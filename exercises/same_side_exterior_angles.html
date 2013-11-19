@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers angles">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>同側外角</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+        <var id="ANCHOR">randRange( 20, 160 )</var>
+        <var id="KNOWN_INDEX, UNKNOWN_INDEX">shuffle( randFromArray( [ [ 3, 4 ], [ 2, 5 ] ] ) )</var>
+        <var id="MEASURE">KNOWN_INDEX % 2 === 0 ? ANCHOR : 180 - ANCHOR</var>
+    </div>
+
+    <div class="problems">
+        <div>
+            <p>下面兩條水平線是互相平行的，而另外有第三條線與它們相交，如下圖所示。</p>
+			<p class="question">如果我們知道 <span class="hint_blue">藍色的角是 <var>MEASURE</var> 度</span> ，請問<span class="hint_orange">橘色的角</span>是幾度呢？</p>
+            <p class="solution" data-forms="integer"><var>180 - MEASURE</var></p>
+            <div class="graphie" id="parallel-lines">
+                init({
+                    range: [ [ -1, 11 ], [-1, 4] ]
+                });
+                graph.pl = new ParallelLines( 0, 0, 10, 0, 3 );
+                graph.pl.draw();
+                graph.pl.drawTransverse( ANCHOR );
+                graph.pl.drawAngle( KNOWN_INDEX, true );
+                graph.pl.drawAngle( UNKNOWN_INDEX, false, "#FFA500" );
+            </div>
+        </div>
+    </div>
+
+    <div class="hints">
+        <div>
+            <p>粉紅色的角在藍色的角旁邊，而且兩個角合起來組成一條直線，所以我們知道粉紅色的角是 <var>180 - MEASURE</var> 度。</p>
+            <div class="graphie" data-update="parallel-lines">
+                graph.pl.drawAdjacentAngles( KNOWN_INDEX, true, "#FF00A5" );
+            </div>
+        </div>
+        <p>兩個粉紅色的角彼此相等是滿合理的結果，因為它們是對頂角。</p>
+        <p>其中一個粉紅色的角是橘色角的同位角，而另一個粉紅色的角則跟橘色角形成外錯角。</p>
+        <div>
+            <p>橘色角跟粉紅色角的角度相同，都是 <var>180 - MEASURE</var> 度。</p>
+            <div class="graphie" data-update="parallel-lines">
+                graph.pl.drawAngle( UNKNOWN_INDEX, true, "#FFA500" );
+            </div>
+        </div>
+        <p>另外，你會注意到藍色的角和橘色的角互為補角。</p>
+    </div>
+    </div>
+</body>
+</html>

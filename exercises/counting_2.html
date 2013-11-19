@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html data-require="math math-format word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>計算數量 2</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="every-n">
+                <div class="vars">
+                    <var id="INCR">randRange( 3, 5 )</var>
+                    <var id="START">randRange( 20, 50 )</var>
+                    <var id="NTH">randRange( 7, 15 )</var>
+                    <var id="ANSWER">START + ( NTH - 1 ) * INCR</var>
+                </div>
+                <p><var>person( 1 )</var>從 <var>START</var> 開始往上數，而<var>he( 1 )</var>數的規律是這樣的：每<var>cardinal( INCR )</var>個數字數一次。</p>
+                <p class="question">如果 <var>START</var> 是<var>person( 1 )</var>數的第一個數字，那<var>he( 1 )</var>數的第<var>cardinal(NTH)</var>個數字是什麼呢？</p>
+                <p class="solution" data-forms="integer"><var>ANSWER</var></p>
+                <div class="hints">
+                    <p><var>he( 1 )</var>數的第一個數字是什麼？</p>
+                    <p><code><var>START</var></code></p>
+                    <p><var>he( 1 )</var>數的第二個數字是什麼？</p>
+                    <p><code>\begin{align*}&<var>START</var> + <var>INCR</var> \\
+                        &= <var>START + INCR</var>\end{align*}</code></p>
+                    <p><var>he( 1 )</var>數的第三個數字是什麼？</p>
+                    <p><code>\begin{align*}&<var>START</var> + <var>INCR</var> + <var>INCR</var> \\
+                        &= <var>START</var> + (2 \times <var>INCR</var>) \\
+                        &= <var>START + 2 * INCR</var>\end{align*}</code></p>
+                    <p><var>he( 1 )</var>數的第<var>cardinal (NTH)</var>個數字是什麼？</p>
+                    <p><code>\begin{align*}&<var>START</var> + (<var>NTH - 1</var>\times<var>INCR</var>) \\
+                        &= <var>START</var> + <var>( NTH - 1 ) * INCR</var> \\
+                        &= <var>ANSWER</var>\end{align*}</code></p>
+                </div>
+            </div>
+
+            <div id="handshakes">
+                <div class="vars">
+                    <var id="NUM">randRange( 5, 10 )</var>
+                    <var id="ANSWER">( NUM * ( NUM - 1 ) ) / 2</var>
+                </div>
+                <p>房間裡有 <var>NUM</var> 個人。</p>
+                <p class="question">如果房間裡的每個人都跟其他人剛剛好握過一次手，那請問房間裡總共發生了幾次握手的動作？</p>
+                <p class="solution" data-forms="integer"><var>ANSWER</var></p>
+
+                <div class="hints">
+                    <p>如果有 <var>NUM</var> 個人，則每個人會跟 <var>NUM - 1</var> 個人握到手。</p>
+                    <div>
+                        <p>下面快接近正確答案了。</p>
+                        <p><code><var>NUM</var> \times <var>NUM - 1</var> = <var>NUM * ( NUM - 1 )</var></code></p>
+                    </div>
+                    <p>不過，我們算的握手次數多出了一倍，因為<var>person( 1 )</var>握<var>person( 2 )</var>的手，跟<var>person( 2 )</var>握<var>person( 1 )</var>的手是一樣的動作。</p>
+                    <div>
+                        <p>因此，下面才是正確答案。</p>
+                        <p><code>\dfrac{<var>NUM</var> \times <var>NUM - 1</var>}{2} = <var>ANSWER</var></code></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="potted-plants">
+                <div class="vars">
+                    <var id="NUM_COLORS, NUM_POTS">randRangeUnique( 2, 6, 2 )</var>
+                    <var id="ANSWER">NUM_COLORS * NUM_POTS</var>
+                </div>
+                <p><var>person( 1 )</var>想要送<var>his( 1 )</var>的朋友一個花籃。花店的老闆告訴<var>person( 1 )</var>說，花籃分花的部份跟籃子的部份。花總共有 <var>NUM_COLORS</var> 種顏色可以選，而裝花的籃子則總共有 <var>NUM_POTS</var> 種樣式可以選。</p>
+                <p class="question">如果<var>he( 1 )</var>可以選擇任何一種花及任何一種籃子，則<var>person( 1 )</var>總共有多少種不同的花籃組合可以選呢？</p>
+                <p class="solution" data-forms="integer"><var>ANSWER</var></p>
+                <div class="hints">
+                    <p>如果<var>person( 1 )</var>已經決定了花的顏色了，那<var>person( 1 )</var>有幾種花籃組合可以選擇呢？</p>
+                    <p><var>He( 1 )</var>可以從 <var>NUM_POTS</var> 種籃子中作選擇，所以總共有 <var>NUM_POTS</var> 種花籃的組合 (前提是<var>he( 1 )</var>已經決定了花的顏色了)。</p>
+                    <p>由於總共有 <var>NUM_COLORS</var> 種顏色的花可以選，所以總共有 <code><var>NUM_COLORS</var> \times <var>NUM_POTS</var> = <var>ANSWER</var></code> 種可能的花籃組合可供選擇。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

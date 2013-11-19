@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html data-require="math math-format word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>組合 1</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="packing">
+                <div class="vars" data-ensure="NUM_THINGS>NUM_TAKEN">
+                    <var id="THING">randFromArray(["外套", "太陽眼鏡", "雜誌", "巧克力", "帽子", "玩偶"])</var>
+                    <var id="NUM_THINGS">randRange(5,9)</var>
+                    <var id="NUM_TAKEN">randRange(3,5)</var>
+                    <var id="ANSWER">factorial(NUM_THINGS) / (factorial(NUM_THINGS-NUM_TAKEN) * factorial(NUM_TAKEN))</var>
+                </div>
+                <p class="problem">
+                    <var>person(1)</var>準備要去度假，所以正在打包<var>his(1)</var>的行李。<var>He(1)</var>有 <code><var>NUM_THINGS</var></code> 種不同的<var>THING</var>，但<var>his(1)</var>行李中只塞的下<code><var>NUM_TAKEN</var></code>種。
+                </p>
+                <p class="question">總共有多少種<var>THING</var>( <code><var>NUM_TAKEN</var></code> 個一組)的組合，可供<var>person(1)</var>選擇呢？</p>
+                <p class="solution" data-forms="integer"><var>ANSWER</var></p>
+                <div class="hints">
+                    <p>
+                        <var>person(1)</var>有 <code><var>NUM_TAKEN</var></code> 個位置可以放<var>his(1)</var><var>THING</var>，
+                        所以我們一個一個來。
+						一開始，<var>person(1)</var>有 <code><var>NUM_THINGS</var></code> 種選擇可以放進第一個位置。
+                    </p>
+                    <p>
+                        第二個位置的話，由於<var>he(1)</var>只剩下 <code><var>NUM_THINGS-1</var></code> 個<var>THING</var>了，
+						所以<var>he(1)</var>只剩下 <code><var>NUM_THINGS-1</var></code> 種選擇可以放進第二個位置裡。
+                        乍看之下，<var>person(1)</var>好像有 <code><var>NUM_THINGS</var> \cdot <var>NUM_THINGS-1</var> = 
+                        <var>NUM_THINGS * (NUM_THINGS-1)</var></code> 種不同的方式來裝滿行李中的前兩個位置。但這不完全正確。
+						
+                    </p>
+                    <p>
+                        為什麼呢？因為如果<var>he(1)</var>先挑第一種<var>THING</var>然後再挑第三種<var>THING</var>，
+						這跟如果<var>he(1)</var>先挑第三種<var>THING</var>然後再挑第一種<var>THING</var>的情況其實是一樣的。它們一樣都在行李裡面。
+                    </p>
+                    <p>
+                        所以，如果<var>person(1)</var>繼續把行李中剩下的位置填滿，乍看之下總共有
+						<code><var>_.map(_.range(NUM_TAKEN), function(l){ return (NUM_THINGS - l);}).join("\\cdot")</var> = \dfrac{<var>NUM_THINGS</var>!}{(<var>NUM_THINGS</var>-<var>NUM_TAKEN</var>)!} = <var> factorial(NUM_THINGS)/factorial(NUM_THINGS-NUM_TAKEN)</var></code> 種不同的決定，但其實這樣重複算了很多種組合。
+                    </p>
+                    <p>
+                        那我們重複算了多少呢？每一種組合裡都有 <code><var>NUM_TAKEN</var></code> 個物品，
+						而我們剛剛把不同的排列順序都算成是不同的組合，但其實它們是一樣的，不應該重複算的。
+						所以，我們重複算的次數，就是等於任意排列 <code><var>NUM_TAKEN</var></code> 個物品的所有方式。
+                    </p>
+                    <p>
+                        要任意排列 <code><var>NUM_TAKEN</var></code> 個物品，總共有 <code><var>NUM_TAKEN</var>! = <var>factorial(NUM_TAKEN)</var></code> 種方式。
+						所以，我們剛剛每一種<code><var>NUM_TAKEN</var></code> 個<var>THING</var>的組合都重複算了 <code><var>factorial(NUM_TAKEN)</var></code> 次。
+                    </p>
+                    <p>
+                        因此，我們必須把我們一開始算的組合的數量，除以我們每一種組合重複算的次數。
+                    </p>
+                    <p>
+                        所以，<var>person(1)</var>到底有幾種<var>THING</var>組合可供選擇呢？答案就是 <code> \dfrac{<var>NUM_THINGS</var>!}{(<var>NUM_THINGS</var> - <var>NUM_TAKEN</var>)!} \cdot \dfrac{1}{<var>NUM_TAKEN</var>!}</code> 
+                        </br>
+                        另一個表示這個數量的方式就是 <code> \binom{<var>NUM_THINGS</var>}{<var>NUM_TAKEN</var>} </code> ，
+                        也就是 <code><var>NUM_THINGS</var></code> 取 <code><var>NUM_TAKEN</var></code> ，等於 <code><var>ANSWER</var></code> 。
+                    </p>
+                </div>
+            </div>
+
+            <div id="boat">
+                <div class="vars">
+                    <var id="FRIENDS">randRange(5,6)</var>
+                    <var id="SLOTS">randRange(2,FRIENDS-2)</var>
+                    <var id="ANSWER">factorial(FRIENDS) / (factorial(FRIENDS-SLOTS) * factorial(SLOTS))</var>
+                </div>
+                <p class="problem">
+                    你剛得到了一張可以免費搭乘遊輪的票，而且還可以帶 <code><var>SLOTS</var></code> 個朋友一起上船！
+                    很不幸的，你總共有 <code><var>FRIENDS</var></code> 個朋友，都想要搭郵輪。
+                </p>
+                <p class="question">你有多少種不同的朋友的組合可以帶上船呢？</p>
+                <p class="solution" data-forms="integer"><var>ANSWER</var></p>
+
+                <div class="hints">
+                    <p>
+                        你總共有 <code><var>SLOTS</var></code> 個名額可以給你的朋友們，所以我們一個名額一個名額來。
+						第一個名額的話，我們有 <code><var>FRIENDS</var></code> 種不同的選擇 (因為你有 <code><var>FRIENDS</var></code> 個不同的朋友可以佔這個名額)。
+                    </p>
+                    <p>
+                        填滿了第一個名額後，剩下 <code><var>FRIENDS-1</var></code> 個朋友可以佔第二個名額。乍看之下，如果我們只考慮填滿前兩個名額的方法，
+						好像總共有 <code><var>FRIENDS</var> \cdot <var>FRIENDS-1</var> = <var>FRIENDS * (FRIENDS-1)</var> </code> 種不同的組合。但那不完全正確。
+                    </p>
+                    <p>
+                        為什麼呢？因為如果我們先挑<var>person(1)</var>，再挑<var>person(2)</var>，這跟先挑<var>person(2)</var>再挑<var>person(1)</var>是完全一樣的。他們最終都會上船。
+                    </p>
+                    <p>
+                        所以，如果們繼續填滿可以上船的名額，乍看之下總共有 <code><var>_.map(_.range(SLOTS), function(l){ return (FRIENDS - l);}).join("\\cdot")</var> = \dfrac{<var>FRIENDS</var>!}{<var>FRIENDS-SLOTS</var>!} = <var> factorial(FRIENDS)/factorial(FRIENDS-SLOTS)</var></code> 種不同的組合。但其實這樣重複算了很多種組合。
+                    </p>
+                    <p>
+                        那我們重複算了多少呢？每一種組合裡都有 <code><var>SLOTS</var></code> 個朋友，而我們剛剛把不同的排列順序都算成是不同的組合，但其實它們是一樣的，不應該重複算的。所以，我們重複算的次數，就是等於任意排列 <code><var>SLOTS</var></code> 個朋友的所有方式。
+                    </p>
+                    <p>
+                        要任意排列 <code><var>SLOTS</var></code> 個東西，總共有 <code><var>SLOTS</var>! = <var>factorial(SLOTS)</var></code> 種方式。
+						所以，我們剛剛每一種 <code><var>SLOTS</var></code> 個朋友的組合都重複算了 <code><var>factorial(SLOTS)</var></code> 次。
+                    </p>
+                    <p>
+                        因此，我們必須把我們一開始算的組合的數量，除以我們每一種組合重複算的次數。
+                        </br>
+                        <code> \dfrac{<var>FRIENDS</var>!}{<var>FRIENDS-SLOTS</var>!} \cdot \dfrac{1}{<var>SLOTS</var>!}</code> 就是我們總共可以帶上船的不同的朋友組合。
+                        </br>
+                        另一種表達這個數量的方式就是 <code> \binom{<var>FRIENDS</var>}{<var>SLOTS</var>} </code> 也就是 <code><var>FRIENDS</var></code> 取 <code><var>SLOTS</var></code> ，等於 <code><var>ANSWER</var></code> 。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

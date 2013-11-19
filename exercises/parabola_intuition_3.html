@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie interactive parabola-intuition">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>拋物線的直覺 3</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area input[type=text] {
+            width: 30px;
+            margin: 0px 0px 0px 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="A">randFromArray([ -2, -1, -0.5, -0.25, 0.25, 0.5, 1, 2 ])</var>
+            <var id="X1">randRangeNonZero( -4, 4 )/8</var>
+            <var id="Y1">randRangeNonZero( -4, 4 )/8</var>
+            <var id="VERTEX_Y">Y1 + 1 / (4 * A)</var>
+            <var id="DIR_Y">Y1 - 1 / (4 * A)</var>
+            <var id="PRETTY_A">fractionReduce.apply(KhanUtil, toFraction(A, 0.001))</var>
+            <var id="PRETTY_X1">fractionReduce.apply(KhanUtil, toFraction(X1, 0.001))</var>
+            <var id="PRETTY_Y1">fractionReduce.apply(KhanUtil, toFraction(Y1, 0.001))</var>
+            <var id="PRETTY_FOCUS_Y">fractionReduce.apply(KhanUtil, toFraction(VERTEX_Y, 0.001))</var>
+            <var id="PRETTY_DIR_Y">fractionReduce.apply(KhanUtil, toFraction(DIR_Y, 0.001))</var>
+        </div>
+
+        <div class="problems">
+            <div>
+                <p class="question">
+                    首先，利用拖曳橘色小點和橘線的方式，請找出拋物線的<span class="hint_orange">焦點</span>和<span class="hint_orange">準線</span>。然後，再請你找出拋物線的等式。
+                </p>
+                <div class="graphie" id="grid">
+                    graph.A = A;
+                    graph.X1 = X1;
+                    graph.Y1 = Y1;
+                    initAutoscaledGraph( [ [ -2.5, 2.5 ], [ -2.5, 2.5 ] ], {} );
+                    addMouseLayer();
+
+                    graph.directrix = addMovableLineSegment({
+                        coordA: [0, -1],
+                        coordZ: [1, -1],
+                        snapY: 0.125,
+                        vertical: false,
+                        extendLine: true,
+                        normalStyle: {
+                            "stroke": KhanUtil.ORANGE,
+                            "stroke-width": 2
+                        },
+                        highlightStyle: {
+                            "stroke": KhanUtil.ORANGE,
+                            "stroke-width": 4
+                        }
+                    });
+                    graph.directrix.onMove = function( x, y ) {
+                        var coord = this.coordA[1];
+                        $("#directrix-label").html( "&lt;code&gt;" + fractionReduce.apply(KhanUtil, toFraction(coord, 0.001)) + "&lt;/code&gt;" ).tmpl();
+                    };
+
+                    graph.vertex = addMovablePoint({
+                        coordX: 0,
+                        coordY: 1,
+                        snapX: 0.125,
+                        snapY: 0.125,
+                    });
+                    graph.vertex.onMove = function( coordX, coordY ) {
+                        $("#focus-x-label").html( "&lt;code&gt;" + fractionReduce.apply(KhanUtil, toFraction(coordX, 0.001)) + "&lt;/code&gt;" ).tmpl();
+                        $("#focus-y-label").html( "&lt;code&gt;" + fractionReduce.apply(KhanUtil, toFraction(coordY, 0.001)) + "&lt;/code&gt;" ).tmpl();
+                    };
+
+                    graph.func = addInteractiveFn( function(x) {
+                        return ( A * ( x - X1 ) * ( x - X1 ) ) + Y1;
+                    }, {});
+
+                    doParabolaInteraction( graph.func, graph.vertex, graph.directrix );
+                </div>
+                <p>
+                    當你的滑鼠指到拋物線上的時候，你會看到<span class="hint_green">兩條綠線</span>；這兩條綠線的長度是彼此相等的，所以你可以利用他們來檢查你找到的焦點和準線是否正確。
+                </p>
+
+                <div class="solution" data-type="multiple">
+                    <div class="sol" data-type="custom">
+                        <div class="guess"> [ graph.vertex.coord, graph.directrix.coordA[1] ] </div>
+                        <div class="validator-function">
+                            if (_.isEqual(guess, [[0, 1], -1])) {
+                                return "";
+                            }
+                            return guess[0][0] === X1
+                                &amp;&amp; guess[0][1] === Y1 + 1 / (4 * A)
+                                &amp;&amp; guess[1] === Y1 - 1 / (4 * A)
+                        </div>
+                        <div class="show-guess">
+                            graph.vertex.setCoord( guess[0] );
+                            graph.directrix.coordA = [0, guess[1]];
+                            graph.directrix.coordZ = [1, guess[1]];
+                            graph.directrix.transform();
+                        </div>
+                    </div>
+
+                    <p><span>焦點： </span><code>(</code><span id="focus-x-label"><code>0</code></span><code>\text{, }</code><span id="focus-y-label"><code>1</code></span><code>)</code></p>
+                    <p>準線： <code>y = </code><span id="directrix-label"><code>-1</code></span></p>
+                    <p>
+                        拋物線的等式：<br />
+                        <code>y - </code><span class="sol" data-fallback="0" required><var>Y1</var></span>
+                        <code> = </code><span class="sol" data-fallback="1" required><var>A</var></span>
+                        <code>(x - </code><span class="sol" data-fallback="0" required><var>X1</var></span>
+                        <code>)^2</code>
+                    </p>
+
+                    <p class="example">利用拖曳的方式，找出正確的焦點與準線</p>
+                    <p class="example">輸入拋物線的等式的時候，你可以使用整數、分數、或精確的小數</p>
+                    <p class="example">要注意你輸入的數字的正負是否正確唷！</p>
+                </div>
+
+                <div class="hints">
+                <p>
+                    一個拋物線上所有的點都有這個性質：它們距離焦點的長度都會等於它們聚離準線的長度。因此，你會發現只有一個點和一條線符合這個要求，而橘點與橘線就應該放在那裡。
+                    
+                    <button onClick="javascript:
+                        graph = KhanUtil.currentGraph.graph;
+                        graph.vertex.moveTo(graph.X1, graph.Y1 + 1 / (4 * graph.A));
+                        $({ y: graph.directrix.coordA[1] }).animate({ y: graph.Y1 - 1 / (4 * graph.A) }, {
+                            duration: Math.abs(graph.directrix.coordA[1] - (graph.Y1 - 1 / (4 * graph.A))) * 300,
+                            step: function(now, fx) {
+                                graph.directrix.coordA = [0, now];
+                                graph.directrix.coordZ = [1, now];
+                                graph.directrix.transform();
+                            }
+                        });
+                    ">秀給我看</button>
+                </p>
+                <p>
+                    焦點是 <code>(<var>PRETTY_X1</var>,    <var>PRETTY_FOCUS_Y</var>)</code>
+                    ，而準線則是 <code>y = <var>PRETTY_DIR_Y</var></code>
+                </p>
+                <p>
+                    拋物線的式子是 <code>y - y_1 = a (x - x_1)^2</code> ，其中， <code>x_1</code> 和 <code>y_1</code>
+                    是拋物線<em>頂點</em>的座標 (頂點是在焦點與準線的正中間)。
+                </p>
+                <p>
+                    <code>x_1</code> 跟焦點的 <code>x</code> 座標會是一樣的。
+                    <code>y_1</code> 則是 <code><var>PRETTY_FOCUS_Y</var></code> 和 <code><var>PRETTY_DIR_Y</var></code> 的中間點。
+                </p>
+                <p>
+                    因此， <code>x_1 = <var>PRETTY_X1</var></code> 。
+                    另外， <code>y_1 = \dfrac{<var>PRETTY_FOCUS_Y</var> + <var>PRETTY_DIR_Y</var>}{2} = <var>PRETTY_Y1</var></code>.
+                </p>
+                <p>
+                     <code>y - y_1 = a (x - x_1)^2</code> 這個等式中的領導係數 <code>a</code> ，決定了拋物線將會多寬，以及到底是往上還是往下開口。這個領導係數的值，永遠都是準線到焦點的距離的兩倍的倒數。
+                  
+                </p>
+                <p>
+                    <code data-if="A >= 0">a = \dfrac{1}{2 \times (<var>PRETTY_FOCUS_Y</var> {-} <var>PRETTY_DIR_Y</var>)} = <var>PRETTY_A</var></code>
+                    <code data-else>a = \dfrac{1}{2 \times (<var>PRETTY_DIR_Y</var> {-} <var>PRETTY_FOCUS_Y</var>)} = <var>PRETTY_A</var></code>
+                </p>
+                <p>
+                    因此，這個拋物線的等式是 <code>y - <var>PRETTY_Y1</var> = <var>PRETTY_A</var>(x - <var>PRETTY_X1</var>)^2</code> 。
+                </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>直線的性質</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area input[type=text] {
+            width: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars"></div>
+        <div class="problems">
+            <div id="perpendicular-graph" data-weight="2">
+                <div class="vars">
+                    <var id="M">randRangeNonZero( -3, 3 ) / randRange( 1, 3 )</var>
+                    <var id="M_SIGN">M > 0 ? "" : "-"</var>
+                    <var id="M_PERP_SIGN">M > 0 ? "-" : ""</var>
+                    <var id="M_FRAC">decimalFraction( M, "true", "true" )</var>
+                    <var id="M_PERP_FRAC">decimalFraction( -1 / M, "true", "true" )</var>
+                    <var id="B">randRange( -5, 5 )</var>
+                    <var id="X" data-ensure="abs( ( -1 / M ) * X ) &lt;= 12">randRange( 2, 8 ) * randRangeNonZero( -1, 1 )</var>
+                    <var id="Y" data-ensure="abs( Y - ( -1 / M ) * X ) &lt; 10">randRange( 2, 8 ) * randRangeNonZero( -1, 1 )</var>
+                    <var id="LINE_TYPE">"垂直"</var>
+                </div>
+                <div class="question">
+					<p><b>有一條直線與 <code>\enspace \color{<var>BLUE</var>}{y = <span data-if="abs( M_FRAC ) !== 1"><var>M_FRAC</var></span><span data-else><var>M_SIGN</var></span>x <span data-if="B !== 0">+ <var>B</var></span>}\enspace</code> <code>\color{<var>GREEN</var>}{\text{<var>LINE_TYPE</var>}}</code> 並經過 <code>\color{red}{(<var>X</var>, <var>Y</var>)}</code> ；請問這條直線的斜率與 Y 軸截距各是多少？</b></p>
+                    <div class="graphie" id="grid">
+                            graphInit({
+                                range: [[-10, 10], [-10, 10]],
+                                scale: [18, 18],
+                                tickStep: 1,
+                                labelStep: 1,
+                                unityLabels: false,
+                                labelFormat: function( s ) { return "\\small{" + s + "}"; },
+                                axisArrows: "<->"
+                            });
+
+                            plot(function( x ) {
+                                return ( M * x + B );
+                            }, [-10, 10], {
+                                stroke: BLUE
+                            });
+
+                            circle( [X, Y], 1/4, {
+                            stroke: "none",
+                            fill: "#ff0000"
+                        } );
+
+                    </div>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <p><code>m</code> = <span class="sol"><var>-1 / M</var></span></p>
+                    <p><code>b</code> = <span class="sol"><var>Y - ( -1 / M * X )</var></span></p>
+                </div>
+                <div class="hints">
+                    <p>如果兩條直線互相垂直，則這兩條直線的斜率將互為負倒數 (也就是說，兩者的斜率相乘將等於 -1 ) 。
+                    <div>
+                        <p>藍色直線的斜率為 <code>\color{<var>BLUE</var>}{<var>M_FRAC</var>}</code> ，而它的負倒數為 <code>\color{<var>GREEN</var>}{<var>M_PERP_FRAC</var>}</code> 。</p>
+                        <p>因此，我們要的垂直線的等式將會長的像這樣： <code>\enspace \color{<var>GREEN</var>}{y = <span data-if="abs( M_PERP_FRAC ) !== 1"><var>M_PERP_FRAC</var></span><span data-else><var>M_PERP_SIGN</var></span>x + b}\enspace</code> </p>
+                    </div>
+                    <div>
+                        <p>我們可以把我們已知的點， <code>(<var>X</var>, <var>Y</var>)</code> ，套進等式裡來求 <code>\color{<var>GREEN</var>}{b}</code> (也就是 Y 軸截距) 的值。</p>
+                        <p data-if="M !== -1"><code><var>Y</var> = \color{<var>GREEN</var>}{<span data-if="abs( M_PERP_FRAC ) !== 1"><var>M_PERP_FRAC</var></span><span data-else><var>M_PERP_SIGN</var></span>}(<var>X</var>) + \color{<var>GREEN</var>}{b}</code></p>
+                    </div>
+                    <div>
+                        <p><code><var>Y</var> = <var>decimalFraction( -1 / M * X, "true", "true" )</var> + \color{<var>GREEN</var>}{b}</code></p>
+                        <p><code><var>Y</var> - <var>decimalFraction( -1 / M * X, "true", "true" )</var> = \color{<var>GREEN</var>}{b} = <var>decimalFraction( Y - ( -1 / M * X ), "true", "true" )</var></code></p>
+                    </div>
+                    <div>
+                        <p>垂直線的等式為 <code>\enspace \color{<var>GREEN</var>}{y = <span data-if="abs( M_PERP_FRAC ) !== 1"><var>M_PERP_FRAC</var></span><span data-else><var>M_PERP_SIGN</var></span>x<span data-if="Y - ( -1 / M * X ) !== 0"> + <var>decimalFraction( Y - ( -1 / M * X ), "true", "true" )</var></span>}\enspace</code> 。</p>
+                        <p><code>\color{<var>GREEN</var>}{m = <var>decimalFraction( -1 / M, "true", "true" )</var>, \enspace b = <var>decimalFraction( Y - ( -1 / M * X ), "true", "true" )</var>}</code></p>
+                        <div class="graphie" data-update="grid">
+                            plot(function( x ) {
+                                return ( -1 / M * x + ( Y - ( -1 / M * X ) ) );
+                            }, [-10, 10], {
+                                stroke: GREEN
+                            });
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="parallel-graph" data-type="perpendicular-graph" data-weight="2">
+                <div class="vars">
+                    <var id="LINE_TYPE">"平行"</var>
+                    <var id="X" data-ensure="abs( M * X ) &lt;= 12">randRange( 2, 8 ) * randRangeNonZero( -1, 1 )</var>
+                    <var id="Y" data-ensure="abs( Y - M * X ) &lt; 10 && abs( Y - M * X - B ) &gt;= 1">randRange( 2, 8 ) * randRangeNonZero( -1, 1 )</var>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <p><code>m</code> = <span class="sol"><var>M</var></span></p>
+                    <p><code>b</code> = <span class="sol"><var>Y - M * X </var></span></p>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>如果兩條直線互相平行，則它們的斜率是一樣的。</p>
+                        <p>藍色直線的斜率為 <code>\color{<var>BLUE</var>}{<var>M_FRAC</var>}</code> ，因此，我們要的平行線的等式將會長的像這樣： <code>\enspace \color{<var>GREEN</var>}{y = <span data-if="abs( M_FRAC ) !== 1"><var>M_FRAC</var></span><span data-else><var>M_SIGN</var></span>x + b}\enspace</code>.</p>
+                    </div>
+                    <div>
+                        <p>我們可以把我們已知的點， <code>(<var>X</var>, <var>Y</var>)</code> ，套進等式裡來求 <code>\color{<var>GREEN</var>}{b}</code> (也就是 Y 軸截距) 的值。</p>
+                        <p data-if="M !== 1"><code><var>Y</var> = \color{<var>GREEN</var>}{<span data-if="abs( M_FRAC ) !== 1"><var>M_FRAC</var></span><span data-else><var>M_SIGN</var></span>}(<var>X</var>) + \color{<var>GREEN</var>}{b}</code></p>
+                    </div>
+                    <div>
+                        <p><code><var>Y</var> = <var>decimalFraction( M * X, "true", "true" )</var> + \color{<var>GREEN</var>}{b}</code></p>
+                        <p><code><var>Y</var> - <var>decimalFraction( M * X, "true", "true" )</var> = \color{<var>GREEN</var>}{b} = <var>decimalFraction( Y - M * X, "true", "true" )</var></code></p>
+                    </div>
+                    <div>
+                        <p>平行線的等式為 <code>\enspace \color{<var>GREEN</var>}{y = <span data-if="abs( M_FRAC ) !== 1"><var>M_FRAC</var></span><span data-else><var>M_SIGN</var></span>x<span data-if="Y - ( M * X ) !== 0"> + <var>decimalFraction( Y - M * X, "true", "true" )</var>}</span>\enspace</code> 。</p>
+                        <p><code>\color{<var>GREEN</var>}{m = <var>decimalFraction( M, "true", "true" )</var>, \enspace b = <var>decimalFraction( Y - M * X, "true", "true" )</var>}</code></p>
+                        <div class="graphie" data-update="grid">
+                            plot(function( x ) {
+                                return ( M * x + ( Y - M * X ) );
+                            }, [-10, 10], {
+                                stroke: GREEN
+                            });
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="compare-lines" data-ensure="abs( A1 ) !== abs( B1 ) && abs( A2 ) !== abs( B2 )" data-weight="0">
+                <div class="vars">
+                    <var id="A1">randRangeNonZero( -5, 5 )</var>
+                    <var id="B1">randRangeNonZero( -5, 5 )</var>
+                    <var id="C1">randRangeNonZero( -5, 5 )</var>
+                    <var id="F">randRangeNonZero( -5, 5 )</var>
+                    <var id="A2">A1 * F</var>
+                    <var id="B2">B1 * F</var>
+                    <var id="C2">C1 * F</var>
+                    <var id="EQ1">expr(["+", ["*", A1, "x"], ["*", B1, "y"]]) + " = " + C1</var>
+                    <var id="EQ2">expr(["+", ["*", A2, "x"], ["*", B2, "y"]]) + " = " + C2</var>
+                </div>
+                <div class="question">
+                    <p>下列兩個等式之間是什麼關係？</p>
+                    <p><code><var>EQ1</var></code></p>
+                    <p><code><var>EQ2</var></code></p>
+                </div>
+                <div class="solution">相同的直線</div>
+                <ul class="choices" data-category="true">
+                    <li>相同的直線</li>
+                    <li>互相平行的直線</li>
+                    <li>互相垂直的直線</li>
+                    <li>以上皆非</li>
+                </ul>
+                <div class="hints">
+                    <div>
+                        <div class="graphie" id="grid">
+                            init({
+                                range: [[-10, 10], [-10, 10]],
+                                scale: [20, 20]
+                            });
+
+                            grid( [-10, 10], [-10, 10], {
+                                stroke: "#ccc"
+                            });
+
+                            style({
+                                stroke: "#888",
+                                strokeWidth: 2,
+                                arrows: "->"
+                            });
+                            path( [ [-10, 0], [10, 0] ] );
+                            path( [ [0, -10], [0, 10] ] );
+
+                            style({
+                                stroke: "#6495ED",
+                                arrows: null
+                            });
+
+                            plot( function( x ) {
+                                return ( C1 / B1 ) - ( A1 / B1 ) * x;
+                            }, [-10, 10]);
+                        </div>
+                        <p>將第一個等式寫成 <code>y = mx + b</code> 的形式：</p>
+                        <p><code><var>expr(["+", ["*", A1, "x"], ["*", B1, "y"]]) + " = " + C1</var></code></p>
+                        <p><code><var>expr(["*", B1, "y"]) + " = " + expr(["+", ["*", (-1 * A1), "x"], C1])</var></code></p>
+                        <p data-if="B1 !== 1"><code><var>"y = " + fractionReduce( -A1, B1 ) + "x + " + fractionReduce( C1, B1 )</var></code></p>
+                    </div>
+                    <div>
+                        <div class="graphie" data-update="grid">
+                            plot( function( x ) {
+                                return ( C2 / B2 ) - ( A2 / B2 ) * x;
+                            }, [-10, 10]);
+                        </div>
+                        <p>將第二個等式寫成 <code>y = mx + b</code> 的形式：</p>
+                        <p><code><var>expr(["+", ["*", A2, "x"], ["*", B2, "y"]]) + " = " + C2</var></code></p>
+                        <p><code><var>expr(["*", B2, "y"]) + " = " + expr(["+", ["*", (-1 * A2), "x"], C2])</var></code></p>
+                        <p data-if="B2 !== 1"><code><var>"y = " + fractionReduce( -A2, B2 ) + "x + " + fractionReduce( C2, B2 )</var></code></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="different-lines" data-type="compare-lines">
+                <div class="vars" data-ensure="A1 / B1 !== A2 / B2 && A1 / B1 !== -B2 / A2">
+                    <var id="A1">randRangeNonZero( -5, 5 )</var>
+                    <var id="A2">randRangeNonZero( -5, 5 )</var>
+                    <var id="B1">randRangeNonZero( -5, 5 )</var>
+                    <var id="B2">randRangeNonZero( -5, 5 )</var>
+                    <var id="C1">randRangeNonZero( -5, 5 )</var>
+                    <var id="C2">randRangeNonZero( -5, 5 )</var>
+                    <var id="EQ1">expr(["+", ["*", A1, "x"], ["*", B1, "y"]]) + " = " + C1</var>
+                    <var id="EQ2">expr(["+", ["*", A2, "x"], ["*", B2, "y"]]) + " = " + C2</var>
+                </div>
+                <div class="solution">以上皆非</div>
+                <div class="hints" data-apply="appendContents">
+                    <p>兩條直線的斜率不一樣，因此兩條直線不可能相等，也不可能平行。兩條線的斜率也不是彼此的負倒數，因此兩條線不是互相垂直的關係。所以正確答案是以上皆非。</p>
+                </div>
+            </div>
+
+            <div id="same-line" data-type="compare-lines">
+                <div class="vars">
+                    <var id="A1">randRangeNonZero( -5, 5 )</var>
+                    <var id="B1">randRangeNonZero( -5, 5 )</var>
+                    <var id="C1">randRangeNonZero( -5, 5 )</var>
+                    <var id="F">randRangeNonZero( -5, 5 )</var>
+                    <var id="A2">A1 * F</var>
+                    <var id="B2">B1 * F</var>
+                    <var id="C2">C1 * F</var>
+                    <var id="EQ1">expr(["+", ["*", A1, "x"], ["*", B1, "y"]]) + " = " + C1</var>
+                    <var id="EQ2">expr(["+", ["*", A2, "x"], ["*", B2, "y"]]) + " = " + C2</var>
+                </div>
+                <div class="solution">相同的直線</div>
+                <div class="hints" data-apply="appendContents">
+                    <p>經過重整，我們可以發現以上兩個等式其實是一樣的，因此它們代表相同的直線。</p>
+                </div>
+            </div>
+
+            <div id="parallel" data-type="compare-lines">
+                <div class="vars" data-ensure="C1 * F !== C2 && C1 * B2 !== C2 * B1">
+                    <var id="A1">randRangeNonZero( -5, 5 )</var>
+                    <var id="B1">randRangeNonZero( -5, 5 )</var>
+                    <var id="C1">randRangeNonZero( -5, 5 )</var>
+                    <var id="F">randRangeNonZero( -5, 5 )</var>
+                    <var id="A2">A1 * F</var>
+                    <var id="B2">B1 * F</var>
+                    <var id="C2">randRange( -5, 5 )</var>
+                    <var id="EQ1">expr(["+", ["*", A1, "x"], ["*", B1, "y"]]) + " = " + C1</var>
+                    <var id="EQ2">expr(["+", ["*", A2, "x"], ["*", B2, "y"]]) + " = " + C2</var>
+                </div>
+                <div class="solution">互相平行的直線</div>
+                <div class="hints" data-apply="appendContents">
+                    <p>兩條直線的斜率相等，而 Y 軸截距不同，所以兩條直線是平行的關係。</p>
+                </div>
+            </div>
+
+            <div id="perpendicular" data-type="compare-lines">
+                <div class="vars">
+                    <var id="A1">randRangeNonZero( -5, 5 )</var>
+                    <var id="B1">randRangeNonZero( -5, 5 )</var>
+                    <var id="C1">randRangeNonZero( -5, 5 )</var>
+                    <var id="F">randRange( 1, 5 )</var>
+                    <var id="A2"> -1 * B1 * F</var>
+                    <var id="B2">A1 * F</var>
+                    <var id="C2">randRangeNonZero( -5, 5 )</var>
+                    <var id="EQ1">expr(["+", ["*", A1, "x"], ["*", B1, "y"]]) + " = " + C1</var>
+                    <var id="EQ2">expr(["+", ["*", A2, "x"], ["*", B2, "y"]]) + " = " + C2</var>
+                </div>
+                <div class="solution">互相垂直的直線</div>
+                <div class="hints" data-apply="appendContents">
+                    <p>兩條直線的斜率互為負倒數 (也就是相乘後等於 -1 )，因此兩條直線互相垂直。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

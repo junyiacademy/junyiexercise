@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html data-require="math">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>正變與反變</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="VARIABLE_NAMES">[["x", "y"], ["a", "b"], ["m", "n"]]</var>
+
+            <var id="V1, V2">randFromArray(VARIABLE_NAMES)</var>
+
+            <var id="MULTIPLIER_IS_FRACTIONAL">rand(2)</var>
+            <var id="MULTIPLIER_VALUE">randRange(2, 9)</var>
+
+            <var id="MULTIPLIER_INVERSE">MULTIPLIER_IS_FRACTIONAL ? MULTIPLIER_VALUE : "\\frac{1}{"+MULTIPLIER_VALUE+"}"</var>
+            <var id="MULTIPLIER">MULTIPLIER_IS_FRACTIONAL ? "\\frac{1}{"+MULTIPLIER_VALUE+"}" : MULTIPLIER_VALUE</var>
+        </div>
+
+        <div class="problems">
+            <div id="direct-variation">
+                <div class="vars">
+                    <var id="STATEMENT">randFromArray([
+                        "&lt;code&gt;&lt;var&gt;V1&lt;/var&gt;&lt;/code&gt; 與 &lt;code&gt;&lt;var&gt;V2&lt;/var&gt;&lt;/code&gt; 成正比",
+                        "&lt;code&gt;&lt;var&gt;V1&lt;/var&gt;&lt;/code&gt; 與 &lt;code&gt;&lt;var&gt;V2&lt;/var&gt;&lt;/code&gt; 會朝相同方向變化",
+                        "&lt;code&gt;&lt;var&gt;V1&lt;/var&gt;&lt;/code&gt; 會跟 &lt;code&gt;&lt;var&gt;V2&lt;/var&gt;&lt;/code&gt; 同個方向變化",
+                        "&lt;code&gt;&lt;var&gt;V1&lt;/var&gt;&lt;/code&gt; 與 &lt;code&gt;&lt;var&gt;V2&lt;/var&gt;&lt;/code&gt; 兩者是正變關係"
+                    ])</var>
+                </div> 
+
+                <p class="problem"><var>STATEMENT</var>。</p>
+                <p class="question">哪一個方程式可以表達出 <code><var>V1</var></code> 與 <code><var>V2</var></code> 之間的關係？</p>
+                <p class="solution"><code>
+                        <var>V1</var> = <var>MULTIPLIER</var> \cdot <var>V2</var>
+                </code></p>
+
+                <div class="hints">
+                    <p>如果 <code><var>V1</var> = k \cdot <var>V2</var></code> （其中 <code>k</code> 為常數），則<var>STATEMENT</var>。</p>
+                    <p><code><var>V1</var> = <var>MULTIPLIER</var> \cdot <var>V2</var></code> 符合這個形式，其中 <code>k = <var>MULTIPLIER</var></code> 。</p>
+                </div>
+
+                <ul class="choices" data-show="5">
+                    <li><code>
+                            <var>V1</var> \cdot <var>V2</var> = <var>MULTIPLIER</var>
+                    </code></li>
+                    <li><code>
+                            <var>V1</var> \cdot <var>V2</var> = <var>MULTIPLIER_INVERSE</var>
+                    </code></li>
+                    <li><code>
+                            <var>V1</var> = <var>MULTIPLIER</var> \cdot \frac{1}{<var>V2</var>}
+                    </code></li>
+                    <li><code>
+                            <var>MULTIPLIER</var> \cdot <var>V1</var> = \frac{1}{<var>V2</var>}
+                    </code></li>
+                    <li><code>
+                            <var>MULTIPLIER_INVERSE</var> \cdot <var>V1</var> = \frac{1}{<var>V2</var>}
+                    </code></li>
+                    <li><code>
+                            <var>MULTIPLIER</var> \cdot \frac{1}{<var>V1</var>} = <var>V2</var>
+                    </code></li>
+                    <li><code>
+                            <var>MULTIPLIER_INVERSE</var> \cdot \frac{1}{<var>V1</var>} = <var>V2</var>
+                    </code></li>
+                    <li><code>
+                            <var>V1</var> + <var>V2</var> = <var>MULTIPLIER_INVERSE</var>
+                    </code></li>
+                    <li><code>
+                            <var>V1</var> = <var>MULTIPLIER</var> - <var>V2</var>
+                    </code></li>
+                </ul>
+            </div>
+
+            <div data-type="direct-variation" id="v1-over-v2">
+                <p class="solution"><code>\frac{<var>V1</var>}{<var>V2</var>} = <var>MULTIPLIER</var></code></p>
+
+                <div class="hints">
+                    <p>如果 <code><var>V1</var> = k \cdot <var>V2</var></code> （其中 <code>k</code> 為常數），則<var>STATEMENT</var>。</p>
+                    <p>如果你在式子的兩邊同時除以 <code><var>V2</var></code> ，會得到 <code>\dfrac{<var>V1</var>}{<var>V2</var>} = k</code> ，其中 <code>k</code> 為常數。</p>
+                    <p><code>\dfrac{<var>V1</var>}{<var>V2</var>} = <var>MULTIPLIER</var></code> 符合這個形式，其中 <code>k = <var>MULTIPLIER</var></code> 。</p>
+                </div>
+            </div>
+
+            <div data-type="direct-variation" id="inverse-k">
+                <p class="solution"><code><var>MULTIPLIER</var> \cdot <var>V1</var> = <var>V2</var></code></p>
+
+                <div class="hints">
+                    <p>如果 <code><var>V1</var> = k \cdot <var>V2</var></code> （其中 <code>k</code> 為常數），則<var>STATEMENT</var>。</p>
+                    <p>如果你在式子的兩邊同時除以 <code>k</code>，會得到 <code>\dfrac{1}{k} \cdot <var>V1</var> = <var>V2</var></code> 。</p>
+                    <p><code><var>MULTIPLIER</var> \cdot <var>V1</var> = <var>V2</var></code> 符合這個形式，其中 <code>k = <var>MULTIPLIER_INVERSE</var></code> 。</p>
+                </div>
+            </div>
+
+            <div id="inverse-variation">
+                <div class="vars">
+                    <var id="STATEMENT">randFromArray([
+                        "&lt;code&gt;&lt;var&gt;V1&lt;/var&gt;&lt;/code&gt; 與 &lt;code&gt;&lt;var&gt;V2&lt;/var&gt;&lt;/code&gt; 成反比",
+                        "&lt;code&gt;&lt;var&gt;V1&lt;/var&gt;&lt;/code&gt; 與 &lt;code&gt;&lt;var&gt;V2&lt;/var&gt;&lt;/code&gt; 會朝相反方向變化",
+                        "&lt;code&gt;&lt;var&gt;V1&lt;/var&gt;&lt;/code&gt; 會隨著 &lt;code&gt;&lt;var&gt;V2&lt;/var&gt;&lt;/code&gt; 的變化而進行反向變化",
+                        "&lt;code&gt;&lt;var&gt;V1&lt;/var&gt;&lt;/code&gt; 與 &lt;code&gt;&lt;var&gt;V2&lt;/var&gt;&lt;/code&gt; 兩者是反變關係"
+                    ])</var>
+                </div>
+
+                <p class="problem"><var>STATEMENT</var>。</p>
+                <p class="question">哪一個方程式可以表達出 <code><var>V1</var></code> 與 <code><var>V2</var></code> 之間的關係？</p>
+                <p class="solution"><code><var>V1</var> = <var>MULTIPLIER</var> \cdot \frac{1}{<var>V2</var>}</code></p>
+
+                <div class="hints">
+                    <p>如果 <code><var>V1</var> = k \cdot \dfrac{1}{<var>V2</var>}</code> （其中 <code>k</code> 為常數），則<var>STATEMENT</var>。</p>
+                    <p><code><var>V1</var> = <var>MULTIPLIER</var> \cdot \dfrac{1}{<var>V2</var>}</code> 符合這個形式，其中 <code>k = <var>MULTIPLIER</var></code> 。</p>
+                </div>
+
+                <ul class="choices" data-show="5">
+                    <li><code>
+                            \frac{<var>V1</var>}{<var>V2</var>} = <var>MULTIPLIER</var>
+                    </code></li>
+                    <li><code>
+                            \frac{<var>V1</var>}{<var>V2</var>} = <var>MULTIPLIER_INVERSE</var>
+                    </code></li>
+                    <li><code>
+                            <var>V1</var> = <var>MULTIPLIER</var> \cdot <var>V2</var>
+                    </code></li>
+                    <li><code>
+                            <var>V1</var> = <var>MULTIPLIER_INVERSE</var> \cdot <var>V2</var>
+                    </code></li>
+                    <li><code>
+                            <var>MULTIPLIER</var> \cdot <var>V1</var> = <var>V2</var>
+                    </code></li>
+                    <li><code>
+                            <var>MULTIPLIER_INVERSE</var> \cdot <var>V1</var> = <var>V2</var>
+                    </code></li>
+                    <li><code>
+                            <var>MULTIPLIER</var> \cdot \frac{1}{<var>V1</var>} = \frac{1}{<var>V2</var>}
+                    </code></li>
+                    <li><code>
+                            <var>MULTIPLIER_INVERSE</var> \cdot \frac{1}{<var>V1</var>} = \frac{1}{<var>V2</var>}
+                    </code></li>
+                    <li><code>
+                            <var>V1</var> - <var>V2</var> = <var>MULTIPLIER_INVERSE</var>
+                    </code></li>
+                    <li><code>
+                            <var>V1</var> = <var>MULTIPLIER</var> + <var>V2</var>
+                    </code></li>
+                </ul>
+            </div>
+
+            <div data-type="inverse-variation" id="v1-v2-over-k">
+                <p class="solution"><code><var>V1</var> \cdot <var>V2</var> = <var>MULTIPLIER</var></code></p>
+
+                <div class="hints">
+                    <p>如果 <code><var>V1</var> = k \cdot \dfrac{1}{<var>V2</var>}</code> （其中 <code>k</code> 為常數），則<var>STATEMENT</var>。</p>
+                    <p>如果你在式子的兩邊同時乘上 <code><var>V2</var></code> ，會得到 <code><var>V1</var> \cdot <var>V2</var> = k</code> （其中 <code>k</code> 為常數）。</p>
+                    <p><code><var>V1</var> \cdot <var>V2</var> = <var>MULTIPLIER</var></code> 符合這個形式，其中 <code>k = <var>MULTIPLIER</var></code> 。</p>
+                </div>
+            </div>
+
+            <div data-type="inverse-variation" id="k-over-a">
+                <p class="solution"><code><var>MULTIPLIER</var> \cdot \dfrac{1}{<var>V1</var>} = <var>V2</var></code></p>
+
+                <div class="hints">
+                        <p>如果 <code><var>V1</var> = k \cdot \dfrac{1}{<var>V2</var>}</code> （其中 <code>k</code> 為常數），則<var>STATEMENT</var>。</p>
+                        <p>如果你在式子的兩邊同時除以 <code>k</code> ，會得到 <code>\dfrac{<var>V1</var>}{k} = \dfrac{1}{<var>V2</var>}</code> 。</p>
+                        <p>接著將兩邊同時倒轉，得到 <code>\dfrac{k}{<var>V1</var>} = <var>V2</var></code>。</p>
+                    <p><code><var>MULTIPLIER</var> \cdot \dfrac{1}{<var>V1</var>} = <var>V2</var></code> 符合這個形式，其中 <code>k = <var>MULTIPLIER</var></code> 。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

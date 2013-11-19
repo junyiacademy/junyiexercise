@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>除法 3.1</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="DIVISOR">randFromArray( [ 2, 3, 4, 5, 6, 7, 8, 9 ] )</var>
+            <var id="QUOTIENT">randRange( 2, 9 )</var>
+            <var id="FINAL_REMAINDER">randRange( 1, DIVISOR - 1 )</var>
+            <var id="DIVIDEND">DIVISOR * QUOTIENT + FINAL_REMAINDER</var>
+            <var id="DIVIDEND_DIGITS">integerToDigits( DIVIDEND )</var>
+        </div>
+        <div class="problems">
+            <div>
+                <p>如果商數是5而餘數是3, 請輸入答案為"5 R 3".</p>
+                <div class="graphie" id="numbers">
+                    graph.divider = new Divider( DIVISOR, DIVIDEND );
+                    graph.divider.show();
+                    DUMMY = Array( graph.divider.getNumHints() );
+                </div>
+                <div class="solution" data-type="multiple">
+                    <span class="sol" data-type="regex">^<var>QUOTIENT</var>\s*[rR]\s*<var>FINAL_REMAINDER</var>$</span>
+                    <p class="example">商數跟餘數，像：<code>5 \text{ R } 3</code></p>
+                </div>
+            </div>
+        </div>
+        <div class="hints">
+            <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
+                graph.divider.showHint();
+            </div>
+
+            <div class="graphie" data-update="numbers">
+                drawDigits( [ "\\text{R}" ].concat( integerToDigits( FINAL_REMAINDER ) ), DIVIDEND_DIGITS.length, 1 );
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta charset="UTF-8" />
+    <title>點與直線之間的距離</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area input[type=text] {
+            width: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars"></div>
+        <div class="problems">
+            <div id="original" data-weight="8">
+                <div class="vars">
+                    <var id="INDEX">randRangeNonZero( -3, 3 )</var>
+                    <var id="M1">INDEX &gt; 0 ? INDEX * randRangeNonZero( -1, 1 ) : 1 / INDEX * randRangeNonZero( -1, 1 )</var>
+                    <var id="M1_FRAC">decimalFraction( M1, "true", "true" )</var>
+                    <var id="M1_SIGN">M1 &gt; 0 ? "" : "-"</var>
+                    <var id="M2">-1 / M1</var>
+                    <var id="M2_FRAC">decimalFraction( M2, "true", "true" )</var>
+                    <var id="M2_SIGN">M2 &gt; 0 ? "" : "-"</var>
+                    <var id="B1">randRange( 2, 8 ) * randRangeNonZero( -1, 1 )</var>
+                    <var id="B2" data-ensure="( B1 - B2 ) % ( pow( abs( INDEX ), 2 ) + 1 ) === 0">randRange( -8, 8 )</var>
+                    <var id="X1" data-ensure="abs( X1 ) < 9 && abs( M1 * X1 + B1 ) < 9 && ( M1 * X1 + B1 ) !== ( M2 * X1 + B2 )">toFraction( M1 )[1] * randRangeNonZero( -3, 3 )</var>
+                    <var id="Y1">M1 * X1 + B1</var>
+                    <var id="X2">round( ( B2 - B1 ) / ( M1 - M2 ), 0 )</var>
+                    <var id="Y2">M2 * X2 + B2</var>
+                    <var id="DISTANCE">pow( X1 - X2, 2 ) + pow( Y1 - Y2, 2 )</var>
+                </div>
+                <div class="question">
+                    <p><b>請找出：點 <code>\color{red}{(<var>X1</var>, <var>Y1</var>)}</code> 跟直線 <code>\enspace \color{<var>BLUE</var>}{y = <span data-if="abs( M2_FRAC ) !== 1"><var>M2_FRAC</var></span><span data-else><var>M2_SIGN</var></span>x <span data-if="B2 !== 0">+ <var>B2</var></span>}\thinspace</code> 之間的距離。</b></p>
+                    <div class="graphie" id="grid">
+                            graphInit({
+                                range: [[-10, 10], [-10, 10]],
+                                scale: [18, 18],
+                                tickStep: 1,
+                                labelStep: 1,
+                                unityLabels: false,
+                                labelFormat: function( s ) { return "\\small{" + s + "}"; },
+                                axisArrows: "<->"
+                            });
+
+                            plot(function( x ) {
+                                return ( M2 * x + B2 );
+                            }, [-10, 10], {
+                                stroke: BLUE
+                            });
+
+                            circle( [X1, Y1], 1/4, {
+                            stroke: "none",
+                            fill: "#ff0000"
+                        } );
+
+                    </div>
+                </div>
+                <div class="solution" data-type="radical">
+                    <p><span class="sol"><var>DISTANCE</var></span></p>
+                </div>
+                <div class="hints">
+                    <p>首先，請找出穿過 <code>\color{red}{(<var>X1</var>, <var>Y1</var>)}</code> 的垂直線的方程式。</p>
+                    <div>
+                        <p>藍線的斜率是 <code>\color{<var>BLUE</var>}{<var>M2_FRAC</var>}</code> ，所以斜率的負倒數是 <code>\color{<var>GREEN</var>}{<var>M1_FRAC</var>}</code> 。</p>
+                        <p>因此，我們要的垂直線的式子會長的像這樣： <code>\enspace \color{<var>GREEN</var>}{y = <span data-if="abs( M1_FRAC ) !== 1"><var>M1_FRAC</var></span><span data-else><var>M1_SIGN</var></span>x + b}\thinspace</code> 。</p>
+                    </div>
+                    <div>
+                        <p>我們可以把我們已知的點： <code>\color{red}{(<var>X1</var>, <var>Y1</var>)}</code> ，套入這個等式來求 <code>\color{<var>GREEN</var>}{b}</code>，也就是 Y 軸截距。</p>
+                    </div>
+                    <div>
+                        <p><code><var>Y1</var> = <var>decimalFraction( M1 * X1, "true", "true" )</var> + \color{<var>GREEN</var>}{b}</code></p>
+                        <p><code><var>Y1</var> - <var>decimalFraction( M1 * X1, "true", "true" )</var> = \color{<var>GREEN</var>}{b} = <var>decimalFraction( Y1 - M1 * X1, "true", "true" )</var></code></p>
+                    </div>
+                    <div>
+                        <p>垂直線的等式是 <code>\enspace \color{<var>GREEN</var>}{y = <span data-if="abs( M1_FRAC ) !== 1"><var>M1_FRAC</var></span><span data-else><var>M1_SIGN</var></span>x<span data-if="B1 !== 0"> + <var>B1</var></span>}\thinspace</code> 。</p>
+                        <div class="graphie" data-update="grid">
+                            plot(function( x ) {
+                                return ( M1 * x + B1 );
+                            }, [-10, 10], {
+                                stroke: GREEN
+                            });
+                        </div>
+                    </div>
+                    <div>
+                        <p>我們可以從圖中看到 (也可以把兩個等式設成彼此相等來求交點) ，兩條直線相交於一點，而這一點是 <code>\color{red}{(<var>X2</var>, <var>Y2</var>)}</code> 。因此，我們想要找的距離便是兩個紅點之間的距離。</p>
+                        <div class="graphie" data-update="grid">
+                            circle( [X2, Y2], 1/4, {
+                            stroke: "none",
+                            fill: "#ff0000"
+                            } );
+                        </div>
+                    </div>
+                    <p>利用距離的公式，我們知道兩點之間的距離等於： <code>\sqrt{( x_{1} - x_{2} )^2 + ( y_{1} - y_{2} )^2}</code></p>
+                    <p>把我們知道的兩個點 <code>\color{red}{(<var>X1</var>, <var>Y1</var>)}</code> 和 <code>\color{red}{(<var>X2</var>, <var>Y2</var>)}</code> 套進這個公式，我們得到： <code>\sqrt{( \color{red}{<var>X1</var>} - \color{red}{<var>X2</var>} )^2 + ( \color{red}{<var>Y1</var>} - \color{red}{<var>Y2</var>} )^2}</code></p>
+                    <p><code>= \sqrt{( <var>X1 - X2</var> )^2 + ( <var>Y1 - Y2</var> )^2} = \sqrt{<var>DISTANCE</var>} <span data-if="squareRootCanSimplify( DISTANCE )"> = <var>formattedSquareRootOf( DISTANCE )</var></span></code></p>
+                    <p>因此，點 <code>\color{red}{(<var>X1</var>, <var>Y1</var>)}</code> 和直線 <code>\thinspace \color{<var>BLUE</var>}{y = <span data-if="abs( M2_FRAC ) !== 1"><var>M2_FRAC</var></span><span data-else><var>M2_SIGN</var></span>x <span data-if="B2 !== 0">+ <var>B2</var></span>}\enspace</code> 之間的距離便是 <code>\thinspace<var>formattedSquareRootOf( DISTANCE )</var></code> 。</p>
+                </div>
+            </div>
+            <div id="horizontal" data-type="original" data-weight="1">
+                <div class="vars">
+                    <var id="M1">0</var>
+                    <var id="M2">99999</var>
+                    <var id="B1">randRange( 2, 8 ) * randRangeNonZero( -1, 1 )</var>
+                    <var id="B2">0</var>
+                    <var id="X1">randRangeNonZero( -8, 8 )</var>
+                    <var id="Y1" data-ensure="abs( Y1 - B1 ) > 2 && abs( Y1 - B1 ) < 9">randRange( -8, 8 )</var>
+                    <var id="X2">0</var>
+                </div>
+                <div class="question">
+					<p><b>請找出：點 <code>\color{red}{(<var>X1</var>, <var>Y1</var>)}</code> 和直線 <code>\enspace \color{<var>BLUE</var>}{y = <var>B1</var>}\thinspace</code> 之間的距離。</b></p>
+                    <div class="graphie" id="grid">
+                            graphInit({
+                                range: [[-10, 10], [-10, 10]],
+                                scale: [18, 18],
+                                tickStep: 1,
+                                labelStep: 1,
+                                unityLabels: false,
+                                labelFormat: function( s ) { return "\\small{" + s + "}"; },
+                                axisArrows: "<->"
+                            });
+
+                            plot(function( x ) {
+                                return ( M1 * x + B1 );
+                            }, [-10, 10], {
+                                stroke: BLUE
+                            });
+
+                            circle( [X1, Y1], 1/4, {
+                            stroke: "none",
+                            fill: "#ff0000"
+                        } );
+
+                    </div>
+                </div>
+                <div class="solution" data-type="radical">
+                    <p><span class="sol"><var>pow( Y1 - B1, 2 )</var></span></p>
+                </div>
+                <div class="hints">
+					<p>首先，找出穿過 <code>\color{red}{(<var>X1</var>, <var>Y1</var>)}</code> 的垂直線的方程式。</p>
+                    
+					<p>由於藍線的斜率是 <code class="hint_blue">0</code> ，所以垂直線的斜率是無線大，也就是一條與 X 軸垂直的垂直線。</p>
+                    <div>
+                        <p>穿過 <code>\color{red}{(<var>X1</var>, <var>Y1</var>)}</code> 這個點的垂直線的方程式是： <code>\enspace \color{<var>GREEN</var>}{x = <var>X1</var>}\thinspace</code> 。</p>
+                        <div class="graphie" data-update="grid">
+                            plot(function( x ) {
+                                return ( M2 * ( x - X1 ) );
+                            }, [-10, 10], {
+                                stroke: GREEN
+                            });
+                        </div>
+                    </div>
+                    <div>
+                        <p>我們可以從圖中看到，兩條直線相交於 <code>\color{red}{(<var>X1</var>, <var>B1</var>)}</code> 這個點。因此，我們要找的距離，便是兩個紅點之間的距離。</p>
+                        <div class="graphie" data-update="grid">
+                            circle( [X1, B1], 1/4, {
+                            stroke: "none",
+                            fill: "#ff0000"
+                            } );
+                        </div>
+                    </div>
+                    <p>由於兩個點的 <code>x</code> 座標是一樣的，因此要找兩個點之間的距離，只要看 <code>y</code> 座標的差別就可以了。</p>
+                    <p><code>|\color{red}{<var>Y1</var>} - ( \color{red}{<var>B1</var>} )| = <var>abs( Y1 - B1 )</var></code></p>
+                    <p>因此，點 <code>\color{red}{(<var>X1</var>, <var>Y1</var>)}</code> 和直線 <code>\enspace \color{<var>BLUE</var>}{y = <var>B1</var>}\enspace</code> 之間的距離便是 <code>\thinspace<var>abs( Y1 - B1 )</var></code> 。</p>
+                </div>
+            </div>
+            <div id="vertical" data-type="original" data-weight="1">
+                <div class="vars">
+                    <var id="M1">99999</var>
+                    <var id="M2">0</var>
+                    <var id="B1">randRange( 2, 8 ) * randRangeNonZero( -1, 1 )</var>
+                    <var id="B2">0</var>
+                    <var id="X1" data-ensure="abs( X1 - B1 ) > 2 && abs( X1 - B1 ) < 9">randRange( -8, 8 )</var>
+                    <var id="Y1">randRangeNonZero( -8, 8 )</var>
+                    <var id="X2">0</var>
+                </div>
+                <div class="question">
+					<p><b>請找出：點 <code>\color{red}{(<var>X1</var>, <var>Y1</var>)}</code> 和直線 <code>\enspace \color{<var>BLUE</var>}{x = <var>B1</var>}\thinspace</code> 之間的距離。</b></p>
+                    <div class="graphie" id="grid">
+                            graphInit({
+                                range: [[-10, 10], [-10, 10]],
+                                scale: [18, 18],
+                                tickStep: 1,
+                                labelStep: 1,
+                                unityLabels: false,
+                                labelFormat: function( s ) { return "\\small{" + s + "}"; },
+                                axisArrows: "<->"
+                            });
+
+                            line( [ B1, -10 ], [ B1, 10 ], {
+                                stroke: BLUE
+                            });
+
+                            circle( [X1, Y1], 1/4, {
+                            stroke: "none",
+                            fill: "#ff0000"
+                        } );
+
+                    </div>
+                </div>
+                <div class="solution" data-type="radical">
+                    <p><span class="sol"><var>pow( X1 - B1, 2 )</var></span></p>
+                </div>
+                <div class="hints">
+					<p>首先，找出穿過 <code>\color{red}{(<var>X1</var>, <var>Y1</var>)}</code> 的垂直線的方程式。</p>
+                    <p>由於藍線的斜率是無線大，所以垂直線的斜率是 <code>\color{<var>GREEN</var>}{0}</code> ，也就是一條橫的水平線。</p>
+                    <div>
+                        <p>穿過 <code>\color{red}{(<var>X1</var>, <var>Y1</var>)}</code> 這個點的垂直線的方程式是： <code>\enspace \color{<var>GREEN</var>}{y = <var>Y1</var>}\thinspace</code> 。</p>
+                        <div class="graphie" data-update="grid">
+                            plot(function( x ) {
+                                return ( M2 * x + Y1 );
+                            }, [-10, 10], {
+                                stroke: GREEN
+                            });
+                        </div>
+                    </div>
+                    <div>
+                        <p>我們可以從圖中看到，兩條直線相交於 <code>\color{red}{(<var>B1</var>, <var>Y1</var>)}</code> 。因此，我們要找的距離，便是兩個紅點之間的距離。</p>
+                        <div class="graphie" data-update="grid">
+                            circle( [B1, Y1], 1/4, {
+                            stroke: "none",
+                            fill: "#ff0000"
+                            } );
+                        </div>
+                    </div>
+                    <p>由於兩個點的 <code>y</code> 座標是一樣的，因此要找兩個點之間的距離，只要看 <code>x</code> 座標的差別就可以了。</p>
+                    <p><code>|\color{red}{<var>X1</var>} - ( \color{red}{<var>B1</var>} )| = <var>abs( X1 - B1 )</var></code></p>
+                    <p>因此，點 <code>\color{red}{(<var>X1</var>, <var>Y1</var>)}</code> 和直線 <code>\enspace \color{<var>BLUE</var>}{x = <var>B1</var>}\enspace</code> 之間的距離便是 <code>\thinspace<var>abs( X1 - B1 )</var></code> 。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers angles">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>同側外角 2</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+        <div data-ensure="A * SOLUTION + B > 30 && A * SOLUTION + B < 150 && C !== A && abs( A - C ) < 6 && abs( A - C ) > 1 && 180 - (A + C) * SOLUTION - B !== 0">
+            <var id="SOLUTION" data-ensure="abs(SOLUTION) > 5">randRangeNonZero( -20, 20 )</var>
+            <var id="A">randRange( 2, 8 )</var>
+            <var id="B">randRangeNonZero( -200, 200 )</var>
+            <var id="C">randRange( 2, 9 )</var>
+        </div>
+        <var id="D">180 - (A + C) * SOLUTION - B</var>
+
+        <var id="ANCHOR">A*SOLUTION + B</var>
+        <var id="KNOWN_INDEX, UNKNOWN_INDEX">shuffle( randFromArray( [ [ 3, 4 ], [ 2, 5 ] ] ) )</var>
+    </div>
+
+    <div class="problems">
+        <div>
+            <p>下面兩條水平線是互相平行的，而另外有第三條線與它們相交，如下圖所示。</p>
+            <p class="question">請求出 <code>x</code> 的值。</p>
+            <p class="solution"><var>SOLUTION</var></p>
+            <div class="graphie" id="parallel-lines">
+
+                var eq1 = A + "x + " + B + "^\\circ";
+                var eq2 = C + "x + " + D + "^\\circ";
+
+                init({
+                    range: [ [ -1, 11 ], [-1, 4] ]
+                });
+
+                graph.pl = new ParallelLines( 0, 0, 10, 0, 3 );
+                graph.pl.draw();
+                graph.pl.drawTransverse( ANCHOR );
+                graph.pl.drawAngle( KNOWN_INDEX, eq1 );
+                graph.pl.drawAngle( UNKNOWN_INDEX, eq2, "#FFA500" );
+            </div>
+        </div>
+    </div>
+
+    <div class="hints">
+        <div>
+            <p>粉紅色的角在藍色的角旁邊，而且兩個角合起來組成一條直線，所以我們知道：</p>
+            <p><code>\color{<var>BLUE</var>}{<var>A</var>x + <var>B</var>} + \color{<var>PINK</var>}{y} = 180</code></p>
+            <p>兩個粉紅色的角是相等的，因為它們是 <code>\color{<var>GREEN</var>}{\text{對頂角}}</code> 。</p>
+            <div class="graphie" data-update="parallel-lines">
+                graph.pl.drawAdjacentAngles( KNOWN_INDEX, "y^\\circ", "#FF00A5" );
+            </div>
+        </div>
+        <div>
+            <p>其中一個粉紅色的角是橘色角的 <code>\color{<var>GREEN</var>}{同位角}</code>，而另一個粉紅色的角則是橘色角的 <code>\color{<var>GREEN</var>}{\text{外錯角}}</code>。因此，橘色角的角度跟粉紅色角是相等的。</p>
+            <p><code>\color{<var>PINK</var>}{y} = \color{<var>ORANGE</var>}{<var>C</var>x + <var>D</var>}</code></p>
+        </div>
+        <div>
+            <p>把 <code>\color{<var>PINK</var>}{y}</code> 用 <code>\color{<var>ORANGE</var>}{<var>C</var>x + <var>D</var>}</code> 代入到我們的第一個等式中。</p>
+            <p><code>\color{<var>BLUE</var>}{<var>A</var>x + <var>B</var>} + \color{<var>ORANGE</var>}{<var>C</var>x + <var>D</var>} = 180</code></p>
+        </div>
+        <div>
+            <p>合併同類項。</p>
+            <p><code><var>A + C</var>x + <var>B + D</var> = 180</code></p>
+        </div>
+        <div>
+            <p>將兩邊同時<var>B + D > 0 ? "減去" : "加上"</var> <code>\color{<var>PINK</var>}{<var>abs(B + D)</var>}</code> 。</p>
+            <p><code>(<var>A + C</var>x + <var>B + D</var>) \color{<var>PINK</var>}{+ <var>-(B + D)</var>} = 180 \color{<var>PINK</var>}{+ <var>-(B + D)</var>}</code></p>
+            <p><code><var>A + C</var>x = <var>180 - B - D</var></code></p>
+        </div>
+        <div>
+        <p>將兩邊同時除以 <code>\color{<var>PINK</var>}{<var>A + C</var>}</code> 。</p>
+        <p><code>\dfrac{<var>A + C</var>x}{\color{<var>PINK</var>}{<var>A + C</var>}} = \dfrac{<var>180 - B - D</var>}{\color{<var>PINK</var>}{<var>A + C</var>}}</code></p>
+        </div>
+        <div>
+        <p>化簡。</p>
+        <p><code>x = <var>(180 - B - D) / (A + C)</var></code></p>
+        <p>另外，你會注意到藍色的角和橘色的角互為補角。</p>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html data-require="math graphie">
+<head>
+    <title>平方根</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="cx">0</var>
+            <var id="y">0</var>
+
+            <var id="N">randRange( 2, 12 )</var>
+            <var id="F_N">getPrimeFactorization( N )</var>
+        </div>
+
+        <div class="hints">
+            <p>
+                如果你沒辦法想到這個數字, 你可以先找出<code><var>Q</var></code>的質因數分解
+                , 並且找找看有沒有一樣的數字
+            </p>
+            <div>
+                <p>讓我們畫出質因數分解樹</p>
+                <div class="graphie" id="factor-tree">
+                    init({
+                        range: [ [-1, FACTORIZATION.length + 2], [ -2 * FACTORIZATION.length - 1, 1] ],
+                        scale: [30, 30]
+                    });
+
+                    label( [cx + 1, y], curr );
+                </div>
+            </div>
+
+            <div class="graphie" data-update="factor-tree" data-each="FACTORIZATION as factor">
+                    path( [ [cx + 1, y - 0.5], [cx, y - 1.5] ] );
+                    path( [ [cx + 1, y - 0.5], [cx + 2, y - 1.5] ] );
+                    y -= 2;
+                    cx += 1;
+
+                    curr = curr / factor;
+
+                    label( [cx - 1, y], factor );
+                    circle( [cx - 1, y], 0.5);
+                    label( [cx + 1, y], curr );
+            </div>
+
+            <div class="graphie" data-update="factor-tree">
+                circle( [cx + 1, y], 0.5);
+            </div>
+
+            <p>所以<code><var>Q</var></code> 的質因數分解為 <code><var>PRIMES.join( "\\times " )</var></code>.</p>
+        </div>
+
+        <div class="problems">
+            <div id="square">
+                <div class="vars">
+                    <var id="Q">N * N</var>
+                    <var id="PRIMES">getPrimeFactorization( Q )</var>
+                    <var id="FACTORIZATION">PRIMES.slice( 0, PRIMES.length - 1 )</var>
+                    <var id="curr">Q</var>
+                </div>
+
+                <p class="question"><code>\sqrt{<var>Q</var>}</code>是多少?</p>
+
+                <p class="solution"><var>N</var></p>
+
+                <div class="hints" data-apply="prependContents">
+                    <p>
+                        <code>\sqrt{<var>Q</var>}</code> 代表了某個數字, 當它自己乘以自己
+                        時等於 <code><var>Q</var></code>.
+                    </p>
+                </div>
+
+                <div class="hints" data-apply="appendContents">
+                    <p>我們正在尋找<code>\sqrt{<var>Q</var>}</code>為多少, 所以我們要將所有的質因數分開成兩組.</p>
+
+                    <div data-if="PRIMES.length === 2" data-unwrap>
+
+                        <p>我們只有兩個質因數, 而我們想要把它們分為兩組, 所以這很容易辦到</p>
+                        <p><code><var>Q</var> = <var>PRIMES.join( "\\times " )</var></code>, so <code><var>N</var>^2 = <var>Q</var></code>.</p>
+
+                    </div><div data-else data-unwrap>
+
+                        <div>
+                            <p>注意我們可以重新安排這些因數像下面這樣:</p>
+                            <p><code><var>Q</var> = <var>PRIMES.join(" &times; ")</var> = \left(<var>F_N.join( "\\times " )</var>\right) \times \left(<var>F_N.join(" &times; ")</var>\right)</code></p>
+                        </div>
+
+                        <p data-if="F_N.length > 1">
+                            所以 <code>\left(<var>F_N.join( "\\times " )</var>\right)^2 = <var>N</var>^2 = <var>Q</var></code>.
+                        </p><p data-else>
+                            所以 <code><var>N</var>^2 = <var>Q</var></code>.
+                        </p>
+
+                    </div>
+
+                    <p>所以 <code>\sqrt{<var>Q</var>}</code> 是 <code><var>N</var></code>.</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

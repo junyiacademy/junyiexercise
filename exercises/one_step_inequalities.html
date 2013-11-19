@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>單步驟化簡不等式</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <!--
+        Solving one-step inequalities with positive and negative coefficients.
+    -->
+    <div class="exercise">
+        <div class="problems">
+            <div>
+                <div class="vars">
+                    <var id="NUM, DEN" data-ensure="NUM > 2 || NUM < -2">reduce( randRange( -20, 20 ), rand( 3 ) &gt; 0 ? 1 : randRange( 2, 20 ) )</var>
+                    <var id="COEF">fractionReduce( NUM, DEN )</var>
+                    <var id="ONE_OVER_COEF">fractionReduce( DEN, NUM )</var>
+                    <var id="RIGHT_INT">randRangeNonZero( -20, 20 )</var>
+                    <var id="COMP">randFromArray([ "&lt;", "&gt;", "&le;", "&ge;" ])</var>
+                    <var id="COMP_SOLUTION">(function() {
+                        if ( NUM &gt; 0 ) {
+                            return COMP;
+                        }
+
+                        switch ( COMP ) {
+                            case "&lt;":
+                                return "&gt;";
+                            case "&gt;":
+                                return "&lt;";
+                            case "&le;":
+                                return "&ge;";
+                            case "&ge;":
+                                return "&le;";
+                        }
+                    })()</var>
+                    <var id="SOLUTION_NOT_REDUCED">fraction( RIGHT_INT * DEN, NUM )</var>
+                    <var id="SOLUTION">fractionReduce( RIGHT_INT * DEN, NUM )</var>
+                    <var id="SOLUTION_REAL">RIGHT_INT * DEN / NUM</var>
+                </div>
+
+                <p class="question">求 <code>x</code> 的解 :</p>
+                <div><code><var>COEF</var>x <var>COMP</var> <var>RIGHT_INT</var></code></div>
+
+                <p class="solution" data-type="multiple">
+                    <code>x</code>
+                    <span class="sol" data-type="list" data-choices="[ '', '&lt;', '&gt;', '&le;', '&ge;' ]">
+                        <var>COMP_SOLUTION</var>
+                    </span>
+                    <span class="sol"><var>SOLUTION_REAL</var></span>
+                    <span class="example">整數，如 <code>6</code></span>
+                    <span class="example">真分數，如 <code>1/2</code> 或 <code>6/10</code></span>
+                    <span class="example">假分數，如 <code>10/7</code> 或 <code>14/8</code></span>
+                    <span class="example">帶分數，如 <code>1\ 3/4</code></span>
+                    <span class="example">小數，如 <code>0.75</code></span>
+                </p>
+
+                <div class="hints">
+                    <p data-if ="NUM < 0">當不等式兩邊同乘或同除以某個負數時，你必須翻轉不等式符號。所以，<code><var>COMP</var></code> 會變成 <code><var>COMP_SOLUTION</var></code>。</p>
+                    <div>
+                        <p>兩邊同乘 <code><var>ONE_OVER_COEF</var></code>。</p>
+                        <p><code>(<var>ONE_OVER_COEF</var>) \cdot (<var>COEF</var>x) <var>COMP_SOLUTION</var> (<var>ONE_OVER_COEF</var>) \cdot (<var>RIGHT_INT</var>)</code></p>
+                    </div>
+                    <div>
+                        <p>化簡。</p>
+                        <p><code>x <var>COMP_SOLUTION</var> <var>SOLUTION_NOT_REDUCED</var></code></p>
+                    </div>
+                    <div data-if="SOLUTION_NOT_REDUCED !== SOLUTION">
+                        <p>化簡。</p>
+                        <p><code>x <var>COMP_SOLUTION</var> <var>SOLUTION</var></code></p>
+                    </div>
+                    <div>
+                        <p>我們可以看到 <code>x <var>COMP_SOLUTION</var> <var>SOLUTION</var></code> 的所有值滿足原本的不等式。</p>
+                        <div class="graphie">
+                            init({
+                                range: [ [-1, 11], [-1, 1] ],
+                            });
+                            var start = SOLUTION_REAL - 4.5;
+                            var end = SOLUTION_REAL + 4.5;
+
+                            numberLine( start, end );
+
+                            var offset;
+                            var fill;
+                            var startOffset = 0.12;
+                            switch ( COMP_SOLUTION ) {
+                                case "&gt;":
+                                    fill = null;
+                                    offset = 5;
+                                    break;
+                                case "&ge;":
+                                    fill = "#6495ED";
+                                    offset = 5;
+                                    break;
+                                case "&lt;":
+                                    fill = null;
+                                    offset = -5;
+                                    startOffset *= -1;
+                                    break;
+                                case "&le;":
+                                    fill = "#6495ED";
+                                    offset = -5;
+                                    startOffset *= -1;
+                                    break;
+                            }
+
+                            var x = SOLUTION_REAL - start;
+
+                            style({ stroke: "#FFA500", fill: "#FFA500", strokeWidth: 3.5, arrows: "-&gt;" });
+                            path([ [ x + startOffset, 0 ], [ x + offset, 0 ]]);
+                            style({ stroke: "#6495ED", strokeWidth: 2.0, fill: fill });
+                            circle([ x, 0 ], 0.15 );
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

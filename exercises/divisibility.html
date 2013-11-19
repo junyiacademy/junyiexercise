@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html data-require="math word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>整除性</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars" data-ensure="A !== ANSWER && B !== ANSWER">
+            <var id="A">randRange( 10, 25 )</var>
+            <var id="B" data-ensure="A !== B">randRange( 10, 25 )</var>
+            <var id="LCM">getLCM( A, B )</var>
+            <var id="LCM_FACTORIZATION">getPrimeFactorization( LCM )</var>
+            <var id="ANSWER">
+                (function() {
+                    var num = randRange( ceil( LCM_FACTORIZATION.length / 2 ), LCM_FACTORIZATION.length - 1 );
+                    var shuffled = shuffle( LCM_FACTORIZATION );
+                    var answer = 1;
+                    for ( var i = 0; i &lt; num; i++ ) {
+                        answer *= shuffled.shift();
+                    }
+                    return answer;
+                })()
+            </var>
+            <var id="WRONGS">
+                (function() {
+                    var wrongs = [];
+                    while( wrongs.length &lt; 4 ) {
+                        var w = randRange( 10, LCM );
+                        if ( LCM % w !== 0 ) {
+                            wrongs.push( w );
+                        }
+                    }
+                    return wrongs;
+                })()
+            </var>
+        </div>
+
+        <div class="problems">
+            <div>
+                <div class="question">所有可以被 <code><var>A</var></code> 和 <code><var>B</var></code> 整除的數字，一定也可以被什麼數字整除呢？</div>
+                <p class="solution"><code><var>ANSWER</var></code></p>
+                <ul class="choices">
+                    <li data-each="WRONGS as index, wrong"><code><var>wrong</var></code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="hints">
+            <p>如果數字 A 能被數字 B 整除，那代表 A 的質因數分解中一定會包含數字 B 的質因數分解。</p>
+            <p><code><var>A</var></code> 的質因數分解是 <code><var>getPrimeFactorization( A ).join( "\\times" )</var></code> 。</p>
+            <p><code><var>B</var></code> 的質因數分解是 <code><var>getPrimeFactorization( B ).join( "\\times" )</var></code> 。</p>
+            <p>因此，任何能被這兩個數字整除的數，都一定會有 <code><var>LCM_FACTORIZATION.join( "\\times" )</var></code> 在它的質因數分解中。</p>
+            <p>換句話說，我們要找的這個數字， 它質因數分解會是 <code><var>LCM_FACTORIZATION.join( "\\times" )</var></code> 的一部份。</p>
+            <p><code><var>ANSWER</var></code> 的質因數分解是 <code><var>getPrimeFactorization( ANSWER ).join( "\\times" )</var></code> 。</p>
+            <p class="final_answer">由於 <code><var>getPrimeFactorization( ANSWER ).join( "\\times" )</var></code> 是 <code><var>LCM_FACTORIZATION.join( "\\times" )</var></code> 的一部份， 因此所有能被 <code><var>A</var></code> 和 <code><var>B</var></code> 整除的數字一定也能被 <code><var>ANSWER</var></code> 整除。</p>
+        </div>
+    </div>
+</body>
+</html>

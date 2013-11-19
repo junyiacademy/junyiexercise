@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>線性不等式</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="A">randRange( 2, 10 )</var>
+            <var id="B">randRangeNonZero( -10, 10 )</var>
+            <var id="C" data-ensure="abs( C - A ) > 1">randRange( 2, 10 )</var>
+            <var id="D" data-ensure="D !== B">randRangeNonZero( 2, 10 )</var>
+            <var id="SOLUTION">fractionReduce( D - B, A - C )</var>
+
+            <var id="REL">randFromArray([ "&lt;", "&gt;", "&le;", "&ge;" ])</var>
+            <var id="FREL">{ "&lt;": "&gt;", "&gt;": "&lt;", "&le;": "&ge;", "&ge;": "&le;" }[ REL ]</var>
+        </div>
+
+        <div class="problems">
+            <div>
+                <p class="question">求 <code>x</code> 的解 :</p>
+                <div><code><var>A</var>x + <var>B</var> <var>REL</var> <var>C</var>x + <var>D</var></code></div>
+
+                <p class="solution" data-type="multiple">
+                    <code>x</code>
+                    <span class="sol" data-type="list" data-choices="['', '&lt;', '&gt;', '&le;', '&ge;']">
+                        <var>A - C > 0 ? REL : FREL</var>
+                    </span>
+                    <span class="sol"><var>( D - B ) / ( A - C )</var></span></p>
+            </div>
+        </div>
+
+        <div class="hints">
+            <div>
+                <p>兩邊同減 <code><var>C</var>x</code> :</p>
+                <p><code>(<var>A</var>x + <var>B</var>) - <var>C</var>x <var>REL</var> (<var>C</var>x + <var>D</var>) - <var>C</var>x</code></p>
+                <p><code><var>A - C</var>x + <var>B</var> <var>REL</var> <var>D</var></code></p>
+            </div>
+            <div>
+                <p>兩邊同<var>B > 0 ? "減" : "加"</var> <code><var>abs(B)</var></code> :</p>
+                <p><code>(<var>A - C</var>x + <var>B</var>) + <var>-B</var> <var>REL</var> <var>D</var> + <var>-B</var></code></p>
+                <p><code><var>A - C</var>x <var>REL</var> <var>D - B</var></code></p>
+            </div>
+            <div data-if="A - C > 0">
+                <div>
+                    <p>兩邊同除以 <code><var>A - C</var></code>。由於 <code><var>A - C</var></code> 是正數，不等式的運算符號 <code><var>REL</var></code> 不改變 。</p>
+                    <p><code>\dfrac{<var>A - C</var>x}{<var>A - C</var>} <var>REL</var> \dfrac{<var>D - B</var>}{<var>A - C</var>}</code></p>
+                </div>
+                <div>
+                    <p>化簡。</p>
+                    <p><code>x <var>REL</var> <var>SOLUTION</var></code></p>
+                </div>
+            </div>
+            <div data-else>
+                <div>
+                    <p>兩邊同除以 <code><var>A - C</var></code>。由於 <code><var>A - C</var></code> 是負數，不等式的運算符號 <code><var>REL</var></code> 必須反轉為 <code><var>FREL</var></code>。</p>
+                    <p><code>\dfrac{<var>A - C</var>x}{<var>A - C</var>} <var>FREL</var> \dfrac{<var>D - B</var>}{<var>A - C</var>}</code></p>
+                </div>
+                <div>
+                    <p>化簡。</p>
+                    <p><code>x <var>FREL</var> <var>SOLUTION</var></code></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

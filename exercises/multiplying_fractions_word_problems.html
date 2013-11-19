@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>分數乘法應用</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+
+            <div id="birthday-party-guests">
+                <div class="vars" data-ensure="isInt( SOLUTION ) && getGCD( D, N ) === 1">
+                    <var id="D">randFromArray([ 5, 8 ])</var>
+                    <var id="N">randRange( 3, D - 1 )</var>
+                    <var id="INVITEES">randRange( 1, 5 ) * D</var>
+                    <var id="SOLUTION">N / D * INVITEES</var>
+                </div>
+
+                <p class="problem">
+                    <var>person( 1 )</var>邀請了 <var>INVITEES</var> 個朋友來參加<var>his( 1 )</var>生日派對，
+                    有些人因為有其他事而沒辦法參加，但是<var>person( 1 )</var>邀請的人有 <code>\frac{<var>N</var>}{<var>D</var>}</code> 
+                    可以參加。
+                </p>
+
+                <p class="question">最後有多少人參加了<var>person( 1 )</var>的生日派對？</p>
+
+                <div class="solution" data-type="multiple">
+                    <span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> 個人
+                </div>
+
+                <div class="hints">
+                    <p>
+                        我們需要弄清楚 <code><var>INVITEES</var></code> 的 <code>\dfrac{<var>N</var>}{<var>D</var>}</code> 
+                        是多少，來了解有多少人參加這個派對。
+                    </p>
+                    <p>
+                        我們可以把 <code class="hint_orange"><var>INVITEES</var></code> 跟 <code class="hint_blue">\dfrac{<var>N</var>}{<var>D</var>}</code>
+                        相乘，來了解 <code><var>INVITEES</var></code> 的 <code>\dfrac{<var>N</var>}{<var>D</var>}</code> 是多少。
+                    </p>
+                    <p><code>
+                        \color{<var>BLUE</var>}{\dfrac{<var>N</var>}{<var>D</var>}} \times \color{<var>ORANGE</var>}{<var>INVITEES</var>} =
+                        \color{<var>GREEN</var>}{\text{?}}
+                    </code></p>
+                    <p><code>
+                        \color{<var>BLUE</var>}{\dfrac{<var>N</var>}{<var>D</var>}} \times \color{<var>ORANGE</var>}{\dfrac{<var>INVITEES</var>}{1}} =
+                        \dfrac{\color{<var>BLUE</var>}{<var>N</var>} \cdot \color{<var>ORANGE</var>}{<var>INVITEES</var>}}
+                        {\color{<var>BLUE</var>}{<var>D</var>} \cdot \color{<var>ORANGE</var>}{1}} = \color{<var>GREEN</var>}{\text{?}}
+                    </code></p>
+                    <p><code>
+                        \dfrac{\color{<var>BLUE</var>}{<var>N</var>} \cdot \color{<var>ORANGE</var>}{<var>INVITEES</var>}}
+                        {\color{<var>BLUE</var>}{<var>D</var>}} = \color{<var>GREEN</var>}{\dfrac{<var>N * INVITEES</var>}{<var>D</var>}} =
+                        \color{<var>GREEN</var>}{<var>SOLUTION</var>}
+                    </code></p>
+                    <div>
+                        <p>
+                            我們也可以看下面的圖表，發現 <code class="hint_orange"><var>INVITEES</var></code> 的
+                            <code class="hint_blue">\dfrac{<var>N</var>}{<var>D</var>}</code> 是 <code class="hint_green"><var>SOLUTION</var></code>：
+                        </p>
+                        <div class="graphie">
+                            init({ range: [ [ -0.05, 1 ], [ 0,  3 ] ],scale: [ 500, 30 ] });
+                            rectchart( [ N, D - N ], [ BLUE, "#ccc" ], 2 );
+                            rectchart( [ INVITEES, 0 ], [ ORANGE, "#999" ], 1 );
+                            rectchart( [ SOLUTION, INVITEES - SOLUTION ], [ GREEN, "#fff" ], 0 );
+                            style({ color: BLUE }, function() {
+                                label([ 0, 2.5 ], "\\frac{" + N + "}{" + D + "}", "left" );
+                            });
+                            style({ color: ORANGE }, function() {
+                                label([ 0, 1.5 ], INVITEES, "left" );
+                            });
+                            style({ color: GREEN }, function() {
+                                label([ 0, 0.5 ], SOLUTION, "left" );
+                            });
+                        </div>
+                    </div>
+                    <p><strong>所以有 <var>SOLUTION</var> 個人參加了<var>person( 1 )</var>的派對。</strong></p>
+                </div>
+            </div>
+
+
+            <div id="bookstore-spending">
+                <div class="vars" data-ensure="isInt ( SOLUTION ) && getGCD( D, N ) === 1">
+                    <var id="AMOUNT">(randRange( 2, 10 )*D)</var>
+                    <var id="D">randFromArray([ 2, 8 ])</var>
+                    <var id="N">randRange( 1, D - 1 )</var>
+                    <var id="SOLUTION">N / D * AMOUNT</var>
+                </div>
+
+                <p class="problem">
+                    <var>person( 1 )</var>存錢存了一段時間後，總共存了 $<var>AMOUNT</var>.00
+                    在<var>his( 1 )</var>小豬撲滿裡面，後來<var>he( 1 )</var>在書店花了小豬撲滿裡面
+                    <code>\frac{<var>N</var>}{<var>D</var>}</code> 的錢買書。
+                </p>
+
+                <p class="question"><var>person( 1 )</var>花了多少錢？</p>
+
+                <div class="solution" data-forms="dollar"><var>SOLUTION</var></div>
+
+                <div class="hints">
+                    <p>
+                        我們需要弄清楚 <code>$<var>AMOUNT</var>.00</code> 的 <code>\dfrac{<var>N</var>}{<var>D</var>}</code> 是多少，來了解<var>person(1)</var>花了多少錢。
+                    </p>
+                    <p>
+                        我們可以將<code class="hint_orange"><var>AMOUNT</var></code> 跟 <code class="hint_blue">\dfrac{<var>N</var>}{<var>D</var>}</code> 相乘，來得知
+                        <code>$<var>AMOUNT</var>.00</code> 的 <code>\dfrac{<var>N</var>}{<var>D</var>}</code> 是多少。
+                    </p>
+                    <p><code>
+                        \color{<var>BLUE</var>}{\dfrac{<var>N</var>}{<var>D</var>}} \times \color{<var>ORANGE</var>}{<var>AMOUNT</var>} =
+                        \color{<var>GREEN</var>}{\text{?}}
+                    </code></p>
+                    <p><code>
+                        \color{<var>BLUE</var>}{\dfrac{<var>N</var>}{<var>D</var>}} \times \color{<var>ORANGE</var>}{\dfrac{<var>AMOUNT</var>}{1}} =
+                        \dfrac{\color{<var>BLUE</var>}{<var>N</var>} \cdot \color{<var>ORANGE</var>}{<var>AMOUNT</var>}}
+                        {\color{<var>BLUE</var>}{<var>D</var>} \cdot \color{<var>ORANGE</var>}{1}} = \color{<var>GREEN</var>}{\text{?}}
+                    </code></p>
+                    <p><code>
+                        \dfrac{\color{<var>BLUE</var>}{<var>N</var>} \cdot \color{<var>ORANGE</var>}{<var>AMOUNT</var>}}
+                        {\color{<var>BLUE</var>}{<var>D</var>}} = \color{<var>GREEN</var>}{\dfrac{<var>N * AMOUNT</var>}{<var>D</var>}} =
+                        \color{<var>GREEN</var>}{<var>SOLUTION</var>}
+                    </code></p>
+                    <div>
+                        <p>
+                            我們也可以看下面的圖表，發現 <code class="hint_orange"><var>AMOUNT</var></code> 的
+                            <code class="hint_blue">\dfrac{<var>N</var>}{<var>D</var>}</code> 是 <code class="hint_green"><var>SOLUTION</var></code>：
+                        </p>
+                        <div class="graphie">
+                            init({ range: [ [ -0.05, 1 ], [ 0,  3 ] ],scale: [ 500, 30 ] });
+                            rectchart( [ N, D - N ], [ BLUE, "#ccc" ], 2 );
+                            rectchart( [ AMOUNT, 0 ], [ ORANGE, "#999" ], 1 );
+                            rectchart( [ SOLUTION, AMOUNT - SOLUTION ], [ GREEN, "#fff" ], 0 );
+                            style({ color: BLUE }, function() {
+                                label([ 0, 2.5 ], "\\frac{" + N + "}{" + D + "}", "left" );
+                            });
+                            style({ color: ORANGE }, function() {
+                                label([ 0, 1.5 ], AMOUNT, "left" );
+                            });
+                            style({ color: GREEN }, function() {
+                                label([ 0, 0.5 ], SOLUTION, "left" );
+                            });
+                        </div>
+                    </div>
+                    <p><strong>所以<var>person( 1 )</var>花了 $<var>SOLUTION</var>.00 來買書。</strong></p>
+                </div>
+            </div>
+
+
+            <div id="canned-food-spending">
+                <div class="vars" data-ensure="isInt ( SOLUTION ) && getGCD( D, N ) === 1">
+                    <var id="AMOUNT">(randRange( 2, 10 )*D)</var>
+                    <var id="D">randFromArray([ 8, 6 ])</var>
+                    <var id="N">randRange( 1, D - 1 )</var>
+                    <var id="SOLUTION">roundTo( 2, N / D * AMOUNT )</var>
+                </div>
+
+                <p class="problem">
+                    <var>person( 1 )</var>每天把<var>his( 1 )</var>口袋裡多出來的零錢放進玻璃瓶裡面。過了
+                    <var>randRange( 10, 30 )</var> 週後，<var>he( 1 )</var>已經存了 $<var>AMOUNT</var>.00。<var>person( 1 )</var>決定用瓶子裡
+                    <code>\frac{<var>N</var>}{<var>D</var>}</code> 的錢來買罐頭食品捐給收容所。
+                </p>
+
+                <p class="question"><var>person( 1 )</var>花了多少錢買罐頭食品？</p>
+
+                <div class="solution" data-forms="dollar"><var>SOLUTION</var></div>
+
+                <div class="hints">
+                    <p>
+                        我們需要弄清楚 <code>$<var>AMOUNT</var>.00</code> 的 <code>\dfrac{<var>N</var>}{<var>D</var>}</code> 是多少，來了解<var>person(1)</var>花了多少錢。
+                    </p>
+                    <p>
+                        我們可以將<code class="hint_orange"><var>AMOUNT</var></code> 跟 <code class="hint_blue">\dfrac{<var>N</var>}{<var>D</var>}</code> 相乘，來得知
+                        <code>$<var>AMOUNT</var>.00</code> 的 <code>\dfrac{<var>N</var>}{<var>D</var>}</code> 是多少。
+                    </p>
+                    <p><code>
+                        \color{<var>BLUE</var>}{\dfrac{<var>N</var>}{<var>D</var>}} \times \color{<var>ORANGE</var>}{<var>AMOUNT</var>} =
+                        \color{<var>GREEN</var>}{\text{?}}
+                    </code></p>
+                    <p><code>
+                        \color{<var>BLUE</var>}{\dfrac{<var>N</var>}{<var>D</var>}} \times \color{<var>ORANGE</var>}{\dfrac{<var>AMOUNT</var>}{1}} =
+                        \dfrac{\color{<var>BLUE</var>}{<var>N</var>} \cdot \color{<var>ORANGE</var>}{<var>AMOUNT</var>}}
+                        {\color{<var>BLUE</var>}{<var>D</var>} \cdot \color{<var>ORANGE</var>}{1}} = \color{<var>GREEN</var>}{\text{?}}
+                    </code></p>
+                    <p><code>
+                        \dfrac{\color{<var>BLUE</var>}{<var>N</var>} \cdot \color{<var>ORANGE</var>}{<var>AMOUNT</var>}}
+                        {\color{<var>BLUE</var>}{<var>D</var>}} = \color{<var>GREEN</var>}{\dfrac{<var>N * AMOUNT</var>}{<var>D</var>}} =
+                        \color{<var>GREEN</var>}{<var>SOLUTION</var>}
+                    </code></p>
+                    <div>
+                        <p>
+                            我們也可以看下面的圖表，發現 <code class="hint_orange"><var>AMOUNT</var></code> 的
+                            <code class="hint_blue">\dfrac{<var>N</var>}{<var>D</var>}</code> 是 <code class="hint_green"><var>SOLUTION</var></code>：
+                        </p>
+                        <div class="graphie">
+                            init({ range: [ [ -0.05, 1 ], [ 0,  3 ] ],scale: [ 500, 30 ] });
+                            rectchart( [ N, D - N ], [ BLUE, "#ccc" ], 2 );
+                            rectchart( [ AMOUNT, 0 ], [ ORANGE, "#999" ], 1 );
+                            rectchart( [ SOLUTION, AMOUNT - SOLUTION ], [ GREEN, "#fff" ], 0 );
+                            style({ color: BLUE }, function() {
+                                label([ 0, 2.5 ], "\\frac{" + N + "}{" + D + "}", "left" );
+                            });
+                            style({ color: ORANGE }, function() {
+                                label([ 0, 1.5 ], AMOUNT, "left" );
+                            });
+                            style({ color: GREEN }, function() {
+                                label([ 0, 0.5 ], SOLUTION, "left" );
+                            });
+                        </div>
+                    </div>
+                    <p><strong><var>person( 1 )</var>花了 $<var>SOLUTION</var>.00 來買罐頭食品捐給收容所。</strong></p>
+                </div>
+            </div>
+
+
+            <div id="road-trip-gas">
+                <div class="vars" data-ensure="isInt( SOLUTION ) && getGCD( D, N ) === 1">
+                    <var id="GALLONS">randRange( 10, 20 )</var>
+                    <var id="D">randFromArray([ 8, 6, 10 ])</var>
+                    <var id="N">randRange( 1, D - 1 )</var>
+                    <var id="SOLUTION">N / D * GALLONS</var>
+                </div>
+
+                <p class="problem">
+                    在展開汽車之旅之前，<var>person( 1 )</var>加滿了<var>his( 1 )</var>車子的油箱，總共有
+                    <var>GALLONS</var> 加崙的汽油。經過 <var>0.5 * randRange( 3 / 0.5, 10 / 0.5 )</var> 小時之後，<var>person( 1 )</var>發現到油箱變成只有
+                    <code>\frac{<var>N</var>}{<var>D</var>}</code> 滿。
+                </p>
+
+                <p class="question">油箱裡面還剩多少加崙的汽油？</p>
+
+                <div class="solution" data-type="multiple">
+                    <span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> 加崙
+                </div>
+
+                <div class="hints">
+                    <p>
+                        因為<var>his( 1 )</var>油箱中剩下 <code>\dfrac{<var>N</var>}{<var>D</var>}</code> 的汽油，我們只要弄清楚
+                        <code><var>GALLONS</var></code> 加崙的<code>\dfrac{<var>N</var>}{<var>D</var>}</code> 是多少，就能了解油箱裡面剩下多少汽油。
+                    </p>
+                    <p>
+                        我們可以將 <code class="hint_orange"><var>GALLONS</var></code> 與 <code class="hint_blue">\dfrac{<var>N</var>}{<var>D</var>}</code> 相乘，來得知
+                        <code><var>GALLONS</var></code> 加崙的 <code>\dfrac{<var>N</var>}{<var>D</var>}</code> 是多少。
+                    </p>
+                    <p><code>
+                        \color{<var>BLUE</var>}{\dfrac{<var>N</var>}{<var>D</var>}} \times \color{<var>ORANGE</var>}{<var>GALLONS</var>} =
+                        \color{<var>GREEN</var>}{\text{?}}
+                    </code></p>
+                    <p><code>
+                        \color{<var>BLUE</var>}{\dfrac{<var>N</var>}{<var>D</var>}} \times \color{<var>ORANGE</var>}{\dfrac{<var>GALLONS</var>}{1}} =
+                        \dfrac{\color{<var>BLUE</var>}{<var>N</var>} \cdot \color{<var>ORANGE</var>}{<var>GALLONS</var>}}
+                        {\color{<var>BLUE</var>}{<var>D</var>} \cdot \color{<var>ORANGE</var>}{1}} = \color{<var>GREEN</var>}{\text{?}}
+                    </code></p>
+                    <p><code>
+                        \dfrac{\color{<var>BLUE</var>}{<var>N</var>} \cdot \color{<var>ORANGE</var>}{<var>GALLONS</var>}}
+                        {\color{<var>BLUE</var>}{<var>D</var>}} = \color{<var>GREEN</var>}{\dfrac{<var>N * GALLONS</var>}{<var>D</var>}} =
+                        \color{<var>GREEN</var>}{<var>SOLUTION</var>}
+                    </code></p>
+                    <div>
+                        <p>
+                            我們也可以看下面的圖表，發現 <code class="hint_orange"><var>GALLONS</var></code> 的
+                            <code class="hint_blue">\dfrac{<var>N</var>}{<var>D</var>}</code> 是 <code class="hint_green"><var>SOLUTION</var></code>：
+                        </p>
+                        <div class="graphie">
+                            init({ range: [ [ -0.05, 1 ], [ 0,  3 ] ],scale: [ 500, 30 ] });
+                            rectchart( [ N, D - N ], [ BLUE, "#ccc" ], 2 );
+                            rectchart( [ GALLONS, 0 ], [ ORANGE, "#999" ], 1 );
+                            rectchart( [ SOLUTION, GALLONS - SOLUTION ], [ GREEN, "#fff" ], 0 );
+                            style({ color: BLUE }, function() {
+                                label([ 0, 2.5 ], "\\frac{" + N + "}{" + D + "}", "left" );
+                            });
+                            style({ color: ORANGE }, function() {
+                                label([ 0, 1.5 ], GALLONS, "left" );
+                            });
+                            style({ color: GREEN }, function() {
+                                label([ 0, 0.5 ], SOLUTION, "left" );
+                            });
+                        </div>
+                    </div>
+                    <p><strong><var>person( 1 )</var>在檢查油箱的時候，<var>his( 1 )</var>油箱裡面還剩 <var>SOLUTION</var> 加崙的汽油。</strong></p>
+                </div>
+            </div>
+
+
+            <div id="picnic-attendees">
+                <div class="vars" data-ensure="isInt( SOLUTION ) && getGCD( D, N ) === 1">
+                    <var id="ATTENDEES">randRange( 15, 40 )</var>
+                    <var id="D">randFromArray([ 8, 6, 10 ])</var>
+                    <var id="N">randRange( 1, D - 1 )</var>
+                    <var id="SOLUTION">N / D * ATTENDEES</var>
+                </div>
+
+                <p class="problem">
+                    有 <var>ATTENDEES</var> 個人在公園裡面野餐，其中
+                    <code>\frac{<var>N</var>}{<var>D</var>}</code> 的人是大人。
+                </p>
+
+                <p class="question">有多少個大人參加這次野餐？</p>
+
+                <div class="solution" data-type="multiple">
+                    <span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> 個大人
+                </div>
+
+                <div class="hints">
+                    <p>
+                        我們需要弄清楚 <code><var>ATTENDEES</var></code> 的 <code>\dfrac{<var>N</var>}{<var>D</var>}</code> 是多少，來了解這次野餐中有多少人是大人。
+                    </p>
+                    <p>
+                        我們可以將 <code class="hint_orange"><var>ATTENDEES</var></code> 跟 <code class="hint_blue">\dfrac{<var>N</var>}{<var>D</var>}</code> 相乘，來得知
+                        <code><var>ATTENDEES</var></code> 的 <code>\dfrac{<var>N</var>}{<var>D</var>}</code> 是多少。
+                    </p>
+                    <p><code>
+                        \color{<var>BLUE</var>}{\dfrac{<var>N</var>}{<var>D</var>}} \times \color{<var>ORANGE</var>}{<var>ATTENDEES</var>} =
+                        \color{<var>GREEN</var>}{\text{?}}
+                    </code></p>
+                    <p><code>
+                        \color{<var>BLUE</var>}{\dfrac{<var>N</var>}{<var>D</var>}} \times \color{<var>ORANGE</var>}{\dfrac{<var>ATTENDEES</var>}{1}} =
+                        \dfrac{\color{<var>BLUE</var>}{<var>N</var>} \cdot \color{<var>ORANGE</var>}{<var>ATTENDEES</var>}}
+                        {\color{<var>BLUE</var>}{<var>D</var>} \cdot \color{<var>ORANGE</var>}{1}} = \color{<var>GREEN</var>}{\text{?}}
+                    </code></p>
+                    <p><code>
+                        \dfrac{\color{<var>BLUE</var>}{<var>N</var>} \cdot \color{<var>ORANGE</var>}{<var>ATTENDEES</var>}}
+                        {\color{<var>BLUE</var>}{<var>D</var>}} = \color{<var>GREEN</var>}{\dfrac{<var>N * ATTENDEES</var>}{<var>D</var>}} =
+                        \color{<var>GREEN</var>}{<var>SOLUTION</var>}
+                    </code></p>
+                    <div>
+                        <p>
+                            我們也可以看下面的圖表，發現 <code class="hint_orange"><var>ATTENDEES</var></code> 的
+                            <code class="hint_blue">\dfrac{<var>N</var>}{<var>D</var>}</code> 是 <code class="hint_green"><var>SOLUTION</var></code>：
+                        </p>
+                        <div class="graphie">
+                            init({ range: [ [ -0.05, 1 ], [ 0,  3 ] ],scale: [ 500, 30 ] });
+                            rectchart( [ N, D - N ], [ BLUE, "#ccc" ], 2 );
+                            rectchart( [ ATTENDEES, 0 ], [ ORANGE, "#999" ], 1 );
+                            rectchart( [ SOLUTION, ATTENDEES - SOLUTION ], [ GREEN, "#fff" ], 0 );
+                            style({ color: BLUE }, function() {
+                                label([ 0, 2.5 ], "\\frac{" + N + "}{" + D + "}", "left" );
+                            });
+                            style({ color: ORANGE }, function() {
+                                label([ 0, 1.5 ], ATTENDEES, "left" );
+                            });
+                            style({ color: GREEN }, function() {
+                                label([ 0, 0.5 ], SOLUTION, "left" );
+                            });
+                        </div>
+                    </div>
+                    <p><strong>參加這次野餐的人有<var>SOLUTION</var> 個是大人。</strong></p>
+                </div>
+            </div>
+
+
+            <div id="recipe">
+                <div class="vars" data-ensure="isInt( SOLUTION ) && getGCD( D, N ) === 1">
+                    <var id="BATCHES">(randRange( 1,5 )*D)</var>
+                    <var id="D">randFromArray([ 2,8 ])</var>
+                    <var id="N">randRange( 1, D - 1 )</var>
+                    <var id="SOLUTION">N / D * BATCHES</var>
+                </div>
+
+                <div class="problem">
+                    <p>
+                        因為學校要舉辦園遊會，<var>person(1)</var>決定要烘焙餅乾來賣，於是<var>He(1)</var>找到一個餅乾的配方，每次用這個配方做餅乾的時候需要
+                        <code>\frac{<var>N</var>}{<var>D</var>}</code> 塊巧克力磚。
+                    </p>
+                    <p>
+                        為了要有足夠的餅乾來賣，<var>person(1)</var>需要做 <var>BATCHES</var> 次餅乾。
+                    </p>
+                </div>
+
+                <p class="question"><var>person(1)</var>總共需要多少塊巧克力磚來做所有的餅乾？</p>
+
+                <div class="solution" data-type="multiple">
+                    <span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> 塊
+                </div>
+
+                <div class="hints">
+                    <p>
+                        我們可以將 <code class="hint_blue">\dfrac{<var>N</var>}{<var>D</var>}</code> 塊乘以 <code class="hint_orange"><var>BATCHES</var></code>
+                        次，來了解<var>person(1)</var>需要多少塊巧克力磚。
+                    </p>
+                    <p><code>
+                        \color{<var>BLUE</var>}{\dfrac{<var>N</var>}{<var>D</var>}} \times \color{<var>ORANGE</var>}{<var>BATCHES</var>} =
+                        \color{<var>GREEN</var>}{\text{?}}
+                    </code></p>
+                    <p><code>
+                        \color{<var>BLUE</var>}{\dfrac{<var>N</var>}{<var>D</var>}} \times \color{<var>ORANGE</var>}{\dfrac{<var>BATCHES</var>}{1}} =
+                        \dfrac{\color{<var>BLUE</var>}{<var>N</var>} \cdot \color{<var>ORANGE</var>}{<var>BATCHES</var>}}
+                        {\color{<var>BLUE</var>}{<var>D</var>} \cdot \color{<var>ORANGE</var>}{1}} = \color{<var>GREEN</var>}{\text{?}}
+                    </code></p>
+                    <p><code>
+                        \dfrac{\color{<var>BLUE</var>}{<var>N</var>} \cdot \color{<var>ORANGE</var>}{<var>BATCHES</var>}}
+                        {\color{<var>BLUE</var>}{<var>D</var>}} = \color{<var>GREEN</var>}{\dfrac{<var>N * BATCHES</var>}{<var>D</var>}} =
+                        \color{<var>GREEN</var>}{<var>SOLUTION</var>}
+                    </code></p>
+                    <!--
+
+                    This is backwards for this problem. The visualization should somehow show that BATCHES instances of N/D is SOLUTION
+
+                    <div>
+                        <p>
+                            我們也可以看下面的圖表，發現 <code class="hint_orange"><var>BATCHES</var></code> 的
+                            <code class="hint_blue">\dfrac{<var>N</var>}{<var>D</var>}</code> 是 <code class="hint_green"><var>SOLUTION</var></code>：
+                        </p>
+                        <div class="graphie">
+                            init({ range: [ [ -0.05, 1 ], [ 0,  3 ] ],scale: [ 500, 30 ] });
+                            rectchart( [ N, D - N ], [ BLUE, "#ccc" ], 2 );
+                            rectchart( [ BATCHES, 0 ], [ ORANGE, "#999" ], 1 );
+                            rectchart( [ SOLUTION, BATCHES - SOLUTION ], [ GREEN, "#fff" ], 0 );
+                            style({ color: BLUE }, function() {
+                                label([ 0, 2.5 ], "\\frac{" + N + "}{" + D + "}", "left" );
+                            });
+                            style({ color: ORANGE }, function() {
+                                label([ 0, 1.5 ], BATCHES, "left" );
+                            });
+                            style({ color: GREEN }, function() {
+                                label([ 0, 0.5 ], SOLUTION, "left" );
+                            });
+                        </div>
+                    </div>
+                    -->
+                    <p><strong><var>person(1)</var>需要 <var>plural(SOLUTION, "塊")</var>巧克力磚，才能做出足夠的餅乾在園遊會賣。</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

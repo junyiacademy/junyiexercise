@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html data-require="math math-format math-model simplify factoring-expressions subhints">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>有兩個變數的多項式分解</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div>
+            <div class="vars">
+                <div data-ensure="A !== B && A !== -B">
+                    <var id="A">randRangeNonZero( -10, 10 )</var>
+                    <var id="B">randRangeNonZero( -10, 10 )</var>
+                </div>
+                <var id="SQUARE">1</var>
+                <var id="CONSTANT">SQUARE*A*B</var>
+                <var id="SIMPLECONSTANT">A*B</var>
+                <var id="LINEAR">SQUARE*(-A-B)</var>
+                <var id="SIMPLELINEAR">-A-B</var>
+                <var id="GROUP1">[
+                parse("(x + ay)(x + by)&=&xx &+& xby + ayx &+& ayby"),
+                parse("&=& x^2 &+& #{(a+b)}xy &+& #{ab}y^2", [GREEN, BLUE]),
+                simplify(parse("&=& x^2 &+& #{" + SIMPLELINEAR + "}xy &+& #{" + SIMPLECONSTANT + "}y^2", [GREEN, BLUE]), simplifyOptions.checkInput),
+                ]
+                </var>
+                <var id="QUESTION">simplify(parse(SQUARE + "x^{2}+" + LINEAR + "xy+" + CONSTANT + "y^{2}"), simplifyOptions.basic)</var>
+                <var id="SOLUTION">simplify(parse("(x + #{" + (-A) + "}y)(x + #{" + (-B) + "}y)", [PINK, PINK]), simplifyOptions.checkInput)</var>
+                <var id="SOLUTION2">simplify(parse("(-x + #{" + (A) + "}y)(-x + #{" + (B) + "}y)", [PINK, PINK]), simplifyOptions.checkInput)</var>
+            </div>
+
+            <p class="problem">分解下面的式子:</var></code></p>
+            <p class="question"><code><var>format(QUESTION)</var></code></p>
+
+            <div class="solution" data-type="custom">
+                <div class="instruction">
+                    <input name="response" type="text">
+                </div>
+                <div class="guess">$( "div.instruction input" ).val()</div>
+                <div class="validator-function">
+                    return (isEqual(simplify(parse(guess), simplifyOptions.checkInput), simplify(SOLUTION, simplifyOptions.checkInput)) ||
+                            isEqual(simplify(parse(guess), simplifyOptions.checkInput), simplify(SOLUTION2, simplifyOptions.checkInput)))
+                </div>
+                <div class="show-guess">
+                </div>
+                <div class="show-guess-solutionarea">
+                    $( "div.instruction input" ).val( guess );
+                </div>
+                <div class="example">一個分解的多項式, 會像是 <b>(x+2y)(x+3y)</b></div>
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>當我們要分解這個樣子的多項式, 我們會嘗試倒轉兩個線性方程式相乘的過程:</p>
+                    <p><code>\qquad <var>formatGroup(GROUP1, [0, 1])</var></code></p>
+                </div>
+
+                <div>
+                    <p><code>\qquad <var>formatGroup(GROUP1, [2])</var></code></p>
+                    <p>
+                        <code>xy</code>的係數是<code class="hint_green"><var>SIMPLELINEAR</var></code>,
+                        <code>y^2</code>的係數是<code class="hint_blue"><var>SIMPLECONSTANT</var></code>, 所以回到上個步驟, 我們可以得到兩個數字 <span class="hint_green">相加是<code><var>SIMPLELINEAR</var></code></span> 而且<span class="hint_blue">相乘是<code><var>SIMPLECONSTANT</var></code></span>.
+                    </p>
+                </div>
+
+                <div>
+                    <p>你可以嘗試看看哪些<code class="hint_blue"><var>SIMPLECONSTANT</var></code>的因數相加是
+                    <span class="hint_green"><code><var>SIMPLELINEAR</var></code></span>。換句話說, 你需要找到兩個值<code class="hint_pink">a</code> 和 <code class="hint_pink">b</code> 符合下面的條件:</p>
+
+                    <p><code>\qquad <var>parseFormat("#a+#b=#{"+ SIMPLELINEAR + "}", [PINK, PINK, GREEN])</var></code></p>
+
+                    <p><code>\qquad <var>parseFormat("#a \\times #b = #{" + SIMPLECONSTANT + "}", [PINK, PINK, BLUE])</var></code></p>
+
+                    <p>如果你不知道怎麼做, 可以嘗試列出<code class="hint_blue"><var>SIMPLECONSTANT</var></code> 所有的因數, 來代入
+                    <code class="hint_pink">a</code> 到等式裡, 來求出 <code class="hint_pink">b</code>
+                    的值是否能滿足兩個條件。 例如: 既然<var>Math.abs(A)</var> 是<code class="hint_blue"><var>SIMPLECONSTANT</var></code>的因數,
+                    嘗試把<var>Math.abs(A)</var> 或 <var>-Math.abs(A)</var> 代入 <code class="hint_pink">a</code> .</p>
+                </div>
+
+                <div>
+                    <p>這兩個數 <code class="hint_pink"><var>-A</var></code> 和 <code class="hint_pink"><var>-B</var></code> 會滿足這兩個條件:</p>
+                    <p><code>
+                        \qquad <var>parseFormat("#{" + (-A) + "}+#{" + (-B) + "}=#{" + SIMPLELINEAR + "}", [PINK, PINK, GREEN])</var>
+                    </code></p>
+                    <p><code>
+                        \qquad <var>parseFormat("#{" + (-A) + "}\\times #{" + (-B) + "}=#{" + SIMPLECONSTANT + "}", [PINK, PINK, BLUE])</var>
+                    </code></p>
+                </div>
+                <div>
+                    <p><b>所以我們把這多項式分解成: <code><var>format(SOLUTION)</var></code></b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers graphie-geometry math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>全等三角形 1</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="MAIN">randomTriangleAngles.triangle()</var>
+            <var id="MAIN_SIZE">5 + Math.random() * 2</var>
+            <var id ="IS_B">randRange( 0, 1 ) === 1 ? true : false</var>
+            <var id="B">IS_B ? MAIN : randomTriangleAngles.triangle()</var>
+            <var id="B_SIZE">IS_B ? MAIN_SIZE : 2 + Math.random() * 2</var>
+            <var id="ANSWER">IS_B ? "是" : "否"</var>
+
+            <var id="A_ANGLES">[ 0, 1, 2 ]</var>
+            <var id="B_ANGLES">A_ANGLES</var>
+            <var id="A_SIDES">[ 0, 1, 2 ]</var>
+            <var id="B_SIDES">A_SIDES</var>
+
+            <var id="TR_A">
+                function(){
+                    var t = new Triangle( [ 3, -2 ], MAIN, MAIN_SIZE, {} );
+                    t.labels =  { "name": "A", "angles" : clearArray( t.niceAngles, A_ANGLES ),  "sides" : clearArray( t.niceSideLengths, A_SIDES ) };
+                    return t;
+                }()
+            </var>
+            <var id="TR_B">
+                function(){
+                    var t = new Triangle( [ 7, -6 ], B, B_SIZE, {} );
+                    t.labels =  { "name": "B", "angles" : clearArray( t.niceAngles, B_ANGLES ),  "sides" : clearArray( t.niceSideLengths, B_SIDES ) };
+                    return t;
+                }()
+            </var>
+        </div>
+        <div class="hints">
+                <p>如果有兩個三角形，它們互相對應的三個角和三個邊都對等，我們就可以說這兩個三角形全等。</p>
+                <p>但是，我們並不需要知道所有的邊與角的值，就可以判定兩個三角形是否全等了。</p>
+                <p>我們有以下的辦法可以驗證三角形的全等性： SSS、ASA、SAS、和AAS。</p>
+        </div>
+        <div class="problem">
+            請問這兩個三角形是否全等？
+        </div>
+        <div class="question">
+            <div class="graphie">
+
+                TR_A.rotate( randRange( 0, 360 ) );
+                TR_B.rotate( randRange( 0, 360 ) );
+
+                var aBounding = TR_A.boundingRange(1);
+                var bBounding = TR_B.boundingRange(1);
+
+                var minX = Math.min(aBounding[0][0], bBounding[0][0]);
+                var maxX = Math.max(aBounding[0][1], bBounding[0][1]);
+
+                var minY = Math.min(aBounding[1][0], bBounding[1][0]);
+                var maxY = Math.max(aBounding[1][1], bBounding[1][1]);
+
+                init({
+                    range: [ [minX, maxX ], [ minY, maxY ] ]
+                })
+
+                TR_A.draw();
+                TR_A.drawLabels();
+
+                TR_B.draw();
+                TR_B.drawLabels();
+            </div>
+        </div>
+        <div class="solution"><var>ANSWER</var></div>
+        <ul class="choices" data-category="true">
+            <li>是</li>
+            <li>否</li>
+            <li>資訊不足，無法判斷</li>
+        </ul>
+        <div class="problems">
+
+            <div id="SSS">
+                <div class="vars">
+                    <var id="A_ANGLES">[]</var>
+                    <var id="A_SIDES">[ 0, 1, 2 ]</var>
+                </div>
+                <div class="hints" data-apply="appendContents">
+                    <p>在這個題目中，我們知道三角形的邊長，所以我們可以很容易的做比較。</p>
+                    <p data-if="IS_B">三角形 B 的三邊跟三角形 A 的三邊一樣長，所以兩個三角形全等。</p>
+                    <p data-else>三角形 B 的三邊跟三角形 A 的三邊不一樣長，所以兩個三角形不全等。</p>
+                </div>
+            </div>
+
+            <div id="SAS">
+                <div class="vars">
+                    <var id="A_ANGLES">[ 1 ]</var>
+                    <var id="A_SIDES">[ 0, 1 ]</var>
+                </div>
+                <div class="hints" data-apply="appendContents">
+                    <p>在這個題目中，我們知道兩邊長以及夾角的大小，所以們可以用SAS來做驗證。</p>
+                    <p data-if="IS_B">三角形 B 的兩邊長和夾角大小跟三角形 A 一樣，所以兩個三角形全等。</p>
+                    <p data-else>由於三角形 A 的兩邊長和夾角大小跟三角形 B 不一樣，所以兩個三角形並不全等。</p>
+                </div>
+            </div>
+
+            <div id="ASA">
+                <div class="vars">
+                    <var id="A_ANGLES">[ 0, 1 ]</var>
+                    <var id="A_SIDES">[ 1 ]</var>
+                </div>
+                <div class="hints" data-apply="appendContents">
+                    <p>在這個題目中，我們知道兩個角的大小以及夾邊的長度，所以我們可以用ASA來做驗證。</p>
+                    <p data-if="IS_B">三角形 B 的兩個角和夾邊跟三角形 A 的一樣，所以兩個三角形全等。</p>
+                    <p data-else>由於三角形 A 的兩個角和夾邊的大小跟三角形 B 的不一樣，所以兩個三角形並不全等。</p>
+                </div>
+            </div>
+
+            <div id="AAS">
+                <div class="vars">
+                    <var id="A_ANGLES">[ 0, 1 ]</var>
+                    <var id="A_SIDES">randRange( 0, 1 ) === 1 ? [ 2 ] : [ 1 ]</var>
+                </div>
+                <div class="hints" data-apply="appendContents">
+					<p>在這個題目中，我們知道兩個角的大小以及另外一個邊的長度，所以我們可以用AAS來做驗證。</p>
+					<p data-if="IS_B">三角形 B 的兩個角和另外一個邊跟三角形 A 的一樣，所以兩個三角形全等。</p>
+					<p data-else>由於三角形 A 的兩個角和另一個邊的大小跟三角形 B 的不一樣，所以兩個三角形並不全等。</p>
+                </div>
+            </div>
+
+            <div id="AAA">
+                <div class="vars">
+                    <var id="A_ANGLES">[ 0, 1, 2 ]</var>
+                    <var id="A_SIDES">[ ]</var>
+                    <var id="ANSWER">IS_B ? "資訊不足，無法判斷" : "否"</var>
+                </div>
+                <div class="hints" data-apply="appendContents">
+                    <p>在這個題目中，我們知道所有三個角的大小。</p>
+                    <p data-if="IS_B">但是，就算兩個三角形的三個角互相對等，我們還是沒有辦法直接判定這兩個三角形是否全等。我們可以判定這兩個三角形相似，但我們不能保證它們全等，因為它們有可能的三個角對等但邊長卻不一樣長。</p>
+                    <p data-else>由於三個角的角度並不對等，所以三角形 A 和三角形 B 並不全等。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

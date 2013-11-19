@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers angles">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>同位角 2</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+        <div data-ensure="A * SOLUTION + B > 0 && A * SOLUTION + B < 180">
+            <var id="SOLUTION">randRange(6, 20) * randRangeNonZero(-1, 1)</var>
+            <var id="DIFFERENCE">randRange(2, 6)</var>
+            <var id="A">randRangeNonZero(2, 8 - DIFFERENCE) + DIFFERENCE</var>
+            <var id="B">DIFFERENCE * randRange(2, 15)</var>
+        </div>
+        <var id="C">A - DIFFERENCE</var>
+        <var id="D">A * SOLUTION + B - C * SOLUTION</var>
+
+        <var id="ANGLE">max(30, min(150, A * SOLUTION + B))</var>
+        <var id="KNOWN_INDEX">(randRange(0, 3) * 2) + ((ANGLE &lt; 50) ? 1 : ((ANGLE &gt; 130) ? 0 : randRange(0, 1)))</var>
+        <var id="UNKNOWN_INDEX">(KNOWN_INDEX + 4) % 8</var>
+    </div>
+
+    <div class="problems">
+        <div>
+            <p>下面的兩條水平線互相平行，而且有第三條線與它們相交，如下圖所示。</p>
+            <p class="question">請問 <code>x</code> 是多少？</p>
+            <p class="solution"><var>SOLUTION</var></p>
+            <div class="graphie" id="parallel-lines">
+
+                var eq1 = A + "x + " + B + "^\\circ";
+                var eq2 = C + "x + " + D + "^\\circ";
+
+                init({
+                    range: [[-1, 11], [-1, 4]]
+                });
+                graph.pl = new ParallelLines(0, 0, 10, 0, 3);
+                graph.pl.draw();
+                graph.pl.drawTransverse(ANGLE);
+                graph.pl.drawAngle(KNOWN_INDEX, eq1);
+                graph.pl.drawAngle(UNKNOWN_INDEX, eq2, "#FFA500");
+            </div>
+        </div>
+    </div>
+
+    <div class="hints">
+i        <p>同位角的角度相等。 <a class="related-video" href="/video/angles-formed-by-parallel-lines-and-transversals" data-youtube-id="H-E5rlpCVu4">你可以看這個影片</a>以了解為什麼。</p>
+        <div>
+            <p><code>\color{<var>BLUE</var>}{\text{藍色的角}}</code> 和 <code>\color{<var>ORANGE</var>}{\text{橘色的角}}</code> 是同位角。因此，我們可以把它們的角度設為彼此相等。</p>
+            <p><code>\color{<var>BLUE</var>}{<var>A</var>x + <var>B</var>} = \color{<var>ORANGE</var>}{<var>C</var>x + <var>D</var>}</code></p>
+        </div>
+
+        <div data-if="A > C" data-unwrap>
+            <div>
+                <p>將兩邊同時減去 <code>\color{<var>PINK</var>}{<var>C</var>x}</code> 。</p>
+                <p><code>(<var>A</var>x + <var>B</var>) \color{<var>PINK</var>}{- <var>C</var>x} = (<var>C</var>x + <var>D</var>) \color{<var>PINK</var>}{- <var>C</var>x}</code></p>
+                <p><code><var>A - C</var>x + <var>B</var> = <var>D</var></code></p>
+            </div>
+            <div>
+                <p>將兩邊同時<var>B > 0 ? "減去" : "加上"</var> <code>\color{<var>PINK</var>}{<var>abs(B)</var>}</code> 。</p>
+                <p><code>(<var>A - C</var>x + <var>B</var>) \color{<var>PINK</var>}{+ <var>-B</var>} = <var>D</var> \color{<var>PINK</var>}{+ <var>-B</var>}</code></p>
+                <p><code><var>A - C</var>x = <var>D - B</var></code></p>
+            </div>
+            <div>
+                <p>將兩邊同時除以 <code>\color{<var>PINK</var>}{<var>A - C</var>}</code> 。</p>
+                <p><code>\dfrac{<var>A - C</var>x}{\color{<var>PINK</var>}{<var>A - C</var>}} = \dfrac{<var>D - B</var>}{\color{<var>PINK</var>}{<var>A - C</var>}}</code></p>
+            </div>
+            <div>
+                <p>化簡。</p>
+                <p><code>x = <var>SOLUTION</var></code></p>
+            </div>
+        </div>
+        <div data-else data-unwrap>
+            <div>
+                <p>將兩邊同時減去 <code>\color{<var>PINK</var>}{<var>A</var>x}</code> 。</p>
+                <p><code>(<var>A</var>x + <var>B</var>) \color{<var>PINK</var>}{- <var>A</var>x} = (<var>C</var>x + <var>D</var>) \color{<var>PINK</var>}{- <var>A</var>x}</code></p>
+                <p><code><var>B</var> = <var>C - A</var>x + <var>D</var></code></p>
+            </div>
+            <div>
+                <p>將兩邊同時<var>D > 0 ? "減去" : "加上"</var> <code>\color{<var>PINK</var>}{<var>abs(D)</var>}</code> 。</p>
+				<p><code><var>B</var> \color{<var>PINK</var>}{+ <var>-D</var>} = (<var>C - A</var>x + <var>D</var>) \color{<var>PINK</var>}{+ <var>-D</var>}</code></p>
+                <p><code><var>B - D</var> = <var>C - A</var>x</code></p>
+            </div>
+            <div>
+                <p>將兩邊同時除以 <code>\color{<var>PINK</var>}{<var>C - A</var>}</code> 。</p>
+                <p><code>\dfrac{<var>B - D</var>}{\color{<var>PINK</var>}{<var>C - A</var>}} = \dfrac{<var>C - A</var>x}{\color{<var>PINK</var>}{<var>C - A</var>}}</code></p>
+            </div>
+            <div>
+                <p>化簡。</p>
+                <p><code><var>SOLUTION</var> = x</code></p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

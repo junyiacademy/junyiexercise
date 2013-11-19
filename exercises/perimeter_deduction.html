@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-geometry angles word-problems interactive subhints">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>周長 1</title>
+    <script src="../khan-exercise.js"></script>
+	
+</head>
+<body>
+<div class="exercise">
+    <div class="vars">
+        <var id="UNIT,UNIT_TEXT">randFromArray([
+            ["公尺", "公尺"],
+            ["公分", "公分"],
+            ["", "單位"]
+        ])</var>
+    </div>
+    <div class="problems">
+        
+        <div id="triangle" data-weight="2">
+            <div class="vars" data-ensure="A < B + C && B < A + C && C < A + B">
+                <var id="A,B,C">randRange(2, 9, 3)</var>
+                <var id="X">((A * A + B * B - C * C) / (2 * A * B)) * B</var>
+                <var id="Y">sqrt(B * B - X * X)</var>
+            </div>
+
+            <p class="question">
+                三角形的周長為<code><var>A+B+C</var></code>
+				<var>plural(UNIT_TEXT, S)</var> 。請問「？」為多少<code><var>"\\text{ " + UNIT + "}"</var></code>？
+            </p>
+
+            <div class="problem">
+                <div class="graphie" id="perimeter">
+                    init({ range: [[min(X, 0) - 2, max(X, A) + 2], [-1, Y + 1]], scale: 30 });
+                    path([[0, 0], [A, 0], [X, Y], true], {stroke: BLUE, fill: "#eee"});
+                    label([A / 2, 0], A + "\\text{ " + UNIT + "}", "below");
+                    label([X / 2 - 0.5, Y / 2], B + "\\text{ " + UNIT + "}", "left");
+                    label([(X + A) / 2 + 0.5, Y / 2], "\\text{ ? }" + "\\text{ " + UNIT + "}", "right");
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var> C </var></span> <var>plural(UNIT_TEXT)</var>
+            </div>
+
+            <div class="hints">
+                <p>
+                    周長為圖形的所有邊長總和。
+                </p>
+                <div>
+                    <div class="graphie" data-update="perimeter">
+                        path([[X, Y], [0, 0]], { strokeWidth: 4, stroke: PINK });
+                        path([[A, 0], [X, Y]], { strokeWidth: 4, stroke: BLUE });
+                        path([[0, 0], [A, 0]], { strokeWidth: 4, stroke: GREEN });
+                    </div>
+                    <p>
+                        把所有的邊長都加起來：
+                    </p>
+                    <p><code>\qquad\text{周長} =
+                        \pink{<var>B</var>}  + \green{<var>A</var>} + \blue{ ? }
+                    </code></p>
+					<p><code>\qquad<var>A+B+C</var> =
+                        \pink{<var>B</var>}  + \green{<var>A</var>} + \blue{ ? }
+                    </code></p>
+                </div>
+                <p><code>\qquad\text{?} = <var>C</var>\text{ <var>UNIT</var>}</code></p>
+            </div>
+        </div>
+		
+		<div id="rectangle" data-weight="1">
+            <div class="vars" data-ensure="L !== W">
+                <var id="L">randRange(2, 9)</var>
+                <var id="W">randRange(2, 9)</var>
+            </div>
+
+            <p class="question">
+				長方形的周長為<code><var> 2*L + 2*W </var></code>
+				<var>plural(UNIT_TEXT, S)</var> 。請問「？」為多少<code><var>"\\text{ " + UNIT + "}"</var></code>？
+            </p>
+
+            <div class="problem">
+                <div class="graphie" id="perimeter">
+                    init({ range: [[-2, L + 1], [-1, W + 1]], scale: 30 });
+                    path([[0, 0], [0, W], [L, W], [L, 0], true], {stroke: BLUE, fill: "#eee"});
+                    label([L / 2, W], "\\text{ ? }" + "\\text{ " + UNIT + "}", "above");
+                    label([0, W / 2], W + "\\text{ " + UNIT + "}", "left");
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var> L </var></span> <var>plural(UNIT_TEXT)</var>
+            </div>
+
+            <div class="hints">
+                <p>
+                    周長為圖形的所有邊長總和。
+                </p>
+                <div>
+                    <div class="graphie" data-update="perimeter">
+                        path([[0, 0], [0, W]], { strokeWidth: 4, stroke: PINK });
+                        path([[0, W], [L, W]], { strokeWidth: 4, stroke: BLUE });
+                        path([[L, W], [L, 0]], { strokeWidth: 4, stroke: "purple" });
+                        path([[L, 0], [0, 0]], { strokeWidth: 4, stroke: GREEN });
+                    </div>
+                    <p>
+                        把所有的邊長都加起來：
+                    </p>
+                    <p><code>\qquad\text{周長} =
+                        \pink{<var>W</var>} + \blue{ ? } + \purple{<var>W</var>} + \green{ ? } 
+                    </code></p>
+					<p><code>\qquad<var> 2*L + 2*W </var> = \pink{<var>W</var>} + \blue{ ? } + \purple{<var>W</var>} + \green{ ? } </code></p>
+                </div>
+				<p><code>\qquad<var> 2*L + 2*W </var> = <var>2*W</var> + \blue{ ? } + \green{ ? } </code></p>
+                <p><code>\qquad<var> 2*L </var> = \blue{ ? } + \green{ ? } </code></p>
+				<p><code>\qquad\text{?} = <var>L</var>\text{ <var>UNIT</var>}</code></p>
+            </div>
+			
+        </div>
+
+		<div id="polygon" data-weight="2">
+            <div class="vars">
+                <var id="S">randRange(2, 3)</var>
+                <var id="SIDES,POLYGON">randFromArray([
+                    [5, "五邊形"],
+                    [6, "六邊形"],
+                    [8, "八邊形"]
+                ])</var>
+                <var id="ANGLE">(2 * PI) / SIDES</var>
+                <var id="RADIUS">S / (2 * sin(PI / SIDES))</var>
+                <var id="APOTHEM">S / (2 * tan(PI / SIDES))</var>
+            </div>
+
+            <p class="question">
+                正<var>POLYGON</var>的周長為<var> S * SIDES </var><code><var>"\\text{ " + UNIT + "}"</var></code>
+				請問「？」為多少<code><var>"\\text{ " + UNIT + "}"</var></code>？
+            </p>
+
+            <div class="problem">
+                <div class="graphie" id="perimeter">
+                    init({ range: [[-RADIUS - 1, RADIUS + 1], [-RADIUS - 1, RADIUS + 1]], scale: 30 });
+                    graph.path = [];
+
+                    _(SIDES).times(function(n) {
+                        graph.path.push([sin(ANGLE * (n + 0.5)) * RADIUS, cos(ANGLE * (n + 0.5)) * RADIUS]);
+                    });
+                    graph.path.push(true);
+                    path(graph.path, {stroke: BLUE, fill: "#eee"});
+                    graph.label = label([0, APOTHEM + 0.7], "\\text{ ? }" + "\\text{ " + UNIT + "}");
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>S </var></span> <var>plural(UNIT_TEXT)</var>
+            </div>
+
+            <div class="hints">
+                <p>
+                    周長為圖形的所有邊長總和。
+                </p>
+                <div>
+                    <div class="graphie" data-update="perimeter">
+                        graph.label.remove();
+                        _(SIDES).times(function(n) {
+                            label([sin(ANGLE * n) * (APOTHEM + 0.7), cos(ANGLE * n)
+                                * (APOTHEM + 0.7)], "\\text{ ? }" + "\\text{ " + UNIT + "}",
+                                {color: GREEN});
+                        });
+                    </div>
+                    <p>
+                        <a href="#" class="show-definition" data-definition="regular-polygon">正</a>
+                        <var>POLYGON</var> 的所有邊長都是一樣長的。
+                    </p>
+                    <div class="definition" id="regular-polygon">
+                        我們稱一個多邊形為<b>正</b>多邊形就是說他的邊長是一樣的。
+                    </div>
+                </div>
+                <div>
+                    <p>
+                        因為圖形有 <span class="hint_blue"><code><var>SIDES</var></code> 個邊</span>
+                        每個邊都是 <span class="hint_green"><code><var>"\\text{ ? }"</var></code>
+                        <var>plural(UNIT_TEXT)</var></span> 長，我們可以直接用乘法：
+                    </p>
+                    <p><code>\qquad\text{周長} =
+                        \blue{<var>SIDES</var>} \times \green{<var>"\\text{ ? }"</var>}
+                    </code></p>
+					<p><code>\qquad<var>S * SIDES</var> =
+                        \blue{<var>SIDES</var>} \times \green{<var>"\\text{ ? }"</var>}
+                    </code></p>
+                </div>
+                <p><code>\qquad\text{ ? } = <var>S </var>\text{ <var>UNIT</var>}</code></p>
+            </div>
+        </div>
+		
+		
+		
+		
+		
+		
+		
+    </div>
+</div>
+</body>
+</html>

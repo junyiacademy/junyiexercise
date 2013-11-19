@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html data-require="math math-format word-problems graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>象形圖1</title>
+    <script src="../khan-exercise.js"></script>
+    <style>
+        .fake_header span, .fake_row span {
+            width: 38px;
+            height: 38px;
+            vertical-align: top;
+            line-height: 38px;
+        }
+        .fake_row span:first-child {
+            width: 76px;
+        }
+        .fake_header span:first-child {
+            width: 460px;
+        }
+    </style>
+</head>
+<body>
+<div class="exercise">
+    <div class="vars">
+        <var id="DATA">randRangeUnique( 1, 8, 5 )</var>
+        <var id="BADGE,TYPE">
+		randFromArray([
+		["meteorite","隕石"],
+		["moon","月亮"],
+		["earth","地球"]
+		])	
+		</var>
+		
+        <var id="FULL_IMAGE">"&lt;img src='" + Khan.imageBase + "badges/" + BADGE + "-small.png'&gt;"</var>
+        <var id="VALUE_PER_IMG">1</var>
+    </div>
+
+    <div class="problem">
+        <p>請利用向形圖來回答以下的問題:</p>
+        <div class="fake_header">
+            <span><span style="text-transform:capitalize"></span>每一位學生獲得的<var>TYPE</var>徽章</span>
+        </div>
+        <div class="fake_row" data-each="5 times as n">
+            <span><var>person( n + 1 )</var></span><span data-each="DATA[n] times"><var>FULL_IMAGE</var>
+            </span><span data-each="(8 - DATA[n]) times">&nbsp;</span>
+        </div>
+        <span style="height: 50px; vertical-align: top; line-height: 50px;">
+            <var>FULL_IMAGE</var> = <var>VALUE_PER_IMG</var>個<var>TYPE</var>徽章
+        </span>
+    </div>
+
+    <div class="problems">
+
+        <div id="most" data-weight="1">
+            <div class="vars">
+                <var id="MOST">_.indexOf( DATA, Math.max.apply( Math, DATA ) )</var>
+            </div>
+            <p class="question">誰獲得了最多個<var>TYPE</var>徽章?</p>
+            <div class="solution"><var>person( MOST + 1 )</var></div>
+            <ul class="choices" data-category="true">
+                <li><var>person( 1 )</var></li>
+                <li><var>person( 2 )</var></li>
+                <li><var>person( 3 )</var></li>
+                <li><var>person( 4 )</var></li>
+                <li><var>person( 5 )</var></li>
+            </ul>
+
+            <div class="hints">
+                <p>圖表中，誰的名字旁邊有最多個<var>TYPE</var>符號?</p>
+                <p><var>person( MOST + 1 )</var>的名字旁邊有最多個圖案。</p>
+                <p><var>person( MOST + 1 )</var>獲得了最多個<var>TYPE</var>徽章。</p>
+            </div>
+        </div>
+
+        <div id="least" data-weight="1">
+            <div class="vars">
+                <var id="LEAST">_.indexOf( DATA, Math.min.apply( Math, DATA ) )</var>
+            </div>
+            <p class="question">誰獲得了最少個<var>TYPE</var>徽章?</p>
+            <div class="solution"><var>person( LEAST + 1 )</var></div>
+            <ul class="choices" data-category="true">
+                <li><var>person( 1 )</var></li>
+                <li><var>person( 2 )</var></li>
+                <li><var>person( 3 )</var></li>
+                <li><var>person( 4 )</var></li>
+                <li><var>person( 5 )</var></li>
+            </ul>
+
+            <div class="hints">
+                <p>圖表中，誰的名字旁邊有最少個<var>TYPE</var>符號?</p>
+                <p><var>person( LEAST + 1 )</var>的名字旁邊有最少個圖案。</p>
+                <p><var>person( LEAST + 1 )</var>獲得了最少個<var>TYPE</var>徽章</p>
+            </div>
+        </div>
+
+        <div id="read-chart" data-weight="3">
+            <div class="vars">
+                <var id="PERSON">rand( 5 )</var>
+                <var id="ANSWER">DATA[ PERSON ] * VALUE_PER_IMG</var>
+            </div>
+
+            <p class="question"><var>person( PERSON + 1 )</var>獲得了多少個<var>TYPE</var>徽章?</p>
+
+            <div class="solution" data-type="multiple">
+                <p><span style="padding-right: 5px" class="sol short40" data-forms="integer"><var>ANSWER</var></span> 個<var>TYPE</var>徽章</p>
+            </div>
+
+            <div class="hints">
+                <p>象形圖的下方有圖鑑，註明說明每一個圖案代表<var>VALUE_PER_IMG</var>個徽章。</p>
+                <div>
+                    <p>在圖表中找出<var>person( PERSON + 1 )</var>的是哪一行:</p>
+                    <div class="fake_row">
+                        <span><var>person( PERSON + 1 )</var></span><span data-each="DATA[ PERSON ] times"><var>FULL_IMAGE</var>
+                        </span><span data-each="(8 - DATA[ PERSON ]) times">&nbsp;</span>
+                    </div>
+                </div>
+                <p>
+                    有<var>DATA[PERSON]</var>個符號。
+                </p>
+
+                <div>
+                    <div>
+                        <code><var>DATA[ PERSON ]</var></code>個符號
+                        <code> \times </code> 每個符號代表的<code><var>VALUE_PER_IMG</var></code>個徽章
+                        <code> = <var>DATA[ PERSON ] * VALUE_PER_IMG</var></code>個徽章.
+                    </div>
+                </div>
+                <p><var>person( PERSON + 1 )</var>獲得了<code><var>ANSWER</var></code>個<var>TYPE</var>徽章。</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

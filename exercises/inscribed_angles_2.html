@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-polygon interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>圓周角 2</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="find-angle">
+            <div class="vars">
+                <var id="START">randRange( 0, 360 )</var>
+                <var id="CENTRAL">randRange( 10, 80 ) * 2</var>
+                <var id="SUBTENDED_POINT">randRange( START + 180 + 5, START + CENTRAL + 180 - 5 ) % 360</var>
+                <var id="RADIUS">4</var>
+
+                <var id="GIVEN">CENTRAL</var>
+                <var id="GIVEN_LABEL">"藍色的"</var>
+                <var id="ASKED_LABEL">"橘色的"</var>
+            </div>
+			<p class="question">如果<var>GIVEN_LABEL</var>角是 <var>GIVEN</var> 度，那請問<var>ASKED_LABEL</var>角是幾度？</p>
+            <p>這是一個特殊的情況，因為藍色與橘色的角共用同一條線段。藍色的角叫做圓心角，而橘色的角叫圓周角。</p>
+            <div class="graphie" id="circle">
+                init({
+                    range: [ [ -RADIUS - 1, RADIUS + 1 ], [ -RADIUS - 1, RADIUS + 1 ] ]
+                });
+                addMouseLayer();
+                graph.circle = new Circle( RADIUS );
+
+                style({ stroke: BLUE, fill: BLUE });
+                graph.circle.drawCenter();
+                graph.circle.drawPoint( START );
+                graph.circle.drawPoint( START + CENTRAL );
+
+                graph.central = graph.circle.drawCentralAngle( START, START + CENTRAL );
+
+                style({ stroke: ORANGE, fill: ORANGE });
+                graph.inscribed = graph.circle.drawInscribedAngle( SUBTENDED_POINT, START, START + CENTRAL );
+
+                graph.circle.drawMovablePoint( SUBTENDED_POINT, START + CENTRAL, START );
+            </div>
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>CENTRAL / 2</var></span> 度
+            </div>
+            <div class="hints">
+                <div>
+                    <p>上面用虛線畫出的直徑把原來的兩個角分成了好幾個小角；利用這些新劃分出來的小角，我們能推斷出什麼呢？</p>
+                    <div class="graphie" data-update="circle">
+                        style({stroke: BLUE, "stroke-dasharray": "-"}, function() {
+                            graph.circle.drawChord( SUBTENDED_POINT, SUBTENDED_POINT + 180 );
+                        });
+                    </div>
+                </div>
+                <div>
+                    <p>如果我們只看這些新劃分出來的小角，我們會發現，這跟上一組習題 (圓周角 1) 的情況是一樣的！</p>
+                    <p>我們知道其中一個橘色小角的角度是它對應的藍色小角的一半。</p>
+                    <div class="graphie" data-update="circle">
+                        graph.inscribed.arc.animate({opacity: 0.4});
+                        graph.central.arc.animate({opacity: 0.4});
+                        style({stroke: BLUE});
+                        graph.centralSub = graph.circle.drawCentralArc( SUBTENDED_POINT + 180, START + CENTRAL, 0.7 );
+                        style({stroke: ORANGE});
+                        graph.inscribedSub = graph.circle.drawInscribedArc( SUBTENDED_POINT, SUBTENDED_POINT + 180, START + CENTRAL, 0.7 );
+                    </div>
+                </div>
+                <div>
+                    <p>同樣的，我們知道另一邊橘色小角的角度也是對應到的藍色小角的一半 (如圖所示)。</p>
+                    <div class="graphie" data-update="circle">
+                        graph.centralSub.remove();
+                        graph.inscribedSub.remove();
+                        style({stroke: BLUE});
+                        graph.centralSub = graph.circle.drawCentralArc( START, SUBTENDED_POINT + 180, 0.7 );
+                        style({stroke: ORANGE});
+                        graph.inscribedSub = graph.circle.drawInscribedArc( SUBTENDED_POINT, START, SUBTENDED_POINT + 180, 0.7 );
+                    </div>
+                </div>
+                <div>
+                    <p>如果兩個橘色小角都分別是兩個藍色小角的一半，那很顯然地，原來的橘色角就是原來的藍色角的一半。</p>
+                    <div class="graphie" data-update="circle">
+                        graph.centralSub.remove();
+                        graph.inscribedSub.remove();
+                        graph.inscribed.arc.animate({opacity: 1.0});
+                        graph.central.arc.animate({opacity: 1.0});
+                    </div>
+                </div>
+                <p><code>\color{<var>ORANGE</var>}{\text{橘色角}} = \dfrac{1}{2} \cdot \color{<var>BLUE</var>}{\text{藍色角}}</code></p>
+                <p><code>\color{<var>ORANGE</var>}{\text{橘色角}} = \dfrac{1}{2} \cdot \color{<var>BLUE</var>}{<var>CENTRAL</var>^{\circ}}</code></p>
+                <p><code>\color{<var>ORANGE</var>}{\text{橘色角}} =  \color{<var>ORANGE</var>}{<var>CENTRAL / 2</var>^{\circ}}</code></p>
+            </div>
+        </div>
+        <div id="find-central-on" data-type="find-angle">
+            <div class="vars">
+                <var id="GIVEN">CENTRAL / 2</var>
+                <var id="GIVEN_LABEL">"橘色的"</var>
+                <var id="ASKED_LABEL">"藍色的"</var>
+            </div>
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>CENTRAL</var></span> 度
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>上面用虛線畫出的直徑把原來的兩個角分成了好幾個小角；利用這些新劃分出來的小角，我們能推斷出什麼呢？</p>
+                    <div class="graphie" data-update="circle">
+                        style({stroke: BLUE, "stroke-dasharray": "-"}, function() {
+                            graph.circle.drawChord( SUBTENDED_POINT, SUBTENDED_POINT + 180 );
+                        });
+                    </div>
+                </div>
+                <div>
+					<p>如果我們只看這些新劃分出來的小角，我們會發現，這跟上一組習題 (圓周角 1) 的情況是一樣的！</p>
+                    <p>我們知道其中一個橘色小角的角度是它對應的藍色小角的一半。</p>
+                    <div class="graphie" data-update="circle">
+                        graph.inscribed.arc.animate({opacity: 0.4});
+                        graph.central.arc.animate({opacity: 0.4});
+                        style({stroke: BLUE});
+                        graph.centralSub = graph.circle.drawCentralArc( SUBTENDED_POINT + 180, START + CENTRAL, 0.7 );
+                        style({stroke: ORANGE});
+                        graph.inscribedSub = graph.circle.drawInscribedArc( SUBTENDED_POINT, SUBTENDED_POINT + 180, START + CENTRAL, 0.7 );
+                    </div>
+                </div>
+                <div>
+                    <p>同樣的，我們知道另一邊橘色小角的角度也是對應到的藍色小角的一半 (如圖所示)。</p>
+                    <div class="graphie" data-update="circle">
+                        graph.centralSub.remove();
+                        graph.inscribedSub.remove();
+                        style({stroke: BLUE});
+                        graph.centralSub = graph.circle.drawCentralArc( START, SUBTENDED_POINT + 180, 0.7 );
+                        style({stroke: ORANGE});
+                        graph.inscribedSub = graph.circle.drawInscribedArc( SUBTENDED_POINT, START, SUBTENDED_POINT + 180, 0.7 );
+                    </div>
+                </div>
+                <div>
+                    <p>如果兩個藍色小角都分別是橘色小角的兩倍，那很顯然地，原來的藍色角就是原來橘色角的兩倍。</p>
+                    <div class="graphie" data-update="circle">
+                        graph.centralSub.remove();
+                        graph.inscribedSub.remove();
+                        graph.inscribed.arc.animate({opacity: 1.0});
+                        graph.central.arc.animate({opacity: 1.0});
+                    </div>
+                </div>
+                <p><code>\color{<var>BLUE</var>}{\text{藍色角}} = 2 \cdot \color{<var>ORANGE</var>}{\text{橘色角}}</code></p>
+                <p><code>\color{<var>BLUE</var>}{\text{藍色角}} = 2 \cdot \color{<var>ORANGE</var>}{<var>CENTRAL / 2</var>^{\circ}}</code></p>
+                <p><code>\color{<var>BLUE</var>}{\text{藍色角}} = \color{<var>BLUE</var>}{<var>CENTRAL</var>^{\circ}}</code></p>
+            </div>
+        </diV>
+    </div>
+    </div>
+</body>
+</html>

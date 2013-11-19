@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers graphie-geometry math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>三角形內角 1</title>
+    <script src="../khan-exercise.js"></script>
+    <script>
+        function scTriangle(){
+            while( ! a || Math.abs( a - b ) < 5 || Math.abs( a - c ) < 5 || Math.abs( b - c ) < 5 ){
+                var a = KhanUtil.randRange( 25, 150 );
+                var b = KhanUtil.randRange( 25, 180 - a );
+                if ( a + b > 170 ){
+                    a = Math.max( 30, a - 15  );
+                    b = Math.max( 30, b - 15  );
+                }
+                var c = 180 - a - b;
+            }
+
+            var sa = KhanUtil.randRange( 4, 8 );
+            var sb = sa * Math.sin( b * Math.PI / 180 )  / Math.sin( a * Math.PI / 180 );
+            var sc = sa * Math.sin( c * Math.PI / 180 )  / Math.sin( a * Math.PI / 180 );
+            return [ [ a, b, c ] , [ sc.toFixed( 1 ),  sa.toFixed( 1 ), sb.toFixed( 1 ) ] ];
+        }
+
+        function eqTriangle(){
+            var a = KhanUtil.randRange( 4, 8 );
+            return [ [ 60, 60, 60 ], [ a, a, a ] ];
+        }
+
+        function isoTriangle(){
+            var a = KhanUtil.randRangeExclude( 25, 75, [ 60 ] );
+            var c = 180 - 2 * a;
+            var sa = KhanUtil.randRange( 4, 8 );
+            var sc = sa * Math.sin( c * Math.PI / 180 )  / Math.sin( a * Math.PI / 180 );
+            var ang =  [ a, a, c ];
+            var sides = [ sc.toFixed( 1 ), sa,  sa ];
+            return [ ang , sides ];
+
+        }
+
+    </script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="scalene">
+                <div class="vars">
+                    <var id="TRIANGLE">scTriangle()</var>
+                </div>
+                <div class="problem">
+                    "X" 的角度是多少?
+                </div>
+                <div class="question">
+                    <div class="graphie">
+                        init({
+                            range: [ [-1, 10 ], [ -8, 1 ] ]
+                        })
+                        var tr = new Triangle( [ 3, -4 ],  TRIANGLE[ 0 ], 5, { "sides" : TRIANGLE[ 1 ], "angles" : [ TRIANGLE[ 0 ][ 0 ]  + "^{\\circ}", TRIANGLE[ 0 ][ 1 ] + "^{\\circ}",  "X" ] } );
+                        tr.rotate( randRange( 0, 90 ) );
+                        tr.boxOut( [ [ [ -10, 1 ], [ 10, 1 ] ] ], [ 0,-0.5 ] )
+                        tr.draw();
+                        tr.drawLabels();
+                    </div>
+                </div>
+
+                <div class="solution" data-type="multiple"><p><code>X =</code><span class="sol"><var>TRIANGLE[ 0 ][ 2 ]</var></span></div>
+                <div class="hints">
+                    <p>三角形的內角相加是180度.</p>
+                    <p>我們已經知道三角形的2個角度</p>
+                    <p>那第3個角度就是180度減掉另外兩個角度</p>
+                    <p>也就是<code>180 - <var>TRIANGLE[ 0 ][ 0 ]</var> - <var>TRIANGLE[ 0 ][ 1 ]</var> = <var>TRIANGLE[ 0 ][ 2 ]</var></code></p>
+                </div>
+            </div>
+            <div id="isosceles1" data-type="scalene">
+                <div class="vars">
+                    <var id="TRIANGLE">isoTriangle()</var>
+                </div>
+                <div class="question">
+                    <div class="graphie">
+                        init({
+                            range: [ [-1, 10 ], [ -8, 1 ] ]
+                        })
+                        var tr = new Triangle( [ 3, -4 ],  TRIANGLE[ 0 ], 5, { "sides" : TRIANGLE[ 1 ], "angles" : [ TRIANGLE[ 0 ][ 0 ] + "^{\\circ}", "",  "X" ] } );
+                        tr.rotate( randRange( 0, 90 ), 3, -3 );
+                        tr.boxOut( [ [ [ -10, 1 ], [ 10, 1 ] ] ], [ 0,-0.5 ] )
+                        tr.draw();
+                        tr.drawLabels();
+                    </div>
+                </div>
+                <div class="solution" data-type="multiple"><p><code>X =</code><span class="sol"><var>TRIANGLE[ 0 ][ 2 ]</var></span></div>
+
+                <div class="hints">
+                    <p>三角形的內角相加是180度.</p>
+                    <p>因為這個三角形有兩個邊是等長的, 所以它也有兩個角度是相等的(它是一個等腰三角形)
+                    <p>我們可以改寫<code>A + B + C = 180</code> 為 <code>A + A + C = 180, 2A + C = 180 </code></p>
+                    <p>在底部(不同長度的邊)的兩個角度是相同的, 而夾在兩條等長的邊的角度是獨立的</p>
+                    <p>我們知道底部其中一個角度, 而另外一個底部的角度也是一樣的, 所以我們有兩個相等的角度都是<var>TRIANGLE[ 0 ][ 0 ]</var>度</p>
+                    <p>用我們的等式, 可以得到 <code>2 \cdot <var>TRIANGLE[ 0 ][ 0 ]</var> + X = 180,<var>2 * TRIANGLE[ 0 ][ 0 ]</var> + C = 180</code></p>
+                    <p><code>X = 180 - <var>2 * TRIANGLE[ 0 ][ 0 ]</var></code></p>
+                    <p><code>X = <var>180 - 2 * TRIANGLE[ 0 ][ 0 ]</var></code></p>
+                </div>
+            </div
+>
+            <div id="isosceles2" data-type="scalene">
+                <div class="vars">
+                    <var id="TRIANGLE">isoTriangle()</var>
+                </div>
+                <div class="question">
+                    <div class="graphie">
+                        init({
+                            range: [ [-1, 10 ], [ -8, 1 ] ]
+                        })
+                        var tr = new Triangle( [ 3, -4 ],  TRIANGLE[ 0 ], 5, { "sides" : TRIANGLE[ 1 ], "angles" : [ "X", "", TRIANGLE[ 0 ][ 2 ] + "^{\\circ}" ]  } );
+                        tr.rotate( randRange( 0, 90 ), 3, -3 );
+                        tr.boxOut( [ [ [ -10, 1 ], [ 10, 1 ] ] ], [ 0,-0.5 ] )
+                        tr.draw();
+                        tr.drawLabels();
+                    </div>
+                </div>
+                <div class="solution" data-type="multiple"><p><code>X =</code><span class="sol"><var>TRIANGLE[ 0 ][ 0 ]</var></span></div>
+
+                <div class="hints">
+                    <p>三角形的內角相加是180度.</p>
+                    <p>因為這個三角形有兩個邊是等長的, 所以它也有兩個角度是相等的(它是一個等腰三角形)
+                    <p>我們可以改寫<code>A + B + C = 180</code> 為 <code>A + A + C = 180, 2A + C = 180 </code></p>
+                    <p>在底部(不同長度的邊)的兩個角度是相同的, 而夾在兩條等長的邊的角度是獨立的</p>
+                    <p>我們知道獨立的角度是多少, 也就是說另外兩個角度是一樣的</p>
+                    <p>所以我們要求的角度就是<code>A</code></p>
+                    <p>利用我們的等式, 可以得到<code>2X  + <var>TRIANGLE[ 0 ][ 2 ]</var> = 180</code></p>
+                    <p><code>2X = 180 - <var>TRIANGLE[ 0 ][ 2 ]</var> </code></p>
+                    <p><code>2X = <var>180 - TRIANGLE[ 0 ][ 2 ]</var></code></p>
+                    <p><code>X = \dfrac{ <var>180 - TRIANGLE[ 0 ][ 2 ]</var> }{ 2 }</code></p>
+                    <p><code>X = <var>TRIANGLE[ 0 ][ 0 ]</var></code></p>
+                </div>
+            </div>
+            <div id="isosceles3" data-type="scalene">
+                <div class="vars">
+                    <var id="TRIANGLE">isoTriangle()</var>
+                </div>
+                <div class="question">
+                    <div class="graphie">
+                        init({
+                            range: [ [-1, 10 ], [ -8, 1 ] ]
+                        })
+                        var tr = new Triangle( [ 3, -4 ],  TRIANGLE[ 0 ], 5, { "sides" : TRIANGLE[ 1 ], "angles" : [ TRIANGLE[ 0 ][ 0 ]+ "^{\\circ}",  "X", "" ]  } );
+                        tr.rotate( randRange( 0, 90 ), 3, -3 );
+                        tr.boxOut( [ [ [ -10, 1 ], [ 10, 1 ] ] ], [ 0,-0.5 ] )
+                        tr.draw();
+                        tr.drawLabels();
+                    </div>
+                </div>
+                <div class="solution" data-type="multiple"><p><code>X =</code><span class="sol"><var>TRIANGLE[ 0 ][ 0 ]</var></span></div>
+                <div class="hints">
+                    <p>三角形的內角相加是180度.</p>
+                    <p>因為這個三角形有兩個邊是等長的, 所以它也有兩個角度是相等的(它是一個等腰三角形)
+                    <p>在底部(不同長度的邊)的兩個角度是相同的, 而夾在兩條等長的邊的角度是獨立的</p>
+                    <p>我們知道其中一個底部的角度為<var>TRIANGLE[ 0 ][ 0 ]</var>, 而我們要求的角度也一樣在底部 </p>
+                    <p>所以我們要求的角度也就是<var>TRIANGLE[ 0 ][ 0 ]</var></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html data-require="math word-problems spin">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>最小公倍數與最大公因數的應用題</title>
+    <script src="../khan-exercise.js"></script>
+    <style>
+        .gcd-column {
+            position: relative;
+            float: left;
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+
+        <div id="lcm-hot-dog-count">
+            <div class="vars" data-ensure="LCM !== A && LCM !== B">
+                <var id="C">randRange( 2, 6 )</var>
+                <var id="START_A">randRange( 1, 10 )</var>
+                <var id="START_B">randRangeExclude( 1, 10, [ START_A ] )</var>
+                <var id="A">START_A * C</var>
+                <var id="B">START_B * C</var>
+                <var id="PRODUCT">A * B</var>
+                <var id="GCD">getGCD( A, B )</var>
+                <var id="LCM">PRODUCT / GCD</var>
+            </div>
+
+            <p class="problem spin">
+                {下禮拜|星期六的時候}，<var>person(1)</var>準備辦一個派對{，<var>he(1)</var>並打算在派對上播放<var>his(1)</var>
+                最喜歡的<var>randRange(2,30)</var>首歌。<var>He(1)</var>同時也|。<var>He(1)</var>} 想為這個派對買一些熱狗。當<var>he(1)</var>
+                去超級市場的時候，<var>he(1)</var>發現熱狗一包有<var>A</var>條，而麵包一包則有<var>B</var>條.
+            </p>
+
+            <p class="question">
+                如果<var>person(1)</var>希望熱狗跟麵包的數量相同，<var>he(1)</var>最少需要買幾條熱狗呢？
+            </p>
+
+            <p class="solution" data-forms="integer"><var>LCM</var></p>
+
+            <div class="hints">
+                <div>
+                    <p>
+                        我們知道熱狗一包有<code><var>A</var></code>條。先寫出<code><var>A</var></code>的一些倍數，看<var>person(1)</var>有可能買多少熱狗：
+                    </p>
+                    <p>
+                        <code>\qquad 熱狗: </code>
+                        <span data-each="getMultiples( A, min( LCM * 2 + A * 2, max( A * 14, LCM ) ) ) as M"><code><var>M</var>,</code> </span>
+                        <code>...</code>
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        我們知道麵包一包有<code><var>B</var></code>條。先寫出<code><var>B</var></code>的一些倍數，看<var>person(1)</var>有可能買多少麵包：
+                    </p>
+                    <p>
+                        <code>\qquad 麵包: </code>
+                        <span data-each="getMultiples( B, min( LCM * 2 + B * 2, max( B * 14, LCM ) ) ) as M"><code><var>M</var>,</code> </span>
+                        <code>...</code>
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        因為<var>person(1)</var>希望買相同數量的熱狗跟麵包，所以我們要找<em>公倍數</em>，這樣買的熱狗跟麵包的數量才有可能一樣。
+                    </p>
+                    <p>
+                        <code>\qquad 熱狗: </code>
+                        <span data-each="getMultiples( A, min( LCM * 2 + A * 2, max( A * 14, LCM ) ) ) as M">
+                            <span data-if="M % LCM === 0 && M / LCM === 1">
+                                <code>\color{<var>PINK</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else-if="M % LCM === 0 && M / LCM === 2">
+                                <code>\color{<var>BLUE</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else-if="M % LCM === 0 && M / LCM === 3">
+                                <code>\color{<var>GREEN</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else>
+                                <code><var>M</var>,</code>
+                            </span>
+                        </span>
+                        <code>...</code>
+                    </p>
+                    <p>
+                        <code>\qquad 麵包: </code>
+                        <span data-each="getMultiples( B, min( LCM * 2 + B * 2, max( B * 14, LCM ) ) ) as M">
+                            <span data-if="M % LCM === 0 && M / LCM === 1">
+                                <code>\color{<var>PINK</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else-if="M % LCM === 0 && M / LCM === 2">
+                                <code>\color{<var>BLUE</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else-if="M % LCM === 0 && M / LCM === 3">
+                                <code>\color{<var>GREEN</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else>
+                                <code><var>M</var>,</code>
+                            </span>
+                        </span>
+                        <code>...</code>
+                    </p>
+                </div>
+
+                <p>
+                    <var>person(1)</var>最少需要買的熱狗跟麵包的數量，也就是兩者的<em>最小</em>公倍數。
+                </p>
+                <p><code class="hint_pink"><var>LCM</var></code>是<code><var>A</var></code>和<code><var>B</var></code>的最小公倍數。</p>
+                <p>
+                    所以如果要買同樣數量的熱狗和麵包，<var>person(1)</var><strong>最少需要買<var>LCM</var>個熱狗和麵包</strong>，也就是<var>plural(LCM/A,"包")</var>熱狗和<var>plural(LCM/B,"包")</var>麵包。
+                </p>
+            </div>
+        </div>
+
+        <div id="lcm-uniforms">
+            <div class="vars" data-ensure="LCM !== A && LCM !== B">
+                <var id="C">randRange( 2, 6 )</var>
+                <var id="START_A">randRange( 1, 10 )</var>
+                <var id="START_B">randRangeExclude( 1, 10, [ START_A ] )</var>
+                <var id="A">START_A * C</var>
+                <var id="B">START_B * C</var>
+                <var id="PRODUCT">A * B</var>
+                <var id="GCD">getGCD( A, B )</var>
+                <var id="LCM">PRODUCT / GCD</var>
+            </div>
+
+            <p class="problem spin">
+                <var>person(1)</var>幫忙組織一個{棒球|壘球}聯盟，因此<var>he(1)</var>需要幫球員購買球衣和帽子。球衣是一組一組賣的，一組有<var>A</var>件；帽子也是一組一組賣的，一組有<var>B</var>頂。
+            </p>
+            <p class="question">
+                如果<var>person(1)</var>想要買同樣數量的球衣和帽子，<var>he(1)</var>最少需要買多少球衣和帽子？
+            </p>
+            <p class="solution" data-forms="integer"><var>LCM</var></p>
+
+            <div class="hints">
+                <div>
+                    <p>
+                        我們知道球衣一組有<code><var>A</var></code>件。先寫出<code><var>A</var></code>的一些倍數，看<var>person(1)</var>有可能買幾件：
+                    </p>
+                    <p>
+                        <code>\qquad 球衣: </code>
+                        <span data-each="getMultiples( A, min( LCM * 2 + A * 2, max( A * 12, LCM ) ) ) as M"><code><var>M</var>,</code> </span>
+                        <code>...</code>
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        我們知道帽子一組有<code><var>B</var></code>頂。先寫出<code><var>B</var></code>的一些倍數，看<var>person(1)</var>有可能買幾頂：
+                    </p>
+                    <p>
+                        <code>\qquad 帽子: </code>
+                        <span data-each="getMultiples( B, min( LCM * 2 + B * 2, max( B * 12, LCM ) ) ) as M"><code><var>M</var>,</code> </span>
+                        <code>...</code>
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        因為<var>person(1)</var>想要買同樣數量球衣和帽子，所以我們要找<em>公倍數</em>，這樣買的球衣跟帽子的數量才有可能一樣。
+                    </p>
+                    <p>
+                        <code>\qquad 球衣: </code>
+                        <span data-each="getMultiples( A, min( LCM * 2 + A * 2, max( A * 12, LCM ) ) ) as M">
+                            <span data-if="M % LCM === 0 && M / LCM === 1">
+                                <code>\color{<var>PINK</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else-if="M % LCM === 0 && M / LCM === 2">
+                                <code>\color{<var>BLUE</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else-if="M % LCM === 0 && M / LCM === 3">
+                                <code>\color{<var>GREEN</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else>
+                                <code><var>M</var>,</code>
+                            </span>
+                        </span>
+                        <code>...</code>
+                    </p>
+                    <p>
+                        <code>\qquad 帽子: </code>
+                        <span data-each="getMultiples( B, min( LCM * 2 + B * 2, max( B * 12, LCM ) ) ) as M">
+                            <span data-if="M % LCM === 0 && M / LCM === 1">
+                                <code>\color{<var>PINK</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else-if="M % LCM === 0 && M / LCM === 2">
+                                <code>\color{<var>BLUE</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else-if="M % LCM === 0 && M / LCM === 3">
+                                <code>\color{<var>GREEN</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else>
+                                <code><var>M</var>,</code>
+                            </span>
+                        </span>
+                        <code>...</code>
+                    </p>
+                </div>
+
+                <p>
+                    <var>person(1)</var>最少需要買的球衣跟帽子的數量，也就是兩者的<em>最小</em>公倍數。
+                </p>
+                <p><code class="hint_pink"><var>LCM</var></code>是<code><var>A</var></code>和<code><var>B</var></code>的最小公倍數。</p>
+                <p>
+					所以如果要買同樣數量的球衣和帽子，<var>person(1)</var><strong>最少需要買<var>LCM</var>個球衣和帽子</strong>，也就是<var>plural(LCM/A,"組")</var>球衣和<var>plural(LCM/B,"組")</var>帽子。                    
+                </p>
+            </div>
+        </div>
+
+        <div id="lcm-test-questions">
+            <div class="vars" data-ensure="LCM !== A && LCM !== B">
+                <var id="C">randRange( 2, 6 )</var>
+                <var id="START_A">randRange( 1, 10 )</var>
+                <var id="START_B">randRangeExclude( 1, 10, [ START_A ] )</var>
+                <var id="A">START_A * C</var>
+                <var id="B">START_B * C</var>
+                <var id="PRODUCT">A * B</var>
+                <var id="GCD">getGCD( A, B )</var>
+                <var id="LCM">PRODUCT / GCD</var>
+            </div>
+
+            <div class="problem">
+                <p class="spin">
+                    <var>person(1)</var>和<var>person(2)</var>都就讀<var>school(1)</var>，但都在不同的班級上<var>course(1)</var>課。
+                    <span data-if="A > B">
+                        <var>person(1)</var>的老師給的<var>plural( exam(1) )</var>總是有<var>A</var>題題目，而<var>person(2)</var>的老師比較常給<var>plural( exam(1) )</var>，但每次都只有<var>B</var>題。
+                    </span>
+                    <span data-else>
+                        <var>person(1)</var>的老師給的<var>plural( exam(1) )</var>總是有<var>B</var>題題目，而<var>person(2)</var>的老師比較常給<var>plural( exam(1) )</var>，但每次都只有<var>A</var>題。
+                    </span>
+                    {<var>person(1)</var>的課堂上另外還有<var>randRange(15,40)</var>名學生。
+                    |<var>person(2)</var>的老師每年都會要求學生寫<var>randRange(3,10)</var>份報告。}
+                </p>
+                <p>
+                    雖然兩個班<var>plural( exam(1) )</var>的次數不一樣，兩個班的老師都跟學生說，到了期末每個學生所做過的<var>exam(1)</var>題目都會跟別班的人是一樣的。
+                </p>
+            </div>
+
+            <p class="question">
+                <var>person(1)</var>和<var>person(2)</var>到期末前最少會做過多少題目呢？
+            </p>
+
+            <p class="solution" data-forms="integer"><var>LCM</var></p>
+
+            <div class="hints">
+                <div>
+                    <p>
+                        我們知道在<var>person(1)</var>的班上，所有的<var>plural( exam(1) )</var>都有<code><var>A</var></code>題題目。
+						試著寫出<code><var>A</var></code>的一些倍數，看<var>person(1)</var>到期末前有可能做過多少題目：
+                    </p>
+                    <p>
+                        <code>\qquad</code>
+                        <span data-each="getMultiples( A, min( LCM * 2 + A * 2, max( A * 15, LCM ) ) ) as M"><code><var>M</var>,</code> </span>
+                        <code>...</code>
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        我們知道在<var>person(2)</var>的班上，所有的<var>plural( exam(1) )</var>都有<code><var>B</var></code>題題目。
+						試著寫出<code><var>B</var></code>的一些倍數，看<var>person(2)</var>到期末前有可能做過多少題目：					
+                    </p>
+                    <p>
+                        <code>\qquad</code>
+                        <span data-each="getMultiples( B, min( LCM * 2 + B * 2, max( B * 15, LCM ) ) ) as M"><code><var>M</var>,</code> </span>
+                        <code>...</code>
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        由於<var>person(1)</var>和<var>person(2)</var>的老師們說過兩個班到期末前做的題目總數都會是一樣的，所以我們要找<em>公倍數</em>來找兩個班級有可能回答的題目總數。	
+                    </p>
+                    <p>
+                        <code>\qquad</code>
+                        <span data-each="getMultiples( A, min( LCM * 2 + A * 2, max( A * 15, LCM ) ) ) as M">
+                            <span data-if="M % LCM === 0 && M / LCM === 1">
+                                <code>\color{<var>PINK</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else-if="M % LCM === 0 && M / LCM === 2">
+                                <code>\color{<var>BLUE</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else-if="M % LCM === 0 && M / LCM === 3">
+                                <code>\color{<var>GREEN</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else>
+                                <code><var>M</var>,</code>
+                            </span>
+                        </span>
+                        <code>...</code>
+                    </p>
+                    <p>
+                        <code>\qquad</code>
+                        <span data-each="getMultiples( B, min( LCM * 2 + B * 2, max( B * 15, LCM ) ) ) as M">
+                            <span data-if="M % LCM === 0 && M / LCM === 1">
+                                <code>\color{<var>PINK</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else-if="M % LCM === 0 && M / LCM === 2">
+                                <code>\color{<var>BLUE</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else-if="M % LCM === 0 && M / LCM === 3">
+                                <code>\color{<var>GREEN</var>}{<var>M</var>},</code>
+                            </span>
+                            <span data-else>
+                                <code><var>M</var>,</code>
+                            </span>
+                        </span>
+                        <code>...</code>
+                    </p>
+                </div>
+
+                <p>
+                    <var>person(1)</var>和<var>person(2)</var>到期末前最少做過的題目總數就是<em>最小</em>公倍數。
+                </p>
+                <p><code class="hint_pink"><var>LCM</var></code>是<code><var>A</var></code>和<code><var>B</var></code>的最小公倍數</p>
+                <p>
+                    如果<var>person(1)</var>和<var>person(2)</var>的班級到期末前做過的題目總數是一樣的，那他們到期末前<strong>可能做過的題目總數最少是<var>LCM</var>題</strong>，也就是說<var>person(1)</var>班上會進行<var>(LCM/A)</var>次<var>exam(1)</var>，而<var>person(2)</var>班上會進行<var>(LCM/B)</var>次<var>exam(1)</var>。
+                </p>
+            </div>
+        </div>
+
+        <div id="gcd-teams">
+            <div class="vars" data-ensure="A_START !== B_START">
+                <var id="A_START">randRange( 1, 10 )</var>
+                <var id="B_START">randRange( 1, 10 )</var>
+                <var id="FACTOR">randRange( 2, 5 )</var>
+
+                <var id="A">A_START * FACTOR</var>
+                <var id="B">B_START * FACTOR</var>
+                <var id="GCD">getGCD( A, B )</var>
+                <var id="A_FACTORS">getFactors( A )</var>
+                <var id="B_FACTORS">getFactors( B )</var>
+            </div>
+
+            <div class="question spin">
+                <p>
+                    最近有一個田徑比賽，總共有<var>A</var>個短跑選手和<var>B</var>個長跑選手{和<var>randRange(5,100)</var>位觀眾|}。
+					<var>person(1)</var>必須將跑步選手們分成不同的隊伍。<var>He(1)</var>希望每一隊的短跑選手的數量是一樣的，也希望每一隊的長跑選手的數量也是一樣的。
+                </p>
+				<p><strong><var>person(1)</var>最多可以組幾隊呢？</strong></p>
+            </div>
+
+            <p class="solution" data-forms="integer"><var>GCD</var></p>
+
+            <div class="hints">
+                <p>
+                    我們先考慮短跑選手就好。我們可以先想想看，要將每一隊都平均分配短跑選手有哪些方式？要找出這些方式，要先找出<var>A</var>的因數。
+                </p>
+
+                <div>
+                    <p>
+                        <var>A</var>的因數有<span class="hint_blue"><var>toSentence( getFactors( A ) )</var></span>，因為這些數字都能整除<var>A</var>。換句話說，我們如果要將短跑選手平均分配到每個隊伍，我們可以用以下任何一種方式：
+                    </p>
+                    <p style="margin-left: 20px">
+                        <span data-each="getFactors( A ) as F" class="hint_blue">
+                            <var>plural( F, "隊" )</var>，每隊有<var>A/F</var>名短跑選手<br />
+                        </span>
+                    </p>
+                </div>
+
+                <p>
+                    我們現在來想想看長跑選手的狀況。要將每一隊都平均分配長跑選手有哪些方式？要找出這些方式，要先找出<var>B</var>的因數。
+                </p>
+
+                <div>
+                    <p>
+                        <var>B</var>的因數有<span class="hint_blue"><var>toSentence( getFactors( B ) )</var></span>，因為這些數字都能整除<var>B</var>。換句話說，我們如果要將長跑選手平均分配到每個隊伍，我們可以用以下任何一種方式：
+                    </p>
+                    <p style="margin-left: 20px">
+                        <span data-each="getFactors( B ) as F" class="hint_green">
+                            <var>plural( F, "隊" )</var>，每隊有<var>B/F</var>名長跑選手<br />
+                        </span>
+                    </p>
+                </div>
+
+
+                <div>
+                    <p>
+                        因為每隊都有短跑選手和長跑選手，所以我們可以比較短跑選手可以分成的隊伍數目與長跑選手可以分成的隊伍數目；比較之後就可以找出<em>公因數</em>。
+                    </p>
+                    <div class="gcd-column">
+                        <span data-each="max( A, B ) times as N">
+                            <span data-if="$.inArray( N + 1, A_FACTORS ) !== -1" class="hint_blue">
+                                <var>plural( N + 1, "隊" )</var>，每隊有<var>A/(N+1)</var>名短跑選手<br />
+                            </span>
+                            <span data-else-if="$.inArray( N + 1, B_FACTORS ) !== -1">
+                                <br />
+                            </span>
+                        </span>
+                    </div>
+                    <div class="gcd-column">
+                        <span data-each="max( A, B ) times as N">
+                            <span data-if="$.inArray( N + 1, B_FACTORS ) !== -1" class="hint_green">
+                                <var>plural( N + 1, "隊" )</var>，每隊有<var>B/(N+1)</var>名長跑選手<br />
+                            </span>
+                            <span data-else-if="$.inArray( N + 1, A_FACTORS ) !== -1">
+                                <br />
+                            </span>
+                        </span>
+                    </div>
+                    <div class="ui-helper-clearfix"></div>
+                </div>
+
+                <div>
+                    <p>
+                        <var>A</var>和<var>B</var>的公因數是<span class="hint_pink"><var>toSentence( _.intersection( A_FACTORS, B_FACTORS ) )</var></span>。換句話說，如果有<var>A</var>名短跑選手和<var>B</var>名長跑選手，<var>person(1)</var>可以用以下的方式來平均分配隊伍：
+                    </p>
+                    <p style="margin-left: 20px">
+                        <span data-each="_.intersection( A_FACTORS, B_FACTORS ) as F" class="hint_pink">
+                            <var>plural( F, "隊" )</var>，每隊有<var>A/F</var>名短跑選手和<var>B/F</var>名長跑選手<br />
+                        </span>
+                    </p>
+                </div>
+
+                <p>
+                    我們想知道<var>person(1)</var><em>最多</em>能組成幾隊，所以從上面的公因數中，我們要找<em>最大公因數</em>。
+                </p>
+
+                <p>
+                    
+					<strong><var>person(1)</var>最多能組成的隊伍數量是<var>GCD</var>隊</strong>，
+                    每隊有<var>A / GCD</var>名短跑選手和<var>B / GCD</var>名長跑選手。
+                </p>
+
+            </div>
+        </div>
+
+        <div id="gcd-restaurant">
+            <div class="vars" data-ensure="A_START !== B_START">
+                <var id="A_START">randRange( 1, 10 )</var>
+                <var id="B_START">randRange( 1, 10 )</var>
+                <var id="FACTOR">randRange( 2, 5 )</var>
+
+                <var id="A">A_START * FACTOR</var>
+                <var id="B">B_START * FACTOR</var>
+                <var id="GCD">getGCD( A, B )</var>
+                <var id="A_FACTORS">getFactors( A )</var>
+                <var id="B_FACTORS">getFactors( B )</var>
+            </div>
+
+            <div class="problem spin">
+                <p>
+                    <var>person(1)</var>經營一家烘培坊，每天都烤一盤巧克力餅乾(共<var>A</var>個)與一盤燕麥餅乾(共<var>B</var>個)。
+					餅乾烤好後，<var>person(1)</var>會將所有的餅乾放在一些禮盒中並拿去賣掉。
+                </p>
+                <p>
+                    {由於<var>his(1)</var>的顧客希望禮盒的品質不變|為了保持一樣的價格}，<var>person(1)</var>希望每一個禮盒裡面的東西都是完全一樣的。
+                    
+                </p>
+            </div>
+
+            <p class="question">
+                <var>person(1)</var>每天最多能做出幾個禮盒呢？
+            </p>
+
+            <p class="solution" data-forms="integer"><var>GCD</var></p>
+
+            <div class="hints">
+                <p>
+                    我們先考慮巧克力餅乾就好。我們可以先想想看，要將巧克力餅乾平均分配到每一個禮盒中有哪些方式？要找出這些方式，要先找出<var>A</var>的因數。
+                </p>
+
+                <div>
+                    <p>
+                        <var>A</var>的因數有<span class="hint_blue"><var>toSentence( getFactors( A ) )</var></span>，因為這些數字都能整除<var>A</var>。換句話說，我們如果要將巧克力餅乾平均分配到每個禮盒，我們可以用以下任何一種方式：
+                    </p>
+                    <p style="margin-left: 20px">
+                        <span data-each="getFactors( A ) as F" class="hint_blue">
+                            <var>F</var>個禮盒，每個禮盒有<var>A/F</var>片餅乾<br />
+                        </span>
+                    </p>
+                </div>
+
+                <p>
+                    我們現在來考慮燕麥餅乾。要找出將燕麥餅乾平均分配到每一個禮盒中有哪些方式的話，就要先找出<var>B</var>的因數。
+                </p>
+
+                <div>
+                    <p>
+                        <var>B</var>的因數有<span class="hint_blue"><var>toSentence( getFactors( B ) )</var></span>，因為這些數字都能整除<var>B</var>。換句話說，我們如果要將燕麥餅乾平均分配到每個禮盒，我們可以用以下任何一種方式：
+                    </p>
+                    <p style="margin-left: 20px">
+                        <span data-each="getFactors( B ) as F" class="hint_green">
+                            <var>F</var>個禮盒，每個禮盒有<var>B/F</var>片餅乾<br />
+                        </span>
+                    </p>
+                </div>
+
+                <div>
+                    <p>
+                        因為每個禮盒都有巧克力餅乾和燕麥餅乾，所以我們可以比較巧克力餅乾可以分成的禮盒數目與燕麥餅乾可以分成的禮盒數目；比較之後就可以找出<em>公因數</em>。
+                    </p>
+                    <div class="gcd-column">
+                        <span data-each="max( A, B ) times as N">
+                            <span data-if="$.inArray( N + 1, A_FACTORS ) !== -1" class="hint_blue">
+                                <var>N+1</var>個禮盒，每個禮盒有<var>A/(N+1)</var>片巧克力餅乾<br />
+                            </span>
+                            <span data-else-if="$.inArray( N + 1, B_FACTORS ) !== -1">
+                                <br />
+                            </span>
+                        </span>
+                    </div>
+                    <div class="gcd-column">
+                        <span data-each="max( A, B ) times as N">
+                            <span data-if="$.inArray( N + 1, B_FACTORS ) !== -1" class="hint_green">
+                                <var>N+1</var>個禮盒，每個禮盒有<var>B/(N+1)</var>片燕麥餅乾<br />
+                            </span>
+                            <span data-else-if="$.inArray( N + 1, A_FACTORS ) !== -1">
+                                <br />
+                            </span>
+                        </span>
+                    </div>
+                    <div class="ui-helper-clearfix"></div>
+                </div>
+
+                <div>
+                    <p>
+                        <var>A</var>和<var>B</var>的公因數是<span class="hint_pink"><var>toSentence( _.intersection( A_FACTORS, B_FACTORS ) )</var></span>。換句話說，如果有<var>A</var>片巧克力餅乾和<var>B</var>片燕麥餅乾，<var>person(1)</var>可以用以下的方式來平均分配禮盒：
+                    </p>
+                    <p style="margin-left: 20px">
+                        <span data-each="_.intersection( A_FACTORS, B_FACTORS ) as F" class="hint_pink">
+                            <var>F</var>個禮盒，每個禮盒有<var>A/F</var>片巧克力餅乾和<var>B/F</var>片燕麥餅乾<br />
+                        </span>
+                    </p>
+                </div>
+
+                <p>
+                    我們想知道<var>person(1)</var><em>最多</em>能分成幾個禮盒，所以從上面的公因數中，我們要找<em>最大公因數</em>。
+                </p>
+
+                <p>
+                    <strong><var>person(1)</var>最多能分成的禮盒數是<var>GCD</var>盒</strong>，
+                    每盒有<var>A / GCD</var>片巧克力餅乾和<var>B / GCD</var>片燕麥餅乾。
+                </p>
+            </div>
+        </div>
+
+        <div id="gcd-office-supplies">
+            <div class="vars" data-ensure="A_START !== B_START">
+                <var id="A_START">randRange( 1, 10 )</var>
+                <var id="B_START">randRange( 1, 10 )</var>
+                <var id="FACTOR">randRange( 2, 5 )</var>
+
+                <var id="A">A_START * FACTOR</var>
+                <var id="B">B_START * FACTOR</var>
+                <var id="GCD">getGCD( A, B )</var>
+                <var id="A_FACTORS">getFactors( A )</var>
+                <var id="B_FACTORS">getFactors( B )</var>
+            </div>
+
+			            <div class="problem spin">
+                <p>
+                    <var>person(1)</var>買了1組<var>deskItem(1)</var>(1組<var>A</var>個)以及1組<var>deskItem(2)</var>(1組<var>B</var>個)。<var>He(1)</var>希望將所有的<var>plural( deskItem(1) )</var>與<var>plural( deskItem(2) )</var>裝成一些一模一樣的包裹，送給<var>his(1)</var>{同事|朋友|同學}們。					
+                </p>
+
+            </div>
+
+            <p class="question">
+                <var>person(1)</var>最多能做出幾個包裹呢？
+            </p>
+
+            <p class="solution" data-forms="integer"><var>GCD</var></p>
+
+            <div class="hints">
+                <p>
+                    我們先考慮<var>deskItem(1)</var>就好。我們可以先想想看，要將<var>deskItem(1)</var>平均分配到每一個包裹中有哪些方式？要找出這些方式，要先找出<var>A</var>的因數。
+                </p>
+
+                <div>
+                    <p>
+                        <var>A</var>的因數有<span class="hint_blue"><var>toSentence( getFactors( A ) )</var></span>，因為這些數字都能整除<var>A</var>。換句話說，我們如果要將<var>deskItem(1)</var>平均分配到每個包裹中，我們可以用以下任何一種方式：
+                    </p>
+                    <p style="margin-left: 20px">
+                        <span data-each="getFactors( A ) as F" class="hint_blue">
+                            <var>F</var>個包裹，每個包裹有<var>A/F</var>個<var>deskItem(1)</var><br />
+                        </span>
+                    </p>
+                </div>
+
+                <p>
+                    我們現在來考慮<var>deskItem(2)</var>。要找出將<var>deskItem(2)</var>平均分配到每一個包裹中有哪些方式的話，就要先找出<var>B</var>的因數。
+                </p>
+
+                <div>
+                    <p>
+                        <var>B</var>的因數有<span class="hint_blue"><var>toSentence( getFactors( B ) )</var></span>，因為這些數字都能整除<var>B</var>。換句話說，我們如果要將<var>deskItem(2)</var>平均分配到每個包裹，我們可以用以下任何一種方式：
+                    </p>
+                    <p style="margin-left: 20px">
+                        <span data-each="getFactors( B ) as F" class="hint_green">
+                            <var>F</var>個包裹，每個包裹中有<var>B/F</var>個<var>deskItem(2)</var><br />
+                        </span>
+                    </p>
+                </div>
+
+                <div>
+                    <p>
+                        因為每個包裹中都有<var>deskItem(1)</var>和<var>deskItem(2)</var>，所以我們可以比較<var>deskItem(1)</var>可以分成的包裹數目與<var>deskItem(2)</var>可以分成的包裹數目；比較之後就可以找出<em>公因數</em>。
+                    </p>
+                    <div class="gcd-column">
+                        <span data-each="max( A, B ) times as N">
+                            <span data-if="$.inArray( N + 1, A_FACTORS ) !== -1" class="hint_blue">
+                                <var>N+1</var>個包裹，每個禮盒有<var>A/(N+1)</var>個<var>deskItem(1)</var><br />
+                            </span>
+                            <span data-else-if="$.inArray( N + 1, B_FACTORS ) !== -1">
+                                <br />
+                            </span>
+                        </span>
+                    </div>
+                    <div class="gcd-column">
+                        <span data-each="max( A, B ) times as N">
+                            <span data-if="$.inArray( N + 1, B_FACTORS ) !== -1" class="hint_green">
+                                <var>N+1</var>個包裹，每個禮盒有<var>B/(N+1)</var>個<var>deskItem(2)</var><br />
+                            </span>
+                            <span data-else-if="$.inArray( N + 1, A_FACTORS ) !== -1">
+                                <br />
+                            </span>
+                        </span>
+                    </div>
+                    <div class="ui-helper-clearfix"></div>
+                </div>
+
+                <div>
+                    <p>
+                        <var>A</var>和<var>B</var>的公因數是<span class="hint_pink"><var>toSentence( _.intersection( A_FACTORS, B_FACTORS ) )</var></span>。換句話說，如果有<var>A</var>個<var>deskItem(1)</var>和<var>B</var>個<var>deskItem(2)</var>，<var>person(1)</var>可以用以下的方式來平均分配包裹：
+                    </p>
+                    <p style="margin-left: 20px">
+                        <span data-each="_.intersection( A_FACTORS, B_FACTORS ) as F" class="hint_pink">
+                            <var>F</var>個包裹，每個禮盒有<var>A/F</var>個<var>deskItem(1)</var>和<var>B/F</var>個<var>deskItem(2)</var><br />
+                        </span>
+                    </p>
+                </div>
+
+                <p>
+                    我們想知道<var>person(1)</var><em>最多</em>能分成幾個包裹，所以從上面的公因數中，我們要找<em>最大公因數</em>。
+                </p>
+
+                <p>
+                    <strong><var>person(1)</var>最多能分成的包裹數是<var>GCD</var>包</strong>，
+                    每包有<var>A / GCD</var>個<var>deskItem(1)</var>和<var>B / GCD</var>個<var>deskItem(2)</var>。
+                </p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

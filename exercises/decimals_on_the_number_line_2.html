@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>線上的小數 2</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+        <var id="LOWER_BOUND">-2</var>
+        <var id="UPPER_BOUND">2</var>
+
+        <var id="LOWER_VALUE">LOWER_BOUND</var>
+        <var id="UPPER_VALUE">UPPER_BOUND</var>
+
+        <var id="SOLUTION">roundTo(1, randRangeNonZero(-19, 19) / 10)</var>
+        <var id="SOLUTION_DECIMAL">roundTo(1, SOLUTION % 1)</var>
+        <var id="SOLUTION_WHOLE">parseInt( ( SOLUTION ).toString(), 10 )</var>
+
+    </div>
+    <div class="problems">
+        <div>
+            <div class="question">
+                <p>移動線上的 <strong><code>\color{orange}{\text{橘點}}</code></strong> 到   <strong><code>\color{orange}{<var>SOLUTION</var>}</code></strong>。每半格的長度是0.5。</p>
+                <div class="graphie" id="number-line">
+                    init({
+                        range: [ [LOWER_BOUND - 1, UPPER_BOUND + 1], [-1, 1] ],
+                        scale: [120, 40]
+                    });
+
+                    style({arrows: "&gt;"});
+                    line( [ 0, 0 ], [ UPPER_BOUND + 0.25, 0 ] );
+
+                    style({arrows: "-&gt;"});
+                    line( [ 0, 0 ], [ LOWER_BOUND - 0.25, 0 ] );
+
+                    style({arrows: ""});
+                    for ( var x = LOWER_BOUND; x &lt;= UPPER_BOUND; x+=0.5 ) {
+                        var markLength;
+                        x % 1 === 0 ? markLength = 0.2 : markLength = 0.1
+                        line( [ x, -markLength ], [ x, markLength ] );
+                    }
+
+                    style({ stroke: GREEN, strokeWidth: 3.5 });
+                    line( [ LOWER_BOUND, -0.2], [LOWER_BOUND, 0.2]);
+                    label( [ LOWER_BOUND, -0.53 ],  LOWER_BOUND, "center", { color: GREEN });
+
+                    line( [ UPPER_BOUND, -0.2], [UPPER_BOUND, 0.2]);
+                    label( [ UPPER_BOUND, -0.53 ],  UPPER_BOUND, "center", { color: GREEN });
+
+                    line( [ 0, -0.2], [0, 0.2]);
+                    label( [ 0, -0.53 ],  "0", "center", { color: GREEN });
+
+                    addMouseLayer();
+                    graph.movablePoint = addMovablePoint({ constraints: { constrainY: true }, snapX: 0.1 });
+                    graph.movablePoint.onMove = function( x, y ) {
+                        return [ min( max( LOWER_BOUND, x ), UPPER_BOUND ), y ];
+                    };
+                </div>
+            </div>
+
+            <div class="solution" data-type="custom">
+                <span class="instruction"> 將線上的橘點移到你的答案位置。 </span>
+                <div class="guess"> graph.movablePoint.coord[0] </div>
+                <div class="validator-function">
+                    if ( guess === 0 ) {
+                        return "";
+                    }
+                    return abs( SOLUTION - guess ) &lt; 0.001;
+                </div>
+                <div class="show-guess">
+                    graph.movablePoint.setCoord( [ guess, 0 ] );
+                </div>
+            </div>
+
+            <div class="hints">
+                <p> 因為 <code>\color{orange}{<var>SOLUTION</var>}</code> 是<span data-if="SOLUTION > 0">正的。</span>
+                <span data-else>負的。</span> 橘點應在原點0的<span data-if="SOLUTION > 0">右邊</span>
+                <span data-else>左邊</span> 。</p>
+
+                <div data-if="abs(SOLUTION) > 1">
+                    <p>將整數與小數分離：</p>
+                    <p><code>\color{orange}{<var>SOLUTION</var>}</code> =
+                    <code>\color{blue}{<var>SOLUTION_WHOLE</var>}</code> + <code>\color{blue}{<var>SOLUTION_DECIMAL</var>}</code>
+                </div>
+
+                <div>
+                    <p>因此，我們知道<code>\color{orange}{<var>SOLUTION</var>}</code>在
+                    <code>\color{orange}{<var>SOLUTION_WHOLE</var>}</code> 與
+                    <code>\color{orange}{<var>SOLUTION_WHOLE + (SOLUTION > 0 ? 1 : -1)</var>}</code> 之間。</p>
+                    <div class="graphie" data-update="number-line">
+                        style({ stroke: "#FFA500", strokeWidth: 3.5 });
+                        line( [SOLUTION_WHOLE, -0.2], [SOLUTION_WHOLE, 0.2]);
+                        line( [SOLUTION_WHOLE + (SOLUTION > 0 ? 1 : -1), -0.2], [SOLUTION_WHOLE + (SOLUTION > 0 ? 1 : -1), 0.2]);
+                    </div>
+                </div>
+
+                <div>
+                    <div class="graphie" data-update="number-line">
+                        style({ stroke: GREEN, fill: "#6495ED", strokeWidth: 3.5, arrows: "-&gt;" });
+                        line( [ 0, 0 ], [ SOLUTION, 0 ] );
+                        graph.movablePoint.visibleShape.toFront();
+                    </div>
+                    <p>橘點應要移到原點0右邊的 <code>\color{orange}{<var>SOLUTION</var>}</code> 。</p>
+                </div>
+
+                <div>
+                    <div class="graphie" data-update="number-line">
+                        label( [ SOLUTION, -0.53 ],  SOLUTION, "center", { color: "#FFA500" });
+                        graph.movablePoint.moveTo( SOLUTION, 0 );
+                    </div>
+                    <p>橘點現在就在線上的 <code>\color{orange}{<var>SOLUTION</var>}</code> 。</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

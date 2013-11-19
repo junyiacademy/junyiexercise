@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers angles">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>內錯角</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+        <var id="ANCHOR">randRange( 20, 160 )</var>
+        <var id="KNOWN_INDEX, UNKNOWN_INDEX">shuffle( randFromArray( [ [ 0, 6 ], [ 1, 7 ] ] ) )</var>
+        <var id="MEASURE">KNOWN_INDEX % 2 === 0 ? ANCHOR : 180 - ANCHOR</var>
+    </div>
+
+    <div class="problems">
+        <div>
+            <p>下面兩條水平線是互相平行的，而另外有第三條線與它們相交，如下圖所示。</p>
+			<p class="question">如果我們知道 <span class="hint_blue">藍色的角是 <var>MEASURE</var> 度</span> ，請問<span class="hint_orange">橘色的角</span>是幾度呢？</p>
+            <p class="solution" data-forms="integer"><var>MEASURE</var></p>
+            <div class="graphie" id="parallel-lines">
+                init({
+                    range: [ [ -1, 11 ], [-1, 4] ]
+                });
+                graph.pl = new ParallelLines( 0, 0, 10, 0, 3 );
+                graph.pl.draw();
+                graph.pl.drawTransverse( ANCHOR );
+                graph.pl.drawAngle( KNOWN_INDEX, true );
+                graph.pl.drawAngle( UNKNOWN_INDEX, false, "#FFA500" );
+            </div>
+        </div>
+    </div>
+
+    <div class="hints">
+        <div>
+            <p>我們知道對頂角的角度是相等的，所以粉紅色的角是 <var>MEASURE</var> 度。</p>
+            <div class="graphie" data-update="parallel-lines">
+                graph.pl.drawVerticalAngle( KNOWN_INDEX, true, "#FF00AF" );
+            </div>
+        </div>
+        <p>粉紅色的角與橘色的角是同位角，所以它們的角度也相同。</p>
+        <div>
+            <p>橘色的角是 <var>MEASURE</var> 度。</p>
+            <div class="graphie" data-update="parallel-lines">
+                graph.pl.drawAngle( UNKNOWN_INDEX, true, "#FFA500" );
+            </div>
+        </div>
+        <div>
+			<p>另外，你會發現綠色的角也是 <var>MEASURE</var> 度。這是合理的，因為它是橘色角的對頂角，而且是藍色的角的同位角。</p>
+            <div class="graphie" data-update="parallel-lines">
+                graph.pl.drawVerticalAngle( UNKNOWN_INDEX, true, "#28AE7B" );
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

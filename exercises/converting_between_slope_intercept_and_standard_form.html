@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>斜截式與一般式的轉換</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="standard-to-slope">
+            <div class="vars">
+                <var id="A">randRangeNonZero( -5, 5 )</var>
+                <var id="B">randRangeNonZero( -5, 5 )</var>
+                <var id="C">randRangeNonZero( -5, 5 )</var>
+                <var id="SLOPE">-1 * A / B</var>
+                <var id="Y_INTERCEPT">C / B</var>
+            </div>
+            <p class="question">將下面的等式從一般式變成斜截式。</p>
+            <p>換句話說，如果把下面的等式寫成 <code>y = mx + b</code> 的樣子，那 <code>m</code> 與 <code>b</code> 的值會是多少呢？</p>
+            <p><code><var>expr([ "*", A, "x"])</var> + <var>expr([ "*", B, "y" ])</var> = <var>C</var></code></p>
+            <div class="solution" data-type="multiple">
+                <p><code>m</code> = <span class="sol"><var>SLOPE</var></span></p>
+                <p><code>b</code> = <span class="sol"><var>Y_INTERCEPT</var></span></p>
+            </div>
+            <div class="hints">
+                <div>
+                    <p>把 <code>x</code> 項移到等式的另一邊。</p>
+                    <p><code><var>expr([ "*", B, "y" ])</var> = <var>expr([ "*", -1 * A, "x"])</var> + <var>C</var></code></p>
+                </div>
+                <div data-if="B !== 1">
+                    <p>將兩邊同除以 <code><var>B</var></code> 。</p>
+                    <p><code>y = <span data-if="abs( SLOPE ) !== 1"><var>fractionReduce( -1 * A, B)</var></span><span data-if="SLOPE === -1">-</span>x + <var>fractionReduce( C, B )</var></code></p>
+                </div>
+                <div>
+                    <p>如果用斜截式的形態來看這個等式，我們會發現：</p>
+                    <p><code>\begin{align*}m &amp;= <var>fractionReduce( -1 * A, B)</var>\\
+                        b &amp;= <var>fractionReduce( C, B )</var>\end{align*}</code></p>
+                </div>
+                <div>
+                    <p>哇！太神奇了！雖然兩個等式好像長的不太一樣，但他們都代表同一條直線耶！</p>
+                    <div class="graphie" id="grid">
+                        graphInit({
+                            range: 10,
+                            scale: 20,
+                            axisArrows: "&lt;-&gt;",
+                            tickStep: 1,
+                            labelStep: 1
+                        });
+
+                        style({ stroke: BLUE, fill: BLUE });
+
+                        plot(function( x ) {
+                            return x * SLOPE + Y_INTERCEPT;
+                        }, [ -10, 10 ]);
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="slope-to-standard">
+            <div class="vars">
+                <var id="SLOPE">randRange( -3, 3 )</var>
+                <var id="Y_INTERCEPT">randRangeNonZero( -3, 3 )</var>
+                <var id="A">SLOPE &lt;= 0 ? -1 * SLOPE : SLOPE</var>
+                <var id="B">SLOPE &lt;= 0 ? 1 : -1</var>
+                <var id="C">SLOPE &lt;= 0 ? Y_INTERCEPT: -1 * Y_INTERCEPT</var>
+            </div>
+            <p class="question">將下面的等式從斜截式變成一般式。</p>
+            <p>換句話說，如果把下面的等式寫成 <code>Ax + By = C</code> 的樣子，那 <code>A</code> ， <code>B</code> ，和 <code>C</code> 的值會是多少呢？</p>
+            <p data-if="SLOPE !==0">(假設 <code>A</code> 是正數。)</p>
+            <p><code>y = <var>expr([ "+", [ "*", SLOPE, "x" ], Y_INTERCEPT ])</var></code></p>
+            <div class="solution" data-type="set">
+                <div class="set-sol" data-type="multiple">
+                    <span class="sol"><var>A</var></span>
+                    <span class="sol"><var>B</var></span>
+                    <span class="sol"><var>C</var></span>
+                </div>
+                <div data-if="A === 0" class="set-sol" data-type="multiple">
+                    <span class="sol"><var>A</var></span>
+                    <span class="sol"><var>-B</var></span>
+                    <span class="sol"><var>-C</var></span>
+                </div>
+
+                <div class="input-format">
+                    <div class="entry" data-type="multiple">
+                        <p><code>A</code> = <span class="sol"></span></p>
+                        <p><code>B</code> = <span class="sol"></span></p>
+                        <p><code>C</code> = <span class="sol"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="hints">
+                <div data-if="SLOPE !== 0">
+                    <p>把 <code>x</code> 項移到跟 <code>y</code> 項同一邊。</p>
+                    <p><code><var>expr([ "*", -SLOPE, "x" ])</var> + y = <var>Y_INTERCEPT</var></code></p>
+                </div>
+                <div data-else>
+                    <p>由於斜率是 <code>0</code> 而且沒有 <code>x</code> 項，這個等式已經是一般式了。</p>
+                    <p><code>y = <var>Y_INTERCEPT</var></code></p>
+                </div>
+                <div data-if="SLOPE > 0">
+                    <p>將兩邊同乘以 <code>-1</code> ，讓 <code>A</code> 變成是正的。</p>
+                    <p><code><var>expr([ "*", SLOPE, "x" ])</var> - y = <var>-Y_INTERCEPT</var></code></p>
+                </div>
+                <div>
+                    <p>如果用一般式的形態來看這個等式，我們會發現：</p>
+                    <p><code>\begin{align*}A &amp;= <var>A</var>\\
+                        B &amp;= <var>B</var>\\
+                        C &amp;= <var>C</var>\end{align*}</code></p>
+                </div>
+                <div>
+                    <p>哇！太神奇了！雖然兩個等式好像長的不太一樣，但他們都代表同一條直線耶！</p>
+                    <div class="graphie" id="grid">
+                        graphInit({
+                            range: 10,
+                            scale: 20,
+                            axisArrows: "&lt;-&gt;",
+                            tickStep: 1,
+                            labelStep: 1
+                        });
+
+                        style({ stroke: BLUE, fill: BLUE });
+
+                        plot(function( x ) {
+                            return x * SLOPE + Y_INTERCEPT;
+                        }, [ -10, 10 ]);
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</body>
+</html>

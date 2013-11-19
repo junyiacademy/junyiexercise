@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>相同分母的帶分數加減法</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+
+<body>
+<div class="exercise">
+
+    <div class="problems">
+        <div id="two-numbers">
+            <div class="vars">
+                <var id="PM">randRangeNonZero( -1, 1 )</var>
+                <var id="SIGN">( PM === 1 ? "+" : "-")</var>
+                <var id="W1">randRange( 2, 19 )</var>
+                <var id="W2">( PM === 1 ? randRange( 1, 19 ) : randRange( -W1 + 1, -1 ))</var>
+
+                <div data-ensure="getLCM( D1, D2 ) < 61 && D1 === D2">
+                    <var id="D1">randRange( 3, 20 )</var>
+                    <var id="D2">randRange( 3, 20 )</var>
+                </div>
+                <div data-ensure="( PM === 1 ? (N1 / D1) + (N2 / D2) < 1 : (N1 / D1) + PM * (N2 / D2) > 0)">
+                    <var id="N1">randRange( 1, D1 - 1 )</var>
+                    <var id="N2">randRange( 1, D2 - 1 )</var>
+                </div>
+
+                <var id="GCD1">getGCD( N1, D1 )</var>
+                <var id="SIMP_N1">N1 / GCD1</var>
+                <var id="SIMP_D1">D1 / GCD1</var>
+
+                <var id="GCD2">getGCD( N2, D2 )</var>
+                <var id="SIMP_N2">N2 / GCD2</var>
+                <var id="SIMP_D2">D2 / GCD2</var>
+
+                <var id="LCM">getLCM( SIMP_D1, SIMP_D2 )</var>
+                <var id="GCD">getGCD( SIMP_N1 * LCM / SIMP_D1 + PM * SIMP_N2 * LCM / SIMP_D2 , LCM )</var>
+            </div>
+
+            <p class="problem">請用帶分數(約分過後的喔!)回答下面的問題。</p>
+            <p class="question"><code><var>expr(["+", W1 + fraction( N1, D1 ), W2 + fraction( N2, D2 )])</var> = {?}</code></p>
+            <div class="solution" data-type="mixed"><var>W1 + W2 + N1 / D1 + PM * N2 / D2</var></div>
+
+            <div class="hints">
+                <div>
+                    <p>將帶分數的整數與分數分離，記得加上加號(+)喔:</p>
+                    <p><code>= \blue{<var>W1</var>} + \blue{<var>fraction( N1, D1 )</var>} <var>SIGN</var> \pink{<var>abs( W2 )</var>} <var>SIGN</var> \pink{<var>fraction( N2, D2 )</var>}</code></p>
+                </div>
+
+                <div>
+                    <p>把整數送作一堆，分數送作另一堆:</p>
+                    <p><code>= \blue{<var>W1</var>} <var>SIGN</var> \pink{<var>abs( W2 )</var>} + \blue{<var>fraction( N1, D1 )</var>} <var>SIGN</var> \pink{<var>fraction( N2, D2 )</var>}</code></p>
+                </div>
+
+                <div>                    
+					<p>將兩個整數相<span data-if="PM === 1">加</span><span data-else>減</span> :</p>
+                    <p><code>=<var>W1 + W2</var> + \blue{<var>fraction( N1, D1 )</var>} <var>SIGN</var> \pink{<var>fraction( N2, D2 )</var>}</code></p>
+                </div>
+
+                <div>
+                    <p>將兩個分數相<span data-if="PM === 1">加</span><span data-else>減</span> :</p>					
+                    <p><code>= <var>expr(["+", W1 + W2, fraction( N1 + PM * N2, D2 )])</var></code></p>
+                </div>
+
+                <div>
+                    <p>再將整數與分數合併成新的帶分數:</p>
+                    <p><code>= <var>W1 + W2 + fraction( SIMP_N1 * LCM / SIMP_D1 + PM * SIMP_N2 * LCM / SIMP_D2, LCM )</var></code></p>
+                </div>
+
+                <div data-if="GCD > 1">
+                    <p>Simplify to lowest terms:</p>
+                    <p><code>= <var>W1 + W2 + fractionReduce( SIMP_N1 * LCM / SIMP_D1 + PM * SIMP_N2 * LCM / SIMP_D2, LCM )</var></code></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="one-whole">
+            <div class="vars">
+                <var id="PM">-1</var>
+                <var id="SIGN">"-"</var>
+                <var id="W1">randRange( 2, 19 )</var>
+                <var id="W2">randRange( -W1 + 1, -1 )</var>
+
+                <div>
+                    <var id="D2">randRange( 3, 20 )</var>
+                    <var id="D1">D2</var>
+                </div>
+                <div>
+                    <var id="N2">randRange( 1, D2 - 1 )</var>
+                    <var id="N1">D2</var>
+                </div>
+
+                <var id="LCM">D2</var>
+                <var id="GCD">getGCD( N1 - N2 , LCM )</var>
+            </div>
+            <p class="problem">請用帶分數(約分過的喔!)回答以下的問題。</p>
+            <p class="question"><code><var>expr(["+", W1 + 1, W2 + fraction( N2, D2 )])</var> = {?}</code></p>
+            <div class="solution" data-type="mixed"><var>W1 + 1 + W2 + PM * N2 / D2</var></div>
+            <div class="hints">
+                <div>
+                    <p>再進行運算前，我們將 <code><var>W1+1</var></code> 轉換成分母為<code><var>D1</var></code> 的帶分數: 如 <code>=\blue{<var>W1</var>} + \blue{<var>fraction( N1, D1)</var>}</code> ，所以我們可以將原本的式子轉換成:</p>
+                    <p><code>= \blue{<var>W1</var>}\blue{<var>fraction( N1, D1 )</var>} <var>SIGN</var> \pink{<var>abs( W2 )</var>}\pink{<var>fraction( N2, D2 )</var>}</code></p>
+                </div>
+                <div>
+                    <p>將這些帶分數的整數與分數分開:</p>
+                    <p><code>= \blue{<var>W1</var>} + \blue{<var>fraction( N1, D1 )</var>} <var>SIGN</var> \pink{<var>abs( W2 )</var>} <var>SIGN</var> \pink{<var>fraction( N2, D2 )</var>}</code></p>
+                </div>
+                <div>
+                    <p>把整數送作一堆，分數送作另一堆:</p>
+                    <p><code>= \blue{<var>W1</var>} <var>SIGN</var> \pink{<var>abs( W2 )</var>} + \blue{<var>fraction( N1, D1 )</var>} <var>SIGN</var> \pink{<var>fraction( N2, D2 )</var>}</code></p>
+                </div>
+                <div>
+                    <p>將兩個整數相<span data-if="PM === 1">加</span><span data-else>減</span> :</p>
+                    <p><code>=<var>W1 + W2</var> + \blue{<var>fraction( N1, D1 )</var>} <var>SIGN</var> \pink{<var>fraction( N2, D2 )</var>}</code></p>
+                </div>
+                <div>
+                    <p>將兩個分數相<span data-if="PM === 1">加</span><span data-else>減</span> :</p>
+                    <p><code>= <var>expr(["+", W1 + W2, fraction( N1 + PM * N2, D2 )])</var></code></p>
+                </div>
+                <div>
+                    <p>再將整數與分數合併成新的帶分數:</p>
+                    <p><code>= <var>W1 + W2 + fraction( N1 - N2, D2)</var></code></p>
+                </div>
+                <div data-if="GCD > 1">
+                    <p>Simplify to lowest terms:</p>
+                    <p><code>= <var>W1 + W2 + fractionReduce( N1 - N2 , LCM )</var></code></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+</body>
+</html>

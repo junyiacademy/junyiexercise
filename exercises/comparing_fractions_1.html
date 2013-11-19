@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>分數的比較</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <!--
+        Compares fractions that have the same numerator or have the same denominator.
+        TODO: would like to draw overlapping circles or rectangle slices for hints.
+    -->
+    <div class="exercise">
+        <div class="problems">
+            <div id="same-numerator">
+                <div class="vars" data-ensure="DEN_1 !== DEN_2">
+                    <var id="NUM_1">randRange( 1, 14 )</var>
+                    <var id="DEN_1">randRange( NUM_1 + 1, 15 )</var>
+
+                    <var id="NUM_2">NUM_1</var>
+                    <var id="DEN_2">randRange( NUM_2 + 1, 15 )</var>
+
+                    <var id="SOLUTION">(function() {
+                        if ( DEN_1 &lt; DEN_2 ) {
+                            return "&gt;";
+                        } else {
+                            return "&lt;";
+                        }
+                    })()</var>
+                    <var id="MORE">DEN_1 > DEN_2 ? "比較多" : "比較少"</var>
+                    <var id="SMALLER">DEN_1 > DEN_2 ? "小" : "大"</var>
+                    <var id="LESS">DEN_1 > DEN_2 ? "少" : "多"</var>
+                    <var id="BIGGER">SMALLER === "小" ? "大片" : "小片"</var>
+                </div>
+
+                <div class="problem">
+                    <p>請選擇填入大於或是小於在空白處</p>
+                    <p>
+                        <code>\dfrac{<var>NUM_1</var>}{<var>DEN_1</var>}</code>
+                        ____ <code>\dfrac{<var>NUM_2</var>}{<var>DEN_2</var>}</code>
+                    </p>
+                </div>
+                <p class="solution"><code><var>SOLUTION</var></code></p>
+                <ul class="choices" data-category="true">
+                    <li><code>&lt;</code></li>
+                    <li><code>&gt;</code></li>
+                </ul>
+                <div class="hints">
+                    <div>
+                        <p>其實分數的比較就像比較兩個一樣大小的蛋糕，只不過一個蛋糕切成<var>DEN_1</var>等分，而另一個蛋糕切成<var>DEN_2</var>等分.</p>
+                        <div style="height: 150px;">
+                            <div class="graphie" style="float: left">
+                                init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
+                                piechart( [NUM_1, DEN_1 - NUM_1], ["#e00", "#999"], 2 );
+                            </div>
+                            <div class="graphie" style="float: left">
+                                init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
+                                piechart( [NUM_2, DEN_2 - NUM_2], ["#e00", "#999"], 2 );
+                            </div>
+                        </div>
+                    </div>
+                    <p>蛋糕切成越多份，每一片蛋糕的大小就越小(每個人可以吃到的蛋糕變少了!).</p>
+                    <p>左邊的分數代表了一個切了<var>MORE</var>片的蛋糕。所以，每一片蛋糕就比較<var>SMALLER</var>。</p>
+                    <p><var>NUM_1</var> <var>SMALLER</var>片的蛋糕比<var>NUM_2</var> <var>BIGGER</var>的蛋糕來的<var>LESS</var>。					
+                    <p>所以, <code>\dfrac{<var>NUM_1</var>}{<var>DEN_1</var>} <var>SOLUTION</var> \dfrac{<var>NUM_2</var>}{<var>DEN_2</var>}</code>.</p>
+                </div>
+            </div>
+
+            <div id="same-denominator">
+                <div class="vars" data-ensure="NUM_1 !== NUM_2">
+                    <var id="NUM_1">randRange( 1, 14 )</var>
+                    <var id="DEN_1">randRange( NUM_1 + 1, 15 )</var>
+
+                    <var id="DEN_2">DEN_1</var>
+                    <var id="NUM_2">randRange( 1, DEN_2 - 1 )</var>
+
+                    <var id="SOLUTION">(function() {
+                        if ( NUM_1 &lt; NUM_2 ) {
+                            return "&lt;";
+                        } else {
+                            return "&gt;";
+                        }
+                    })()</var>
+                    <var id="LESS">NUM_1 &lt; NUM_2 ? "少" : "多"</var>
+                </div>
+
+                <div class="problem">
+                    <p>請選擇填入大於或是小於在空白處.</p>
+                    <p>
+                        <code>\dfrac{<var>NUM_1</var>}{<var>DEN_1</var>}</code>
+                        ____ <code>\dfrac{<var>NUM_2</var>}{<var>DEN_2</var>}</code>
+                    </p>
+                </div>
+                <p class="solution"><code><var>SOLUTION</var></code></p>
+                <ul class="choices" data-category="true">
+                    <li><code>&lt;</code></li>
+                    <li><code>&gt;</code></li>
+                </ul>
+                <div class="hints">
+                    <div>
+                        <p>相同分母的分數就像把兩個蛋糕都切成<var>DEN_1</var>片.</p>
+                        <p>既然兩個蛋糕都有<var>DEN_1</var>片，那每一片的大小都應該一樣.
+						那這樣我們只要比較哪個蛋糕剩下的片數比較多，那個蛋糕就比較大囉!</p>
+                        <div style="height: 150px;">
+                            <div class="graphie" style="float: left">
+                                init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
+                                piechart( [NUM_1, DEN_1 - NUM_1], ["#e00", "#999"], 2 );
+                            </div>
+                            <div class="graphie" style="float: left">
+                                init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
+                                piechart( [NUM_2, DEN_2 - NUM_2], ["#e00", "#999"], 2 );
+                            </div>
+                        </div>
+                    </div>
+                    <p><var>NUM_1</var>片蛋糕比<var>NUM_2</var>片蛋糕來的<var>LESS</var>。</p>
+                    <p>因此, <code>\dfrac{<var>NUM_1</var>}{<var>DEN_1</var>} <var>SOLUTION</var> \dfrac{<var>NUM_2</var>}{<var>DEN_2</var>}</code>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

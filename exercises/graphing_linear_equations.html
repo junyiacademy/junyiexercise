@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions graphie interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>畫出直線方程式</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+        <div>
+            <div class="vars">
+                <var id="SLOPE_FRAC">reduce( randRangeNonZero( -5, 5 ), randRange( 1, 5 ) )</var>
+                <var id="YINT">randRangeNonZero( max( -10, -10 - SLOPE_FRAC[0] ), min( 10, 10 - SLOPE_FRAC[0] ) )</var>
+                <var id="SLOPE">SLOPE_FRAC[0] / SLOPE_FRAC[1]</var>
+                <var id="PRETTY_SLOPE">SLOPE === 1 ? "" : ( SLOPE === -1 ? "-" : fraction( SLOPE_FRAC[0], SLOPE_FRAC[1], true, true ) )</var>
+                <var id="MULT">randRangeNonZero( -3, 3 )</var>
+                <var id="A">SLOPE_FRAC[0] * -MULT</var>
+                <var id="B">SLOPE_FRAC[1] * MULT</var>
+                <var id="C">SLOPE_FRAC[1] * YINT * MULT</var>
+                <var id="STD_FORM">random() &lt; 0.3</var>
+            </div>
+
+            <p class="question">畫出下列的等式：</p>
+
+            <div class="problem">
+                <p class="hint_blue" data-if="STD_FORM">
+                    <code><var>expr([ "+", [ "*", A, "x" ], [ "*", B, "y" ] ])</var> = <var>C</var></code>
+                </p>
+                <p class="hint_blue" data-else>
+                    <code>y = <var>PRETTY_SLOPE</var> x + <var>YINT</var></code>
+                </p>
+
+                <div class="graphie" id="grid">
+                    graphInit({
+                        range: 11,
+                        scale: 20,
+                        axisArrows: "&lt;-&gt;",
+                        tickStep: 1,
+                        labelStep: 1,
+                        gridOpacity: 0.05,
+                        axisOpacity: 0.2,
+                        tickOpacity: 0.4,
+                        labelOpacity: 0.5
+                    });
+
+                    label( [ 0, 11 ], "y", "above" );
+                    label( [ 11, 0 ], "x", "right" );
+
+                    addMouseLayer();
+                    graph.pointA = addMovablePoint({
+                        coord: [ -5, 5 ],
+                        snapX: 0.5,
+                        snapY: 0.5,
+                        normalStyle: {
+                            stroke: KhanUtil.BLUE,
+                            fill: KhanUtil.BLUE
+                        }
+                    });
+                    graph.pointB = addMovablePoint({
+                        coord: [ 5, 5 ],
+                        snapX: 0.5,
+                        snapY: 0.5,
+                        normalStyle: {
+                            stroke: KhanUtil.BLUE,
+                            fill: KhanUtil.BLUE
+                        }
+                    });
+                    graph.line1 = addMovableLineSegment({
+                        pointA: graph.pointA,
+                        pointZ: graph.pointB,
+                        fixed: true,
+                        extendLine: true
+                    });
+
+                    // A and B can't be in the same place
+                    graph.pointA.onMove = function( x, y ) {
+                        return ( x != graph.pointB.coord[0] || y != graph.pointB.coord[1] );
+                    }
+                    graph.pointB.onMove = function( x, y ) {
+                        return ( x != graph.pointA.coord[0] || y != graph.pointA.coord[1] );
+                    }
+
+                    graph.pointA.toFront();
+                    graph.pointB.toFront();
+
+                </div>
+            </div>
+            <div class="solution" data-type="custom">
+                <div class="instruction">
+                    用拖曳圖上的兩點的方式，把直線移到正確的位置。
+                </div>
+                <div class="guess"> [ graph.pointA.coord, graph.pointB.coord ] </div>
+                <div class="validator-function">
+                    var slope = ( guess[1][1] - guess[0][1] ) / ( guess[1][0] - guess[0][0] );
+                    var yint = slope * ( 0 - guess[0][0] ) + guess[0][1];
+                    return abs( SLOPE - slope ) &lt; 0.001 &amp;&amp; abs( YINT - yint ) &lt; 0.001;
+                </div>
+                <div class="show-guess">
+                    graph.pointA.setCoord( guess[0] );
+                    graph.pointB.setCoord( guess[1] );
+                    graph.line1.transform( true );
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hints">
+        <div data-if="STD_FORM" data-unwrap>
+            <p>
+                先把 <code><var>expr([ "+", [ "*", A, "x" ], [ "*", B, "y" ] ])</var> = <var>C</var></code>
+                轉換成斜截式 (也就是當作你在解 <code>y</code> 的值) 。
+            </p>
+            <div>
+                <p>
+                    把兩邊各<var>A &lt; 0 ? "加上" : "減去"</var> <code><var>abs( A )</var>x</code> ：
+                </p><p>
+                    <code>\qquad <var>expr( [ "*", B, "y" ] )</var> = <var>expr([ "+", [ "*", -A, "x" ], C ])</var></code>
+                </p>
+            </div>
+            <div data-if="B !== 1">
+                <p>
+                    將兩邊同除以 <code><var>B</var></code> ：
+                </p><p>
+                    <code>\qquad y = <var>expr([ "+", "\\dfrac{" + expr([ "*", -A, "x" ]) + "}{" + B + "}", "\\dfrac{" + C + "}{" + B + "}" ])</var></code>
+                </p>
+            </div>
+        </div>
+        <div>
+            <p>
+                <code>\qquad y = \color{purple}{<var>PRETTY_SLOPE</var>} x \color{<var>GREEN</var>}{+ <var>YINT</var>}</code>
+            </p><p>
+				Y 軸截距是 <code class="hint_green"><var>YINT</var></code> ，而斜率是 <code class="hint_purple"><var>decimalFraction( SLOPE, true, true )</var></code> 。
+            </p>
+        </div>
+        <div>
+            <p>
+                由於Y 軸截距是 <code class="hint_green"><var>YINT</var></code> ，這條直線一定會經過這個點： <code class="hint_green">(0, <var>YINT</var>)</code>。
+            </p>
+            <div class="graphie" data-update="grid">
+                style({ stroke: GREEN, fill: GREEN }, function() {
+                    graph.yint = circle( [ 0, YINT ], 0.2 ).toBack();
+                });
+            </div>
+        </div>
+        <div>
+            <p>
+				斜率是 <code class="hint_purple"><var>decimalFraction( SLOPE, true, true )</var></code> 。我們知道，
+                斜率代表的是 y 的改變除以 x 對應的改變。所以在這個題目中，你每往<span data-if="SLOPE_FRAC[0] < 0"><em>下</em> (因為是負的)</span><span data-else>上</span>移動 <code><var>abs( SLOPE_FRAC[0] )</var></code> 單位，你便需要往右移動<code><var>SLOPE_FRAC[1]</var></code>單位。
+				
+            </p>
+            <div class="graphie" data-update="grid">
+                style({
+                    stroke: "purple",
+                    strokeWidth: 2,
+                    arrows: "-&gt;"
+                }, function() {
+                    path([ [ 0, YINT ], [ 0, YINT + SLOPE_FRAC[0] ] ]).toBack();
+                    path([ [ 0, YINT + SLOPE_FRAC[0] ], [ SLOPE_FRAC[1], YINT + SLOPE_FRAC[0] ] ]).toBack();
+                });
+                label( [ 0, YINT + SLOPE_FRAC[0] / 2 ], abs( SLOPE_FRAC[0] ) + " \\text{ " + ( SLOPE_FRAC[0] &lt; 0 ? "下" : "上" ) + "} \\quad", "left", { color: "purple" } );
+                label( [ 0, YINT + SLOPE_FRAC[0] ], SLOPE_FRAC[1] + " \\text{ 右}", ( SLOPE_FRAC[0] &lt; 0 ? "below right" : "above right" ), { color: "purple" } );
+                graph.yint.toBack();
+            </div>
+        </div>
+        <div>
+			<p>所以這條直線一定會經過這個點： <code class="hint_purple">(<var>SLOPE_FRAC[1]</var>, <var>YINT + SLOPE_FRAC[0]</var>)</code></p>
+            <div class="graphie" data-update="grid">
+                style({ stroke: BLUE, strokeWidth: 2, strokeDasharray: "." }, function() {
+                    plot( function( x ) {
+                        return x * SLOPE + YINT;
+                    }, [ -11, 11 ] ).toBack();
+                });
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>帶分數乘法 1</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+
+                <div class="vars" data-ensure="getGCD(NUM_1,DENOM_1)===1 && getGCD(NUM_2,DENOM_2)===1">
+                    <var id="WHOLE_1">randRange( 1, 5 )</var>
+                    <var id="NUM_1">randRange( 1, 4 )</var>
+                    <var id="DENOM_1">randRange( NUM_1 + 1, 5 )</var>
+
+                    <var id="WHOLE_2">randRange( 1, 5 )</var>
+                    <var id="NUM_2">randRange( 1, 4 )</var>
+                    <var id="DENOM_2">randRange( NUM_2 + 1, 5 )</var>
+
+                    <var id="I_NUM_1">WHOLE_1 * DENOM_1 + NUM_1</var>
+                    <var id="I_DENOM_1">DENOM_1</var>
+
+                    <var id="I_NUM_2">WHOLE_2 * DENOM_2 + NUM_2</var>
+                    <var id="I_DENOM_2">DENOM_2</var>
+
+                    <var id="I_NUM">I_NUM_1*I_NUM_2</var>
+                    <var id="I_DENOM">I_DENOM_1*I_DENOM_2</var>
+                    <var id="I_NUM_SIMP">(I_NUM_1*I_NUM_2)/getGCD(I_NUM, I_DENOM)</var>
+                    <var id="I_DENOM_SIMP">(I_DENOM_1*I_DENOM_2)/getGCD(I_NUM,I_DENOM)</var>
+
+                    <var id="WHOLE_3">roundTowardsZero(I_NUM/I_DENOM)</var>
+                    <var id="NUM_3_DEC">(I_NUM/I_DENOM)-WHOLE_3</var>
+                    <var id="NUM_3">roundTo(0,NUM_3_DEC*I_DENOM)</var>
+                    <var id="DENOM_3">I_DENOM</var>
+                    <var id="NUM_3_SIMP">NUM_3/getGCD(NUM_3,DENOM_3)</var>
+                    <var id="DENOM_3_SIMP">DENOM_3/getGCD(NUM_3,DENOM_3)</var>
+                </div>
+
+        <div class="problems">
+                <div class="problem">請計算下列式子，並約分為最簡帶分數。
+                    <p class="question"><code>\displaystyle<var>WHOLE_1</var>\ <var>fraction( NUM_1, DENOM_1, false, true )</var> \times <var>WHOLE_2</var>\ <var>fraction( NUM_2, DENOM_2, false, true )</var></code></p>
+                    <div class="solution" data-type="multiple">
+                    <p><span class="sol" data-type="mixed"><var>(WHOLE_3 + (NUM_3_SIMP/DENOM_3_SIMP))</var></span></p>
+                    <p class="example">帶分數，例如 <code>1</code> <code>3/4</code></p>
+                    </div>
+                </div>
+        </div>
+
+        <div class="hints">
+            <p>先將帶分數轉換為假分數會比較好相乘。</p>
+            <p>我們先進行第一個帶分數的轉換：我們要計算出假分數的分子。找到整數部份(<strong><var>WHOLE_1</var></strong>)，分母(<strong><var>DENOM_1</var></strong>)，兩者相乘。之後再加上分子(<strong><var>NUM_1</var></strong>)。</p>
+            <p><code><var>WHOLE_1</var>\times<var>DENOM_1</var> + <var>NUM_1</var> = <var>I_NUM_1</var></code>。</p>
+            <p>所以第一個假分數就是<code><var>fraction( I_NUM_1, I_DENOM_1, false, true )</var></code>。</p>
+            <p>接著我們進行第二個帶分數轉換：我們要計算出假分數的分子。找到整數部份(<strong><var>WHOLE_2</var></strong>)，分母(<strong><var>DENOM_2</var></strong>)，兩者相乘。之後再加上分子(<strong><var>NUM_2</var></strong>)。</p>
+            <p><code><var>WHOLE_2</var>\times<var>DENOM_2</var> + <var>NUM_2</var> = <var>I_NUM_2</var></code>。</p>
+            <p>所以第二個假分數就是<code><var>fraction( I_NUM_2, I_DENOM_2, false, true )</var></code>。</p>
+            <p>將兩個假分數相乘<code><var>fraction( I_NUM_1, I_DENOM_1, false, true )</var>\times<var>fraction(  I_NUM_2, I_DENOM_2, false, true )</var>\displaystyle {} = <var>fraction( I_NUM, I_DENOM )</var></code></p>
+            <span data-if="NUM_3===0"><code><var>mixedFractionFromImproper(I_NUM_SIMP, I_DENOM_SIMP)</var></code></span>
+            <div data-else data-unwrap>
+            <p>將假分數換回帶分數：</p>
+                <p>首先：分子除以分母。
+                    <code><var>I_NUM</var> \div <var>I_DENOM</var> = \color{#28AE7B}{<var>WHOLE_3</var>}…\color{purple}{<var>NUM_3</var>}</code></p>
+                <p>所以這個假分數中有<code class="hint_green"><var>WHOLE_3</var></code>個整數。</p>
+                <p>商數<code class="hint_green"><var>WHOLE_3</var></code>就是帶分數當中的整數部份。</p>
+                <p我們還有餘數<code class="hint_purple">餘數<var>NUM_3</var></code>，這代表<code>\dfrac{\color{purple}{<var>NUM_3</var>}}{<var>DENOM_3</var>}</code>，是在假分數中剩下的部份，不夠湊成一個完整的數。</p>
+                <p>最後我們得到轉換後的帶分數為 <code>\color{#28AE7B}{<var>WHOLE_3</var>}\ \color{purple}{<var>fraction( NUM_3, DENOM_3, false, true )</var>}</code>。</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+
+
+
+
+

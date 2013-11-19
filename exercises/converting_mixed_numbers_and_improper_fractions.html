@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+    <head>
+        <title>帶分數與假分數之間的互換</title>
+        <script src="../khan-exercise.js"></script>
+    </head>
+    <body>
+        <div class="exercise">
+            <div class="vars" data-ensure="M_NUM &lt; M_DENOM">
+                <var id="WHOLE">randRange( 1, 10 )</var>
+
+                <var id="M_NUM">randRange( 1, 30 )</var>
+                <var id="M_DENOM">randRange( 1, 30 )</var>
+
+                <var id="M_REDUCED_NUM">M_NUM / getGCD( M_NUM, M_DENOM )</var>
+                <var id="M_REDUCED_DENOM">M_DENOM / getGCD( M_NUM, M_DENOM )</var>
+
+                <var id="I_NUM">WHOLE * M_REDUCED_DENOM + M_REDUCED_NUM</var>
+                <var id="I_DENOM">M_REDUCED_DENOM</var>
+            </div>
+
+            <div class="problems">
+                <div id="improper-to-mixed">
+                    <p class="question">把 <code><var>fraction( I_NUM, I_DENOM, false, true )</var></code> 轉換成帶分數表示。</p>
+
+                    <p class="solution" data-type="mixed"><var>I_NUM / I_DENOM</var></p>
+
+                    <div class="hints">
+                        <div>
+                            <p>首先，分子除以分母。</p>
+                            <p><code><var>I_NUM</var> \div <var>I_DENOM</var> = \color{#28AE7B}{<var>WHOLE</var>}\ \text{ 餘 } \color{purple}{<var>M_REDUCED_NUM</var>}</code></p>
+                        </div>
+                        <div>
+                            <p>所以假分數有 <code class="hint_green"><var>WHOLE</var></code> 個整數，等同於 <code>\color{#28AE7B}{<var>WHOLE</var>} \times \dfrac{<var>I_DENOM</var>}{<var>I_DENOM</var>} = \color{#28AE7B}{<var>fraction( I_DENOM * WHOLE, I_DENOM, false, false )</var>}</code>。</p>
+                            <div class="graphie">
+                                init({ range: [ [0, 1], [0, WHOLE] ], scale: [250, 25] });
+
+                                for ( var y = 0; y &lt; WHOLE; y++ ) {
+                                    rectchart( [M_REDUCED_DENOM, 0], ["#28AE7B", "#999"], y );
+                                }
+                            </div>
+                            <p>得到的商數 <code class="hint_green"><var>WHOLE</var></code> 為帶分數的整數部分。</p>
+                        </div>
+                        <div>
+                            <p>我們還得到餘數 <code class="hint_purple"><var>M_REDUCED_NUM</var></code>。這是 <code>\dfrac{\color{purple}{<var>M_REDUCED_NUM</var>}}{<var>I_DENOM</var>}</code> 剩餘的部分；還不夠成為另一個整數。</p>
+                            <div class="graphie">
+                                init({ range: [ [0, 1], [0, 1] ], scale: [250, 25] });
+
+                                rectchart( [M_REDUCED_NUM, M_REDUCED_DENOM - M_REDUCED_NUM], ["purple", "#999"] );
+                            </div>
+                        </div>
+                        <div>
+                            <p>轉換後的帶分數為 <code>\color{#28AE7B}{<var>WHOLE</var>}\ \color{purple}{<var>fraction( M_NUM, M_DENOM, false, true )</var>}.</code></p>
+                            <div class="graphie">
+                                init({ range: [ [0, 1], [0, WHOLE + 1] ], scale: [250, 25] });
+
+                                for ( var y = 1; y &lt;= WHOLE; y++ ) {
+                                    rectchart( [M_REDUCED_DENOM, 0], ["#28AE7B", "#999"], y );
+                                }
+
+                                rectchart( [M_REDUCED_NUM, M_REDUCED_DENOM - M_REDUCED_NUM], ["purple", "#999"] );
+                            </div>
+                        </div>
+                        <p>注意如果我們把帶分數的兩個部分相加， <code>\color{#28AE7B}{<var>fraction( I_DENOM * WHOLE, I_DENOM, false, false )</var>} + \color{purple}{<var>fraction( M_NUM, M_DENOM, false, true )</var>}</code>，我們可以得到原本的假分數 <code><var>fraction( I_NUM, I_DENOM, false, true )</var></code>。</p>
+                    </div>
+                </div>
+
+                <div id="mixed-to-improper">
+                    <p class="question">把 <code><var>WHOLE</var>\ <var>fraction( M_NUM, M_DENOM, false, true )</var></code> 轉換成假分數表示。</p>
+
+                    <p class="solution" data-type="improper"><var>I_NUM / I_DENOM</var></p>
+
+                    <div class="hints">
+                        <p><code>\color{#FFA500}{<var>WHOLE</var>}\ \color{#6495ED}{<var>fraction( M_NUM, M_DENOM, false, true )</var>}</code></p>
+                        <p>帶分數等於 <code>\color{#FFA500}{<var>WHOLE</var>} + \color{#6495ED}{<var>fraction( M_NUM, M_DENOM, false, true )</var>}</code>。</p>
+                        <div>
+                            <p>首先，轉換帶分數的 <span class="hint_orange">整數部分</span> 成為與 <span class="hint_blue">分數部分</span> 同樣的分母 <code><var>M_REDUCED_DENOM</var></code>。</p>
+                            <p><code>\color{#FFA500}{<var>WHOLE</var>} \times \dfrac{<var>M_REDUCED_DENOM</var>}{<var>M_REDUCED_DENOM</var>} = \color{#FFA500}{\dfrac{<var>WHOLE * M_REDUCED_DENOM</var>}{<var>M_REDUCED_DENOM</var>}}</code></p>
+                            <div class="graphie">
+                                init({ range: [ [0, 1], [0, WHOLE] ], scale: [250, 25] });
+
+                                for ( var y = 0; y &lt; WHOLE; y++ ) {
+                                    rectchart( [M_REDUCED_DENOM, 0], ["#FFA500", "#999"], y );
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            <p>所以現在我們數字的形式為 <code>\color{#FFA500}{\dfrac{<var>WHOLE * M_REDUCED_DENOM</var>}{<var>M_REDUCED_DENOM</var>}} + \color{#6495ED}{<var>fraction( M_NUM, M_DENOM, false, true )</var>}</code>.</p>
+                            <div class="graphie">
+                                init({ range: [ [0, 1], [0, WHOLE + 1] ], scale: [250, 25] });
+
+                                for ( var y = 1; y &lt;= WHOLE; y++ ) {
+                                    rectchart( [M_REDUCED_DENOM, 0], ["#FFA500", "#999"], y );
+                                }
+
+                                rectchart( [M_REDUCED_NUM, M_REDUCED_DENOM - M_REDUCED_NUM], ["#6495ED", "#999"] );
+                            </div>
+                            <p>現在，只要把兩個假分數相加然後化簡！</p>
+                        </div>
+                        <p><code>\color{#FFA500}{\dfrac{<var>WHOLE * M_REDUCED_DENOM</var>}{<var>M_REDUCED_DENOM</var>}} + \color{#6495ED}{<var>fraction( M_NUM, M_DENOM, false, true )</var>} = <var>fraction( I_NUM, I_DENOM, true, true )</var></code></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

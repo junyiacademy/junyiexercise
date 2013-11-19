@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers angles">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>對角 1</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+        <var id="ANCHOR">randRange( 20, 160 )</var>
+        <var id="KNOWN_INDEX, UNKNOWN_INDEX">shuffle( randFromArray( [ [ 2, 4 ], [ 3, 5 ] ] ) )</var>
+        <var id="MEASURE">KNOWN_INDEX % 2 === 0 ? ANCHOR : 180 - ANCHOR</var>
+    </div>
+
+    <div class="problems">
+        <div>
+            <p class="question">如果我們已經知道 <span class="hint_blue">藍色的角是 <var>MEASURE</var> 度</span>，那請問
+			<span class="hint_orange">橘色的角是幾度呢</span> ？</p>
+            <p class="solution" data-forms="integer"><var>MEASURE</var></p>
+            <div class="graphie" id="lines">
+                init({
+                    range: [ [ -1, 5 ], [-1, 1] ]
+                });
+                graph.pl = new ParallelLines( 0, 0, 4, 0, 0 );
+                graph.pl.draw();
+                graph.pl.drawTransverse( ANCHOR );
+                graph.pl.drawAngle( KNOWN_INDEX, true );
+                graph.pl.drawAngle( UNKNOWN_INDEX, false, "#FFA500" );
+            </div>
+        </div>
+    </div>
+
+    <div class="hints">
+        <div>
+            <p>粉紅色的角多大呢？</p>
+            <div class="graphie" data-update="lines">
+                graph.pl.drawAngle( KNOWN_INDEX + 1, false, "#FF00AF" );
+            </div>
+        </div>
+        <div>
+            <p>粉紅色的角與藍色的角相加等於180度，因為這兩個鄰角放在一起會形成一條直線。</p>
+            <p><code>\color{#FF00AF}{\text{粉紅色的角}}= 180^{\circ} - \color{#6495ED}{<var>MEASURE</var>^{\circ}} = \color{#FF00AF}{<var>180 - MEASURE</var>^{\circ}}</code></p>
+            <div class="graphie" data-update="lines">
+                graph.pl.drawAngle( KNOWN_INDEX + 1, true, "#FF00AF" );
+            </div>
+        </div>
+        <div>
+            <p>粉紅色的角與橘色的角相加也等於180度，因為這兩個鄰角放在一起也會形成一條直線。</p>
+            <p><code>\color{#FFAF00}{\text{橘色的角}}= 180^{\circ} - \color{#FF00AF}{<var>180 - MEASURE</var>^{\circ}} = \color{#FFAF00}{<var>MEASURE</var>^{\circ}}</code></p>
+            <div class="graphie" data-update="lines">
+                graph.pl.drawAngle( UNKNOWN_INDEX, true, "#FFA500" );
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

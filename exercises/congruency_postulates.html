@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers graphie-geometry math-format interactive triangle-congruence">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>三角形全等的性質</title>
+    <script src="../khan-exercise.js"></script>
+    <style>
+        div#triangles {
+            outline-color: #999;
+            outline-style: dashed;
+            outline-width: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div>
+                <!--
+                All angles should be at least 10 degrees different from each other so the
+                effect of rotating and reflecting is more apparent. For SSA, the second
+                side must be longer than first and first angle must not be close to 90 to
+                ensure the resulting shape can make two visually distinct triangles
+                -->
+                <div class="vars" data-ensure="
+                        ( abs( ANGLES[0] - ANGLES[1] ) > 10 ) &&
+                        ( abs( ANGLES[1] - ANGLES[2] ) > 10 ) &&
+                        ( abs( ANGLES[0] - ANGLES[2] ) > 10 ) &&
+                        ( ( TYPE !== 'SSA' ) || ( (TRIANGLE.niceSideLengths[0] + 1) < TRIANGLE.niceSideLengths[1] && abs(ANGLES[0] - 90) > 10 ) )">
+                    <var id="TYPE">randFromArray([ "SSS", "SAS", "SAA", "ASA", "SSA", "SSA", "AAA" ])</var>
+                    <var id="NAME">{
+                            "SSS": "SSS (邊-邊-邊)",
+                            "SAS": "SAS (邊-角-邊)",
+                            "SAA": "SAA (邊-角-角)",
+                            "ASA": "ASA (角-邊-角)",
+                            "SSA": "SSA (邊-邊-角)",
+                            "AAA": "AAA (角-角-角)"
+                        }[ TYPE ]
+                    </var>
+                    <var id="ANGLES">randomTriangleAngles.triangle()</var>
+                    <var id="SCALE">5 + random() * 2</var>
+                    <var id="REFLECTED">randRange( 0, 1 ) === 1 ? true : false</var>
+                    <var id="ANSWER">{ "SSS": "Yes", "SAS": "Yes", "SAA": "Yes", "ASA": "Yes", "SSA": "No", "AAA": "No" }[ TYPE ]</var>
+                    <var id="TRIANGLE">new Triangle( [ 0, 0 ], ANGLES, SCALE, {} )</var>
+                    <var id="ROTATION">randRange( 0, 360 )</var>
+                </div>
+                <p class="problem">
+                    <strong>請問 <em><var>NAME</var></em> 是否能驗證三角形的全等性？</strong><br />
+                    要回答這個題目，請拖曳下面的圖形，看你能產生幾種不同的三角形。<br />
+                    如果你能產生的三角形都是全等的，那代表<var>NAME</var>可以驗證全等三角形。如果你可以產生出不只一種三角形 (但都符合題目的條件) ，那代表<var>NAME</var>不能驗證三角形是否全等。
+                </p>
+                <div class="question">
+                    <em>你的三角形放在哪裡都可以，不需要跟左邊的三角形對齊或重疊。</em>
+                    <div class="graphie" id="triangles">
+                        init({
+                            range: [ [ -7, 7 ], [ -7, 7 ] ]
+                        });
+                        addMouseLayer();
+                        initCongruence({ triangle: TRIANGLE, type: TYPE, reflected: REFLECTED });
+
+                        TRIANGLE.rotate( ROTATION );
+                        style({ stroke: "#b1c9f5", "stroke-width": 5 });
+                        TRIANGLE.translate([
+                            -5 - Math.min(TRIANGLE.points[0][0], TRIANGLE.points[1][0], TRIANGLE.points[2][0]),
+                            6 - Math.max(TRIANGLE.points[0][1], TRIANGLE.points[1][1], TRIANGLE.points[2][1])
+                        ]);
+
+                        path( [ lineMidpoint( TRIANGLE.sides[ 2 ] ), TRIANGLE.points[2], TRIANGLE.points[1], TRIANGLE.points[0], lineMidpoint( TRIANGLE.sides[ 2 ] ) ] );
+                        addTriangleDecorations( TRIANGLE, TYPE );
+                    </div>
+                </div>
+
+                <div class="solution" data-type="custom">
+                    <div class="instruction">
+                        <ul>
+                            <li><label><input type="radio" name="solution" value="Yes"><span class="value">
+                                可以 &mdash; 我產生了一個全等的三角形，而且這是在這組條件下我 <strong>唯一</strong> 能產生的三角形。
+                            </span></label></li>
+                            <li><label><input type="radio" name="solution" value="No"><span class="value">
+                                不行 &mdash; 我拼出了一個不全等的三角形，證明這組條件不能驗證全等性。
+                            </span></label></li>
+                        </ul>
+                    </div>
+                    <div class="guess">[
+                        $( "#solutionarea" ).find( "input:checked" ).val(),
+                        interactiveTriangle.points[0].coord,
+                        interactiveTriangle.points[1].coord,
+                        interactiveTriangle.points[2].coord,
+                        interactiveTriangle.points[3].coord
+                    ]</div>
+                    <div class="validator-function">
+                        var saved = $.map( new Array( 4 ), function( el, n ) {
+                            return [ interactiveTriangle.points[ n ].coord ];
+                        });
+                        $.map( guess.slice( 1 ), function( el, n ) {
+                            interactiveTriangle.points[ n ].setCoord( el );
+                        });
+                        interactiveTriangle.update();
+                        var isTriangle = interactiveTriangle.isTriangle;
+                        var isCongruent = abs( getDistance( guess[1], guess[2] ) - TRIANGLE.sideLengths[ 0 ] ) &lt; 0.001
+                            &amp;&amp; abs( getDistance( guess[2], guess[3] ) - TRIANGLE.sideLengths[ 1 ] ) &lt; 0.001
+                            &amp;&amp; abs( getDistance( guess[3], guess[4] ) - TRIANGLE.sideLengths[ 2 ] ) &lt; 0.001;
+                        $.map( saved, function( el, n ) {
+                            interactiveTriangle.points[ n ].setCoord( el );
+                        });
+                        interactiveTriangle.update();
+                        if ( guess[0] == null ) {
+                            return "";
+                        } else if ( guess[0] !== ANSWER ) {
+                            return false;
+                        } else if ( !isTriangle ) {
+                            return "你的回答快要是正確的了，但你還沒產生出一個三角形。";
+                        } else if ( ANSWER === "No" &amp;&amp; isCongruent ) {
+                            return "你的回答快要是正確的了，但你拼出來的三角形跟左邊的是全等的。為了要證明你的回答，請試著產生出一個跟左邊不全等的三角形。";
+                        } else {
+                            return true;
+                        }
+                    </div>
+                    <div class="show-guess">
+                        $.map( guess.slice( 1 ), function( el, n ) {
+                            interactiveTriangle.points[ n ].setCoord( el );
+                        });
+                        interactiveTriangle.update();
+                    </div>
+                    <div class="show-guess-solutionarea">
+                        $( "#solutionarea" ).find( "input:checked" ).prop( 'checked', false );
+                        if ( guess[0] != null ) {
+                            $( "#solutionarea" ).find( "input[value=" + guess[0] + "]" ).prop( 'checked', true );
+                        }
+                    </div>
+                </div>
+
+                <div class="hints">
+                    <p>
+                        如果一組條件要能拿來驗證全等三角形，那代表這組條件<em>只能</em>產生出一種三角形，而且這個產生出來的三角形會跟原來的三角形長的一模一樣 (除非是位置被移動了、被旋轉、或被反射)。
+                    </p>
+                    <p data-if="ANSWER === 'Yes'">
+                        在<var>NAME</var>這組條件下，只能產生一種三角形。
+                    </p>
+                    <p data-if="ANSWER === 'Yes'">
+                        <strong><var>NAME</var> 可以拿來驗證全等三角形。</strong> 請試著在上面拼出與左邊圖形全等的三角形，並想想看為什麼我們只能拼出一種三角形。
+                    </p>
+
+                    <p data-if="TYPE === 'SSA'">
+                        在 <var>NAME</var> 這組條件下，可以拼出不只一種的三角形。事實上有兩種辦法，請你試試看你是否兩種方法都拼的出來。
+                    </p>
+                    <div data-if="TYPE === 'SSA'">
+                        <p>這兩個三角形都有同樣相鄰的 SSA(邊-邊-角)，但它們並不全等：
+                        <div class="graphie">
+                            var triangle = new Triangle( [ 0, 0 ], ANGLES, SCALE, {} );
+                            triangle.rotate( -ANGLES[1] );
+                            init({ range: triangle.boundingRange( 0.4 ) });
+                            addMouseLayer();
+                            style({ stroke: "#b1c9f5", "stroke-width": 5 });
+                            path( [ lineMidpoint( triangle.sides[ 2 ] ), triangle.points[2], triangle.points[1], triangle.points[0], lineMidpoint( triangle.sides[ 2 ] ) ] );
+                            addTriangleDecorations( triangle, TYPE );
+                            KhanUtil.currentGraph = $( "div#triangles" ).data().graphie
+                        </div>
+                        <div class="graphie">
+                            var points = [
+                                [
+                                    TRIANGLE.sideLengths[ 1 ] - cos( ( 180 - ( 180 - ANGLES[ 0 ] ) - ANGLES[ 2 ] ) * PI / 180 ) * TRIANGLE.sideLengths[ 0 ],
+                                    -sin( ( 180 - ( 180 - ANGLES[ 0 ] ) - ANGLES[ 2 ] ) * PI / 180 ) * TRIANGLE.sideLengths[ 0 ]
+                                ],
+                                [ TRIANGLE.sideLengths[ 1 ], 0 ],
+                                [ 0, 0 ]
+                            ];
+                            var triangle = new Triangle( [], [], 0, {}, points );
+                            init({ range: triangle.boundingRange( 0.4 ) });
+                            addMouseLayer();
+                            style({ stroke: "#b1c9f5", "stroke-width": 5 });
+                            path( [ lineMidpoint( triangle.sides[ 2 ] ), triangle.points[2], triangle.points[1], triangle.points[0], lineMidpoint( triangle.sides[ 2 ] ) ] );
+                            addTriangleDecorations( triangle, TYPE );
+                            KhanUtil.currentGraph = $( "div#triangles" ).data().graphie
+                        </div>
+                    </div>
+                    <p data-if="TYPE === 'SSA'">
+                        由於我們可以產生出兩種互相不全等的三角形，我們可以利用反證法證明
+                        <strong>SSA (邊-邊-角) 不能拿來驗證三角形的全等性。</strong> 請記得在上面拼出一個跟左邊三角形不全等的的三角形來證明這個結果。
+                    </p>
+
+                    <p data-if="TYPE === 'AAA'">
+                        <var>NAME</var> 這組條件下，可以拼出不只一種的三角形。請你試試看，你能產生出幾種呢？
+                    </p>
+                    <div data-if="TYPE === 'AAA'">
+                        <p>這兩種三角形擁有同樣的的三個角，但它們並不全等 (只是相似而已) ：
+                        <div class="graphie" style="float: left">
+                            style({ stroke: "#b1c9f5", "stroke-width": 5 });
+                            init({ range: TRIANGLE.boundingRange( 0.4 ) });
+                            addMouseLayer();
+                            style({ stroke: "#b1c9f5", "stroke-width": 5 });
+                            path( [ lineMidpoint( TRIANGLE.sides[ 2 ] ), TRIANGLE.points[2], TRIANGLE.points[1], TRIANGLE.points[0], lineMidpoint( TRIANGLE.sides[ 2 ] ) ] );
+                            addTriangleDecorations( TRIANGLE, TYPE );
+                            KhanUtil.currentGraph = $( "div#triangles" ).data().graphie
+                        </div>
+                        <div class="graphie" style="float: left">
+                            var triangle = new Triangle( [ 0, 0 ], ANGLES, SCALE - 4, {} );
+                            triangle.rotate( ROTATION );
+                            style({ stroke: "#b1c9f5", "stroke-width": 5 });
+                            init({ range: triangle.boundingRange( 0.4 ) });
+                            addMouseLayer();
+                            style({ stroke: "#b1c9f5", "stroke-width": 5 });
+                            path( [ lineMidpoint( triangle.sides[ 2 ] ), triangle.points[2], triangle.points[1], triangle.points[0], lineMidpoint( triangle.sides[ 2 ] ) ] );
+                            addTriangleDecorations( triangle, TYPE );
+                            KhanUtil.currentGraph = $( "div#triangles" ).data().graphie
+                        </div>
+                    </div>
+                    <p data-if="TYPE === 'AAA'" style="clear: left">
+                        由於我們可以產生出兩種互相不全等的三角形，我們可以利用反證法證明
+                        <strong>AAA (角-角-角) 不能拿來驗證三角形的全等性。</strong> 請記得在上面拼出一個跟左邊三角形不全等的的三角形來證明這個結果。
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

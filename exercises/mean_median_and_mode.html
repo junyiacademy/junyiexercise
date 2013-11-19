@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html data-require="math math-format stat graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>中間值平均值眾數</title>
+    <script src="../khan-exercise.js"></script>
+
+    <style type="text/css">
+        .number-list {
+            text-align: center
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <script type="text/javascript">
+        function GenerateIntegers() {
+            var len, integers;
+            do {
+                // generate random list of numbers
+                len = KhanUtil.randRange( 5, 10 );
+
+                integers = [];
+
+                for (var i = 0; i < len; i++) {
+                    integers[i] = KhanUtil.randRange( 1, 10 );
+                }
+            } while ( !KhanUtil.mode(integers) );
+
+            return integers;
+        }
+
+        function DisplayMedian( sortedInts ) {
+            var si = sortedInts.slice(0),
+            center = Math.floor( si.length / 2 ),
+
+            prepend = "\\boldsymbol{",
+            append = "}";
+
+            if ( si.length % 2 == 0 ) {
+                si[center] = prepend + si[center] + append;
+                si[center - 1] = prepend + si[center - 1] + append;
+            } else {
+                si[center] = prepend + si[center] + append;
+            }
+
+            return si.join( ", " );
+        }
+        </script>
+
+        <div class="vars">
+            <var id="INTEGERS">GenerateIntegers()</var>
+            <var id="INTEGERS_COUNT">INTEGERS.length</var>
+            <var id="INTEGER_LIST">INTEGERS.join( ", " )</var>
+
+            <var id="SORTED_INTS">sortNumbers( INTEGERS )</var>
+            <var id="SORTED_LIST">SORTED_INTS.join( ", " )</var>
+            <var id="MEDIAN_LIST">DisplayMedian( SORTED_INTS )</var>
+
+            <var id="MEAN">mean( INTEGERS )</var>
+            <var id="MEDIAN">median( INTEGERS )</var>
+            <var id="MODE">mode( INTEGERS )</var>
+        </div>
+
+        <div class="problems">
+            <div id="mean">
+                <div class="question">
+                    <p>以下數字的算術平均數是多少?</p>
+                    <div class="number-list"><code><var>INTEGER_LIST</var></code></div>
+                </div>
+
+                <p class="solution" data-inexact data-max-error="0.01"><var>MEAN</var></p>
+
+                <div class="hints">
+                    <p>要找算術平均數(平均值)，先將所有的數字相加，然後除以數字的個數。</p>
+                    <div>
+                        <div class="number-list"><code><var>INTEGER_LIST</var></code></div>
+                        <p>這裡有<code><var>INTEGERS_COUNT</var></code>個數字。</p>
+                    </div>
+                    <p>平均是<code>\displaystyle <var>fractionSimplification( sum(INTEGERS), INTEGERS_COUNT )</var></code>。</p>
+                </div>
+            </div>
+
+            <div id="median">
+                <div class="question">
+                    <p>以下數字的中位數是多少?</p>
+                    <div class="number-list"><code><var>INTEGER_LIST</var></code></div>
+                </div>
+
+                <p class="solution"><var>MEDIAN</var></p>
+
+                <div class="hints">
+                    <div>
+                        <p>先將所有的數字從小到大排序:</p>
+                        <div class="number-list"><code><var>SORTED_LIST</var></code></div>
+                    </div>
+                    <div>
+                        <p data-if="INTEGERS.length % 2 === 0">因為最中間的數值有<code>2</code>個，中位數就是<strong>這兩個</strong>數字的平均!</p>
+                        <p data-else>中位數就是在最'中間'的數字:</p>
+                        <div class="number-list"><code><var>MEDIAN_LIST</var></code></div>
+                        <p data-if="SORTED_INTS.length % 2 === 0">中位數是<code>\dfrac{<var>SORTED_INTS[ SORTED_INTS.length / 2 - 1 ]</var> + <var>SORTED_INTS[ SORTED_INTS.length / 2 ]</var>}{2}</code>。</p>
+                    </div>
+                    <div>
+                        <p>因此，中位數就是<code><var>fractionReduce(2 * MEDIAN, 2)</var></code>.</p>
+                        <p>另一種找到中位數的方式就是在數線上把數字畫出來。如果一個數字出現不只一次，數的時候，這個點出現幾次就算幾次。</p>
+                        <div class="graphie">
+                            init({
+                                range: [ [-0.5, 10.5], [-1, 1] ]
+                            });
+
+                            style({
+                                stroke: "#666"
+                            }, function() {
+                                numberLine( 0, 10, 1 );
+                            });
+
+                            var freq = {};
+                            var labels = {};
+                            $.each(INTEGERS, function( index, number ) {
+                                var count = freq[ number ] = (freq[ number ] || 0) + 1;
+
+                                if ( labels[ number ] ) {
+                                    labels[ number ].remove();
+                                }
+
+                                if ( count >= 2 ) {
+                                    labels[ number ] = label( [number, 0.2], "\\scriptsize{" + count + "}", "above", { labelDistance: 0 } );
+                                } else {
+                                    circle( [number, 0], 5/40, { stroke: "none", fill: "#6495ed" } );
+                                }
+                            });
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mode">
+                <div class="question">
+                    <p>以下數字的眾數是多少?</p>
+                    <div class="number-list"><code><var>INTEGER_LIST</var></code></div>
+                </div>
+
+                <p class="solution" data-forms="integer"><var>MODE</var></p>
+
+                <div class="hints">
+                    <p>眾數就是出現次數最多的數字。</p>
+                    <div>
+                        <p>我們可以拿數線當作長條圖來看每一個數字出現的次數。</p>
+
+                        <div class="graphie">
+                            var freq = {};
+                            var maxFreq = 0;
+                            $.each(INTEGERS, function( index, number ) {
+                                var count = freq[ number ] = (freq[ number ] || 0) + 1;
+                                maxFreq = count > maxFreq ? count : maxFreq;
+                            });
+
+                            init({
+                                range: [ [-0.5, 10.5], [-1, ( maxFreq + 1.5 ) / 2] ]
+                            });
+
+                            style({
+                                stroke: "#666"
+                            }, function() {
+                                numberLine( 0, 10, 1 );
+                            });
+
+                            for ( var num in freq ) {
+                                for ( var i = 0, l = freq[ num ]; i &lt; l; i++ ) {
+                                    circle( [num, ( i + 1.5 ) / 2], 5/40, { stroke: "none", fill: "#6495ed" } );
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    <p>因為<code><var>MODE</var></code>出現的次數最多，所以<code><var>MODE</var></code>就是眾數。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

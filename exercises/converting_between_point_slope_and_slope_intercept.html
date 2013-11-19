@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>點斜式與斜截式的轉換</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area input[type=text] {
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="point-to-intercept">
+            <div class="vars" data-ensure="y1 != 0">
+                <var id="m">(random() > 0.5 ? -1 : 1) * (rand(5) + 1)</var>
+                <var id="b">(random() > 0.5 ? -1 : 1) * (rand(5) + 1)</var>
+                <var id="x1">(random() > 0.5 ? -1 : 1) * (rand(3) + 1)</var>
+                <var id="y1">m*x1+b</var>
+                <var id="var1">m*x1</var>
+            </div>
+            <p class="question">將下列的等式從點斜式改寫成斜截式。</p>
+            <p>換句話說，如果要把下面的等式寫成 <code>y = mx + b</code> 的樣子，那 <code>m</code> 與 <code>b</code> 的值會是多少呢？</p>
+            <p><code>y - <var>y1</var> = <var>m</var>(x - <var>x1</var>)</code></p>
+            <div class="solution" data-type="multiple">
+                <p><code>y = \space</code><span class="sol"><var>m</var></span><code>\space \cdot x + \space</code><span class="sol"><var>b</var></span></p>
+            </div>
+            <div class="hints">
+                <div>
+					<p>把右邊的 <code class="hint_blue"><var>m</var>(x - <var>x1</var>)</code> 展開 (也就是把 <code><var>m</var></code> 分別乘上刮號內的項)。</p>
+                    <p><code>y - <var>y1</var> = \color{<var>BLUE</var>}{<var>expr([ "*", m, "x" ])</var> - <var>var1</var>}</code></p>
+                </div>
+                <div>
+                    <p>
+                        接下來讓左邊只剩下 y 項，也就是說：
+                        <span data-if="y1 < 0">將兩邊同時減去 <code><var>-y1</var></code> 。</span>
+                        <span data-else>將兩邊同時加上 <code><var>y1</var></code> 。</span>
+                    </p>
+                    <p><code>y = <var>expr([ "*", m, "x" ])</var> - <var>var1</var> + <var>y1</var></code></p>
+                </div>
+                <div>
+                    <p>將右邊的常數項合併。</p>
+                    <p><code>y = <var>expr([ "*", m, "x" ])</var> + <var>b</var></code></p>
+                </div>
+                <div>
+                    <p><strong>
+                        現在這個等式就是點斜式了；斜率是 <code><var>m</var></code> 而 Y 軸截距則是 <code><var>b</var></code> 。
+                    </strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</body>
+</html>

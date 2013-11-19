@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html data-require="math graphie interactive mean-and-median">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>平均值與中間值</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="LOWER_BOUND">-7</var>
+            <var id="UPPER_BOUND">-1 * LOWER_BOUND</var>
+            <!--
+                80% chance of getting 10 points to work with; otherwise 5. Any
+                other reasonable quantity leads to really messy means. This at
+                least covers both cases: where the median is a point, and
+                where the median is between two points. Weighted towards more
+                problems with 10 points to make it easier to get the intuition
+                how/why the mean and median can vary.
+            -->
+            <var id="POINTS">random() &lt; 0.8 ? 10 : 5</var>
+            <var id="MEDIAN">
+                roundTo(1, randRangeNonZero((LOWER_BOUND + 1) * 2,
+                    (UPPER_BOUND - 1) * 2) / 2)
+            </var>
+            <var id="MIN_MEAN">
+                ((POINTS / 2) * (MEDIAN + 0.5) + MEDIAN - 0.5 +
+                    (POINTS / 2 - 1) * LOWER_BOUND) / POINTS
+            </var>
+            <var id="MAX_MEAN">
+                ((POINTS / 2) * (MEDIAN - 0.5) + MEDIAN + 0.5 +
+                    (POINTS / 2 - 1) * UPPER_BOUND) / POINTS
+            </var>
+            <var id="MEAN">
+                roundTo(1, randRangeNonZero(MIN_MEAN * 10, MAX_MEAN * 10) / 10)
+            </var>
+        </div>
+        <div class="problems">
+            <div>
+                <div class="question">
+                    <p>調整數線上的<var>POINTS</var>個橘色的點，讓<span class="hint_blue">平均值是<code><var>MEAN</var></code></span><br />，還有<span class="hint_green">中間值是<code><var>MEDIAN</var></code></span>.
+                    格與格之間的間距是1.</p>
+                    <div class="graphie" id="number-line">
+                        graph.targetMedian = MEDIAN;
+                        graph.targetMean = MEAN;
+                        graph.numPoints = POINTS;
+
+                        init({
+                            range: [
+                                [LOWER_BOUND - 1, UPPER_BOUND + 1],
+                                [-3, 3]],
+                            scale: 35
+                        });
+
+                        style({ stroke: "#bbb" });
+                        line([LOWER_BOUND, 0], [UPPER_BOUND, 0]);
+                        for (var x = LOWER_BOUND; x &lt;= UPPER_BOUND; x++) {
+                            line([x, -0.2], [x, 0.2]);
+                        }
+                        style({ strokeWidth: 3.5 });
+                        line([0, -0.2], [0, 0.2]);
+                        label([0, -0.53],  "0", "center", {});
+
+                        style({
+                            strokeWidth: 2,
+                            stroke: BLUE,
+                            fill: BLUE,
+                            opacity: 1.0
+                        });
+                        graph.meanArrow = path([
+                            [0, 0.7], [0.05, 0.7], [0, 0.6],
+                            [-0.05, 0.7], [0, 0.7], [0, 1.0]
+                        ]);
+                        graph.meanLabel = label([0, 1.3], "\\text{平均值}",
+                            "above", { color: BLUE });
+                        graph.meanValueLabel = label([0, 0.8], "0",
+                            "above", { color: BLUE });
+
+                        style({ strokeWidth: 2, stroke: GREEN, fill: GREEN });
+                        graph.medianArrow = path([
+                            [0, -1.1], [0.05, -1.1], [0, -1],
+                            [-0.05, -1.1], [0, -1.1], [0, -1.4]
+                        ]);
+                        graph.medianLabel = label([0, -1.7],  "\\text{中間值}",
+                            "below", { color: GREEN });
+                        graph.medianValueLabel = label([0, -1.2], "0",
+                            "below", { color: GREEN });
+
+                        addMouseLayer();
+                        graph.points = [];
+                        for (var x = 0; x &lt; POINTS; x++) {
+                            graph.points[x] = addMovablePoint({
+                                coord: [x - POINTS / 2 + 0.5, 0],
+                                constraints: { constrainY: true },
+                                snapX: 0.5
+                            });
+                        }
+
+                        graph.median = 0;
+                        graph.mean = 0;
+                        graph.moved = false;
+                        $.each(graph.points, function(idx, point) {
+                            this.onMove = function(x, y) {
+                                graph.moved = true;
+                                return onMovePoint(point, x, y,
+                                    updateMeanAndMedian);
+                            };
+                        });
+                    </div>
+                </div>
+                <div class="solution" data-type="custom">
+                    <div class="instruction">
+                        移動橘色的點來作答。
+                    </div>
+                    <div class="guess">$.map(graph.points, function(el) {
+                            return el.coord[0];
+                        })</div>
+                    <div class="validator-function">
+                        if (roundTo(1, mean(guess)) === MEAN &amp;&amp;
+                                roundTo(1, median(guess)) === MEDIAN) {
+                            return true;
+                        } else if (graph.moved) {
+                            return false;
+                        } else {
+                            return "";
+                        }
+                    </div>
+                    <div class="show-guess">
+                        $.each(guess, function(i, x) {
+                            onMovePoint(graph.points[i], x, 0);
+                        });
+                        updateMeanAndMedian();
+                    </div>
+                    <div class="example">
+                        只要讓平均值與中間值都正確，可以隨意調整橘色的點。
+                    </div>
+                </div>
+
+                <div class="hints">
+                    <p>
+                        中間值就是位於最中間的數字。換句話說，中間值得左邊與右邊都有一樣多個點。
+                    </p>
+                    <p>
+                        試試看移動橘色的點，讓一半在<span class="hint_green">
+                        <code><var>MEDIAN</var></code></span>的左邊，一半在<span class="hint_green">
+                        <code><var>MEDIAN</var></code></span>的右邊。
+                        <span data-if="POINTS % 2 === 0">
+                            位在中間的兩個點需要在<span class="hint_green">
+                            <code><var>MEDIAN</var></code></span>左右相同的距離。
+                        </span>
+                        <span data-else>
+                            中間的點需要放在
+                            <span class="hint_green">
+                            <code><var>MEDIAN</var></code></span>.
+                        </span><br />
+                        <input type="button" value="做給我看"
+                            onClick="javascript:
+                                KhanUtil.showMedianExample();
+                            ">
+                    </p>
+                    <p>
+                        只要中間值左邊與右邊的點的數量維持一樣，
+						中間值就會維持不變。平均值則是會用到每一個點的數值來做計算。
+						試試看將中間值兩邊的點，移動接近中間值，或移動遠離，看平均值會有什麼變化。
+                    </p>
+                    <p>
+                        有很多不同方法可以讓平均值是<span class="hint_blue">
+                        <code><var>MEAN</var></code></span>，並且讓中間值是
+                        <span class="hint_green">
+                        <code><var>MEDIAN</var></code></span>。
+                        <input type="button" value="做給我看"
+                            onClick="javascript:
+                                KhanUtil.showMeanExample();
+                            ">
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html data-require="math math-format word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>速率問題 2</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="average-speed">
+            <div class="vars">
+                <var id="DISTANCE">randRange( 2, 6 )</var>
+                <var id="FACTORS">shuffle( getPrimeFactorization( 60 ).concat( getPrimeFactorization( DISTANCE ) ) )</var>
+                <var id="MULTIPLY">
+                    function( factors ) {
+                        var product = 1;
+                        for ( var i = 0; i &lt; factors.length; i++ ) {
+                            product *= factors[ i ];
+                        }
+                        return product;
+                    }
+                </var>
+                <var id="SPLIT">randRange( 3, FACTORS.length - 2 )</var>
+                <var id="TIME_UP">MULTIPLY( FACTORS.slice( 0, SPLIT ) )</var>
+                <var id="RATE_UP">MULTIPLY( FACTORS.slice( SPLIT ) )</var>
+                <var id="K">
+                    (function() {
+                        if ( RATE_UP % 3 === 0 ) {
+                            return 2;
+                        } else {
+                            return 3;
+                        }
+                    })()
+                </var>
+                <var id="RATE_DOWN">K * RATE_UP</var>
+                <var id="TIME_DOWN">60 * DISTANCE / RATE_DOWN</var>
+                <var id="RATE_AVG">60 * 2 * DISTANCE / ( TIME_UP + TIME_DOWN )</var>
+            </div>
+            <p class="problem"><var>person( 1 )</var>從家裡出發，在上坡時以每小時<var>RATE_UP</var>公里的速度前進了<var>TIME_UP</var>分鐘。
+			接著，<var>He( 1 )</var>再以每小時<var>K * RATE_UP</var>公里的速度沿著下坡回家。</p>
+            <p class="question">那請問，<var>his( 1 )</var>來回平均速度是多少呢？</p>
+
+            <div class="solution" data-type="multiple">
+                每小時<span class="sol" style="padding-right: 5px"><var>RATE_AVG</var></span>公里
+            </div>
+
+            <div class="hints">
+                <p>平均速度不是只是對上坡速度每小時<var>RATE_UP</var>公里和下坡速度每小時<var>RATE_DOWN</var>公里取平均值。</p>
+                <p><var>He( 1 )</var>上坡時需要花比較多的時間（因為<var>he( 1 )</var>在上坡時的速度比較慢），所以我們可以假設平均速度比較接近上坡速度每小時<var>RATE_UP</var>公里。</p>
+                <div>
+                    <p>求平均速度可以利用下面兩個式子：</p>
+                    <p><code>\text{平均速度} = \dfrac{\color{<var>KhanUtil.BLUE</var>}{\text{總共移動的公里數}}}{\color{<var>KhanUtil.ORANGE</var>}{\text{總共花費的時間}}}</code></p>
+                    <p><code>\text{上坡時走的總距離} = \text{下坡時走的總距離}</code></p>
+                </div>
+                <p>但是，他總共前進了多少公里呢？</p>
+                <div>
+                    <p><code>\color{<var>KhanUtil.BLUE</var>}{\begin{align*}\text{總距離} &= \text{上坡時走的總公里數} + \text{下坡時走的總公里數}\\
+                        &= 2 \times \text{上坡時走的總公里數}\end{align*}}</code></p>
+                    <p><code>\begin{align*}\text{上坡時走的總公里數} &= \text{上坡速度} \times \text{上坡所花的總時間} \\\
+                        &= <var>RATE_UP</var>\text{ 公里/每小時} \times <var>TIME_UP</var>\text{ 分鐘}\times\dfrac{1 \text{ 小時}}{60 \text{ 分鐘}}\\
+                        &= <var>DISTANCE</var>\text{ 公里}\end{align*}</code></p>
+                </div>
+                <div>
+                    <p>把這些數字代進去，就可以得到總共移動多少公里囉：</p>
+                    <p><code>\color{<var>KhanUtil.BLUE</var>}{\text{總共移動多少公里} = <var>2 * DISTANCE</var>\text{ 公里}}</code></p>
+                </div>
+                <p>但是，他總共花了多少分鐘呢？</p>
+                <div>
+                    <p><code>\color{<var>KhanUtil.ORANGE</var>}{\text{總共花了多少分鐘} = \text{上坡時花的分鐘數} + \text{下坡時花的分鐘數}}</code></p>
+                    <p><code>\begin{align*}\text{下坡時所花的分鐘數} &= \dfrac{\text{下坡時走的總公里數}}{\text{下坡時的速度}}\\
+                        &= \dfrac{<var>DISTANCE</var>\text{ 公里}}{<var>RATE_DOWN</var>\text{ 公里/每小時}}\times\dfrac{60 \text{ 分鐘}}{1 \text{ 小時}}\\
+                        &= <var>TIME_DOWN</var>\text{ 分鐘}\end{align*}</code></p>
+                </div>
+                <p><code>\color{<var>KhanUtil.ORANGE</var>}{\begin{align*}\text{總共花的分鐘數} &= <var>TIME_UP</var>\text{ 分鐘} + <var>TIME_DOWN</var>\text{ 分鐘}\\
+                    &= <var>TIME_UP + TIME_DOWN</var>\text{ 分鐘}\end{align*}}</code></p>
+                <p>現在，我們已經知道總共移動了多少公里，跟總共移動了多少分鐘，那我們就可以來算平均速度囉：</p>
+                <p><code>\begin{align*}\text{平均速度} &= \dfrac{\color{<var>KhanUtil.BLUE</var>}{\text{總共移動的公里數}}}{\color{<var>KhanUtil.ORANGE</var>}{\text{總共移動的時間}}}\\
+                    &= \dfrac{\color{<var>KhanUtil.BLUE</var>}{<var>2 * DISTANCE</var>\text{ 公里}}}{\color{<var>KhanUtil.ORANGE</var>}{<var>TIME_UP + TIME_DOWN</var>\text{ 分鐘}}}\times\dfrac{60 \text{ 分鐘}}{1 \text{ 小時}}\\
+                    &= <var>RATE_AVG</var>\text{ 公里/每小時}\end{align*}</code></p>
+                <p>所以，平均速度就是每小時<var>RATE_AVG</var>公里，而且這個值比較接近上坡速度每小時<var>RATE_UP</var>公里。</p>
+            </div>
+        </div>
+        <div id="collective-action-same">
+            <div class="vars">
+                <var id="PEOPLE_INIT">randRange( 5, 10 )</var>
+                <var id="WALL_INIT">PEOPLE_INIT</var>
+                <var id="TIME_INIT">randRange( 20, 59 )</var>
+                <var id="PEOPLE_FINAL">randRange( PEOPLE_INIT + 3, 20 )</var>
+                <var id="WALL_FINAL">PEOPLE_FINAL</var>
+                <var id="TIME_FINAL">TIME_INIT</var>
+            </div>
+            <p class="problem">如果 <var>PEOPLE_INIT</var> 個人油漆 <var>WALL_INIT</var> 面牆需要花上 <var>TIME_INIT</var> 分鐘。</p>
+            <p class="question">那麼， <var>PEOPLE_FINAL</var> 個人油漆 <var>WALL_FINAL</var> 面牆需要花多少分鐘呢？</p>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol" style="padding-right: 5px"><var>TIME_FINAL</var></span>分鐘
+            </div>
+            <div class="hints">
+                <p>想像一下，假設每一個人都被分配到一面牆，而且 <var>PEOPLE_INIT</var> 個人都同時開始油漆。</p>
+                <p>因為每個人都需要花 <var>TIME_INIT</var> 分鐘才能油漆完一面牆，所以表示說一個人必須要花 <var>TIME_INIT</var> 分鐘才能油漆完一面牆。</p>
+                <p>所以，如果現在有 <var>PEOPLE_FINAL</var> 個人和 <var>WALL_FINAL</var> 面牆，我們同樣可以把一面牆分配給一個人。</p>
+                <p>每個人都需要花 <var>TIME_FINAL</var> 分鐘來油漆他們負責的那面牆。</p>
+                <p>所以， <var>PEOPLE_FINAL</var> 個人油漆 <var>WALL_FINAL</var> 面牆需要花 <var>TIME_FINAL</var> 分鐘。</p>
+            </div>
+        </div>
+        <div id="collective-action-calculate">
+            <div class="vars">
+                <var id="PEOPLE_INIT, WALL_INIT">randRangeUnique( 3, 7, 2 )</var>
+                <var id="TIME_INIT">randRange( 30, 50 )</var>
+                <var id="PEOPLE_FINAL">randRange( PEOPLE_INIT + 1, 10 )</var>
+                <var id="WALL_FINAL">randRange( WALL_INIT + 1, 10 )</var>
+                <var id="TIME_FINAL">round( WALL_FINAL * TIME_INIT * PEOPLE_INIT / ( WALL_INIT * PEOPLE_FINAL ) )</var>
+                <var id="NEED_TO_ROUND">getGCD( WALL_FINAL * TIME_INIT * PEOPLE_INIT, WALL_INIT * PEOPLE_FINAL ) !== (WALL_INIT * PEOPLE_FINAL)</var>
+            </div>
+            <p class="problem">如果<var>PEOPLE_INIT</var>個人在<var>TIME_INIT</var>分鐘內可以油漆<var>WALL_INIT</var>面牆。</p>
+            <p class="question">那麼，<var>PEOPLE_FINAL</var>個人油漆 <var>WALL_FINAL</var> 面牆需要花多少分鐘？四捨五入到整數位。</p>
+            <div class="solution" data-type="multiple">
+                <span class="sol" style="padding-right: 5px" data-forms="integer"><var>TIME_FINAL</var></span>分鐘
+                <p class="example">分鐘數，四捨五入到最近的整數</p>
+            </div>
+            <div class="hints">
+                <div>
+                    <p>我們已經知道<code>p</code>個人在一定的速率<code>r</code>下油漆<code>w</code>面牆需要花<code>t</code>分鐘。</p>
+                    <p><code>w = r \cdot t \cdot p</code></p>
+                    <p><code>\begin{align*}w &= <var>WALL_INIT</var>\text{面牆}\\
+                        p &= <var>PEOPLE_INIT</var>\text{個人}\\
+                        t &= <var>TIME_INIT</var>\text{分鐘}\end{align*}</code></p>
+                </div>
+                <div>
+                    <p>把已經知道的數字代進去，就可以求油漆牆的速率<code>r</code>囉：</p>
+                    <p><code>r = \dfrac{w}{t \cdot p}= \dfrac{<var>WALL_INIT</var>}{<var>TIME_INIT</var> \cdot <var>PEOPLE_INIT</var>} = <var>fractionReduce( WALL_INIT, TIME_INIT * PEOPLE_INIT )</var>\text{每個人每分鐘可以油漆的牆數}</code></p>
+                </div>
+                <p>現在，我們可以回來求<var>PEOPLE_FINAL</var>個人油漆 <var>WALL_FINAL</var>面牆需要花多少時間囉。</p>
+                <p><code>t = \dfrac{w}{r \cdot p} = \dfrac{<var>WALL_FINAL</var>}{<var>fractionReduce( WALL_INIT, TIME_INIT * PEOPLE_INIT )</var> \cdot <var>PEOPLE_FINAL</var>} = \dfrac{<var>WALL_FINAL</var>}{<var>fractionReduce( WALL_INIT * PEOPLE_FINAL, TIME_INIT * PEOPLE_INIT )</var>} = <var>fractionReduce( WALL_FINAL * TIME_INIT * PEOPLE_INIT, WALL_INIT * PEOPLE_FINAL )</var>\text{分鐘}</code><span data-if="NEED_TO_ROUND"><code>= <var>mixedFractionFromImproper( WALL_FINAL * TIME_INIT * PEOPLE_INIT, WALL_INIT * PEOPLE_FINAL, true, true )</var>\text{分鐘}</code></span></p>
+                <div data-if="NEED_TO_ROUND">
+                    <p>四捨五入到最接近的分鐘數：</p>
+                    <p><code>t = <var>TIME_FINAL</var>\text{分鐘}</code></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

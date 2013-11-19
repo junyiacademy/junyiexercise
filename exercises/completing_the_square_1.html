@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html data-require="math polynomials expressions math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>配方法 1</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .short input[type=text] {
+            width: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="original" data-weight="5">
+                <div class="vars">
+                    <var id="X1">randRangeNonZero( -10, 10 )</var>
+                    <var id="X2" data-ensure="X1 !== X2">randRange( -5, 5 ) * 2 + ( X1 % 2 )</var>
+                    <var id="B">( X1 + X2 ) * -1</var>
+                    <var id="C">X1 * X2</var>
+                    <var id="POLY">new Polynomial( 0, 2, [C, B, 1], "x" )</var>
+                    <var id="POLY_TEXT">POLY.text()</var>
+                </div>
+                <p class="question">利用配方法，解出 <code>x</code> 的値。</p>
+                <p><code><var>POLY_TEXT</var> = 0</code></p>
+                <div class="solution" data-type="set">
+                    <div class="set-sol"><var>X1</var></div>
+                    <div class="set-sol"><var>X2</var></div>
+                    <div class="input-format">
+                        <p><code>x = \quad</code><span class="entry short"></span><code>\quad \text{或} \quad x = \quad</code><span class="entry short"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div id="one-root" data-type="original" data-weight="1">
+                <div class="vars">
+                    <var id="X2">X1</var>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <p><code>x = \quad</code><span class="sol"><var>X1</var></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="hints">
+            <div data-if="X1 !== X2" data-unwrap>
+                <div data-if="C !== 0">
+                    <p>先將常數項搬到等式的右邊。</p>
+                    <p><code>x^2 <span data-if="B !== 0"> + <var>B</var>x</span> = <var>C * -1</var></code></p>
+                </div>
+                <div data-if="B !== 0">
+                    
+					<p>要順利完成配方，我們只需要先看 <code>x</code> 項的係數；把這個係數的値減半再平方，然後把這個數字加到等式的兩邊。
+					<code>x</code> 項的的係數是 <code><var>B</var></code>，所以減半後是 <code><var>B / 2</var></code> ，而將這個數字平方後，我們會得到 <code>\color{blue}{<var>pow( B / 2, 2 )</var>}</code> 。</p>
+                    <p><code>x^2 + <var>B</var>x \color{blue}{ + <var>pow( B / 2, 2 )</var>} = <var>C * -1</var> \color{blue}{ + <var>pow( B / 2, 2 )</var>}</code></p>
+                </div>
+                <div data-if="B !== 0">
+                    <p>現在，我們終於可以把等式的左邊寫成平方數的格式。</p>
+                    <p><code>( x + <var>B / 2</var> )^2 = <var>C * -1 + pow( B / 2, 2 )</var></code></p>
+                </div>
+            </div>
+            <div data-else data-unwrap>
+                <p>等式左邊已經是一個完全平方項式的展開式了。 <code>x</code> 項的係數是 <code><var>B</var></code> ，減半後是 <code><var>B / 2</var></code>
+				而將這個數字平方後，我們會得到 <code>\color{blue}{<var>pow( B / 2, 2 )</var>}</code> ，也就是我們的常數項。</p>
+                <div>
+                    <p>所以，我們可以把等式的左邊寫成平方數的格式。</p>
+                    <p><code>( x + <var>B / 2</var> )^2 = <var>C * -1 + pow( B / 2, 2 )</var></code></p>
+                </div>
+            </div>
+            <div>
+                <p>將兩邊同時開根號。</p>
+                <p><code>x <span data-if="B !== 0"> + <var>B / 2</var></span> = <span data-if="sqrt( C * -1 + pow( B / 2, 2 ) ) !== 0">\pm</span><var>sqrt( C * -1 + pow( B / 2, 2 ) )</var></code></p>
+            </div>
+            <div data-if="B !== 0">
+                <p>將 <code>x</code> 項孤立，以求出解。</p>
+                <p data-if="sqrt( C * -1 + pow( B / 2, 2 ) ) !== 0"><code>x = <var>-B / 2</var>\pm<var>sqrt( C * -1 + pow( B / 2, 2 ) )</var></code></p>
+                <p><code>x = <var>-B / 2 + sqrt( C * -1 + pow( B / 2, 2 ) )</var><span data-if="sqrt( C * -1 + pow( B / 2, 2 ) ) !== 0"> \text{ 或 } x = <var>-B / 2 - sqrt( C * -1 + pow( B / 2, 2 ) )</var></span></code></p>
+            </div>
+            <div data-else>
+                <p><code>x = <var>-B / 2 + sqrt( C * -1 + pow( B / 2, 2 ) )</var><span data-if="sqrt( C * -1 + pow( B / 2, 2 ) ) !== 0"> \text{ 或 } x =     <var>-B / 2 - sqrt( C * -1 + pow( B / 2, 2 ) )</var></span></code></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

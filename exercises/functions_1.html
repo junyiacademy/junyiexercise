@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html data-require="math graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>函數 1</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="FUNCTION_PATH">
+                (function() {
+                    var functionPath = [];
+
+                    functionPath.push([ -11, randRange( -5, 5 ) ]);
+                    for( var i = -10; i &lt; 11; i++ ) {
+                        if ( abs( randRangeNonZero( -10, 10 ) &lt; 2 ) && functionPath[i+10][1] &lt; 8 ) {
+                            functionPath.push([i, functionPath[i+10][1]+1]);
+
+                        } else if ( abs( randRangeNonZero( -10, 10 ) &lt; 2 ) && functionPath[i+10][1] > -8 ) {
+                            functionPath.push([i, functionPath[i+10][1]-1]);
+
+                        } else if ( abs( randRangeNonZero( -10, 10 ) &lt; 2 ) && functionPath[i+10][1] &lt; 7 ) {
+                            functionPath.push([i, functionPath[i+10][1]+2]);
+
+                        } else if ( abs( randRangeNonZero( -10, 10 ) &lt; 3 ) && functionPath[i+10][1] > -7 ) {
+                            functionPath.push([i, functionPath[i+10][1]-2]);
+
+                        } else {
+                            functionPath.push([i, functionPath[i+10][1]]);
+                        }
+                    }
+                    return functionPath;
+                })()
+            </var>
+
+            <var id="CORRECT_X">randRange(-9, 9)</var>
+            <var id="CORRECT_Y">FUNCTION_PATH[CORRECT_X + 11][1]</var>
+        </div>
+
+        <div class="problems">
+            <div>
+                <p class="question">畫出函數 <code>f(x)</code> 的圖形如下圖，請問 <code>f(<var>CORRECT_X</var>)</code> 是多少。</p>
+
+                <div id="graph" class="graphie">
+                    graphInit({
+                        range: 10,
+                        scale: 20,
+                        axisArrows: "<->",
+                        tickStep: 1,
+                        labelStep: 1,
+                        unityLabels: false,
+                        labelFormat: function( s ) { return "\\small{" + s + "}"; }
+                    });
+
+                    path( FUNCTION_PATH, { stroke: "#6495ed" } );
+                </div>
+                <div class="solution" data-type="multiple">
+                    <p><code>f(<var>CORRECT_X</var>)=</code> <span class="sol"><var>CORRECT_Y</var></span></p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="hints">
+            <div>
+                <p>觀察圖形，看看 <code>f(x)</code> 與 <code>x = <var>CORRECT_X</var></code> 是相交在哪一個點？</p>
+                <div class="graphie" data-update="graph">
+                    graph.vert = line( [CORRECT_X, -10], [CORRECT_X, 10], {
+                        stroke: "#28ae7b",
+                        strokeDasharray: "- "
+                    } );
+
+                    circle( [CORRECT_X, CORRECT_Y], 3/20, {
+                        stroke: "none",
+                        fill: "black"
+                    } );
+                </div>
+            </div>
+
+            <p>它們相交在點 <code>(<var>CORRECT_X</var>, <var>CORRECT_Y</var>)</code> 。</p>
+
+            <div>
+                <p>所以 <code>f(<var>CORRECT_X</var>) = <var>CORRECT_Y</var></code> 。</p>
+                <div class="graphie" data-update="graph">
+                    graph.vert.remove();
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

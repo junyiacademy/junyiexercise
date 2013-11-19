@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html data-require="math">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>代入數值</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        .plug_in > span {
+            width: 80px;
+        }
+        table.plug_hint td {
+            padding-left: 40px;
+        }
+        #answer_area input[type=text] {
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="exercise">
+    <div class="vars"></div>
+    <div class="problems">
+        <div id="linear">
+            <div class="vars">
+                <var id="A1">2</var>
+                <var id="A2">5</var>
+                <var id="B1">1</var>
+                <var id="B2">10</var>
+                <var id="COEF">randRange( A1, A2 )</var>
+                <var id="CONS">randRange( B1, B2 )</var>
+                <var id="XVALS">randRangeUnique( 1, 9, 4 ).sort()</var>
+                <var id="WRONG_ANSWERS">
+                (function() {
+                    var wrongs = [];
+                    var i = randRangeWeighted( A1, A2, COEF, 0 );
+                    var j = ( COEF * XVALS[0] + CONS ) - ( i * XVALS[0] );
+                    wrongs.push( { coef: i, cons: j } );
+                    while( wrongs.length &lt; 4 ) {
+                        i = randRange( A1, A2 );
+                        if( i === COEF ) {
+                            j = randRangeWeighted( B1, B2, CONS, 0 );
+                        }
+                        else {
+                            j = randRange( B1, B2 );
+                        }
+                        wrongs.push( { coef: i, cons: j } );
+                    }
+
+                    return wrongs;
+
+                })()
+                </var>
+                <var id="X_VAR">"x"</var>
+                <var id="Y_VAR">"y"</var>
+                <var id="X_HEADER">"x"</var>
+                <var id="Y_HEADER">"y"</var>
+            </div>
+            <div class="question">
+                <p><span class='hint_orange'><code><var>X_VAR</var></code></span> 的線性方程式的幾個已知結果如下表所示。</p>
+                <p><b>請問這個表格的結果是用哪個方程式產生出來的？</b></p>
+            </div>
+            <div class="fake_header plug_in">
+                <span class='hint_orange'><code><var>X_HEADER</var></code></span>
+                <span class='hint_blue'><code><var>Y_HEADER</var></code></span>
+            </div>
+            <div class='fake_row plug_in' data-each="XVALS as xval">
+                <span><code><var>xval</var></code></span>
+                <span><code><var>COEF * xval + CONS</var></code></span>
+            </div>
+            <p class="solution"> <code><var>Y_VAR</var> = <var>COEF</var><var>X_VAR</var> + <var>CONS</var></code></p>
+            <ul class="choices" data-show="5">
+                <li data-each="WRONG_ANSWERS as wrong">
+                    <code><var>Y_VAR</var> = <var>wrong.coef</var><var>X_VAR</var> + <var>wrong.cons</var></code>
+                </li>
+            </ul>
+            <div class="hints">
+                <p>選一個方程式，並且試著將表格中每一列的數值代入方程式中。如果表格中有任何一列數值無法讓方程式成立，代表表格裡面的結果不是用這個方程式所產生出來的，那我們就可以把這個答案選項排除掉。</p>
+                <div>
+                    <p>舉例來說，我們來考慮 <code><var>Y_VAR</var> = <var>WRONG_ANSWERS[0].coef</var><var>X_VAR</var> + <var>WRONG_ANSWERS[0].cons</var></code> 。代入第一列的數值 <code>\color{<var>ORANGE</var>}{<var>X_VAR</var> = <var>XVALS[0]</var>}</code> 與 <code>\color{<var>BLUE</var>}{<var>Y_VAR</var> = <var>XVALS[0] * COEF + CONS</var>}</code> 後，發現這個方程式讓表格第一列的數值成立：</p>
+                    <p><code>\color{<var>BLUE</var>}{<var>XVALS[0] * COEF + CONS</var>} =  <var>WRONG_ANSWERS[0].coef</var>(\color{<var>ORANGE</var>}{<var>XVALS[0]</var>}) + <var>WRONG_ANSWERS[0].cons</var></code></p>
+                    <p><code><var>XVALS[0] * COEF + CONS</var> = <var>XVALS[0] * COEF + CONS</var></code></p>
+                </div>
+                <div>
+                    <p>但是如果代入表格中第二列的數值 <code>\color{<var>ORANGE</var>}{<var>X_VAR</var> = <var>XVALS[1]</var>}</code> 與 <code>\color{<var>BLUE</var>}{<var>Y_VAR</var> = <var>XVALS[1] * COEF + CONS</var>}</code> ，結果發現這個方程式不成立：</p>
+                    <p><code>\color{<var>BLUE</var>}{<var>XVALS[1] * COEF + CONS</var>} =  <var>WRONG_ANSWERS[0].coef</var>(\color{<var>ORANGE</var>}{<var>XVALS[1]</var>}) + <var>WRONG_ANSWERS[0].cons</var></code></p>
+                    <p><code><var>XVALS[1] * COEF + CONS</var> \ne <var>WRONG_ANSWERS[0].coef * XVALS[1] + WRONG_ANSWERS[0].cons</var></code></p>
+                    <p>所以我們可以把 <code><var>Y_VAR</var> = <var>WRONG_ANSWERS[0].coef</var><var>X_VAR</var> + <var>WRONG_ANSWERS[0].cons</var></code> 從我們考慮的項目中排除掉，然後嘗試不同的答案選項。</p>
+                </div>
+                <div>
+                    <p>當我們嘗試 <code><var>Y_VAR</var> = <var>COEF</var><var>X_VAR</var> + <var>CONS</var></code> 這個方程式時，我們可以發現表格中的每一列數值都可以讓這個方程式成立。</p>
+                    <table class='plug_hint'>
+                        <tr data-each="XVALS as xval">
+                            <td>
+                                <code>\color{<var>BLUE</var>}{<var>COEF * xval + CONS</var>} = <var>COEF</var> \cdot \color{<var>ORANGE</var>}{<var>xval</var>} + <var>CONS</var></code>
+                            </td>
+                            <td>&rarr;</td>
+                            <td>
+                                <code>\color{<var>BLUE</var>}{<var>COEF * xval + CONS</var>} = <var>COEF * xval + CONS</var></code>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <p>所以符合表格中這些資料的方程式是 <code><var>Y_VAR</var> = <var>COEF</var><var>X_VAR</var> + <var>CONS</var></code>。</p>
+            </div>
+        </div>
+        <div id="grocery" data-type="linear">
+            <div class="vars">
+                <var id="X_VAR">"p"</var>
+                <var id="Y_VAR">"c"</var>
+                <var id="X_HEADER">"磅 (p)"</var>
+                <var id="Y_HEADER">"費用 (c)"</var>
+            </div>
+            <div class="question">
+                <p>表格中的資料列出購買不同重量的蔬菜所需要的費用，重量的單位為磅（<code>p</code>），而費用內也包括了請店員將蔬菜裝進箱子裡的工錢。</p>
+                <p><b>請問哪個方程式符合這些資料？</b></p>
+            </div>
+            <div class='fake_row plug_in' data-each="XVALS as xval">
+                <span><code><var>xval</var></code></span>
+                <span><code>$<var>COEF * xval + CONS</var></code></span>
+            </div>
+        </div>
+        <div id="negative" data-type="linear">
+            <div class="vars">
+                <var id="A1">-5</var>
+                <var id="A2">-2</var>
+            </div>
+        </div>
+        <div id="fill-table" data-type="linear" data-weight="3">
+            <div class="vars">
+                <var id="COEF">randRange( A1, A2 ) * randRangeNonZero( -1, 1 )</var>
+                <var id="CONS">randRange( B1, B2 ) * randRangeNonZero( -1, 1 )</var>
+                <var id="Y_VAR">"f(x)"</var>
+                <var id="Y_HEADER">"f(x)"</var>
+                <var id="I">randRange( 1, 3 )</var>
+                <var id="TABLEVALS">
+                (function() {
+                    var wrongs = [];
+                    var count = 0;
+                    while ( wrongs.length &lt; 4 ) {
+                        wrongs.push( { xval: XVALS[count], yval: COEF * XVALS[count] + CONS } );
+                        count++;
+                    }
+                    count = 0;
+                    var j = randRangeUnique( 0, 3, I );
+                    while( count &lt; I ) {
+                        wrongs[j[count]].yval = " ";
+                        count++;
+                    }
+
+                    return wrongs;
+
+                })()
+                </var>
+            </div>
+            <div class='fake_row plug_in' data-each="TABLEVALS as tableval">
+                <span><code><var>tableval.xval</var></code></span>
+                <span><code><var>tableval.yval</var></code></span>
+            </div>
+            <div class="question">
+                <p><b>這個表格的內容是用後面這個方程式產生出來的：</b><code>\quad f(x) = <var>COEF</var>x + <var>CONS</var></code></p>
+                <p><b>請找出表格中的遺漏值。</b></p>
+            </div>
+            <div class="solution" data-each="TABLEVALS as tableval" data-type="multiple">
+                <p data-if="tableval.yval === ' '"><code>f(<var>tableval.xval</var>)</code> = <span class="sol"><var>COEF * tableval.xval + CONS</var></span></p>
+            </div>
+            <div class="hints">
+                <p>將 <code class="hint_orange">x</code> 對應的值帶入這個方程式中，來找出 <code class="hint_blue">f(x)</code> 的遺漏值。</p>
+                <div>
+                    <p data-each="TABLEVALS as tableval"><span data-if="tableval.yval === ' '"><code>\color{<var>BLUE</var>}{f(<var>tableval.xval</var>)} = <var>COEF</var> \cdot \color{<var>ORANGE</var>}{<var>tableval.xval</var>} + <var>CONS</var> = <var>tableval.xval * COEF</var> + <var>CONS</var> = <var>tableval.xval * COEF + CONS</var></code></span></p>
+                </div>
+                <div>
+                    <p><span data-if="I === 1">這個遺漏值是</span><span data-else>這些遺漏值是</span>：</p>
+                    <p data-each="TABLEVALS as tableval"><span data-if="tableval.yval === ' '"><code>f(<var>tableval.xval</var>) = <var>tableval.xval * COEF + CONS</var></code></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

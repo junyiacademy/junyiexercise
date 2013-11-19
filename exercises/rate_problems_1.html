@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html data-require="math word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>速率問題 1</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="VEHC1">vehicle(1)</var>
+            <var id="VEHC2">vehicle(2)</var>
+
+            <var id="REASONABLESPEED">
+                function(vehicletype) {
+                    if (vehicletype === "bike") {
+                        return randRange(5, 15);
+                    } else if (vehicletype ==="horse") {
+                        return randRange(3, 30);
+                    } else if (vehicletype ==="train") {
+                        return randRange(30, 70);
+                    } else {
+                        return randRange(10, 65);
+                    }
+                }
+            </var>
+
+            <var id="SPEED1">REASONABLESPEED(VEHC1)</var>
+            <var id="SPEED2" data-ensure="SPEED2 !== SPEED1">REASONABLESPEED(VEHC2)</var>
+            <var id="AVG">SPEED1 &lt; SPEED2 ? randRange(SPEED1 + 1, SPEED2 - 1) : randRange(SPEED2 + 1, SPEED1 - 1)</var>
+            <var id="TIME">randRange(1, 9)</var>
+            <var id="DIST">AVG * TIME</var>
+            <var id="DIST2">(SPEED1 * SPEED2 * TIME - DIST * SPEED2) / (SPEED1 - SPEED2)</var>
+            <var id="DIST1">DIST - DIST2</var>
+        </div>
+
+        <div class="problems">
+            <div id="original">
+                <div class="problem">
+                    <p><var>person(1)</var>一開始搭上以每小時<var>SPEED1</var>公里的速度前進的<var>VEHC1</var>。</p>
+                    <p>接著，<var>he(1)</var>改以<var>VEHC2</var>用每小時<var>SPEED2</var>公里的速度前進。</p>
+                    <p><var>he(1)</var>總共花了<var>plural(TIME, "小時")</var>前進<var>DIST</var>公里。</p>
+                </div>
+                <p class="question">那麼，<var>person(1)</var>以<var>VEHC1</var>前進了幾公里呢？（四捨五入到最接近的個位數）</p>
+                <div class="solution" data-type="multiple">
+                    <p><span class="sol" style="padding-right: 5px" data-forms="integer"><var>round(DIST1)</var></span> 公里。</p>
+                </div>
+                <div class="hints" data-apply="appendContents">
+                    <p id="final-hint"><code>d_<var>vehicleVar(1)</var> = <var>round(DIST1)</var></code> 公里。</p>
+                </div>
+            </div>
+            <div data-type="original">
+                <p class="question">那麼，<var>person(1)</var>以<var>vehicle(2)</var>前進了幾公里呢？（四捨五入到最接近的個位數）</p>
+                <div class="solution" data-type="multiple">
+                    <p><span class="sol" style="padding-right: 5px" data-forms="integer"><var>round(DIST2)</var></span> 公里。</p>
+                </div>
+                <div class="hints" data-apply="appendContents">
+                    <p id="final-hint"><code>d_<var>vehicleVar(2)</var> = <var>round(DIST2)</var></code> 公里。</p>
+                </div>
+            </div>
+            <div data-type="original">
+                <p class="question">那麼，請問<var>person(1)</var>以<var>vehicle(1)</var>前進了幾分鐘呢？（四捨五入到最接近的個位數）</p>
+                <div class="solution" data-type="multiple">
+                    <p><span class="sol" style="padding-right: 5px" data-forms="integer"><var>round(DIST1 / SPEED1 * 60)</var></span> 分鐘。</p>
+                </div>
+                <div class="hints" data-apply="appendContents">
+                    <p id="final-hint"><code>t_<var>vehicleVar(1)</var> = <var>round(DIST1 / SPEED1 * 60)</var></code> 分鐘。</p>
+                </div>
+            </div>
+            <div data-type="original">
+                <p class="question">那麼，請問<var>person(1)</var>以<var>vehicle(2)</var>前進了幾分鐘呢？（四捨五入到最接近的個位數）</p>
+                <div class="solution" data-type="multiple">
+                    <p><span class="sol" style="padding-right: 5px" data-forms="integer"><var>round(DIST2 / SPEED2 * 60)</var></span> 分鐘。</p>
+                </div>
+                <div class="hints" data-apply="appendContents">
+                    <p id="final-hint"><code>t_<var>vehicleVar(2)</var> = <var>round(DIST2 / SPEED2 * 60)</var></code> 分鐘。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="hints">
+            <p>要記得，<code>d = r * t</code>，或者寫成另外一種表式方式，<code>t = d / r</code>。</p>
+            <div>
+                <p><code>d_<var>vehicleVar(1)</var> =</code><var>person(1)</var>藉<var>vehicle(1)</var>移動的公里數。</p>
+                <p><code>d_<var>vehicleVar(2)</var> =</code><var>person(1)</var>藉<var>vehicle(2)</var>移動的公里數。</p>
+                <p>總移動距離：<code class="hint_orange">d_<var>vehicleVar(1)</var> + d_<var>vehicleVar(2)</var> = <var>DIST</var></code></p>
+            </div>
+            <p>總共所花費的時間：<code class="hint_blue">t_<var>vehicleVar(1)</var> + t_<var>vehicleVar(2)</var> = <var>TIME</var></code></p>
+            <p><code class="hint_blue">t_<var>vehicleVar(1)</var> = (d_<var>vehicleVar(1)</var> / <var>SPEED1</var>)</code> 且
+                <code class="hint_blue">t_<var>vehicleVar(2)</var> = (d_<var>vehicleVar(2)</var> / <var>SPEED2</var>)</code></p>
+            <p>帶入藍色方程式裡面，可以得到：
+                <code>(d_<var>vehicleVar(1)</var> / <var>SPEED1</var>) + (d_<var>vehicleVar(2)</var> / <var>SPEED2</var>) = <var>TIME</var></code></p>
+            <p>將上面的式子兩邊同時乘上<var>-1 * SPEED1</var>：
+                <code class="hint_orange">-d_<var>vehicleVar(1)</var> - (<var>SPEED1</var> / <var>SPEED2</var>) * d_<var>vehicleVar(2)</var>  = <var>-SPEED1 * TIME</var></code></p>
+            <p>把兩道橘色的式子加起來，可以得到：
+                <code>(<var>SPEED2 - SPEED1</var> / <var>SPEED2</var>) * d_<var>vehicleVar(2)</var> = <var>DIST - (SPEED1 * TIME)</var></code></p>
+            <p>計算所有變數的值（記得要四捨五入到整數位喔）：<br>
+                <code>d_<var>vehicleVar(2)</var> =</code> <var>roundTo( 4 , DIST2 )</var> <code>(<var>round(DIST2)</var>)</code>公里<br>
+                <code>d_<var>vehicleVar(1)</var> =</code> <var>roundTo( 4 , DIST1 )</var> <code>(<var>round(DIST1)</var>)</code>公里<br>
+                <code>t_<var>vehicleVar(1)</var> =</code> <var>roundTo( 4 , DIST1 / SPEED1 * 60 )</var> <code>(<var>round(DIST1 / SPEED1 * 60)</var>)</code>分鐘<br>
+                <code>t_<var>vehicleVar(2)</var> =</code> <var>roundTo( 4 , DIST2 / SPEED2 * 60 )</var> <code>(<var>round(DIST2 / SPEED2 * 60)</var>)</code>分鐘</p>
+        </div>
+    </div>
+</body>
+</html>

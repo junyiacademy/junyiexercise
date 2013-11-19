@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-polygon interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>圓周角 3</title>
+    <script src="../khan-exercise.js"></script>
+    <script>
+        /**
+         * Computes arc start and end angles that will guarantee an
+         * "inner arc" so that the arc is always less than 180 degrees.
+         */
+        function innerArc( start, end ) {
+            var delta = ( end - start + 360 ) % 360;
+            if ( delta >= 180 ) {
+                return {
+                    start: end,
+                    end: start
+                };
+            }
+            return {
+                start: start,
+                end: end
+            };
+        }
+    </script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="find-inscribed-outside">
+            <div class="vars">
+                <var id="START">randRange( 0, 360 )</var>
+                <var id="CENTRAL">randRange( 10, 80 ) * 2</var>
+                <var id="SUBTENDED_POINT">randFromArray([
+                        randRange( START + CENTRAL + 5, START + 180 - 5 ),
+                        randRange( START + CENTRAL + 180 + 5, START + 360 - 5 )
+                        ]) % 360</var>
+                <var id="RADIUS">4</var>
+
+                <var id="GIVEN">CENTRAL</var>
+                <var id="GIVEN_LABEL">"藍色的"</var>
+                <var id="ASKED_LABEL">"橘色的"</var>
+            </div>
+            <p class="question">如果<var>GIVEN_LABEL</var>角是 <var>GIVEN</var> 度，那請問<var>ASKED_LABEL</var>角是幾度？</p>
+            <p>這是一個特殊的情況，因為藍色與橘色的角共用同一條線段。藍色的角叫做圓心角，而橘色的角叫圓周角。</p>
+            <div class="graphie" id="circle">
+                init({
+                    range: [ [ -RADIUS - 1, RADIUS + 1 ], [ -RADIUS - 1, RADIUS + 1 ] ]
+                });
+                addMouseLayer();
+                graph.circle = new Circle( RADIUS );
+
+                style({ stroke: BLUE, fill: BLUE });
+                graph.circle.drawCenter();
+                graph.circle.drawPoint( START );
+                graph.circle.drawPoint( START + CENTRAL );
+
+                graph.circle.drawCentralAngle( START, START + CENTRAL );
+
+                style({ stroke: ORANGE, fill: ORANGE });
+                graph.circle.drawInscribedAngle( SUBTENDED_POINT, START, START + CENTRAL );
+
+                graph.circle.drawMovablePoint( SUBTENDED_POINT, START + CENTRAL, START );
+            </div>
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>CENTRAL / 2</var></span> 度
+            </div>
+            <div class="hints">
+                <div>
+					<p>上面用虛線畫出的直徑產生了幾個新的角；利用這些新畫出來的角，我們能推斷出什麼呢？</p>
+                    <div class="graphie" data-update="circle">
+                        style({stroke: BLUE, "stroke-dasharray": "-"}, function() {
+                            graph.circle.drawChord( SUBTENDED_POINT, SUBTENDED_POINT + 180 );
+                        });
+                    </div>
+                </div>
+                <div>
+                    <p>如果作過之前的圓周角題目，我們便知道綠色的角和粉紅色的角有以下的關係：</p>
+                    <p><code>\color{<var>GREEN</var>}{\text{綠色的角}} = \dfrac{1}{2} \cdot \color{<var>PINK</var>}{\text{粉紅色的角}}</code></p>
+                    <div class="graphie" data-update="circle">
+                        style({stroke: BLUE, fill: BLUE}, function() {
+                            graph.circle.drawPoint( SUBTENDED_POINT + 180 );
+                        });
+                        style({stroke: PINK});
+                        var arc = innerArc( START, ( SUBTENDED_POINT + 180 ) % 360 );
+
+                        graph.central = graph.circle.drawCentralAngle( arc.start, arc.end, 0.7 );
+                        style({stroke: GREEN});
+                        graph.inscribed = graph.circle.drawInscribedAngle( SUBTENDED_POINT, arc.start, arc.end, 0.7 );
+                    </div>
+                </div>
+                <div>
+                    <p>我們可以看到圖中還有另一對特殊圓心角與圓周角的組合(粉紅色角與綠色角)，而且這兩個角彼此的關係也跟之前一樣。</p>
+                    <div class="graphie" data-update="circle">
+                        graph.central.arc.animate({opacity: 0.4});
+                        graph.central.radii[0].remove();
+                        graph.central.radii[1].remove();
+                        graph.inscribed.arc.animate({opacity: 0.4});
+                        graph.inscribed.chords[0].remove();
+                        graph.inscribed.chords[1].remove();
+
+                        var arc = innerArc( START + CENTRAL, ( SUBTENDED_POINT + 180 ) % 360 );
+
+                        style({stroke: PINK});
+                        graph.central = graph.circle.drawCentralAngle( arc.start, arc.end, 0.9 );
+                        style({stroke: GREEN});
+                        graph.inscribed = graph.circle.drawInscribedAngle( SUBTENDED_POINT, arc.start, arc.end, 0.9 );
+                    </div>
+                </div>
+                <div>
+                    <p>觀察這個圖，我們可以作出以下的推斷：</p>
+                    <p><code>\color{<var>GREEN</var>}{\text{小的綠色角}} + \color{<var>ORANGE</var>}{\text{橘色角}} = \color{<var>GREEN</var>}{\text{大的綠色角}}</code></p>
+                    <div class="graphie" data-update="circle">
+                        graph.central.arc.animate({opacity: 0.4});
+                        graph.central.radii[0].remove();
+                        graph.central.radii[1].remove();
+                        graph.inscribed.arc.animate({opacity: 0.4});
+                        graph.inscribed.chords[0].remove();
+                        graph.inscribed.chords[1].remove();
+                    </div>
+                </div>
+                <div>
+                    <p>利用我們一開始就知道的綠色角和粉紅色角之間的關係，我們可以把等式改寫成下面這樣：</p>
+                    <p><code>\dfrac{1}{2} \cdot \color{<var>PINK</var>}{\text{小的粉紅色角}} + \color{<var>ORANGE</var>}{\text{橘色角}} = \dfrac{1}{2} \cdot \color{<var>PINK</var>}{\text{大的粉紅色角}}</code></p>
+                </div>
+                <p><code>\color{<var>ORANGE</var>}{\text{橘色角}} = \dfrac{1}{2}( \color{<var>PINK</var>}{\text{大的粉紅色角}} - \color{<var>PINK</var>}{\text{小的粉紅色角}})</code></p>
+                <div>
+                    <p>觀察這個圖，我們還可以做出下列的推斷：</p>
+                    <p><code>\color{<var>PINK</var>}{\text{小的粉紅色角}} + \color{<var>BLUE</var>}{\text{藍色角}} = \color{<var>PINK</var>}{\text{大的粉紅色角}}</code></p>
+                    <p><code>\color{<var>BLUE</var>}{\text{藍色角}} = \color{<var>PINK</var>}{\text{大的粉紅色角}} - \color{<var>PINK</var>}{\text{小的粉紅色角}}</code></p>
+                </div>
+                <div>
+                    <p>根據上面橘色與藍色角相關的的等式，我們發現橘色角是藍色角的一半大，所以我們可以列出以下的等式：</p>
+                    <p><code>\color{<var>ORANGE</var>}{\text{橘色角}} = \dfrac{1}{2} \cdot \color{<var>BLUE</var>}{\text{藍色角}}</code></p>
+                </div>
+                <p><code>\color{<var>ORANGE</var>}{\text{橘色角}} = \dfrac{1}{2} \cdot \color{<var>BLUE</var>}{<var>CENTRAL</var>^{\circ}}</code></p>
+                <p><code>\color{<var>ORANGE</var>}{\text{橘色角}} = \color{<var>ORANGE</var>}{<var>CENTRAL / 2</var>^{\circ}}</code></p>
+            </div>
+        </div>
+        <div id="find-central" data-type="find-inscribed-outside">
+            <div class="vars">
+                <var id="GIVEN">CENTRAL / 2</var>
+                <var id="GIVEN_LABEL">"橘色的"</var>
+                <var id="ASKED_LABEL">"藍色的"</var>
+            </div>
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>CENTRAL</var></span> 度
+            </div>
+            <div class="hints">
+                <div>
+                    <p>上面用虛線畫出的直徑產生了幾個新的角；利用這些新畫出來的角，我們能推斷出什麼呢？</p>
+                    <div class="graphie" data-update="circle">
+                        style({stroke: BLUE, "stroke-dasharray": "-"}, function() {
+                            graph.circle.drawChord( SUBTENDED_POINT, SUBTENDED_POINT + 180 );
+                        });
+                    </div>
+                </div>
+                <div>
+                    <p>如果作過之前的圓周角題目，我們便知道綠色的角和粉紅色的角有以下的關係：</p>
+                    <p><code>\color{<var>PINK</var>}{\text{粉紅色角}} = 2 \cdot \color{<var>GREEN</var>}{\text{綠色角}}</code></p>
+                    <div class="graphie" data-update="circle">
+                        style({stroke: BLUE, fill: BLUE}, function() {
+                            graph.circle.drawPoint( SUBTENDED_POINT + 180 );
+                        });
+                        style({stroke: PINK});
+
+                        var arc = innerArc( START, ( SUBTENDED_POINT + 180 ) % 360 );
+
+                        graph.central = graph.circle.drawCentralAngle( arc.start, arc.end, 0.7 );
+                        style({stroke: GREEN});
+                        graph.inscribed = graph.circle.drawInscribedAngle( SUBTENDED_POINT, arc.start, arc.end, 0.7 );
+                    </div>
+                </div>
+                <div>
+                    <p>我們可以看到圖中還有另一對特殊圓心角與圓周角的組合(粉紅色角與綠色角)，而且這兩個角彼此的關係也跟之前一樣。</p>
+                    <div class="graphie" data-update="circle">
+                        graph.central.arc.animate({opacity: 0.4});
+                        graph.central.radii[0].remove();
+                        graph.central.radii[1].remove();
+                        graph.inscribed.arc.animate({opacity: 0.4});
+                        graph.inscribed.chords[0].remove();
+                        graph.inscribed.chords[1].remove();
+
+                        var arc = innerArc( START + CENTRAL, ( SUBTENDED_POINT + 180 ) % 360 );
+
+                        style({stroke: PINK});
+                        graph.central = graph.circle.drawCentralAngle( arc.start, arc.end, 0.9 );
+                        style({stroke: GREEN});
+                        graph.inscribed = graph.circle.drawInscribedAngle( SUBTENDED_POINT, arc.start, arc.end, 0.9 );
+                    </div>
+                </div>
+                <div>
+                    <p>觀察這個圖，我們還可以做出下列的推斷：</p>
+                    <p><code>\color{<var>PINK</var>}{\text{小的粉紅色角}} + \color{<var>BLUE</var>}{\text{藍色角}} = \color{<var>PINK</var>}{\text{大的粉紅色角}}</code></p>
+                    <div class="graphie" data-update="circle">
+                        graph.central.arc.animate({opacity: 0.4});
+                        graph.central.radii[0].remove();
+                        graph.central.radii[1].remove();
+                        graph.inscribed.arc.animate({opacity: 0.4});
+                        graph.inscribed.chords[0].remove();
+                        graph.inscribed.chords[1].remove();
+                    </div>
+                </div>
+                <div>
+                    <p>利用我們一開始就知道的綠色角和粉紅色角之間的關係，我們可以把等式改寫成下面這樣：</p>
+                    <p><code>2 \cdot \color{<var>GREEN</var>}{\text{小的綠色角}} + \color{<var>BLUE</var>}{\text{藍色角}} = 2 \cdot \color{<var>GREEN</var>}{\text{大的綠色角}}</code></p>
+                </div>
+                <p><code>\color{<var>BLUE</var>}{\text{藍色角}} = 2( \color{<var>GREEN</var>}{\text{大的綠色角}} - \color{<var>GREEN</var>}{\text{小的綠色角}})</code></p>
+                <div>
+                    <p>觀察這個圖，我們還可以做出下列的推斷：</p>
+                    <p><code>\color{<var>GREEN</var>}{\text{小的綠色角}} + \color{<var>ORANGE</var>}{\text{橘色角}} = \color{<var>GREEN</var>}{\text{大的綠色角}}</code></p>
+                    <p><code>\color{<var>ORANGE</var>}{\text{橘色角}} = \color{<var>GREEN</var>}{\text{大的綠色角}} - \color{<var>GREEN</var>}{\text{小的綠色角}}</code></p>
+                </div>
+                <div>
+                    <p>根據上面橘色與藍色角相關的的等式，我們發現藍色角是橘色角的兩倍大，所以我們可以列出以下的等式：</p>
+                    <p><code>\color{<var>BLUE</var>}{\text{藍色角}} = 2 \cdot \color{<var>ORANGE</var>}{\text{橘色角}}</code></p>
+                </div>
+                <p><code>\color{<var>BLUE</var>}{\text{藍色角}} = 2 \cdot \color{<var>ORANGE</var>}{<var>CENTRAL / 2</var>^{\circ}}</code></p>
+                <p><code>\color{<var>BLUE</var>}{\text{藍色角}} = \color{<var>BLUE</var>}{<var>CENTRAL</var>^{\circ}}</code></p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

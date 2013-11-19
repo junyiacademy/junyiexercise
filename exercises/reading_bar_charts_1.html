@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers d3 word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>長條圖1</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+        <var id="HOUSES"> [ "葛來分多", "赫夫帕夫", "雷文克勞", "史萊哲林" ]</var>
+        <var id="INDEX">randRange( 0, HOUSES.length - 1 )</var>
+        <var id="VALUES">shuffle( [ 1, 2, 3, 4, 5 ], 4 )</var>
+        <var id="DATA">
+            (function() {
+                var ordinals = $.map( HOUSES, function( house, i ) {
+                    return house.charAt( 0 );
+                });
+
+                return { min: 0,
+                    max: 5,
+                    tickCount: 5,
+                    values: VALUES,
+                    ordinals: ordinals };
+            })()
+        </var>
+    </div>
+    <div class="problems">
+        <div>
+            <p>霍格華茲分成四個學院: <var>toSentence( HOUSES )</var>。下方的圖表顯示每一個學院當天獲得的學院分數。</p>
+            <p class="question">請問，<var>HOUSES[ INDEX ]</var>今天獲得幾分?</p>
+            <div class="graphie" id="barchart">
+                var width = 5;
+                var height = 5;
+
+                init({
+                    range: [ [ -1, width + 1 ], [ -1, height + 0.5 ] ]
+                });
+
+                var pos = { lx: 0, ly: 0, width: width, height: height};
+                graph.barchart = new BarChart( DATA, pos );
+                graph.barchart.draw();
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <span style="padding-right: 5px" class="sol" data-forms="integer, decimal"><var>VALUES[ INDEX ]</var></span>分
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>看圖表下方的字來找出代表<var>HOUSES[ INDEX ]</var>的圖。</p>
+                    <div class="graphie" data-update="barchart">
+                        graph.barchart.highlightDataPoint( INDEX );
+                    </div>
+                </div>
+                <div>
+                    <p>用長條的高度跟左邊的數字做比較。</p>
+                    <div class="graphie" data-update="barchart">
+                        graph.barchart.labelDataPoint( INDEX );
+                    </div>
+                </div>
+                <p><var>HOUSES[ INDEX ]</var>獲得了<var>VALUES[ INDEX ]</var>分。</p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

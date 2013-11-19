@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers graphie-geometry math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>四邊形的角度</title>
+    <script src="../khan-exercise.js"></script>
+    <script>
+
+    </script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="trapezoid">
+                <div class="vars">
+                    <var id="ANGLES">randomQuadAngles.trapezoid()</var>
+                    <var id="ANSWER_POS">randRange( 0, 3 )</var>
+                    <var id="SHOWN_POS">ANSWER_POS % 2 === 0 ? ( ANSWER_POS + 3 ) % 4 : ( ANSWER_POS + 1 ) % 4</var>
+                    <var id="ANG_LABELS">
+                        function(){
+                            var a = [ "", "","" ,"" ];
+                            a[ ANSWER_POS ] = "x";
+                            a[ SHOWN_POS ] = ANGLES[ SHOWN_POS ] + "^{\\circ}";
+                            return a;
+                        }()
+                    </var>
+                </div>
+                <div class="problem">
+                    請問，角度度數為 x 的角多大呢？
+                </div>
+                <div class="question">
+                    <div class="graphie">
+                        init({
+                            range: [ [-1, 12 ], [ -8, -1 ] ]
+                        })
+                        var q = new Quadrilateral( [ 3.5, -7 ],  ANGLES, randRange(0, 1 ) + 0.5, "", 3 );
+                        q.boxOut( [ [ [ 0, -10 ], [ 0, 10 ] ] ], [ 0.7, 0 ] );
+                        q.boxOut( [ [ [ 11, -10 ], [ 11, 10 ] ] ], [ -0.7, 0 ] );
+
+                        q.draw();
+                        q.labels = { "angles" : ANG_LABELS, "sides" : $.map( $.map( q.sides, lineLength ), function( x ){ return x.toFixed( 1 ); } ) };
+                        q.drawLabels();
+                    </div>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <span class="sol"><var>ANGLES[ ANSWER_POS ]</var></span><code>\Large{^\circ}</code>
+                </div>
+                <div class="hints">
+                    <p>這個圖形是一個梯形。</p>
+                    <p>梯形中，同一邊的角是互補的。</p>
+                    <p><code><var>ANGLES[ SHOWN_POS ]</var> + x = 180</code></p>
+                    <p><code>x = 180 - <var>ANGLES[ SHOWN_POS ]</var></code></p>
+                    <p><code>x =  <var>ANGLES[ ANSWER_POS ]</var></code></p>
+                </div>
+            </div>
+            <div id="isoscelesTrap1" data-type="trapezoid">
+                <div class="vars">
+                    <var id="ANGLES">randomQuadAngles.isoscelesTrapezoid()</var>
+                </div>
+            </div>
+            <div id="isoscelesTrap2" data-type="trapezoid">
+                <div class="vars">
+                    <var id="ANGLES">randomQuadAngles.isoscelesTrapezoid()</var>
+                    <var id="SHOWN_POS">ANSWER_POS % 2 === 0 ? ( ANSWER_POS + 1 ) : ( ANSWER_POS - 1 )</var>
+                </div>
+
+                <div class="hints">
+                    <p>這個圖形是一個等腰梯形。</p>
+                    <p>等腰梯形底邊兩側的角是相等的。</p>
+                    <p>因此，角度 x 的值也是 <code><var>ANGLES[ SHOWN_POS ]</var></code> 。</p>
+                </div>
+            </div>
+            <div id="parallelogram1" data-type="trapezoid">
+                <div class="vars">
+                    <var id="ANGLES">randomQuadAngles.parallelogram()</var>
+                    <var id="SHOWN_POS">( ANSWER_POS + 2 ) % 4</var>
+                </div>
+                <div class="hints">
+                    <p>這是一個平行四邊形。</p>
+                    <p>平行四邊形的對角是彼此相等的。</p>
+                    <p>因此，角度 x 的值也是 <code><var>ANGLES[ SHOWN_POS ]</var></code> 。</p> 
+                </div>
+            </div>
+            <div id="parallelogram2" data-type="trapezoid">
+                <div class="vars">
+                    <var id="ANGLES">randomQuadAngles.parallelogram()</var>
+                    <var id="SHOWN_POS">ANSWER_POS % 2 === 0 ? ( ANSWER_POS + 1 ) : ( ANSWER_POS - 1 )</var>
+                </div>
+                <div class="hints">
+                    <p>這是一個平行四邊形。</p>
+                    <p>平行四邊形的鄰角是互補的。</p>
+                    <p><code><var>ANGLES[ SHOWN_POS ]</var> + x = 180</code></p>
+                    <p><code>x = 180 - <var>ANGLES[ SHOWN_POS ]</var></code></p>
+                    <p><code>x =  <var>ANGLES[ ANSWER_POS ]</var></code></p>
+                </div>
+            </div>
+            <div id="rhombus1" data-type="parallelogram1">
+                <div class="vars">
+                    <var id="ANGLES">randomQuadAngles.rhombus()</var>
+                </div>
+                <div class="question">
+                    <div class="graphie">
+                        init({
+                            range: [ [-1, 13 ], [ -8, -1 ] ]
+                        })
+                        var q = new Quadrilateral( [ 3.5, -7 ],  ANGLES, 1, "", 3 );
+                        q.boxOut( [ [ [ 0, -10 ], [ 0, 10 ] ] ], [ 0.7, 0 ] );
+                        q.boxOut( [ [ [ 12, -10 ], [ 12, 10 ] ] ], [ -0.7, 0 ] );
+
+                        q.draw();
+                        q.labels = { "angles" : ANG_LABELS, "sides" : $.map( $.map( q.sides, lineLength ), function( x ){ return x.toFixed( 1 ); } ) };
+                        q.drawLabels();
+                    </div>
+                </div>
+                <div class="hints">
+                    <p>這個四邊形是菱形，因為每個邊都相等。</p>
+                    <p>菱形的對邊是彼此相等的。</p>
+                    <p>因此，角度 x 的值也是 <code><var>ANGLES[ SHOWN_POS ]</var></code> 。</p>
+                </div>
+            </div>
+            <div id="rhombus2" data-type="rhombus1">
+                <div class="vars">
+                    <var id="ANGLES">randomQuadAngles.rhombus()</var>
+                    <var id="SHOWN_POS">ANSWER_POS % 2 === 0 ? ( ANSWER_POS + 1 ) : ( ANSWER_POS - 1 )</var>
+                </div>
+                <div class="hints">
+                    <p>這個四邊形是菱形，因為每個邊都相等。</p>
+					<p>菱形中相鄰的角是彼此互補的。</p>
+                    <p><code><var>ANGLES[ SHOWN_POS ]</var> + x = 180</code></p>
+                    <p><code>x = 180 - <var>ANGLES[ SHOWN_POS ]</var></code></p>
+                    <p><code>x =  <var>ANGLES[ ANSWER_POS ]</var></code></p>
+                </div>
+            </div>
+            <div id="kite" data-type="rhombus1">
+                <div class="vars">
+                    <var id="ANGLES">randomQuadAngles.kite()</var>
+                    <var id="ANSWER_POS">randFromArray( [ 1, 3 ] )</var>
+                    <var id="SHOWN_POS">( ANSWER_POS + 2 ) % 4</var>
+                </div>
+                <div class="hints">
+                    <p>這個平行四邊形是一個箏形 (鳶形) ，因為它有兩組相鄰又彼此相等的角。</p>
+                    <p>在箏形中，兩個不同長的邊所夾的角是跟對邊相等的。</p>
+                    <p>因此，角度 x 的值也是 <code><var>ANGLES[ SHOWN_POS ]</var></code> 。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

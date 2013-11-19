@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers angles">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>同位角</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+        <var id="ANCHOR">randRange( 20, 160 )</var>
+        <var id="KNOWN_INDEX">randRange( 0, 7 )</var>
+        <var id="UNKNOWN_INDEX">( KNOWN_INDEX + 4 ) % 8</var>
+        <var id="MEASURE">KNOWN_INDEX % 2 === 0 ? ANCHOR : 180 - ANCHOR</var>
+    </div>
+
+    <div class="problems">
+        <div>
+            <p>下面的兩條水平線互相平行，而且有第三條線與它們相交，如下圖所示。</p>
+            <p class="question">如果我們知道<span class="hint_blue">藍色的角是 <var>MEASURE</var> 度</span> ，那請問 <span class="hint_orange">橘色的角是幾度</span>？</p>
+            <p class="solution" data-forms="integer"><var>MEASURE</var></p>
+            <div class="graphie" id="parallel-lines">
+                init({
+                    range: [ [ -1, 11 ], [-1, 4] ]
+                });
+                graph.pl = new ParallelLines( 0, 0, 10, 0, 3 );
+                graph.pl.draw();
+                graph.pl.drawTransverse( ANCHOR );
+                graph.pl.drawAngle( KNOWN_INDEX, true );
+                graph.pl.drawAngle( UNKNOWN_INDEX, false, "#FFA500" );
+            </div>
+        </div>
+    </div>
+
+    <div class="hints">
+        <p>你會發現，藍色的角跟橘色的角的相對位置是相同的，只是在不同的相交點產生而已。</p>
+        <p>我們可以說，這兩個角是同位角。</p>
+        <p>我們可以證明為什麼同位角是相等的，但我們現在先略過證明，直接利用這個結果回答問題。</p>
+        <div>
+            <p>橘色的角是 <var>MEASURE</var> 度。</p>
+            <div class="graphie" data-update="parallel-lines">
+                graph.pl.drawAngle( UNKNOWN_INDEX, true, "#FFA500" );
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

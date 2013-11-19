@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>認識分數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars" data-ensure="NUMERATOR < DENOMINATOR">
+            <var id="NUMERATOR">randRange( 1, 11 )</var>
+            <var id="DENOMINATOR">randRange( 2, 12 )</var>
+        </div>
+
+        <div class="problems">
+            <div id="original">
+                <p class="question"> <code>\dfrac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code>的分子是？</p>
+                <p class="solution" data-forms="integer"><var>NUMERATOR</var></p>
+                <div class="hints">
+                    <p>分數可以用來幫助我們了解一個東西在整體中所占的比例。</p>
+                    <div>
+                        <p>分數<code>\dfrac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code>可以表示成一片圓餅<var>DENOMINATOR</var>份中的<var>NUMERATOR</var> 份。換句話說，就是有一片圓餅被切成<var>DENOMINATOR</var>片，但是我們只想要其中<var>NUMERATOR</var>片。</p>
+                        <div class="graphie">
+                            init({
+                                range: [ [-2, 10], [-2, 2] ],
+                                scale: 25
+                            });
+
+                            piechart( [NUMERATOR, DENOMINATOR - NUMERATOR], ["#6495ED", "#FFA500"], 2 );
+                            label( [2, 0], "=\\dfrac{\\color{#6495ED}{" + NUMERATOR + "}}{" + DENOMINATOR + "}"
+                                + "=\\dfrac{\\color{#6495ED}{\\text{分子}}}{\\text{分母}}", "right");
+                        </div>
+                    </div>
+                    <p>分子就是我們想要的片數，而我們在寫的時候，會把它寫在分數中間那條橫線的上方。而線下面的數字叫做分母，就是這一片餅總共被切的片數。</p>
+                    <p id="answer_hint">所以，分子就是 <code><var>NUMERATOR</var></code> 。</p>
+                </div>
+            </div>
+            <div data-type="original">
+                <p class="question">分數<code>\dfrac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code>的分母是？</p>
+                <p class="solution" data-forms="integer"><var>DENOMINATOR</var></p>
+                <div class="hints" data-apply="appendContents">
+                    <p id="answer_hint">所以，分母是<code><var>DENOMINATOR</var></code>。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

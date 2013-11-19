@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html data-require="math">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>有效數字 1</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+    <div class="vars">
+        <var id="LEADING"> Array( randRange( 0, 2 ) ).join( '0' ) </var>
+        <var id="RIGHTLEADING"> Array( randRange( 0, 2) ).join( '0' ) </var>
+        <var id="TRAILING"> Array( randRange( 0, 4 ) ).join( '0' ) </var>
+        <var id="IS_ZERO"> random() &gt; 0.5 </var>
+        <var id="HAS_DOT"> IS_ZERO ? true : random() &gt; 0.5 </var>
+        <var id="RIGHTSIDE"> randRange( 1, 9, randRange( 1, 6 ) ).join('') </var>
+        <var id="LEFTSIDE"> IS_ZERO ? '0' : randRange( 1, 9, randRange( 1, 4 ) ).join('') </var>
+        <var id="TOTAL"> HAS_DOT ?
+            LEADING + LEFTSIDE + '.' + RIGHTLEADING + RIGHTSIDE + TRAILING :
+            LEADING + LEFTSIDE + TRAILING </var>
+        <var id="SOLUTION"> IS_ZERO ?
+            RIGHTSIDE.length + TRAILING.length :
+            HAS_DOT ?
+                LEFTSIDE.length + RIGHTLEADING.length + RIGHTSIDE.length + TRAILING.length :
+                LEFTSIDE.length </var>
+        <var id="PROPER_LEADING"> IS_ZERO ? LEADING + LEFTSIDE + '.' + RIGHTLEADING : LEADING </var>
+        <var id="INBETWEEN"> IS_ZERO ? RIGHTSIDE : HAS_DOT ?
+            LEFTSIDE + '.' + RIGHTLEADING + RIGHTSIDE : LEFTSIDE </var>
+    </div>
+    <div class="problems">
+        <div>
+            <p class="question"><code><var>TOTAL</var></code> 有多少個有效數字?</p>
+            <p class="solution" data-forms="integer"><var>SOLUTION</var></p>
+        </div>
+    </div>
+    <div class="hints">
+        <div>
+            <p>找出所有的非零數字, 夾在其中的0也要算進來, 這些都是有效數字</p>
+            <p><code><var>PROPER_LEADING</var>\color{blue}{<var>INBETWEEN</var>}<var>TRAILING</var></code></p>
+        </div>
+        <div data-if="PROPER_LEADING.length > 0">
+            <p>前面的0不是有效數字</p>
+            <p><code>\color{orange}{<var>PROPER_LEADING</var>}\color{blue}{<var>INBETWEEN</var>}<var>TRAILING</var></code></p>
+        </div>
+        <div data-if="TRAILING.length > 0 && HAS_DOT">
+            <p>因為這是一個小數, 小數末尾的幾個0都是有效數字</p>
+            <p><code>\color{orange}{<var>PROPER_LEADING</var>}\color{blue}{<var>INBETWEEN</var><var>TRAILING</var>}</code></p>
+        </div>
+        <div data-if="TRAILING.length > 0 && !HAS_DOT">
+            <p>因為這不是一個小數, 所以後面的0不是有效數字</p>
+            <p><code>\color{orange}{<var>PROPER_LEADING</var>}\color{blue}{<var>INBETWEEN</var>}\color{orange}{<var>TRAILING</var>}</code></p>
+        </div>
+        <p>由此我們可以得知有<var>SOLUTION</var>位有效數字</p>
+    </div>
+</div>
+</body>
+</html>

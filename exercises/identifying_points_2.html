@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html data-require="math graphie expressions">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>辦視座標 2</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="M">randRangeNonZero( -3, 3 )</var>
+            <var id="B">randRangeNonZero( -2, 2)</var>
+            <var id="CORRECT">randRange( 0, 4 )</var>
+            <var id="POINTS">
+                (function() {
+                    var points = [];
+
+                    for ( var x = -2, i = 0; x &lt;= 2; x++, i++ ) {
+                        var y = x * M + B,
+                            jitter = randRangeNonZero( -2, 2 );
+
+                        if ( i === CORRECT ) {
+                            jitter = 0;
+                        }
+
+                        points.push( [ x, y + jitter ] );
+                    }
+                    return points;
+                })()
+            </var>
+
+            <var id="PAIR">function( arr ) {
+                return "(" + arr.join( ", " ) + ")";
+            }</var>
+        </div>
+
+        <div class="problems">
+            <div id="equation">
+                <p class="question">哪一個下列座標可以符合下面的等式？</p>
+                <p><code><var>$.map( POINTS, PAIR ).join( "\\qquad" )</var></code></p>
+                <p><code>y = <var>expr(["+", ["*", M, "x"], B])</var></code></p>
+                <p class="solution"><code><var>PAIR( POINTS[CORRECT] )</var></code></p>
+                <ul class="choices" data-category="true">
+                    <li data-each="POINTS as i, point"><code><var>PAIR( point )</var></code></li>
+                </ul>
+                <div class="hints">
+                    <p>我們可以將座標中的x值代入等式中。</p>
+                    <p>如果我們可以得到座標相同y值，那就得解了！</p>
+                    <div data-each="POINTS as i, point" data-unwrap>
+                        <div>
+                            <p>讓我們來看看 <code><var>PAIR( point )</var></code>。</p>
+                            <p>我們把 <code><var>point[ 0 ]</var></code> 代入 <code>x</code> ， 我們可得 <code><var>point[ 1 ]</var></code>嗎？</p>
+                        </div>
+                        <p><code>y = <span data-if="M !== 1">(<var>M</var>)</span>(<var>point[ 0 ]</var>) + <var>B</var> = <span data-if="M !== 1"><var>M * point[ 0 ]</var> + <var>B</var> = </span><var>M * point[ 0 ] + B</var></code></p>
+                    </div>
+                    <p>因此唯一符合等式的座標只有<code><var>PAIR( POINTS[ CORRECT ] )</var></code>。</p>
+                    <div>
+                        <p>我們可以透過標示座標與畫出方式程來看出解答。</p>
+                        <div class="graphie" id="grid">
+                            graphInit({
+                                range: 10,
+                                scale: 20,
+                                axisArrows: "<->",
+                                tickStep: 1,
+                                labelStep: 2
+                            });
+
+                            style({ stroke: BLUE, fill: BLUE });
+
+                            plot(function( x ) {
+                                return x * M + B;
+                            }, [ -10, 10 ]);
+
+                            $.each( POINTS, function( i, point ) {
+                                if ( i === CORRECT ) {
+                                    style({ stroke: ORANGE, fill: ORANGE }, function() {
+                                        circle( point, 0.3 );
+                                    });
+                                } else {
+                                    circle( point, 0.15 );
+                                }
+                            });
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="graphed">
+                <p class="question">下列哪一個座標會在座標圖的方程式之上？</p>
+                <p><code><var>$.map( POINTS, PAIR ).join( "\\qquad" )</var></code></p>
+
+                <div class="graphie" id="grid">
+                    graphInit({
+                        range: 10,
+                        scale: 20,
+                        axisArrows: "<->",
+                        tickStep: 1,
+                        labelStep: 2
+                    });
+
+                    style({ stroke: BLUE, fill: BLUE });
+
+                    plot(function( x ) {
+                        return x * M + B;
+                    }, [ -10, 10 ]);
+                </div>
+                <p class="solution"><code><var>PAIR( POINTS[CORRECT] )</var></code></p>
+                <ul class="choices" data-category="true">
+                    <li data-each="POINTS as i, point"><code><var>PAIR( point )</var></code></li>
+                </ul>
+                <div class="hints">
+                    <p>讓我們把座標各別標示出來吧！</p>
+                    <div class="graphie" data-update="grid" data-each="POINTS as i, point">
+                        circle( point, 0.15 );
+                    </div>
+                    <div>
+                        <p>唯一落在線上的座標是 <code><var>PAIR( POINTS[ CORRECT ] )</var></code>。</p>
+                        <div class="graphie" data-update="grid">
+                            style({ stroke: ORANGE, fill: ORANGE });
+                            circle( POINTS[ CORRECT ], 0.3);
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>等值分數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars" data-ensure="A < B">
+        <var id="A">randRange( 1, 3 )</var>
+        <var id="B">randRange( 2, 4 )</var>
+        <var id="M">randRange(2, 3)</var>
+        <var id="C">A * M</var>
+        <var id="D">B * M</var>
+        <var id="SYMBOL">binop( 1 )</var>
+    </div>
+
+    <div class="problems">
+        <div id="numerator">
+            <p class="question">符號<code><var>SYMBOL</var></code>的位置該填入什麼數字，才會使等式成立呢？</p>
+            <p><code>\dfrac{<var>A</var>}{<var>B</var>} = \dfrac{<var>SYMBOL</var>}{<var>D</var>}</code></p>
+            <div class="solution" data-forms="integer"><var>C</var></div>
+            <div class="hints">
+                <div>
+                    <p>左邊的分式可以想像將長方形<var>pizza( 1 )</var>切成<var>B</var>等份後拿了<var>A</var> 份。</p>
+                    <div class="graphie">
+                        init({ range: [ [0, 1], [0, 1] ], scale: [180, 25] });
+                        rectchart( [A, B - A], ["#e00", "#999"] );
+                    </div>
+                </div>
+                <div>
+                    <p>如果我們將<var>pizza( 1 )</var>切成<var>D</var>等份的話，請問我們該拿多少份<var>pizza( 1 )</var>才會得到相同份量呢？</p>
+                    <div class="graphie">
+                        init({ range: [ [0, 1], [0, 1] ], scale: [180, 25] });
+                        rectchart( [0, D], ["#e00", "#999"] );
+                    </div>
+                </div>
+                <div>
+                    <p>我們需要拿<var>C</var>份。</p>
+                    <div class="graphie">
+                        init({ range: [ [0, 1], [0, 1] ], scale: [180, 25] });
+                        rectchart( [C, D - C], ["#e00", "#999"] );
+                    </div>
+                </div>
+                <p><code>\dfrac{<var>A</var>}{<var>B</var>} = \dfrac{<var>C</var>}{<var>D</var>}</code>，所以<code><var>SYMBOL</var> = <var>C</var></code>。</p>
+
+                <div>
+                    <p>我們還有另個方法，試著將左邊的式子乘上<code>\dfrac{<var>M</var>}{<var>M</var>}</code>。</p>
+                    <p>因為<code>\dfrac{<var>M</var>}{<var>M</var>} = \dfrac{1}{1} = 1</code>，所以乘上1以後並不會改變原先分數的大小。</p>
+                </div>
+                <p>最後計算的結果是： <code>\dfrac{<var>A</var>}{<var>B</var>} \times \dfrac{<var>M</var>}{<var>M</var>} = \dfrac{<var>C</var>}{<var>D</var>} </code>，所以我們所求的 <code><var>SYMBOL</var> =<var>C</var></code>。</p>
+
+            </div>
+        </div>
+
+        <div id="denominator">
+            <p class="question">符號<code><var>SYMBOL</var></code>的位置該填入什麼數字，才會使等式成立呢？</p>
+            <p><code>\dfrac{<var>A</var>}{<var>B</var>} = \dfrac{<var>C</var>}{<var>SYMBOL</var>}</code></p>
+            <div class="solution" data-forms="integer"><var>D</var></div>
+            <div class="hints">
+                <div>左邊的分式可以想像將長方形<var>pizza( 1 )</var>切成<var>B</var>等份後拿了<var>A</var> 份。</p>
+                    <div class="graphie">
+                        init({ range: [ [0, 1], [0, 1] ], scale: [180, 25] });
+                        rectchart( [A, B - A], ["#e00", "#999"] );
+                    </div>
+                </div>
+
+                <div>
+                    <p>試問<var>pizza( 1 )</var>應該切成幾等份後，再拿出來的<var>C</var>份才會等於我們原來的<var>A</var>份呢？</p>
+                    <div class="graphie">
+                        init({ range: [ [0, 1], [0, 1] ], scale: [180, 25] });
+                        rectchart( [C, D - C], ["#e00", "#fff"] );
+                    </div>
+                </div>
+
+                <div>
+                    <p>我們需要將<var>pizza( 1 )</var>等分成<var>D</var>份。</p>
+                    <div class="graphie">
+                        init({ range: [ [0, 1], [0, 1] ], scale: [180, 25] });
+                        rectchart( [C, D - C], ["#e00", "#999"] );
+                    </div>
+                </div>
+                <p><code>\dfrac{<var>A</var>}{<var>B</var>} = \dfrac{<var>C</var>}{<var>D</var>}</code>，所以<code><var>SYMBOL</var> = <var>C</var></code>。</p>
+
+                <div>
+                    <p>我們還有別的方法可以求得答案，就是左邊的分式同乘上<code>\dfrac{<var>M</var>}{<var>M</var>}</code>。</p>
+                    <p>因為<code>\dfrac{<var>M</var>}{<var>M</var>} = \dfrac{1}{1} = 1</code>，所以乘上後並不會改變原先分式的值。</p>
+                </div>
+
+                <p>最後計算的結果是：<code>\dfrac{<var>A</var>}{<var>B</var>} \times \dfrac{<var>M</var>}{<var>M</var>} = \dfrac{<var>C</var>}{<var>D</var>} </code>，所以<code><var>SYMBOL</var> = <var>D</var></code>。</p>
+
+            </div>
+        </div>
+
+        <div id="custom-7" data-weight="0" data-type="numerator">
+            <div class="vars">
+                <var id="A">1</var>
+                <var id="B">2</var>
+                <var id="M">2</var>
+                <var id="C">A * M</var>
+                <var id="D">B * M</var>
+                <var id="SYMBOL">"\\otimes"</var>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

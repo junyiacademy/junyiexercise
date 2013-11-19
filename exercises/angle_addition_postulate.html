@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html data-require="math graphie expressions">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>角相加的公理</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+        <div>
+            <div class="vars">
+                <!-- pick problem type -->
+                <var id="PROBLEM">randRange(0,2)</var>
+
+                <!--Pick some letters, starting with the vertex -->
+                <var id="O, A, B, C">randFromArray([
+                        ["O", "A", "B", "C"],
+                        ["B", "A", "C", "D"],
+                        ["O", "L", "M", "N"],
+                        ["P", "Q", "R", "S"]
+                    ])
+                </var>
+
+                <!--And what do we call you all? -->
+                <var id="ANGLE_TOP">"\\angle " + A + O + B</var>
+                <var id="ANGLE_BOT">"\\angle " + B + O + C</var>
+                <var id="LARGE_ANGLE">"\\angle " + A + O + C</var>
+
+                <!-- Which do we list first? -->
+                <var id="ANGLE_ONE, ANGLE_TWO">shuffle([ ANGLE_BOT, ANGLE_TOP ])</var>
+
+                <!--What are you worth? -->
+
+                <var id="largeAngle">(function() {
+                    if ( PROBLEM === 0 ) {
+                        return randRange(30, 170)
+                    }
+                    else if ( PROBLEM === 1) {
+                        return 180
+                    }
+                    else {
+                        return 90;
+                    }
+                    })()
+                </var>
+                <var id="subAngle1">randRange(15, largeAngle-15)</var>
+                <var id="subAngle2">largeAngle - subAngle1</var>
+
+                <!--Let's add some algebra in here! -->
+                <var id="X">randRange( 1, 20 )</var>
+                <var id="COEF_1">randRange( 2, 9 )</var>
+                <var id="CONST_1">subAngle1 - COEF_1*X</var>
+                <var id="COEF_2">randRange( 2, 9 )</var>
+                <var id="CONST_2">subAngle2 - COEF_2*X</var>
+
+                <var id="ANSWER">randFromArray([ [ANGLE_ONE, COEF_1, CONST_1], [ANGLE_TWO, COEF_2, CONST_2] ])</var>
+
+            </div>
+
+            <div class="problem">
+                假設：<br />
+                    <span data-if="PROBLEM===2"><span><code>\qquad \overrightarrow{<var>O</var><var>A</var>}\perp\overrightarrow{<var>O</var><var>C</var>}</code></span> ，<br />            </span>
+                    <span id="given0"><code>\qquad m <var>ANGLE_ONE</var> = <var>COEF_1</var>x + <var>CONST_1</var></code></span> ， <span data-if="PROBLEM !== 0">而且</span><br/>
+                    <span id="given1"><code>\qquad m <var>ANGLE_TWO</var> = <var>COEF_2</var>x + <var>CONST_2</var></code></span><span data-if="PROBLEM !==0"> ，<br /></span>
+                    <span data-if="PROBLEM === 0"> ，而且<br />
+                    <span id="givenLarge"><code>\qquad m <var>LARGE_ANGLE</var> = <var>largeAngle</var></code></span>,</span>
+                    <p class="question">則請問 <code>m<var>ANSWER[0]</var></code> 是多少？</p>
+
+                <div id="angleGraph" class="graphie">
+                    init({
+                        range: [ [(Math.min( polar(5.5, largeAngle)[0], -.5)-.5), 5.5], [-1, (Math.min( Math.max( polar(5.5,largeAngle)[1], polar(5.5, subAngle2)[1])+.5, 5.5))] ],
+                        scale: 40
+                    });
+                    dotAttr={ r: 0.1, fill: "black", stroke: "none" };
+
+                    line( [0, 0], [5, 0], { arrows: "->" } );
+                    line( [0, 0], polar(5, largeAngle), {arrows: "->"} );
+                    if (ANGLE_ONE === ANGLE_TOP){
+                        line( [0, 0], polar(5, subAngle2), {arrows: "->"} );
+                    } else {
+                        line( [0, 0], polar(5, subAngle1), {arrows: "->"} );
+                    }
+
+                    circle( [0, 0] , dotAttr );
+                    label( [0, 0], O, "below left" );
+
+                    circle( polar(4.5,largeAngle), dotAttr );
+                    label( polar(4.5,largeAngle), A, (largeAngle &gt; 120) ? "below left" : "left" );
+
+                    circle( [4.5, 0], dotAttr );
+                    label( [4.5, 0], C, "below" );
+
+                    if (ANGLE_ONE === ANGLE_TOP){
+                        circle( polar(4.5, subAngle2), dotAttr );
+                        label( polar(4.5, subAngle2), B, (subAngle2 &gt; 45) ? "right" : "above" );
+                    } else {
+                        circle( polar(4.5, subAngle1), dotAttr );
+                        label( polar(4.5, subAngle1), B, (subAngle1 &gt; 45) ? "right" : "above" );
+                    }
+
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+
+            <div class="solution" data-type="multiple">
+                <span class="sol" data-forms="integer">
+                    <var>ANSWER[1] * X + ANSWER[2]</var>
+                </span><code>{}^{\circ}</code>
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>根據這個圖，我們可以觀察到，<code>\blue{<var>ANGLE_TOP</var>}</code> 和 <code>\green{<var>ANGLE_BOT</var>}</code> 兩個角一起組成 <code>\purple{<var>LARGE_ANGLE</var>}</code> 這個角。所以：</p>
+                    <p><code>\qquad \blue{m<var>ANGLE_TOP</var>} + \green{m<var>ANGLE_BOT</var>} = \purple{m<var>LARGE_ANGLE</var>}</code>.</p>
+
+                    <div class="graphie" data-update="angleGraph">
+                        style({ stroke: GREEN, strokeWidth: 3 });
+                        arc( [ 0, 0 ], 1, 0, subAngle2 );
+                        style({ stroke: BLUE, strokeWidth: 3 });
+                        arc( [ 0, 0 ], 1, subAngle2, largeAngle );
+
+                        if (PROBLEM === 0){
+                            style({ stroke: "purple", strokeWidth: 3 });
+                            arc( [ 0, 0 ], 1.2, 0, largeAngle );
+                            jQuery( "#givenLarge" ).css({ "color": "purple"} );
+                        }
+                        if (ANGLE_ONE === ANGLE_TOP){
+                            jQuery( "#given0" ).css({ "color": BLUE });
+                            jQuery( "#given1" ).css({ "color": GREEN });
+                        } else {
+                            jQuery( "#given0" ).css({ "color": GREEN });
+                            jQuery( "#given1" ).css({ "color": BLUE });
+                        };
+                    </div>
+                </div>
+
+                <div data-if="PROBLEM===1">
+                    <p>由於 <code><var>LARGE_ANGLE</var></code> 是一個平角，所以我們知道 <code>\purple{m<var>LARGE_ANGLE</var> = 180}</code> 。</p>
+                    <div class="graphie" data-update="angleGraph">
+                        style({ stroke: "purple", strokeWidth: 3 });
+                        arc( [ 0, 0 ], 1.2, 0, 180 );
+                    </div>
+                </div>
+                <div data-if="PROBLEM===2">
+                    <p>由於題目告訴我們 <code>\overrightarrow{<var>O</var><var>A</var>}\perp\overrightarrow{<var>O</var><var>C</var>}</code> ，我們知道 <code>\purple{m<var>LARGE_ANGLE</var> = 90}</code> 。
+                    <div class="graphie" data-update="angleGraph">
+                        style({ stroke: "purple", strokeWidth: 3 });
+                        path( [[0, .5], [.5, .5], [.5, 0]] );
+
+                    </div>
+                </div>
+                <div>
+                    <p>題目中給了兩個角的角度的表示式，所以我們現在把這些表示式代入等式：</p>
+                    <p data-if="ANGLE_TOP === ANGLE_ONE"><code>\qquad \blue{<var>COEF_1</var>x + <var>CONST_1</var>} + \green{<var>COEF_2</var>x + <var>CONST_2</var>} = \purple{<var>largeAngle</var>}</code>.</p>
+                    <p data-else><code>\qquad \blue{<var>COEF_2</var>x + <var>CONST_2</var>} + \green{<var>COEF_1</var>x + <var>CONST_1</var>} = \purple{<var>largeAngle</var>}</code></p>
+                </div>
+                <div>
+                    <p>合併同類項：</p>
+                    <p><code>\qquad<var>COEF_1 + COEF_2</var>x + <var>CONST_1 + CONST_2</var> = <var>largeAngle</var></code></p>
+                </div>
+                <div>
+                    <p data-if="CONST_1+CONST_2 &gt; 0">將兩邊同時減去 <code><var>CONST_1 + CONST_2</var></code> ：</p>
+                    <p data-else>將兩邊同時加上 <code><var>-(CONST_1 + CONST_2)</var></code> ：</p>
+                    <p><code>\qquad<var>COEF_1 + COEF_2</var>x  = <var>largeAngle - CONST_1 - CONST_2</var></code></p>
+                </div>
+                <div>
+                    <p>將兩邊同時除以 <code><var>COEF_1 + COEF_2</var></code> 來求 <code>x</code> 的值：</p>
+                    <p><code class="hint_pink">\qquad x  = <var>X</var></code></p>
+                </div>
+                <div data-if="ANSWER[0]===ANGLE_BOT">
+                    <p>把 <code class="hint_pink">x</code> 用 <code class="hint_pink"><var>X</var></code> 代替，套回原來 <code class="hint_green">m<var>ANSWER[0]</var></code> 的表示式：
+                    <p ><code class="hint_green">\qquad m<var>ANSWER[0]</var> = <var>ANSWER[1]</var>(\pink{<var>X</var>}) + <var>ANSWER[2]</var></code></p>
+                </div>
+                <div data-else>
+                    <p>把 <code class="hint_pink">x</code> 用 <code class="hint_pink"><var>X</var></code> 代替，套回原來 <code class="hint_blue">m<var>ANSWER[0]</var></code> 的表示式：
+                    <p><code class="hint_blue">\qquad m<var>ANSWER[0]</var> = <var>ANSWER[1]</var>(\pink{<var>X</var>}) + <var>ANSWER[2]</var></code></p>
+                </div>
+                <div data-if="ANSWER[0]===ANGLE_BOT">
+                    <p>化減：</p>
+                    <p><code>\qquad \green{m<var>ANSWER[0]</var> = <var>ANSWER[1]*X</var> + <var>ANSWER[2]</var>}</code></p>
+                </div>
+                <div data-else>
+                    <p>化減：</p>
+                    <p><code>\qquad \blue{m<var>ANSWER[0]</var> = <var>ANSWER[1]*X</var> + <var>ANSWER[2]</var>}</code></p>
+                </div>
+                <p class="final_answer" data-if="ANSWER[0]===ANGLE_BOT">所以 <code>\green{m<var>ANSWER[0]</var> = <var>ANSWER[1] * X + ANSWER[2]</var>}</code> 。</p>
+                <p class="final_answer" data-else>所以 <code>\blue{m<var>ANSWER[0]</var> = <var>ANSWER[1] * X + ANSWER[2]</var>}</code> 。</p>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</body>
+</html>

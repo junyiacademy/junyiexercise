@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html data-require="math graphie expressions">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>線段的中點</title>
+    <script src="../khan-exercise.js"></script>
+    <style>
+        .lcol { text-align:left; width:200px; display:inline-block; }
+        .rcol { text-align:left; width:auto; display:inline-block; }
+    </style>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+        <div>
+            <div class="vars">
+                <var id="POINTS">randFromArray([ [ "A", "B", "C" ], [ "J", "K", "L" ], [ "C", "J", "T" ] ])</var>
+                <var id="SEG_1">POINTS[ 0 ] + POINTS[ 1 ]</var>
+                <var id="SEG_2">POINTS[ 1 ] + POINTS[ 2 ]</var>
+                <var id="SEG_TOTAL">POINTS[ 0 ] + POINTS[ 2 ]</var>
+                <div data-ensure="( COEF_1 !== COEF_2 || CONST_1 !== CONST_2 ) && ( TOTAL > 0 ) && ( CONST_2 !== 0 )">
+                    <var id="X">randRange( 1, 9 )</var>
+                    <var id="COEF_1">randRangeNonZero( 2, 9 )</var>
+                    <var id="CONST_1">randRangeNonZero( -9, 9 )</var>
+                    <var id="COEF_2">randRangeNonZero( 2, 9 )</var>
+                    <var id="CONST_2">COEF_1 * X + CONST_1 - COEF_2 * X</var>
+                    <var id="TOTAL">( COEF_1 * X + CONST_1 ) + ( COEF_2 * X + CONST_2 )</var>
+                </div>
+            </div>
+            <div class="problem">
+                <p><code><var>POINTS[ 1 ]</var></code> 是 <code>\overline{<var>SEG_TOTAL</var>}</code> 的中點。</p>
+                <div class="graphie" id="number-line">
+                    init({
+                        range: [ [ -1, 11 ], [ -1, 1 ] ]
+                    });
+                    line( [ 0, 0 ], [ 10, 0 ] );
+                    style({ stroke: "#000", fill: "#000" });
+                    graph.points = raphael.set();
+                    graph.points.push( circle( [ 0, 0 ], 0.10 ) );
+                    graph.points.push( circle( [ 5, 0 ], 0.10 ) );
+                    graph.points.push( circle( [ 10, 0 ], 0.10 ) );
+                    label( [ 0, 0 ], POINTS[ 0 ], "below" );
+                    label( [ 5, 0 ], POINTS[ 1 ], "below" );
+                    label( [ 10, 0 ], POINTS[ 2 ], "below" );
+                </div>
+                <p>
+                    如果：<br />
+                    <span id="given1"><code>\qquad <var>SEG_1</var> = <var>COEF_1</var>x + <var>CONST_1</var></code></span> 而且<br />
+                    <span id="given2"><code>\qquad <var>SEG_2</var> = <var>COEF_2</var>x + <var>CONST_2</var></code></span><br />
+                </p>
+            </div>
+            <p class="question">則請問 <code><var>SEG_TOTAL</var></code> 的值是多少？</p>
+            <div class="solution" data-forms="integer"><var>TOTAL</var></div>
+            <div class="hints">
+                <p>一個線段的中點，就是將線段分成兩等份的點 (兩邊的長度相等)。</p>
+                <div>
+                    <div class="graphie" data-update="number-line">
+                        style({ stroke: BLUE, strokeWidth: 3 });
+                        line( [ 0, 0 ], [ 5, 0 ] );
+                        style({ stroke: GREEN, strokeWidth: 3 });
+                        line( [ 5, 0 ], [ 10, 0 ] );
+                        graph.points.toFront();
+                        $( "#given1" ).css({ "color": BLUE });
+                        $( "#given2" ).css({ "color": GREEN });
+                    </div>
+                    <p><code>\blue{<var>SEG_1</var>} = \green{<var>SEG_2</var>}</code></p>
+                </div>
+                <div>
+                    <p>題目已經給了兩邊線段長度的表示式，所以我們可以將它們分別代入上面的等式：</p>
+                    <p><code>\qquad \blue{<var>COEF_1</var>x + <var>CONST_1</var>} = \green{<var>COEF_2</var>x + <var>CONST_2</var>}</code></p>
+                </div>
+                <div>
+                    <p>解 <code class="hint_pink">x</code> 的值：</p>
+                    <p><code class="hint_pink">\qquad <var>expr([ "*", COEF_1 - COEF_2, "x" ])</var> = <var>CONST_2 - CONST_1</var></code></p>
+                </div>
+                <p data-if="abs( COEF_1 - COEF_2 - 1 ) > 0.001" class="hint_pink"><code>\qquad x = <var>X</var></code></p>
+                <div>
+                    <p>
+                        把 <code class="hint_blue"><var>SEG_1</var></code> 和 <code class="hint_green"><var>SEG_2</var></code> 這兩個線段的表示式中的 <code class="hint_pink">x</code> 都用 <code class="hint_pink"><var>X</var></code> 取代：
+                        :
+                    </p>
+                    <p>
+                        <span class="lcol"><code class="hint_blue">\qquad <var>SEG_1</var> = <var>COEF_1</var>(\pink{<var>X</var>}) + <var>CONST_1</var></code></span>
+                        <span class="rcol"><code class="hint_green">\qquad <var>SEG_2</var> = <var>COEF_2</var>(\pink{<var>X</var>}) + <var>CONST_2</var></code></span>
+                    </p>
+                </div>
+                <p>
+                    <span class="lcol"><code class="hint_blue">\qquad <var>SEG_1</var> = <var>COEF_1 * X</var> + <var>CONST_1</var></code></span>
+                    <span class="rcol"><code class="hint_green">\qquad <var>SEG_2</var> = <var>COEF_2 * X</var> + <var>CONST_2</var></code></span>
+                </p>
+                <p>
+                    <span class="lcol"><code class="hint_blue">\qquad <var>SEG_1</var> = <var>COEF_1 * X + CONST_1</var></code></span>
+                    <span class="rcol"><code class="hint_green">\qquad <var>SEG_2</var> = <var>COEF_2 * X + CONST_2</var></code></span>
+                </p>
+                <div>
+                    <p>要找出 <code><var>SEG_TOTAL</var></code> 的長度的話，只要將 <code>\blue{<var>SEG_1</var>}</code> 和 <code>\green{<var>SEG_2</var>}</code> 的長度相加就可以了：</p>
+                    <p><code>\qquad <var>SEG_TOTAL</var> = \blue{<var>SEG_1</var>} + \green{<var>SEG_2</var>}</code></p>
+                </div>
+                <p><code>\qquad <var>SEG_TOTAL</var> = \blue{<var>COEF_1 * X + CONST_1</var>} + \green{<var>COEF_2 * X + CONST_2</var>}</code></p>
+                <p><code>\qquad <var>SEG_TOTAL</var> = <var>TOTAL</var></code></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

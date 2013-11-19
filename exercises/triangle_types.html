@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers graphie-geometry math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>三角形的種類</title>
+    <script src="../khan-exercise.js"></script>
+    <script>
+        function scTriangle(){
+            while( ! a || a === b || a === c || b === c ){
+                var a = KhanUtil.randRange( 25, 150 );
+                var b = KhanUtil.randRange( 25, 180 - a );
+                if ( a + b > 170 ){
+                    a = Math.max( 30, a - 15  );
+                    b = Math.max( 30, b - 15  );
+                }
+                var c = 180 - a - b;
+            }
+            var sa = KhanUtil.randRange( 4, 8 );
+            var sb = sa * Math.sin( b * Math.PI / 180 )  / Math.sin( a * Math.PI / 180 );
+            var sc = sa * Math.sin( c * Math.PI / 180 )  / Math.sin( a * Math.PI / 180 );
+            if ( Math.abs( a - b ) < 5 || Math.abs( a - c ) < 5  || Math.abs( b - c ) < 5 ){
+                return scTriangle();
+            }
+            return [ [ a, b, c ] , [ sa.toFixed( 1 ), sb.toFixed( 1 ), sc.toFixed( 1 ) ] ];
+        }
+
+        function eqTriangle(){
+            var a = KhanUtil.randRange( 4, 8 );
+            return [ [ 60, 60, 60 ], [ a, a, a ] ];
+        }
+
+        function isoTriangle(){
+            var a = KhanUtil.randRange( 25, 75 );
+            var c = 180 - 2 * a;
+            var sa = KhanUtil.randRange( 4, 8 );
+            var sc = sa * Math.sin( c * Math.PI / 180 )  / Math.sin( a * Math.PI / 180 );
+            var ang = [ a, a, a ];
+            var sides = [ sa, sa, sa ];
+            var oddside = KhanUtil.randRange( 0, 2 );
+            ang[ oddside ] = c;
+            sides[ oddside ] = sc.toFixed( 1 );
+            if( a == 60 ){
+                return isoTriangle();
+            }
+            return [ ang , sides ];
+        }
+
+    </script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="TYPES">[ "正三角形", "等腰三角形", "不等邊三角形" ]</var>
+            <var id="TYPE">randFromArray( TYPES )</var>
+            <var id="TRIANGLE">function(){
+                                if ( TYPE === "正三角形" ){
+                                    return eqTriangle();
+                                }
+                                if ( TYPE === "等腰三角形" ){
+                                    return isoTriangle();
+                                }
+                                if ( TYPE === "不等邊三角形" ){
+                                    return scTriangle();
+                                }
+                            }()
+            </var>
+        </div>
+
+        <div class="problems">
+            <div id="knownAngles">
+                <div class="problem">
+                    這一個三角形是正三角形、等腰三角形、還是不等邊三角形?
+                </div>
+                <div class="question">
+                    <div class="graphie" id="typeTr" >
+                        var tr = new Triangle( [ 0, 0 ],  TRIANGLE[ 0 ], 5, {} );
+                        tr.labels = { "angles" : clearArray( tr.niceAngles, [ 0, 1 ] ) };
+                        tr.rotate( randRange( 0, 90 ) );
+
+                        init({
+                            range: tr.boundingRange( 1 )
+                        })
+
+                        tr.draw();
+                        tr.drawLabels();
+                        graph.TR = tr;
+                    </div>
+                </div>
+                <div class="solution"><var>TYPE</var></div>
+                <ul class="choices" data-category="true">
+                    <li data-each="TYPES as t"><var>t</var></li>
+                </ul>
+                <div class="hints">
+                    <p>我們已經知道三角形裡面兩個角的角度，所以我們可以將<code>180</code>減去這兩個角，來找出第三個角。</p>
+                    <div>
+                        <p><code>180 -<var>TRIANGLE[ 0 ][ 0 ]</var> - <var>TRIANGLE[ 0 ][ 1 ]</var> = <var>TRIANGLE[ 0 ][ 2 ]</var></code></p>
+                        <div class="graphie" data-update="typeTr" >
+                            graph.TR.labels = { "angles" : graph.TR.niceAngles };
+                            graph.TR.drawLabels();
+                        </div>
+                    </div>
+                <p data-if="TYPE === '不等邊三角形'">因為三個角都不一樣，這是一個不等邊三角形。</p>
+                    <p data-else-if="TYPE === '等腰三角形'">有兩個角是一樣的，所以對應到的兩個邊也會是一樣的。因此，這是一個等腰三角形。</p>
+                    <p data-else>每一個角剛好都是60。這也代表說三個邊都是一樣長，所以這是一個正三角形。</p>
+                </div>
+            </div>
+            <div id="knownSides" data-type="knownAngles">
+                <div class="question">
+                    <div class="graphie">
+                        var tr = new Triangle( [ 0, 0 ],  TRIANGLE[ 0 ], 5, {} );
+                        tr.labels = {  "sides" : tr.niceSideLengths };
+                        tr.rotate( randRange( 0, 90 ) );
+
+                        init({
+                            range: tr.boundingRange( 1 )
+                        })
+                        tr.draw();
+                        tr.drawLabels();
+                    </div>
+                </div>
+                <div class="hints">
+                    <p data-if="TYPE === '不等邊三角形'">因為三個邊都不一樣長，這是一個不等邊三角形。</p>
+                    <p data-else-if="TYPE === '等腰三角形'">有兩個邊一樣長，因此，這是一個等腰三角形。</p>
+                    <p data-else>每一個邊都一樣長。這也代表說每一個角都是60，而且這是一個正三角形。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

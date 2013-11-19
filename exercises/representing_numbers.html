@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>用積木算數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars" data-ensure="N !== 0">
+        <var id="A">randRange( 0, 2 )</var>
+        <var id="B">randRange( 0, 5 )</var>
+        <var id="C">randRange( 0, 9 )</var>
+        <var id="N">100 * A + 10 * B + C</var>
+    </div>
+
+    <div class="problems">
+        <div>
+            <div class="question">
+                <p>下面的積木代表了什麼數字?</p>
+            </div>
+
+            <div class="graphie" data-if="C !== 0" id="ones-graph">
+                init({
+                    range: [ [-1, 21], [-0.5, 1.5] ],
+                    scale: 28
+                });
+
+                style({
+                    fill: "#6495ed",
+                    fillOpacity: 0.6,
+                    strokeWidth: 2,
+                    stroke: "#4e74ba"
+                });
+
+                for ( var i = 0; i &lt; C; i++ ) {
+                    path([ [1.5 * i, 0], [1.5 * i, 1], [1.5 * i + 1, 1], [1.5 * i + 1, 0], true ]);
+                }
+            </div>
+
+            <div class="graphie" data-if="B !== 0" id="tens-graph">
+                init({
+                    range: [ [-1, 21], [-1.5 * B, 0.5] ],
+                    scale: 28
+                });
+
+                style({
+                    fill: "#6495ed",
+                    fillOpacity: 0.6,
+                    strokeWidth: 2,
+                    stroke: "#4e74ba"
+                });
+
+                for ( var i = 0; i &lt; B; i++ ) {
+                    path([ [0, -1.5 * i], [10, -1.5 * i], [10, -1.5 * i - 1], [0, -1.5 * i - 1], true ]);
+                    grid( [0, 10], [-1.5 * i, -1.5 * i - 1], { strokeWidth: 1 } ).translate( -0.5, 0 );
+                }
+            </div>
+
+            <div class="graphie" data-if="A !== 0" id="hundreds-graph">
+                init({
+                    range: [ [-1, 21], [-0.5, 10.5] ],
+                    scale: 28
+                });
+
+                style({
+                    fill: "#6495ed",
+                    fillOpacity: 0.6,
+                    strokeWidth: 2,
+                    stroke: "#4e74ba"
+                });
+
+                for ( var i = 0; i &lt; A; i++ ) {
+                    path([ [10.5 * i + 0, 0], [10.5 * i + 0, 10], [10.5 * i + 10, 10], [10.5 * i + 10, 0], true ]);
+                    grid( [0, 10], [0, 10], { strokeWidth: 1 } ).translate( 28 * 10.5 * i - 0.5, 0 );
+                }
+            </div>
+
+            <div class="solution" data-forms="integer"><var>N</var></div>
+        </div>
+    </div>
+
+    <div class="hints">
+        <div data-if="A !== 0">
+            <p>數一數一百個一組的積木有多少, 我們可以看到共有 <code><var>A</var></code>組.</p>
+            <div class="graphie" data-update="hundreds-graph">
+                for ( var i = 0; i &lt; A; i++ ) {
+                    label( [10.5 * i + 5, 5], "\\large{\\mathbf{100}}", { color: "black", background: "#a2bff4" } );
+                }
+            </div>
+        </div>
+        <div data-if="A !== 0 || B !== 0" data-unwrap>
+            <p data-if="B === 0">因為沒有十個一組的積木, 十個一組的是 <code>0</code>個.</p>
+            <div data-else>
+                <p>數一數十個一組的積木有多少, 我們可以看到共有 <code><var>B</var></code>組.</p>
+                <div class="graphie" data-update="tens-graph">
+                    for ( var i = 0; i &lt; B; i++ ) {
+                        label( [5, -1.5 * i - 0.6], "\\large{\\mathbf{1\\:0}}", { color: "black" } );
+                    }
+                </div>
+            </div>
+        </div>
+        <p data-if="C === 0">因為沒有單個的積木, 單個的積木是 <code>0</code>個.</p>
+        <div data-else>
+            <p>數一數單個的積木有多少, 我們可以看到共有 <code><var>C</var></code>個.</p>
+            <div class="graphie" data-update="ones-graph">
+                for ( var i = 0; i &lt; C; i++ ) {
+                    label( [1.5 * i + 0.5, 0.5], "\\mathbf{1}", { color: "black" } );
+                }
+            </div>
+        </div>
+        <p>數字是 <code><var>N</var></code>.</p>
+    </div>
+    </div>
+</body>
+</html>

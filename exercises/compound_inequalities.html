@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers functional">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>複合不等式</title>
+    <script src="../khan-exercise.js"></script>
+    <script type="text/javascript">
+        function getComp( coef, comp ) {
+            if ( coef >= 0 ) {
+                return comp;
+            }
+
+            return {
+                "≤": "≥",
+                "≥": "≤",
+                "<": ">",
+                ">": "<"
+            }[comp];
+        }
+    </script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars" data-ensure="abs( SOLUTION[0] - SOLUTION[1] ) <= 5 && FAKE_ANSWER[0] !== SOLUTION[0] && FAKE_ANSWER[1] !== SOLUTION[1]">
+            <var id="COEF">tabulate( function() {
+                return randRange( 2, 9 ) * ( rand( 3 ) > 0 ? 1 : -1 );
+            } , 2 )</var>
+            <var id="ONE_OVER_COEF">tabulate( function(i) {
+                return fraction( 1, COEF[i] );
+            }, 2 )</var>
+            <var id="SIGN">randFromArray( [ "-", "+" ], 2)</var>
+            <var id="LEFT_INT">tabulate( function() {
+                return rand( 3 ) > 0 ? randRange( 2, 9 ) : 0;
+            }, 2 )</var>
+            <var id="ADD_TO_SIMPLIFY">tabulate( function(i) {
+                return LEFT_INT[i] * ( SIGN[i] === "+" ? -1 : 1 );
+            }, 2 )</var>
+            <var id="COMP">randFromArray( [ "&lt;", "&gt;", "&le;", "&ge;" ], 2 )</var>
+            <var id="RIGHT_INT">tabulate( function(i) {
+                return randRange( 1, 6 ) * abs( COEF[i] ) + ( SIGN[i] === "+" ? 1 : -1 ) * LEFT_INT[i];
+            }, 2 )</var>
+            <var id="VARIABLE_NAME">randFromArray([ "a", "b", "c", "x", "y", "z" ])</var>
+            <var id="COMP_SOLUTION">tabulate( function(i) {
+                return getComp( COEF[i], COMP[i] );
+            }, 2 )</var>
+            <var id="SOLUTION_NOT_REDUCED">tabulate( function(i) {
+                return fraction( RIGHT_INT[i] + ADD_TO_SIMPLIFY[i], COEF[i] );
+            }, 2 )</var>
+            <var id="SOLUTION">tabulate( function(i) {
+                return ( RIGHT_INT[i] + ADD_TO_SIMPLIFY[i] ) / COEF[i];
+            }, 2 )</var>
+            <var id="FIRST">[ "一", "二" ]</var>
+            <var id="COLOR">[ "#1F78B4", "#B30000" ]</var>
+            <var id="INCLUSIVE">tabulate( function(i) {
+                return COMP_SOLUTION[i] === "&le;" || COMP_SOLUTION[i] === "&ge;";
+            }, 2 )</var>
+            <var id="LESS_THAN">tabulate( function(i) {
+                return COMP_SOLUTION[i] === "&le;" || COMP_SOLUTION[i] === "&lt;";
+            }, 2 )</var>
+            <var id="ALL_NUMBERS">( LESS_THAN[0] && !LESS_THAN[1] && SOLUTION[0] >= SOLUTION [1] ) || ( !LESS_THAN[0] && LESS_THAN[1] && SOLUTION[0] &lt;= SOLUTION [1] )</var>
+            <var id="NO_SOLUTION">( LESS_THAN[0] && !LESS_THAN[1] && SOLUTION[1] > SOLUTION[0] ) || ( !LESS_THAN[0] && LESS_THAN[1] && SOLUTION[0] > SOLUTION[1] ) || ( LESS_THAN[0] !== LESS_THAN[1] && SOLUTION[0] === SOLUTION[1] && ( !INCLUSIVE[0] || !INCLUSIVE[1] ) )</var>
+            <var id="OR">randFromArray([ "或", "且" ])</var>
+            <var id="IS_OR">OR === "或"</var>
+            <var id="FAKE_ANSWER">tabulate( function() {
+                return randRange( 2, 9 ) * ( rand( 3 ) > 0 ? 1 : -1 );
+            }, 2 )</var>
+            <var id="CONTAINS">(function() {
+                if ( LESS_THAN[0] && LESS_THAN[1] ) {
+                    if ( SOLUTION[0] === SOLUTION[1] ) {
+                        return INCLUSIVE[0] ? 1 : 2;
+                    }
+                    return SOLUTION[0] > SOLUTION[1] ? 1 : 2;
+                } else if ( !LESS_THAN[0] && !LESS_THAN[1] ) {
+                    if ( SOLUTION[0] === SOLUTION[1] ) {
+                        return INCLUSIVE[0] ? 1 : 2;
+                    }
+                    return SOLUTION[0] &lt; SOLUTION[1] ? 1 : 2;
+                }
+
+                return 0;
+            })()</var>
+            <var id="IS_CONTAINED">CONTAINS === 1 ? 2 : 1</var>
+            <var id="SINGLE_SOLUTION">SOLUTION[0] === SOLUTION[1] && INCLUSIVE[0] && INCLUSIVE[1] && ( LESS_THAN[0] ? !LESS_THAN[1] : LESS_THAN[0] )</var>
+        </div>
+
+        <div class="problems">
+            <div>
+                <p class="question">求 <code><var>VARIABLE_NAME</var> 的解</code>:</p>
+                <div>
+                    <code>\color{<var>COLOR[0]</var>}{<var>COEF[0] + VARIABLE_NAME</var><var data-if="LEFT_INT[0] !== 0">SIGN[0] + LEFT_INT[0]</var><var>COMP[0] + RIGHT_INT[0]</var>}</code> <var>OR</var>
+                    <code>\color{<var>COLOR[1]</var>}{<var>COEF[1] + VARIABLE_NAME</var><var data-if="LEFT_INT[1] !== 0">SIGN[1] + LEFT_INT[1]</var><var>COMP[1] + RIGHT_INT[1]</var>}</code>
+                </div>
+
+                <p class="solution">
+                    <span data-if="!IS_OR && SINGLE_SOLUTION"><code><var>VARIABLE_NAME</var> = <var>SOLUTION[0]</var></code></span>
+                    <span data-else-if="IS_OR && ALL_NUMBERS">任意數。</span>
+                    <span data-else-if="IS_OR && CONTAINS"><code><var>VARIABLE_NAME + COMP_SOLUTION[CONTAINS - 1] + SOLUTION[CONTAINS - 1]</var></code></span>
+                    <span data-else-if="!IS_OR && CONTAINS"><code><var>VARIABLE_NAME + COMP_SOLUTION[IS_CONTAINED - 1] + SOLUTION[IS_CONTAINED - 1]</var></code></span>
+                    <span data-else-if="!IS_OR && NO_SOLUTION">無解。</span>
+                    <span data-else><code><var>VARIABLE_NAME + COMP_SOLUTION[0] + SOLUTION[0]</var></code> <var>OR</var> <code><var>VARIABLE_NAME + COMP_SOLUTION[1] + SOLUTION[1]</var></code></span>
+                </p>
+
+                <ul class="choices" data-show="4">
+                    <li><code><var>VARIABLE_NAME + COMP_SOLUTION[0] + FAKE_ANSWER[0]</var></code> <var>OR</var> <code><var>VARIABLE_NAME + COMP_SOLUTION[1] + FAKE_ANSWER[1]</var></code></li>
+                    <li><code><var>VARIABLE_NAME + COMP_SOLUTION[0] + SOLUTION[0]</var></code> <var>OR</var> <code><var>VARIABLE_NAME + COMP_SOLUTION[1] + randRangeNonZero( -9, 9 )</var></code></li>
+                    <li><code><var>VARIABLE_NAME + COMP_SOLUTION[0] + randRangeNonZero( -9, 9 )</var></code> <var>OR</var> <code><var>VARIABLE_NAME + COMP_SOLUTION[1] + SOLUTION[1]</var></code></li>
+                    <li><code><var>VARIABLE_NAME + COMP_SOLUTION[0] + FAKE_ANSWER[0]</var></code></li>
+                    <li data-if="CONTAINS"><code><var>VARIABLE_NAME + COMP_SOLUTION[0] + SOLUTION[0]</var></code> <var>OR</var> <code><var>VARIABLE_NAME + COMP_SOLUTION[1] + SOLUTION[1]</var></code></li>
+                    <div data-if="COMP[0] !== COMP_SOLUTION[0]" data-unwrap>
+                        <li><code><var>VARIABLE_NAME + COMP[0] + SOLUTION[0]</var></code> <var>OR</var> <code><var>VARIABLE_NAME + COMP_SOLUTION[1] + SOLUTION[1]</var></code></li>
+                        <li><code><var>VARIABLE_NAME + COMP[0] + FAKE_ANSWER[0]</var></code> <var>OR</var> <code><var>VARIABLE_NAME + COMP_SOLUTION[1] + FAKE_ANSWER[1]</var></code></li>
+                    </div>
+                    <div data-if="COMP[1] !== COMP_SOLUTION[1]" data-unwrap>
+                        <li><code><var>VARIABLE_NAME + COMP_SOLUTION[0] + SOLUTION[0]</var></code> <var>OR</var> <code><var>VARIABLE_NAME + COMP[1] + SOLUTION[1]</var></code></li>
+                        <li><code><var>VARIABLE_NAME + COMP_SOLUTION[0] + FAKE_ANSWER[0]</var></code> <var>OR</var> <code><var>VARIABLE_NAME + COMP[1] + FAKE_ANSWER[1]</var></code></li>
+                    </div>
+                    <div data-if="COMP[0] !== COMP_SOLUTION[0] && COMP[1] !== COMP_SOLUTION[1]" data-unwrap>
+                        <li><code><var>VARIABLE_NAME + COMP[0] + SOLUTION[0]</var></code> <var>OR</var> <code><var>VARIABLE_NAME + COMP[1] + SOLUTION[1]</var></code></li>
+                        <li><code><var>VARIABLE_NAME + COMP[0] + FAKE_ANSWER[0]</var></code> <var>OR</var> <code><var>VARIABLE_NAME + COMP[1] + FAKE_ANSWER[1]</var></code></li>
+                    </div>
+                    <li data-if="LEFT_INT[0] !== 0 || LEFT_INT[1] !== 0"><code><var>VARIABLE_NAME + COMP_SOLUTION[0] + round( ( RIGHT_INT[0] - ADD_TO_SIMPLIFY[0] ) / COEF[0] )</var></code> <var>OR</var> <code><var>VARIABLE_NAME + COMP_SOLUTION[1] +
+                        round( ( RIGHT_INT[1] - ADD_TO_SIMPLIFY[1] ) / COEF[1] )</var></code></li>
+                    <li data-if="IS_OR && !ALL_NUMBERS">任意數。</li>
+                    <li data-if="!IS_OR && !NO_SOLUTION">無解。</li>
+                    <li data-if="!IS_OR && SINGLE_SOLUTION"><code><var>VARIABLE_NAME</var> = <var>SOLUTION[0]</var></code></li>
+                </ul>
+
+                <div class="hints">
+                    <div data-each="[ 0, 1 ] as i" data-unwrap>
+                        <div>
+                            <p>第<var>FIRST[i]</var>個不等式可化簡為:</p>
+                            <p><code>\color{<var>COLOR[i]</var>}{<var>VARIABLE_NAME + COMP_SOLUTION[i] + SOLUTION[i]</var>}</code></p>
+                        </div>
+                    </div>
+                    <div class="graphie">
+                        var start = min( SOLUTION[0], SOLUTION[1] ) - randRange( 2, 5 );
+                        var end = max( SOLUTION[0], SOLUTION[1] ) + randRange( 2, 5 );
+
+                        init({
+                            range: [ [ start - 1, end + 1 ], [ -1, 1 ] ]
+                        });
+
+                        numberLine( start, end, null, start );
+
+                        // Draw both inequalities
+                        var y_placement = [ 0.05, -0.05 ];
+                        for ( var i = 0; i &lt; 2; i++ ) {
+                            style({ stroke: COLOR[i], fill: COLOR[i], strokeWidth: 3.5, arrows: "->" });
+                            path([ [ SOLUTION[i] + 0.15 * ( LESS_THAN[i] ? -1 : 1  ), y_placement[i] ], [ LESS_THAN[i] ? start : end, y_placement[i] ] ]);
+                            style({ stroke: COLOR[i], fill: INCLUSIVE[i] ? COLOR[i] : null });
+                            circle( [ SOLUTION[i], y_placement[i] ], 0.15 );
+                        }
+                    </div>
+                    <div data-if="IS_OR">
+                        <p>複合不等式中含有"或"這關鍵字的話，其複合不等式的解就是<strong>任何</strong>各別不等式的解(區域)。</p>
+                        <p data-if="ALL_NUMBERS">各別不等式聯集起來的話將會是整個是數字軸，因此，複合不等式的解為 "任意數"。</p>
+                        <div data-else-if="CONTAINS">
+                            <p>可以觀察到第<var>FIRST[IS_CONTAINED - 1]</var>個不等式完全被包在第<var>FIRST[CONTAINS - 1]</var>個不等式中，因此，複合不等式的解為:</p>
+                            <p><code>\color{<var>COLOR[CONTAINS - 1]</var>}{<var>VARIABLE_NAME + COMP_SOLUTION[CONTAINS - 1] + SOLUTION[CONTAINS - 1]</var>}</code></p>
+                        </div>
+                        <div data-else>
+                            <p>由於各別不等式的解在圖形上不相交，因此，我們可以得到複合不等式的解為:</p>
+                            <p>
+                                <code>\color{<var>COLOR[0]</var>}{<var>VARIABLE_NAME + COMP_SOLUTION[0] + SOLUTION[0]</var>}</code> 或
+                                <code>\color{<var>COLOR[1]</var>}{<var>VARIABLE_NAME + COMP_SOLUTION[1] + SOLUTION[1]</var>}</code>
+                            </p>
+                        </div>
+                    </div>
+                    <div data-else>
+                        <p>複合不等式中含有"且"這關鍵字的話，其實就是求這些各別不等式的交集。</p>
+                        <div data-if="SINGLE_SOLUTION">
+                            <p>因此，此複合不等式的解就是:</p>
+                            <code>\color{magenta}{<var>VARIABLE_NAME</var> = <var>SOLUTION[0]</var>}</code>
+                        </div>
+                        <p data-else-if="NO_SOLUTION">既然各別不等式在圖形中並沒有交集，那麼自然就無解了。</p>
+                        <div data-else-if="CONTAINS">
+                            <p>因為第<var>FIRST[IS_CONTAINED - 1]</var>個不等式完全被包在第<var>FIRST[CONTAINS - 1]</var>個不等式中, 所以他們的交集就是第 <var>FIRST[IS_CONTAINED -1]</var> 個不等式囉。因此，複合不等式的解為:</p>
+                            <p><code>\color{<var>COLOR[IS_CONTAINED - 1]</var>}{<var>VARIABLE_NAME + COMP_SOLUTION[IS_CONTAINED - 1] + SOLUTION[IS_CONTAINED - 1]</var>}</code></p>
+                        </div>
+                        <div data-else>
+                            <p>因此，複合不等式的解為:</p>
+                            <p>
+                                <code>\color{<var>COLOR[0]</var>}{<var>VARIABLE_NAME + COMP_SOLUTION[0] + SOLUTION[0]</var>}</code> 且
+                                <code>\color{<var>COLOR[1]</var>}{<var>VARIABLE_NAME + COMP_SOLUTION[1] + SOLUTION[1]</var>}</code>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html data-require="math word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>寫出比例式</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div>
+            <div class="vars">
+                <var id="N1">randRange( 2, 10 )</var>
+                <var id="N2">randRangeExclude( 2, 15, [ N1 ] )</var>
+                <var id="C">( N1 * randRange( 2400, 5970 ) / 100 ).toFixed( 0 )</var>
+                <var id="SOLUTIONS">
+                    (function() {
+                        var solutions = [
+                            "\\dfrac{" + N1 + "}{\\$" + C + "} = \\dfrac{" + N2 + "}{x}",
+                            "\\dfrac{" + N2 + "}{x} = \\dfrac{" + N1 + "}{\\$" + C + "}",
+                            "\\dfrac{" + N1 + "}{" + N2 + "} = \\dfrac{\\$" + C + "}{x}",
+                            "\\dfrac{x}{" + N2 + "} = \\dfrac{\\$" + C + "}{" + N1 + "}"
+                        ];
+                        return solutions;
+                    })()
+                </var>
+                <var id="IDX">randRange( 0, SOLUTIONS.length - 1 )</var>
+                <var id="SOLUTION">SOLUTIONS[ IDX ]</var>
+            </div>
+            <p class="problem">假設買<var>N1</var>個<var>deskItem(0)</var>必須花<var>C</var>元。</p>			
+            <p class="question">那麼，如果我們想買<var>N2</var>個<var>deskItem(0)</var>，那右邊哪個方程式可以幫助我們表示買東西的花費呢？</p>
+            <p class="solution"><code><var>SOLUTION</var></code></p>
+            <ul class="choices" data-none="true" data-show="5">
+                <li><code>\dfrac{<var>N2</var>}{\$<var>C</var>} = \dfrac{x}{<var>N1</var>}</code></li>
+                <li><code>\dfrac{<var>N2</var>}{<var>N1</var>} = \dfrac{\$<var>C</var>}{x}</code></li>
+                <li><code>\dfrac{<var>N1</var>}{<var>N2</var>} = \dfrac{x}{\$<var>C</var>}</code></li>
+                <li><code>\dfrac{x}{<var>N2</var>} = \dfrac{<var>N1</var>}{\$<var>C</var>}</code></li>
+                <li><code>\dfrac{<var>N2</var>}{x} = \dfrac{\$<var>C</var>}{<var>N1</var>}</code></li>
+            </ul>
+
+            <div class="hints">
+                <p>可以看到，右邊有好幾條方程式，而每一條都代表一種花費的方式。</p>
+                <div data-if="IDX === 0" data-unwrap>
+                    <p>我們知道買<var>N1</var>個<var>deskItem(0)</var>要花<var>C</var>元，所以可以寫成下面的比例式：</p>
+                    <p><code>\dfrac{<var>N1</var>}{\$<var>C</var>}</code></p>
+                    <p>令 <code>x</code> 代表買<var>N2</var>個<var>deskItem(0)</var>總共需要花多少錢。因為買<var>N2</var>個<var>deskItem(0)</var>要花<code>x</code>元，所以我們可以列出下面的比例：</p>
+                    <p><code>\dfrac{<var>N2</var>}{x}</code></p>
+                    <p>總花費金額會隨著購買<var>deskItem( 0 )</var>的數量而有所改變，但數量對花費金額的比例是不會變的，所以兩個比例是相等的喔。</p>
+                </div>
+
+                <div data-if="IDX === 1" data-unwrap>
+                    <p>令<code>x</code>表示買<var>N2</var>個<var>deskItem(0)</var>總共需要花多少錢。因為買<var>N2</var>個<var>deskItem(0)</var>要花<code>x</code>，所以我們可以列出下面的比例：</p>
+                    <p><code>\dfrac{<var>N2</var>}{x}</code></p>
+                    <p>我們知道買<var>N1</var>個<var>deskItem(0)</var>要花<var>C</var>元，所以可以寫成下面的比例式：</p>
+                    <p><code>\dfrac{<var>N1</var>}{\$<var>C</var>}</code></p>
+                    <p>總花費金額會隨著購買<var>deskItem( 0 )</var>的數量而有改變，但由於每個<var>deskItem( 0 )</var>的價格不會改變，所以兩個比例是相等的喔。</p>
+                </div>
+
+                <div data-if="IDX === 2" data-unwrap>
+                    <p>我們已經知道買<var>N1</var>個<var>deskItem(0)</var>要花多少錢。然後，現在我們想知道買<var>N2</var>個<var>deskItem(0)</var>要花我們多少錢。在這裡，我們可以把 <var>deskItem( 0 )</var> 的數量寫入比例式：</p>
+                    <p><code>\dfrac{<var>N1</var>}{<var>N2</var>}</code></p>
+                    <p>我們已經知道買<var>N1</var>個<var>deskItem(0)</var>要花$<var>C</var>元。接著，我們可以讓<code>x</code>代表買<var>N2</var>個<var>deskItem(0)</var>必須花多少錢。花費金額的比例式可以寫成下面的式子：</p>
+                    <p><code>\dfrac{\$<var>C</var>}{x}</code></p>
+                    <p>總花費金額會隨著購買<var>deskItem( 0 )</var>的數量而按比例改變，所以兩邊比例是相等的喔。</p>
+                </div>
+
+                <div data-if="IDX === 3" data-unwrap>
+                    <p>如果我們用<code>x</code>來表示買<var>N2</var>個<var>deskItem(0)</var>總共要花多少錢的話，我們可以得到下列的表示式：</p>
+                    <p><code>\dfrac{x}{<var>N2</var>}</code></p>
+                    <p>我們必須花 $<var>C</var>元來買<var>N1</var>個<var>deskItem(0)</var>，而這可以表示成下面的比例式：</p>
+                    <p><code>\dfrac{\$<var>C</var>}{<var>N1</var>}</code></p>
+                    <p>因為單件物品的價格是不會變的，所以這兩個比例式會相等喔。</p>
+                </div>
+
+                <p><code><var>SOLUTIONS[ IDX ]</var></code></p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

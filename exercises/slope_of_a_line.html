@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>一條線的斜率</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        .quarter-graph {
+            float: left;
+            margin-bottom: 45px;
+            margin-right: 45px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="give-two-points" data-weight="3">
+            <div class="vars" data-ensure="Math.pow(Y1 - Y2, 2) + Math.pow(X1 - X2, 2) < 36 && X1 < X2 && Math.abs(M) !== 1">
+                <var id="X1">randRange(-9, 9)</var>
+                <var id="Y1">randRange(-9, 9)</var>
+
+                <var id="X2">randRange(-9, 9)</var>
+                <var id="Y2">randRange(-9, 9)</var>
+
+                <var id="M">(Y1 - Y2) / (X1 - X2)</var>
+                <var id="GRAPH_IN_QUESTION">randRange( 0, 1 )</var>
+            </div>
+            <div class="question">
+                <p>一條線經過點 <code>(<var>X1</var>, <var>Y1</var>)</code> 與 <code>(<var>X2</var>, <var>Y2</var>)</code> ，請問這條線的斜率是多少？</p>
+                <div data-if="GRAPH_IN_QUESTION" class="graphie" id="slope">
+                    graphInit({
+                        range: 10,
+                        scale: 20,
+                        tickStep: 1,
+                        labelStep: 1,
+                        unityLabels: false,
+                        labelFormat: function( s ) { return "\\small{" + s + "}"; },
+                        axisArrows: "<->"
+                    });
+
+                    line( [X1 - 19, Y1 - 19 * M], [X2 + 19, Y2 + 19 * M], {
+                        stroke: "#888"
+                    } );
+                    style({ fill: ORANGE, stroke: ORANGE });
+                    circle( [X1, Y1], 3/20 );
+                    style({ fill: BLUE, stroke: BLUE });
+                    circle( [X2, Y2], 3/20 );
+                </div>
+            </div>
+
+            <div class="solution"><var>(Y1 - Y2) / (X1 - X2)</var></div>
+            <div class="hints">
+              <div>
+                <p>想像一台飛機從左邊移動到右邊，如果這台飛機正在起飛 <code>\color{<var>BLUE</var>}{/}</code> ，則此時的斜率是正值；如果這台飛機正在降落 <code>\color{<var>GREEN</var>}{\backslash}</code> ，則此時的斜率是負值；當這台飛機已經達到飛行高度時 <code>\color{<var>ORANGE</var>}{-}</code> ，則此時的斜率是 0 。</p>
+                <div style="height: 200px;">
+                    <div class="graphie" style="float: left; margin: 8px;">
+                            graphInit({
+                            range: 4,
+                            scale: 20,
+                            tickStep: 1,
+                            labelStep: false
+                            });
+                            style({ fill: BLUE, stroke: BLUE });
+                            line( [ -1,-1 ], [ 1,4 ] );
+                            label([0,-4], "\\color{" + BLUE + "}{\\text{飛機起飛}}", "below");
+                    </div>
+                    <div class="graphie" style="float: left; margin: 8px;">
+                            graphInit({
+                            range: 4,
+                            scale: 20,
+                            tickStep: 1,
+                            labelStep: false
+                            });
+                            style({ fill: GREEN, stroke: GREEN });
+                            line( [ 0, 2 ], [ 2, -1 ] );
+                            label([0,-4], "\\color{" + GREEN + "}{\\text{飛機降落}}", "below");
+                    </div>
+                </div>
+              </div>
+                <p>如果飛機起飛的速度越快，則斜率值增加得越多，也就是說答案將比飛機慢慢地起飛的斜率值來得大。<br />
+                如果飛機降落的速度越快，則斜率值減少得越多，也就是說答案將比飛機慢慢地降落的斜率值來得小。</p>
+                <div data-if="!GRAPH_IN_QUESTION" class="graphie" id="slope">
+                    graphInit({
+                        range: 10,
+                        scale: 20,
+                        tickStep: 1,
+                        labelStep: 1,
+                        unityLabels: false,
+                        labelFormat: function( s ) { return "\\small{" + s + "}"; },
+                        axisArrows: "<->"
+                    });
+
+                    line( [X1 - 19, Y1 - 19 * M], [X2 + 19, Y2 + 19 * M], {
+                        stroke: "#888"
+                    } );
+
+                    style({ fill: ORANGE, stroke: ORANGE });
+                    circle( [X1, Y1], 3/20 );
+                    style({ fill: BLUE, stroke: BLUE });
+                    circle( [X2, Y2], 3/20 );
+                </div>
+                <p>代表 <code>(\color{<var>ORANGE</var>}{<var>X1</var>}, \color{<var>ORANGE</var>}{<var>Y1</var>})</code> 與 <code>(\color{<var>BLUE</var>}{<var>X2</var>}, \color{<var>BLUE</var>}{<var>Y2</var>})</code> 兩點的斜率之等式為 <code>m = \dfrac{\color{<var>BLUE</var>}{y_2} - \color{<var>ORANGE</var>}{y_1}}{\color{<var>BLUE</var>}{x_2} - \color{<var>ORANGE</var>}{x_1}}</code> 。</p>
+                <div>
+                    <div class="graphie" data-update="slope">
+                        style({ fill: "", stroke: PINK });
+                        line( [ X1, Y2 ], [ X2, Y2 ] );
+                        style({ stroke: GREEN });
+                        line( [ X1, Y1 ], [ X1, Y2 ] );
+                    </div>
+                    <p>將這兩點代入，我們得到 <code>m = \dfrac{\color{<var>BLUE</var>}{<var>Y2</var>} - \color{<var>ORANGE</var>}{<var>negParens(Y1)</var>}}{\color{<var>BLUE</var>}{<var>X2</var>} - \color{<var>ORANGE</var>}{<var>negParens(X1)</var>}} =
+                        \dfrac{\color{<var>GREEN</var>}{<var>Y2 - Y1</var>}}{\color{<var>PINK</var>}{<var>X2 - X1</var>}}</code></p>
+                </div>
+                <p>所以，斜率 <code>m</code> 為 <code><var>fractionReduce( Y2 - Y1, X2 - X1 )</var></code> 。</p>
+            </div>
+        </div>
+        <div id="show-four-graphs" data-weight="2">
+            <div class="vars">
+              <var id="COLORS">[
+                { name: "藍色", hex: KhanUtil.BLUE },
+                { name: "橘色", hex: KhanUtil.ORANGE },
+                { name: "綠色", hex: KhanUtil.GREEN },
+                { name: "粉紅色", hex: KhanUtil.PINK }
+                ]</var>
+                <var id="M_INIT">randRange( 2, 5 )</var>
+                <var id="SLOPES">[
+                    { value: M_INIT, display: M_INIT },
+                    { value: -1 * M_INIT, display: "-" + M_INIT },
+                    { value: 1 / M_INIT, display: "\\dfrac{1}{" + M_INIT + "}" },
+                    { value: -1 / M_INIT, display: "-\\dfrac{1}{" + M_INIT + "}" }
+                ]</var>
+                <var id="B">randRange( -3, 3 )</var>
+                <var id="WHICH">randRange( 0, 3 )</var>
+                <var id="DUMMY">[ 0, 1, 2, 3 ]</var>
+                <var id="M">SLOPES[WHICH]</var>
+            </div>
+            <p class="question">請問哪一張圖最適合表示一個為 <code><var>M.display</var></code> 的斜率？</p>
+            <div data-each="DUMMY as index">
+                <div class="graphie quarter-graph">
+                    graphInit({
+                        range: 6,
+                        scale: 20,
+                        tickStep: 1,
+                        labelStep: 1,
+                        labelFormat: function( s ) { return "\\small{" + s + "}"; },
+                        axisArrows: "&lt;-&gt;"
+                    });
+
+                    style({ stroke: COLORS[index].hex });
+                    label([0,-6], "\\color{" + COLORS[index].hex + "}" +
+                                  "{\\text{" + COLORS[index].name + "}}", "below");
+                    plot(function( x ) {
+                        return ( x - 1 ) * SLOPES[index].value + B;
+                    }, [ -11, 11 ]);
+                </div>
+            </div>
+            <div class="solution"><code>\quad \color{<var>COLORS[WHICH].hex</var>}{\text{<var>COLORS[WHICH].name</var>}}</code></div>
+            <ol class="choices" data-category="true">
+                <li data-each="DUMMY as index"><code>\quad \color{<var>COLORS[index].hex</var>}{\text{<var>COLORS[index].name</var>}}</code></li>
+            </ol>
+            <div class="hints">
+                <p style="clear: both">記得斜率相當於一條線的傾斜方向與傾斜程度。</p>
+                <div data-if="M.value < 0">
+                    <p>因為 <code><var>M.display</var></code> 是負值，這條線應該往右邊向下延伸。</p>
+                    <p>答案會是 <code class="hint_orange">\text{橘色}</code> 或 <code class="hint_pink">\text{粉紅色}</code> 其中之一的圖。</p>
+                </div>
+                <div data-else>
+                    <p>因為 <code><var>M.display</var></code> 是正值，這條線應該往右邊向上延伸。</p>
+                    <p>答案會是 <code class="hint_blue">\text{藍色}</code> 或 <code class="hint_green">\text{綠色}</code> 其中之一的圖。</p>
+                </div>
+                <p>哪一張圖中的 x 值改變 1 時， y 值會跟著改變 <code><var>M.display</var></code> ？</p>
+                <p><code>\color{<var>COLORS[WHICH].hex</var>}{\text{<var>COLORS[WHICH].name.toLowerCase()</var>}}</code> 的圖最能表示一個為 <code><var>M.display</var></code> 的斜率。</p>
+            </div>
+        </div>
+        <div id="slopes-zero-infinity" data-type="show-four-graphs" data-weight="1">
+            <div class="vars">
+                <var id="SLOPES">[
+                    { value: M_INIT, display: M_INIT },
+                    { value: 0, display: 0 },
+                    { value: 99999, display: "undefined" },
+                    { value: 1 / M_INIT, display: "\\dfrac{1}{" + M_INIT + "}" }
+                    ]</var>
+                <var id="WHICH">randRange( 1, 2 )</var>
+                <var id="M">SLOPES[WHICH]</var>
+            </div>
+            <p class="question"><span data-if="WHICH ===1">哪一張圖最能表示一個為 <code><var>M.display</var></code> 的斜率？</span><span data-else>哪一張圖最能表示一個未定義的斜率？</span></p>
+            <div class="hints">
+                <p style="clear: both">記得斜率相當於一條線的陡峭程度。</p>
+                <p>想像一下，往上走向一個丘陵的高點，往上走的軌跡可以用一條線來表現。一個比較大的斜率就代表一個比較陡峭的丘陵。</p>
+                <p data-if="M.value === 0">斜率為 <code><var>M.display</var></code> 代表根本就沒有丘陵的存在，圖應該是平坦的。</p>
+                <p data-if="M.value === Number.POSITIVE_INFINITY">斜率為 <var>M.display</var> 相當於一條垂直的線，就像是一個不可能存在的超陡丘陵。</p>
+                <p><code>\color{<var>COLORS[WHICH].hex</var>}{\text{<var>COLORS[WHICH].name.toLowerCase()</var>}}</code> 的圖最能表示一個<span data-if="WHICH === 2">未定義</span><span data-if="WHICH === 1">為 <code><var>M.display</var></code> </span>的斜率。</p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

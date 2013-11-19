@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-geometry graphie-polygon word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>多邊形的角</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+        <var id="SIDES">randRange( 5, 7 )</var>
+    </div>
+    <div class="problems">
+        <div id="interior">
+            <div class="vars">
+                <var id="ANSWER">180 * ( SIDES - 2 )</var>
+                <var id="CLONE">{}</var>
+            </div>
+            <p class="question">請問，這個多邊形的內角和是多少？</p>
+            <div class="graphie" id="circle">
+                init({
+                    range: [ [ -5, 5 ], [ -1, 5 ] ],
+                    scale: [ 40, 40 ]
+                });
+                graph.polygon = new Polygon( SIDES );
+                graph.polygon.draw();
+                CLONE = graph.polygon.clone();
+            </div>
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>ANSWER</var></span> 度
+            </div>
+            <div class="hints">
+                <p>要解這個問題的方法其實不只一種。</p>
+                <p>我們知道三角形的內角和是 180 度；這是否會對你解題有幫助呢？</p>
+                <div>
+                    <p>由於這個多邊形有 <var>SIDES</var> 個邊，我們可以畫出 <var>SIDES</var> 三角形，而這些三角形的頂點都在多邊行的中間交會。</p>
+                    <div class="graphie" data-update="circle">
+                        graph.polygon.drawRadialDiagonals();
+                    </div>
+                </div>
+                <p>我們可以將這些三角形的角度都加起來，然後再減去 360 度 (因為中間形成的圓圈是多餘的) 。</p>
+                <p><code>\begin{align*}&<var>SIDES</var> \times 180^{\circ} - 360^{\circ} \\
+                    &= <var>SIDES * 180</var>^{\circ} - 360^{\circ} \\
+                    &= <var>ANSWER</var>^{\circ}\end{align*}</code></p>
+
+                <div>
+                    <p>下面是另外一種解法。</p>
+                    <p>我們可以用<var>cardinal( SIDES )</var>個邊中的四個邊，做出兩個三角形，如圖中橘色線條所示。</p>
+                    <div class="graphie" data-id="other">
+                        init({
+                             range: [ [ -5, 5 ], [ -1, 5 ] ]
+                        });
+                        graph.polygon = CLONE;
+                        graph.polygon.draw();
+                        graph.polygon.drawDiagonals( randRange( 0, SIDES - 1 ) );
+                    </div>
+                </div>
+				<p>這兩個橘色三角形之間隔了 <var>SIDES - 4 </var> 個邊，另外又形成了 <var>SIDES - 4</var> 個三角形。</p>
+                <p>我們將這個多邊形切成了 <var>SIDES - 2</var> 個三角形，而每個三角形的內角和都是 180 度。</p>
+                <p><code><var>SIDES - 2</var> \times 180^{\circ} = <var>ANSWER</var>^{\circ}</code></p>
+                <p>跟第一個方法一樣：我們發現這個多邊形的內角和是 <var>ANSWER</var> 度。</p>
+            </div>
+        </div>
+        <div id="exterior">
+            <p class="question">請問，這個多邊形的外角和是多少？</p>
+            <div class="graphie" id="polygon">
+                init({
+                     range: [ [ -6, 6 ], [ -2, 7 ] ]
+                });
+                graph.polygon = new Polygon( SIDES );
+                graph.polygon.draw();
+            </div>
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>360</var></span> 度
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>上面的圖將多邊形的外角都畫出來了。</p>
+                    <div class="graphie" data-update="polygon">
+                        graph.polygon.drawExteriorAngles();
+                    </div>
+                </div>
+                <div class="graphie" data-update="polygon">
+                    graph.polygon.animateExteriorAngles( randRange( 0, SIDES - 1 ) );
+                </div>
+                <p>你會發現，這些外角全部加起來剛好組成一個圓形，所以多邊形的外角和跟一個圓形的度數是一樣的： 360 度。</p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

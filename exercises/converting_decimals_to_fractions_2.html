@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <title>將小數轉換成分數 2</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+
+<!--
+Convert decimals such as 0.3763 to a fraction (3763/10000),  convert decimals such as 12.16 into mixed number (12 4/25), reduce to simplest terms
+ -->
+
+<body>
+<div class="exercise">
+
+    <div class="problems">
+        <div id="into-fraction">
+            <div class="vars">
+                <var id="NUMERATOR">randRange( 0, 1 ) ? randRange( 100, 999 ) : randRange( 1000, 9999 )</var>
+                <var id="D">( NUMERATOR / 10000 ).toFixed( 4 )</var>
+                <var id="GCD">getGCD( round( D * 10000 ) , 10000 )</var>
+            </div>
+            <p class="question">請將<code><var>D</var></code> 轉換成分數. 並化簡成最簡分數.</p>
+            <p class="solution" data-type="rational"><var>D</var></p>
+            <div class="hints">
+                <div>
+                    <p><code><var>D</var></code> 可以寫成:</p>
+                    <p><code>= 0 + <var>fraction( D.substr( 2, 1 ) , 10 )</var> + <var>fraction( D.substr( 3, 1 ) , 100 )</var> + <var>fraction( D.substr( 4, 1 ), 1000 )</var> + <var>fraction( D.substr( 5, 1 ), 10000 )</var></code></p>
+                    <p><code>= <var>fraction( NUMERATOR, 10000 )</var></code></p>
+                </div>
+                <div>
+                    <p>你也可以省略幾個步驟，直接將分子寫成<code><var>NUMERATOR</var></code>，將分母寫成<code>10000</code> (因為小數點延伸到萬分位).</p>
+                    <p><code><var>fraction( NUMERATOR, 10000 )</var></code></p>
+                </div>
+                <div data-if="GCD > 1">
+                    <p>然後約分: 將分子和分母除以最大公約數 <code><var>GCD</var></code>.</p>
+                    <p><code>=<var>fractionReduce( round( D * 10000 ) , 10000 )</var></code></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="into-mixed">
+            <div class="vars">
+                <var id="W">randRange( 1, 19 )</var>
+                <var id="D">randRangeExclude(1, 99, [ 10 , 20 , 30 , 40 , 50 , 60 , 70 , 80 , 90 ]) / 100</var>
+                <var id="GCD">getGCD( round( D * 100 ) , 100 )</var>
+                <var id="FIXED">( W + D ).toFixed( 2 )</var>
+            </div>
+            <p class="question">請將 <code><var>FIXED</var></code> 轉換成帶分數. 並化簡之</p>
+
+            <p class="solution" data-type="mixed"><var>W + D</var></p>
+
+            <div class="hints">
+                <div>
+                    <p><code><var>FIXED</var></code> 可以寫成:</p>
+                    <p><code>= <var>W</var> + <var>fraction( floor( D * 10 ), 10 )</var> + <var>fraction( floor( ( D * 100 ) % 10 ), 100 )</var></code></p>
+                </div>
+                <p><code>= <var>W  + fraction( roundTo( 0, D * 100 ), 100 )</var></code></p>
+                <div data-if="GCD > 1">
+                    <p>化簡分數部分，將分子和分母除以最大公約數 <code><var>GCD</var></code>.</p>
+                    <p><code>=<var>W + fractionReduce( round( D * 100 ) , 100 )</var></code></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

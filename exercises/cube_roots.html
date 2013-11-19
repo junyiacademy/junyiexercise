@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html data-require="math graphie">
+<head>
+    <title>立方根</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="cx">0</var>
+            <var id="y">0</var>
+
+            <var id="N">randRange( 2, 12 )</var>
+            <var id="F_N">getPrimeFactorization( N )</var>
+        </div>
+
+        <div class="hints">
+            <p>
+                如果你沒辦法立刻想到那是什麼數字，你可以將<code><var>Q</var></code>做質因數分解，並看這些質因數能湊成幾組相同的組合。
+            </p>
+            <div>
+                <p>我們先畫一個質因數分解的樹狀圖。</p>
+                <div class="graphie" id="factor-tree">
+                    init({
+                        range: [ [-1, FACTORIZATION.length + 2], [ -2 * FACTORIZATION.length - 1, 1] ],
+                        scale: [30, 30]
+                    });
+
+                    label( [cx + 1, y], curr );
+                </div>
+            </div>
+
+            <div class="graphie" data-update="factor-tree" data-each="FACTORIZATION as factor">
+                    path( [ [cx + 1, y - 0.5], [cx, y - 1.5] ] );
+                    path( [ [cx + 1, y - 0.5], [cx + 2, y - 1.5] ] );
+                    y -= 2;
+                    cx += 1;
+
+                    curr = curr / factor;
+
+                    label( [cx - 1, y], factor );
+                    circle( [cx - 1, y], 0.5);
+                    label( [cx + 1, y], curr );
+            </div>
+
+            <div class="graphie" data-update="factor-tree">
+                circle( [cx + 1, y], 0.5);
+            </div>
+
+            <p>所以我們發現<code><var>Q</var></code>的質因數分解是<code><var>PRIMES.join( "\\times " )</var></code>。</p>
+        </div>
+
+        <div class="problems">
+            <div id="cube">
+                <div class="vars">
+                    <var id="Q">N * N * N</var>
+                    <var id="PRIMES">getPrimeFactorization( Q )</var>
+                    <var id="FACTORIZATION">PRIMES.slice( 0, PRIMES.length - 1 )</var>
+                    <var id="curr">Q</var>
+                </div>
+
+                <p class="question"><code><var>Q</var></code>的立方根是多少?</p>
+
+                <p class="solution"><var>N</var></p>
+
+                <div class="hints" data-apply="prependContents">
+                    <p>
+                        <code><var>Q</var></code>的立方根，就是一個自己乘以自己三次後會等於<code><var>Q</var></code>的數字。
+                    </p>
+                </div>
+
+                <div class="hints" data-apply="appendContents">
+                    <p>我們要找的是<code><var>Q</var></code>的立方根，所以我們要將質因數們分成三組一模一樣的組合。</p>
+
+                    <div data-if="PRIMES.length === 3" data-unwrap>
+
+                        <p>由於我們的質因數分解只產生了三個數字，所以我們要將這些數字分成三組的工作就變得很簡單了。</p>
+                        <p><code><var>Q</var> = <var>PRIMES.join( "\\times " )</var></code>，所以<code><var>N</var>^3 = <var>Q</var></code>。</p>
+
+                    </div><div data-else data-unwrap>
+
+                        <div>
+                            <p>你會發現我們可以將這些質因數們這樣重新排列：</p>
+                            <p><code><var>Q</var> = <var>PRIMES.join( "\\times " )</var> = \left(<var>[ F_N.join( "\\times " ), F_N.join( "\\times " ), F_N.join( "\\times ") ].join( "\\right)\\times\\left(" )</var>\right)</code><p>
+                        </div>
+
+                        <p data-if="F_N.length > 1">
+                            這樣一來，<code>\left(<var>F_N.join( "\\times " )</var>\right)^3 = <var>N</var>^3 = <var>Q</var></code>.
+                        </p><p data-else>
+                            這樣一來，<code><var>N</var>^3 = <var>Q</var></code>.
+                        </p>
+
+                    </div>
+
+                    <p>所以<code><var>Q</var></code>的立方根便是<code><var>N</var></code>。</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html data-require="math word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>簡化分數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars" data-ensure="! (getGCD ( NUM, DENOM ) === NUM || getGCD ( NUM, DENOM) === DENOM)">
+            <var id="FACTOR">randRange( 3, 15 )</var>
+            <var id="NUM">randRange(2, 10) * FACTOR</var>
+            <var id="DENOM">randRange(2, 10) * FACTOR</var>
+            <var id="GCD">getGCD( NUM, DENOM )</var>
+            <var id="GCD_FACTORS">getPrimeFactorization( GCD )</var>
+            <var id="HINT">
+                (function(){
+                    var factorValue = 1;
+                    var factorDisplay = "";
+                    var hint = "\\dfrac{" + NUM + "}{" + DENOM + "}";
+                    $.each( GCD_FACTORS, function( index, value) {
+                        factorValue *= value;
+                        var dot = index === 0 ? "" : "\\cdot ";
+                        factorDisplay += dot + value;
+                        hint += "= \\dfrac{" + factorDisplay + "\\cdot" + NUM / factorValue + "}{" + factorDisplay + "\\cdot" + DENOM / factorValue + "}";
+                    });
+                    hint += "= \\dfrac{" + NUM / GCD + "}{" + DENOM / GCD + "}";
+
+                    return hint;
+                })()
+            </var>
+        </div>
+
+        <div class="problems">
+            <div>
+                <p class="problem">簡化至最簡分數。</p>
+                <p class="question"><code>\dfrac{<var>NUM</var>}{<var>DENOM</var>}</code></p>
+                <p class="solution" data-type="rational"><var>NUM / DENOM</var></p>
+            </div>
+        </div>
+
+        <div class="hints">
+            <p data-if="GCD_FACTORS.length !== 1">有幾種方法能解決這個問題。</p>
+
+            <p> <var>NUM</var> 和 <var>DENOM</var> 的最大公因數（GCD）是多少？</p>
+
+            <p><code><var>NUM</var>   = <var>getPrimeFactorization( NUM   ).join( "\\cdot" )</var></code><br />
+               <code><var>DENOM</var> = <var>getPrimeFactorization( DENOM ).join( "\\cdot" )</var></code></p>
+
+            <p><code>\mbox{GCD}(<var>NUM</var>, <var>DENOM</var>)<span data-if="!isPrime(GCD)"> = <var>GCD_FACTORS.join( "\\cdot" )</var></span> = <var>GCD</var></code></p>
+
+            <p>
+                <code>\dfrac{<var>NUM</var>}{<var>DENOM</var>}
+                = \dfrac{<var>NUM / GCD</var> \cdot <var>GCD</var>}{ <var>DENOM / GCD</var>\cdot <var>GCD</var>}</code>
+            </p>
+
+            <p>
+                <code>\hphantom{\dfrac{<var>NUM</var>}{<var>DENOM</var>}}
+                = \dfrac{<var>NUM / GCD</var>}{<var>DENOM / GCD</var>} \cdot \dfrac{<var>GCD</var>}{<var>GCD</var>}</code>
+            </p>
+
+            <p>
+                <code>\hphantom{\dfrac{<var>NUM</var>}{<var>DENOM</var>}}
+                = \dfrac{<var>NUM / GCD</var>}{<var>DENOM / GCD</var>} \cdot 1</code>
+            </p>
+            <p>
+                <code>\hphantom{\dfrac{<var>NUM</var>}{<var>DENOM</var>}}
+                = \dfrac{<var>NUM / GCD</var>}{<var>DENOM / GCD</var>}</code>
+            </p>
+            <div data-if="GCD_FACTORS.length !== 1" data-unwrap>
+                <p>你也可以透過將分母與分子重複拆解至公因數的方式來解決這個問題。</p>
+                <div>
+                    <p>例如：</p>
+                    <p><code><var>HINT</var></code></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

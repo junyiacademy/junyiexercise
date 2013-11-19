@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+    <title>分數換算成小數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div>
+            <div class="vars" data-ensure="getGCD( NUMERATOR, DENOMINATOR ) === 1">
+                <var id="NUMERATOR">randRange( 1, 30 )</var>
+                <var id="DENOMINATOR">randRange( NUMERATOR + 1, 30 )</var>
+                <var id="DECIMAL_4">Math.floor( NUMERATOR / DENOMINATOR * 10000 ) / 10000</var>
+                <var id="DECIMAL">roundTo( 3, NUMERATOR / DENOMINATOR )</var>
+            </div>
+            <p>分數換算成小數，並且四捨五入至小數點後第三位。</p>
+            <p class="question"><code>\dfrac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code></p>
+            <p class="solution" data-type="decimal"><var>DECIMAL</var></p>
+            <div class="hints">
+                <p>分數是分子 <code><var>NUMERATOR</var></code> 除以分母 <code><var>DENOMINATOR</var></code>。</p>
+
+                <div class="graphie" id="nmbrs">
+                    graph.divider = new Divider( DENOMINATOR, NUMERATOR * 10000, 0, 4 );
+                    graph.divider.show();
+                    DUMMY = Array( graph.divider.getNumHints() );
+                </div>
+
+                <div class="graphie" data-update="nmbrs">
+                    graph.divider.shiftDecimals();
+                </div>
+
+                <div class="graphie" data-update="nmbrs" data-each="Divider.numHintsFor( DENOMINATOR, NUMERATOR * 10000, 0, 4 ) times">
+                    graph.divider.showHint();
+                </div>
+
+                <p>把結果 <code><var>DECIMAL_4.toFixed( 4 )</var></code> 算到小數點後第三位得到 <code><var>DECIMAL.toFixed( 3 )</var></code>。</p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

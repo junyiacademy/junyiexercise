@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>函數的定義域</title>
+    <script src="../khan-exercise.js"></script>
+    <script type="text/javascript">
+        function filter( o, f ) {
+            var n = {};
+            for ( var p in o ) {
+                if ( o.hasOwnProperty( p ) && f( p ) ) n[p] = o[p];
+            }
+            return n;
+        }
+    </script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="A">randRange( 1, 10 )</var>
+            <var id="B" data-ensure="A !== B">randRange( 1, 10 )</var>
+            <var id="C" data-ensure="A !== C && B !== C">randRange( 1, 10 )</var>
+
+            <var id="SET">function() { return "\\{ \\, x \\in \\RR \\mid " + Array.prototype.join.call( arguments, ", \\," ) + "\\, \\}"; }</var>
+            <var id="FN">function( n, sym ) { return "x " + sym + n; }</var>
+            <var id="FN2">function( n, m, sym1, sym2 ) { return n + sym1 + " x " + sym2 + m; }</var>
+            <var id="NEQ">function( n ) { return FN( n, "\\neq" ); }</var>
+            <var id="GEQ">function( n ) { return FN( n, "\\geq" ); }</var>
+            <var id="LEQ">function( n ) { return FN( n, "\\leq" ); }</var>
+            <var id="GE">function( n ) { return FN( n, ">" ); }</var>
+            <var id="LE">function( n ) { return FN( n, "&lt;" ); }</var>
+            <var id="LE_LEQ">function( n, m ) { return FN2( n, m, "&lt;", "\\leq" ); }</var>
+            <var id="LEQ_LEQ">function( n, m ) { return FN2( n, m, "\\leq", "\\leq" ); }</var>
+            <var id="LE_LE">function( n, m ) { return FN2( n, m, "&lt;", "&lt;" ); }</var>
+
+            <var id="CHOICES">{
+                "two-denom-simplify": SET( NEQ( -1*A ), NEQ( B ) ),
+                "two-denom-cond": SET( NEQ( -1*A ) ),
+                "sqrt": SET( GEQ( A ) ),
+                "inverse-sqrt": SET( GE( A ) ),
+                "inverse-sqrt-cond": SET( NEQ( A ) ),
+                "sqrt-frac": SET( LE_LEQ( A, A+B ) ),
+                "two-denom-cond-weird": SET( NEQ( -1*A ), NEQ( C ) ),
+                "sqrt-poly-frac": SET( GEQ( C ) ),
+                "sqrt-abs": SET( LEQ_LEQ( -1*A, A ) ),
+                "inverse-sqrt-abs": SET( LE_LE( -1*A, A ) )
+            }</var>
+
+        </div>
+
+        <div class="problems">
+
+            <div id="two-denom-simplify">
+
+                <p class="problem"><code>f(x) = \dfrac{ x + <var>A</var> }{ ( x + <var>A</var> )( x - <var>B</var> ) }</code></p>
+
+                <p class="question">請問 <code>f(x)</code> 的定義域為何？</p>
+
+                <p class="solution"><code><var>CHOICES["two-denom-simplify"]</var></code></p>
+                <ul class="choices" data-show="5" data-none="true">
+                    <li data-each="filter( CHOICES, function( c ) { return c !== 'two-denom-simplify'; } ) as c"><code><var>c</var></code></li>
+                </ul>
+
+                <div class="hints">
+                    <p>當分母等於 0 的時候， <code>f(x)</code> 是未定義的。</p>
+                    <p>當 <code>x=<var>(-1*A)</var></code> 或 <code>x=<var>B</var></code> 的時候，分母等於 0 。</p>
+                    <p>所以我們得知 <code>x \neq <var>-1*A</var></code> 與 <code>x \neq <var>B</var></code> 。</p>
+                    <p>用數學的方式來表示後，定義域為 <code><var>CHOICES["two-denom-simplify"]</var></code> 。</p>
+                </div>
+
+            </div>
+
+            <div id="two-denom-cond" data-type="two-denom-simplify">
+
+                <p class="problem"><code>f(x)= \begin{cases} \dfrac{ x + <var>A</var> }{ ( x + <var>A</var> )( x - <var>B</var> ) } & \text{若 $x \neq <var>B</var>$} \\ <var>C</var> & \text{若 $x = <var>B</var>$} \end{cases}</code></p>
+
+                <p class="solution"><code><var>CHOICES["two-denom-cond"]</var></code></p>
+                <ul class="choices" data-show="5" data-none="true">
+                    <li data-each="filter( CHOICES, function( c ) { return c !== 'two-denom-cond'; } ) as c"><code><var>c</var></code></li>
+                </ul>
+
+                <div class="hints">
+                    <p><code>f(x)</code> 是一個分段函數，所以我們需要檢查哪些片段是未定義的。</p>
+                    <p>當分母為 0 時，<code>f(x)</code> 中第一個片段的定義 <code>\frac{ x + <var>A</var> }{ ( x + <var>A</var> )( x - <var>B</var> ) }</code> 是未定義的。</p>
+                    <p>當 <code>x=<var>-1*A</var></code> 或 <code>x=<var>B</var></code> 的時候，分母會是 0 。</p>
+                    <p>因此，基於第一個片段的定義，我們得知 <code>x \neq <var>-1*A</var></code> 與 <code>x \neq <var>B</var></code> 。</p>
+                    <p>然而，第二個片段的定義只會在 <code>x = <var>B</var></code> 時成立，而且第二個片段的定義是 <code><var>C</var></code> ，沒有任何間斷，所以當 <code>x = <var>B</var></code> 的時候， <code>f(x)</code> 會是已定義的。</p>
+                    <p>所以定義域唯一的限制就只有 <code>x \neq <var>-1*A</var></code> 。</p>
+                    <p>以數學的方式呈現後，定義域為 <code><var>CHOICES["two-denom-cond"]</var></code> 。</p>
+                </div>
+
+            </div>
+
+            <div id="sqrt" data-type="two-denom-simplify">
+
+                <p class="problem"><code>f(x) = \sqrt{ x - <var>A</var> }</code></p>
+
+                <p class="solution"><code><var>CHOICES.sqrt</var></code></p>
+                <ul class="choices" data-show="5" data-none="true">
+                    <li data-each="filter( CHOICES, function( c ) { return c !== 'sqrt'; } ) as c"><code><var>c</var></code></li>
+                </ul>
+
+                <div class="hints">
+                    <p>當被開方數（根號底下的式子）小於 0 的時候， <code>f(x)</code> 是未定義的。</p>
+                    <p>所以這個被開方數 <code>x - <var>A</var></code> 一定要大於或等於 0 。</p>
+                    <p>因此 <code>x - <var>A</var> \geq 0</code>，也就代表 <code>x \geq <var>A</var></code> 。</p>
+                    <p>用數學的方式來表示後，定義域為 <code><var>CHOICES.sqrt</var></code> 。</p>
+                </div>
+
+            </div>
+
+            <div id="inverse-sqrt" data-type="two-denom-simplify">
+
+                <p class="problem"><code>f(x) = \dfrac{ 1 }{ \sqrt{ x - <var>A</var> } }</code></p>
+
+                <p class="solution"><code><var>CHOICES["inverse-sqrt"]</var></code></p>
+                <ul class="choices" data-show="5" data-none="true">
+                    <li data-each="filter( CHOICES, function( c ) { return c !== 'inverse-sqrt'; } ) as c"><code><var>c</var></code></li>
+                </ul>
+
+                <div class="hints">
+                    <p>首先，我們先想到：當被開方數（根號底下的式子）小於 0 的時候， <code>f(x)</code> 是未定義的。</p>
+                    <p>所以被開方數 <code>x - <var>A</var></code> 一定要大於或等於 0 。</p>
+                    <p>因此 <code>x - <var>A</var> \geq 0</code> ，也就是 <code>x \geq <var>A</var></code> 。</p>
+                    <p>接著，我們也想到：當分母 <code>\sqrt{ x - <var>A</var> }</code> 是 0 的時候，<code>f(x)</code> 也是未定義的。</p>
+                    <p>所以 <code>\sqrt{ x - <var>A</var> } \neq 0</code> 。</p>
+                    <p>只有當 <code>z = 0</code> 的時候 <code>\sqrt{ z } = 0</code>，所以 <code>\sqrt{ x - <var>A</var> } \neq 0</code> 代表 <code>x - <var>A</var> \neq 0</code> 。</p>
+                    <p>因此 <code>x \neq <var>A</var></code> 。</p>
+                    <p>就這樣，我們有了兩個限制： <code>x \geq <var>A</var></code> 與 <code>x \neq <var>A</var></code> 。</p>
+                    <p>我們將這兩個限制做個結合，可以簡化成 <code>x > <var>A</var></code> 。</p>
+                    <p>用數學符號將定義域表示出來，定義域為 <code><var>CHOICES["inverse-sqrt"]</var></code> 。</p>
+                </div>
+
+            </div>
+
+            <div id="inverse-sqrt-cond" data-type="two-denom-simplify">
+
+                <p class="problem"><code>f(x) = \begin{cases} \dfrac{ 1 }{ \sqrt{ x - <var>A</var> } } & \text{若 $x \geq <var>A</var>$} \\ \dfrac{ 1 }{ \sqrt{ <var>A</var> - x } } & \text{若 $x &lt; <var>A</var>$} \end{cases}</code></p>
+
+                <p class="solution"><code><var>CHOICES["inverse-sqrt-cond"]</var></code></p>
+                <ul class="choices" data-show="5" data-none="true">
+                    <li data-each="filter( CHOICES, function( c ) { return c !== 'inverse-sqrt-cond'; } ) as c"><code><var>c</var></code></li>
+                </ul>
+
+                <div class="hints">
+                    <p><code>f(x)</code> 是一個分段函數，所以我們需要檢查哪些片段是未定義的。</p>
+                    <p>當分母為 0 或是被開方數（根號底下的式子）小於 0 的時候，<code>f(x)</code> 中第一個片段的定義 <code>\frac{ 1 }{ \sqrt{ x - <var>A</var> } }</code> 是未定義的。</p>
+                    <p>分母 <code>\sqrt{ x - <var>A</var> }</code> 在 <code>x - <var>A</var> = 0</code> 的情況下會是 0，所以我們得知 <code>x \neq <var>A</var></code> 。</p>
+                    <p>被開方數 <code>x - <var>A</var></code> 在 <code>x < <var>A</var></code> 的情況下會小於 0，所以我們得知 <code>x \geq <var>A</var></code> 。</p>
+                    <p>所以當 <code>x \neq <var>A</var></code> 與 <code>x \geq <var>A</var></code> 時， <code>f(x)</code> 中第一個片段的定義是未定義的。結合這兩個限制後，當 <code>x > <var>A</var></code> 時，第一個片段的定義是已定義的。當 <code>x \geq <var>A</var></code> 時，<code>f(x)</code> 中第一個片段的定義成立，所以這個限制是有關係的。</p>
+                    <p>當 <code>x < <var>A</var></code> 時， <code>f(x)</code> 中第二個片段的定義 <code>\frac{ 1 }{ \sqrt{ <var>A</var> - x } }</code> 成立，而且當分母為 0 或是被開方數（根號底下的式子）小於 0 的時候是未定義的。</p>
+                    <p>分母 <code>\sqrt{ <var>A</var> - x }</code> 在 <code><var>A</var> - x = 0</code> 的情況下會是 0 ，所以我們得知 <code>x \neq <var>A</var></code> 。</p>
+                    <p>被開方數 <code><var>A</var> - x</code> 在 <code>x > <var>A</var></code> 的情況會下小於 0，所以我們得知 <code>x \leq <var>A</var></code> 。</p>
+                    <p>所以當 <code>x \neq <var>A</var></code> 與 <code>x \leq <var>A</var></code> 時，<code>f(x)</code> 中第二個片段的定義是已定義的。結合這兩個限制，當 <code>x < <var>A</var></code> 時，第二個片段的定義是已定義的。但是， <code>f(x)</code> 中第二個片段的定義只有在 <code>x < <var>A</var></code> 成立，所以這個限制其實跟 <code>f(x)</code> 的定義域沒有關聯性。</p>
+                    <p>所以當 <code>x > <var>A</var></code> 時，第一個片段的定義是已定義的，而且在 <code>x \geq <var>A</var></code> 時成立；而當 <code>x < <var>A</var></code> 時，第二個片段的定義是已定義的，而且在 <code>x < <var>A</var></code> 時成立。將這兩個的限制結合在一起，唯一一個讓定義成立且其值是未定義的情況就是在 <code>x = <var>A</var></code> 。所以 <code>f(x)</code> 的定義域中唯一的限制就是 <code>x \neq <var>A</var></code> 。</p>
+                    <p>用數學的方式來表示後，定義域為 <code><var>CHOICES["inverse-sqrt-cond"]</var></code> 。</p>
+                </div>
+
+            </div>
+
+            <div id="sqrt-frac" data-type="two-denom-simplify">
+
+                <p class="problem"><code>f(x) = \dfrac{ \sqrt{ <var>A+B</var> - x } }{ \sqrt{ x - <var>A</var> } }</code></p>
+
+                <p class="solution"><code><var>CHOICES["sqrt-frac"]</var></code></p>
+                <ul class="choices" data-show="5" data-none="true">
+                    <li data-each="filter( CHOICES, function( c ) { return c !== 'sqrt-frac'; } ) as c"><code><var>c</var></code></li>
+                </ul>
+
+                <div class="hints">
+                    <p>首先，我們先想到：只要根數是未定義， <code>f(x)</code> 就會是未定義，所以被開方數（在根號底下的式子）不能比 0 小。</p>
+                    <p>當 <code><var>A+B</var> - x < 0</code> 的時候，在上方的根數就會是未定義。</p>
+                    <p>所以當 <code>x > <var>A+B</var></code> 時，在上方的根數就是未定義，因此我們得知 <code>x \leq <var>A+B</var></code> 。</p>
+                    <p>當 <code>x - <var>A</var> < 0</code> 時，在下方的根數就會是未定義。</p>
+                    <p>所以當 <code>x < <var>A</var></code> 時，在下方的根數就是未定義，因此我們得知 <code>x \geq <var>A</var></code> 。</p>
+                    <p>接著，我們也想到：當分母 <code>\sqrt{ x - <var>A</var> }</code> 為 0 時， <code>f(x)</code> 就是未定義。</p>
+                    <p>所以 <code>\sqrt{ x - <var>A</var> } \neq 0</code> ，因此 <code>x - <var>A</var> \neq 0</code>，也就是 <code>x \neq <var>A</var></code> 。</p>
+                    <p>就這樣，我們有了三個限制： <code>x \leq <var>A+B</var></code> 、 <code>x \geq <var>A</var></code> 、與 <code>x \neq <var>A</var></code> 。</p>
+                    <p>結合這三個限制，我們得到 <code><var>A</var> < x \leq <var>A+B</var></code> 。</p>
+                    <p>用數學的方式來表示後，定義域為 <code><var>CHOICES["sqrt-frac"]</var></code> 。</p>
+                </div>
+
+            </div>
+
+            <div id="two-denom-cond-weird" data-type="two-denom-simplify">
+
+                <p class="problem"><code>f(x) = \begin{cases} \dfrac{ x + <var>A</var> }{ ( x + <var>A</var> )( x - <var>C</var> ) } & \text{若 $x \neq <var>B</var>$} \\ <var>A</var> & \text{若 $x = <var>B</var>$} \end{cases}</code></p>
+
+                <p class="solution"><code><var>CHOICES["two-denom-cond-weird"]</var></code></p>
+                <ul class="choices" data-show="5" data-none="true">
+                    <li data-each="filter( CHOICES, function( c ) { return c !== 'two-denom-cond-weird'; } ) as c"><code><var>c</var></code></li>
+                </ul>
+
+                <div class="hints">
+                    <p><code>f(x)</code> 是一個分段函數，所以我們需要檢查哪些片段是未定義的。</p>
+                    <p><code>f(x)</code> 的第一個片段定義 <code>\frac{ x + <var>A</var> }{ ( x + <var>A</var> )( x - <var>C</var> ) }</code> 中，當分母為 0 的時候是未定義的。</p>
+                    <p>分母 <code>(x + <var>A</var>)(x - <var>C</var>)</code> 會在 <code>x = <var>-1*A</var></code> 或 <code>x = <var>C</var></code> 的時候為 0 。</p>
+                    <p>所以當 <code>x \neq <var>-1*A</var></code> 與 <code>x \neq <var>C</var></code> 時，<code>f(x)</code> 的第一個片段定義是已定義的。而且 <code>x = <var>-1*A</var></code> 與 <code>x = <var>C</var></code> 都包含在第一個片段定義中，所以這些限制跟 <code>f(x)</code> 的定義域有關係。</p>
+                    <p><code>f(x)</code> 的第二個片段定義 <code><var>A</var></code> ，是一個單純的水平線性函數，所以不用煩惱有任何間斷的地方，因此它不管在何處都是已定義的。</p>
+                    <p>所以當 <code>x \neq <var>-1*A</var></code> 與 <code>x \neq <var>C</var></code> 的時候，第一個片段定義是已定義的，而且在 <code>x \neq <var>B</var></code> 的時候皆成立；第二個片段定義則總是已定義的，而且在 <code>x = <var>B</var></code> 的時候成立。將這兩個限制結合在一起，在定義成立時唯一會是未定義的地方是在 <code>x = <var>-1*A</var></code> 與 <code>x = <var>C</var></code> 的時候。所以在 <code>f(x)</code> 的定義域中，限制是 <code>x \neq <var>-1*A</var></code> 與 <code>x \neq <var>C</var></code> 。</p>
+                    <p>用數學的方式來表示後，定義域為 <code><var>CHOICES["two-denom-cond-weird"]</var></code> 。</p>
+                </div>
+
+            </div>
+
+            <div id="sqrt-poly-frac" data-type="two-denom-simplify">
+
+                <p class="problem"><code>f(x) = \dfrac{ \sqrt{ x - <var>C</var> } }{ x^2 + <var>A+B</var> x + <var>A*B</var> }</code></p>
+
+                <p class="solution"><code><var>CHOICES["sqrt-poly-frac"]</var></code></p>
+                <ul class="choices" data-show="5" data-none="true">
+                    <li data-each="filter( CHOICES, function( c ) { return c !== 'sqrt-poly-frac'; } ) as c"><code><var>c</var></code></li>
+                </ul>
+
+                <div class="hints">
+                    <p><code>f(x) = \dfrac{ \sqrt{ x - <var>C</var> } }{ x^2 + <var>A+B</var> x + <var>A*B</var> } = \dfrac{ \sqrt{ x - <var>C</var> } }{ ( x + <var>A</var> )( x + <var>B</var> ) }</code></p>
+                    <p>首先，我們先想到：只要根數是未定義， <code>f(x)</code> 就會是未定義，所以被開方數（在根號底下的式子）不能比 0 小。</p>
+                    <p>所以 <code>x - <var>C</var> \geq 0</code> ，也就是 <code>x \geq <var>C</var></code> 。</p>
+                    <p>接著，我們也想到：只要分母是 0 ， <code>f(x)</code> 就會是未定義。</p>
+                    <p>因此 <code>x \neq <var>-1*A</var></code> 與 <code>x \neq <var>-1*B</var></code> 。</p>
+                    <p>但是，最後這兩個限制跟定義域沒有關係的，因為 <code><var>C</var> > <var>-1*A</var></code> 與 <code><var>C</var> > <var>-1*B</var></code> ，而且 <code>x \geq <var>C</var></code> 會確保 <code>x \neq <var>-1*A</var></code> 與 <code>x \neq <var>-1*B</var></code> 。</p>
+                    <p>我們可以把這些限制做結合，並簡化成 <code>x \geq <var>C</var></code> 。</p>
+                    <p>用數學符號將定義域表示出來，定義域為 <code><var>CHOICES["sqrt-poly-frac"]</var></code> 。</p>
+                </div>
+
+            </div>
+
+            <div id="sqrt-abs" data-type="two-denom-simplify">
+
+                <p class="problem"><code>f(x) = \sqrt{ <var>A</var> - \lvert x \rvert }</code></p>
+
+                <p class="solution"><code><var>CHOICES["sqrt-abs"]</var></code></p>
+                <ul class="choices" data-show="5" data-none="true">
+                    <li data-each="filter( CHOICES, function( c ) { return c !== 'sqrt-abs'; } ) as c"><code><var>c</var></code></li>
+                </ul>
+
+                <div class="hints">
+                    <p>當被開方數（根號底下的式子）小於 0 的時候， <code>f(x)</code> 是未定義的。</p>
+                    <p>所以我們得知 <code><var>A</var> - \lvert x \rvert \geq 0</code> 。</p>
+                    <p>因此 <code>\lvert x \rvert \leq <var>A</var></code> 。</p>
+                    <p>這就代表 <code>x \leq <var>A</var></code> 與 <code>x \geq <var>-1*A</var></code>；也就是 <code><var>-1*A</var> \leq x \leq <var>A</var></code> 。</p>
+                    <p>用數學的方式來表示後，定義域為 <code><var>CHOICES["sqrt-abs"]</var></code> 。</p>
+                </div>
+
+            </div>
+
+            <div id="inverse-sqrt-abs" data-type="two-denom-simplify">
+
+                <p class="problem"><code>f(x) = \dfrac{ <var>B</var> }{ \sqrt{ <var>A</var> - \lvert x \rvert } }</code></p>
+
+                <p class="solution"><code><var>CHOICES["inverse-sqrt-abs"]</var></code></p>
+                <ul class="choices" data-show="5" data-none="true">
+                    <li data-each="filter( CHOICES, function( c ) { return c !== 'inverse-sqrt-abs'; } ) as c"><code><var>c</var></code></li>
+                </ul>
+
+                <div class="hints">
+                    <p>首先，我們先想到：當被開方數（根號底下的式子）小於 0 的時候， <code>f(x)</code> 是未定義的。</p>
+                    <p>所以我們得知 <code><var>A</var> - \lvert x \rvert \geq 0</code> 。</p>
+                    <p>這也就代表 <code>\lvert x \rvert \leq <var>A</var></code>，也就是 <code><var>-1*A</var> \leq x \leq <var>A</var></code> 。</p>
+                    <p>接著，我們也想到：只要分母是 0 ， <code>f(x)</code> 就會是未定義。</p>
+                    <p>所以我們得知 <code>\sqrt{ <var>A</var> - \lvert x \rvert } \neq 0</code>，因此 <code>\lvert x \rvert \neq <var>A</var></code> 。</p>
+                    <p>這就代表 <code>x \neq <var>A</var></code> 與 <code>x \neq <var>-1*A</var></code> 。</p>
+                    <p>就這樣，我們有了四個限制： <code>x \geq <var>-1*A</var></code> 、 <code>x \leq <var>A</var></code> 、 <code>x \neq <var>-1*A</var></code> 、與 <code>x \neq <var>A</var></code> 。</p>
+                    <p>將這四個限制做個結合，我們得到 <code>x > <var>-1*A</var></code> 與 <code>x < <var>A</var></code> ；或是可以寫成 <code><var>-1*A</var> < x < <var>A</var></code> 。</p>
+                    <p>用數學的方式來表示後，定義域為 <code><var>CHOICES["inverse-sqrt-abs"]</var></code> 。</p>
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</body>
+</html>

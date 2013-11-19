@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>點斜式</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+    #answer_area input[type=text] {
+        width: 25px;
+    }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="y-as-function-of-x" data-weight="2">
+                <div class="vars"  data-ensure="X1 !== X2">
+                    <var id="X1">randRangeNonZero( -5, 5 )</var>
+                    <var id="Y1">randRangeNonZero( -5, 5 )</var>
+                    <var id="X2">randRangeNonZero( -5, 5 )</var>
+                    <var id="Y2">randRangeNonZero( -5, 5 )</var>
+                    <var id="SLOPE">(Y1 - Y2) / (X1 - X2)</var>
+                </div>
+                <p class="problem">用後面這些值來產生點斜式。<br/>換句話說，給定後面這些值給一個看起來像是 <code>(y - y_{1}) = m(x - x_{1})</code> 的方程式，請問 <code>x_{1}</code> 、 <code>y_{1}</code> 、與 <code>m</code> 的值各是多少？</p>
+                <p><code>x_{1}=\color{#b22222}{<var>X1</var>},\quad f(x_{1})=\color{#b22222}{<var>Y1</var>}.</code><br /><code>x_{2}=\color{#4169E1}{<var>X2</var>},\quad f(x_{2})\text{ } = \color{#4169E1}{<var>Y2</var>}.</code> </p>
+                <div class="solution" data-type="set">
+                    <div class="set-sol" data-type="multiple">
+                        <span class="sol" data-type="rational"><var>Y2</var></span>
+                        <span class="sol" data-type="rational"><var>SLOPE</var></span>
+                        <span class="sol" data-type="rational"><var>X2</var></span>
+                    </div>
+                    <div class="set-sol" data-type="multiple">
+                        <span class="sol" data-type="rational"><var>Y1</var></span>
+                        <span class="sol" data-type="rational"><var>SLOPE</var></span>
+                        <span class="sol" data-type="rational"><var>X1</var></span>
+                    </div>
+                    <div class="input-format">
+                        <p class="entry" data-type="multiple">
+                            <code>(y - \space</code><span class="sol" data-type="rational"></span><code>) = \space</code><span class="sol" data-type="rational"></span><code>(x - \space</code><span class="sol" data-type="rational"></span><code>)</code>
+                        </p>
+                    </div>
+                    <p class="example">整數，例：<code>6</code></p>
+                    <p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+                    <p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+                    <p class="example">小數，例：<code>0.75</code></p>
+                    <p class="example">請注意你輸入的各個數值的正負號，確保整個方程式是正確的</p>
+                </div>
+                <div class="hints">
+                    <p><code>f(x)</code> 是一個代表 <code>y</code> 的項式，所以可以定義一個點 <code>(\color{#b22222}{<var>X1</var>}, \color{#b22222}{<var>Y1</var>})</code> 。</p>
+                    <p>而用於了解斜率的公式為： <code>m = (y_{1} - y_{2}) / (x_{1} - x_{2})</code> 。</p>
+                    <p>所以，代入這些數值後，我們得到斜率為 <code>\displaystyle {} \frac{\color{#b22222}{<var>Y1</var>} - <span data-if="Y2 &lt; 0" >(</span>\color{#4169E1}{<var>Y2</var>}<span data-if="Y2 &lt; 0" >)</span>}{\color{#b22222}{<var>X1</var>} - <span data-if="X2 &lt; 0" >(</span>\color{#4169E1}{<var>X2</var>}<span data-if="X2 &lt; 0" >)</span>} =</code>
+                    <span data-if="getGCD( Y1-Y2, X1-X2 ) !== 1 || X1-X2 === 1 || X1-X2 &lt; 0 || Y1-Y2 &lt; 0">
+                        <code>\color{#68228B}{\dfrac{<var>Y1-Y2</var>}{<var> X1-X2</var>}} =</code>
+                    </span>
+                    <code>\color{#68228B}{<var>fractionReduce(Y1 - Y2, X1 - X2)</var>}</code></p>
+                    <div>
+                        <p>選擇一個點代入點斜式的 <code>x_{1}</code> 與 <code>y_{1}</code> ，結果就會是下列兩者之一：</p>
+                        <p><code>(y - \color{#b22222}{<var>Y1</var>}) = \color{#68228B}{<var>fractionReduce(Y1 - Y2, X1 - X2)</var>}(x - \color{#b22222}{<var>X1</var>})</code></p>
+                        <p>或</p>
+                        <p><code>(y - \color{#4169E1}{<var>Y2</var>}) = \color{#68228B}{<var>fractionReduce(Y1 - Y2, X1 - X2)</var>}(x - \color{#4169E1}{<var>X2</var>})</code></p>
+                    </div>
+                </div>
+            </div>
+            <div id="two-points" data-weight="3">
+                <div class="vars"  data-ensure="X1 !== X2">
+                    <var id="X1">randRangeNonZero( -5, 5 )</var>
+                    <var id="Y1">randRangeNonZero( -5, 5 )</var>
+                    <var id="X2">randRangeNonZero( -5, 5 )</var>
+                    <var id="Y2">randRangeNonZero( -5, 5 )</var>
+                    <var id="SLOPE">(Y1 - Y2) / (X1 - X2)</var>
+                </div>
+                <p class="problem">一條同時經過點 <code>(\color{#b22222}{<var>X1</var>}, \color{#b22222}{<var>Y1</var>})</code> 與 <code>(\color{#4169E1}{<var>X2</var>}, \color{#4169E1}{<var>Y2</var>})</code> 的線，請用點斜式來表示這條線的方程式。</p>
+                <div class="solution" data-type="set">
+                    <div class="set-sol" data-type="multiple">
+                        <span class="sol" data-type="rational"><var>Y2</var></span>
+                        <span class="sol" data-type="rational"><var>SLOPE</var></span>
+                        <span class="sol" data-type="rational"><var>X2</var></span>
+                    </div>
+                    <div class="set-sol" data-type="multiple">
+                        <span class="sol" data-type="rational"><var>Y1</var></span>
+                        <span class="sol" data-type="rational"><var>SLOPE</var></span>
+                        <span class="sol" data-type="rational"><var>X1</var></span>
+                    </div>
+                    <div class="input-format">
+                        <p class="entry" data-type="multiple">
+                            <code>(y - \space</code><span class="sol" data-type="rational"></span><code>) = \space</code><span class="sol" data-type="rational"></span><code>(x - \space</code><span class="sol" data-type="rational"></span><code>)</code>
+                        </p>
+                    </div>
+                    <p class="example">整數，例：<code>6</code></p>
+                    <p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+                    <p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+                    <p class="example">小數，例：<code>0.75</code></p>
+                    <p class="example">請注意你輸入的各個數值的正負號，確保整個方程式是正確的</p>
+                </div>
+                <div class="hints">
+                    <p>用於了解斜率的公式為： <code>m = (y_{1} - y_{2}) / (x_{1} - x_{2})</code> 。</p>
+                    <p>所以，代入這些數值後，我們得到斜率為 <code>\displaystyle {} \frac{\color{#b22222}{<var>Y1</var>} - <span data-if="Y2 &lt; 0" >(</span>\color{#4169E1}{<var>Y2</var>}<span data-if="Y2 &lt; 0" >)</span>}{\color{#b22222}{<var>X1</var>} - <span data-if="X2 &lt; 0" >(</span>\color{#4169E1}{<var>X2</var>}<span data-if="X2 &lt; 0" >)</span>} =</code>
+                    <span data-if="getGCD( Y1-Y2, X1-X2 ) !== 1 || X1-X2 === 1 || X1-X2 &lt; 0 || Y1-Y2 &lt; 0">
+                        <code>\color{#68228B}{\dfrac{<var>Y1-Y2</var>}{<var> X1-X2</var>}} =</code>
+                    </span><code> \color{#68228B}{<var>fractionReduce(Y1 - Y2, X1 - X2)</var>}</code></p>
+                    <div>
+                        <p>選擇一個點代入點斜式的 <code>x_{1}</code> 與 <code>y_{1}</code> ，結果就會是下列兩者之一：</p>
+                        <p><code>(y - \color{#b22222}{<var>Y1</var>}) = \color{#68228B}{<var>fractionReduce(Y1 - Y2, X1 - X2)</var>}(x - \color{#b22222}{<var>X1</var>})</code></p>
+                        <p>或</p>
+                        <p><code>(y - \color{#4169E1}{<var>Y2</var>}) = \color{#68228B}{<var>fractionReduce(Y1 - Y2, X1 - X2)</var>}(x - \color{#4169E1}{<var>X2</var>})</code></p>
+                    </div>
+                </div>
+            </div>
+            <div id="slope-intercept" data-weight="1">
+                <div class="vars"  data-ensure="X1 !== X2">
+                    <var id="X1">0</var>
+                    <var id="Y1">randRangeNonZero( -5, 5 )</var>
+                    <var id="X2">randRangeNonZero( -5, 5 )</var>
+                    <var id="Y2">randRangeNonZero( -5, 5 )</var>
+                    <var id="SLOPE">(Y1 - Y2)/ (X1 - X2)</var>
+                </div>
+                <p class="problem">一條線的斜率為 <code>\color{#68228B}{<var>fractionReduce(Y1 - Y2, X1 - X2)</var>}</code> ，而 y 截距是 <code>\color{#4169E1}{<var>Y1</var>}</code> ，請用點斜式來表示這條線的方程式。</p>
+                <div class="solution" data-type="set">
+                    <div class="set-sol" data-type="multiple">
+                        <span class="sol" data-type="rational"><var>Y1</var></span>
+                        <span class="sol" data-type="rational"><var>SLOPE</var></span>
+                        <span class="sol" data-type="rational"><var>X1</var></span>
+                    </div>
+                    <div class="input-format">
+                        <p class="entry" data-type="multiple">
+                            <code>(y - \space</code><span class="sol" data-type="rational"></span><code>) = \space</code><span class="sol" data-type="rational"></span><code>(x - \space</code><span class="sol" data-type="rational"></span><code>)</code>
+                        </p>
+                    </div>
+                    <p class="example">整數，例：<code>6</code></p>
+                    <p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+                    <p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+                    <p class="example">小數，例：<code>0.75</code></p>
+                    <p class="example">請注意你輸入的各個數值的正負號，確保整個方程式是正確的</p>
+                </div>
+                <div class="hints">
+                    <p>當 <code>x = 0</code> 時， y 截距的值是 <code>y</code> ，因此這樣子定義了一個你可以用的點： <code>\quad(\color{#b22222}{<var>X1</var>}, \color{#b22222}{<var>Y1</var>})</code> 。</p>
+                    <p>一個用點斜式表示的方程式看起來像是： <code>(y - y_{1}) = m(x - x_{1})</code> </p>
+                    <div>
+                        <p>所以，用點斜式表示的結果就可以寫成：<br /><code>(y - \color{#b22222}{<var>Y1</var>}) = \color{#68228B}{<var>fractionReduce(Y1 - Y2, X1 - X2)</var>}(x - \color{#b22222}{<var>X1</var>})</code></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

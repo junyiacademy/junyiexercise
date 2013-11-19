@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html data-require="math graphie word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>數線 3</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+        <var id="MIDPOINT">randRange( -15, 15 )</var>
+        <var id="DISTANCE">randRange( -2, 2 )</var>
+        <var id="NUMBER">randRangeExclude( max(MIDPOINT-5, MIDPOINT-5-DISTANCE),min(MIDPOINT+5, MIDPOINT+5-DISTANCE), [ 0, MIDPOINT - DISTANCE ] )</var>
+    </div>
+    <div class="problems">
+        <div>
+            <div class="question">
+                <p data-if="DISTANCE !== 0"><strong>橘色的點<span data-if="DISTANCE < 1">左邊</span><span data-else>右邊</span><var>abs (DISTANCE)</var>格</strong>的數字是多少? 每一格的間距是 1.</p>
+                <p data-else>橘色的點代表什麼數字? 每一格的間距是 1.</p>
+                <div class="graphie" id="number-line">
+                    init({
+                        range: [ [ MIDPOINT-6, MIDPOINT+6 ], [ -1, 1 ] ]
+                    });
+
+                    line( [ MIDPOINT-5, 0 ], [ MIDPOINT+5, 0 ] );
+                    for ( var x = MIDPOINT-5; x &lt;= MIDPOINT+5; x++ ) {
+                        line( [ x, -0.2 ], [ x, 0.2 ] );
+                    }
+
+                    style({ stroke: "#6495ED", strokeWidth: 3.5 });
+                    line( [ MIDPOINT, -0.2], [MIDPOINT, 0.2]);
+                    label( [ MIDPOINT, -0.53 ],  MIDPOINT, "center", { color: "#6495ED" });
+
+                    style({ stroke: "#FFA500", fill: "#FFA500" });
+                    graph.orangeDot = circle( [ NUMBER, 0 ], 0.10 );
+                </div>
+            </div>
+            <div class="solution" data-forms="integer"><var>NUMBER+DISTANCE</var></div>
+
+            <div class="hints">
+                <p>我們知道<code><var>MIDPOINT</var></code>在數字線上面的位置, 因為有標出來.</p>
+                <p>比<code><var>MIDPOINT</var></code>更左邊的數字會比它小, 而更右邊的數字會比<code><var>MIDPOINT</var></code>大.</p>
+                <div data-if="DISTANCE !== 0">
+                    <p>我們需要找到藍色的點所代表的數字. 它位於橘色的點<span data-if="DISTANCE < 1">左邊</span><span data-else>右邊</span><var>abs (DISTANCE)</var>格</p>
+                    <div class="graphie" data-update="number-line">
+                        style({ stroke: "#6495ED", fill: "#6495ED" });
+                        graph.blueDot = circle( [ NUMBER+DISTANCE, 0 ], 0.10 );
+                    </div>
+                </div>
+                <div>
+                    <p>從<code><var>MIDPOINT</var></code>開始, 我們要往<span data-if="NUMBER-MIDPOINT+DISTANCE < 0">左邊</span><span data-else>右邊</span>移動<code><var>abs( NUMBER-MIDPOINT+DISTANCE )</var></code>格才會到<span data-if="DISTANCE !== 0">藍色</span><span data-else>橘色</span>的點.</p>
+                    <div class="graphie" data-update="number-line">
+                        var color = "#6495ED";
+                        if ( DISTANCE === 0 ) {
+                            color = "#FFA500";
+                        }
+                        style({ stroke: color, fill: color, strokeWidth: 3.5, arrows: "->" });
+                        line( [ MIDPOINT, 0 ], [ NUMBER+DISTANCE, 0 ] );
+                        graph.blueDot.toFront();
+                        graph.orangeDot.toFront();
+                    </div>
+                </div>
+                <div>
+                    <p class="final_answer">因此,<span data-if="DISTANCE !== 0">藍色</span><span data-else>橘色</span>的點代表數字<code><var>NUMBER+DISTANCE</var></code>.</p>
+                    <div class="graphie" data-update="number-line">
+                        var color = "#6495ED";
+                        if ( DISTANCE === 0 ) {
+                            color = "#FFA500";
+                        }
+                        label( [ NUMBER+DISTANCE, -0.53 ],  NUMBER+DISTANCE, "center", { color: color });
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html data-require="math stat math-format word-problems spin">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>枝葉圖</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+    <div class="vars">
+        <var id="STEMS">randRange( 5, 7 )</var>
+        <var id="SAMPLES">randRange( 10, 20 )</var>
+        <var id="TGT_MEAN">randRange( 20, STEMS * 10 - 20 )</var>
+        <var id="TGT_STDDEV">randRange( 10, 15 )</var>
+        <var id="RAW_DATA">sortNumbers( $.map( _.range( SAMPLES ), function() {
+            var dataPoint;
+            while ( 1 ) {
+                dataPoint = round( randGaussian() * TGT_STDDEV + TGT_MEAN );
+                if ( dataPoint &gt;= 0 &amp;&amp; dataPoint &lt; STEMS * 10 ) {
+                    return dataPoint;
+                }
+            }
+        }) )</var>
+        <var id="DATA">$.map( _.range( STEMS ), function( stem ) {
+            return [ $.map( RAW_DATA, function( leaf ) {
+                if ( stem * 10 &lt;= leaf &amp;&amp; leaf &lt; ( stem + 1 ) * 10 ) {
+                    return leaf - ( stem * 10 );
+                }
+            }) ];
+        })</var>
+        <var id="LOCATION">randFromArray([ "超級市場", "百貨公司", "動物園" ])</var>
+        <var id="ITEM">
+            {
+                "超級市場": fruit(1),
+                "百貨公司": clothing(1),
+                "動物園": animal(1)
+            }[ LOCATION ]
+        </var>
+    </div>
+
+    <div class="problem">
+        <p data-if="LOCATION === '超級市場'" class="spin">
+             一個超級市場的{買家|統計員|高階主管}將每一個分店內的<var>ITEM</var>庫存量做出枝葉圖:
+        </p>
+        <p data-if="LOCATION === '百貨公司'" class="spin">
+            一個連鎖百貨公司的{買家|統計員|區經理}將每一個分店內的<var>ITEM</var>庫存量做出枝葉圖:
+        </p>
+        <p data-if="LOCATION === '動物園'" class="spin">
+            {政府|一個保育團體|動物園管理員}{製做出|公佈了}國內的所有動物園裡面，<var>ITEM</var>數量的枝葉圖:
+        </p>
+        <p>
+            <code>
+                \left| \quad \begin{matrix}
+                <span data-each="STEMS times as STEM" data-unwrap>
+                    <var>STEM</var>
+                    \vphantom{\Large{0}} \\
+                </span>
+                \end{matrix} \quad \right|
+                \quad
+                \begin{matrix}
+                <span data-each="STEMS times as STEM" data-unwrap>
+                    <span data-each="DATA[ STEM ] as LEAF" data-unwrap><var>LEAF</var>&amp;</span>
+                    \vphantom{\Large{0}} \\
+                </span>
+                \end{matrix}
+            </code>
+        </p>
+    </div>
+
+    <div class="hints">
+        <p>
+            枝葉圖左邊的縱列代表十位數；右邊的每一個數字都代表一個<var>LOCATION</var>裡面，<var>ITEM</var>的數量的個位數。
+        </p>
+        <div>
+            <p>
+                我們可以結合十位數與在右邊的個位數來寫出來每一個<var>LOCATION</var>裡面<var>ITEM</var>的數量:
+            </p>
+            <p>
+                <code>
+                    \small{
+                    \left| \space \begin{matrix}
+                    <span data-each="STEMS times as STEM" data-unwrap>
+                        \color{<var>GREEN</var>}{<var>STEM</var>}
+                        \vphantom{\Large{0}} \\
+                    </span>
+                    \end{matrix} \space \right|
+                    \space
+                    \begin{matrix}
+                    <span data-each="STEMS times as STEM" data-unwrap>
+                        <span data-each="DATA[ STEM ] as LEAF" data-unwrap>\color{<var>BLUE</var>}{<var>LEAF</var>}&amp;</span>
+                        \vphantom{\Large{0}} \\
+                    </span>
+                    \end{matrix}
+                    \space
+                    \begin{matrix}
+                    <span data-each="STEMS times as STEM" data-unwrap>
+                        \rightarrow
+                        \vphantom{\Large{0}} \\
+                    </span>
+                    \end{matrix}
+                    \space
+                    \begin{matrix}
+                    <span data-each="STEMS times as STEM" data-unwrap>
+                        <span data-each="DATA[ STEM ] as LEAF" data-unwrap>\color{<var>GREEN</var>}{<var>STEM</var>}\color{<var>BLUE</var>}{<var>LEAF</var>}&amp;</span>
+                        \vphantom{\Large{0}} \\
+                    </span>
+                    \end{matrix}
+                    }
+                </code>
+            </p>
+        </div>
+        <div>
+            <p>現在我們知道<var>LOCATION</var>有多少<var>ITEM</var>:</p>
+            <p><code>\qquad</code><var>toSentenceTex( RAW_DATA, "還有" )</var></p>
+        </div>
+        <div>
+            <p>
+            <span data-if="TYPE === 'smallest'">在所有的<var>LOCATION</var>裡面，<var>ITEM</var>最少的有幾個?</span>
+            <span data-else-if="TYPE === 'largest'">在所有的<var>LOCATION</var>裡面，<var>ITEM</var>最多的有幾個?</span>
+            <span data-else>
+                有多少個<var>LOCATION</var>有
+                <span data-if="TYPE === 'how-many'">剛好</span>
+                <span data-if="TYPE === 'less-than'">少於</span>
+                <span data-if="TYPE === 'greater-than'">多於</span>
+                <var>AMOUNT</var>個<var>ITEM</var>?
+            </span>
+            </p>
+            <p data-if="SOLUTION > 0">
+                <code>\qquad</code><var>toSentenceTex( RAW_DATA, "還有", IS_SOLUTION, "hint_pink" )</var>
+            </p>
+        </div>
+        <div>
+            <p>
+                <code>
+                    \qquad
+                    \left| \quad \begin{matrix}
+                    <span data-each="STEMS times as STEM" data-unwrap>
+                        <var>STEM</var>
+                        \vphantom{\Large{0}} \\
+                    </span>
+                    \end{matrix} \quad \right|
+                    \quad
+                    \begin{matrix}
+                    <span data-each="STEMS times as STEM" data-unwrap>
+                        <span data-each="DATA[ STEM ] as LEAF" data-unwrap>
+                            <span data-if="IS_SOLUTION( STEM * 10 + LEAF )" data-unwrap>
+                                \color{<var>PINK</var>}{<var>LEAF</var>}&amp;
+                            </span>
+                            <span data-else data-unwrap>
+                                <var>LEAF</var>&amp;
+                            </span>
+                        </span>
+                        \vphantom{\Large{0}} \\
+                    </span>
+                    \end{matrix}
+                </code>
+            </p>
+            <p><strong>
+                <span data-if="TYPE === 'smallest'"><var>ITEM</var>數量最少的<var>LOCATION</var>有<var>SOLUTION</var>個<var>ITEM</var>。</span>
+                <span data-else-if="TYPE === 'largest'"><var>ITEM</var>數量最多的<var>LOCATION</var>有<var>SOLUTION</var>個<var>ITEM</var>。</span>
+                <span data-else>
+                    <var>SOLUTION</var>個<var>LOCATION</var>有
+                    <span data-if="TYPE === 'how-many'">剛好</span>
+                    <span data-if="TYPE === 'less-than'">少於</span>
+                    <span data-if="TYPE === 'greater-than'">多於</span>
+                    <var>AMOUNT</var>個<var>ITEM</var>.
+                </span>
+            </strong></p>
+        </div>
+    </div>
+
+    <div class="problems">
+        <div id="how-many">
+            <div class="vars">
+                <var id="TYPE">"how-many"</var>
+                <var id="AMOUNT" data-ensure="0 <= AMOUNT && AMOUNT < STEMS * 10">
+                    random() &lt; 0.7 ?
+                    randFromArray( RAW_DATA ) :
+                    round( randGaussian() * TGT_STDDEV + TGT_MEAN )
+                </var>
+                <var id="IS_SOLUTION">function( x ) { return x === AMOUNT; }</var>
+                <var id="SOLUTION">_.reduce( RAW_DATA, function( memo, num ) { return num === AMOUNT ? ++memo : memo; }, 0 )</var>
+            </div>
+
+            <p class="question">有多少個<var>LOCATION</var>有剛好<var>AMOUNT</var>個<var>ITEM</var>?</p>
+
+            <div class="solution" data-type="multiple">
+                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> <var>LOCATION</var></p>
+            </div>
+        </div>
+
+        <div id="less-than">
+            <div class="vars">
+                <var id="TYPE">"less-than"</var>
+                <var id="AMOUNT">randRange( 10, (STEMS - 1) * 10 )</var>
+                <var id="IS_SOLUTION">function( x ) { return x &lt; AMOUNT; }</var>
+                <var id="SOLUTION">_.reduce( RAW_DATA, function( memo, num ) { return num &lt; AMOUNT ? ++memo : memo; }, 0 )</var>
+            </div>
+
+            <p class="question">有多少個<var>LOCATION</var>有少於<var>AMOUNT</var>個<var>ITEM</var>?</p>
+
+            <div class="solution" data-type="multiple">
+                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> <var>LOCATION</var></p>
+            </div>
+        </div>
+
+        <div id="greater-than">
+            <div class="vars">
+                <var id="TYPE">"greater-than"</var>
+                <var id="AMOUNT">randRange( 10, (STEMS - 1) * 10 )</var>
+                <var id="IS_SOLUTION">function( x ) { return x &gt; AMOUNT; }</var>
+                <var id="SOLUTION">_.reduce( RAW_DATA, function( memo, num ) { return num &gt; AMOUNT ? ++memo : memo; }, 0 )</var>
+            </div>
+
+            <p class="question">有多少個<var>LOCATION</var>具有多於<var>AMOUNT</var>個<var>ITEM</var>?</p>
+
+            <div class="solution" data-type="multiple">
+                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> <var>LOCATION</var></p>
+            </div>
+        </div>
+
+        <div id="extreme">
+            <div class="vars">
+                <var id="TYPE">randFromArray([ "smallest", "largest" ])</var>
+                <var id="AMOUNT">TYPE === "smallest" ? RAW_DATA[ 0 ] : RAW_DATA[ RAW_DATA.length - 1 ]</var>
+                <var id="IS_SOLUTION">function( x ) { return x === AMOUNT; }</var>
+                <var id="SOLUTION">AMOUNT</var>
+            </div>
+
+            <p class="question">
+                <span data-if="TYPE === 'smallest'">在所有<var>LOCATION</var>之中，<var>ITEM</var>數量最小的是有幾個?</span>
+                <span data-if="TYPE === 'largest'">在所有<var>LOCATION</var>之中，<var>ITEM</var>數量最多的是有幾個?</span>
+            </p>
+
+            <div class="solution" data-type="multiple">
+                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> <var>ITEM</var></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

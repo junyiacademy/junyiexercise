@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html data-require="math expressions spin word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>現實中的比例問題 1</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="simple-percentages">
+            <div class="vars">
+                <var id="A_SIMPLE">randRange( 1, 150 )</var>
+                <var id="B_SIMPLE">randRange( 2, 100 )</var>
+            </div>
+            <p class="question">
+                請問<var>B_SIMPLE</var>的<var>A_SIMPLE</var>%是多少？（四捨五入到最接近的整數位）
+            </p>
+            <p class="solution" data-forms="integer"><var>round((A_SIMPLE * B_SIMPLE) / 100)</var></p>
+            <div class="hints">
+                <p>
+                <code><var>A_SIMPLE / 100</var> \times <var>B_SIMPLE</var> \approx <var>round((A_SIMPLE * B_SIMPLE) / 100)</var> </code>
+                </p>
+            </div>
+        </div>
+        <div id="backward-percentages" data-type="simple-percentages">
+            <p class="question">
+                請問<var>B_SIMPLE</var>是多少的<var>A_SIMPLE</var>%？（四捨五入到小數點後第二位）
+            </p>
+            <p class="solution" data-forms="decimal"><var>round(((B_SIMPLE * 100) / A_SIMPLE) * 100) / 100</var></p>
+            <div class="hints">
+                <p>設 <code>x</code> 的 <var>A_SIMPLE</var>% 是 <var>B_SIMPLE</var>。</p>
+                <p><code><var>A_SIMPLE / 100</var> \times x = <var>B_SIMPLE</var></code></p>
+                <p><code>x=<var>B_SIMPLE</var>/<var>A_SIMPLE / 100</var></code></p>
+                <p><code>x \approx<var>round((B_SIMPLE * 100/A_SIMPLE * 100))/100</var></code></p>
+            </div>
+        </div>
+        <div id="bank-percentages">
+            <div class="vars">
+                <var id="BANK_FEWER">randRange( 2, 100 )</var>
+                <var id="BANK_MORE">BANK_FEWER + randRange(5, 2 * BANK_FEWER + 10 )</var>
+            </div>
+            <p class="question">
+                <var>person(1)</var>今天在銀行有<var>BANK_MORE</var>元。而昨天<var>he(1)</var>只有<var>BANK_FEWER</var>元。那請問<var>person(1)</var>的銀行帳戶經過一天之後成長了多少百分比呢？（四捨五入到百分比的小數點後第二位）</p>
+            <p class="solution" data-forms="percent"><var>round(((BANK_MORE - BANK_FEWER) * 10000) / BANK_FEWER) / 100</var></p>
+            <div class="hints">
+                <p>銀行帳戶裡面的錢，經過一天以後總共增加了 <code><var>BANK_MORE</var> - <var>BANK_FEWER</var> = <var>BANK_MORE - BANK_FEWER</var></code> 元。 </p>
+                <p><code>\frac{<var>BANK_MORE - BANK_FEWER</var>}{<var>BANK_FEWER</var>} \approx <var>round(((BANK_MORE - BANK_FEWER) * 10000) / BANK_FEWER) / 100</var>\%</code></p>
+            </div>
+        </div>
+        <div id="bank-percentages-loss" data-type="bank-percentages">
+            <p class="question">
+                <var>person(1)</var>今天在銀行有<var>BANK_FEWER</var>元。而昨天<var>he(1)</var>則有<var>BANK_MORE</var> 元。那請問，<var>person(1)</var>的銀行帳戶在經過一天之後減少了多少百分比呢？（四捨五入到百分比的小數點後第二位）</p>
+            <p class="solution" data-forms="percent"><var>round(((BANK_MORE - BANK_FEWER) * 10000) / BANK_MORE) / 100</var></p>
+            <div class="hints">
+                <p>銀行帳戶裡面的錢，經過一天以後總共減少了<code><var>BANK_MORE</var> - <var>BANK_FEWER</var> = <var>BANK_MORE - BANK_FEWER</var></code>元。 </p>
+                <p><code>\frac{<var>BANK_MORE - BANK_FEWER</var>}{<var>BANK_MORE</var>} \approx <var>round(((BANK_MORE - BANK_FEWER) * 10000) / BANK_MORE) / 100</var>\%</code></p>
+            </div>
+        </div>
+        <div id="yearly-percentages">
+            <div class="vars">
+                <var id="YEAR_PERCENT_MORE">randRange( 10, 150 )</var>
+                <var id="YEAR_THIS">randRange( 50, 999 )</var>
+                <var id="YEAR_LAST">round(YEAR_THIS * 10000 / (100 + YEAR_PERCENT_MORE)) / 100</var>
+            </div>
+            <p class="question">
+                <var>person(1)</var>今年在銀行中的存款，比起<var>he(1)</var>去年同一時間時多了<var>YEAR_PERCENT_MORE</var>% 。如果<var>person(1)</var>現在在銀行中有<var>YEAR_THIS</var>元，那麼，在去年的同一個時間，<var>he(1)</var>在銀行裡有多少錢呢？（四捨五入到小數點後第二位）</p>
+            <p class="solution" data-forms="dollar"><var>YEAR_LAST</var></p>
+            <div class="hints">
+                <p>令去年<var>he(1)</var>在銀行裡面總共有<code>x</code>元。</p>
+                <p><code>x + <var>YEAR_PERCENT_MORE / 100</var>x = <var>YEAR_THIS</var></code></p>
+                <p><code><var>(100 + YEAR_PERCENT_MORE) / 100</var>x = <var>YEAR_THIS</var></code></p>
+                <p><code>x = \frac{<var>YEAR_THIS</var>}{<var>(100 + YEAR_PERCENT_MORE) / 100</var>}</code></p>
+                <p><code>x \approx <var>YEAR_LAST</var></code></p>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

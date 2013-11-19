@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html data-require="math graphie expressions">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>函數的範圍</title>
+    <script src="../khan-exercise.js"></script>
+
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="quadratic">
+                <div class="vars">
+                    <var id="A" data-ensure="A !== 1">randRangeNonZero(-4, 4)</var>
+                    <var id="B">randRangeNonZero(-4, 4)</var>
+                </div>
+
+                <p class="problem"><code>f(x) = <var>expr(["+", ["*", A, ["^", "x", 2]], B])</var></code></p>
+
+                <p class="question">  <code>f(x)</code> 的範圍在哪？</p>
+
+                <p class="solution" data-type="multiple">
+                    <code>\{\, y \in \RR \mid y</code>
+                    <span class="sol" data-type="list" data-choices="['', '&lt;', '&gt;', '&le;', '&ge;', '&ne;']">
+                        <var>A > 0 ? "&ge;" : "&le;"</var>
+                    </span>
+                    <span class="sol"><var>B</var></span>
+                    <code>\,\}</code>
+                </p>
+
+                <div class="hints" data-apply="appendContents">
+                    <p id="prehint" data-apply="remove"></p>
+                </div>
+            </div>
+
+            <div id="quadratic-random-hole">
+                <div class="vars">
+                    <var id="A" data-ensure="A !== 1">randRangeNonZero(-4, 4)</var>
+                    <var id="B" data-ensure="abs( 3 * A + B ) < 10">randRangeNonZero(-4, 4)</var>
+                    <var id="HOLE" data-ensure="abs( A * HOLE * HOLE + B ) < 10">randRangeNonZero( -4, 4 )</var>
+                </div>
+
+                <p class="problem"><code>f(x) = \begin{cases}
+                    <var>3 * A + B</var> & \text{如果 $x = <var>HOLE</var>$} \\
+                    <var>expr(["+", ["*", A, ["^", "x", 2]], B])</var> & \text{其餘}
+                \end{cases}</code></p>
+
+                <p class="question"> <code>f(x)</code> 的範圍在哪？</p>
+
+                <p class="solution" data-type="multiple">
+                    <code>\{\, y \in \RR \mid y</code>
+                    <span class="sol" data-type="list" data-choices="['', '&lt;', '&gt;', '&le;', '&ge;', '&ne;']">
+                        <var>A > 0 ? "&ge;" : "&le;"</var>
+                    </span>
+                    <span class="sol"><var>B</var></span>
+                    <code>\,\}</code>
+                </p>
+
+                <div class="hints" data-apply="appendContents">
+                    <p id="prehint">首先考慮 <code>x \ne <var>HOLE</var></code>。</p>
+                    <div id="posthint">
+                        <p>如果 <code>x = <var>HOLE</var></code>，然後 <code>f(x) = <var>3 * A + B</var></code>，但範圍並不改變。</p>
+                        <div class="graphie" data-update="grid">
+                            circle( [HOLE, 3 * A + B], 3 / 20, {
+                                fill: "red",
+                                stroke: "none"
+                            } );
+                            circle( [HOLE, A * HOLE * HOLE + B], 3 / 20, {
+                                fill: "#fff",
+                                stroke: "red"
+                            } );
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="quadratic-zero-hole" data-type="quadratic-random-hole">
+                <div class="vars">
+                    <var id="HOLE">0</var>
+                </div>
+
+                <p class="solution" data-type="multiple">
+                    <code>\{\, y \in \RR \mid y</code>
+                    <span class="sol" data-type="list" data-choices="['', '&lt;', '&gt;', '&le;', '&ge;', '&ne;']">
+                        <var>A > 0 ? "&gt;" : "&lt;"</var>
+                    </span>
+                    <span class="sol"><var>B</var></span>
+                    <code>\,\}</code>
+                </p>
+
+                <div class="hints" data-apply="appendContents">
+                    <p id="prehint">首慮考慮 <code>x \ne <var>HOLE</var></code>。</p>
+                    <div id="posthint">
+                        <p>如果 <code>x = <var>HOLE</var></code>，那麼 <code>f(x) = <var>3 * A + B</var></code>，使 <code>f(x) = <var>B</var></code> 不在範圍內。</p>
+                        <div class="graphie" data-update="grid">
+                            circle( [HOLE, 3 * A + B], 3 / 20, {
+                                fill: "red",
+                                stroke: "red"
+                            } );
+                            circle( [HOLE, A * HOLE * HOLE + B], 3 / 20, {
+                                fill: "#fff",
+                                stroke: "red"
+                            } );
+                        </div>
+                    </div>
+                    <p>新的範圍是 <code>\{\, y \mid y <var>A > 0 ? "&gt;" : "&lt;"</var> <var>B</var> \,\}</code>。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="hints">
+            <p id="prehint"></p>
+            <div>
+                <div class="graphie" id="grid">
+                    graphInit({
+                        range: 10,
+                        scale: 20,
+                        tickStep: 1,
+                        axisArrows: "<->"
+                    });
+
+                    style({
+                        stroke: "#6495ED",
+                        arrows: null
+                    })
+
+                    graph.pl = plot( function( x ) {
+                        return A * pow( x, 2 );
+                    }, [-10, 10], {
+                        stroke: "red",
+                        strokeDasharray: "- "
+                    });
+                </div>
+                <p>考慮 <code><var>expr(["*", A, ["^", "x", 2]])</var></code> 的範圍。</p>
+            </div>
+            <p data-if="A > 0"> <code>x^2</code> 的範圍是 <code>\{\, y \mid y \ge 0 \,\}</code>. 乘以 <code><var>A</var></code> 不改變範圍。</p>
+            <p data-else> <code>x^2</code> 的範圍是 <code>\{\, y \mid y \ge 0 \,\}</code>. 乘以 <code><var>A</var></code> 將範圍翻轉為 <code>\{\, y \mid y \le 0 \,\}</code>。</p>
+            <div>
+                <p>現在 <var>B > 0 ? "加上" : "減掉"</var> <code><var>abs( B )</var></code>. 範圍變成： <code>\{\, y \mid y <var>A > 0 ? "&ge;" : "&le;"</var> <var>B</var> \,\}</code>。</p>
+
+                <div class="graphie" data-update="grid">
+                    graph.pl.remove();
+                    graph.pl = plot( function( x ) {
+                        return A * pow( x, 2 ) + B;
+                    }, [-10, 10], {
+                        stroke: "red"
+                    });
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

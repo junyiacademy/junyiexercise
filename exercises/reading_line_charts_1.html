@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html data-require="math d3 graphie graphie-helpers word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>閱讀折線圖 1</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+        <var id="DAYS">[ "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日" ]</var>
+        <var id="INDEX">randRange( 0, DAYS.length - 1 )</var>
+        <var id="VALUES">shuffle( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], DAYS.length )</var>
+        <var id="DATA">
+            (function() {
+                var ordinals = $.map( DAYS, function( day, i ) {
+                    return day.substring( 0, 3 );
+                });
+
+                return {
+                    min: 0,
+                    max: 10,
+                    tickCount: 10,
+                    values: VALUES,
+                    ordinals: ordinals
+                };
+            })()
+        </var>
+    </div>
+    <div class="problems">
+        <div>
+            <p><var>person( 1 )</var> 寫下這禮拜每天<var>he( 1 )</var> 看到多少 <var>color( 1 )</var> <var>plural( clothing( 1 ) )</var> </p>
+            <p class="question">在<var>DAYS[ INDEX ]</var> <var>he( 1 )</var> 總共看到多少 <var>color( 1 )</var> <var>plural( clothing( 1 ) )</var>?</p>
+            <div class="graphie" id="scatter">
+                var width = 12;
+                var height = 12;
+
+                init({
+                    range: [ [ -1, width + 1 ], [ -1, height + 0.5 ] ]
+                });
+
+                var pos = { lx: 0, ly: 0, width: width, height: height};
+                graph.lc = new LineChart( DATA, pos );
+                graph.lc.draw();
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <span style="padding-right: 5px" class="sol"><var>VALUES[ INDEX ]</var></span> <var>color( 1 )</var> <var>plural( clothing( 1 ) )</var>
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>看散佈圖下面的文字, 找到對應 <var> DAYS[ INDEX ]</var> 的點</p>
+                    <div class="graphie" data-update="scatter">
+                        graph.lc.highlightDataPoint( INDEX );
+                    </div>
+                </div>
+                <div>
+                    <p>比較一下這個點對應圖左邊哪個數字</p>
+                    <div class="graphie" data-update="scatter">
+                        graph.lc.labelDataPoint( INDEX );
+                    </div>
+                </div>
+                <p><var>He( 1 )</var> 在 <var>DAYS[ INDEX ]</var> 看到 <var>VALUES[ INDEX ]</var> 個<var>color( 1 )</var> <var>plural( clothing( 1 ) )</var></p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

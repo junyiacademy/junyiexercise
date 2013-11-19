@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-geometry word-problems interactive subhints">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>周長 1</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+    <div class="vars">
+        <var id="UNIT,UNIT_TEXT">randFromArray([
+            ["公尺", "公尺"],
+            ["公分", "公分"],
+            ["", "單位"]
+        ])</var>
+    </div>
+    <div class="problems">
+        <div id="square" data-weight="1">
+            <div class="vars">
+                <var id="S">randRange(2, 7)</var>
+            </div>
+
+            <p class="question">
+                邊長是<code><var> S </var></code>的正方形圖卡拼成的圖形，這個圖形的周長是多少<code><var>"\\text{ " + UNIT + "}"</var></code>？
+            </p>
+            <div class="problem">
+                <div class="graphie" id="perimeter">
+                    init({ range: [[-2, 3*S + 1], [-1, 2*S + 1]], scale: 30 });
+					path([[0, 0], [0, S], [3*S, S], [3*S, 0], true], {stroke: BLUE, fill: "#eee"});
+					path([[0, 0], [0, S], [2*S, S], [2*S, 0], true], {stroke: BLUE, fill: "#eee"});
+					path([[0, 0], [0, S], [S, S], [S, 0], true], {stroke: BLUE, fill: "#eee"});
+					path([[S, S], [S, 2*S], [2*S, 2*S], [2*S, S], true], {stroke: BLUE, fill: "#eee"});
+					<!-- label([S / 2, S], S + "\\text{ " + UNIT + "}", "above");
+                    label([0, S / 2], S + "\\text{ " + UNIT + "}", "left"); -->
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>10 * S</var></span> <var>plural(UNIT_TEXT)</var>
+            </div>
+
+            <div class="hints">
+                <p>
+                    周長為圖形的所有邊長總和。
+                </p>
+                <div>
+                    <p>
+                        把所有的邊長都加起來：
+                    </p>
+                    <p><code>\qquad\text{周長} =<var>S</var>+<var>S</var>+<var>S</var>+<var>S</var>
+					                           +<var>S</var>+<var>S</var>+<var>S</var>+<var>S</var>
+											   +<var>S</var>+<var>S</var>
+                    </code></p>
+                </div>
+                <p><code>\qquad\text{周長} = <var>S * 10</var>\text{ <var>UNIT</var>}</code></p>
+            </div>
+        </div>
+
+        <div id="rectangle" data-weight="1">
+            <div class="vars" data-ensure="L !== W">
+                <var id="L">randRange(2, 9)</var>
+                <var id="W">randRange(2, 7)</var>
+            </div>
+
+            <p class="question">
+                長方形的周長為<code><var> 2*L + 4*W </var></code>
+				<var>plural(UNIT_TEXT, S)</var> ，寬邊是<code><var> W </var></code>
+				<var>plural(UNIT_TEXT, S)</var> 。請問「？」為多少<code><var>"\\text{ " + UNIT + "}"</var></code>？
+            </p>
+
+            <div class="problem">
+                <div class="graphie" id="perimeter">
+                    init({ range: [[-2, L + 1], [-1, 2*W + 1]], scale: 30 });
+                    path([[0, 0], [0, 2*W], [L, 2*W], [L, 0], true], {stroke: BLUE, fill: "#eee"});
+					path([[0, 0], [0, W], [L, W], [L, 0], true], {stroke: BLUE, fill: "#eee"});
+                    label([L/2 , 2*W], "\\text{ ? }"  + "\\text{ " + UNIT + "}", "above");
+                    label([0, W/2 ], W + "\\text{ " + UNIT + "}", "left");
+					label([0, 1.5*W ], W + "\\text{ " + UNIT + "}", "left");
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var> L </var></span> <var>plural(UNIT_TEXT)</var>
+            </div>
+
+            <div class="hints">
+                <p>
+                    周長為圖形的所有邊長總和。
+                </p>
+                <div>
+                    <div class="graphie" data-update="perimeter">
+                        path([[0, 0], [0, W]], { strokeWidth: 4, stroke: PINK });
+						path([[0, W], [0, 2*W]], { strokeWidth: 4, stroke: RED });
+                        path([[0, 2*W], [L, 2*W]], { strokeWidth: 4, stroke: BLUE });
+                        path([[L, W], [L, 0]], { strokeWidth: 4, stroke: "orange" });
+						path([[L, W], [L, 2*W]], { strokeWidth: 4, stroke: "purple" });
+                        path([[L, 0], [0, 0]], { strokeWidth: 4, stroke: GREEN });
+                    </div>
+                    <p>
+                        把所有的邊長都加起來：
+                    </p>
+                    <p><code>\qquad\text{周長} =
+                        \pink{<var>W</var>} + \red{<var>W</var>}+ \blue{ ? }  + \purple{<var>W</var>} + \orange{<var>W</var>} + \green{ ? }
+                    </code></p>
+					<p><code>\qquad<var> 2*L + 4*W </var> = <var>4*W</var> + \blue{ ? } + \green{ ? } </code></p>
+                </div>
+                <p><code>\qquad<var> 2*L </var> = \blue{ ? } + \green{ ? } </code></p>
+				<p><code>\qquad\text{?} = <var>L</var>\text{ <var>UNIT</var>}</code></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

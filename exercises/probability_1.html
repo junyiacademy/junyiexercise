@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html data-require="math math-format probability word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>機率 1</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="marbles">
+            <div class="vars">
+                <var id="CONTAINER">randFromArray(["袋子", "罐子", "盒子", "杯子"])</var>
+                <var id="MARBLE">randFromArray(["彈珠", "球", "糖果"])</var>
+                <var id="REDMAR">randRange(3, 11)</var>
+                <var id="GREENMAR">randRange(3, 11)</var>
+                <var id="BLUEMAR">randRange(3, 11)</var>
+                <var id="TOTAL">REDMAR + GREENMAR + BLUEMAR</var>
+
+                <var id="NOT">rand(2) === 0</var>
+                <var id="CHOSEN_COLOR, CHOSEN_NUMBER">randFromArray([["紅色", REDMAR], ["綠色", GREENMAR], ["藍色", BLUEMAR]])</var>
+                <var id="NUMBER">NOT ? TOTAL - CHOSEN_NUMBER : CHOSEN_NUMBER</var>
+            </div>
+
+            <div class="question">
+                <p>一個<var>CONTAINER</var>理面放了<code><var>REDMAR</var></code>個紅色的<var>MARBLE</var>、
+                <code><var>GREENMAR</var></code>個綠色的<var>MARBLE</var>還有<code><var>BLUEMAR</var></code>個藍色的<var>MARBLE</var>。</p>
+
+                <p>如果隨機拿一個<var>MARBLE</var>，請問
+                彈珠<em data-if="NOT">不是</em> <var>CHOSEN_COLOR</var>的機率是多少? 請用最簡分數來表示。</p>
+            </div>
+
+            <div class="solution"><var>NUMBER / TOTAL</var></div>
+            <div class="hints">
+                <p><var>CONTAINER</var>裡面總共有<code><var>REDMAR</var> + <var>GREENMAR</var> + <var>BLUEMAR</var> = <var>TOTAL</var></code>個<var>MARBLE</var>。</p>
+                <p>其中有<code><var>CHOSEN_NUMBER</var></code>個是<var>CHOSEN_COLOR</var>的<var>MARBLE</var>。
+                <span data-if="NOT">換句話說，有<code><var>TOTAL</var> - <var>CHOSEN_NUMBER</var> = <var>NUMBER</var></code> 個<em>不是</em><var>CHOSEN_COLOR</var>。</span></p>
+                <p>因此，機率可以寫成<code>\displaystyle <var>fractionSimplification(NUMBER, TOTAL)</var></code>。</p>
+            </div>
+        </div>
+
+        <div id="die">
+            <div class="vars">
+                <var id="RESULT_DESC, RESULT_POSSIBLE">randFromArray([
+                    ["是1 ", [1]],
+                    ["是2 ", [2]],
+                    ["是3 ", [3]],
+                    ["是4 ", [4]],
+                    ["是5 ", [5]],
+                    ["是6 ", [6]],
+                    ["是2或更高", [2, 3, 4, 5, 6]],
+                    ["是3或更高", [3, 4, 5, 6]],
+                    ["是4或更高", [4, 5, 6]],
+                    ["會大於 2 ", [3, 4, 5, 6]],
+                    ["會大於 3 ", [4, 5, 6]],
+                    ["會大於 4 ", [5, 6]],
+                    ["會小於 4 ", [1, 2, 3]],
+                    ["會小於 5 ", [1, 2, 3, 4]],
+                    ["會小於 6 ", [1, 2, 3, 4, 5]],
+                    ["是偶數", [2, 4, 6]],
+                    ["是偶數", [2, 4, 6]],
+                    ["是奇數", [1, 3, 5]],
+                    ["是奇數", [1, 3, 5]],
+                    ["是質數", [2, 3, 5]]
+                ])</var>
+                <var id="RESULT_COUNT">RESULT_POSSIBLE.length</var>
+            </div>
+
+            <div class="question">
+                <p>擲出一個公正的六面骰。有多大的機率擲出的數字<var>RESULT_DESC</var>? 請用最簡分數來表示。</p>
+            </div>
+
+            <div class="solution"><var>RESULT_COUNT / 6</var></div>
+
+            <div class="hints">
+                <p>擲出骰子，有 <code>6</code> 個可能數字: 1, 2, 3, 4, 5, 還有 6.</p>
+                <p data-if="RESULT_COUNT === 1">而這題的問法，只有 <code>1</code> 個是我們要的結果: 數字<var>RESULT_POSSIBLE[0]</var>。</p>
+                <p data-else>這一個問法，指出其中<code><var>RESULT_COUNT</var></code>個數字: <var>toSentence(RESULT_POSSIBLE)</var>。</p>
+                <p>因此，機率會寫成<code>\displaystyle <var>fractionSimplification(RESULT_COUNT, 6)</var></code>。</p>
+            </div>
+        </div>
+
+        <div id="circles">
+            <div class="vars">
+                <var id="BIG_RAD">randRange(7,12)</var>
+                <var id="SMALL_RAD">randRange(3,6)</var>
+                <var id="BIG_GIVEN">randFromArray(["半徑","直徑","圓周"])</var>
+                <var id="SMALL_GIVEN">randFromArray(["半徑","直徑","圓周"])</var>
+                <var id="BIG_INFO">BIG_GIVEN === "半徑" ? BIG_RAD : BIG_RAD*2</var>
+                <var id="SMALL_INFO">SMALL_GIVEN === "半徑" ? SMALL_RAD : SMALL_RAD*2</var>
+                <var id="GCD">getGCD(Math.pow(SMALL_RAD,2),Math.pow(BIG_RAD,2))</var>
+            </div>
+            <p>
+                如果你對著一個圓形的標靶丟飛鏢。標靶的<var>BIG_GIVEN</var>是<var>BIG_INFO</var> 
+                <code><var>BIG_GIVEN === "圓周" ? "\\pi" : ""</var></code>。標靶之內，有一個比較小的圓形目標，其
+                <var>SMALL_GIVEN</var>是<var>SMALL_INFO</var> <code><var>SMALL_GIVEN === "圓周" ? "\\pi" : ""</var></code>。
+                假設你已經厲害到每一隻飛標都會丟到靶上，而且飛鏢落在每一個位置的機率都一樣。
+            </p>
+            <p class="question">
+                請問，丟中小的圓形目標的機率是多少?
+            </p>
+
+            <div class="solution" data-forms="proper, decimal"><var>Math.pow(SMALL_RAD,2)/Math.pow(BIG_RAD,2)</var></div>
+
+            <div class="hints">
+                <p>
+                    因為丟中每一個位置的機率都一樣，所以丟中小目標的機率基本上就是小目標的大小除以標靶的大小。
+                </p>
+                <p>
+                    要知道這些大小，我們就需要算出來目標與標靶的面積。
+                </p>
+                <p>
+                    標靶的面積是 <code>\pi r^2</code>，又 <code><var>BIG_GIVEN === "半徑" ? "半徑 =" + BIG_INFO : 
+                    (BIG_GIVEN === "直徑" ? "半徑 = \\frac{直徑}{2}" : "半徑 = \\frac{圓周}{2 \\pi}")</var></code>， 
+                    所以標靶的面積是<code><var>BIG_RAD</var>^2 \pi</code>.
+                </p>
+                <p>
+                    目標的面積是 <code>\pi r^2</code>。又 <code><var>SMALL_GIVEN === "半徑" ? "半徑 =" + SMALL_INFO : 
+                    (SMALL_GIVEN === "直徑" ? "半徑 = \\frac{直徑}{2}" : "半徑 = \\frac{圓周}{2 \\pi}")</var></code>, 
+                    所以目標的面積是 <code><var>SMALL_RAD</var>^2 \pi</code>.
+                </p>
+                <p data-if="GCD != 1">
+                    因此，丟中目標的機率是 <code> \frac{<var>Math.pow(SMALL_RAD,2)</var>}{<var>Math.pow(BIG_RAD,2)</var>}
+                    = \frac{<var>Math.pow(SMALL_RAD,2)/GCD</var>}{<var>Math.pow(BIG_RAD,2)/GCD</var>}</code>.
+                </p>
+                <p data-else>
+                    因此，丟中目標的機率是 <code> \frac{<var>Math.pow(SMALL_RAD,2)</var>}{<var>Math.pow(BIG_RAD,2)</var>}
+                    </code>.
+                </p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

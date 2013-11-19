@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>長條圖2</title>
+    <script src="../khan-exercise.js"></script>
+    <style>
+        span.rotate  {
+            -moz-transform: rotate(-90deg);
+            -o-transform: rotate(-90deg);
+            -webkit-transform: rotate(-90deg);
+            -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=3)";
+        }
+        body.ie span.rotate {
+            left: 60px !important;
+            top: 140px !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <div data-ensure="( NUM_IMPROVED >= 3 && !IMPROVE_TIE ) || UNBIASED">
+                <var id="MIDTERM">$.map( new Array( 5 ), function() { return randRange( 12, 20 ) * 5; } )</var>
+                <var id="FINAL">$.map( new Array( 5 ), function() { return randRange( 12, 20 ) * 5; } )</var>
+                <var id="IMPROVEMENT">$.map( new Array( 5 ), function( e, n ) { return FINAL[ n ] - MIDTERM[ n ]; } )</var>
+                <var id="NUM_IMPROVED">$.map( IMPROVEMENT, function( x ) { return x &gt; 0 ? 1 : null; }).length</var>
+                <var id="IMPROVE_TIE">IMPROVEMENT.slice().sort(function(a,b){return a - b;})[4] === IMPROVEMENT.slice().sort(function(a,b){return a - b;})[3]</var>
+                <var id="UNBIASED">false</var>
+            </div>
+        </div>
+        <div class="problem">
+            <p>用圖表中的資料來回答下方的問題:</p>
+            <div class="graphie" id="barchart">
+                init({
+                    range: [ [ -2, 17 ], [ -3, 11 ] ],
+                    scale: [ 27, 30 ]
+                });
+
+                for ( var y = 1; y &lt;= 10; ++y ) {
+                    label( [ 0, y ], y * 10, "left", false );
+                    style({ stroke: "#000", strokeWidth: 1, opacity: 0.2 }, function() {
+                        line( [ 0, y ], [ 16, y ] )
+                    });
+                }
+                for ( var index = 0; index &lt; 5; ++index ) {
+                    style({ stroke: "none", fill: "#9ab8ed", opacity: 1.0 });
+                    path([ [ index * 3 + 1, 0 ], [ index * 3 + 1, MIDTERM[ index ] / 10 ], [ index * 3 + 2, MIDTERM[ index ] / 10 ], [ index * 3 + 2, 0 ], [ index * 3 + 1, 0 ] ]);
+                    style({ stroke: "none", fill: "#ffc966", opacity: 1.0 });
+                    path([ [ index * 3 + 2, 0 ], [ index * 3 + 2, FINAL[ index ] / 10 ], [ index * 3 + 3, FINAL[ index ] / 10 ], [ index * 3 + 3, 0 ], [ index * 3 + 2, 0 ] ]);
+                    style({ opacity: 1.0 });
+                    label( [ index * 3 + 2, 0 ], person( index + 1 ), "below", false );
+                }
+                style({ stroke: "#000", strokeWidth: 2, opacity: 1.0 });
+                line( [ 0, 0 ], [ 16, 0 ] );
+                line( [ 0, 0 ], [ 0, 10 ] );
+
+                label( [ 8, -0.8 ], "&lt;b&gt;學生&lt;/b&gt;", "below", false );
+                $( label( [ -1.5, 5 ], "&lt;b&gt;分數&lt;/b&gt;", "center", false ) ).addClass( "rotate" );
+                label( [ 8, 10.5 ], "&lt;b&gt;期中考與期末考的分數&lt;/b&gt;", "above", false );
+
+                style({ stroke: "none", fill: "#9ab8ed", opacity: 1.0 });
+                path([ [ 0, -2 ], [ 0.5, -2  ], [ 0.5, -2.5  ], [ 0, -2.5 ], [ 0, -2 ] ]);
+                style({ stroke: "#000", strokeWidth: 2, opacity: 1.0 });
+                label( [ 0.5, -2.25 ], "期中考", "right", false );
+                style({ stroke: "none", fill: "#ffc966", opacity: 1.0 });
+                path([ [ 3, -2 ], [ 3.5, -2  ], [ 3.5, -2.5  ], [ 3, -2.5 ], [ 3, -2 ] ]);
+                style({ stroke: "#000", strokeWidth: 2, opacity: 1.0 });
+                label( [ 3.5, -2.25 ], "期末考", "right", false );
+            </div>
+        </div>
+
+        <div class="problems">
+            <div id="most-improved">
+                <div class="vars">
+                    <var id="BEST_IMPROVEMENT">Math.max.apply( Math, IMPROVEMENT )</var>
+                    <var id="MOST_IMPROVED_IDX">_.indexOf( IMPROVEMENT, BEST_IMPROVEMENT )</var>
+                    <var id="MOST_IMPROVED">person( MOST_IMPROVED_IDX + 1 )</var>
+                </div>
+                <p class="question">從期中考到期末考，哪一位學生進步最多?</p>
+
+                <div class="solution"><var>MOST_IMPROVED</var></div>
+                <ul class="choices" data-category="true">
+                    <li><var>person( 1 )</var></li>
+                    <li><var>person( 2 )</var></li>
+                    <li><var>person( 3 )</var></li>
+                    <li><var>person( 4 )</var></li>
+                    <li><var>person( 5 )</var></li>
+                </ul>
+
+                <div class="hints">
+                    <div data-each="5 times as INDEX">
+                        <div data-if="IMPROVEMENT[ INDEX ] > 0">
+                            <p><var>person( INDEX + 1 )</var>的期末考分數長條比<var>his( INDEX + 1 )</var>
+                            期中考分數長條要高，所以<var>person( INDEX + 1 )</var>的分數有進步。<var>His( INDEX + 1 )</var>的期中考分數是
+                            <code><var>MIDTERM[ INDEX ]</var></code>然後<var>his( INDEX + 1 )</var>期末考分數是<code><var>FINAL[ INDEX ]</var></code>，所以
+                            <var>he( INDEX + 1 )</var>分數進步了<code><var>IMPROVEMENT[ INDEX ]</var></code>分。</p>
+                            <div class="graphie" data-update="barchart">
+                                style({ stroke: GREEN, strokeWidth: 2, arrows: "-&gt;" });
+                                line( [ INDEX * 3 + 1.5, MIDTERM[ INDEX ] / 10 ], [ INDEX * 3 + 2.5, FINAL[ INDEX ] / 10 ] );
+                                label( [ INDEX * 3 + 1.5, MIDTERM[ INDEX ] / 10 + 0.2 ], MIDTERM[ INDEX ], "below", false ).css({ fontWeight: "bold" });
+                                label( [ INDEX * 3 + 2.5, FINAL[ INDEX ] / 10 - 0.2 ], FINAL[ INDEX ], "above", false ).css({ fontWeight: "bold" });
+                            </div>
+                        </div>
+                        <div data-else-if="IMPROVEMENT[ INDEX ] < 0">
+                            <p><var>person( INDEX + 1 )</var>的期末考分數長條比<var>his( INDEX + 1 )</var>
+                            期中考分數長條要短，所以<var>person( INDEX + 1 )</var>的分數沒有進步。</p>
+                            <div class="graphie" data-update="barchart">
+                                style({ stroke: "grey", strokeWidth: 2, arrows: "-&gt;" });
+                                line( [ INDEX * 3 + 1.5, MIDTERM[ INDEX ] / 10 ], [ INDEX * 3 + 2.5, FINAL[ INDEX ] / 10 ] );
+                            </div>
+                        </div>
+                        <div data-else>
+                            <p><var>person( INDEX + 1 )</var>的期末考分數長條與<var>his( INDEX + 1 )</var>
+                            期中考分數長條是一樣的高度，所以<var>person( INDEX + 1 )</var>的分數並沒有進步。</p>
+                        </div>
+                    </div>
+                    <p>
+                        跟期中考比起來，<var>MOST_IMPROVED</var>在期末考進步了<code><var>BEST_IMPROVEMENT</var></code>分，在五位學生中，是進步了最多的。
+                    </p>
+                </div>
+            </div>
+
+            <div id="difference">
+                <div class="vars">
+                    <var id="INDEX" data-ensure="IMPROVEMENT[ INDEX ] > 0">randRange( 0, 4 )</var>
+                    <var id="STUDENT">person( INDEX + 1 )</var>
+                </div>
+                <p class="question">從期中考至期末考<var>STUDENT</var>的分數進步了幾分</p>
+
+                <div class="solution" data-type="multiple">
+                    <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>IMPROVEMENT[ INDEX ]</var></span>分</p>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>找到代表<var>STUDENT</var>分數的兩個長條。</p>
+                        <div class="graphie" data-update="barchart">
+                            style({ stroke: PINK, fill: "none", strokeWidth: 2 });
+                            ellipse( [ INDEX * 3 + 2, -0.6 ], [ 1.2, 0.5 ] );
+                        </div>
+                    </div>
+
+                    <div>
+                        <p>
+                            將<var>STUDENT</var>的藍色長條高度對到左方的縱軸，來看出來<var>his( INDEX + 1 )</var>期中考分數。
+                            <span data-if="MIDTERM[ INDEX ] % 10 === 5">
+                                長條的高度剛好在<code><var>MIDTERM[ INDEX ] - 5</var></code>與<code><var>MIDTERM[ INDEX ] + 5</var></code>的正中間，所以
+                            </span>
+                            <var>STUDENT</var>在期中考得了<code class="hint_blue"><var>MIDTERM[ INDEX ]</var></code>分。
+                        </p>
+                        <div class="graphie" data-update="barchart">
+                            style({ stroke: BLUE, strokeWidth: 2, arrows: "-&gt;", strokeDasharray: "-" });
+                            line( [ INDEX * 3 + 1, MIDTERM[ INDEX ] / 10 ], [ 0, MIDTERM[ INDEX ] / 10 ] );
+                        </div>
+                    </div>
+
+                    <div>
+                        <p>
+                            將<var>STUDENT</var>的橘色長條高度對到左方的縱軸，來看出來<var>his( INDEX + 1 )</var>期末考分數。
+                            <span data-if="FINAL[ INDEX ] % 10 === 5">
+                                長條的高度剛好在<code><var>FINAL[ INDEX ] - 5</var></code>與<code><var>FINAL[ INDEX ] + 5</var></code>的正中間，所以
+                            </span>
+                            <var>STUDENT</var>在期末考得了<code class="hint_orange"><var>FINAL[ INDEX ]</var></code>分。
+                        </p>
+                        <div class="graphie" data-update="barchart">
+                            style({ stroke: ORANGE, strokeWidth: 2, arrows: "-&gt;", strokeDasharray: "-" });
+                            line( [ INDEX * 3 + 2, FINAL[ INDEX ] / 10 ], [ 0, FINAL[ INDEX ] / 10 ] );
+                        </div>
+                    </div>
+
+                    <p>
+                        將期末考分數減去期中考的分數，就可以知道<var>STUDENT</var>進步了多少。
+                    </p>
+
+                    <p>
+                        <code>\color{ORANGE}{<var>FINAL[ INDEX ]</var>} - \color{#6495ED}{<var>MIDTERM[ INDEX ]</var>} = <var>IMPROVEMENT[ INDEX ]</var></code>，所以從期中考至期末考，
+                        <var>STUDENT</var>進步了<code><var>IMPROVEMENT[ INDEX ]</var></code>分。
+                    </p>
+
+                </div>
+            </div>
+
+            <div id="reading">
+                <div class="vars">
+                    <var id="INDEX">randRange( 0, 4 )</var>
+                    <var id="STUDENT">person( INDEX + 1 )</var>
+                    <var id="COLUMN">randRange( 0, 1 )</var>
+                    <var id="TEST">[ "期中考", "期末考" ][ COLUMN ]</var>
+                    <var id="ANSWER">COLUMN === 0 ? MIDTERM[ INDEX ] : FINAL[ INDEX ]</var>
+                </div>
+                <p class="question">請問，<var>STUDENT</var>在<var>TEST</var>得了幾分?</p>
+
+                <div class="solution" data-type="multiple">
+                    <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>ANSWER</var></span>分</p>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>找出代表<var>STUDENT</var>分數的兩個長條。</p>
+                        <div class="graphie" data-update="barchart">
+                            style({ stroke: PINK, fill: "none", strokeWidth: 2 });
+                            ellipse( [ INDEX * 3 + 2, -0.6 ], [ 1.2, 0.5 ] );
+                        </div>
+                    </div>
+                    <div>
+                        <p>使用圖例來決定，兩個長條中哪一個是代表<var>TEST</var>。</p>
+                        <div class="graphie" data-update="barchart">
+                            style({ stroke: PINK, fill: "none", strokeWidth: 2 });
+                            ellipse( [ COLUMN * 3 + 1.2, -2.25 ], [ 1.5, 0.5 ] );
+                        </div>
+                    </div>
+                    <div>
+                        <p>將<var>STUDENT</var>的<span data-if="COLUMN === 0">藍色</span><span data-else>橘色</span>長條比對到左方的縱軸。</p>
+                        <div class="graphie" data-update="barchart">
+                            style({ stroke: PINK, strokeWidth: 2, arrows: "-&gt;", strokeDasharray: "-" });
+                            line( [ INDEX * 3 + 1 + COLUMN, ANSWER / 10 ], [ 0, ANSWER / 10 ] );
+                        </div>
+                    </div>
+                    <p data-if="ANSWER % 10 === 5">
+                        長條的高度剛好在<code><var>ANSWER - 5</var></code>跟<code><var>ANSWER + 5</var></code>的正中間，所以
+                        <var>STUDENT</var>在<var>TEST</var>得了<code><var>ANSWER</var></code>分。
+                    </p>
+                    <p data-else>
+                        <var>STUDENT</var>在<var>TEST</var>得了<code><var>ANSWER</var></code>分。
+                    </p>
+                </div>
+            </div>
+
+            <div id="num-improved">
+                <p class="question">請問，期中考至期末考，有幾位學生的分數有進步?</p>
+
+                <div class="solution" data-type="multiple">
+                    <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>NUM_IMPROVED</var></span>位學生</p>
+                </div>
+
+                <div class="hints">
+                    <div data-each="5 times as INDEX">
+                        <div data-if="IMPROVEMENT[ INDEX ] > 0">
+                            <p><var>person( INDEX + 1 )</var>的期末考分數長條比<var>his( INDEX + 1 )</var>
+                            期中考分數長條要高，所以<var>person( INDEX + 1 )</var>的分數有進步。</p>
+                            <div class="graphie" data-update="barchart">
+                                style({ stroke: "grey", strokeWidth: 2, arrows: "-&gt;" });
+                                line( [ INDEX * 3 + 1.5, MIDTERM[ INDEX ] / 10 ], [ INDEX * 3 + 2.5, FINAL[ INDEX ] / 10 ] );
+                            </div>
+                        </div>
+                        <div data-else-if="IMPROVEMENT[ INDEX ] < 0">
+                            <p><var>person( INDEX + 1 )</var>的期末考分數長條比<var>his( INDEX + 1 )</var>
+                            期中考分數長條要短，所以<var>person( INDEX + 1 )</var>的分數沒有進步。</p>
+                        </div>
+                        <div data-else>
+                            <p><var>person( INDEX + 1 )</var>的期末考分數長條與其中考是同樣的高度，所以<var>person( INDEX + 1 )</var>的分數沒有進步</p>
+                        </div>
+                    </div>
+                    <p>現在數數看分數有進步的學生有幾位。</p>
+                    <p><code><var>NUM_IMPROVED</var></code>位學生從期中考到期末考之間的分數有進步。</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

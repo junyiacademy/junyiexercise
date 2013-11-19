@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-polygon interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>圓周角 1</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="find-angle">
+            <div class="vars">
+                <var id="START">randRange( 0, 360 )</var>
+                <var id="CENTRAL">randRange( 10, 80 ) * 2</var>
+                <var id="SUBTENDED_POINT">( START + 180 ) % 360</var>
+                <var id="RADIUS">4</var>
+
+                <var id="GIVEN">CENTRAL</var>
+                <var id="GIVEN_LABEL">"藍色的"</var>
+                <var id="ASKED_LABEL">"橘色的"</var>
+            </div>
+            <p class="question">如果<var>GIVEN_LABEL</var>角是 <var>GIVEN</var> 度，那請問<var>ASKED_LABEL</var>角是幾度？</p>
+            <p>這是一個特殊的情況，因為藍色與橘色的角共用同一條線段。藍色的角叫做圓心角，而橘色的角叫圓周角。</p>
+            <div class="graphie" id="circle">
+                init({
+                    range: [ [ -RADIUS - 1, RADIUS + 1 ], [ -RADIUS - 1, RADIUS + 1 ] ]
+                });
+                addMouseLayer();
+                graph.circle = new Circle( RADIUS );
+
+                style({ stroke: BLUE, fill: BLUE });
+                graph.circle.drawCenter();
+                graph.circle.drawPoint( START );
+                graph.circle.drawPoint( START + CENTRAL );
+
+                graph.circle.drawCentralAngle( START, START + CENTRAL );
+
+                style({ stroke: ORANGE, fill: ORANGE });
+                graph.circle.drawInscribedAngle( SUBTENDED_POINT, START, START + CENTRAL );
+
+                graph.circle.drawMovablePoint( SUBTENDED_POINT, START + CENTRAL, START );
+            </div>
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>CENTRAL / 2</var></span> 度
+            </div>
+            <div class="hints">
+                <div>
+                    <p>綠色的角和藍色的角互為補角。由於藍色的角是 <var>CENTRAL</var> 度，所以綠色的角一定是 <var>180 - CENTRAL</var> 度。</p>
+                    <div class="graphie" data-update="circle">
+                        style({ stroke: GREEN }, function() {
+                            graph.circle.drawCentralArc( START + CENTRAL, SUBTENDED_POINT );
+                        })
+                    </div>
+                </div>
+                <div>
+                    <p>我們知道，三角形的內角和永遠是 180 度。</p>
+                    <div class="graphie" data-update="circle">
+                        style({ stroke: PINK }, function() {
+                            graph.circle.drawInscribedArc( START + CENTRAL, SUBTENDED_POINT, START + CENTRAL + 180 );
+                        });
+                    </div>
+                    <p><code>\color{<var>GREEN</var>}{\text{綠色的角}} + \color{<var>PINK</var>}{\text{粉紅色的角}} + \color{<var>ORANGE</var>}{\text{橘色的角}} = 180^{\circ}</code></p>
+                </div>
+                <div>
+                    <p>三角形兩個粉紅色的邊都是圓的半徑，所以兩個邊一定相等。</p>
+                    <div class="graphie" data-update="circle">
+                        style({ stroke: PINK }, function() {
+                            graph.circle.drawRadius( START + CENTRAL );
+                            graph.circle.drawRadius( SUBTENDED_POINT );
+                        });
+                    </div>
+                </div>
+                <p>這代表說這個三角形是等腰三角形；而且，既然是等腰三角形，則它的兩個底角 (也就是粉紅色和橘色的角) 一定彼此相等。</p>
+                <p><code>\color{<var>GREEN</var>}{\text{綠色的角}} + 2 \cdot \color{<var>ORANGE</var>}{\text{橘色的角}} = 180^{\circ}</code></p>
+                <p><code>2 \cdot \color{<var>ORANGE</var>}{\text{橘色的角}}  = 180^{\circ} - \color{<var>GREEN</var>}{<var>180 - CENTRAL</var>^{\circ}}</code></p>
+                <p><code>2 \cdot \color{<var>ORANGE</var>}{\text{橘色的角}}  = \color{<var>BLUE</var>}{<var>CENTRAL</var>^{\circ}}</code></p>
+                <p><code>\color{<var>ORANGE</var>}{\text{橘色的角}} = \dfrac{1}{2} \cdot \color{<var>BLUE</var>}{<var>CENTRAL</var>^{\circ}}</code></p>
+                <p><code>\color{<var>ORANGE</var>}{\text{橘色的角}} = \color{<var>ORANGE</var>}{<var>CENTRAL / 2</var>^{\circ}}</code></p>
+            </div>
+        </div>
+        <div id="find-central-on" data-type="find-angle">
+            <div class="vars">
+                <var id="GIVEN">CENTRAL / 2</var>
+                <var id="GIVEN_LABEL">"橘色的"</var>
+                <var id="ASKED_LABEL">"藍色的"</var>
+            </div>
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>CENTRAL</var></span> 度
+            </div>
+
+            <div class="hints">
+                
+                <div>
+                    <p>我們知道，三角形的內角和永遠是 180 度。</p>
+                    <div class="graphie" data-update="circle">
+                        style({ stroke: GREEN }, function() {
+                            graph.circle.drawCentralArc( START + CENTRAL, SUBTENDED_POINT );
+                        })
+						
+						style({ stroke: PINK }, function() {
+                            graph.circle.drawInscribedArc( START + CENTRAL, SUBTENDED_POINT, START + CENTRAL + 180 );
+                        });
+                    </div>
+					
+                    <p><code>\color{<var>GREEN</var>}{\text{綠色的角}} + \color{<var>PINK</var>}{\text{粉紅色的角}} + \color{<var>ORANGE</var>}{\text{橘色的角}} = 180^{\circ}</code></p>
+					
+				</div>
+				<div>
+					<p>三角形兩個粉紅色的邊都是圓的半徑，所以兩個邊一定相等。這代表說這個三角形是等腰三角形；而且，既然是等腰三角形，則它的兩個底角 (也就是粉紅色和橘色的角) 一定彼此相等。</p>
+                    <div class="graphie" data-update="circle">
+                        style({ stroke: PINK }, function() {
+                            graph.circle.drawRadius( START + CENTRAL );
+                            graph.circle.drawRadius( SUBTENDED_POINT );
+                        });
+					</div>
+				</div>
+				
+					
+				<div>
+					<p><code>\color{<var>GREEN</var>}{\text{綠色的角}} + 2 \cdot \color{<var>ORANGE</var>}{\text{橘色的角}} = 180^{\circ}</code></p>
+				</div>
+				<div>
+					<p><code>\color{<var>GREEN</var>}{\text{綠色的角}} = 180^{\circ} - 2 \cdot \color{<var>ORANGE</var>}{\text{橘色的角}}</code></p>
+				</div>
+				<div>
+					<p><code>\color{<var>GREEN</var>}{\text{綠色的角}} = 180^{\circ} - \color{<var>ORANGE</var>}{<var>2*GIVEN</var>^{\circ}}</code></p>
+				</div>					
+				<div>
+					<p><code>\color{<var>GREEN</var>}{\text{綠色的角}} = \color{<var>GREEN</var>}{<var>180-2*GIVEN</var>^{\circ}}</code></p>
+				</div>					
+				
+                <p>藍色的角和綠色的角互為補角。</p>
+                <p><code>\color{<var>GREEN</var>}{\text{綠色的角}} + \color{<var>BLUE</var>}{\text{藍色的角}} = 180^{\circ}</code></p>
+                <p><code>\color{<var>BLUE</var>}{\text{藍色的角}} = 180^{\circ} - \color{<var>GREEN</var>}{\text{綠色的角}} </code></p>
+                <p><code>\color{<var>BLUE</var>}{\text{藍色的角}} = 180^{\circ} - \color{<var>GREEN</var>}{\text{<var>180 - CENTRAL</var>}^{\circ}} </code></p>
+                <p><code>\color{<var>BLUE</var>}{\text{藍色的角}} = \color{<var>BLUE</var>}{<var>CENTRAL</var>^{\circ}} </code></p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
