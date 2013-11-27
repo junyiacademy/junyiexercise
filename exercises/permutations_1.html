@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html data-require="math math-format word-problems">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Permutations 1</title>
+    <title>排列 1</title>
     <script src="../khan-exercise.js"></script>
 </head>
 <body>
@@ -15,29 +15,29 @@
                     <var id="PERM">shuffle(WORD).join("")</var>
                     <var id="ANSWER">factorial(WORD.length)</var>
                 </div>
-                <p class="question">How many unique ways are there to arrange the letters in the word <var>WORD</var>?</p>
+                <p class="question">有多少種方式(不可重複)可以排列<var>WORD</var>這個單字的字母?</p>
                 <p class="solution" data-forms="integer"><var>ANSWER</var></p>
                 <div class="hints">
                     <div>
-                        Let's try building the re-arrangements (or permutations) letter by letter. The word is <var>WORD.length</var>
-                        letters long:
+                        讓我們試著將字母重新排列。這個單字有 <var>WORD.length</var>個空格可以填字母:
+                        
                         <p><var>_.map(_.range(WORD.length), function(l){ return "_ "; }).join("")</var></p>
-                        <p>Now, for the first blank, we have <var>WORD.length</var> choices of letters to put in.
+                        <p>在第一格，我們有<var>WORD.length</var>種字母的選擇。
                     </div>
                     <div>
-                        After we put in the first letter, let's say it's <var>PERM[0]</var>, we have <var>WORD.length-1</var> blanks left.
+                        在放入第一個字母之後，假設是<var>PERM[0]</var>，那我們還剩下<var>WORD.length-1</var>個空格。
                         <p><var>PERM[0]+" "+_.map(_.range(WORD.length-1), function(l){ return "_ "; }).join("")</var></p>
-                        <p>For the second blank, we only have <var>WORD.length-1</var> choices of letters left to put in. So far, there were
-                            <code><var>WORD.length</var> \cdot <var>WORD.length-1</var></code> unique choices we could have made.</p>
+                        <p>在第二格，我們只有<var>WORD.length-1</var>種字母的選擇。到目前為止，總共有
+                            <code><var>WORD.length</var> \cdot <var>WORD.length-1</var></code>種選擇。</p>
                     </div>
                     <div>
-                        We can continue in this fashion to put in a third letter, then a fourth, and so on. At each step, we have one fewer unique choice to
-                        make, until we get to the last letter, and there's only one we can put in.
+                        我們可以繼續用這個方式得到第三個字母的選擇，接著是第四個、第五個......，在每一個步驟，我們得到更少字母的選擇
+                        ，直到最後一格我們只有一個字母可以選擇。
                     </br></br>
                     </div>
                     <div>
-                        So, the total number of unique re-arrangements must be <code><var>_.map(_.range(WORD.length).reverse(), function(l){ return (++l);}).join("\\cdot")</var>.</code> Another way of writing this is <code><var>WORD.length</var>!</code>, 
-                        or <var>WORD.length</var> factorial, which is <var>ANSWER</var>.
+                        所以，排列這個單字字母的總數為<code><var>_.map(_.range(WORD.length).reverse(), function(l){ return (++l);}).join("\\cdot")</var>。</code>也可以寫成<code><var>WORD.length</var>!</code>，或是 
+                        <var>WORD.length</var>階，也就是<var>ANSWER</var>。
                     </div>
                 </div>
             </div>
@@ -53,28 +53,27 @@
                     <var id="ANSWER">factorial(NAMES.length)/factorial(NAMES.length-SLOTS)</var>
                 </div>
                 <p>
-                    You have <var>NAMES.length</var> reindeer, <var>toSentence(NAMES)</var>, and you want to have <var>SLOTS</var> fly your sleigh.
-                    You always have your reindeer fly in a single-file line.
+                    你有<var>NAMES.length</var>之馴鹿，名字分別是<var>toSentence(NAMES)</var>，你需要馴鹿和你拉雪橇<var>SLOTS</var>次。
+                    每一隻馴鹿只能拉一次雪橇(也就是每次拉雪橇的馴鹿不可重複)。
                 </p>
 
-                <p class="question">How many different ways can you arrange your reindeer?</p>
+                <p class="question">有多少種安排馴鹿拉雪橇的方法?</p>
                 <p class="solution" data-forms="integer"><var>ANSWER</var></p>
 
                 <div class="hints">
                     <div>
-                        <p>We can build our line of reindeer one by one: there are <var>SLOTS</var> slots, and we have <var>NAMES.length</var>
-                        different reindeer we can put in the first slot.</p>
+                        <p>我們可以把馴鹿一個一個排進去:總共需要拉雪橇<var>SLOTS</var>次，然後我們有<var>NAMES.length</var>
+                        隻不同的馴鹿可以拉第一次的雪橇。</p>
                     </div>
                     <p>
-                        Once we fill the first slot, we only have <var>NAMES.length-1</var> reindeer left, so we only have <var>NAMES.length-1</var>
-                        choices for the second slot. So far, there are <code><var>NAMES.length</var> \cdot <var>NAMES.length-1</var> = <var>NAMES.length*(NAMES.length-1)</var></code> unique choices we can make.
+                        一旦我們決定了第一次拉雪橇的馴鹿，那我們就只剩下<var>NAMES.length-1</var>隻馴鹿(因為馴鹿不可重複拉雪橇)，所以第二次拉雪橇的馴鹿只剩下<var>NAMES.length-1</var>
+                        種選擇。目前我們總共有<code><var>NAMES.length</var> \cdot <var>NAMES.length-1</var> = <var>NAMES.length*(NAMES.length-1)</var></code>種選擇。
                     </p>
                     <p>
-                        We can continue in this way for the third reindeer, and so on, until we reach the last slot, where we will
-                        have <var>NAMES.length - SLOTS + 1</var> choices for the last reindeer.
+                        我們可以持續用這個方法得到第三次拉雪橇的選擇，直到最後一次拉雪橇，我們還有<var>NAMES.length - SLOTS + 1</var>隻馴鹿可以選擇。
                     </p>
                     <p>
-                        So, the total number of unique choices we could make to get to an arrangement of reindeer is <code><var>_.map(_.range(SLOTS), function(l){ return (NAMES.length - l);}).join("\\cdot")</var>.</code> Another way of writing this is <code> \dfrac{<var>NAMES.length</var>!}{(<var>NAMES.length</var>-<var>SLOTS</var>)!} = <var>ANSWER</var></code>
+                        所以，全部安排馴鹿拉雪橇的方法共有<code><var>_.map(_.range(SLOTS), function(l){ return (NAMES.length - l);}).join("\\cdot")</var>種。</code>也可以寫成<code> \dfrac{<var>NAMES.length</var>!}{(<var>NAMES.length</var>-<var>SLOTS</var>)!} = <var>ANSWER</var></code>
                     </p>
                 </div>
             </div>
