@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html data-require="math graphie word-problems interactive subhints">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>盒子的容積</title>
+    <script src="../khan-exercise.js"></script>
+
+</head>
+<body>
+
+<div class="exercise">
+    <div class="vars">
+        <var id="UNIT,UNIT_TEXT">randFromArray([
+            ["公尺", "公尺"],
+            ["公分", "公分"],
+            ["", "單位"]
+        ])</var>
+    </div>
+
+    <div class="problems">
+        <div id="rectangular_box" data-weight="1">
+            <div class="vars" data-ensure="L != WFAKE  &&  (WFAKE*H)%2 === 0 ">
+                <var id="L">randRange(10, 20)</var>
+                <var id="WFAKE">randRange(2, 4)*5</var>
+                <var id="W">WFAKE*0.75</var>
+                <var id="H">randRange(1, 2)*5</var>
+                <var id="B">randRange(1, 2)</var>
+            </div>
+
+            <p class="question">
+                下圖是一個長方體盒子，請問盒子的容積是多少？
+            </p>
+            <div class="problem">
+                <div class="graphie" id="original">
+                    init({ range: [[-B*8, L+W + 1], [-B*2, H+W + 1]], scale: 10 });
+
+
+                    path([ [0-B*1.414, H-B/1.414], [L, H-B/1.414],[L+W/1.414+B*1.414, H+(W+B)/1.414], [0+W/1.414, H+(W+B)/1.414],  true],{stroke: RED, fill: "#fbc1cb"});
+                    path([ [0, H], [L, H], [L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414], true],{stroke: BLUE, fill: "#eee"});
+
+                    path([ [0-B*1.414, H-B/1.414], [L, H-B/1.414],[L,0-B/1.414],[0-B*1.414, 0-B/1.414],  true],{stroke: RED, fill: "#fbc1cb"});
+                    
+                    path([ [L, H-B/1.414],[L,-B/1.414],[L+W/1.414+B*1.414, (W+B)/1.414], [L+W/1.414+B*1.414, H+(W+B)/1.414], true],{stroke: RED, fill: "#fbc1cb"});
+
+
+
+                    
+                    
+                    path([ [0,0],[0, H], true],
+                          style({strokeWidth: 1,strokeDasharray: "-"})
+                          );
+                    path([ [0,0],[L,0], true]);
+                    path([ [0, 0],[W/1.414,W/1.414], true]);
+                    path([ [L,0],[L+W/1.414,W/1.414], true]);
+                    path([ [L,0],[L, H], true]);
+                    path([ [W/1.414,W/1.414],[L+W/1.414,W/1.414], true]);
+                    path([ [W/1.414,W/1.414],[W/1.414,W/1.414+H], true]
+                          );
+                    path([ [L+W/1.414,W/1.414],[L+W/1.414,W/1.414+H], true]);
+                    
+
+
+                    label([(L+W/1.414+B*1.414)*0.75, H+(W+B)/1.414], L+2*B + "\\text{ " + UNIT + "}","above", {color: KhanUtil.RED});
+                    label([B*1.414, (H+(W+B)/1.414)*0.75], WFAKE+2*B + "\\text{ " + UNIT + "}", "left", {color: KhanUtil.RED});
+                    label([0-B*1.414, (H-B/1.414)*0.5], H+2*B + "\\text{ " + UNIT + "}", "left", {color: KhanUtil.RED});
+                
+
+                    label([(L+W/1.414)*0.75,W/1.414+H], L + "\\text{ " + UNIT + "}", "below", {color: KhanUtil.BLUE});
+                    label([(L+W/1.414)*0.7, H+(W/1.414)*0.25], WFAKE + "\\text{ " + UNIT + "}", "center", {color: KhanUtil.BLUE});
+                    label([W/1.414,(W/1.414+H)*0.8], H + "\\text{ " + UNIT + "}", "center", {color: KhanUtil.BLUE});
+
+
+
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>L*WFAKE*H</var></span>
+                立方 <var>plural(UNIT_TEXT)</var>
+            </div>
+
+            <div class="hints">
+                <p>容器內部空間的體積，稱為‘‘容積’’，也就是盒子裡面可以放東西的空間有多大</p>
+
+                <div>
+                    <p>長方體盒子的底面積：盒內長&times;盒內寬</p>
+                    <div class="graphie" id="area">
+                    init({ range: [[-B*8, L+W + 1], [-B*2, H+W + 1]], scale: 10 });
+
+
+  
+                    path([ [0, H], [L, H], [L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414], true],{stroke: BLUE, fill: "#eee"});
+
+
+                    label([(L+W/1.414)*0.75,W/1.414+H], L + "\\text{ " + UNIT + "}", "below", {color: KhanUtil.BLUE});
+                    label([(L+W/1.414)*0.7, H+(W/1.414)*0.25], WFAKE + "\\text{ " + UNIT + "}", "center", {color: KhanUtil.BLUE});
+                    </div>
+               
+                <p>盒子的底面積＝<var>L</var>&times;<var>WFAKE</var>=<var>L*WFAKE</var>平方<var>plural(UNIT_TEXT)</var></p>
+
+                   
+                </div>
+
+                <p>盒子的容積：底面積&times;盒內高</p>
+                <p>長方體盒子的容積：(盒內長&times;盒內寬)&times;盒內高</p>
+
+                <div>
+                    
+                    <div class="graphie" data-update="area">
+                    init({ range: [[-B*8, L+W + 1], [-B*2, H+W + 1]], scale: 10 });
+
+
+                    path([ [0, H], [L, H], [L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414], true],{stroke: BLUE, fill: "#eee"});
+                    
+                    
+                    path([ [0,0],[0, H], true],
+                          style({strokeWidth: 1,strokeDasharray: "-"})
+                          );
+                    path([ [0,0],[L,0], true]);
+                    path([ [0, 0],[W/1.414,W/1.414], true]);
+                    path([ [L,0],[L+W/1.414,W/1.414], true]);
+                    path([ [L,0],[L, H], true]);
+                    path([ [W/1.414,W/1.414],[L+W/1.414,W/1.414], true]);
+                    path([ [W/1.414,W/1.414],[W/1.414,W/1.414+H], true]
+                          );
+                    path([ [L+W/1.414,W/1.414],[L+W/1.414,W/1.414+H], true]);
+                    
+                
+
+                    label([(L+W/1.414)*0.75,W/1.414+H], L + "\\text{ " + UNIT + "}", "below", {color: KhanUtil.BLUE});
+                    label([(L+W/1.414)*0.7, H+(W/1.414)*0.25], WFAKE + "\\text{ " + UNIT + "}", "center", {color: KhanUtil.BLUE});
+                    label([W/1.414,(W/1.414+H)*0.8], H + "\\text{ " + UNIT + "}", "center", {color: KhanUtil.BLUE});
+                    </div>   
+                </div>
+
+
+                <p>長方體盒子的容積 = (<var>L</var>&times;<var>WFAKE</var>)&times;<var>H</var> = <var>L*WFAKE</var>&times;<var>H</var> = <var>L*WFAKE*H</var>立方<var>plural(UNIT_TEXT)</var></p>
+
+
+
+
+            </div>
+
+
+
+
+        </div>
+
+
+
+        <div id="square_box" data-weight="1">
+           <div class="vars" data-ensure="(WFAKE*H)%2 === 0 ">
+                <var id="L">randRange(10, 20)</var>
+                <var id="WFAKE">L</var>
+                <var id="W">WFAKE*0.75</var>
+                <var id="H">randRange(1, 2)*5</var>
+                <var id="B">randRange(1, 2)</var>
+            </div>
+
+            <p class="question">
+                下圖是一個長方體盒子，請問盒子的容積是多少？
+            </p>
+            <div class="problem">
+                <div class="graphie" id="original">
+                    init({ range: [[-B*8, L+W + 1], [-B*2, H+W + 1]], scale: 10 });
+
+
+                    path([ [0-B*1.414, H-B/1.414], [L, H-B/1.414],[L+W/1.414+B*1.414, H+(W+B)/1.414], [0+W/1.414, H+(W+B)/1.414],  true],{stroke: RED, fill: "#fbc1cb"});
+                    path([ [0, H], [L, H], [L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414], true],{stroke: BLUE, fill: "#eee"});
+
+                    path([ [0-B*1.414, H-B/1.414], [L, H-B/1.414],[L,0-B/1.414],[0-B*1.414, 0-B/1.414],  true],{stroke: RED, fill: "#fbc1cb"});
+                    
+                    path([ [L, H-B/1.414],[L,-B/1.414],[L+W/1.414+B*1.414, (W+B)/1.414], [L+W/1.414+B*1.414, H+(W+B)/1.414], true],{stroke: RED, fill: "#fbc1cb"});
+
+
+
+                    
+                    
+                    path([ [0,0],[0, H], true],
+                          style({strokeWidth: 1,strokeDasharray: "-"})
+                          );
+                    path([ [0,0],[L,0], true]);
+                    path([ [0, 0],[W/1.414,W/1.414], true]);
+                    path([ [L,0],[L+W/1.414,W/1.414], true]);
+                    path([ [L,0],[L, H], true]);
+                    path([ [W/1.414,W/1.414],[L+W/1.414,W/1.414], true]);
+                    path([ [W/1.414,W/1.414],[W/1.414,W/1.414+H], true]
+                          );
+                    path([ [L+W/1.414,W/1.414],[L+W/1.414,W/1.414+H], true]);
+                    
+
+
+                    label([(L+W/1.414+B*1.414)*0.75, H+(W+B)/1.414], L+2*B + "\\text{ " + UNIT + "}","above", {color: KhanUtil.RED});
+                    label([B*1.414, (H+(W+B)/1.414)*0.75], WFAKE+2*B + "\\text{ " + UNIT + "}", "left", {color: KhanUtil.RED});
+                    label([0-B*1.414, (H-B/1.414)*0.5], H+2*B + "\\text{ " + UNIT + "}", "left", {color: KhanUtil.RED});
+                
+
+                    label([(L+W/1.414)*0.75,W/1.414+H], L + "\\text{ " + UNIT + "}", "below", {color: KhanUtil.BLUE});
+                    label([(L+W/1.414)*0.7, H+(W/1.414)*0.25], WFAKE + "\\text{ " + UNIT + "}", "center", {color: KhanUtil.BLUE});
+                    label([W/1.414,(W/1.414+H)*0.8], H + "\\text{ " + UNIT + "}", "center", {color: KhanUtil.BLUE});
+
+
+
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>L*WFAKE*H</var></span>
+                立方 <var>plural(UNIT_TEXT)</var>
+            </div>
+
+            <div class="hints">
+                <p>容器內部空間的體積，稱為‘‘容積’’，也就是盒子裡面可以放東西的空間有多大</p>
+
+                <div>
+                    <p>長方體盒子的底面積：盒內長&times;盒內寬</p>
+                    <div class="graphie" id="area">
+                    init({ range: [[-B*8, L+W + 1], [-B*2, H+W + 1]], scale: 10 });
+
+
+  
+                    path([ [0, H], [L, H], [L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414], true],{stroke: BLUE, fill: "#eee"});
+
+
+                    label([(L+W/1.414)*0.75,W/1.414+H], L + "\\text{ " + UNIT + "}", "below", {color: KhanUtil.BLUE});
+                    label([(L+W/1.414)*0.7, H+(W/1.414)*0.25], WFAKE + "\\text{ " + UNIT + "}", "center", {color: KhanUtil.BLUE});
+                    </div>
+                    
+                <p>盒子的底面積＝<var>L</var>&times;<var>WFAKE</var>=<var>L*WFAKE</var>平方<var>plural(UNIT_TEXT)</var></p>
+                   
+                </div>
+
+
+                <p>盒子的容積：底面積&times;盒內高</p>
+                <p>長方體盒子的容積：(盒內長&times;盒內寬)&times;盒內高</p>
+
+                <div>
+                    
+                    <div class="graphie" data-update="area">
+                    init({ range: [[-B*8, L+W + 1], [-B*2, H+W + 1]], scale: 10 });
+
+
+                    path([ [0, H], [L, H], [L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414], true],{stroke: BLUE, fill: "#eee"});
+                    
+                    
+                    path([ [0,0],[0, H], true],
+                          style({strokeWidth: 1,strokeDasharray: "-"})
+                          );
+                    path([ [0,0],[L,0], true]);
+                    path([ [0, 0],[W/1.414,W/1.414], true]);
+                    path([ [L,0],[L+W/1.414,W/1.414], true]);
+                    path([ [L,0],[L, H], true]);
+                    path([ [W/1.414,W/1.414],[L+W/1.414,W/1.414], true]);
+                    path([ [W/1.414,W/1.414],[W/1.414,W/1.414+H], true]
+                          );
+                    path([ [L+W/1.414,W/1.414],[L+W/1.414,W/1.414+H], true]);
+                    
+                
+
+                    label([(L+W/1.414)*0.75,W/1.414+H], L + "\\text{ " + UNIT + "}", "below", {color: KhanUtil.BLUE});
+                    label([(L+W/1.414)*0.7, H+(W/1.414)*0.25], WFAKE + "\\text{ " + UNIT + "}", "center", {color: KhanUtil.BLUE});
+                    label([W/1.414,(W/1.414+H)*0.8], H + "\\text{ " + UNIT + "}", "center", {color: KhanUtil.BLUE});
+                    </div>   
+                </div>
+
+
+                <p>長方體盒子的容積 = (<var>L</var>&times;<var>WFAKE</var>)&times;<var>H</var> = <var>L*WFAKE</var>&times;<var>H</var> = <var>L*WFAKE*H</var>立方<var>plural(UNIT_TEXT)</var></p>
+
+
+
+
+            </div>
+
+
+
+        </div>
+
+        
+
+    </div>
+</div>
+</body>
+</html>

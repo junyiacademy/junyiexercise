@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie time word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>時間的加減應用(不用借位與進位)</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .short input[type=text] {
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+		<div class="vars">
+			<var id="HOUR">randRange( 1, 2 )</var>
+			<var id="HOUR1" data-ensure="HOUR1+HOUR &lt; 4">randRange( 1, 22 )  </var>
+			<var id="HOUR2">randRange( 2, 11 )</var>
+			<var id="MINUTE">randRange( 1, 55 )  </var>
+			<var id="MINUTE1" data-ensure="MINUTE1+MINUTE &lt; 60">randRange( 2, 55 )  </var> 
+			<var id="SECOND">randRange( 1, 59 )  </var>
+			<var id="ROUND">randRange( 1, 10 )  </var>
+			<var id="NICE_MINUTE"> MINUTE &gt; 5 ? MINUTE : "0" + "" + MINUTE</var>
+			<var id="AM_PM">HOUR >= 7 ? "a.m" : "p.m."</var>
+    	
+			<var id="SOLUTION">(function() {
+                        if ( HOUR &lt; 12 ) {
+                            return "上午(AM)";
+                        } else {
+                            return "下午(PM)";
+                        }
+                    })()</var>
+				
+		</div>
+
+     <div class="problems">
+        <div id="hour_minute_plus">
+            <div class="question">
+			    <p><var>person(1)</var>要燉雞湯，花了<var>HOUR</var>時<var>MINUTE</var>分準備材料，燉了<var>HOUR1</var>時<var>MINUTE1</var>分，一共花了幾時幾分？</p>
+            </div>
+
+			 <div class="solution" data-type="multiple"> 
+				<p class="short"><span class="sol"><var>HOUR+HOUR1</var></span>時<span class="sol"><var>MINUTE+MINUTE1</var></span>分</p>
+                <p class="example">整數</p>
+            </div>
+
+            <div class="hints">
+
+                
+                    <p>題目給我們兩段時間，問我們總共的時間</p>
+				    <p>要把兩段時間加起來，<var>HOUR</var>時<var>MINUTE</var>分+<var>HOUR1</var>時<var>MINUTE1</var>分</p>
+				    <p>總共的時間為<var>HOUR+HOUR1</var>時<var>MINUTE+MINUTE1</var>分</p>
+               
+				
+            </div>
+        </div>
+
+		 <div id="hour_minute_minus">
+            <div class="question">
+			    <p>從嘉義到臺北坐高鐵需要<var>HOUR</var>時<var>MINUTE</var>分，坐自強號火車需要<var>HOUR+HOUR1</var>時<var>MINUTE+MINUTE1</var>分，兩者相差幾時幾分？</p>
+            </div>
+
+			 <div class="solution" data-type="multiple"> 
+				<p class="short"><span class="sol"><var>HOUR1</var></span>時<span class="sol"><var>MINUTE1</var></span>分</p>
+                <p class="example">整數</p>
+            </div>
+
+            <div class="hints">
+
+                    <p>題目給我們兩段時間，要算這兩段時間的差距</p>
+					<p>哪一段時間比較長呢?</p>
+					<p>坐自強號的時間比較長</p>
+					<p>所以要用比較長的時間減去比較短的時間</p>
+				    <p><var>HOUR+HOUR1</var>時減掉<var>HOUR</var>時等於<var>HOUR1</var>時</p>
+					<p><var>MINUTE+MINUTE1</var>分減掉<var>MINUTE</var>分等於<var>MINUTE1</var>分</p>
+				    <p>兩段時間相差<var>HOUR1</var>時<var>MINUTE1</var>分</p>
+	
+            </div>
+         </div>
+	
+		
+     </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html data-require="math graphie word-problems interactive subhints">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>倒水進容器</title>
+    <script src="../khan-exercise.js"></script>
+
+</head>
+<body>
+
+<div class="exercise">
+    <div class="vars">
+        <var id="UNIT,UNIT_TEXT">randFromArray([
+            ["公分", "公分"]
+             ])</var>
+    </div>
+
+    <div class="problems">
+        <div id="rectangular_box" data-weight="1">
+            <div class="vars" data-ensure="L != WFAKE  &&  (WFAKE*HW)%2 === 0 ">
+                <var id="L">randRange(10, 20)</var>
+                <var id="WFAKE">randRange(2, 4)*3</var>
+                <var id="W">WFAKE*0.75</var>
+                <var id="H">15</var>
+                <var id="HW">randRange(4, 12)</var>
+                <var id="B">randRange(1, 2)</var>
+            </div>
+
+            <p class="question">
+                將一整壺水倒進一個長方體容器內，水面高是<var>HW</var>公分。容器內長、寬各是<var>L</var>公分、<var>WFAKE</var>公分，水壺的容量是多少毫升？
+            </p>
+            <div class="problem">
+                <div class="graphie" id="original">
+                    init({ range: [[-B*8, L+W + 1], [-B*2, H+W + 1]], scale: 10 });
+
+                    path([ [0,0],[0,HW],[L,HW],[L,0], true],{fill: KhanUtil.BLUE});
+                    path([ [L,HW],[L,0],[L+W/1.414,W/1.414],[L+W/1.414,W/1.414+HW], true],{fill: KhanUtil.BLUE});
+                    path([ [0,HW],[L,HW],[L+W/1.414,W/1.414+HW], [W/1.414,W/1.414+HW], true],{fill: KhanUtil.BLUE});
+
+
+                    path([ [0, H], [L, H], [L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414], true]);
+                    
+                    
+                    path([ [0,0],[0, H], true]);
+                    path([ [0,0],[L,0], true]);
+                    path([ [0, 0],[W/1.414,W/1.414], true]);
+                    path([ [L,0],[L+W/1.414,W/1.414], true]);
+                   
+                    path([ [W/1.414,W/1.414],[L+W/1.414,W/1.414], true]);
+                    path([ [W/1.414,W/1.414],[W/1.414,W/1.414+H], true]
+                          );
+                    path([ [L+W/1.414,W/1.414],[L+W/1.414,W/1.414+H], true]);
+                    
+
+                    
+
+                     path([ [L,0],[L, H], true]);
+
+
+                    label([(L+W/1.414)*0.75,W/1.414+H], L + "\\text{ " + UNIT + "}", "above");
+                    label([(L+W/1.414)*0.8, H+(W/1.414)*0.25], WFAKE + "\\text{ " + UNIT + "}", "right");
+                    label([0,HW*0.5], HW + "\\text{ " + UNIT + "}", "left");
+
+
+
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>L*WFAKE*HW</var></span>毫升
+            </div>
+
+            <div class="hints">
+                <p>容器內部空間的體積，稱為‘‘容積’’，也就是盒子裡面可以放東西的空間有多大</p>
+                <p>水壺的容積：(盒內長&times;盒內寬)&times;水面高</p>
+
+                <div>
+                    
+                    <div class="graphie" id="area">
+                    init({ range: [[-B*8, L+W + 1], [-B*2, H+W + 1]], scale: 10 });
+
+                    path([ [0,0],[0,HW],[L,HW],[L,0], true],{fill: KhanUtil.BLUE});
+                    path([ [L,HW],[L,0],[L+W/1.414,W/1.414],[L+W/1.414,W/1.414+HW], true],{fill: KhanUtil.BLUE});
+                    path([ [0,HW],[L,HW],[L+W/1.414,W/1.414+HW], [W/1.414,W/1.414+HW], true],{fill: KhanUtil.BLUE});
+
+                    label([(L+W/1.414)*0.75,W/1.414+HW], L + "\\text{ " + UNIT + "}", "above");
+                    label([(L+W/1.414)*0.8, HW+(W/1.414)*0.25], WFAKE + "\\text{ " + UNIT + "}", "right");
+                    label([0,HW*0.5], HW + "\\text{ " + UNIT + "}", "left");
+
+
+                    </div>
+               
+                <p>水壺的容積=(<var>L</var>&times;<var>WFAKE</var>)&times;<var>HW</var>=<var>L*WFAKE</var>&times;<var>HW</var>=<var>L*WFAKE*HW</var>立方公分</p>
+
+                   
+                </div>
+
+                <p>1立方公分=1毫升</p>
+                <p><var>L*WFAKE*HW</var>立方公分 = <var>L*WFAKE*HW</var>毫升</p>
+
+                
+
+
+
+
+            </div>
+
+
+
+
+        </div>
+
+
+        <div id="square_box" data-weight="1">
+            <div class="vars" data-ensure="(WFAKE*H)%2 === 0 ">
+                <var id="L">randRange(10, 20)</var>
+                <var id="WFAKE">L</var>
+                <var id="W">WFAKE*0.75</var>
+                <var id="H">15</var>
+                <var id="HW">randRange(4, 12)</var>
+                <var id="B">randRange(1, 2)</var>
+            </div>
+
+            <p class="question">
+                將一整壺水倒進一個長方體容器內，水面高是<var>HW</var>公分。容器內長、寬各是<var>L</var>公分、<var>WFAKE</var>公分，水壺的容量是多少毫升？
+            </p>
+            <div class="problem">
+                <div class="graphie" id="original">
+                    init({ range: [[-B*8, L+W + 1], [-B*2, H+W + 1]], scale: 10 });
+
+                    path([ [0,0],[0,HW],[L,HW],[L,0], true],{fill: KhanUtil.BLUE});
+                    path([ [L,HW],[L,0],[L+W/1.414,W/1.414],[L+W/1.414,W/1.414+HW], true],{fill: KhanUtil.BLUE});
+                    path([ [0,HW],[L,HW],[L+W/1.414,W/1.414+HW], [W/1.414,W/1.414+HW], true],{fill: KhanUtil.BLUE});
+
+
+                    path([ [0, H], [L, H], [L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414], true]);
+                    
+                    
+                    path([ [0,0],[0, H], true]);
+                    path([ [0,0],[L,0], true]);
+                    path([ [0, 0],[W/1.414,W/1.414], true]);
+                    path([ [L,0],[L+W/1.414,W/1.414], true]);
+                   
+                    path([ [W/1.414,W/1.414],[L+W/1.414,W/1.414], true]);
+                    path([ [W/1.414,W/1.414],[W/1.414,W/1.414+H], true]
+                          );
+                    path([ [L+W/1.414,W/1.414],[L+W/1.414,W/1.414+H], true]);
+                    
+
+                    
+
+                     path([ [L,0],[L, H], true]);
+
+
+                    label([(L+W/1.414)*0.75,W/1.414+H], L + "\\text{ " + UNIT + "}", "above");
+                    label([(L+W/1.414)*0.8, H+(W/1.414)*0.25], WFAKE + "\\text{ " + UNIT + "}", "right");
+                    label([0,HW*0.5], HW + "\\text{ " + UNIT + "}", "left");
+
+
+
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>L*WFAKE*HW</var></span>毫升
+            </div>
+
+            <div class="hints">
+                <p>容器內部空間的體積，稱為‘‘容積’’，也就是盒子裡面可以放東西的空間有多大</p>
+                <p>水壺的容積：(盒內長&times;盒內寬)&times;水面高</p>
+
+                <div>
+                    
+                    <div class="graphie" id="area">
+                    init({ range: [[-B*8, L+W + 1], [-B*2, H+W + 1]], scale: 10 });
+
+                    path([ [0,0],[0,HW],[L,HW],[L,0], true],{fill: KhanUtil.BLUE});
+                    path([ [L,HW],[L,0],[L+W/1.414,W/1.414],[L+W/1.414,W/1.414+HW], true],{fill: KhanUtil.BLUE});
+                    path([ [0,HW],[L,HW],[L+W/1.414,W/1.414+HW], [W/1.414,W/1.414+HW], true],{fill: KhanUtil.BLUE});
+
+                    label([(L+W/1.414)*0.75,W/1.414+HW], L + "\\text{ " + UNIT + "}", "above");
+                    label([(L+W/1.414)*0.8, HW+(W/1.414)*0.25], WFAKE + "\\text{ " + UNIT + "}", "right");
+                    label([0,HW*0.5], HW + "\\text{ " + UNIT + "}", "left");
+
+
+                    </div>
+               
+                <p>水壺的容積=(<var>L</var>&times;<var>WFAKE</var>)&times;<var>HW</var>=<var>L*WFAKE</var>&times;<var>HW</var>=<var>L*WFAKE*HW</var>立方公分</p>
+
+                   
+                </div>
+
+                <p>1立方公分=1毫升</p>
+                <p><var>L*WFAKE*HW</var>立方公分 = <var>L*WFAKE*HW</var>毫升</p>
+
+                
+
+
+
+
+            </div>
+
+
+
+
+        </div>
+
+
+        
+
+        
+
+    </div>
+</div>
+</body>
+</html>

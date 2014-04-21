@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie time word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>計算經過的時間</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .short input[type=text] {
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+     <div class="vars">
+        <var id="HOUR">randRange( 6, 9 )</var>
+		<var id="HOUR1" data-ensure="HOUR1+HOUR &lt; 12">randRange( 2, 6 )  </var>
+        <var id="MINUTE">randRange( 1, 55 )  </var>
+		<var id="MINUTE1" data-ensure="MINUTE1+MINUTE &lt; 60">randRange( 2, 55 )  </var> 
+		<var id="SECOND">randRange( 1, 59 )  </var>
+		<var id="ROUND">randRange( 1, 10 )  </var>
+        <var id="NICE_MINUTE"> MINUTE &gt; 5 ? MINUTE : "0" + "" + MINUTE</var>
+        <var id="AM_PM">HOUR >= 7 ? "a.m" : "p.m."</var>
+    	
+		<var id="SOLUTION">(function() {
+                        if ( HOUR &lt; 12 ) {
+                            return "上午(AM)";
+                        } else {
+                            return "下午(PM)";
+                        }
+                    })()</var>
+				
+	 </div>
+
+     <div class="problems">
+        <div id="minute">
+            <div class="question">
+			    <p><var>person(1)</var>從上午<var>HOUR</var>時<var>MINUTE</var>分玩遊戲到上午<var>HOUR</var>時<var>MINUTE+MINUTE1</var>分結束，一共玩了多久的時間?</p>
+            </div>
+
+			 <div class="solution" data-type="multiple"> 
+				<p class="short"><span class="sol"><var>MINUTE1</var></span>分</p>
+                <p class="example">整數</p>
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>上午<var>HOUR</var>時<var>MINUTE</var>分是開始的時間</p>
+					<p>上午<var>HOUR</var>時<var>MINUTE+MINUTE1</var>分是結束的時間</p>
+                </div>
+                
+				<div>  
+				    <p>知道開始的時間和結束的時間要算經過的時間。要用結束的時間減掉開始的時間。</p>
+                </div>
+				
+				<div>  
+				    <p>上午<var>HOUR</var>時<var>MINUTE1+MINUTE</var>分減掉上午<var>HOUR</var>時<var>MINUTE</var>分等於<var>MINUTE1</var>分</p>
+                </div>
+
+            </div>
+        </div>
+
+		<div id="hour">
+            <div class="question">
+			    <p><var>person(1)</var>從上午<var>HOUR</var>時工作到下午<var>HOUR1</var>時，他工作了多久的時間？</p>
+            </div>
+
+			 <div class="solution" data-type="multiple"> 
+				<p class="short"><span class="sol"><var>(12-HOUR)+HOUR1</var></span>時</p>
+                <p class="example">整數</p>
+            </div>
+
+            <div class="hints">
+                
+                <div>
+                    <p>上午<var>HOUR</var>時是開始的時間，下午<var>HOUR1</var>是結束的時間</p>
+                </div>
+                
+				<div>  
+				    <p>先算出早上工作了多少時間，再加上下午工作的時間。</p>
+                </div>
+				
+				<div>  
+				    <p>上午工作了<var>12-HOUR</var>個小時，再加上下午<var>HOUR1</var>個小時。</p>
+                </div>
+
+				<div>  
+				    <p>所以總共工作了<var>12-HOUR+HOUR1</var>個小時</p>
+                </div>
+				
+            </div>
+        </div>
+		
+		
+        <div id="minute_hour_1">
+            <div class="question">
+			    <p><var>person(1)</var>坐飛機到新加坡旅行，上午<var>HOUR</var>時<var>MINUTE</var>分搭飛機，上午<var>HOUR+HOUR1</var>時<var>MINUTE+MINUTE1</var>分抵達，<var>person(1)</var>搭了多久的飛機？</p>
+            </div>
+
+			 <div class="solution" data-type="multiple"> 
+				<p class="short"><span class="sol"><var>HOUR1</var></span>時<span class="sol"><var>MINUTE1</var></span>分</p>
+                <p class="example">整數</p>
+            </div>
+
+            <div class="hints">
+                
+                <div>
+                    <p>上午<var>HOUR</var>時<var>MINUTE</var>分是開始的時間</p>
+					<p>上午<var>HOUR+HOUR1</var>時<var>MINUTE+MINUTE1</var>分是抵達的時間</p>
+                </div>
+                
+				<div>  
+				    <p>知道出發的時間和抵達的時間要算經過的時間。要用抵達的時間減掉出發的時間。</p>
+                </div>
+				
+				<div>  
+				   <p><var>HOUR+HOUR1</var>時<var>MINUTE1+MINUTE</var>分減掉上午<var>HOUR</var>時<var>MINUTE</var>分等於<var>HOUR1</var>時<var>MINUTE1</var>分</p>
+                </div>
+
+            </div>
+        </div>
+		
+
+		<div id="minute_hour_2">
+            <div class="question">
+			    <p><var>person(1)</var>和家人在上午<var>HOUR</var>時<var>MINUTE</var>分達臺北 圓山參觀花卉展，在下午<var>HOUR1</var>時<var>MINUTE+MINUTE1</var>分離開，他們參觀花卉展花了多久的時間？</p>
+            </div>
+
+			 <div class="solution" data-type="multiple"> 
+				<p class="short"><span class="sol"><var>(12-HOUR)+HOUR1</var></span>時<span class="sol"><var>MINUTE1</var></span>分</p>
+                <p class="example">整數</p>
+            </div>
+
+            <div class="hints">
+                
+                <div>
+                    <p>上午<var>HOUR</var>時<var>MINUTE</var>分是開始的時間</p>
+					<p>下午<var>HOUR1</var>時<var>MINUTE+MINUTE1</var>分是結束的時間</p>
+                </div>
+                
+				<div>  
+				    <p>知道開始的時間和結束的時間要算經過的時間。要用結束的時間減掉開始的時間。</p>
+                </div>
+				
+				<div>  
+				    <p>下午<var>HOUR1</var>時<var>MINUTE+MINUTE1</var>分要先換算成二十四小時制，等於<var>HOUR1+12</var>時<var>MINUTE+MINUTE1</var>分</p>
+                </div>
+				
+				<div>  
+				   <p><var>HOUR1+12</var>時<var>MINUTE+MINUTE1</var>分減掉<var>HOUR</var>時<var>MINUTE</var>分</p>
+                </div>
+				
+				<div>  
+				   <p>等於<var>HOUR1+12-HOUR</var>時<var>MINUTE1</var>分</p>
+                </div>
+
+            </div>
+        </div>
+		
+     </div>
+    </div>
+</body>
+</html>

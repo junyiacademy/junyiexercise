@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html data-require="math graphie angles interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>角的種類</title>
+    <script src="../khan-exercise.js"></script>
+	    <script>
+        function protractorHint( pro, rot, angle ) {
+            pro.translate( 0, 0, true );
+            pro.rotate( rot, true );
+            pro.translatable( false );
+            pro.rotatable( false );
+
+            pro.drawAngle( angle, 2, "green", "green" );
+        }
+    </script>
+
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+	
+			<div id="measure_2">
+			
+				 <div class="vars">
+                <var id="ANGLE_ONE">randRange(0, 359)</var>
+                <var id="DIFF">randRange(20, 160)</var>
+				<var id="ANGLE_ONEv">randRange(0, 359)</var>
+                <var id="DIFFv" data-ensure="Math.abs(DIFFv-DIFF) > 30" && "DIFFv!=DIFF">randRange(20, 160)</var>
+				<var id="DIFFw">90</var>
+				<var id="ANGLE_ONEw">randRange(0, 359)</var>
+				
+					<var id="SOLUTION_1">(function() {
+                        if ( DIFF &gt; DIFFv ) {
+                            return "角A";
+                        } else {
+                            return "角B";
+                        }
+                    })()		
+					</var>
+				
+                </div>
+            
+			<div class="question">
+                <p>比比看哪個角比較大？ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (往下捲動來看到角B) </p>
+				
+			<div id="q1">
+				<p>A</p>
+                <div class="graphie" id="angle" >
+
+                    var ANGLE_TWO = ANGLE_ONE + DIFF;
+                    var ANGLE_ONE_R = ANGLE_ONE * PI / 180;
+                    var ANGLE_TWO_R = ANGLE_TWO * PI / 180;
+
+                    init({
+                        range: [ [-11, 25], [-10, 10] ],
+                        scale: 20
+                    });
+                    path([ [5 * cos( ANGLE_ONE_R ), 5 * sin( ANGLE_ONE_R )], [0, 0], [5 * cos( ANGLE_TWO_R ), 5 * sin( ANGLE_TWO_R )] ]);
+
+                    <!-- somewhat verbose, but draws a right angle symbol or arc based on angle -->
+                    DIFF == 90 ? path([ [1 * cos( ANGLE_ONE_R ), 1 * sin( ANGLE_ONE_R )], [sqrt(2) * cos( ANGLE_ONE_R + PI / 4 ), sqrt(2) * sin( ANGLE_ONE_R + PI / 4)], [1 * cos( ANGLE_TWO_R ), 1 * sin( ANGLE_TWO_R )] ]) : arc( [0,0], 1, ANGLE_ONE, ANGLE_TWO );
+					
+					addMouseLayer();
+                    graph.protractor = new Protractor( [5, 3] );
+
+                </div>
+			</div>
+				
+			<div id="q2">
+				<p>B</p>
+				<div class="graphie" id="angle2">
+					
+					var ANGLE_TWO = ANGLE_ONEv + DIFFv;
+                    var ANGLE_ONE_R = ANGLE_ONEv * PI / 180;
+                    var ANGLE_TWO_R = ANGLE_TWO * PI / 180;
+
+                    init({
+                        range: [ [-11, 25], [-10, 10] ],
+                        scale: 20
+                    });
+                    path([ [5 * cos( ANGLE_ONE_R ), 5 * sin( ANGLE_ONE_R )], [0, 0], [5 * cos( ANGLE_TWO_R ), 5 * sin( ANGLE_TWO_R )] ]);
+
+                    <!-- somewhat verbose, but draws a right angle symbol or arc based on angle -->
+                    DIFFv == 90 ? path([ [1 * cos( ANGLE_ONE_R ), 1 * sin( ANGLE_ONE_R )], [sqrt(2) * cos( ANGLE_ONE_R + PI / 4 ), sqrt(2) * sin( ANGLE_ONE_R + PI / 4)], [1 * cos( ANGLE_TWO_R ), 1 * sin( ANGLE_TWO_R )] ]) : arc( [0,0], 1, ANGLE_ONEv, ANGLE_TWO );
+				
+					addMouseLayer();
+                    graph.protractor = new Protractor( [5, 3] );
+				
+				</div>
+			</div>
+				
+            </div>
+
+			
+			 <div  class="solution"><var>SOLUTION_1</var></div>
+                <ul class="choices" data-category="true">
+                    <li>角A</li>
+                    <li>角B</li>
+                </ul>
+
+
+            <div class="hints">
+			
+			<div class="graphie" data-update="angle">
+                    graph.protractor.moveTo( 0, 0 );
+                    graph.protractor.rotateTo( 360 - ANGLE_ONE );
+                    label( [ 9 * cos( toRadians( ANGLE_ONE + DIFF ) ), 9 * sin( toRadians( ANGLE_ONE + DIFF ) ) ], "\\color{" + PINK + "}{" + DIFF + "^{\\circ}}" );
+                </div>
+				<div class="graphie" data-update="angle2">
+                    graph.protractor.moveTo( 0, 0 );
+                    graph.protractor.rotateTo( 360 - ANGLE_ONEv );
+                    label( [ 9 * cos( toRadians( ANGLE_ONEv + DIFFv ) ), 9 * sin( toRadians( ANGLE_ONEv + DIFFv ) ) ], "\\color{" + PINK + "}{" + DIFFv + "^{\\circ}}" );
+                </div>
+               
+                    <p>先看看兩個角度哪一個比較大</p>
+                    <p>兩條邊張開的範圍比較大的那一個角，角度是比較大的。</p>
+					<p>A的角度是<var>DIFF</var>度，B的角度是<var>DIFFv</var>度</p>
+                    <p>所以<var>SOLUTION_1</var>的角度比較大</p>		
+			   
+			   
+			   
+			</div>
+			
+			</div>
+			
+			
+			
+
+			
+			<div id="measure_w_90">
+			
+				<div class="vars">
+                <var id="ANGLE_ONE">randRange(0, 359)</var>
+                <var id="DIFF" data-ensure="Math.abs(DIFF-90) > 20">randRange(20, 160)</var>
+				<var id="DIFFw">90</var>
+				<var id="ANGLE_ONEw">randRange(0, 359)</var>
+				
+					<var id="SOLUTION_2">(function() {
+                        if ( DIFF &gt; DIFFw ) {
+                            return "有";
+                        } else {
+                            return "沒有";
+                        }
+                    })()		
+					</var>
+				
+                </div>
+            
+			<div class="question">
+                <p>A的角度有沒有比直角大？&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (往下捲動來看到直角)</p>
+				
+			<div id="q1">
+				<p>A</p>
+                <div class="graphie" id="angle" >
+
+                    var ANGLE_TWO = ANGLE_ONE + DIFF;
+                    var ANGLE_ONE_R = ANGLE_ONE * PI / 180;
+                    var ANGLE_TWO_R = ANGLE_TWO * PI / 180;
+
+                    init({
+                        range: [ [-11, 25], [-10, 10] ],
+                        scale: 20
+                    });
+                    path([ [5 * cos( ANGLE_ONE_R ), 5 * sin( ANGLE_ONE_R )], [0, 0], [5 * cos( ANGLE_TWO_R ), 5 * sin( ANGLE_TWO_R )] ]);
+
+                    <!-- somewhat verbose, but draws a right angle symbol or arc based on angle -->
+                    DIFF == 90 ? path([ [1 * cos( ANGLE_ONE_R ), 1 * sin( ANGLE_ONE_R )], [sqrt(2) * cos( ANGLE_ONE_R + PI / 4 ), sqrt(2) * sin( ANGLE_ONE_R + PI / 4)], [1 * cos( ANGLE_TWO_R ), 1 * sin( ANGLE_TWO_R )] ]) : arc( [0,0], 1, ANGLE_ONE, ANGLE_TWO );
+						addMouseLayer();
+                    graph.protractor = new Protractor( [5, 3] );
+
+                </div>
+			</div>
+				
+			<div id="q2">
+				<p>直角</p>
+				<div class="graphie" id="angle2">
+					
+					var ANGLE_TWO = ANGLE_ONEw + DIFFw;
+                    var ANGLE_ONE_R = ANGLE_ONEw * PI / 180;
+                    var ANGLE_TWO_R = ANGLE_TWO * PI / 180;
+
+                    init({
+                        range: [ [-11, 25], [-10, 10]],
+                        scale: 20
+                    });
+                    path([ [5 * cos( ANGLE_ONE_R ), 5 * sin( ANGLE_ONE_R )], [0, 0], [5 * cos( ANGLE_TWO_R ), 5 * sin( ANGLE_TWO_R )] ]);
+
+                    <!-- somewhat verbose, but draws a right angle symbol or arc based on angle -->
+                    DIFFw == 90 ? path([ [1 * cos( ANGLE_ONE_R ), 1 * sin( ANGLE_ONE_R )], [sqrt(2) * cos( ANGLE_ONE_R + PI / 4 ), sqrt(2) * sin( ANGLE_ONE_R + PI / 4)], [1 * cos( ANGLE_TWO_R ), 1 * sin( ANGLE_TWO_R )] ]) : arc( [0,0], 1, ANGLE_ONEw, ANGLE_TWO );
+				
+					addMouseLayer();
+                    graph.protractor = new Protractor( [5, 3] );
+				</div>
+			</div>
+				
+            </div>
+
+			
+			 <div  class="solution"><var>SOLUTION_2</var></div>
+                <ul class="choices" data-category="true">
+                    <li>有</li>
+                    <li>沒有</li>
+                </ul>
+
+
+            <div class="hints">
+							
+			<div class="graphie" data-update="angle">
+                    graph.protractor.moveTo( 0, 0 );
+                    graph.protractor.rotateTo( 360 - ANGLE_ONE );
+                    label( [ 9 * cos( toRadians( ANGLE_ONE + DIFF ) ), 9 * sin( toRadians( ANGLE_ONE + DIFF ) ) ], "\\color{" + PINK + "}{" + DIFF + "^{\\circ}}" );
+                </div>
+				<div class="graphie" data-update="angle2">
+                    graph.protractor.moveTo( 0, 0 );
+                    graph.protractor.rotateTo( 360 - ANGLE_ONEw );
+                    label( [ 9 * cos( toRadians( ANGLE_ONEw + DIFFw ) ), 9 * sin( toRadians( ANGLE_ONEw + DIFFw ) ) ], "\\color{" + PINK + "}{" + DIFFw + "^{\\circ}}" );
+                </div>
+               
+                    <p>先看看兩個角度哪一個比較大</p>
+                    <p>兩條邊張開的範圍比較大的那一個角，角度是比較大的。</p>
+					<p>A的角度是<var>DIFF</var>度，直角的角度是90度</p>
+                    <p>所以A的角度<var>SOLUTION_2</var>比直角大</p>			
+			   
+			   
+			   
+			</div>
+			
+			</div>
+			
+			
+			<div id="compare_4">
+			
+				 <div class="vars">
+				 
+				 <var id="Q" >randRange(10, 45)</var>
+				 <var id="R" >randRange(60, 85)</var>
+				 <var id="S" >randRange(100, 135)</var>
+				 <var id="T" >randRange(150, 180)</var>
+
+				 <var id="DIFF,DIFFv,DIFFw,DIFFx">randFromArray([
+				[Q, R, S, T],
+				[Q, R, T, S],
+				[Q, S, R, T],
+				[Q, S, T, R],
+				[Q, T, S, R],
+				[Q, T, R, S],
+				
+				[R, Q, S, T],
+				[R, Q, T, S],
+				[R, S, Q, T],
+				[R, S, T, Q],
+				[R, T, S, Q],
+				[R, T, Q, S],
+				
+				[S, R, Q, T],
+				[S, R, T, Q],
+				[S, Q, R, T],
+				[S, Q, T, R],
+				[S, T, Q, R],
+				[S, T, R, Q],
+				
+				[T, R, S, Q],
+				[T, R, Q, S],
+				[T, S, R, Q],
+				[T, S, Q, R],
+				[T, Q, S, R],
+				[T, Q, R, S],
+
+				])</var>
+		 
+				 
+                <var id="ANGLE_ONE">randRange(0, 180)</var>
+        		<var id="ANGLE_ONEv">randRange(0, 180)</var>
+               	<var id="ANGLE_ONEw">randRange(0, 180)</var>
+               	<var id="ANGLE_ONEx">randRange(0, 180)</var>
+
+				<var id="SOLUTION">(function() {
+                        if ( DIFF &gt; DIFFv && DIFF &gt; DIFFw && DIFF &gt; DIFFx) {
+                            	return "角A";
+							} 
+						else if ( DIFFv &gt; DIFF && DIFFv &gt; DIFFw && DIFFv &gt; DIFFx ){
+								return "角B";
+							}
+						else if ( DIFFw &gt; DIFF && DIFFw &gt; DIFFv && DIFFw &gt; DIFFx){
+								return "角C";
+							}
+						else {
+                            return "角D";
+                        }
+						})()</var>
+				
+				
+				
+                </div>
+            
+			<div class="question">
+                <p>比比看哪個角最大？</p>
+				
+			<div id="q1" style="float:left;">
+				<p>A</p>
+                <div class="graphie" id="angle" >
+
+                    var ANGLE_TWO = ANGLE_ONE + DIFF;
+                    var ANGLE_ONE_R = ANGLE_ONE * PI / 180;
+                    var ANGLE_TWO_R = ANGLE_TWO * PI / 180;
+
+                    init({
+                        range: [ [-3, 3], [-3, 3] ],
+                        scale: 20
+                    });
+                    path([ [5 * cos( ANGLE_ONE_R ), 5 * sin( ANGLE_ONE_R )], [0, 0], [5 * cos( ANGLE_TWO_R ), 5 * sin( ANGLE_TWO_R )] ]);
+
+                    <!-- somewhat verbose, but draws a right angle symbol or arc based on angle -->
+                    DIFF == 90 ? path([ [1 * cos( ANGLE_ONE_R ), 1 * sin( ANGLE_ONE_R )], [sqrt(2) * cos( ANGLE_ONE_R + PI / 4 ), sqrt(2) * sin( ANGLE_ONE_R + PI / 4)], [1 * cos( ANGLE_TWO_R ), 1 * sin( ANGLE_TWO_R )] ]) : arc( [0,0], 1, ANGLE_ONE, ANGLE_TWO );
+
+                </div>
+			</div>
+				
+			<div id="q2" style="float:left;">
+				<p>B</p>
+				<div class="graphie" id="angle2">
+					
+					var ANGLE_TWO = ANGLE_ONEv + DIFFv;
+                    var ANGLE_ONE_R = ANGLE_ONEv * PI / 180;
+                    var ANGLE_TWO_R = ANGLE_TWO * PI / 180;
+
+                    init({
+                        range: [ [-3, 3], [-3, 3] ],
+                        scale: 20
+                    });
+                    path([ [5 * cos( ANGLE_ONE_R ), 5 * sin( ANGLE_ONE_R )], [0, 0], [5 * cos( ANGLE_TWO_R ), 5 * sin( ANGLE_TWO_R )] ]);
+
+                    <!-- somewhat verbose, but draws a right angle symbol or arc based on angle -->
+                    DIFFv == 90 ? path([ [1 * cos( ANGLE_ONE_R ), 1 * sin( ANGLE_ONE_R )], [sqrt(2) * cos( ANGLE_ONE_R + PI / 4 ), sqrt(2) * sin( ANGLE_ONE_R + PI / 4)], [1 * cos( ANGLE_TWO_R ), 1 * sin( ANGLE_TWO_R )] ]) : arc( [0,0], 1, ANGLE_ONEv, ANGLE_TWO );
+				
+				</div>
+			</div>
+			<div id="q3" style="float:left;">
+				<p>C</p>
+				<div class="graphie" id="angle3">
+					
+					var ANGLE_TWO = ANGLE_ONEw + DIFFw;
+                    var ANGLE_ONE_R = ANGLE_ONEw * PI / 180;
+                    var ANGLE_TWO_R = ANGLE_TWO * PI / 180;
+
+                    init({
+                        range: [ [-3, 3], [-3, 3] ],
+                        scale: 20
+                    });
+                    path([ [5 * cos( ANGLE_ONE_R ), 5 * sin( ANGLE_ONE_R )], [0, 0], [5 * cos( ANGLE_TWO_R ), 5 * sin( ANGLE_TWO_R )] ]);
+
+                    <!-- somewhat verbose, but draws a right angle symbol or arc based on angle -->
+                    DIFFw == 90 ? path([ [1 * cos( ANGLE_ONE_R ), 1 * sin( ANGLE_ONE_R )], [sqrt(2) * cos( ANGLE_ONE_R + PI / 4 ), sqrt(2) * sin( ANGLE_ONE_R + PI / 4)], [1 * cos( ANGLE_TWO_R ), 1 * sin( ANGLE_TWO_R )] ]) : arc( [0,0], 1, ANGLE_ONEw, ANGLE_TWO );
+				
+				</div>
+			</div>
+			<div id="q4" style="float:left;">
+				<p>D</p>
+				<div class="graphie" id="angle4">
+					
+					var ANGLE_TWO = ANGLE_ONEx + DIFFx;
+                    var ANGLE_ONE_R = ANGLE_ONEx * PI / 180;
+                    var ANGLE_TWO_R = ANGLE_TWO * PI / 180;
+
+                    init({
+                        range: [ [-3, 3], [-3, 3] ],
+                        scale: 20
+                    });
+                    path([ [5 * cos( ANGLE_ONE_R ), 5 * sin( ANGLE_ONE_R )], [0, 0], [5 * cos( ANGLE_TWO_R ), 5 * sin( ANGLE_TWO_R )] ]);
+
+                    <!-- somewhat verbose, but draws a right angle symbol or arc based on angle -->
+                    DIFFx == 90 ? path([ [1 * cos( ANGLE_ONE_R ), 1 * sin( ANGLE_ONE_R )], [sqrt(2) * cos( ANGLE_ONE_R + PI / 4 ), sqrt(2) * sin( ANGLE_ONE_R + PI / 4)], [1 * cos( ANGLE_TWO_R ), 1 * sin( ANGLE_TWO_R )] ]) : arc( [0,0], 1, ANGLE_ONEx, ANGLE_TWO );
+				
+				</div>
+			</div>
+				
+            </div>
+
+
+			 <p class="solution"><var>SOLUTION</var></p>
+                <ul class="choices" data-category="true">
+                    <li>角A</li>
+                    <li>角B</li>
+					<li>角C</li>
+                    <li>角D</li>
+                </ul>
+
+
+
+            <div class="hints">
+
+                    <p><br><br><br><br><br><br><br><br><br><br><br><br>先看看每個角度大小</p>
+                    <p>兩條邊張開的範圍比較大的那一個角，角度是比較大的。</p>
+                    <p>所以<var>SOLUTION</var>的角度最大</p>					
+		
+               
+			</div>
+			
+			</div>
+			
+			
+       
+    </div>
+    </div>
+</body>
+</html>

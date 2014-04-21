@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+    <head>
+	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>圓與弧的分數表示</title>
+        <script src="../khan-exercise.js"></script>
+    </head>
+    <body>
+        <div class="exercise">
+            <div class="vars">
+                <var id="ANGLE">randRange(5, 355)</var>
+                <var id="R">randRange(6, 8)</var>
+                <var id="C">2 * Math.PI * R</var>
+
+                <var id="PRETTY_C">2 * R + "\\pi"</var>
+
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+
+                <var id="A">ANGLE/360 * C</var>
+
+                <var id="PRETTY_A">fractionReduce(ANGLE * 2 * R, 360) + "\\pi"</var>
+            </div>
+
+            <div class="problems">
+                <div id="fraction_case">
+                    <p class="problem">圓心角為<code class="hint_pink"><var>ANGLE</var>^\circ</code>的扇形，是圓的幾分之幾?</p>
+                    
+
+                    <div class="graphie" id="circle">
+                        init({
+                            range: [[-R - 2, R + 2], [-R - 2, R + 2]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R, { stroke: BLUE });
+
+                        path([polar(R, ROTATE_ARC + ANGLE), [0, 0], polar(R, ROTATE_ARC)], { stroke: RED, "stroke-dasharray": "." });
+                        arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + ANGLE, { stroke: RED, "stroke-dasharray": "-" });
+
+                        graph.cAngle = 180 + ((ROTATE_ARC + ANGLE) + ROTATE_ARC) / 2;
+
+        
+                        graph.aAngle = (ROTATE_ARC * 2 + ANGLE) / 2;
+
+                        graph.angle = arc([0, 0], R * 0.12, ROTATE_ARC, ROTATE_ARC + ANGLE, { stroke: PINK });
+                        graph.angleL = label([0, 0], "\\color{"+PINK+"}{"+ANGLE+"^\\circ}", labelDirection(graph.aAngle));
+
+                        graph.arcL = label(polar(R-3, graph.aAngle), "\\color{"+RED+"}{"+fractionReduce(ANGLE,360)+"}", labelDirection(graph.aAngle));
+                        $(graph.arcL).hide();
+                    </div>
+                    <p class="solution" data-forms="integer, proper, improper, mixed, pi"><var>ANGLE/360</var></p>
+
+                    <div class="hints">
+
+                        <p>兩條半徑和一段圓弧，所圍成的圖形稱為<code class="hint_red">扇形</code>。<br>
+                        以圓心為頂點，兩條半徑為邊所組成的角，叫作<code class="hint_pink">圓心角</code>。</p>
+
+
+                        <p>圓心角 <code class="hint_pink">\theta</code> 和 <code>360^\circ</code> 的比例，就是扇形與圓的比例。</p>
+
+                        <div>
+                        <p><code>\dfrac{\theta}{360^\circ} = \dfrac{<var>ANGLE</var>^\circ}{360^\circ} = <var>fractionReduce(ANGLE,360)</var></code></p>
+                            <div class="graphie" data-update="circle">
+                                    $(graph.arcL).show();
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div id="fraction_case2">
+                    <p class="problem"><code><var>fractionReduce(ANGLE,360)</var></code>圓的扇形，圓心角是多少度?</p>
+                    
+
+                    <div class="graphie" id="circle">
+                        init({
+                            range: [[-R - 2, R + 2], [-R - 2, R + 2]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R, { stroke: BLUE });
+
+                        path([polar(R, ROTATE_ARC + ANGLE), [0, 0], polar(R, ROTATE_ARC)], { stroke: RED, "stroke-dasharray": "." });
+                        arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + ANGLE, { stroke: RED, "stroke-dasharray": "-" });
+
+                        graph.cAngle = 180 + ((ROTATE_ARC + ANGLE) + ROTATE_ARC) / 2;
+
+        
+                        graph.aAngle = (ROTATE_ARC * 2 + ANGLE) / 2;
+
+                        graph.angle = arc([0, 0], R * 0.12, ROTATE_ARC, ROTATE_ARC + ANGLE, { stroke: PINK });
+                        graph.angleL = label([0, 0], "\\color{"+PINK+"}{"+ANGLE+"^\\circ}", labelDirection(graph.aAngle));
+                        $(graph.angleL).hide();
+
+                        graph.arcL = label(polar(R-3, graph.aAngle), "\\color{"+RED+"}{"+fractionReduce(ANGLE,360)+"}", labelDirection(graph.aAngle));
+                        
+                    </div>
+
+                    <p class="solution" data-type="multiple"><span class="sol" data-forms="integer, proper, improper, mixed, pi"><var>ANGLE</var></span><code>\Large{^\circ}</code></p>
+
+
+                    <div class="hints">
+
+                        <p>兩條半徑和一段圓弧，所圍成的圖形稱為<code class="hint_red">扇形</code>。<br>
+                        以圓心為頂點，兩條半徑為邊所組成的角，叫作<code class="hint_pink">圓心角</code>。</p>
+
+
+                        <p>扇形與圓的比例，就是圓心角 <code class="hint_pink">\theta</code> 和 <code>360^\circ</code>的比例 。</p>
+
+                        <div>
+                        <p><code><var>fractionReduce(ANGLE,360)</var> = \dfrac{\theta}{360^\circ} = \dfrac{<var>ANGLE</var>^\circ}{360^\circ}</code></p>
+                            <div class="graphie" data-update="circle">
+                                    $(graph.angleL).show();
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </body>
+</html>

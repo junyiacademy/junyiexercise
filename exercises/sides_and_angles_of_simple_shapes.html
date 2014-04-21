@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>邊、角、頂點</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+		<div class="vars">
+			<var id="UNIT,UNIT_TEXT">randFromArray([
+            ["公尺", "公尺"],
+            ["公分", "公分"],
+            ["", "單位"]
+				])</var>
+
+            <var id="S">randRange(2, 9)</var>
+            <var id="L">randRange(2, 9)</var>
+            
+            <var id="W" data-ensure="L !== W">randRange(2, 9)</var>
+            
+            <var id="A,B,C" data-ensure="A < B + C && B < A + C && C < A + B">randRange(2, 9, 3)</var>
+            <var id="X">((A * A + B * B - C * C) / (2 * A * B)) * B</var>
+            <var id="Y">sqrt(B * B - X * X)</var>
+
+             <var id="T">randRange(2, 3)</var>
+                <var id="SIDES,POLYGON">randFromArray([
+                    [5, "五邊形"],
+                    [6, "六邊形"],
+                    [8, "八邊形"]
+                ])</var>
+                <var id="ANGLE">(2 * PI) / SIDES</var>
+                <var id="RADIUS">T / (2 * sin(PI / SIDES))</var>
+                <var id="APOTHEM">T / (2 * tan(PI / SIDES))</var>
+            
+
+        </div>
+
+            
+    <div class="problems">
+        <div id="square">
+            <p class="question">
+                下面的圖形有幾條邊?
+            </p>
+               <div class="graphie" id="perimeter">
+                    init({ range: [[-2, S + 1], [-1, S + 1]], scale: 30 });
+                    path([[0, 0], [0, S], [S, S], [S, 0], true], {stroke: BLUE, fill: "#eee"});
+                </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>4</var></span>條邊
+            </div>
+
+            <div class="hints">
+                <p>看一看這個圖形是幾條線圍起來的?</p>
+				<div class="graphie" data-update="perimeter">
+                        path([[0, 0], [0, S]], { strokeWidth: 4, stroke: GREEN });
+						label([0, S / 2], 1, "left");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                       path([[0, S], [S, S]], { strokeWidth: 4, stroke: GREEN });
+						label([S/2, S], 1+1, "above");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                        path([[S, S], [S, 0]], { strokeWidth: 4, stroke: GREEN });
+						label([S, S/2], 1+1+1, "right");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                        path([[S, 0], [0, 0]], { strokeWidth: 4, stroke: GREEN });
+						label([S/2, 0], 1+1+1+1, "below");
+                </div>
+				<p>正方形就是四條直線圍起來的，所以正方形有4條邊。</p>
+			
+            </div>
+        </div>
+		
+		<div id="square_vertex">
+            <p class="question">
+                下面的圖形有幾個頂點?
+            </p>
+                <div class="graphie" id="perimeter">
+                    init({ range: [[-2, S + 1], [-1, S + 1]], scale: 30 });
+                    path([[0, 0], [0, S], [S, S], [S, 0], true], {stroke: BLUE, fill: "#eee"});
+                </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>4</var></span>個頂點
+            </div>
+
+            <div class="hints">
+                <p>看一看這個圖形有幾個凸出來的角?</p>
+				<div class="graphie" data-update="perimeter">     
+						label([0, S], 1, "left");
+                </div>
+				<div class="graphie" data-update="perimeter">
+						label([S, S], 1+1, "right");
+                </div>
+				<div class="graphie" data-update="perimeter">
+						label([S, 0], 1+1+1, "right");
+                </div>
+				<div class="graphie" data-update="perimeter">
+						label([0, 0], 1+1+1+1, "left");
+                </div>
+				
+				<p>正方形有四個角落，所以正方形有4個頂點。</p>
+            </div>
+        </div>
+		
+		<div id="square_arc">
+            <p class="question">
+                下面的圖形有幾個角?
+            </p>
+                <div class="graphie" id="perimeter">
+                    init({ range: [[-2, S + 1], [-1, S + 1]], scale: 30 });
+                    path([[0, 0], [0, S], [S, S], [S, 0], true], {stroke: BLUE, fill: "#eee"});
+                </div>
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>4</var></span>個角
+            </div>
+            <div class="hints">
+                <p>看一看這個圖形有多少個轉角?</p>
+				<div class="graphie" data-update="perimeter">
+                      path([[0, S], [S/5, S]], { strokeWidth: 4, stroke: GREEN });
+					   path([[0, S-S/5], [0, S]], { strokeWidth: 4, stroke: GREEN });
+						label([0.4, S-0.4], 1, "center");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                        path([[S-S/5, S], [S, S]], { strokeWidth: 4, stroke: GREEN });
+						path([[S, S], [S, S-S/5]], { strokeWidth: 4, stroke: GREEN });
+						label([S-0.4, S-0.4], 1+1, "center");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                        path([[S, 0], [S-S/5, 0]], { strokeWidth: 4, stroke: GREEN });
+						path([[S, 0], [S, S/5]], { strokeWidth: 4, stroke: GREEN });
+						label([S-0.3, 0.3], 1+1+1, "center");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                        path([[0, 0], [0, S/5]], { strokeWidth: 4, stroke: GREEN });
+						path([[S/5, 0], [0, 0]], { strokeWidth: 4, stroke: GREEN });
+						label([0.3, 0.3], 1+1+1+1, "center");
+                </div>
+	            <p>正方形就是四條直線圍起來的，而這四條線接起來的地方看起來像是直線折起來，轉了一個彎，就是角。</p>
+				<p>所以正方形有4個角。</p>
+            </div>
+        </div>
+
+        <div id="rectangle">
+
+            <p class="question">
+                下面的圖形有幾條邊?
+            </p>
+
+                <div class="graphie" id="perimeter">
+                    init({ range: [[-2, L + 1], [-1, W + 1]], scale: 30 });
+                    path([[0, 0], [0, W], [L, W], [L, 0], true], {stroke: BLUE, fill: "#eee"});
+                </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>4</var></span>條邊
+            </div>
+
+            <div class="hints">
+                <p>看一看這個圖形是幾條線圍起來的?</p>
+				<div class="graphie" data-update="perimeter">
+                        path([[0, 0], [0, W]], { strokeWidth: 4, stroke: GREEN });
+						label([0, W / 2], 1, "left");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                       path([[0, W], [L, W]], { strokeWidth: 4, stroke: GREEN });
+						label([L/2, W], 1+1, "above");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                        path([[L, W], [L, 0]], { strokeWidth: 4, stroke: GREEN });
+						label([L, W/2], 1+1+1, "right");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                        path([[L, 0], [0, 0]], { strokeWidth: 4, stroke: GREEN });
+						label([L/2, 0], 1+1+1+1, "below");
+                </div>
+				<p>四邊形就是四條直線圍起來的，所以四邊形有4條邊。</p>
+            </div>
+        </div>
+		
+		<div id="rectangle_vertex">
+
+            <p class="question">
+                下面的圖形有幾個頂點?
+            </p>
+
+                <div class="graphie" id="perimeter">
+                    init({ range: [[-2, L + 1], [-1, W + 1]], scale: 30 });
+                    path([[0, 0], [0, W], [L, W], [L, 0], true], {stroke: BLUE, fill: "#eee"});
+                </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>4</var></span>個頂點
+            </div>
+
+            <div class="hints">
+                <p>看一看這個圖形有幾個凸出來的角?</p>
+				<div class="graphie" data-update="perimeter">     
+						label([0, W], 1, "left");
+                </div>
+				<div class="graphie" data-update="perimeter">
+						label([L, W], 1+1, "right");
+                </div>
+				<div class="graphie" data-update="perimeter">
+						label([L, 0], 1+1+1, "right");
+                </div>
+				<div class="graphie" data-update="perimeter">
+						label([0, 0], 1+1+1+1, "left");
+                </div>
+				<p>四邊形有四個角落，所以四邊形有4個頂點。</p>
+
+            </div>
+        </div>
+		
+		<div id="rectangle_arc">
+
+            <p class="question">
+                下面的圖形有個角?
+            </p>
+
+                <div class="graphie" id="perimeter">
+                    init({ range: [[-2, L + 1], [-1, W + 1]], scale: 30 });
+                    path([[0, 0], [0, W], [L, W], [L, 0], true], {stroke: BLUE, fill: "#eee"});
+                </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>4</var></span>個角
+            </div>
+
+            <div class="hints">
+                <p>看一看這個圖形有多少個轉角?</p>
+				<div class="graphie" data-update="perimeter">
+                      path([[0, W], [L/5, W]], { strokeWidth: 4, stroke: GREEN });
+					   path([[0, W-W/5], [0, W]], { strokeWidth: 4, stroke: GREEN });
+						label([0.3, W-0.4], 1, "center");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                        path([[L-L/5, W], [L, W]], { strokeWidth: 4, stroke: GREEN });
+						path([[L, W], [L, W-W/5]], { strokeWidth: 4, stroke: GREEN });
+						label([L-0.3, W-0.4], 1+1, "center");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                        path([[L, 0], [L-L/5, 0]], { strokeWidth: 4, stroke: GREEN });
+						path([[L, 0], [L, W/5]], { strokeWidth: 4, stroke: GREEN });
+						label([L-0.3, 0.3], 1+1+1, "center");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                        path([[0, 0], [0, W/5]], { strokeWidth: 4, stroke: GREEN });
+						path([[L/5, 0], [0, 0]], { strokeWidth: 4, stroke: GREEN });
+						label([0.3, 0.3], 1+1+1+1, "center");
+                </div>
+	            <p>四邊形就是四條直線圍起來的，而這四條線接起來的地方看起來像是直線折起來，轉了一個彎，就是角。</p>
+				<p>所以四邊形有4個角。</p>				
+            </div>
+        </div>
+
+        <div id="triangle">
+
+            <p class="question">
+                下面的圖形有幾條邊?
+            </p>
+
+                <div class="graphie" id="perimeter">
+                    init({ range: [[min(X, 0) - 2, max(X, A) + 2], [-1, Y + 1]], scale: 30 });
+                    path([[0, 0], [A, 0], [X, Y], true], {stroke: BLUE, fill: "#eee"});
+                </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>3</var></span>條邊
+            </div>
+
+            <div class="hints">
+                <p>看一看這個圖形是幾條線圍起來的?</p>
+				<div class="graphie" data-update="perimeter">
+                        path([[X, Y], [0, 0]], { strokeWidth: 4, stroke: GREEN });
+						label([X / 2 - 0.5, Y / 2], 1, "left");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                       path([[A, 0], [X, Y]], { strokeWidth: 4, stroke: GREEN });
+					   label([(X + A) / 2 + 0.5, Y / 2], 1+1, "right");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                        path([[0, 0], [A, 0]], { strokeWidth: 4, stroke: GREEN });
+						label([A / 2, 0], 1+1+1 , "below");
+                </div>
+
+				<p>三角形就是三條直線圍起來的，所以三角形有3條邊。</p>
+
+            </div>
+        </div>
+		
+		<div id="triangle_vertex">
+
+            <p class="question">
+                下面的圖形有幾個頂點?
+            </p>
+
+                <div class="graphie" id="perimeter">
+                    init({ range: [[min(X, 0) - 2, max(X, A) + 2], [-1, Y + 1]], scale: 30 });
+                    path([[0, 0], [A, 0], [X, Y], true], {stroke: BLUE, fill: "#eee"});
+                </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>3</var></span>個頂點
+            </div>
+
+            <div class="hints">
+                <p>看一看這個圖形有幾個凸出來的角?</p>
+				<div class="graphie" data-update="perimeter">
+						label([0, 0], 1, "left");
+                </div>
+				<div class="graphie" data-update="perimeter">
+					   label([X, Y], 1+1, "above");
+                </div>
+				<div class="graphie" data-update="perimeter">
+						label([A, 0], 1+1+1 , "right");
+                </div>
+				<p>三角形有三個角落，所以三角形有3個頂點。</p>
+            </div>
+        </div>
+		
+		<div id="triangle_arc">
+
+            <p class="question">
+                下面的圖形有幾個角?
+            </p>
+
+                <div class="graphie" id="perimeter">
+                    init({ range: [[min(X, 0) - 2, max(X, A) + 2], [-1, Y + 1]], scale: 30 });
+                    path([[0, 0], [A, 0], [X, Y], true], {stroke: BLUE, fill: "#eee"});
+                </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>3</var></span>個角
+            </div>
+
+            <div class="hints">
+                <p>看一看這個圖形有多少個轉角?</p>
+				<div class="graphie" data-update="perimeter">
+                        path([[X/5, Y/5], [0, 0]], { strokeWidth: 4, stroke: GREEN });
+						path([[A/5, 0], [0, 0]], { strokeWidth: 4, stroke: GREEN });
+						label([0.7, 0.3], 1, "center");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                       path([[X-X/5, Y-Y/5], [X, Y]], { strokeWidth: 4, stroke: GREEN });
+					   path([[X+(A-X)/5, Y-Y/5], [X, Y]], { strokeWidth: 4, stroke: GREEN });
+					   label([X, Y-0.5], 1+1, "center");
+                </div>
+				<div class="graphie" data-update="perimeter">
+                        path([[A, 0], [A-(A-X)/5, Y/5]], { strokeWidth: 4, stroke: GREEN });
+						path([[A, 0], [A-A/5, 0]], { strokeWidth: 4, stroke: GREEN });
+						label([A-0.7, 0.3], 1+1+1 , "center");
+                </div>
+				<p>三角形就是三條直線圍起來的，而這三條線接起來的地方看起來像是直線折起來，轉了一個彎，就是角。</p>
+				<p>所以三角形有3個角。</p>		
+            </div>
+        </div>
+
+        <div id="polygonshape">
+            
+            <p class="question">
+               下面的圖形有幾條邊?
+            </p>
+
+                <div class="graphie" id="perimeter">
+                    init({ range: [[-RADIUS - 1, RADIUS + 1], [-RADIUS - 1, RADIUS + 1]], scale: 30 });
+                    graph.path = [];
+
+                    _(SIDES).times(function(n) {
+                        graph.path.push([sin(ANGLE * (n + 0.5)) * RADIUS, cos(ANGLE * (n + 0.5)) * RADIUS]);
+                    });
+                    graph.path.push(true);
+                    path(graph.path, {stroke: BLUE, fill: "#eee"});
+                    graph.label = label([0, APOTHEM + 0.7], T + "\\text{ " + UNIT + "}");
+					 graph.label.remove();
+                </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>SIDES</var></span>條邊
+            </div>
+
+            <div class="hints">
+			    <p>看一看這個圖形是幾條線圍起來的?</p>
+				<div>
+                    <div class="graphie" data-update="perimeter">
+              
+
+						for (i=1; i=SIDES; i=i+1)
+						{
+                            label([sin(ANGLE * i) * (APOTHEM + 0.7), cos(ANGLE * i)
+                                * (APOTHEM + 0.7)], i ,
+                                {color: GREEN});
+								}
+                    </div>
+					<p><var>POLYGON</var> 就是<var>SIDES</var> 條直線圍起來的，所以<var>POLYGON</var> 有<var>SIDES</var> 條邊。</p>
+
+                </div>
+
+            </div>
+        </div>
+		
+		<div id="polygonshape_vertex">
+
+            <p class="question">
+               下面的圖形有幾個頂點?
+            </p>
+
+                <div class="graphie" id="perimeter">
+                    init({ range: [[-RADIUS - 1, RADIUS + 1], [-RADIUS - 1, RADIUS + 1]], scale: 30 });
+                    graph.path = [];
+
+                    _(SIDES).times(function(n) {
+                        graph.path.push([sin(ANGLE * (n + 0.5)) * RADIUS, cos(ANGLE * (n + 0.5)) * RADIUS]);
+                    });
+                    graph.path.push(true);
+                    path(graph.path, {stroke: BLUE, fill: "#eee"});
+                    graph.label = label([0, APOTHEM + 0.7], T + "\\text{ " + UNIT + "}");
+					 graph.label.remove();
+                </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>SIDES</var></span>個頂點
+            </div>
+
+            <div class="hints">
+			    <p>看一看這個圖形有幾個凸出來的角?</p>
+				<div>
+                    <div class="graphie" data-update="perimeter">
+   						for (i=1; i=SIDES; i=i+1)
+						{
+                            label([sin(ANGLE * i+(PI) /SIDES) * (APOTHEM + 0.7), cos(ANGLE * i+(PI)/ SIDES)
+                                * (APOTHEM + 0.7)], i ,
+                                {color: GREEN});
+								}
+                    </div>
+				<p><var>POLYGON</var> 有<var>SIDES</var> 個角落，所以<var>POLYGON</var> 有<var>SIDES</var> 個頂點。</p>
+
+                </div>
+
+            </div>
+        </div>
+		
+		<div id="polygonshape_arc">
+
+            <p class="question">
+               下面的圖形有幾個角?
+            </p>
+
+                <div class="graphie" id="perimeter">
+                    init({ range: [[-RADIUS - 1, RADIUS + 1], [-RADIUS - 1, RADIUS + 1]], scale: 30 });
+                    graph.path = [];
+
+                    _(SIDES).times(function(n) {
+                        graph.path.push([sin(ANGLE * (n + 0.5)) * RADIUS, cos(ANGLE * (n + 0.5)) * RADIUS]);
+                    });
+                    graph.path.push(true);
+                    path(graph.path, {stroke: BLUE, fill: "#eee"});
+                    graph.label = label([0, APOTHEM + 0.7], T + "\\text{ " + UNIT + "}");
+					 graph.label.remove();
+                </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>SIDES</var></span>個角
+            </div>
+
+            <div class="hints">
+			    <p>看一看這個圖形有多少個轉角?</p>
+				<div>
+                    <div class="graphie" data-update="perimeter">
+						for (i=1; i=SIDES; i=i+1)
+						{
+                            label([sin(ANGLE * i+(PI) /SIDES) * (APOTHEM - 0.3), cos(ANGLE * i+(PI)/ SIDES)
+                                * (APOTHEM - 0.3)], i ,
+                                {color: RED});
+								}
+                    </div>
+				<p><var>POLYGON</var>就是<var>SIDES</var> 條直線圍起來的，而這<var>SIDES</var> 條線接起來的地方看起來像是直線折起來，轉了一個彎，就是角。</p>
+				<p>所以<var>POLYGON</var>有<var>SIDES</var> 個角。</p>		
+                </div>
+
+            </div>
+        </div>
+		
+		
+		
+    </div>
+</div>
+</body>
+</html>

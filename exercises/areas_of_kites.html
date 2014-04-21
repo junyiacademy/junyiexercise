@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html data-require="math graphie word-problems subhints graphie-geometry">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>菱形的面積</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="UNIT,UNIT_TEXT">randFromArray([
+                ["公尺", "meter"],
+                ["公分", "centimeter"],
+                ["單位", "unit"]
+            ])</var>
+        </div>
+
+        <div class="problems">
+            
+
+            <div id="kite">
+                <div class="vars" data-ensure="D1 &gt; SH">
+                    <var id="D1">randRange(1, 7) * 2</var>
+                    <var id="D2">randRange(1, 7) * 2</var>
+
+                    <var id="ORIENT">randFromArray(["v", "h"])</var>
+                    <var id="SH" data-ensure="SH === D1/2">rand(3) !== 0 ? randRange(1, 5) : D1/2</var>
+
+                    <var id="K">1/2 * D1 * D2</var>
+
+                    <var id="RHOMBUS">SH === D1/2</var>
+                </div>
+
+                <div class="question">求下面圖形的面積?</div>
+
+                <div class="graphie" id="figure">
+                    var range, v;
+                    var drawCongruencies, drawD1, drawD2;
+                    if (ORIENT === "h") {
+                        range = [[-1, D1 + 2], [-D2/2 - 1, D2/2 + 1]];
+                        v = [[0, 0], [SH, D2/2], [D1, 0], [SH, -D2/2], [0, 0]];
+
+                        drawCongruencies = function(style) {
+                            congruent([[0, 0], [SH, D2/2]], 1, style);
+                            congruent([[0, 0], [SH, -D2/2]], 1, style);
+
+                            congruent([[SH, D2/2], [D1, 0]], RHOMBUS ? 1 : 2, style);
+                            congruent([[SH, -D2/2], [D1, 0]], RHOMBUS ? 1 : 2, style);
+                        };
+                        drawD1 = function(style) {
+                            return {
+                                label: label([D1/2, 0], D1 + "\\text{ " + UNIT + "}", style),
+                                path: path([[0, 0], [D1, 0]], style)
+                            };
+                        };
+                        drawD2 = function(style) {
+                            return {
+                                label: label([D1, 0], D2 + "\\text{ " + UNIT + "}", "right", style),
+                                path: path([[D1, -D2/2], [D1, D2/2]], style)
+                            };
+                        };
+                    } else {
+                        range = [[-D2/2 - 1, D2/2 + 1], [-1, D1 + 2]];
+                        v = [[0, 0], [D2/2, SH], [0, D1], [-D2/2, SH], [0, 0]];
+
+                        drawCongruencies = function(style) {
+                            congruent([[0, 0], [D2/2, SH]], 1);
+                            congruent([[0, 0], [-D2/2, SH]], 1);
+
+                            congruent([[D2/2, SH], [0, D1]], RHOMBUS ? 1 : 2);
+                            congruent([[0, D1], [-D2/2, SH]], RHOMBUS ? 1 : 2);
+                        };
+                        drawD1 = function(style) {
+                            return {
+                                label: label([0, D1/2], D1 + "\\text{ " + UNIT + "}", style),
+                                path: path([[0, 0], [0, D1]], style)
+                            };
+                        };
+                        drawD2 = function(style) {
+                            return {
+                                label: label([0, D1], D2 + "\\text{ " + UNIT + "}", "above", style),
+                                path: path([[-D2/2, D1], [D2/2, D1]], style)
+                            };
+                        };
+                    }
+
+                    init({ range: range, scale: 20 });
+
+                    path(v, { stroke: BLUE, fill: "#eee" });
+                    drawCongruencies({ stroke: BLUE });
+
+                    style({ stroke: BLUE, strokeDasharray: "." }, function() {
+                        graph.d1 = drawD1();
+                        graph.d2 = drawD2();
+                    });
+                    rightAngleBox(graph.d1.path.graphiePath, graph.d2.path.graphiePath, { stroke: GRAY, opacity: 0.5 });
+                </div>
+
+                <div class="solution" data-type="multiple">
+                    <span class="sol"><var>K</var></span>
+                    平方<var>UNIT</var>
+                </div>
+
+                <div class="hints">
+                    <div>
+                        <p>圖中的四邊形有兩對等長的鄰邊以及直角對角線，而且因為這個圖形的四個邊都等長，
+                            所以是個菱形。</p>
+                    </div>
+                    <div>
+                        <p>
+                            菱形的面積 <code>= \dfrac12 \cdot d_1 \cdot d_2</code>
+                            [<a href="#" class="show-subhint" data-subhint="area-kite">解釋</a>]
+                        </p>
+                        <div class="subhint" id="area-kite">
+                            <p> <span data-if="ORIENT === 'h'">水平</span><span data-else>垂直</span>對角線把這個菱形分成兩個全等三角形</p>
+                            <div class="graphie" data-update="figure">
+                                var showSubHint = function() {
+                                    graph.subhint.show();
+
+                                    $("a[data-subhint='area-kite']")
+                                        .unbind("click", showSubHint)
+                                        .click(hideSubHint);
+                                };
+
+                                var hideSubHint = function() {
+                                    graph.subhint.hide();
+
+                                    $("a[data-subhint='area-kite']")
+                                        .unbind("click", hideSubHint)
+                                        .click(showSubHint);
+                                };
+
+                                if (ORIENT === "h") {
+                                    graph.subhint = raphael.set().push(
+                                        path([[0, 0], [SH, D2/2], [D1, 0], [0, 0]], { fill: ORANGE, opacity: 0.5 }),
+                                        path([[0, 0], [SH, -D2/2], [D1, 0], [0, 0]], { fill: GREEN, opacity: 0.5 })
+                                    );
+                                } else {
+                                    graph.subhint = raphael.set().push(
+                                        path([[0, 0], [D2/2, SH], [0, D1], [0, 0]], { fill: ORANGE, opacity: 0.5 }),
+                                        path([[0, 0], [-D2/2, SH], [0, D1], [0, 0]], { fill: GREEN, opacity: 0.5 })
+                                    );
+                                }
+                                hideSubHint();
+                            </div>
+                            <p>分割這個菱形的對角線為 <code>d_1 = <var>D1</var></code>. 另一條垂直對角線 <code>d_2 = <var>D2</var></code></p>
+                            <p>請注意 <code>d_1</code>是兩個三角形的底,而<code>d_2</code>是兩個三角形高的和, 所以每個三角形的高是<code>\dfrac{d_2}{2}</code></p>
+                            <p>每一個三角形的面積是:</p>
+                            <p><code>A_T = \dfrac12 \cdot b \cdot h = \dfrac12 \cdot d_1 \cdot \dfrac{d_2}{2} = \dfrac14 \cdot d_1 \cdot d_2</code></p>
+                            <p>菱形的面積為這兩個三角形的和, 即 <code>2A_T</code>:</p>
+                            <p><code>2A_T = 2(\dfrac14 \cdot d_1 \cdot d_2) = \dfrac12 \cdot d_1 \cdot d_2 = A</code></p>
+                        </div>
+                    </div>
+                    <div>
+                        <p>現在我們用公式來計算菱形的面積</p>
+                        <p><code>d_1 = <var>D1</var></code></p>
+                        <p><code>d_2 = <var>D2</var></code></p>
+                        <p><code>A = \dfrac12 \cdot <var>D1</var> \cdot <var>D2</var> = <var>K</var></code></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

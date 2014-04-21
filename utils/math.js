@@ -46,8 +46,10 @@ $.extend(KhanUtil, {
             number += digit * place;
             place /= 10;
         });
-
-        return number;
+		
+		return number;
+		
+        
     },
 
     padDigitsToNum: function(digits, num) {
@@ -58,7 +60,7 @@ $.extend(KhanUtil, {
         return digits;
     },
 
-    placesLeftOfDecimal: ["個位數", "十位數", "百位數", "千位數"],
+    placesLeftOfDecimal: ["個位數", "十位數", "百位數", "千位數","萬位數", "十萬位數", "百萬位數", "千萬位數","億位數", "十億位數", "百億位數", "千億位數","兆位數", "十兆位數", "百兆位數", "千兆位數"],
     placesRightOfDecimal: ["個位數", "十分位", "百分位", "千分位"],
 
     powerToPlace: function(power) {
@@ -477,7 +479,12 @@ $.extend(KhanUtil, {
         }
         return 1;
     },
-
+/**
+     * Add LaTeX color markup to a given value.
+     */
+    colorMarkup: function(val, color) {
+        return "\\color{" + color + "}{" + val + "}";
+    },
     // Checks if a number or string representation thereof is an integer
     isInt: function(num) {
         return parseFloat(num) === parseInt(num, 10) && !isNaN(num);

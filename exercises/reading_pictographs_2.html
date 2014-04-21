@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html data-require="math math-format stat word-problems graphie">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Reading pictographs 2</title>
+    <title>象形圖2</title>
     <script src="../khan-exercise.js"></script>
     <style>
         .fake_header span, .fake_row span {
@@ -23,7 +23,13 @@
 <div class="exercise">
     <div class="vars">
         <var id="DATA">randRangeUnique( 1, 8, 5 )</var>
-        <var id="BADGE">randFromArray([ "meteorite", "moon", "earth" ])</var>
+        <var id="BADGE,TYPE">
+		randFromArray([
+		["meteorite","隕石"],
+		["moon","月亮"],
+		["earth","地球"]
+		])	
+		</var>
         <var id="FULL_IMAGE">"&lt;img src='" + Khan.urlBase + "images/" + BADGE + "-small.png'&gt;"</var>
         <var id="HALF_IMAGE">"&lt;div style=\"background-image:url('" + Khan.urlBase + "images/" + BADGE + "-small.png'); width:20px; height:40px;\"&gt;&nbsp;&lt;/div&gt;"</var>
         <var id="VALUE_PER_IMG">randFromArray([ 2, 4 ])</var>
@@ -31,16 +37,16 @@
     </div>
 
     <div class="problem">
-        <p>Use the pictograph to answer the question below:</p>
+        <p>請利用象形圖來回答下列問題:</p>
         <div class="fake_header">
-            <span><span style="text-transform:capitalize"><var>BADGE</var></span> badges earned by each student</span>
+            <span>每一位學生獲得的<span style="text-transform:capitalize"><var>TYPE</var></span>徽章</span>
         </div>
         <div class="fake_row" data-each="5 times as n">
             <span><var>person( n + 1)</var></span><span data-each="DATA[n] times"><var>FULL_IMAGE</var>
             </span><span data-if="HALF[n]"><var>HALF_IMAGE</var>
             </span><span data-else></span><span data-each="(7 - DATA[n]) times">&nbsp;</span>
         </div>
-        <span style="height: 50px; vertical-align: top; line-height: 50px;"><var>FULL_IMAGE</var> = <var>VALUE_PER_IMG</var> <var>BADGE</var> <var>plural( "badge", VALUE_PER_IMG )</var></span>
+        <span style="height: 50px; vertical-align: top; line-height: 50px;"><var>FULL_IMAGE</var> = <var>VALUE_PER_IMG</var>  個<var>TYPE</var><var>plural( "徽章", VALUE_PER_IMG )</var></span>
     </div>
 
     <div class="problems">
@@ -51,15 +57,15 @@
                 <var id="ANSWER">DATA[ PERSON ] * VALUE_PER_IMG + HALF[ PERSON ] * VALUE_PER_IMG / 2</var>
             </div>
 
-            <p class="question">How many <var>BADGE</var> badges did <var>person( PERSON + 1 )</var> earn?</p>
+            <p class="question"><var>person( PERSON + 1 )</var>總共獲得多少個<var>TYPE</var>徽章?</p>
 
             <div class="solution" data-type="multiple">
-                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>ANSWER</var></span> <var>BADGE</var> badges</p>
+                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>ANSWER</var></span> 個 <var>TYPE</var>徽章</p>
             </div>
             <div class="hints">
-                <p>The key at the bottom of the pictograph shows that each full symbol represents <var>plural( VALUE_PER_IMG, "badge" )</var>.</p>
+                <p>在圖表最下方顯示每一個完整的圖示代表<var>plural( VALUE_PER_IMG, "個" )</var><var>TYPE</var>徽章。</p>
                 <div>
-                    Find <var>person( PERSON + 1 )</var>'s row in the table:
+                    在表格中找到<var>person( PERSON + 1 )</var>那一列:
                     <div class="fake_row">
                         <span><var>person( PERSON + 1 )</var></span><span data-each="DATA[ PERSON ] times"><var>FULL_IMAGE</var>
                         </span><span data-if="HALF[ PERSON ]"><var>HALF_IMAGE</var>
@@ -67,22 +73,22 @@
                     </div>
                 </div>
                 <p>
-                    There <var>plural( "is", DATA[PERSON] )</var> <var>plural( DATA[ PERSON ], "full symbol" )</var><span data-if="HALF[ PERSON ]"> and 1 half symbol</span>.
-                    <span data-if="HALF[ PERSON ]">The full symbols represent <var>plural( VALUE_PER_IMG, "badge" )</var>, so the half symbol must represent <var>plural( VALUE_PER_IMG/2, "badge" )</var>.</span>
+                    總共有<var>plural( DATA[ PERSON ], "個" )</var><span data-if="HALF[ PERSON ]">加1/2個</span>圖示。
+                    <span data-if="HALF[ PERSON ]">一個完整的圖示代表<var>plural( VALUE_PER_IMG, "個徽章" )</var>，所以一半的圖示代表<var>plural( VALUE_PER_IMG/2, "個徽章" )</var>。</span>
                 </p>
 
                 <div>
                     <div>
-                        <code><var>DATA[ PERSON ]</var></code> <var>plural( "symbol", DATA[ PERSON ] )</var>
-                        <code> \times </code> <code><var>VALUE_PER_IMG</var></code> <var>plural( "badge", VALUE_PER_IMG )</var> per symbol <code> = <var>DATA[ PERSON ] * VALUE_PER_IMG</var></code>
-                        <var>plural( "badge", DATA[ PERSON ] * VALUE_PER_IMG )</var>.
+                        <code><var>DATA[ PERSON ]</var></code> <var>plural( "圖示", DATA[ PERSON ] )</var>
+                        <code> \times </code> <code><var>VALUE_PER_IMG</var></code> <var>plural( "徽章", VALUE_PER_IMG )</var>/圖示<code> = <var>DATA[ PERSON ] * VALUE_PER_IMG</var></code>
+                        <var>plural( "徽章", DATA[ PERSON ] * VALUE_PER_IMG )</var>.
                         <span data-if="HALF[ PERSON ]">
-                            <br /><code>1</code> half symbol <code> \times <var>VALUE_PER_IMG/2</var></code> <var>plural( "badge", VALUE_PER_IMG / 2 )</var> per half symbol <code> = <var>VALUE_PER_IMG / 2</var></code>
-                            <var>plural( "badge", VALUE_PER_IMG / 2 )</var>.
+                            <br /><code>1</code>一半圖示<code> \times <var>VALUE_PER_IMG/2</var></code> <var>plural( "徽章", VALUE_PER_IMG / 2 )</var>/一半圖示<code> = <var>VALUE_PER_IMG / 2</var></code>
+                            <var>plural( "徽章", VALUE_PER_IMG / 2 )</var>。
                         </span>
                     </div>
                 </div>
-                <p><var>person( PERSON + 1 )</var> earned <code><var>ANSWER</var></code> <var>BADGE</var> <var>plural( "badge", ANSWER )</var>.</p>
+                <p><var>person( PERSON + 1 )</var>總共得到<code><var>ANSWER</var></code>個<var>BADGE</var><var>plural( "徽章", ANSWER )</var>。</p>
             </div>
         </div>
 
@@ -93,7 +99,7 @@
                 <var id="NUM_SYMBOLS">mixedFractionFromImproper( toFraction( VALUE / VALUE_PER_IMG, 0.001 )[0], toFraction( VALUE / VALUE_PER_IMG, 0.001 )[1] )</var>
             </div>
 
-            <p class="question">Who earned <code><var>VALUE</var></code> <var>BADGE</var> <var>plural( "badge", VALUE )</var>?</p>
+            <p class="question">誰得到<code><var>VALUE</var></code>個 <var>TYPE</var><var>plural( "徽章", VALUE )</var>?</p>
 
             <div class="solution"><var>person( PERSON + 1 )</var></div>
             <ul class="choices" data-category="true">
@@ -105,24 +111,24 @@
             </ul>
 
             <div class="hints">
-                <p>The key at the bottom of the pictograph shows that each full symbol represents <var>plural( VALUE_PER_IMG, "badge" )</var>.</p>
-                <p>How many symbols are needed to represent <code><var>VALUE</var></code> <var>plural( "badge", VALUE )</var>?</p>
+                <p>在圖表最下方顯示每一個完整的<var>TYPE</var>圖示代表<var>plural( VALUE_PER_IMG, "個" )</var><var>TYPE</var>徽章。</p>
+                <p>需要多少圖示才能表示<code><var>VALUE</var></code>個<var>plural( "徽章", VALUE )</var>?</p>
                 <p>
                     <code>
-                        \dfrac{<var>VALUE</var> \text{ <var>plural( "badge", VALUE )</var>}}{<var>VALUE_PER_IMG</var> \text{ <var>plural( "symbol", VALUE_PER_IMG )</var> per badge}} =
-                        <var>NUM_SYMBOLS</var> \text{ <var>plural( "symbol", VALUE / VALUE_PER_IMG )</var>}
+                        \dfrac{<var>VALUE</var> \text{ <var>plural( "徽章", VALUE )</var>}}{每個圖示<var>VALUE_PER_IMG</var> \text{ <var>plural( "徽章", VALUE_PER_IMG )</var>}} =
+                        <var>NUM_SYMBOLS</var> \text{ <var>plural( "圖示", VALUE / VALUE_PER_IMG )</var>}
                     </code>
                 </p>
                 <div>
-                    Who has <code><var>NUM_SYMBOLS</var></code> <var>plural( "symbol", VALUE / VALUE_PER_IMG )</var> next to <var>his( PERSON + 1 )</var> name?
+                    誰的名字右邊有<code><var>NUM_SYMBOLS</var></code>個<var>plural( "圖示", VALUE / VALUE_PER_IMG )</var>呢?
                     <div class="fake_row">
                         <span>???</span><span data-each="DATA[ PERSON ] times"><var>FULL_IMAGE</var>
                         </span><span data-if="HALF[ PERSON ]"><var>HALF_IMAGE</var>
                         </span><span data-else></span><span data-each="(7 - DATA[ PERSON ]) times">&nbsp;</span>
                     </div>
                 </div>
-                <p><var>person( PERSON + 1 )</var> has <code><var>NUM_SYMBOLS</var></code> <var>plural( "symbol", VALUE / VALUE_PER_IMG )</var> next to <var>his( PERSON + 1 )</var> name.</p>
-                <p><var>person( PERSON + 1 )</var> earned <code><var>VALUE</var></code> <var>BADGE</var> <var>plural( "badge", VALUE )</var>.</p>
+                <p><var>person( PERSON + 1 )</var>的名字右邊有<code><var>NUM_SYMBOLS</var></code>個<var>plural( "圖示", VALUE / VALUE_PER_IMG )</var></p>
+                <p>代表<var>person( PERSON + 1 )</var>得到<code><var>VALUE</var></code>個<var>TYPE</var> <var>plural( "徽章", VALUE )</var>。</p>
             </div>
         </div>
 
@@ -138,15 +144,15 @@
                 <var id="PRETTY_SYM_DIFF">mixedFractionFromImproper( toFraction( SYMBOL_DIFF, 0.001 )[0], toFraction( SYMBOL_DIFF, 0.001 )[1] )</var>
             </div>
 
-            <p class="question">How many more <var>BADGE</var> badges did <var>person( PERSON1 + 1 )</var> earn than <var>person( PERSON2 + 1 )</var>?</p>
+            <p class="question"><var>person( PERSON1 + 1 )</var>比<var>person( PERSON2 + 1 )</var>多獲得幾個</var>徽章</var>?</p>
 
             <div class="solution" data-type="multiple">
-                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>VAL1 - VAL2</var></span> <var>BADGE</var> badges</p>
+                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>VAL1 - VAL2</var></span> 個 <var>TYPE</var>徽章</p>
             </div>
             <div class="hints">
-                <p>The key at the bottom of the pictograph shows that each full symbol represents <var>plural( VALUE_PER_IMG, "badge" )</var>.</p>
+                <p>在圖表最下方顯示每一個完整的圖案代表<var>plural( VALUE_PER_IMG, "個徽章" )</var>。</p>
                 <div>
-                    Find <var>person( PERSON1 + 1 )</var>'s and <var>person( PERSON2 + 1 )</var>'s rows in the table:
+                    表格中<var>person( PERSON1 + 1 )</var>和<var>person( PERSON2 + 1 )</var>的那兩列分別如下:
                     <div class="fake_row">
                         <span><var>person( PERSON1 + 1 )</var></span><span data-each="DATA[ PERSON1 ] times"><var>FULL_IMAGE</var>
                         </span><span data-if="HALF[ PERSON1 ]"><var>HALF_IMAGE</var>
@@ -159,17 +165,17 @@
                     </div>
                 </div>
                 <p>
-                    <var>person( PERSON1 + 1 )</var> has <code><var>PRETTY_SYM_DIFF</var></code> more <var>plural( "symbol", SYMBOL_DIFF )</var> next to <var>his( PERSON1 + 1 )</var> name than <var>person( PERSON2 + 1 )</var> does.
+                    <var>person( PERSON1 + 1 )</var>比<var>person( PERSON2 + 1 )</var>多了<code><var>PRETTY_SYM_DIFF</var></code>個<var>plural( "圖示", SYMBOL_DIFF )</var>。
                 </p>
 
                 <div>
                     <div>
-                        <code><var>PRETTY_SYM_DIFF</var></code> <var>plural( "symbol", SYMBOL_DIFF )</var>
-                        <code> \times </code> <code><var>VALUE_PER_IMG</var></code> <var>plural( "badge", VALUE_PER_IMG )</var> per symbol <code> = <var>VAL1 - VAL2</var></code>
-                        <var>plural( "badge", VAL1 - VAL2 )</var>.
+                        <code><var>PRETTY_SYM_DIFF</var></code> <var>plural( "圖示", SYMBOL_DIFF )</var>
+                        <code> \times </code> <code><var>VALUE_PER_IMG</var></code> <var>plural( "徽章", VALUE_PER_IMG )</var>/圖示<code> = <var>VAL1 - VAL2</var></code>
+                        <var>plural( "徽章", VAL1 - VAL2 )</var>。
                     </div>
                 </div>
-                <p><var>person( PERSON1 + 1 )</var> earned <code><var>VAL1 - VAL2</var></code> more <var>BADGE</var> <var>plural( "badge", VAL1 - VAL2 )</var> than <var>person( PERSON2 + 1 )</var>.</p>
+                <p>所以<var>person( PERSON1 + 1 )</var>比<var>person( PERSON2 + 1 )</var>多了<code><var>VAL1 - VAL2</var></code>個<var>TYPE</var><var>plural( "徽章", VAL1 - VAL2 )</var>。</p>
             </div>
         </div>
 
@@ -179,31 +185,31 @@
                 <var id="HALF_SYM">sum( HALF )</var>
                 <var id="TOTAL">sum( DATA ) * VALUE_PER_IMG + sum( HALF ) * ( VALUE_PER_IMG / 2 )</var>
             </div>
-            <p class="question">How many <var>BADGE</var> badges were earned by everyone all together?</p>
+            <p class="question">全部的人總共獲得多少<var>TYPE</var>徽章?</p>
 
             <div class="solution" data-type="multiple">
-                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>TOTAL</var></span> <var>BADGE</var> badges</p>
+                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>TOTAL</var></span> 個 <var>TYPE</var> 徽章</p>
             </div>
             <div class="hints">
-                <p>Start by counting the total number of <var>BADGE</var> symbols.</p>
-                <p>There are <code><var>FULL_SYM</var></code> symbols<span data-if="HALF_SYM !== 0"> and <code><var>HALF_SYM</var></code> half symbols</span>.</p>
+                <p>先計算全部有多少個<var>TYPE</var>圖示。</p>
+                <p>總共有<code><var>FULL_SYM</var></code>個完整的圖示<span data-if="HALF_SYM !== 0">和<code><var>HALF_SYM</var></code>個一半的圖示</span>。</p>
                 <p>
-                    Each symbol represents <code><var>VALUE_PER_IMG</var></code> <var>BADGE</var> <var>plural( "badge", VALUE_PER_IMG )</var><span data-if="HALF_SYM !== 0">
-                    and each half symbol represents <code><var>VALUE_PER_IMG / 2</var></code> <var>BADGE</var> <var>plural( "badge", VALUE_PER_IMG / 2 )</var></span>.
+                    每一個完整圖示代表<code><var>VALUE_PER_IMG</var></code>個<var>TYPE</var><var>plural( "徽章", VALUE_PER_IMG )</var><span data-if="HALF_SYM !== 0">
+                    ，每一個一半的圖示代表<code><var>VALUE_PER_IMG / 2</var></code>個<var>TYPE</var><var>plural( "徽章", VALUE_PER_IMG / 2 )</var></span>。
                 </p>
                 <div>
                     <div>
-                        <code><var>FULL_SYM</var></code> <var>plural( "symbol", FULL_SYM )</var>
-                        <code> \times </code> <code><var>VALUE_PER_IMG</var></code> <var>plural( "badge", VALUE_PER_IMG )</var> per symbol <code> = <var>FULL_SYM * VALUE_PER_IMG</var></code>
-                        <var>plural( "badge", FULL_SYM * VALUE_PER_IMG )</var>.
+                        <code><var>FULL_SYM</var></code> <var>plural( "圖示", FULL_SYM )</var>
+                        <code> \times </code> <code><var>VALUE_PER_IMG</var></code> <var>plural( "徽章", VALUE_PER_IMG )</var>/圖示<code> = <var>FULL_SYM * VALUE_PER_IMG</var></code>
+                        <var>plural( "徽章", FULL_SYM * VALUE_PER_IMG )</var>。
                         <span data-if="HALF_SYM">
-                            <br /><code><var>HALF_SYM</var></code> half <var>plural( "symbol", HALF_SYM )</var>
-                            <code> \times <var>VALUE_PER_IMG/2</var></code> <var>plural( "badge", VALUE_PER_IMG / 2 )</var> per half symbol <code> = <var>HALF_SYM * VALUE_PER_IMG / 2</var></code>
-                            <var>plural( "badge", HALF_SYM * VALUE_PER_IMG / 2 )</var>.
+                            <br /><code><var>HALF_SYM</var></code>一半<var>plural( "圖示", HALF_SYM )</var>
+                            <code> \times <var>VALUE_PER_IMG/2</var></code> <var>plural( "徽章", VALUE_PER_IMG / 2 )</var> /一半圖示<code> = <var>HALF_SYM * VALUE_PER_IMG / 2</var></code>
+                            <var>plural( "徽章", HALF_SYM * VALUE_PER_IMG / 2 )</var>。
                         </span>
                     </div>
                 </div>
-                <p>All together, everyone earned <code><var>TOTAL</var></code> <var>BADGE</var> <var>plural( "badge", TOTAL )</var>.</p>
+                <p>加在一起後，全部的人總共得到 <code><var>TOTAL</var></code>個<var>TYPE</var> <var>plural( "徽章", TOTAL )</var>。</p>
             </div>
         </div>
 

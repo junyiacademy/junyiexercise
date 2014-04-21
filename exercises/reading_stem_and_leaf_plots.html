@@ -36,6 +36,13 @@
                 "動物園": animal(1)
             }[ LOCATION ]
         </var>
+        <var id="ITEM_UNIT">
+            {
+                "超級市場": measureWord(fruit(1)),
+                "百貨公司": measureWord(clothing(1)),
+                "動物園": "\隻"
+            }[ LOCATION ]
+        </var>
     </div>
 
     <div class="problem">
@@ -110,19 +117,19 @@
             </p>
         </div>
         <div>
-            <p>現在我們知道<var>LOCATION</var>有多少<var>ITEM</var>:</p>
+            <p>現在我們知道<var>LOCATION</var>有多少<var>ITEM_UNIT</var><var>ITEM</var>:</p>
             <p><code>\qquad</code><var>toSentenceTex( RAW_DATA, "還有" )</var></p>
         </div>
         <div>
             <p>
-            <span data-if="TYPE === 'smallest'">在所有的<var>LOCATION</var>裡面，<var>ITEM</var>最少的有幾個?</span>
-            <span data-else-if="TYPE === 'largest'">在所有的<var>LOCATION</var>裡面，<var>ITEM</var>最多的有幾個?</span>
+            <span data-if="TYPE === 'smallest'">在所有的<var>LOCATION</var>裡面，<var>ITEM</var>最少的有幾<var>ITEM_UNIT</var>?</span>
+            <span data-else-if="TYPE === 'largest'">在所有的<var>LOCATION</var>裡面，<var>ITEM</var>最多的有幾<var>ITEM_UNIT</var>?</span>
             <span data-else>
                 有多少個<var>LOCATION</var>有
                 <span data-if="TYPE === 'how-many'">剛好</span>
                 <span data-if="TYPE === 'less-than'">少於</span>
                 <span data-if="TYPE === 'greater-than'">多於</span>
-                <var>AMOUNT</var>個<var>ITEM</var>?
+                <var>AMOUNT</var><var>ITEM_UNIT</var><var>ITEM</var>?
             </span>
             </p>
             <p data-if="SOLUTION > 0">
@@ -163,7 +170,7 @@
                     <span data-if="TYPE === 'how-many'">剛好</span>
                     <span data-if="TYPE === 'less-than'">少於</span>
                     <span data-if="TYPE === 'greater-than'">多於</span>
-                    <var>AMOUNT</var>個<var>ITEM</var>.
+                    <var>AMOUNT</var><var>ITEM_UNIT</var><var>ITEM</var>.
                 </span>
             </strong></p>
         </div>
@@ -182,7 +189,7 @@
                 <var id="SOLUTION">_.reduce( RAW_DATA, function( memo, num ) { return num === AMOUNT ? ++memo : memo; }, 0 )</var>
             </div>
 
-            <p class="question">有多少個<var>LOCATION</var>有剛好<var>AMOUNT</var>個<var>ITEM</var>?</p>
+            <p class="question">有多少個<var>LOCATION</var>有剛好<var>AMOUNT</var><var>ITEM_UNIT</var><var>ITEM</var>?</p>
 
             <div class="solution" data-type="multiple">
                 <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> <var>LOCATION</var></p>
@@ -197,7 +204,7 @@
                 <var id="SOLUTION">_.reduce( RAW_DATA, function( memo, num ) { return num &lt; AMOUNT ? ++memo : memo; }, 0 )</var>
             </div>
 
-            <p class="question">有多少個<var>LOCATION</var>有少於<var>AMOUNT</var>個<var>ITEM</var>?</p>
+            <p class="question">有多少個<var>LOCATION</var>有少於<var>AMOUNT</var><var>ITEM_UNIT</var><var>ITEM</var>?</p>
 
             <div class="solution" data-type="multiple">
                 <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> <var>LOCATION</var></p>
@@ -212,7 +219,7 @@
                 <var id="SOLUTION">_.reduce( RAW_DATA, function( memo, num ) { return num &gt; AMOUNT ? ++memo : memo; }, 0 )</var>
             </div>
 
-            <p class="question">有多少個<var>LOCATION</var>具有多於<var>AMOUNT</var>個<var>ITEM</var>?</p>
+            <p class="question">有多少個<var>LOCATION</var>具有多於<var>AMOUNT</var><var>ITEM_UNIT</var><var>ITEM</var>?</p>
 
             <div class="solution" data-type="multiple">
                 <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> <var>LOCATION</var></p>
@@ -228,12 +235,12 @@
             </div>
 
             <p class="question">
-                <span data-if="TYPE === 'smallest'">在所有<var>LOCATION</var>之中，<var>ITEM</var>數量最小的是有幾個?</span>
-                <span data-if="TYPE === 'largest'">在所有<var>LOCATION</var>之中，<var>ITEM</var>數量最多的是有幾個?</span>
+                <span data-if="TYPE === 'smallest'">在所有<var>LOCATION</var>之中，<var>ITEM</var>數量最小的是有幾<var>ITEM_UNIT</var>?</span>
+                <span data-if="TYPE === 'largest'">在所有<var>LOCATION</var>之中，<var>ITEM</var>數量最多的是有幾<var>ITEM_UNIT</var>?</span>
             </p>
 
             <div class="solution" data-type="multiple">
-                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> <var>ITEM</var></p>
+                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span><var>ITEM_UNIT</var><var>ITEM</var></p>
             </div>
         </div>
     </div>

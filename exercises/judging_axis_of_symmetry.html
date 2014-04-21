@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems subhints expressions">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>判斷出對稱軸</title>
+    <script src="../khan-exercise.js"></script>
+
+</head>
+<body>
+
+<div class="exercise">
+    
+    <div class="problems">
+        <div id="triangle_mirror" data-weight="1">
+            <div class="vars" >
+                <var id="B">randRange(10, 16)</var>
+                <var id="ADD">randRange(0, 1)*3</var>
+                <var id="H">randRange(1, 2)*5</var>
+                <var id="SOLUTION">(function() {
+                        if ( ADD === 0 ) {
+                            return "有";
+                        } else {
+                            return "沒有";
+                        }
+                    })()</var>
+                <var id="FEEDBACK">(function() {
+                        if ( ADD === 0 ) {
+                            return "是";
+                        } else {
+                            return "不是";
+                        }
+                    })()</var>
+                
+            </div>
+
+            <p class="question">
+                下面藍色的圖形與紅色的圖形有沒有線對稱呢？
+            </p>
+        
+                <div class="graphie" id="original">
+                   
+                    init({ range: [[-5, B + 5], [-5, H+5]], scale: 20 });
+
+                    path([ [0,0], [B/2,0], [B/2,H], true ],{fill: KhanUtil.BLUE}  );
+                    path([ [B/2,0], [B/2,H], [B+ADD,0], true ],{fill: KhanUtil.RED} );
+
+                    label([B/2,H],  "\\text{A}" , "above");
+                    label([0,0],  "\\text{B}" , "left");
+                    label([B+ADD,0],  "\\text{C}", "right");
+                    label([B/2,0],  "\\text{D}", "below");
+
+                </div>
+            
+
+            <p class="solution"><var>SOLUTION</var></p>
+                <ul class="choices" data-category="true">
+                    <li>有</li>
+                    <li>沒有</li>
+                </ul>
+
+            <div class="hints">
+
+              <div>
+                <p>沿著綠線，進行對折</p>
+                <div class="graphie" data-update="original">
+                   
+                    init({ range: [[-5, B + 5], [-5, H+5]], scale: 20 });
+
+                    path([ [B/2,0], [B/2,H], [B+ADD,0], true ],{fill: KhanUtil.RED} );
+                    path([ [B,0], [B/2,0], [B/2,H], true ],{fill: KhanUtil.BLUE, opacity: 0.8});
+                    path([ [B/2,0-2], [B/2,H+2], true ],{stroke: KhanUtil.GREEN, strokeWidth: 3 ,strokeDasharray: "-"} );
+
+                    label([B/2,H],  "\\text{A}" , "above");
+                    label([0,0],  "\\text{B}" , "left");
+                    label([B+ADD,0],  "\\text{C}", "right");
+                    label([B/2,0],  "\\text{D}", "below");
+
+                </div>
+               </div>
+
+               <div>
+                <p>圖形<var>SOLUTION</var>吻合</p>
+                <div class="graphie" data-update="original">
+                   
+                    init({ range: [[-5, B + 5], [-5, H+5]], scale: 20 });
+                    path([ [B/2,0], [B/2,H], [B+ADD,0], true ],{fill: KhanUtil.RED} );
+                    path([ [0,0], [B/2,0], [B/2,H], true ],{fill: KhanUtil.BLUE}  );
+                    path([ [B/2,0-2], [B/2,H+2], true ],{stroke: KhanUtil.GREEN, strokeWidth: 3 ,strokeDasharray: "-"} );
+
+                    label([B/2,H],  "\\text{A}" , "above");
+                    label([0,0],  "\\text{B}" , "left");
+                    label([B+ADD,0],  "\\text{C}", "right");
+                    label([B/2,0],  "\\text{D}", "below");
+
+                </div>
+               </div>
+
+               <p>A點與D點的連線，<var>FEEDBACK</var>他們的對稱軸，圖形<var>SOLUTION</var>線對稱</p>
+
+            </div>
+        </div>
+
+
+        <div id="rectangular_mirror" data-weight="1">
+            <div class="vars" >
+                <var id="W">randRange(10, 16)</var>
+                <var id="ADD">randRange(0, 1)*3</var>
+                <var id="L">randRange(1, 2)*5</var>
+                <var id="SOLUTION">(function() {
+                        if ( ADD === 0 ) {
+                            return "有";
+                        } else {
+                            return "沒有";
+                        }
+                    })()</var>
+                <var id="FEEDBACK">(function() {
+                        if ( ADD === 0 ) {
+                            return "是";
+                        } else {
+                            return "不是";
+                        }
+                    })()</var>
+                
+            </div>
+
+            <p class="question">
+                下面藍色的圖形與紅色的圖形有沒有線對稱呢？
+            </p>
+        
+                <div class="graphie" id="original">
+                   
+                    init({ range: [[-5, W + 5], [-5, L+5]], scale: 20 });
+
+                    path([ [0,0], [W/2,0], [W/2,L], [0,L], true ],{fill: KhanUtil.BLUE}  );
+                    path([ [W/2,0], [W/2,L], [W+ADD,L], [W+ADD,0], true ],{fill: KhanUtil.RED} );
+
+                    label([0,L],  "\\text{A}" , "left");
+                    label([0,0],  "\\text{B}" , "left");
+                    label([W+ADD,0],  "\\text{C}", "right");
+                    label([W+ADD,L],  "\\text{D}", "right");
+
+                    label([W/2,L],  "\\text{E}", "above");
+                    label([W/2,0],  "\\text{F}", "below");
+                </div>
+            
+
+            <p class="solution"><var>SOLUTION</var></p>
+                <ul class="choices" data-category="true">
+                    <li>有</li>
+                    <li>沒有</li>
+                </ul>
+
+            <div class="hints">
+
+              <div>
+                <p>沿著綠線，進行對折</p>
+                <div class="graphie" data-update="original">
+                   
+                    init({ range: [[-5, W + 5], [-5, L+5]], scale: 20 });
+                    path([ [W/2,0], [W/2,L], [W+ADD,L], [W+ADD,0], true ],{fill: KhanUtil.RED} );
+                    path([ [W,0], [W/2,0], [W/2,L], [W,L], true ],{fill: KhanUtil.BLUE, opacity: 0.8} );
+                    path([ [W/2,0-2], [W/2,L+2], true ],{stroke: KhanUtil.GREEN, strokeWidth: 3 ,strokeDasharray: "-"} );
+
+                    label([0,L],  "\\text{A}" , "left");
+                    label([0,0],  "\\text{B}" , "left");
+                    label([W+ADD,0],  "\\text{C}", "right");
+                    label([W+ADD,L],  "\\text{D}", "right");
+
+                    label([W/2,L],  "\\text{E}", "above");
+                    label([W/2,0],  "\\text{F}", "below");
+                </div>
+               </div>
+
+               <div>
+                <p>圖形<var>SOLUTION</var>吻合</p>
+                <div class="graphie" data-update="original">
+                   
+                    init({ range: [[-5, W + 5], [-5, L+5]], scale: 20 });
+                    
+                    path([ [W/2,0], [W/2,L], [W+ADD,L], [W+ADD,0], true ],{fill: KhanUtil.RED} );
+                    path([ [0,0], [W/2,0], [W/2,L], [0,L], true ],{fill: KhanUtil.BLUE}  );
+                    path([ [W/2,0-2], [W/2,L+2], true ],{stroke: KhanUtil.GREEN, strokeWidth: 3 ,strokeDasharray: "-"} );
+
+                    label([0,L],  "\\text{A}" , "left");
+                    label([0,0],  "\\text{B}" , "left");
+                    label([W+ADD,0],  "\\text{C}", "right");
+                    label([W+ADD,L],  "\\text{D}", "right");
+
+                    label([W/2,L],  "\\text{E}", "above");
+                    label([W/2,0],  "\\text{F}", "below");
+                </div>
+               </div>
+
+               <p>A點與D點的連線，<var>FEEDBACK</var>他們的對稱軸，圖形<var>SOLUTION</var>線對稱</p>
+
+            </div>
+        </div>
+
+        <div id="rectangular_mirror2" data-weight="1">
+            <div class="vars" data-ensure="W != L">
+                <var id="W">randRange(8, 12)</var>
+                <var id="L">randRange(2, 3)*4</var>
+                <var id="R">W*W+L*L</var>
+                <var id="P">(L*W/R + L*W/R)</var>
+                
+            </div>
+
+            <p class="question">
+                長方形ABCB由線段EF分成藍色與紅色兩部分。請問，這兩部分是否呈線對稱?
+            </p>
+        
+                <div class="graphie" id="original">
+                   
+                    init({ range: [[-5, W + 5], [-5, L+5]], scale: 20 });
+
+                    path([ [0,0], [W,0], [0,L], true ],{fill: KhanUtil.BLUE}  );
+                    path([ [0,L], [W,L], [W,0], true ],{fill: KhanUtil.RED} );
+
+                    label([0,L],  "\\text{A}" , "left");
+                    label([0,0],  "\\text{B}" , "left");
+                    label([W,0],  "\\text{C}", "right");
+                    label([W,L],  "\\text{D}", "right");
+                   
+                </div>
+            
+
+            <p class="solution">沒有</p>
+                <ul class="choices" data-category="true">
+                    <li>有</li>
+                    <li>沒有</li>
+                </ul>
+
+            <div class="hints">
+
+              <div>
+                <p>沿著綠線，進行對折</p>
+                <div class="graphie" data-update="original">
+                   
+                    init({ range: [[-5, W + 5], [-5, L+5]], scale: 20 });
+                    path([ [0,L], [W,L], [W,0], true ],{fill: KhanUtil.RED} );
+                    path([ [0,L], [W,0], [L*P,L*P*W/L], true ],{fill: KhanUtil.BLUE, opacity: 0.8}  );
+
+                    path([ [0,L], [W,0], true ],{stroke: KhanUtil.GREEN, strokeWidth: 3 ,strokeDasharray: "-"} );
+
+                    label([0,L],  "\\text{A}" , "left");
+                    label([0,0],  "\\text{B}" , "left");
+                    label([W,0],  "\\text{C}", "right");
+                    label([W,L],  "\\text{D}", "right");
+
+
+                </div>
+               </div>
+
+               
+                <p>圖形沒有吻合</p>
+                
+               
+
+               <p>A點與C點的連線，不是他們的對稱軸，圖形沒有線對稱</p>
+
+            </div>
+        </div>
+
+
+        <div id="rectangular_mirror3" data-weight="1">
+            <div class="vars" data-ensure="W != L">
+                <var id="W">randRange(6, 12)</var>
+                <var id="L">randRange(2, 3)*4</var>
+                <var id="ADD">randRange(1, 2)*3</var>
+                <var id="R">W*W+L*L</var>
+                <var id="P">(L*W/R + L*W/R)</var>
+                
+            </div>
+
+            <p class="question">
+                下面藍色的圖形與紅色的圖形有沒有線對稱呢？
+            </p>
+        
+                <div class="graphie" id="original">
+                   
+                    init({ range: [[-8, W + 6], [-5, L+5]], scale: 20 });
+
+                    path([ [0-ADD,0], [(W-ADD)/2,0], [(W-ADD)/2,L], [0,L], true ],{fill: KhanUtil.BLUE}  );
+                    path([  [(W-ADD)/2,0], [(W-ADD)/2,L], [W,L], [W-ADD,0], true ],{fill: KhanUtil.RED} );
+
+                    label([0,L],  "\\text{A}" , "left");
+                    label([0-ADD,0],  "\\text{B}" , "left");
+                    label([W-ADD,0],  "\\text{C}", "right");
+                    label([W,L],  "\\text{D}", "right");
+                   
+                </div>
+            
+
+            <p class="solution">沒有</p>
+                <ul class="choices" data-category="true">
+                    <li>有</li>
+                    <li>沒有</li>
+                </ul>
+
+            <div class="hints">
+
+              <div>
+                <p>沿著綠線，進行對折</p>
+                <div class="graphie" data-update="original">
+                   
+                    init({ range: [[-8, W + 6], [-5, L+5]], scale: 20 });
+                    path([  [(W-ADD)/2,0], [(W-ADD)/2,L], [W,L], [W-ADD,0], true ],{fill: KhanUtil.RED} );
+                    path([ [(W-ADD)/2,0], [(W-ADD)/2,L], [W-ADD,L] ,[W,0], true ],{fill: KhanUtil.BLUE, opacity: 0.8}  );
+                    path([ [(W-ADD)/2,-2], [(W-ADD)/2,L+2], true ],{stroke: KhanUtil.GREEN, strokeWidth: 3 ,strokeDasharray: "-"} );
+
+
+                    label([0,L],  "\\text{A}" , "left");
+                    label([0-ADD,0],  "\\text{B}" , "left");
+                    label([W-ADD,0],  "\\text{C}", "right");
+                    label([W,L],  "\\text{D}", "right");
+
+
+                </div>
+               </div>
+
+               
+                <p>圖形沒有吻合</p>
+                
+               
+
+               <p>綠色的線不是他們的對稱軸，圖形沒有線對稱</p>
+
+            </div>
+        </div>
+
+
+        
+
+    
+        <div id="rectangular_mirror4" data-weight="1">
+            <div class="vars">
+                <var id="W">randRange(8, 12)</var>
+                <var id="L">W</var>
+                <var id="R">W*W+L*L</var>
+                <var id="P">(L*W/R + L*W/R)</var>
+                
+            </div>
+
+            <p class="question">
+                下面藍色的圖形與紅色的圖形有沒有線對稱呢？
+            </p>
+        
+                <div class="graphie" id="original">
+                   
+                    init({ range: [[-5, W + 5], [-5, L+5]], scale: 20 });
+
+                    path([ [0,0], [W,0], [0,L], true ],{fill: KhanUtil.BLUE}  );
+                    path([ [0,L], [W,L], [W,0], true ],{fill: KhanUtil.RED} );
+
+                    label([0,L],  "\\text{A}" , "left");
+                    label([0,0],  "\\text{B}" , "left");
+                    label([W,0],  "\\text{C}", "right");
+                    label([W,L],  "\\text{D}", "right");
+                   
+                </div>
+            
+
+            <p class="solution">有</p>
+                <ul class="choices" data-category="true">
+                    <li>有</li>
+                    <li>沒有</li>
+                </ul>
+
+            <div class="hints">
+
+              <div>
+                <p>沿著綠線，進行對折</p>
+                <div class="graphie" data-update="original">
+                   
+                    init({ range: [[-5, W + 5], [-5, L+5]], scale: 20 });
+                    path([ [0,L], [W,L], [W,0], true ],{fill: KhanUtil.RED} );
+                    path([ [0,L], [W,0], [L*P,L*P*W/L], true ],{fill: KhanUtil.BLUE, opacity: 0.8}  );
+
+                    path([ [0,L], [W,0], true ],{stroke: KhanUtil.GREEN, strokeWidth: 3 ,strokeDasharray: "-"} );
+
+                    label([0,L],  "\\text{A}" , "left");
+                    label([0,0],  "\\text{B}" , "left");
+                    label([W,0],  "\\text{C}", "right");
+                    label([W,L],  "\\text{D}", "right");
+
+
+                </div>
+               </div>
+
+               
+                <p>圖形有吻合</p>
+                
+               
+
+               <p>A點與C點的連線，是他們的對稱軸，圖形有線對稱</p>
+
+            </div>
+        </div>
+
+        
+
+    </div>
+</div>
+</body>
+</html>

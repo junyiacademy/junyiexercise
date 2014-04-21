@@ -2,29 +2,35 @@
 <html data-require="math graphie word-problems interactive">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>數線2</title>
+    <title>數線上的加減</title>
     <script src="../khan-exercise.js"></script>
 </head>
 <body>
     <div class="exercise">
     <div class="vars">
-        <var id="LOWER_BOUND">-5</var>
-        <var id="UPPER_BOUND">-1 * LOWER_BOUND</var>
-        <var id="NUMBER">randRangeNonZero( LOWER_BOUND, UPPER_BOUND )</var>
+        <var id="LOWER_BOUND">0</var>
+        <var id="LOWER_BOUNDmama">-7</var>
+        <var id="UPPER_BOUND">-1 * LOWER_BOUNDmama</var>
+        <var id="NUMBER">randRangeNonZero( LOWER_BOUND*4, UPPER_BOUND*4 )/4</var>
     </div>
     <div class="problems">
         <div id="where-is-point">
             <div class="question">
-                <p>將橘色小點拖曳至 <strong><var>NUMBER</var></strong>。每格的間距單位是 1。</p>
+                <p>將橘色小點拖曳至 <strong><var>NUMBER</var></strong>。一大格的間距單位是 1。</p>
                 <div class="graphie" id="number-line">
                     init({
                         range: [ [LOWER_BOUND - 1, UPPER_BOUND + 1], [-1, 1] ]
                     });
 
                     line( [ LOWER_BOUND, 0 ], [ UPPER_BOUND, 0 ] );
+                    for ( var x = LOWER_BOUND; x &lt;= UPPER_BOUND; x=x+0.25 ) {
+                        line( [ x, -0.1 ], [ x, 0.1 ] );
+                    }
                     for ( var x = LOWER_BOUND; x &lt;= UPPER_BOUND; x++ ) {
                         line( [ x, -0.2 ], [ x, 0.2 ] );
                     }
+
+
                     style({ stroke: "#6495ED", strokeWidth: 3.5 });
                     line( [ 0, -0.2], [0, 0.2]);
                     label( [ 0, -0.53 ],  "0", "center", { color: "#6495ED" });
@@ -54,8 +60,7 @@
             <div class="hints">
                 <p>我們知道 0 在哪裡，因為已經被標註在數線上了。</p>
                 <p>左邊的數字比較小，而右邊的數字比較大</p>
-                <p>小於 0 的數字是負數，而大於 0 的數字是正數。</p>
-                <div>
+                 <div>
                     <div class="graphie" data-update="number-line">
                         style({ stroke: "#6495ED", fill: "#6495ED", strokeWidth: 3.5, arrows: "-&gt;" });
                         line( [ 0, 0 ], [ NUMBER, 0 ] );
@@ -75,16 +80,21 @@
 
         <div id="what-is-point">
             <div class="question">
-                <p>橘色的小點代表什麼數字？每格的間距單位是 1。</p>
+                <p>橘色的小點代表什麼數字？一大格的間距單位是 1。</p>
                 <div class="graphie" id="number-line-2">
                     init({
                         range: [ [LOWER_BOUND - 1, UPPER_BOUND + 1], [-1, 1] ]
                     });
 
                     line( [ LOWER_BOUND, 0 ], [ UPPER_BOUND, 0 ] );
+                    for ( var x = LOWER_BOUND; x &lt;= UPPER_BOUND; x=x+0.25 ) {
+                        line( [ x, -0.1 ], [ x, 0.1 ] );
+                    }
                     for ( var x = LOWER_BOUND; x &lt;= UPPER_BOUND; x++ ) {
                         line( [ x, -0.2 ], [ x, 0.2 ] );
                     }
+
+
                     style({ stroke: "#6495ED", strokeWidth: 3.5 });
                     line( [ 0, -0.2], [0, 0.2]);
                     label( [ 0, -0.53 ],  "0", "center", { color: "#6495ED" });
@@ -93,13 +103,16 @@
                     graph.orangeDot = circle( [ NUMBER, 0 ], 0.10 );
                 </div>
             </div>
-            <div class="solution" data-forms="integer"><var>NUMBER</var></div>
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>NUMBER</var></span>
+                <p class="example">小數，例：2.5</p>
+            </div>
+
 
             <div class="hints">
                 <p>我們知道 0 在哪裡，因為已經被標註在數線上了。</p>
                 <p>左邊的數字比較小，而右邊的數字比較大</p>
-                <p>小於 0 的數字是負數，而大於 0 的數字是正數。</p>
-                <div>
+                 <div>
                     <div class="graphie" data-update="number-line-2">
                         style({ stroke: "#6495ED", fill: "#6495ED", strokeWidth: 3.5, arrows: "->" });
                         line( [ 0, 0 ], [ NUMBER, 0 ] );

@@ -2,7 +2,7 @@
 <html data-require="math math-format polynomials expressions">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Limits 2</title>
+    <title>極限值 2</title>
     <script src="../khan-exercise.js"></script>
 </head>
 <body>
@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="question">
-                    <p>Find <code>\displaystyle\lim_{x \to <var>PM</var>\infty}\dfrac{<var>NUM.text()</var>}{<var>DEN.text()</var>}</code>.</p>
+                    <p>求 <code>\displaystyle\lim_{x \to <var>PM</var>\infty}\dfrac{<var>NUM.text()</var>}{<var>DEN.text()</var>}</code>.</p>
                 </div>
 
                 <p class="solution"><code><var>fractionReduce( NUM.getCoefAndDegreeForTerm(0).coef, DEN.getCoefAndDegreeForTerm(0).coef )</var></code></p>
@@ -26,12 +26,16 @@
                     <li><code>+\infty</code></li>
                     <li><code>-\infty</code></li>
                     <li><code>0</code></li>
-                    <li>undefined</li>
+                    <li>極限不存在</li>
                 </ul>
 
                 <div class="hints">
-                    <p>Look at the leading terms <code><var>expr(NUM.expr()[1])</var></code> and <code><var>expr(DEN.expr()[1])</var></code>.</p>
-                    <p>Because they have the same degree <code><var>DEG</var></code>, the limit is equal to the quotient of their coefficients.</p>
+                    <p>
+                    觀察分子和分母的最高次項 <code><var>expr(NUM.expr()[1])</var></code> 與 <code><var>expr(DEN.expr()[1])</var></code>。   
+                    </p>
+                    <p>
+                    由於他們同樣是 <code><var>DEG</var></code> 次項，因此極限值將會等於兩者係數相除得到的比值。
+                    </p>
                     <p><code>\displaystyle\lim_{x \to <var>PM</var>\infty}\dfrac{<var>NUM.text()</var>}{<var>DEN.text()</var>} = <var>fractionSimplification( NUM.coefs[DEG], DEN.coefs[DEG] )</var></code></p>
                 </div>
             </div>
@@ -45,7 +49,7 @@
                 </div>
 
                 <div class="question">
-                    <p>Find <code>\displaystyle\lim_{x \to <var>PM</var>\infty}\dfrac{<var>NUM.text()</var>}{<var>DEN.text()</var>}</code>.</p>
+                    <p>求 <code>\displaystyle\lim_{x \to <var>PM</var>\infty}\dfrac{<var>NUM.text()</var>}{<var>DEN.text()</var>}</code>.</p>
                 </div>
 
                 <p class="solution"><code>0</code></p>
@@ -54,13 +58,20 @@
                     <li><code><var>fractionReduce( -NUM.getCoefAndDegreeForTerm(0).coef, DEN.getCoefAndDegreeForTerm(0).coef )</var></code></li>
                     <li><code>+\infty</code></li>
                     <li><code>-\infty</code></li>
-                    <li>undefined</li>
+                    <li>極限不存在</li>
                 </ul>
 
                 <div class="hints">
-                    <p>Look at the leading terms <code><var>expr(NUM.expr()[1])</var></code> and <code><var>expr(DEN.expr()[1])</var></code>.</p>
-                    <p>Because the numerator's degree <code><var>NUM.getCoefAndDegreeForTerm(0).degree</var></code> is less than the denominator's degree <code><var>DEN.getCoefAndDegreeForTerm(0).degree</var></code>, the bottom term dominates as <code>x</code> approaches <code><var>PM</var>\infty</code>.</p>
-                    <p>Since the denominator grows faster than the numerator, the limit goes to <code>0</code>.</p>
+                    <p>
+                    觀察分子和分母的最高次項 <code><var>expr(NUM.expr()[1])</var></code> 與 <code><var>expr(DEN.expr()[1])</var></code>。   
+                    </p>
+
+                    <p>
+                    由於分子最高次數 <code><var>NUM.getCoefAndDegreeForTerm(0).degree</var></code> 比分母的最高次數 <code><var>DEN.getCoefAndDegreeForTerm(0).degree</var></code> 還小，這表示當 <code>x</code> 接近 <code><var>PM</var>\infty</code> 時，分母的絕對值將遠遠大過分子。
+                    </p>
+                    <p>
+                    由於分母成長的速度比分子快，本題極限值為 <code>0</code> 。
+                    </p>
                 </div>
             </div>
 
@@ -74,7 +85,7 @@
                 </div>
 
                 <div class="question">
-                    <p>Find <code>\displaystyle\lim_{x \to \infty}\dfrac{<var>NUM.text()</var>}{<var>DEN.text()</var>}</code>.</p>
+                    <p>求 <code>\displaystyle\lim_{x \to \infty}\dfrac{<var>NUM.text()</var>}{<var>DEN.text()</var>}</code>.</p>
                 </div>
 
                 <p class="solution"><code><var>RIGHT_SIGN</var>\infty</code></p>
@@ -83,16 +94,34 @@
                     <li><code><var>fractionReduce( -NUM.getCoefAndDegreeForTerm(0).coef, DEN.getCoefAndDegreeForTerm(0).coef )</var></code></li>
                     <li><code><var>WRONG_SIGN</var>\infty</code></li>
                     <li><code>0</code></li>
-                    <li>undefined</li>
+                    <li>極限不存在</li>
                 </ul>
 
                 <div class="hints">
-                    <p>Look at the leading terms <code><var>expr(NUM.expr()[1])</var></code> and <code><var>expr(DEN.expr()[1])</var></code>.</p>
-                    <p>As <code>x \to \infty</code>, the numerator approaches <code><var>NUM.getCoefAndDegreeForTerm(0).coef &lt; 0 ? "-" : ""</var>\infty</code> because the coefficient <code><var>NUM.getCoefAndDegreeForTerm(0).coef</var></code> is <var>NUM.getCoefAndDegreeForTerm(0).coef &lt; 0 ? "negative" : "positive"</var>.</p>
-                    <p>As <code>x \to \infty</code>, the denominator <var>NUM.getCoefAndDegreeForTerm(0).coef * DEN.getCoefAndDegreeForTerm(0).coef > 0 ? "also " : ""</var>approaches <code><var>DEN.getCoefAndDegreeForTerm(0).coef &lt; 0 ? "-" : ""</var>\infty</code> because the coefficient <code><var>DEN.getCoefAndDegreeForTerm(0).coef</var></code> is <var>DEN.getCoefAndDegreeForTerm(0).coef &lt; 0 ? "negative" : "positive"</var>.</p>
-                    <p>Because the numerator's degree <code><var>NUM.getCoefAndDegreeForTerm(0).degree</var></code> is greater than the denominator's degree <code><var>DEN.getCoefAndDegreeForTerm(0).degree</var></code>, the limit diverges.</p>
-                    <p data-if="NUM.getCoefAndDegreeForTerm(0).coef * DEN.getCoefAndDegreeForTerm(0).coef > 0">The numerator and denominator have the same sign as <code>x</code> gets large, so the limit is <code>+\infty</code>.</p>
-                    <p data-else>The numerator and denominator have differing signs as <code>x</code> gets large, so the limit is <code>-\infty</code>.</p>
+                    <p>
+                    觀察分子和分母的最高次項 <code><var>expr(NUM.expr()[1])</var></code> 與 <code><var>expr(DEN.expr()[1])</var></code>。
+                    </p>
+
+                    <p>
+                    看看分子的最高次項係數 <code><var>NUM.getCoefAndDegreeForTerm(0).coef</var></code> <var>NUM.getCoefAndDegreeForTerm(0).coef &lt; 0 ? "小於" : "大於"</var> <code>0</code>，所以當 <code>x \to \infty</code> 時，分子趨近於 <code><var>NUM.getCoefAndDegreeForTerm(0).coef &lt; 0 ? "-" : ""</var>\infty</code> 。
+                    </p>
+
+                    <p>
+                    再看分母的最高次項係數 <code><var>DEN.getCoefAndDegreeForTerm(0).coef</var></code> <var>DEN.getCoefAndDegreeForTerm(0).coef &lt; 0 ? "小於" : "大於"</var> <code>0</code>，所以當 <code>x \to \infty</code> 時，分母趨近於 <code><var>DEN.getCoefAndDegreeForTerm(0).coef &lt; 0 ? "-" : ""</var>\infty</code> 。
+
+                    </p>
+                    
+                    <p>
+                    但是，分子的最高項次數 <code><var>NUM.getCoefAndDegreeForTerm(0).degree</var></code> 卻大於分母的最高項次數 <code><var>DEN.getCoefAndDegreeForTerm(0).degree</var></code>，這表示當 <code> x \to \infty </code> 時，分子的絕對值將遠遠比分母的絕對值大，極限值會發散。  
+                    </p>
+
+                    <p data-if="NUM.getCoefAndDegreeForTerm(0).coef * DEN.getCoefAndDegreeForTerm(0).coef > 0">
+                    由於分子分母同號，本題極限值為 <code>+\infty</code> 。    
+                    </p>
+                    
+                    <p data-else>
+                    由於分子分母不同正負號，本題極限值為 <code>-\infty</code> 。    
+                    </p>
                 </div>
             </div>
 
@@ -105,10 +134,10 @@
                 </div>
 
                 <div class="question">
-                    <p>Find <code>\displaystyle\lim_{x \to <var>K</var>}\dfrac{<var>A</var>}{<var>B</var>x + <var>-K</var>}</code>.</p>
+                    <p>求 <code>\displaystyle\lim_{x \to <var>K</var>}\dfrac{<var>A</var>}{<var>B</var>x + <var>-K</var>}</code>.</p>
                 </div>
 
-                <p class="solution">undefined</p>
+                <p class="solution">極限不存在</p>
                 <ul class="choices">
                     <li><code><var>fractionReduce( A, K )</var></code></li>
                     <li><code><var>fractionReduce( A, -K )</var></code></li>
@@ -118,10 +147,20 @@
                 </ul>
 
                 <div class="hints">
-                    <p>Consider the behavior of the function as <code>x \to <var>K</var></code> from each direction.</p>
-                    <p>As <code>x</code> approaches <code><var>K</var></code> from the left, <code><var>B</var>x + <var>-K</var></code> starts negative and increases as it approaches <code>0</code>, so <code>\dfrac{<var>A</var>}{<var>B</var>x + <var>-K</var>}</code> approaches <code><var>SIGN_LIM_LEFT</var>\infty</code>.</p>
-                    <p>As <code>x</code> approaches <code><var>K</var></code> from the right, <code><var>B</var>x + <var>-K</var></code> starts positive and decreases as it approaches <code>0</code>, so <code>\dfrac{<var>A</var>}{<var>B</var>x + <var>-K</var>}</code> approaches <code><var>SIGN_LIM_RIGHT</var>\infty</code>.</p>
-                    <p>Since the left- and right-hand limits are not equal, the limit is not defined.</p>
+                    <p>
+                    觀察當 <code>x</code> 由數線左邊或右邊趨近 <code><var>K</var></code> 時，這個函數的值會如何變化？
+                    </p>
+
+                    <p>
+                    在 <code>x</code> 由數線左方逐漸趨近 <code><var>K</var></code> 的過程中，<code><var>B</var>x + <var>-K</var></code> 的值為負，並逐漸接近 <code>0</code> 。因此 <code>\dfrac{<var>A</var>}{<var>B</var>x + <var>-K</var>}</code> 將會趨近於 <code><var>SIGN_LIM_LEFT</var>\infty</code>。
+                    </p>
+                    <p>
+                    而當 <code>x</code> 由數線右方逐漸趨近 <code><var>K</var></code>， <code><var>B</var>x + <var>-K</var></code> 的值為正，並逐漸接近 <code>0</code> 。因此，<code>\dfrac{<var>A</var>}{<var>B</var>x + <var>-K</var>}</code> 將會趨近於 <code><var>SIGN_LIM_RIGHT</var>\infty</code>。   
+                    </p>
+
+                    <p>
+                    由於左右的極限值不相等，本題的極限值不存在。
+                    </p>
                 </div>
             </div>
 
@@ -134,7 +173,7 @@
                 </div>
 
                 <div class="question">
-                    <p>Find <code>\displaystyle\lim_{x \to <var>K</var>}\dfrac{<var>A</var>}{(<var>B</var>x + <var>-K</var>\smash{)}^2}</code>.</p>
+                    <p>求 <code>\displaystyle\lim_{x \to <var>K</var>}\dfrac{<var>A</var>}{(<var>B</var>x + <var>-K</var>\smash{)}^2}</code>.</p>
                 </div>
 
                 <p class="solution"><code><var>RIGHT_SIGN</var>\infty</code></p>
@@ -143,13 +182,21 @@
                     <li><code><var>fractionReduce( A, -K * K )</var></code></li>
                     <li><code><var>WRONG_SIGN</var>\infty</code></li>
                     <li><code>0</code></li>
-                    <li>undefined</li>
+                    <li>極限不存在</li>
                 </ul>
 
                 <div class="hints">
-                    <p>Consider the behavior of the function as <code>x \to <var>K</var></code> from each direction.</p>
-                    <p>In either direction, <code>(x + <var>-K</var>)^2</code> approaches <code>0</code>, so <code>\dfrac{<var>A</var>}{(<var>B</var>x + <var>-K</var>\smash{)}^2}</code> diverges.</p>
-                    <p>Because <code>(x + <var>-K</var>)^2</code> is always positive and <code><var>A</var></code> is <var>A > 0 ? "positive" : "negative"</var>, <code>\dfrac{<var>A</var>}{(<var>B</var>x + <var>-K</var>\smash{)}^2}</code> approaches <code><var>RIGHT_SIGN</var>\infty</code>.</p>
+                    <p>
+                    觀察當 <code>x</code> 由數線左邊或右邊趨近 <code><var>K</var></code> 時，這個函數的值會如何變化？
+                    </p>
+                    
+                    <p>
+                    我們發現，無論由哪個方向看，當 <code>x \to <var>K</var></code> 時，<code>(x + <var>-K</var>)^2</code> 都會趨近 <code>0</code> ，因此  <code>\dfrac{<var>A</var>}{(<var>B</var>x + <var>-K</var>\smash{)}^2}</code> 會發散。
+                    </p>
+                    
+                    <p>
+                    由於 <code>(x + <var>-K</var>)^2</code> 永遠為正，又分子 <code><var>A</var></code> 為<var>A > 0 ? "正" : "負"</var>，所以 <code>\dfrac{<var>A</var>}{(<var>B</var>x + <var>-K</var>\smash{)}^2}</code> 的極限值為 <code><var>RIGHT_SIGN</var>\infty</code> 。
+                    </p>
                 </div>
             </div>
         </div>

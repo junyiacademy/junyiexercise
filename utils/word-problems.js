@@ -196,25 +196,26 @@ $.fn["word-problemsLoad"] = function() {
     };
 
     var names = [
-        ["小英", "f"],
-        ["小明", "m"],
-        ["學諒", "m"],
-        ["新舟", "m"],
-        ["偉誠", "m"],
-        ["凱辰", "f"],
-        ["芹萱", "f"],
-        ["子恩", "m"],
-        ["一寧", "f"],
-        ["季玄", "m"],
-        ["宗宇", "m"],
-        ["皓瑋", "m"],
-        ["子儀", "f"],
-        ["翔中", "m"],
-        ["沂玲", "f"],
-        ["怡婷", "f"],
-        ["巧筠", "f"],
-        ["鎔毓", "f"], //（有些名字太難，建議找一些較普遍的名字）
-        ["柏清", "m"]
+        ["玉婷", "f"],
+        ["小明", "m"], 
+        ["志明", "m"], 
+        ["俊杰", "m"], 
+        ["天佑", "m"], 
+        ["秀英", "f"], 
+        ["怡君", "f"], 
+        ["哲浩", "m"], 
+        ["佳玲", "f"], 
+        ["才良", "m"],  
+        ["冠宇", "m"],  
+        ["文山", "m"],   
+        ["淑芬", "f"],  
+        ["成文", "m"],  
+		["力學", "m"],   
+        ["惠如", "f"],  
+        ["心怡", "f"], 
+        ["佩珍", "f"],  
+        ["小惠", "f"],  
+        ["正雄", "m"]  
     ];
 
     // We only want one name per letter of the alphabet, so group people with
@@ -350,7 +351,13 @@ $.fn["word-problemsLoad"] = function() {
     var exercises = new IncrementalShuffler([
         new Noun("伏地挺身", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
         new Noun("仰臥起坐", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
-        new Noun("交互蹲跳", {measureWord: new IncrementalShuffler(["個", "次", "下"])})
+        new Noun("開合跳", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
+        new Noun("原地彈跳", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
+        new Noun("交互蹲跳", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
+        new Noun("跳跳繩", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
+        new Noun("呼拉圈轉", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
+        new Noun("踢毽子", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
+        new Noun("投籃", {measureWord: new IncrementalShuffler(["個", "次", "下"])})
     ]);
 
     var fruits = new IncrementalShuffler([
@@ -393,17 +400,71 @@ $.fn["word-problemsLoad"] = function() {
         "金色",
         "粉紅色"
     ]);
-
+    
+	var movies = new IncrementalShuffler([
+	       "綠野仙蹤",
+		   "玩具總動員",
+		   "米老鼠",
+		   "黑天鵝",
+		   "小美人魚",
+		   "灰姑娘",
+		   "獅子王",
+		   "花木蘭",
+		   "小熊維尼",
+    ]);
+	
+	var familys = new IncrementalShuffler([
+	       "爸爸",
+		   "媽媽",
+		   "爺爺",
+		   "奶奶",
+		   "外公",
+		   "外婆",
+		   "哥哥",
+		   "姊姊",
+		   "弟弟",
+		   "妹妹",
+		   "阿姨",
+		   "姑姑",
+    ]);
+	
+	var countrys = new IncrementalShuffler([
+	       "宜蘭縣",
+		   "花蓮縣",
+		   "台東縣",
+		   "雲林縣",
+		   "嘉義縣",
+		   "屏東縣",
+		   "苗栗縣",
+		   "彰化縣"
+    ]);
+	
     var schools = new IncrementalShuffler([
-        "仁和國小",
-        "文化國小",
-        "潛龍國小",
+        "龍埔國小",
+        "長安國小",
+        "米倉國小",
         "育英國小",
-        "興南國小",
-        "板橋國小",
-		"桃源國小",
-		"羅娜國小",
-		"東埔國小"
+        "康橋國小",
+        "中山國中",
+        "潛龍國小",
+        "仁和國小",
+        "南崁國小",
+        "羅娜國小",
+        "東埔國小",
+        "嘉北國小",
+        "大成國中",
+        "仁德國小",
+        "五甲國中",
+        "加昌國小",
+        "龍肚國小",
+        "港東國小",
+        "礁溪國中",
+        "湖山國小",
+        "吳江國小",
+        "瑞穗國中",
+        "桃源國小",
+        "均一中小學",
+        "武陵國小"
     ]);
 
     var furnitureStore = new IncrementalShuffler([
@@ -494,7 +555,6 @@ $.fn["word-problemsLoad"] = function() {
     var distanceActivities = new IncrementalShuffler([
         {present: "騎", past: "騎", noun: new Noun("腳踏車", {measureWord: new IncrementalShuffler(["台", "輛"])}), done: "騎", continuous: "騎"}, //（這幾個都很難翻。騎過、正在騎？怪怪的）
         {present: "划", past: "划", noun: new Noun("船", {measureWord: "艘"}), done: "划", continuous: "划"},
-        {present: "開", past: "開", noun: new Noun("汽車", {measureWord: new IncrementalShuffler(["台", "輛"])}), done: "開", continuous: "開"},
         {present: "遛", past: "遛", noun: new Noun("狗", {measureWord: "隻"}), done: "遛", continuous: "遛"}
     ]);
 
@@ -610,6 +670,18 @@ $.fn["word-problemsLoad"] = function() {
         color: function(i) {
             return colors.get(i - 1);
         },
+		
+	    movie: function(i) {
+		    return movies.get(i-1);
+	    },
+		
+		family: function(i) {
+		    return familys.get(i-1);
+	    },
+		
+		country: function(i) {
+		    return countrys.get(i-1);
+	    },
 
         fruit: function(i) {
             return fruits.get(i);

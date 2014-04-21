@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers graphie-geometry math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>三角形內角和為180度(基本題)</title>
+    <script src="../khan-exercise.js"></script>
+    <script>
+        function scTriangle(){
+            while( ! a || Math.abs( a - b ) < 5 || Math.abs( a - c ) < 5 || Math.abs( b - c ) < 5 ){
+                var a = KhanUtil.randRange( 25, 150 );
+                var b = KhanUtil.randRange( 25, 180 - a );
+                if ( a + b > 170 ){
+                    a = Math.max( 30, a - 15  );
+                    b = Math.max( 30, b - 15  );
+                }
+                var c = 180 - a - b;
+            }
+
+            var sa = KhanUtil.randRange( 4, 8 );
+            var sb = sa * Math.sin( b * Math.PI / 180 )  / Math.sin( a * Math.PI / 180 );
+            var sc = sa * Math.sin( c * Math.PI / 180 )  / Math.sin( a * Math.PI / 180 );
+            return [ [ a, b, c ] , [ sc.toFixed( 1 ),  sa.toFixed( 1 ), sb.toFixed( 1 ) ] ];
+        }
+
+        function rtTriangle(){
+            while( ! a || Math.abs( a - b ) < 5 || Math.abs( a - c ) < 5 || Math.abs( b - c ) < 5 ){
+                var a = 90;
+                var b = KhanUtil.randRange( 25,60 );
+                var c = 90 - b;
+            }
+
+            var sa = KhanUtil.randRange( 4, 8 );
+            var sb = sa * Math.sin( b * Math.PI / 180 )  / Math.sin( a * Math.PI / 180 );
+            var sc = sa * Math.sin( c * Math.PI / 180 )  / Math.sin( a * Math.PI / 180 );
+            return [ [ a, b, c ] , [ sc.toFixed( 1 ),  sa.toFixed( 1 ), sb.toFixed( 1 ) ] ];
+        }
+
+        function eqTriangle(){
+            var a = KhanUtil.randRange( 4, 8 );
+            return [ [ 60, 60, 60 ], [ a, a, a ] ];
+        }
+
+        function isoTriangle(){
+            var a = KhanUtil.randRangeExclude( 25, 75, [ 60 ] );
+            var c = 180 - 2 * a;
+            var sa = KhanUtil.randRange( 4, 8 );
+            var sc = sa * Math.sin( c * Math.PI / 180 )  / Math.sin( a * Math.PI / 180 );
+            var ang =  [ a, a, c ];
+            var sides = [ sc.toFixed( 1 ), sa,  sa ];
+            return [ ang , sides ];
+
+        }
+
+    </script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+
+            <div id="rightTriangle">
+                <div class="vars">
+                    <var id="TRIANGLE">rtTriangle()</var>
+                </div>
+                <div class="problem">
+                    ∠C 的角度是多少?
+                </div>
+                <div class="question">
+                    <div class="graphie">
+                        init({
+                            range: [ [-1, 10 ], [ -8, 1 ] ]
+                        })
+                        var tr = new Triangle( [ 3, -4 ],  TRIANGLE[ 0 ], 5, {  "angles" : [ TRIANGLE[ 0 ][ 0 ]  + "^{\\circ}", TRIANGLE[ 0 ][ 1 ] + "^{\\circ}",  "?" ],"points" : ["A","B","C"] } );
+                        <!--tr.rotate( randRange( 0, 90 ) );-->
+                        tr.boxOut( [ [ [ -10, 1 ], [ 10, 1 ] ] ], [ 0,-0.5 ] )
+                        tr.draw();
+                        tr.drawLabels();
+                    </div>
+                </div>
+
+                <div class="solution" data-type="multiple"><p><code>∠C =</code><span class="sol"><var>TRIANGLE[ 0 ][ 2 ]</var>度</span></div>
+                <div class="hints">
+                    <p><code>\triangle</code>ABC為直角三角形</p>
+                    <p>三角形的內角相加是180度.</p>
+                    <p>&ang;A＝90度</p>
+                    <p>三角形的內角和為180度，減掉∠A後，代表&ang;B+&ang;C=90度</p>
+                    <p>∠B=<var>TRIANGLE[0][1]</var>度，所以&ang;C = 90 - <var>TRIANGLE[0][1]</var></p>
+                    <p>∠C = <var>TRIANGLE[0][2]</var>度</p>
+                </div>
+            </div>
+            <div id="scalene">
+                <div class="vars">
+                    <var id="TRIANGLE">scTriangle()</var>
+                </div>
+                <div class="problem">
+                    ∠C 的角度是多少?
+                </div>
+                <div class="question">
+                    <div class="graphie">
+                        init({
+                            range: [ [-1, 10 ], [ -8, 1 ] ]
+                        })
+                        var tr = new Triangle( [ 3, -4 ],  TRIANGLE[ 0 ], 5, {  "angles" : [ TRIANGLE[ 0 ][ 0 ]  + "^{\\circ}", TRIANGLE[ 0 ][ 1 ] + "^{\\circ}",  "?" ],"points":["A","B","C"] } );
+                        tr.rotate( randRange( 0, 90 ) );
+                        tr.boxOut( [ [ [ -10, 1 ], [ 10, 1 ] ] ], [ 0,-0.5 ] )
+                        tr.draw();
+                        tr.drawLabels();
+                    </div>
+                </div>
+
+                <div class="solution" data-type="multiple"><p><code>∠C =</code><span class="sol"><var>TRIANGLE[ 0 ][ 2 ]</var>度</span></div>
+                <div class="hints">
+                    <p>三角形的內角相加是180度.</p>
+                    <p>我們已經知道三角形的2個角度</p>
+                    <p>那第3個角度就是180度減掉另外兩個角度</p>
+                    <p>也就是<code>180 - <var>TRIANGLE[ 0 ][ 0 ]</var> - <var>TRIANGLE[ 0 ][ 1 ]</var> = <var>TRIANGLE[ 0 ][ 2 ]</var></code></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

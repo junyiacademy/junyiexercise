@@ -2031,7 +2031,7 @@ var Khan = (function() {
             if (pass !== true) {
                 checkAnswerButton
                     .effect("shake", {times: 3, distance: 5}, 80)
-                    .val("嗯... 再試看看！");
+                    .val("打錯了，再試看看喔！");
 
                 // Is this a message to be shown?
                 if (typeof pass === "string") {

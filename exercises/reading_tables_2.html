@@ -2,7 +2,7 @@
 <html data-require="math graphie word-problems">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Reading tables 2</title>
+    <title>閱讀圖表 2</title>
     <script src="../khan-exercise.js"></script>
     <style>
         .reading span {
@@ -25,8 +25,8 @@
     <div class="exercise">
     <div class="vars">
         <var id="INDEX">randRange( 0, 3 )</var>
-        <var id="ROWS">[ [ school(1), school(2), school(3), school(4) ], [ person(1), person(2), person(3), person(4) ], [ person(1), person(2), person(3), person(4) ], [ "Alabama", "Michigan", "New York", "Wyoming" ] ][ INDEX ]</var>
-        <var id="COLUMNS">[ [ "3rd grade", "4th grade", "5th grade", "Total" ], [ "January", "February", "March", "Total" ], [ "1st Quarter", "2nd Quarter", "3rd Quarter", "4th Quarter", "Final" ], [ "Q1", "Q2", "Q3", "Q4", "Total" ] ][ INDEX ]</var>
+        <var id="ROWS">[ [ school(1), school(2), school(3), school(4) ], [ person(1), person(2), person(3), person(4) ], [ person(1), person(2), person(3), person(4) ], [ "宜蘭縣", "台北市", "台中縣", "花蓮縣" ] ][ INDEX ]</var>
+        <var id="COLUMNS">[ [ "三年級", "四年級", "五年級", "全部" ], [ "一月", "二月", "三月", "全部" ], [ "第一季", "第二季", "第三季", "第四季", "總得分" ], [ "春", "夏", "秋", "冬", "全部" ] ][ INDEX ]</var>
         <var id="COL_INDEX">randRange( 0, COLUMNS.length - 1 )</var>
         <var id="ROW_INDEX">randRange( 0, ROWS.length - 1 )</var>
         <var id="ENROLLMENTS, ANSWER">
@@ -48,24 +48,24 @@
                 return [ enrollments, answer ];
             })()
         </var>
-        <var id="PROBLEM">[ "shows the enrollment at four different elementary schools that have 3rd through 5th grade students", "shows the number of chickens sold by four friends from January to March", "indicates the points scored by four players in a charity basketball game", "shows solar panel installations by state during the last fiscal year" ][ INDEX ]</var>
-        <var id="HEADER">[ "Schools", "Farmers", "Players", "States" ][ INDEX ]</var>
-        <var id="UNIT">[ "students", "chickens", "points", "solar panels" ][ INDEX ]</var>
+        <var id="PROBLEM">[ "顯示出四個不同小學三年級到五年級學生的註冊人數", "顯示出四個不同的農夫從一月到三月賣出的雞的數量" , "顯示出在慈善籃球賽中四個球員在四個球季中各自的得分數", "顯示四個不同縣市在四個季節中出國的總人數" ][ INDEX ]</var>
+        <var id="HEADER">[ "學校", "農夫", "球員", "縣市" ][ INDEX ]</var>
+        <var id="UNIT">[ "個學生", "支雞", "分", "個人" ][ INDEX ]</var>
         <var id="HINT1">
             (function() {
                 if ( COL_INDEX === COLUMNS.length - 1 ) {
-                    return [ "the total number of students at " + ROWS[ ROW_INDEX ] + " Elementary School", "the total number of chickens sold by " + ROWS[ ROW_INDEX ], "the total number of points scored by " + ROWS[ ROW_INDEX ], "the total number of solar panels installed in " + ROWS [ ROW_INDEX ] ][ INDEX ];
+                    return [ ROWS[ ROW_INDEX ] + "三年級到五年級全部的學生人數", ROWS[ ROW_INDEX ] + "從一月到三月賣出的雞的總數量", ROWS[ ROW_INDEX ] + "在四個球季中的總得分數", ROWS [ ROW_INDEX ] + "在一整年中人民出國的總人數" ][ INDEX ];
                 } else {
-                    return [ "the number of " + COLUMNS[ COL_INDEX ] + " students at " + ROWS[ ROW_INDEX ] + " Elementary School", "the number of chickens sold in " + COLUMNS[ COL_INDEX ] + " by " + ROWS[ ROW_INDEX ], "the number of points scored in the " + COLUMNS[ COL_INDEX ] + " by " + ROWS[ ROW_INDEX ], "the number of solar panels installed in " + COLUMNS[ COL_INDEX ] + " in " + ROWS[ ROW_INDEX ] ][ INDEX ];
+                    return [ ROWS[ ROW_INDEX ] + "中" + COLUMNS[ COL_INDEX ] + "的學生人數", ROWS[ ROW_INDEX ]+ "在" + COLUMNS[ COL_INDEX ] + "賣出的雞的數量", ROWS[ ROW_INDEX ] + "在" + COLUMNS[ COL_INDEX ] + "球賽中的得分數 ", ROWS[ ROW_INDEX ] + "在" + COLUMNS[ COL_INDEX ] + "季中出國的總人數 "  ][ INDEX ];
                 }
             })()
         </var>
-        <var id="HINT2">[ "The total number of students at " + ROWS[ ROW_INDEX ] + " Elementary School", "The total number of chickens sold by " + ROWS[ ROW_INDEX ], "The total number of points scored by " + ROWS[ ROW_INDEX ], "The total number of solar panels installed in " + ROWS [ ROW_INDEX ] ][ INDEX ]</var>
+        <var id="HINT2">[ ROWS[ ROW_INDEX ] + "三年級到五年級全部的學生人數為", ROWS[ ROW_INDEX ] + "從一月到三月賣出的雞的總數量有", ROWS[ ROW_INDEX ] + "在四個球季的總得分數為", ROWS [ ROW_INDEX ] + "在一整年中人民出國的總人數為" ][ INDEX ]</var>
     </div>
     <div class="problems">
         <div>
-            <p>The table below <var>PROBLEM</var>, except one entry is missing.</p>
-            <p class="question">What number should go in the empty cell?</p>
+            <p>下面的圖表<var>PROBLEM</var>，除了其中一個資料有缺漏。</p>
+            <p class="question">請問缺少的那一格是多少？</p>
             <div class="fake_header reading">
                 <span><var>HEADER</var></span><span data-each="COLUMNS as i, column"><var>column</var></span>
             </div>
@@ -77,10 +77,10 @@
             </div>
 
             <div class="hints">
-                <p>The table is missing <var>HINT1</var>.</p>
+                <p>這個圖表中缺少了<var>HINT1</var>。</p>
                 <div data-if="COL_INDEX === COLUMNS.length - 1" data-unwrap>
                     <div>
-                        <p>The table accounts for <span class="hint_orange"><var>ENROLLMENTS[ ROW_INDEX ].slice( 0, COL_INDEX ).join( "+" )</var></span> <var>UNIT</var>.</p>
+                        <p>將圖表中已知的橘色數字加起來共有<span class="hint_orange"><var>ENROLLMENTS[ ROW_INDEX ].slice( 0, COL_INDEX ).join( "+" )</var></span> <var>UNIT</var>。</p>
                         <div class="graphie">
                             $.each( COLUMNS, function( i, c ) {
                                 if ( i !== 0 ) {
@@ -91,7 +91,7 @@
                         </div>
                     </div>
                     <div>
-                        <p><var>HINT2</var> is simply the sum, or <span class="hint_pink"><var>ANSWER</var></span>.</p>
+                        <p><var>HINT2</var>剛剛算出的總和，也就是<span class="hint_pink"><var>ANSWER</var></span>。</p>
                         <div class="graphie">
                             fillInCorrectAnswer( ROW_INDEX, COL_INDEX, ANSWER, KhanUtil.PINK );
                         </div>
@@ -99,14 +99,14 @@
                 </div>
                 <div data-else data-unwrap>
                 <div>
-                    <p><var>HINT2</var> is <span class="hint_blue"><var>ENROLLMENTS[ ROW_INDEX ][ COLUMNS.length - 1 ]</var></span>.</p>
+                    <p><var>HINT2</var><span class="hint_blue"><var>ENROLLMENTS[ ROW_INDEX ][ COLUMNS.length - 1 ]</var></span>。</p>
                     <div class="graphie">
                         $( ".fake_row" ).eq( ROW_INDEX ).find( "span" ).eq( COLUMNS.length )
                             .css( "color", KhanUtil.BLUE );
                     </div>
                 </div>
                 <div>
-                    <p>The table already accounts for <span class="hint_orange"><var>ENROLLMENTS[ ROW_INDEX ].slice( 0, COL_INDEX ).concat( ENROLLMENTS[ ROW_INDEX ].slice( COL_INDEX + 1, COLUMNS.length - 1 ) ).join( "+" )</var> =
+                    <p>將圖表中已知的數字加起來共有<span class="hint_orange"><var>ENROLLMENTS[ ROW_INDEX ].slice( 0, COL_INDEX ).concat( ENROLLMENTS[ ROW_INDEX ].slice( COL_INDEX + 1, COLUMNS.length - 1 ) ).join( "+" )</var> =
                     <var>ENROLLMENTS[ ROW_INDEX ][ COLUMNS.length - 1 ] - ANSWER</var></span> <var>UNIT</var>.</p>
                     <div class="graphie">
                         $.each( COLUMNS, function( i, c ) {
@@ -117,9 +117,9 @@
                         });
                     </div>
                 </div>
-                <p>The missing number must be the difference between <var>HINT2.slice( 0, 1 ).toLowerCase() + HINT2.slice( 1 )</var>, <span class="hint_blue"><var>ENROLLMENTS[ ROW_INDEX ][ COLUMNS.length - 1 ]</var></span>, and the values already accounted for, <span class="hint_orange"><var>ENROLLMENTS[ ROW_INDEX ][ COLUMNS.length - 1 ] - ANSWER</var></span>.</p>
+                <p>缺少的那一格一定是<var>HINT2.slice( 0, 1 ).toLowerCase() + HINT2.slice( 1 )</var><span class="hint_blue"><var>ENROLLMENTS[ ROW_INDEX ][ COLUMNS.length - 1 ]</var></span>和剛剛所算出<span class="hint_orange"><var>ENROLLMENTS[ ROW_INDEX ][ COLUMNS.length - 1 ] - ANSWER</var></span>的差值。</p>
                 <div>
-                    <p><span class="hint_blue"><var>ENROLLMENTS[ ROW_INDEX ][ COLUMNS.length - 1 ]</var></span> - <span class="hint_orange"><var>ENROLLMENTS[ ROW_INDEX ][ COLUMNS.length - 1 ] - ANSWER</var></span> = <span class="hint_pink"><var>ANSWER</var></span></p>
+                    <p>也就是<span class="hint_blue"><var>ENROLLMENTS[ ROW_INDEX ][ COLUMNS.length - 1 ]</var></span> - <span class="hint_orange"><var>ENROLLMENTS[ ROW_INDEX ][ COLUMNS.length - 1 ] - ANSWER</var></span> = <span class="hint_pink"><var>ANSWER</var></span></p>
                     <div class="graphie">
                         fillInCorrectAnswer( ROW_INDEX, COL_INDEX, ANSWER, KhanUtil.PINK );
                     </div>

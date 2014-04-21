@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html data-require="math graphie kmatrix">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Matrix Addition and Subtraction 2</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+		.aa{
+			color:red;
+		}
+    </style>
+</head>
+
+<body>
+<div class="exercise">
+    <div class="problems">
+	<div id="case1" data-weight="1">
+	
+            <div class="vars">
+				<var id="sizeX">randRange(2,4)</var>
+				<var id="sizeY">randRange(2,4)</var>
+				<var id="A">randRange(-99,99,sizeX,sizeY)</var>
+				<var id="B">randRange(-99,99,sizeX,sizeY)</var>
+				<var id="matrixA">makeMatrix(A)</var>
+				<var id="matrixB">makeMatrix(B)</var>
+				<var id="randQ">
+				(function(){
+					var randQ = new Array(2);
+					randQ[0] = "A + B = ";
+					randQ[1] = "A - B = ";
+					return randQ;
+				})()
+				</var>
+				<var id="rQ">randRange(0,1)</var>
+				<var id="symbol">
+				(function(){
+					var symbol = new Array(2);
+					symbol[0] = "+";
+					symbol[1] = "-";
+					if(rQ == 0){ <!-- A+B -->
+						return symbol[0];
+					}
+					else if(rQ == 1){ <!-- A-B -->
+						return symbol[1];
+					}
+				})()
+				</var>
+				<var id="AB">
+				(function(){
+					var AB = new Array(sizeX);
+					for(i=0;i&lt;sizeX;i++){
+						AB[i] = new Array(sizeY);
+					}
+					for(i=0;i&lt;sizeX;i++){
+						for(j=0;j&lt;sizeY;j++){
+							AB[i][j] = A[i][j]+symbol+B[i][j];
+						}
+					}
+					return AB;
+				})()
+				</var>
+				<var id="C">
+				(function(){
+					var C = new Array(sizeX);
+					for(i=0;i&lt;sizeX;i++){
+						C[i] = new Array(sizeY);
+					}
+					if(symbol == "+"){
+						for(i=0;i&lt;sizeX;i++){
+							for(j=0;j&lt;sizeY;j++){
+								C[i][j] = A[i][j] + B[i][j];
+							}
+						}
+					}
+					else{
+						for(i=0;i&lt;sizeX;i++){
+							for(j=0;j&lt;sizeY;j++){
+								C[i][j] = A[i][j] - B[i][j];
+							}
+						}
+					}
+					return C;
+				})()
+				</var>
+				<var id="sampleA">
+				(function(){
+					var sampleA = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleA[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						sampleA[i][0] = "a"+(i+1)+"1";
+						sampleA[i][1] = "a"+(i+1)+"2";
+						sampleA[i][2] = "...";
+					}
+					sampleA[2][0] = ":";
+					sampleA[2][1] = ":";
+					return sampleA;
+				})()				
+				</var>				
+				<var id="sampleB">
+				(function(){
+					var sampleB = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleB[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						sampleB[i][0] = "b"+(i+1)+"1";
+						sampleB[i][1] = "b"+(i+1)+"2";
+						sampleB[i][2] = "...";
+					}
+					sampleB[2][0] = ":";
+					sampleB[2][1] = ":";
+					return sampleB;
+				})()	
+				</var>
+				<var id="sampleAB">
+				(function(){
+					var sampleAB = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleAB[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						sampleAB[i][0] = "("+sampleA[i][0]+symbol+sampleB[i][0]+")";
+						sampleAB[i][1] = "("+sampleA[i][1]+symbol+sampleB[i][1]+")";
+						sampleAB[i][2] = "...";
+					}
+					sampleAB[2][0] = ":";
+					sampleAB[2][1] = ":";
+					return sampleAB;
+				})()	
+				</var>
+				<var id="colorA">[PURPLE]</var>
+				<var id="colorB">[GREEN]</var>
+				<var id="colorAB">[PURPLE,GREEN]</var>
+				
+            </div>
+			
+            <div class="question">
+				<p>A = <code><var>printSimpleMatrix(A)</var></code></p>
+				<p>B = <code><var>printSimpleMatrix(B)</var></code></p>
+				<p><code><var>randQ[rQ]</var></code> <B>?</B></p>
+				<p></p>
+            </div>
+			
+<!--example: sizeX*sizeY matrix-->			
+            <div class="solution" data-type="multiple">
+				<p>
+				<span class="sol" data-if="sizeX >0 && sizeY >0">
+				<var>C[0][0]</var></span>
+				<span class="sol" data-if="sizeX >0 && sizeY >1">
+				<var>C[0][1]</var></span>
+				<span class="sol" data-if="sizeX >0 && sizeY >2">
+				<var>C[0][2]</var></span>
+				<span class="sol" data-if="sizeX >0 && sizeY >3">
+				<var>C[0][3]</var></span><br>
+				
+				<span class="sol" data-if="sizeX >1 && sizeY >0">
+				<var>C[1][0]</var></span>
+				<span class="sol" data-if="sizeX >1 && sizeY >1">
+				<var>C[1][1]</var></span>
+				<span class="sol" data-if="sizeX >1 && sizeY >2">
+				<var>C[1][2]</var></span>
+				<span class="sol" data-if="sizeX >1 && sizeY >3">
+				<var>C[1][3]</var></span><br>
+				
+				<span class="sol" data-if="sizeX >2 && sizeY >0">
+				<var>C[2][0]</var></span>
+				<span class="sol" data-if="sizeX >2 && sizeY >1">
+				<var>C[2][1]</var></span>
+				<span class="sol" data-if="sizeX >2 && sizeY >2">
+				<var>C[2][2]</var></span>
+				<span class="sol" data-if="sizeX >2 && sizeY >3">
+				<var>C[2][3]</var></span><br>
+				
+				<span class="sol" data-if="sizeX >3 && sizeY >0">
+				<var>C[3][0]</var></span>
+				<span class="sol" data-if="sizeX >3 && sizeY >1">
+				<var>C[3][1]</var></span>
+				<span class="sol" data-if="sizeX >3 && sizeY >2">
+				<var>C[3][2]</var></span>
+				<span class="sol" data-if="sizeX >3 && sizeY >3">
+				<var>C[3][3]</var></span>
+				</p>
+			</div>		
+
+            <div class="hints">
+				<p>
+				<code><var>randQ[rQ]</var></code>
+				<code><var>printSimpleMatrix(sampleA,colorA)</var></code><code><var>symbol</var></code><code><var>printSimpleMatrix(sampleB,colorB)</var></code><br><br>
+				= <code><var>printSimpleMatrix(sampleAB,colorAB)</var></code>
+				</p>
+				
+				<p>
+				<code><var>randQ[rQ]</var></code><br><br>
+				<code><var>printSimpleMatrix(A,colorA)</var></code><code><var>symbol</var></code><code><var>printSimpleMatrix(B,colorB)</var></code><br><br>
+				= <code><var>printSimpleMatrix(AB)</var></code>
+				</p>
+				
+				<p>
+				= <code><var>printSimpleMatrix(C)</var></code></p>
+				
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

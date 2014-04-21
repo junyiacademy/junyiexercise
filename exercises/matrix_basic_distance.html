@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html data-require="math graphie kmatrix">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Matrix Basic Distance</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+    </style>
+</head>
+							<!--城市之間的公路交通里程數-->
+<body>
+<div class="exercise">
+    <div class="problems">
+	<div id="case1" data-weight="1">
+	
+            <div class="vars">
+				<!--
+				<var id="A">randRange(100,999,5,5)</var>
+				<var id="MAT">makeMatrix(A)</var>
+				-->
+				<var id="name">name = ["基隆","桃園","新竹","苗栗","彰化","雲林","南投","嘉義","屏東","宜蘭","花蓮","台東"]</var>
+				
+				<var id="table">
+				(function(){
+				var table = [[0,randRange(50,70),randRange(110,130),randRange(150,170),randRange(220,240),randRange(275,295),randRange(220,300),randRange(310,330),randRange(425,450),randRange(50,70),randRange(120,220),randRange(300,400)],				[0,0,randRange(30,50),randRange(70,110),randRange(160,180),randRange(215,235),randRange(120,220),randRange(250,270),randRange(365,385),randRange(30,50),randRange(70,170),randRange(220,320)],	[0,0,0,randRange(30,50),randRange(100,120),randRange(155,175),randRange(110,160),randRange(190,210),randRange(305,325),randRange(30,60),randRange(90,190),randRange(200,310)],				[0,0,0,0,randRange(60,80),randRange(115,135),randRange(70,140),randRange(150,170),randRange(265,285),randRange(70,120),randRange(130,210),randRange(240,300)],		[0,0,0,0,0,randRange(30,50),randRange(30,60),randRange(80,100),randRange(195,215),randRange(180,220),randRange(170,230),randRange(200,250)],		[0,0,0,0,0,0,randRange(30,60),randRange(30,50),randRange(110,170),randRange(200,250),randRange(190,250),randRange(200,250)],	[0,0,0,0,0,0,0,randRange(30,60),randRange(100,170),randRange(70,110),randRange(30,140),randRange(70,150)],				[0,0,0,0,0,0,0,0,randRange(100,160),randRange(220,260),randRange(150,210),randRange(160,240)],	[0,0,0,0,0,0,0,0,0,randRange(250,350),randRange(140,240),randRange(30,120)],				[0,0,0,0,0,0,0,0,0,0,randRange(30,80),randRange(90,150)],				
+				[0,0,0,0,0,0,0,0,0,0,0,randRange(30,100)],				
+				[0,0,0,0,0,0,0,0,0,0,0,0]];
+				
+				for(j=0;j&lt;12;j++){
+					for(i=j;i&lt;12;i++){
+						table[i][j]=table[j][i];
+					}
+				}
+				return table;
+				})()
+				
+				</var>
+
+				<var id="v">
+				(function(){
+					var v = new Array(5);
+					v[0] = randRange(0,11);
+					v[1] = randRangeExclude(0,11,[v[0]]);
+					v[2] = randRangeExclude(0,11,[v[0],v[1]]);
+					v[3] = randRangeExclude(0,11,[v[0],v[1],v[2]]);
+					v[4] = randRangeExclude(0,11,[v[0],v[1],v[2],v[3]]);
+					return v;
+				})()
+				</var>
+				
+				<var id="dist">
+				(function(){
+					var dist = new Array(5);
+					for(i=0;i&lt;5;i++){
+						dist[i] = new Array(5);
+					}
+					for(j=0;j&lt;5;j++){
+						for(i=j;i&lt;5;i++){
+							dist[j][i] = table[v[j]][v[i]];
+							dist[i][j] = table[v[j]][v[i]];
+						}
+					}
+					return dist;
+				})()
+				</var>
+
+            </div>
+			
+            <div class="question">
+				<p><B>下面幾個城市之間的公路交通里程數據如下：</B></p>
+				<p>
+				• <var>name[v[0]]</var>到<var>name[v[1]]</var>的距離是：<var>dist[0][1]</var>公里<br>
+				• <var>name[v[0]]</var>到<var>name[v[2]]</var>的距離是：<var>dist[0][2]</var>公里<br>
+				• <var>name[v[0]]</var>到<var>name[v[3]]</var>的距離是：<var>dist[0][3]</var>公里<br>
+				• <var>name[v[0]]</var>到<var>name[v[4]]</var>的距離是：<var>dist[0][4]</var>公里
+				</p>
+				<p>
+				• <var>name[v[1]]</var>到<var>name[v[2]]</var>的距離是：<var>dist[1][2]</var>公里<br>
+				• <var>name[v[1]]</var>到<var>name[v[3]]</var>的距離是：<var>dist[1][3]</var>公里<br>
+				• <var>name[v[1]]</var>到<var>name[v[4]]</var>的距離是：<var>dist[1][4]</var>公里
+				</p>
+				<p>
+				• <var>name[v[2]]</var>到<var>name[v[3]]</var>的距離是：<var>dist[2][3]</var>公里<br>
+				• <var>name[v[2]]</var>到<var>name[v[4]]</var>的距離是：<var>dist[2][4]</var>公里
+				</p>
+				<p>
+				• <var>name[v[3]]</var>到<var>name[v[4]]</var>的距離是：<var>dist[3][4]</var>公里
+				</p>
+				<p><B>請用一個5X5的矩陣表示上述之數據，直行與橫列依序代表<var>name[v[0]]</var>、<var>name[v[1]]</var>、<var>name[v[2]]</var>、<var>name[v[3]]</var>、<var>name[v[4]]</var>五個城市。</B></p>
+            </div>
+			
+<!--example: 5*5 matrix-->			
+            <div class="solution" data-type="multiple"> 
+				<p>
+				<span class="sol"><var>dist[0][0]</var></span>
+				<span class="sol"><var>dist[0][1]</var></span>
+				<span class="sol"><var>dist[0][2]</var></span>
+				<span class="sol"><var>dist[0][3]</var></span>
+				<span class="sol"><var>dist[0][4]</var></span><br>
+				<span class="sol"><var>dist[1][0]</var></span>
+				<span class="sol"><var>dist[1][1]</var></span>
+				<span class="sol"><var>dist[1][2]</var></span>
+				<span class="sol"><var>dist[1][3]</var></span>
+				<span class="sol"><var>dist[1][4]</var></span><br>
+				<span class="sol"><var>dist[2][0]</var></span>
+				<span class="sol"><var>dist[2][1]</var></span>
+				<span class="sol"><var>dist[2][2]</var></span>
+				<span class="sol"><var>dist[2][3]</var></span>
+				<span class="sol"><var>dist[2][4]</var></span><br>
+				<span class="sol"><var>dist[3][0]</var></span>
+				<span class="sol"><var>dist[3][1]</var></span>
+				<span class="sol"><var>dist[3][2]</var></span>
+				<span class="sol"><var>dist[3][3]</var></span>
+				<span class="sol"><var>dist[3][4]</var></span><br>
+				<span class="sol"><var>dist[4][0]</var></span>
+				<span class="sol"><var>dist[4][1]</var></span>
+				<span class="sol"><var>dist[4][2]</var></span>
+				<span class="sol"><var>dist[4][3]</var></span>
+				<span class="sol"><var>dist[4][4]</var></span><br>
+				</p>
+            </div>
+            <div class="hints">
+				<p>
+				<var>name[v[0]]</var>、<var>name[v[1]]</var>、<var>name[v[2]]</var>、<var>name[v[3]]</var>、<var>name[v[4]]</var>五個城市，分別代表五個直行與五個橫列。<br>
+				對於每一列，代表該列城市到其他(包含自己)城市的距離。<br>
+				把<var>name[v[0]]</var>到<var>name[v[0]]</var>的距離，(也就是，0)，填入11的位置。<br>
+				把<var>name[v[0]]</var>到<var>name[v[1]]</var>的距離，填入12的位置。<br>
+				把<var>name[v[0]]</var>到<var>name[v[2]]</var>的距離，填入13的位置。<br>
+				把<var>name[v[0]]</var>到<var>name[v[3]]</var>的距離，填入14的位置。<br>
+				把<var>name[v[0]]</var>到<var>name[v[4]]</var>的距離，填入15的位置。<br>
+				其他的城市依此類推。
+				</p>
+				<p>
+				把<var>name[v[0]]</var>到<var>name[v[0]]</var>的距離，(也就是，0)，填入11的位置。<br>
+				<var>name[v[1]]</var>到<var>name[v[0]]</var>的距離，等於：<var>name[v[0]]</var>到<var>name[v[1]]</var>的距離，填入21的位置。<br>
+				<var>name[v[2]]</var>到<var>name[v[0]]</var>的距離，等於：<var>name[v[0]]</var>到<var>name[v[2]]</var>的距離，填入31的位置。<br>
+				其他的城市依此類推。
+				</p>
+				<p><code><var>printSimpleMatrix(dist)</var></code></p>
+				<!--
+				<p></p>
+				<p>4</p>
+				<p>5</p>
+				<p>6</p>
+				-->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

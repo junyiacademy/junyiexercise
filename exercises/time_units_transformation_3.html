@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html data-require="math math-format word-problems graphie spin">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>時間單位的換算</title>
+	<script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		#answer_area .short input[type=text] {
+			width: 30px;
+		}
+	</style>
+</head>
+<body>
+	<div class="exercise">
+		<div class="problems">
+			<div id="DayToHr">
+				<div class="vars">
+					<var id="Day">randRange(1,5)</var>
+					<var id="Hr">randRange(3,23)</var>
+				</div>
+				<p class="question">
+					<p class="spin">
+					{一趟登山之旅要花<var>Day</var>日<var>Hr</var>小時，是幾小時？|爸爸建造大花圃要花<var>Day</var>日<var>Hr</var>小時，是幾小時？}
+					</p>
+				<div class="solution"><var>Day*24+Hr</var>
+				</div>
+				<div class="hints">
+					<p>1日 = 24小時</p>
+					<div>
+						<p><var>Day</var>日就是<code><var>Day</var> \times 24 = </code><span id="DtH"><code><var>Day*24</var></code></span>小時</p>
+						<div class="graphie">
+							$("#DtH").addClass("hint_green");
+						</div>
+					</div>
+					<div>
+						<p>所以總共是<code><var>Day*24</var> + <var>Hr</var>=</code><span id="Total"><code><var>Day*24+Hr</var></code></span>小時</p>
+						<div class="graphie">
+							$("#DtH").removeClass("hint_green");
+							$("#Total").addClass("hint_red");
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="HrToDay">
+				<div class="vars">
+					<var id="Hr2">randRange(24,100)</var>
+					<var id="AnsD">floorTo(0,Hr2/24)</var>
+					<var id="AnsHr">Hr2%24</var>
+				</div>
+				<p class="question">
+					<p class="spin">
+					{<var>person(1)</var>安裝電腦花了<var>Hr2</var>小時，是幾日幾小時？|從地球坐太空船到月球要<var>Hr2</var>小時，是幾日幾小時？}</p>
+				</p>
+				<div class="solution" data-type="multiple">
+					<p class="short"><span class="sol"><var>AnsD</var></var></span>日<span class="sol"><var>AnsHr</var></span>時</p>
+					<p class="example">整數</p>
+				</div>
+				<div class="hints">
+					<p>1日 = 24小時</p>
+					<div>
+						<p><var>Hr2</var> 小時就是 <code><var>Hr2</var> \div 24 = </code><span id="HtD"><code><var>AnsD</var></code></span>日，餘<span id="leftH"><code><var>AnsHr</var></code></span>小時</p>
+						<div class="graphie">
+							$("#HtD").addClass("hint_green");
+							$("#leftH").addClass("hint_green");
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="hr_minute">
+				<div class="vars">
+					<var id="Hr3">randRange(1,5)</var>
+					<var id="Minute">randRange(10,55)</var>
+				</div>
+				<p class="question">
+					<var>person(1)</var>做蛋糕花了<var>Hr3</var>小時<var>Minute</var>分鐘，是幾分鐘？
+				</p>
+				<div class="solution"><var>Hr3*60+Minute</var></div>
+				<div class="hints">
+					<p>1小時 = 60分鐘</p>
+					<div>
+						<p><var>Hr3</var>小時就是<code><var>Hr3</var> \times 60 = </code><span id="HtM"><code><var>Hr3*60</var></code></span> 分鐘</p>
+						<div class="graphie">
+							$("#HtM").addClass("hint_green");
+						</div>
+					</div>
+					<div>
+						<p>總共是<code><var>Hr3*60</var>+<var>Minute</var> = </code><span id="sumM"><code><var>Hr3*60+Minute</var></code></span>分鐘</p>
+						<div class="graphie">
+								$("#HtM").removeClass("hint_green");
+								$("#sumM").addClass("hint_red");
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="minute_hr">
+				<div class="vars">
+					<var id="Minute1">randRange(70,200)</var>
+					<var id="Ans1">floorTo(0,Minute1/60)</var>
+					<var id="Ans2">Minute1%60</var>
+				</div>
+				<p class="question">
+					<var>person(1)</var>寫作業花了<var>Minute1</var>分鐘，是幾小時幾分鐘？
+				</p>
+				<div class="solution" data-type="multiple">
+					<p class="short"><span class="sol"><var>Ans1</var></var></span>小時<span class="sol"><var>Ans2</var></span>分鐘</p>
+					<p class="example">整數</p>
+				</div>
+				<div class="hints">
+					<p>1小時 = 60分鐘</p>
+					<div>
+						<p><var>Minute1</var>分鐘是<code><var>Minute1</var> \div 60 = </code><span id="MtH"><code><var>Ans1</var></code></span>小時，餘<span id="leftM"><code><var>Ans2</var></code></span>分鐘</p>
+						<div class="graphie">
+							$("#MtH").addClass("hint_green");
+							$("#leftM").addClass("hint_green");
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="minute_sec">
+				<div class="vars">
+					<var id="Minute2">randRange(3,15)</var>
+					<var id="Sec">randRange(5,60)</var>
+				</div>
+				<p class="question">
+					<var>person(1)</var>從家中走到公園的時間是<var>Minute2</var>分<var>Sec</var>秒，是幾秒？
+				</p>
+				<div class="solution">
+					<var>Minute2*60+Sec</var>
+				</div>
+				<div class="hints">
+					<p>1分鐘 = 60秒</p>
+					<div>
+						<p><var>Minute2</var>分鐘就是<code><var>Minute2</var> \times 60 = </code><span id="MtS"><code><var>Minute2*60</var></code></span> 秒</p>
+						<div class="graphie">
+							$("#MtS").addClass("hint_green");
+						</div>
+					</div>
+					<div>
+						<p>總共是<code><var>Minute2*60</var>+<var>Sec</var> = </code><span id="sumS"><code><var>Minute2*60+Sec</var></code></span>秒</p>
+						<div class="graphie">
+								$("#MtS").removeClass("hint_green");
+								$("#sumS").addClass("hint_red");
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="sec_minute">
+				<div class="vars">
+					<var id="Sec2">randRange(70,600)</var>
+					<var id="AnsM">floorTo(0,Sec2/60)</var>
+					<var id="AnsS">Sec2%60</var>
+				</div>
+				<p class="question">
+					<var>person(1)</var>參加拼圖比賽，花了<var>Sec2</var>秒完成拼圖，是幾分幾秒？
+				</p>
+				<div class="solution" data-type="multiple">
+					<p class="short"><span class="sol"><var>AnsM</var></var></span>分<span class="sol"><var>AnsS</var></span>秒</p>
+					<p class="example">整數</p>
+				</div>
+				<div class="hints">
+					<p>1分鐘 = 60秒</p>
+					<div>
+						<p><var>Sec2</var> 秒就是 <code><var>Sec2</var> \div 60 = </code><span id="StM"><code><var>AnsM</var></code></span>分，餘<span id="leftS"><code><var>AnsS</var></code></span>秒</p>
+						<div class="graphie">
+							$("#StM").addClass("hint_green");
+							$("#leftS").addClass("hint_green");
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>

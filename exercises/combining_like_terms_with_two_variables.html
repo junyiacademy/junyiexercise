@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html data-require="math expressions math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>二元一次式化簡 1</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .short input[type=text] {
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">"
+        <div class="vars" data-ensure="A !== D" data-ensure="B !== E" data-ensure="C !== F" data-ensure="G !== H" data-ensure="GA !== HD" data-ensure="GB !== HE" data-ensure="GC !== HF">
+            <var id="A">randRangeNonZero( -10 , 10 )</var>
+            <var id="B">randRangeNonZero( -10 , 10 )</var>
+			<var id="C">randRangeNonZero( -10 , 10 )</var>
+			<var id="D">randRangeNonZero( -10 , 10 )</var>
+			<var id="E">randRangeNonZero( -10 , 10 )</var>
+			<var id="F">randRangeNonZero( -10 , 10 )</var>
+			<var id="G">randRangeExclude( -5 , 5, [0, -1, 1])</var>
+			<var id="H">randRangeExclude( -5 , 5, [0, -1, 1])</var>
+			<var id="X"> A + D </var>
+			<var id="Y"> B + E </var>
+			<var id="Z"> C + F </var>
+			<var id="GA"> G * A </var>
+			<var id="GB"> G * B </var>
+			<var id="GC"> G * C </var>
+			<var id="HD"> H * D </var>
+			<var id="HE"> H * E </var>
+			<var id="HF"> H * F </var>
+			<var id="M"> GA + HD </var>
+			<var id="N"> GB + HE </var>
+			<var id="O"> GC + HF </var>
+        </div>
+
+        <div class="problems">
+            <div id="original">
+                <div class="problem">
+                    <p>請化簡下列式子:</p>
+                </div>
+                <p class="question"><code> &#40 <var>expr(["+", ["*", A, "x"], ["*", B, "y"], C])</var> &#41 + &#40 <var>expr(["+", ["*", D, "x"], ["*", E, "y"], F])</var> &#41 </code></p>
+				
+				<div class="solution" data-type="multiple"> 
+					<p class="short"><span class="sol"><var>X</var></span> x + <span class="sol"><var>Y</var></span> y + <span class="sol"><var>Z</var></span></p>
+					<p class="example">整數</p>
+				</div>               
+                <div class="hints">
+					<div>
+						<p>首先，有括號必需去括號</p>						
+						<p><code>\color {ORANGE}{&#40}</code><code><var>expr(["+", ["*", A, "x"], ["*", B, "y"], C])</var></code><code>\color {ORANGE}{&#41 + &#40}</code><code><var>expr(["+", ["*", D, "x"], ["*", E, "y"], F])</var></code><code>\color {ORANGE}{&#41}</code></p>
+					</div>  
+					<div>
+						<p>可得</p>
+						<p><code><var>expr(["+", ["*", A, "x"], ["*", B, "y"], C , ["*", D, "x"], ["*", E, "y"], F ])</var></code></p>
+					</div>
+					<div>
+						<p>同類項合併</p>
+						<p>
+						<code>\color {BLUE}{<var>plus( A + "x" )</var>}</code>
+						<code><var>B &gt;= 0 ? "+" : ""</var></code>
+						<code>\color {RED}{<var>plus( B + "y" )</var>}</code>
+						<code><var>C &gt;= 0 ? "+" : ""</var></code>
+						<code>\color {GREEN}{<var>C</var>}</code>
+						<code><var>D &gt;= 0 ? "+" : ""</var></code>
+						<code>\color {BLUE}{<var>plus( D + "x" )</var>}</code>
+						<code><var>E &gt;= 0 ? "+" : ""</var></code>
+						<code>\color {RED}{<var>plus( E + "y" )</var>}</code>
+						<code><var>F &gt;= 0 ? "+" : ""</var></code>
+						<code>\color {GREEN}{<var>F</var>}</code>
+						</p>
+					</div>
+					<div>
+						<p>因此整理後為</p>
+						<p><code> &#40 <var>expr(["+", A , D ])</var> &#41 x +  &#40 <var>expr(["+", B , E ])</var> &#41 y +  &#40 <var>expr(["+", C , F ])</var> &#41  </code></p>
+					</div>					
+					<p>因此<code>\color {ORANGE}{<var>expr(["+", ["*", X, "x"], ["*", Y, "y"], Z])</var>}</code>為此題答案</p>
+				</div>
+			</div>
+			
+			<div id="coefficient_ver"  data-type="original">
+				<div class="problem">
+                    <p>請化簡下列式子:</p>
+                </div>
+                <p class="question"><code><var>G</var> &#40 <var>expr(["+", ["*", A, "x"], ["*", B, "y"], C])</var> &#41 + <var>H</var> &#40 <var>expr(["+", ["*", D, "x"], ["*", E, "y"], F])</var> &#41 </code></p>
+				
+				<div class="solution" data-type="multiple"> 
+					<p class="short"><span class="sol"><var>M</var></span> x + <span class="sol"><var>N</var></span> y + <span class="sol"><var>O</var></span></p>
+					<p class="example">整數</p>
+				</div>               
+                <div class="hints">
+					<div>
+						<p>首先，有括號必需去括號</p>
+						<p><code>\color {ORANGE}{<var>G</var> &#40}</code><code><var>expr(["+", ["*", A, "x"], ["*", B, "y"], C])</var></code><code>\color {ORANGE}{&#41 + <var>H</var> &#40}</code><code><var>expr(["+", ["*", D, "x"], ["*", E, "y"], F])</var></code><code>\color {ORANGE}{&#41}</code></p>
+					</div>
+					<div>
+						<p>由於括號前有係數，所以我們可以利用分配律去括號</p>
+						<p>
+						<code>\color {ORANGE}{<var>G</var>} \times &#40 <var>plus( A + "x" )</var> &#41 </code>
+						<code><var>G &gt;= 0 ? "+" : ""</var></code>
+						<code>\color {ORANGE}{<var>G</var>} \times &#40 <var>plus( B + "y" )</var> &#41 </code>
+						<code><var>G &gt;= 0 ? "+" : ""</var></code>
+						<code>\color {ORANGE}{<var>G</var>} \times &#40 <var>C</var> &#41 </code>
+						<code><var>H &gt;= 0 ? "+" : ""</var></code>
+						<code>\color {ORANGE}{<var>H</var>} \times &#40 <var>plus( D + "x" )</var> &#41 </code>
+						<code><var>H &gt;= 0 ? "+" : ""</var></code>
+						<code>\color {ORANGE}{<var>H</var>} \times &#40 <var>plus( E + "y" )</var> &#41 </code>
+						<code><var>H &gt;= 0 ? "+" : ""</var></code>
+						<code>\color {ORANGE}{<var>H</var>} \times &#40 <var>F</var> &#41 </code>
+						</p>					
+						<p>可得</p>
+						<p><code><var>expr(["+", ["*", GA, "x"], ["*", GB, "y"], GC , ["*", HD, "x"], ["*", HE, "y"], HF ])</var></code></p>
+					</div>
+					<div>
+						<p>接著同類項合併</p>
+						<p>
+						<code>\color {BLUE}{<var>plus( GA + "x" )</var>}</code>
+						<code><var>GB &gt;= 0 ? "+" : ""</var></code>
+						<code>\color {RED}{<var>plus( GB + "y" )</var>}</code>
+						<code><var>GC &gt;= 0 ? "+" : ""</var></code>
+						<code>\color {GREEN}{<var>GC</var>}</code>
+						<code><var>HD &gt;= 0 ? "+" : ""</var></code>
+						<code>\color {BLUE}{<var>plus( HD + "x" )</var>}</code>
+						<code><var>HE &gt;= 0 ? "+" : ""</var></code>
+						<code>\color {RED}{<var>plus( HE + "y" )</var>}</code>
+						<code><var>HF &gt;= 0 ? "+" : ""</var></code>
+						<code>\color {GREEN}{<var>HF</var>}</code>
+						</p>
+					</div>
+					<div>
+						<p>整理後為</p>
+						<p><code> &#40 <var>expr(["+", GA , HD ])</var> &#41 x +  &#40 <var>expr(["+", GB , HE ])</var> &#41 y +  &#40 <var>expr(["+", GC , HF ])</var> &#41  </code></p>
+					</div>					
+					<p>因此<code>\color {ORANGE}{<var>expr(["+", ["*", M, "x"], ["*", N, "y"], O])</var>}</code>為此題答案</p>
+				</div>
+			</div>
+        </div>
+</body>
+</html>

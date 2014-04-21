@@ -2,7 +2,7 @@
 <html data-require="math math-format stat graphie word-problems">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Reading bar charts 3</title>
+    <title>閱讀條形圖</title>
     <script src="../khan-exercise.js"></script>
     <style>
         span.rotate  {
@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="problem">
-            Use the following graph to answer the question below:
+            使用下列圖表來回答問題:
             <div class="graphie" id="barchart">
                 init({
                     range: [ [ -2, NUM_STUDENTS * 3 + 2 ], [ -3, 12 ] ],
@@ -59,18 +59,18 @@
                 line( [ 0, 0 ], [ NUM_STUDENTS * 3 + 1, 0 ] );
                 line( [ 0, 0 ], [ 0, 10 ] );
 
-                label( [ ( NUM_STUDENTS * 3 + 1 ) / 2, -0.8 ], "&lt;b&gt;Student&lt;/b&gt;", "below", false );
-                $( label( [ -1.5, 5 ], "&lt;b&gt;Score (points)&lt;/b&gt;", "center", false ) ).addClass( "rotate" );
-                label( [ ( NUM_STUDENTS * 3 + 1 ) / 2, 10.5 ], "&lt;b&gt;Scores on Midterm and Final Exams&lt;/b&gt;", "above", false );
+                label( [ ( NUM_STUDENTS * 3 + 1 ) / 2, -0.8 ], "&lt;b&gt;學生&lt;/b&gt;", "below", false );
+                $( label( [ -1.5, 5 ], "&lt;b&gt;分數&lt;/b&gt;", "center", false ) ).addClass( "rotate" );
+                label( [ ( NUM_STUDENTS * 3 + 1 ) / 2, 10.5 ], "&lt;b&gt;期中考與期末考的分數&lt;/b&gt;", "above", false );
 
                 style({ stroke: "none", fill: "#9ab8ed", opacity: 1.0 });
                 path([ [ 0, -2 ], [ 0.5, -2  ], [ 0.5, -2.5  ], [ 0, -2.5 ], [ 0, -2 ] ]);
                 style({ stroke: "#000", strokeWidth: 2, opacity: 1.0 });
-                label( [ 0.5, -2.25 ], "Midterm", "right", false );
+                label( [ 0.5, -2.25 ], "期中考", "right", false );
                 style({ stroke: "none", fill: "#ffc966", opacity: 1.0 });
                 path([ [ 3, -2 ], [ 3.5, -2  ], [ 3.5, -2.5  ], [ 3, -2.5 ], [ 3, -2 ] ]);
                 style({ stroke: "#000", strokeWidth: 2, opacity: 1.0 });
-                label( [ 3.5, -2.25 ], "Final", "right", false );
+                label( [ 3.5, -2.25 ], "期末考", "right", false );
             </div>
         </div>
 
@@ -79,23 +79,23 @@
             <div id="average">
                 <div class="vars" data-ensure="NUM_STUDENTS === 5">
                     <var id="COLUMN">randRange( 0, 1 )</var>
-                    <var id="TEST">[ "midterm", "final exam" ][ COLUMN ]</var>
+                    <var id="TEST">[ "期中考", "期末考" ][ COLUMN ]</var>
                     <var id="AVERAGE">COLUMN === 0 ? mean( MIDTERM ) : mean( FINAL )</var>
                 </div>
-                <p class="question">What was the average student score for the <var>TEST</var>?</p>
+                <p class="question">學生的<var>TEST</var>平均分數是多少?</p>
 
                 <div class="solution" data-forms="integer"><var>AVERAGE</var></div>
 
                 <div class="hints">
                     <div>
-                        <p>Use the key to figure out which of the two bars shows the scores for the <var>TEST</var>.</p>
+                        <p>找到<var>TEST</var>所代表的顏色。</p>
                         <div class="graphie" data-update="barchart">
                             style({ stroke: PINK, fill: "none", strokeWidth: 2 });
                             ellipse( [ COLUMN * 3 + 1.2, -2.25 ], [ 1.5, 0.5 ] );
                         </div>
                     </div>
                     <div>
-                        <p>Find each of the <var>TEST</var> scores represented by the <span data-if="COLUMN === 0">blue</span><span data-else>orange</span> bars.</p>
+                        <p>找出每一個學生<span data-if="COLUMN === 0">藍色</span><span data-else>橘色</span>條狀圖所代表的<var>TEST</var>分數。</p>
                         <div data-each="NUM_STUDENTS times as INDEX">
                             <div class="graphie" data-update="barchart">
                                 if ( COLUMN === 0 ) {
@@ -106,7 +106,7 @@
                             </div>
                         </div>
                     </div>
-                    <p>To find the average student score, add up the individual scores and divide by the number of students.</p>
+                    <p>為了得到<var>TEST</var>的平均分數，把每一個學生的<var>TEST</var>分數全部加起來後除以總人數。</p>
                     <p>
                         <code>
                             \dfrac{<var>plus.apply( null, COLUMN === 0 ? MIDTERM : FINAL )</var>}{<var>NUM_STUDENTS</var>} =
@@ -114,7 +114,7 @@
                             <var>AVERAGE</var>
                         </code>
                     </p>
-                    <p class="final_answer">The average student score on the <var>TEST</var> was <code><var>AVERAGE</var></code>.</p>
+                    <p class="final_answer">所以<var>TEST</var>的平均分數為<code><var>AVERAGE</var></code>。</p>
                 </div>
             </div>
 
@@ -123,63 +123,63 @@
                     <var id="UNBIASED">true</var>
                     <var id="MIDTERM_AVG">mean( MIDTERM )</var>
                     <var id="FINAL_AVG">mean( FINAL )</var>
-                    <var id="ANSWER">MIDTERM_AVG &gt; FINAL_AVG ? "Midterm" : ( MIDTERM_AVG &lt; FINAL_AVG ? "Final exam" : "Same on both" )</var>
+                    <var id="ANSWER">MIDTERM_AVG &gt; FINAL_AVG ? "期中考" : ( MIDTERM_AVG &lt; FINAL_AVG ? "期末考" : "兩次考試一樣" )</var>
                 </div>
-                <p class="question">On average, did the students do better on the midterm or the final exam?</p>
+                <p class="question">學生在期中考和期末考的平均分數哪一個比較高?</p>
 
                 <div class="solution"><var>ANSWER</var></div>
                 <ul class="choices" data-category="true">
-                    <li>Midterm</li>
-                    <li>Final exam</li>
-                    <li>Same on both</li>
+                    <li>期中考</li>
+                    <li>期末考</li>
+                    <li>兩次考試一樣</li>
                 </ul>
 
                 <div class="hints">
                     <div>
-                        <p>Find each of the <span class="hint_blue">midterm scores</span> represented by the <span class="hint_blue">blue bars</span>.</p>
+						<p>找到每一個<span class="hint_blue">藍色條狀圖</span>所代表的<span class="hint_blue">期中考分數</span>。</p>
                         <div data-each="NUM_STUDENTS times as INDEX">
                             <div class="graphie" data-update="barchart">
                                     label( [ INDEX * 3 + 1.5, MIDTERM[ INDEX ] / 10 + 0.2 ], MIDTERM[ INDEX ], "below", false ).css({ fontWeight: "bold" });
                             </div>
                         </div>
                     </div>
-                    <p>To find the average student score on the midterm, add up the individual scores and divide by the number of students.</p>
+                    <p>為了得到學生期中考的平均分數，把每一個期中分數都加起來除以全部的學生人數。</p>
                     <div>
                         <p><code>
                             \dfrac{<var>plus.apply( null, MIDTERM )</var>}{<var>NUM_STUDENTS</var>} =
                             \dfrac{<var>sum( MIDTERM )</var>}{<var>NUM_STUDENTS</var>} =
                             <var>MIDTERM_AVG</var>
                         </code></p>
-                        <p>The average student score on the midterm was <code class="hint_blue"><var>MIDTERM_AVG</var></code>.</p>
+                        <p>所以學生期中考的平均分數為<code class="hint_blue"><var>MIDTERM_AVG</var></code>。</p>
                     </div>
                     <div>
-                        <p>Find each of the <span class="hint_orange">final exam scores</span> represented by the <span class="hint_orange">orange bars</span>.</p>
+                        <p>找到每一個<span class="hint_blue">橘色條狀圖</span>所代表的<span class="hint_blue">期末考分數</span>。</p>
                         <div data-each="NUM_STUDENTS times as INDEX">
                             <div class="graphie" data-update="barchart">
                                     label( [ INDEX * 3 + 2.5, FINAL[ INDEX ] / 10 + 0.2 ], FINAL[ INDEX ], "below", false ).css({ fontWeight: "bold" });
                             </div>
                         </div>
                     </div>
-                    <p>To find the average student score on the final exam, add up the individual scores and divide by the number of students.</p>
+                    <p>為了得到學生期末考的平均分數，把每一個期末分數都加起來除以全部的學生人數。</p>
                     <div>
                         <p><code>
                             \dfrac{<var>plus.apply( null, FINAL )</var>}{<var>NUM_STUDENTS</var>} =
                             \dfrac{<var>sum( FINAL )</var>}{<var>NUM_STUDENTS</var>} =
                             <var>FINAL_AVG</var>
                         </code></p>
-                        <p>The average student score on the final exam was <code class="hint_orange"><var>FINAL_AVG</var></code>.</p>
+                        <p>所以學生期末考的平均分數為<code class="hint_orange"><var>FINAL_AVG</var></code>。</p>
                     </div>
                     <p class="final_answer" data-if="MIDTERM_AVG > FINAL_AVG">
-                        The average student score was higher on the <span class="hint_blue">midterm</span>
-                        than on the <span class="hint_orange">final exam</span>.
+                        由此可知，學生在<span class="hint_blue">期中考</span>的平均分數比
+                        <span class="hint_orange">期末考</span>的平均分數還高。
                     </p>
                     <p class="final_answer" data-else-if="MIDTERM_AVG < FINAL_AVG">
-                        The average student score was higher on the <span class="hint_orange">final exam</span>
-                        than the <span class="hint_blue">midterm</span>.
+                        由此可知，學生在<span class="hint_orange">期末考</span>的平均分數比
+                        <span class="hint_blue">期中考</span>的平均分數還高。
                     </p>
                     <p class="final_answer" data-else>
-                        The average student score was the same on both the <span class="hint_blue">midterm</span>
-                        and the <span class="hint_orange">final exam</span>.
+                        由此可知，學生在<span class="hint_blue">期中考</span>的平均分數和
+                        <span class="hint_orange">期末考</span>的平均分數一樣高。
                     </p>
                 </div>
             </div>
@@ -187,23 +187,23 @@
             <div id="median">
                 <div class="vars">
                     <var id="COLUMN">randRange( 0, 1 )</var>
-                    <var id="TEST">[ "midterm", "final exam" ][ COLUMN ]</var>
+                    <var id="TEST">[ "期中考", "期末考" ][ COLUMN ]</var>
                     <var id="MEDIAN">COLUMN === 0 ? median( MIDTERM ) : median( FINAL )</var>
                 </div>
-                <p class="question">What was the median score for the <var>TEST</var>?</p>
+                <p class="question">學生在<var>TEST</var>分數的中位數是多少?</p>
 
                 <div class="solution"><var>MEDIAN</var></div>
 
                 <div class="hints">
                     <div>
-                        <p>Use the key to figure out which of the two bars shows the scores for the <var>TEST</var>.</p>
+                        <p>找到<var>TEST</var>所代表的顏色。</p>
                         <div class="graphie" data-update="barchart">
                             style({ stroke: PINK, fill: "none", strokeWidth: 2 });
                             ellipse( [ COLUMN * 3 + 1.2, -2.25 ], [ 1.5, 0.5 ] );
                         </div>
                     </div>
                     <div>
-                        <p>Find each of the <var>TEST</var> scores represented by the <span data-if="COLUMN === 0">blue</span><span data-else>orange</span> bars.</p>
+                        <p>列出每一條<span data-if="COLUMN === 0">藍色</span><span data-else>橘色</span>所代表的<var>TEST</var>分數。</p>
                         <p><code>\qquad\large{<var>toSentence( COLUMN === 0 ? MIDTERM : FINAL, "" )</var>}</code></p>
                         <div data-each="NUM_STUDENTS times as INDEX">
                             <div class="graphie" data-update="barchart">
@@ -216,12 +216,12 @@
                         </div>
                     </div>
                     <div>
-                        <p>Put the <var>TEST</var> scores in order from least to greatest.</p>
+                        <p>把<var>TEST</var>的每一個分數由小排到大。</p>
                         <p><code>\qquad\large{<var>toSentence( sortNumbers( COLUMN === 0 ? MIDTERM : FINAL ), "" )</var>}</code></p>
                     </div>
-                    <p data-if="NUM_STUDENTS % 2">Since there are an odd number of scores, the median score is just the middle score.</p>
+                    <p data-if="NUM_STUDENTS % 2">因為總共有奇數個分數，所以中位數就是最中間那一個分數。</p>
                     <div data-else data-unwrap>
-                        <p>Since there are an even number of scores, the median score is the average of the two middle scores.</p>
+                        <p>因為總共有偶數個分數，所以中位數就是最中間那兩個分數的平均。</p>
                         <p>
                             <code>
                                 \dfrac{
@@ -231,30 +231,30 @@
                             </code>
                         </p>
                     </div>
-                    <p class="final_answer">The median score on the <var>TEST</var> was <code><var>MEDIAN</var></code>.</p>
+                    <p class="final_answer">所以<var>TEST</var>的中位數為<code><var>MEDIAN</var></code>。</p>
                 </div>
             </div>
 
             <div id="mode">
                 <div class="vars" data-ensure="MODE">
                     <var id="COLUMN">randRange( 0, 1 )</var>
-                    <var id="TEST">[ "midterm", "final exam" ][ COLUMN ]</var>
+                    <var id="TEST">[ "期中考", "期末考" ][ COLUMN ]</var>
                     <var id="MODE">COLUMN === 0 ? mode( MIDTERM ) : mode( FINAL )</var>
                 </div>
-                <p class="question">What was the mode for the <var>TEST</var> scores?</p>
+                <p class="question"><var>TEST</var>分數的眾數是多少?</p>
 
                 <div class="solution" data-forms="integer"><var>MODE</var></div>
 
                 <div class="hints">
                     <div>
-                        <p>Use the key to figure out which of the two bars shows the scores for the <var>TEST</var>.</p>
+                        <p>找到<var>TEST</var>所代表的顏色。</p>
                         <div class="graphie" data-update="barchart">
                             style({ stroke: PINK, fill: "none", strokeWidth: 2 });
                             ellipse( [ COLUMN * 3 + 1.2, -2.25 ], [ 1.5, 0.5 ] );
                         </div>
                     </div>
                     <div>
-                        <p>Find each of the <var>TEST</var> scores represented by the <span data-if="COLUMN === 0">blue</span><span data-else>orange</span> bars.</p>
+                        <p>找出每一個學生<span data-if="COLUMN === 0">藍色</span><span data-else>橘色</span>條狀圖所代表的<var>TEST</var>分數。</p>
                         <div data-each="NUM_STUDENTS times as INDEX">
                             <div class="graphie" data-update="barchart">
                                 if ( COLUMN === 0 ) {
@@ -265,9 +265,9 @@
                             </div>
                         </div>
                     </div>
-                    <p>The mode is the most frequently occurring score.</p>
+                    <p>眾數代表最常出現的數</p>
                     <div>
-                        <p class="final_answer"><code><var>MODE</var></code> is the most frequently occurring score.</p>
+                        <p class="final_answer"><code><var>MODE</var></code>是最常出現的分數。</p>
                         <div data-each="NUM_STUDENTS times as INDEX">
                             <div class="graphie" data-update="barchart">
                                 if ( COLUMN === 0 ) {
@@ -288,26 +288,26 @@
             <div id="range">
                 <div class="vars">
                     <var id="COLUMN">randRange( 0, 1 )</var>
-                    <var id="TEST">[ "midterm", "final exam" ][ COLUMN ]</var>
+                    <var id="TEST">[ "期中考", "期末考" ][ COLUMN ]</var>
                     <var id="MIN">COLUMN === 0 ? Math.min.apply( null, MIDTERM ) : Math.min.apply( null, FINAL )</var>
                     <var id="MAX">COLUMN === 0 ? Math.max.apply( null, MIDTERM ) : Math.max.apply( null, FINAL )</var>
                     <var id="RANGE">MAX - MIN</var>
                 </div>
-                <p class="question">What is the range of the <var>TEST</var> scores?</p>
+                <p class="question"><var>TEST</var>分數的範圍(全距)是多少?</p>
 
                 <div class="solution" data-forms="integer"><var>RANGE</var></div>
 
                 <div class="hints">
-                    <p>The range is the difference between the largest value and the smallest value.</p>
+                    <p>範圍(稱做全距或是極差)代表最大值和最小值的差。</p>
                     <div>
-                        <p>Use the key to figure out which of the two bars shows the scores for the <var>TEST</var>.</p>
+                        <p>找到<var>TEST</var>所代表的顏色。</p>
                         <div class="graphie" data-update="barchart">
                             style({ stroke: PINK, fill: "none", strokeWidth: 2 });
                             ellipse( [ COLUMN * 3 + 1.2, -2.25 ], [ 1.5, 0.5 ] );
                         </div>
                     </div>
                     <div>
-                        <p>Find the largest and smallest <var>TEST</var> scores represented by the <span data-if="COLUMN === 0">blue</span><span data-else>orange</span> bars.</p>
+                        <p>找出代表<var>TEST</var>最大值和最小值的<span data-if="COLUMN === 0">藍色</span><span data-else>橘色</span>條狀圖。</p>
                         <div data-each="NUM_STUDENTS times as INDEX">
                             <div class="graphie" data-update="barchart">
                                 if ( COLUMN === 0 ) {
@@ -322,38 +322,38 @@
                             </div>
                         </div>
                     </div>
-                    <p>The smallest <var>TEST</var> score is <code><var>MIN</var></code>. The largest <var>TEST</var> score is <code><var>MAX</var></code>.</p>
+                    <p><var>TEST</var>分數的最小值為<code><var>MIN</var></code>。<var>TEST</var>分數的最大值為<code><var>MAX</var></code>。</p>
                     <div>
-                        <p>Find the range by subtracting the smallest score from the largest score.</p>
+                        <p>把最大值和最小值相減即可得到<var>TEST</var>分數的範圍</p>
                         <p><code>\qquad <var>MAX</var> - <var>MIN</var> = <var>RANGE</var></code></p>
                     </div>
-                    <p class="final_answer">The range of <var>TEST</var> scores is <code><var>RANGE</var></code>.</p>
+                    <p class="final_answer">所以<var>TEST</var>分數的範圍(全距)是<code><var>RANGE</var></code>。</p>
                 </div>
             </div>
 
             <div id="midrange">
                 <div class="vars">
                     <var id="COLUMN">randRange( 0, 1 )</var>
-                    <var id="TEST">[ "midterm", "final exam" ][ COLUMN ]</var>
+                    <var id="TEST">[ "期中考", "期末考" ][ COLUMN ]</var>
                     <var id="MIN">COLUMN === 0 ? Math.min.apply( null, MIDTERM ) : Math.min.apply( null, FINAL )</var>
                     <var id="MAX">COLUMN === 0 ? Math.max.apply( null, MIDTERM ) : Math.max.apply( null, FINAL )</var>
                     <var id="MIDRANGE">(MAX + MIN) / 2</var>
                 </div>
-                <p class="question">What is the midrange of the <var>TEST</var> scores?</p>
+                <p class="question"><var>TEST</var>分數的中距數是多少?</p>
 
                 <div class="solution"><var>MIDRANGE</var></div>
 
                 <div class="hints">
-                    <p>The midrange is halfway between the largest value and the smallest value.</p>
+                    <p>中距數代表最大值和最小值的中點</p>
                     <div>
-                        <p>Use the key to figure out which of the two bars shows the scores for the <var>TEST</var>.</p>
+                        <p>找到<var>TEST</var>所代表的顏色。</p>
                         <div class="graphie" data-update="barchart">
                             style({ stroke: PINK, fill: "none", strokeWidth: 2 });
                             ellipse( [ COLUMN * 3 + 1.2, -2.25 ], [ 1.5, 0.5 ] );
                         </div>
                     </div>
                     <div>
-                        <p>Find the largest and smallest <var>TEST</var> scores represented by the <span data-if="COLUMN === 0">blue</span><span data-else>orange</span> bars.</p>
+                        <p>找出代表<var>TEST</var>最大值和最小值的<span data-if="COLUMN === 0">藍色</span><span data-else>橘色</span>條狀圖。</p>
                         <div data-each="NUM_STUDENTS times as INDEX">
                             <div class="graphie" data-update="barchart">
                                 if ( COLUMN === 0 ) {
@@ -368,12 +368,12 @@
                             </div>
                         </div>
                     </div>
-                    <p>The smallest <var>TEST</var> score is <code><var>MIN</var></code>. The largest <var>TEST</var> score is <code><var>MAX</var></code>.</p>
+                    <p><var>TEST</var>分數的最小值為<code><var>MIN</var></code>。<var>TEST</var>分數的最大值為<code><var>MAX</var></code>。</p>
                     <div>
-                        <p>Find the midrange by averaging the smallest and largest scores.</p>
+                        <p>把最小值和最大值平均得到中距數。</p>
                         <p><code>\qquad \dfrac{<var>MIN</var> + <var>MAX</var>}{2} = <var>MIDRANGE</var></code></p>
                     </div>
-                    <p class="final_answer">The midrange of <var>TEST</var> scores is <code><var>MIDRANGE</var></code>.</p>
+                    <p class="final_answer"><var>TEST</var>分數的中距數為<code><var>MIDRANGE</var></code>。</p>
                 </div>
             </div>
 

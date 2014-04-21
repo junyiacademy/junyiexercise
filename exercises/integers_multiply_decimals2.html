@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>整數乘以小數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="area">
+                <div class="vars">
+                    <var id="SMALL_FACTOR">randRange(10,59)*10+randRange(1,9)</var>
+                    <var id="BIG_FACTOR">randRange( 11, 50 )</var>
+                    <var id="PRODUCT">SMALL_FACTOR * BIG_FACTOR</var>
+                    <var id="SMALL_FACTOR_DECIMAL">2</var>
+                    <var id="BIG_FACTOR_DECIMAL">0</var>
+                    <var id="SMALL_FACTOR_DISPLAY">SMALL_FACTOR/pow(10, SMALL_FACTOR_DECIMAL ) </var>
+                    <var id="PRODUCT_DISPLAY">PRODUCT/pow(10,SMALL_FACTOR_DECIMAL)</var>
+                </div>
+                <div class="question">
+                    <p>長<var>BIG_FACTOR</var>公分、寬<var>SMALL_FACTOR_DISPLAY</var>公分的長方形，面積為幾平方公分?</p>
+                </div>
+                <div class="solution" data-type="decimal">
+                    <span><var>PRODUCT_DISPLAY</var>平方公分</span>
+                </div>
+                
+                <div class="hints">
+
+                    <p>我們知道面積等於長度乘以寬<br>
+                       （可以利用旁邊空白處計算）</p>
+                        
+                    <p>長度乘以寬等於 <code><var>BIG_FACTOR</var>\times<var>SMALL_FACTOR_DISPLAY</var></code></p>
+
+                    <p>暫時不看小數，將兩個數字相乘：<br>
+                    <code><var>SMALL_FACTOR</var>\times<var>BIG_FACTOR</var> = <var>PRODUCT</var></code>
+                    </p>
+
+                    <p>回過頭來算小數的位數：<br>
+                        數字 <var>BIG_FACTOR</var> 沒有小數</p>
+                    
+                    <p>數字 <var>SMALL_FACTOR_DISPLAY</var> 的小數有 <var>SMALL_FACTOR_DECIMAL</var>位</p>
+                    
+                    <p>所以，我們要將 <var>PRODUCT</var> 的小數點往左邊移 <var>SMALL_FACTOR_DECIMAL</var> 位</p>
+
+                    <p><var>PRODUCT</var>可以寫成 <var>PRODUCT.toFixed(1)</var></p>
+                    
+                    <p>將 <var>PRODUCT.toFixed(1)</var>小數點往左邊移 <var>SMALL_FACTOR_DECIMAL</var>位會成為 <var>PRODUCT_DISPLAY</var>平方公分</p>
+                    
+                    <p>因此長方形的面積為 <var>PRODUCT_DISPLAY</var>平方公分</p>
+
+                </div>
+            </div>
+            
+            <div id="apply">
+                <div class="vars">
+                    <var id="SMALL_FACTOR">randRange( 1, 9 )</var>
+                    <var id="BIG_FACTOR">randRange( 1, 9 )*10</var>
+                    <var id="PRODUCT">SMALL_FACTOR * BIG_FACTOR</var>
+                    <var id="SMALL_FACTOR_DECIMAL">1</var>
+                    <var id="BIG_FACTOR_DECIMAL">0</var>
+                    <var id="SMALL_FACTOR_DISPLAY">SMALL_FACTOR/pow(10,SMALL_FACTOR_DECIMAL)</var>
+                    <var id="PRODUCT_DISPLAY">PRODUCT/pow(10,SMALL_FACTOR_DECIMAL)</var>
+                    <var id="idx">randRange(0,1)</var>
+                    <var id="type">[ ["盒" ,"餅乾" ,"片"],
+                                    ["包" ,"糖果" ,"顆"] ]</var>
+                    
+                </div>
+                <div class="problem">
+                    <p>
+                        一<var>type[idx][0]</var><var>type[idx][1]</var>
+                        有<var>BIG_FACTOR</var><var>type[idx][2]</var>
+                        ，吃了<var>SMALL_FACTOR_DISPLAY</var><var>type[idx][0]</var>
+                        是吃了幾<var>type[idx][2]</var>?
+                    </p>
+                </div>
+                <div class="solution" data-type="decimal">
+                    <span><var>PRODUCT_DISPLAY</var><var>type[idx][2]</var></span>
+                </div>
+                <div class="hints">
+
+                    <p>我們可以用<code><var>BIG_FACTOR</var>\times<var>SMALL_FACTOR_DISPLAY</var></code>算出來到底是吃了幾<var>type[idx][2]</var></p>
+                    
+                    <p>暫時不看小數，將兩個數字相乘：<br>
+                    <code><var>SMALL_FACTOR</var>\times<var>BIG_FACTOR</var> = <var>PRODUCT</var></code>
+                    </p>
+                    
+                    <p>回過頭來算小數的位數：
+                        數字<var>BIG_FACTOR</var>沒有小數</p>
+                    
+                    <p>數字<var>SMALL_FACTOR_DISPLAY</var>的小數有一位</p>
+                    
+                    <p>所以，我們要將<var>PRODUCT</var>的小數點往左邊移一位</p>
+                    
+                    <p><var>PRODUCT</var>可以寫成<var>PRODUCT.toFixed(1)</var></p>
+                    
+                    <p>將<var>PRODUCT.toFixed(1)</var>小數點往左邊移一位會成為<var>(PRODUCT/pow(10,1)).toFixed(2)</var>也就是<var>PRODUCT_DISPLAY</var></p>
+                    
+                    <p>也就是說<code><var>BIG_FACTOR</var>\times<var>SMALL_FACTOR_DISPLAY</var></code>的結果為<var>PRODUCT_DISPLAY</var>，代表吃了<var>PRODUCT_DISPLAY</var><var>type[idx][2]</var></p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

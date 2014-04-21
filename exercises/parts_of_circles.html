@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie time word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>圓的結構</title>
+    <script src="../khan-exercise.js"></script>
+	<script type="text/javascript">
+        var R_COLOR = "purple";
+        var D_COLOR = "green";
+        var C_COLOR = "blue";
+        var K_COLOR = "red";
+
+		
+		
+        function initCircle( R ) {
+            var graph = KhanUtil.currentGraph;
+
+            graph.init({
+                range: [ [-1.1, 1.1], [-1.1, 1.1] ],
+                scale: 100
+            });
+
+            graph.circle( [0, 0], 1, { "fill-opacity": 0 , "stroke": C_COLOR } );
+			graph.label( [0.7, 0.7], "\\color{" + C_COLOR + "}{C}", "above" );
+        }
+		function initCircleano( R ) {
+            var graph = KhanUtil.currentGraph;
+
+            graph.init({
+                range: [ [-37, 37], [-37, 37] ],
+                scale: 3
+            });
+
+            graph.circle( [0, 0], 1, { "fill": "#0000", "stroke": K_COLOR } );
+			graph.label( [0, 0], "\\color{" + K_COLOR + "}{O}", "above" );
+        }
+
+        function drawRadius( R ) {
+            var graph = KhanUtil.currentGraph;
+
+            graph.line( [0, 0], [1, 0], { "fill": "none", "stroke": R_COLOR } );
+            graph.label( [1/2, 0], "\\color{" + R_COLOR + "}{r}", "below" );
+        }
+
+        function drawDiameter( R ) {
+            var graph = KhanUtil.currentGraph;
+
+            graph.line( [-1, 0], [1, 0], { "stroke": D_COLOR } );
+            graph.label( [0, 0], "\\color{" + D_COLOR + "}{d = " + 2 * R + "}", "above" );
+        }
+		
+		function drawDiameter_tile( R ) {
+            var graph = KhanUtil.currentGraph;
+
+            graph.line( [-1/2, 1.73205/2], [1/2, -1.73205/2], { "stroke": D_COLOR } );
+            graph.label( [0, -0.1], "\\color{" + D_COLOR + "}{d}", "below" );
+        }
+
+        function drawCircumference( R ) {
+            var graph = KhanUtil.currentGraph;
+
+            graph.circle( [0, 0], 1, { "stroke": C_COLOR } );
+            graph.label( [0, -1], "\\color{" + C_COLOR + "}{c = " + 2 * R + "\\pi}", "below" );
+        }
+
+        function drawArea( R ) {
+            var graph = KhanUtil.currentGraph;
+
+            var c = graph.circle( [0, 0], 1, { "fill": "#ffcccc", "stroke-width": 0 } );
+            $(c.node).insertBefore($(graph.raphael.canvas).find("ellipse")[0]);
+
+            graph.label( [0, 0.5], "\\color{" + K_COLOR + "}{K = " + R*R + "\\pi}", "above" );
+
+			
+        }
+    </script>
+    <style type="text/css">
+        #answer_area .short input[type=text] {
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+        <var id="A">1</var>
+		<var id="B">2</var>
+		<var id="C">3</var>
+		<var id="D">4</var>
+		<var id="R">randRange(1, 8)</var>
+		    	
+		<var id="SOLUTION_1">(function() {
+                        if ( A &lt; 2 ) {
+                            return "半徑";
+                        } else {
+                            return "沒有被平分";
+                        }
+                    })()
+		</var>
+        <var id="SOLUTION_2">(function() {
+                        if ( 2 === B ) {
+                            return "直徑";
+                        } else {
+                            return "有被平分";
+                        }
+                    })()
+		</var>
+		<var id="SOLUTION_3">(function() {
+                        if ( C &gt; 2 ) {
+                            return "圓周";
+                        } else {
+                            return "有被平分";
+                        }
+                    })()
+		</var>
+				<var id="SOLUTION_4">(function() {
+                        if ( D &gt; 2 ) {
+                            return "圓心";
+                        } else {
+                            return "有被平分";
+                        }
+                    })()
+		</var>
+									
+	</div>
+
+    <div class="problems">
+        <div id="A">
+		
+            <div class="question">
+			    <p>認識圓的各部位名稱。<code><strong>\purple{r}</strong></code>是什麼? </p>
+
+				
+				<div class="graphie" id="circle">
+                    
+					initCircleano( R );
+					initCircle( R );
+					drawRadius( R );
+					drawDiameter_tile( R );
+
+                </div>
+
+
+				
+            </div>
+			
+          
+		   
+		   <p class="solution"><var>SOLUTION_1</var></p>
+                <ul class="choices" data-category="true">
+                    <li>半徑</li>
+                    <li>直徑</li>
+					<li>圓周</li>
+					<li>圓心</li>
+                </ul>
+
+            <div class="hints">
+
+			<p><code>\purple{r}是從\red{圓心}到\blue{圓周}的直線。</code></p>
+            <p><code>這一條線叫做\purple{半徑}。</code></p>
+
+
+
+            </div>
+        </div>
+		<div id="B">
+		
+            <div class="question">
+			    <p>認識圓的各部位名稱。<code><strong>\green{d}</strong></code>是什麼?</p>
+				<div class="graphie" id="circle">
+                    
+					initCircleano( R );
+					initCircle( R );
+					drawRadius( R );
+					drawDiameter_tile( R );
+
+                </div>			
+            </div>
+
+		   
+		   <p class="solution"><var>SOLUTION_2</var></p>
+                <ul class="choices" data-category="true">
+                    <li>半徑</li>
+                    <li>直徑</li>
+					<li>圓周</li>
+					<li>圓心</li>
+                </ul>
+
+            <div class="hints">
+			
+			<p><code>\green{d}是從\blue{圓周}，通過\red{圓心}，到\blue{圓周}上另外一邊的直線。</code></p>
+			<p><code>這一條線叫做\green{直徑}。直徑剛好是半徑的兩倍長。</code></p>
+
+            </div>
+        </div>
+		
+		<div id="C">
+		
+            <div class="question">
+			    <p>認識圓的各部位名稱。<code><strong>\blue{C}</strong></code>是什麼?</p>     
+				<div class="graphie" id="circle">
+                    
+					initCircleano( R );
+					initCircle( R );
+					drawRadius( R );
+					drawDiameter_tile( R );
+
+                </div>
+            </div>
+			
+
+		   
+		   <p class="solution"><var>SOLUTION_3</var></p>
+                <ul class="choices" data-category="true">
+                    <li>半徑</li>
+                    <li>直徑</li>
+					<li>圓周</li>
+					<li>圓心</li>
+                </ul>
+
+            <div class="hints">
+			<p><code>\blue{C的長度}是沿著\blue{圓}的\blue{周}圍走一圈。</code></p>
+			<p><code>這一條弧線的長度叫做\blue{圓周長}。</code></p>
+            </div>
+        </div>
+
+		<div id="D">
+		
+            <div class="question">
+			    <p>認識圓的各部位名稱。<code><strong>\red{O}</strong></code>是什麼?</p>     
+				<div class="graphie" id="circle">
+                    
+					initCircleano( R );
+					initCircle( R );
+					drawRadius( R );
+					drawDiameter_tile( R );
+
+                </div>
+            </div>
+			
+
+		   
+		   <p class="solution"><var>SOLUTION_4</var></p>
+                <ul class="choices" data-category="true">
+                    <li>半徑</li>
+                    <li>直徑</li>
+					<li>圓周</li>
+					<li>圓心</li>
+                </ul>
+
+            <div class="hints">
+			<p><code>\red{O}是在圓最中心的位置，圓心到\blue{圓周}上每一個點的距離都是一樣的。</code></p>
+			<p><code>一個圓最中間的那一點叫做\red{圓心}。</code></p>
+            </div>
+        </div>
+
+
+		
+  
+    </div>
+</body>
+</html>

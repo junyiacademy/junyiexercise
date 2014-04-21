@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie time word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>公制面積大單位比較</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .short input[type=text] {
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+       
+
+        <var id="SU">randFromArray([
+            [randRange( 1, 999 )*100],
+            [randRange( 1, 999 )*10],
+        ])</var>
+
+        <var id="SUL" data-ensure="SUL &gt; 0">randFromArray([
+            [SU*10],
+            [SU*0.1],
+            [SU*0.9],
+            [SU*1.1],
+            [(SU+randRange( 1, 999 ))*10],
+        ])</var>
+        
+        <var id="BU">randFromArray([
+            [randRange( 1, 999 )/100],
+            [randRange( 1, 999 )/10],
+            [randRange( 1, 999 )/1],
+        ])</var>
+
+        <var id="BUL">randFromArray([
+            [BU*10],
+            [BU*0.1],
+            [BU*0.9],
+            [BU*1.1],
+            [(BU+randRange( 1, 999 ))*10],
+        ])</var>
+
+        <var id="A,B,C">randFromArray([
+            ["平方公尺", "公頃", "10000"],
+            ["平方公尺", "公畝", "100"],
+            ["平方公分","平方公尺" , "10000"],
+            ["平方公尺", "平方公里", "1000000"],
+            ["公畝", "公頃", "100"],
+            ["公畝", "平方公里", "10000"],
+            ["公頃", "平方公里", "100"],
+           ])</var>
+			
+            <var id="FBUL">Math.floor(BUL*10000)/10000</var>
+
+            <var id="S1">(function() {
+                        if ( FBUL/C &gt; BU ) {
+                            return "&gt;";
+                        } else {
+                            return "&lt;";
+                        }
+                    })()        
+                    </var>
+            <var id="S2">(function() {
+                        if ( BU*C &gt; BUL ) {
+                            return "&gt;";
+                        } else {
+                            return "&lt;";
+                        }
+                    })()        
+                    </var>
+ 
+            
+           
+
+	</div>
+
+    <div class="problems">
+        <div id="small_to_big">
+            <div class="question">
+                <p>請比較兩個面積的大小</p>
+                <p><var>FBUL</var><var>A</var><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><var>BU</var><var>B</var></p>
+            </div>
+           
+        <p class="solution"><var>S1</var></p>
+                <ul class="choices" data-category="true">
+                    <li>&lt;</li>
+                    <li>=</li>
+                    <li>&gt;</li>
+                </ul>
+
+            <div class="hints">
+                
+                <p>1<var>A</var>=1&divide;<var>C</var><var>B</var></p>
+                <p>那麼<var>FBUL</var><var>A</var>= 多少<var>B</var>?</p>
+                <p><var>FBUL</var><var>A</var>= <var>FBUL</var>&divide;<var>C</var><var>B</var></p>
+                <p>也就是<var>Math.round(FBUL*C/C)/C</var><var>B</var></p>
+                <p><var>Math.round(FBUL*C/C)/C</var><var>B</var><var>S1</var><var>BU</var><var>B</var></p>
+                <p>所以<var>FBUL</var><var>A</var><var>S1</var><var>BU</var><var>B</var></p>
+
+            </div>
+        </div>
+
+         <div id="big_to_small">
+            <div class="question">
+                <p>請比較兩個面積的大小</p>
+                <p><var>BU</var><var>B</var><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><var>FBUL</var><var>A</var></p>
+            </div>
+           
+        <p class="solution"><var>S2</var></p>
+                <ul class="choices" data-category="true">
+                    <li>&lt;</li>
+                    <li>=</li>
+                    <li>&gt;</li>
+                </ul>
+
+            <div class="hints">
+                
+                <p>1<var>B</var>=<var>C</var><var>A</var></p>
+                <p>那麼<var>BU</var><var>B</var>= 多少<var>A</var>?</p>
+                <p><var>BU</var><var>B</var>= <var>BU</var>&times;<var>C</var><var>A</var></p>
+                <p>也就是<var>BU*C</var><var>A</var></p>
+                <p><var>BU*C</var><var>A</var><var>S2</var><var>FBUL</var><var>A</var><p>
+                <p>所以<var>BU</var><var>B</var><var>S2</var><var>FBUL</var><var>A</var></p>
+
+            </div>
+        </div>
+
+
+
+        <div id="same_to">
+            <div class="question">
+                <p>請比較兩個面積的大小</p>
+                <p><var>SU</var><var>A</var><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><var>SU/C</var><var>B</var></p>
+            </div>
+           
+              <p class="solution">=</p>
+                <ul class="choices" data-category="true">
+                    <li>&lt;</li>
+                    <li>=</li>
+                    <li>&gt;</li>
+                </ul>
+
+            <div class="hints">
+                
+                <p>1<var>A</var>=1&divide;<var>C</var><var>B</var></p>
+                <p>那麼<var>SU</var><var>A</var>=多少<var>B</var>?</p>
+                <p><var>SU</var><var>A</var>=<var>SU</var>&divide;<var>C</var><var>B</var></p>
+                <p>也就是<var>SU/C</var><var>B</var></p>
+                <p><var>SU/C</var><var>B</var>=<var>SU/C</var><var>B</var></p>
+                <p>所以<var>SU</var><var>A</var>=<var>SU/C</var><var>B</var></p>
+
+            </div>
+
+
+        </div>
+		
+		
+			
+		
+		
+    </div>
+    </div>
+</body>
+</html>

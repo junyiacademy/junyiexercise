@@ -2,7 +2,7 @@
 <html data-require="math math-format expressions">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Equation of a hyperbola</title>
+    <title>雙曲線的方程式</title>
     <script src="../khan-exercise.js"></script>
     <style type="text/css">
         #answer_area input[type="text"] {
@@ -23,7 +23,7 @@
         <var id="WHICH_NEG">rand(2)</var>
 
         <var id="X_MINUS">WHICH_NEG === 1 ? "+" : "+"</var>
-        <var id="Y_MINUS">WHICH_NEG === 1 ? "" : "-"</var>
+        <var id="Y_MINUS">WHICH_NEG === 1 ? "-" : "-"</var>
 
         <var id="X">H === 0 ? "x^2" :  expr(["^", ["+", "x", -H], 2])</var>
         <var id="Y">K === 0 ? "y^2" :  expr(["^", ["+", "y", -K], 2])</var>
@@ -34,8 +34,8 @@
     <div class="problems">
         <div>
             <div class="question">
-                <p>The equation of hyperbola <code>H</code> is <code><var>WHICH_NEG === 1 ? expr(["-", Y2T, X2T]) : expr(["-", X2T, Y2T])</var> = 1</code>.</p>
-                <p>What are the asymptotes?</p>
+                <p>雙曲線<code>H</code>的方程式為<code><var>WHICH_NEG === 1 ? expr(["-", Y2T, X2T]) : expr(["-", X2T, Y2T])</var> = 1</code>。</p>
+                <p>請寫出漸進線的方程式</p>
             </div>
 
             <div class="solution" data-type="multiple">
@@ -53,21 +53,21 @@
 
     <div class="hints">
         <div>
-            <p>We want to rewrite the equation in terms of <code>y</code>, so start off by moving the <code>y</code> terms to one side:</p>
+            <p>因為我們要寫成<code>y</code>=?的表示式，所以把有<code>y</code>的項放在同一邊，剩下的放在另一邊，做法如下:</p>
             <p><code><var> Y2T</var> = <var>Y_MINUS</var> 1 <var>X_MINUS</var> <var>X2T</var></code></p>
         </div>
 
         <div>
-            <p>Multiply both sides of the equation by <code><var>B * B</var></code>.</p>
+            <p>為了把左邊分母去掉，等號兩邊都乘上<code><var>B * B</var></code>。</p>
             <p><code><var> Y</var> = { <var>Y_MINUS</var> <var>B*B</var> <var>X_MINUS</var> \dfrac{ <var>X</var> \cdot <var> B*B </var> }{<var> A*A </var>}}</code> </p>
         </div>
         <div>
-            <p>Take the square root of both sides.</p>
+            <p>等號兩邊開根號。</p>
             <p><code>\sqrt{<var>Y</var>} = \pm \sqrt { <var>Y_MINUS</var> <var>B*B</var> <var>X_MINUS</var> \dfrac{ <var>X</var> \cdot <var> B*B </var> }{<var> A*A </var>}}</code></p>
             <p><code> <var>plus("y", -K)</var> = \pm \sqrt { <var>Y_MINUS</var> <var>B*B</var> <var>X_MINUS</var> \dfrac{ <var>X</var> \cdot <var> B*B </var> }{<var> A*A </var>}}</code></p>
         </div>
         <div>
-            <p>As <code>x</code> approaches positive or negative infinity, the constant term in the square root matters less and less, so we can just ignore it.</p>
+            <p>當<code>x</code>跑到正無限大或負無限大時，括號內的常數項<code><var>Y_MINUS</var><var>H</var></code>相對顯得很小，所以可以直接忽略。</p>
             <p><code><var>plus( "y", -K )</var> \approx \pm \sqrt {\dfrac{ <var>X</var> \cdot <var> B*B </var> }{<var> A*A </var>}}</code></p>
 
             <p><code><var>plus( "y", -K )</var> \approx \pm \left(\dfrac{<var>B</var> \cdot (<var>plus( "x", -H )</var>)}{<var> A </var>}\right)</code></p>
@@ -75,10 +75,10 @@
 
         <div>
             <p>
-                <span data-if="K > 0">Add <code><var>K</var></code> to both sides and rewrite</span>
-                <span data-else-if="K < 0">Subtract <code><var>-K</var></code> from both sides and rewrite</span>
-                <span data-else>Rewrite</span>
-                as an equality in terms of <code>y</code> to get the equation of the asymptotes:
+                <span data-if="K > 0">等號左右兩邊都加上<code><var>K</var></code>。</span>
+                <span data-else-if="K < 0">等號左右兩邊都減掉<code><var>-K</var></code>，</span>
+                <span data-else>重寫一次</span>
+                得到漸進線方程式:
             </p>
             <p><code>y = \pm \dfrac{<var>reduce( A, B )[1]</var>}{<var>reduce( A, B )[0]</var>}(<var>plus( "x", -H )</var>)<var>K &gt;= 0 ? "+" : ""</var> <var>K</var></code></p>
         </div>

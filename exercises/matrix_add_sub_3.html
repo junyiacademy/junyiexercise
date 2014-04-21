@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html data-require="math graphie kmatrix">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Matrix Addition and Subtraction 3</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="exercise">
+    <div class="problems">
+	<div id="case1" data-weight="1">
+	
+            <div class="vars">
+				<var id="sizeX">randRange(2,4)</var>
+				<var id="sizeY">randRange(2,4)</var>
+				<var id="A">randRange(-99,99,sizeX,sizeY)</var>
+				<var id="B">randRange(-99,99,sizeX,sizeY)</var>
+				<var id="C">randRange(-99,99,sizeX,sizeY)</var>
+				<var id="matrixA">makeMatrix(A)</var>
+				<var id="matrixB">makeMatrix(B)</var>
+				<var id="matrixC">makeMatrix(C)</var>
+				<var id="mA">
+					(function(){
+						var mA = new Array(sizeX);
+						for(i=0;i&lt;sizeX;i++){
+							mA[i] = new Array(sizeY);
+						}
+						for(i=0;i&lt;sizeX;i++){
+							for(j=0;j&lt;sizeY;j++){
+								mA[i][j] = -(A[i][j]);
+							}
+						}
+						return mA;
+					})()
+				</var>
+				<var id="randQ">
+				(function(){
+					var randQ = new Array(7);
+					randQ[0] = "A + B + C = ";
+					randQ[1] = "(A + B) + C = ";
+					randQ[2] = "A + (B + C) = ";
+					randQ[3] = "(A + B) - C = ";
+					randQ[4] = "(A - B) + C = ";
+					randQ[5] = "(A - B) - C = ";
+					randQ[6] = "(-A) + (B + C) = ";
+					return randQ;
+				})()
+				</var>
+				<var id="rQ">randRange(0,6)</var>
+				<var id="D">
+					(function(){
+					var D = new Array(sizeX);
+					for(i=0;i&lt;sizeX;i++){
+						D[i] = new Array(sizeY);
+					}
+					if(rQ == 0 | rQ == 1| rQ == 2){ <!-- A + B + C or (A + B) + C or A + (B + C) -->
+						for(i=0;i&lt;sizeX;i++){
+							for(j=0;j&lt;sizeY;j++){
+								D[i][j] = A[i][j] + B[i][j] + C[i][j];
+							}
+						}
+					}
+					else if(rQ == 3){ <!-- (A + B) - C -->
+						for(i=0;i&lt;sizeX;i++){
+							for(j=0;j&lt;sizeY;j++){
+								D[i][j] = A[i][j] - B[i][j] - C[i][j];
+							}
+						}
+					}
+					else if(rQ == 4){ <!-- (A - B) + C -->
+						for(i=0;i&lt;sizeX;i++){
+							for(j=0;j&lt;sizeY;j++){
+								D[i][j] = A[i][j] - B[i][j] + C[i][j];
+							}
+						}
+					}
+					else if(rQ == 5){ <!-- ((A - B) - C  -->
+						for(i=0;i&lt;sizeX;i++){
+							for(j=0;j&lt;sizeY;j++){
+								D[i][j] = A[i][j] - B[i][j] - C[i][j];
+							}
+						}
+					}
+											
+					else if(rQ == 6){ <!-- (-A) + (B + C)-->
+						for(i=0;i&lt;sizeX;i++){
+							for(j=0;j&lt;sizeY;j++){
+								D[i][j] = mA[i][j] + B[i][j] + C[i][j];
+							}
+						}
+					}
+					return D;
+					})()
+				</var>
+				<var id="add">"+"</var>
+				<var id="minus">"-"</var>
+				<var id="AB">
+				(function(){
+					var AB = new Array(sizeX);
+					for(i=0;i&lt;sizeX;i++){
+						AB[i] = new Array(sizeY);
+					}
+					if(rQ == 0 | rQ == 1 | rQ == 3){ <!-- (A+B) -->
+						for(i=0;i&lt;sizeX;i++){
+							for(j=0;j&lt;sizeY;j++){
+								AB[i][j] = A[i][j]+add+B[i][j];
+							}
+						}
+					}
+					else if(rQ == 4 |rQ == 5)
+					for(i=0;i&lt;sizeX;i++){
+						for(j=0;j&lt;sizeY;j++){<!-- (A-B) -->
+							AB[i][j] = A[i][j]+minus+B[i][j];
+						}
+					}
+					return AB;
+				})()
+				</var>
+				<var id="BC">
+				(function(){
+					var BC = new Array(sizeX);
+					for(i=0;i&lt;sizeX;i++){
+						BC[i] = new Array(sizeY);
+					}
+					for(i=0;i&lt;sizeX;i++){
+						for(j=0;j&lt;sizeY;j++){
+							BC[i][j] = B[i][j]+add+C[i][j];
+						}
+					}			
+					return BC;
+				})()
+				</var>
+				<var id="ABC">
+				(function(){
+					var ABC = new Array(sizeX);
+					for(i=0;i&lt;sizeX;i++){
+						ABC[i] = new Array(sizeY);
+					}
+					if(rQ == 0 | rQ == 1 | rQ == 4){ <!--A + B + C or (A + B) + C or (A - B) + C -->
+						for(i=0;i&lt;sizeX;i++){
+							for(j=0;j&lt;sizeY;j++){
+								ABC[i][j] = "("+AB[i][j]+")"+add+C[i][j];
+								ABC[i][j] = "("+AB[i][j]+")"+add+C[i][j];
+							}
+						}
+					}
+					else if(rQ == 3 | rQ ==5){ <!--(A + B) - C or (A - B) - C -->
+						for(i=0;i&lt;sizeX;i++){
+							for(j=0;j&lt;sizeY;j++){
+								ABC[i][j] = "("+AB[i][j]+")"+minus+C[i][j];
+								ABC[i][j] = "("+AB[i][j]+")"+minus+C[i][j];
+							}
+						}
+					}
+					else if(rQ == 2){ <!--A + (B + C)-->
+						for(i=0;i&lt;sizeX;i++){
+							for(j=0;j&lt;sizeY;j++){
+								ABC[i][j] = A[i][j]+add+"("+BC[i][j]+")";
+								ABC[i][j] = A[i][j]+add+"("+BC[i][j]+")";
+							}
+						}
+					}
+					else if(rQ == 6){ <!-- (-A) + (B + C)-->
+						for(i=0;i&lt;sizeX;i++){
+							for(j=0;j&lt;sizeY;j++){
+								ABC[i][j] = mA[i][j]+add+"("+BC[i][j]+")";
+								ABC[i][j] = mA[i][j]+add+"("+BC[i][j]+")";
+							}
+						}
+					}
+					return ABC;
+				})()	
+				</var>
+				
+				<var id="sampleA">
+				(function(){
+					var sampleA = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleA[i] = new Array(3);
+					}
+					if(rQ == 6){ <!-- -A -->
+						for(i=0;i&lt;3;i++){
+							sampleA[i][0] = "-a"+(i+1)+"1";
+							sampleA[i][1] = "-a"+(i+1)+"2";
+							sampleA[i][2] = "...";
+						}
+					}
+					else{
+						for(i=0;i&lt;3;i++){
+							sampleA[i][0] = "a"+(i+1)+"1";
+							sampleA[i][1] = "a"+(i+1)+"2";
+							sampleA[i][2] = "...";
+						}
+					}
+					sampleA[2][0] = ":";
+					sampleA[2][1] = ":";
+					return sampleA;
+				})()				
+				</var>
+				<var id="sampleB">
+				(function(){
+					var sampleB = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleB[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						sampleB[i][0] = "b"+(i+1)+"1";
+						sampleB[i][1] = "b"+(i+1)+"2";
+						sampleB[i][2] = "...";
+					}
+					sampleB[2][0] = ":";
+					sampleB[2][1] = ":";
+					return sampleB;
+				})()	
+				</var>
+				<var id="sampleC">
+				(function(){
+					var sampleC = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleC[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						sampleC[i][0] = "c"+(i+1)+"1";
+						sampleC[i][1] = "c"+(i+1)+"2";
+						sampleC[i][2] = "...";
+					}
+					sampleC[2][0] = ":";
+					sampleC[2][1] = ":";
+					return sampleC;
+				})()	
+				</var>
+				<var id="sampleAB">
+				(function(){
+					var sampleAB = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleAB[i] = new Array(3);
+					}
+					if(rQ == 0 | rQ == 1 | rQ == 3){ <!-- (A+B) -->
+						for(i=0;i&lt;3;i++){
+							sampleAB[i][0] = "("+sampleA[i][0]+add+sampleB[i][0]+")";
+							sampleAB[i][1] = "("+sampleA[i][1]+add+sampleB[i][1]+")";
+							sampleAB[i][2] = "...";
+						}
+					}
+					else if(rQ == 4 | rQ == 5){ <!-- (A-B) -->
+						for(i=0;i&lt;3;i++){
+							sampleAB[i][0] = "("+sampleA[i][0]+minus+sampleB[i][0]+")";
+							sampleAB[i][1] = "("+sampleA[i][1]+minus+sampleB[i][1]+")";
+							sampleAB[i][2] = "...";
+						}
+					}
+					sampleAB[2][0] = ":";
+					sampleAB[2][1] = ":";
+					return sampleAB;
+				})()	
+				</var>
+				<var id="sampleBC">
+				(function(){
+					var sampleBC = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleBC[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						sampleBC[i][0] = "("+sampleB[i][0]+add+sampleC[i][0]+")";
+						sampleBC[i][1] = "("+sampleB[i][1]+add+sampleC[i][1]+")";
+						sampleBC[i][2] = "...";
+					}
+					sampleBC[2][0] = ":";
+					sampleBC[2][1] = ":";
+					return sampleBC;
+				})()	
+				</var>
+				<var id="sampleABC">
+				(function(){
+					var sampleABC = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleABC[i] = new Array(3);
+					}
+					if(rQ == 0 | rQ == 1 | rQ == 4){ <!-- A + B + C or (A + B) + C or (A - B) + C -->
+						for(i=0;i&lt;3;i++){
+							sampleABC[i][0] = sampleAB[i][0]+add+sampleC[i][0];
+							sampleABC[i][1] = sampleAB[i][1]+add+sampleC[i][1];
+							sampleABC[i][2] = "...";
+						}
+					}
+					else if(rQ == 3 | rQ ==5){ <!--(A + B) - C or (A - B) - C -->
+						for(i=0;i&lt;3;i++){
+							sampleABC[i][0] = sampleAB[i][0]+minus+sampleC[i][0];
+							sampleABC[i][1] = sampleAB[i][1]+minus+sampleC[i][1];
+							sampleABC[i][2] = "...";
+						}
+					}
+					else if(rQ == 2 | rQ == 6){ <!--A + (B + C) or (-A) + (B + C) -->
+						for(i=0;i&lt;3;i++){
+							sampleABC[i][0] = sampleA[i][0]+add+sampleBC[i][0];
+							sampleABC[i][1] = sampleA[i][1]+add+sampleBC[i][1];
+							sampleABC[i][2] = "...";
+						}
+					}
+					sampleABC[2][0] = ":";
+					sampleABC[2][1] = ":";
+					return sampleABC;
+				})()	
+				</var>
+				<var id="colorA">[BLUE]</var>
+				<var id="colorB">[RED]</var>
+				<var id="colorC">[GREEN]</var>
+				
+            </div>
+			
+            <div class="question">
+				<p>A = <code><var>printSimpleMatrix(A)</var></code></p>
+				<p>B = <code><var>printSimpleMatrix(B)</var></code></p>
+				<p>C = <code><var>printSimpleMatrix(C)</var></code></p>
+				<p><code><var>randQ[rQ]</var></code> <B>?</B></p>
+				<p></p>
+            </div>
+			
+<!--example: sizeX*sizeY matrix-->			
+            <div class="solution" data-type="multiple"> 
+				<p>
+				<span class="sol" data-if="sizeX >0 && sizeY >0">
+				<var>D[0][0]</var></span>
+				<span class="sol" data-if="sizeX >0 && sizeY >1">
+				<var>D[0][1]</var></span>
+				<span class="sol" data-if="sizeX >0 && sizeY >2">
+				<var>D[0][2]</var></span>
+				<span class="sol" data-if="sizeX >0 && sizeY >3">
+				<var>D[0][3]</var></span><br>
+				
+				<span class="sol" data-if="sizeX >1 && sizeY >0">
+				<var>D[1][0]</var></span>
+				<span class="sol" data-if="sizeX >1 && sizeY >1">
+				<var>D[1][1]</var></span>
+				<span class="sol" data-if="sizeX >1 && sizeY >2">
+				<var>D[1][2]</var></span>
+				<span class="sol" data-if="sizeX >1 && sizeY >3">
+				<var>D[1][3]</var></span><br>
+				
+				<span class="sol" data-if="sizeX >2 && sizeY >0">
+				<var>D[2][0]</var></span>
+				<span class="sol" data-if="sizeX >2 && sizeY >1">
+				<var>D[2][1]</var></span>
+				<span class="sol" data-if="sizeX >2 && sizeY >2">
+				<var>D[2][2]</var></span>
+				<span class="sol" data-if="sizeX >2 && sizeY >3">
+				<var>D[2][3]</var></span><br>
+				
+				<span class="sol" data-if="sizeX >3 && sizeY >0">
+				<var>D[3][0]</var></span>
+				<span class="sol" data-if="sizeX >3 && sizeY >1">
+				<var>D[3][1]</var></span>
+				<span class="sol" data-if="sizeX >3 && sizeY >2">
+				<var>D[3][2]</var></span>
+				<span class="sol" data-if="sizeX >3 && sizeY >3">
+				<var>D[3][3]</var></span>
+				</p>
+			
+            </div>
+
+             <div class="hints">
+				<!---- hint 1 ---->
+				<div data-if="rQ == 0 | rQ == 1"> <!-- A + B + C or (A + B) + C -->
+				<p>
+				<code><var>randQ[rQ]</var></code><br><br>
+				(<code><var>printSimpleMatrix(sampleA,colorA)</var></code><B><var>add</var></B><code><var>printSimpleMatrix(sampleB,colorB)</var></code>)&nbsp;<B><var>add</var></B><code><var>printSimpleMatrix(sampleC,colorC)</var></code><br><br>
+				= <code><var>printSimpleMatrix(sampleAB)</var></code><B><var>add</var></B><code><var>printSimpleMatrix(sampleC,colorC)</var></code></p></div>
+				
+				<div data-if="rQ == 3"> <!--(A + B) - C -->
+				<p>
+				<code><var>randQ[rQ]</var></code><br><br>
+				(<code><var>printSimpleMatrix(sampleA,colorA)</var></code><B><var>add</var></B><code><var>printSimpleMatrix(sampleB,colorB)</var></code>)&nbsp;<B><var>minus</var></B><code><var>printSimpleMatrix(sampleC,colorC)</var></code><br><br>
+				= <code><var>printSimpleMatrix(sampleAB)</var></code><B><var>minus</var></B><code><var>printSimpleMatrix(sampleC,colorC)</var></code></p></div>
+				
+				<div data-if="rQ == 4"> <!-- (A - B) + C -->
+				<p>
+				<code><var>randQ[rQ]</var></code><br><br>
+				(<code><var>printSimpleMatrix(sampleA,colorA)</var></code><B><var>minus</var></B><code><var>printSimpleMatrix(sampleB,colorB)</var></code>)&nbsp;<B><var>add</var></B><code><var>printSimpleMatrix(sampleC,colorC)</var></code><br><br>
+				= <code><var>printSimpleMatrix(sampleAB)</var></code><B><var>add</var></B><code><var>printSimpleMatrix(sampleC,colorC)</var></code></p></div>
+				
+				<div data-if="rQ == 5"> <!-- (A - B) - C -->
+				<p>
+				<code><var>randQ[rQ]</var></code><br><br>
+				(<code><var>printSimpleMatrix(sampleA,colorA)</var></code><B><var>minus</var></B><code><var>printSimpleMatrix(sampleB,colorB)</var></code>)&nbsp;<B><var>minus</var></B><code><var>printSimpleMatrix(sampleC,colorC)</var></code><br><br>
+				= <code><var>printSimpleMatrix(sampleAB)</var></code><B><var>minus</var></B><code><var>printSimpleMatrix(sampleC,colorC)</var></code></p></div>
+				
+				<div data-if="rQ == 2"> <!-- A + (B + C) -->
+				<p>
+				<code><var>randQ[rQ]</var></code><br><br>
+				<code><var>printSimpleMatrix(sampleA,colorA)</var></code><B><var>add</var></B>&nbsp;(<code><var>printSimpleMatrix(sampleB,colorB)</var></code><B><var>add</var></B><code><var>printSimpleMatrix(sampleC,colorC)</var></code>)<br><br>
+				= <code><var>printSimpleMatrix(sampleA,colorA)</var></code><B><var>add</var></B><code><var>printSimpleMatrix(sampleBC)</var></code></p></div>
+				
+				<div data-if="rQ == 6"> <!-- (-A) + (B + C) = -->
+				<p>
+				<code><var>randQ[rQ]</var></code><br><br>
+				<code><var>printSimpleMatrix(sampleA,colorA)</var></code><B><var>add</var></B>&nbsp;(<code><var>printSimpleMatrix(sampleB,colorB)</var></code><B><var>add</var></B><code><var>printSimpleMatrix(sampleC,colorC)</var></code>)<br><br>
+				= <code><var>printSimpleMatrix(sampleA,colorA)</var></code><B><var>add</var></B><code><var>printSimpleMatrix(sampleBC)</var></code></p></div>
+				
+				
+				<!---- hint 2 ---->
+				<p>
+				= <code><var>printSimpleMatrix(sampleABC)</var></code>
+				</p>
+				
+				
+				<!---- hint 3 ---->	
+				<div data-if="rQ == 0 | rQ == 1"> <!-- A + B + C or (A + B) + C -->
+				<p>
+				<code><var>randQ[rQ]</var></code><br><br>
+				(<code><var>printSimpleMatrix(A,colorA)</var></code><B><var>add</var></B><code><var>printSimpleMatrix(B,colorB)</var></code>)&nbsp;<B><var>add</var></B><code><var>printSimpleMatrix(C,colorC)</var></code><br><br>
+				= (<code><var>printSimpleMatrix(AB)</var></code>)&nbsp;<B><var>add</var></B><code><var>printSimpleMatrix(C,colorC)</var></code></p></div>
+				
+				<div data-if="rQ == 3"> <!--(A + B) - C -->
+				<p>
+				<code><var>randQ[rQ]</var></code><br><br>
+				(<code><var>printSimpleMatrix(A,colorA)</var></code><B><var>add</var></B><code><var>printSimpleMatrix(B,colorB)</var></code>)&nbsp;<B><var>minus</var></B><code><var>printSimpleMatrix(C,colorC)</var></code><br><br>
+				= (<code><var>printSimpleMatrix(AB)</var></code>)&nbsp;<B><var>minus</var></B><code><var>printSimpleMatrix(C,colorC)</var></code></p></div>
+				
+				<div data-if="rQ == 4"> <!-- (A - B) + C -->
+				<p>
+				<code><var>randQ[rQ]</var></code><br><br>
+				(<code><var>printSimpleMatrix(A,colorA)</var></code><B><var>minus</var></B><code><var>printSimpleMatrix(B,colorB)</var></code>)&nbsp;<B><var>add</var></B><code><var>printSimpleMatrix(C,colorC)</var></code><br><br>
+				= (<code><var>printSimpleMatrix(AB)</var></code>)&nbsp;<B><var>add</var></B><code><var>printSimpleMatrix(C,colorC)</var></code></p></div>
+				
+				<div data-if="rQ == 5"> <!-- (A - B) - C -->
+				<p>
+				<code><var>randQ[rQ]</var></code><br><br>
+				(<code><var>printSimpleMatrix(A,colorA)</var></code><B><var>minus</var></B><code><var>printSimpleMatrix(B,colorB)</var></code>)&nbsp;<B><var>minus</var></B><code><var>printSimpleMatrix(C,colorC)</var></code><br><br>
+				= (<code><var>printSimpleMatrix(AB)</var></code>)&nbsp;<B><var>minus</var></B><code><var>printSimpleMatrix(C,colorC)</var></code></p></div>
+				
+				<div data-if="rQ == 2"> <!-- A + (B + C) -->
+				<p>
+				<code><var>randQ[rQ]</var></code><br><br>
+				<code><var>printSimpleMatrix(A,colorA)</var></code><B><var>add</var></B>&nbsp;(<code><var>printSimpleMatrix(B,colorB)</var></code><B><var>add</var></B><code><var>printSimpleMatrix(C,colorC)</var></code>)<br><br>
+				= <code><var>printSimpleMatrix(A,colorA)</var></code><B><var>add</var></B>&nbsp;(<code><var>printSimpleMatrix(BC)</var></code>)</p></div>
+				
+				<div data-if="rQ == 6"> <!-- (-A) + (B + C) = -->
+				<p>
+				<code><var>randQ[rQ]</var></code><br><br>
+				<code><var>printSimpleMatrix(mA,colorA)</var></code><B><var>add</var></B>&nbsp;(<code><var>printSimpleMatrix(B,colorB)</var></code><B><var>add</var></B><code><var>printSimpleMatrix(C,colorC)</var></code>)<br><br>
+				= <code><var>printSimpleMatrix(mA,colorA)</var></code><B><var>add</var></B>&nbsp;(<code><var>printSimpleMatrix(BC)</var></code>)</p></div>
+				
+
+				<!---- hint 4 ---->
+				<p>
+				= <code><var>printSimpleMatrix(ABC)</var></code>
+				</p>
+				
+				
+				<!---- hint 5 ---->
+				<p>
+				= <code><var>printSimpleMatrix(D)</var></code></p>
+				
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+				

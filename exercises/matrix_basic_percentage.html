@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html data-require="math graphie kmatrix">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Matrix Basic Percentage</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+    </style>
+</head>
+		<!--此次去甲便利商店買東西的人，下一次，會繼續去同一家便利商店，或改去另外一家便利商店的比例-->
+<body>
+<div class="exercise">
+    <div class="problems">
+	<div id="case1" data-weight="1">
+			<div class="vars">
+				<var id="A">
+				(function(){
+					var A = new Array(4);
+					for(i=0;i&lt;4;i++){
+						A[i] = new Array(4);
+					}
+					var a = new Array(4);
+					for(i=0;i&lt;4;i++){
+						a[0] = randRange(1,50);
+						a[1] = randRange(1,100-a[0]-1);
+						a[2] = randRange(1,100-a[0]-a[1]);
+						a[3] = 100-a[0]-a[1]-a[2];
+						for(j=0;j&lt;4;j++){
+							A[i][j] = a[j];
+						}
+					}
+					return A;
+				})()
+				</var>
+				<var id="B">
+				(function(){
+					var B = new Array(4);
+					for(i=0;i&lt;4;i++){
+						B[i] = new Array(4);
+					}
+					for(i=0;i&lt;4;i++){
+						for(j=0;j&lt;4;j++){
+							B[i][j] = roundTo( 2, (A[i][j])/100 );
+						}
+					}
+					return B;
+				})()
+				</var>
+				<!--
+				<var id="name">
+				(function(){
+					var name = new array(4);
+					for(i=0;i&lt;4;i++){
+						name[i] = new array(4);
+						name[i][0] = "7-11";
+						name[i][1] = "OK";
+						name[i][2] = "全家";
+						name[i][3] = "萊爾富";
+					}
+					var store11 = randRange(0,3);
+					var store12 = randRangeExclude(0,3,[store11]);
+					var store13 = randRangeExclude(0,3,[store11,store12]);
+					var store14 = randRangeExclude(0,3,[store11,store12,store13]);
+					name = [[store11,store12,store13,store14],[],[],[]];
+					return name;
+				})()
+				</var>
+				-->
+				<var id="name"> name = ["7-11","OK","全家","萊爾富"]</var>;
+				<var id="store11">randRange(0,3)</var>
+				<var id="store12">randRangeExclude(0,3,[store11])</var>
+				<var id="store13">randRangeExclude(0,3,[store11,store12])</var>
+				<var id="store14">randRangeExclude(0,3,[store11,store12,store13])</var>
+				
+				<var id="name2"> name2 = ["7-11","OK","全家","萊爾富"]</var>;
+				<var id="store22">randRangeExclude(0,3,[store12])</var>
+				<var id="store23">randRangeExclude(0,3,[store12,store22])</var>
+				<var id="store24">randRangeExclude(0,3,[store12,store22,store23])</var>
+				
+				<var id="name3"> name3 = ["7-11","OK","全家","萊爾富"]</var>;
+				<var id="store32">randRangeExclude(0,3,[store13])</var>
+				<var id="store33">randRangeExclude(0,3,[store13,store32])</var>
+				<var id="store34">randRangeExclude(0,3,[store13,store32,store33])</var>
+				
+				<var id="name4"> name4 = ["7-11","OK","全家","萊爾富"]</var>;
+				<var id="store42">randRangeExclude(0,3,[store14])</var>
+				<var id="store43">randRangeExclude(0,3,[store14,store42])</var>
+				<var id="store44">randRangeExclude(0,3,[store14,store42,store43])</var>
+				
+            </div>
+			
+            <div class="question">
+				<p><B>此次去<var>name[store11]</var>便利商店買東西的人，</B><br>
+				下一次會繼續去同一家便利商店或改去另外一家便利商店的比例為：<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				繼續去同一家：<var>A[0][0]</var>%，改去<var>name[store12]</var>：<var>A[0][1]</var>%，改去<var>name[store13]</var>：<var>A[0][2]</var>%，改去<var>name[store14]</var>：<var>A[0][3]</var>%。</p>
+				
+				<p><B>此次去<var>name[store12]</var>便利商店買東西的數據為：</B><br>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				繼續去同一家：<var>A[1][0]</var>%，改去<var>name2[store22]</var>：<var>A[1][1]</var>%，改去<var>name2[store23]</var>：<var>A[1][2]</var>%，改去<var>name2[store24]</var>：<var>A[1][3]</var>%</p>
+				
+				<p><B>此次去<var>name[store13]</var>便利商店買東西的數據為：</B><br>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				繼續去同一家：<var>A[2][0]</var>%，改去<var>name3[store32]</var>：<var>A[2][1]</var>%，改去<var>name3[store33]</var>：<var>A[2][2]</var>%，改去<var>name3[store34]</var>：<var>A[2][3]</var>%</p>
+				
+				<p><B>此次去<var>name[store14]</var>便利商店買東西的數據為：</B><br>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				繼續去同一家：<var>A[3][0]</var>%，改去<var>name4[store42]</var>：<var>A[3][1]</var>%，改去<var>name4[store43]</var>：<var>A[3][2]</var>%，改去<var>name4[store44]</var>：<var>A[3][3]</var>%</p>
+				<p>請用一個4x4的矩陣表示上述資料，直行依序代表四家便利商店，橫列代表後續消費行為。<br>
+				   請用小數格式來表示此組數據，例如：24% 以 0.24 表示之。</p>
+            </div>
+			
+<!--example: 4*4 matrix-->			
+            <div class="solution" data-type="multiple" data-forms="decimal"> 
+				<p>
+				<span class="sol"><var>B[0][0]</var></span>
+				<span class="sol"><var>B[0][1]</var></span>
+				<span class="sol"><var>B[0][2]</var></span>
+				<span class="sol"><var>B[0][3]</var></span><br>
+				<span class="sol"><var>B[1][0]</var></span>
+				<span class="sol"><var>B[1][1]</var></span>
+				<span class="sol"><var>B[1][2]</var></span>
+				<span class="sol"><var>B[1][3]</var></span><br>
+				<span class="sol"><var>B[2][0]</var></span>
+				<span class="sol"><var>B[2][1]</var></span>
+				<span class="sol"><var>B[2][2]</var></span>
+				<span class="sol"><var>B[2][3]</var></span><br>
+				<span class="sol"><var>B[3][0]</var></span>
+				<span class="sol"><var>B[3][1]</var></span>
+				<span class="sol"><var>B[3][2]</var></span>
+				<span class="sol"><var>B[3][3]</var></span><br>
+				</p>
+            </div>
+            <div class="hints">
+				<p>
+				用四個橫列代表下一次去的四家便利商店，<br>
+				用四個直行代表下一次去的四家便利商店，<br>
+				所以，11的位置是上一次去第一家，下一次也是去第一家的比例值。<br>
+				12的位置是上一次去第一家，下一次去第二家的比例值。<br>
+				13的位置是上一次去第一家，下一次去第三家的比例值。<br>
+				14的位置是上一次去第一家，下一次去第四家的比例值。<br>
+				同理，21的位置是上一次去第二家，下一次去第一家的比例值。<br>
+				22的位置是上一次去第二家，下一次也是去第二家的比例值。<br>
+				其他位置的數據依此類推。
+				</p>
+				<p>
+				同理，21的位置是上一次去第二家，下一次去第一家的比例值。<br>
+				22的位置是上一次去第二家，下一次也是去第二家的比例值。<br>
+				23的位置是上一次去第二家，下一次也是去第三家的比例值。<br>
+				24的位置是上一次去第二家，下一次也是去第四家的比例值。<br>
+				其他位置的數據依此類推。
+				</p>
+				<p><code><var>printSimpleMatrix(B)</var></code></p>
+				<!--
+				<p>4</p>
+				<p>5</p>
+				<p>6</p>
+				-->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html data-require="math math-format word-problems stat">
 <head>
     <meta charset="UTF-8" />
-    <title>Variance</title>
+    <title>變異數</title>
     <script src="../khan-exercise.js"></script>
     <style>
         #answer_area .short input[type=text] {
@@ -31,13 +31,13 @@
 
             <div id="population">
                 <div class="problem" data-else>
-                    <p>You have found the following ages (in years) of all <var>plural( DATA_POINTS, animal( 1 ) )</var> at your local zoo:</p>
+                    <p>你已經知道動物園裡全部有<var>DATA_POINTS</var>隻<var>plural(animal( 1 ) )</var>，年齡分別如下:</p>
                     <p><code>\qquad<var>DATA.join( ",\\enspace " )</var></code></p>
                 </div>
 
                 <p class="question">
-                    What is the average age of the <var>plural( animal( 1 ) )</var> at your zoo? What is the variance?
-                    You may round your answers to the nearest tenth.
+                    請問<var>plural( animal( 1 ) )</var>年齡的母體平均值為多少?母體變異數為多少?
+                    請將答案取到小數點第一位。
                 </p>
 
                 <div class="solution" data-type="multiple">
@@ -55,16 +55,15 @@
 
                 <div class="hints">
                     <p>
-                        Because we have data for all <var>plural( DATA_POINTS, animal( 1 ) )</var> at the zoo, we are able
-                        to calculate the <span class="hint_blue">population mean</span>
-                        <code>(\color{<var>BLUE</var>}{\mu})</code> and
-                        <span class="hint_pink">population variance</span> <code>(\color{<var>PINK</var>}{\sigma^2})</code>.
+                        因為我們有全部<var>DATA_POINTS</var>隻<var>plural(animal( 1 ) )</var>的年齡，所以我們可以算出
+                        <span class="hint_blue">母體平均數</span>
+                        <code>(\color{<var>BLUE</var>}{\mu})</code>和
+                        <span class="hint_pink">母體變異數</span> <code>(\color{<var>PINK</var>}{\sigma^2})</code>.
                     </p>
 
                     <div>
                         <p>
-                            To find the <span class="hint_blue">population mean</span>, add up the values of all <code class="hint_green"><var>DATA_POINTS</var></code>
-                            ages and divide by <code class="hint_green"><var>DATA_POINTS</var></code>.
+                            為了得到<span class="hint_blue">母體平均數</span>，我們把<var>DATA_POINTS</var>隻<var>plural(animal( 1 ) )</var>的年齡全部加起來除以<var>DATA_POINTS</var>。
                         </p>
                         <p>
                             <code>
@@ -79,20 +78,20 @@
                         <code>
                                 \color{<var>BLUE</var>}{\mu} \quad = \quad
                                 \dfrac{<var>plus.apply( KhanUtil, DATA )</var>}{\color{<var>GREEN</var>}{<var>DATA_POINTS</var>}} \quad = \quad
-                                \color{<var>BLUE</var>}{<var>MEAN</var>\text{ <var>plural( "year", MEAN )</var> old}}
+                                \color{<var>BLUE</var>}{<var>MEAN</var>\text{ <var>plural( "歲", MEAN )</var>}}
                         </code>
                     </p>
 
                     <div>
                         <p>
-                            Find the <span class="hint_purple">squared deviations from the mean</span> for each <var>animal(1)</var>.
+                            計算每一隻<var>animal(1)</var><span class="hint_purple">和平均數相減的平方</span>。
                         </p>
                         <div class="fake_header">
                             <span style="width: 100px;">
-                                Age<br/>
+                                年齡<br/>
                                 <code>x_i</code>
                             </span><span style="width: 150px;">
-                                <span class="hint_gray">Distance from the mean</span>
+                                <span class="hint_gray">與平均值的差</span>
                                 <code>(x_i - \color{<var>BLUE</var>}{\mu})</code>
                             </span><span style="width: 150px;">
                                 <code>(x_i - \color{<var>BLUE</var>}{\mu})^2</code>
@@ -100,21 +99,20 @@
                         </div>
                         <div class="fake_row" data-each="DATA as i, POINT">
                             <span style="width: 100px;">
-                                <code><var>POINT</var></code> <var>plural( "year", POINT )</var>
+                                <code><var>POINT</var></code> <var>plural( "歲", POINT )</var>
                             </span><span style="width: 150px;" class="hint_gray">
-                                <code><var>roundTo( 2, POINT - MEAN )</var></code> <var>plural( "year", roundTo( 2, POINT - MEAN ) )</var>
+                                <code><var>roundTo( 2, POINT - MEAN )</var></code> <var>plural( "歲", roundTo( 2, POINT - MEAN ) )</var>
                             </span><span style="width: 150px;" class="hint_purple">
-                                <code><var>SQR_DEV[ i ]</var></code> <var>plural( "year", SQR_DEV[ i ] )</var><code>^2</code>
+                                <code><var>SQR_DEV[ i ]</var></code> <var>plural( "歲", SQR_DEV[ i ] )</var><code>^2</code>
                             </span>
                         </div>
                     </div>
 
                     <div>
                         <p>
-                            Because we used the <span class="hint_blue">population mean</span><code>(\color{<var>BLUE</var>}{\mu})</code> to compute the
-                            <span class="hint_purple">squared deviations from the mean</span>, we can find the <span class="hint_red">variance</span>
-                            <code>(\color{red}{\sigma^2})</code>, without introducing any bias, by simply averaging the
-                            <span class="hint_purple">squared deviations from the mean</span>:
+                            因為我們使用<span class="hint_blue">母體平均數</span><code>(\color{<var>BLUE</var>}{\mu})</code>來計算<span class="hint_purple">和平均數相減的平方</span>，我們可以藉由直接把<span class="hint_purple">和平均數相減的平方</span>平均，得到沒有偏差的<span class="hint_red">母體變異數</span>
+                            <code>(\color{red}{\sigma^2})</code>
+                            :
                         </p>
                         <p>
                             <code>
@@ -136,13 +134,12 @@
                         <code>
                             \color{red}{\sigma^2} \quad = \quad
                             \dfrac{\color{purple}{<var>roundTo( 2, sum( SQR_DEV ) )</var>}}{\color{<var>GREEN</var>}{<var>DATA_POINTS</var>}} \quad = \quad
-                            \color{red}{<var>VARIANCE_POP</var>\text{ <var>plural( "year", VARIANCE_POP )</var>}^2}
+                            \color{red}{<var>VARIANCE_POP</var>\text{ <var>plural( "歲", VARIANCE_POP )</var>}^2}
                         </code>
                     </p>
 
                     <p><strong>
-                        The average <var>animal( 1 )</var> at the zoo is <var>plural( MEAN, "year" )</var> old, and the population variance
-                        is <var>plural( VARIANCE_POP, "year" )</var><code>^2</code>.
+                        <var>animal( 1 )</var>的母體平均數為<var>plural( MEAN, "歲" )</var>，母體變異數為<var>VARIANCE_POP</var><code></code>。
                     </strong></p>
 
                 </div> <!-- hints -->
@@ -151,15 +148,13 @@
             <div id="sample">
                 <div class="problem" data-else>
                     <p>
-                        You have found the following ages (in years) of <var>plural( DATA_POINTS, animal( 1 ) )</var>
-                        randomly selected from the <var>plural( POPULATION, animal( 1 ) )</var> at your local zoo:
+                        動物園裡有<var>POPULATION</var>隻<var>plural(animal( 1 ))</var>，你隨機選擇了其中的<var>DATA_POINTS</var>隻，年齡分別如下:
                     </p>
                     <p><code>\qquad<var>DATA.join( ",\\enspace " )</var></code></p>
                 </div>
 
                 <p class="question">
-                    Based on your sample, what is the average age of the <var>plural( animal( 1 ) )</var>? What is the variance?
-                    You may round your answers to the nearest tenth.
+                    根據你的樣本，<var>plural( animal( 1 ) )</var>的平均年齡為多少？變異數為多少？請將答案取到小數點第二位。
                 </p>
 
                 <div class="solution" data-type="multiple">
@@ -177,16 +172,14 @@
 
                 <div class="hints">
                     <p>
-                        Because we only have data for a small sample of the <var>plural( POPULATION, animal( 1 ) )</var>, we are only able
-                        to estimate the population mean and variance by finding the <span class="hint_blue">sample mean</span>
-                        <code>(\color{<var>BLUE</var>}{\overline{x}})</code> and
-                        <span class="hint_pink">sample variance</span> <code>(\color{<var>PINK</var>}{s^2})</code>.
+                        因為我們只有<var>POPULATION</var>隻<var>plural(animal( 1 ))</var>裡面其中<var>DATA_POINTS</var>隻的數據，所以我們只能藉由找到<span class="hint_blue">樣本平均數</span><code>(\color{<var>BLUE</var>}{\overline{x}})</code>和<span class="hint_pink">樣本變異數</span> <code>(\color{<var>PINK</var>}{s^2})</code>估計年齡的平均值和變異數。
+
                     </p>
 
                     <div>
                         <p>
-                            To find the <span class="hint_blue">sample mean</span>, add up the values of all <code class="hint_green"><var>DATA_POINTS</var></code>
-                            samples and divide by <code class="hint_green"><var>DATA_POINTS</var></code>.
+                            為了得到<span class="hint_blue">樣本平均值</span><code>(\color{<var>BLUE</var>}{\overline{x}})</code>，我們把<code class="hint_green"><var>DATA_POINTS</var></code>個樣本的值全部加起來除以
+                            <code class="hint_green"><var>DATA_POINTS</var></code>。
                         </p>
                         <p>
                             <code>
@@ -201,23 +194,22 @@
                         <code>
                                 \color{<var>BLUE</var>}{\overline{x}} \quad = \quad
                                 \dfrac{<var>plus.apply( KhanUtil, DATA )</var>}{\color{<var>GREEN</var>}{<var>DATA_POINTS</var>}} \quad = \quad
-                                \color{<var>BLUE</var>}{<var>MEAN</var>\text{ <var>plural( "year", MEAN )</var> old}}
+                                \color{<var>BLUE</var>}{<var>MEAN</var>\text{ <var>plural( "歲", MEAN )</var>}}
                         </code>
                     </p>
 
                     <p>
-                        Find the <span class="hint_purple">squared deviations from the mean</span> for each sample. Since we don't know the
-                        population mean, estimate the mean by using the <span class="hint_blue">sample mean</span> we just calculated
-                        <code>(\color{<var>BLUE</var>}{\overline{x}} = \color{<var>BLUE</var>}{<var>MEAN</var>\text{ <var>plural( "year", MEAN )</var>}})</code>.
+                        找出每一個樣本<span class="hint_purple">和平均數相減的平方</span>。因為我們不知道全部的平均值，所以我們估計平均值為<span class="hint_blue">樣本平均數</span>
+                        <code>(\color{<var>BLUE</var>}{\overline{x}} = \color{<var>BLUE</var>}{<var>MEAN</var>\text{ <var>plural( "歲", MEAN )</var>}})</code>。
                     </p>
 
                     <div>
                         <div class="fake_header">
                             <span style="width: 100px;">
-                                Age<br/>
+                                年齡<br/>
                                 <code>x_i</code>
                             </span><span style="width: 150px;">
-                                <span class="hint_gray">Distance from the mean</span>
+                                <span class="hint_gray">與平均值的差</span>
                                 <code>(x_i - \color{<var>BLUE</var>}{\overline{x}})</code>
                             </span><span style="width: 150px;">
                                 <code>(x_i - \color{<var>BLUE</var>}{\overline{x}})^2</code>
@@ -225,31 +217,25 @@
                         </div>
                         <div class="fake_row" data-each="DATA as i, POINT">
                             <span style="width: 100px;">
-                                <code><var>POINT</var></code> <var>plural( "year", POINT )</var>
+                                <code><var>POINT</var></code> <var>plural( "歲", POINT )</var>
                             </span><span style="width: 150px;" class="hint_gray">
-                                <code><var>roundTo( 2, POINT - MEAN )</var></code> <var>plural( "year", roundTo( 2, POINT - MEAN ) )</var>
+                                <code><var>roundTo( 2, POINT - MEAN )</var></code> <var>plural( "歲", roundTo( 2, POINT - MEAN ) )</var>
                             </span><span style="width: 150px;" class="hint_purple">
-                                <code><var>SQR_DEV[ i ]</var></code> <var>plural( "year", SQR_DEV[ i ] )</var><code>^2</code>
+                                <code><var>SQR_DEV[ i ]</var></code> <var>plural( "歲", SQR_DEV[ i ] )</var><code>^2</code>
                             </span>
                         </div>
                     </div>
 
                     <div>
                         <p>
-                            Normally we can find the variance <code>(\color{red}{s^2})</code> by averaging the
-                            <span class="hint_purple">squared deviations from the mean</span>. But remember we don't know the real
-                            population mean&mdash;we had to estimate it by using the <span class="hint_blue">sample mean</span>.
+                            一般來說我們可以把<span class="hint_purple">和平均數相減的平方</span>平均得到變異數<code>(\color{red}{s^2})</code>。但是我們還不知道真實的年齡平均值我們先用樣本平均數估計他。
                         </p>
                         <p>
-                            The age of any particular <var>animal( 1 )</var> in our sample is likely to be closer to the average age
-                            of the <var>plural( DATA_POINTS, animal( 1 ) )</var> we sampled than it is to the average age
-                            of all <var>plural( POPULATION, animal( 1 ) )</var> in the zoo.
-                            Because of that, the <span class="hint_purple">squared deviations from the mean</span> we calculated will
-                            probably underestimate the actual deviations from the population mean.
+                            在樣本裡，特定<var>animal( 1 )</var>的年齡相較於<var>POPULATION</var>隻<var>plural(animal( 1 ) )</var>的平均年齡可能會比較接近<var>DATA_POINTS</var>隻<var>plural(animal( 1 ) )</var>的平均年齡。所以我們在計算
+                            <span class="hint_purple">和平均數相減的平方</span>時可能會比用實際的平均值計算來的低。
                         </p>
                         <p>
-                            To compensate for this underestimation, rather than simply averaging the <span class="hint_purple">squared deviations from the mean</span>,
-                            we total them and divide by <code class="hint_green">n - 1</code>.
+                            為了解決這個低估的問題，我們不直接取<span class="hint_purple">和平均數相減的平方</span>的平均，而是全部除以<code class="hint_green">n - 1</code>。
                         </p>
                         <p>
                             <code>
@@ -271,13 +257,13 @@
                         <code>
                             \color{red}{s^2} \quad = \quad
                             \dfrac{\color{purple}{<var>roundTo( 2, sum( SQR_DEV ) )</var>}}{\color{<var>GREEN</var>}{<var>DATA_POINTS - 1</var>}} \quad = \quad
-                            \color{red}{<var>VARIANCE</var>\text{ <var>plural( "year", VARIANCE )</var>}^2}
+                            \color{red}{<var>VARIANCE</var>\text{ <var>plural( "歲", VARIANCE )</var>}^2}
                         </code>
                     </p>
 
                     <p><strong>
-                        We can estimate that the average <var>animal( 1 )</var> at the zoo is <var>plural( MEAN, "year" )</var> old with a variance
-                        of <var>plural( VARIANCE, "year" )</var><code>^2</code>.
+                        我們可以估計<var>animal( 1 )</var>的平均年齡為<var>plural( MEAN, "歲" )</var>。
+                        變異數是<var>plural( VARIANCE, "歲" )</var><code>^2</code>。
                     </strong></p>
 
                 </div> <!-- hints -->

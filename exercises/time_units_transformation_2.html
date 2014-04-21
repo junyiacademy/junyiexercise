@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie time word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>時間單位的轉換 2</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .short input[type=text] {
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+        <var id="HOUR">randRange( 1, 23 )</var>
+		<var id="HOUR1">randRange( 13, 23 )</var>
+        <var id="MINUTE">randRange( 10, 59 )  </var>
+		<var id="MINUTE1">randRange( 61, 600 )  </var>
+		<var id="SECOND">randRange( 1, 59 )  </var>
+		<var id="ROUND">randRange( 1, 10 )  </var>
+        <var id="NICE_MINUTE"> MINUTE &gt; 5 ? MINUTE : "0" + "" + MINUTE</var>
+        <var id="AM_PM">HOUR >= 7 ? "a.m" : "p.m."</var>
+    	
+		<var id="SOLUTION">(function() {
+                        if ( HOUR &lt; 12 ) {
+                            return "上午(AM)";
+                        } else {
+                            return "下午(PM)";
+                        }
+                    })()</var>
+				
+	</div>
+
+    <div class="problems">
+        <div id="second-to-minute">
+            <div class="question">
+			    <p>秒針走<var>ROUND</var>圈，分針會走幾小格?</p>
+            </div>
+           
+		   
+			 <div class="solution" data-type="multiple"> 
+				<p class="short"><span class="sol"><var>ROUND</var></span>小格</p>
+                <p class="example">整數，像是 6</p>
+            </div>
+
+            <div class="hints">
+                
+                    <p>秒針走1圈是60秒，分針走1格是60秒</p>
+					<p>秒針走1圈等於分針走1格</p>
+					<p>秒針走<code><var>ROUND</var></code>圈，分針會走<code><var>ROUND</var></code>格。</p>
+                            
+            </div>
+        </div>
+		
+		<div id="second-to-minute_2">
+            <div class="question">
+			    <p>秒針走<var>ROUND</var>圈，分針會走幾分鐘?</p>
+            </div>
+           
+		   
+			 <div class="solution" data-type="multiple"> 
+				<p class="short"><span class="sol"><var>ROUND</var></span>分鐘</p>
+                <p class="example">整數，像是 6</p>
+            </div>
+
+            <div class="hints">
+
+				    <p>秒針走1圈是60秒，60秒等於1分鐘</p>
+					<p>秒針走1圈等於1分鐘</p>
+					<p>秒針走<code><var>ROUND</var></code>圈，是<code><var>ROUND</var></code>分鐘。</p>
+
+                
+            </div>
+        </div>
+		
+		
+		<div id="second-and-minute">
+            <div class="question">
+			    <p>現在是<var>HOUR1</var>時<var>MINUTE-5</var>分59秒，再過<var>SECOND</var>秒，是幾時幾分又幾秒?</p>
+            </div>
+           
+			 <div class="solution" data-type="multiple"> 
+				<p class="short"><span class="sol"><var>HOUR1</var></span>時<span class="sol"><var>MINUTE-5+1</var></span>分又<span class="sol"><var>SECOND-1</var></span>秒</p>
+                <p class="example">整數，像是 6</p>
+            </div>
+
+            <div class="hints">
+                
+                 <p>分與秒的關係是什麼?</p>
+                 <p>一分鐘=六十秒</p>
+                 <p>當秒數從59變成60的時候，時鐘會發生什麼事?</p>				 
+			     <p>當秒數從59變成60的時候，時間會進一位，讓60秒變成1分鐘。秒數會再從0開始計算，而分鐘的數字會增加1。</p>
+		         <p>59秒再過了<var>SECOND</var>秒，就變成<code>\orange{1分}</code>又<code>\blue{<var>SECOND-1</var>秒}</code>。</p>
+           		 <p>一分鐘因為進位了，所以是跟原本的<var>MINUTE-5</var>分相加
+				 <p>時間變成<var>HOUR1</var>時<var>MINUTE-5</var>+<code>\orange{1分}</code>又<code>\blue{<var>SECOND-1</var>秒}</code>。</p>
+	           
+
+                <div>   
+					<p>就是<var>HOUR1</var>時<var>MINUTE-5+1</var>分<var>SECOND-1</var>秒</p>
+	            </div>
+            </div>
+        </div>
+		
+		
+    </div>
+    </div>
+</body>
+</html>

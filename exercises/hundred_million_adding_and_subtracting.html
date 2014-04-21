@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html data-require="math word-problems spin graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>認識大數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="income">
+            <div class="vars">
+                <var id="distance_1_integer">randRange(100000,500000)</var>
+                <var id="distance_1_decimal">(4)</var>
+                <var id="distance_1">truncate_to_max(distance_1_integer*pow(10,-distance_1_decimal), 4)</var>
+                <var id="distance_2_integer">randRange(100,distance_1_integer-1)</var>
+                <var id="distance_2_decimal">(4)</var>
+                <var id="distance_2">truncate_to_max(distance_2_integer*pow(10,-distance_2_decimal), 4)</var>
+                <var id="solution">truncate_to_max((distance_1+distance_2),4)</var>
+                <var id="time_1">randRange(20.2,52.17)</var>
+                <var id="DUMMY">[]</var>
+                <var id="F">Math.floor(distance_1_integer/10000)</var>
+                <var id="G">Math.round((distance_1_integer/10000-F)*10000)</var>
+                <var id="F2">Math.floor(distance_2_integer/10000)</var>
+                <var id="G2">Math.round((distance_2_integer/10000-F2)*10000)</var>
+                <var id="S,B">randFromArray([
+                                            ["億", "兆"],
+                                            ["萬", "億"],
+                                            ])</var>
+            </div>
+    
+            <div class="question spin">
+                <p>某一家{大公司|企業}，去年的營業收入是<var>distance_1_integer</var><var>S</var>元，今年的營業收入是<var>distance_2_integer</var><var>S</var>元，兩年的營收入共是多少<var>B</var>？</p>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p> <span class="sol"><var>solution</var></span><var>B</var></p>
+            </div>
+            <div class="hints">
+                <p>我們要用多少<var>B</var>來表示<var>distance_1_integer</var><var>S</var>和<var>distance_2_integer</var><var>S</var></p>     
+                <p>每一<var>S</var>個一<var>S</var>就會等於一<var>B</var></p>
+                
+                <div>
+                <p>10000<var>S</var> ＝ 10 &times; 1000<var>S</var> ＝ 1<var>B</var></p>
+                <p>去年的營收 = <var>distance_1_integer</var><var>S</var> = <var>F</var> &times; 10000<var>S</var> + <var>G</var><var>S</var> = <var>F</var> <var>B</var> + <var>G/10000</var><var>B</var> = <var>distance_1</var><var>B</var></p>
+                
+
+                <p>今年的營收 = <var>distance_2_integer</var><var>S</var> = <var>F2</var> &times; 10000<var>S</var> + <var>G2</var><var>S</var> = <var>F2</var> <var>B</var> + <var>G2/10000</var><var>B</var> = <var>distance_2</var><var>B</var></p>
+
+                </div>
+
+                <div class="graphie" id="numbers">
+
+
+                    graph.adder = new DecimalAdder( distance_1_integer, distance_1_decimal, distance_2_integer, distance_2_decimal );
+                    graph.adder.show();
+                    graph.adder.showDecimals();
+
+                    
+
+                    label([7,2], B );
+                    label([7,1], B );
+                </div>
+                <div class="graphie" data-update="numbers" data-each="DecimalAdder.numHintsFor( distance_1_integer, distance_1_decimal, distance_2_integer, distance_2_decimal ) times">
+                    graph.adder.showHint();
+
+
+                </div>
+
+                <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
+                    graph.adder.showHint();
+                </div>
+                <p class="final_answer">兩年的營業收入共是<var>solution</var><var>B</var>。</p>
+            </div>
+        </div>
+
+        <div id="population">
+            <div class="vars">
+                <var id="distance_1_integer">randRange(900,1200)*10000</var>
+                <var id="distance_1_decimal">(0)</var>
+                <var id="distance_1">truncate_to_max(distance_1_integer*pow(10,-distance_1_decimal), 0)</var>
+                <var id="distance_2_integer">randRange(900,distance_1_integer/10000-1)*10000</var>
+                <var id="distance_2_decimal">(0)</var>
+                <var id="distance_2">truncate_to_max(distance_2_integer*pow(10,-distance_2_decimal), 0)</var>
+                <var id="solution">truncate_to_max((distance_1+distance_2),0)</var>
+                <var id="time_1">randRange(20.2,52.17)</var>
+                <var id="DUMMY">[]</var>
+                <var id="F">Math.floor(distance_1_integer/10000)</var>
+                <var id="F2">Math.floor(distance_2_integer/10000)</var>
+                
+            </div>
+    
+            <div class="question spin">
+                <p>某一年台灣男生的人口數是<var>distance_1_integer</var>人，女生的人口數是<var>distance_2_integer</var>人，台灣總人口數是幾人？</p>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p> <span class="sol"><var>F+F2</var></span>萬人</p>
+            </div>
+            <div class="hints">
+
+                <p>我們要用多少萬來表示<var>distance_1_integer</var>和<var>distance_2_integer</var>的總和</p>     
+                
+                <p>每一萬個一萬就會等於一億</p>
+
+                <p>10000 ＝ 10 &times; 1000 ＝ 1萬</p>
+
+                <p>男生的人口 = <var>distance_1_integer</var>人= <var>F</var> 萬人</p>
+
+                <p>女生的人口 = <var>distance_2_integer</var>人= <var>F2</var> 萬人</p>
+
+
+                <div class="graphie" id="numbers">
+
+
+                    graph.adder = new Adder( F, F2);
+                    graph.adder.show();
+
+                    label([5,2], "\\text{ 萬 }" );
+                    label([5,1], "\\text{ 萬 }" );
+                </div>
+                <div class="graphie" data-update="numbers" data-each="Adder.numHintsFor( F, F2) times">
+                    graph.adder.showHint();
+
+
+                </div>
+
+                <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
+                    graph.adder.showHint();
+                </div>
+                <p class="final_answer">台灣總人口數是<var>F+F2</var>萬人。</p>
+            </div>
+        </div>
+
+        <div id="population_2">
+            <div class="vars">
+                <var id="distance_1_integer">randRange(2100,2300)*10000</var>
+                <var id="distance_1_decimal">(0)</var>
+                <var id="distance_1">truncate_to_max(distance_1_integer*pow(10,-distance_1_decimal), 0)</var>
+                <var id="distance_2_integer">randRange(10000,13000)*10000</var>
+                <var id="distance_2_decimal">(0)</var>
+                <var id="distance_2">truncate_to_max(distance_2_integer*pow(10,-distance_2_decimal), 0)</var>
+                <var id="solution">truncate_to_max((distance_1+distance_2),0)</var>
+                <var id="time_1">randRange(20.2,52.17)</var>
+                <var id="DUMMY">[]</var>
+                <var id="F">Math.floor(distance_1_integer/10000)</var>
+                <var id="F2">Math.floor(distance_2_integer/10000)</var>
+                
+            </div>
+    
+            <div class="question spin">
+                <p>某一年日本的總人口數是<var>distance_2_integer</var>人，台灣的總人口數是<var>distance_1_integer</var>人，兩個地區的總人口數共有幾人？？</p>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p> <span class="sol"><var>(F+F2)/10000</var></span>億人</p>
+            </div>
+            <div class="hints">
+                <p>我們要用多少萬來表示<var>distance_1_integer</var>和<var>distance_2_integer</var>的總和</p>
+
+                <p>每一萬個一萬就會等於一億</p>
+
+                <p>10000 ＝ 10 &times; 1000 ＝ 1萬</p>
+
+                <p>日本的人口 = <var>distance_2_integer</var>人= <var>F2</var> 萬人</p>
+
+                <p>台灣的人口 = <var>distance_1_integer</var>人= <var>F</var> 萬人</p>
+               
+
+
+                <div class="graphie" id="numbers">
+
+
+                    graph.adder = new Adder( F2, F);
+                    graph.adder.show();
+
+                    label([6,2], "\\text{ 萬 }" );
+                    label([6,1], "\\text{ 萬 }" );
+                </div>
+                <div class="graphie" data-update="numbers" data-each="Adder.numHintsFor( F2, F) times">
+                    graph.adder.showHint();
+
+
+                </div>
+
+                <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
+                    graph.adder.showHint();
+                </div>
+
+                <p>10000萬 ＝ 10 &times; 1000<var>S</var> ＝ 1億 </p>
+                <p><var>F+F2</var>萬 = <var>(F+F2)/10000</var>億</p>
+
+                <p class="final_answer">兩個地區的總人口數是<var>(F+F2)/10000</var>億人。</p>
+            </div>
+        </div>
+
+        <div id="population_3">
+            <div class="vars">
+                <var id="distance_1_integer">randRange(18000,21000)*10000</var>
+                <var id="distance_1_decimal">(0)</var>
+                <var id="distance_1">truncate_to_max(distance_1_integer*pow(10,-distance_1_decimal), 0)</var>
+                <var id="distance_2_integer">randRange(20000,25000)*10000</var>
+                <var id="distance_2_decimal">(0)</var>
+                <var id="distance_2">truncate_to_max(distance_2_integer*pow(10,-distance_2_decimal), 0)</var>
+                <var id="solution">truncate_to_max((distance_1+distance_2),0)</var>
+                <var id="time_1">randRange(20.2,52.17)</var>
+                <var id="DUMMY">[]</var>
+                <var id="F">Math.floor(distance_1_integer/10000)</var>
+                <var id="F2">Math.floor(distance_2_integer/10000)</var>
+                
+            </div>
+       
+            <div class="question spin">
+                <p>某一年巴西的總人口數是<var>distance_2_integer</var>人，印尼的總人口數是<var>distance_1_integer</var>人，兩個地區的總人口數共有幾人？？</p>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p> <span class="sol"><var>(F+F2)/10000</var></span>億人</p>
+            </div>
+            <div class="hints">
+                <p>我們要用多少萬來表示<var>distance_1_integer</var>和<var>distance_2_integer</var>的總和</p>
+
+                <p>每一萬個一萬就會等於一億</p>
+
+                <p>10000 ＝ 10 &times; 1000 ＝ 1萬</p>
+
+                <p>巴西的人口 = <var>distance_2_integer</var>人= <var>F2</var> 萬人</p>
+
+                <p>印尼的人口 = <var>distance_1_integer</var>人= <var>F</var> 萬人</p>
+               
+
+
+                <div class="graphie" id="numbers">
+
+
+                    graph.adder = new Adder( F2, F);
+                    graph.adder.show();
+
+                    label([6,2], "\\text{ 萬 }" );
+                    label([6,1], "\\text{ 萬 }" );
+                </div>
+                <div class="graphie" data-update="numbers" data-each="Adder.numHintsFor( F2, F) times">
+                    graph.adder.showHint();
+
+
+                </div>
+
+                <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
+                    graph.adder.showHint();
+                </div>
+
+                <p>10000萬 ＝ 10 &times; 1000<var>S</var> ＝ 1億 </p>
+                <p><var>F+F2</var>萬 = <var>(F+F2)/10000</var>億</p>
+
+                <p class="final_answer">兩個地區的總人口數是<var>(F+F2)/10000</var>億人。</p>
+            </div>
+        </div>
+
+        <div id="population_4">
+            <div class="vars">
+                <var id="distance_1_integer">randRange(29000,31000)*10000</var>
+                <var id="distance_1_decimal">(0)</var>
+                <var id="distance_1">truncate_to_max(distance_1_integer*pow(10,-distance_1_decimal), 0)</var>
+                <var id="distance_2_integer">randRange(100000,120000)*10000</var>
+                <var id="distance_2_decimal">(0)</var>
+                <var id="distance_2">truncate_to_max(distance_2_integer*pow(10,-distance_2_decimal), 0)</var>
+                <var id="solution">truncate_to_max((distance_1+distance_2),0)</var>
+                <var id="time_1">randRange(20.2,52.17)</var>
+                <var id="DUMMY">[]</var>
+                <var id="F">Math.floor(distance_1_integer/10000)</var>
+                <var id="F2">Math.floor(distance_2_integer/10000)</var>
+                
+            </div>
+       
+            <div class="question spin">
+                <p>某一年印度的總人口數是<var>distance_2_integer</var>人，美國的總人口數是<var>distance_1_integer</var>人，兩個地區的總人口數共有幾人？？</p>
+            </div>
+ 
+            <div class="solution" data-type="multiple">
+                <p> <span class="sol"><var>(F+F2)/10000</var></span>億人</p>
+            </div>
+            <div class="hints">
+                <p>我們要用多少萬來表示<var>distance_1_integer</var>和<var>distance_2_integer</var>的總和</p>
+
+                <p>每一萬個一萬就會等於一億</p>
+
+                <p>10000 ＝ 10 &times; 1000 ＝ 1萬</p>
+
+                <p>印度的人口 = <var>distance_2_integer</var>人= <var>F2</var> 萬人</p>
+
+                <p>美國的人口 = <var>distance_1_integer</var>人= <var>F</var> 萬人</p>
+               
+
+
+                <div class="graphie" id="numbers">
+
+
+                    graph.adder = new Adder( F2, F);
+                    graph.adder.show();
+
+                    label([7,2], "\\text{ 萬 }" );
+                    label([7,1], "\\text{ 萬 }" );
+                </div>
+                <div class="graphie" data-update="numbers" data-each="Adder.numHintsFor( F2, F) times">
+                    graph.adder.showHint();
+
+
+                </div>
+
+                <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
+                    graph.adder.showHint();
+                </div>
+
+                <p>10000萬 ＝ 10 &times; 1000<var>S</var> ＝ 1億 </p>
+                <p><var>F+F2</var>萬 = <var>(F+F2)/10000</var>億</p>
+
+                <p class="final_answer">兩個地區的總人口數是<var>(F+F2)/10000</var>億人。</p>
+            </div>
+        </div>
+
+
+        <div id="incomeM">
+            <div class="vars">
+                <var id="distance_1_integer">randRange(100000,500000)</var>
+                <var id="distance_1_decimal">(4)</var>
+                <var id="distance_1">truncate_to_max(distance_1_integer*pow(10,-distance_1_decimal), 4)</var>
+                <var id="distance_2_integer">randRange(100,distance_1_integer-1)</var>
+                <var id="distance_2_decimal">(4)</var>
+                <var id="distance_2">truncate_to_max(distance_2_integer*pow(10,-distance_2_decimal), 4)</var>
+                <var id="solution">truncate_to_max((distance_1-distance_2),4)</var>
+                <var id="time_1">randRange(20.2,52.17)</var>
+                <var id="DUMMY">[]</var>
+                <var id="F">Math.floor(distance_1_integer/10000)</var>
+                <var id="G">Math.round((distance_1_integer/10000-F)*10000)</var>
+                <var id="F2">Math.floor(distance_2_integer/10000)</var>
+                <var id="G2">Math.round((distance_2_integer/10000-F2)*10000)</var>
+                <var id="S,B">randFromArray([
+                                            ["億", "兆"],
+                                            ["萬", "億"],
+                                            ])</var>
+            </div>
+    
+            <div class="question spin">
+                <p>某一家{大公司|企業}，去年的營業收入是<var>distance_1_integer</var><var>S</var>元，今年的營業收入是<var>distance_2_integer</var><var>S</var>元，兩年的營業收入相差多少<var>B</var>？</p>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p> <span class="sol"><var>solution</var></span><var>B</var></p>
+            </div>
+            <div class="hints">
+                <p>我們要用多少<var>B</var>來表示<var>distance_1_integer</var><var>S</var>和<var>distance_2_integer</var><var>S</var></p>     
+                <p>每一<var>S</var>個一<var>S</var>就會等於一<var>B</var></p>
+
+                <div>
+                <p>10000<var>S</var> ＝ 10 &times; 1000<var>S</var> ＝ 1<var>B</var></p>
+
+                <p>去年的營收 = <var>distance_1_integer</var><var>S</var> = <var>F</var> &times; 10000<var>S</var> + <var>G</var><var>S</var> = <var>F</var> <var>B</var> + <var>G/10000</var><var>B</var> = <var>distance_1</var><var>B</var></p>
+
+                <p>今年的營收 = <var>distance_2_integer</var><var>S</var> = <var>F2</var> &times; 10000<var>S</var> + <var>G2</var><var>S</var> = <var>F2</var> <var>B</var> + <var>G2/10000</var><var>B</var> = <var>distance_2</var><var>B</var></p>
+                </div>
+
+
+                <div class="graphie" id="numbers">
+
+
+                    graph.subtractor = new DecimalSubtractor( distance_1_integer, distance_1_decimal, distance_2_integer, distance_2_decimal );
+                    graph.subtractor.show();
+                    graph.subtractor.showDecimals();
+
+                    
+
+                    label([7,2], B );
+                    label([7,1], B );
+                </div>
+                <div class="graphie" data-update="numbers" data-each="DecimalAdder.numHintsFor( distance_1_integer, distance_1_decimal, distance_2_integer, distance_2_decimal ) times">
+                    graph.subtractor.showHint();
+
+
+                </div>
+
+                <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
+                    graph.subtractor.showHint();
+                </div>
+                <p class="final_answer">兩年的營業收入相差<var>solution</var><var>B</var>。</p>
+            </div>
+        </div>
+
+        <div id="populationM">
+            <div class="vars">
+                <var id="distance_1_integer">randRange(1000,1200)*10000</var>
+                <var id="distance_1_decimal">(0)</var>
+                <var id="distance_1">truncate_to_max(distance_1_integer*pow(10,-distance_1_decimal), 0)</var>
+                <var id="distance_2_integer">randRange(900,distance_1_integer/10000-1)*10000</var>
+                <var id="distance_2_decimal">(0)</var>
+                <var id="distance_2">truncate_to_max(distance_2_integer*pow(10,-distance_2_decimal), 0)</var>
+                <var id="solution">truncate_to_max((distance_1+distance_2),0)</var>
+                <var id="time_1">randRange(20.2,52.17)</var>
+                <var id="DUMMY">[]</var>
+                <var id="F">Math.floor(distance_1_integer/10000)</var>
+                <var id="F2">Math.floor(distance_2_integer/10000)</var>
+                
+            </div>
+    
+            <div class="question spin">
+                <p>某一年台灣男生的人口數是<var>distance_1_integer</var>人，女生的人口數是<var>distance_2_integer</var>人，台灣男女人口數相差幾人？</p>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p> <span class="sol"><var>F-F2</var></span>萬人</p>
+            </div>
+            <div class="hints">
+                <p>我們要用多少萬來表示<var>distance_1_integer</var>和<var>distance_2_integer</var>的相差</p>
+
+                <p>每一萬個一萬就會等於一億</p>
+
+                <p>10000 ＝ 10 &times; 1000 ＝ 1萬</p>
+
+                <p>男生的人口 = <var>distance_1_integer</var>人= <var>F</var> 萬人</p>
+
+                <p>女生的人口 = <var>distance_2_integer</var>人= <var>F2</var> 萬人</p>
+
+
+                <div class="graphie" id="numbers">
+
+
+                    graph.subtractor = new Subtractor( F, F2);
+                    graph.subtractor.show();
+
+
+                    
+
+                    label([5,2], "\\text{ 萬 }" );
+                    label([5,1], "\\text{ 萬 }" );
+                </div>
+                <div class="graphie" data-update="numbers" data-each="DecimalSubtractor.numHintsFor( F, F2 ) times">
+                    graph.subtractor.showHint();
+
+
+                </div>
+
+                <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
+                    graph.subtractor.showHint();
+                </div>
+                <p class="final_answer">台灣總人口數相差<var>F-F2</var>萬人。</p>
+            </div>
+        </div>
+
+
+        <div id="population_2M">
+            <div class="vars">
+                <var id="distance_1_integer">randRange(2100,2300)*10000</var>
+                <var id="distance_1_decimal">(0)</var>
+                <var id="distance_1">truncate_to_max(distance_1_integer*pow(10,-distance_1_decimal), 0)</var>
+                <var id="distance_2_integer">randRange(10000,13000)*10000</var>
+                <var id="distance_2_decimal">(0)</var>
+                <var id="distance_2">truncate_to_max(distance_2_integer*pow(10,-distance_2_decimal), 0)</var>
+                <var id="solution">truncate_to_max((distance_1+distance_2),0)</var>
+                <var id="time_1">randRange(20.2,52.17)</var>
+                <var id="DUMMY">[]</var>
+                <var id="F">Math.floor(distance_1_integer/10000)</var>
+                <var id="F2">Math.floor(distance_2_integer/10000)</var>
+                
+            </div>
+    
+            <div class="question spin">
+                <p>某一年日本的總人口數是<var>distance_2_integer</var>人，台灣的總人口數是<var>distance_1_integer</var>人，兩個地區的總人口數相差幾人？？</p>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p> <span class="sol"><var>(F2-F)/10000</var></span>億人</p>
+            </div>
+            <div class="hints">
+                <p>我們要用多少萬來表示<var>distance_1_integer</var>和<var>distance_2_integer</var>的相差</p>
+
+                <p>每一萬個一萬就會等於一億</p>
+
+                <p>10000 ＝ 10 &times; 1000 ＝ 1萬</p>
+
+                <p>日本的人口 = <var>distance_2_integer</var>人= <var>F2</var> 萬人</p>
+
+                <p>台灣的人口 = <var>distance_1_integer</var>人= <var>F</var> 萬人</p>
+               
+
+
+                <div class="graphie" id="numbers">
+
+
+                    graph.subtractor = new Subtractor( F2, F);
+                    graph.subtractor.show();
+
+                    label([6,2], "\\text{ 萬 }" );
+                    label([6,1], "\\text{ 萬 }" );
+                </div>
+                <div class="graphie" data-update="numbers" data-each="Subtractor.numHintsFor( F2, F) times">
+                    graph.subtractor.showHint();
+
+
+                </div>
+
+                <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
+                    graph.subtractor.showHint();
+                </div>
+
+                <p>10000萬 ＝ 10 &times; 1000<var>S</var> ＝ 1億 </p>
+                <p><var>F2-F</var>萬 = <var>(F2-F)/10000</var>億</p>
+
+                <p class="final_answer">兩個地區的總人口數相差<var>(F2-F)/10000</var>億人。</p>
+            </div>
+        </div>
+
+        <div id="population_3M">
+            <div class="vars">
+                <var id="distance_1_integer">randRange(18000,21000)*10000</var>
+                <var id="distance_1_decimal">(0)</var>
+                <var id="distance_1">truncate_to_max(distance_1_integer*pow(10,-distance_1_decimal), 0)</var>
+                <var id="distance_2_integer">randRange(20000,25000)*10000</var>
+                <var id="distance_2_decimal">(0)</var>
+                <var id="distance_2">truncate_to_max(distance_2_integer*pow(10,-distance_2_decimal), 0)</var>
+                <var id="solution">truncate_to_max((distance_1+distance_2),0)</var>
+                <var id="time_1">randRange(20.2,52.17)</var>
+                <var id="DUMMY">[]</var>
+                <var id="F">Math.floor(distance_1_integer/10000)</var>
+                <var id="F2">Math.floor(distance_2_integer/10000)</var>
+                
+            </div>
+    
+            <div class="question spin">
+                <p>某一年巴西的總人口數是<var>distance_2_integer</var>人，印尼的總人口數是<var>distance_1_integer</var>人，兩個地區的總人口數相差幾人？？</p>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p> <span class="sol"><var>(F2-F)/10000</var></span>億人</p>
+            </div>
+            <div class="hints">
+                <p>我們要用多少萬來表示<var>distance_1_integer</var>和<var>distance_2_integer</var>的相差</p>
+
+                <p>每一萬個一萬就會等於一億</p>
+
+                <p>10000 ＝ 10 &times; 1000 ＝ 1萬</p>
+
+                 <p>巴西的人口 = <var>distance_2_integer</var>人= <var>F2</var> 萬人</p>
+
+                <p>印尼的人口 = <var>distance_1_integer</var>人= <var>F</var> 萬人</p>
+               
+
+
+                <div class="graphie" id="numbers">
+
+
+                    graph.subtractor = new Subtractor( F2, F);
+                    graph.subtractor.show();
+
+                    label([6,2], "\\text{ 萬 }" );
+                    label([6,1], "\\text{ 萬 }" );
+                </div>
+                <div class="graphie" data-update="numbers" data-each="Subtractor.numHintsFor( F2, F) times">
+                    graph.subtractor.showHint();
+
+
+                </div>
+
+                <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
+                    graph.subtractor.showHint();
+                </div>
+
+                <p>10000萬 ＝ 10 &times; 1000<var>S</var> ＝ 1億 </p>
+                <p><var>F2-F</var>萬 = <var>(F2-F)/10000</var>億</p>
+
+                <p class="final_answer">兩個地區的總人口數相差<var>(F2-F)/10000</var>億人。</p>
+            </div>
+        </div>
+
+
+        <div id="population_4M">
+            <div class="vars">
+                <var id="distance_1_integer">randRange(29000,31000)*10000</var>
+                <var id="distance_1_decimal">(0)</var>
+                <var id="distance_1">truncate_to_max(distance_1_integer*pow(10,-distance_1_decimal), 0)</var>
+                <var id="distance_2_integer">randRange(100000,120000)*10000</var>
+                <var id="distance_2_decimal">(0)</var>
+                <var id="distance_2">truncate_to_max(distance_2_integer*pow(10,-distance_2_decimal), 0)</var>
+                <var id="solution">truncate_to_max((distance_1+distance_2),0)</var>
+                <var id="time_1">randRange(20.2,52.17)</var>
+                <var id="DUMMY">[]</var>
+                <var id="F">Math.floor(distance_1_integer/10000)</var>
+                <var id="F2">Math.floor(distance_2_integer/10000)</var>
+                
+            </div>
+    
+            <div class="question spin">
+                <p>某一年印度的總人口數是<var>distance_2_integer</var>人，美國的總人口數是<var>distance_1_integer</var>人，兩個地區的總人口數相差幾人？？</p>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p> <span class="sol"><var>(F2-F)/10000</var></span>億人</p>
+            </div>
+            <div class="hints">
+                <p>我們要用多少萬來表示<var>distance_1_integer</var>和<var>distance_2_integer</var>的相差</p>
+
+                <p>每一萬個一萬就會等於一億</p>
+
+                <p>10000 ＝ 10 &times; 1000 ＝ 1萬</p>
+
+                <p>印度的人口 = <var>distance_2_integer</var>人= <var>F2</var> 萬人</p>
+
+                <p>美國的人口 = <var>distance_1_integer</var>人= <var>F</var> 萬人</p>
+               
+               
+
+
+                <div class="graphie" id="numbers">
+
+
+                    graph.subtractor = new Subtractor( F2, F);
+                    graph.subtractor.show();
+
+                    label([7,2], "\\text{ 萬 }" );
+                    label([7,1], "\\text{ 萬 }" );
+                </div>
+                <div class="graphie" data-update="numbers" data-each="Subtractor.numHintsFor( F2, F) times">
+                    graph.subtractor.showHint();
+
+
+                </div>
+
+                <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
+                    graph.subtractor.showHint();
+                </div>
+
+                <p>10000萬 ＝ 10 &times; 1000<var>S</var> ＝ 1億 </p>
+                <p><var>F2-F</var>萬 = <var>(F2-F)/10000</var>億</p>
+
+                <p class="final_answer">兩個地區的總人口數相差<var>(F2-F)/10000</var>億人。</p>
+            </div>
+        </div>
+
+
+
+    </div>
+    </div>
+
+</body>
+</html>

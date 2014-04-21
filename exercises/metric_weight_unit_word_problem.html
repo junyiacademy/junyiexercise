@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie time word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>重量單位的加減換算</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .short input[type=text] {
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+        <var id="TON">randRange( 25, 40 )</var>
+		<var id="NUNBER">randRange( 6, 15 )</var>
+		<var id="R">randRange( 9, 16 )</var>
+		<var id="KILO">randRange( 500, 2000 )</var>
+		<var id="KILO2" data-ensure="KILO !== KILO2">randRange( 500, 2000 )</var>
+		<var id="DAY">randRange( 10, 25 )</var>
+		<var id="A">randRange( 5, 30 )</var>
+		<var id="B">randRange( 37, 51 )</var>
+			<var id="SOLUTION_0">(function() {
+                        if ( KILO &gt; KILO2 ) {
+                            return "一期";
+                        } else {
+                            return "二期";
+                        }
+                    })()		
+					</var>
+					
+			<var id="MORE">(function() {
+                        if ( KILO &gt; KILO2 ) {
+                            return  KILO  ;
+                        } else {
+                            return KILO2 ;
+                        }
+                    })()		
+					</var>
+			<var id="LESS">(function() {
+                        if ( KILO &gt; KILO2 ) {
+                            return  [KILO2]  ;
+                        } else {
+                            return KILO ;
+                        }
+                    })()		
+			</var>
+				
+	</div>
+
+    <div class="problems">
+        <div id="fruit">
+            <div class="question">
+			    <p>超市每天進貨<var>KILO</var>公斤的<var>fruit(1)</var>，<var>DAY</var>天共進貨幾公噸?</p>
+            </div>
+
+			<div class="solution" data-type="multiple"> 
+                <span class="sol"><var>KILO*DAY/1000</var></span>公噸</p>
+                <p class="example">整數，像是:6</p>
+            </div>
+            
+			<div class="hints">
+                    <p>每天進貨<var>KILO</var>公斤，要計算<var>DAY</var>天共進貨多少公斤必須用<var>KILO</var>X<var>DAY</var>=</p>
+					<p>1公噸=1000公斤。</p>
+					<p><var>KILO*DAY</var>公斤=<var>KILO*DAY/1000</var>公噸。               
+            </div>
+        </div>
+		
+		<div id="rice">
+            <div class="question">
+			    <p><var>country(1)</var>一期稻作每公頃收成<var>KILO</var>公斤，二期稻作每公頃收成<var>KILO2</var>公斤，哪一期比較多？每公頃多幾公斤？是幾公噸？</p>
+            </div>
+           
+			 <div class="solution" data-type="multiple">
+                    <span class="sol" data-type="list" data-choices="['一期', '二期']">
+                        <var>SOLUTION_0</var>
+                    </span>比較多
+                    <p><span class="sol"><var>abs(KILO-KILO2)</var></span>公斤</p>
+					<p><span class="sol"><var>abs(KILO-KILO2)/1000</var></span>公噸</p>
+					</div>
+
+			<div class="hints">
+                
+					<p>單位一樣的時候比較數字大小。</p>
+					<p><var>MORE</var>大於<var>LESS</var></p>
+                    <p>因為重量單位一樣，所以將數字相減可以知道差多少。</p>
+					<p><var>MORE</var>-<var>LESS</var>=<var>abs(KILO-KILO2)</var>公斤</p>
+					 <p>最後要用公噸為單位來回答問題，所以要將公斤轉換為公噸。</p>
+					  <p>1000 公斤 = 1 公噸</p>
+					 <p><var>abs(KILO-KILO2)</var>公斤= <var>abs(KILO-KILO2)</var>&divide;1000 公噸</p>
+                    <p>所以第一期與第二期差距<var>abs(KILO-KILO2)/1000</var>公噸</p>
+               
+            </div>
+        </div>
+		
+		<div id="truck">
+            <div class="question">
+			    <p>一輛空貨車重<var>TON/10</var>公噸，載了<var>NUNBER</var>臺冰箱，每臺重<var>R*10</var>公斤。
+				當貨車經過地磅時，地磅會顯示幾公噸?</p>
+            </div>
+           
+				<div class="solution" data-type="multiple"> 
+					<span class="sol"><var>TON/10+(NUNBER*R*10)/1000</var></span>公噸</p>
+					<p class="example">小數，像是:6.66</p>
+				</div>
+
+			<div class="hints">
+			
+			    <p>當貨車開過地磅的時候，地磅會秤出貨車以及上面的貨物的總重量。</p>
+				<p><code>總重量 = \blue{所有冰箱的重量} + \orange{貨車本身的重量}</code></p>
+				<p><code>總重量 = \blue{多少臺冰箱  &times; 每臺冰箱的重量} + \orange{貨車本身的重量} </code></p>
+				<p><code>\blue{有<var>NUNBER</var>臺，每臺冰箱重<var>R*10</var> }\red{公斤} </code></p>
+				<p><code>\orange{貨車本身的重量 = <var>TON/10</var>}  公噸</code></p>
+				<p>用這些數字與單位來計算總重量</p>
+				<p><code>總重量 = \blue{<var>NUNBER</var>} &times;\blue{<var>R*10</var>}\red{公斤} + \orange{<var>TON/10</var>}公噸</code></p>
+				<p><code>總重量 = \blue{<var>NUNBER*R*10</var>}\red{公斤} + \orange{<var>TON/10</var>}公噸</code></p>
+				<p>兩個重量單位不一樣。要用哪一個?</p>
+				<p>答案欄的單位是用 “噸”，所以使用公斤為單位的重量要轉換為公噸</p>
+				<p>1000 公斤 = 1 公噸</p>
+				<p><code>\blue{<var>NUNBER*R*10</var>}\red{公斤} = \blue{<var>(NUNBER*R*10)/1000</var>}公噸</code></p>
+				<p><code>總重量 = \blue{<var>(NUNBER*R*10)/1000</var>}公噸 + \orange{<var>TON/10</var>}公噸</code></p>
+				<p>總重量 = <var>Math.round((TON/10+(NUNBER*R*10)/1000)*100)/100</var> 公噸</p>
+				
+            </div>
+        </div>
+		
+		<div id="weight">
+            <div class="question">
+			    <p>大象重<var>randRange( 40, 60 )/10</var>公噸，是小象的<var>A</var>倍，藍鯨的體重是大象的<var>B</var>倍。藍鯨的體重是小象的幾倍?</p>
+            </div>
+           
+				<div class="solution" data-type="multiple"> 
+					<span class="sol"><var>A*B</var></span>倍</p>
+					<p class="example">整數，像是:6</p>
+				</div>
+
+			<div class="hints">
+                
+				
+				
+				
+                <p><code>大象重量是小象的<var>A</var>倍，藍鯨的重量又是大象的<var>B</var>倍。</code></p>
+				<p>用數學式子來表示，<code>\orange{1隻大象}的重量=\green{<var>A</var>隻小象}的重量</code></p>
+				<p><code>\blue{1尾藍鯨}的重量=\orange{<var>B</var>隻大象}的重量</code></p>
+				<p><code>那麼\blue{1尾藍鯨}的重量會是\green{幾隻小象}的重量?</code></p>
+				<p><code>\blue{1尾藍鯨}的重量=\orange{<var>B</var>隻大象}重量=\green{<var>A*B</var>隻小象}的重量</code></p>
+				<p>所以，藍鯨的重量是小象的<var>A*B</var>倍。</p>
+
+                
+            </div>
+        </div>
+
+		
+    </div>
+    </div>
+</body>
+</html>

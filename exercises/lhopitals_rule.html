@@ -2,7 +2,7 @@
 <html data-require="math math-format calculus polynomials expressions">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>L'Hôpital's rule</title>
+    <title>羅必達法則 (L'Hôpital's rule)</title>
     <script src="../khan-exercise.js"></script>
 </head>
 <body>
@@ -72,21 +72,31 @@
 
                 <div class="hints">
                     <!-- Remind them of L'Hopital's rule -->
-                    <p>L'Hopital's rule states that since evaluating
+                    <p>根據羅必達法則 (L'Hopital's rule)，若 <code>\displaystyle
+                     \frac {\lim_{x \to c}f(x)} 
+                     {\lim_{x \to c}g(x)} = \frac{0}{0} </code> 或 <code>\displaystyle \pm\frac{\infty}{\infty}</code>，
+                     如果 <code>\displaystyle \lim_{x \to c} \frac{f'(x)}{g'(x)} = L</code> 存在，
+                     則 <code>\displaystyle \lim_{x \to c} \frac{f(x)}{g(x)} = L </code>。
+                    </p>
+
+                    <p>由於 
                         <!-- Original problem -->
-                        <code>\displaystyle \lim_{x \to <var>APPROACHES_TEXT</var>} \frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>} = <var>INDETERMINATE_FORM</var></code>,<br />
+                        <code>\displaystyle \frac{\lim_{x \to <var>APPROACHES_TEXT</var>}
+                        <var>NUMERATOR</var>} {\lim_{x \to <var>APPROACHES_TEXT</var>}<var>DENOMINATOR</var>} = <var>INDETERMINATE_FORM</var>
+                        </code> 
+                        <br /> <br /> 
                         <!-- Explanation of rule -->
-                        if <code>\displaystyle \lim_{x \to <var>APPROACHES_TEXT</var>} \frac{\frac{d}{dx} (<var>NUMERATOR</var>)}{\frac{d}{dx} (<var>DENOMINATOR</var>)}</code> exists, evaluating it will give us the actual limit.
+                        因此若 <code>\displaystyle \lim_{x \to <var>APPROACHES_TEXT</var>} \frac{\frac{d}{dx} (<var>NUMERATOR</var>)}{\frac{d}{dx} (<var>DENOMINATOR</var>)}</code> 存在, 即為本題之答案。
                     </p>
 
                     <!-- Show them the steps of L'Hopital's rule by deriving until the indeterminate form can be resolved -->
                     <div data-each="STEPS as N, STEP" data-unwrap>
                         <div data-if="N !== STEPS.length-1">
                             <p data-if="N === 0">
-                                Repeat this process until evaluating the limit will not result in an indeterminate form:
+                                若微分一次仍不能得到答案，看看是否能再度套用羅必達法則。
                             </p>
                             <p data-else>
-                                Since evaluating the limit at this point still results in <code><var>INDETERMINATE_FORM</var></code>, we must apply L'Hopital's rule again:
+                                經過一次套用，我們發現這函數在 <code>x \to<var>APPROACHES_TEXT</var></code> 時依舊是 <code><var>INDETERMINATE_FORM</var></code> ，因此可以再使用一次羅必達法則:
                             </p>
                             <p>
                                 <code>
@@ -100,9 +110,11 @@
                     <!-- Evaluate the limit and give the solution in both unsimplified and simplified form (if necessary) -->
                     <p>
                         <!-- Restate the problem using the derived, but unevaluated limit-->
-                        Evaluate the limit:
+                        求取這個形式的極限值變得容易多了！
+                        於是我們最終得到:<br /><br />
                         <code>
-                            \displaystyle \lim_{x \to <var>APPROACHES_TEXT</var>} \frac{<var>SLN_NUMERATOR_TEXT.text()</var>}{<var>SLN_DENOMINATOR_TEXT.text()</var>}
+                            \displaystyle \lim_{x \to <var>APPROACHES_TEXT</var>} \frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>} = 
+                            \lim_{x \to <var>APPROACHES_TEXT</var>} \frac{<var>SLN_NUMERATOR_TEXT.text()</var>}{<var>SLN_DENOMINATOR_TEXT.text()</var>}
                             <!-- Show the evaluation of the limit (only necessary for x->0, otherwise evaluation is obvious because all variables will be gone) -->
                             <span data-if="APPROACHES === 0">
                                 = \frac{<var>SLN_NUMERATOR_TEXT.text().replace("x", "(0)")</var>}{<var>SLN_DENOMINATOR_TEXT.text().replace("x", "(0)")</var>} =

@@ -251,17 +251,77 @@ $.extend(KhanUtil, {
         else
         {
             var DigitNum=new Array();
-            for (i=3; i>=0; i=i-1)
+            for (i=15; i>=0; i=i-1)
             {
             DigitNum[i] = Math.floor(n / Math.pow(10,i)) % 10;
             }
             var add_zero = false;
             var zero_tail = 0;
             var i=0;
-            for (i=0; i<4; i=i+1)
+            for (i=0; i<12; i=i+1)
             {
             if(DigitNum[i]===0){zero_tail += 1}
             else{break;}
+            }
+            if (DigitNum[15])
+            {
+                str += cardinalUnits[DigitNum[15]] + "千"
+                add_zero = true;
+            }
+            if (DigitNum[14])
+            {
+                str += cardinalUnits[DigitNum[14]] + "百"
+                add_zero = true;
+            }
+            if (DigitNum[13])
+            {
+                str += cardinalUnits[DigitNum[13]] + "十"
+                add_zero = true;
+            }
+            if (DigitNum[12])
+            {
+                str += cardinalUnits[DigitNum[12]] + "兆"
+                add_zero = true;
+            }
+            if (DigitNum[11])
+            {
+                str += cardinalUnits[DigitNum[11]] + "千"
+                add_zero = true;
+            }
+            if (DigitNum[10])
+            {
+                str += cardinalUnits[DigitNum[10]] + "百"
+                add_zero = true;
+            }
+            if (DigitNum[9])
+            {
+                str += cardinalUnits[DigitNum[9]] + "十"
+                add_zero = true;
+            }
+            if (DigitNum[8])
+            {
+                str += cardinalUnits[DigitNum[8]] + "億"
+                add_zero = true;
+            }
+            if (DigitNum[7])
+            {
+                str += cardinalUnits[DigitNum[7]] + "千"
+                add_zero = true;
+            }
+            if (DigitNum[6])
+            {
+                str += cardinalUnits[DigitNum[6]] + "百"
+                add_zero = true;
+            }
+            if (DigitNum[5])
+            {
+                str += cardinalUnits[DigitNum[5]] + "十"
+                add_zero = true;
+            }
+            if (DigitNum[4])
+            {
+                str += cardinalUnits[DigitNum[4]] + "萬"
+                add_zero = true;
             }
             if (DigitNum[3])
             {

@@ -2,7 +2,7 @@
 <html data-require="math graphie math-format expressions">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Limits 1</title>
+    <title>極限值 1</title>
     <script src="../khan-exercise.js"></script>
 </head>
 <body>
@@ -54,7 +54,7 @@
                     <li><code><var>q_lcoef</var></code></li>
                     <li><code><var>l_cons</var></code></li>
                     <li><code><var>curFunc(0)</var></code></li>
-                    <li>Does not exist.</li>
+                    <li>極限不存在</li>
                 </ul>
             </div>
             <div>
@@ -94,7 +94,7 @@
                         circle( [-abs_cons, abs_coef], 4 / 20, { fill: "white" } )
                     });
                 </div>
-                <p class="solution">Does not exist.</p>
+                <p class="solution">極限不存在</p>
                 <ul class="choices" data-show="5" data-none="true">
                     <li><code>0</code></li>
                     <li><code><var>a</var></code></li>
@@ -107,7 +107,10 @@
                     <li><code><var>randRangeNonZero(-3, 3)</var></code></li>
                 </ul>
                 <div class="hints" data-apply="appendContents">
-                    <p id="final">The limit as we approach from the left doesn't match the limit as we approach from the right, so <code>f(x)</code> has no limit as <code>x \to <var>a</var></code>.</p>
+                    <p id="final">
+                        當從左右兩邊靠近 <code>x = <var>a</var></code>, <code>f(x)</code>所趨近的值並不相等，因此 <code>f(x)</code> 在 <code>x=<var>a</var></code> 時的極限並不存在。
+
+                    </p>
                 </div>
             </div>
             <div>
@@ -127,10 +130,14 @@
                     <var id="r_limtoa">limtoa</var>
                 </div>
 
-                <p>If <code>f(x) = \begin{cases}
+                <p> <code>f(x) =\begin{cases}
+                    <var>d_cons</var> & \text{，當 $x = <var>a</var>$} &\\
+                    <var>d_line</var> & \text{，當 $x$ 為其他 } & 
+                \end{cases}</code>, 求 <code>\displaystyle \lim_{x \to <var>a</var>} f(x)</code>.</p> 
+                <!-- <p>If <code>f(x) = \begin{cases}
                     <var>d_cons</var> & \text{if $x = <var>a</var>$} \\
                     <var>d_line</var> & \text{otherwise}
-                \end{cases}</code>, find <code>\displaystyle \lim_{x \to <var>a</var>} f(x)</code>.</p>
+                \end{cases}</code>, find <code>\displaystyle \lim_{x \to <var>a</var>} f(x)</code>.</p> -->
                 <div class="graphie" id="graph">
                     graphInit({
                         range: 10,
@@ -162,7 +169,7 @@
                     <li><code><var>fractionReduce(l_cons * -1, l_coef)</var></code></li>
                     <li><code><var>randRangeNonZero(-3, 3)</var></code></li>
                     <li><code><var>randRangeNonZero(-3, 3)</var></code></li>
-                    <li>Does not exist.</li>
+                    <li>極限不存在</li>
                 </ul>
             </div>
             <div>
@@ -206,14 +213,17 @@
                     <li><code><var>randRangeNonZero(-3, 3)</var></code></li>
                     <li><code><var>q_cons</var></code></li>
                     <li><code><var>q_cons * -1</var></code></li>
-                    <li>Does not exist.</li>
+                    <li>極限不存在</li>
                 </ul>
             </div>
         </div>
 
         <div class="hints">
             <div>
-                <p>What happens as we approach <code>x = <var>a</var></code> from the left?</p>
+
+                <p>
+                當 <code>x</code> 值由左邊逐漸接近 <code><var>a</var></code> 時，<code>f(x)</code> 函數圖形的 <code>y</code> 值是如何改變呢？
+                </p>
                 <div class="graphie" data-update="graph" data-style="stroke: orange; marker: arrow;">
                     line( [a - 2, 0], [a, 0], {
                         stroke: "#ff00af",
@@ -226,15 +236,20 @@
                     <tr><th><code>x</code></th><th><var>a - 0.1</var></th><th><var>a - 0.01</var></th><th><var>a - 0.001</var></th></tr>
                     <tr><th><code>f(x)</code></th><td><var>curFunc(a - 0.1).toFixed(4)</var></td><td><var>curFunc(a - 0.01).toFixed(4)</var></td><td><var>curFunc(a - 0.001).toFixed(4)</var></td></tr>
                 </table>
-                It looks like <code>f(x)</code> is approaching <code><var>l_limtoa</var></code> from the left.
+                <p>
+                看起來當 <code>x</code> 由左邊逐漸靠近 <code><var>a</var></code> 時，<code>f(x)</code> 逐漸接近 <code><var>l_limtoa</var></code>。</p>
             </div>
             <div>
-                <p>When we approach <code>x = <var>a</var></code> from the right, we get:</p>
+                <p>
+                另一方面，當 <code>x</code> 從右邊接近 <code><var>a</var></code> 時，觀察 <code>f(x)</code>: </p>
+
                 <table class="limit">
                     <tr><th><code>x</code></th><th><var>a + 0.1</var></th><th><var>a + 0.01</var></th><th><var>a + 0.001</var></th></tr>
                     <tr><th><code>f(x)</code></th><td><var>curFunc(a + 0.1).toFixed(4)</var></td><td><var>curFunc(a + 0.01).toFixed(4)</var></td><td><var>curFunc(a + 0.001).toFixed(4)</var></td></tr>
                 </table>
-                It looks like <code>f(x)</code> is approaching <code><var>r_limtoa</var></code> from the right.
+                <p>
+                看起來 <code>f(x)</code> 在此過程中逐漸接近 <code><var>r_limtoa</var></code>。</p>
+
                 <div class="graphie" data-update="graph" data-style="stroke: orange; marker: arrow;">
                     line( [a + 2, 0], [a, 0], {
                         stroke: "#ff00af",
@@ -242,7 +257,8 @@
                     });
                 </div>
             </div>
-            <p id="final">So the limit is <code><var>limtoa</var></code>.</p>
+            <p id="final">
+                因此 <code>f(x)</code> 在 <code>x=<var>a</var></code> 時的極限值為 <code><var>limtoa</var></code>。</p>
         </div>
     </div>
 </body>

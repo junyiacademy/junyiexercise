@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie time word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>時間單位的換算</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .short input[type=text] {
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+        <var id="HOUR">randRange( 1, 9 )</var>
+		<var id="HOUR1">randRange( 13, 23 )</var>
+        <var id="MINUTE">randRange( 10, 59 )  </var>
+		 <var id="MINUTE2">randRange( 1, 15 )  </var>
+		<var id="MINUTE1" data-ensure="MINUTE1 % 60 != 0 ">randRange( 61, 599 )  </var>
+		<var id="SECOND">randRange( 1, 59 )  </var>
+		<var id="SECOND1" data-ensure="SECOND1 % 60 != 0 ">randRange( 61, 599 )  </var>
+        <var id="NICE_MINUTE"> MINUTE &gt; 5 ? MINUTE : "0" + "" + MINUTE</var>
+        <var id="AM_PM">HOUR >= 7 ? "a.m" : "p.m."</var>
+    	
+		<var id="SOLUTION">(function() {
+                        if ( HOUR &lt; 12 ) {
+                            return "上午(AM)";
+                        } else {
+                            return "下午(PM)";
+                        }
+                    })()</var>
+				
+	</div>
+
+    <div class="problems">
+        <div id="hour-to-minute">
+            <div class="question">
+			    <p><var>HOUR</var>小時<var>MINUTE</var>分鐘等於幾分鐘？</p>
+				
+            </div>
+           
+		   
+			 <div class="solution" data-type="multiple"> 
+					
+                <p class="short"><span class="sol"><var>HOUR*60+MINUTE</var></span> 分鐘 </p>
+                <p class="example">整數，像是:6</p>
+            </div>
+
+            <div class="hints">
+                
+                <div>
+                    <p>1小時等於60分鐘</p>
+					<p><code><var>HOUR</var></code>小時=<code><var>HOUR*60</var></code>分鐘</p>
+                </div>
+                <div>                    
+					<p><code><var>HOUR*60</var></code>分鐘加上<code><var>MINUTE</var></code>等於<code><var>HOUR*60+MINUTE</var></code>，所以
+					<var>HOUR</var>小時<var>MINUTE</var>分鐘等於<code><var>HOUR*60+MINUTE</var></code>分鐘。</p>
+                </div>
+                
+            </div>
+        </div>
+		
+		<div id="minute-to-hour">
+            <div class="question">
+			    <p><var>MINUTE1</var>分鐘，等於幾小時又幾分鐘？</p>
+            </div>
+           
+		   
+			 <div class="solution" data-type="multiple"> 
+				<p class="short"><span class="sol"><var>Math.floor(MINUTE1/60)</var></span> 個小時又 <span class="sol"><var>MINUTE1-Math.floor(MINUTE1/60)*60</var></span>分鐘</p>
+                <p class="example">使用兩個整數，像是:6個小時又57分鐘</p>
+            </div>
+
+            <div class="hints">
+                
+                <div>
+                    <p>1小時等於60分鐘，<code><var>MINUTE1</var></code>分鐘可以分成幾小時?</p>
+					<p><code><var>MINUTE1</var></code>÷60=<var>Math.floor(MINUTE1/60)</var>...<var>MINUTE1-Math.floor(MINUTE1/60)*60</var></p>
+                </div>
+				
+                <div>                    
+					<p><code><var>MINUTE1</var></code>分鐘可以分成<var>Math.floor(MINUTE1/60)</var>個60分鐘，還多<code><var>MINUTE1-Math.floor(MINUTE1/60)*60</var></code>分鐘。</p>
+                </div>
+				<div>                    
+					<p><code><var>MINUTE1</var></code>分鐘等於<var>Math.floor(MINUTE1/60)</var>小時<code><var>MINUTE1-Math.floor(MINUTE1/60)*60</var></code>分鐘。</p>
+                </div>
+            </div>
+        </div>
+		
+		<div id="minute-to-second">
+            <div class="question">
+			    <p><var>MINUTE2</var>分鐘<var>SECOND</var>秒等於幾秒？</p>
+				
+            </div>
+          
+			 <div class="solution" data-type="multiple"> 
+					
+                <p class="short"><span class="sol"><var>MINUTE2*60+SECOND</var></span> 秒 </p>
+                <p class="example">整數，像是6</p>
+            </div>
+
+            <div class="hints">
+                
+                <div>
+                    <p>1分鐘等於60秒</p>
+					<p><code><var>MINUTE2</var></code>分鐘=<code><var>MINUTE2*60</var></code>秒</p>
+                </div>
+                <div>                    
+					<p><code><var>MINUTE2*60</var></code>秒加上<code><var>SECOND</var></code>等於<code><var>MINUTE2*60+SECOND</var></code>秒，所以
+					<var>MINUTE2</var>分鐘<var>SECOND</var>秒等於<code><var>MINUTE2*60+SECOND</var></code>秒。</p>
+                </div>
+                
+            </div>
+        </div>
+		
+		<div id="second-to-minute">
+            <div class="question">
+			    <p><var>SECOND1</var>秒，等於幾分鐘又幾秒？</p>
+            </div>
+           
+		   
+			 <div class="solution" data-type="multiple"> 
+				<p class="short"><span class="sol"><var>Math.floor(SECOND1/60)</var></span>分鐘又<span class="sol"><var>SECOND1-Math.floor(SECOND1/60)*60</var></span>秒</p>
+                <p class="example">使用兩個整數，像是:1分鐘又29秒</p>
+            </div>
+
+            <div class="hints">
+                
+                <div>
+                    <p>1分鐘等於60秒，<code><var>SECOND1</var></code>秒可以分成幾分鐘?</p>
+					<p><code><var>SECOND1</var></code>÷60=<var>Math.floor(SECOND1/60)</var>...<var>SECOND1-Math.floor(SECOND1/60)*60</var></p>
+                </div>
+				
+                <div>                    
+					<p><code><var>SECOND1</var></code>秒可以分成<var>Math.floor(SECOND1/60)</var>個60秒，還多<code><var>SECOND1-Math.floor(SECOND1/60)*60</var></code>秒。</p>
+                </div>
+				<div>                    
+					<p><code><var>SECOND1</var></code>秒等於<var>Math.floor(SECOND1/60)</var>分鐘<code><var>SECOND1-Math.floor(SECOND1/60)*60</var></code>秒。</p>
+                </div>
+            </div>
+        </div>
+		
+		
+		
+    </div>
+    </div>
+</body>
+</html>
