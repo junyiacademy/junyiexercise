@@ -8,6 +8,12 @@
         #answer_area .sol input[type=text] {
             width: 30px;
         }
+		#answer_area .block {
+        	display: inline-block;
+        	width: 36px;
+        	background-color:#DDDDDD;
+        	text-align: center;
+        }
     </style>
 </head>
 		<!--此次去甲便利商店買東西的人，下一次，會繼續去同一家便利商店，或改去另外一家便利商店的比例-->
@@ -49,26 +55,6 @@
 					return B;
 				})()
 				</var>
-				<!--
-				<var id="name">
-				(function(){
-					var name = new array(4);
-					for(i=0;i&lt;4;i++){
-						name[i] = new array(4);
-						name[i][0] = "7-11";
-						name[i][1] = "OK";
-						name[i][2] = "全家";
-						name[i][3] = "萊爾富";
-					}
-					var store11 = randRange(0,3);
-					var store12 = randRangeExclude(0,3,[store11]);
-					var store13 = randRangeExclude(0,3,[store11,store12]);
-					var store14 = randRangeExclude(0,3,[store11,store12,store13]);
-					name = [[store11,store12,store13,store14],[],[],[]];
-					return name;
-				})()
-				</var>
-				-->
 				<var id="name"> name = ["7-11","OK","全家","萊爾富"]</var>;
 				<var id="store11">randRange(0,3)</var>
 				<var id="store12">randRangeExclude(0,3,[store11])</var>
@@ -89,7 +75,8 @@
 				<var id="store42">randRangeExclude(0,3,[store14])</var>
 				<var id="store43">randRangeExclude(0,3,[store14,store42])</var>
 				<var id="store44">randRangeExclude(0,3,[store14,store42,store43])</var>
-				
+				<var id="blank">randRange(1,16,3)</var>
+
             </div>
 			
             <div class="question">
@@ -109,56 +96,96 @@
 				<p><B>此次去<var>name[store14]</var>便利商店買東西的數據為：</B><br>
 				&nbsp;&nbsp;&nbsp;&nbsp;
 				繼續去同一家：<var>A[3][0]</var>%，改去<var>name4[store42]</var>：<var>A[3][1]</var>%，改去<var>name4[store43]</var>：<var>A[3][2]</var>%，改去<var>name4[store44]</var>：<var>A[3][3]</var>%</p>
-				<p>請用一個4x4的矩陣表示上述資料，直行依序代表四家便利商店，橫列代表後續消費行為。<br>
-				   請用小數格式來表示此組數據，例如：24% 以 0.24 表示之。</p>
+				<p>我們可以用一個4x4的矩陣表示上述資料，橫列依序代表四家便利商店，直行代表後續消費行為。<br>
+				請將右側的矩陣中缺少的數據填入。<br>請用小數格式來表示此組數據，例如：24% 以 0.24 表示之。</p>
             </div>
 			
 <!--example: 4*4 matrix-->			
             <div class="solution" data-type="multiple" data-forms="decimal"> 
 				<p>
-				<span class="sol"><var>B[0][0]</var></span>
-				<span class="sol"><var>B[0][1]</var></span>
-				<span class="sol"><var>B[0][2]</var></span>
-				<span class="sol"><var>B[0][3]</var></span><br>
-				<span class="sol"><var>B[1][0]</var></span>
-				<span class="sol"><var>B[1][1]</var></span>
-				<span class="sol"><var>B[1][2]</var></span>
-				<span class="sol"><var>B[1][3]</var></span><br>
-				<span class="sol"><var>B[2][0]</var></span>
-				<span class="sol"><var>B[2][1]</var></span>
-				<span class="sol"><var>B[2][2]</var></span>
-				<span class="sol"><var>B[2][3]</var></span><br>
-				<span class="sol"><var>B[3][0]</var></span>
-				<span class="sol"><var>B[3][1]</var></span>
-				<span class="sol"><var>B[3][2]</var></span>
-				<span class="sol"><var>B[3][3]</var></span><br>
+				<span>
+				<span class="sol" data-if="blank[0]==1 || blank[1]==1 || blank[2]==1"><var>B[0][0]</var></span>
+				<span class="block" data-else><var>B[0][0]</var></span>
+				</span>
+				<span>
+				<span class="sol" data-if="blank[0]==2 || blank[1]==2 || blank[2]==2"><var>B[0][1]</var></span>
+				<span class="block" data-else><var>B[0][1]</var></span>
+				</span>
+				<span>
+				<span class="sol" data-if="blank[0]==3 || blank[1]==3 || blank[2]==3"><var>B[0][2]</var></span>
+				<span class="block" data-else><var>B[0][2]</var></span>
+				</span>
+				<span>
+				<span class="sol" data-if="blank[0]==4 || blank[1]==4 || blank[2]==4"><var>B[0][3]</var></span>
+				<span class="block" data-else><var>B[0][3]</var></span>
+				</span><br>
+				<span>
+				<span class="sol" data-if="blank[0]==5 || blank[1]==5 || blank[2]==5"><var>B[1][0]</var></span>
+				<span class="block" data-else><var>B[1][0]</var></span>
+				</span>
+				<span>
+				<span class="sol" data-if="blank[0]==6 || blank[1]==6 || blank[2]==6"><var>B[1][1]</var></span>
+				<span class="block" data-else><var>B[1][1]</var></span>
+				</span>
+				<span>
+				<span class="sol" data-if="blank[0]==7 || blank[1]==7 || blank[2]==7"><var>B[1][2]</var></span>
+				<span class="block" data-else><var>B[1][2]</var></span>
+				</span>
+				<span>
+				<span class="sol" data-if="blank[0]==8 || blank[1]==8 || blank[2]==8"><var>B[1][3]</var></span>
+				<span class="block" data-else><var>B[1][3]</var></span>
+				</span><br>
+				<span>
+				<span class="sol" data-if="blank[0]==9 || blank[1]==9 || blank[2]==9"><var>B[2][0]</var></span>
+				<span class="block" data-else><var>B[2][0]</var></span>
+				</span>
+				<span>
+				<span class="sol" data-if="blank[0]==10 || blank[1]==10 || blank[2]==10"><var>B[2][1]</var></span>
+				<span class="block" data-else><var>B[2][1]</var></span>
+				</span>
+				<span>
+				<span class="sol" data-if="blank[0]==11 || blank[1]==11 || blank[2]==11"><var>B[2][2]</var></span>
+				<span class="block" data-else><var>B[2][2]</var></span>
+				</span>
+				<span>
+				<span class="sol" data-if="blank[0]==12 || blank[1]==12 || blank[2]==12"><var>B[2][3]</var></span>
+				<span class="block" data-else><var>B[2][3]</var></span>
+				</span><br>
+				<span>
+				<span class="sol" data-if="blank[0]==13 || blank[1]==13 || blank[2]==13"><var>B[3][0]</var></span>
+				<span class="block" data-else><var>B[3][0]</var></span>
+				</span>
+				<span>
+				<span class="sol" data-if="blank[0]==14 || blank[1]==14 || blank[2]==14"><var>B[3][1]</var></span>
+				<span class="block" data-else><var>B[3][1]</var></span>
+				</span>
+				<span>
+				<span class="sol" data-if="blank[0]==15 || blank[1]==15 || blank[2]==15"><var>B[3][2]</var></span>
+				<span class="block" data-else><var>B[3][2]</var></span>
+				</span>
+				<span>
+				<span class="sol" data-if="blank[0]==16 || blank[1]==16 || blank[2]==16"><var>B[3][3]</var></span>
+				<span class="block" data-else><var>B[3][3]</var></span>
+				</span>
 				</p>
             </div>
             <div class="hints">
 				<p>
-				用四個橫列代表下一次去的四家便利商店，<br>
+				用四個橫列代表上一次去的四家便利商店，<br>
 				用四個直行代表下一次去的四家便利商店，<br>
 				所以，11的位置是上一次去第一家，下一次也是去第一家的比例值。<br>
 				12的位置是上一次去第一家，下一次去第二家的比例值。<br>
 				13的位置是上一次去第一家，下一次去第三家的比例值。<br>
 				14的位置是上一次去第一家，下一次去第四家的比例值。<br>
-				同理，21的位置是上一次去第二家，下一次去第一家的比例值。<br>
-				22的位置是上一次去第二家，下一次也是去第二家的比例值。<br>
-				其他位置的數據依此類推。
 				</p>
 				<p>
 				同理，21的位置是上一次去第二家，下一次去第一家的比例值。<br>
-				22的位置是上一次去第二家，下一次也是去第二家的比例值。<br>
-				23的位置是上一次去第二家，下一次也是去第三家的比例值。<br>
-				24的位置是上一次去第二家，下一次也是去第四家的比例值。<br>
+				22的位置是上一次去第二家，下一次去第二家的比例值。<br>
+				23的位置是上一次去第二家，下一次去第三家的比例值。<br>
+				24的位置是上一次去第二家，下一次去第四家的比例值。<br>
 				其他位置的數據依此類推。
 				</p>
 				<p><code><var>printSimpleMatrix(B)</var></code></p>
-				<!--
-				<p>4</p>
-				<p>5</p>
-				<p>6</p>
-				-->
             </div>
         </div>
     </div>

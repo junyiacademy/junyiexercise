@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html data-require="math graphie kmatrix">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Matrix Multiplication Zero One</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+		#answer_area .block {
+        	display: inline-block;
+        	width: 36px;
+        	background-color:#DDDDDD;
+        	text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<div class="exercise">
+    <div class="problems">
+		<div id="case1" data-weight="1">
+            <div class="vars">
+				<var id="random12">randRange(1,2)</var>
+				<var id="m">randRange(2,4)</var>
+				<var id="k">randRange(2,4)</var>
+				<var id="A">randRange(-9,9,m,k)</var>
+				<var id="ZA">randRange(0,0,m,m)</var> <!--mxm (multiple before A)-->
+				<var id="AZ">randRange(0,0,k,k)</var> <!--kxk (multiple after A)-->
+				<var id="blank_x1">randRange(0,m-1)</var>
+				<var id="blank_y1">randRange(0,k-1)</var>
+				<var id="blank_x2">randRangeExclude(0,m-1,[blank_x1])</var>
+				<var id="blank_y2">randRangeExclude(0,k-1,[blank_y1])</var>
+				<var id="C">randRange(0,0,m,k)</var>				
+				<var id="sampleO">
+				(function(){
+					var sampleO = new Array(4);
+					for(i=0;i&lt;4;i++){
+						sampleO[i] = new Array(4);
+					}
+					for(i=0;i&lt;4;i++){
+						for(j=0;j&lt;4;j++)
+							sampleO[i][j] = "...";
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;3;j++)
+							sampleO[i][j] = 0;
+					}
+					sampleO[1][3] = ":";
+					sampleO[2][3] = ":";
+					sampleO[3][0] = ":";
+					return sampleO;
+				})()	
+				</var>				
+				<var id="sampleA">
+				(function(){
+					var sampleA = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleA[i] = new Array(4);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;4;j++)
+							sampleA[i][j] = "...";
+					}
+					if(random12 == 1){<!-- OxA -->
+						sampleA[0][0] = "a11";
+						sampleA[1][0] = "a21";
+						sampleA[2][0] = "a31";
+						sampleA[1][3] = ":";
+					}
+					else{<!-- AxO -->
+						sampleA[0][0] = "a11";
+						sampleA[0][1] = "a12";
+						sampleA[0][2] = "a13";
+						sampleA[1][0] = ":";
+						sampleA[1][3] = ":";
+					}
+
+					return sampleA;
+				})()				
+				</var>
+				<var id="sampleOA">
+				(function(){
+					var sampleOA = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleOA[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;3;j++)
+							sampleOA[i][j] = "...";
+					}
+					sampleOA[0][0] = "0&middot;a11 + 0&middot;a21 + 0&middot;a31 + ...";
+					sampleOA[1][0] = ":";
+					sampleOA[1][2] = ":";
+					return sampleOA;
+				})()
+				</var>
+				<var id="sampleAO">
+				(function(){
+					var sampleAO = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleAO[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;3;j++)
+							sampleAO[i][j] = "...";
+					}
+					sampleAO[0][0] = "a11&middot;0 + a12&middot;0 + a13&middot;0 + ...";
+					sampleAO[1][0] = ":";
+					sampleAO[1][2] = ":";
+					return sampleAO;
+				})()
+				</var>
+				<var id="sampleOO">
+				(function(){
+					var sampleOO = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleOO[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;3;j++)
+							sampleOO[i][j] = "...";
+					}
+					sampleOO[0][0] = 0;
+					sampleOO[1][0] = ":";
+					sampleOO[1][2] = ":";
+					return sampleOO;
+				})()
+				</var>
+				<var id="OA">
+				(function(){
+					var OA = new Array(3);
+					for(i=0;i&lt;3;i++){
+						OA[i] = new Array(2);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;2;j++)
+							OA[i][j] = "...";
+					}
+					OA[0][0] = "0&middot;(" + A[0][0] + ") + 0&middot;(" + A[0][1] +") +...";
+					OA[1][0] = ":";
+					return OA;
+				})()
+				</var>
+				<var id="AO">
+				(function(){
+					var AO = new Array(3);
+					for(i=0;i&lt;3;i++){
+						AO[i] = new Array(2);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;2;j++)
+							AO[i][j] = "...";
+					}
+					AO[0][0] = "(" + A[0][0] + ")&middot;0 + (" + A[0][1] +")&middot;0 +...";
+					AO[1][0] = ":";
+					return AO;
+				})()
+				</var>
+				<var id="one_O">
+				(function(){
+					var one_O = new Array(3);
+					for(i=0;i&lt;3;i++){
+						one_O[i] = new Array(2);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;2;j++)
+							one_O[i][j] = "...";
+					}
+					one_O[0][0] = 0;
+					one_O[1][0] = ":";
+					return one_O;
+				})()
+				</var>
+				<var id="one_OA">
+				(function(){
+					var one_OA = new Array(3);
+					for(i=0;i&lt;3;i++){
+						one_OA[i] = new Array(2);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;2;j++)
+							one_OA[i][j] = "...";
+					}
+					one_OA[0][0] = 0;
+					one_OA[1][0] = "0&middot;(" + A[1][0] + ") + 0&middot;(" + A[1][1] + ") +...";
+					return one_OA;
+				})()
+				</var>
+				<var id="one_AO">
+				(function(){
+					var one_AO = new Array(3);
+					for(i=0;i&lt;3;i++){
+						one_AO[i] = new Array(2);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;2;j++)
+							one_AO[i][j] = "...";
+					}
+					one_AO[0][0] = 0;
+					one_AO[1][0] = "(" + A[1][0] + ")&middot;0 + (" + A[1][1] + ")&middot;0 +...";
+					return one_AO;
+				})()
+				</var>
+				<var id="colorA">[GREEN]</var>
+				<var id="colorO">[BLUE]</var>
+				<var id="blank1_x">randRange(0,m-1)</var>
+				<var id="blank1_y">randRange(0,k-1)</var>
+				<var id="blank2_x">randRangeExclude(0,m-1,[blank1_x])</var>
+				<var id="blank2_y">randRangeExclude(0,k-1,[blank1_y])</var>
+            </div>
+			
+            <div class="question">
+				<p><code>{A} = <var>printSimpleMatrix(A)</var></code></p>
+				<div data-if="random12 == 1"> <!-- OxA -->
+				<p><code>O_{<var>m</var>} &middot; {A} = {?}</code></p>
+				</div>
+				<div data-if="random12 == 2"> <!-- AxO -->
+				<p><code>{A} &middot; O_{<var>k</var>} = {?}</code></p>
+				</div>
+            </div>
+			
+<!--example: m*k matrix-->			
+            <div class="solution" data-type="multiple">
+				<p>
+				<span data-if="m >0 && k >0 ">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==0) || (blank2_x==0 && blank2_y==0)">
+				<var>C[0][0]</var></span>
+				<span class="block" data-else><var>C[0][0]</var></span>
+				</span>
+
+				<span data-if="m >0 && k >1">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==1) || (blank2_x==0 && blank2_y==1)">
+				<var>C[0][1]</var></span>
+				<span class="block" data-else><var>C[0][1]</var></span>
+				</span>
+				
+				<span data-if="m >0 && k >2">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==2) || (blank2_x==0 && blank2_y==2)">
+				<var>C[0][2]</var></span>
+				<span class="block" data-else><var>C[0][2]</var></span>
+				</span>
+				
+				<span data-if="m >0 && k >3">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==3) || (blank2_x==0 && blank2_y==3)">
+				<var>C[0][3]</var></span>
+				<span class="block" data-else><var>C[0][3]</var></span>
+				</span><br>
+				
+				<span data-if="m >1 && k >0">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==0) || (blank2_x==1 && blank2_y==0)">
+				<var>C[1][0]</var></span>
+				<span class="block" data-else><var>C[1][0]</var></span>
+				</span>
+				
+				<span data-if="m >1 && k >1">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==1) || (blank2_x==1 && blank2_y==1)">
+				<var>C[1][1]</var></span>
+				<span class="block" data-else><var>C[1][1]</var></span>
+				</span>
+				
+				<span data-if="m >1 && k >2">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==2) || (blank2_x==1 && blank2_y==2)">
+				<var>C[1][2]</var></span>
+				<span class="block" data-else><var>C[1][2]</var></span>
+				</span>
+				
+				<span data-if="m >1 && k >3">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==3) || (blank2_x==1 && blank2_y==3)">
+				<var>C[1][3]</var></span>
+				<span class="block" data-else><var>C[1][3]</var></span>
+				</span><br>
+				
+				<span data-if="m >2 && k >0">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==0) || (blank2_x==2 && blank2_y==0)">
+				<var>C[2][0]</var></span>
+				<span class="block" data-else><var>C[2][0]</var></span>
+				</span>
+				
+				<span data-if="m >2 && k >1">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==1) || (blank2_x==2 && blank2_y==1)">
+				<var>C[2][1]</var></span>
+				<span class="block" data-else><var>C[2][1]</var></span>
+				</span>
+				
+				<span data-if="m >2 && k >2">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==2) || (blank2_x==2 && blank2_y==2)">
+				<var>C[2][2]</var></span>
+				<span class="block" data-else><var>C[2][2]</var></span>
+				</span>
+				
+				<span data-if="m >2 && k >3">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==3) || (blank2_x==2 && blank2_y==3)">
+				<var>C[2][3]</var></span>
+				<span class="block" data-else><var>C[2][3]</var></span>
+				</span><br>
+				
+				<span data-if="m >3 && k >0">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==0) || (blank2_x==3 && blank2_y==0)">
+				<var>C[3][0]</var></span>
+				<span class="block" data-else><var>C[3][0]</var></span>
+				</span>
+				
+				<span data-if="m >3 && k >1">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==1) || (blank2_x==3 && blank2_y==1)">
+				<var>C[3][1]</var></span>
+				<span class="block" data-else><var>C[3][1]</var></span>
+				</span>
+				
+				<span data-if="m >3 && k >2">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==2) || (blank2_x==3 && blank2_y==2)">
+				<var>C[3][2]</var></span>
+				<span class="block" data-else><var>C[3][2]</var></span>
+				</span>
+				
+				<span data-if="m >3 && k >3">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==3) || (blank2_x==3 && blank2_y==3)">
+				<var>C[3][3]</var></span>
+				<span class="block" data-else><var>C[3][3]</var></span>
+				</span>
+				</p>
+			</div>		
+
+            <div class="hints">
+				<!----hint 1---->
+				<p><code>O_{n} = <var>printSimpleMatrix(sampleO)</var>_{nxn}</code></p>
+				
+				<!----hint 2---->
+				<div data-if="random12 == 1"> <!-- OxA -->
+				<p><code>O_{n} &middot; {A} = </code></p>
+				<p><code><var>printSimpleMatrix(sampleO,colorO)</var>_{nxn}<var>printSimpleMatrix(sampleA,colorA)</var></code></p>
+				<p><code>= <var>printSimpleMatrix(sampleOA)</var></code></p>
+				</div>
+				<div data-if="random12 == 2"> <!-- AxO -->
+				<p><code>{A} &middot; O_{n} = </code></p>
+				<p><code><var>printSimpleMatrix(sampleA,colorA)</var><var>printSimpleMatrix(sampleO,colorO)</var>_{nxn}</code></p>
+				<p><code>= <var>printSimpleMatrix(sampleAO)</var></code></p>
+				</div>
+				
+				<!----hint 3---->
+				<p><code>= <var>printSimpleMatrix(sampleOO)</var></code></p>
+				
+				<!----hint 4---->
+				<div data-if="random12 == 1"> <!-- OxA -->
+				<p><code>O_{<var>m</var>} &middot; {A} = </code></p>
+				<p><code><var>printSimpleMatrix(ZA,colorO)</var><var>printSimpleMatrix(A,colorA)</var></code></p>
+				<p><code>= <var>printSimpleMatrix(OA)</var></code></p>
+				</div>
+				<div data-if="random12 == 2"> <!-- AxO -->
+				<p><code>{A} &middot; O_{<var>k</var>} = </code></p>
+				<p><code><var>printSimpleMatrix(A,colorA)</var><var>printSimpleMatrix(AZ,colorO)</var></code></p>
+				<p><code>= <var>printSimpleMatrix(AO)</var></code></p>
+				</div>
+				
+				<!----hint 5---->
+				<p><code>= <var>printSimpleMatrix(one_O)</var></code></p>
+				
+				<!----hint 6---->
+				<div data-if="random12 == 1"> <!-- OxA -->
+				<p><code>= <var>printSimpleMatrix(one_OA)</var></code></p>
+				</div>
+				<div data-if="random12 == 2"> <!-- AxO -->
+				<p><code>= <var>printSimpleMatrix(one_AO)</var></code></p>
+				</div>
+				
+				<!----hint 7---->
+				<p><code>= <var>printSimpleMatrix(C)</var></code></p>
+				
+            </div>
+        </div>
+		
+		<div id="case2" data-weight="1">
+            <div class="vars">
+				<var id="random12">randRange(1,2)</var>
+				<var id="m">randRange(2,4)</var>
+				<var id="k">randRange(2,4)</var>
+				<var id="A">randRange(-9,9,m,k)</var>
+				<var id="IA"> <!--mxm (multiple before A)-->
+				(function(){
+					var IA = new Array(m);
+					for(i=0;i&lt;m;i++){
+						IA[i] = new Array(m);
+					}
+					for(i=0;i&lt;m;i++){
+						for(j=0;j&lt;m;j++){
+							if(i==j)
+								IA[i][j] = 1;
+							else
+								IA[i][j] = 0;
+						}
+					}
+					return IA;
+				})()	
+				</var>
+				<var id="AI"> <!--kxk (multiple after A)-->
+				(function(){
+					var AI = new Array(k);
+					for(i=0;i&lt;k;i++){
+						AI[i] = new Array(k);
+					}
+					for(i=0;i&lt;k;i++){
+						for(j=0;j&lt;k;j++){
+							if(i==j)
+								AI[i][j] = 1;
+							else
+								AI[i][j] = 0;
+						}
+					}
+					return AI;
+				})()	
+				</var>
+				<var id="sampleI">
+				(function(){
+					var sampleI = new Array(4);
+					for(i=0;i&lt;4;i++){
+						sampleI[i] = new Array(4);
+					}
+					for(i=0;i&lt;4;i++){
+						for(j=0;j&lt;4;j++)
+							sampleI[i][j] = "...";
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;3;j++){
+							if(i==j)
+								sampleI[i][j] = 1;
+							else
+								sampleI[i][j] = 0;
+						}	
+					}
+					sampleI[1][3] = ":";
+					sampleI[2][3] = ":";
+					sampleI[3][0] = ":";
+					return sampleI;
+				})()	
+				</var>				
+				<var id="sampleA">
+				(function(){
+					var sampleA = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleA[i] = new Array(4);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;4;j++)
+							sampleA[i][j] = "...";
+					}
+					if(random12 == 1){ <!-- IxA -->
+						sampleA[0][0] = "a11";
+						sampleA[1][0] = "a21";
+						sampleA[2][0] = "a31";
+						sampleA[1][3] = ":";
+					}
+					else{ <!-- AxI -->
+						sampleA[0][0] = "a11";
+						sampleA[0][1] = "a12";
+						sampleA[0][2] = "a13";
+						sampleA[1][0] = ":";
+						sampleA[1][3] = ":";
+					}
+
+					return sampleA;
+				})()				
+				</var>
+				<var id="sampleIA">
+				(function(){
+					var sampleIA = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleIA[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;3;j++)
+							sampleIA[i][j] = "...";
+					}
+					sampleIA[0][0] = "1&middot;a11 + 0&middot;a21 + 0&middot;a31 + ...";
+					sampleIA[1][0] = ":";
+					sampleIA[1][2] = ":";
+					return sampleIA;
+				})()
+				</var>
+				<var id="sampleAI">
+				(function(){
+					var sampleAI = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleAI[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;3;j++)
+							sampleAI[i][j] = "...";
+					}
+					sampleAI[0][0] = "a11&middot;1 + a12&middot;0 + a13&middot;0 + ...";
+					sampleAI[1][0] = ":";
+					sampleAI[1][2] = ":";
+					return sampleAI;
+				})()
+				</var>
+				<var id="sampleII">
+				(function(){
+					var sampleII = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sampleII[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;3;j++)
+							sampleII[i][j] = "...";
+					}
+					sampleII[0][0] = "a11";
+					sampleII[1][0] = ":";
+					sampleII[1][2] = ":";
+					return sampleII;
+				})()
+				</var>
+				<var id="sample2IA">
+				(function(){
+					var sample2IA = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sample2IA[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;3;j++)
+							sample2IA[i][j] = "...";
+					}
+					sample2IA[0][0] = "a11";
+					sample2IA[0][1] = "1&middot;a12 + 0&middot;a22 + 0&middot;a32 + ..."
+					sample2IA[1][0] = ":";
+					sample2IA[1][2] = ":";
+					return sample2IA;
+				})()
+				</var>
+				<var id="sample2AI">
+				(function(){
+					var sample2AI = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sample2AI[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;3;j++)
+							sample2AI[i][j] = "...";
+					}
+					sample2AI[0][0] = "a11";
+					sample2AI[0][1] = "a11&middot;0 + a12&middot;1 + a13&middot;0 + ...";
+					sample2AI[1][0] = ":";
+					sample2AI[1][2] = ":";
+					return sample2AI;
+				})()
+				</var>
+				<var id="sample2II">
+				(function(){
+					var sample2II = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sample2II[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;3;j++)
+							sample2II[i][j] = "...";
+					}
+					
+					sample2II[0][0] = "a11";
+					sample2II[0][1] = "a12";
+					sample2II[1][0] = ":";
+					sample2II[1][2] = ":";
+					return sample2II;
+				})()
+				</var>
+				<var id="sample3IA">
+				(function(){
+					var sample3IA = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sample3IA[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;3;j++)
+							sample3IA[i][j] = "...";
+					}
+					sample3IA[0][0] = "a11";
+					sample3IA[0][1] = "a12"
+					sample3IA[1][0] = "0&middot;a11 + 1&middot;a21 + 0&middot;a31 + ...";
+					sample3IA[1][2] = ":";
+					return sample3IA;
+				})()
+				</var>
+				<var id="sample3AI">
+				(function(){
+					var sample3AI = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sample3AI[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;3;j++)
+							sample3AI[i][j] = "...";
+					}
+					sample3AI[0][0] = "a11";
+					sample3AI[0][1] = "a12";
+					sample3AI[1][0] = "a21&middot;1 + a22&middot;0 + a23&middot;0 + ...";
+					sample3AI[1][2] = ":";
+					return sample3AI;
+				})()
+				</var>
+				<var id="sample3II">
+				(function(){
+					var sample3II = new Array(3);
+					for(i=0;i&lt;3;i++){
+						sample3II[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;3;j++)
+							sample3II[i][j] = "...";
+					}
+					sample3II[0][0] = "a11";
+					sample3II[0][1] = "a12";
+					sample3II[1][0] = "a21";
+					sample3II[1][2] = ":";
+					return sample3II;
+				})()
+				</var>
+				<var id="I_A">
+				(function(){
+					var IA = new Array(3);
+					for(i=0;i&lt;3;i++){
+						IA[i] = new Array(2);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;2;j++)
+							IA[i][j] = "...";
+					}
+					IA[0][0] = "1&middot;(" + A[0][0] + ") + 0&middot;(" + A[0][1] +") +...";
+					IA[1][0] = ":";
+					return IA;
+				})()
+				</var>
+				<var id="A_I">
+				(function(){
+					var AI = new Array(3);
+					for(i=0;i&lt;3;i++){
+						AI[i] = new Array(2);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;2;j++)
+							AI[i][j] = "...";
+					}
+					AI[0][0] = "(" + A[0][0] + ")&middot;1 + (" + A[0][1] +")&middot;0 +...";
+					AI[1][0] = ":";
+					return AI;
+				})()
+				</var>
+				<var id="one_I">
+				(function(){
+					var one_I = new Array(3);
+					for(i=0;i&lt;3;i++){
+						one_I[i] = new Array(2);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;2;j++)
+							one_I[i][j] = "...";
+					}
+					one_I[0][0] = A[0][0];
+					one_I[1][0] = ":";
+					return one_I;
+				})()
+				</var>
+				<var id="colorA">[GREEN]</var>
+				<var id="colorI">[BLUE]</var>
+				<var id="blank1_x">randRange(0,m-1)</var>
+				<var id="blank1_y">randRange(0,k-1)</var>
+				<var id="blank2_x">randRangeExclude(0,m-1,[blank1_x])</var>
+				<var id="blank2_y">randRangeExclude(0,k-1,[blank1_y])</var>
+            </div>
+			
+            <div class="question">
+				<p><code>{A} = <var>printSimpleMatrix(A)</var></code></p>
+				<div data-if="random12 == 1"> <!-- IxA -->
+				<p><code>I_{<var>m</var>} &middot; {A} = {?}</code></p>
+				</div>
+				<div data-if="random12 == 2"> <!-- AxI -->
+				<p><code>{A} &middot; I_{<var>k</var>} = {?}</code></p>
+				</div>
+				<p>請將右側的矩陣中缺少的數據填入。</p>
+            </div>
+			
+<!--example: m*k matrix-->			
+            <div class="solution" data-type="multiple">
+				<p>
+				<span data-if="m >0 && k >0 ">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==0) || (blank2_x==0 && blank2_y==0)">
+				<var>A[0][0]</var></span>
+				<span class="block" data-else><var>A[0][0]</var></span>
+				</span>
+
+				<span data-if="m >0 && k >1">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==1) || (blank2_x==0 && blank2_y==1)">
+				<var>A[0][1]</var></span>
+				<span class="block" data-else><var>A[0][1]</var></span>
+				</span>
+				
+				<span data-if="m >0 && k >2">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==2) || (blank2_x==0 && blank2_y==2)">
+				<var>A[0][2]</var></span>
+				<span class="block" data-else><var>A[0][2]</var></span>
+				</span>
+				
+				<span data-if="m >0 && k >3">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==3) || (blank2_x==0 && blank2_y==3)">
+				<var>A[0][3]</var></span>
+				<span class="block" data-else><var>A[0][3]</var></span>
+				</span><br>
+				
+				<span data-if="m >1 && k >0">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==0) || (blank2_x==1 && blank2_y==0)">
+				<var>A[1][0]</var></span>
+				<span class="block" data-else><var>A[1][0]</var></span>
+				</span>
+				
+				<span data-if="m >1 && k >1">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==1) || (blank2_x==1 && blank2_y==1)">
+				<var>A[1][1]</var></span>
+				<span class="block" data-else><var>A[1][1]</var></span>
+				</span>
+				
+				<span data-if="m >1 && k >2">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==2) || (blank2_x==1 && blank2_y==2)">
+				<var>A[1][2]</var></span>
+				<span class="block" data-else><var>A[1][2]</var></span>
+				</span>
+				
+				<span data-if="m >1 && k >3">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==3) || (blank2_x==1 && blank2_y==3)">
+				<var>A[1][3]</var></span>
+				<span class="block" data-else><var>A[1][3]</var></span>
+				</span><br>
+				
+				<span data-if="m >2 && k >0">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==0) || (blank2_x==2 && blank2_y==0)">
+				<var>A[2][0]</var></span>
+				<span class="block" data-else><var>A[2][0]</var></span>
+				</span>
+				
+				<span data-if="m >2 && k >1">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==1) || (blank2_x==2 && blank2_y==1)">
+				<var>A[2][1]</var></span>
+				<span class="block" data-else><var>A[2][1]</var></span>
+				</span>
+				
+				<span data-if="m >2 && k >2">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==2) || (blank2_x==2 && blank2_y==2)">
+				<var>A[2][2]</var></span>
+				<span class="block" data-else><var>A[2][2]</var></span>
+				</span>
+				
+				<span data-if="m >2 && k >3">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==3) || (blank2_x==2 && blank2_y==3)">
+				<var>A[2][3]</var></span>
+				<span class="block" data-else><var>A[2][3]</var></span>
+				</span><br>
+				
+				<span data-if="m >3 && k >0">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==0) || (blank2_x==3 && blank2_y==0)">
+				<var>A[3][0]</var></span>
+				<span class="block" data-else><var>A[3][0]</var></span>
+				</span>
+				
+				<span data-if="m >3 && k >1">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==1) || (blank2_x==3 && blank2_y==1)">
+				<var>A[3][1]</var></span>
+				<span class="block" data-else><var>A[3][1]</var></span>
+				</span>
+				
+				<span data-if="m >3 && k >2">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==2) || (blank2_x==3 && blank2_y==2)">
+				<var>A[3][2]</var></span>
+				<span class="block" data-else><var>A[3][2]</var></span>
+				</span>
+				
+				<span data-if="m >3 && k >3">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==3) || (blank2_x==3 && blank2_y==3)">
+				<var>A[3][3]</var></span>
+				<span class="block" data-else><var>A[3][3]</var></span>
+				</span>
+				</p>
+			</div>		
+
+            <div class="hints">
+				<!----hint 1---->
+				<p><code>I_{n} = <var>printSimpleMatrix(sampleI)</var>_{nxn}</code></p>
+				
+				<!----hint 2---->
+				<div data-if="random12 == 1"> <!-- IxA -->
+				<p><code>I_{n} &middot; {A} = </code></p>
+				<p><code><var>printSimpleMatrix(sampleI,colorI)</var>_{nxn}<var>printSimpleMatrix(sampleA,colorA)</var></code></p>
+				<p><code>= <var>printSimpleMatrix(sampleIA)</var></code></p>
+				</div>
+				<div data-if="random12 == 2"> <!-- AxI -->
+				<p><code>{A} &middot; I_{n} = </code></p>
+				<p><code><var>printSimpleMatrix(sampleA,colorA)</var><var>printSimpleMatrix(sampleI,colorI)</var>_{nxn}</code></p>
+				<p><code>= <var>printSimpleMatrix(sampleAI)</var></code></p>
+				</div>
+				
+				<!----hint 3---->
+				<p><code>= <var>printSimpleMatrix(sampleII)</var></code></p>
+				
+				<!----hint 4---->
+				<div data-if="random12 == 1"> <!-- IxA -->
+				<p><code>= <var>printSimpleMatrix(sample2IA)</var></code></p>
+				</div>
+				<div data-if="random12 == 2"> <!-- AxI -->
+				<p><code>= <var>printSimpleMatrix(sample2AI)</var></code></p>
+				</div>
+				
+				<!----hint 5---->
+				<p><code>= <var>printSimpleMatrix(sample2II)</var></code></p>
+				
+				<!----hint 6---->
+				<div data-if="random12 == 1"> <!-- IxA -->
+				<p><code>= <var>printSimpleMatrix(sample3IA)</var></code></p>
+				</div>
+				<div data-if="random12 == 2"> <!-- AxI -->
+				<p><code>= <var>printSimpleMatrix(sample3AI)</var></code></p>
+				</div>				
+				
+				<!----hint 7---->
+				<p><code>= <var>printSimpleMatrix(sample3II)</var></code></p>
+
+				<!----hint 8---->
+				<div data-if="random12 == 1"> <!-- IxA -->
+				<p><code>I_{<var>m</var>} &middot; {A} = </code></p>
+				<p><code><var>printSimpleMatrix(IA,colorI)</var><var>printSimpleMatrix(A,colorA)</var></code></p>
+				<p><code>= <var>printSimpleMatrix(I_A)</var></code></p>
+				</div>
+				<div data-if="random12 == 2"> <!-- AxI -->
+				<p><code>{A} &middot; I_{<var>k</var>} = </code></p>
+				<p><code><var>printSimpleMatrix(A,colorA)</var><var>printSimpleMatrix(AI,colorI)</var></code></p>
+				<p><code>= <var>printSimpleMatrix(A_I)</var></code></p>
+				</div>
+				
+				<!----hint 9---->
+				<p><code>= <var>printSimpleMatrix(one_I)</var></code></p>
+				
+				<!----hint 10---->
+				<p><code>= <var>printSimpleMatrix(A)</var></code></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

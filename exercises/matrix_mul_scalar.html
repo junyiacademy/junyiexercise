@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html data-require="math graphie kmatrix">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Matrix Multiplication 4</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+		#answer_area .block {
+        	display: inline-block;
+        	width: 36px;
+        	background-color:#DDDDDD;
+        	text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<div class="exercise">
+    <div class="problems">
+	<div id="case1" data-weight="1">
+	
+            <div class="vars">
+				<var id="m">randRange(2,4)</var>
+				<var id="k">randRange(2,4)</var>
+				<var id="M">randRange(-9,9,m,k)</var>
+				<var id="color">[GREEN]</var>
+				<var id="randvar">randRange(-9,9)</var>
+				<var id="samplecM">
+				(function(){
+					var samplecM = new Array(3);
+					for(i=0;i&lt;3;i++){
+						samplecM[i] = new Array(3);
+					}
+					for(i=0;i&lt;3;i++){
+						for(j=0;j&lt;3;j++)
+							samplecM[i][j] = "...";
+					}
+					samplecM[0][0] = "c&middot;m11";
+					samplecM[0][1] = "c&middot;m12";
+					samplecM[1][0] = "c&middot;m21";
+					samplecM[1][1] = "c&middot;m22";
+					return samplecM;
+				})()	
+				</var>
+				<var id="cM">
+				(function(){
+					var cM = new Array(m);
+					for(i=0;i&lt;m;i++){
+						cM[i] = new Array(k);
+					}
+					for(i=0;i&lt;m;i++){
+						for(j=0;j&lt;k;j++)
+							cM[i][j] = "(" + randvar + ")&middot;(" + M[i][j] + ")";
+					}
+					return cM;
+				})()	
+				</var>
+				<var id="A">
+				(function(){
+					var A = new Array(m);
+					for(i=0;i&lt;m;i++){
+						A[i] = new Array(k);
+					}
+					for(i=0;i&lt;m;i++){
+						for(j=0;j&lt;k;j++)
+							A[i][j] = randvar*M[i][j];
+					}
+					return A;
+				})()	
+				</var>
+				<var id="blank1_x">randRange(0,m-1)</var>
+				<var id="blank1_y">randRange(0,k-1)</var>
+				<var id="blank2_x">randRangeExclude(0,m-1,[blank1_x])</var>
+				<var id="blank2_y">randRangeExclude(0,k-1,[blank1_y])</var>
+
+            </div>
+			
+            <div class="question">
+				<p><code>{M} = <var>printSimpleMatrix(M)</var></code></p>
+				<p><code>{<var>randvar</var>} &middot; {M} = {?}</code></p>
+				<p>請將右側的矩陣中缺少的數據填入。</p>
+            </div>
+			
+<!--example: m*k matrix-->			
+            <div class="solution" data-type="multiple">
+				<p>
+				<span data-if="m >0 && k >0 ">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==0) || (blank2_x==0 && blank2_y==0)">
+				<var>A[0][0]</var></span>
+				<span class="block" data-else><var>A[0][0]</var></span>
+				</span>
+
+				<span data-if="m >0 && k >1">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==1) || (blank2_x==0 && blank2_y==1)">
+				<var>A[0][1]</var></span>
+				<span class="block" data-else><var>A[0][1]</var></span>
+				</span>
+				
+				<span data-if="m >0 && k >2">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==2) || (blank2_x==0 && blank2_y==2)">
+				<var>A[0][2]</var></span>
+				<span class="block" data-else><var>A[0][2]</var></span>
+				</span>
+				
+				<span data-if="m >0 && k >3">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==3) || (blank2_x==0 && blank2_y==3)">
+				<var>A[0][3]</var></span>
+				<span class="block" data-else><var>A[0][3]</var></span>
+				</span><br>
+				
+				<span data-if="m >1 && k >0">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==0) || (blank2_x==1 && blank2_y==0)">
+				<var>A[1][0]</var></span>
+				<span class="block" data-else><var>A[1][0]</var></span>
+				</span>
+				
+				<span data-if="m >1 && k >1">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==1) || (blank2_x==1 && blank2_y==1)">
+				<var>A[1][1]</var></span>
+				<span class="block" data-else><var>A[1][1]</var></span>
+				</span>
+				
+				<span data-if="m >1 && k >2">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==2) || (blank2_x==1 && blank2_y==2)">
+				<var>A[1][2]</var></span>
+				<span class="block" data-else><var>A[1][2]</var></span>
+				</span>
+				
+				<span data-if="m >1 && k >3">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==3) || (blank2_x==1 && blank2_y==3)">
+				<var>A[1][3]</var></span>
+				<span class="block" data-else><var>A[1][3]</var></span>
+				</span><br>
+				
+				<span data-if="m >2 && k >0">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==0) || (blank2_x==2 && blank2_y==0)">
+				<var>A[2][0]</var></span>
+				<span class="block" data-else><var>A[2][0]</var></span>
+				</span>
+				
+				<span data-if="m >2 && k >1">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==1) || (blank2_x==2 && blank2_y==1)">
+				<var>A[2][1]</var></span>
+				<span class="block" data-else><var>A[2][1]</var></span>
+				</span>
+				
+				<span data-if="m >2 && k >2">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==2) || (blank2_x==2 && blank2_y==2)">
+				<var>A[2][2]</var></span>
+				<span class="block" data-else><var>A[2][2]</var></span>
+				</span>
+				
+				<span data-if="m >2 && k >3">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==3) || (blank2_x==2 && blank2_y==3)">
+				<var>A[2][3]</var></span>
+				<span class="block" data-else><var>A[2][3]</var></span>
+				</span><br>
+				
+				<span data-if="m >3 && k >0">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==0) || (blank2_x==3 && blank2_y==0)">
+				<var>A[3][0]</var></span>
+				<span class="block" data-else><var>A[3][0]</var></span>
+				</span>
+				
+				<span data-if="m >3 && k >1">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==1) || (blank2_x==3 && blank2_y==1)">
+				<var>A[3][1]</var></span>
+				<span class="block" data-else><var>A[3][1]</var></span>
+				</span>
+				
+				<span data-if="m >3 && k >2">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==2) || (blank2_x==3 && blank2_y==2)">
+				<var>A[3][2]</var></span>
+				<span class="block" data-else><var>A[3][2]</var></span>
+				</span>
+				
+				<span data-if="m >3 && k >3">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==3) || (blank2_x==3 && blank2_y==3)">
+				<var>A[3][3]</var></span>
+				<span class="block" data-else><var>A[3][3]</var></span>
+				</span>
+				</p>
+			</div>		
+
+            <div class="hints">
+				<!----hint 1---->
+				
+				<p><span style="color:green; font-size:20px">C</span>&nbsp;<code>&middot; {M} = <var>printSimpleMatrix(samplecM)</var></code></p>
+				
+				<!----hint 2---->
+				<p><span style="color:green; font-size:20px"><var>randvar</var></span>&nbsp;<code> &middot; {M} = <var>printSimpleMatrix(cM)</var></code></p>
+				
+				<!----hint 10---->
+				<p><code>= <var>printSimpleMatrix(A)</var></code></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

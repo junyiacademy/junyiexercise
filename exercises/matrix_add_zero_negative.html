@@ -8,6 +8,12 @@
         #answer_area .sol input[type=text] {
             width: 30px;
         }
+		#answer_area .block {
+        	display: inline-block;
+        	width: 36px;
+        	background-color:#DDDDDD;
+        	text-align: center;
+        }
     </style>
 </head>
 
@@ -18,7 +24,7 @@
             <div class="vars">
 				<var id="sizeX">randRange(2,4)</var>
 				<var id="sizeY">randRange(2,4)</var>
-				<var id="A">randRange(-99,99,sizeX,sizeY)</var>
+				<var id="A">randRange(-9,9,sizeX,sizeY)</var>
 				<var id="B">randRange(0,0,sizeX,sizeY)</var>
 				<var id="matrixA">makeMatrix(A)</var>
 				<var id="matrixB">makeMatrix(B)</var>
@@ -158,6 +164,10 @@
 				</var>
 				<var id="colorA">[BLUE]</var>
 				<var id="colorB">[PINK]</var>
+				<var id="blank1_x">randRange(0,sizeX-1)</var>
+				<var id="blank1_y">randRange(0,sizeY-1)</var>
+				<var id="blank2_x">randRangeExclude(0,sizeX-1,[blank1_x])</var>
+				<var id="blank2_y">randRangeExclude(0,sizeY-1,[blank1_y])</var>
             </div>
 			
             <div class="question">
@@ -170,78 +180,198 @@
 <!--example: sizeX*sizeY matrix-->			
             <div class="solution" data-type="multiple"> 
 				<P data-if= "rQ == 3">
-				<span class="sol" data-if="sizeX >0 && sizeY >0">
+				<span data-if="sizeX >0 && sizeY >0 ">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==0) || (blank2_x==0 && blank2_y==0)">
 				<var>mA[0][0]</var></span>
-				<span class="sol" data-if="sizeX >0 && sizeY >1">
+				<span class="block" data-else><var>mA[0][0]</var></span>
+				</span>
+
+				<span data-if="sizeX >0 && sizeY >1">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==1) || (blank2_x==0 && blank2_y==1)">
 				<var>mA[0][1]</var></span>
-				<span class="sol" data-if="sizeX >0 && sizeY >2">
+				<span class="block" data-else><var>mA[0][1]</var></span>
+				</span>
+				
+				<span data-if="sizeX >0 && sizeY >2">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==2) || (blank2_x==0 && blank2_y==2)">
 				<var>mA[0][2]</var></span>
-				<span class="sol" data-if="sizeX >0 && sizeY >3">
-				<var>mA[0][3]</var></span><br>
+				<span class="block" data-else><var>mA[0][2]</var></span>
+				</span>
 				
-				<span class="sol" data-if="sizeX >1 && sizeY >0">
+				<span data-if="sizeX >0 && sizeY >3">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==3) || (blank2_x==0 && blank2_y==3)">
+				<var>mA[0][3]</var></span>
+				<span class="block" data-else><var>mA[0][3]</var></span>
+				</span><br>
+				
+				<span data-if="sizeX >1 && sizeY >0">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==0) || (blank2_x==1 && blank2_y==0)">
 				<var>mA[1][0]</var></span>
-				<span class="sol" data-if="sizeX >1 && sizeY >1">
+				<span class="block" data-else><var>mA[1][0]</var></span>
+				</span>
+				
+				<span data-if="sizeX >1 && sizeY >1">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==1) || (blank2_x==1 && blank2_y==1)">
 				<var>mA[1][1]</var></span>
-				<span class="sol" data-if="sizeX >1 && sizeY >2">
+				<span class="block" data-else><var>mA[1][1]</var></span>
+				</span>
+				
+				<span data-if="sizeX >1 && sizeY >2">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==2) || (blank2_x==1 && blank2_y==2)">
 				<var>mA[1][2]</var></span>
-				<span class="sol" data-if="sizeX >1 && sizeY >3">
-				<var>mA[1][3]</var></span><br>
+				<span class="block" data-else><var>mA[1][2]</var></span>
+				</span>
 				
-				<span class="sol" data-if="sizeX >2 && sizeY >0">
+				<span data-if="sizeX >1 && sizeY >3">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==3) || (blank2_x==1 && blank2_y==3)">
+				<var>mA[1][3]</var></span>
+				<span class="block" data-else><var>mA[1][3]</var></span>
+				</span><br>
+				
+				<span data-if="sizeX >2 && sizeY >0">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==0) || (blank2_x==2 && blank2_y==0)">
 				<var>mA[2][0]</var></span>
-				<span class="sol" data-if="sizeX >2 && sizeY >1">
-				<var>mA[2][1]</var></span>
-				<span class="sol" data-if="sizeX >2 && sizeY >2">
-				<var>mA[2][2]</var></span>
-				<span class="sol" data-if="sizeX >2 && sizeY >3">
-				<var>mA[2][3]</var></span><br>
+				<span class="block" data-else><var>mA[2][0]</var></span>
+				</span>
 				
-				<span class="sol" data-if="sizeX >3 && sizeY >0">
+				<span data-if="sizeX >2 && sizeY >1">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==1) || (blank2_x==2 && blank2_y==1)">
+				<var>mA[2][1]</var></span>
+				<span class="block" data-else><var>mA[2][1]</var></span>
+				</span>
+				
+				<span data-if="sizeX >2 && sizeY >2">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==2) || (blank2_x==2 && blank2_y==2)">
+				<var>mA[2][2]</var></span>
+				<span class="block" data-else><var>mA[2][2]</var></span>
+				</span>
+				
+				<span data-if="sizeX >2 && sizeY >3">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==3) || (blank2_x==2 && blank2_y==3)">
+				<var>mA[2][3]</var></span>
+				<span class="block" data-else><var>mA[2][3]</var></span>
+				</span><br>
+				
+				<span data-if="sizeX >3 && sizeY >0">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==0) || (blank2_x==3 && blank2_y==0)">
 				<var>mA[3][0]</var></span>
-				<span class="sol" data-if="sizeX >3 && sizeY >1">
+				<span class="block" data-else><var>mA[3][0]</var></span>
+				</span>
+				
+				<span data-if="sizeX >3 && sizeY >1">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==1) || (blank2_x==3 && blank2_y==1)">
 				<var>mA[3][1]</var></span>
-				<span class="sol" data-if="sizeX >3 && sizeY >2">
+				<span class="block" data-else><var>mA[3][1]</var></span>
+				</span>
+				
+				<span data-if="sizeX >3 && sizeY >2">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==2) || (blank2_x==3 && blank2_y==2)">
 				<var>mA[3][2]</var></span>
-				<span class="sol" data-if="sizeX >3 && sizeY >3">
+				<span class="block" data-else><var>mA[3][2]</var></span>
+				</span>
+				
+				<span data-if="sizeX >3 && sizeY >3">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==3) || (blank2_x==3 && blank2_y==3)">
 				<var>mA[3][3]</var></span>
+				<span class="block" data-else><var>mA[3][3]</var></span>
+				</span>
 				</p>
 				<p data-else>
-				<span class="sol" data-if="sizeX >0 && sizeY >0">
+				<span data-if="sizeX >0 && sizeY >0 ">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==0) || (blank2_x==0 && blank2_y==0)">
 				<var>A[0][0]</var></span>
-				<span class="sol" data-if="sizeX >0 && sizeY >1">
+				<span class="block" data-else><var>A[0][0]</var></span>
+				</span>
+
+				<span data-if="sizeX >0 && sizeY >1">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==1) || (blank2_x==0 && blank2_y==1)">
 				<var>A[0][1]</var></span>
-				<span class="sol" data-if="sizeX >0 && sizeY >2">
+				<span class="block" data-else><var>A[0][1]</var></span>
+				</span>
+				
+				<span data-if="sizeX >0 && sizeY >2">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==2) || (blank2_x==0 && blank2_y==2)">
 				<var>A[0][2]</var></span>
-				<span class="sol" data-if="sizeX >0 && sizeY >3">
-				<var>A[0][3]</var></span><br>
+				<span class="block" data-else><var>A[0][2]</var></span>
+				</span>
 				
-				<span class="sol" data-if="sizeX >1 && sizeY >0">
+				<span data-if="sizeX >0 && sizeY >3">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==3) || (blank2_x==0 && blank2_y==3)">
+				<var>A[0][3]</var></span>
+				<span class="block" data-else><var>A[0][3]</var></span>
+				</span><br>
+				
+				<span data-if="sizeX >1 && sizeY >0">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==0) || (blank2_x==1 && blank2_y==0)">
 				<var>A[1][0]</var></span>
-				<span class="sol" data-if="sizeX >1 && sizeY >1">
+				<span class="block" data-else><var>A[1][0]</var></span>
+				</span>
+				
+				<span data-if="sizeX >1 && sizeY >1">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==1) || (blank2_x==1 && blank2_y==1)">
 				<var>A[1][1]</var></span>
-				<span class="sol" data-if="sizeX >1 && sizeY >2">
+				<span class="block" data-else><var>A[1][1]</var></span>
+				</span>
+				
+				<span data-if="sizeX >1 && sizeY >2">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==2) || (blank2_x==1 && blank2_y==2)">
 				<var>A[1][2]</var></span>
-				<span class="sol" data-if="sizeX >1 && sizeY >3">
-				<var>A[1][3]</var></span><br>
+				<span class="block" data-else><var>A[1][2]</var></span>
+				</span>
 				
-				<span class="sol" data-if="sizeX >2 && sizeY >0">
+				<span data-if="sizeX >1 && sizeY >3">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==3) || (blank2_x==1 && blank2_y==3)">
+				<var>A[1][3]</var></span>
+				<span class="block" data-else><var>A[1][3]</var></span>
+				</span><br>
+				
+				<span data-if="sizeX >2 && sizeY >0">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==0) || (blank2_x==2 && blank2_y==0)">
 				<var>A[2][0]</var></span>
-				<span class="sol" data-if="sizeX >2 && sizeY >1">
-				<var>A[2][1]</var></span>
-				<span class="sol" data-if="sizeX >2 && sizeY >2">
-				<var>A[2][2]</var></span>
-				<span class="sol" data-if="sizeX >2 && sizeY >3">
-				<var>A[2][3]</var></span><br>
+				<span class="block" data-else><var>A[2][0]</var></span>
+				</span>
 				
-				<span class="sol" data-if="sizeX >3 && sizeY >0">
+				<span data-if="sizeX >2 && sizeY >1">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==1) || (blank2_x==2 && blank2_y==1)">
+				<var>A[2][1]</var></span>
+				<span class="block" data-else><var>A[2][1]</var></span>
+				</span>
+				
+				<span data-if="sizeX >2 && sizeY >2">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==2) || (blank2_x==2 && blank2_y==2)">
+				<var>A[2][2]</var></span>
+				<span class="block" data-else><var>A[2][2]</var></span>
+				</span>
+				
+				<span data-if="sizeX >2 && sizeY >3">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==3) || (blank2_x==2 && blank2_y==3)">
+				<var>A[2][3]</var></span>
+				<span class="block" data-else><var>A[2][3]</var></span>
+				</span><br>
+				
+				<span data-if="sizeX >3 && sizeY >0">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==0) || (blank2_x==3 && blank2_y==0)">
 				<var>A[3][0]</var></span>
-				<span class="sol" data-if="sizeX >3 && sizeY >1">
+				<span class="block" data-else><var>A[3][0]</var></span>
+				</span>
+				
+				<span data-if="sizeX >3 && sizeY >1">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==1) || (blank2_x==3 && blank2_y==1)">
 				<var>A[3][1]</var></span>
-				<span class="sol" data-if="sizeX >3 && sizeY >2">
+				<span class="block" data-else><var>A[3][1]</var></span>
+				</span>
+				
+				<span data-if="sizeX >3 && sizeY >2">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==2) || (blank2_x==3 && blank2_y==2)">
 				<var>A[3][2]</var></span>
-				<span class="sol" data-if="sizeX >3 && sizeY >3">
+				<span class="block" data-else><var>A[3][2]</var></span>
+				</span>
+				
+				<span data-if="sizeX >3 && sizeY >3">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==3) || (blank2_x==3 && blank2_y==3)">
 				<var>A[3][3]</var></span>
+				<span class="block" data-else><var>A[3][3]</var></span>
+				</span>
 				</p>
 
 			</div>
@@ -300,7 +430,7 @@
             <div class="vars">
 				<var id="sizeX">randRange(2,4)</var>
 				<var id="sizeY">randRange(2,4)</var>
-				<var id="A">randRange(2,99,sizeX,sizeY)</var>
+				<var id="A">randRange(2,9,sizeX,sizeY)</var>
 				<var id="matrixA">makeMatrix(A)</var>		
 				<var id="mA">
 					(function(){
@@ -411,6 +541,10 @@
 				</var>
 				<var id="colorA">[BLUE]</var>
 				<var id="colormA">[RED]</var>
+				<var id="blank1_x">randRange(0,sizeX-1)</var>
+				<var id="blank1_y">randRange(0,sizeY-1)</var>
+				<var id="blank2_x">randRangeExclude(0,sizeX-1,[blank1_x])</var>
+				<var id="blank2_y">randRangeExclude(0,sizeY-1,[blank1_y])</var>
             </div>
 			
             <div class="question">
@@ -422,41 +556,101 @@
 <!--example: sizeX*sizeY matrix-->			
             <div class="solution" data-type="multiple"> 
 				<p>
-				<span class="sol" data-if="sizeX >0 && sizeY >0">
+				<span data-if="sizeX >0 && sizeY >0 ">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==0) || (blank2_x==0 && blank2_y==0)">
 				<var>C[0][0]</var></span>
-				<span class="sol" data-if="sizeX >0 && sizeY >1">
+				<span class="block" data-else><var>C[0][0]</var></span>
+				</span>
+
+				<span data-if="sizeX >0 && sizeY >1">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==1) || (blank2_x==0 && blank2_y==1)">
 				<var>C[0][1]</var></span>
-				<span class="sol" data-if="sizeX >0 && sizeY >2">
+				<span class="block" data-else><var>C[0][1]</var></span>
+				</span>
+				
+				<span data-if="sizeX >0 && sizeY >2">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==2) || (blank2_x==0 && blank2_y==2)">
 				<var>C[0][2]</var></span>
-				<span class="sol" data-if="sizeX >0 && sizeY >3">
-				<var>C[0][3]</var></span><br>
+				<span class="block" data-else><var>C[0][2]</var></span>
+				</span>
 				
-				<span class="sol" data-if="sizeX >1 && sizeY >0">
+				<span data-if="sizeX >0 && sizeY >3">
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==3) || (blank2_x==0 && blank2_y==3)">
+				<var>C[0][3]</var></span>
+				<span class="block" data-else><var>C[0][3]</var></span>
+				</span><br>
+				
+				<span data-if="sizeX >1 && sizeY >0">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==0) || (blank2_x==1 && blank2_y==0)">
 				<var>C[1][0]</var></span>
-				<span class="sol" data-if="sizeX >1 && sizeY >1">
+				<span class="block" data-else><var>C[1][0]</var></span>
+				</span>
+				
+				<span data-if="sizeX >1 && sizeY >1">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==1) || (blank2_x==1 && blank2_y==1)">
 				<var>C[1][1]</var></span>
-				<span class="sol" data-if="sizeX >1 && sizeY >2">
+				<span class="block" data-else><var>C[1][1]</var></span>
+				</span>
+				
+				<span data-if="sizeX >1 && sizeY >2">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==2) || (blank2_x==1 && blank2_y==2)">
 				<var>C[1][2]</var></span>
-				<span class="sol" data-if="sizeX >1 && sizeY >3">
-				<var>C[1][3]</var></span><br>
+				<span class="block" data-else><var>C[1][2]</var></span>
+				</span>
 				
-				<span class="sol" data-if="sizeX >2 && sizeY >0">
+				<span data-if="sizeX >1 && sizeY >3">
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==3) || (blank2_x==1 && blank2_y==3)">
+				<var>C[1][3]</var></span>
+				<span class="block" data-else><var>C[1][3]</var></span>
+				</span><br>
+				
+				<span data-if="sizeX >2 && sizeY >0">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==0) || (blank2_x==2 && blank2_y==0)">
 				<var>C[2][0]</var></span>
-				<span class="sol" data-if="sizeX >2 && sizeY >1">
-				<var>C[2][1]</var></span>
-				<span class="sol" data-if="sizeX >2 && sizeY >2">
-				<var>C[2][2]</var></span>
-				<span class="sol" data-if="sizeX >2 && sizeY >3">
-				<var>C[2][3]</var></span><br>
+				<span class="block" data-else><var>C[2][0]</var></span>
+				</span>
 				
-				<span class="sol" data-if="sizeX >3 && sizeY >0">
+				<span data-if="sizeX >2 && sizeY >1">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==1) || (blank2_x==2 && blank2_y==1)">
+				<var>C[2][1]</var></span>
+				<span class="block" data-else><var>C[2][1]</var></span>
+				</span>
+				
+				<span data-if="sizeX >2 && sizeY >2">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==2) || (blank2_x==2 && blank2_y==2)">
+				<var>C[2][2]</var></span>
+				<span class="block" data-else><var>C[2][2]</var></span>
+				</span>
+				
+				<span data-if="sizeX >2 && sizeY >3">
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==3) || (blank2_x==2 && blank2_y==3)">
+				<var>C[2][3]</var></span>
+				<span class="block" data-else><var>C[2][3]</var></span>
+				</span><br>
+				
+				<span data-if="sizeX >3 && sizeY >0">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==0) || (blank2_x==3 && blank2_y==0)">
 				<var>C[3][0]</var></span>
-				<span class="sol" data-if="sizeX >3 && sizeY >1">
+				<span class="block" data-else><var>C[3][0]</var></span>
+				</span>
+				
+				<span data-if="sizeX >3 && sizeY >1">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==1) || (blank2_x==3 && blank2_y==1)">
 				<var>C[3][1]</var></span>
-				<span class="sol" data-if="sizeX >3 && sizeY >2">
+				<span class="block" data-else><var>C[3][1]</var></span>
+				</span>
+				
+				<span data-if="sizeX >3 && sizeY >2">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==2) || (blank2_x==3 && blank2_y==2)">
 				<var>C[3][2]</var></span>
-				<span class="sol" data-if="sizeX >3 && sizeY >3">
+				<span class="block" data-else><var>C[3][2]</var></span>
+				</span>
+				
+				<span data-if="sizeX >3 && sizeY >3">
+				<span class="sol" data-if="(blank1_x==3 && blank1_y==3) || (blank2_x==3 && blank2_y==3)">
 				<var>C[3][3]</var></span>
+				<span class="block" data-else><var>C[3][3]</var></span>
+				</span>
 				</p>
             </div>
 			

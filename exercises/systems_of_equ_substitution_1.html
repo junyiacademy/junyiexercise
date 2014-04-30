@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>解一元二次方程式-代入法消去法_1</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area input[type=text] {
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="substitution-x">
+                <div class="vars" data-ensure="abs( A1 * X + B1 * Y ) > 1 && abs( A1 * X + B1 * Y ) < 50">	
+					<var id="A1"> randRange( 2, 6 ) * randRangeNonZero( -1 , 1 )</var>
+					<var id="B1"> randRangeNonZero( -6 , 6 )</var>
+					<var id="A2"> randRangeNonZero( -4 , 4 )</var>				
+                    <var id="Y"> randRangeNonZero ( -10, 10 )</var>	
+					<var id="X"> A2 * Y </var>					
+                    <var id="C1" >( A1 * X ) + ( B1 * Y )</var>
+					<var id="O"> B1 * Y </var>
+                </div>
+                <p class="problem">使用代入法消去法解 <code>x</code> 和 <code>y</code></p>
+                <div class="question">
+                    <p><code>\color{<var>GREEN</var>}{ x = <var>expr(["+", ["*", A2, "y"]])</var>}</code><br />
+					<code>\color{<var>BLUE</var>}{<var>expr(["+", ["*", A1, "x"], ["*", B1, "y"]])</var> = <var>C1</var>}</code></p>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <p><code>x</code> = <span class="sol"><var>X</var></span></p>
+                    <p><code>y</code> = <span class="sol"><var>Y</var></span></p>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>因為已經得出 <code>x</code>, 將 <code>x</code>為<code class="hint_green"><var>expr(["+", ["*", A2, "y"]])</var></code> 代入到第一個方程式中</p>
+                        <p><code>\color{<var>BLUE</var>}{<var>A1</var>}\color{<var>GREEN</var>}{(<var>expr(["*", A2, "y"])</var>)}\color{<var>BLUE</var>}{<var>B1 &gt;= 0 ? "+" : ""</var><var>expr(["*", B1, "y"])</var>=<var>C1</var>}</code></p>
+                    </div>
+                    <div>
+                        <p>化簡後求得 <code>y</code></p>
+                    </div>
+                    <div>
+                        <p><code><var>expr(["+", ["*", A1 * A2, "y"], ["*", B1, "y"]])</var> = <var>C1</var></code></p>
+                        <p><code><var>expr(["+", ["*", A1 * A2 + B1 , "y"]])</var> = <var>C1</var></code></p>
+                        <p><code>\dfrac{<var>expr(["*", A1 * A2 + B1, "y"])</var>}{\color{<var>BLUE</var>}{<var>A1 * A2 + B1</var>}} = \dfrac{<var>C1</var>}{\color{<var>BLUE</var>}{<var>A1 * A2 + B1</var>}}</code></p>
+                        <p><code>\color{red}{y = <var>Y</var>}</code></p>
+                    </div>
+                    <div>
+                        <p>現在你知道<code>\color{red}{y = <var>Y</var>}</code>, 把它放入<code>\thinspace \color{<var>GREEN</var>}{x = <var>expr(["+", ["*", A2, "y"]])</var>}\thinspace</code> 來取得 <code>x</code></p>
+                    </div>
+                    <div>
+                        <p data-if= "abs(A2) !== 1"><code>\color{<var>GREEN</var>}{x = <span data-if="abs( A2 ) !== 1"><var>A2</var></span><span data-if="A2 === -1">-</span>}\color{red}{(<var>Y</var>)}</code></p>                        
+                        <p><code class="hint_red">x = <var>X</var></code></p>
+                    </div>
+                    <div>
+                        <p>你也可以把 <code>\color{red}{y = <var>Y</var>}</code> 放到 <code>\thinspace \color{<var>BLUE</var>}{<var>expr(["+", ["*", A1, "x"], ["*", B1, "y"]])</var> = <var>C1</var>}\thinspace</code> 獲得同樣的 <code>x</code>:</p>
+                        <p><code>\color{<var>BLUE</var>}{<span data-if=" B1 === 1"><var>expr(["*", A1, "x"])</var> + </span><span data-if=" B1 === -1"><var>expr(["*", A1, "x"])</var> - </span><span data-if=" abs( B1 ) !== 1"><var>expr([ "+", ["*", A1, "x"], B1])</var></span>}\color{red}{(<var>Y</var>)}\color{<var>BLUE</var>}{ = <var>C1</var>}</code></p>
+						<p><code><var>expr(["+", ["*", A1, "x"], O ])</var>=<var>C1</code></p>
+						<p><code><var>expr(["*", A1, "x"])</var>=<var>C1</var><var>O &gt;= 0 ? "" : "+"</var><var>-O</code></code></p>
+						<p data-if="abs( A1 ) !== 1"><code><var>expr(["*", A1, "x"])</var> = <var>C1-O</var></code></p>
+                        <p><code>\color{red}{x = <var>X</var>}</code></p>
+                    </div>
+                </div>
+            </div>
+			
+			<div id="substitution-y">
+                <div class="vars" data-ensure="abs( A1 * X + B1 * Y ) > 1 && abs( A1 * X + B1 * Y ) < 50">	
+					<var id="A1"> randRange( 2, 6 ) * randRangeNonZero( -1 , 1 )</var>
+					<var id="B1"> randRangeNonZero( -6 , 6 )</var>
+					<var id="A2"> randRangeNonZero( -4 , 4 )</var>	
+					<var id="X"> randRangeNonZero ( -10, 10 ) </var>					
+                    <var id="Y"> A2 * X </var>											
+                    <var id="C1">( A1 * X ) + ( B1 * Y )</var>
+					<var id="O"> A1 * X </var>
+                </div>
+                <p class="problem">使用代入法消去法解 <code>x</code> 和 <code>y</code></p>
+                <div class="question">
+                    <p><code>\color{<var>BLUE</var>}{<var>expr(["+", ["*", A1, "x"], ["*", B1, "y"]])</var> = <var>C1</var>}</code><br />
+					<code>\color{<var>GREEN</var>}{ y = <var>expr(["+", ["*", A2, "x"]])</var>}</code></p>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <p><code>x</code> = <span class="sol"><var>X</var></span></p>
+                    <p><code>y</code> = <span class="sol"><var>Y</var></span></p>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>因為已經得出 <code>y</code>, 將 <code>y</code>為<code class="hint_green"><var>expr(["+", ["*", A2, "x"]])</var></code> 代入到第一個方程式中</p>
+                        <p><code>\color{<var>BLUE</var>}{<var>expr(["*" ,A1 ,"x"])</var><var>B1 &gt;= 0 ? "+" : ""</var><span data-if="abs( B1 ) !== 1"><var>B1</var></span>}\color{<var>GREEN</var>}{(<var>expr(["*", A2, "x"])</var>)}\color{<var>BLUE</var>}{=<var>C1</var>}</code></p>
+                    </div>
+                    <div>
+                        <p>化簡後求得 <code>x</code></p>
+                    </div>
+                    <div>
+                        <p><code><var>expr(["+", ["*", A1, "x"], ["*", B1 * A2, "x"]])</var> = <var>C1</var></code></p>
+                        <p><code><var>expr(["+", ["*", A1 + B1 * A2 , "x"]])</var> = <var>C1</var></code></p>
+                        <p><code>\dfrac{<var>expr(["*", A1 + B1 * A2, "x"])</var>}{\color{<var>BLUE</var>}{<var>A1 + B1 * A2</var>}} = \dfrac{<var>C1</var>}{\color{<var>BLUE</var>}{<var>A1 + B1 * A2</var>}}</code></p>
+                        <p><code>\color{red}{x = <var>X</var>}</code></p>
+                    </div>
+                    <div>
+                        <p>現在你知道<code>\color{red}{x = <var>X</var>}</code>, 把它放入<code>\thinspace \color{<var>GREEN</var>}{y = <var>expr(["+", ["*", A2, "x"]])</var>}\thinspace</code> 來取得 <code>y</code></p>
+                    </div>
+                    <div>
+                        <p data-if= "abs(A2) !== 1"><code>\color{<var>GREEN</var>}{y = <span data-if="abs( A2 ) !== 1"><var>A2</var></span><span data-if="A2 === -1">-</span>}\color{red}{(<var>X</var>)}</code></p>                        
+                        <p><code class="hint_red">y = <var>Y</var></code></p>
+                    </div>
+                    <div>
+                        <p>你也可以把 <code>\color{red}{x = <var>X</var>}</code> 放到 <code>\thinspace \color{<var>BLUE</var>}{<var>expr(["+", ["*", A1, "x"], ["*", B1, "y"]])</var> = <var>C1</var>}\thinspace</code> 獲得同樣的 <code>y</code>:</p>
+                        <p><code>\color{<var>BLUE</var>}{<var>A1</var>}\color{red}{(<var>X</var>)}\color{<var>BLUE</var>}{<var>B1 &gt;= 0 ? "+" : ""</var><var>expr(["*", B1, "y"])</var> = <var>C1</var>}</code></p>
+						<p><code><var>expr(["+", O, ["*", B1, "y"]])</var>=<var>C1</code></p>
+						<p><code><var>expr(["*", B1, "y"])</var>=<var>C1</var><var>O &gt;= 0 ? "" : "+"</var><var>-O</code></code></p>
+						<p data-if="abs( A2 ) !== 1"><code><var>expr(["*", B1, "y"])</var> = <var>C1-O</var></code></p>
+                        <p><code class="hint_red">y = <var>Y</var></code></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
