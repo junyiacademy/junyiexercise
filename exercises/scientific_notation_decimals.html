@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>用科學記號表示小於1的正數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+	<div id="case1">
+        <div class="vars">
+		    <var id="N">randRange(4,9)</var>
+			<var id="J">randRange(1,9)</var>
+			<var id="K">randRange(1,9)</var>
+			<var id="DECIMAL">
+			    (function(){
+			       return (J*10+K)/pow(10,N+2);
+				})()</var>
+			<var id="str_zeros_match">
+			    (function(){
+				    return "0."+"000000000".substr(0,N);
+			})()
+			</var>
+			<var id="SC_DECIMAL">J+K/10</var>
+			<var id="SC_N">-N-1</var>
+        </div>
+
+                <p class="question">以科學記號表示 <code><var>str_zeros_match</var><var>J</var><var>K</var></code>。
+                </p>
+
+                <div class="solution" data-type="multiple">
+                    <span class="sol base"><var>SC_DECIMAL</var></span>
+                    <code> \times 10 </code>
+                    <sup class="sol exp" style="width: 20px;"><var>SC_N</var></sup>
+					<p class="example">格式例如:3.2<code>\times 10 ^\text{2}</code></p>
+                </div>
+
+                <div class="hints">
+				    <div>
+					    <p>科學記號的表示方法為 <code> a \times 10^{n}</code> ，其中 <code>a</code> 要滿足 <code>1</code> &le; <code>a</code> &lt; <code>10</code> ，</p>
+						<p>而且 <code>n</code> 必須為整數。</p>
+					</div>
+					<div><p>從小數點往後數，直到遇見第一個不是 <code>0</code> 的數字，總共數得 <code><var>N</var></code> 個 <code>0</code> 。</p></div>
+					<div>
+					    <p>因為 <code><var>str_zeros_match</var></code><code><var>J</var><var>K</var></code> = <code><var>SC_DECIMAL</var>\times <var>str_zeros_match</var></code><code><var>1</var></code>= <code><var>SC_DECIMAL</var> \times 10^{-(<var>N</var>+<var>1</var>)}</code> ，</p>
+					</div>
+					<div><p>所以 <code><var>str_zeros_match</var></code><code><var>J</var><var>K</var></code> 的科學記號表示法為 <code class="hint_green"><var>SC_DECIMAL</var> \times 10^{-<var>N+1</var>}</code> 。</p></div>
+					<div><p>因此，本題的答案應依次填入 <code class="hint_pink"><var>SC_DECIMAL</var></code> 和 <code class="hint_pink"><var>-N-1</var></code> 。</p></div>
+                </div>
+    </div>
+	<div id="case2">
+			<div class="vars">
+				<var id="N">randRange(4,9)</var>
+				<var id="J">randRange(2,9)</var>
+				<var id="str_zeros_match">
+					(function(){
+						return "1"+"000000000".substr(0,N);
+				})()
+				</var>
+				<var id="SC_DECIMAL">J</var>
+				<var id="SC_N">-N</var>
+			</div>
+
+			<p class="question">以科學記號表示 <code>\frac{<var>J</var>}{<var>str_zeros_match</var>}</code>。
+			</p>
+
+			<div class="solution" data-type="multiple">
+				<span class="sol base"><var>SC_DECIMAL</var></span>
+				<code> \times 10 </code>
+				<sup class="sol exp" style="width: 20px;"><var>SC_N</var></sup>
+				<p class="example">格式例如:<code>3</code><code>\times 10 ^\text{-5}</code></p>
+			</div>
+
+			<div class="hints">
+				<div>
+					<p>科學記號的表示方法為 <code> a \times 10^{n}</code> ，其中 <code>a</code> 要滿足 <code>1</code> &le; <code>a</code> &lt; <code>10</code> ，</p>
+					<p>而且 <code>n</code> 必須為整數。</p>
+				</div>
+				<div>
+					<p>因為 <code>\frac{<var>J</var>}{<var>str_zeros_match</var>}</code>
+					<code>=<var>J</var> \times \frac{1}{<var>str_zeros_match</var>}</code>
+						<code>=<var>J</var> \times \frac{1}{10^<var>N</var>}</code>
+						<code>=<var>J</var> \times 10^{-<var>N</var>}</code></p>
+				</div>
+				<div><p>所以<code>\frac{<var>J</var>}{<var>str_zeros_match</var>}</code>的科學記號表示法為 <code class="hint_green"><var>SC_DECIMAL</var> \times 10^{-<var>N</var>}</code> 。</p></div>
+				<div><p>因此，本題的答案應依次填入 <code class="hint_pink"><var>SC_DECIMAL</var></code> 和 <code class="hint_pink"><var>-N</var></code> 。</p></div>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

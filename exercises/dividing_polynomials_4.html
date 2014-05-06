@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html data-require="math math-format polynomials functional graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>多項式除以多項式</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+		<div class="problems">
+		<div id="divide">
+			<div class="vars" data-ensure="a!=0 && b!=0 && c!=0 && d!=0">
+				<var id="X">randVar()</var>
+				<var id="b">randRangeNonZero(-5,5)</var> 
+				<var id="a">b*randRangeNonZero(-2,2)</var>
+				<var id="ax">new Polynomial( 0, 2, [0,0,a], X )</var>
+				<var id="c">b*randRangeNonZero(-2,2)</var>
+				<var id="cx">new Polynomial( 0, 1, [0,c], X )</var>
+				<var id="d">b</var>
+				<var id="DIVISOR">new Polynomial( 0, 1, [d,c], X )</var>
+				<var id="DIVIDEND">new Polynomial( 0, 2, [b,0,a], X )</var>
+				<var id="SOLUTION">DIVIDEND.divide(DIVISOR)</var>
+				<var id="j">SOLUTION[1].coefs[1]</var>
+				<var id="k">SOLUTION[1].coefs[0]</var>
+				<var id="jx">new Polynomial( 0, 1, [0,j], X )</var>
+			</div>
+            <p class="question">請計算下面的除式：</p>
+            <p class="problem"><code>(<var>DIVIDEND</var>) \div (<var>DIVISOR</var>)</code></p>
+			<div class="graphie" id="numbers">
+				graph.PolyDivider = new PolyDivider( DIVISOR, DIVIDEND, SOLUTION );
+				DUMMY = Array( graph.PolyDivider.getNumHints() )
+			</div>
+            <div class="solution" data-type="multiple">
+				<code>商式 =\space</code><span class="sol"><var>j</var></span>
+				<code><var>X</var>+</code>
+				<span class="sol"><var>k</var></span></code>
+				<code data-if="SOLUTION[0]!=0">餘數 =\space</code><span class="sol" data-if="SOLUTION[0]!=0"><var>SOLUTION[0]</var></span>
+				<p class="example" data-if="SOLUTION[0]!=0">商式 = J<var>X</var>+K<br>
+				餘數 = C<br>
+				C,J和K可為整數,小數或分數</p>
+				<p class="example" data-if="SOLUTION[0]==0">商式 = J<var>X</var>+K<br>
+				J和K可為整數,小數或分數</p>
+            </div>
+		</div>
+		</div>
+		<div class="hints">
+			<div class="graphie" data-update="numbers">
+				graph.PolyDivider.showHintTitle();
+			</div>	
+			<div class="graphie" data-update="numbers" data-each="DUMMY as index">		
+                graph.PolyDivider.showHint();
+			</div>
+       </div>        
+    </div>
+</body>
+</html>
