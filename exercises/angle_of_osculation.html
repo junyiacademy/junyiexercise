@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>弦切角</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+        </style>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">	
+		<div id="case1">
+            <div class="vars">
+				<var id="J">randRange(140,160)</var>
+				<var id="ap">2*(180-J)</var>
+            </div>
+            <p class="question">如下圖， <code>\overline{PA}</code> 為圓 <code>O</code> 的弦，直線 <code>PC</code> 切圓 <code>O</code> 於 <code>P</code> 點，已知 <code>\angle{APD}=<var>J</var>^{\circ}</code> ，則 <code>\angle{AOP}</code> 與 <code>\angle{ABP}</code> 各是多少度？</p>
+			<div class="problem">
+				<div class="graphie" id="angle_osculation_1">
+                    init({
+                        range: [ [-1, 12], [-3, 3] ],
+                        scale: 40
+                    });
+					circle([2,0],2);
+					line([0,-2],[4,-2]);
+					var nh = 4*Math.sin((180-J)/180*Math.PI)*Math.sin((180-J)/180*Math.PI);
+					var nl = 4*Math.sin((180-J)/180*Math.PI)*Math.cos((180-J)/180*Math.PI);
+					line([2,-2],[2+nl,nh-2]);
+					line([2,-2],[2,0]);
+					line([2,0],[2+nl,nh-2]);
+					var bp = (2+2*Math.cos((180-J)/180*Math.PI))/Math.cos((90-J/2)/180*Math.PI);
+					var h_2 = bp*Math.sin(J/2/180*Math.PI);
+					var l_2 = bp*Math.cos(J/2/180*Math.PI);
+					line([2,-2],[2-l_2,h_2-2]);
+					line([2+nl,nh-2],[2-l_2,h_2-2]);
+					label( [2,-2],  "\\small{P}", "below", { color: "black" });
+					label( [0,-2],  "\\small{D}", "below", { color: "black" });
+					label( [4,-2],  "\\small{C}", "below", { color: "black" });
+					label( [2+nl,nh-2],  "\\small{A}", "right", { color: "black" });
+					label( [2,0],  "\\small{O}", "left", { color: "black" });
+					label( [2-l_2,h_2-2],  "\\small{B}", "above left", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<code>\angle{AOP}=\enspace</code><span class="sol" data-forms="integer"><var>ap</var></span><code>^{\circ}</code><br />
+				<code>\angle{ABP}=\enspace</code><span class="sol" data-forms="integer"><var>180-J</var></span><code>^{\circ}</code>
+				<p class="example">整數，例 <code>6</code></p> 
+			</div>
+            <div class="hints">
+				<p>由題意知 <code>\angle{APC}</code> 為弦切角， <code>\angle{AOP}</code> 為圓心角， <code>\angle{ABP}</code> 為圓周角，</p>
+				<p><code>\therefore\enspace\angle{APC}=180^{\circ}-\angle{APD}=<var>180-J</var>^{\circ}=\dfrac{1}{2}\widehat{AP}</code></p>
+				<p><code>\Longrightarrow\enspace\widehat{AP}=<var>ap</var>^{\circ}</code></p>
+				<p><code>\therefore\enspace\angle{AOP}=\widehat{AP}=</code><code class="hint_pink"><var>ap</var>^{\circ}</code></p>
+				<p><code>\angle{ABP}=\dfrac{1}{2}\widehat{AP}=</code><code class="hint_pink"><var>180-J</var>^{\circ}</code></p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+				<var id="J">randRange(20,40)</var>
+				<var id="K">randRange(45,70)</var>
+				<var id="angA">180-J-K</var>
+            </div>
+            <p class="question">如下圖， <code>\overline{PA}</code> 切圓 <code>O</code> 於 <code>A</code> 點，割線 <code>PB</code> 交圓 <code>O</code> 於 <code>B</code> 、<code>C</code> 兩點。已知 <code>\angle{P}=<var>J</var>^{\circ}</code> 、<code>\angle{ABP}=<var>K</var>^{\circ}</code> ，則 <code>\widehat{AB}</code> 是多少度數？</p>
+			<div class="problem">
+				<div class="graphie" id="angle_osculation_1">
+                    init({
+                        range: [ [-1, 12], [-3, 3] ],
+                        scale: 40
+                    });
+					circle([6,0],2);
+					circle([6,0],0.05,{fill:"black"});
+					label( [6,0],  "\\small{O}", "below left", { color: "black" });
+					line([-3*sqrt(2)+6,-1],[2-2*sqrt(2)+6,2]);
+					line([-3*sqrt(2)+6,-1],[7.833,-0.8]);
+					line([7.833,-0.8],[6-sqrt(2),sqrt(2)]);
+					label( [6-sqrt(2),sqrt(2)],  "\\small{A}", "above left", { color: "black" });
+					label( [-3*sqrt(2)+6,-1],  "\\small{P}", "left", { color: "black" });
+					label( [4,-1],  "\\small{C}", "below left", { color: "black" });
+					label( [7.833,-0.8],  "\\small{B}", "below right", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<code>\widehat{AB}=\enspace</code><span class="sol" data-forms="integer"><var>360-2*(180-J-K)</var></span><code>^{\circ}</code>
+				<p class="example">整數，例 <code>6</code></p> 
+			</div>
+            <div class="hints">
+				<p>由題意可知 <code>\angle{PAB}</code> 為弦切角，</p>
+				<p><code>\angle{P}=<var>J</var>^{\circ}</code> 、<code>\angle{ABP}=<var>K</var>^{\circ}</code> ，<code>\triangle{APB}</code> 內角和 <code>180</code> 度，</p>
+				<p>所以 <code>\angle{PAB}=180^{\circ}-<var>J</var>^{\circ}-<var>K</var>^{\circ}=<var>180-J-K</var>^{\circ}</code> ，</p>
+				<p>又 <code>\angle{PAB}</code> 為弦切角，所以 <code>\angle{PAB}=<var>180-J-K</var>^{\circ}=\dfrac{1}{2}\widehat{ACB}</code> ，</p>
+				<p>所以 <code>\widehat{ACB}=<var>2*(180-J-K)</var></code> 度，</p>
+				<p><code>\widehat{AB}=360^{\circ}-\widehat{ACB}=360^{\circ}-<var>2*(180-J-K)</var>^{\circ}=</code><code class="hint_pink"><var>360-2*(180-J-K)</var></code> 度。</p>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+				<var id="J">2*randRange(60,80)</var>
+				<var id="K">randRange(35,45)</var>
+				<var id="angA">180-J-K</var>
+            </div>
+            <p class="question">如下圖，直線 <code>PB</code> 與圓相切於 <code>B</code> 點，直線 <code>PA</code> 交圓於 <code>A</code> 、<code>D</code> 兩點。已知 <code>\widehat{AB}=<var>J</var>^{\circ}</code> 、<code>\widehat{BD}=<var>K</var>^{\circ}</code> ，</p>
+			<div class="problem">
+				<div class="graphie" id="angle_osculation_1">
+                    init({
+                        range: [ [-1, 12], [-3, 3] ],
+                        scale: 40
+                    });
+					circle([2,0],2);
+					line([0,-2],[4,-2]);
+					var nh = 4*Math.sin((180-J)/180*Math.PI)*Math.sin((180-J)/180*Math.PI);
+					var nl = 4*Math.sin((180-J)/180*Math.PI)*Math.cos((180-J)/180*Math.PI);
+					var bp = (2+2*Math.cos((180-J)/180*Math.PI))/Math.cos((90-J/2)/180*Math.PI);
+					var h_2 = bp*Math.sin(J/2/180*Math.PI);
+					var l_2 = bp*Math.cos(J/2/180*Math.PI);
+					line([2,-2],[2-l_2,h_2-2]);
+					line([4,-2],[2-l_2,h_2-2]);
+					label( [2,-2],  "\\small{B}", "below", { color: "black" });
+					label( [0,-2],  "\\small{C}", "below", { color: "black" });
+					label( [4,-2],  "\\small{P}", "below", { color: "black" });
+					label( [4,-1.75],  "\\small{D}", "above", { color: "black" });
+					label( [2-l_2,h_2-2],  "\\small{A}", "above left", { color: "black" });
+				</div>
+				<p>則： <code>\angle{ABC}=？</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<code>\angle{ABC}=\enspace</code><span class="sol" data-forms="integer"><var>J/2</var></span><code>^{\circ}</code>
+				<p class="example">整數，例 <code>6</code></p> 
+			</div>
+            <div class="hints">
+				<p>由題意可知 <code>\angle{ABC}</code> 為弦切角，</p>
+				<p><code>\widehat{AB}=<var>J</var>^{\circ}</code> ，</p>
+				<p>則 <code>\angle{ABC}=\dfrac{1}{2}\times<var>J</var>^{\circ}=</code><code class="hint_pink"><var>J/2</var>^{\circ}</code> 。</p>
+            </div>
+        </div>
+		
+    </div>
+		
+	</div>
+	</div>
+</body>
+</html>

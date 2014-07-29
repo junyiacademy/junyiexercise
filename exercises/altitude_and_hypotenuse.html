@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>直角三角形斜邊上的高</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+	    <div id="case1">
+            <div class="vars">
+				<var id="JK">randFromArray([[10,24,26],[15,36,39],[3,4,5],[6,8,10],[9,12,15],[12,16,20],[7,24,25],[14,48,50],[15,20,25],[18,24,30]])</var>
+				<var id="J">JK[0]</var>
+				<var id="K">JK[1]</var>
+				<var id="L">JK[2]</var>
+				<var id="h_bd">J*K/L</var>
+				<var id="sm">
+				(function(){
+				    var smm = 1;
+					if(J/K==3/4){
+					    smm = J/3;
+					}
+					if(J/K==5/12){
+					    smm = J/5*2;
+					}
+					if(J/K==7/24){
+					    smm = J/3;
+					}
+					return smm;
+				})()</var>
+            </div>
+			<p class="question">如下圖， 已知 <code>\overline{AB}=<var>J</var></code>、<code>\overline{BC}=<var>K</var></code>，求 <code>B</code> 到 <code>\overline{AC}</code> 的距離。</p>
+			<div class="problem">
+			    <div class="graphie" id="right_1">
+				    init({
+                        range: [ [-1, 12], [-1,4] ],
+                        scale: 40
+                    });
+					path([[0,0],[K/sm,0],[0,J/sm],[0,0]],{stroke:"black"});
+					label( [0,J/sm],  "A", "above", { color: "black" });
+					label( [0,0],  "B", "left", { color: "black" });
+					label( [K/sm,0],  "C", "right", { color: "black" });
+					s1 = line([0,0.3],[0.3,0.3]);
+					s2 = line([0.3,0.3],[0.3,0]);
+				</div>
+			</div>
+			<div class="solution">
+			    <span class="sol" data-type="rational"><var>h_bd</var></span>
+            </div>
+            <div class="hints">
+			    <p><code>\triangle{ABC}</code> 為直角三角形，可以用畢氏定理求出 <code>\overline{AC}</code> 的長度，</p>
+				<p><code>\overline{AC}</code> 的長度 <code>=\sqrt{<var>J</var>^{2}+<var>K</var>^{2}}=<var>L</var></code> ，</p>
+				<p>因為 <code>\angle{B}</code> 是直角，所以 <code>\triangle{ABC}</code> 的面積 <code>=<var>J</var>\times<var>K</var>\div 2</code> 。</p>
+				<p>要計算 <code>B</code> 到 <code>\overline{AC}</code> 的距離時，我們一樣可以利用三角形的面積公式。</p>
+				<div>
+				    <p>若以 <code>\overline{AC}</code> 為底邊，<code>B</code> 到 <code>\overline{AC}</code> 的距離就會是三角形的高<br />(<code>\color{red}{在圖上用紅色線段表示為\enspace\overline{BD}}</code>)</p>
+					<div class="graphie" data-update="right_1">
+					    s1.remove();
+						s2.remove();
+						var hs = h_bd*h_bd/J;
+						var ls = hs*J/K;
+						line([0,0],[ls/sm,hs/sm],{stroke:"red"});
+						label( [ls/sm,hs/sm],  "D", "right", { color: "red" });
+						var nl = 0.3*L/K;
+						var nh = 0.3*J/K;
+						var pPercent = 1-(nh+0.3)/(hs/sm);
+						var npPercent = 1-0.3/(hs/sm);
+						var pmh = hs/sm*pPercent;
+						var pml = ls/sm*pPercent+nl;
+						line([ls/sm*npPercent,hs/sm*npPercent],[pml,pmh]);
+						var ll = J*J/L;
+						var lPercent = (L/sm-0.3-ll/sm)/(L/sm-ll/sm);
+						var nlPercent = ll/sm/(ll/sm+0.3);
+						line([pml,pmh],[ls/sm/nlPercent,hs/sm*lPercent]);
+					</div>
+				</div>
+				<p><code>\triangle{ABC}</code> 的面積 <code>=<var>J</var>\times<var>K</var>\div 2=\overline{AC}\times\overline{BD}\div 2</code></p>
+				<p>所以 <code><var>J*K</var>=<var>L</var>\times\overline{BD}</code> ，</p>
+				<p>那麼 <code>\overline{BD}=<var>J*K</var>\div<var>L</var>=</code><code class="hint_green">\enspace<var>fraction(J*K,L,true,true,false,false)</var></code> ，</p>
+				<p>即，本題中 <code>B</code> 到 <code>\overline{AC}</code> 的距離為 <code class="hint_pink"><var>fraction(J*K,L,true,true,false,false)</var></code> 。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

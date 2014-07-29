@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html data-require="math graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>圓面積的計算</title>
+    <script src="../khan-exercise.js"></script>
+    <script type="text/javascript">
+        var R_COLOR = "mediumslateblue";
+        var D_COLOR = "green";
+        var C_COLOR = "blue";
+        var K_COLOR = "red";
+        var W_COLOR = "chocolate";
+        var L_COLOR = "orange";
+        function drawSquare(R, J, type) {
+            var graph = KhanUtil.currentGraph;
+            var N = J/R;
+            if( type==="Square"){
+                graph.line([-1, 1], [N, 1], { "fill": "none", "stroke": W_COLOR } );
+                graph.line([-1, 1], [-1, -1], { "fill": "none", "stroke": W_COLOR } );
+                graph.line([N, 1], [N, -1], { "fill": "none", "stroke": W_COLOR } );
+                graph.line([-1, -1], [N, -1], { "fill": "none", "stroke": W_COLOR } );
+                var S = N + 0.4;
+                graph.label( [S, 0], "\\color{" + W_COLOR + "}{邊長 = " + R + "}", "below" );
+            }
+            else if(type==="Rectangle"){
+                graph.line([-1, 1], [N, 1], { "fill": "none", "stroke": L_COLOR } );
+                graph.line([-1, 1], [-1, -1], { "fill": "none", "stroke": W_COLOR } );
+                graph.line([N, 1], [N, -1], { "fill": "none", "stroke": W_COLOR } );
+                graph.line([-1, -1], [N, -1], { "fill": "none", "stroke": L_COLOR } );
+                var S = N + 0.4;
+                var K = N - 0.4;
+                graph.label( [S, 0], "\\color{" + W_COLOR + "}{寬 = " + R + "}", "below" );
+                graph.label( [K, 1], "\\color{" + L_COLOR + "}{長 = " + J + "}", "below" );
+            }
+        }
+        function graph_init(type){
+            var graph = KhanUtil.currentGraph;
+            if(type==="Rectangle"){
+                graph.init({
+                    range: [ [-1.1, 2.7], [-1.1, 1.1] ],
+                    scale: 100
+                });
+            }
+            else if(type==="Square"){
+                graph.init({
+                    range: [ [-1.1, 2.7], [-1.1, 1.1] ],
+                    scale: 100
+                });
+            }
+            else{//none
+                graph.init({
+                    range: [ [-1.1, 1.1], [-1.1, 1.1] ],
+                    scale: 100
+                });
+            }
+        }
+        function drawCircle( R ) {
+            var graph = KhanUtil.currentGraph;
+
+            graph.circle( [0, 0], 1, { "fill-opacity": 0 } );
+        }
+
+        function drawRadius( R ,type) {
+            var graph = KhanUtil.currentGraph;
+            if(type==="Rectangle"){
+                graph.line( [0, 0], [0, -1], { "fill": "none", "stroke": R_COLOR } );
+                graph.label( [1/2, 0], "\\color{" + R_COLOR + "}{半徑 = " + R + "}", "below" );
+            }
+            else if(type==="Square"){
+                graph.line( [0, 0], [1, 0], { "fill": "none", "stroke": R_COLOR } );
+                graph.label( [1/2, 0], "\\color{" + R_COLOR + "}{半徑 = " + R + "}", "below" );
+            }
+            else{//none
+                graph.line( [0, 0], [1, 0], { "fill": "none", "stroke": R_COLOR } );
+                graph.label( [1/2, 0], "\\color{" + R_COLOR + "}{半徑 = " + R + "}", "below" );
+            }
+
+            
+        }
+
+        function drawDiameter( R ,type) {
+            var graph = KhanUtil.currentGraph;
+            if(type==="Rectangle"){
+                graph.line( [0, 1], [0, -1], { "stroke": D_COLOR } );
+                graph.label( [-0.5, 0], "\\color{" + D_COLOR + "}{直徑 = " + 2 * R + "}", "above" );
+            }
+            else if(type==="Square"){
+                graph.line( [-1, 0], [1, 0], { "stroke": D_COLOR } );
+                graph.label( [0, 0], "\\color{" + D_COLOR + "}{直徑 = " + 2 * R + "}", "above" );
+            }
+            else{//none
+                graph.line( [-1, 0], [1, 0], { "stroke": D_COLOR } );
+                graph.label( [0, 0], "\\color{" + D_COLOR + "}{直徑 = " + 2 * R + "}", "above" );
+            }
+            
+        }
+
+        function drawCircumference( R ,n) {
+            var graph = KhanUtil.currentGraph;
+            graph.circle( [0, 0], 1, { "stroke": C_COLOR } );
+            if(n===1){
+                graph.label( [0, -1], "\\color{" + C_COLOR + "}{圓周長 = " + Math.round(2*R*22/7) + "}", "below" );
+            }
+            else{
+               graph.label( [0, -1], "\\color{" + C_COLOR + "}{圓周長 = " + 2*R*314/Math.pow(10,2) + "}", "below" ); 
+            }
+        }
+
+        function drawArea( R ,n) {
+            var graph = KhanUtil.currentGraph;
+
+            var c = graph.circle( [0, 0], 1, { "fill": "pink", "stroke-width": 0 } );
+            $(c.node).insertBefore($(graph.raphael.canvas).find("ellipse")[0]);
+            if(n===0){
+                graph.label( [0, 0.5], "\\color{" + K_COLOR + "}{面積 = " + R*R*314/Math.pow(10,2) + "}", "above" );
+            }
+            else{
+                graph.label( [0, 0.5], "\\color{" + K_COLOR + "}{面積 = " + Math.round(R*R*22/7) + "}", "above" );   
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        
+        <div id="c-to-a">
+            <div class="vars">
+                <var id="R">randRange(1, 12)*7</var>
+                <var id="J">Math.round(22*2*R/7)</var>
+                <var id="line">randFromArray("細繩","棉線","棉繩","童軍繩")</var>
+            </div>
+
+            <div class="question">
+                <!--用一條J公分的細線圍成一個最大的圓，這個圓的面積是幾平方公分?(圓周率用22/7來計算)-->
+                <p>用一條<var>J</var>公分的<var>line</var>圍成一個最大的圓，這個圓的面積是幾平方公分?(圓周率用<code>\frac{22}{7}</code>來計算)</p>
+            </div>
+
+            <div class="solution" data-forms="integer, proper, improper, mixed, decimal, pi" data-type="multiple"><span class="sol"><var>Math.round(R*R*22/7)</var></span> 平方公分</div>
+
+            <div class="hints">
+                <div>
+                    <p>我們可以從圓周長找出直徑後，再算出半徑，最後再由半徑算出圓面積。</p>
+                </div>
+                <div class="graphie" id="circle">
+                    graph_init("none");
+                    drawCircle( R );
+                    drawCircumference( R,1 );
+                </div>
+                <div>
+                    <p>周長的計算方式為直徑<code>\times</code>圓周率</p>
+                    <p><var>J</var> = 直徑 <code>\times \dfrac{22}{7}</code> </p>
+                </div>
+                <div>
+                    <p><code>直徑＝<var>J</var> &divide; <code>\dfrac{22}{7}</code> = \color{<var>D_COLOR</var>}{<var>R*2</var>}</code></p>
+                    <div class="graphie" data-update="circle">
+                        drawDiameter( R, "none" );
+                    </div>
+                </div>
+                <div>
+                    <p>我們知道直徑之後，算出半徑</p>
+                    <p>半徑 = 直徑&divide;2 = <var>R</var></p>
+                    <div class="graphie" data-update="circle">
+                        drawRadius( R , "none" );
+                    </div>
+                    <p>再用半徑算出圓面積。</p>
+                </div>
+                <div>
+                    <p><code>圓面積 = 半徑 \times 半徑 \times 圓周率（\dfrac{22}{7}）</code></p>
+                    <p><code> = <var>R</var>\times<var>R</var>\times \dfrac{22}{7}</code></p>
+                </div>
+                <div>
+                    <p>
+                        圓面積為<var>Math.round(R*R*22/7)</var>平方公分
+                    </p>
+                    <div class="graphie" data-update="circle">
+                        drawArea( R ,1);
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="d-to-a">
+            <div class="vars">
+                <var id="R">randRange(1, 30)</var>
+            </div>
+
+            <div class="question">
+                <!--漢文將圓規張開了J公分，畫了一個圓，這個圓的面積是幾平方公分?(圓周率用3.14來計算)-->
+                <p>漢文將圓規張開了<var>R</var>公分，畫了一個圓，這個圓的面積是幾平方公分?(圓周率用3.14來計算)</p>
+            </div>
+
+            <div class="solution" data-forms="integer, proper, improper, mixed, decimal, pi"><var>R*R*314/pow(10,2)</var></div>
+
+            <div class="hints">
+                <div class="graphie" id="circle">
+                    graph_init("none");
+                    drawCircle( R );
+                    drawRadius( R , "none" );
+                </div>
+                <div>
+                    <p>圓規雙腳張的最大寬度就是圓的半徑</p>
+                    <p>我們知道圓面積的計算方式為<code>半徑\times半徑\times</code>圓周率3.14</p> 
+                </div>
+                <div>
+                    <p><code>所以圓面積 = <var>R</var> \times <var>R</var> \times 3.14 = \color{<var>RED</var>}{<var>R * R * 314 / pow(10,2)</var>}</code>平方公分</p>
+                    <div class="graphie" data-update="circle">
+                        drawArea( R ,0);
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="rectangle-to-a">
+            <div class="vars">
+                <var id="R">randRange(1,11)*7</var>
+                <var id="J">randRange(R*2,R*2*2-1)</var>
+            </div>
+
+            <div class="question">
+                <!--用長J公分，寬K公分的長方形色紙，剪出一個最大的圓，這個圓的面積是幾平方公分?(圓周率用22/7來替代)-->
+                <p>用長<var>J</var>公分，寬<var>R*2</var>公分的長方形色紙，剪出一個最大的圓，這個圓的面積是幾平方公分?(圓周率用<code>\dfrac{22}{7}</code>來替代)</p>
+            </div>
+
+            <div class="solution" data-forms="integer, proper, improper, mixed, decimal, pi"><var>Math.round(R * R * 22/7)</var></div>
+            <div class="hints">
+                <div class="graphie" id="circle">
+                    graph_init("Rectangle");
+                    drawCircle( R );
+                    drawSquare(R*2, J, "Rectangle");
+                </div>
+                <div>
+                    <p>我們知道 <code>圓面積 = 半徑 \times 半徑 \times 圓周率</code></p>
+                </div>
+                <div>
+                    <p><code>在長<var>J</var>公分，寬<var>R*2</var>公分的長方形中要剪出一個最大的圓，</code><br>
+                    <code>我們可以知道這一個圓的直徑會是\color{<var>D_COLOR</var>}{<var>R*2</var>}公分。</code></p>
+                    <div class="graphie" data-update="circle">
+                        drawDiameter( R ,"Rectangle");
+                    </div>
+                    
+                </div>
+                <div>
+                    <p><code>圓的半徑 = \color{<var>D_COLOR</var>}{<var>R*2</var>} &divide; 2 = \color{<var>R_COLOR</var>}{<var>R</var>}</code></p>
+                    <div class="graphie" data-update="circle">
+                        drawRadius( R ,"Rectangle");
+                    </div>
+                </div>
+                <div>
+                    <p><code>圓面積 = \color{<var>R_COLOR</var>}{<var>R</var>} \times \color{<var>R_COLOR</var>}{<var>R</var>} \times \frac{22}{7}</code></p>
+                </div>
+                <div>
+                    <p><code> = \color{<var>A_COLOR</var>}{<var>Math.round(R*R*22/7)</var>}</code></p>
+                    <div class="graphie" data-update="circle">
+                        drawArea( R ,1);
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="square-to-a">
+            <div class="vars">
+                <var id="R">randRange(1, 30)</var>
+            </div>
+
+            <div class="question">
+                <!--用一個邊長J公分的正方形色紙，剪出一個最大的圓，這個圓的面積是幾平方公分?-->
+                <p>用一個邊長<var>R*2</var>公分的正方形色紙，剪出一個最大的圓，這個圓的面積是幾平方公分?(圓周率用3.14來計算)</p>
+            </div>
+
+            <div class="solution" data-forms="integer, proper, improper, mixed, decimal, pi"><var>R*R*314/pow(10,2)</var></div>
+            <div class="hints">
+                <div>
+                    <div class="graphie" id="circle">
+                        graph_init("Square");
+                        drawSquare(R*2 , R*2, "Square");
+                        drawCircle( R );
+                    </div>
+                    <div>
+                        <p>在邊長<var>R*2</var>公分的色紙中要剪出最大的圓</p> 
+                    </div>
+                </div>
+                <div>
+                    <p>我們可以知道這個圓的直徑=正方形的邊長<var>2*R</var></p>
+                    <div class="graphie" data-update="circle">
+                        drawDiameter( R ,"Square");
+                    </div>
+                </div>
+                <div>
+                    <p><code>算出半徑 = \color{<var>D_COLOR</var>}{<var>2 * R</var>}&divide;2</code> = <var>R</var></p>
+                    <div class="graphie" data-update="circle">
+                        drawRadius( R ,"Square");
+                    </div>
+                </div>
+                <div>
+                    <p><code>圓面積 = 半徑\times半徑\times圓周率</code></p>
+                </div>
+                <div>
+                    <p><code>圓面積 = <var>R</var>\times<var>R</var> \times 3.14</code></p>
+                </div>
+                <div>
+                    <p>圓面積 = <var>R*R*314/pow(10,2)</var></p>
+                    <div class="graphie" data-update="circle">
+                        drawArea( R ,0);
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+</body>
+</html>

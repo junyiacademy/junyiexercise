@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>以科學記號表示生活中的量</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="J">randRange(2,9)</var>
+				<var id="K">randRange(2,9)</var>
+				<var id="str_zeros_match">
+					(function(){
+						return (J*pow(10,8) + K*pow(10,7));
+				})()
+				</var>
+				<var id="SC_DECIMAL">J+K/10</var>
+				<var id="SC_N">8</var>
+			</div>
+
+            <p class="question">有一個古生物化石距離現今約 <code><var>J</var></code> 億 <code><var>K</var></code> 千萬年，
+			請用科學記號表示 <code><var>J</var></code> 億 <code><var>K</var></code> 千萬年。</p>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol base"><var>SC_DECIMAL</var></span>
+                <code> \times 10 </code>
+                <sup class="sol exp" style="width: 20px;"><var>SC_N</var></sup><code>年</code>
+				<p class="example">格式例如:3.2<code>\times 10 ^\text{8}</code></p>
+            </div>
+
+            <div class="hints">
+				<div>
+					<p>科學記號的表示方法為 <code> a \times 10^{n}</code> ，其中 <code>a</code> 要滿足 <code>1</code> &le; <code>a</code> &lt; <code>10</code> ，而且 <code>n</code> 必須為整數。</p>
+				</div>
+				<div><p><code><var>J</var></code> 億 <code><var>K</var></code> 千萬年 <code>=<var>str_zeros_match</var></code><code>\enspace=<var>SC_DECIMAL</var>\times 10^\text{8}</code>。</p></div>
+				<div><p>因此，本題的答案應依次填入 <code class="hint_pink"><var>SC_DECIMAL</var></code> 和 <code class="hint_pink"><var>SC_N</var></code> 。</p></div>
+            </div>
+		</div>
+		<div id="case2">
+			<div class="vars" data-ensure="CHECK">
+				<var id="N">randFromArray([5,6,10,11])</var>
+				<var id="J">randRange(2,9)</var>
+				<var id="str_zeros_match">
+					(function(){
+						return "0."+"00000000000".substr(0,N);
+				})()
+				</var>
+				<var id="class_Type">
+				(function(){
+				    if(N&lt;7){
+					    return "微生物";
+					}else return "原子的直徑";
+				})()</var>
+				<var id="SC_DECIMAL">J</var>
+				<var id="SC_N">-N-1</var>
+				<var id="CHECK">
+				(function(){if(N==11&&J&lt;5){
+				    return false;
+				}else return true;
+				})()</var>
+			</div>
+
+			<p class="question">一個科學家發現一個 <code><var>class_Type</var></code> 的大小約為 <code><var>str_zeros_match</var></code><code><var>J</var></code> 公尺。</p>
+
+			<div class="solution" data-type="multiple">
+				<span class="sol base"><var>SC_DECIMAL</var></span>
+				<code> \times 10 </code>
+				<sup class="sol exp" style="width: 20px;"><var>SC_N</var></sup><code>公尺</code>
+				<p class="example">格式例如:<code>3</code><code>\times 10 ^\text{-11}</code></p>
+			</div>
+
+			<div class="hints">
+				<div>
+					<p>科學記號的表示方法為 <code> a \times 10^{n}</code> ，其中 <code>a</code> 要滿足 <code>1</code> &le; <code>a</code> &lt; <code>10</code> ，而且 <code>n</code> 必須為整數。</p>
+				</div>
+				<div><p>從小數點往後數，直到遇見第一個不是 <code>0</code> 的數字，總共數得 <code><var>N</var></code> 個 <code>0</code> 。</p></div>
+				<div><p>所以 <code><var>str_zeros_match</var></code><code><var>J</var></code> 公尺 <code>=<var>J</var> \times 10^{-(<var>N</var>+<var>1</var>)}</code><code>=<var>J</var> \times 10^\text{<var>SC_N</var>}</code> 公尺。</p></div>
+				<div><p>因此，本題的答案應依次填入 <code class="hint_pink"><var>SC_DECIMAL</var></code> 和 <code class="hint_pink"><var>SC_N</var></code> 。</p></div>
+			</div>
+		</div>
+		<div id="case3">
+			<div class="vars">
+				 <var id="J">randFromArray([10,25,50,100])</var>
+				<var id="K">
+					(function(){
+					    switch(J){
+						    case 10:return 1;break;
+							case 25:return 4;break;
+							case 50:return 2;break;
+							case 100:return 1;break;
+						}
+					})()</var>
+				<var id="L">
+					(function(){
+					    switch(J){
+						    case 10:return -5;break;
+							case 25:return -6;break;
+							case 50:return -6;break;
+							case 100:return -6;break;
+						}
+					})()</var>
+				<var id="J_STR">
+				(function(){
+					    switch(J){
+						    case 10:return "十";break;
+							case 25:return "二十五";break;
+							case 50:return "五十";break;
+							case 100:return "一百";break;
+						}
+					})()</var>
+			</div>
+
+			<p class="question">樂透彩中頭獎的機率為 <code><var>J_STR</var></code> 萬分之一，請用科學記號表示 <code><var>J_STR</var></code> 萬分之一。</p>
+
+			<div class="solution" data-type="multiple">
+				<span class="sol base"><var>K</var></span>
+				<code> \times 10 </code>
+				<sup class="sol exp" style="width: 20px;"><var>L</var></sup>
+				<p class="example">格式例如:<code>2</code><code>\times 10 ^\text{-6}</code></p>
+			</div>
+
+			<div class="hints">
+				<div>
+					<p>科學記號的表示方法為 <code> a \times 10^{n}</code> ，其中 <code>a</code> 要滿足 <code>1</code> &le; <code>a</code> &lt; <code>10</code> ，而且 <code>n</code> 必須為整數。</p>
+				</div>
+				<div data-if="J == 25">
+				    <p>首先，我們將文字描述轉換成數學公式，則：</p>
+					<p><code><var>J_STR</var></code> 萬分之一 <code>=\frac{1}{250000}</code></p>
+				</div>
+				<div data-if="J==25">
+				    <p>繼續化簡公式：</p>
+					<p><code>=\frac{4}{1000000}=\frac{4}{10^\text{6}}=4 \times \frac{1}{10^\text{6}}=4 \times 10^\text{-6}</code></p>
+				</div>
+				<div data-if="J == 10">
+				    <p>首先，我們將文字描述轉換成數學公式，則：</p>
+					<p><code><var>J_STR</var></code> 萬分之一 <code>=\frac{1}{100000}</code></p>
+				</div>
+				<div data-if="J==10">
+				    <p>繼續化簡公式：</p>
+					<p><code>=\frac{1}{100000}=\frac{1}{10^\text{5}}=1 \times \frac{1}{10^\text{5}}=1 \times 10^\text{-5}</code></p>
+				</div>
+				<div data-if="J == 50">
+				    <p>首先，我們將文字描述轉換成數學公式，則：</p>
+					<p><code><var>J_STR</var></code> 萬分之一 <code>=\frac{1}{500000}</code></p>
+				</div>
+				<div data-if="J==50">
+				    <p>繼續化簡公式：</p>
+					<p><code>=\frac{2}{1000000}=\frac{2}{10^\text{6}}=2 \times \frac{1}{10^\text{6}}=2 \times 10^\text{-6}</code></p>
+				</div>
+				<div data-if="J == 100">
+				    <p>首先，我們將文字描述轉換成數學公式，則：</p>
+					<p><code><var>J_STR</var></code> 萬分之一 <code>=\frac{1}{1000000}</code></p>
+				</div>
+				<div data-if="J==100">
+				    <p>繼續化簡公式：</p>
+					<p><code>=\frac{1}{1000000}=\frac{1}{10^\text{6}}=1 \times \frac{1}{10^\text{6}}=1 \times 10^\text{-6}</code></p>
+				</div>
+				<div><p>因此，本題的答案應依次填入 <code class="hint_pink"><var>K</var></code> 和 <code class="hint_pink"><var>L</var></code> 。</p></div>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html data-require="math graphie kmatrix">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>矩陣向量-成份比例</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="exercise">
+	<div class="problems">
+		<div id="case1" data-weight="1">
+			<div class="vars">
+				<var id="rnd1">randRange(0, 8)</var>
+				<var id="rnd4">randRangeExclude(0, 8, [rnd1])</var>
+				<var id="rnd5">randRangeExclude(0, 8, [rnd1, rnd4])</var>
+				<var id="rnd6">randRangeExclude(0, 8, [rnd1, rnd4, rnd5])</var>
+				<var id="rnd2">randRange(0, 2)</var>
+				<var id="rnd3">randRangeExclude(0,2,[rnd2])</var>
+				<var id="m1"> randRange(10, 200, 3, 3)</var>
+				<var id="m2"> randRange(400, 1500, 3, 1)</var>
+				<var id="m3"> [["x"], ["y"], ["z"]]</var>
+				<var id="a"> m1[floor(rnd1/3)][(rnd1%3)]</var>
+				<var id="b"> m1[floor(rnd4/3)][rnd4%3]</var>
+				<var id="c"> m1[floor(rnd5/3)][rnd5%3]</var>
+				<var id="d"> m1[floor(rnd6/3)][rnd6%3]</var>
+				<var id="e"> m2[rnd2][0]</var>
+				<var id="f"> m2[rnd3][0]</var>
+				<var id="m4">
+				(function(){
+					var tmp = new Array(3);
+					for(i=0; i&lt; 3; i++) {
+						tmp[i] = new Array(3);
+					}
+					for(i=0; i&lt; 3; i++) {
+						for(j=0; j&lt; 3; j++) {
+							if(i == floor(rnd1/3) && j == rnd1%3) {
+								tmp[i][j] = "a";
+							}else if(i == floor(rnd4/3) && j == rnd4%3) {
+								tmp[i][j] = "b";
+							}else if(i == floor(rnd5/3) && j == rnd5%3) {
+								tmp[i][j] = "c";
+							}else if(i == floor(rnd6/3) && j == rnd6%3) {
+								tmp[i][j] = "d";
+							}else {
+								tmp[i][j] = m1[i][j];
+							}
+						}
+					}
+					return tmp;
+				})()
+				</var>
+				<var id="m5">
+				(function(){
+					var m5 = new Array(3);
+					for(i=0; i&lt; 3; i++) {
+						m5[i] = new Array(1);
+					}
+					for(i=0; i&lt; 3; i++) {
+						if(i == rnd2 ) {
+							m5[i][0] = "e";
+						}else if(i == rnd3) {
+							m5[i][0] = "f";
+						}else {
+							m5[i][0] = m2[i];
+						}
+					}
+					return m5;
+				})()
+				</var>
+			</div>
+			
+			<div class="question">
+				<p>假設: </p>
+				<p>每單位西瓜中所含有的維生素A ，維生素C ，水分，的重量為：<var>m1[0][0]</var>，
+							<var>m1[1][0]</var>， <var>m1[2][0]</var>。</p>
+				<p>每單位芭樂中所含有的維生素A ，維生素C ，水分，的重量為：<var>m1[0][1]</var>，
+							<var>m1[1][1]</var>， <var>m1[2][1]</var>。</p>
+				<p>每單位香蕉中所含有的維生素A ，維生素C ，水分，的重量為：<var>m1[0][2]</var>，
+							<var>m1[1][2]</var>， <var>m1[2][2]</var>。</p>
+				<p>一個消費者，希望採購這三種水果，以獲得：</p>
+				<p> <var>m2[0][0]</var>單位的維生素A ， <var>m2[1][0]</var>單位的維生素C ， <var>m2[2][0]</var>單位的水分</p>
+				<p>假設採購了：x單位的西瓜，y單位的芭樂，z單位的香蕉。</p>
+				<p>上述的問題，可以用下面的矩陣向量的方式表示之</p>
+				<p>請將下面矩陣中的未知數： a, b, c, d, e, f 填入答案區。</p>
+				<p><code><var>printSimpleMatrix(m4)</var>●<var>printSimpleMatrix(m3)</var>=<var>printSimpleMatrix(m5)</var></code></p>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<p>
+					ａ= <span class="sol"> <var>a</var> </span> <br>
+					ｂ= <span class="sol"> <var>b</var> </span> <br>
+					ｃ= <span class="sol"> <var>c</var> </span> <br>
+					ｄ= <span class="sol"> <var>d</var> </span> <br>
+					ｅ= <span class="sol"> <var>e</var> </span> <br>
+					ｆ= <span class="sol"> <var>f</var> </span>
+				</p>
+			</div>
+			
+			<div class="hints">
+				<p>
+					西瓜，芭樂，香蕉中所含有的維生素A分別為：<var>m1[0][0]</var> x，<var>m1[0][1]</var> y，<var>m1[0][2]</var> z<br>
+					西瓜，芭樂，香蕉中所含有的維生素C分別為：<var>m1[1][0]</var> x，<var>m1[1][1]</var> y，<var>m1[1][2]</var> z<br>
+					西瓜，芭樂，香蕉中所含有的水分分別為：<var>m1[2][0]</var> x，<var>m1[2][1]</var> y，<var>m1[2][2]</var> z<br>
+					預計獲得的維生素A，維生素C，水分分別為：<var>m2[0][0]</var>，<var>m2[1][0]</var>，<var>m2[2][0]</var>
+				</p>
+				
+				<p>
+					所以，維生素A的關係式為：<var>m1[0][0]</var> x + <var>m1[0][1]</var> y + <var>m1[0][2]</var> z = <var>m2[0]</var>，<br>
+					維生素C的關係式為：<var>m1[1][0]</var> x + <var>m1[1][1]</var> y + <var>m1[1][2]</var> z = <var>m2[1]</var>，<br>
+					水分的關係式為：<var>m1[2][0]</var> x + <var>m1[2][1]</var> y + <var>m1[2][2]</var> z = <var>m2[2]</var>。
+				</p>
+				
+				<p>
+					最後，寫成矩陣向量的表示式為：<br>
+					<code><var>printSimpleMatrix(m1)</var>●<var>printSimpleMatrix(m3)</var>=<var>printSimpleMatrix(m2)</var></code>
+				</p>
+			</div>
+		</div>
+		<div id="case2" data-weight="1">
+			<div class="vars">
+				<var id="array"> array=[0.1, 0.15, 0.2, 0.25, 0.3, 
+				                        0.35, 0.4, 0.45, 0.5, 0.55, 
+										0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]</var>
+				<var id="rnd1">randRange(0, 16)</var>
+				<var id="rnd2">randRangeExclude(0, 16, [rnd1])</var>
+				<var id="a">array[rnd1]</var>
+				<var id="b">array[rnd2]</var>
+				<var id="c">array[16-rnd1]</var>
+				<var id="d">array[16-rnd2]</var>
+				<var id="e">randRange(1,9)</var>
+				<var id="f">10-e</var>
+				<var id="m1"> [["a", "b"], ["c", "d"]]</var>
+				<var id="m2"> [["x"], ["y"]]</var>
+				<var id="m3"> [["e"], ["f"]]</var>
+				<var id="m4"> [[a,b], [c,d]]</var>
+				<var id="m5"> [[e], [f]]</var>
+			</div>
+			
+			<div class="question">
+				<p>假設: 市面上的食用油，都是由黃豆油和花生油混合而成</p>
+				<p>常見的兩種品牌的混合比例為:</p>
+				<p>    甲品牌: <var>a</var>與<var>c</var>，乙品牌: <var>b</var>與<var>d</var></p>
+				<p>一個消費者，希望採購10公升的食用油</p>
+				<p>其中，黃豆油佔<var>e</var>公升，花生油佔<var>f</var>公升。</p>
+				<p> 假設採購了：x公升的甲食用油，y公升的乙食用油。</p>
+				<p>上述的問題，可以用下面的矩陣向量的方式表示之</p>
+				<p>請將下面矩陣中的未知數： a, b, c, d, e, f 填入答案區。</p>
+				<p><code><var>printSimpleMatrix(m1)</var>●<var>printSimpleMatrix(m2)</var>=<var>printSimpleMatrix(m3)</var></code></p>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<p>
+					ａ= <span class="sol"> <var>a</var> </span> <br>
+					ｂ= <span class="sol"> <var>b</var> </span> <br>
+					ｃ= <span class="sol"> <var>c</var> </span> <br>
+					ｄ= <span class="sol"> <var>d</var> </span> <br>
+					ｅ= <span class="sol"> <var>e</var> </span> <br>
+					ｆ= <span class="sol"> <var>f</var> </span>
+				</p>
+			</div>
+			
+			<div class="hints">
+				<p>
+					甲食用油的黃豆油是： <var>a</var> x <br>
+					乙食用油的黃豆油是： <var>b</var> y <br>
+					甲食用油的花生油是： <var>c</var> x <br>
+					乙食用油的花生油是：<var>d</var> y <br>
+					採購的黃豆油為 <var>e</var> ，花生油為 <var>f</var>
+				</p>
+				
+				<p>
+					所以，黃豆油的關係式： <var>a</var> x + <var>b</var> y = <var>e</var> ，<br>
+					花生油的關係式： <var>c</var> x + <var>d</var> y = <var>f</var>
+				</p>
+				
+				<p>
+					最後，寫成矩陣向量的表示式為：<br>
+					<code><var>printSimpleMatrix(m4)</var>●<var>printSimpleMatrix(m2)</var>=<var>printSimpleMatrix(m5)</var></code>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+</body>

@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>內心的基本概念</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 40px;
+        }
+        </style>
+		<style type="text/css">
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script>
+	function chg()
+		{
+			for(var i=2;i<=5;i++)
+			{
+					var ran=10*Math.random();
+					if(ran>5)
+					{
+						var name="t"+i;
+						document.getElementById(name).style.display="none";
+					}
+			}
+		}
+	function chg2()
+		{
+			for(var i=2;i<=6;i++)
+			{
+					var ran=10*Math.random();
+					if(ran>5)
+					{
+						var name="t"+i;
+						document.getElementById(name).style.display="none";
+					}
+			}
+		}
+		function chg4()
+		{
+			for(var i=2;i<=9;i++)
+			{
+					var ran=10*Math.random();
+					if(ran>5)
+					{
+						var name="t"+i;
+						document.getElementById(name).style.display="none";
+					}
+			}
+		} 
+		
+	function judge(co,rig,num)
+		{
+		if(co.length!=num)
+				return false;
+		var c= new Array(); 
+		var ri= new Array(); 
+		c=co.split(""); 
+		ri=rig.split(""); 
+			var k="";
+			for(var i=0;i<num;i++)
+			{
+					var j=i;
+					for(;j<num;j++)
+					{//alert(i+","+j+","+c[i]+","+ri[0]+","+ri[1]+","+ri[2]+";");
+						if(c[i]==ri[j])
+						{
+						
+							k=ri[i];
+							ri[i]=ri[j];
+							ri[j]=k;
+							break;
+						}
+					}
+					if(j>=num)
+					{
+						
+						return false;
+					}
+			}
+			
+				return true;
+		}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+				<var id="change">chg()</var>
+            </div>
+			<p class="question"> 如下圖，有一 <code>\Delta ABC</code> 與圓 <code>O</code> ，試在圓 <code>O</code> 作一外切三角形 <code>A'B'C'</code>
+				，使得 <code>\Delta ABC \sim \Delta A'B'C'</code> 。</p>
+			
+			<div class="problem">
+				<div class="graphie">
+					init({
+							range: [ [0, 10], [0, 3.9] ],
+							scale: 40
+					});
+                    path( [ [1,1], [4.5,1], [2, 3.1], [1,1 ]]);
+					circle([7,1.5],1);
+					circle([7,1.5],0.01);
+					label( [ 7, 1.5 ], "O", "below" );
+					label( [ 1, 1.2 ], "65&deg;", "right" );
+					label( [ 2.2, 2.6 ], "75&deg;", "below" );
+					label( [ 4.1, 1.2 ], "40&deg;", "left" );
+					label( [ 2, 3.1 ], "A", "above" );
+					label( [ 1, 1 ], "B", "left" );
+					label( [ 4.5,1 ], "C", "right" );
+                </div>
+				<p>請在下面空格填入適當的答案</p>
+				<p>令<code>\angle 1=180 ^\circ-\angle A=105^\circ</code></p>
+				<p><code>\angle 2=180 ^\circ-\angle B=115^\circ</code></p>
+				<p><code>\angle 3=180 ^\circ-\angle C=140^\circ</code></p>
+				<p>由於<code>\angle 1+\angle 2+\angle 3=</code><input type="text" id="t1" style="width: 40px ; display: " ><code data-if="t1.style.display=='none'">360</code><code>^\circ</code>，在圓 <code>O</code> 作 <code>105^\circ</code> 、<code>115^\circ</code> 、<code>140^\circ</code>
+				的<input type="text" id="t2" style="width: 50px ; display: " ><code data-if="t2.style.display=='none'">圓心角</code> ，分別在圓上得<code>D</code> 、<code>E</code>、<code>F</code> 點如下圖。</p>
+				<div class="graphie">
+					init({
+							range: [ [0, 10], [0, 5] ],
+							scale: 40
+					});
+					circle([5,2.5],1);
+					circle([5,2.5],0.01);
+					label( [ 5, 2.5 ], "O", "below right" );
+					line([1,1.5],[9,1.5]);
+					label( [ 3, 1.5 ], "B'","below" );
+					label( [ 3, 1 ], "N","below left" );
+					label( [ 9, 1.5 ], "L","above" );
+					label( [ 9, 1.5 ], "M","below left" );
+					label( [ 8, 1.5 ], "C'","below left" );
+					line([2.4,-0.6],[5.4,5.7]);
+					line([10.5,-0.6],[2.8,5.53]);
+					label( [ 5, 5], "A'","below left" );
+					
+					line([5,2.5],[5,1.5]);
+					line([5,2.5],[5.64,3.26]);
+					line([5,2.5],[4.2,3.1]);
+					label( [ 5, 2.5 ], "1", "above" );
+					label( [ 5, 2.5 ], "2", "left" );
+					label( [ 5, 2.5 ], "3", "right" );
+					label( [ 5, 1.5 ], "D", "below" );
+					label( [ 5.64, 3.36 ], "E", "above right" );
+					label( [ 4.23, 3.14 ], "F", "left" );
+                </div>
+				<p>再過 <code>D</code> 、<code>E</code> 、<code>F</code> 分別作切線 <code>L</code> 、<code>M</code>、<code>N</code> 構成<code>\Delta A'B'C'</code> 。所以</p>
+				<p><code>\angle A’=180 ^\circ-\angle </code><input type="text" id="t3" style="width: 40px ; display: " ><code data-if="t3.style.display=='none'">1</code><code>=180^\circ-105^\circ=75^\circ=\angle A</code></p>
+				<p><code>\angle B’=180 ^\circ-\angle  </code><input type="text" id="t4" style="width: 40px ; display: " ><code data-if="t4.style.display=='none'">2</code><code>=180^\circ-115^\circ=65^\circ=\angle B</code></p>
+				<p>因此 <code>\Delta ABC \sim \Delta A'B'C'</code><input type="text" id="t5" style="width: 40px ; display: " ><code data-if="t5.style.display=='none'">AA</code><code>相似性質</code> 。</p>
+			</div>
+			<div class="solution" data-type="multiple">		
+				<div class="sol" data-type="custom">
+					<div class="guess">document.getElementById("t1").value</div>
+				    <div class="validator-function">
+						if(document.getElementById("t1").style.display=="")
+						{
+							if(document.getElementById("t1").value==360)
+							{}
+							else
+								return false;
+						}
+						else
+				
+						if(document.getElementById("t2").style.display=="")
+						{
+							if(document.getElementById("t2").value=="圓心角")
+							{}
+							else
+							return false;
+						}
+						else
+					
+						if(document.getElementById("t3").style.display=="")
+						{
+							if(document.getElementById("t3").value==1)
+							{}
+							else
+							return false;
+						}
+						if(document.getElementById("t4").style.display=="")
+						{
+							if(document.getElementById("t4").value==2)
+							{}
+							else
+							return false;
+						}
+						if(document.getElementById("t5").style.display=="")
+						{
+							if(document.getElementById("t5").value.replace(/\s+/g,"")=="AA")
+							{}
+							else
+							return false;
+						}
+						return true;
+								
+                    </div>
+				</div>
+				 <p class="example">整數，例 <code>6</code></p> 
+				 <p class="example">文字，例 <code>數</code></p> 
+				 <p class="example">字母，例 <code>AB</code></p> 
+            </div>
+            <div class="hints">
+				<div>
+					<p>令 <code>\angle 1=180 ^\circ-\angle A=105^\circ</code></p>
+					<p><code>\angle 2=180 ^\circ-\angle B=115^\circ</code></p>
+					<p><code>\angle 3=180 ^\circ-\angle C=140^\circ</code></p>
+					<p>由於 <code>\angle 1+\angle 2+\angle 3=</code><code class="hint_pink">360</code><code>^\circ</code> ，在圓 <code>O</code> 作 <code>105^\circ</code> 、<code>115^\circ</code> 、<code>140^\circ</code>
+					的</code><code class="hint_pink">圓心角</code>，分別在圓上得<code>D</code> 、<code>E</code>、<code>F</code>點如下圖。</p>
+					<div class="graphie">
+					init({
+							range: [ [0, 10], [0, 5] ],
+							scale: 40
+					});
+					circle([5,2.5],1);
+					circle([5,2.5],0.01);
+					label( [ 5, 2.5 ], "O", "below right" );
+					line([1,1.5],[9,1.5]);
+					label( [ 3, 1.5 ], "B'","below" );
+					label( [ 3, 1 ], "N","below left" );
+					label( [ 9, 1.5 ], "L","above" );
+					label( [ 9, 1.5 ], "M","below left" );
+					label( [ 8, 1.5 ], "C'","below left" );
+					line([2.4,-0.6],[5.4,5.7]);
+					line([10.5,-0.6],[2.8,5.53]);
+					label( [ 5, 5], "A'","below left" );
+					
+					line([5,2.5],[5,1.5]);
+					line([5,2.5],[5.64,3.26]);
+					line([5,2.5],[4.23,3.14]);
+					label( [ 5, 2.5 ], "1", "above" );
+					label( [ 5, 2.5 ], "2", "left" );
+					label( [ 5, 2.5 ], "3", "right" );
+					label( [ 5, 1.5 ], "D", "below" );
+					label( [ 5.64, 3.36 ], "E", "above right" );
+					label( [ 4.23, 3.14 ], "F", "left" );
+					</div>
+					<p>再過 <code>D</code> 、<code>E</code>、<code>F</code> 分別作切線 <code>L</code> 、<code>M</code>、<code>N</code> 構成<code>\Delta A'B'C'</code> 。所以</p>
+					<p><code>\angle A’=180 ^\circ-\angle </code><code class="hint_pink">1</code><code>=180^\circ-105^\circ=75^\circ=\angle A</code></p>
+					<p><code>\angle B’=180 ^\circ-\angle </code><code class="hint_pink">2</code><code>=180^\circ-115^\circ=65^\circ=\angle B</code></p>
+					<p>因此 <code>\Delta ABC \sim \Delta A'B'C'</code> <code class="hint_pink">AA</code> 相似性質。</p>
+				</div>
+				
+            </div>
+        </div>
+		<div id="case2">
+            <div class="vars">
+				<var id="change">chg2()</var>
+				
+            </div>
+			<p class="question"> 由於內心 <code>O</code> 到 <code>\Delta ABC</code> 三邊的距離都相等（記成 <code>d</code> ）。
+				底下將說明如何計算 <code>d</code> :</p>
+			
+			<div class="problem">
+				<div class="graphie">
+					init({
+							range: [ [0, 10], [0, 4] ],
+							scale: 40
+					});
+                    path( [ [1,1], [7,1], [5.4, 3.3], [1,1 ]]);
+					label( [ 1, 1 ], "B", "left" );
+					label( [ 7, 1 ], "C", "right" );
+					label( [ 5.4, 3.3 ], "A", "above" );
+					circle([5.05,2],1);
+					label( [ 5.05, 2], "O", "left" );
+					circle([5.05,2],0.01);
+					line([5.05,2],[1,1]);
+					line([5.05,2],[7,1]);
+					line([5.05,2],[5.4,3.3]);
+					
+					line([5.05,2],[5.05,1]);
+					label( [ 5.05, 1 ], "D", "below" );
+					path( [ [5.05,1.2], [5.25,1.2], [5.25,1]]);
+					
+					line([5.05,2],[5.95,2.55]);
+					path( [ [5.75,2.45], [5.85,2.30], [6,2.40]]);
+					label( [ 5.95, 2.55 ], "E", "right" );
+					
+					line([5.05,2],[4.57,2.85]);
+					label( [4.57,2.85], "F", "above left" );
+					path( [ [4.66,2.62], [4.9,2.76], [4.78,2.94]]);
+                </div>
+				<p>請在下面空格填入適當的答案</p>
+				<p>連接 <code>\overline{OA}</code> 、<code>\overline{OB}</code> 、<code>\overline{OC}</code> ，由於</p>
+				<p><code>\Delta OAB</code> 面積 <code> = <var>decimalFraction(1/2,true,true,false,false)</var> \times \overline{AB} \times </code> <code data-if="t1.style.display!='none'">線段</code> <input type="text" id="t1" style="width: 50px ;  display: " ><code data-if="t1.style.display=='none'">\overline{OF}</code><code>= <var>decimalFraction(1/2,true,true,false,false)</var> \times \overline{AB} \times d</code></p>
+				<p><code>\Delta OBC</code> 面積 <code> = <var>decimalFraction(1/2,true,true,false,false)</var> \times \overline{BC} \times </code> <code data-if="t2.style.display!='none'">線段</code> <input type="text" id="t2" style="width: 50px ; display:" ><code data-if="t2.style.display=='none'">\overline{OD}</code><code>= <var>decimalFraction(1/2,true,true,false,false)</var> \times \overline{BC} \times d</code></p>
+				<p><code>\Delta OCA</code> 面積 <code> = <var>decimalFraction(1/2,true,true,false,false)</var> \times </code> <code data-if="t3.style.display!='none'">線段</code><input type="text" id="t3" style="width: 50px ; display:" ><code data-if="t3.style.display=='none'">\overline{CA}</code> <code>\times \overline{OE} = <var>decimalFraction(1/2,true,true,false,false)</var> \times \overline{CA} \times d</code></p>
+				<p>三式連加，可得</p>
+				<p><code>\Delta ABC </code> 面積 <code>= \Delta </code> <input type="text" id="t4" style="width: 40px ; display: " ><code data-if="t4.style.display=='none'">OAB</code> 面積 <code>+ \Delta OBC</code> 面積 <code>+ \Delta</code> <input type="text" id="t5" style="width: 40px ; display: " ><code data-if="t5.style.display=='none'">OCA</code> 面積 
+				<code>=<var>decimalFraction(1/2,true,true,false,false)</var>\times (</code> <code data-if="t6.style.display!='none'">線段</code> <input type="text" id="t6" style="width: 40px ; display: " ><code data-if="t6.style.display=='none'">\overline{AB}</code><code>+\overline{BC}+\overline{CA})\times d </code> </p>				
+				
+			</div>
+			<div class="solution" data-type="multiple">		
+				<div class="sol" data-type="custom">
+					<div class="guess">document.getElementById("t1").value</div>
+				    <div class="validator-function">
+						if(document.getElementById("t1").style.display=="")
+						{
+							if(document.getElementById("t1").value.replace(/\s+/g,"")=="OF"||document.getElementById("t1").value.replace(/\s+/g,"")=="FO")
+							{}
+							else
+								return false;
+						}
+						if(document.getElementById("t2").style.display=="")
+						{
+							if(document.getElementById("t2").value.replace(/\s+/g,"")=="OD"||document.getElementById("t2").value.replace(/\s+/g,"")=="DO")
+							{}
+							else
+								return false;
+						}
+						if(document.getElementById("t3").style.display=="")
+						{
+							if(document.getElementById("t3").value.replace(/\s+/g,"")=="CA"||document.getElementById("t3").value.replace(/\s+/g,"")=="AC")
+							{}
+							else
+								return false;
+						}
+						if(document.getElementById("t4").style.display=="")
+						{
+							if(judge(document.getElementById("t4").value.replace(/\s+/g,""),"OAB",3))
+							{}
+							else
+								return false;
+						}
+						if(document.getElementById("t5").style.display=="")
+						{
+							if(judge(document.getElementById("t5").value.replace(/\s+/g,""),"OCA",3))
+							{}
+							else
+								return false;
+						}
+						if(document.getElementById("t6").style.display=="")
+						{
+							if(document.getElementById("t6").value.replace(/\s+/g,"")=="BA"||document.getElementById("t6").value.replace(/\s+/g,"")=="AB")
+							{}
+							else
+								return false;
+						}
+						return true;
+								
+                    </div>
+				</div>
+				 <p class="example">整數，例 <code>6</code></p> 
+				 <p class="example">文字，例 <code>數</code></p> 
+				 <p class="example">字母，例 <code>AB</code></p> 
+            </div>
+            <div class="hints">
+				<div>
+					<p>連接 <code>\overline{OA}</code> 、<code>\overline{OB} </code>、<code>\overline{OC}</code> ，由於</p>
+					<p><code>\Delta OAB</code> 面積 <code> = <var>decimalFraction(1/2,true,true,false,false)</var> \times \overline{AB} \times </code><code class="hint_pink">\overline{OF}</code><code>= <var>decimalFraction(1/2,true,true,false,false)</var> \times \overline{AB} \times d</code></p>
+					<p><code>\Delta OBC</code> 面積 <code> = <var>decimalFraction(1/2,true,true,false,false)</var> \times \overline{BC} \times </code><code class="hint_pink">\overline{OD}</code><code>= <var>decimalFraction(1/2,true,true,false,false)</var> \times \overline{BC} \times d</code></p>
+					<p><code>\Delta OCA</code> 面積 <code> = <var>decimalFraction(1/2,true,true,false,false)</var> \times </code><code class="hint_pink">\overline{CA}</code><code>\times \overline{OE} = <var>decimalFraction(1/2,true,true,false,false)</var> \times \overline{CA}\times d</code></p>
+					<p>三式連加，可得</p>
+					<p><code>\Delta ABC </code> 面積 <code>=</code><code class="hint_pink"> \Delta OAB</code> 面積 <code>+ \Delta OBC</code> 面積 <code>+</code><code class="hint_pink"> \Delta OCA</code> 面積 
+					<code>=<var>decimalFraction(1/2,true,true,false,false)</var>\times ( </code><code class="hint_pink">\overline{AB}</code><code>+\overline{BC}+\overline{CA})\times d </code> </p>				
+					<p><code>\Delta ABC </code> 面積 <code> = <var>decimalFraction(1/2,true,true,false,false)</var>\times \Delta ABC </code> 周長 <code>\times d</code> 。</p>
+				</div>
+				
+            </div>
+        </div>
+		 <div id="case3">
+            <div class="vars" data-ensure="S!=(2*J+K)">
+				<var id="J">randRange(4,7)</var>
+				<var id="K">randRange(3,J-1)</var>
+				<var id="J1">2*J</var>
+				<var id="K1">2*K</var>
+				<var id="H">splitRadical(J1*J1-K*K)</var>
+				<var id="S">H[0]*K</var>
+				<var id="D">S*2/(J1+J1+K1)</var>
+				
+            </div>
+            <p class="question"> 如下圖， <code>\Delta ABC</code> 為等腰三角形，腰長為 <code><var>J1</var></code> ，底邊長為 <code><var>K1</var></code> 。</p>
+			<div class="problem">
+			    <p><code>(1)</code> 求  <code>\Delta ABC</code> 的面積。</p>
+			    <p><code>(2)</code> 求內心 <code>O</code> 到各邊的距離。</p>
+				<div class="graphie" id="text">
+					init({
+						range: [ [0, 6], [0, 6] ],
+						scale: 40
+					});
+					path([[1,1],[4,1],[2.5,5],[1,1]]);
+					label([1,1],"B","left");
+					label([4,1],"C","right");
+					label([2.5,5],"A","above");
+					label([2.5,1],K1,"below");
+					label([1.75,3],J1,"left");
+					label([3.25,3],J1,"right");
+					
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">					
+				<p> <code>\Delta ABC</code> 的面積 <code>=</code><span class="sol" data-type="rational"><var>S</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span>
+				<span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart"></span></p>
+				<p> <code>O</code> 到各邊的距離 <code>=</code><span class="sol" data-type="rational"><var>D</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span>
+				<span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart1"></span></p>
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("sqrtPart").value</div>
+				    <div class="validator-function">
+					if (guess==document.getElementById("sqrtPart1").value&&guess==H[1]){
+					    return true;
+					}
+                    </div>
+				</div>
+				<p class="example">整數，例：<code>6</code></p>
+                <p class="example">帶分數，例：<code>1\enspace 3/4</code></p>
+                <p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>	
+                <p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>	
+            </div>
+            <div class="hints">
+					<div>
+						<p> <code>(1)</code> 如下圖，作 <code>\overline{AH}</code> 為 <code>\overline{BC}</code> 上的高。</p>
+						<div class="graphie">
+							init({
+								range: [ [0, 6], [0, 6] ],
+								scale: 40
+							});
+							path([[1,1],[4,1],[2.5,5],[1,1]]);
+							label([1,1],"B","left");
+							label([4,1],"C","right");
+							label([2.5,5],"A","above");
+							label([2.5,1],"H","below");
+							label([1.75,3],J1,"left");
+							label([1.75,1],K,"below");
+							line([2.5,1],[2.5,5]);
+							
+							line([1,1],[1.5,0.7]);
+							line([2.5,1],[2,0.7]);
+						</div>
+					</div>
+						<p>所以 <code>\overline{BH}=<var>K</var>\enspace \enspace \enspace \enspace \enspace \overline{AH}</code> 是 <code>\overline{BC}</code>  的中垂線</p>
+						<p> <code>\overline{AH}=\sqrt {<var>J1</var>^2-<var>K</var>^2}=\sqrt {<var>J1*J1-K*K</var>}=<var>H[0]==1?"":H[0]</var> \sqrt{<var>H[1]</var>}</code> </p>
+						<p>由此得 <code>\Delta ABC</code> 面積為</p>
+						<p> <code><var>decimalFraction(0.5,true,true,false,false)</var>\times<var>K1</var>\times<var>H[0]==1?"":H[0]</var>\sqrt {<var>H[1]</var>}=<var>S</var>\sqrt{<var>H[1]</var>}</code> </p>
+					
+					
+						<p><code>(2)</code> 設內心 <code>O</code>到各邊的距離為 <code>d</code> 。<code>\Delta ABC</code> 的周長為 <code><var>J1</var>+<var>J1</var>+<var>K1</var>=<var>J1*2+K1</var></code></p>
+						<p>因此 <code><var>S</var>\sqrt{<var>H[1]</var>}=<var>decimalFraction(0.5,true,true,false,false)</var>\times <var>J1*2+K1</var>\times d</code></p>
+						<p>解得 <code>d=<var>S</var>\sqrt{<var>H[1]</var>}\times <var>decimalFraction(2/(J1*2+K1),true,true,false,false)</var>=<var>decimalFraction(D,true,true,false,false)</var>\sqrt{<var>H[1]</var>}</code></p>
+
+					 <div>
+					     <p>所以，本題答案為</P>
+					     <p><code>(1) \Delta ABC</code> 面積為 <code class="hint_pink"><var>S</var>\sqrt{<var>H[1]</var>}</code></p>
+					     <p><code>(2) O</code> 到各邊距離為 <code class="hint_pink"><var>decimalFraction(D,true,true,false,false)</var>\sqrt{<var>H[1]</var>}</code></p>
+					</div>
+            </div>
+        </div>
+		<div id="case4">
+            <div class="vars">
+				<var id="change">chg4()</var>
+				
+            </div>
+			<p class="question"> 如下圖，四邊形 <code>ABCD</code> 是圓 <code>O</code> 的外切四邊形，說明 <code>\overline{AD}+\overline{BC}=\overline{AB}+\overline{CD}</code> 。</p>
+			
+			<div class="problem">
+				<div class="graphie">
+					init({
+							range: [ [0, 10], [0.5, 5.3] ],
+							scale: 40
+					});
+                    path( [ [1,3], [2.5,1.5], [4, 2.5], [3,4.5 ],[1,3]]);
+					circle([2.65,2.88],1.05);
+					circle([2.65,2.88],0.01);
+					label([2.65,2.88],"O","below");
+					label([2.5,1.5],"B","below");
+					label([1,3],"A","left");
+					label([4,2.5],"C","right");
+					label([3,4.5],"D","above");
+					
+                </div>
+				<p>請在下面空格填入適當的答案</p>
+				<p>設四邊形 <code>ABCD</code> 和圓 <code>O</code> 切於 <code>E</code> 、 <code>F</code> 、<code>G</code> 、<code>H</code> 四點。</p>
+				<p>由於 <code>\overline{AH}=</code> <span style="border-top: 1px solid #000; padding: 6px 1px 0 0px; margin-left: -1px;"><input type="text" id="t1" style=" width: 40px ; display: " ></span><code data-if="t1.style.display=='none'">\overline{AE}</code> ， 
+				<code>\overline{BE}=</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 0px; margin-left: -1px;"><input type="text" id="t2" style=" width: 40px ; display: " ></span><code data-if="t2.style.display=='none'">\overline{BF}</code> ，</p>
+				<p> <code>\overline{CF}=</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 0px; margin-left: -1px;"><input type="text" id="t3" style=" width: 40px ; display: " ></span><code data-if="t3.style.display=='none'">\overline{CG}</code>
+				， <code>\overline{DG}=</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 0px; margin-left: -1px;"><input type="text" id="t4" style=" width: 40px ; display: " ></span><code data-if="t4.style.display=='none'">\overline{DH}</code> ， 切線性質</p>
+				<p>因此 <code>\overline{AD}+\overline{BC}=</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 0px; margin-left: -1px;"><input type="text" id="t5" style=" width: 40px ; display: " ></span><code data-if="t5.style.display=='none'">\overline{AH}</code>
+				<code>+\overline{DH}+</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 0px; margin-left: -1px;"><input type="text" id="t6" style=" width: 40px ; display: " ></span><code data-if="t6.style.display=='none'">\overline{BF}</code>
+				<code>+\overline{CF}</code> </p>
+				<p> <code>=\overline{AE}+</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 0px; margin-left: -1px;"><input type="text" id="t7" style=" width: 40px ; display: " ></span><code data-if="t7.style.display=='none'">\overline{DG}</code>
+				<code>+\overline{BE}+</code> <span style="border-top: 1px solid #000; padding: 6px 1px 0 0px; margin-left: -1px;"><input type="text" id="t8" style=" width: 40px ; display: " ></span><code data-if="t8.style.display=='none'">\overline{CG}</code> </p>
+				<p> <code>=(\overline{AE}+\overline{BE})+(\overline{CG}+\overline{DG})</code> </p>
+				<p> <code>=</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 0px; margin-left: 0px;"><input type="text" id="t9" style=" width: 40px ; display: " ></span><code data-if="t9.style.display=='none'">\overline{AB}</code>
+				<code>+\overline{CD}</code> </p>
+				
+			</div>
+			<div class="solution" data-type="multiple">		
+				<div class="sol" data-type="custom">
+					<div class="guess">document.getElementById("t1").value</div>
+				    <div class="validator-function">
+						if(document.getElementById("t1").style.display=="")
+						{
+							if(document.getElementById("t1").value.replace(/\s+/g,"")=="AE"||document.getElementById("t1").value.replace(/\s+/g,"")=="EA")
+							{}
+							else
+								return false;
+						}
+						if(document.getElementById("t2").style.display=="")
+						{
+							if(document.getElementById("t2").value.replace(/\s+/g,"")=="BF"||document.getElementById("t2").value.replace(/\s+/g,"")=="FB")
+							{}
+							else
+								return false;
+						}
+						if(document.getElementById("t3").style.display=="")
+						{
+							if(document.getElementById("t3").value.replace(/\s+/g,"")=="CG"||document.getElementById("t3").value.replace(/\s+/g,"")=="GC")
+							{}
+							else
+								return false;
+						}
+						if(document.getElementById("t4").style.display=="")
+						{
+							if(document.getElementById("t4").value.replace(/\s+/g,"")=="DH"||document.getElementById("t4").value.replace(/\s+/g,"")=="HD")
+							{}
+							else
+								return false;
+						}
+						if(document.getElementById("t5").style.display=="")
+						{
+							if(document.getElementById("t5").value.replace(/\s+/g,"")=="AH"||document.getElementById("t5").value.replace(/\s+/g,"")=="HA")
+							{}
+							else
+								return false;
+						}
+						if(document.getElementById("t6").style.display=="")
+						{
+							if(document.getElementById("t6").value.replace(/\s+/g,"")=="BF"||document.getElementById("t6").value.replace(/\s+/g,"")=="FB")
+							{}
+							else
+								return false;
+						}
+						if(document.getElementById("t7").style.display=="")
+						{
+							if(document.getElementById("t7").value.replace(/\s+/g,"")=="DG"||document.getElementById("t7").value.replace(/\s+/g,"")=="GD")
+							{}
+							else
+								return false;
+						}
+						if(document.getElementById("t8").style.display=="")
+						{
+							if(document.getElementById("t8").value.replace(/\s+/g,"")=="CG"||document.getElementById("t8").value.replace(/\s+/g,"")=="GC")
+							{}
+							else
+								return false;
+						}
+						if(document.getElementById("t9").style.display=="")
+						{
+							if(document.getElementById("t9").value.replace(/\s+/g,"")=="AB"||document.getElementById("t3").value.replace(/\s+/g,"")=="BA")
+							{}
+							else
+								return false;
+						}
+						return true;
+								
+                    </div>
+				</div>
+				 <p class="example">整數，例 <code>6</code></p> 
+				 <p class="example">文字，例 <code>數</code></p> 
+				 <p class="example">字母，例 <code>AB</code></p> 
+            </div>
+            <div class="hints">
+				<div>
+					<div class="graphie">
+						init({
+								range: [ [0, 10], [0.5, 5.3] ],
+								scale: 40
+						});
+						path( [ [1,3], [2.5,1.5], [4, 2.5], [3,4.5 ],[1,3]]);
+						circle([2.65,2.88],1.05);
+						circle([2.65,2.88],0.01);
+						label([2.65,2.88],"O","below");
+						label([2.5,1.5],"B","below");
+						label([1,3],"A","left");
+						label([4,2.5],"C","right");
+						label([3,4.5],"D","above");
+						
+						label([2,3.75],"\\color{gray }{"+"H}","left");
+						label([1.75,2.25],"\\color{gray }{"+"E}","below left");
+						label([3.25,2],"\\color{gray }{"+"F}","below right");
+						label([3.5,3.5],"\\color{gray}{"+"G}","right");
+						
+					</div>
+					<p>設四邊形 <code>ABCD</code> 和圓 <code>O</code> 切於 <code>E</code> 、 <code>F</code> 、<code>G</code> 、<code>H</code> 四點。</p>
+					<p>由於 <code>\overline{AH}=</code><code class="hint_pink">\overline{AE}</code> ， <code>\overline{BE}=</code><code class="hint_pink">\overline{BF}</code> ，</p>
+					<p> <code>\overline{CF}=</code><code class="hint_pink">\overline{CG}</code> ， <code>\overline{DG}=</code><code class="hint_pink">\overline{DH}</code> ， 切線性質</p>
+					<p>因此 <code>\overline{AD}+\overline{BC}=</code><code class="hint_pink">\overline{AH}</code><code>+\overline{DH}+</code><code class="hint_pink">\overline{BF}</code><code>+\overline{CF}</code> </p>
+					<p> <code>=\overline{AE}+</code><code class="hint_pink">\overline{DG}</code><code>+\overline{BE}+</code><code class="hint_pink">\overline{CG}</code> </p>
+					<p> <code>=(\overline{AE}+\overline{BE})+(\overline{CG}+\overline{DG})</code> </p>
+					<p> <code>=</code><code class="hint_pink">\overline{AB}</code><code>+\overline{CD}</code> </p>
+
+				</div>
+				
+            </div>
+        </div>
+		<div id="case5">
+            <div class="vars" >
+				<var id="J">randRange(4,6)</var>
+				<var id="K">randRange(12,15)</var>
+				<var id="J1">2*J</var>
+				<var id="K1">2*K</var>
+				<var id="AB">J+K</var>
+				<var id="D1">AB*AB-(K-J)*(K-J)</var>
+				<var id="D">splitRadical(D1)</var>
+            </div>
+            <p class="question"> 如下圖，等腰梯形 <code>ABCD</code> 有內切圓，其中 <code>\overline{AD}//\overline{BC}</code> ，
+			<code>\overline{AD}=<var>J1</var></code> ， <code>\overline{BC}=<var>K1</var></code> ，求<code>\overline{AB}</code> 和內切圓半徑。</p>
+			<div class="problem">
+				<div class="graphie" id="draw">
+					init({
+						range: [ [0, 7], [0, 5] ],
+						scale: 40
+					});
+					path([[1,1],[6,1],[4.5,4],[2.5,4],[1,1]]);
+					circle([3.5,2.5],1.5);
+					circle([3.5,2.5],0.01);
+					label([3.5,2.5],"O","below left");
+					label([1,1],"B","left");
+					label([6,1],"C","right");
+					label([4.5,4],"D","right");
+					label([2.5,4],"A","left");
+				
+					label([3.5,1],K1,"below");
+					label([3.5,4],J1,"above");
+					
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">					
+				<p> <code>\overline {AB}=\enspace</code><span class="sol" data-forms="integer"><var>AB</var></span></p>
+				<p> 內切圓半徑 <code>=\enspace</code><input type="text" style="width:30px" id="sqrtPart1"><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span>
+				<span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart"></span></p>
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("sqrtPart").value</div>
+				    <div class="validator-function">
+						if(guess==D[1])
+						{
+							if(D[0]/2==1)
+							{
+								if(document.getElementById("sqrtPart1").value==D[0]/2||document.getElementById("sqrtPart1").value=="")
+									return true;
+							}
+							else
+							{
+								if(document.getElementById("sqrtPart1").value==D[0]/2)
+									return true;
+							}
+						}
+                    </div>
+				</div>
+				<p class="example">整數，例：<code>6</code></p>
+                <p class="example">帶分數，例：<code>1\enspace 3/4</code></p>
+                <p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>	
+                <p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>	
+            </div>
+            <div class="hints">
+					<div>
+						<p>要求內切圓半徑我們必須先在圖形上畫一些輔助線</p>
+						<div class="graphie" data-update="draw">
+							style({
+                                stroke: RED,
+                                strokeWidth: 1,
+                            }, function() {
+                                line( [3.5, 1 ], [ 3.5, 4 ]);
+                            });
+							label([ 3.5, 1 ], "\\color{green}{"+ "F}", "above left");
+							label([ 3.5, 4 ], "\\color{green}{"+ "E}", "below left");
+							style({
+                                stroke: BLUE,
+                                strokeWidth: 2,
+                            }, function() {
+                                line( [3.5, 2.5 ], [ 2.1, 3.2 ]);
+								line( [3.5, 2.5 ], [ 4.9, 3.2 ]);
+                            });
+							label([ 2.1, 3.2 ], "\\color{green}{"+ "G}", "above left");
+							label([ 4.9, 3.2], "\\color{green}{"+ "H}", "above right");
+						</div>
+					
+						<p>四邊形 <code>ABCD</code> 和圓 <code>O</code> 切 <code>E</code> 、<code>F</code> 、<code>G</code> 、<code>H</code> 四點，
+						根據切線性質我們知道 <code>\overline{AG} =\overline{AE} </code> ，<code>\overline{DE} =\overline{DH} </code> ，<code>\overline{CH} =\overline{CF} </code> ，<code>\overline{BF} =\overline{BG} </code></p>
+					</div>
+						<div>
+							<p>因為 <code>ABCD</code> 是等腰梯形，我們取 <code>\overline{AD}</code> 及 <code>\overline{BC}</code> 中點相連得 <code>\overline{EF}</code> 為 <code>ABCD</code> 等腰梯形的高</p>
+						</div>
+						<div>
+							<p>所以我們知道 <code>\overline{BF}=\overline{CF}=<var>K</var></code> ，<code>\overline{AE}=\overline{DE}=<var>J</var></code> 。</p>
+						</div>
+						<div>
+							<p>又 <code>\overline{AG}=\overline{AE}</code> ，<code>\overline{DE}=\overline{DH}</code> ，<code>\overline{CH}=\overline{CF}</code> ，<code>\overline{BF}=\overline{BG}</code> 。</p>
+							<p>所以 <code>\overline{AG}=\overline{AE}=\overline{DE}=\overline{DH}=<var>J</var></code> ，<code>\overline{CH}=\overline{CF}=\overline{BF}=\overline{BG}=<var>K</var></code> </p>
+						</div>
+						<div>
+							<p>我們將 <code>\overline{EF}</code> 往左平移讓 <code>E</code> 點與 <code>A</code> 點重疊，透過畢氏定理，計算<code>\Delta ABF'</code>的其中一邊，就可以算出 <code>\overline{EF}</code> 的長</p>
+							<div class="graphie" data-update="draw">
+							style({
+                                stroke: ORANGE,
+                                strokeWidth: 1,
+                            }, function() {
+                                line( [2.5, 1 ], [ 2.5, 4 ]);
+                            });
+							label([ 2.5, 1 ], "\\color{green}{"+ "F}", "above left");
+							
+						</div>
+						</div>
+						<p><code>\overline{AB}^2=\overline{BF'}^2+\overline{EF}^2</code></p>
+						<p><code><var>AB</var>^2=(<var>K</var>-<var>J</var>)^2+\overline{EF}^2</code></p>
+						<p><code><var>AB*AB</var>=<var>(K-J)*(K-J)</var>+\overline{EF}^2</code></p>
+						<p><code>\overline{EF}^2=<var>AB*AB</var>-<var>(K-J)*(K-J)</var>=<var>D1</var></code></p>
+						<p><code>\overline{EF}=\pm<var>D[0]</var>\sqrt{<var>D[1]</var>}(</code> 負不合<code>)</code> ，內切圓半徑為 <code><var>D[0]</var>\sqrt{<var>D[1]</var>}\div2=<var>D[0]/2==1?"":D[0]/2</var>\sqrt{<var>D[1]</var>}</code></p>
+						<p>所以，本題答案為 <code>\overline {AB}=</code><code class="hint_pink"><var>AB</var></code> ，內切圓半徑為 <code class="hint_pink"><var>D[0]/2==1?"":D[0]/2</var>\sqrt{<var>D[1]</var>}</code></p>
+					 
+            </div>
+        </div>
+	</div>
+	</div>
+</body>
+</html>

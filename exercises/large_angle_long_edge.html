@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>大邊對大角-大角對大邊</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+	    <div id="case1">
+            <div class="vars">
+				<var id="J">randRange(1,3)</var>
+				<var id="J_s">J==1?"":J</var>
+            </div>
+			<p class="question">如下圖，<code>\triangle{ABC}</code>中，<code>\overline{AB}=\overline{AC}</code>，若 <code>\overline{BC}&lt;\overline{AB}</code> ，求 <code><var>J_s</var>x</code> 的範圍。</p>
+			<div class="problem">
+			    <div class="graphie" id="angle_edge">
+				    init({
+                        range: [ [-1, 6], [-1,5.5] ],
+                        scale: 40
+                    });
+					path([[0,0],[4,0],[2,4.5],[0,0]],{stroke:"black"});
+					label( [2,4.5],  "A", "above", { color: "black" });
+					label( [0,0],  "B", "left", { color: "black" });
+					label( [4,0],  "C", "right", { color: "black" });
+					label( [0.1,0.3],  "x^{\\circ}", "right", { color: "black" });
+					label( [4,0.3],  "x^{\\circ}", "left", { color: "black" });
+					arc([2.8,3.5],0.8,210,330);
+					line([2.8-0.4*sqrt(3),3.1],[2.2,2.8]);
+					line([2.8-0.4*sqrt(3),3.1],[2.4,3]);
+					label( [3+0.4*sqrt(3),3.1],  "\\small{(180-2x)^{\\circ}}", "above", { color: "black" });
+					line([1.1,2.15],[0.9,2.35],{stroke:"red"});
+					line([2.9,2.15],[3.1,2.35],{stroke:"red"});
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>60*J</var></span><code>\enspace &lt;<var>J_s</var>x&lt;\enspace</code><span class="sol" data-forms="integer"><var>90*J</var></span>
+				<p class="example">整數，例：<code>6</code></p>	
+            </div>
+            <div class="hints">
+			    <p>因為 <code>\angle{A}</code> 是一個角，所以 <code>180-2x&gt;0</code></p>
+				<p>解得 <code>x&lt;90</code></p>
+				<p>又因為 <code>\overline{AB}&gt;\overline{BC}</code></p>
+				<p>所以 <code>x&gt;180-2x \enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\color{BLUE}{大邊對大角}</code></p>
+				<p>解得 <code>x&gt;60</code></p>
+				<p data-if="J==1">因此 <code>x</code> 的範圍為 <code class="hint_pink">60&lt;x&lt;90</code> 。</p>
+				<p data-if="J!=1">因此 <code>60&lt;x&lt;90</code></p>
+				<p data-if="J!=1">所以 <code><var>J_s</var>x</code> 的範圍為 <code class="hint_pink"><var>J*60</var>&lt;<var>J</var>x&lt;<var>J*90</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+				<var id="J">randRange(9,13)</var>
+				<var id="K">randRange(4,7)</var>
+				<var id="R_max">J+K</var>
+				<var id="R_random">randRange(J+1,R_max-1)</var>
+				<var id="sm">Math.pow(1.2,J-8)</var>
+				<var id="cosA">-(J*J-K*K-R_random*R_random)/(2*K*R_random)</var>
+				<var id="lrs">cosA*K</var>
+				<var id="lrh">sqrt(K*K-lrs*lrs)</var>
+            </div>
+			<p class="question">如下圖，<code>\triangle{ABC}</code>中，<code>\angle{A}&gt;\angle{B}&gt;\angle{C}</code> ，<code>\overline{AB}=<var>K</var></code> ，<code>\overline{AC}=<var>J</var></code> ，求 <code>\overline{BC}</code> 的範圍。</p>
+			<div class="problem">
+			    <div class="graphie" id="angle_edge">
+				    init({
+                        range: [ [-1, R_random/sm+1], [-1,lrh/sm+1] ],
+                        scale: 40
+                    });
+					path([[0,0],[R_random/sm,0],[lrs/sm,lrh/sm],[0,0]],{stroke:"black"});
+					label( [lrs/sm,lrh/sm],  "A", "above", { color: "black" });
+					label( [0,0],  "B", "left", { color: "black" });
+					label( [R_random/sm,0],  "C", "right", { color: "black" });
+					label( [lrs/sm/2,lrh/sm/2],  K, "above left", { color: "black" });
+					label( [(lrs+R_random)/sm/2,lrh/sm/2],  J, "above right", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>J</var></span><code>\enspace &lt;\overline{BC}&lt;\enspace</code><span class="sol" data-forms="integer"><var>R_max</var></span>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+            <div class="hints">
+			    <p>因為 <code>\angle{A}&gt;\angle{B}</code>，得 <code>\overline{BC}&gt;<var>J</var></code>，<code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\color{BLUE}{大角對大邊}</code></p>
+				<div>
+				    <p>再由兩邊和大於第三邊，得</p>
+					<p><code>\enspace\enspace\enspace\enspace\enspace\overline{BC}&lt;\overline{AB}+\overline{AC}=<var>K</var>+<var>J</var>=<var>R_max</var></code></p>
+				</div>
+				<p>所以 <code class="hint_pink"><var>J</var>&lt;\overline{BC}&lt;<var>R_max</var></code> 。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

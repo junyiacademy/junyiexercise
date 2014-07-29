@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>外心的基本概念</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 40px;
+        }
+        </style>
+		<style type="text/css">
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script>
+	function chg(num)
+		{
+			for(var i=2;i<=num;i++)
+			{
+					var ran=10*Math.random();
+					if(ran>5)
+					{
+						var name="t"+i;
+						document.getElementById(name).style.display="none";
+					}
+			}
+		}
+
+	function judge(co,rig,num)
+		{
+		if(co.length!=num)
+				return false;
+		var c= new Array(); 
+		var ri= new Array(); 
+		c=co.split(""); 
+		ri=rig.split(""); 
+			var k="";
+			for(var i=0;i<num;i++)
+			{
+					var j=i;
+					for(;j<num;j++)
+					{//alert(i+","+j+","+c[i]+","+ri[0]+","+ri[1]+","+ri[2]+";");
+						if(c[i]==ri[j])
+						{
+						
+							k=ri[i];
+							ri[i]=ri[j];
+							ri[j]=k;
+							break;
+						}
+					}
+					if(j>=num)
+					{
+						
+						return false;
+					}
+			}
+			
+				return true;
+		}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+				<var id="change">chg(4)</var>
+            </div>
+			<p class="question"> 若一多邊形有外心，說明外心是此多邊形各邊中垂線的交點。</p>
+			<div class="problem">
+				<p>請在下面空格填入適當的答案</p>
+				<div class="graphie">
+					init({
+							range: [ [0, 10], [-0.10, 4.1] ],
+							scale: 40
+					});
+                    path( [ [1.3,1.03], [4,0.3], [4.85, 1.3],[3.5,3.9],[2,3.7], [1.3,1.03 ]]);
+					circle([3,2],2);
+					circle([3,2],0.01);
+					line([3,2],[2.65,0.665]);
+					line([3,2],[4.425,0.8]);
+					line([3,2],[4.17,2.6]);
+					line([3,2],[2.75,3.8]);
+					line([3,2],[1.65,2.365]);
+					path([[2.7,0.865], [2.9,0.8], [2.8, 0.6]]);
+					path([[4.3,0.645], [4.1,0.8], [4.23, 0.95]]);
+					path([[3.99,2.5], [4.1,2.3], [4.27, 2.39]]);
+					path([[2.75,3.6], [2.95,3.65], [2.93, 3.8]]);
+					path([[1.85,2.3], [1.9,2.5], [1.658,2.565 ]]);
+                </div>
+				<p>由於此多邊形有外接圓，因此任一邊都是該圓的<input type="text" id="t1" style="width: 40px ; display: " ><code data-if="t1.style.display=='none'">弦</code>，
+				但因為圓上一弦的<input type="text" id="t2" style="width: 50px ; display: " ><code data-if="t2.style.display=='none'">中垂</code>線必過<input type="text" id="t3" style="width: 40px ; display: " ><code data-if="t3.style.display=='none'">圓心</code>，
+				因此外心（亦即圓心）就是各邊<input type="text" id="t4" style="width: 50px ; display: " ><code data-if="t4.style.display=='none'">中垂</code>線的交點。上圖是五邊形的例子。</p>
+				</p>
+			</div>
+			<div class="solution" data-type="multiple">		
+				<div class="sol" data-type="custom">
+					<div class="guess">document.getElementById("t1").value</div>
+				    <div class="validator-function">
+					    var answerNum = 0;
+					    var rightNum = 0;
+						if(document.getElementById("t1").style.display=="")
+						{
+						    answerNum+=1;
+							if(document.getElementById("t1").value.replace(/\s+/g,"")=="弦")
+							{rightNum+=1;}
+						}
+						if(document.getElementById("t2").style.display=="")
+						{
+						    answerNum+=1;
+							if(document.getElementById("t2").value.replace(/\s+/g,"")=="中垂"||document.getElementById("t2").value.replace(/\s+/g,"")=="垂直平分")
+							{rightNum+=1;}
+						}
+						if(document.getElementById("t3").style.display=="")
+						    answerNum+=1;
+						{
+							if(document.getElementById("t3").value.replace(/\s+/g,"")=="圓心")
+							{rightNum+=1;}
+						}
+						if(document.getElementById("t4").style.display=="")
+						{
+						    answerNum+=1;
+							if(document.getElementById("t4").value.replace(/\s+/g,"")=="中垂"||document.getElementById("t4").value.replace(/\s+/g,"")=="垂直平分")
+							{rightNum+=1;}
+						}
+						if(answerNum==rightNum){
+						    return true;
+						}
+								
+                    </div>
+				</div>
+				 <p class="example">文字，例 <code>中垂線</code></p> 
+            </div>
+            <div class="hints">
+				<p>由於此多邊形有外接圓，因此任一邊都是該圓的<code class="hint_pink">弦</code>，但因為圓上一弦的<code class="hint_pink">中垂</code>線必過<code class="hint_pink">圓心</code>，
+				因此外心（亦即圓心）就是各邊<code class="hint_pink">中垂</code>線的交點。上圖是五邊形的例子。</p>
+				<p>反過來說，若一多邊形每一邊的中垂線都相交於同一點，則此多邊形有外接圓，而且各中垂線交點就是此圓的圓心，
+				也就是此多邊形的外心。</p>
+				
+            </div>
+        </div>
+		<div id="case2">
+            <div class="vars">
+				<var id="change">chg(3)</var>
+            </div>
+			<p class="question"> 如下圖， <code>\Delta ABC</code> 為直角三角形，說明 <code>\Delta ABC</code> 的外心就是斜邊 <code>\overline{AC}</code> 的中點。</p>
+			<div class="problem">
+				<div class="graphie">
+					init({
+							range: [ [0, 10], [0, 4] ],
+							scale: 40
+					});
+					path( [ [1,1], [4.46,1], [1, 3], [1,1 ]]);
+					path( [ [1.2,1], [1.2,1.2], [1, 1.2]]);
+					label( [ 1, 1 ], "B", "left" );
+					label( [ 4.46, 1 ], "C", "right" );
+					label( [ 1, 3 ], "A", "left" );
+					
+                    path( [ [6,1], [9.46,1], [6, 3], [6,1 ]]);
+					path( [ [6.2,1], [6.2,1.2], [6, 1.2]]);
+					label( [ 6, 1 ], "B", "left" );
+					label( [ 9.46, 1 ], "C", "right" );
+					label( [ 6, 3 ], "A", "left" );
+					circle([7.73,2],2);
+					circle([7.73,2],0.02);
+					label( [ 7.73,2 ], "O", "below" );
+                </div>
+				<p>請在下面空格填入適當的答案</p>
+				<p>過 <code>A</code> 、<code>B</code> 、<code>C</code> 三點作一外接圓，如上圖。由於圓周角 <code>\angle</code> <input type="text" id="t1" style="width: 50px ; display:" ><code data-if="t1.style.display=='none'">ABC</code><code>=90^\circ</code>
+				，所以<code>\overline{AC}</code>必為<input type="text" id="t2" style="width: 50px ; display:" ><code data-if="t2.style.display=='none'">直徑</code> 。但外心 <code>O</code> 為此圓的圓心，因此外心就是 <code>\overline{AC}</code>
+				 的<input type="text" id="t3" style="width: 40px ; display: " ><code data-if="t3.style.display=='none'">中點</code>。</p>
+				
+				
+			</div>
+			<div class="solution" data-type="multiple">		
+				<div class="sol" data-type="custom">
+					<div class="guess">document.getElementById("t1").value</div>
+				    <div class="validator-function">
+					    var answerNum = 0;
+					    var rightNum = 0;
+						if(document.getElementById("t1").style.display=="")
+						{
+						    answerNum+=1;
+							if(document.getElementById("t1").value.replace(/\s+/g,"")=="ABC"||document.getElementById("t1").value.replace(/\s+/g,"")=="CBA"||document.getElementById("t1").value.replace(/\s+/g,"")=="B")
+							{rightNum+=1;}
+						}
+						if(document.getElementById("t2").style.display=="")
+						{
+						    answerNum+=1;
+							if(document.getElementById("t2").value.replace(/\s+/g,"")=="直徑")
+							{rightNum+=1;}
+						}
+						if(document.getElementById("t3").style.display=="")
+						{
+						    answerNum+=1;
+							if(document.getElementById("t3").value.replace(/\s+/g,"")=="中點")
+							{rightNum+=1;}
+						}
+						if(answerNum==rightNum){
+						    return true;
+						}
+								
+                    </div>
+				</div>
+				
+				 <p class="example">文字，例 <code>中垂線</code></p> 
+				 <p class="example">字母，例 <code>AB</code></p> 
+            </div>
+            <div class="hints">
+				<p>過 <code>A</code> 、<code>B</code> 、<code>C</code> 三點作一外接圓，如上圖。由於圓周角 <code>\angle</code> <code class="hint_pink">ABC</code><code>=90^\circ</code>
+				，所以<code>\overline{AC}</code>必為<code class="hint_pink">直徑</code> 。但外心 <code>O</code> 為此圓的圓心，因此外心就是 <code>\overline{AC}</code>
+				 的<code class="hint_pink">中點</code>。</p>
+				
+            </div>
+        </div>
+		 <div id="case3">
+            <div class="vars" >
+				<var id="J">randRange(10,13)</var>
+				<var id="J1">10*J</var>
+				<var id="X">decimalFraction(120-J1/3,true,true,false,false)</var>
+				<var id="Y">decimalFraction(60+J1/3,true,true,false,false)</var>
+				<var id="X1">120-J1/3</var>
+				<var id="Y1">60+J1/3</var>
+            </div>
+            <p class="question"> 如下圖，有一四邊形 <code>ABCD</code> ，若已知 <code>ABCD</code>  有外接圓，求 <code>x</code> 、 <code>y</code> 。</p>
+			<div class="problem">
+				<div class="graphie">
+					init({
+						range: [ [0, 10], [0, 4.3] ],
+						scale: 40
+					});
+					path([[1.5,1],[7,2],[1,3.4],[0.8,2],[1.5,1]]);
+					label([1.5,1],"C","below");
+					label([7,2],"D","right");
+					label([1,3.4],"A","above");
+					label([0.8,2],"B","left");
+					
+					label([1,3.4],"\\small{x"+"&deg;}","below right");
+					label([0.8,2],"\\small{(2x)&deg;}","right");
+					label([1.5,1],"\\small{y&deg;}","above right");
+					label([6,2],"\\small{("+J1+"-y)&deg;}","left");
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">					
+				<p><code>x=\enspace</code><span class="sol" data-type="rational"><var>X1</var></span></p>
+				<p><code>y=\enspace</code><span class="sol" data-type="rational"><var>Y1</var></span></p>
+				<p class="example">整數，例：<code>6</code></p>
+                <p class="example">帶分數，例：<code>1\enspace 3/4</code></p>
+                <p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>	
+                <p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>	
+            </div>
+            <div class="hints">
+				<p>若四邊形外接於一圓，則此四邊形的兩組對角互補。</p>
+				<p>所以 <code>x+y=180</code> ，<code>2x+<var>J1</var>-y=180</code></p>
+				<p>運用代入消去法解二元一次聯立方程式</p>
+				<p><code>x=(180-y)</code></p>
+				<p><code>2(180-y)+<var>J1</var>-y=180</code></p>
+				<p><code>360-3y+<var>J1</var>=180</code></p>
+				<p><code><var>180+J1</var>=3y</code></p>
+				<p><code>y=<var>Y</var></code></p>
+				<p><code>x=<var>X</var></code></p>
+				<p>所以，本題答案為 <code class="hint_pink">x=<var>X</var></code> ，<code class="hint_pink">y=<var>Y</var></code> 。</p>
+            </div>
+        </div>
+		<div id="case4">
+            <div class="vars" >
+				<var id="J">randRange(1,3)</var>
+				<var id="K">[[3,4],[5,12],[7,24]]</var>
+				<var id="L">randRange(0,2)</var>
+				<var id="AB">J*K[L][0]</var>
+				<var id="BC">J*K[L][1]</var>
+				<var id="AC">sqrt(AB*AB+BC*BC)</var>
+				<var id="R">AC/2</var>
+            </div>
+            <p class="question"> 如下圖，<code>\Delta ABC</code> 為直角三角形，其中 <code>\overline{AB}=<var>AB</var></code> ，<code>\overline{BC}=<var>BC</var></code> ，求外接圓的半徑。</p>
+			<div class="problem">
+				<div class="graphie" id="draw">
+					init({
+						range: [ [0, 7], [0, 3.5] ],
+						scale: 40
+					});
+					path( [ [1,1], [4.46,1], [1, 3], [1,1 ]]);
+					path( [ [1.2,1], [1.2,1.2], [1, 1.2]]);
+					label( [ 1, 1 ], "B", "left" );
+					label( [ 4.46, 1 ], "C", "right" );
+					label( [ 1, 3 ], "A", "left" );
+				</div>
+			</div>
+			<div class="solution">					
+				<span class="sol" data-type="rational"><var>R</var></span>
+				
+            </div>
+            <div class="hints">
+				<p><code>\Delta ABC</code> 為直角三角形，說明 <code>\Delta ABC</code> 的外心就是斜邊 <code>\overline{AC}</code> 的中點。</p>	
+				<p>我們必須先算出 <code>\overline{AC}</code> 的長，</p>		
+				<p>透過畢氏定理可以知道 <code>\overline{AB}^2+\overline{BC}^2=\overline{AC}^2</code> ，</p>	
+				<p>所以 <code><var>AB</var>^2+<var>BC</var>^2=<var>AB*AB</var>+<var>BC*BC</var>=<var>AC*AC</var>=<var>AC</var>^2</code> ，</p>	
+				<p> <code>\overline{AC}=<var>AC</var></code></p>	
+				<p>外接圓半徑 <code>=</code> 斜邊長的一半，所以外接圓半徑 <code>=<var>AC</var>\div 2=<var>R</var></code> ，</p>	
+				<p>所以，本題答案為 <code class="hint_pink"><var>R</var></code>  。</p>
+
+            </div>
+        </div>
+	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers expressions interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>十字交乘法(進階)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+                <var id="a">randRange(6,15)</var>
+				<var id="b">randRange(2,5)</var>
+				<var id="m">randRange(2,5)</var>
+				<var id="a_mul_b">accMul(a,b)</var>
+				<var id="a_sub_b">Subtr(a,b)</var>
+            </div>
+            <p class="question">用十字交乘法求下列各一元二次式的因式分解：</p>
+			<div class="problem"><p><code><var>m</var>x^{2}-<var>accMul(a_sub_b,m)</var>x-<var>accMul(a_mul_b,m)</var></code></p></div>
+			<div class="solution" data-type="multiple">
+				<p><span class="sol" data-forms="integer"><var>m</var></span><code>(x+\enspace</code><span class="sol" data-forms="integer"><var>b</var></span><code>)\enspace (x-\enspace</code><span class="sol" data-forms="integer"><var>a</var></span><code>)</code></p>
+				<p class="example">正整數，例如 <code>6</code></p>
+            </div>
+
+            <div class="hints">
+			<p>我們觀察到 <code><var>m</var>x^{2}-<var>accMul(a_sub_b,m)</var>x-<var>accMul(a_mul_b,m)</var></code> 每一項的係數都是 <code><var>m</var></code> 的倍數，</p>
+			<p>所以 <code><var>m</var>x^{2}-<var>accMul(a_sub_b,m)</var>x-<var>accMul(a_mul_b,m)</var>=<var>m</var>(x^{2}-<var>a_sub_b</var>x-<var>a_mul_b</var>)</code> 。</p>
+			<p>因此只要分解 <code>x^{2}-<var>a_sub_b</var>x-<var>a_mul_b</var></code> 即可。</p>
+			<div>
+			    <p>因為 <code>-<var>a_mul_b</var>=(-<var>a</var>)\cdot <var>b</var></code> ，而且 <code>(<var>-a</var>)+<var>b</var>=<var>-a_sub_b</var></code> ，即</p>
+				<div class="graphie" id="phillips">
+				    init({ range:[[-1,12],[-3,3]],scale: 30});
+					line( [ 1, 0], [4, 2],{stroke:"black"});
+					line( [ 1, 2], [4, 0],{stroke:"black"});
+					label( [ 1, 0 ],  1, "left", { color: "black" });
+					label( [ 1, 2 ],  1, "left", { color: "black" });
+					label( [ 4, 0 ],  -a, "right", { color: "black" });
+					label( [ 4, 2 ],  b, "right", { color: "black" });
+					line( [ 0, -0.8], [7, -0.8],{stroke:"black"});
+					label( [ 0, -1.5 ],  -a+"+"+b+"="+(-a_sub_b), "right", { color: "#6495ED" });
+					
+				</div>
+			</div>
+			<p>所以 <code>x^{2}-<var>a_sub_b</var>x-<var>a_mul_b</var>=(x+<var>b</var>)(x-<var>a</var>)</code> 。</p>
+			<p>因此，求得因式分解 <code><var>m</var>x^{2}-<var>accMul(a_sub_b,m)</var>x-<var>accMul(a_mul_b,m)</var>=</code><code class="hint_pink"><var>m</var>(x+<var>b</var>)(x-<var>a</var>)</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars" data-ensure="(t_1==4||t_1==3)&&(t_2[0]%2==0&&t_2[1]%2==0)">
+                <var id="a">2*randRange(1,7)+1</var>
+				<var id="b">randRange(2,5)</var>
+				<var id="a_mul_b">accMul(a,b)</var>
+				<var id="a_add_b">accAdd(a,accMul(2,b))</var>
+				<var id="t_1">
+				(function(){
+				    var add = 0;
+				    for(var i=2;i&lt;=a_mul_b-1;i++){
+					    if(a_mul_b%i==0){
+						    add+=1;
+						}
+					}
+					return add;
+				})()</var>
+				<var id="t_2">
+				(function(){
+				    var dex = 0;
+				    var arr = new Array();
+				    for(var i=2;i&lt;=a_mul_b-1&&i!=a&&i!=b;i++){
+					    if(a_mul_b%i==0&&i*i==a_mul_b){
+						    arr[0]=i;
+							arr[1]=i;
+						}
+						if(a_mul_b%i==0&&i*i!=a_mul_b){
+						    arr[0]=i;
+							arr[1]=accDiv(a_mul_b,i);
+						}
+					}
+					return arr;
+				})()</var>
+            </div>
+            <p class="question">用十字交乘法求下列各一元二次式的因式分解：</p>
+			<div class="problem"><p><code>2x^{2}+<var>a_add_b</var>x+<var>a_mul_b</var></code></p></div>
+			<div class="solution" data-type="multiple">
+				<p><code>(</code><span class="sol" data-forms="integer"><var>2</var></span><code>x+\enspace</code><span class="sol" data-forms="integer"><var>a</var></span><code>) (x+\enspace</code><span class="sol" data-forms="integer"><var>b</var></span><code>)</code></p>
+				<p class="example">整數，例如 <code>6</code></p>
+            </div>
+
+            <div class="hints">
+			<p><code>x^{2}</code> 的係數 <code>2</code> 只能分解成 <code>2\cdot 1</code> 。將 <code><var>a_mul_b</var></code> 分解成兩整數相乘，如下圖：</p>
+			<div>
+			    <div class="graphie" id="phillips">
+				    init({ range:[[-1,12],[-3,3]],scale: 30});
+					line( [ 1, 0], [4, 2],{stroke:"black"});
+					line( [ 1, 2], [4, 0],{stroke:"black"});
+					path([[4.5, 1.5], [4.5, 2.5], [5.5,2.5], [5.5,1.5], [4.5,1.5],true], {stroke: "black", fill: "#F0F0F0"});
+					path([[5, 0.5], [5.5, -0.5], [4.5,-0.5], [5,0.5],true], {stroke: "black", fill: "#F0F0F0"});
+					label( [ 1, 0 ],  1, "left", { color: "black" });
+					label( [ 1, 2 ],  2, "left", { color: "black" });
+					line( [ 0, -0.8], [7, -0.8],{stroke:"black"});
+					label( [ 1, -1.5 ],  2+"&times;", "left", { color: "#6495ED" });
+					label( [ 2, -1.5 ],  "+", "right", { color: "#6495ED" });
+					label( [ 4, -1.5 ],  "="+a_add_b, "right", { color: "#6495ED" });
+					path([[1.5, -1], [2, -2], [1,-2], [1.5,-1],true], {stroke: "#6495ED", fill: "#F0F0F0"});
+					path([[3, -1], [4, -1], [4,-2], [3,-2], [3,-1],true], {stroke: "#6495ED", fill: "#F0F0F0"});
+				</div>
+			</div>
+			<p><code><var>a_mul_b</var></code> 有兩種分解方式：<code><var>a</var>\cdot <var>b</var></code> 和 <code><var>t_2[0]</var>\cdot <var>t_2[1]</var></code></p>
+			<p>但因為 <code><var>a_add_b</var></code> 是奇數，所以方框所表示的數字必須為奇數，因此 <code><var>t_2[0]</var>\cdot <var>t_2[1]</var></code> 不符合要求。</p>
+			<p>剩下來的分解是 <code><var>a</var>\cdot <var>b</var></code> ，但因為方框所表示的數為奇數，所以只要試方框 <code>=<var>a</var></code> ：</p>
+			<div>
+			    <div class="graphie" id="newPhillips">
+				    init({ range:[[-1,12],[-3,3]],scale: 30});
+					line( [ 1, 0], [4, 2],{stroke:"black"});
+					line( [ 1, 2], [4, 0],{stroke:"black"});
+					label( [ 1, 0 ],  1, "left", { color: "black" });
+					label( [ 1, 2 ],  2, "left", { color: "black" });
+					label( [ 4, 0 ],  b, "right", { color: "black" });
+					label( [ 4, 2 ],  a, "right", { color: "black" });
+					line( [ 0, -0.8], [7, -0.8],{stroke:"black"});
+					label( [ 0, -1.5 ],  accMul(2,b)+"+"+a+"="+a_add_b, "right", { color: "#6495ED" });
+					
+				</div>
+			</div>
+			<div>
+			    <p>因此，求得因式分解 <code>2x^{2}+<var>a_add_b</var>x+<var>a_mul_b</var>=</code><code class="hint_pink">(2x+<var>a</var>)(x+<var>b</var>)</code> 。</p>
+				<p>在做十字交乘時，係數奇偶數的關係可以用來排除一些不必要的配對。</p>
+			</div>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars" data-ensure="(t_1==4||t_1==3)&&(t_2[0]%2==0&&t_2[1]%2==0)&&val_1%2!=a_add_b%2">
+                <var id="a">randRange(2,15)</var>
+				<var id="b">randRange(2,5)</var>
+				<var id="a_mul_b">accMul(a,b)</var>
+				<var id="a_add_b">accAdd(a,accMul(3,b))</var>
+				<var id="t_1">
+				(function(){
+				    var add = 0;
+				    for(var i=2;i&lt;=a_mul_b-1;i++){
+					    if(a_mul_b%i==0){
+						    add+=1;
+						}
+					}
+					return add;
+				})()</var>
+				<var id="t_2">
+				(function(){
+				    var dex = 0;
+				    var arr = new Array();
+				    for(var i=2;i&lt;=a_mul_b-1&&i!=a&&i!=b;i++){
+					    if(a_mul_b%i==0&&i*i==a_mul_b){
+						    arr[0]=i;
+							arr[1]=i;
+						}
+						if(a_mul_b%i==0&&i*i!=a_mul_b){
+						    arr[0]=i;
+							arr[1]=accDiv(a_mul_b,i);
+						}
+					}
+					arr[2]=1;
+					arr[3]=a_mul_b;
+					return arr;
+				})()</var>
+				<var id="val_1">3*t_2[0]+t_2[1]</var>
+            </div>
+            <p class="question">用十字交乘法求下列各一元二次式的因式分解：</p>
+			<div class="problem"><p><code>3x^{2}-<var>a_add_b</var>x+<var>a_mul_b</var></code></p></div>
+			<div class="solution" data-type="multiple">
+				<p><code>(</code><span class="sol" data-forms="integer"><var>3</var></span><code>x-\enspace</code><span class="sol" data-forms="integer"><var>a</var></span><code>) (x-\enspace</code><span class="sol" data-forms="integer"><var>b</var></span><code>)</code></p>
+				<p class="example">整數，例如 <code>6</code></p>
+            </div>
+
+            <div class="hints">
+			<p><code>x^{2}</code> 的係數 <code>3</code> 只能分解成 <code>3\cdot 1</code> 。將 <code><var>a_mul_b</var></code> 分解成兩整數相乘，且其十字交乘的和為 <code><var>-a_add_b</var></code> ，所以這兩整數都是負數，如下圖所示：</p>
+			<div>
+			    <div class="graphie" id="phillips">
+				    init({ range:[[-1,12],[-3,3]],scale: 30});
+					line( [ 1, 0], [4, 2],{stroke:"black"});
+					line( [ 1, 2], [4, 0],{stroke:"black"});
+					path([[4.5, 1.5], [4.5, 2.5], [5.5,2.5], [5.5,1.5], [4.5,1.5],true], {stroke: "black", fill: "#F0F0F0"});
+					path([[5, 0.5], [5.5, -0.5], [4.5,-0.5], [5,0.5],true], {stroke: "black", fill: "#F0F0F0"});
+					label( [ 1, 0 ],  1, "left", { color: "black" });
+					label( [ 1, 2 ],  3, "left", { color: "black" });
+					line( [ 0, -0.8], [7, -0.8],{stroke:"black"});
+					label( [ 1, -1.5 ],  3+"&times;", "left", { color: "#6495ED" });
+					label( [ 2, -1.5 ],  "+", "right", { color: "#6495ED" });
+					label( [ 4, -1.5 ],  "="+(-a_add_b), "right", { color: "#6495ED" });
+					path([[1.5, -1], [2, -2], [1,-2], [1.5,-1],true], {stroke: "#6495ED", fill: "#F0F0F0"});
+					path([[3, -1], [4, -1], [4,-2], [3,-2], [3,-1],true], {stroke: "#6495ED", fill: "#F0F0F0"});
+				</div>
+			</div>
+			<p>所以分解 <code><var>a_mul_b</var></code> 的可能性有：<code>(-1)\cdot (-<var>a_mul_b</var>)、(-<var>a</var>)\cdot (-<var>b</var>)</code> 和 <code>(-<var>t_2[0]</var>)\cdot (-<var>t_2[1]</var>)</code></p>
+			<p>底下再利用奇偶數的關係來協助找出 <code><var>a_mul_b</var></code> 的正確分解方式。</p>
+			<p>因為 <code><var>a_add_b</var></code> 是 <code data-if="a_add_b%2==1">奇數</code><code data-if="a_add_b%2==0">偶數</code> ，所以 <code>(-<var>t_2[0]</var>)\cdot (<var>t_2[1]</var>)</code> 可以排除。</p>
+			<p>若三角形取值為 <code>-<var>a_mul_b</var></code> 時，也因為數字太大，可以很快排除。</p>
+			<p>在心中很快的計算剩下的情況或用十字交乘法來幫忙計算，如下圖：</p>
+			<div>
+			    <div class="graphie" id="newPhillips_1">
+				    init({ range:[[-1,12],[-3,3]],scale: 30});
+					line( [ 1, 0], [4, 2],{stroke:"black"});
+					line( [ 1, 2], [4, 0],{stroke:"black"});
+					label( [ 1, 0 ],  1, "left", { color: "black" });
+					label( [ 1, 2 ],  3, "left", { color: "black" });
+					label( [ 4, 0 ],  -1, "right", { color: "black" });
+					label( [ 4, 2 ],  -a_mul_b, "right", { color: "black" });
+					line( [ 0, -0.8], [7, -0.8],{stroke:"black"});
+					label( [ 0, -1.5 ],  -3+"-"+a_mul_b+"="+(-accAdd(3,a_mul_b)), "right", { color: "#6495ED" });
+					
+				</div>
+				<div class="graphie" id="newPhillips_2">
+				    init({ range:[[-1,12],[-3,3]],scale: 30});
+					line( [ 1, 0], [4, 2],{stroke:"black"});
+					line( [ 1, 2], [4, 0],{stroke:"black"});
+					label( [ 1, 0 ],  1, "left", { color: "black" });
+					label( [ 1, 2 ],  3, "left", { color: "black" });
+					label( [ 4, 0 ],  -a, "right", { color: "black" });
+					label( [ 4, 2 ],  -b, "right", { color: "black" });
+					line( [ 0, -0.8], [7, -0.8],{stroke:"black"});
+					label( [ 0, -1.5 ],  accMul(3,-a)+"-"+b+"="+(-(accAdd(accMul(3,a),b))), "right", { color: "#6495ED" });
+					
+				</div>
+			    <div class="graphie" id="newPhillips">
+				    init({ range:[[-1,12],[-3,3]],scale: 30});
+					line( [ 1, 0], [4, 2],{stroke:"black"});
+					line( [ 1, 2], [4, 0],{stroke:"black"});
+					label( [ 1, 0 ],  1, "left", { color: "black" });
+					label( [ 1, 2 ],  3, "left", { color: "black" });
+					label( [ 4, 0 ],  -b, "right", { color: "black" });
+					label( [ 4, 2 ],  -a, "right", { color: "black" });
+					line( [ 0, -0.8], [7, -0.8],{stroke:"black"});
+					label( [ 0, -1.5 ],  accMul(3,-b)+"-"+a+"="+(-a_add_b), "right", { color: "#6495ED" });
+					
+				</div>
+			</div>
+			<div>
+			    <p>因此，求得因式分解 <code>3x^{2}-<var>a_add_b</var>x+<var>a_mul_b</var>=</code><code class="hint_pink">(3x-<var>a</var>)(x-<var>b</var>)</code> 。</p>
+			</div>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

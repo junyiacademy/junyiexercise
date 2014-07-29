@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions graphie interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>一次函數的方程式及圖形</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+            <div class="vars" data-ensure="J!=M && K!=N && J_M/getGCD(K_N,J_M) &lt;=20 && J_M/getGCD(N*J-M*K,J_M) &lt;=20">
+			    <var id="J">randRangeNonZero(-10,10)</var>
+				<var id="K">randRangeNonZero(-10,10)</var>
+				<var id="M">randRangeNonZero(-10,10)</var>
+				<var id="N">randRangeNonZero(-10,10)</var>
+				<var id="K_N">K-N</var>
+				<var id="J_M">J-M</var>
+				<var id="arr">
+				(function(){
+				    var arr = new Array();
+					if(K==1){
+					    arr[0]="";
+					}
+					if(K==-1){
+					    arr[0]="-";
+					}
+					if(K!=1&&K!=-1){
+					    arr[0]=K;
+					}
+					if(J==1){
+					    arr[1]="";
+					}
+					if(J==-1){
+					    arr[1]="-";
+					}
+					if(J!=1&&J!=-1){
+					    arr[1]=J;
+					}
+					if(M==1){
+					    arr[2]="";
+					}
+					if(M==-1){
+					    arr[2]="-";
+					}
+					if(M!=1&&M!=-1){
+					    arr[2]=M;
+					}
+					if(N==1){
+					    arr[3]="";
+					}
+					if(N==-1){
+					    arr[3]="-";
+					}
+					if(N!=1&&N!=-1){
+					    arr[3]=N;
+					}
+					if(J_M==1){
+					    arr[4]="";
+					}
+					if(J_M==-1){
+					    arr[4]="-";
+					}
+					if(J_M!=1&&J_M!=-1){
+					    arr[4]=J_M;
+					}
+					return arr;
+				})()</var>
+				<var id="R_a">(K_N)/(J_M)</var>
+				<var id="R_b">K-R_a*J</var>
+            </div>
+			<p class="question">若函數 <code>y=ax+b</code> 的圖形是通過 <code>(<var>J</var>,<var>K</var>)</code> 、<code>(<var>M</var>,<var>N</var>)</code> 兩點的直線，求 <code>a</code> 和 <code>b</code></p>
+			<div class="solution" data-type="multiple">
+				<code>a=\enspace</code><span class="sol" data-type="rational"><var>R_a</var></span></br>
+				<code>b=\enspace</code><span class="sol" data-type="rational"><var>R_b</var></span>
+				<p class="example">整數，例： <code>152</code></p>	
+				<p class="example">分數，例： <code>\dfrac{2}{3}</code></p>	
+				<p class="example">小數，例： <code>1.125</code></p>	
+			</div>
+
+    <div class="hints">
+	    <p>函數 <code>y=ax+b</code> 是通過 <code>(<var>J</var>,<var>K</var>)</code> 、<code>(<var>M</var>,<var>N</var>)</code> 兩點的直線。要算出 <code>a</code> 和 <code>b</code> 時，我們可以將 <code>(<var>J</var>,<var>K</var>)</code> 、<code>(<var>M</var>,<var>N</var>)</code> 兩點帶入直線方程式中。</p>
+		<div>
+		    <p>代入後會得到方程組：</p>
+			<p><code>\left\{\begin{array}{l}
+                <var>K</var> = <var>arr[1]</var>a + b\enspace\enspace\enspace\enspace\enspace(1) \\
+                <var>N</var> = <var>arr[2]</var>a + b\enspace\enspace\enspace\enspace\enspace(2)\end{array}\right.
+				</code>
+			</p>
+		</div>
+		<p>可以用加減消去，將第 <code>(1)</code> 式減去第 <code>(2)</code> 式，會得到：</p>
+		<p><code><var>K</var>-<span data-if="N&lt;0">(</span><var>N</var><span  data-if="N&lt;0">)</span>=<var>arr[1]</var>a-<span data-if="M&lt;0">(</span><var>arr[2]</var>a<span data-if="M&lt;0">)</span></code></p>
+		<p><code><var>K_N</var>=<var>arr[4]</var>a</code></p>
+		<p>
+		    <code data-if="(K_N)%(J_M)!=0">a=<span data-if="K_N/J_M&lt;0">-</span><var>fraction(abs(K_N),abs(J_M),true,true,true)</var></code>
+			<code data-if="(K_N)%(J_M)==0">a=<var>R_a</var></code>
+		</p>
+		<div><p>算出 <code>a</code> 之後代回第 <code>(1)</code> 式算 <code>b</code> ，<code><var>K</var> = <var>J</var>\times </code>
+		    <code data-if="(K_N)%(J_M)!=0"><span data-if="K_N/J_M&lt;0">(-</span><var>fraction(abs(K_N),abs(J_M),true,true,true)</var><span data-if="K_N/J_M&lt;0">)</span></code>
+			<code data-if="(K_N)%(J_M)==0"><var>R_a</var></code>
+			<code>+\enspace b</code></p></div>
+		<div>
+		    <p>
+			    <code data-if="(K_N*J)%(J_M)!=0"><var>K</var> = <span data-if="K_N*J/J_M&lt;0">-</span><var>fraction(abs(K_N*J),abs(J_M),true,true,true)</var>+b</code>
+				<code data-if="(K_N*J)%(J_M)==0"><var>K</var> = <var>R_a*J</var>+b</code>
+			</p>
+		</div>
+		<p>
+		    <code>b=<var>decimalFraction(R_b,true,true,true,false)</var></code>
+		</p>
+		<p>因此，可以知道函數的方程式為 <code data-if="abs(R_a)!=1" class="hint_green">y=<var>decimalFraction(R_a,true,true,true,false)</var></code><code data-if="R_a==1" class="hint_green">y=</code><code data-if="R_a==-1" class="hint_green">y=-</code><code class="hint_green">x+<var>decimalFraction(R_b,true,true,true,false)</var></code> 。</p>
+		<p>所以，本題的答案為 <code class="hint_pink">a=<var>decimalFraction(R_a,true,true,true,false)</var></code>、<code class="hint_pink">b=<var>decimalFraction(R_b,true,true,true,false)</var>。</code></p>
+    </div>
+	</div>
+	
+	<div id="case2">
+            <div class="vars" data-ensure="J!=M && K!=N && J_M/getGCD(K_N,J_M) &lt;=20 && J_M/getGCD(N*J-M*K,J_M) &lt;=20">
+			    <var id="J">randRangeNonZero(-10,10)</var>
+				<var id="K">randRangeNonZero(-10,10)</var>
+				<var id="M">randRangeNonZero(-10,10)</var>
+				<var id="N">randRangeNonZero(-10,10)</var>
+				<var id="K_N">K-N</var>
+				<var id="J_M">J-M</var>
+				<var id="arr">
+				(function(){
+				    var arr = new Array();
+					if(K==1){
+					    arr[0]="";
+					}
+					if(K==-1){
+					    arr[0]="-";
+					}
+					if(K!=1&&K!=-1){
+					    arr[0]=K;
+					}
+					if(J==1){
+					    arr[1]="";
+					}
+					if(J==-1){
+					    arr[1]="-";
+					}
+					if(J!=1&&J!=-1){
+					    arr[1]=J;
+					}
+					if(M==1){
+					    arr[2]="";
+					}
+					if(M==-1){
+					    arr[2]="-";
+					}
+					if(M!=1&&M!=-1){
+					    arr[2]=M;
+					}
+					if(N==1){
+					    arr[3]="";
+					}
+					if(N==-1){
+					    arr[3]="-";
+					}
+					if(N!=1&&N!=-1){
+					    arr[3]=N;
+					}
+					if(J_M==1){
+					    arr[4]="";
+					}
+					if(J_M==-1){
+					    arr[4]="-";
+					}
+					if(J_M!=1&&J_M!=-1){
+					    arr[4]=J_M;
+					}
+					return arr;
+				})()</var>
+				<var id="R_a">(K_N)/(J_M)</var>
+				<var id="R_b">K-R_a*J</var>
+            </div>
+			<p class="question">若一次函數的圖形是通過 <code>(<var>J</var>,<var>K</var>)</code> 、<code>(<var>M</var>,<var>N</var>)</code> 兩點的直線，求這個一次函數方程式的圖形</p>
+			<div class="solution" data-type="multiple">
+			    <code>y=ax+b</code></br>
+				<code>a=\enspace</code><span class="sol" data-type="rational"><var>R_a</var></span></br>
+				<code>b=\enspace</code><span class="sol" data-type="rational"><var>R_b</var></span>
+				<p class="example">整數，例： <code>152</code></p>	
+				<p class="example">分數，例： <code>\dfrac{2}{3}</code></p>	
+				<p class="example">小數，例： <code>1.125</code></p>	
+			</div>
+
+    <div class="hints">
+	    <p>要計算通過 <code>(<var>J</var>,<var>K</var>)</code> 、<code>(<var>M</var>,<var>N</var>)</code> 兩點直線的函數圖形時，我們可以先假設函數的方程式為 <code>y=ax+b</code> 。</p>
+		<p>然後，我們可以將 <code>(<var>J</var>,<var>K</var>)</code> 、<code>(<var>M</var>,<var>N</var>)</code> 兩點帶入直線方程式中，並解出 <code>a</code> 和 <code>b</code>。</p>
+		<div>
+		    <p>代入後會得到方程組：</p>
+			<p><code>\left\{\begin{array}{l}
+                <var>K</var> = <var>arr[1]</var>a + b\enspace\enspace\enspace\enspace\enspace(1) \\
+                <var>N</var> = <var>arr[2]</var>a + b\enspace\enspace\enspace\enspace\enspace(2)\end{array}\right.
+				</code>
+			</p>
+		</div>
+		<p>可以用加減消去，將第 <code>(1)</code> 式減去第 <code>(2)</code> 式，會得到：</p>
+		<p><code><var>K</var>-<span data-if="N&lt;0">(</span><var>N</var><span  data-if="N&lt;0">)</span>=<var>arr[1]</var>a-<span data-if="M&lt;0">(</span><var>arr[2]</var>a<span data-if="M&lt;0">)</span></code></p>
+		<p><code><var>K_N</var>=<var>arr[4]</var>a</code></p>
+		<p>
+		    <code data-if="(K_N)%(J_M)!=0">a=<span data-if="K_N/J_M&lt;0">-</span><var>fraction(abs(K_N),abs(J_M),true,true,true)</var></code>
+			<code data-if="(K_N)%(J_M)==0">a=<var>R_a</var></code>
+		</p>
+		<div><p>算出 <code>a</code> 之後代回第 <code>(1)</code> 式算 <code>b</code> ，<code><var>K</var> = <var>J</var>\times </code>
+		    <code data-if="(K_N)%(J_M)!=0"><span data-if="K_N/J_M&lt;0">(-</span><var>fraction(abs(K_N),abs(J_M),true,true,true)</var><span data-if="K_N/J_M&lt;0">)</span></code>
+			<code data-if="(K_N)%(J_M)==0"><var>R_a</var></code>
+			<code>+\enspace b</code></p></div>
+		<div>
+		    <p>
+			    <code data-if="(K_N*J)%(J_M)!=0"><var>K</var> = <span data-if="K_N*J/J_M&lt;0">-</span><var>fraction(abs(K_N*J),abs(J_M),true,true,true)</var>+b</code>
+				<code data-if="(K_N*J)%(J_M)==0"><var>K</var> = <var>R_a*J</var>+b</code>
+			</p>
+		</div>
+		<p>
+		    <code>b=<var>decimalFraction(R_b,true,true,true,false)</var></code>
+		</p>
+		<p>因此，可以知道函數的方程式為 <code class="hint_pink" data-if="abs(R_a)!=1">y=<var>decimalFraction(R_a,true,true,true,false)</var></code><code class="hint_pink" data-if="R_a==1">y=</code><code class="hint_pink" data-if="R_a==-1">y=-</code><code class="hint_pink">x+<var>decimalFraction(R_b,true,true,true,false)</var></code> 。</p>
+    </div>
+	</div>
+
+	<div id="case3">
+            <div class="vars">
+			    <var id="J">randRange(-20,20)</var>
+				<var id="K">randRangeNonZero(-20,20)</var>
+            </div>
+			<p class="question">常數函數 <code>y=b</code> 的圖形是通過 <code>(<var>J</var>,<var>K</var>)</code> 的水平線，則 <code>b=</code>？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>K</var></span>
+			</div>
+
+    <div class="hints">
+	    <p>我們可以從圖中看出 <code>(<var>J</var>,<var>K</var>)</code> 所在的位置：</p>
+		<div>
+                <div class="graphie" id="grid">
+                    graphInit({
+                        range: [[-21, 21], [-21, 21]],
+                        scale: [10, 10],
+                        axisArrows: "&lt;-&gt;",
+                        tickStep: 3,
+                        labelStep: 1,
+                        gridOpacity: 0.05,
+                        axisOpacity: 0.2,
+                        tickOpacity: 0.4,
+                        labelOpacity: 0.5
+                    });
+
+					label([J, K ], "("+J+","+K+")", "below right");
+					circle( [J, K], 1/4,{stroke: "none",fill: "#ff0000"} );
+					
+                    addMouseLayer();
+                </div>
+        </div>
+		<p>常數函數 <code>y=b</code> 的圖形是通過 <code>(<var>J</var>,<var>K</var>)</code> 的水平線。</p>
+		<p>我們在直角座標平面上畫出這條水平線：</p>
+		<div>
+		    <div class="graphie" data-update="grid">
+			    line([-21,K], [21,K], { stroke: "blue" });
+			</div>
+		</div>
+		<p>我們知道 <code>y=b</code> 這條線上的 <code>y</code> 值永遠都等於 <code><var>K</var></code> ，所以 <code>y=<var>K</var></code> 。</p>
+		<p>所以，本題的答案為 <code class="hint_pink">b=<var>K</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case4">
+            <div class="vars">
+			    <var id="J">randRangeNonZero(-20,20)</var>
+				<var id="m_low">randRange(2,20)</var>
+				<var id="m_up">randRange(-10,10)*randRange(1,m_low)</var>
+				<var id="n_low">randRange(2,20)</var>
+				<var id="n_up">randRange(-10,10)*randRange(1,n_low)</var>
+				<var id="R">n_up/n_low-J*m_up/m_low</var>
+            </div>
+			<p class="question">已知函數 <code data-if="abs(J)!=1">y=<var>J</var>x+K</code><code data-if="J==1">y=x+K</code><code data-if="J==-1">y=-x+K</code> 的圖形通過 <code>(<var>fraction(m_up,m_low,true,true,false)</var>,<var>fraction(n_up,n_low,true,true,false)</var>)</code>，則 <code>K=</code>？</p>
+			<div class="solution" data-type="number">
+				<span class="sol"><var>R</var></span>
+			</div>
+
+    <div class="hints">
+	    <p>函數 <code data-if="abs(J)!=1">y=<var>J</var>x+K</code><code data-if="J==1">y=x+K</code><code data-if="J==-1">y=-x+K</code> 的圖形通過 <code>(<var>fraction(m_up,m_low,true,true,false)</var>,<var>fraction(n_up,n_low,true,true,false)</var>)</code> ，我們可以將 <code>(<var>fraction(m_up,m_low,true,true,false)</var>,<var>fraction(n_up,n_low,true,true,false)</var>)</code> 代入 <code data-if="abs(J)!=1">y=<var>J</var>x+K</code><code data-if="J==1">y=x+K</code><code data-if="J==-1">y=-x+K</code> 之中。</p>
+		<p>得到 <code><var>fraction(n_up,n_low,true,true,false)</var>=<var>decimalFraction(J*(m_up/m_low),true,true,false)</var>+K</code> </p>
+		<p><code><var>fraction(n_up,n_low,true,true,false)</var>-<var>decimalFraction(J*(m_up/m_low),true,true,false)</var>=K</code></p>
+		<p><code>K=<var>decimalFraction(n_up/n_low-J*(m_up/m_low),true,true,false)</var></code></p>
+		<p>因此，本題的答案為 <code class="hint_pink"><var>decimalFraction(R,true,true,false)</var></code> 。</p>
+    </div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

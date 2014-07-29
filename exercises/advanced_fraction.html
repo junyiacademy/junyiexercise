@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>分數除法的應用題(進階)</title>
+    <script src="../khan-exercise.js"></script>
+    <!--from//stackoverflow.com/questions/4652468/is-there-a-javascript-function-that-reduces-a-fraction-->
+    <script type="text/javascript">
+        function reduce(numerator,denominator){
+            var gcd = function gcd(a,b){
+                return b ? gcd(b, a%b) : a;
+            };
+            gcd = gcd(numerator,denominator);
+            return [numerator/gcd, denominator/gcd];
+        }
+    </script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars">
+                    <var id="bottle">randFromArray(["洗衣精","醬油","洗碗精","沙拉油"])</var>
+                    <var id="Q">randRange(1,9)</var>
+                    <var id="S">randRange(1,8)</var>
+                    <var id="T">
+                        (function(){
+                        if(S===2){return randRangeExclude(S+1,9,[S*2,S*3,S*4]);}
+                        else if(S===3){return randRangeExclude(S+1,9,[S*2,S*3]);}
+                        else if(S===4){return randRangeExclude(S+1,9,[S*3/2,S*2]);}
+                        else if(S===6){return randRangeExclude(S+1,9,[8,9]);}
+                        else{return randRange(S+1,9);}
+                    })()
+                    </var>
+                    <var id="P">randRange(1,9)</var>
+                    <var id="M">randRange(1,8)</var>
+                    <var id="N">
+                        (function(){
+                        if(M===2){return randRangeExclude(M+1,9,[M*2,M*3,M*4]);}
+                        else if(M===3){return randRangeExclude(M+1,9,[M*2,M*3]);}
+                        else if(M===4){return randRangeExclude(M+1,9,[M*3/2,M*2]);}
+                        else if(M===6){return randRangeExclude(M+1,9,[8,9]);}
+                        else{return randRange(M+1,9);}
+                    })()</var>
+                    <var id="ans_reduce">reduce((Q*T+S)*N,T*(P*N+M))</var>
+                </div>
+                <p class="problem">
+                    <code><var>P</var>\dfrac{<var>M</var>}{<var>N</var>}</code>瓶<var>bottle</var>有<code><var>Q</var>\dfrac{<var>S</var>}{<var>T</var>}</code>公升
+                </p>
+                <p class="question">
+                    請問，一瓶<var>bottle</var>有幾公升？
+                </p>
+                <p class="solution" data-type="rational" data-simplify="optional">
+                    <var>(Q*T+S)*N/(T*(P*N+M))</var>
+                </p>
+                <div class="hints">
+                    <p>我們知道<code><var>P</var>\dfrac{<var>M</var>}{<var>N</var>}</code>瓶<var>bottle</var>有<code><var>Q</var>\dfrac{<var>S</var>}{<var>T</var>}</code>公升，題目要求算出一瓶有幾公升</p>
+                    <p>我們可以列出：（一瓶幾公升）<code>\times</code>（總共有幾瓶）＝ 總共有多少公升</p>
+                    <p>所以（一瓶幾公升）＝（總共多少公升）&divide;（有幾瓶）</p>
+                    <p>我們要求一瓶有幾公升，所以我們將等式剩下的變數套入數字：<br>
+                        一瓶幾公升＝
+                        <code><var>Q</var>\dfrac{<var>S</var>}{<var>T</var>}</code>
+                        &divide;
+                        <code><var>P</var>\dfrac{<var>M</var>}{<var>N</var>}</code>
+                    </p>
+                    <p> = <code>\dfrac{<var>Q</var>\times<var>T</var>+<var>S</var>}{<var>T</var>}</code>
+                        &divide;
+                        <code>\dfrac{<var>P</var>\times<var>N</var>+<var>M</var>}{<var>N</var>}</code>
+                    </p>
+                    <p> = <code>\dfrac{<var>Q*T</var>+<var>S</var>}{<var>T</var>}</code>
+                        &divide;
+                        <code>\dfrac{<var>P*N</var>+<var>M</var>}{<var>N</var>}</code>
+                    </p>
+                    <p> = <code>\dfrac{<var>Q*T+S</var>}{<var>T</var>}</code>
+                        &divide;
+                        <code>\dfrac{<var>P*N+M</var>}{<var>N</var>}</code>
+                    </p>
+                    <p> = <code>\dfrac{<var>Q*T+S</var>}{<var>T</var>}
+                        \times \dfrac{<var>N</var>}{<var>P*N+M</var>}</code>
+                        <span data-if="ans_reduce[0]!==(Q*T+S)*N">(先化簡再算會比較好算喔！)
+                    </p>
+                    <p> = <code>\dfrac{<var>ans_reduce[0]</var>}{<var>ans_reduce[1]</var>}</code>
+                        <br>所以答案是一瓶<var>bottle</var><code>\dfrac{<var>ans_reduce[0]</var>}{<var>ans_reduce[1]</var>}</code>公升
+                    </p>
+                </div>
+
+            </div>
+            
+            <div id="case2">
+                <div class="vars">
+                    <var id="Q">randRange(1,9)</var>
+                    <var id="S">randRange(1,8)</var>
+                    <var id="T">
+                        (function(){
+                        if(S===2){return randRangeExclude(S+1,9,[S*2,S*3,S*4]);}
+                        else if(S===3){return randRangeExclude(S+1,9,[S*2,S*3]);}
+                        else if(S===4){return randRangeExclude(S+1,9,[S*3/2,S*2]);}
+                        else if(S===6){return randRangeExclude(S+1,9,[8,9]);}
+                        else{return randRange(S+1,9);}
+                    })()
+                    </var>
+                    <var id="P">randRange(1,9)</var>
+                    <var id="M">randRange(1,8)</var>
+                    <var id="N">
+                        (function(){
+                        if(M===2){return randRangeExclude(M+1,9,[M*2,M*3,M*4]);}
+                        else if(M===3){return randRangeExclude(M+1,9,[M*2,M*3]);}
+                        else if(M===4){return randRangeExclude(M+1,9,[M*3/2,M*2]);}
+                        else if(M===6){return randRangeExclude(M+1,9,[8,9]);}
+                        else{return randRange(M+1,9);}
+                    })()</var>
+                    <var id="ans_reduce">reduce((Q*T+S)*N,T*(P*N+M))</var>
+                </div>
+                <p class="problem">
+                    長方形的長<code><var>P</var>\dfrac{<var>M</var>}{<var>N</var>}</code>公尺，面積是<code><var>Q</var>\dfrac{<var>S</var>}{<var>T</var>}</code>平方公尺，
+                </p>
+                <p class="question">
+                    請問，寬是幾公尺？
+                </p>
+                <p class="solution" data-type="rational" data-simplify="optional">
+                    <var>(Q*T+S)*N/(T*(P*N+M))</var>公頃
+                </p>
+                <div class="hints">
+                    <p>我們知道長方形的面積 = 長 &times; 寬
+                        ，我們已經有長和面積的數字，題目要求算出寬為多少</p>
+                    <p>我們可以列出：（長）<code>\times</code>（寬）＝ 總共面積</p>
+                    <p>所以（寬）＝（總共面積）&divide;（長）</p>
+                    <p>我們要求寬為多少，所以我們將等式剩下的變數套入數字：<br>
+                        寬＝
+                        <code><var>Q</var>\dfrac{<var>S</var>}{<var>T</var>}</code>
+                        &divide;
+                        <code><var>P</var>\dfrac{<var>M</var>}{<var>N</var>}</code>
+                    </p>
+                    <p> = <code>\dfrac{<var>Q</var>\times<var>T</var>+<var>S</var>}{<var>T</var>}</code>
+                        &divide;
+                        <code>\dfrac{<var>P</var>\times<var>N</var>+<var>M</var>}{<var>N</var>}</code>
+                    </p>
+                    <p> = <code>\dfrac{<var>Q*T</var>+<var>S</var>}{<var>T</var>}</code>
+                        &divide;
+                        <code>\dfrac{<var>P*N</var>+<var>M</var>}{<var>N</var>}</code>
+                    </p>
+                    <p> = <code>\dfrac{<var>Q*T+S</var>}{<var>T</var>}</code>
+                        &divide;
+                        <code>\dfrac{<var>P*N+M</var>}{<var>N</var>}</code>
+                    </p>
+                    <p> = <code>\dfrac{<var>Q*T+S</var>}{<var>T</var>}
+                        \times \dfrac{<var>N</var>}{<var>P*N+M</var>}</code>
+                        <span data-if="ans_reduce[0]!==(Q*T+S)*N">(先化簡再算會比較好算喔！)
+                    </p>
+                    <p> = <code>\dfrac{<var>ans_reduce[0]</var>}{<var>ans_reduce[1]</var>}</code><br>
+                    所以寬就是<code>\dfrac{<var>ans_reduce[0]</var>}{<var>ans_reduce[1]</var>}</code>公尺
+                    </p>
+                </div>
+
+            </div>
+            <div id="case3">
+                <div class="vars">
+                    <var id="Q">randRange(1,8)</var>
+                    <var id="S">randRange(1,8)</var>
+                    <var id="T">
+                        (function(){
+                        if(S===2){return randRangeExclude(S+1,9,[S*2,S*3,S*4]);}
+                        else if(S===3){return randRangeExclude(S+1,9,[S*2,S*3]);}
+                        else if(S===4){return randRangeExclude(S+1,9,[S*3/2,S*2]);}
+                        else if(S===6){return randRangeExclude(S+1,9,[8,9]);}
+                        else{return randRange(S+1,9);}
+                    })()
+                    </var>
+                    <var id="P">randRange(Q+1,9)</var>
+                    <var id="M">randRange(1,8)</var>
+                    <var id="N">
+                        (function(){
+                        if(M===2){return randRangeExclude(M+1,9,[M*2,M*3,M*4]);}
+                        else if(M===3){return randRangeExclude(M+1,9,[M*2,M*3]);}
+                        else if(M===4){return randRangeExclude(M+1,9,[M*3/2,M*2]);}
+                        else if(M===6){return randRangeExclude(M+1,9,[8,9]);}
+                        else{return randRange(M+1,9);}
+                    })()</var>
+                    <var id="ans_reduce">reduce((Q*T+S)*N,T*(P*N+M))</var>
+                </div>
+                <p class="problem">
+                    <var>person(1)</var>有<code><var>P</var>\dfrac{<var>M</var>}{<var>N</var>}</code>公頃的土地，其中的<code><var>Q</var>\dfrac{<var>S</var>}{<var>T</var>}</code>公頃種<var>fruit(1)</var>
+                </p>
+                <p class="question">
+                    請問，<var>fruit(1)</var>的面積占全部面積的幾分之幾？
+                </p>
+                <p class="solution" data-type="rational" data-simplify="optional">
+                    <var>(Q*T+S)*N/(T*(P*N+M))</var>
+                </p>
+                <div class="hints">
+                    <p><var>fruit(1)</var>種植面積比例＝(<var>fruit(1)</var>的面積)&divide;(全部面積)</p>
+                    <p><var>fruit(1)</var>種植面積比例＝
+                        <code><var>Q</var>\dfrac{<var>S</var>}{<var>T</var>}</code>
+                        &divide;
+                        <code><var>P</var>\dfrac{<var>M</var>}{<var>N</var>}</code>
+                    </p>
+                    <p> = <code>\dfrac{<var>Q</var>\times<var>T</var>+<var>S</var>}{<var>T</var>}</code>
+                        &divide;
+                        <code>\dfrac{<var>P</var>\times<var>N</var>+<var>M</var>}{<var>N</var>}</code>
+                    </p>
+                    <p> = <code>\dfrac{<var>Q*T</var>+<var>S</var>}{<var>T</var>}</code>
+                        &divide;
+                        <code>\dfrac{<var>P*N</var>+<var>M</var>}{<var>N</var>}</code>
+                    </p>
+                    <p> = <code>\dfrac{<var>Q*T+S</var>}{<var>T</var>}</code>
+                        &divide;
+                        <code>\dfrac{<var>P*N+M</var>}{<var>N</var>}</code>
+                    </p>
+                    <p> = <code>\dfrac{<var>Q*T+S</var>}{<var>T</var>}
+                        \times \dfrac{<var>N</var>}{<var>P*N+M</var>}</code>
+                        <span data-if="ans_reduce[0]!==(Q*T+S)*N">(先化簡再算會比較好算喔！)
+                    </p>
+                    <p> = <code>\dfrac{<var>ans_reduce[0]</var>}{<var>ans_reduce[1]</var>}</code><br>
+                    所以<var>fruit(1)</var>種植比例占全部土地比例為<code>\dfrac{<var>ans_reduce[0]</var>}{<var>ans_reduce[1]</var>}</code>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!--edit by taron 2014/5/7-->

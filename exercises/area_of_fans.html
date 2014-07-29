@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>弧長與扇形面積</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 40px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+	    <div id="case1">
+            <div class="vars">
+			    <var id="J">randFromArray([45,60,90,120,135,150,180,210,225,240,270,320])</var>
+				<var id="R">accDiv(J,360)</var>
+            </div>
+			<p class="question">如下圖，若圓心角是 <code><var>J</var>^{\circ}</code> ，則所對的 <code>\widehat{ACB}</code> 是圓的幾分之幾？</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped_1">
+				    init({
+                        range: [ [-1, 5], [-2.5, 2.5] ],
+                        scale: 40
+                    });
+					circle([2,0],1.5);
+					line([2,1.5],[2,0]);
+					var poiB = [1.5*Math.cos((90-J)*Math.PI/180)+2,1.5*Math.sin((90-J)*Math.PI/180)];
+					line([2,0],poiB);
+					arc( [2, 0], 0.2, 90-J, 90 );
+					style({stroke:"#6495ED"});
+					arc( [2, 0], 1.5, 90-J, 90 );
+					style({stroke:"red",fill:"gray"});
+					var poiC = [1.5*Math.cos((90-J/2)*Math.PI/180)+2,1.5*Math.sin((90-J/2)*Math.PI/180)];
+					circle(poiC,0.05);
+					label( [ 2, 1.5 ],  "A", "above", { color: "black" });
+					label( [1.3*(poiB[0]-2)+2,1.3*poiB[1]],  "B", "center", { color: "black" });
+					label( [1.3*(poiC[0]-2)+2,1.3*poiC[1]],  "C", "center", { color: "black" });
+				</div>
+			</div>
+			<div class="solution">	
+				<span class="sol" data-type="rational"><var>R</var></span>			
+            </div>
+            <div class="hints">
+			    <p>圓周角為 <code>360^{\circ}</code> ，</p>
+				<p>圓心角 <code><var>J</var>^{\circ}</code> 佔了整個圓的 <code>\dfrac{<var>J</var>}{360}=<var>fraction(J,360,true,true,false,false)</var></code> ，</p>
+				<p>所對的 <code>\widehat{ACB}</code> 弧一樣是佔了整個圓周的 <code class="hint_pink"><var>fraction(J,360,true,true,false,false)</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+			    <var id="J">10*randRange(1,9)</var>
+            </div>
+			<p class="question">下圖為圓心角是 <code>60^{\circ}</code> 的扇形與弓形，已知半徑為 <code><var>J</var></code> ，求此扇形與弓形的周長。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped_2">
+				    init({
+                        range: [ [-1, 10], [-2.5, 2.5] ],
+                        scale: 40
+                    });
+					circle([2,0],1.5);
+					line([1.25,0.75*sqrt(3)],[2,0]);
+					line([2.75,0.75*sqrt(3)],[2,0]);
+					style({fill:"#6495ED"});
+					path([[2,0],[1.25,0.75*sqrt(3)],[2.75,0.75*sqrt(3)],[2,0]],{fill:"#6495ED",stroke:"#6495ED"});
+					arc( [2, 0], 1.5, 60, 120 );
+					arc( [2, 0], 0.3, 60, 120 );
+					label( [2.1,0],  "\\small{60^{\\circ}}", "above", { color: "black" });
+					
+					style({fill:"white"});
+					circle([6,0],1.5);
+					line([5.25,0.75*sqrt(3)],[6,0]);
+					line([6.75,0.75*sqrt(3)],[6,0]);
+					style({fill:"#E9967A"});
+					arc( [6, 0], 1.5, 60, 120 );
+					arc( [6, 0], 0.3, 60, 120 );
+					label( [6.1,0],  "\\small{60^{\\circ}}", "above", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">	
+				扇形周長 <code>\enspace = \enspace</code><span class="sol" data-type="rational"><var>J/3</var></span><code>\enspace\pi + \enspace</code><span class="sol" data-forms="integer"><var>2*J</var></span><br />
+                弓形周長 <code>\enspace = \enspace</code><span class="sol" data-type="rational"><var>J/3</var></span><code>\enspace\pi + \enspace</code><span class="sol" data-forms="integer"><var>J</var></span>	
+				<p class="example">整數，例：<code>6</code></p>
+                <p class="example">帶分數，例：<code>1\enspace 3/4</code></p>
+                <p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>	
+                <p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>				
+            </div>
+            <div class="hints">
+			    <p>要計算扇形的周長必須先算出其弧長再加上兩段半徑，</p>
+				<p>弧長 <code>=</code> 直徑 <code>\times \pi \times</code> 圓心角 <code>\div 360</code> ，</p>
+				<p>弧長 <code>=2\times <var>J</var>\times \pi\times 60\div 360=<var>fraction(J,3,true,true,false,false)</var>\pi</code> ，</p>
+				<p>扇形的周長 <code>=<var>fraction(J,3,true,true,false,false)</var>\pi+<var>2*J</var></code> 。</p>
+				<div>
+				    <p>弓形的周長 <code>=</code> 弧長加上 <code>\overline{AB}=<var>fraction(J,3,true,true,false,false)</var>\pi+<var>J</var>(</code> 因為 <code>\triangle{OAB}</code> 為正三角形 <code>)</code> 。</p>
+					<div class="graphie" data-update="fan_shaped_2">
+						label( [5.25,0.75*sqrt(3)],  "\\small{A}", "left", { color: "black" });
+						label( [6.75,0.75*sqrt(3)],  "\\small{B}", "right", { color: "black" });
+						label( [6,0],  "\\small{O}", "below", { color: "black" });
+					</div>
+				</div>
+				<div>
+				    <p>因此，本題的答案應分別填入：</p>
+				    <p>扇形周長 <code class="hint_pink">=<var>fraction(J,3,true,true,false,false)</var>\pi+<var>2*J</var></code></p>
+				    <p>弓形周長 <code class="hint_pink">=<var>fraction(J,3,true,true,false,false)</var>\pi+<var>J</var></code></p>
+				</div>
+            </div>
+        </div>
+		
+        <div id="case3">
+            <div class="vars">
+			    <var id="J">randRange(20,30)</var>
+				<var id="K">randRange(6,20)</var>
+				<var id="R">J*K/2</var>
+            </div>
+			<p class="question">有一扇形半徑為 <code><var>J</var></code> 公分，其所對弧長為 <code><var>K</var></code> 公分，求此扇形面積。</p>
+			<div class="solution">	
+				<span class="sol" data-type="rational"><var>R</var></span>			
+            </div>
+            <div class="hints">
+			    <p>扇形面積 <code>=\dfrac{半徑\times 弧長}{2}</code></p>
+				<p>本題中，扇形面積 <code>=\dfrac{<var>J</var>\times<var>K</var>}{2}=</code><code class="hint_pink">\enspace<var>R</var></code> 平方公分。</p>
+            </div>
+        </div>
+		
+		<div id="case4">
+            <div class="vars">
+			    <var id="J">randFromArray([45,60,90,120,210,240,300,320])</var>
+				<var id="K">10*randRange(1,4)</var>
+				<var id="R">K*K*J/360</var>
+            </div>
+			<p class="question">已知一圓的半徑為 <code><var>K</var></code> 公分，求圓心角為 <code><var>J</var>^{\circ}</code> 的扇形面積。</p>
+			<div class="solution" data-type="multiple">	
+				扇形面積 <code>\enspace = \enspace</code><span class="sol" data-type="rational"><var>R</var></span><code>\enspace\pi</code>(平方公分)			
+            </div>
+            <div class="hints">
+			    <p><code><var>J</var>^{\circ}</code> 圓心角的扇形面積 <code>=圓面積\times\dfrac{<var>J</var>}{360}</code></p>
+				<p><code>=\pi\times (<var>K</var>)^{2}\times\dfrac{<var>J</var>}{360}</code></p>
+				<p><code>=\pi\times <var>K*K</var>\times<var>fraction(J,360,true,true,false,false)</var></code></p>
+				<p><code>=<var>fraction(K*K*J,360,true,true,false,false)</var>\pi</code> (平方公分)</p>
+				<p>因此，本題的答案為 <code class="hint_pink"><var>fraction(K*K*J,360,true,true,false,false)</var>\pi</code> (平方公分)。</p>
+            </div>
+        </div>
+		
+		<div id="case5">
+            <div class="vars">
+			    <var id="J">randFromArray([[10,20],[5,10],[20,30]])</var>
+				<var id="K">30*randRange(2,7)</var>
+				<var id="R2">2*(J[1]-J[0])</var>
+				<var id="r_b1">J[1]*J[1]-J[0]*J[0]</var>
+            </div>
+			<p class="question">如下圖，有兩 <code><var>K</var>^{\circ}</code> 圓心角的扇形，其半徑分別為 <code><var>J[0]</var></code> 公分和 <code><var>J[1]</var></code> 公分，求藍色區域的周長與面積。</p>
+			<div class="problem">
+			    <div class="graphie" id="case5_graphie">
+				    init({
+                        range: [ [-1, 10], [-2, 3.5] ],
+                        scale: 40
+                    });
+					style({fill:"#6495ED"});
+					arc( [3, 0], 3, 0, K );
+					var hei = 3*Math.sin(K*Math.PI/180);
+					var len = 3*Math.cos(K*Math.PI/180);
+					path([[3,0],[6,0],[len+3,hei],[3,0]],{fill:"#6495ED",stroke:"#6495ED"});
+					
+					style({fill:"white"});
+					var size_ = J[0]/J[1];
+					arc( [3, 0], 3*size_, 0, K );
+					var hei_w = 3*Math.sin(K*Math.PI/180)*size_;
+					var len_w = 3*Math.cos(K*Math.PI/180)*size_;
+					path([[3,0],[3+3*size_,0],[len_w+3,hei_w],[3,0]],{fill:"white",stroke:"white"});
+					if(K==210){
+					    path([[3,0],[6,0],[3-1.5*sqrt(3),-1.5],[3,0]],{fill:"white",stroke:"white"});
+					}
+					arc( [3, 0], 0.2, 0, K );
+					style({stroke:"black"});
+					line([3,0],[6,0]);
+					line([3,0],[len+3,hei]);
+					label( [Math.cos(K/2*Math.PI/180)*0.6+3,Math.sin(K/2*Math.PI/180)*0.6],  K+"\\small{^{\\circ}}", "center", { color: "black" });
+					label( [3+1.5*size_,0],  "\\color{RED}{"+J[0]+"}", "below", { color: "black" });
+					var p1 = 1.5*Math.sin((K+20)*Math.PI/180);
+					var p2 = 1.5*Math.cos((K+20)*Math.PI/180)+3;
+					label( [p2,p1],  "\\color{GREEN}{"+J[1]+"}", "center", { color: "black" });
+					style({stroke:"red"});
+					line([3+3*size_,0],[3,0]);
+					style({stroke:"green"});
+					line([len+3,hei],[3,0]);
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">	
+				周長 <code>\enspace = \enspace</code><span class="sol" data-type="rational"><var>2*K*(J[0]+J[1])/360</var></span><code>\enspace\pi + \enspace</code><span class="sol" data-forms="integer"><var>R2</var></span> 公分<br />
+                面積 <code>\enspace = \enspace</code><span class="sol" data-type="rational"><var>r_b1*K/360</var></span><code>\enspace\pi</code> 平方公分	
+				<p class="example">整數，例：<code>6</code></p>
+                <p class="example">帶分數，例：<code>1\enspace 3/4</code></p>
+                <p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>	
+                <p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>		
+            </div>
+            <div class="hints">
+			    <p>藍色區域周長 <code>=(</code> 大扇形弧長 <code>)+(</code> 小扇形弧長 <code>)+2\times(</code> 兩半徑之差 <code>)</code></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>=2\pi\times<var>J[1]</var>\times\dfrac{<var>K</var>}{360}+2\pi\times<var>J[0]</var>\times\dfrac{<var>K</var>}{360}+2\times (<var>J[1]</var>-<var>J[0]</var>)</code></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>=2\pi\times<var>fraction(K*(J[0]+J[1]),360,true,true,false,false)</var>+<var>R2</var>=</code><code class="hint_green">\enspace<var>fraction(2*K*(J[0]+J[1]),360,true,true,false,false)</var>\pi+<var>R2</var></code> (公分)</p>
+				<p>藍色區域面積 <code>=(</code> 大扇形面積 <code>)-(</code> 小扇形面積 <code>)</code></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>=\pi\times <var>J[1]</var>^{2}\times\dfrac{<var>K</var>}{360}-\pi\times<var>J[0]</var>^{2}\times\dfrac{<var>K</var>}{360}</code></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>=\pi\times<var>r_b1</var>\times\dfrac{<var>K</var>}{360}=</code><code class="hint_green">\enspace<var>fraction(r_b1*K,360,true,true,false,false)</var>\pi</code> (平方公分)</p>
+				<div>
+				    <p>所以，本題的答案為：</p>
+					<p>藍色區域周長 <code class="hint_pink">=<var>fraction(2*K*(J[0]+J[1]),360,true,true,false,false)</var>\pi+<var>R2</var></code> (公分)</p>
+					<p>藍色區域面積 <code class="hint_pink">=<var>fraction(r_b1*K,360,true,true,false,false)</var>\pi</code> (平方公分)</p>
+				</div>
+            </div>
+        </div>
+		
+		<div id="case6">
+            <div class="vars">
+			    <var id="J">randFromArray([4,8,10,12,15,6,9,18,20])</var>
+				<var id="K">J*J/6</var>
+				<var id="tri_k">J*J/4</var>
+            </div>
+			<p class="question">如下圖，有兩半徑同為 <code><var>J</var></code> 的圓 <code>O</code> 與圓 <code>O^{'}</code> ，求兩圓相交的藍色區域面積。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped_6">
+				    init({
+                        range: [ [-1, 10], [-2.5, 2.5] ],
+                        scale: 40
+                    });
+					circle([2,0],1.5);
+					circle([3.5,0],1.5);
+					label( [2,0],  "O", "left", { color: "black" });
+					label( [3.5,0],  "O^{'}", "right", { color: "black" });
+					style({fill:"#87CEEB"});
+					arc([2,0],1.5,0,60);
+					arc([2,0],1.5,300,360);
+					arc([3.5,0],1.5,120,180);
+					arc([3.5,0],1.5,180,240);
+					path([[2,0],[2.75,0.75*sqrt(3)],[3.5,0],[2.75,-0.75*sqrt(3)],[2,0]],{fill:"#87CEEB",stroke:"#87CEEB"});
+					style({fill:"black"});
+					circle([2,0],0.05);
+					circle([3.5,0],0.05);
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-type="rational"><var>J*J/6*4</var></span><code>\pi+\enspace</code><span class="sol" data-type="rational"><var>-tri_k*2</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("sqrtPart").value</div>
+				    <div class="validator-function">
+					if (guess==3){
+					    return true;
+					}
+                    </div>
+				</div>
+				<p class="example">整數，例如 <code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1 3/4</code></p>
+				<p class="example">小數，例：<code>0.75</code></p>
+            </div>
+            <div class="hints">
+			    <div>
+				    <div class="graphie" id="fan_shaped_6_1">
+					init({
+                        range: [ [-2, 9], [-1, 3] ],
+                        scale: 40
+                    });
+					style({fill:"#87CEEB"});
+					arc([-1,0],2.5,0,60);
+					arc([1.5,0],2.5,120,180);
+					path([[-1,0],[1.5,0],[0.25,1.25*sqrt(3)],[-1,0]],{});
+					label( [-1,0],  "O", "left", { color: "black" });
+					label( [1.5,0],  "O^{'}", "right", { color: "black" });
+					label( [0.25,1.25*sqrt(3)],  "A", "above", { color: "black" });
+					label( [0.25,0],  "\\small{"+J+"}", "below", { color: "black" });
+					label( [-0.2,0.7],  "\\small{"+J+"}", "center", { color: "black" });
+					label( [0.7,0.7],  "\\small{"+J+"}", "center", { color: "black" });
+					</div>
+				    <p>有上圖知 <code>\overline{OO^{'}}</code> 是圓 <code>O</code> 與圓 <code>O^{'}</code> 的半徑，因此 <code>\overline{OO^{'}}=<var>J</var></code></p>
+				</div>
+				<div>
+				    <p>觀察上圖，知藍色區域上半部的面積滿足下列等式：</p>
+					<div class="graphie" id="fan_shaped_6_2">
+					    init({
+                        range: [ [-2, 9], [-0.5, 2] ],
+                        scale: 40
+                    });
+					style({fill:"#87CEEB"});
+					arc([-1,0],1.5,0,60);
+					arc([0.5,0],1.5,120,180);
+					path([[-1,0],[0.5,0],[-0.25,0.75*sqrt(3)],[-1,0]],{});
+					label( [1,0.375*sqrt(3)],  "=", "center", { color: "black" });
+					arc([3,0],1.5,120,180);
+					path([[1.5,0],[3,0],[2.25,0.75*sqrt(3)],[1.5,0]],{});
+					label( [3.5,0.375*sqrt(3)],  "+", "center", { color: "black" });
+					arc([4,0],1.5,0,60);
+					line([4,0],[4.75,0.75*sqrt(3)]);
+					line([4.75,0.75*sqrt(3)],[5.5,0]);
+					line([4,0],[5.5,0]);
+					</div>
+				</div>
+				<p>但 <code>\triangle{OO^{'}A}</code> 為正三角形，因此 <code>\angle{OO^{'}A}=60^{\circ}</code> ，</p>
+				<div>
+				    <div class="graphie" id="fan_shaped_6_3">
+					    init({
+                            range: [ [-2, 11], [-0.5, 2] ],
+                            scale: 40
+                        });
+						label( [-0.2,0.375*sqrt(3)],  "\\small{"+"所以\\enspace\\enspace扇形面積"+"}", "center", { color: "black" });
+						style({fill:"#87CEEB"});
+						arc([3,0],1.5,120,180);
+					    path([[1.5,0],[3,0],[2.25,0.75*sqrt(3)],[1.5,0]],{});
+						label( [3,0.375*sqrt(3)],  "="+"\\pi\\times"+J+"\\times"+J+"\\times\\dfrac{60}{360}="+decimalFraction(K,true,true,false,false)+"\\pi", "right", { color: "black" });
+					</div>
+				</div>
+				<div class="graphie" id="fan_shaped_6_4">
+				    init({
+                            range: [ [-2, 11], [-0.5, 2] ],
+                            scale: 40
+                    });
+					label( [-0.2,0.375*sqrt(3)],  "\\small{"+"而\\enspace\\enspace\\enspace弓形面積"+"}", "center", { color: "black" });
+					style({fill:"#87CEEB"});
+					label( [3.5,0.375*sqrt(3)],  "=", "center", { color: "black" });
+					arc([1.5,0],1.5,0,60);
+					line([1.5,0],[2.25,0.75*sqrt(3)]);
+					line([2.25,0.75*sqrt(3)],[3,0]);
+					line([1.5,0],[3,0]);
+					arc([4,0],1.5,0,60);
+					path([[4,0],[5.5,0],[4.75,0.75*sqrt(3)],[4,0]],{});
+					label( [6,0.375*sqrt(3)],  "-", "center", { color: "black" });
+					path([[6.5,0],[8,0],[7.25,0.75*sqrt(3)],[6.5,0]],{});
+				</div>
+				<p>邊長為 <code>a</code> 的正三角形面積為 <code>\dfrac{\sqrt{3}}{4}a^{2}</code></p>
+				<p>所以弓形面積 <code>=<var>decimalFraction(K,true,true,false,false)</var>\pi-\dfrac{\sqrt{3}}{4}\times<var>J</var>\times<var>J</var></code></p>
+				<p><code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace=<var>decimalFraction(K,true,true,false,false)</var>\pi-<var>decimalFraction(tri_k,true,true,false,false)</var>\sqrt{3}</code></p>
+				<p>因此，上半部的面積為 <code><var>decimalFraction(K,true,true,false,false)</var>\pi+<var>decimalFraction(K,true,true,false,false)</var>\pi-<var>decimalFraction(tri_k,true,true,false,false)</var>\sqrt{3}=<var>decimalFraction(2*K,true,true,false,false)</var>\pi-<var>decimalFraction(tri_k,true,true,false,false)</var>\sqrt{3}</code></p>
+				<p>那麼，藍色區域的面積 <code>=</code> 上半部面積 <code>\times 2=</code><code class="hint_pink">\enspace<var>fraction(J*J*4,6,true,true,false,false)</var>\pi-<var>decimalFraction(tri_k*2,true,true,false,false)</var>\sqrt{3}</code> 。</p>
+            </div>
+        </div>
+
+	</div>
+	</div>
+</body>
+</html>

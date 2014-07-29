@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html data-require="math math-format word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>速率的應用問題</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1" data-weight="2"><!--小倩和小雯兩人跑步的速率分別是J公尺/秒和K公尺/秒，如果他們從同一起點同時同向跑步，L秒後兩人相距多少公尺?-->
+                <div class="vars">
+                    <var id="Name1">randRange(1,10)</var>
+                    <var id="Name2">randRangeExclude(1,10,[Name1])</var>
+                    <var id="Speed1">randRange(20,70)</var>
+                    <var id="Speed2">randRange(10,Speed1-1)</var>
+                    <var id="Speed1_show">Speed1/pow(10,1)</var>
+                    <var id="Speed2_show">Speed2/pow(10,1)</var>
+                    <var id="Time">randRange(10,50)</var>
+                    <var id="Direction">randFromArray(["反","同"])</var>
+                    <var id="Notice">Direction==="反"? "（兩人反方向跑步）":" "</var>
+                    <var id="Answer">Direction==="反"? ((Speed1+Speed2)*Time)/pow(10,1):((Speed1-Speed2)*Time)/pow(10,1)</var>
+                    <var id="Hint_op">Direction==="反"?"+":"-"</var>
+                    <var id="Hint_speed_diff">Direction==="反" ? (Speed1+Speed2)/pow(10,1):(Speed1-Speed2)/pow(10,1)</var>
+                </div>
+                <div class="question">
+                   <p><var>person(Name1)</var>和<var>person(Name2)</var>兩人跑步的速率分別是<var>Speed1_show</var>公尺/秒和<var>Speed2_show</var>公尺/秒，如果他們從同一起點同時<var>Direction</var>方向跑步，<var>Time</var>秒後兩人相距多少公尺?<var>Notice</var></p>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <span class='sol'><var>Answer</var></span>公尺
+                </div>
+                <div class="hints">
+                    <p>先算出兩人一秒鐘相差幾公尺，再算<var>Time</var>秒後相差幾公尺。</p>
+                    <p>兩人是<var>Direction</var>方向跑步，一秒鐘相差<var>Speed1_show</var><var>Hint_op</var><var>Speed2_show</var>=<var>Hint_speed_diff</var>公尺</p>
+                    <p>兩人跑了<var>Time</var>秒，共差了<var>Hint_speed_diff</var>&times;<var>Time</var></p>
+                    <p>=<var>Answer</var>公尺。答案即為<var>Answer</var>公尺</p>
+                </div>
+            </div>
+            <div id="case2" data-weight="1"><!--小玉和小剛兩人跑步的速率分別是J公尺/秒和K公尺/秒，如果他們從同一起點同時同方向跑步，跑了多久後，小玉會在小剛前L公尺?-->
+                <div class="vars">
+                    <var id="Name1">randRange(1,10)</var>
+                    <var id="Name2">randRangeExclude(1,10,[Name1])</var>
+                    <var id="Speed1">randRange(20,70)</var>
+                    <var id="Speed2">randRange(10,Speed1-1)</var>
+                    <var id="Speed1_show">Speed1/pow(10,1)</var>
+                    <var id="Speed2_show">Speed2/pow(10,1)</var>
+                    <var id="Answer">randRange(10,50)</var>
+                    <var id="Distance">((Speed1-Speed2)*Answer)/pow(10,1)</var>
+                    <var id="Dis_per_sec">(Speed1-Speed2)/pow(10,1)</var>
+                </div>
+                <div class="question">
+                    <p><var>person(Name1)</var>和<var>person(Name2)</var>兩人跑步的速率分別是<var>Speed1_show</var>公尺/秒和<var>Speed2_show</var>公尺/秒，如果他們從同一起點同時同方向跑步，跑了多久後，<var>person(Name1)</var>會在<var>person(Name2)</var>前<var>Distance</var>公尺？</p>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <span class="sol"><var>Answer</var></span> 秒
+                </div>
+                <div class="hints">
+                    <p>先算出兩人一秒鐘相差幾公尺，再算幾秒後相差<var>Distance</var>公尺。</p>
+                    <p>一秒鐘相差<var>Speed1_show</var> - <var>Speed2_show</var>=<var>Dis_per_sec</var>公尺</p>
+                    <p>兩人共差了<var>Distance</var>公尺，<var>Dis_per_sec</var>&times;跑的時間=<var>Distance</var></p>
+                    <p>所以我們要算跑的時間，也就是<var>Distance</var>除以<var>Dis_per_sec</var></p>
+                    <p><var>Distance</var> &divide; <var>Dis_per_sec</var> = <var>Answer</var> 秒。答案即為 <var>Answer</var> 秒</p>
+
+                </div>
+            </div>
+            <div id="case3" data-weight="1"><!-- 公園步道一圈J公尺，甲和乙同時同地背向而行，甲和乙的速率分別為K公尺/分和L公尺/分，他們兩人從出發到相遇要經過幾分鐘?他們兩人從出發到第M次相遇需經過幾分鐘?-->
+                <div class="vars">
+                    <var id="Name1">randRange(1,10)</var>
+                    <var id="Name2">randRangeExclude(1,10,[Name1])</var>
+                    <var id="Speed1">randRange(500,700)</var>
+                    <var id="Speed2">1200-Speed1</var>
+                    <var id="Speed1_show">Speed1/pow(10,1)</var>
+                    <var id="Speed2_show">Speed2/pow(10,1)</var>
+                    <var id="round_length">randRange(0,1) === 1 ? 480:600</var>
+                    <var id="M">randRange(2,6)</var>
+                    <var id="Answer0">round_length*M/120</var>
+                    <var id="Answer1">round_length/120</var>
+                </div>
+                <div class="question">
+                   <p>公園步道一圈<var>round_length</var>公尺，<var>person(Name1)</var>和<var>person(Name2)</var>同時同地背向而行，<var>person(Name1)</var>和<var>person(Name2)</var>的速率分別為<var>Speed1_show</var>公尺/分和<var>Speed2_show</var>公尺/分，他們兩人從出發到相遇要經過幾分鐘?他們兩人從出發到第<var>M</var>次相遇需經過幾分鐘?</p>
+                </div>
+                <div class="solution" data-type="multiple">
+                    第一次相遇需要<span class="sol"><var>Answer1</var></span>分鐘<br>第<var>M</var>次相遇需經過<span class="sol"><var>Answer0</var></span>分鐘
+                </div>
+                
+                <div class="hints">
+                    <p>因為<var>person(Name1)</var><var>person(Name2)</var>同時同地相背而行，也就代表每分鐘兩人共同跑了操場(<var>Speed1_show</var>+<var>Speed2_show</var>)公尺</p>
+                    <p>公園步道一圈<var>round_length</var>公尺，走完一圈的時間為<var>round_length</var>&divide;(<var>Speed1_show</var>+<var>Speed2_show</var>)分</p>
+                    <p>所以<var>round_length</var>&divide;(<var>Speed1_show</var>+<var>Speed2_show</var>)<br>=<var>round_length</var>&divide;120</p>
+                    <p>=<var>Answer1</var>分</p>
+                    <p>若要跑<var>M</var>圈，則時間必須再乘以<var>M</var>倍，答案為<var>Answer0</var>分</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

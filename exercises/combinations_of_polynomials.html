@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>多項式的併項與排列</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+        </style>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+            <div class="vars">
+			    <var id="J">randRange(3,9)</var>
+				<var id="K">randRange(2,6)</var>
+				<var id="L">randRange(1,10)</var>
+				<var id="M">randRange(1,8)</var>
+				<var id="M_one_handle">M==1?"":M</var>
+            </div>
+			<p class="question">將下列多項式併項，並將結果依照降冪的方式排列：</p>
+			<div class="problem"><p><code><var>J</var>x-<var>K</var>x^{2}+<var>L</var>+<var>M_one_handle</var>x</code></p></div>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>-K</var></span><code>x^{2}+</code><span class="sol" data-forms="integer"><var>J+M</var></span><code>x+</code><span class="sol" data-forms="integer"><var>L</var></span>
+				<p class="example">例：<code>-2x^{2}+8x+9</code></p>
+			</div>
+
+    <div class="hints">
+	    <p>依照降冪的方式排列多項式：</p>
+		<p><code><var>J</var>x-<var>K</var>x^{2}+<var>L</var>+<var>M_one_handle</var>x=-<var>K</var>x^{2}+<var>J</var>x+<var>M_one_handle</var>x+<var>L</var></code></p>
+		<p>再將同類項合併：</p>
+		<p><code>-<var>K</var>x^{2}+<var>J</var>x+<var>M_one_handle</var>x+<var>L</var>=-<var>K</var>x^{2}+<var>J+M</var>x+<var>L</var></code></p>
+		<p>所以，本題的答案爲 <code class="hint_pink">-<var>K</var>x^{2}+<var>J+M</var>x+<var>L</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case2">
+            <div class="vars" data-ensure="R_1!=0 && R_2!=0 && R_3!=0">
+			    <var id="J">randRange(2,6)</var>
+				<var id="K">randRangeNonZero(-10,10)</var>
+				<var id="L">randRange(1,8)</var>
+				<var id="L_show">L==1?"":L</var>
+				<var id="M">randRange(2,6)</var>
+				<var id="N">randRange(1,8)</var>
+				<var id="N_show">N==1?"":N</var>
+				<var id="O">randRange(1,10)</var>
+				<var id="R_1">J-M</var>
+				<var id="R_2">N-L</var>
+				<var id="R_3">K-O</var>
+				<var id="R_1_SHOW">(function(){if(J-M==1){return "";}if(J-M==-1){return "-";}return J-M;})()</var>
+				<var id="R_2_SHOW">(function(){if(N-L==1){return "";}if(N-L==-1){return "-";}return N-L;})()</var>
+            </div>
+			<p class="question">將下列多項式併項，並將結果依照降冪的方式排列：</p>
+			<div class="problem"><p><code><var>J</var>x^{2}+<var>K</var>-<var>L_show</var>x-<var>M</var>x^{2}+<var>N_show</var>x-<var>O</var></code></p></div>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R_1</var></span><code>x^{2}+</code><span class="sol" data-forms="integer"><var>R_2</var></span><code>x+</code><span class="sol" data-forms="integer"><var>R_3</var></span>
+				<p class="example">例：<code>-2x^{2}+8x+9</code></p>
+			</div>
+
+    <div class="hints">
+	    <p>依照降冪的方式排列多項式：</p>
+		<p><code><var>J</var>x^{2}+<var>K</var>-<var>L_show</var>x-<var>M</var>x^{2}+<var>N_show</var>x-<var>O</var>=<var>J</var>x^{2}-<var>M</var>x^{2}-<var>L_show</var>x+<var>N_show</var>x+<var>K</var>-<var>O</var></code></p>
+		<p>再將同類項合併：</p>
+		<p><code><var>J</var>x^{2}-<var>M</var>x^{2}-<var>L_show</var>x+<var>N_show</var>x+<var>K</var>-<var>O</var>=<var>R_1_SHOW</var>x^{2}+<var>R_2_SHOW</var>x+<var>R_3</var></code></p>
+		<p>所以，本題的答案爲 <code class="hint_pink"><var>R_1_SHOW</var>x^{2}+<var>R_2_SHOW</var>x+<var>R_3</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case3">
+            <div class="vars">
+			    <var id="J">randRange(3,9)</var>
+				<var id="K">randRange(2,6)</var>
+				<var id="L">randRange(1,10)</var>
+				<var id="M">randRange(1,8)</var>
+				<var id="M_one_handle">M==1?"":M</var>
+            </div>
+			<p class="question">將下列多項式併項，並將結果依照升冪的方式排列：</p>
+			<div class="problem"><p><code><var>J</var>x-<var>K</var>x^{2}+<var>L</var>+<var>M_one_handle</var>x</code></p></div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>L</var></span><code>+</code><span class="sol" data-forms="integer"><var>J+M</var></span><code>x+</code><span class="sol" data-forms="integer"><var>-K</var></span><code>x^{2}</code>
+				<p class="example">例：<code>9+8x-2x^{2}</code></p>
+			</div>
+
+    <div class="hints">
+	    <p>依照降冪的方式排列多項式：</p>
+		<p><code><var>J</var>x-<var>K</var>x^{2}+<var>L</var>+<var>M_one_handle</var>x=<var>L</var>+<var>M_one_handle</var>x+<var>J</var>x-<var>K</var>x^{2}</code></p>
+		<p>再將同類項合併：</p>
+		<p><code><var>L</var>+<var>M_one_handle</var>x+<var>J</var>x-<var>K</var>x^{2}=<var>L</var>+<var>J+M</var>x-<var>K</var>x^{2}</code></p>
+		<p>所以，本題的答案爲 <code class="hint_pink"><var>L</var>+<var>J+M</var>x-<var>K</var>x^{2}</code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case4" data-ensure="R_1!=0 && R_2!=0 && R_3!=0">
+            <div class="vars">
+			    <var id="J">randRange(2,6)</var>
+				<var id="K">randRangeNonZero(-10,10)</var>
+				<var id="L">randRange(1,8)</var>
+				<var id="L_show">L==1?"":L</var>
+				<var id="M">randRange(2,6)</var>
+				<var id="N">randRange(1,8)</var>
+				<var id="N_show">N==1?"":N</var>
+				<var id="O">randRange(1,10)</var>
+				<var id="R_1">J-M</var>
+				<var id="R_2">N-L</var>
+				<var id="R_3">K-O</var>
+				<var id="R_1_SHOW">(function(){if(J-M==1){return "";}if(J-M==-1){return "-";}return J-M;})()</var>
+				<var id="R_2_SHOW">(function(){if(N-L==1){return "";}if(N-L==-1){return "-";}return N-L;})()</var>
+            </div>
+			<p class="question">將下列多項式併項，並將結果依照升冪的方式排列：</p>
+			<div class="problem"><p><code><var>J</var>x^{2}+<var>K</var>-<var>L_show</var>x-<var>M</var>x^{2}+<var>N_show</var>x-<var>O</var></code></p></div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>R_3</var></span><code>+</code><span class="sol" data-forms="integer"><var>R_2</var></span><code>x+</code><span class="sol" data-forms="integer"><var>R_1</var></span><code>x^{2}</code>
+				<p class="example">例：<code>9+8x-2x^{2}</code></p>
+			</div>
+
+    <div class="hints">
+	    <p>依照降冪的方式排列多項式：</p>
+		<p><code><var>J</var>x^{2}+<var>K</var>-<var>L_show</var>x-<var>M</var>x^{2}+<var>N_show</var>x-<var>O</var>=<var>K</var>-<var>O</var>-<var>L_show</var>x+<var>N_show</var>x+<var>J</var>x^{2}-<var>M</var>x^{2}</code></p>
+		<p>再將同類項合併：</p>
+		<p><code><var>K</var>-<var>O</var>-<var>L_show</var>x+<var>N_show</var>x+<var>J</var>x^{2}-<var>M</var>x^{2}=<var>R_3</var>+<var>R_2_SHOW</var>x+<var>R_1_SHOW</var>x^{2}</code></p>
+		<p>所以，本題的答案爲 <code class="hint_pink"><var>R_3</var>+<var>R_2_SHOW</var>x+<var>R_1_SHOW</var>x^{2}</code> 。</p>
+    </div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>比例式</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 40px;
+        }
+        </style>
+		<style type="text/css">
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+
+
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+				<var id="J">randRange(5,8)</var>
+				<var id="L">randRange(5,8)</var>
+				<var id="M">randRange(2,6)</var>
+				
+            </div>
+            <p class="question"> 在下列比例式中填入適當的數： </p>
+			<div class="problem"><p> 已知 <code><var>J</var>:<var>M</var>=<var>J*L</var>:d</code>，求 <code>d</code> 。</p></div>
+			<div class="solution" data-type="multiple">			
+				<span class="sol" data-forms="integer"><var>M*L</var></span>
+				 
+            </div>
+            <div class="hints">
+				<p>因為 <code><var>J*L</var></code> 是 <code><var>J</var></code> 的 <code><var>L</var></code> 倍，所以 <code>d</code> 是 <code><var>M</var></code> 的 <code><var>L</var></code> 倍， </p>
+				<p>即 <code class="hint_pink">d=<var>L</var>\times<var>M</var>=<var>L*M</var></code> 。</p>
+				
+            </div>
+        </div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="J">randRange(5,11)</var>
+				<var id="L">randRange(6,12)</var>
+            </div>
+            <p class="question"> 在下列比例式中填入適當的數： </p>
+			<div class="problem"><p> 已知 <code>a:<var>J</var>=b:<var>J*L</var></code>，求 <code>\dfrac{a}{b}</code> 。</p></div>
+			<div class="solution">			
+				<span class="sol" data-type="rational"><var>1/L</var></span>
+				 
+            </div>
+            <div class="hints">
+				<div>
+					<p>由 <code>a:<var>J</var>=b:<var>J*L</var></code> ，可得 </p>
+					<p><code>a:b=<var>J</var>:<var>J*L</var></code> </p>
+				</div>
+				<p>因此 <code class="hint_pink">\dfrac{a}{b}=\dfrac{<var>J</var>}{<var>J*L</var>}=\dfrac{1}{<var>L</var>}</code> 。</p>
+				
+            </div>
+		</div>
+		<div id="case3">
+			<div class="vars" data-ensure="J!=L">
+				<var id="J">randRange(3,11)</var>
+				<var id="L">randRange(4,11)</var>
+				<var id="M">getGCD(J,L)</var>
+				
+            </div>
+            <p class="question">  已知 <code><var>J</var>a=<var>L</var>b</code>，求 <code>a:b</code> 。</p>
+			
+			<div class="solution" data-type="multiple">
+				<code> a:b =  </code>			
+				<span class="sol" data-forms="integer"><var>L/M</var></span>
+				<code> : </code>
+				<span class="sol" data-forms="integer"><var>J/M</var></span>
+				 <p class="example">例如： <code>a:b=3:7</code></p>
+            </div>
+            <div class="hints">
+				
+					<p>要先求出 <code>\dfrac{a}{b}</code> ，但已知 <code><var>J</var>a=<var>L</var>b</code>，得 <code>\dfrac{a}{b}=<var>decimalFraction(L/J,true,true,false,false)</var></code> 。</p>
+					
+				<p>因此 <code class="hint_pink">a:b=<var>accDiv(L,M)</var>:<var>accDiv(J,M)</var></code> 。</p>
+				
+            </div>
+		</div>
+		<div id="case4">
+			<div class="vars" data-ensure="J!=K&&M!=N">
+				<var id="J">randRange(3,9)</var>
+				<var id="K">randRange(2,8)</var>
+				<var id="M">randRange(3,11)</var>
+				<var id="N">randRange(4,11)</var>
+				<var id="F">getGCD(J*N,K*M)</var>
+				
+            </div>
+            <p class="question">  已知 <code><var>M</var>a:<var>N</var>b=<var>J</var>:<var>K</var></code>，求 <code>a:b</code> 。</p>
+			
+			<div class="solution" data-type="multiple">
+				<code> a:b =  </code>			
+				<span class="sol" data-forms="integer"><var>J*N/F</var></span>
+				<code> : </code>
+				<span class="sol" data-forms="integer"><var>K*M/F</var></span>
+				<p class="example">例如： <code>a:b=3:7</code></p>
+				 
+            </div>
+            <div class="hints">
+				
+					<p> 由題意知 <code>\dfrac{<var>M</var>a}{<var>N</var>b}=\dfrac{<var>J</var>}{<var>K</var>}</code> ，所以 
+					<code>\dfrac{a}{b}=\dfrac{<var>J</var>}{<var>K</var>}\times \dfrac{<var>N</var>}{<var>M</var>}=<var>decimalFraction((J*N)/(K*M),true,true,false,false)</var></code> </p>
+					
+				<p>因此 <code class="hint_pink">a:b=<var>J*N/F</var>:<var>K*M/F</var></code> 。</p>
+				
+            </div>
+		</div>
+		<div id="case5">
+			<div class="vars" data-ensure="J!=K&&M!=N">
+				<var id="J">randRange(3,9)</var>
+				<var id="K">randRange(2,8)</var>
+				<var id="M">randRange(3,11)</var>
+				<var id="N">randRange(4,11)</var>
+				<var id="F">getGCD(J*M,K*N)</var>
+				
+            </div>
+            <p class="question">  已知 <code>a:b=<var>M</var>:<var>N</var></code>，求 <code><var>J</var>a:<var>K</var>b</code> 。</p>
+			
+			<div class="solution" data-type="multiple">
+				<code> <var>J</var>a:<var>K</var>b=  </code>			
+				<span class="sol" data-forms="integer"><var>J*M/F</var></span>
+				<code> : </code>
+				<span class="sol" data-forms="integer"><var>K*N/F</var></span>
+				<p class="example">例如： <code>a:b=3:7</code></p>
+				 
+            </div>
+            <div class="hints">
+			    <p> 要先求出 <code>\dfrac{<var>J</var>a}{<var>K</var>b}</code> 。</p>
+					<div>
+					<p>由題意可知<code>\dfrac{a}{b}=\dfrac{<var>M</var>}{<var>N</var>}</code> ，所以 </p>
+					<p><code>\dfrac{<var>J</var>a}{<var>K</var>b}=\dfrac{<var>J</var>}{<var>K</var>}\times \dfrac{a}{b}=\dfrac{<var>J</var>}{<var>K</var>}\times \dfrac{<var>M</var>}{<var>N</var>}=<var>decimalFraction((J*M)/(K*N),true,true,false,false)</var> ，</code> </p>
+					</div>
+				<p>因此 <code class="hint_pink"><var>J</var>a:<var>K</var>b=<var>J*M/F</var>:<var>K*N/F</var></code> 。</p>
+				
+            </div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>運用三角形相似性質來計算</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+            <div class="vars">
+				<var id="JK">randFromArray([[3,10],[4,10],[6,10],[3,11],[3,13],[5,15],[4,15]])</var>
+				<var id="J">JK[0]</var>
+				<var id="K">JK[1]</var>
+            </div>
+			<p class="question">如下圖，已知 <code>\angle{1}=\angle{C}</code> ，<code>\overline{BC}=<var>2*K</var></code> ，<code>\overline{AB}=<var>K</var></code> ，<code>\overline{AF}=<var>J</var></code> ，<code>\overline{AE}=<var>J+2</var></code> ，求 <code>\overline{EF}</code> 和 <code>\overline{AC}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="graphie_0_basic">
+				    init({
+                        range: [ [-1, 12], [-2.25,4.75] ],
+                        scale: 40
+                    });
+					path([[0,0],[1.25*sqrt(3),-1.25],[1.25*sqrt(3),3.75],[0,0]],{stroke:"black"});
+					line([1.25*sqrt(3)*J/K,-1.25*J/K],[1.25*sqrt(3)*J/K,3.75*J/K]);
+					label( [0,0],  "\\small{A}", "left", { color: "black" });
+					label( [1.25*sqrt(3),-1.25],  "\\small{B}", "below", { color: "black" });
+					label( [1.25*sqrt(3),3.75],  "\\small{C}", "above", { color: "black" });
+					label( [1.25*sqrt(3)*J/K,3.75*J/K],  "\\small{E}", "above", { color: "black" });
+					label( [1.25*sqrt(3)*J/K,-1.25*J/K],  "\\small{F}", "below", { color: "black" });
+					
+					label( [1.25*sqrt(3)*J/K+0.2,3.75*J/K],  "\\small{1}", "below left", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <code>\overline{EF}=\enspace</code><span class="sol" data-type="rational"><var>2*J</var></span><br />
+				<code>\overline{AC}=\enspace</code><span class="sol" data-type="rational"><var>K*(J+2)/J</var></span>
+				<p class="example">整數，例：<code>6</code></p>
+                <p class="example">帶分數，例：<code>1\enspace 3/4</code></p>
+                <p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>	
+                <p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>	
+            </div>
+            <div class="hints">
+			    <div>
+					<p>因為 <code>\angle{1}=\angle{C}</code></p>
+					<p><code>\angle{A}=\angle{A}</code></p>
+				</div>
+				<p>所以 <code>\triangle{AEF}\sim\triangle{ACB}\enspace\enspace\enspace\enspace\color{blue}{AA相似性質}</code></p>
+				<p>因此 <code>\overline{EF}:\overline{CB}=\overline{AE}:\overline{AC}=\overline{AF}:\overline{AB}=<var>J</var>:<var>K</var>\enspace\enspace\enspace\enspace\color{blue}{對應邊成比例}</code></p>
+				<p>即 <code>\overline{EF}=\dfrac{<var>J</var>}{<var>K</var>}\overline{CB}=\dfrac{<var>J</var>}{<var>K</var>}\times<var>2*K</var>=<var>2*J</var></code></p>
+				<p><code>\overline{AC}=\dfrac{<var>K</var>}{<var>J</var>}\overline{AE}=\dfrac{<var>K</var>}{<var>J</var>}\times<var>J+2</var>=<var>fraction(K*(J+2),J,true,true,false,false)</var></code></p>
+				<p>因此，本題的答案應分別填入 <code class="hint_pink">\overline{EF}=<var>2*J</var></code> 、<code class="hint_pink">\overline{AC}=<var>fraction(K*(J+2),J,true,true,false,false)</var></code> 。</p>
+            </div>
+        </div>
+		
+	    <div id="case2">
+            <div class="vars">
+				<var id="J">randRange(65,75)</var>
+				<var id="K">randRange(45,55)</var>
+            </div>
+			<p class="question">如下圖中 <code>\triangle{ABC}</code> 中， <code>E</code> 、<code>F</code> 分別為 <code>\overline{AB}</code> 、<code>\overline{AC}</code> 的中點。已知 <code>\angle{B}=<var>J</var>^{\circ}</code> ，<code>\angle{C}=<var>K</var>^{\circ}</code> ，求 <code>\angle{AEF}</code> 和 <code>\angle{AFE}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="graphie_2_basic">
+				    init({
+                        range: [ [-1, 12], [-2,3] ],
+                        scale: 40
+                    });
+					path([[0,0],[4,-1],[3.75,2],[0,0]],{stroke:"black"});
+					line([2,-0.5],[1.875,1]);
+					label( [0,0],  "\\small{A}", "left", { color: "black" });
+					label( [4,-1],  "\\small{B}", "below right", { color: "black" });
+					label( [3.75,2],  "\\small{C}", "above", { color: "black" });
+					label( [2,-0.5],  "\\small{E}", "below", { color: "black" });
+					label( [1.875,1],  "\\small{F}", "above", { color: "black" });
+					label( [4,-1],  "\\small{"+J+"}^{\\circ}", "above left", { color: "black" });
+					label( [3.6,1.8],  "\\small{"+K+"}^{\\circ}", "below", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<code>\angle{AEF}=\enspace</code><span class="sol" data-forms="integer"><var>J</var></span><code>^{\circ}</code><br />
+				<code>\angle{AFE}=\enspace</code><span class="sol" data-forms="integer"><var>K</var></span><code>^{\circ}</code>
+				<p class="example">整數，例：<code>6</code></p>	
+            </div>
+            <div class="hints">
+				<p>由於 <code>E</code> 、<code>F</code> 分別為 <code>\overline{AB}</code> 、<code>\overline{AC}</code> 的中點，所以</p>
+				<p><code>\overline{AE}:\overline{AB}=\overline{AF}:\overline{AC}=1:2</code></p>
+				<p>又 <code>\angle{A}=\angle{A}</code></p>
+				<p>所以根據 <code class="hint_green">SAS</code> 相似性質，得 <code>\triangle{AEF}\sim\triangle{ABC}</code></p>
+				<p>因此，由對應角相等，我們可以得出本題的答案，</p>
+				<div>
+					<p><code>\angle{AEF}=\angle{B}=</code><code class="hint_pink">\enspace<var>J</var>^{\circ}</code></p>
+					<p><code>\angle{AFE}=\angle{C}=</code><code class="hint_pink">\enspace<var>K</var>^{\circ}</code></p>
+				</div>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+				<var id="J">randRange(3,7)</var>
+				<var id="angB">Math.acos(11/16)*180/Math.PI</var>
+				<var id="len_1">2*11/16</var>
+				<var id="high_1">2*Math.sin(angB*Math.PI/180)</var>
+				<var id="r1">16/getGCD(16,4*J*J)</var>
+				<var id="r2">4*J*J/getGCD(16,4*J*J)</var>
+            </div>
+			<p class="question">如下圖，有兩三角形 <code>\triangle{ABC}</code> 和 <code>\triangle{DEF}</code> ，求 <code>\triangle{ABC}</code> 面積 <code>:</code> <code>\triangle{DEF}</code> 面積。</p>
+			<div class="problem">
+				<p>由於篇幅問題，下圖未完全按照大小比例去繪畫。</p>
+			    <div class="graphie" id="graphie_3_basic">
+				    init({
+                        range: [ [-1, 12], [-1,3.5] ],
+                        scale: 40
+                    });
+					path([[0,0],[4,0],[len_1,high_1],[0,0]],{stroke:"black"});
+					path([[5,0],[11,0],[11-len_1*1.5,high_1*1.5],[5,0]],{stroke:"black"});
+					label( [len_1,high_1],  "\\small{A}", "above", { color: "black" });
+					label( [0,0],  "\\small{B}", "below", { color: "black" });
+					label( [4,0],  "\\small{C}", "below", { color: "black" });
+					label( [len_1/2,high_1/2],  "\\small{4}", "above left", { color: "black" });
+					label( [len_1/2+2,high_1/2],  "\\small{6}", "above right", { color: "black" });
+					label( [2,0],  "\\small{8}", "below", { color: "black" });
+					
+					label( [11-len_1*1.5,high_1*1.5],  "\\small{D}", "above", { color: "black" });
+					label( [5,0],  "\\small{E}", "below", { color: "black" });
+					label( [11,0],  "\\small{F}", "below", { color: "black" });
+					label( [11-len_1*1.5/2,high_1*1.5/2],  "\\small{"+2*J+"}", "above right", { color: "black" });
+					label( [8-len_1*1.5/2,high_1*1.5/2],  "\\small{"+3*J+"}", "above left", { color: "black" });
+					label( [8,0],  "\\small{"+4*J+"}", "below", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>r1</var></span>&nbsp;：&nbsp;<span class="sol" data-forms="integer"><var>r2</var></span>
+				<p class="example">整數，例：<code>6</code></p>	
+            </div>
+            <div class="hints">
+			    <div>
+					<p>觀察兩個三角形的邊長，得</p>
+					<p><code>\overline{AB}:\overline{BC}:\overline{CA}=\overline{DF}:\overline{FE}:\overline{ED}=2:4:3</code></p>
+				</div>
+				<p>所以根據 <code class="hint_green">SSS</code> 相似性質， <code>\triangle{ABC}\sim\triangle{DFE}</code></p>
+				<div>
+					<p>因此 <code>\triangle{ABC}</code> 面積 <code>:</code> <code>\triangle{DEF}</code> 面積</p>
+					<p><code>=\overline{AB}^{2}:\overline{DF}^{2}=<var>4</var>^{2}:<var>2*J</var>^{2}=<var>16</var>:<var>4*J*J</var>=<var>r1</var>:<var>r2</var></code> 。</p>
+				</div>
+            </div>
+        </div>
+		
+		<div id="case4">
+            <div class="vars">
+				<var id="J">randFromArray([0.25,0.2,1/6,0.4,2/7,2/9,0.6,3/7])</var>
+				<var id="angB">Math.acos(0.125)*180/Math.PI</var>
+				<var id="angA">Math.acos(0.75)*180/Math.PI</var>
+				<var id="len_1">3*0.125</var>
+				<var id="high_1">3*Math.sin(angB*Math.PI/180)</var>
+				<var id="len_3">(4.5*J+3)*Math.cos(angB*Math.PI/180)</var>
+				<var id="high_3">(4.5*J+3)*Math.sin(angB*Math.PI/180)</var>
+				<var id="len_2">3.75-3.75*(0.8*J+1.2)*Math.cos(angA*Math.PI/180)</var>
+				<var id="high_2">3.75*(0.8*J+1.2)*Math.sin(angA*Math.PI/180)</var>
+            </div>
+			<p class="question">如下圖， <code>\overline{BE}</code> 和 <code>CD</code> 交於 <code>A</code> ，<code>\overline{AD}=<var>decimalFraction(accMul(J,8),true,true,false,false)</var></code> ，<code>\overline{AE}=<var>decimalFraction(accMul(J,12),true,true,false,false)</var></code> ，<code>\overline{AB}=8</code> ，<code>\overline{AC}=12</code> ，<code>\overline{BC}=10</code> ，求 <code>\overline{DE}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="graphie_3_basic">
+				    init({
+                        range: [ [-1, 12], [-1,high_3+1] ],
+                        scale: 40
+                    });
+					path([[0,0],[3.75,0],[len_1,high_1],[0,0]],{stroke:"black"});
+					path([[len_1,high_1],[len_3,high_3],[len_2,high_2],[len_1,high_1]],{stroke:"black"});
+					
+					label( [0,0],  "\\small{B}", "below left", { color: "black" });
+					label( [3.75,0],  "\\small{C}", "below right", { color: "black" });
+					label( [len_1,high_1],  "\\small{A}", "right", { color: "black" });
+					label( [len_3,high_3],  "\\small{E}", "above right", { color: "black" });
+					label( [len_2,high_2],  "\\small{D}", "above left", { color: "black" });
+					label( [len_1/2,high_1/2],  "\\small{8}", "left", { color: "black" });
+					label( [(len_2+3.75)/2,high_1/2],  "\\small{12}", "above right", { color: "black" });
+					label( [3.75/2,0],  "\\small{10}", "below", { color: "black" });
+				</div>
+			</div>
+			<div class="solution">
+			    <span class="sol" data-type="rational"><var>10*KhanUtil.toFraction(J)[0]/KhanUtil.toFraction(J)[1]</var></span>
+            </div>
+            <div class="hints">
+				<p>因為 <code>\overline{AD}:\overline{AB}=<var>KhanUtil.toFraction(J)[0]</var>\enspace : \enspace <var>KhanUtil.toFraction(J)[1]</var>=\overline{AE}:\overline{AC}</code> ，</p>
+				<p>且 <code>\angle{DAE}=\angle{BAC}\enspace\enspace\enspace\enspace\color{blue}{對頂角相等}</code></p>
+				<p>所以 <code>\triangle{ADE}\sim\triangle{ABC}\enspace\enspace\enspace\enspace\color{blue}{SAS相似性質}</code></p>
+				<p>因此 <code>\overline{DE}:\overline{BC}=<var>KhanUtil.toFraction(J)[0]</var>\enspace : \enspace <var>KhanUtil.toFraction(J)[1]</var>\enspace\enspace\enspace\enspace\color{blue}{對應邊成比例}</code></p>
+				<p>將 <code>\overline{BC}=10</code> 代入，得 <code>\overline{DE}=\dfrac{10\times<var>KhanUtil.toFraction(J)[0]</var>}{<var>KhanUtil.toFraction(J)[1]</var>}=<var>fraction(10*KhanUtil.toFraction(J)[0],KhanUtil.toFraction(J)[1],true,true,false,false)</var></code> 。</p>
+				<p>因此，本題的答案為 <code class="hint_pink"><var>fraction(10*KhanUtil.toFraction(J)[0],KhanUtil.toFraction(J)[1],true,true,false,false)</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case5">
+            <div class="vars">
+				<var id="JKL">randFromArray([[3,4,5],[6,8,10],[5,12,13],[7,24,25]])</var>
+				<var id="J">JKL[0]</var>
+				<var id="K">JKL[1]</var>
+				<var id="L">JKL[2]</var>
+				<var id="sm">
+				(function(){
+					if(K==4){
+					    return 1;
+					}
+					if(K==8){
+					    return 1.5;
+					}
+					if(K==12){
+					    return 1.7;
+					}
+					if(K==24){
+					    return 4;
+					}
+				})()</var>
+				<var id="angA">Math.asin(K/L)*180/Math.PI</var>
+				<var id="nLen">L*L/2/J</var>
+            </div>
+			<p class="question">如下圖， <code>\overline{AB}=<var>J</var></code> ，<code>\overline{BC}=<var>K</var></code> ，<code>\overline{AC}=<var>L</var></code> ，<code>E</code> 為 <code>\overline{AC}</code> 的中點， <code>\angle{BAC}=\angle{EAD}</code> ，<code>\angle{B}=\angle{AED}=90^{\circ}</code> ，求 <code>\overline{DE}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="graphie_3_basic">
+				    init({
+                        range: [ [-1, 12], [-1,nLen/sm+1] ],
+                        scale: 40
+                    });
+					path([[0,0],[K/sm,0],[0,J/sm],[0,0]],{stroke:"black"});
+					path([[0,J/sm],[K/sm/2,J/sm/2],[K/sm,nLen/sm],[0,J/sm]],{stroke:"black"});
+					label( [0,0],  "\\small{B}", "below left", { color: "black" });
+					label( [K/sm,0],  "\\small{C}", "below right", { color: "black" });
+					label( [0,J/sm],  "\\small{A}", "above", { color: "black" });
+					label( [K/sm/2,J/sm/2],  "\\small{E}", "right", { color: "black" });
+					label( [K/sm,nLen/sm],  "\\small{D}", "right", { color: "black" });
+					label( [0,J/sm/2],  "\\small{"+J+"}", "below left", { color: "black" });
+					label( [K/sm/2,0],  "\\small{"+K+"}", "below left", { color: "black" });
+					label( [K/sm/2,J/sm/2],  "\\small{"+L+"}", "below left", { color: "black" });
+				</div>
+			</div>
+			<div class="solution">
+			    <span class="sol" data-type="rational"><var>L*K/2/J</var></span>
+            </div>
+            <div class="hints">
+				<p>因為 <code>\angle{B}=\angle{AED}=90^{\circ}</code> ，<code>\angle{BAC}=\angle{EAD}</code></p>
+				<p>所以由 <code class="hint_green">AA</code> 相似性質， <code>\triangle{ABC}\sim\triangle{AED}</code></p>
+				<p>又因為 <code>\overline{AE}=<var>fraction(L,2,true,true,false,false)</var>\enspace\enspace\enspace\enspace\color{blue}{E為\overline{AC}中點}</code></p>
+				<p>所以 <code>\overline{ED}:\overline{BC}=\overline{AE}:\overline{AB}=<var>fraction(L,2,true,true,false,false)</var>:<var>J</var>\enspace\enspace\enspace\enspace\color{blue}{對應邊成比例}</code></p>
+				<p>因此 <code><var>J</var>\overline{ED}=<var>fraction(L,2,true,true,false,false)</var>\overline{BC}</code></p>
+				<p>得 <code>\overline{ED}=\overline{BC}\times<var>fraction(L,2*J,true,true,false,false)</var>=<var>K</var>\times<var>fraction(L,2*J,true,true,false,false)</var>=</code><code class="hint_pink"><var>fraction(L*K,2*J,true,true,false,false)</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case6">
+            <div class="vars">
+				<var id="JK">randFromArray([[12,3],[16,4],[32,2]])</var>
+				<var id="J">JK[0]</var>
+				<var id="K">JK[1]</var>
+            </div>
+			<p class="question">如下圖， 直角三角形 <code>\triangle{ABC}</code> 中，<code>\angle{ACB}=90^{\circ}</code> ，<code>\overline{CD}</code> 是斜邊上的高，已知 <code>\overline{AD}=<var>J</var></code> ，<code>\overline{BD}=<var>K</var></code> ，求 <code>\overline{CD}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="graphie_6_basic">
+				    init({
+                        range: [ [-1, 12], [-1,1.5*sqrt(3)+1] ],
+                        scale: 40
+                    });
+					path([[0,0],[6,0],[4.5,1.5*sqrt(3)],[0,0]],{stroke:"black"});
+					line([4.5,0],[4.5,1.5*sqrt(3)]);
+					line([4.2,0],[4.2,0.3]);
+					line([4.2,0.3],[4.5,0.3]);
+					line([4.5,1.5*sqrt(3)-0.35],[4.3,1.5*sqrt(3)-0.1]);
+					line([4.5,1.5*sqrt(3)-0.35],[4.6,1.5*sqrt(3)-0.15]);
+					label( [0,0],  "\\small{A}", "below left", { color: "black" });
+					label( [4.5,0],  "\\small{D}", "below", { color: "black" });
+					label( [6,0],  "\\small{B}", "below right", { color: "black" });
+					label( [4.5,1.5*sqrt(3)],  "\\small{C}", "above", { color: "black" });
+					label( [2.25,0],  "\\small{"+J+"}", "below", { color: "red" });
+					label( [5.25,0],  "\\small{"+K+"}", "below", { color: "green" });
+					line([4.5,0],[0,0],{stroke:"red"});
+					line([4.5,0],[6,0],{stroke:"green"});
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>splitRadical(J*K)[0]</var></span>
+            </div>
+            <div class="hints">
+			    <p>相似關係中，<code>\triangle{ACD}</code> 中的 <code>A</code> 、<code>C</code> 、<code>D</code> 分別對應於 <code>\triangle{CBD}</code> 中的 <code>C</code> 、<code>B</code> 、<code>D</code> 。</p>
+				<p>所以 <code>\overline{AD}:\overline{CD}=\overline{CD}:\overline{BD}\enspace\enspace\enspace\enspace\color{blue}{對應邊成比例}</code></p>
+				<p>即 <code><var>J</var>:\overline{CD}=\overline{CD}:<var>K</var></code></p>
+				<p>得 <code>\overline{CD}^{2}=<var>J*K</var></code> ，</p>
+				<p>因此 <code class="hint_pink">\overline{CD}=<var>formattedSquareRootOf(J*K)</var></code> 。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

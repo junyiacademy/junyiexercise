@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie-geometry graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>等差級數的應用</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+			<div class="vars">
+			    <var id="S">1</var>
+				<var id="n">randRange(8,15)</var>
+				<var id="J">n*(12+(n-1)*5)/2</var>
+				<var id="Double_J">J*2</var>
+				<var id="J_FAC">Double_J/n</var>
+				<var id="R">5*n+1</var>
+				<var id="c_text">
+				(function(){
+				    var arr = ["八","九","十","十一","十二","十三","十四","十五"];
+					return arr[n-8];
+				})()</var>
+			</div>
+
+            <p class="question">下面各圖是由等長的吸管所排成的圖形所組成，圖(一)有 <code>1</code> 個六邊形，圖(二)有 <code>2</code> 個六邊形，……圖 <code>(n)</code> 有 <code>n</code> 個六邊形。若圖(一)到圖 <code>(n)</code> 共用去 <code><var>J</var></code> 根吸管，則圖 <code>(n)</code> 用去幾根吸管？</p>
+			<div class="problem">
+			    <div class="graphie" id="proGrph_1">
+				    init({ range:[[-2,20],[-2,S+1]],scale: 30});
+					path([[0, 0], [0, S], [sqrt(3)/2*S, 1.5*S], [sqrt(3)*S, S],[sqrt(3)*S,0],[sqrt(3)*S/2,-0.5*S], true], {stroke: BLUE, fill: "#eee"});
+					path([[sqrt(3)*S+3, S], [1.5*sqrt(3)*S+3, 1.5*S], [2*sqrt(3)*S+3, S], [2*sqrt(3)*S+3, 0],[1.5*sqrt(3)*S+3,-0.5*S],[sqrt(3)*S+3,0], true], {stroke: BLUE, fill: "#eee"});
+					path([[3, 0], [3, S], [sqrt(3)/2*S+3, 1.5*S], [sqrt(3)*S+3, S],[sqrt(3)*S+3,0],[sqrt(3)*S/2+3,-0.5*S], true], {stroke: BLUE, fill: "#eee"});
+					label([sqrt(3)/2*S, -0.5*S ], "圖(一)", "below");
+					label([2.75*sqrt(3)*S, -0.5*S ], "圖(二)", "below");
+				</div>
+			</div>
+            <div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>R</var></span>
+            </div>
+
+            <div class="hints">
+                <div>
+				    <p>第一個圖形有六根吸管：</p>
+				    <div class="graphie" id="perimeter">
+				    init({ range:[[-2,20],[-1,S+1]],scale: 30});
+					path([[0, 0], [0, S], [sqrt(3)/2*S, 1.5*S], [sqrt(3)*S, S],[sqrt(3)*S,0],[sqrt(3)*S/2,-0.5*S], true], {stroke: BLUE, fill: "#eee"});
+					path([[0, 0], [0, S]], { strokeWidth: 2, stroke: PINK });
+					path([[0, S], [sqrt(3)/2*S, 1.5*S]], { strokeWidth: 2, stroke: RED });
+                    path([[sqrt(3)/2*S, 1.5*S], [sqrt(3)*S,S]], { strokeWidth: 2, stroke: BLUE });
+					path([[sqrt(3)*S,S], [sqrt(3)*S,0]], { strokeWidth: 2, stroke: "orange" });
+                    path([[sqrt(3)*S,0], [sqrt(3)*S/2,-0.5*S]], { strokeWidth: 2, stroke: "red" });
+					path([[sqrt(3)*S/2,-0.5*S], [0,0]], { strokeWidth: 2, stroke: "purple" });
+				    </div>
+                </div>
+				<div>
+				    <p>拼出第二個圖形只需要再加上5個吸管，</p>
+				</div>
+				<div>
+				    <div class="graphie" data-update="perimeter">
+					path([[sqrt(3)*S,S], [1.5*sqrt(3)*S,1.5*S]], { strokeWidth: 3, stroke: "blue" });
+					path([[1.5*sqrt(3)*S,1.5*S], [2*sqrt(3)*S, S]], { strokeWidth: 3, stroke: "red" });
+                    path([[2*sqrt(3)*S, S], [2*sqrt(3)*S,0]], { strokeWidth: 3, stroke: "purple" });
+					path([[2*sqrt(3)*S,0], [1.5*sqrt(3)*S,-0.5*S]], { strokeWidth: 3, stroke: "red" });
+                    path([[1.5*sqrt(3)*S,-0.5*S], [sqrt(3)*S,0]], { strokeWidth: 3, stroke: "red" });
+					
+					path([[0, 0], [0, S]], { strokeWidth: 3, stroke: "black" });
+					path([[0, S], [sqrt(3)/2*S, 1.5*S]], { strokeWidth: 3, stroke: "black" });
+                    path([[sqrt(3)/2*S, 1.5*S], [sqrt(3)*S,S]], { strokeWidth: 3, stroke: "black" });
+					path([[sqrt(3)*S,S], [sqrt(3)*S,0]], { strokeWidth: 3, stroke: "black" });
+                    path([[sqrt(3)*S,0], [sqrt(3)*S/2,-0.5*S]], { strokeWidth: 3, stroke: "black" });
+					path([[sqrt(3)*S/2,-0.5*S], [0,0]], { strokeWidth: 3, stroke: "black" });
+                    </div>
+				</div>
+				<div>
+				    <p>拼出第三個圖形也只需要再加上5個吸管，</p>
+				</div>
+				<div>
+				    <div class="graphie" data-update="perimeter">
+					path([[2*sqrt(3)*S,S], [2.5*sqrt(3)*S,1.5*S]], { strokeWidth: 3.5, stroke: "red" });
+					path([[2.5*sqrt(3)*S,1.5*S], [3*sqrt(3)*S, S]], { strokeWidth: 3.5, stroke: "blue" });
+                    path([[3*sqrt(3)*S, S], [3*sqrt(3)*S,0]], { strokeWidth: 3.5, stroke: "yellow" });
+					path([[3*sqrt(3)*S,0], [2.5*sqrt(3)*S,-0.5*S]], { strokeWidth: 3.5, stroke: "red" });
+                    path([[2.5*sqrt(3)*S,-0.5*S], [2*sqrt(3)*S,0]], { strokeWidth: 3.5, stroke: "blue" });
+					
+					path([[sqrt(3)*S,S], [1.5*sqrt(3)*S,1.5*S]], { strokeWidth: 3.5, stroke: "black" });
+					path([[1.5*sqrt(3)*S,1.5*S], [2*sqrt(3)*S, S]], { strokeWidth: 3.5, stroke: "black" });
+                    path([[2*sqrt(3)*S, S], [2*sqrt(3)*S,0]], { strokeWidth: 3.5, stroke: "black" });
+					path([[2*sqrt(3)*S,0], [1.5*sqrt(3)*S,-0.5*S]], { strokeWidth: 3.5, stroke: "black" });
+                    path([[1.5*sqrt(3)*S,-0.5*S], [sqrt(3)*S,0]], { strokeWidth: 3.5, stroke: "black" });
+					
+					path([[0, 0], [0, S]], { strokeWidth: 3.5, stroke: "black" });
+					path([[0, S], [sqrt(3)/2*S, 1.5*S]], { strokeWidth: 3.5, stroke: "black" });
+                    path([[sqrt(3)/2*S, 1.5*S], [sqrt(3)*S,S]], { strokeWidth: 3.5, stroke: "black" });
+					path([[sqrt(3)*S,S], [sqrt(3)*S,0]], { strokeWidth: 3.5, stroke: "black" });
+                    path([[sqrt(3)*S,0], [sqrt(3)*S/2,-0.5*S]], { strokeWidth: 3.5, stroke: "black" });
+					path([[sqrt(3)*S/2,-0.5*S], [0,0]], { strokeWidth: 3.5, stroke: "black" });
+                    </div>
+				</div>
+				<div>
+				    <p>這樣子的排列方式，可以看見規律。圍出來第一個六邊形需要六個吸管，接下來每增加一個六邊形都只需要五個吸管。吸管的數量增加成等差的方式增加。
+找到了規律，我們就可以用數列的方式來表示：</p>
+				</div>
+				<div>
+				    <p>已知首項 <code>a_1=6</code> ， 公差 <code>d=5</code> ， 等差級數之和 <code>{{\rm{S}}_n}=<var>J</var></code> 。</p>
+				</div>
+				<div>
+				    <p>則通過等差級數求和公式： <code>S_n=\dfrac{n[2a_1 + (n - 1) \times d]}{2}</code></p>
+				</div>
+				<div>
+					<p>可得到等式： <code><var>J</var>=\dfrac{n[12 + (n - 1) \times 5]}{2}</code></p>
+				</div>
+				<div>
+				    <p><code><var>Double_J</var>=n[12 + (n - 1) \times 5]</code></p>
+				    <p><code><var>Double_J</var>=n[12+5n-5]</code></p>
+				    <p><code><var>Double_J</var>=n[5n+7]</code></p>
+				    <p><code>5n^{2}+7n-<var>Double_J</var>=0</code></p>
+				</div>
+				<p>十字交乘後的結果為 <code>(5n+<var>J_FAC</var>)(n-<var>n</var>)=0</code> 。</p>
+				<p><code>n=-\frac{<var>J_FAC</var>}{5}(</code>不合<code>)</code> 或 <code>n=<var>n</var></code></p>
+				<div>
+				    <p>則 <code>{{\rm{a}}_{<var>n</var>}}=a_1+<var>n-1</var>d</code></p>
+					<p>   <code>=6+<var>n-1</var>\times 5</code></p>
+					<p>   =<code><var>R</var></code></p>
+				</div>
+				<div><p>故圖 <code>(<var>c_text</var>)</code> 共用去 <code><var>R</var></code> 根吸管。</p></div>
+				<p>因此，本題的答案為 <code class="hint_pink"><var>R</var></code> 。</p>
+            </div>
+		</div>
+		
+		<div id="case2">
+		    <div class="vars">
+			    <var id="K">randRange(0,20)</var>
+				<var id="J">99+2*K</var>
+				<var id="L">49+K</var>
+				<var id="J_MUL">J-2</var>
+				<var id="Sn">L/2*(2+(L-1)*2)</var>
+				<var id="R">2*Sn+J</var>
+			</div>
+			<p class="question">請把以下很長一串數字加起來。</p>
+			<div class="problem">
+			    <p><code>1+3+5+...+<var>J_MUL</var>+<var>J</var>+<var>J_MUL</var>+<var>J-4</var>...+5+3+1</code></p>
+			</div>
+            <div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>R</var></span>
+            </div>
+
+            <div class="hints">
+			    <p>原式 <code>=2×[1+3+5+</code> ... <code>+<var>J_MUL</var> ]+<var>J</var></code></p>
+				<p>觀察可知， <code>1+3+5+</code> ... <code>+<var>J_MUL</var></code> 為一等差級數。</p>
+				<p>我們要求等差級數的和時，必須有首項、項數以及公差。</p>
+				<p>已知首項 <code>a_1=1</code> ，公差 <code>d=2</code> ，我們用 <code>a_n=a_1+(n-1)\times d</code> 就可以算出這個等差級數有幾項：</p>
+				<p><code><var>J_MUL</var>=1+(n-1)\times 2</code></p>
+				<p>透過移項整理算出 <code><var>J_MUL</var></code> 其實是第 <code><var>L</var></code> 項。</p>
+				<p>然後，我們用等差級數求和公式 <code>S_n=\dfrac{n[2a_1 + (n - 1) \times d]}{2}</code> 算出 <code>{{\rm{S}}_{<var>L</var>}}</code> 的值：</p>
+				<p><code>{{\rm{S}}_{<var>L</var>}}=\dfrac{<var>L</var> \times [2\times 1 + (<var>L</var> - 1) \times 2]}{2}=<var>Sn</var></code></p>
+				<p>所以，原式的值為 <code>2\times <var>Sn</var>+<var>J</var>=<var>R</var></code> 。</p>
+				<p>因此，本題的答案為 <code class="hint_pink"><var>R</var></code> 。</p>
+			</div>
+		</div>
+		
+		<div id="case3">
+		    <div class="vars">
+			    <var id="K">randRange(0,20)</var>
+				<var id="J">100+(20+K)*K</var>
+				<var id="Double_J">2*J</var>
+				<var id="class_type">randFromArray(["奶粉罐","麵粉罐","玉米罐頭","鮪魚罐頭"])</var>
+				<var id="R">K+10</var>
+			</div>
+			<p class="question">大賣場的 <code><var>class_type</var></code> 堆疊如下圖，已知最上層有 <code>1</code> 罐 <code><var>class_type</var></code> ，第 <code>2</code> 層有 <code>3</code> 罐 <code><var>class_type</var></code> ，...，每一層比上一層多 <code>2</code> 罐，若總共有 <code><var>J</var></code> 罐，則這些 <code><var>class_type</var></code> 共疊了幾層？</p>
+			<div class="problem">
+			    <div class="graphie" id="proGrph_1">
+				    init({ range: [[-6, 8], [-1, 2]], scale: 30 });
+					path([[0, 0], [0, 1], [3, 1], [3, 0], true], {stroke: BLUE, fill: "#eee"});
+					path([[0, 0], [0, 1], [2, 1], [2, 0], true], {stroke: BLUE, fill: "#eee"});
+					path([[0, 0], [0, 1], [1, 1], [1, 0], true], {stroke: BLUE, fill: "#eee"});
+					path([[1, 1], [1, 2], [2, 2], [2, 1], true], {stroke: BLUE, fill: "#eee"});
+				</div>
+			</div>
+            <div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>R</var></span>
+            </div>
+            <div class="hints">
+			    <p>我們可以看出，第 <code>1</code> 層，第 <code>2</code> 層，...第 <code>n</code> 層的罐頭數量是一個等差級數。</p>
+				<div>
+				    <p>已知首項 <code>a_1=1</code> ， 公差 <code>d=2</code> ， 等差級數之和 <code>{{\rm{S}}_{n}}=<var>J</var></code> 。</p>
+				</div>
+				<div>
+				    <p>則我們可以通過等差級數求和公式 <code>S_n=\dfrac{n[2a_1 + (n - 1) \times d]}{2}</code> 求得共疊了幾層。</p>
+				</div>
+				<div>
+					<p>將已知的值代入公式，得到等式： <code><var>J</var>=\dfrac{n[2 \times 1 + (n - 1) \times 2]}{2}</code></p>
+				</div>
+				<div><p>透過移項整理後知道 <code><var>Double_J</var>=n\times (2+2n-2)</code></p></div>
+				<div>
+				    <p><code>2n^{2}=<var>Double_J</var></code></p>
+					<p><code>n^{2}=<var>J</var></code></p>
+				</div>
+				<p><code>n=\pm <var>R</var>(-<var>R</var></code> 不合 <code>)</code> 所以總共疊了 <code><var>R</var></code> 層。</p>
+				<p>因此，本題的答案為 <code class="hint_pink"><var>R</var></code> 。</p>
+			</div>
+		</div>
+		
+		<div id="case4">
+		    <div class="vars">
+			    <var id="J">randRange(12,20)</var>
+				<var id="M">randRange(0,10)</var>
+				<var id="K">42+2*M</var>
+				<var id="R">J*(K-J+1)</var>
+			</div>
+			<p class="question">一家戲院共有 <code><var>J</var></code> 排，若最後一排有 <code><var>K</var></code> 個座位，而每一排都比後一排少 <code><var>2</var></code> 個座位，則這家戲院有幾個座位？</p>
+            <div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>R</var></span>
+            </div>
+            <div class="hints">
+			    <p>我們可以看出，戲院從後往前，每排的座位數可以構成一個等差級數。</p>
+				<p>已知這個等差級數的首項 <code>a_1=<var>K</var></code> ， 公差 <code>d=-2</code> ， 項數 <code>n=<var>J</var></code> 。</p>
+				<p>要求這家戲院有幾個座位就是求上述等差級數之和。</p>
+				<p>我們可以通過等差級數求和公式 <code>S_n=\dfrac{n[2a_1 + (n - 1) \times d]}{2}</code> 求得戲院座位數。</p>
+				<p><code>{{\rm{S}}_{<var>J</var>}}=\dfrac{<var>J</var>\times [2\times <var>K</var>+(<var>J</var>-1)\times (-2)]}{2}</code></p>
+				<p><code>=<var>J/2</var>\times [2\times <var>K</var>+(<var>J</var>-1)\times (-2)]</code></p>
+				<p><code>=<var>J/2</var>\times (<var>2*K</var>-<var>(J-1)*2</var>)</code></p>
+				<p><code>=<var>J/2</var>\times <var>2*K-2*(J-1)</var></code></p>
+				<p><code>=<var>R</var></code></p>
+				<p>因此，本題的答案為 <code class="hint_pink"><var>R</var></code> 。</p>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

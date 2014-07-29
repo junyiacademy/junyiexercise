@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>雞兔問題</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+            <div class="vars" data-ensure="R&gt;0">
+			    <var id="J">randRange(6,12)</var>
+				<var id="K">randRange(3,5)</var>
+				<var id="L">randRange(1,3)</var>
+				<var id="R">4*J-4*K-2*L</var>
+            </div>
+			<p class="question"><code><var>J</var></code> 隻兔子的腳數比 <code><var>K</var></code> 隻兔子和 <code><var>L</var></code> 隻雞合起來的腳數多多少？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>\enspace 隻</code>
+			</div>
+
+    <div class="hints">
+	    <div>
+	        <p><code>1</code> 隻兔子有 <code>4</code> 隻腳。</p>
+		    <p>本題中 <code><var>J</var></code> 隻兔子有 <code>4\times <var>J</var>=<var>4*J</var></code> 隻腳，<code><var>K</var></code> 隻兔子有 <code>4\times <var>K</var>=<var>4*K</var></code> 隻腳。</p>
+		</div>
+		<div>
+		    <p><code>1</code> 隻雞有 <code>2</code> 隻腳。</p>
+			<p>本題中 <code><var>L</var></code> 隻雞有 <code>2\times <var>L</var>=<var>2*L</var></code> 隻腳。</p>
+		</div>
+		<p><code><var>K</var></code> 隻兔子和 <code><var>L</var></code> 隻雞總共有 <code><var>4*K</var>+<var>2*L</var>=<var>4*K+2*L</var></code> 隻腳。</p>
+		<p>所以我們知道 <code><var>J</var></code> 隻兔子比 <code><var>K</var></code> 隻兔子和 <code><var>L</var></code> 隻雞多了 <code><var>4*J</var>-<var>4*K+2*L</var>=<var>R</var></code> 隻腳。</p>
+		<p>所以，本題的答案爲 <code class="hint_pink"><var>R</var></code> 隻。</p>
+    </div>
+	</div>
+	
+	<div id="case2">
+            <div class="vars" data-ensure="J%2==0">
+			    <var id="J">randRange(20,40)</var>
+				<var id="R">J/2</var>
+            </div>
+			<p class="question">甲農場養兔子，乙農場養兔子和雞。甲農場的兔子和乙農場雞、兔合起來的數量一樣多，如果甲農場的兔子腳數比乙農場雞、兔合起來的腳數多 <code><var>J</var></code> ，乙農場的雞有幾隻？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>\enspace 隻</code>
+			</div>
+
+    <div class="hints">
+	    <p>乙農場養一隻雞，總腳數就會少 <code>2</code> 隻腳。</p>
+		<p>現在總共少 <code><var>J</var></code> 隻腳。</p>
+		<p>那麼，乙農場養了 <code><var>J</var>\div 2=<var>J/2</var></code> 隻雞。</p>
+		<p>所以，本題的答案爲 <code class="hint_pink"><var>R</var></code> 隻。</p>
+    </div>
+	</div>
+	
+	<div id="case3">
+            <div class="vars" data-ensure="R_ch&gt;=1 && R_ra&gt;=1 && isInt(R_ra) && isInt(R_ch)">
+			    <var id="J">randRange(20,50)</var>
+				<var id="K">randRange((J-1)*2+4,(J-1)*4+2)</var>
+				<var id="R_ch">(4*J-K)/2</var>
+				<var id="R_ra">J-R_ch</var>
+            </div>
+			<p class="question">乙農場養雞、兔子共 <code><var>J</var></code> 隻，雞和兔子合起來的腳數是 <code><var>K</var></code> ，雞和兔子各有幾隻？</p>
+			<div class="solution" data-type="multiple">
+				<code>雞=\enspace</code><span class="sol" data-forms="integer"><var>R_ch</var></span><code>\enspace 隻</code><br />
+				<code>兔=\enspace</code><span class="sol" data-forms="integer"><var>R_ra</var></span><code>\enspace 隻</code><br />
+				<p class="example">整數，例：6</p>
+			</div>
+
+    <div class="hints">
+	    <p>先假設乙農場全部都養兔子。</p>
+		<p><code>1</code> 隻兔子有 <code>4</code> 隻腳，總共有 <code>4\times <var>J</var>=<var>4*J</var></code> 隻腳。</p>
+		<p>但其實雞加上兔子只有 <code><var>K</var></code> 隻腳。</p>
+		<p>我們多算了 <code><var>4*J</var>-<var>K</var>=<var>4*J-K</var></code> 隻腳。</p>
+		<p>如果我們將一隻兔子換成一隻雞，就會少 <code>2</code> 隻腳。</p>
+		<p><code><var>4*J-K</var>\div 2=<var>R_ch</var></code></p>
+		<p>所以，我們要將 <code><var>R_ch</var></code> 隻兔子換成雞。</p>
+		<div>
+		    <p>驗算看看：</p>
+			<p><code><var>R_ch</var></code> 隻雞有 <code>2\times <var>R_ch</var>=<var>R_ch*2</var></code> 隻腳。</p>
+		</div>
+		<p><code>(<var>J</var>-<var>R_ch</var>)</code> 隻兔子有 <code><var>R_ra</var>\times 4=<var>R_ra*4</var></code> 隻腳。</p>
+		<p><code><var>2*R_ch</var>+<var>4*R_ra</var>=<var>K</var></code> 隻腳。</p>
+		<p>所以，本題的答案爲乙農場養了 <code class="hint_pink"><var>R_ch</var></code> 隻雞、<code class="hint_pink"><var>R_ra</var></code> 隻兔子。</p>
+    </div>
+	</div>
+	
+	<div id="case4">
+            <div class="vars" data-ensure="R&gt;=1 && isInt(small_note)">
+			    <var id="J">randRange(40,60)</var>
+				<var id="K">J-5</var>
+				<var id="L">randRange(10,15)</var>
+				<var id="M">randRange((L-1)*(J-5)+J,L*J-5)</var>
+				<var id="jlm">J*L-M</var>
+				<var id="small_note">jlm/5</var>
+				<var id="R">L-small_note</var>
+            </div>
+			<p class="question">大、小兩種筆記本的價錢分別是 <code><var>J</var></code> 元和 <code><var>K</var></code> 元，小英買了 <code><var>L</var></code> 本筆記本，共花了 <code><var>M</var></code> 元，她買了幾本大筆記本？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>\enspace 本</code><br />
+			</div>
+
+    <div class="hints">
+	    <p>先假設全部都買大筆記本，總共要花 <code><var>J</var>\times <var>L</var>=<var>J*L</var></code> 元。</p>
+		<p>但其實只花了 <code><var>M</var></code> 元，我們多算了 <code><var>J*L</var>-<var>M</var>=<var>jlm</var></code> 元。</p>
+		<p>每一本大筆記本和小筆記本相差 <code><var>J</var>-<var>K</var>=5</code> 元。</p>
+		<p>我們多算的 <code><var>jlm</var></code> 元是因為多算了 <code><var>jlm</var>\div 5=<var>small_note</var></code> 本大筆記本。</p>
+		<p>我們將 <code><var>small_note</var></code> 本大筆記本換成 <code><var>small_note</var></code> 本小筆記本。</p>
+		<div>
+		    <p>驗算看看：</p>
+			<p><code><var>small_note</var></code> 本小筆記本要 <code><var>K</var>\times <var>small_note</var>=<var>K*small_note</var></code> 元。</p>
+		</div>
+		<p><code>(<var>L</var>-<var>small_note</var>)=<var>R</var></code> 本大筆記本要 <code><var>J</var>\times <var>R</var>=<var>J*R</var></code> 元。</p>
+		<p>總共花了 <code><var>K*small_note</var>+<var>J*R</var>=<var>M</var></code> 元。</p>
+		<p>因此，本題的答案為小英買了 <code class="hint_pink"><var>R</var></code> 本大筆記本。</p>
+    </div>
+	</div>
+	
+	<div id="case5">
+            <div class="vars" data-ensure="L&lt;=12000 && L&gt;=3600">
+			    <var id="names_1">randFromArray(["龍埔","博爱","龙安","敦化"])</var>
+				<var id="names_2">randRange(1,6)</var>
+				<var id="names_3">randRange(1,9)</var>
+			    <var id="J">10*randRange(12,18)</var>
+				<var id="K">10*randRange(6,10)</var>
+				<var id="R_child">randRange(60,120)</var>
+				<var id="R_full">R_child&gt;=66?randRange(1,66):randRange(1,R_child)</var>
+				<var id="M">R_child+R_full</var>
+				<var id="L">R_child*K+R_full*J</var>
+				<var id="jlm">J*M-L</var>
+            </div>
+			<p class="question">畫展門票，全票每張 <code><var>J</var></code> 元，兒童票每張 <code><var>K</var></code> 元，<code><var>names_1</var></code> 國小 <code><var>names_2</var></code> 年 <code><var>names_3</var></code> 班去校外教學，共買了兩種票券共 <code><var>M</var></code> 張，付了 <code><var>L</var></code> 元，<code><var>names_1</var></code> 國小 <code><var>names_2</var></code>年 <code><var>names_3</var></code> 買了幾張全票？幾張兒童票？</p>
+			<div class="solution" data-type="multiple">
+				<code>全票=\enspace</code><span class="sol" data-forms="integer"><var>R_full</var></span><code>\enspace 張</code><br />
+				<code>兒童票=\enspace</code><span class="sol" data-forms="integer"><var>R_child</var></span><code>\enspace 張</code><br />
+				<p class="example">整數，例：6</p>
+			</div>
+
+    <div class="hints">
+	    <p>先假設全部買全票，總共要花 <code><var>J</var>\times <var>M</var>=<var>J*M</var></code> 元。</p>
+		<p>但其實只花了 <code><var>L</var></code> 元，我們多算了 <code><var>J*M</var>-<var>L</var>=<var>jlm</var></code> 元。</p>
+		<p>每一張全票和兒童票相差 <code><var>J</var>-<var>K</var>=<var>J-K</var></code> 元。</p>
+		<p>我們多算的 <code><var>jlm</var></code> 元是因為多算了 <code><var>jlm</var>\div <var>J-K</var>=<var>R_child</var></code> 張全票。</p>
+		<p>我們將 <code><var>R_child</var></code> 張全票換成 <code><var>R_child</var></code> 張兒童票。</p>
+		<div>
+		    <p>驗算看看：</p>
+			<p><code><var>R_child</var></code> 張兒童票要 <code><var>R_child</var>\times <var>K</var>=<var>K*R_child</var></code> 元。</p>
+		</div>
+		<p><code>(<var>M</var>-<var>R_child</var>)=<var>R_full</var></code> 張全票要 <code><var>R_full</var>\times <var>J</var>=<var>J*R_full</var></code> 元。</p>
+		<p>總共花了 <code><var>K*R_child</var>+<var>J*R_full</var>=<var>L</var></code> 元。</p>
+		<p>因此，本題的答案為買了 <code class="hint_pink"><var>R_full</var></code> 張全票、<code class="hint_pink"><var>R_child</var></code> 張兒童票。</p>
+    </div>
+	</div>
+	
+	<div id="case6">
+            <div class="vars" data-ensure="R_child&gt;=1 && R_full&gt;=1">
+			    <var id="names">randFromArray(["媽媽","爸爸","叔叔","阿姨"])</var>
+			    <var id="J">5*randRange(14,16)</var>
+				<var id="K">5*randRange(17,20)</var>
+				<var id="R_child">randRange(1,29)</var>
+				<var id="M">10*randRange(3,5)</var>
+				<var id="R_full">M-R_child</var>
+				<var id="L">R_child*J+R_full*K</var>
+				<var id="klm">K*M-L</var>
+            </div>
+			<p class="question">排骨便當和雞腿便當的價格分別為 <code><var>J</var></code> 和 <code><var>K</var></code> 元，<code><var>names</var></code> 公司買了 <code><var>M</var></code> 個便當，共花了 <code><var>L</var></code> 元，請問 <code><var>names</var></code> 買了幾個排骨便當?幾個雞腿便當？</p>
+			<div class="solution" data-type="multiple">
+			    <code>雞腿便當=\enspace</code><span class="sol" data-forms="integer"><var>R_full</var></span><code>\enspace 個</code><br />
+				<code>排骨便當=\enspace</code><span class="sol" data-forms="integer"><var>R_child</var></span><code>\enspace 個</code><br />
+				<p class="example">整數，例：6</p>
+			</div>
+
+    <div class="hints">
+	    <p>先假設全部買雞腿，總共要花 <code><var>K</var>\times <var>M</var>=<var>K*M</var></code> 元。</p>
+		<p>但其實只花了 <code><var>L</var></code> 元，我們多算了 <code><var>K*M</var>-<var>L</var>=<var>klm</var></code> 元。</p>
+		<p>雞腿便當和排骨便當相差 <code><var>K</var>-<var>J</var>=<var>K-J</var></code> 元。</p>
+		<p>我們多算的 <code><var>klm</var></code> 元是因為多算了 <code><var>klm</var>\div <var>K-J</var>=<var>R_child</var></code> 個雞腿便當。</p>
+		<p>我們將 <code><var>R_child</var></code> 個雞腿便當換成 <code><var>R_child</var></code> 個排骨便當。</p>
+		<div>
+		    <p>驗算看看：</p>
+			<p><code><var>R_child</var></code> 個排骨便當要 <code><var>R_child</var>\times <var>J</var>=<var>J*R_child</var></code> 元。</p>
+		</div>
+		<p><code>(<var>M</var>-<var>R_child</var>)=<var>R_full</var></code> 個雞腿便當要 <code><var>R_full</var>\times <var>K</var>=<var>K*R_full</var></code> 元。</p>
+		<p>總共花了 <code><var>J*R_child</var>+<var>K*R_full</var>=<var>L</var></code> 元。</p>
+		<p>因此，本題的答案為買了 <code class="hint_pink"><var>R_full</var></code> 個雞腿便當、<code class="hint_pink"><var>R_child</var></code> 個排骨便當。</p>
+    </div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>多重括號的運算</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+	    <div id="case1">
+			<div class="vars" data-ensure="R_1!=0 && L-M*N!=0 && K+L-M*N!=0">
+			    <var id="J">randRange(2,9)</var>
+				<var id="K">randRange(2,6)</var>
+				<var id="L">randRange(2,5)</var>
+				<var id="M">randRange(2,5)</var>
+				<var id="N">randRange(2,9)</var>
+				<var id="O">randRange(2,5)</var>
+				<var id="P">randRange(1,5)</var>
+				<var id="R_1">J-K-L+M*N</var>
+				<var id="R_2">M*O-P</var>
+			</div>
+
+            <p class="question">化簡下列各式</p>
+			<p class="problem"><code><var>J</var>x - \left\{ {<var>K</var>x + \left[ {<var>L</var>x - <var>M</var>\left( {<var>N</var>x - <var>O</var>} \right) - <var>P</var>} \right]} \right\}</code></p>
+
+			<div class="solution" data-type="multiple">
+				<p><span class="sol" data-type="rational"><var>R_1</var></span><code>\enspace\cdot\enspace x +\enspace</code><span class="sol" data-type="rational"><var>-R_2</var></span></p>
+				<p class="example">格式例如： <code>-6 x + 3</code></p>	
+			</div>
+
+            <div class="hints">
+			    <div><p>原式 <code>=<var>J</var>x - [<var>K</var>x + (<var>L</var>x - <var>M*N</var>x + <var>M*O</var> - <var>P</var>)]</code></p></div>
+				<div><p><code>=<var>J</var>x - [<var>K</var>x + (<var>L</var> - <var>M*N</var>)x + (<var>M*O</var> - <var>P</var>)]</code></p></div>
+				<div><p><code>=<var>J</var>x - (<var>K</var>x</code><code data-if="abs(L-M*N)!=1">+<var>L-M*N</var></code><code data-if="L-M*N==-1">-\enspace </code><code data-if="L-M*N==1">+\enspace </code><code>x + <var>M*O-P</var>)</code></p></div>
+				<div><p><code>=<var>J</var>x - (</code><code data-if="abs(K+L-M*N)!=1"><var>K+L-M*N</var></code><code data-if="K+L-M*N==-1">-</code><code>x + <var>M*O-P</var>)</code></p></div>
+				<div><p><code>=<var>J</var>x - <span data-if="K+L-M*N<0">(</span></code><code data-if="abs(K+L-M*N)!=1"><var>K+L-M*N</var></code><code data-if="K+L-M*N==-1">-</code><code>x<span data-if="K+L-M*N<0">)</span> - <var>M*O-P</var></code></p></div>
+				<div><p><code>=\enspace</code><code data-if="abs(R_1)!=1"><var>R_1</var></code><code data-if="R_1==-1">-</code><code>x - <var>M*O-P</var></code></p></div>
+				<div><p>因此，本題可化簡為 <code class="hint_pink" data-if="abs(R_1)!=1"><var>R_1</var>x-<var>R_2</var></code><code class="hint_pink" data-if="R_1==-1">-x-<var>R_2</var></code><code class="hint_pink" data-if="R_1==1">x-<var>R_2</var></code> 。</p></div>
+            </div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars" data-ensure="M-N*O!=0 && K-L*(M-N*O)!=0 && R_1!=0">
+			    <var id="J">randRange(2,9)</var>
+				<var id="K">randRange(2,6)</var>
+				<var id="L">randRange(2,5)</var>
+				<var id="M">randRange(2,5)</var>
+				<var id="N">randRange(2,9)</var>
+				<var id="O">randRange(2,5)</var>
+				<var id="P">randRange(1,5)</var>
+				<var id="Q">randRange(2,5)</var>
+				<var id="R">randRange(1,9)</var>
+				<var id="R_1">J*(K-L*(M-N*O))-Q</var>
+				<var id="R_2">R-J*L*N*P</var>
+			</div>
+
+            <p class="question">化簡下列各式</p>
+			<p class="problem"><code><var>J</var>\left\{ {<var>K</var>x - <var>L</var>\left[ {<var>M</var>x - <var>N</var>\left( {<var>O</var>x - <var>P</var>} \right)} \right]} \right\} - <var>Q</var>x + <var>R</var></code></p>
+
+			<div class="solution" data-type="multiple">
+				<p><span class="sol" data-type="rational"><var>R_1</var></span><code>\enspace\cdot\enspace x +\enspace</code><span class="sol" data-type="rational"><var>R_2</var></span></p>
+				<p class="example">格式例如： <code>-6 x + 3</code></p>	
+			</div>
+
+            <div class="hints">
+			    <div><p>原式 <code>=<var>J</var>[<var>K</var>x - <var>L</var>(<var>M</var>x - <var>N*O</var>x + <var>N*P</var>)] - <var>Q</var>x + <var>R</var></code></p></div>
+				<div><p><code>=<var>J</var>[<var>K</var>x - <var>L</var> (</code><code data-if="abs(M-N*O)!=1"><var>M-N*O</var></code><code data-if="M-N*O==-1">-</code><code>x + <var>N*P</var>)]  - <var>Q</var>x + <var>R</var></code></p></div>
+				<div><p><code>=<var>J</var>(<var>K</var>x - <var>L*(M-N*O)</var>x - <var>L*N*P</var>) - <var>Q</var>x + <var>R</var></code></p></div>
+				<div><p><code data-if="abs(K-L*(M-N*O))!=1">=<var>J</var>(<var>K-L*(M-N*O)</var></code><code data-if="K-L*(M-N*O)==-1">=<var>J</var>(-</code><code data-if="K-L*(M-N*O)==1">=<var>J</var>(</code><code>x-<var>L*N*P</var>) - <var>Q</var>x + <var>R</var></code></p></div>
+				<div><p><code>=<var>J*(K-L*(M-N*O))</var>x-<var>J*L*N*P</var> - <var>Q</var>x + <var>R</var></code></p></div>
+				<div><p><code>=<var>R_1</var>x + <var>R_2</var></code></p></div>
+				<div><p>因此，本題可化簡為 <code class="hint_pink"><var>R_1</var>x+<var>R_2</var></code> 。</p></div>
+            </div>
+		</div>
+		
+		<div id="case3">
+			<div class="vars" data-ensure="check_params_1!=0">
+			    <var id="J_low">randRange(2,5)</var>
+				<var id="K_low">randRange(2,6)</var>
+				<var id="L_low">randRange(2,4)</var>
+				<var id="M_low">randRange(2,5)</var>
+				<var id="N_low">randRange(2,5)</var>
+				<var id="O_low">randRange(2,6)</var>
+				<var id="P_low">randRange(2,8)</var>
+				<var id="J_up">randRange(1,J_low-1)</var>
+				<var id="K_up">randRange(1,K_low-1)</var>
+				<var id="L_up">randRange(1,L_low-1)</var>
+				<var id="M_up">randRange(1,M_low-1)</var>
+				<var id="N_up">randRange(1,N_low-1)</var>
+				<var id="O_up">randRange(1,O_low-1)</var>
+				<var id="P_up">randRange(1,P_low-1)</var>
+				<var id="J">fraction(J_up,J_low,true,true,false,false)</var>
+				<var id="K">fraction(K_up,K_low,true,true,false,false)</var>
+				<var id="L">fraction(L_up,L_low,true,true,false,false)</var>
+				<var id="M">fraction(M_up,M_low,true,true,false,false)</var>
+				<var id="N">fraction(N_up,N_low,true,true,false,false)</var>
+				<var id="O">fraction(O_up,O_low,true,true,false,false)</var>
+				<var id="P">fraction(P_up,P_low,true,true,false,false)</var>
+				<var id="check_params_1">L_up/L_low-M_up*N_up/M_low/N_low</var>
+				<var id="R_before">J_up/J_low-K_up/K_low-check_params_1</var>
+				<var id="R_after">M_up*O_up/M_low/O_low+P_up/P_low</var>
+			</div>
+
+            <p class="question">化簡下列各式</p>
+			<p class="problem"><code><var>J</var>x-\{<var>K</var>x+[<var>L</var>x-<var>M</var>(<var>N</var>x+<var>O</var>)-<var>P</var>]\}</code></p>
+			<div class="solution" data-type="multiple">
+				<p><span class="sol" data-type="rational"><var>R_before</var></span><code>\enspace\cdot\enspace x +\enspace</code><span class="sol" data-type="rational"><var>R_after</var></span></p>
+				<p class="example">格式例如： <code>-6 x + 3</code></p>	
+			</div>
+
+            <div class="hints">
+			    <div><p>原式 <code><var>fraction(J_up,J_low,true,true,true,false)</var>x-\{<var>fraction(K_up,K_low,true,true,true,false)</var>x+[<var>fraction(L_up,L_low,true,true,true,false)</var>x-<var>fraction(M_up,M_low,true,true,true,false)</var>(<var>fraction(N_up,N_low,true,true,true,false)</var>x+<var>fraction(O_up,O_low,true,true,true,false)</var>)-<var>fraction(P_up,P_low,true,true,true,false)</var>]\}</code></p></div>
+				<div><p><code>=<var>fraction(J_up,J_low,true,true,true,false)</var>x-[<var>fraction(K_up,K_low,true,true,true,false)</var>x+(<var>fraction(L_up,L_low,true,true,true,false)</var>x-<var>decimalFraction(M_up*N_up/M_low/N_low,true,true,true,false)</var>x-<var>decimalFraction(M_up*O_up/M_low/O_low,true,true,true,false)</var>-<var>fraction(P_up,P_low,true,true,true,false)</var>)]</code></p></div>
+				<div><p><code>=<var>fraction(J_up,J_low,true,true,true,false)</var>x-\{<var>fraction(K_up,K_low,true,true,true,false)</var>x+[(<var>fraction(L_up,L_low,true,true,true,false)</var>-<var>decimalFraction(M_up*N_up/M_low/N_low,true,true,true,false)</var>)x+(-<var>decimalFraction(M_up*O_up/M_low/O_low,true,true,true,false)</var>-<var>fraction(P_up,P_low,true,true,true,false)</var>)]\}</code></p></div>
+				<div><p><code>=<var>fraction(J_up,J_low,true,true,true,false)</var>x-<span data-if="check_params_1 &lt;0">[</span><span data-if="check_params_1 &gt;0">(</span><var>fraction(K_up,K_low,true,true,true,false)</var>x+<span data-if="check_params_1 &lt;0">(</span><var>decimalFraction(check_params_1,true,true,true,false)</var><span data-if="check_params_1 &lt;0">)</span>x-<var>decimalFraction(R_after,true,true,true,false)</var><span data-if="check_params_1 &lt;0">]</span><span data-if="check_params_1 &gt;0">)</span></code></p></div>
+				<div><p><code>=<var>fraction(J_up,J_low,true,true,true,false)</var>x-(<var>decimalFraction(K_up/K_low+check_params_1,true,true,true,false)</var>x-<var>decimalFraction(R_after,true,true,true,false)</var>)</code></p></div>
+				<div><p><code>=<var>fraction(J_up,J_low,true,true,true,false)</var>x-<var>decimalFraction(K_up/K_low+check_params_1,true,true,true,false)</var>x+<var>decimalFraction(R_after,true,true,true,false)</var></code></p></div>
+				<div><p><code>=<var>decimalFraction(J_up/J_low-K_up/K_low-check_params_1,true,true,true,false)</var>x+<var>decimalFraction(R_after,true,true,true,false)</var></code></p></div>
+				<div><p>因此，本題可化簡為 <code class="hint_pink"><var>decimalFraction(R_before,true,true,false,false)</var>x+<var>decimalFraction(R_after,true,true,false,false)</var></code> 。</p></div>
+            </div>
+		</div>
+		
+		<div id="case4">
+			<div class="vars" data-ensure="check_params_1!=0">
+			    <var id="J_low">randRange(2,5)</var>
+				<var id="K_low">randRange(2,5)</var>
+				<var id="L_low">randRange(2,5)</var>
+				<var id="M_low">randRange(2,5)</var>
+				<var id="N_low">randRange(2,5)</var>
+				<var id="O_low">randRange(2,5)</var>
+				<var id="P_low">randRange(2,5)</var>
+				<var id="J_up">randRange(1,J_low-1)</var>
+				<var id="K_up">randRange(1,K_low-1)</var>
+				<var id="L_up">randRange(1,L_low-1)</var>
+				<var id="M_up">randRange(1,M_low-1)</var>
+				<var id="N_up">randRange(1,N_low-1)</var>
+				<var id="O_up">randRange(1,O_low-1)</var>
+				<var id="P_up">randRange(1,P_low-1)</var>
+				<var id="J">fraction(J_up,J_low,true,true,false,false)</var>
+				<var id="K">fraction(K_up,K_low,true,true,false,false)</var>
+				<var id="L">fraction(L_up,L_low,true,true,false,false)</var>
+				<var id="M">fraction(M_up,M_low,true,true,false,false)</var>
+				<var id="N">fraction(N_up,N_low,true,true,false,false)</var>
+				<var id="O">fraction(O_up,O_low,true,true,false,false)</var>
+				<var id="P">fraction(P_up,P_low,true,true,false,false)</var>
+				<var id="check_params_1">L_up/L_low-M_up*N_up/M_low/N_low</var>
+				<var id="R_before">J_up/J_low-K_up/K_low-check_params_1</var>
+				<var id="R_after">M_up*O_up/M_low/O_low-P_up/P_low</var>
+			</div>
+
+            <p class="question">化簡下列各式</p>
+			<p class="problem"><code><var>J</var>x-\{<var>K</var>x+[<var>L</var>x-<var>M</var>(<var>N</var>x-<var>O</var>)-<var>P</var>]\}</code></p>
+			<div class="solution" data-type="multiple">
+				<p><span class="sol" data-type="rational"><var>R_before</var></span><code>\enspace\cdot\enspace x +\enspace</code><span class="sol" data-type="rational"><var>-R_after</var></span></p>
+				<p class="example">格式例如： <code>-6 x + 3</code></p>	
+			</div>
+
+            <div class="hints">
+			    <div><p>原式 <code><var>fraction(J_up,J_low,true,true,true,false)</var>x-\{<var>fraction(K_up,K_low,true,true,true,false)</var>x+[<var>fraction(L_up,L_low,true,true,true,false)</var>x-<var>fraction(M_up,M_low,true,true,true,false)</var>(<var>fraction(N_up,N_low,true,true,true,false)</var>x-<var>fraction(O_up,O_low,true,true,true,false)</var>)-<var>fraction(P_up,P_low,true,true,true,false)</var>]\}</code></p></div>
+				<div><p><code>=<var>fraction(J_up,J_low,true,true,true,false)</var>x-[<var>fraction(K_up,K_low,true,true,true,false)</var>x+(<var>fraction(L_up,L_low,true,true,true,false)</var>x-<var>decimalFraction(M_up*N_up/M_low/N_low,true,true,true,false)</var>x+<var>decimalFraction(M_up*O_up/M_low/O_low,true,true,true,false)</var>-<var>fraction(P_up,P_low,true,true,true,false)</var>)]</code></p></div>
+				<div><p><code>=<var>fraction(J_up,J_low,true,true,true,false)</var>x-\{<var>fraction(K_up,K_low,true,true,true,false)</var>x+[(<var>fraction(L_up,L_low,true,true,true,false)</var>-<var>decimalFraction(M_up*N_up/M_low/N_low,true,true,true,false)</var>)x+(<var>decimalFraction(M_up*O_up/M_low/O_low,true,true,true,false)</var>-<var>fraction(P_up,P_low,true,true,true,false)</var>)]\}</code></p></div>
+				<div><p><code>=<var>fraction(J_up,J_low,true,true,true,false)</var>x-<span data-if="check_params_1 &lt;0">[</span><span data-if="check_params_1 &gt;0">(</span><var>fraction(K_up,K_low,true,true,true,false)</var>x+<span data-if="check_params_1 &lt;0">(</span><var>decimalFraction(check_params_1,true,true,true,false)</var><span data-if="check_params_1 &lt;0">)</span>x+<var>decimalFraction(R_after,true,true,true,false)</var><span data-if="check_params_1 &lt;0">]</span><span data-if="check_params_1 &gt;0">)</span></code></p></div>
+				<div><p><code>=<var>fraction(J_up,J_low,true,true,true,false)</var>x-(<var>decimalFraction(K_up/K_low+check_params_1,true,true,true,false)</var>x+<var>decimalFraction(R_after,true,true,true,false)</var>)</code></p></div>
+				<div><p><code>=<var>fraction(J_up,J_low,true,true,true,false)</var>x-<var>decimalFraction(K_up/K_low+check_params_1,true,true,true,false)</var>x-<var>decimalFraction(R_after,true,true,true,false)</var></code></p></div>
+				<div><p><code>=<var>decimalFraction(J_up/J_low-K_up/K_low-check_params_1,true,true,true,false)</var>x-<var>decimalFraction(R_after,true,true,true,false)</var></code></p></div>
+				<div><p>因此，本題可化簡為 <code class="hint_pink"><var>decimalFraction(R_before,true,true,false,false)</var>x-<var>decimalFraction(R_after,true,true,false,false)</var></code> 。</p></div>
+            </div>
+		</div>
+		
+	</div>
+	</div>
+</body>
+</html>

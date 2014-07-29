@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>特殊直角三角形</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+	    <div id="case1">
+            <div class="vars">
+				<var id="J">randRange(2,20)</var>
+            </div>
+			<p class="question">如下圖， <code>\triangle{ABC}</code> 為直角三角形，<code>\angle{A}=30^{\circ}，\angle{C}=60^{\circ}，</code>若 <code>\overline{BC}=<var>J</var></code> ，求 <code>\overline{BC}:\overline{AB}:\overline{AC}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="right_1">
+				    init({
+                        range: [ [-1, 12], [-1,4.3] ],
+                        scale: 40
+                    });
+					path([[0,0],[2,0],[0,2*sqrt(3)],[0,0]],{stroke:"black"});
+					s1 = line([0,0.3],[0.3,0.3]);
+					s2 = line([0.3,0.3],[0.3,0]);
+					label( [0,2*sqrt(3)],  "A", "above", { color: "black" });
+					label( [0,0],  "B", "left", { color: "black" });
+					label( [2,0],  "C", "right", { color: "black" });
+					label( [-0.15,2*sqrt(3)-0.8],  "\\small{30^{\\circ}}", "below right", { color: "black" });
+					label( [2,-0.3],  "\\small{60^{\\circ}}", "above left", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <code>\normalsize{\overline{BC}}:\normalsize{\overline{AB}}:\normalsize{\overline{AC}}=\enspace</code><span class="sol" data-forms="integer"><var>1</var></span><code>:</code><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart_1"></span><code>:</code><span class="sol" data-forms="integer"><var>2</var></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("sqrtPart_1").value</div>
+				    <div class="validator-function">
+					if (guess==3){
+					    return true;
+					}
+                    </div>
+				</div>
+				<p class="example">整數，例：<code>6</code></p>	
+            </div>
+            <div class="hints">
+			    <div>
+				    <p>在上圖，我們作 <code>\overline{BD}</code> ，使得 <code>\angle{1}=60^{\circ}</code> ，</p>
+					<div class="graphie" data-update="right_1">
+					    s1.remove();
+						s2.remove();
+						line([0,0],[1,sqrt(3)]);
+						label( [1,sqrt(3)],  "D", "right", { color: "black" });
+						arc([0,0],0.3,0,60,{stroke:"green"});
+						arc([0,0],0.3,60,90,{stroke:"red"});
+						label( [0.2,0.2],  "\\small{1}", "right", { color: "green" });
+						label( [-0.15,0.6],  "\\small{2}", "right", { color: "red" });
+					</div>
+				</div>
+				<p>又因為 <code>\angle{C}=60^{\circ}</code> ，</p>
+				<div>
+				    <p>所以 <code>\angle{BDC}=180^{\circ}-60^{\circ}-60^{\circ}\enspace\enspace</code><code>\color{SlateBlue}{三角形內角和 180^{\circ}}</code></p>
+					<p><code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace=60^{\circ}</code></p>
+				</div>
+				<p>因此 <code>\triangle{BCD}</code> 是正三角形。</p>
+				<p>得 <code>\overline{DB}=\overline{DC}=\overline{BC}=<var>J</var></code></p>
+				<p>又因為 <code>\angle{2}=90^{\circ}-\angle{1}=30^{\circ}</code></p>
+				<p>所以 <code>\angle{2}=\angle{A}</code></p>
+				<p>因此 <code>\triangle{ABD}</code> 是等腰三角形。&nbsp;&nbsp;&nbsp;&nbsp;<code>\color{SlateBlue}{等角對等邊}</code></p>
+				<p>即 <code>\overline{DA}=\overline{DB}=<var>J</var></code></p>
+				<p>所以 <code>\overline{AC}=\overline{DA}+\overline{DC}=<var>2*J</var></code></p>
+				<div>
+				    <p>因此 <code>\overline{AB}=\sqrt{<var>2*J</var>^{2}-<var>J</var>^{2}}</code></p>
+					<p><code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace=<var>J</var>\sqrt{3}</code></p>
+				</div>
+				<p>所以 <code>\overline{BC}:\overline{AB}:\overline{AC}=</code><code class="hint_pink">\enspace 1:\sqrt{3}:2</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+				<var id="J">10*randRange(2,7)</var>
+            </div>
+			<p class="question">如下圖， <code>\triangle{ABC}</code> 為直角三角形，其中 <code>\angle{A}=30^{\circ}</code> ，<code>\angle{B}=60^{\circ}</code> ，<code>\angle{C}=90^{\circ}</code>，已知 <code>\overline{AC}=<var>J</var>，</code>求 <code>\overline{AB}</code> 和 <code>\overline{BC}</code>。</p>
+			<div class="problem">
+			    <div class="graphie" id="right_1">
+				    init({
+                        range: [ [-1, 12], [-1,4.3] ],
+                        scale: 40
+                    });
+					path([[0,0],[2,0],[2,2*sqrt(3)],[0,0]],{stroke:"black"});
+					line([1.7,0.3],[2,0.3]);
+					line([1.7,0.3],[1.7,0]);
+					label( [02,2*sqrt(3)],  "A", "above", { color: "black" });
+					label( [0,0],  "B", "left", { color: "black" });
+					label( [2,0],  "C", "right", { color: "black" });
+					label( [2,sqrt(3)],  J, "right", { color: "black" });
+					label( [0.2,-0.25],  "\\small{60^{\\circ}}", "above right", { color: "black" });
+					label( [2.2,2*sqrt(3)-0.8],  "\\small{30^{\\circ}}", "below left", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <code>\overline{AB}=\enspace</code><span class="sol" data-type="rational"><var>2*J/3</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart_2"></span><br />
+				<code>\overline{BC}=\enspace</code><span class="sol" data-type="rational"><var>J/3</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart_3"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("sqrtPart_2").value,document.getElementById("sqrtPart_3").value]</div>
+				    <div class="validator-function">
+					if (guess[0]==3&&guess[1]==3){
+					    return true;
+					}
+                    </div>
+				</div>
+				<p class="example">整數，例：<code>6</code></p>
+                <p class="example">帶分數，例：<code>1\enspace 3/4</code></p>
+                <p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>	
+                <p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>
+				<p class="example">根號內結果若為 <code>1</code>，可不填</p>
+            </div>
+            <div class="hints">
+			    <p>由上述知 <code>\overline{BC}:<var>J</var>:\overline{AB}=1:\sqrt{3}:2</code></p>
+				<p>由 <code>\overline{BC}:<var>J</var>=1:\sqrt{3}</code></p>
+				<p>得 <code>\overline{BC}=\dfrac{<var>J</var>\times 1}{\sqrt{3}}=\dfrac{<var>J</var>\times 1 \times \sqrt{3}}{3}=<var>fraction(J,3,true,true,false,false)</var>\sqrt{3}</code></p>
+				<p>由 <code>\overline{BC}:\overline{AB}=1:2</code> ，可知 <code>\overline{AB}</code> 是 <code>\overline{BC}</code> 的 <code>2</code> 倍，</p>
+				<p>所以 <code>\overline{AB}=<var>fraction(J,3,true,true,false,false)</var>\sqrt{3}\times 2=<var>fraction(2*J,3,true,true,false,false)</var>\sqrt{3}</code></p>
+				<p>因此，本題的答案應填入 <code class="hint_pink">\overline{AB}=<var>fraction(2*J,3,true,true,false,false)</var>\sqrt{3}，\overline{BC}=<var>fraction(J,3,true,true,false,false)</var>\sqrt{3}</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+				<var id="J">10*randRange(2,7)</var>
+            </div>
+			<p class="question">如下圖， <code>\triangle{ABC}</code> 為直角三角形，其中 <code>\angle{A}=30^{\circ}</code> ，<code>\angle{B}=60^{\circ}</code> ，<code>\angle{C}=90^{\circ}</code>，已知 <code>\overline{AC}=<var>J</var>，</code>求 <code>\overline{AB}</code> 和 <code>\overline{BC}</code>。</p>
+			<div class="problem">
+			    <div class="graphie" id="right_1">
+				    init({
+                        range: [ [-1, 12], [-1,3] ],
+                        scale: 40
+                    });
+					path([[0,0],[2,0],[2,2],[0,0]],{stroke:"black"});
+					line([1.7,0.3],[2,0.3]);
+					line([1.7,0.3],[1.7,0]);
+					label( [02,2],  "A", "above", { color: "black" });
+					label( [0,0],  "B", "left", { color: "black" });
+					label( [2,0],  "C", "right", { color: "black" });
+					label( [2,1],  J, "right", { color: "black" });
+					label( [0.2,-0.25],  "\\small{45^{\\circ}}", "above right", { color: "black" });
+					label( [2.2,2-0.5],  "\\small{45^{\\circ}}", "below left", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <code>\overline{AB}=\enspace</code><span class="sol" data-type="rational"><var>J</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart_4"></span><br />
+				<code>\overline{BC}=\enspace</code><span class="sol" data-type="rational"><var>J</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart_5"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("sqrtPart_4").value,document.getElementById("sqrtPart_5").value]</div>
+				    <div class="validator-function">
+					var ng = guess[1].replace(/[ ]/g,"");
+					if (guess[0]==2&&(ng==1||ng=="")){
+					    return true;
+					}
+                    </div>
+				</div>
+				<p class="example">整數，例：<code>6</code></p>
+				<p class="example">根號內結果若為 <code>1</code>，可不填</p>
+            </div>
+            <div class="hints">
+			    <p>由上述知 <code>\overline{BC}:\overline{AC}:\overline{AB}=1:1:\sqrt{2}</code></p>
+				<p>由 <code>\overline{BC}:<var>J</var>=1:1</code></p>
+				<p>得 <code>\overline{BC}=<var>J</var></code></p>
+				<p>由 <code>\overline{BC}:\overline{AB}=1:\sqrt{2}</code> ，可知 <code>\overline{AB}</code> 是 <code>\overline{BC}</code> 的 <code>\sqrt{2}</code> 倍，</p>
+				<div>
+				    <p>所以 <code>\overline{AB}=<var>J</var>\times\sqrt{2}</code></p>
+					<p><code>=<var>J</var>\sqrt{2}</code></p>
+				</div>
+				<p>因此，本題的答案應填入 <code class="hint_pink">\overline{AB}=<var>J</var>\sqrt{2}，\overline{BC}=<var>J</var></code> 。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

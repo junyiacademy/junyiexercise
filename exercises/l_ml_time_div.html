@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic spin">
+<head>
+	<meta http-equiv="Content-type" content="text/html ; Charset=UTF-8">
+	<title>公升與毫升的乘除問題</title>
+	<script src="../khan-exercise.js"></script>
+	<script>
+		function getMyRangeFactor(number,floor_num,ceil_num) {
+			var factors = KhanUtil.getFactors(number);
+			var begin = 0;
+			var ending = factors.length-1;
+			for (var i=1;i<factors.length;i=i+1)
+			{
+				if (factors[i-1] < floor_num && factors[i] >= floor_num)
+				{
+					begin = i;
+				}
+				if (factors[i-1] <= ceil_num && factors[i] > ceil_num)
+				{
+					ending = i-1;
+					break;
+				}
+			}
+			return factors[KhanUtil.randRange(begin, ending)];
+		}
+	</script>
+</head>
+
+<body>
+	<div class="exercise">
+		<div class="problems">
+			<div id="case1">
+				<div class="vars">
+					<var id="J">randRange(5,15)</var>
+					<var id="K">randRange(2,15)</var>
+					<var id="NumHints">0</var>
+				</div>
+				<p class="question"><var>J</var>公升<code>\times</code><var>K</var> = (<code>\space\space\space\space</code>)公升
+				</p>
+				<p class="solution" data-type="multiple"><span style="padding-right: 5px" class="sol" data-forms="integer"><var>J*K</var></span>公升
+				</p>
+				<div class="graphie" id="numbers">
+					graph.multiplier = new Multiplier( J, K );
+					NumHints = graph.multiplier.getNumHints();
+				</div>
+				<div class="hints">
+					<div class="graphie" data-update="numbers">
+						graph.multiplier.show();
+					</div>
+					<div class="graphie" data-update="numbers" data-each="NumHints times">
+						graph.multiplier.showHint();
+					</div>
+				</div>
+			</div>
+			
+			<div id="case2">
+				<div class="vars">
+					<var id="K">randRange(5,9)</var>
+					<var id="J">randRange(300,999)</var>
+					<var id="AnsL">floorTo(0,(K*J)/1000)</var>
+					<var id="AnsML">(K*J)%1000</var>
+					<var id="NumHints">0</var>
+				</div>
+				<p class="question"><var>J</var>毫升<code>\times</code><var>K</var> = (<code>\space\space\space\space</code>)公升(<code>\space\space\space\space</code>)毫升
+				</p>
+				<div class="solution" data-type="multiple"><p class="short"><span class="sol"><var>AnsL</var></span>公升<span class="sol"><var>AnsML</var></span>毫升</p></div>
+				<div class="graphie" id="numbers">
+					graph.multiplier = new Multiplier( J, K );
+					NumHints = graph.multiplier.getNumHints();
+				</div>
+				<div class="hints">
+					<div class="graphie" data-update="numbers">
+						graph.multiplier.show();
+					</div>
+					<div class="graphie" data-update="numbers" data-each="NumHints times">
+						graph.multiplier.showHint();
+					</div>
+					<p>因為1公升 = 1000毫升</p>
+					<p><var>K*J</var>毫升可以換算成<var>AnsL</var>個1000再加上<var>AnsML</var>。所以<var>K*J</var>毫升=<var>AnsL</var>公升<var>AnsML</var>毫升</p>
+				</div>
+			</div>
+			
+			<div id="case3">
+				<div class="vars">
+					<var id="Array">[50,51,52,54,55,56,57,58,60,62,63,64,65,66,68,69,70,72,74,75,76,77,78,80,81]</var>
+					<var id="J">Array[randRange(0,24)]</var>
+					<var id="K">getMyRangeFactor(J,2,9)</var>
+					<var id="NumHints">0</var>
+				</div>
+				<p class="question"><var>J</var>公升<code>\div</code><var>K</var> = (<code>\space\space\space\space</code>)公升
+				</p>
+				<p class="solution" data-type="multiple"><span style="padding-right: 5px" class="sol" data-forms="integer"><var>J/K</var></span>公升
+				</p>
+				<div class="graphie" id="numbers">
+					graph.divider = new Divider( K, J );
+					NumHints = graph.divider.getNumHints();
+				</div>
+				<div class="hints">
+					<div class="graphie" data-update="numbers">
+						graph.divider.show();
+					</div>
+					<div class="graphie" data-update="numbers" data-each="NumHints times">
+						graph.divider.showHint();
+					</div>
+				</div>
+			</div>
+		
+			<div id="case4">
+				<div class="vars">
+					<var id="Array">[50,51,52,54,55,56,57,58,60,62,63,64,65,66,68,69,70,72,74,75,76,77,78,80,81]</var>
+					<var id="J">Array[randRange(0,24)]</var>
+					<var id="K">getMyRangeFactor(J,2,9)</var>
+					<var id="NumHints">0</var>
+				</div>
+				<p class="question"><var>J</var>毫升<code>\div</code><var>K</var> = (<code>\space\space\space\space</code>)毫升
+				</p>
+				<p class="solution" data-type="multiple"><span style="padding-right: 5px" class="sol" data-forms="integer"><var>J/K</var></span>毫升
+				</p>
+				<div class="graphie" id="numbers">
+					graph.divider = new Divider( K, J );
+					NumHints = graph.divider.getNumHints();
+				</div>
+				<div class="hints">
+					<div class="graphie" data-update="numbers">
+						graph.divider.show();
+					</div>
+					<div class="graphie" data-update="numbers" data-each="NumHints times">
+						graph.divider.showHint();
+					</div>
+				</div>
+			</div>
+		
+			<div id="case5">
+				<div class="vars">
+					<var id="J">randRange(1,5)</var>
+					<var id="K">getMyRangeFactor(J*1000,5,100)</var>
+					<var id="NumHints">0</var>
+				</div>
+				<p class="question"><var>J</var>公升<code>\div</code><var>K</var> = (<code>\space\space\space\space</code>)毫升
+				</p>
+				<p class="solution" data-type="multiple"><span style="padding-right: 5px" class="sol" data-forms="integer"><var>J*1000/K</var></span>毫升
+				</p>
+				<div class="graphie" id="numbers">
+					graph.divider = new Divider( K, J*1000 );
+					NumHints = graph.divider.getNumHints();
+				</div>
+				<div class="hints">
+					<p><var>J</var>公升除以<var>K</var>不夠除，所以將<var>J</var>公升全部換成毫升，因為1公升=1000毫升，所以<var>J</var>公升 = <var>1000*J</var>毫升</p>
+					<div class="graphie" data-update="numbers">
+						graph.divider.show();
+					</div>
+					<div class="graphie" data-update="numbers" data-each="NumHints times">
+						graph.divider.showHint();
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>

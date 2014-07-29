@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>三角形三邊長的關係</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+	    <div id="case1">
+            <div class="vars">
+			    <var id="a">randFromArray(['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'])</var>
+				<var id="J">randRange(5,25)</var>
+            </div>
+			<p class="question">若 <code><var>a</var></code>、<code><var>a</var></code>、<code><var>J</var></code> 為三角形的三邊長，求 <code><var>a</var></code> 的範圍。</p>
+			<div class="solution" data-type="multiple">
+			    <code><var>a</var>\enspace</code>
+				<span class="sol" data-type="list" data-choices="['','&gt;','&ge;','&lt;','&le;']">
+                        <var>"&gt;"</var>
+                </span>
+				<code>\enspace</code><span class="sol" data-type="rational"><var>J/2</var></span>
+				<p class="example">先選擇不等式的符號，再填入數字</p>
+			</div>
+            <div class="hints">
+			    <div>
+			        <p>因為 <code><var>a</var></code>、<code><var>a</var></code>、<code><var>J</var></code> 為三角形的三邊長，得：</p>
+				    <p><code>\left\{\begin{array}{3}
+					<var>a</var>+<var>J</var>&gt;<var>a</var> \\
+                    <var>J</var>+<var>a</var>&gt;<var>a</var> \\
+					<var>a</var>+<var>a</var>&gt;<var>J</var>\end{array}\right.
+				    </code>
+			        </p>
+				</div>
+                <p>但 <code><var>a</var>+<var>J</var>&gt;<var>a</var></code> ，<code><var>J</var>+<var>a</var>&gt;<var>a</var></code> 自動成立，</p>
+			    <p>所以只要 <code class="hint_green"><var>a</var>+<var>a</var>&gt;<var>J</var></code> 成立即可，</p>
+			    <p>由此得 <code><var>a</var></code> 的範圍為 <code class="hint_pink"><var>a</var>&gt;<var>fraction(J,2,true,true,false,false)</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+			    <var id="a">randFromArray(['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'])</var>
+				<var id="J">randRange(5,25)</var>
+            </div>
+			<p class="question">若 <code><var>J</var></code>、<code><var>J</var></code>、<code><var>a</var></code> 為三角形的三邊長，求 <code><var>a</var></code> 的範圍。</p>
+			<div class="solution" data-type="multiple">
+			    <code><var>a</var>\enspace</code>
+				<span class="sol" data-type="list" data-choices="['','&gt;','&ge;','&lt;','&le;']">
+                        <var>"&lt;"</var>
+                </span>
+				<code>\enspace</code><span class="sol" data-type="rational"><var>J+J</var></span>
+				<p class="example">先選擇不等式的符號，再填入數字</p>
+			</div>
+            <div class="hints">
+			    <div>
+			        <p>因為 <code><var>J</var></code>、<code><var>J</var></code>、<code><var>a</var></code> 為三角形的三邊長，得：</p>
+				    <p><code>\left\{\begin{array}{3}
+					<var>J</var>+<var>J</var>&gt;<var>a</var> \\
+                    <var>J</var>+<var>a</var>&gt;<var>J</var> \\
+					<var>J</var>+<var>a</var>&gt;<var>J</var>\end{array}\right.
+				    </code>
+			        </p>
+				</div>
+                <p>因為 <code><var>a</var></code> 是正數，所以 <code><var>J</var>+<var>a</var>&gt;<var>J</var></code> 必定成立，</p>
+			    <p>所以只要 <code class="hint_green"><var>J</var>+<var>J</var>&gt;<var>a</var></code> 成立即可，</p>
+			    <p>由此得 <code><var>a</var></code> 的範圍為 <code class="hint_pink"><var>a</var>&lt;<var>J+J</var></code> 。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

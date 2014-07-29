@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>二次函數的應用</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 40px;
+        }
+        </style>
+		<style type="text/css">
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+
+
+
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+				<var id="J">randRange(2,5)</var>
+				<var id="K">randFromArray(["農夫","菜農","茶農"])</var>
+            </div>
+            <p class="question"> 有一位<var>K</var>想用 <code><var>J*100</var></code> 公尺的籬笆圍成一個矩形的菜園，問如何圍出最大面積的菜園？並求出此面積。</p>
+			
+			<div class="solution" data-type="multiple">					
+				<span class="sol" data-forms="integer"><var>(J*100/4)*(J*100/4)</var></span>平方公尺
+            </div>
+            <div class="hints">
+					<div>
+					<p>如下圖，設農夫所圍成矩形菜園的一邊長為 <code>x</code> 公尺。由題意知另一邊長為 <code>(<var>J*100/2</var>-x)</code> 公尺。</p>
+						<div class="graphie">
+							init({
+							range: [ [0, 10], [0, 5] ],
+							scale: 40
+						});
+						path([[1,1],[6,1],[6,4],[1,4],[1,1]]);
+						label([3.5,0.5],J*100/2+"-x","center");
+						label([0.5,2.5],"x","center");
+						</div>
+					</div>
+					<div>
+						<p>因此菜園的面積為</p>
+						<p><code>x(<var>J*100/2</var>-x)=<var>J*100/2</var>x-x^2</code></p>
+					</div>
+						<p><code>=-(x^2-<var>J*100/2</var>x)</code></p>
+						<p><code>=-(x^2-2\cdot<var>J*100/4</var>x+<var>J*100/4</var>^2-<var>J*100/4</var>^2)</code></p>
+						<p><code>=-(x-<var>J*100/4</var>)^2+<var>(J*100/4)*(J*100/4)</var></code></p>
+					<p>因此當 <code>x=<var>J*100/4</var></code> 時，面積有最大值 <code><var>(J*100/4)*(J*100/4)</var></code> 
+					。此時菜園的一邊長為 <code><var>J*100/4</var></code> 公尺，另一邊長為 <code><var>J*100/2</var>-<var>J*100/4</var>=<var>J*100/4</var></code>
+					 （公尺），也就是說當此菜園是正方形時，其面積最大，且面積為 <code><var>(J*100/4)*(J*100/4)</var></code> 平方公尺。</p>
+					 <p>所以，本題答案為 <code class="hint_pink"><var>(J*100/4)*(J*100/4)</var></code> 平方公尺。 </p>
+            </div>
+        </div>
+		
+		<div id="case2">
+			<div class="vars" data-ensure="Res==A">
+				<var id="K">randRange(1,10)</var>
+				<var id="M">randRange(1,4)</var>
+				<var id="N">randRange(5,10)</var>
+				<var id="Res">(2*K*M+sqrt(2*K*M*2*K*M+4*10*K*N))/2</var>
+				<var id="Res2">(2*K*M-sqrt(2*K*M*2*K*M+4*10*K*N))/2</var>
+				<var id="A">round(Res)</var>
+				<var id="Result">K*M*M/10+N</var>
+				<var id="Name">randFromArray(["小紅","小劉","小王","小明"])</var>
+				<var id="Team">randFromArray(["科學營","夏令營","科研社"])</var>
+            </div>
+            <p class="question"> <var>Name</var>參加創意<var>Team</var>，製作了一個小火箭，完成後拿到操場試射。
+			假設小火箭沿二次函數 <code>y=-\dfrac{1}{<var>10*K</var>}x^2+\dfrac{<var>M</var>}{5}x+<var>N</var></code>
+			的軌跡飛行，如下圖：</p>
+			<div class="problem">
+				<div class="graphie">
+							init({
+							range: [ [0, 10], [0, 5] ],
+							scale: 40
+						});
+						line([1,0],[1,5]);
+						line([1,5],[0.8,4.8]);
+						line([1,5],[1.2,4.8]);
+						line([0,1],[9,1]);
+						line([8.8,1.2],[9,1]);
+						line([8.8,0.8],[9,1]);
+						arc( [1.7, -1], 4, 30, 100, { stroke: "black" } );
+						label([1.7,2.5],"(0,"+N+")","center");
+						label([0.5,4.5],"y","center");
+						label([8.5,0.5],"x","center");
+				</div>
+						
+				<p>其中 <code>x</code> 公尺為火箭飛行的水平距離，<code>y</code> 公尺則為火箭距地面高度，發射點在 <code>(0,<var>N</var>)</code>
+				的位置。試回答下列問題：</p>
+				<p><code>(1)</code>火箭從發射到落地時，飛行的水平距離為多少公尺？</p>
+				<p><code>(2)</code>在飛行過程中，火箭離地面的高度最高為多少公尺？</p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>落地水平距離： 
+				<span class="sol" data-forms="integer"><var>Res</var></span>公尺
+				</p>
+				<p>最大高度：
+				<span class="sol" data-forms="integer"><var>Result</var></span>公尺
+				</p>
+				<p class="example">整數，例 <code>6</code></p> 
+				<p class="example">小數，例 <code>0.6</code></p> 
+            </div>
+            <div class="hints">
+					<div>
+					<p><code>(1)</code>我們必須知道火箭落地的位置。當火箭落地時，高度為 <code>0</code> ，即 <code>y=0</code>，所以可得一元二次方程式：</p>
+					<p> <code>-\dfrac{1}{<var>10*K</var>}x^2+\dfrac{<var>M</var>}{5}x+<var>N</var>=0</code></p>
+					</div>
+						<p>化簡得 <code>x^2-<var>2*K*M</var>x-<var>10*K*N</var>=0</code></p>
+						<p>由因式分解得 <code>(x-<var>Res</var>)(x-<var>Res2</var>)=0</code></p>
+						<p>解一元二次方程得 <code>x=<var>Res</var></code>，或 <code>x=<var>Res2</var></code>（不合題意）</p>
+					<p>因此，火箭落地的地點到發射點的水平距離為 <code><var>Res</var>-0=</code><code><var>Res</var></code> 公尺。</p>
+					<div>
+						<p><code>(2)</code>因為 <code>y</code> 公尺表示火箭的飛行高度，火箭離地面最高的高度即為函數</p>
+						<p><code>y=-\dfrac{1}{<var>10*K</var>}x^2+\dfrac{<var>M</var>}{5}x+<var>N</var></code> 的最大值，所以，可將此函數配方而得到：</p>
+					</div>
+					<p> <code>=-\dfrac{1}{<var>10*K</var>}(x^2-<var>2*K*M</var>x)+<var>N</var></code></p>
+					<p> <code>=-\dfrac{1}{<var>10*K</var>}(x^2-2\cdot<var>K*M</var>\cdot x+<var>K*M</var>^2-<var>K*M</var>^2)+<var>N</var></code></p>
+					<p> <code>=-\dfrac{1}{<var>10*K</var>}(x-<var>K*M</var>)^2+<var>(K*M*M)/10</var>+<var>N</var></code></p>
+					<p> <code>=-\dfrac{1}{<var>10*K</var>}(x-<var>K*M</var>)^2+<var>Result</var></code></p>
+					<p>因此，當  <code>x=<var>K*M</var></code> 時，<code>y=<var>Result</var></code> 為最大值，也就是說，飛行過程中火箭離地面最高的高度為 <code><var>Result</var></code> 公尺 。</p>
+					<p>所以，本題答案為 <code>\enspace (1)</code>落地水平距離<code class="hint_pink"><var>Res</var></code> 公尺；<code>\enspace(2)</code>最大高度為<code class="hint_pink"><var>Result</var></code>公尺 。</p>
+            </div>
+		</div>
+
+	
+
+	</div>
+	</div>
+</body>
+</html>

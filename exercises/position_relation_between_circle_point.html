@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>點與圓的位置關係</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+        </style>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">	
+		<div id="case1">
+            <div class="vars" data-ensure="K&gt;J">
+				<var id="J">randRange(5,10)</var>
+				<var id="K">randRange(6,15)</var>
+            </div>
+            <p class="question">已知圓 <code>O</code> 的半徑為 <code><var>J</var></code> 公分， <code>P</code> 點與圓心的距離是 <code><var>K</var></code> 公分。則 <code>P</code> 點與圓 <code>O</code> 的位置關係為何？</p>
+			<div class="solution"><var>"圓外"</var></div>
+            <ul class="choices" data-category="true">
+                <li>圓上</li>
+                <li>圓內</li>
+				<li>圓外</li>
+            </ul>
+            <div class="hints">
+				<p><code>\because\enspace\overline{OP}=<var>K</var>&gt;<var>J</var></code>(圓 <code>O</code> 半徑)</p>
+				<p><code>\therefore\enspace P</code> 點在 <code class="hint_pink">圓外</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars" data-ensure="(A[0]!=B[0]&&A[1]!=B[1])&&(A[0]!=C[0]&&A[1]!=C[1])&&(B[0]!=C[0]&&B[1]!=B[C])">
+				<var id="J">randRange(3,7)</var>
+				<var id="A">[randRange(-6,6),randRange(-3,3)]</var>
+				<var id="B">[randRange(-6,6),randRange(-3,3)]</var>
+				<var id="C">[randRange(-6,6),randRange(-3,3)]</var>
+				<var id="S1">A[0]*A[0]+A[1]*A[1]</var>
+				<var id="S2">B[0]*B[0]+B[1]*B[1]</var>
+				<var id="S3">C[0]*C[0]+C[1]*C[1]</var>
+				<var id="S">J*J</var>
+            </div>
+            <p class="question">如下圖，坐標平面上有 <code>A(<var>A[0]</var>，<var>A[1]</var>)</code> 、<code>B(<var>B[0]</var>，<var>B[1]</var>)</code> 、<code>C(<var>C[0]</var>，<var>C[1]</var>)</code> 三點。若以原點 <code>O</code> 為圓心，半徑為 <code><var>J</var></code> 畫一圓，請說明 <code>A、B、C</code> 三點與圓的位置關係。</p>
+			<div class="problem">
+			    <div class="graphie" id="cir_pos">
+                    graphInit({
+                            range: 9,
+                            scale: 15,
+                            axisArrows: "&lt;-&gt;",
+                            tickStep: 1,
+                            labelStep: 2,
+                            gridOpacity: 0.05,
+                            axisOpacity: 0.2,
+                            tickOpacity: 0.4,
+                            labelOpacity: 0.5
+                        });
+						label([ A[0], A[1] ], "A", "below",{color:"blue"});
+						label([ B[0], B[1] ], "B", "below",{color:"green"});
+						label([ C[0], C[1] ], "C", "below",{color:"red"});
+						circle([A[0],A[1]],0.1,{stroke:"blue"});
+						circle([B[0],B[1]],0.1,{stroke:"green"});
+						circle([C[0],C[1]],0.1,{stroke:"red"});
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<code>A</code> &nbsp;在&nbsp;<span class="sol" data-type="list" data-choices="['', '圓上', '圓內','圓外']"><var>S1&gt;S?"圓外":(S1==S?"圓上":"圓內")</var></span><br />
+				<code>B</code> &nbsp;在&nbsp;<span class="sol" data-type="list" data-choices="['', '圓上', '圓內','圓外']"><var>S2&gt;S?"圓外":(S2==S?"圓上":"圓內")</var></span><br />
+				<code>C</code> &nbsp;在&nbsp;<span class="sol" data-type="list" data-choices="['', '圓上', '圓內','圓外']"><var>S3&gt;S?"圓外":(S3==S?"圓上":"圓內")</var></span><br />
+            </div>
+            <div class="hints">
+				<div>
+					<p>利用兩點間距離公式</p>
+					<p>【 <code>A(p，q)、B(r，s)</code> ，則 <code>\overline{AB}=\sqrt{(p-r)^{2}+(q-s)^{2}}</code> 】 </p>
+					<p>求得 <code>\overline{OA}、\overline{OB}、\overline{OC}</code>，再與半徑 <code><var>J</var></code> 做比較。</p>
+				</div>
+				<p><code>\overline{OA}=</code><code data-if="A[0]!=0&&A[1]!=0">\sqrt{(<var>A[0]</var>-0)^{2}+(<var>A[1]</var>-0)^{2}}</code><code data-if="A[0]==0||A[1]==0">|<var>A[0]</var>-<var>A[1]</var>|</code><code>=<var>formattedSquareRootOf(S1)</var><var>S1&gt;S?"&gt;":(S1==S?"=":"&lt;")</var><var>J</var></code></p>
+				<p><code>\therefore\enspace A</code> 點在 <code class="hint_green"><var>S1&gt;S?"圓外":(S1==S?"圓上":"圓內")</var></code></p>
+				<p><code>\overline{OB}=</code><code data-if="B[0]!=0&&B[1]!=0">\sqrt{(<var>B[0]</var>-0)^{2}+(<var>B[1]</var>-0)^{2}}</code><code data-if="B[0]==0||B[1]==0">|<var>B[0]</var>-<var>B[1]</var>|</code><code>=<var>formattedSquareRootOf(S2)</var><var>S2&gt;S?"&gt;":(S2==S?"=":"&lt;")</var><var>J</var></code></p>
+				<p><code>\therefore\enspace B</code> 點在 <code class="hint_blue"><var>S2&gt;S?"圓外":(S2==S?"圓上":"圓內")</var></code></p>
+				<p><code>\overline{OC}=</code><code data-if="C[0]!=0&&C[1]!=0">\sqrt{(<var>C[0]</var>-0)^{2}+(<var>C[1]</var>-0)^{2}}</code><code data-if="C[0]==0||C[1]==0">|<var>C[0]</var>-<var>C[1]</var>|</code><code>=<var>formattedSquareRootOf(S3)</var><var>S3&gt;S?"&gt;":(S3==S?"=":"&lt;")</var><var>J</var></code></p>
+				<p><code>\therefore\enspace C</code> 點在 <code class="hint_orange"><var>S3&gt;S?"圓外":(S3==S?"圓上":"圓內")</var></code></p>
+				<div>
+					<p>我們可以在坐標平面上畫出該圓。</p>
+					<div class="graphie" data-update="cir_pos">
+						circle([0,0],J);
+					</div>
+				</div>
+				<p>所以本題的答案應分別選擇 <code>A</code> 點在 <code class="hint_pink"><var>S1&gt;S?"圓外":(S1==S?"圓上":"圓內")</var></code>、<code>B</code> 點在 <code class="hint_pink"><var>S2&gt;S?"圓外":(S2==S?"圓上":"圓內")</var></code>、<code>C</code> 點在 <code class="hint_pink"><var>S3&gt;S?"圓外":(S3==S?"圓上":"圓內")</var></code> 。</p>
+            </div>
+        </div>
+		
+    </div>
+		
+	</div>
+	</div>
+</body>
+</html>

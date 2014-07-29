@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie expressions interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>和差問題</title>
+    <script src="../khan-exercise.js"></script>
+	<script script="text/javascript">
+	    function accMul(arg1,arg2) { 
+            var m=0,s1=arg1.toString(),s2=arg2.toString(); 
+            try{m+=s1.split(".")[1].length}catch(e){} 
+            try{m+=s2.split(".")[1].length}catch(e){} 
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m) 
+        } 
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+            <div class="vars" data-ensure="isEven(J+K)">
+				<var id="names">randFromArray(["向南","小可","書雁","芷容","采藍","語馨"])</var>
+				<var id="J">randRange(50,80)</var>
+				<var id="K">randRange(90,150)</var>
+				<var id="R">(K-J)/2</var>
+				<var id="endPosition">J/K*13</var>
+            </div>
+			<p class="question"><code><var>names</var></code> 有 <code><var>J</var></code> 元，姊姊有 <code><var>K</var></code> 元，姊姊給 <code><var>names</var></code> 多少元後，兩人的錢才會一樣多？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>元</code><br />
+			</div>
+
+    <div class="hints">
+	    <div>
+	        <p>我們可以通過觀察下圖來解題：</p>
+			<div class="graphie" id="age">
+			    init({ range:[[-2,15],[-2,3]],scale: 30});
+				    <!--start&end-->
+				    line( [ 1, 1.6], [1, 1.4],{stroke:"black"});
+					line( [ 13, 1.6], [13, 1.4],{stroke:"black"});
+					line( [ 1, 0.1], [1, -0.1],{stroke:"black"});
+					line( [ endPosition, 0.1], [endPosition, -0.1],{stroke:"black"});
+					line( [ endPosition, 1.6], [endPosition, 1.4],{stroke:"black"});
+					<!--basicLine&label-->
+                    label( [ 0, 1.5 ],  names, "left", { color: "dimgray" });
+					line( [ 1, 1.5], [13, 1.5],{stroke:"red"});
+					label( [ 0, 0 ],  "姊姊", "left", { color: "dimgray" });
+					line( [ 1, 0], [endPosition, 0],{stroke:"deepskyblue"});
+					<!--Slash-->
+					line( [ 1, 1.5], [6, 2],{stroke:"dimgray"});
+					line( [ 13, 1.5], [8, 2],{stroke:"dimgray"});
+					line( [ 1, 0], [(endPosition+1)/2-1, -0.5],{stroke:"dimgray"});
+					line( [ endPosition, 0], [(endPosition+1)/2+1, -0.5],{stroke:"dimgray"});
+					<!--numLabel-->
+					label( [ 7, 2 ],  K, "center", { color: "dimgray" });
+					label( [ 0.5+endPosition/2, -0.5 ],  J, "center", { color: "dimgray" });
+					
+					line( [ endPosition, 1.4], [endPosition, 0.1],{stroke:"dimgray","stroke-dasharray": "-"});
+					label( [ 6.5+endPosition/2, 0.5 ],  "兩人的差", "center", { color: "dimgray" });
+			</div>
+		</div>
+	    <p>我們發現，將兩人的差平分成 <code>2</code> 份，<code>1</code> 份留給姊姊，<code>1</code> 份給 <code><var>names</var></code> ，兩人的錢就會相等。</p>
+		<p><code><var>K</var>-<var>J</var>=<var>K-J</var></code></p>
+		<p><code><var>K-J</var>\div 2=<var>R</var></code></p>
+		<p>姊姊給 <code><var>names</var></code> <code><var>R</var></code> 元之後，兩個人的錢就會一樣多。</p>
+		<div>
+			<p>所以，本題的答案爲 <code class="hint_pink"><var>R</var></code> 元。</p>
+		</div>
+    </div>
+	</div>
+	
+	<div id="case2">
+            <div class="vars">
+			    <var id="names_1">randFromArray(["爸爸","媽媽","外公","外婆","爺爺","奶奶"])</var>
+				<var id="names_2">randFromArray(["佑聖","麗雲","正達","致勤","張晨","俊豪"])</var>
+				<var id="names_3">randFromArray(["弟弟","哥哥","姐姐","妹妹"])</var>
+				<var id="J">50*randRange(4,10)</var>
+				<var id="K">10*randRange(2,9)</var>
+				<var id="R_1">(J-K)/2</var>
+				<var id="R_2">J-R_1</var>
+				<var id="endPosition">J/(K+2*J)*13</var>
+				<var id="endPosition_2">(J+K)/(K+2*J)*13</var>
+				<var id="endPosition_3">2*J/(K+2*J)*13</var>
+            </div>
+			<p class="question"><code><var>names_1</var></code> 給 <code><var>names_2</var></code> 和 <code><var>names_3</var></code> 的零用錢共 <code><var>J</var></code> 元，<code><var>names_2</var></code> 的零用錢比 <code><var>names_3</var></code> 多 <code><var>K</var></code> 元，<code><var>names_2</var></code> 和 <code><var>names_3</var></code> 的零用錢各是多少元？</p>
+			<div class="solution" data-type="multiple">
+				<code><var>names_2</var>=\enspace</code><span class="sol" data-forms="integer"><var>R_2</var></span><code>元</code><br />
+				<code><var>names_3</var>=\enspace</code><span class="sol" data-forms="integer"><var>R_1</var></span><code>元</code><br />
+				<p class="example">整數，例：6</p>
+			</div>
+
+    <div class="hints">
+	    <div>
+	        <p>大雄和弟弟零用錢間的關係如下圖：</p>
+			<div class="graphie" id="age">
+			    init({ range:[[-2,15],[-4,3]],scale: 30});
+					<!--basicLine&label-->
+                    label( [ 0, 1.5 ],  names_2, "left", { color: "dimgray" });
+					line( [ 1, 1.5], [endPosition_2, 1.5],{stroke:"red"});
+					label( [ 0, 0 ],  names_3, "left", { color: "dimgray" });
+					line( [ 1, 0], [endPosition, 0],{stroke:"red"});
+					line( [ 1, -1.5], [13, -1.5],{stroke:"red"});
+					<!--start&end-->
+				    line( [ 1, 1.6], [1, 1.4],{stroke:"black"});
+					line( [ 1, -1.6], [1, -1.4],{stroke:"black"});
+					line( [ endPosition_2, 1.6], [endPosition_2, 1.4],{stroke:"black"});
+					line( [ endPosition_3, -1.6], [endPosition_3, -1.4],{stroke:"black"});
+					line( [ endPosition, -1.6], [endPosition, -1.4],{stroke:"black"});
+					line( [ 13, -1.6], [13, -1.4],{stroke:"black"});
+					line( [ 1, 0.1], [1, -0.1],{stroke:"black"});
+					line( [ endPosition, 0.1], [endPosition, -0.1],{stroke:"black"});
+					line( [ endPosition, 1.6], [endPosition, 1.4],{stroke:"black"});
+					line( [ endPosition, 1.4], [endPosition, 0.1],{stroke:"dimgray","stroke-dasharray": "-"});
+					if(endPosition_2-endPosition&gt;=2){
+					line( [ endPosition, 1.5], [(endPosition+endPosition_2)/2-0.5, 2],{stroke:"dimgray"});
+					line( [ endPosition_2, 1.5], [(endPosition+endPosition_2)/2+0.5, 2],{stroke:"dimgray"});
+					label( [ endPosition_2/2+endPosition/2, 2 ],  K, "center", { color: "dimgray" });
+					}
+					if(endPosition_2-endPosition&lt;2){
+					line( [ endPosition, 1.5], [endPosition+0.1, 2],{stroke:"dimgray"});
+					line( [ endPosition_2, 1.5], [endPosition_2-0.1, 2],{stroke:"dimgray"});
+					label( [ endPosition_2/2+endPosition/2, 1.7 ],  K, "above", { color: "dimgray" });
+					}
+					label( [ endPosition/2+0.5, -2.2 ],  names_3, "center", { color: "dimgray" });
+					label( [ endPosition/2+6.5, -2.2 ],  names_2, "center", { color: "dimgray" });
+					line( [ 1, -1.5], [6, -1],{stroke:"dimgray"});
+					line( [ 13, -1.5], [8, -1],{stroke:"dimgray"});
+					label( [ 7, -1 ],  J, "center", { color: "dimgray" });
+					line( [ 1, -1.5], [endPosition/2-0.2, -2],{stroke:"dimgray"});
+					line( [ endPosition, -1.5], [endPosition/2+1.2, -2],{stroke:"dimgray"});
+					line( [ endPosition, -1.5], [endPosition/2+5.5, -2],{stroke:"dimgray"});
+					line( [ 13, -1.5], [endPosition/2+7.5, -2],{stroke:"dimgray"});
+					
+					line( [ endPosition_3, -1.5], [endPosition_3+0.1, -1],{stroke:"dimgray"});
+					line( [ 13, -1.5], [12.8, -1],{stroke:"dimgray"});
+					label( [ endPosition_3/2+6.5, -1.3 ],  K, "above", { color: "dimgray" });
+			</div>
+		</div>
+	    <p><code><var>J</var></code> 元減掉 <code><var>K</var></code> 元後，就是 <code><var>names_3</var></code> 零用錢的 <code>2</code> 倍。</p>
+		<p><code><var>J</var>-<var>K</var>=<var>J-K</var></code></p>
+		<p><code><var>names_3</var></code> 的零用錢為 <code><var>J-K</var>\div 2=<var>R_1</var></code></p>
+		<p><code><var>names_2</var></code> 的零用錢為 <code><var>J</var>-<var>R_1</var>=<var>R_2</var></code></p>
+		<div>
+			<p>所以，本題中 <code><var>names_2</var></code> 的零用錢為 <code class="hint_pink"><var>R_2</var></code> 元、 <code><var>names_3</var></code> 的零用錢為 <code class="hint_pink"><var>R_1</var></code> 元。</p>
+		</div>
+    </div>
+	</div>
+	
+	<div id="case3">
+            <div class="vars" data-ensure="isInt(R_1) && isInt(R_2)">
+				<var id="J">randRange(80,150)</var>
+				<var id="K">randRange(7,20)</var>
+				<var id="R_1">(K+J)/2</var>
+				<var id="R_2">(J-K)/2</var>
+				<var id="endPosition">R_2/R_1*13</var>
+            </div>
+			<p class="question">甲、乙兩數的和是 <code><var>J</var></code> ，兩數的差是 <code><var>K</var></code> ，如果甲數比乙數大，甲數和乙數各是多少？</p>
+			<div class="solution" data-type="multiple">
+				<code>甲數=\enspace</code><span class="sol" data-forms="integer"><var>R_1</var></span><br />
+				<code>乙數=\enspace</code><span class="sol" data-forms="integer"><var>R_2</var></span><br />
+				<p class="example">整數，例：6</p>
+			</div>
+
+    <div class="hints">
+		    <div>
+			    <p>甲數 <code>+</code> 乙數 <code>=<var>J</var></code></p>
+			    <p>甲數 <code>-</code> 乙數 <code>=<var>K</var></code></p>
+			</div>
+			<div>
+			<p>那麼，甲數 <code>+</code> 乙數 <code>-<var>K</var>=</code> 乙數的兩倍(如下圖)。</p>
+			<div class="graphie" id="age">
+			    init({ range:[[-2,15],[-2,3]],scale: 30});
+					<!--basicLine&label-->
+					line( [ 1, 1.5], [13, 1.5],{stroke:"red"});
+					line( [ 1, 0], [endPosition, 0],{stroke:"red"});
+					label( [ 0, 1.5 ],  "甲", "left", { color: "dimgray" });
+					label( [ 0, 0 ],  "乙", "left", { color: "dimgray" });
+					<!--start&end-->
+				    line( [ 1, 1.6], [1, 1.4],{stroke:"black"});
+					line( [ 13, 1.6], [13, 1.4],{stroke:"black"});
+					line( [ 1, 0.1], [1, -0.1],{stroke:"black"});
+					line( [ endPosition, 0.1], [endPosition, -0.1],{stroke:"black"});
+					line( [ endPosition, 1.6], [endPosition, 1.4],{stroke:"black"});
+					
+					line( [ endPosition, 1.4], [endPosition, 0.1],{stroke:"dimgray","stroke-dasharray": "-"});
+					if(13-endPosition&gt;=1){
+					label( [ 6.5+endPosition/2, 1 ],  K, "center", { color: "dimgray" });
+					line( [ endPosition, 1.5], [(endPosition+13)/2-0.5, 1],{stroke:"dimgray"});
+					line( [ 13, 1.5], [(endPosition+13)/2+0.5, 1],{stroke:"dimgray"});
+					}
+					if(13-endPosition&lt;1){
+					label( [ 6.5+endPosition/2, 0.5 ],  K, "center", { color: "dimgray" });
+					line( [ endPosition, 1.5], [endPosition+0.2, 1],{stroke:"dimgray"});
+					line( [ 13, 1.5], [12.8, 1],{stroke:"dimgray"});
+					}
+			</div>
+		    </div>
+			<p><code><var>J</var>-<var>K</var>=<var>J-K</var></code></p>
+			<p>乙數為 <code><var>J-K</var>\div 2=<var>R_2</var></code></p>
+			<p>甲數為 <code><var>J</var>-<var>R_2</var>=<var>R_1</var></code></p>
+		<div>
+			<p>所以，本題中甲數為 <code class="hint_pink"><var>R_1</var></code> 、 乙數為 <code class="hint_pink"><var>R_2</var></code> 。</p>
+		</div>
+    </div>
+	</div>
+	
+	<div id="case4">
+            <div class="vars" data-ensure="isInt(R_1) && isInt(R_2)">
+			    <var id="names">randFromArray(["繩子","緞帶","毛線"])</var>
+				<var id="J">10*randRange(25,35)</var>
+				<var id="K">10*randRange(2,7)</var>
+				<var id="R_2">(J/2-K)/2</var>
+				<var id="R_1">R_2+K</var>
+				<var id="endPosition">R_2/R_1*13</var>
+            </div>
+			<p class="question">將一條長 <code><var>J</var></code> 公分的 <code><var>names</var></code> 圍成一個長方形，如果長比寬多 <code><var>K</var></code> 公分，這個長方形的長和寬各是多少公分？</p>
+			<div class="solution" data-type="multiple">
+				<code>長=\enspace</code><span class="sol" data-forms="integer"><var>R_1</var></span><br />
+				<code>寬=\enspace</code><span class="sol" data-forms="integer"><var>R_2</var></span><br />
+				<p class="example">整數，例：6</p>
+			</div>
+
+    <div class="hints">
+			<div>
+			<p>我們可以通過觀察下圖來解題：</p>
+			<div class="graphie" id="age">
+			    init({ range:[[-2,15],[-2,3]],scale: 30});
+					<!--basicLine&label-->
+					line( [ 1, 1.5], [13, 1.5],{stroke:"red"});
+					line( [ 1, 0], [endPosition, 0],{stroke:"red"});
+					label( [ 0, 1.5 ],  "長", "left", { color: "dimgray" });
+					label( [ 0, 0 ],  "寬", "left", { color: "dimgray" });
+					<!--start&end-->
+				    line( [ 1, 1.6], [1, 1.4],{stroke:"black"});
+					line( [ 13, 1.6], [13, 1.4],{stroke:"black"});
+					line( [ 1, 0.1], [1, -0.1],{stroke:"black"});
+					line( [ endPosition, 0.1], [endPosition, -0.1],{stroke:"black"});
+					line( [ endPosition, 1.6], [endPosition, 1.4],{stroke:"black"});
+					
+					line( [ endPosition, 1.4], [endPosition, 0.1],{stroke:"dimgray","stroke-dasharray": "-"});
+					if(13-endPosition&gt;=1){
+					label( [ 6.5+endPosition/2, 1 ],  K, "center", { color: "dimgray" });
+					line( [ endPosition, 1.5], [(endPosition+13)/2-0.5, 1],{stroke:"dimgray"});
+					line( [ 13, 1.5], [(endPosition+13)/2+0.5, 1],{stroke:"dimgray"});
+					}
+					if(13-endPosition&lt;1){
+					label( [ 6.5+endPosition/2, 0.5 ],  K, "center", { color: "dimgray" });
+					line( [ endPosition, 1.5], [endPosition+0.2, 1],{stroke:"dimgray"});
+					line( [ 13, 1.5], [12.8, 1],{stroke:"dimgray"});
+					}
+			</div>
+		    </div>
+			<p>長和寬的和是 <code><var>names</var></code> 長度的一半。</p>
+			<p><code><var>J</var>\div 2=<var>J/2</var></code></p>
+			<p>長、寬的和減去長、寬的差是寬的兩倍。</p>
+			<p><code><var>J/2</var>-<var>K</var>=<var>J/2-K</var></code></p>
+			<p>寬為 <code><var>J/2-K</var>\div 2=<var>R_2</var></code></p>
+			<p>長為 <code><var>R_2</var>+<var>K</var>=<var>R_1</var></code></p>
+		<div>
+			<p>所以，本題中長為 <code class="hint_pink"><var>R_1</var></code> 、 寬為 <code class="hint_pink"><var>R_2</var></code> 。</p>
+		</div>
+    </div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

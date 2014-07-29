@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>相似形的基本概念</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	    function chg(num){
+		    var ansNums = KhanUtil.randRange(3,4);
+			var arr = KhanUtil.randRangeUnique(1,num,ansNums);
+			for(var i = 0;i<=ansNums-1;i++){
+			    document.getElementById("t_"+arr[i]).style.display="none";
+			}
+			return [num-ansNums,arr];
+		}
+		function chg2(num,quesMin,quesMax){
+		    var ansNums = KhanUtil.randRange(num-quesMax,num-quesMin);
+			var arr = KhanUtil.randRangeUnique(1,num,ansNums);
+			for(var i = 0;i<=ansNums-1;i++){
+			    document.getElementById("t_"+arr[i]).style.display="none";
+			}
+			return [num-ansNums,arr];
+		}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+	    <div id="case1">
+            <div class="vars">
+				<var id="change">chg2(6,2,3)</var>
+            </div>
+			<p class="question">如下圖，有兩個直角三角形 <code>\triangle{AEF}</code> 和 <code>\triangle{ABC}</code> ，試說明這兩個三角形的三邊成比例，即 <code>\overline{BC}:\overline{EF}=\overline{AB}:\overline{AE}=\overline{AC}:\overline{AF}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="graphie_1_basic">
+				    init({
+                        range: [ [-1, 12], [-0.8,4] ],
+                        scale: 40
+                    });
+					path([[0,0],[3*sqrt(3),0],[3*sqrt(3),3],[0,0]],{stroke:"black"});
+					line([1.5*sqrt(3),0],[1.5*sqrt(3),1.5]);
+					label( [0,0],  "\\small{A}", "below left", { color: "black" });
+					label( [1.5*sqrt(3),0],  "\\small{E}", "below", { color: "black" });
+					label( [3*sqrt(3),0],  "\\small{B}", "below right", { color: "black" });
+					label( [3*sqrt(3),3],  "\\small{C}", "above right", { color: "black" });
+					label( [1.5*sqrt(3),1.5],  "\\small{F}", "above", { color: "black" });
+					line([1.5*sqrt(3)-0.3,0],[1.5*sqrt(3)-0.3,0.3]);
+					line([1.5*sqrt(3)-0.3,0.3],[1.5*sqrt(3),0.3]);
+					line([3*sqrt(3)-0.3,0],[3*sqrt(3)-0.3,0.3]);
+					line([3*sqrt(3)-0.3,0.3],[3*sqrt(3),0.3]);
+				</div>
+				<p>請在下列空格中填入適當的答案：</p>
+				<div>
+			        <p>將 <code>\triangle{ABC}</code> 複製一份，如下圖拼成一個矩形 <code>ABCI</code> 。</p>
+					<div class="graphie" id="graphie_1_1">
+					    init({
+                        range: [ [-1, 12], [-0.8,4] ],
+                        scale: 40
+						});
+						path([[0,0],[3*sqrt(3),0],[3*sqrt(3),3],[0,0]],{stroke:"black"});
+						line([1.5*sqrt(3),0],[1.5*sqrt(3),3]);
+						line([0,0],[0,3]);
+						line([0,3],[3*sqrt(3),3]);
+						line([0,1.5],[3*sqrt(3),1.5]);
+						label( [0,0],  "\\small{A}", "below left", { color: "black" });
+						label( [1.5*sqrt(3),0],  "\\small{E}", "below", { color: "black" });
+						label( [3*sqrt(3),0],  "\\small{B}", "below right", { color: "black" });
+						label( [3*sqrt(3),3],  "\\small{C}", "above right", { color: "black" });
+						label( [1.5*sqrt(3),1.5],  "\\small{F}", "below right", { color: "black" });
+						label( [0,1.5],  "\\small{J}", "left", { color: "black" });
+						label( [0,3],  "\\small{I}", "above left", { color: "black" });
+						label( [1.5*sqrt(3),3],  "\\small{H}", "above", { color: "black" });
+						label( [3*sqrt(3),1.5],  "\\small{G}", "right", { color: "black" });
+						line([1.5*sqrt(3)-0.3,0],[1.5*sqrt(3)-0.3,0.3]);
+						line([1.5*sqrt(3)-0.3,0.3],[1.5*sqrt(3),0.3]);
+						line([3*sqrt(3)-0.3,0],[3*sqrt(3)-0.3,0.3]);
+						line([3*sqrt(3)-0.3,0.3],[3*sqrt(3),0.3]);
+						line([0,1.2],[0.3,1.2]);
+						line([0.3,1.2],[0.3,1.5]);
+					</div>
+				</div>
+				<p>矩形 <code>AEHI</code> 的面積 <code>=</code> 矩形 <code>ABGJ</code> 的面積</p>
+				<div>
+				    <p>由於 矩形 <code>AEHI</code> 的面積 <code>=\overline{AE}\cdot\overline{AI}=\overline{AE}\cdot\overline{BC}</code></p>
+					<p>&nbsp;&nbsp;&nbsp;&nbsp;矩形 <code>ABGJ</code> 的面積 <code>=\overline{AB}\cdot\overline{BG}=\overline{AB}\cdot\overline{EF}</code></p>
+				</div>
+				<p>因此 <code>\overline{AE}\cdot\overline{BC}=\overline{AB}\cdot\overline{EF}</code> ，即 <code>\overline{AB}:</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_4" style="width:30px"><code data-if="t_4.style.display=='none'">AE</code></span><code>=\overline{BC}:</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_5" style="width:30px"><code data-if="t_5.style.display=='none'">EF</code></span> 。</p>
+				<div>
+				    <p>至於要說明斜邊的比，就要應用 <input type="text" id="t_1" style="width:30px"><code data-if="t_1.style.display=='none'">畢氏</code> 定理。設上面比例比值為 <code>r</code> ，</p>
+					<p>即 <code>\overline{AB}=r\overline{AE}</code> ，<code>\overline{BC}=r\overline{EF}</code></p>
+				</div>
+				<div>
+				    <p>由畢氏定理得</p>
+					<p><code>\overline{AC}=\sqrt{(\overline{AB})^{2}+(\overline{BC})^{2}}=\sqrt{(r\overline{AE})^{2}+(r\overline{EF})^{2}}</code></p>
+					<p><code>=\sqrt{r^{2}(\overline{AE}^{2}+\overline{EF}^{2})}=r\sqrt{\overline{AE}^{2}+\overline{EF}^{2}}=r</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_6" style="width:30px"><code data-if="t_6.style.display=='none'">AF</code></span></p>
+				</div>
+				<p>由上述知可知 <code>\overline{BC}:</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_2" style="width:30px"><code data-if="t_2.style.display=='none'">EF</code></span><code>=\overline{AB}:\overline{AE}=</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_3" style="width:30px"><code data-if="t_3.style.display=='none'">AC</code></span><code>:\overline{AF}</code> 。</p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value,document.getElementById("t_2").value,document.getElementById("t_3").value,document.getElementById("t_4").value,document.getElementById("t_5").value,document.getElementById("t_6").value]</div>
+				    <div class="validator-function">
+					    var rightNums = 0;
+						if(document.getElementById("t_1").style.display==""){
+						    guess[0].replace(/[ ]/g,"")=="畢氏"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_2").style.display==""){
+						    (guess[1].replace(/[ ]/g,"")=="EF"||guess[1].replace(/[ ]/g,"")=="FE")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_3").style.display==""){
+						    (guess[2].replace(/[ ]/g,"")=="AC"||guess[2].replace(/[ ]/g,"")=="CA")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_4").style.display==""){
+						    (guess[3].replace(/[ ]/g,"")=="AE"||guess[3].replace(/[ ]/g,"")=="EA")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_5").style.display==""){
+						    (guess[4].replace(/[ ]/g,"")=="EF"||guess[4].replace(/[ ]/g,"")=="FE")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_6").style.display==""){
+						    (guess[5].replace(/[ ]/g,"")=="AF"||guess[5].replace(/[ ]/g,"")=="FA")?rightNums+=1:rightNums+=0;
+						}
+						return rightNums==change[0]?true:false;
+					</div>
+				</div>
+				<p class="example">文字(國字或英文)</p>
+            </div>
+            <div class="hints">
+			    <div>
+			        <p>將 <code>\triangle{ABC}</code> 複製一份，如下圖拼成一個矩形 <code>ABCI</code> 。</p>
+					<div class="graphie" id="graphie_1_2">
+					    init({
+                        range: [ [-1, 12], [-0.8,4] ],
+                        scale: 40
+						});
+						path([[0,0],[3*sqrt(3),0],[3*sqrt(3),3],[0,0]],{stroke:"black"});
+						line([1.5*sqrt(3),0],[1.5*sqrt(3),3]);
+						line([0,0],[0,3]);
+						line([0,3],[3*sqrt(3),3]);
+						line([0,1.5],[3*sqrt(3),1.5]);
+						label( [0,0],  "\\small{A}", "below left", { color: "black" });
+						label( [1.5*sqrt(3),0],  "\\small{E}", "below", { color: "black" });
+						label( [3*sqrt(3),0],  "\\small{B}", "below right", { color: "black" });
+						label( [3*sqrt(3),3],  "\\small{C}", "above right", { color: "black" });
+						label( [1.5*sqrt(3),1.5],  "\\small{F}", "below right", { color: "black" });
+						label( [0,1.5],  "\\small{J}", "left", { color: "black" });
+						label( [0,3],  "\\small{I}", "above left", { color: "black" });
+						label( [1.5*sqrt(3),3],  "\\small{H}", "above", { color: "black" });
+						label( [3*sqrt(3),1.5],  "\\small{G}", "right", { color: "black" });
+						line([1.5*sqrt(3)-0.3,0],[1.5*sqrt(3)-0.3,0.3]);
+						line([1.5*sqrt(3)-0.3,0.3],[1.5*sqrt(3),0.3]);
+						line([3*sqrt(3)-0.3,0],[3*sqrt(3)-0.3,0.3]);
+						line([3*sqrt(3)-0.3,0.3],[3*sqrt(3),0.3]);
+						line([0,1.2],[0.3,1.2]);
+						line([0.3,1.2],[0.3,1.5]);
+					</div>
+				</div>
+				<p>矩形 <code>AEHI</code> 的面積 <code>=</code> 矩形 <code>ABGJ</code> 的面積</p>
+				<div>
+				    <p>由於 矩形 <code>AEHI</code> 的面積 <code>=\overline{AE}\cdot\overline{AI}=\overline{AE}\cdot\overline{BC}</code></p>
+					<p>&nbsp;&nbsp;&nbsp;&nbsp;矩形 <code>ABGJ</code> 的面積 <code>=\overline{AB}\cdot\overline{BG}=\overline{AB}\cdot\overline{EF}</code></p>
+				</div>
+				<p>因此 <code>\overline{AE}\cdot\overline{BC}=\overline{AB}\cdot\overline{EF}</code> ，即 <code>\overline{AB}:\overline{AE}=\overline{BC}:\overline{EF}</code> 。</p>
+				<div>
+				    <p>至於要說明斜邊的比，就要應用畢氏定理。設上面比例比值為 <code>r</code> ，</p>
+					<p>即 <code>\overline{AB}=r\overline{AE}</code> ，<code>\overline{BC}=r\overline{EF}</code></p>
+				</div>
+				<div>
+				    <p>由畢氏定理得</p>
+					<p><code>\overline{AC}=\sqrt{(\overline{AB})^{2}+(\overline{BC})^{2}}=\sqrt{(r\overline{AE})^{2}+(r\overline{EF})^{2}}</code></p>
+					<p><code>=\sqrt{r^{2}(\overline{AE}^{2}+\overline{EF}^{2})}=r\sqrt{\overline{AE}^{2}+\overline{EF}^{2}}=r\overline{AF}</code></p>
+				</div>
+				<p>由上述知可知 <code class="hint_pink">\overline{BC}:\overline{EF}=\overline{AB}:\overline{AE}=\overline{AC}:\overline{AF}</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+			    <var id="AE">randRange(10,15)</var>
+				<var id="EB">randRange(40,50)</var>
+				<var id="EF">randRange(3,8)</var>
+				<var id="BC">EF*(AE+EB)/AE</var>
+            </div>
+			<p class="question">如下圖， <code>\overline{AE}=<var>AE</var></code> ，<code>\overline{EB}=<var>EB</var></code> ，<code>\overline{EF}=<var>EF</var></code> ，求 <code>\overline{BC}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="similar_2">
+				    init({
+                        range: [ [-1, (AE+EB)/10+1], [-0.8,BC/10+1] ],
+                        scale: 40
+                    });
+					line([0,0],[(AE+EB)/10,BC/10]);
+					line([(AE+EB)/10,BC/10],[(AE+EB)/10,0],{stroke:"red"});
+					line([0,0],[AE/10,0],{stroke:"blue"});
+					line([AE/10,0],[(AE+EB)/10,0],{stroke:"green"});
+					line([AE/10,0],[AE/10,EF/10]);
+					label( [0,0],  "\\small{A}", "below left", { color: "black" });
+					label( [AE/10,0],  "\\small{E}", "below", { color: "black" });
+					label( [(AE+EB)/10,0],  "\\small{B}", "below right", { color: "black" });
+					label( [AE/10,EF/10],  "\\small{F}", "above", { color: "black" });
+					label( [(AE+EB)/10,BC/10],  "\\small{C}", "above right", { color: "black" });
+					label( [AE/20,0],  "\\small{"+AE+"}", "below", { color: "blue" });
+					label( [AE/20+(AE+EB)/20,0],  "\\small{"+EB+"}", "below", { color: "green" });
+					label( [AE/10,EF/20],  "\\small{"+EF+"}", "right", { color: "black" });
+					label( [(AE+EB)/10,BC/20],  "\\small{?}", "right", { color: "red" });
+					line([AE/10-0.1,0],[AE/10-0.1,0.1]);
+					line([AE/10-0.1,0.1],[AE/10,0.1]);
+					line([(AE+EB)/10-0.3,0],[(AE+EB)/10-0.3,0.3]);
+					line([(AE+EB)/10-0.3,0.3],[(AE+EB)/10,0.3]);
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-type="rational"><var>EF*(AE+EB)/AE</var></span>
+            </div>
+            <div class="hints">
+			    <p><code>\overline{AE}:\overline{AB}=\overline{EF}:\overline{BC}</code></p>
+				<p>設 <code>\overline{BC}</code> 的長為 <code>x</code> ，</p>
+				<p>得 <code><var>AE</var>:<var>AE+EB</var>=<var>EF</var>:x</code></p>
+				<div>
+				    <p>運用比例式的性質來計算出 <code>x</code> ：</p>
+					<p>內項乘積 <code>=</code> 外項乘積</p>
+				</div>
+				<p><code><var>AE+EB</var>\cdot<var>EF</var>=<var>AE</var>\cdot x</code></p>
+				<p><code><var>EF*(AE+EB)</var>=<var>AE</var>x</code></p>
+				<p><code>x=<var>fraction(EF*(AE+EB),AE,true,true,false,false)</var></code></p>
+				<p>所以，本題的答案為 <code class="hint_pink">\overline{BC}=<var>fraction(EF*(AE+EB),AE,true,true,false,false)</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+			    <var id="change">chg2(7,3,4)</var>
+            </div>
+			<p class="question">如下圖，<code>\angle{B^{'}A^{'}C^{'}}</code> 是由 <code>O</code> 將 <code>\angle{BAC}</code> 的圖形縮放 <code>3</code> 倍的結果，試說明 <code>\angle{BAC}=\angle{B^{'}A^{'}C^{'}}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="similar_3">
+				    init({
+                        range: [ [-1, 12], [-2,4.5] ],
+                        scale: 40
+                    });
+					line([0,0],[6,0]);
+					line([1.5,0],[2,1.2]);
+					line([4.5,0],[6,3.6]);
+					line([0,0],[6,3.6]);
+					line([1.5,0],[2,-0.5]);
+					line([4.5,0],[6,-1.5]);
+					line([0,0],[6,-1.5]);
+					label( [0,0],  "\\small{O}", "left", { color: "black" });
+					label( [1.2,-0.2],  "\\small{A}", "above", { color: "black" });
+					label( [2,1.2],  "\\small{B}", "above", { color: "black" });
+					label( [2,-0.5],  "\\small{C}", "below", { color: "black" });
+					label( [4.2,-0.2],  "\\small{A^{'}}", "above", { color: "black" });
+					label( [6,3.6],  "\\small{B^{'}}", "above", { color: "black" });
+					label( [6,-1.5],  "\\small{C^{'}}", "below", { color: "black" });
+				</div>
+				<p>請在下列空格中填入適當的答案：</p>
+				<div>
+				    <p>標示 <code>\angle{1}</code> 、<code>\angle{2}</code> 、<code>\angle{3}</code> 、<code>\angle{4}</code> 如下圖：</p>
+					<div class="graphie" id="similar_3_2">
+				    init({
+                        range: [ [-1, 12], [-2,4.5] ],
+                        scale: 40
+                    });
+					line([0,0],[6,0]);
+					line([1.5,0],[2,1.2]);
+					line([4.5,0],[6,3.6]);
+					line([0,0],[6,3.6]);
+					line([1.5,0],[2,-0.5]);
+					line([4.5,0],[6,-1.5]);
+					line([0,0],[6,-1.5]);
+					label( [0,0],  "\\small{O}", "left", { color: "black" });
+					label( [1.2,-0.2],  "\\small{A}", "above", { color: "black" });
+					label( [2,1.2],  "\\small{B}", "above", { color: "black" });
+					label( [2,-0.5],  "\\small{C}", "below", { color: "black" });
+					label( [4.2,-0.2],  "\\small{A^{'}}", "above", { color: "black" });
+					label( [6,3.6],  "\\small{B^{'}}", "above", { color: "black" });
+					label( [6,-1.5],  "\\small{C^{'}}", "below", { color: "black" });
+					label( [2,-0.2],  "\\small{1}", "above", { color: "blue" });
+					label( [5,-0.2],  "\\small{3}", "above", { color: "blue" });
+					label( [2,0.2],  "\\small{2}", "below", { color: "green" });
+					label( [5,0.2],  "\\small{4}", "below", { color: "green" });
+					</div>
+				</div>
+				<p>由於 <code>\overline{AB}//\overline{A^{'}B^{'}}</code> ，<code>\overline{AC}//\overline{A^{'}C^{'}}</code> ，</p>
+				<p>所以 <code>\angle{1}=\angle{}</code><input type="text" id="t_1" style="width:30px"><code data-if="t_1.style.display=='none'">3</code><code>\enspace\enspace\enspace\enspace</code><input type="text" id="t_2" style="width:30px"><code data-if="t_2.style.display=='none'" class="hint_blue">同位角</code><code>\color{blue}{相等}</code></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>\angle{}</code><input type="text" id="t_3" style="width:30px"><code data-if="t_3.style.display=='none'">2</code><code>=\angle{4}\enspace\enspace\enspace\enspace</code><input type="text" id="t_4" style="width:30px"><code data-if="t_4.style.display=='none'" class="hint_blue">同位角</code><code>\color{blue}{相等}</code></p>
+				<p>因此 <code>\angle{1}+\angle{}</code><input type="text" id="t_5" style="width:30px"><code data-if="t_5.style.display=='none'">2</code><code>=\angle{3}+\angle{}</code><input type="text" id="t_6" style="width:30px"><code data-if="t_6.style.display=='none'">4</code></p>
+				<p>即 <code>\angle{}</code><input type="text" id="t_7" style="width:30px"><code data-if="t_7.style.display=='none'">BAC</code><code>=\angle{B^{'}A^{'}C^{'}}</code> 。</p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value,document.getElementById("t_2").value,document.getElementById("t_3").value,document.getElementById("t_4").value,document.getElementById("t_5").value,document.getElementById("t_6").value,document.getElementById("t_7").value]</div>
+				    <div class="validator-function">
+					    var rightNums = 0;
+						if(document.getElementById("t_1").style.display==""){
+						    (guess[0].replace(/[ ]/g,"")=="3"||guess[0].replace(/[ ]/g,"")==3)?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_2").style.display==""){
+						    guess[1].replace(/[ ]/g,"")=="同位角"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_3").style.display==""){
+						    (guess[2].replace(/[ ]/g,"")=="2"||guess[2].replace(/[ ]/g,"")==2)?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_4").style.display==""){
+						    guess[3].replace(/[ ]/g,"")=="同位角"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_5").style.display==""){
+						    (guess[4].replace(/[ ]/g,"")=="2"||guess[4].replace(/[ ]/g,"")==2)?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_6").style.display==""){
+						    (guess[5].replace(/[ ]/g,"")=="4"||guess[5].replace(/[ ]/g,"")==4)?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_7").style.display==""){
+						    (guess[6].replace(/[ ]/g,"")=="BAC"||guess[5].replace(/[ ]/g,"")=="CAB")?rightNums+=1:rightNums+=0;
+						}
+						return rightNums==change[0]?true:false;
+					</div>
+				</div>
+				<p class="example">文字(國字或英文)</p>
+            </div>
+            <div class="hints">
+			    <div>
+				    <p>標示 <code>\angle{1}</code> 、<code>\angle{2}</code> 、<code>\angle{3}</code> 、<code>\angle{4}</code> 如下圖：</p>
+					<div class="graphie" id="similar_3_2">
+				    init({
+                        range: [ [-1, 12], [-2,4.5] ],
+                        scale: 40
+                    });
+					line([0,0],[6,0]);
+					line([1.5,0],[2,1.2]);
+					line([4.5,0],[6,3.6]);
+					line([0,0],[6,3.6]);
+					line([1.5,0],[2,-0.5]);
+					line([4.5,0],[6,-1.5]);
+					line([0,0],[6,-1.5]);
+					label( [0,0],  "\\small{O}", "left", { color: "black" });
+					label( [1.2,-0.2],  "\\small{A}", "above", { color: "black" });
+					label( [2,1.2],  "\\small{B}", "above", { color: "black" });
+					label( [2,-0.5],  "\\small{C}", "below", { color: "black" });
+					label( [4.2,-0.2],  "\\small{A^{'}}", "above", { color: "black" });
+					label( [6,3.6],  "\\small{B^{'}}", "above", { color: "black" });
+					label( [6,-1.5],  "\\small{C^{'}}", "below", { color: "black" });
+					label( [2,-0.2],  "\\small{1}", "above", { color: "blue" });
+					label( [5,-0.2],  "\\small{3}", "above", { color: "blue" });
+					label( [2,0.2],  "\\small{2}", "below", { color: "green" });
+					label( [5,0.2],  "\\small{4}", "below", { color: "green" });
+					</div>
+				</div>
+				<p>由於 <code>\overline{AB}//\overline{A^{'}B^{'}}</code> ，<code>\overline{AC}//\overline{A^{'}C^{'}}</code> ，</p>
+				<p>所以 <code>\angle{1}=\angle{3}\enspace\enspace\enspace\enspace\color{blue}{同位角相等}</code></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>\angle{2}=\angle{4}\enspace\enspace\enspace\enspace\color{blue}{同位角相等}</code></p>
+				<p>因此 <code>\angle{1}+\angle{2}=\angle{3}+\angle{4}</code></p>
+				<p>即 <code class="hint_pink">\angle{BAC}=\angle{B^{'}A^{'}C^{'}}</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case4">
+            <div class="vars">
+			    <var id="J">randRange(3,6)</var>
+				<var id="K">J-2</var>
+				<var id="sideCount">
+				(function(){
+				    if(J==3){return "三";}
+					if(J==4){return "四";}
+					if(J==5){return "五";}
+					if(J==6){return "六";}
+					if(J==7){return "七";}
+				})()</var>
+				<var id="shapeName">
+				(function(){
+				    if(J==3){return "三角形";}
+					if(J==4){return "方形";}
+					if(J==5){return "五邊形";}
+					if(J==6){return "六邊形";}
+					if(J==7){return "七邊形";}
+				})()</var>
+				<var id="points">
+				(function(){
+					var angle = 360/J;
+					var uAngle = angle;
+					var pArr=new Array();
+                    for(var i=0;i&lt;J;i++){
+                    pArr[i]=new Array(); 
+                    for(var j=0;j&lt;2;j++){
+                    pArr[i][j]=1;
+                    }
+                    }
+					for(var j=0;j&lt;J;j++){
+					    pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+					    pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+						uAngle=uAngle+angle;
+					}
+					return pArr;
+				})()</var>
+				<var id="points_big">
+				(function(){
+					var angle2 = 360/J;
+					var uAngle2 = angle2;
+					var qArr=new Array();
+                    for(var i=0;i&lt;J;i++){
+                    qArr[i]=new Array(); 
+                    for(var j=0;j&lt;2;j++){
+                    qArr[i][j]=1;
+                    }
+                    }
+					for(var j=0;j&lt;J;j++){
+					    qArr[j][0]=2*Math.sin(uAngle2*Math.PI/180)+5.5;
+					    qArr[j][1]=2*Math.cos(uAngle2*Math.PI/180);
+						uAngle2=uAngle2+angle2;
+					}
+					return qArr;
+				})()</var>
+				<var id="label_arr">['A','B','C','D','E','F','G','H','I','J','K','L','M','N']</var>
+			    <var id="change">chg2(3,3,3)</var>
+				<var id="show_arr">
+				(function(){
+				    var str = "";
+				    for(var i=0;i&lt;=J-2;i++){
+					    str+= "\\overline{"+label_arr[i]+label_arr[i+1]+"}:\\overline{"+label_arr[i+J]+label_arr[i+J+1]+"}=";
+					}
+					str+="\\overline{"+label_arr[J-1]+label_arr[0]+"}:\\overline{"+label_arr[2*J-1]+label_arr[J]+"}";
+				    return str;
+				})()</var>
+            </div>
+			<p class="question">說明任意兩個正<var>shapeName</var>相似。</p>
+			<div class="problem">
+			    <div class="graphie" id="similar_4">
+				    init({
+                        range: [ [-3, 12], [-3,3] ],
+                        scale: 40
+                    });
+					for(var i=0;i&lt;=points.length-2;i++){
+					    line(points[i],points[i+1]);
+						label( [points[i][0]*1.2,points[i][1]*1.2],  "\\small{"+label_arr[i]+"}", "center", { color: "black" });
+						line(points_big[i],points_big[i+1]);
+						label( [(points_big[i][0]-5.5)*1.1+5.5,points_big[i][1]*1.2],  "\\small{"+label_arr[i+points.length]+"}", "center", { color: "black" });
+					}
+					line(points[0],points[points.length-1]);
+					label( [points[points.length-1][0]*1.2,points[points.length-1][1]*1.2],  "\\small{"+label_arr[points.length-1]+"}", "center", { color: "black" });
+					line(points_big[0],points_big[points.length-1]);
+					label( [(points_big[points.length-1][0]-5.5)*1.2+5.5,points_big[points.length-1][1]*1.2],  "\\small{"+label_arr[points.length*2-1]+"}", "center", { color: "black" });
+				</div>
+				<p>請在下列空格中填入適當的答案：</p>
+				<p>如圖，任取兩個正<var>shapeName</var>。</p>
+				<p>由於正<var>shapeName</var>的內角都是 <input type="text" id="t_1" style="width:30px"><code data-if="t_1.style.display=='none'">\dfrac{180\times<var>K</var>}{<var>J</var>}=<var>fraction(180*K,J,true,true,false,false)</var></code>度，</p>
+				<p>因此這兩個正<var>shapeName</var>的&nbsp;<input type="text" id="t_2" style="width:40px"><code data-if="t_2.style.display=='none'">"對應角"</code>&nbsp;相等。</p>
+				<p>又因為每個正<var>shapeName</var>的<var>sideCount</var>邊均等長，所以</p>
+				<p><code><var>show_arr</var></code></p>
+				<p>亦即&nbsp;<input type="text" id="t_3" style="width:30px"><code data-if="t_3.style.display=='none'">"對應邊"</code>&nbsp;成比例，因此這兩個正<var>shapeName</var>相似。</p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value,document.getElementById("t_2").value,document.getElementById("t_3").value]</div>
+				    <div class="validator-function">
+					    var rightNums = 0;
+						if(document.getElementById("t_1").style.display==""){
+						    guess[0].replace(/[ ]/g,"")==180*K/J?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_2").style.display==""){
+						    guess[1].replace(/[ ]/g,"")=="對應角"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_3").style.display==""){
+						    guess[2].replace(/[ ]/g,"")=="對應邊"?rightNums+=1:rightNums+=0;
+						}
+						return rightNums==change[0]?true:false;
+					</div>
+				</div>
+				<p class="example">文字(國字或英文)</p>
+            </div>
+            <div class="hints">
+			    <p>如圖，任取兩個正<var>sideCount</var>邊形。</p>
+				<p>由於正<var>sideCount</var>邊形的內角都是 <code>\dfrac{180\times<var>K</var>}{<var>J</var>}=<var>fraction(180*K,J,true,true,false,false)</var></code>度，</p>
+				<p>因此這兩個正<var>sideCount</var>邊形的對應角相等。</p>
+				<p>又因為每個正<var>sideCount</var>邊形的<var>sideCount</var>邊均等長，所以</p>
+				<p><code><var>show_arr</var></code></p>
+				<p>亦即對應邊成比例，因此這兩個正<var>sideCount</var>邊形相似。</p>
+            </div>
+        </div>
+		
+		<div id="case5">
+            <div class="vars" data-ensure="len_1&gt;=1">
+			    <var id="J">randRange(3,5)</var>
+				<var id="K">randRange(6,8)</var>
+				<var id="L">randRange(2,4)</var>
+				<var id="M">randRange(9,12)</var>
+				<var id="len_1">sqrt(J*J/4-L*L/4)</var>
+				<var id="len_2">sqrt(K*K/4-L*L/4)</var>
+				<var id="toBig">M/K</var>
+            </div>
+			<p class="question">如下圖， <code>\triangle{ABC}\sim\triangle{DEF}</code> ，其中 <code>A</code> 、<code>B</code> 、<code>C</code> 的對應點分別為 <code>D</code> 、<code>E</code> 、<code>F</code> 。已知 <code>\overline{AB}=<var>J</var></code> ，<code>\overline{AC}=<var>K</var></code> ，<code>\overline{AG}=<var>L</var></code> ，<code>\overline{DF}=<var>M</var></code> ，求 <code>\overline{DE}</code> 和 <code>\overline{DH}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="similar_5">
+				    init({
+                        range: [ [-1, 12], [-L/2-3,L/2+1] ],
+                        scale: 40
+                    });
+					path([[0,0],[len_1,L/2],[len_1+len_2,0],[0,0]],{stroke:"black"});
+					line([len_1,L/2],[len_1,0]);
+					path([[0,-L/2-2],[len_1*toBig,L/2*toBig-L/2-2],[(len_1+len_2)*toBig,-L/2-2],[0,-L/2-2]],{stroke:"black"});
+					line([len_1*toBig,L/2*toBig-L/2-2],[len_1*toBig,-L/2-2]);
+					label( [0,0],  "\\small{B}", "below left", { color: "black" });
+					label( [len_1,0],  "\\small{G}", "below", { color: "black" });
+					label( [len_1+len_2,0],  "\\small{C}", "below right", { color: "black" });
+					label( [len_1,L/2],  "\\small{A}", "above", { color: "black" });
+					label( [0,-L/2-2],  "\\small{E}", "below left", { color: "black" });
+					label( [len_1*toBig,-L/2-2],  "\\small{H}", "below", { color: "black" });
+					label( [(len_1+len_2)*toBig,-L/2-2],  "\\small{F}", "below right", { color: "black" });
+					label( [len_1*toBig,L/2*toBig-L/2-2],  "\\small{D}", "above", { color: "black" });
+					line([len_1,0.3],[len_1+0.3,0.3]);
+					line([len_1+0.3,0],[len_1+0.3,0.3]);
+					line([len_1*toBig,-L/2-2+0.3],[len_1*toBig+0.3,-L/2-2+0.3]);
+					line([len_1*toBig+0.3,-L/2-2],[len_1*toBig+0.3,-L/2-2+0.3]);
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <code>\overline{DE}=\enspace</code><span class="sol" data-type="rational"><var>M*J/K</var></span><br />
+				<code>\overline{DH}=\enspace</code><span class="sol" data-type="rational"><var>M*L/K</var></span>
+				<p class="example">整數，例：<code>6</code></p>
+                <p class="example">帶分數，例：<code>1\enspace 3/4</code></p>
+                <p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>	
+                <p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>	
+            </div>
+            <div class="hints">
+			    <p>因為 <code>\triangle{ABC}\sim\triangle{DEF}</code> ，所以 <code>\triangle{DEF}</code> 全等於 <code>\triangle{ABC}</code> 的縮放圖形，</p>
+				<p>其縮放的倍數等於 <code>\dfrac{\overline{DF}}{\overline{AC}}=\dfrac{<var>M</var>}{<var>K</var>}</code><code data-if="getGCD(M,K)!=1">\enspace =<var>fraction(M,K,true,true,false,false)</var></code></p>
+				<p>因此 <code>\overline{DE}</code> 是 <code>\overline{AB}</code> 的 <code><var>fraction(M,K,true,true,false,false)</var></code> 倍，亦即</p>
+				<p><code>\overline{DE}=\overline{AB}\times<var>fraction(M,K,true,true,false,false)</var>=<var>J</var>\times<var>fraction(M,K,true,true,false,false)</var>=<var>fraction(M*J,K,true,true,false,false)</var></code></p>
+				<p>由於 <code>\overline{AG}\perp\overline{BC}</code> ，所以經過縮放后，其對應邊也會互相垂直，所以 <code>\overline{DH}</code> 就是 <code>\overline{AG}</code> 的對應邊，</p>
+				<p>因此 <code>\overline{DH}=\overline{AG}\times<var>fraction(M,K,true,true,false,false)</var>=<var>L</var>\times<var>fraction(M,K,true,true,false,false)</var>=<var>fraction(M*L,K,true,true,false,false)</var></code></p>
+				<p>所以，本題的答案為 <code class="hint_pink">\overline{DE}=<var>fraction(M*J,K,true,true,false,false)</var>、\overline{DH}=<var>fraction(M*L,K,true,true,false,false)</var></code> 。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

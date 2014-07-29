@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie-geometry graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>解一元一次方程式</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+			<div class="vars" data-ensure="denominator !== 0">
+			    <var id="J">randRange(2,6)</var>
+				<var id="K">randRangeNonZero(-1,5)</var>
+				<var id="L">randRange(1,6)</var>
+				<var id="M">randRange(2,6)</var>
+				<var id="N">randRange(1,9)</var>
+				<var id="O">randRange(2,5)</var>
+				<var id="P">randRange(2,5)</var>
+				<var id="Z">randRange(1,7)</var>
+				<var id="J_K">J * K</var>
+				<var id="J_L">J * L</var>
+				<var id="O_P">O * P</var>
+				<var id="O_Z">O * Z</var>
+				<var id="molecule">N+O*Z+J*L</var>
+				<var id="denominator">J*K+M-O*P</var>
+				<var id="GCD">getGCD(molecule,denominator)</var>
+				<var id="molecule_GCD">abs(molecule/GCD)</var>
+				<var id="denominator_GCD">abs(denominator/GCD)</var>
+				<var id="mod">molecule % denominator</var>
+				<var id="c">molecule / denominator</var>
+			</div>
+
+            <p class="question">解一元一次方程式 <code><var>J</var>(<var data-if="abs(K)!=1">K</var></code><code data-if="K!=-1">x</code><code data-if="K==-1">-x</code><code>-<var>L</var>)+<var>M</var>x=
+				<var>N</var>+<var>O</var>(<var>P</var>x+<var>Z</var>)</code></p>
+            <div class="solution" data-type="rational"><var>c</var></div>
+
+            <div class="hints">
+				<div>
+				    <p>有括號的依分配律法則先去括號，再移項、整併求 <code>x</code> 。</p>
+				</div>
+				<div>
+				    <p><code><var>J_K</var>x-<var>J_L</var>+<var>M</var>x=
+						<var>N</var>+<var>O_P</var>x+<var>O_Z</var></code></p>
+				</div>
+
+				<div>
+				    <p><code><var>J_K</var>x+<var>M</var>x-<var>O_P</var>x=
+						<var>N</var>+<var>O_Z</var>+<var>J_L</var></code></p>
+				</div>
+				<div>
+				     <p><code><var>denominator</var>x=<var>molecule</var></code></p>
+				</div>
+				<div>
+					<p><code data-if="c<0 && mod !== 0">x=-{\frac{<var>abs(molecule)</var>}{<var>abs(denominator)</var>}}</code>
+					<code data-if="c>0 && mod !== 0">x=\frac{<var>abs(molecule)</var>}{<var>abs(denominator)</var>}</code>
+					<code data-if="mod == 0">x=<var>c</var></code></p>
+				</div>
+				<p data-if="GCD!=1 && mod !== 0">分子和分母有最大公約數 <code><var>GCD</var></code> ，分子分母同時進行約分。</p>
+				<div>
+					<p>因此本題的答案為 <code class="hint_pink" data-if="mod !== 0 && c<0">-{\frac{<var>molecule_GCD</var>}{<var>denominator_GCD</var>}}</code>
+					<code class="hint_pink" data-if="mod !== 0 && c>0">\frac{<var>molecule_GCD</var>}{<var>denominator_GCD</var>}</code>
+					<code class="hint_pink" data-if="mod == 0"><var>c</var></code> 。</p>
+				</div>
+            </div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars" data-ensure="denominator !== 0">
+			    <var id="J">randRange(2,6)</var>
+				<var id="K">randRange(1,5)</var>
+				<var id="L">randRange(1,6)</var>
+				<var id="M">randRange(2,6)</var>
+				<var id="N">randRange(1,9)</var>
+				<var id="O">randRange(2,5)</var>
+				<var id="P">randRange(2,5)</var>
+				<var id="J_K">J * K</var>
+				<var id="J_L">J * L</var>
+				<var id="molecule">N+O+J*L</var>
+				<var id="denominator">J*K-M-P</var>
+				<var id="GCD">getGCD(molecule,denominator)</var>
+				<var id="molecule_GCD">abs(molecule/GCD)</var>
+				<var id="denominator_GCD">abs(denominator/GCD)</var>
+				<var id="mod">molecule % denominator</var>
+				<var id="c">molecule / denominator</var>
+			</div>
+
+            <p class="question">解一元一次方程式 <code><var>J</var>(<var data-if="K!=1">K</var>x-<var>L</var>)-(<var>M</var>x+<var>N</var>)=
+				<var>O</var>+<var>P</var>x</code></p>
+            <div class="solution" data-type="rational"><var>c</var></div>
+
+            <div class="hints">
+				<div>
+				    <p>有括號的依分配律法則先去括號，再移項、整併求 <code>x</code> 。</p>
+				</div>
+				<div>
+				    <p><code><var>J_K</var>x-<var>J_L</var>-<var>M</var>x-<var>N</var>=
+						<var>O</var>+<var>P</var>x</code></p>
+				</div>
+				<div>
+				    <p><code><var>J_K</var>x-<var>M</var>x-<var>P</var>x=
+						<var>O</var>+<var>J_L</var>+<var>N</var></code></p>
+				</div>
+				<div>
+				     <p><code><var>denominator</var>x=<var>molecule</var></code></p>
+				</div>
+				<div>
+					<p><code data-if="c<0 && mod !== 0">x=-{\frac{<var>abs(molecule)</var>}{<var>abs(denominator)</var>}}</code>
+					<code data-if="c>0 && mod !== 0">x=\frac{<var>abs(molecule)</var>}{<var>abs(denominator)</var>}</code>
+					<code data-if="mod == 0">x=<var>c</var></code></p>
+				</div>
+				<p data-if="GCD!=1 && mod !== 0">分子和分母有最大公約數 <code><var>GCD</var></code> ，分子分母同時進行約分。</p>
+				<div>
+					<p>因此本題的答案為 <code class="hint_pink" data-if="mod !== 0 && c<0">-{\frac{<var>molecule_GCD</var>}{<var>denominator_GCD</var>}}</code>
+					<code class="hint_pink" data-if="mod !== 0 && c>0">\frac{<var>molecule_GCD</var>}{<var>denominator_GCD</var>}</code>
+					<code class="hint_pink" data-if="mod == 0"><var>c</var></code> 。</p>
+				</div>
+            </div>
+		</div>
+		
+		<div id="case3">
+			<div class="vars" data-ensure="J_denominator !== Q_denominator && P_denominator !== R_denominator">
+				<var id="J_ARRAY">
+				(function(){
+				    var arr = [[1,2],[1,3],[2,3],[1,4],[3,4],[1,5],[2,5],[3,5],[4,5],[1,6],[5,6]];
+					return arr[randRange(0,10)];
+				})()</var>
+				<var id="Q_ARRAY">
+				(function(){
+				    var arr = [[1,2],[1,3],[2,3],[1,4],[3,4],[1,5],[2,5],[3,5],[4,5],[1,6],[5,6]];
+					return arr[randRange(0,10)];
+				})()</var>
+				<var id="P_ARRAY">
+				(function(){
+				    var arr = [[1,2],[3,2],[1,3],[2,3],[4,3],[5,3],[1,4],[3,4],[5,4],[7,4]];
+					return arr[randRange(0,9)];
+				})()</var>
+				<var id="R_ARRAY">
+				(function(){
+				    var arr = [[1,2],[3,2],[1,3],[2,3],[4,3],[5,3],[1,4],[3,4],[5,4],[7,4]];
+					return arr[randRange(0,9)];
+				})()</var>
+				<var id="J">J_ARRAY</var>
+				<var id="P">P_ARRAY</var>
+				<var id="Q">Q_ARRAY</var>
+				<var id="R">R_ARRAY</var>
+				<var id="J_molecule">J[0]</var>
+				<var id="J_denominator">J[1]</var>
+				<var id="Q_molecule">Q[0]</var>
+				<var id="Q_denominator">Q[1]</var>
+				<var id="P_molecule">P[0]</var>
+				<var id="P_denominator">P[1]</var>
+				<var id="R_molecule">R[0]</var>
+				<var id="R_denominator">R[1]</var>
+				<var id="JQ_LCM">getLCM(J_denominator,Q_denominator)</var>
+				<var id="PR_LCM">getLCM(P_denominator,R_denominator)</var>
+				<var id="j_molecule">JQ_LCM / J_denominator * J_molecule</var>
+				<var id="q_molecule">JQ_LCM / Q_denominator * Q_molecule</var>
+				<var id="r_molecule">PR_LCM / R_denominator * R_molecule</var>
+				<var id="p_molecule">PR_LCM / P_denominator * P_molecule</var>
+				<var id="jq_molecule">j_molecule-q_molecule</var>
+				<var id="pr_molecule">p_molecule-r_molecule</var>
+				<var id="jq_molecule_abs">abs(jq_molecule)</var>
+				<var id="pr_molecule_abs">abs(pr_molecule)</var>
+				<var id="jq_pr_gcd">getGCD(jq_molecule,pr_molecule)</var>
+				<var id="jq_pr_LCM_gcd">getGCD(PR_LCM,JQ_LCM)</var>
+				<var id="pr_molecule_gcd">pr_molecule / jq_pr_gcd</var>
+				<var id="pr_denominator_gcd">PR_LCM / jq_pr_LCM_gcd</var>
+				<var id="jq_molecule_gcd">JQ_LCM / jq_pr_LCM_gcd</var>
+				<var id="jq_denominator_gcd">jq_molecule / jq_pr_gcd</var>
+				<var id="pr_molecule_gcd_abs">abs(pr_molecule_gcd)</var>
+				<var id="jq_denominator_gcd_abs">abs(jq_denominator_gcd)</var>
+				<var id="molecule">pr_molecule_gcd * jq_molecule_gcd</var>
+				<var id="denominator">pr_denominator_gcd * jq_denominator_gcd</var>
+				<var id="molecule_abs">abs(molecule)</var>
+				<var id="denominator_abs">abs(denominator)</var>
+				<var id="mod">molecule % denominator</var>
+				<var id="c">molecule * denominator</var>
+			</div>
+
+            <p class="question">解一元一次方程式 <code><var>fraction(J[0],J[1])</var>x-<var>fraction(P[0],P[1])</var>=<var>fraction(Q[0],Q[1])</var>x-<var>fraction(R[0],R[1])</var></code></p>
+            <div class="solution" data-type="rational"><var>molecule / denominator</var></div>
+
+            <div class="hints">
+				<div>
+				    <p>直接移項後再通分計算。</p>
+				</div>
+				<div>
+				    <p><code><var>fraction(J[0],J[1])</var>x-<var>fraction(Q[0],Q[1])</var>x=-<var>fraction(R[0],R[1])</var>+<var>fraction(P[0],P[1])</var></code></p>
+				</div>
+				<div>
+				    <p><code><var>fraction(j_molecule,JQ_LCM)</var>x-<var>fraction(q_molecule,JQ_LCM)</var>x=
+					-<var>fraction(r_molecule,PR_LCM)</var>+<var>fraction(p_molecule,PR_LCM)</var></code></p>
+				</div>
+				<div>
+					<p><code data-if="jq_molecule<0">-<var>fraction(jq_molecule_abs,JQ_LCM)</var>x=</code>
+					<code data-if="jq_molecule>0"><var>fraction(jq_molecule,JQ_LCM)</var>x=</code>
+					<code data-if="pr_molecule<0">-<var>fraction(pr_molecule_abs,PR_LCM)</var></code>
+					<code data-if="pr_molecule>0"><var>fraction(pr_molecule,PR_LCM)</var></code></p>
+				</div>
+				<div>
+					<p><code data-if="pr_molecule<0">x=(-<var>fraction(pr_molecule_abs,PR_LCM)</var>)</code>
+					<code data-if="pr_molecule>0">x=(<var>fraction(pr_molecule,PR_LCM)</var>)</code><code> \div </code>
+					<code data-if="jq_molecule<0">(-<var>fraction(jq_molecule_abs,JQ_LCM)</var></var>)</code>
+					<code data-if="jq_molecule>0">(<var>fraction(jq_molecule,JQ_LCM)</var>)</code>
+					</p>
+				</div>
+				<div>
+					<p><code data-if="pr_molecule_gcd<0">x=(-<var>fraction(pr_molecule_gcd_abs,pr_denominator_gcd)</var>)</code>
+					<code data-if="pr_molecule_gcd>0">x=(<var>fraction(pr_molecule_gcd,pr_denominator_gcd)</var>)</code><code> \times </code>
+					<code data-if="jq_denominator_gcd<0">(-<var>fraction(jq_molecule_gcd,jq_denominator_gcd_abs)</var>)</code>
+					<code data-if="jq_denominator_gcd>0">(<var>fraction(jq_molecule_gcd,jq_denominator_gcd)</var>)</code>
+					</p>
+				</div>
+				<div>
+					<p><code data-if="c<0 && mod !==0">x=-<var>fraction(molecule_abs,denominator_abs)</var></code>
+					<code data-if="c>0 && mod !==0">x=<var>fraction(molecule_abs,denominator_abs)</var></code>
+					<code data-if="mod ==0">x=<var>c</var></code>
+					</p>
+				</div>
+				<div>
+					<p>因此本題的答案為 <code class="hint_pink" data-if="c<0 && mod !==0">-<var>fraction(molecule_abs,denominator_abs)</var></code>
+					<code class="hint_pink" data-if="c>0 && mod !==0"><var>fraction(molecule_abs,denominator_abs)</var></code> 。</p>
+					<code class="hint_pink" data-if="mod ==0"><var>c</var></code>
+				</div>
+            </div>
+		</div>
+		
+		<div id="case4">
+			<div class="vars" data-ensure="L !== P && denominator !==0">
+			    <var id="J">randRange(1,5)</var>
+				<var id="K">randRange(1,9)</var>
+				<var id="L">randRange(2,9)</var>
+				<var id="P">randRange(2,9)</var>
+				<var id="M">randRange(2,6)</var>
+				<var id="N">randRange(1,9)</var>
+				<var id="LP_LCM">getLCM(L,P)</var>
+				<var id="LP_LCM_L">LP_LCM / L</var>
+				<var id="LP_LCM_P">LP_LCM / P</var>
+				<var id="LP_LCM_L_J">LP_LCM_L * J</var>
+				<var id="LP_LCM_L_K">LP_LCM_L * K</var>
+				<var id="LP_LCM_P_M">LP_LCM_P * M</var>
+				<var id="LP_LCM_P_N">LP_LCM_P * N</var>
+				<var id="molecule">LP_LCM+LP_LCM_P_N+LP_LCM_L_K</var>
+				<var id="denominator">LP_LCM_L_J-LP_LCM_P_M</var>
+				<var id="GCD">getGCD(molecule,denominator)</var>
+				<var id="molecule_gcd">molecule / GCD</var>
+				<var id="denominator_gcd">denominator / GCD</var>
+				<var id="mod">molecule_gcd % denominator_gcd</var>
+				<var id="c">molecule_gcd / denominator_gcd</var>
+			</div>
+
+            <p class="question">解一元一次方程式 <code>\dfrac{<var data-if="J!=1">J</var>x-<var>K</var>}{<var>L</var>}-\dfrac{<var>M</var>x+<var>N</var>}{<var>P</var>}=1</code></p>
+            <div class="solution" data-type="rational"><var>c</var></div>
+
+            <div class="hints">
+				<div>
+				    <p>兩邊先同乘以<var>LP_LCM</var>後，目的是把分母消掉。</p>
+				</div>
+				<div>
+				    <p><code><var>LP_LCM_L</var> \times (<var data-if="J!=1">J</var>x-<var>K</var>)-<var>LP_LCM_P</var> \times (<var>M</var>x+<var>N</var>)=<var>LP_LCM</var></code></p>
+				</div>
+				<div>
+				    <p>拆括號後同類項合併。</p>
+				</div>
+				<div>
+				    <p><code><var>LP_LCM_L_J</var>x-<var>LP_LCM_L_K</var>-<var>LP_LCM_P_M</var>x-<var>LP_LCM_P_N</var>=<var>LP_LCM</var></code></p>
+				</div>
+				<div>
+				     <p><code><var data-if="abs(denominator)!=1">denominator</var></code><code data-if="denominator!=-1">x=</code><code data-if="denominator==-1">-x=</code><code><var>molecule</var></code></p>
+				</div>
+				<p data-if="GCD!=1 && mod !== 0">分子和分母有最大公約數 <code><var>GCD</var></code> ，分子分母同時進行約分。</p>
+				<div data-if="denominator!=1">
+				     <p><code data-if="c < 0 && mod !==0">x=-\frac{<var>abs(molecule_gcd)</var>}{<var>abs(denominator_gcd)</var>}</code>
+					 <code data-if="c > 0 && mod !==0">x=\frac{<var>abs(molecule_gcd)</var>}{<var>abs(denominator_gcd)</var>}</code>
+					 <code data-if="mod == 0">x=<var>c</var></code></p>
+				</div>
+				<div>
+					<p>因此本題的答案為 <code class="hint_pink" data-if="mod !== 0 && c<0">-\frac{<var>abs(molecule_gcd)</var>}{<var>abs(denominator_gcd)</var>}</code>
+					<code class="hint_pink" data-if="mod !== 0 && c>0">\frac{<var>abs(molecule_gcd)</var>}{<var>abs(denominator_gcd)</var>}</code>
+					<code class="hint_pink" data-if="mod == 0"><var>c</var></code> 。</p>
+				</div>
+            </div>
+		</div>
+		
+	</div>
+	</div>
+</body>
+</html>

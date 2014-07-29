@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html data-require="math graphie kmatrix">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Matrix Transpose</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+		#answer_area .block input[type=text]{
+        	width: 30px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="exercise">
+    <div class="problems">
+		<div id="case1" data-weight="1">
+			<div class="vars">
+				<var id="sizeX">randRange(1,3) </var>
+				<var id="sizeY">randRange(1,3) </var>
+				<var id="matrix">randRange(-9,9,sizeX,sizeY) </var>
+				<var id="hint1"> hint1 = [ ["a11", "a12", "a13"], ["a21", "...", ":"], ["...", "...", "..."] ]</var>
+				<var id="hint1a">hint1a = [ ["a11", "a21", "..."], ["a12", "...", ":"], ["a13", "...", "..."] ] </var>
+				<var id="x">x ="" </var>
+				<var id="ans">
+				(function(){
+					var tmp = new Array(3);
+					for(i=0; i&lt; 3; i++) {
+						tmp[i] = new Array(3);
+					}
+					for(i=0; i&lt; sizeX; i++) {
+						for(j=0; j&lt; sizeY; j++) {
+							tmp[j][i] = matrix[i][j];
+						}
+					}
+					return tmp;
+				})()
+				</var>
+				<var id="show_ans">
+				(function(){
+					var tmp = new Array(sizeY);
+					for(i=0; i&lt; sizeY; i++) {
+						tmp[i] = new Array(sizeX);
+					}
+					for(i=0; i&lt; sizeX; i++) {
+						for(j=0; j&lt; sizeY; j++) {
+							tmp[j][i] = matrix[i][j];
+						}
+					}
+					return tmp;
+				})()
+				</var>
+			</div>
+			
+			<div class="question">
+				<code>A=<var>printSimpleMatrix(matrix)</var></code><br><br>
+				<code>A^{T} = ?</code>
+				<p>請將有數據的矩陣元素填入右側答案區的空格，</p>
+				<p>不應該有數據的空格，請勿填入任何文字或數據。</p>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<!--
+				<span class="sol"> <var>ans[0][0]</var></span>
+				<span class="sol"> <var>ans[0][1]</var></span>
+				<span class="sol"> <var>ans[0][2]</var></span><br>
+				
+				<span class="sol"> <var>ans[1][0]</var></span>
+				<span class="sol"> <var>ans[1][1]</var></span>
+				<span class="sol"> <var>ans[1][2]</var></span><br>
+				
+				<span class="sol"> <var>ans[2][0]</var></span>
+				<span class="sol"> <var>ans[2][1]</var></span>
+				<span class="sol"> <var>ans[2][2]</var></span>
+				-->
+				<span class="sol" data-if="sizeY >0 && sizeX >0"> <var>ans[0][0]</var></span>
+				<span class="sol" data-type="text" data-if="sizeX <= 0">           <var>x</var> </span>
+				<span class="sol" data-if="sizeY >0 && sizeX >1"> <var>ans[0][1]</var></span>
+				<span class="sol" data-type="text" data-if="sizeX <= 1">           <var>x</var> </span>
+				<span class="sol" data-if="sizeY >0 && sizeX >2"> <var>ans[0][2]</var></span>
+				<span class="sol" data-type="text" data-if="sizeX <= 2">           <var>x</var> </span>
+				<br>
+				
+				<span class="sol" data-if="sizeY >1 && sizeX >0"> <var>ans[1][0]</var></span>
+				<span class="sol" data-type="text" data-if="sizeX <=0 || sizeY <=1"> <var>x</var> </span>
+				<span class="sol" data-if="sizeY >1 && sizeX >1"> <var>ans[1][1]</var></span>
+				<span class="sol" data-type="text" data-if="sizeX <=1 || sizeY <=1"> <var>x</var> </span>
+				<span class="sol" data-if="sizeY >1 && sizeX >2"> <var>ans[1][2]</var></span>
+				<span class="sol" data-type="text" data-if="sizeX <=2 || sizeY <=1"> <var>x</var> </span>
+				<br>
+			
+				<span class="sol" data-if="sizeX >0 && sizeY >2"> <var>ans[2][0]</var></span>
+				<span class="sol" data-type="text" data-if="sizeX <=0 || sizeY <= 2"> <var>x</var> </span>
+				<span class="sol" data-if="sizeX >1 && sizeY >2"> <var>ans[2][1]</var></span>
+				<span class="sol" data-type="text" data-if="sizeX <=1 || sizeY <= 2"> <var>x</var> </span>
+				<span class="sol" data-if="sizeX >2 && sizeY >2"> <var>ans[2][2]</var></span>
+				<span class="sol" data-type="text" data-if="sizeX <=2 || sizeY <= 2"> <var>x</var> </span>
+				<br>
+			</div>
+			
+			<div class="hints">
+				<p>
+				<code>A=<var>printSimpleMatrix(hint1)</var></code><br><br>
+				<code>A^{T}=<var>printSimpleMatrix(hint1a)</var></code>
+				</p>
+				
+				<p>
+				<code>A=<var>printSimpleMatrix(matrix)</var></code><br><br>
+				<code>A^{T}=<var>printSimpleMatrix(show_ans)</var></code>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

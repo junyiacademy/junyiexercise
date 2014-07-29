@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>年齡問題</title>
+    <script src="../khan-exercise.js"></script>
+	<script script="text/javascript">
+	    function accMul(arg1,arg2) { 
+            var m=0,s1=arg1.toString(),s2=arg2.toString(); 
+            try{m+=s1.split(".")[1].length}catch(e){} 
+            try{m+=s2.split(".")[1].length}catch(e){} 
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m) 
+        } 
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+            <div class="vars" data-ensure="(J+K)%2==0">
+			    <var id="names_1">randFromArray(["佑聖","麗雲","正達","致勤","張晨","俊豪"])</var>
+				<var id="names_2">randFromArray(["向南","小可","書雁","芷容","采藍","語馨"])</var>
+				<var id="J">randRange(20,37)</var>
+				<var id="K">randRange(30,40)</var>
+				<var id="M">10*randRange(9,11)</var>
+				<var id="R">(M-J-K)/2</var>
+            </div>
+			<p class="question"><code><var>names_1</var></code> 今年 <code><var>J</var></code> 歲，<code><var>names_2</var></code> 今年 <code><var>K</var></code> 歲，幾年後兩人的年齡合起來是 <code><var>M</var></code> 歲？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>年</code>
+			</div>
+
+    <div class="hints">
+	    <div>
+	        <p>先把兩個人的年齡加起來，</p>
+			<p><code><var>J</var>+<var>K</var>=<var>J+K</var></code></p>
+		</div>
+		<div>
+		    <p>看看他們的年齡和與 <code><var>M</var></code> 相差多少，</p>
+			<p><code><var>M</var>-<var>J+K</var>=<var>M-J-K</var></code></p>
+		</div>
+		<div>
+		    <p>這個差距必須平均分給兩個人，</p>
+			<p><code><var>M-J-K</var>\div 2=<var>R</var></code></p>
+		</div>
+		<div>
+			<p>所以，本題的答案爲 <code class="hint_pink"><var>R</var></code> 年後兩個人的年齡和為 <code><var>M</var></code> 歲。</p>
+		</div>
+    </div>
+	</div>
+	
+	<div id="case2">
+            <div class="vars" data-ensure="(M-(J+K+L))%3==0">
+			    <var id="names">randFromArray([["佑聖","麗雲","正達"],["向南","小可","書雁"],["芷容","采藍","語馨"],["致勤","張晨","俊豪"]])</var>
+				<var id="J">randRange(30,45)</var>
+				<var id="K">randRange(25,30)</var>
+				<var id="L">randRange(30,45)</var>
+				<var id="M">10*randRange(14,16)</var>
+				<var id="R">(M-J-K-L)/3</var>
+            </div>
+			<p class="question"><code><var>names[0]</var></code>、<code><var>names[1]</var></code>、<code><var>names[2]</var></code> 三個人今年的年齡各是 <code><var>J</var></code> 歲、<code><var>K</var></code> 歲、<code><var>L</var></code> 歲，幾年後三個人合起來是 <code><var>M</var></code> 歲？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>年</code>
+			</div>
+
+    <div class="hints">
+	    <div>
+	        <p>先把三個人的年齡加起來，</p>
+			<p><code><var>J</var>+<var>K</var>+<var>L</var>=<var>J+K+L</var></code></p>
+		</div>
+		<div>
+		    <p>看看他們的年齡和與 <code><var>M</var></code> 相差多少，</p>
+			<p><code><var>M</var>-<var>J+K+L</var>=<var>M-J-K-L</var></code></p>
+		</div>
+		<div>
+		    <p>這個差距必須平均分給三個人，</p>
+			<p><code><var>M-J-K-L</var>\div 3=<var>R</var></code></p>
+		</div>
+		<div>
+			<p>所以，本題的答案爲 <code class="hint_pink"><var>R</var></code> 年後三個人的年齡和為 <code><var>M</var></code> 歲。</p>
+		</div>
+    </div>
+	</div>
+	
+	<div id="case3">
+            <div class="vars">
+			    <var id="names">randFromArray(["向南","小可","書雁","芷容","采藍","語馨"])</var>
+				<var id="J">2*randRange(13,20)</var>
+				<var id="R">J/2*3</var>
+            </div>
+			<p class="question">媽媽比 <code><var>names</var></code> 大 <code><var>J</var></code> 歲，今年媽媽的年齡剛好是 <code><var>names</var></code> 年齡的 <code>3</code> 倍。媽媽今年幾歲？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>歲</code>
+			</div>
+
+    <div class="hints">
+	    <div>
+	        <p>媽媽的年齡是 <code><var>names</var></code> 的 <code>3</code> 倍，也就是說媽媽的年齡減去 <code><var>names</var></code> 的年齡後還是 <code><var>names</var></code> 的 <code>2</code> 倍。</p>
+		</div>
+		<p>所以，<code><var>J</var>\div (3-1)=<var>J/2</var></code></p>
+	    <p><code>1</code> 倍 <code>=<var>J/2</var></code> 歲，也就代表了 <code><var>names</var></code> 今年 <code><var>J/2</var></code> 歲。</p>
+		<p>媽媽的年齡是 <code><var>names</var></code> 的 <code>3</code> 倍。</p>
+		<p>所以，媽媽的年齡為 <code><var>J/2</var>\times 3 = <var>R</var></code> 歲。</p>
+		<div>
+			<p>所以，本題的答案爲 <code class="hint_pink"><var>R</var></code> 歲。</p>
+		</div>
+    </div>
+	</div>
+	
+	<div id="case4">
+            <div class="vars" data-ensure="(J-2*K)%5==0">
+				<var id="J">randRange(45,70)</var>
+				<var id="K">randRange(4,8)</var>
+				<var id="R">(J-2*K)/5</var>
+				<var id="R_R">R+K</var>
+            </div>
+			<p class="question"><code><var>K</var></code> 年前，妹妹是 <code>B</code> 歲，那一年媽媽的年齡是妹妹年齡的 <code>4</code> 倍，今年妹妹的年齡和媽媽的年齡合起來是 <code><var>J</var></code> 歲，妹妹今年是幾歲？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R_R</var></span><code>歲</code>
+			</div>
+
+    <div class="hints">
+	    <div>
+	        <p>依照題目的敘述，我們可以假設：</p>
+			<p>妹妹今年 <code>(B+<var>K</var>)</code> 歲；媽媽今年 <code>(B\times 4+<var>K</var>)</code>。</p>
+		</div>
+		<p>妹妹的年齡加上媽媽的年齡是 <code><var>J</var></code> 歲。</p>
+		<p>可以列出 <code>(B+<var>K</var>)+(B\times 4+<var>K</var>)=<var>J</var></code></p>
+		<div><p>拆括號進行運算：</p>
+		    <p><code>B+<var>K</var>+B\times 4+<var>K</var>=<var>J</var></code></p>
+		</div>
+		<p>運用等量公理求 <code>B</code> ：</p>
+		<p><code>B\times 5+<var>2*K</var>-<var>2*K</var>=<var>J</var>-<var>2*K</var></code></p>
+		<p><code>B \times 5=<var>J-2*K</var></code></p>
+		<p><code>B=<var>R</var></code></p>
+		<p>所以，妹妹今年 <code>(<var>R</var>+<var>K</var>)=<var>R_R</var></code> 歲。</p>
+		<div>
+			<p>所以，本題的答案爲 <code class="hint_pink"><var>R_R</var></code> 歲。</p>
+		</div>
+    </div>
+	</div>
+	
+	<div id="case5">
+            <div class="vars">
+			    <var id="names">randFromArray(["佑聖","麗雲","正達","致勤","張晨","俊豪"])</var>
+				<var id="J">randRange(40,50)</var>
+				<var id="K">randRange(15,20)</var>
+				<var id="R">J-2*K</var>
+            </div>
+			<p class="question">爸爸今年 <code><var>J</var></code> 歲，<code><var>names</var></code> 今年 <code><var>K</var></code> 歲，<code>A</code> 年後爸爸的年齡剛好是 <code><var>names</var></code> 年齡的 <code>2</code> 倍。<code>A</code> 是多少？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>年</code>
+			</div>
+
+    <div class="hints">
+	    <div>
+	        <p>依照題目的敘述，我們可以知道：</p>
+			<p><code>A</code> 年後爸爸的年齡為 <code>(<var>J</var>+A)</code> 歲，<code><var>names</var></code> 的年齡為 <code>(<var>K</var>+A)</code> 歲。</p>
+		</div>
+		<p>爸爸的年齡是 <code><var>names</var></code> 的 <code>2</code> 倍。</p>
+		<div><p>也可以說爸爸的年齡減去 <code><var>names</var></code> 的年齡就剩下 <code>1</code> 倍。</p>
+		    <p>(補充說明:因為 <code><var>names</var></code> 的年齡就算是 <code>1</code> 倍)</p>
+		</div>
+		<p>爸爸的年齡與 <code><var>names</var></code> 的年齡差 <code><var>J-K</var></code> 歲。</p>
+		<p>所以，<code>(<var>J</var>+A)- (<var>K</var>+A)=<var>J-K</var></code></p>
+		<p>我們就算出 <code><var>names</var>A</code> 年後的年齡為 <code><var>J-K</var></code> 歲。</p>
+		<p><code><var>names</var></code> 今年 <code><var>K</var></code> 歲，因此 <code>A=<var>J-K</var>-<var>K</var>=<var>R</var></code></p>
+		<div>
+			<p>所以，本題的答案爲 <code class="hint_pink">A=<var>R</var></code> 年。</p>
+		</div>
+    </div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

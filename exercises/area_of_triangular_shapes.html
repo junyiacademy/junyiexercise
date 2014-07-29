@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>各式圖形的面積</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 60px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+			    <var id="J">2*randRange(3,25)</var>
+				<var id="R">accDiv(J,2)</var>
+            </div>
+			<p class="question">如下圖， <code>D</code> 為 <code>\overline{AB}</code> 的中點，若 <code>\triangle{ABC}</code> 的面積為 <code><var>J</var></code> ，求 <code>\triangle{ADC}</code> 的面積。</p>
+			<div class="problem">
+			    <div class="graphie" id="triangle_1">
+                    init({
+                        range: [ [-1, 12], [-0.5, 2.5] ],
+                        scale: 40
+                    });
+					var maxRight = randRange(4,7);
+					path([[0,0],[2,2],[maxRight,0],[0,0]],{stroke:"black"});
+					line([1,1],[maxRight,0]);
+					style({fill:"black"});
+					circle([1,1],0.07);
+					style({ stroke: "red", strokeWidth: 1.5 });
+					line([0.4,0.6],[0.6,0.4]);
+					line([1.4,1.6],[1.6,1.4]);
+					label( [ 0, 0 ],  "B", "left", { color: "black" });
+					label( [ 2, 1.8 ],  "A", "above", { color: "black" });
+					label( [ maxRight, 0 ],  "C", "right", { color: "black" });
+					label( [ 1, 1 ],  "D", "left", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">	
+				<span class="sol" data-forms="integer"><var>R</var></span>			
+            </div>
+            <div class="hints">
+			    <p>因為 <code>D</code> 是 <code>\overline{AB}</code> 的中點，所以 <code>\overline{AB}=2\overline{AD}</code> 。</p>
+				<p>但因為 <code>\triangle{ABC}</code> 在 <code>\overline{AB}</code> 上的高等於 <code>\triangle{ADC}</code> 在 <code>\overline{AD}</code> 的高，</p>
+				<p>由三角形面積公式知， <code>\triangle{ABC}</code> 的面積是 <code>\triangle{ADC}</code> 的兩倍，</p>
+				<p>因此， <code>\triangle{ADC}</code> 的面積 <code>=<var>J</var>\times \dfrac{1}{2}=</code><code class="hint_pink">\enspace<var>R</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+			    <var id="jkArr">randFromArray([[5,8],[10,16],[15,24],[20,32],[25,40],[30,48],[35,56],[40,64],[13,10],[13,24],[25,14],[25,48]])</var>
+				<var id="J">jkArr[0]</var>
+				<var id="K">jkArr[1]</var>
+				<var id="graphie_length">sqrt(accMul(J,J)-accDiv(accMul(K,K),4))</var>
+				<var id="smaller">
+				(function(){
+				    var smallerin = 5;
+					if(accDiv(J,K)==5/8){
+					    smallerin = J/5*1.5;
+					}
+					if(J==25){
+					    smallerin = 8;
+					}
+					return smallerin;
+				})()</var>
+				<var id="point1">graphie_length/smaller</var>
+				<var id="point2">K/smaller/2</var>
+            </div>
+			<p class="question">如下圖， <code>ABCD</code> 為一菱形， <code>\overline{AB}=<var>J</var></code> ， <code>\overline{AC}=<var>K</var></code> ，求對角線 <code>\overline{BD}</code> 的長及 <code>ABCD</code> 的面積。</p>
+			<div class="problem">
+			    <div class="graphie" id="fourth_graphic">
+                    init({
+                        range: [ [-1, 12], [-point2-0.6, point2+0.8] ],
+                        scale: 40
+                    });
+					path([[0,0],[point1,point2],[2*point1,0],[point1,-point2],[0,0]],{stroke:"black"});
+					<!--style({ stroke: "red", strokeWidth: 1.5 });-->
+					line([point1,point2],[point1,-point2]);
+					label( [ 0, 0 ],  "B", "left", { color: "black" });
+					label( [ point1,point2],  "A", "above", { color: "black" });
+					label( [ 2*point1,0 ],  "D", "right", { color: "black" });
+					label( [ point1,-point2 ],  "C", "below", { color: "black" });
+					label( [ point1,0.2 ],  K, "right", { color: "black" });
+					label( [ point1/2,point2/2 ],  J, "left", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">	
+				<code>\overline{BD}=\enspace</code><span class="sol" data-forms="integer"><var>2*graphie_length</var></span><br />
+                <code>S_{ABCD}=\enspace</code><span class="sol" data-forms="integer"><var>K*graphie_length</var></span>
+                <p class="example">整數，例如 <code>6</code></p>				
+            </div>
+            <div class="hints">
+			    <div>
+				    <p>連接 <code>\overline{BD}</code> ，<code>\overline{BD}</code> 交 <code>\overline{AC}</code> 於 <code>O</code> ，</p>
+					<div class="graphie" data-update="fourth_graphic">
+					    line([0,0],[2*point1,0]);
+						label( [ point1,-0.3 ],  "O", "right", { color: "black" });
+					</div>
+				</div>
+				<p>因為 <code>ABCD</code> 為一菱形，所以對角線會互相垂直平分，</p>
+				<p>因此 <code>\triangle{ABO}</code> 為一直角三角形，且 <code>\overline{AO}=<var>K/2</var></code> ，</p>
+				<p>運用畢氏定理可以求出 <code>\overline{BO}</code> ，</p>
+				<p><code>\overline{BO}^{2}+\overline{AO}^{2}=\overline{AB}^{2}</code></p>
+				<p><code>\overline{BO}^{2}=\overline{AB}^{2}-\overline{AO}^{2}</code></p>
+				<p><code>\overline{BO}^{2}=<var>J*J</var>-<var>K*K/4</var>=<var>graphie_length*graphie_length</var></code></p>
+				<p>所以 <code>\overline{BO}=<var>graphie_length</var></code> ，則 <code>\overline{BD}=</code><code class="hint_green">\enspace<var>2*graphie_length</var></code> ，</p>
+				<p><code>\triangle{ABO}</code> 為直角三角形，面積為 <code><var>K/2</var>\times<var>graphie_length</var>\div 2=<var>K*graphie_length/4</var></code> ，</p>
+				<p>菱形 <code>ABCD</code> 的面積為 <code>\triangle{ABO}</code> 的 <code>4</code> 倍， <code class="hint_green"><var>K*graphie_length/4</var>\times 4=<var>K*graphie_length</var></code> 。</p>
+				<p>因此，本題的答案為 <code>\overline{BD}=</code><code class="hint_pink">\enspace<var>2*graphie_length</var></code> ， <code>S_{ABCD}=</code><code class="hint_pink">\enspace<var>K*graphie_length</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+			    <var id="J">randRange(5,20)</var>
+				<var id="gLength">2*sqrt(3)</var>
+            </div>
+			<p class="question">如下圖， <code>ABCD</code> 為邊長 <code><var>J</var></code> 的菱形，若已知 <code>\angle{B}=60^{\circ}</code> ，求 <code>ABCD</code> 的面積。</p>
+			<div class="problem">
+			    <div class="graphie" id="fourth_graphic_2">
+                    init({
+                        range: [ [-1, 8], [-2.6, 2.8] ],
+                        scale: 40
+                    });
+					path([[0,0],[gLength,2],[2*gLength,0],[gLength,-2],[0,0]],{stroke:"black"});
+					label( [ gLength/2,1.3 ],  J, "left", { color: "black" });
+					label( [ 0, 0 ],  "B", "left", { color: "black" });
+					label( [ gLength,2],  "A", "above", { color: "black" });
+					label( [ 2*gLength,0 ],  "D", "right", { color: "black" });
+					label( [ gLength,-2 ],  "C", "below", { color: "black" });
+					arc( [0, 0], 0.5, -30, 30 );
+					label( [ 0.5,0 ],  "60^{\\circ}", "right", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-type="rational"><var>J*J/2</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("sqrtPart").value</div>
+				    <div class="validator-function">
+					if (guess==3){
+					    return true;
+					}
+                    </div>
+				</div>
+				<p class="example">整數，例如 <code>6</code></p>
+			</div>
+            <div class="hints">
+			    <div>
+				    <p>連接對角線 <code>\overline{AC}</code> ，由菱形邊長相等的性質，可知 <code>\triangle{ABC}</code> 為頂角 <code>60^{\circ}</code> 的等腰三角形，</p>
+					<div class="graphie" data-update="fourth_graphic_2">
+					    line([gLength,2],[gLength,-2]);
+					</div>
+				</div>
+				<p>即 <code>\triangle{ABC}</code> 是一個邊長為 <code><var>J</var></code> 的正三角形，</p>
+				<p>所以， <code>\triangle{ABC}</code> 面積 <code>=\dfrac{\sqrt{3}}{4}\times<var>J</var>^{2}=<var>fraction(J*J,4,true,true,false,false)</var>\sqrt{3}</code></p>
+				<p>又 <code>\overline{AC}</code> 為此菱形的對稱軸，因此 <code>\triangle{ABC}\cong\triangle{ADC}</code> ，</p>
+				<p>則菱形 <code>ABCD</code> 的面積為 <code><var>fraction(J*J,4,true,true,false,false)</var>\sqrt{3}\times 2=</code><code class="hint_pink">\enspace<var>fraction(J*J,2,true,true,false,false)</var>\sqrt{3}</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case4">
+            <div class="vars">
+			    <var id="J">randRange(3,20)</var>
+				<var id="gLength">2*sqrt(3)</var>
+            </div>
+			<p class="question">如下圖，有一邊長為 <code><var>J</var></code> 的正六邊形，求其面積。</p>
+			<div class="problem">
+			    <div class="graphie" id="fourth_graphic_2">
+                    init({
+                        range: [ [-1, 8], [-5, 5] ],
+                        scale: 40
+                    });
+					var arrList = [[0,-2],[0,2],[gLength,4],[2*gLength,2],[2*gLength,-2],[gLength,-4],[0,-2]];
+					path(arrList,{stroke:"black"});
+					for(var i=0;i&lt;=5;i++){
+					    line(arrList[i],[gLength,0]);
+					}
+					label( [ gLength/2,3 ],  J, "left", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-type="rational"><var>J*J*6/4</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("sqrtPart").value</div>
+				    <div class="validator-function">
+					if (guess==3){
+					    return true;
+					}
+                    </div>
+				</div>
+				<p class="example">整數，例如 <code>6</code></p>
+			</div>
+            <div class="hints">
+			    <p>由圖可知，此正六邊形可分割成 <code>6</code> 個邊長為 <code><var>J</var></code> 的正三角形，</p>
+				<p>因為正三角形的面積 <code>=\dfrac{\sqrt{3}}{4}\times(邊長)^{2}=\dfrac{\sqrt{3}}{4}\times<var>J</var>^{2}=<var>fraction(J*J,4,true,true,false,false)</var>\sqrt{3}</code></p>
+				<p>所以正六邊形的面積 <code><var>fraction(J*J,4,true,true,false,false)</var>\sqrt{3}\times 6=</code><code class="hint_pink">\enspace <var>fraction(J*J*6,4,true,true,false,false)</var>\sqrt{3}</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case5">
+            <div class="vars">
+			    <var id="J">randRange(4,10)</var>
+				<var id="lmn">randFromArray([[12,13,15],[24,25,30]])</var>
+				<var id="l">lmn[0]</var>
+				<var id="m">lmn[1]</var>
+				<var id="n">lmn[2]</var>
+				<var id="leftLen">sqrt(n*n-l*l)</var>
+				<var id="rightLen">sqrt(m*m-l*l)</var>
+				<var id="smaller">l==12?3:6</var>
+				<var id="uladd">J+leftLen+rightLen</var>
+				<var id="R">(J+uladd)*l/2</var>
+            </div>
+			<p class="question">如下圖，求四邊形的面積。</p>
+			<div class="problem">
+			    <div class="graphie" id="fourth_graphic_3">
+                    init({
+                        range: [ [-1, 9], [-2, 5] ],
+                        scale: 40
+                    });
+					var middlePoi = (leftLen/smaller+(leftLen+J)/smaller)/2;
+					var arrList = [[0,0],[leftLen/smaller,l/smaller],[(leftLen+J)/smaller,l/smaller],[(leftLen+J+rightLen)/smaller,0],[0,0]];
+					line([middlePoi,l/smaller],[middlePoi,0]);
+					path(arrList,{stroke:"black"});
+					line([middlePoi,0.2],[middlePoi+0.2,0.2]);
+					line([middlePoi+0.2,0.2],[middlePoi+0.2,0]);
+					label( [ 0,0 ],  "D", "left", { color: "black" });
+					label( [ leftLen/smaller,l/smaller ],  "A", "above", { color: "black" });
+					label( [ (leftLen+J)/smaller,l/smaller ],  "B", "above", { color: "black" });
+					label( [ (leftLen+J+rightLen)/smaller,0 ],  "C", "right", { color: "black" });
+					label( [ leftLen/smaller/2,l/smaller/2 ],  n, "left", { color: "black" });
+					label( [ middlePoi,l/smaller ],  J, "above", { color: "black" });
+					label( [ (leftLen+J+rightLen/2)/smaller,l/smaller/2 ],  m, "right", { color: "black" });
+					label( [ middlePoi,l/smaller/2],  l, "left", { color: "black" });
+					label( [ (leftLen+J+rightLen)/smaller/2,-0.5],  "(梯形)", "below", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>R</var></span>
+			</div>
+            <div class="hints">
+			    <div>
+				    <p>將作兩條平行梯形 <code>ABCD</code> 的高(表示為紅線)，</p>
+					<div class="graphie" data-update="fourth_graphic_3">
+					    style({ stroke: "red" });
+						line([leftLen/smaller,l/smaller],[leftLen/smaller,0]);
+						line([(leftLen+J)/smaller,l/smaller],[(leftLen+J)/smaller,0]);
+						label( [ leftLen/smaller,0],  "E", "below", { color: "red" });
+						label( [ (leftLen+J)/smaller,0],  "F", "below", { color: "red" });
+					</div>
+				</div>
+				<p>我們可以知道 <code>\overline{AB}=\overline{EF}=<var>J</var></code> ，</p>
+				<p>且 <code>\overline{AE}=\overline{BF}=<var>l</var></code> ， <code>\overline{AE}\perp\overline{DC}</code> ， <code>\overline{BF}\perp\overline{DC}</code> 。</p>
+				<p><code>\triangle{BCF}</code> 為直角三角形，因此可以用畢氏定理求出 <code>\overline{FC}</code> 。</p>
+				<p><code>\overline{BC}^{2}=\overline{BF}^{2}+\overline{FC}^{2}</code></p>
+				<p><code><var>m</var>^{2}=<var>l</var>^{2}+\overline{FC}^{2}</code></p>
+				<p><code>\overline{FC}^{2}=<var>rightLen*rightLen</var></code> ， <code>\overline{FC}=\pm <var>rightLen</var></code> (負不合)，所以 <code>\overline{FC}=<var>rightLen</var></code> 。</p>
+				<p>同理 <code>\triangle{ADE}</code> 為直角三角形，因此可以用畢氏定理求出 <code>\overline{DE}</code> 。</p>
+				<p><code>\overline{AD}^{2}=\overline{AE}^{2}+\overline{DE}^{2}</code></p>
+				<p><code><var>n</var>^{2}=<var>l</var>^{2}+\overline{DE}^{2}</code></p>
+				<p><code>\overline{DE}^{2}=<var>leftLen*leftLen</var></code> ， <code>\overline{DE}=\pm <var>leftLen</var></code> (負不合)，所以 <code>\overline{DE}=<var>leftLen</var></code> 。</p>
+				<p>因此，我們可以知道 <code>\overline{DC}=\overline{DE}+\overline{EF}+\overline{FC}=<var>leftLen</var>+<var>J</var>+<var>rightLen</var>=<var>uladd</var></code> ，</p>
+				<p>梯形面積等於(上底 + 下底) <code>\times</code> 高 <code>\div 2=(<var>J</var>+<var>uladd</var>)\times<var>l</var>\div 2=</code><code class="hint_pink">\enspace <var>R</var></code> 。</p>
+            </div>
+        </div>
+
+	</div>
+	</div>
+</body>
+</html>

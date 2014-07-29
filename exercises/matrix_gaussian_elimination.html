@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html data-require="math graphie kmatrix">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Matrix Gaussian Elimination</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+		#answer_area .block {
+        	display: inline-block;
+        	width: 36px;
+        	background-color:#DDDDDD;
+        	text-align: center;
+        }
+    </style>
+</head>
+							
+<body>
+<div class="exercise">
+    <div class="problems">
+		<div id="case1" data-weight="1">		
+            <div class="vars">
+				<var id="m0">[[2,1,3],[1,0,-3],[1,2,-1]]</var>
+				<var id="m1">[[1,2,-1],[-1,-2,1]]</var>
+				<var id="m2">[[2,-1,0],[-1,2,-1],[0,-1,2]]</var>
+				<var id="m3">[[1,2,-1],[-1,-1,2]]</var>
+				<var id="m4">[[2,3,1,5,2],[0,1,1,3,2],[4,5,1,7,2],[2,1,-1,-1,-2]]</var>
+				<var id="m5">[[1,-1,2],[3,-1,2],[7,-2,4]]</var>
+				<var id="m6">[[1,2,-1,2,1,2],[-1,-2,1,2,3,6],[2,4,-3,2,0,3],[-3,-6,2,0,3,9]]</var>
+				<var id="m7">[[0,0,2,-4,-5,2],[0,1,-1,1,3,1],[0,6,0,-6,5,16]]</var>
+				<var id="m8">[[1,2,-1,2,1,2],[-3,-6,2,0,3,9],[2,4,-3,2,0,3],[-1,-2,1,2,3,6]]</var>
+				<var id="m9">[[0,1,-1,1,3],[0,0,2,-4,-5],[0,6,0,-6,5]]</var>
+				<var id="m10">[[1,3,1,9],[1,1,-1,1],[3,11,5,35]]</var>
+				<var id="m11">[[2,1,-1,8],[-3,-1,2,-11],[-2,1,2,-3]]</var>			
+				
+				<var id="s0">[[1,0,0],[0,1,0],[0,0,1]]</var>
+				<var id="s1">[[1,2,0],[0,0,1]]</var>
+				<var id="s2">[[1,0,0],[0,1,0],[0,0,1]]</var>
+				<var id="s3">[[1,0,-3],[0,1,1]]</var>
+				<var id="s4">[[1,0,-1,-2,-2],[0,1,1,3,2],[0,0,0,0,0],[0,0,0,0,0]]</var>
+				<var id="s5">[[1,0,0],[0,1,-2],[0,0,0]]</var>
+				<var id="s6">[[1,2,0,0,-1,-5],[0,0,1,0,0,-3],[0,0,0,1,1,2],[0,0,0,0,0,0]]</var>
+				<var id="s7">[[0,1,0,-1,0,1],[0,0,1,-2,0,6],[0,0,0,0,1,2]]</var>
+				<var id="s8">[[1,2,0,0,-1,-5],[0,0,1,0,0,-3],[0,0,0,1,1,2],[0,0,0,0,0,0]]</var> <!--make sure-->
+				<var id="s9">[[0,1,0,-1,0],[0,0,1,-2,0],[0,0,0,0,1]]</var>
+				<var id="s10">[[1,0,-2,-3],[0,1,1,4],[0,0,0,0]]</var>
+				<var id="s11">[[1,0,0,2],[0,1,0,3],[0,0,1,-1]]</var>
+				
+				<!--match[matrixM, matrixS, #_of_elem_S,rowSize_S,colSize_S]-->
+				<var id="match">[[m0,s0,9,3,3],
+								 [m1,s1,6,2,3],
+								 [m2,s2,9,3,3],
+								 [m3,s3,6,2,3],
+								 [m4,s4,20,4,5],
+								 [m5,s5,9,3,3],
+								 [m6,s6,24,4,6],
+								 [m7,s7,18,3,6],
+								 [m8,s8,24,4,6],
+								 [m9,s9,15,3,5],
+								 [m10,s10,12,3,4],
+								 [m11,s11,12,3,4]]</var>
+				<!------------------------------------------------------------>
+				<var id="index">randRange(0,11)</var>
+				<var id="matS">makeMatrix(match[index][1])</var>
+				<var id="elemS">match[index][2]</var>
+				<var id="rowS">match[index][3]</var>
+				<var id="colS">match[index][4]</var>
+				<var id="blank_row">randRange(0,rowS-1,2)</var>
+				<var id="blank_row_v2">randRange(0,rowS-1,3)</var>
+				<var id="blank_col">randRange(0,colS-1,3)</var>
+				<var id="blank">
+				(function(){
+					var blank = new Array(3);
+					if(elemS == 6){
+						blank[0]=blank_row[0]+","+blank_col[0];
+						blank[1]=blank_row[0]+","+blank_col[1];
+						blank[2]=blank_row[1]+","+blank_col[2];
+					}
+					else{
+						blank[0]=blank_row_v2[0]+","+blank_col[0];
+						blank[1]=blank_row_v2[1]+","+blank_col[1];
+						blank[2]=blank_row_v2[2]+","+blank_col[2];
+					}
+					return blank;
+				})()
+				</var>
+				<var id="ref">
+				(function(){
+					var ref = new Array(rowS);
+					for(i=0;i&lt;rowS;i++)
+						ref[i] = new Array(colS);
+					
+					for(i=0;i&lt;rowS;i++){
+						for(j=0;j&lt;colS;j++)
+							ref[i][j]=i+","+j;
+					}
+					return ref;
+				})()
+				</var>
+			
+            </div>
+			
+            <div class="question">
+				<code>M = <var>printSimpleMatrix(match[index][0])</var></code><br><br>
+				<p>請用高斯消去法將矩陣M轉成最簡列梯型？</p>
+            </div>
+					
+            <div class="solution" data-type="multiple">
+				<p>
+				
+								<!------------ ROW 0 ----------------->
+				<span data-if=" rowS > 0 && colS > 0 ">
+					<span class="sol" data-if="blank[0]==ref[0][0] || blank[1]==ref[0][0] || blank[2]==ref[0][0]">
+					<var>matS[0][0]</var></span>
+					<span class="block" data-else><var>matS[0][0]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 0 && colS > 1 ">
+					<span class="sol" data-if="blank[0]==ref[0][1] || blank[1]==ref[0][1] || blank[2]==ref[0][1]">
+					<var>matS[0][1]</var></span>
+					<span class="block" data-else><var>matS[0][1]</var></span>
+				</span>
+
+				<span data-if=" rowS > 0 && colS > 2 ">
+					<span class="sol" data-if="blank[0]==ref[0][2] || blank[1]==ref[0][2] || blank[2]==ref[0][2]">
+					<var>matS[0][2]</var></span>
+					<span class="block" data-else><var>matS[0][2]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 0 && colS > 3 ">
+					<span class="sol" data-if="blank[0]==ref[0][3] || blank[1]==ref[0][3] || blank[2]==ref[0][3]">
+					<var>matS[0][3]</var></span>
+					<span class="block" data-else><var>matS[0][3]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 0 && colS > 4 ">
+					<span class="sol" data-if="blank[0]==ref[0][4] || blank[1]==ref[0][4] || blank[2]==ref[0][4]">
+					<var>matS[0][4]</var></span>
+					<span class="block" data-else><var>matS[0][4]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 0 && colS > 5 ">
+					<span class="sol" data-if="blank[0]==ref[0][5] || blank[1]==ref[0][5] || blank[2]==ref[0][5]">
+					<var>matS[0][5]</var></span>
+					<span class="block" data-else><var>matS[0][5]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 0 && colS > 6 ">
+					<span class="sol" data-if="blank[0]==ref[0][6] || blank[1]==ref[0][6] || blank[2]==ref[0][6]">
+					<var>matS[0][6]</var></span>
+					<span class="block" data-else><var>matS[0][6]</var></span>
+				</span><br>
+				
+				
+				
+								<!------------ ROW 1 ----------------->
+				<span data-if=" rowS > 1 && colS > 0 ">
+					<span class="sol" data-if="blank[0]==ref[1][0] || blank[1]==ref[1][0] || blank[2]==ref[1][0]">
+					<var>matS[1][0]</var></span>
+					<span class="block" data-else><var>matS[1][0]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 1 && colS > 1 ">
+					<span class="sol" data-if="blank[0]==ref[1][1] || blank[1]==ref[1][1] || blank[2]==ref[1][1]">
+					<var>matS[1][1]</var></span>
+					<span class="block" data-else><var>matS[1][1]</var></span>
+				</span>
+
+				<span data-if=" rowS > 1 && colS > 2 ">
+					<span class="sol" data-if="blank[0]==ref[1][2] || blank[1]==ref[1][2] || blank[2]==ref[1][2]">
+					<var>matS[1][2]</var></span>
+					<span class="block" data-else><var>matS[1][2]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 1 && colS > 3 ">
+					<span class="sol" data-if="blank[0]==ref[1][3] || blank[1]==ref[1][3] || blank[2]==ref[1][3]">
+					<var>matS[1][3]</var></span>
+					<span class="block" data-else><var>matS[1][3]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 1 && colS > 4 ">
+					<span class="sol" data-if="blank[0]==ref[1][4] || blank[1]==ref[1][4] || blank[2]==ref[1][4]">
+					<var>matS[1][4]</var></span>
+					<span class="block" data-else><var>matS[1][4]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 1 && colS > 5 ">
+					<span class="sol" data-if="blank[0]==ref[1][5] || blank[1]==ref[1][5] || blank[2]==ref[1][5]">
+					<var>matS[1][5]</var></span>
+					<span class="block" data-else><var>matS[1][5]</var></span>
+				</span><br>
+				
+				
+				
+								<!------------ ROW 2 ----------------->
+				<span data-if=" rowS > 2 && colS > 0 ">
+					<span class="sol" data-if="blank[0]==ref[2][0] || blank[1]==ref[2][0] || blank[2]==ref[2][0]">
+					<var>matS[2][0]</var></span>
+					<span class="block" data-else><var>matS[2][0]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 2 && colS > 1 ">
+					<span class="sol" data-if="blank[0]==ref[2][1] || blank[1]==ref[2][1] || blank[2]==ref[2][1]">
+					<var>matS[2][1]</var></span>
+					<span class="block" data-else><var>matS[2][1]</var></span>
+				</span>
+
+				<span data-if=" rowS > 2 && colS > 2 ">
+					<span class="sol" data-if="blank[0]==ref[2][2] || blank[1]==ref[2][2] || blank[2]==ref[2][2]">
+					<var>matS[2][2]</var></span>
+					<span class="block" data-else><var>matS[2][2]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 2 && colS > 3 ">
+					<span class="sol" data-if="blank[0]==ref[2][3] || blank[1]==ref[2][3] || blank[2]==ref[2][3]">
+					<var>matS[2][3]</var></span>
+					<span class="block" data-else><var>matS[2][3]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 2 && colS > 4 ">
+					<span class="sol" data-if="blank[0]==ref[2][4] || blank[1]==ref[2][4] || blank[2]==ref[2][4]">
+					<var>matS[2][4]</var></span>
+					<span class="block" data-else><var>matS[2][4]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 2 && colS > 5 ">
+					<span class="sol" data-if="blank[0]==ref[2][5] || blank[1]==ref[2][5] || blank[2]==ref[2][5]">
+					<var>matS[2][5]</var></span>
+					<span class="block" data-else><var>matS[2][5]</var></span>
+				</span><br>
+				
+				
+								
+								<!------------ ROW 3 ----------------->
+				<span data-if=" rowS > 3 && colS > 0 ">
+					<span class="sol" data-if="blank[0]==ref[3][0] || blank[1]==ref[3][0] || blank[2]==ref[3][0]">
+					<var>matS[3][0]</var></span>
+					<span class="block" data-else><var>matS[3][0]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 3 && colS > 1 ">
+					<span class="sol" data-if="blank[0]==ref[3][1] || blank[1]==ref[3][1] || blank[2]==ref[3][1]">
+					<var>matS[3][1]</var></span>
+					<span class="block" data-else><var>matS[3][1]</var></span>
+				</span>
+
+				<span data-if=" rowS > 3 && colS > 2 ">
+					<span class="sol" data-if="blank[0]==ref[3][2] || blank[1]==ref[3][2] || blank[2]==ref[3][2]">
+					<var>matS[3][2]</var></span>
+					<span class="block" data-else><var>matS[3][2]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 3 && colS > 3 ">
+					<span class="sol" data-if="blank[0]==ref[3][3] || blank[1]==ref[3][3] || blank[2]==ref[3][3]">
+					<var>matS[3][3]</var></span>
+					<span class="block" data-else><var>matS[3][3]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 3 && colS > 4 ">
+					<span class="sol" data-if="blank[0]==ref[3][4] || blank[1]==ref[3][4] || blank[2]==ref[3][4]">
+					<var>matS[3][4]</var></span>
+					<span class="block" data-else><var>matS[3][4]</var></span>
+				</span>
+				
+				<span data-if=" rowS > 3 && colS > 5 ">
+					<span class="sol" data-if="blank[0]==ref[3][5] || blank[1]==ref[3][5] || blank[2]==ref[3][5]">
+					<var>matS[3][5]</var></span>
+					<span class="block" data-else><var>matS[3][5]</var></span>
+				</span><br>
+				
+				
+				</p>
+				
+			</div>
+			
+            <div class="hints">
+				<p>
+				 高斯消去法的步驟：<br>
+				1. 找出最左邊非零的直行，在此直行找出一個非零的數字。<br>
+				2. 然後，經過兩列交換，將此橫列移到第一橫列。<br>
+				3. 再把第一橫列乘上適當的數字，加到下面的橫列，使得下面的數字為零。<br>
+				4. 接著，不考慮以次橫列以上的數字，繼續往右找出下一個在這個橫列之下的非零的直行。<br>
+				5. 如果此橫列的第一個元素不是1的話，可以整個橫列除以該數字，使的該元素的數值為1 。<br>
+				6. 接著，再把該列乘上適當的數字之後，加到該元素上面的橫列，使得該元素以上的元素皆為零。<br>
+				7. 依照上述步驟遞迴由左至右，由上而下，即可獲得一個最簡列梯型矩陣。<br>
+				</p>
+				<p><code><var>printSimpleMatrix(matS)</var></code></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

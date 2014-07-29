@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>最大公因數與最小公倍數的應用</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+			<div class="vars" data-ensure="K&lt;=500&&K>=200&&L&lt;=90&&L>=30&&getLCM(L,c)==K&&getGCD(L,c)==J">
+				<var id="J">randRange(5,15)</var>
+				<var id="L">randRange(2,6)*J</var>
+				<var id="K">randRange(3,18)*L</var>
+				<var id="c">J*K/L</var>
+			</div>
+
+            <p class="question">有兩個正整數的最大公因數是<code><var>J</var></code>，最小公倍數是<code><var>K</var></code>，
+			已知其中的一數是<code><var>L</var></code>，那麼另外一數是多少?</p>
+
+            <div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>c</var></span>
+			</div>
+
+            <div class="hints">
+				<div>
+					<p>兩個數的最大公因數與最小公倍數的乘積 <code>=</code> 兩個數相乘</p>
+				</div>
+				<div>
+					<p>以 <code>6</code> 和 <code>10</code> 這兩個數來討論看看，</p>
+				</div>
+				<div><p><code>6=2 \times 3</code></p>
+				     <p><code>10=2 \times 5</code></p>
+			    </div>
+				<div><p><code>6</code> 和 <code>10</code> 的最大公因數 <code>=\color{red}{2}</code></p></div>
+				<div><p><code>6</code> 和 <code>10</code> 的最小公倍數<code>=\color{green}{2 \times 3 \times 5}=\color{green}{30}</code></p></div>
+				<div><p><code>\color{red}{2} \times \color{green}{(2 \times 3 \times 5)}=6 \times 10=60</code></p></div>
+				<div><p>本題中， <code><var>J</var>\times<var>K</var>=<var>L</var>\times &Delta;</code></p></div>
+				<div><p><code>&Delta;=<var>J</var>\times<var>K</var>\div<var>L</var>=<var>c</var></code></p></div>
+				<div><p>因此，本題的答案應填入 <code class="hint_pink"><var>c</var></code> 。</p></div>
+			</div>
+		</div>
+		<div id="case2">
+			<div class="vars">
+				<var id="a">randRange(1,4)</var>
+				<var id="b">randRange(1,4)</var>
+				<var id="c">randRange(1,3)</var>
+				<var id="d">randRange(1,4)</var>
+				<var id="e">randRange(1,3)</var>
+				<var id="f">randRange(1,4)</var>
+				<var id="g">randRange(1,3)</var>
+				<var id="J">pow(2,a)*pow(3,b)*pow(5,c)</var>
+				<var id="K">pow(3,d)*pow(5,e)</var>
+				<var id="L">pow(2,f)*pow(5,g)</var>
+				<var id="X">Math.max(a,f)</var>
+				<var id="Y">Math.max(b,d)</var>
+				<var id="Z">
+					(function(){
+						var z=0;
+						z = Math.max(c,e);
+						z = Math.max(z,g);
+						return z;
+				})()
+				</var>
+				<var id="N">pow(2,X)*pow(3,Y)*pow(5,Z)</var>
+			</div>
+
+			<p class="question"><code>\frac{1}{<var>J</var>}</code>、<code>\frac{1}{<var>K</var>}</code>、<code>\frac{1}{<var>L</var>}</code> 分別乘上同一個正整數 <code>n</code> 之後，都變成整數，
+			則 <code>n</code> 最小值為何?</p>
+
+            <div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>N</var></span>
+			</div>
+
+			<div class="hints">
+				<div>
+					<p>要讓 <code>\frac{1}{<var>J</var>}</code>、<code>\frac{1}{<var>K</var>}</code>、<code>\frac{1}{<var>L</var>}</code>
+					分別乘上 <code>n</code> 後都是整數，</p>
+					<p>那麼，正整數 <code>n</code> 其實就是 <code><var>J</var></code>、<code><var>K</var></code>、<code><var>L</var></code> 的最小公倍數。</p>
+				</div>
+				<div><p><code><var>J</var>=2^{<var>a</var>} \times 3^{<var>b</var>} \times 5^{<var>c</var>}</code></p></div>
+				<div><p><code><var>K</var>=3^{<var>d</var>} \times 5^{<var>e</var>}</code></p></div>
+				<div><p><code><var>L</var>=2^{<var>f</var>} \times 5^{<var>g</var>}</code></p></div>
+				<div>
+				    <p data-if="a!=f">比較 <code>2</code> 的指數 <code><var>a</var></code> 和 <code><var>f</var></code> 兩數，選擇較大者 <code><var>X</var></code> ，</p>
+					<p data-if="a==f"><code>2</code> 的指數都為 <code><var>a</var></code> ，</p>
+				</div>
+				<div>
+				    <p data-if="b!=d">比較 <code>3</code> 的指數 <code><var>b</var></code> 和 <code><var>d</var></code> 兩數，選擇較大者 <code><var>Y</var></code> ，</p>
+					<p data-if="b==d"><code>3</code> 的指數都為 <code><var>b</var></code> ，</p>
+				</div>
+				<div><p data-if="c!=e||e!=g">最後，比較 <code>5</code> 的指數 <code><var>c</var></code>、<code><var>e</var></code>、<code><var>g</var></code>三數，選擇最大者
+					<code><var>Z</var></code> 。</p>
+					<p data-if="c==e&&e==g">最後， <code>5</code> 的指數都為 <code><var>c</var></code> 。</p>
+				</div>
+				<div>
+				    <p>所以 <code>[<var>J</var>,<var>K</var>,<var>L</var>]=2^{<var>X</var>} \times 3^{<var>Y</var>} \times 5^{<var>Z</var>}=<var>N</var></code> 。</p>
+				</div>
+				<div><p>因此，本題的答案為 <code class="hint_pink"><var>N</var></code> 。</p></div>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>連比</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 40px;
+        }
+        </style>
+		<style type="text/css">
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+
+
+
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+				<var id="J">randRangeUnique(2,9,4)</var>
+            </div>
+            <p class="question"> 設 <code>a:<var>J[0]</var>:<var>J[1]</var>=<var>J[2]</var>:<var>J[3]</var>:b</code> ，求 <code>a</code> 、 <code>b</code> 的值。</p>
+			
+			<div class="solution" data-type="multiple">		
+				<p><code>a=\enspace </code>			
+				<span class="sol" data-type="rational"><var>J[0]*J[2]/J[3]</var></span></p>
+				<p><code>b=\enspace </code>			
+				<span class="sol" data-type="rational"><var>J[3]*J[1]/J[0]</var></span></p>
+				 <p class="example">整數，例 <code>6</code></p> 
+				<p class="example">分數，例<code>1/2</code></p>
+            </div>
+            <div class="hints">
+				<div>
+					<p>由 <code>a:<var>J[0]</var>:<var>J[1]</var>=<var>J[2]</var>:<var>J[3]</var>:b</code> </p>
+					<p>得 <code>a:<var>J[0]</var>=<var>J[2]</var>:<var>J[3]</var></code> ，<code><var>J[0]</var>:<var>J[1]</var>=<var>J[3]</var>:b</code> </p>
+				</div>
+				<p>所以 <code><var>J[3]</var>a=<var>J[0]*J[2]</var></code> ，<code><var>J[0]</var>b=<var>J[3]*J[1]</var></code> 外項乘積等於內項乘積。</p>
+				<p>因此 <code>a=<var>decimalFraction(J[0]*J[2]/J[3],true,true,false,false)</var></code> ，<code>b=<var>decimalFraction(J[3]*J[1]/J[0],true,true,false,false)</var></code> 。</p>
+				<p>所以，本題答案為 <code class="hint_pink">a=<var>decimalFraction(J[0]*J[2]/J[3],true,true,false,false)</var></code> ，<code class="hint_pink">b=<var>decimalFraction(J[3]*J[1]/J[0],true,true,false,false)</var></code> 。</p>
+				
+            </div>
+        </div>
+		
+		<div id="case2">
+		    <div class="vars" data-ensure="M<8&&N<8">
+				<var id="J">randRange(3,8)*1000</var>
+				<var id="K">randRange(1,7)</var>
+				<var id="M">randRange(1,9-K)</var>
+				<var id="N">10-K-M</var>
+				<var id="G">getGCD(getGCD(K,M),N)</var>
+				<var id="Z">J*G/10</var>
+            </div>
+            <p class="question"> 廷聰家招待客人，準備調配<code><var>J</var></code>毫升的混合果汁，此果汁要以鳳梨汁、椰子汁、芒果汁 <code><var>K/G</var>:<var>M/G</var>:<var>N/G</var></code> 的容量比例來調配。問需鳳梨汁、椰子汁、芒果汁各多少毫升？</p>
+			
+			<div class="solution" data-type="multiple">		
+				<p>鳳梨汁 <code>= </code>			
+				<span class="sol" data-type="rational"><var>Z*K/G</var></span></p>
+				<p>椰子汁 <code>= </code>			
+				<span class="sol" data-type="rational"><var>Z*M/G</var></span></p>
+				<p>芒果汁 <code>= </code>			
+				<span class="sol" data-type="rational"><var>Z*N/G</var></span></p>
+				<p class="example">整數，例 <code>6</code></p> 
+				
+            </div>
+            <div class="hints">
+				
+				<p>設需要鳳梨汁 <code>a</code> 毫升，椰子汁 <code>b</code> 毫升，芒果汁 <code>c</code> 毫升 。  </p>
+				<div>
+					<p>由 <code>a:b:c=<var>K/G</var>:<var>M/G</var>:<var>N/G</var></code> </p>
+					<p>可設 <code>a=<var>K/G==1?"":K/G</var>r</code> ， <code>b=<var>M/G==1?"":M/G</var>r</code> ，<code>c=<var>N/G==1?"":N/G</var>r</code> ，其中 <code>r \ne 0</code>。</p>
+				</div>
+				<p>所以 <code><var>K/G==1?"":K/G</var>r+<var>M/G==1?"":M/G</var>r+<var>N/G==1?"":N/G</var>r=<var>J</var></code> </p>
+				<p>解得 <code>r=<var>Z</var></code></p>
+				<div>
+				    <p>因此：</p>
+					<p><code>a=<var>K/G</var>\times<var>Z</var>=<var>Z*K/G</var></code></p>
+					<p><code>b=<var>M/G</var>\times<var>Z</var>=<var>Z*M/G</var></code></p>
+					<p><code>c=<var>N/G</var>\times<var>Z</var>=<var>Z*N/G</var></code></p>
+				</div>
+				<p>答：需要鳳梨汁 <code class="hint_pink"><var>Z*K/G</var></code> 毫升，椰子汁 <code class="hint_pink"><var>Z*M/G</var></code> 毫升，芒果汁 <code class="hint_pink"><var>Z*N/G</var></code> 毫升。</p>
+				
+            </div>
+		</div>
+		<div id="case3">
+			<div class="vars" data-ensure="J!=K">
+				<var id="J">randRange(5,9)</var>
+				<var id="K">randRange(3,7)</var>
+				<var id="L">randRange(8,14)</var>
+				<var id="G">getGCD(getGCD(J,K),L)</var>
+			</div>
+			<p class="question"> 已知 <code>a:b=<var>J</var>:<var>K</var></code> ，<code>b:c=<var>K</var>:<var>L</var></code> ，求連比 <code>a:b:c</code> 。</p>
+			
+			<div class="solution" data-type="multiple">		
+				<code>a:b:c=\enspace</code>			
+				<span class="sol" data-type="rational"><var>J/G</var></span>
+				<code>:</code>			
+				<span class="sol" data-type="rational"><var>K/G</var></span>
+				<code>:</code>	
+				<span class="sol" data-type="rational"><var>L/G</var></span>
+				 <p class="example">整數，例 <code>6</code></p> 
+				
+			</div>
+			<div class="hints">
+			
+					<p>由 <code>a:b=<var>J</var>:<var>K</var></code> ，得 <code>\dfrac{a}{<var>J/G</var>}=\dfrac{b}{<var>K/G</var>}</code></p>
+					<p>由 <code>b:c=<var>K</var>:<var>L</var></code> ，得 <code>\dfrac{b}{<var>K/G</var>}=\dfrac{c}{<var>L/G</var>}</code></p>
+			
+				<p>所以 <code>\dfrac{a}{<var>J/G</var>}=\dfrac{b}{<var>K/G</var>}=\dfrac{c}{<var>L/G</var>}</code></p>
+				<p>因此 <code class="hint_pink">a:b:c=<var>J/G</var>:<var>K/G</var>:<var>L/G</var></code> 。</p>
+				
+			</div>
+		</div>
+		<div id="case4">
+			<div class="vars" data-ensure="J!=K&&J2!=L">
+				<var id="J">randRange(2,9)</var>
+				<var id="K">randRange(3,7)</var>
+				<var id="L">randRange(8,14)</var>
+				<var id="J2">2*J</var>
+				<var id="CS1">J2/getGCD(K,J2)</var>
+				<var id="CS2">K/getGCD(K,J2)</var>
+				<var id="G">getGCD(getGCD(J*CS1,K*CS1),L*CS2)</var>
+			</div>
+			<p class="question"> 已知 <code>a:b=<var>J</var>:<var>K</var></code> ，<code>b:c=<var>2*J</var>:<var>L</var></code> ，求連比 <code>a:b:c</code> 。</p>
+			
+			<div class="solution" data-type="multiple">		
+				<code>a:b:c=\enspace</code>			
+				<span class="sol" data-type="rational"><var>J*CS1/G</var></span>
+				<code>:</code>			
+				<span class="sol" data-type="rational"><var>K*CS1/G</var></span>
+				<code>:</code>	
+				<span class="sol" data-type="rational"><var>L*CS2/G</var></span>
+				 <p class="example">整數，例 <code>6</code></p> 
+				
+			</div>
+			<div class="hints">
+					<p>因為 <code>a:b=<var>J</var>:<var>K</var>=<var>J*CS1</var>:<var>K*CS1</var></code> </p>
+					<p> &nbsp; &nbsp; &nbsp; &nbsp; <code>b:c=<var>2*J</var>:<var>L</var>=<var>2*J*CS2</var>:<var>L*CS2</var></code> </p>
+					<p data-if="G>1"> &nbsp; &nbsp; &nbsp; &nbsp; <code>a:b:c=<var>J*CS1</var>:<var>K*CS1</var>:<var>L*CS2</var></code></p>
+					<div data-if="G!=1">
+					    <p>我們需要用這三個數的最大公約數來進行化簡，化簡得 </p>
+						<p><code class="hint_green">a:b:c=<var>J*CS1/G</var>:<var>K*CS1/G</var>:<var>L*CS2/G</var></code> 。</p>
+					</div>
+				<p>所以，本題答案為 <code class="hint_pink">a:b:c=<var>J*CS1/G</var>:<var>K*CS1/G</var>:<var>L*CS2/G</var></code> 。</p>
+				
+			</div>
+		</div>
+		<div id="case5">
+			<div class="vars" data-ensure="J!=K">
+				<var id="J">randRange(2,9)</var>
+				<var id="K">randRange(3,7)</var>
+				<var id="L">randRange(3,5)</var>
+				<var id="M">randRange(2,4)*J</var>
+				<var id="N">randRange(6,8)*K</var>
+				<var id="G">getGCD(getGCD(L,M/J),N/K)</var>
+			</div>
+			<p class="question"> 設 <code>a:<var>J</var>b:<var>K</var>c=<var>L</var>:<var>M</var>:<var>N</var></code> ，求連比 <code>a:b:c</code> 。</p>
+			
+			<div class="solution" data-type="multiple">		
+				<code>a:b:c=\enspace</code>			
+				<span class="sol" data-type="rational"><var>L/G</var></span>
+				<code>:</code>			
+				<span class="sol" data-type="rational"><var>M/J/G</var></span>
+				<code>:</code>	
+				<span class="sol" data-type="rational"><var>N/K/G</var></span>
+				 <p class="example">整數，例 <code>6</code></p> 
+				
+			</div>
+			<div class="hints">
+				<p>由 <code>a:<var>J</var>b:<var>K</var>c=<var>L</var>:<var>M</var>:<var>N</var></code></code> </p>
+				<p>可設 <code>a=<var>L</var>r</code> ，<code><var>J</var>b=<var>M</var>r</code> 和 <code><var>K</var>c=<var>N</var>r</code> ，其中<code>r \ne 0</code> 。</p>
+				<p>所以 <code>a=<var>L</var>r</code> ，<code>b=<var>M/J</var>r</code> ，<code>c=<var>N/K</var>r</code></p>
+				<div data-if="G!=1">
+					<p>我們再進行化簡，化簡得 </p>
+			        <p><code class="hint_green">a:b:c=<var>L/G</var>:<var>M/J/G</var>:<var>N/K/G</var></code> 。</p>
+				</div>
+				<p>因此 <code class="hint_pink">a:b:c=<var>L/G</var>:<var>M/J/G</var>:<var>N/K/G</var></code> 。</p>
+				
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

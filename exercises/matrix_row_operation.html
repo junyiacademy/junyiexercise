@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html data-require="math graphie kmatrix">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Matrix Row Operation</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+							
+<body>
+<div class="exercise">
+	<div class="vars">
+		<var id="rowSize">randRange(3,4)</var>
+		<var id="colSize">randRange(2,4)</var>
+		<var id="M">randRange(-9,9,rowSize,colSize)</var>
+		<var id="int">randRange(-5,5)</var>
+		<var id="rowRand1">randRange(1,rowSize)</var>
+		<var id="rowRand2">randRangeExclude(1,rowSize,[rowRand1])</var>
+		<var id="rowRand3">rowRand1</var>
+		<var id="rowRand4">randRangeExclude(1,rowSize,[rowRand2,rowRand3])</var>
+		<var id="rowRand5">rowRand2</var>
+		<var id="rowRand6">randRangeExclude(1,rowSize,[rowRand1,rowRand5])</var>
+		<var id="rowVar">rowVar = ["","第一列","第二列","第三列","第四列"]</var>
+		<var id="hint_q0_M">hint_q0_M = [["...","...","..."],
+												 ["m_{i1}","m_{i2}","m_{i3}"],
+												 ["...","...","..."],
+												 ["m_{j1}","m_{j2}","m_{j3}"],
+												 ["...","...","..."]]</var>
+		<var id="seq">randRange(1,3)</var>
+	</div>
+    <div class="problems">
+										<!-- 矩陣M的 row A 與 row B 互換位置 -->
+		<div id="case1" data-weight=1>		
+            <div class="vars">
+				
+				<var id="hint_q0_M2">hint_q0_M2 = [["...","...","..."],
+												 ["m_{j1}","m_{j2}","m_{j3}"],
+												 ["...","...","..."],
+												 ["m_{i1}","m_{i2}","m_{i3}"],
+												 ["...","...","..."]]</var>				
+				<var id="ans_q0_M">
+				(function(){
+					var ans_q0_M = new Array(rowSize);
+					for(i=0;i&lt;rowSize;i++){
+						ans_q0_M[i] = new Array(colSize);
+					}
+					for(i=0;i&lt;rowSize;i++){
+						if(rowRand1-1 == i){
+							for(j=0;j&lt;colSize;j++)
+								ans_q0_M[rowRand1-1][j] = M[rowRand2-1][j];
+						}
+						if(rowRand2-1 == i){
+							for(j=0;j&lt;colSize;j++)
+								ans_q0_M[rowRand2-1][j] = M[rowRand1-1][j];
+						}
+						if((rowRand1-1 != i)&&(rowRand2-1 != i)){
+							for(j=0;j&lt;colSize;j++)
+								ans_q0_M[i][j] = M[i][j];
+						}
+					}
+					return ans_q0_M;
+				})()	
+				</var>
+				<var id="otherM_q0">
+				(function(){
+					var otherM_q0 = new Array(rowSize);
+					for(i=0;i&lt;rowSize;i++){
+						otherM_q0[i] = new Array(colSize);
+					}
+					for(i=0;i&lt;rowSize;i++){
+						if(rowRand3-1 == i){
+							for(j=0;j&lt;colSize;j++)
+								otherM_q0[rowRand3-1][j] = M[rowRand4-1][j];
+						}
+						if(rowRand4-1 == i){
+							for(j=0;j&lt;colSize;j++)
+								otherM_q0[rowRand4-1][j] = M[rowRand3-1][j];
+						}
+						if((rowRand3-1 != i)&&(rowRand4-1 != i)){
+							for(j=0;j&lt;colSize;j++)
+								otherM_q0[i][j] = M[i][j];
+						}
+					}
+					return otherM_q0;
+				})()
+				</var>	
+				<var id="otherM2_q0">
+				(function(){
+					var otherM2_q0 = new Array(rowSize);
+					for(i=0;i&lt;rowSize;i++){
+						otherM2_q0[i] = new Array(colSize);
+					}
+					for(i=0;i&lt;rowSize;i++){
+						if(rowRand5-1 == i){
+							for(j=0;j&lt;colSize;j++)
+								otherM2_q0[rowRand5-1][j] = M[rowRand6-1][j];
+						}
+						if(rowRand6-1 == i){
+							for(j=0;j&lt;colSize;j++)
+								otherM2_q0[rowRand6-1][j] = M[rowRand5-1][j];
+						}
+						if((rowRand5-1 != i)&&(rowRand6-1 != i)){
+							for(j=0;j&lt;colSize;j++)
+								otherM2_q0[i][j] = M[i][j];
+						}
+					}
+					return otherM2_q0;
+				})()
+				</var>
+				<var id="mcq">
+				(function(){
+					var mcq = new Array();
+					for(k=0;k&lt;3;k++){
+						mcq[k] = new Array();
+						for(i=0;i&lt;rowSize;i++){
+							mcq[k][i] = new Array(colSize);
+						}
+					}
+					if(seq == 1){
+						for(i=0;i&lt;rowSize;i++){
+							for(j=0;j&lt;colSize;j++){
+								mcq[0][i][j] = ans_q0_M[i][j];
+								mcq[1][i][j] = otherM_q0[i][j];
+								mcq[2][i][j] = otherM2_q0[i][j];
+							}
+						}
+					}
+					else if(seq == 2){
+						for(i=0;i&lt;rowSize;i++){
+							for(j=0;j&lt;colSize;j++){
+								mcq[0][i][j] = otherM_q0[i][j];
+								mcq[1][i][j] = ans_q0_M[i][j];
+								mcq[2][i][j] = otherM2_q0[i][j];
+							}
+						}
+					}
+					else if(seq == 3){
+						for(i=0;i&lt;rowSize;i++){
+							for(j=0;j&lt;colSize;j++){
+								mcq[0][i][j] = otherM_q0[i][j];
+								mcq[1][i][j] = otherM2_q0[i][j];
+								mcq[2][i][j] = ans_q0_M[i][j];
+							}
+						}
+					}
+					return mcq;
+				})()
+				</var>
+
+            </div>
+			
+            <div class="question">
+			<p><code>M = <var>printSimpleMatrix(M)</var></code></p>
+			<p></p>
+			<p>請把矩陣M的<var>rowVar[rowRand1]</var>與<var>rowVar[rowRand2]</var>互換位置。</p>
+            </div>
+					
+            <div class="solution">
+				<p><code><var>printSimpleMatrix(ans_q0_M)</var></code></p>
+			</div>
+
+			
+			<ul class="choices" data-category="true">
+				<li><code><var>printSimpleMatrix(mcq[0])</var></code></li>
+				<li><code><var>printSimpleMatrix(mcq[1])</var></code></li>
+				<li><code><var>printSimpleMatrix(mcq[2])</var></code></li>
+			</ul>
+			
+			
+            <div class="hints">
+				<p>
+					<code>M = <var>printSimpleMatrix(hint_q0_M)</var></code><br><br>
+					第i列與第j列互換位置之後<br><br>
+					<code>M_{ij->ji} = <var>printSimpleMatrix(hint_q0_M2)</var></code>
+				</p>
+				
+				<p>
+					<code>M = <var>printSimpleMatrix(M)</var></code><br><br>
+					<code>M_{<var>rowRand1</var><var>rowRand2</var>-><var>rowRand2</var><var>rowRand1</var>} 
+					= <var>printSimpleMatrix(ans_q0_M)</var></code>
+				</p>
+				
+            </div>
+        </div>
+		
+										<!-- 矩陣M的 row A 乘上 某數 -->
+		<div id="case2" data-weight=1>
+			<div class="vars">		
+				<var id="hint_q1_M">hint_q1_M = [["...","...","..."],
+												 ["m_{i1}","m_{i2}","m_{i3}"],
+												 ["...","...","..."]]</var>
+				<var id="hint_q1_M2">hint_q1_M2 = [["...","...","..."],
+												  ["(a)&middot;m_{i1}","(a)&middot;m_{i2}","(a)&middot;m_{i3}"],
+												  ["...","...","..."]]</var>
+				<var id="hint_q1_M3">
+				(function(){
+					var hint_q1_M3 = new Array(rowSize);
+					for(i=0;i&lt;rowSize;i++){
+						hint_q1_M3 [i]= new Array(colSize);
+					}
+					for(i=0;i&lt;rowSize;i++){
+						if(rowRand1-1 == i){
+							for(j=0;j&lt;colSize;j++)
+								hint_q1_M3[rowRand1-1][j] = "("+int+")&middot;"+M[rowRand1-1][j];
+						}
+						else{
+							for(j=0;j&lt;colSize;j++)
+								hint_q1_M3[i][j] = M[i][j];
+						}
+					}
+					return hint_q1_M3;
+				})()
+				</var>
+				<var id="ans_q1_M">
+				(function(){
+					var ans_q1_M = new Array(rowSize);
+					for(i=0;i&lt;rowSize;i++){
+						ans_q1_M [i]= new Array(colSize);
+					}
+					for(i=0;i&lt;rowSize;i++){
+						if(rowRand1-1 == i){
+							for(j=0;j&lt;colSize;j++)
+								ans_q1_M[rowRand1-1][j] = int*M[rowRand1-1][j];
+						}
+						else{
+							for(j=0;j&lt;colSize;j++)
+								ans_q1_M[i][j] = M[i][j];
+						}
+					}
+					return ans_q1_M;
+				})()
+				</var>
+				<var id="otherM_q1">
+				(function(){
+					var otherM_q1 = new Array(rowSize);
+					for(i=0;i&lt;rowSize;i++){
+						otherM_q1 [i]= new Array(colSize);
+					}
+					for(i=0;i&lt;rowSize;i++){
+						if(rowRand2-1 == i){
+							for(j=0;j&lt;colSize;j++)
+								otherM_q1[rowRand2-1][j] = int*M[rowRand2-1][j];
+						}
+						else{
+							for(j=0;j&lt;colSize;j++)
+								otherM_q1[i][j] = M[i][j];
+						}
+					}
+					return otherM_q1;
+				})()
+				</var>
+				<var id="int2">randRange(-9,9)</var>
+				<var id="otherM2_q1">
+				(function(){
+					var otherM2_q1 = new Array(rowSize);
+					for(i=0;i&lt;rowSize;i++){
+						otherM2_q1 [i]= new Array(colSize);
+					}
+					for(i=0;i&lt;rowSize;i++){
+						if(rowRand1-1 == i){
+							for(j=0;j&lt;colSize;j++)
+								otherM2_q1[rowRand1-1][j] = int2*M[rowRand1-1][j];
+						}
+						else{
+							for(j=0;j&lt;colSize;j++)
+								otherM2_q1[i][j] = M[i][j];
+						}
+					}
+					return otherM2_q1;
+				})()
+				</var>
+				<var id="mcq">
+				(function(){
+					var mcq = new Array();
+					for(k=0;k&lt;3;k++){
+						mcq[k] = new Array();
+						for(i=0;i&lt;rowSize;i++){
+							mcq[k][i] = new Array(colSize);
+						}
+					}
+					if(seq == 1){
+						for(i=0;i&lt;rowSize;i++){
+							for(j=0;j&lt;colSize;j++){
+								mcq[0][i][j] = ans_q1_M[i][j];
+								mcq[1][i][j] = otherM_q1[i][j];
+								mcq[2][i][j] = otherM2_q1[i][j];
+							}
+						}
+					}
+					else if(seq == 2){
+						for(i=0;i&lt;rowSize;i++){
+							for(j=0;j&lt;colSize;j++){
+								mcq[0][i][j] = otherM_q1[i][j];
+								mcq[1][i][j] = ans_q1_M[i][j];
+								mcq[2][i][j] = otherM2_q1[i][j];
+							}
+						}
+					}
+					else if(seq == 3){
+						for(i=0;i&lt;rowSize;i++){
+							for(j=0;j&lt;colSize;j++){
+								mcq[0][i][j] = otherM_q1[i][j];
+								mcq[1][i][j] = otherM2_q1[i][j];
+								mcq[2][i][j] = ans_q1_M[i][j];
+							}
+						}
+					}
+					return mcq;
+				})()
+				</var>
+								
+            </div>
+			
+			<div class="question">
+			<p><code>M = <var>printSimpleMatrix(M)</var></code></p>
+			<p></p>
+			<p>請把矩陣M的<var>rowVar[rowRand1]</var>乘上<var>int</var>。</p>
+			</div>
+			
+			<div class="solution">
+				<p><code><var>printSimpleMatrix(ans_q1_M)</var></code></p>
+			</div>
+
+			<ul class="choices" data-category="true">
+				<li><code><var>printSimpleMatrix(mcq[0])</var></code></li>
+				<li><code><var>printSimpleMatrix(mcq[1])</var></code></li>
+				<li><code><var>printSimpleMatrix(mcq[2])</var></code></li>
+			</ul>
+			
+			<div class="hints">
+			
+				<p>
+					<code>M = <var>printSimpleMatrix(hint_q1_M)</var></code><br><br>
+					第i列乘上a之後<br><br>
+					<code>M_{(a)&middot;i} = <var>printSimpleMatrix(hint_q1_M2)</var></code>
+				</p>
+				
+				<p>
+					<code>M = <var>printSimpleMatrix(M)</var></code><br><br>
+					<code>M_{(<var>int</var>)&middot;<var>rowRand1</var>} 
+					= <var>printSimpleMatrix(hint_q1_M3)</var></code>
+				</p>			
+				
+				<p>
+					<code>M_{(<var>int</var>)&middot;<var>rowRand1</var>}
+					= <var>printSimpleMatrix(ans_q1_M)</var></code>
+				</p>
+				
+					
+            </div>
+            
+		</div>
+		
+										<!-- 矩陣M的 row A 的數值加到 row B 的數值上 -->
+		<div id="case3" data-weight=1>
+			<div class="vars">		
+				<var id="hint_q2_M2">hint_q2_M2 = [["...","...","..."],
+												   ["m_{i1}","m_{i2}","m_{i3}"],
+												   ["...","...","..."],
+												   ["m_{i1}+m_{j1}","m_{i2}+m_{j2}","m_{j3}+m_{j3}"],
+												   ["...","...","..."]]</var>
+				<var id="hint_q2_M3">
+				(function(){
+					var hint_q2_M3 = new Array(rowSize);
+					for(i=0;i&lt;rowSize;i++){
+						hint_q2_M3 [i]= new Array(colSize);
+					}
+					for(i=0;i&lt;rowSize;i++){
+						if(rowRand2-1 == i){
+							for(j=0;j&lt;colSize;j++)
+								hint_q2_M3[rowRand2-1][j] = M[rowRand1-1][j] + "+" + M[rowRand2-1][j];
+						}
+						else{
+							for(j=0;j&lt;colSize;j++)
+								hint_q2_M3[i][j] = M[i][j];
+						}
+					}
+					return hint_q2_M3;
+				})()
+				</var>
+				<var id="ans_q2_M">
+				(function(){
+					var ans_q2_M = new Array(rowSize);
+					for(i=0;i&lt;rowSize;i++){
+						ans_q2_M [i]= new Array(colSize);
+					}
+					for(i=0;i&lt;rowSize;i++){
+						if(rowRand2-1 == i){
+							for(j=0;j&lt;colSize;j++)
+								ans_q2_M[rowRand2-1][j] = M[rowRand1-1][j]+M[rowRand2-1][j];
+						}
+						else{
+							for(j=0;j&lt;colSize;j++)
+								ans_q2_M[i][j] = M[i][j];
+						}
+					}
+					return ans_q2_M;
+				})()
+				</var>
+				<var id="otherM_q2">
+				(function(){
+					var otherM_q2 = new Array(rowSize);
+					for(i=0;i&lt;rowSize;i++){
+						otherM_q2 [i]= new Array(colSize);
+					}
+					for(i=0;i&lt;rowSize;i++){
+						if(rowRand4-1 == i){
+							for(j=0;j&lt;colSize;j++)
+								otherM_q2[rowRand4-1][j] = M[rowRand3-1][j]+M[rowRand4-1][j];
+						}
+						else{
+							for(j=0;j&lt;colSize;j++)
+								otherM_q2[i][j] = M[i][j];
+						}
+					}
+					return otherM_q2;
+				})()
+				</var>
+				<var id="otherM2_q2">
+				(function(){
+					var otherM2_q2 = new Array(rowSize);
+					for(i=0;i&lt;rowSize;i++){
+						otherM2_q2 [i]= new Array(colSize);
+					}
+					for(i=0;i&lt;rowSize;i++){
+						if(rowRand6-1 == i){
+							for(j=0;j&lt;colSize;j++)
+								otherM2_q2[rowRand6-1][j] = M[rowRand5-1][j]+M[rowRand6-1][j];
+						}
+						else{
+							for(j=0;j&lt;colSize;j++)
+								otherM2_q2[i][j] = M[i][j];
+						}
+					}
+					return otherM2_q2;
+				})()
+				</var>
+				<var id="mcq">
+				(function(){
+					var mcq = new Array();
+					for(k=0;k&lt;3;k++){
+						mcq[k] = new Array();
+						for(i=0;i&lt;rowSize;i++){
+							mcq[k][i] = new Array(colSize);
+						}
+					}
+					if(seq == 1){
+						for(i=0;i&lt;rowSize;i++){
+							for(j=0;j&lt;colSize;j++){
+								mcq[0][i][j] = ans_q2_M[i][j];
+								mcq[1][i][j] = otherM_q2[i][j];
+								mcq[2][i][j] = otherM2_q2[i][j];
+							}
+						}
+					}
+					else if(seq == 2){
+						for(i=0;i&lt;rowSize;i++){
+							for(j=0;j&lt;colSize;j++){
+								mcq[0][i][j] = otherM_q2[i][j];
+								mcq[1][i][j] = ans_q2_M[i][j];
+								mcq[2][i][j] = otherM2_q2[i][j];
+							}
+						}
+					}
+					else if(seq == 3){
+						for(i=0;i&lt;rowSize;i++){
+							for(j=0;j&lt;colSize;j++){
+								mcq[0][i][j] = otherM_q2[i][j];
+								mcq[1][i][j] = otherM2_q2[i][j];
+								mcq[2][i][j] = ans_q2_M[i][j];
+							}
+						}
+					}
+					return mcq;
+				})()
+				</var>
+				
+            </div>
+			
+			<div class="question">
+			<p><code>M = <var>printSimpleMatrix(M)</var></code></p>
+			<p></p>
+			<p>請把矩陣M的<var>rowVar[rowRand1]</var>的數值加到<var>rowVar[rowRand2]</var>的數值上。</p>
+			</div>
+			
+			<div class="solution">
+				<p><code><var>printSimpleMatrix(ans_q2_M)</var></code></p>
+			</div>
+
+			<ul class="choices" data-category="true">
+				<li><code><var>printSimpleMatrix(mcq[0])</var></code></li>
+				<li><code><var>printSimpleMatrix(mcq[1])</var></code></li>
+				<li><code><var>printSimpleMatrix(mcq[2])</var></code></li>
+			</ul>
+			
+			<div class="hints">
+			
+				<p>
+					<code>M = <var>printSimpleMatrix(hint_q0_M)</var></code><br><br>
+					第i列的數值加到第j列的數值之後<br><br>
+					<code>M_{i+j} = <var>printSimpleMatrix(hint_q2_M2)</var></code>
+				</p>
+				
+				<p>
+					<code>M = <var>printSimpleMatrix(M)</var></code><br><br>
+					<code>M_{<var>rowRand1</var>+<var>rowRand2</var>}
+					= <var>printSimpleMatrix(hint_q2_M3)</var></code>
+				</p>
+				
+				<p>
+					<code>M_{<var>rowRand1</var>+<var>rowRand2</var>}
+					= <var>printSimpleMatrix(ans_q2_M)</var></code>
+				</p>				
+            </div>
+            
+		</div>
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>機率的基本概念2</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 40px;
+        }
+		table.nLimit{margin:5px ;border:1px}
+        table.nLimit td { text-align:center;max-width:80px;border: 1px solid #AAA; }
+        table.nLimit td { padding: 5px; }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+                <var id="J">randRange(1,13)</var>
+				<var id="J_S">
+				(function(){
+				    if(J==11){
+					return 'J';
+					}
+					if(J==12){
+					return 'Q';
+					}
+					if(J==13){
+					return 'K';
+					}
+					return J;
+				})()</var>			
+			
+            </div>
+            <p class="question">一副撲克牌有 <code>52</code> 張，均勻洗牌後抽出一張，求該牌為 <code><var>J_S</var></code> 的機率。</p>
+			<div class="solution">				
+				<span class="sol" data-forms="rational"><var>1/13</var></span>
+            </div>
+
+            <div class="hints">
+			    <p>由於一副撲克牌有 <code>4</code> 種花色，因此一副撲克牌共有 <code>4</code> 張 <code><var>J_S</var></code> ，</p>
+				<p>所以抽出一張 <code><var>J_S</var></code> 的情形共有 <code>4</code> 種可能，即紅桃 <code><var>J_S</var></code> 、黑桃 <code><var>J_S</var></code> 、方塊 <code><var>J_S</var></code> 和梅花 <code><var>J_S</var></code> ，</p>
+				<p>所以，概率 <code>P=\dfrac{4}{52}=\dfrac{1}{13}</code></p>
+				<p>因此，本題的答案為 <code class="hint_pink">\dfrac{1}{13}</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+                <var id="J">randRange(2,3)</var>
+				<var id="KK">randRange(1,2)</var>
+                <var id="K">KK==1?"正面":"反面"</var>
+				<var id="KKK">KK==1?"正":"反"</var>
+                <var id="pows">Math.pow(2,J)</var>				
+			
+            </div>
+            <p class="question">擲一枚銅板 <code><var>J==2?"兩":"三"</var></code> 次，求每次都出現 <code><var>K</var></code> 的機率。</p>
+			<div class="solution">				
+				<span class="sol" data-forms="rational"><var>1/pows</var></span>
+            </div>
+
+            <div class="hints">
+			    <p>擲一枚銅板 <code><var>J==2?"兩":"三"</var></code> 次，共有多少種可能的結果呢？將每次擲銅板的可能結果都寫下來，就可以計算出總共有幾種可能的結果。</p>
+				<p data-if="J==2">例如，若第一次擲出的是正面，第二次擲出的是反面，記為 (正，反)，而 (反，正)則表示第一次出現的是反面，第二次出現的是正面。</p>
+				<p data-if="J==3">例如，若第一次擲出的是正面，第二次擲出的是反面，第三次擲出的是正面，記為 (正，反，正)，而 (反，正，反)則表示第一次出現的是反面，第二次出現的是正面，第三次出現的是反面。</p>
+				<div>
+				    <p>用上面的記錄方式，我們發現擲 <code><var>J==2?"兩":"三"</var></code> 次銅板會出現的結果是：</p>
+					<p data-if="J==2">(正，正)，(正，反)，(反，正)，(反，反)</p>
+					<p data-if="J==3">(正，正，正)，(正，正，反)，(正，反，正)，(正，反，反)，</p>
+					<p data-if="J==3">(反，正，正)，(反，正，反)，(反，反，正)，(反，反，反)</p>
+				</div>
+				<p>這 <code><var>pows</var></code> 種可能，由於每次丟擲時，出現正面，反面的機率都一樣，因此上面這 <code><var>pows</var></code> 種情形出現的可能也都一樣，</p>
+				<p data-if="J==3">所以，出現 <code>(<var>KKK</var>,<var>KKK</var>,<var>KKK</var>)</code> 的機率 <code>=\dfrac{1}{8}</code></p>
+				<p data-if="J==2">所以，出現 <code>(<var>KKK</var>,<var>KKK</var>)</code> 的機率 <code>=\dfrac{1}{4}</code></p>
+				<p>因此，本題的答案為 <code class="hint_pink">\dfrac{1}{<var>pows</var>}</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars" data-ensure="J!=K">
+                <var id="J">randRange(4,8)</var>	
+                <var id="K">randRange(5,9)</var>
+                <var id="add">accAdd(J,K)</var>
+                <var id="mul">accMul(add,add)</var>	
+                <var id="up">accAdd(accMul(J,J),accMul(K,K))</var>				
+            </div>
+            <p class="question">有兩個袋子，每個袋子中都裝了 <code><var>J</var></code> 個紅球、 <code><var>K</var></code> 個白球，現在從兩個袋子各取出一球，試問：</p>
+			<div class="problem"><p>兩球為同一顏色的機率是多少？</p></div>
+			<div class="solution">				
+				<span class="sol" data-forms="rational"><var>up/mul</var></span>
+            </div>
+
+            <div class="hints">
+			    <div>
+				    <p>由於每一袋子各裝有 <code><var>add</var></code> 個球，因此各拿出一球的所有可能共有</p>
+				    <p><code><var>add</var>\times <var>add</var>=<var>mul</var></code> 種。</p>
+				</div>
+				<p>現在要求兩球同一顏色，可分成兩種情況：同為紅色或同為白色。</p>
+				<div>
+				    <p>同為紅色共有 <code><var>J</var>\times <var>J</var>=<var>accMul(J,J)</var></code> 種可能；</p>
+				    <p>同為白色共有 <code><var>K</var>\times <var>K</var>=<var>accMul(K,K)</var></code> 種可能。</p>
+				</div>
+				<p>所以， <code>P=\dfrac{<var>accMul(J,J)</var>+<var>accMul(K,K)</var>}{<var>mul</var>}=\dfrac{<var>up</var>}{<var>mul</var>}</code><code data-if="getGCD(up,mul)!=1">=<var>fraction(up,mul,true,true,false,false)</var></code></p>
+				<p>因此，本題的答案為 <code class="hint_pink"><var>fraction(up,mul,true,true,false,false)</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case4">
+            <div class="vars" data-ensure="J!=K">
+                <var id="J">randRange(4,8)</var>	
+                <var id="K">randRange(5,9)</var>
+                <var id="add">accAdd(J,K)</var>
+                <var id="mul">accMul(add,add)</var>	
+                <var id="up">accAdd(accMul(J,J),accMul(K,K))</var>				
+            </div>
+            <p class="question">有兩個袋子，每個袋子中都裝了 <code><var>J</var></code> 個紅球、 <code><var>K</var></code> 個白球，現在從兩個袋子各取出一球，試問：</p>
+			<div class="problem"><p>兩球為不同顏色的機率是多少？</p></div>
+			<div class="solution">				
+				<span class="sol" data-forms="rational"><var>(mul-up)/mul</var></span>
+            </div>
+
+            <div class="hints">
+			    <p>從兩個袋子各拿出一球，顯然這兩個球不是同色就是不同色。</p>
+				<p>因為全部有 <code><var>mul</var></code> 種可能的結果，而同色的情形有 <code><var>accMul(J,J)</var>+<var>accMul(K,K)</var>=<var>up</var></code> 種可能的結果，</p>
+				<p>所以，不同色的情形有 <code><var>mul</var>-<var>up</var>=<var>mul-up</var></code> 種可能的結果。</p>
+				<p>那麼， <code>P=\dfrac{<var>mul-up</var>}{<var>mul</var>}</code><code data-if="getGCD(mul-up,mul)!=1">=<var>fraction(Subtr(mul,up),mul,true,true,false,false)</var></code></p>
+				<p>因此，本題的答案為 <code class="hint_pink"><var>fraction(Subtr(mul,up),mul,true,true,false,false)</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case5">
+            <div class="vars">
+                <var id="J">randRange(5,10)</var>
+				<var id="str">
+				(function(){
+				    var s = "";
+					var t = "";
+					var u = "";
+				    for(var i = 1;i&lt;accDiv(J,2);i++){
+					    if(i&lt;=6&&Subtr(J,i)&lt;=6){
+					        s = s+"("+i+","+Subtr(J,i)+")"+"、";
+						}
+					}
+					for(var i = 1;i&lt;accDiv(J,2);i++){
+					    if(i&lt;=6&&Subtr(J,i)&lt;=6){
+						    u = i;
+							break;
+						}
+					}
+					for(var i = J-1;i&gt;=Math.ceil(accDiv(J,2));i--){
+					    if(i&lt;=6&&Subtr(J,i)&lt;=6){
+					        t = "("+i+","+Subtr(J,i)+")"+"、"+t;
+						}
+					}
+					return [s+t.substr(0,t.length-1),u];
+				})()</var>
+				<var id="JJ">J&lt;=7?J-1:(J==8?5:(J==9?4:(J==10?3:1)))</var>
+            </div>
+            <p class="question">連擲一粒骰子兩次，出現點數和是 <code><var>J</var></code> 的機率是多少？</p>
+			<div class="solution">
+				<span class="sol" data-forms="rational"><var>JJ/36</var></span>
+            </div>
+
+            <div class="hints">
+			    <p>將骰子連擲兩次，共有 <code>6 \times 6=36</code> 種結果。</p>
+				<div>
+				    <p>點數和是 <code><var>J</var></code> 的共有 <code><var>JJ</var></code> 種情形：</p>
+					<p><code><var>str[0]</var></code></p>
+				    <p>其中， <code>(<var>str[1]</var>,<var>Subtr(J,str[1])</var>)</code> 表示第一次擲出 <code><var>str[1]</var></code> 點，第二次擲出 <code><var>Subtr(J,str[1])</var></code> 點，依次類推，</p>
+			    </div>
+				<p>所以點數和是 <code><var>J</var></code> 的機率 <code>=\dfrac{<var>JJ</var>}{36}</code><code data-if="getGCD(JJ,36)!=1">=<var>fraction(JJ,36,true,true,false,false)</var></code></p>
+				<p>因此，本題的答案為 <code class="hint_pink"><var>fraction(JJ,36,true,true,false,false)</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case6">
+            <div class="vars">
+                <var id="school">randFromArray(["仁山","嘉明","北山","康橋","建明"])</var>
+				<var id="gen">randFromArray(["國一","國二","國三"])</var>
+				<var id="sex_type">randRange(1,2)</var>
+				<var id="sex">sex_type==1?"男":"女"</var>
+				<var id="type">randRange(1,3)</var>
+				<var id="R">type==1?0.29:(type==2?0.7:0)</var>
+            </div>
+            <div class="question">
+			    <p>下表是<var>school</var>國中<var>gen</var><var>sex</var>生的身高統計表，如果任意選定一個<var>gen</var><var>sex</var>生，依據此表，回答下列問題：</p>
+				<div>
+				    <table class="nLimit">
+					    <tr><td>身高分組<br />(a)</td><td>140&le;a<br />&lt;150</td><td>150&le;a<br />&lt;160</td><td>160&le;a<br />&lt;170</td><td>170&le;a<br />&lt;180</td><td>180&le;a<br />&lt;190</td></tr>
+						<tr><td>相對次數</td><td><code>\frac{63}{300}</code></td><td><code>\frac{150}{300}</code></td><td><code>\frac{60}{300}</code></td><td><code>\frac{24}{300}</code></td><td><code>\frac{3}{300}</code></td></tr>
+					</table>
+				</div>
+				<div class="problem">
+				    <p data-if="type==2"><var>sex_type==1?"他":"她"</var>的身高介於 150 ~ 170 公分的機率是多少？</p>
+					<p data-if="type==1"><var>sex_type==1?"他":"她"</var>的身高大於或等於 160 公分的機率是多少？</p>
+					<p data-if="type==3"><var>sex_type==1?"他":"她"</var>的身高高於 190 公分的機率是多少？</p>
+				</div>
+			</div>
+			<div class="solution" data-type="decimal">
+				<span class="sol"><var>R</var></span>
+            </div>
+
+            <div class="hints">
+			    <p data-if="type==1">由表可知，有三組身高資料值大於或等於 <var>160</var> 公分，</p>
+				<p data-if="type==1">因此機率是 <code>\dfrac{60}{300}+\dfrac{24}{300}+\dfrac{3}{300}=\dfrac{87}{300}=</code><code class="hint_pink">0.29</code> 。</p>
+				<p data-if="type==2">由於 [介於] 的意思不是很清楚，但我們可以用常識將它解釋為第二組和第三組的資料，</p>
+				<p data-if="type==2">因此概率是 <code>\dfrac{150}{300}+\dfrac{60}{300}=\dfrac{210}{300}=</code><code class="hint_pink">0.7</code> 。</p>
+				<p data-if="type==3">依據表中記錄沒有任何人高於 <var>190</var> 公分，</p>
+				<p data-if="type==3">因此概率是 <code class="hint_pink">0</code> 。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

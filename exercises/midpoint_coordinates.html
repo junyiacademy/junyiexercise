@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>中點座標</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+            <div class="vars">
+			    <var id="J">randRange(1,19)+randRange(1,9)/10</var>
+            </div>
+			<p class="question">下列是數線上某兩點的座標，求出中點座標：</p>
+			<div class="problem"><p><code><var>J</var></code>、 <code><var>-J</var></code></p></div>
+			<div class="solution">
+				<span class="sol" data-type="rational"><var>0</var></span>
+			</div>
+
+    <div class="hints">
+	    <p>要求 <code><var>J</var></code> 與 <code><var>-J</var></code> 的中點座標</p>
+	    <div>
+		    <p>可用下圖來表示 <code><var>J</var></code> 、中點座標、 <code><var>-J</var></code> 的關係：</p>
+	        <div class="graphie" id="numbers">
+                        init({
+                            range: [ [0, 13], [-1, 1] ],scale: 30
+                        });
+						style({stroke:"#28AE7B"});
+						path([[2,0],[12,0]]);
+						path([[11.8,0.2],[12,0]]);
+						path([[11.8,-0.2],[12,0]]);
+						style({stroke:"#6495ED"});
+						circle( [ 4, 0 ], 0.05 );
+						circle( [ 10, 0 ], 0.05 );
+						style({stroke:"blue"});
+						circle( [ 7, 0 ], 0.05 );
+						label( [ 7, 0 ],  "中點", "below");
+						label( [ 4, 0 ],  -J, "below");
+						label( [ 10, 0 ],  J, "below");
+            </div>
+		</div>
+		<p><code><var>-J</var></code> 到中點的距離 <code>=<var>J</var></code> 到中點的距離。</p>
+		<p>我們必須將 <code>[<var>J</var>+(<var>-J</var>)]\div 2</code></p>
+		<p>得到中點座標為 <code>0</code> 。</p>
+		<p>所以，本題的答案為 <code class="hint_pink"><var>0</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case2">
+            <div class="vars" data-ensure="getGCD(J_decimal_up,J_decimal_low)==1 && getGCD(K_decimal_up,K_decimal_low)==1 && J!=K">
+			    <var id="J_int">randRange(1,19)</var>
+			    <var id="J_decimal_low">randRange(2,10)</var>
+				<var id="J_decimal_up">randRange(1,J_decimal_low-1)</var>
+				<var id="K_int">randRange(1,19)</var>
+			    <var id="K_decimal_low">randRange(2,10)</var>
+				<var id="K_decimal_up">randRange(1,K_decimal_low-1)</var>
+				<var id="R">(J_int+J_decimal_up/J_decimal_low+K_int+K_decimal_up/K_decimal_low)/2</var>
+				<var id="J">J_int+J_decimal_up/J_decimal_low</var>
+				<var id="K">K_int+K_decimal_up/K_decimal_low</var>
+				<var id="R_show">
+				(function(){
+				    var arr = KhanUtil.toFraction(R);
+				    var up = arr[0]-parseInt(R)*arr[1];
+					var low = arr[1];
+					var rArr = [up,low];
+					return rArr;
+				})()</var>
+				<var id="JK_compare">
+				(function(){
+				    var s = J&gt;=K?true:false;
+					return s;
+				})()</var>
+            </div>
+			<p class="question">下列是數線上某兩點的座標，求出中點座標：</p>
+			<div class="problem"><p><code><var>mixedFraction(J_int,J_decimal_up,J_decimal_low,true,true,false,false)</var></code>、 <code><var>mixedFraction(K_int,K_decimal_up,K_decimal_low,true,true,false,false)</var></code></p></div>
+			<div class="solution">
+				<span class="sol" data-type="rational"><var>R</var></span>
+			</div>
+
+    <div class="hints">
+	    <p>要求 <code><var>mixedFraction(J_int,J_decimal_up,J_decimal_low,true,true,false,false)</var></code> 與 <code><var>mixedFraction(K_int,K_decimal_up,K_decimal_low,true,true,false,false)</var></code> 的中點座標</p>
+	    <div>
+		    <p>可用下圖來表示 <code><var>mixedFraction(J_int,J_decimal_up,J_decimal_low,true,true,false,false)</var></code> 、中點座標、 <code><var>mixedFraction(K_int,K_decimal_up,K_decimal_low,true,true,false,false)</var></code> 的關係：</p>
+	        <div class="graphie" id="numbers">
+                        init({
+                            range: [ [0, 13], [-2, 1] ],scale: 30
+                        });
+						style({stroke:"#28AE7B"});
+						path([[2,0],[12,0]]);
+						path([[11.8,0.2],[12,0]]);
+						path([[11.8,-0.2],[12,0]]);
+						style({transform:true,stroke:"#6495ED"});
+						circle( [ 4, 0 ], 0.05 );
+						circle( [ 10, 0 ], 0.05 );
+						style({transform:true,stroke:"blue"});
+						circle( [ 7, 0 ], 0.05 );
+						label( [ 7, 0 ],  "中點", "below");
+						label( [ 4, 0 ],  JK_compare==true?mixedFraction(K_int,K_decimal_up,K_decimal_low,true,true,true,false):mixedFraction(J_int,J_decimal_up,J_decimal_low,true,true,true,false), "below");
+						label( [ 10, 0 ], JK_compare==true?mixedFraction(J_int,J_decimal_up,J_decimal_low,true,true,true,false):mixedFraction(K_int,K_decimal_up,K_decimal_low,true,true,true,false), "below");
+            </div>
+		</div>
+		<p><code><var>mixedFraction(J_int,J_decimal_up,J_decimal_low,true,true,false,false)</var></code> 到中點的距離 <code>=<var>mixedFraction(K_int,K_decimal_up,K_decimal_low,true,true,false,false)</var></code> 到中點的距離。</p>
+		<p>我們必須將 <code>(<var>mixedFraction(J_int,J_decimal_up,J_decimal_low,true,true,false,false)</var>+<var>mixedFraction(K_int,K_decimal_up,K_decimal_low,true,true,false,false)</var>)\div 2</code></p>
+		<p>得到中點座標為 <code><var>mixedFraction(parseInt(R),R_show[0],R_show[1],true,true,false,false)</var></code> 。</p>
+		<p>所以，本題的答案為 <code class="hint_pink"><var>mixedFraction(parseInt(R),R_show[0],R_show[1],true,true,false,false)</var></code> 。</p>
+    </div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

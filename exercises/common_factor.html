@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>提公因式做因式分解</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 40px;
+        }
+        </style>
+		<style type="text/css">
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+
+
+
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+                <var id="K">randRange(2,8)</var>
+				<var id="M">randRangeNonZero(-10,10)</var>
+				<var id="M_1">abs(M)==1?(M==1?"":"-"):M</var>
+            </div>
+            <p class="question">利用分配律把這個公因式提出來：</p>
+			<p><code><var>K</var>x^2+<var>M_1</var> x </code></p>
+			
+			<div class="solution" data-type="multiple">		
+				<code>( </code>			
+				<span class="sol" data-forms="integer"><var>K</var></span>
+				<code>x + </code>
+				<span class="sol" data-forms="integer"><var>M</var></span>
+				<code> ) x </code>
+				<p class="example">整數，例 <code>6</code></p> 
+            </div>
+            <div class="hints">
+				<p> <code>=<var>K</var>x\cdot x + <var>M</var>\cdot x</code></p>
+				<p><code>=(<var>K</var>x+<var>M</var>)x</code></p>
+				<p>所以，本題的答案為：<code class="hint_pink">(<var>K</var>x+<var>M</var>)x</code> 。</p>
+				
+            </div>
+        </div>
+		
+		<div id="case2">
+			<div class="vars">
+                <var id="K">randRange(10,30)</var>
+				<var id="M">randRange(-30,-10)</var>
+				<var id="MK">getGCD(M,K)</var>
+				<var id="MK_1">MK==1?"":MK</var>
+				<var id="K_MK">abs(K/MK)==1?(K/MK==1?"":"-"):K/MK</var>
+            </div>
+            <p class="question">利用分配律把這個公因式提出來：</p>
+			<p><code><var>K</var>x^2+<var>M</var> x </code></p>
+			
+			<div class="solution" data-type="multiple">	
+				<span class="sol" data-forms="integer"><var>MK</var></span>			
+				<code>x( </code>			
+				<span class="sol" data-forms="integer"><var>K/MK</var></span>
+				<code>x + </code>
+				<span class="sol" data-forms="integer"><var>M/MK</var></span>
+				<code> )</code>
+				<p class="example">整數，例 <code>6</code></p> 
+            </div>
+            <div class="hints">
+				<p> <code>=<var>K_MK</var>x \cdot <var>MK_1</var>x + <var>M/MK</var>\cdot <var>MK_1</var>x</code></p>
+				<p><code>=(<var>K_MK</var>x+<var>M/MK</var>)\cdot <var>MK_1</var>x</code></p>
+				<p>所以，本題的答案為：<code class="hint_pink"><var>MK_1</var>x(<var>K_MK</var>x+<var>M/MK</var>)</code> 。</p>
+				
+            </div>
+		</div>
+		<div id="case3">
+			<div class="vars" data-ensure="abs(M)!=1">
+                <var id="K">randRange(-30,-10)</var>
+				<var id="M">randRangeNonZero(-30,10)</var>
+				<var id="MK">getGCD(M,K)</var>
+				<var id="MK_1">MK==1?"":MK</var>
+				<var id="K_MK">abs(K/MK)==1?(K/MK==1?"":"-"):K/MK</var>
+            </div>
+            <p class="question">利用分配律把這個公因式提出來：</p>
+			<p><code><var>K</var>x^2+<var>M</var> x </code></p>
+			
+			<div class="solution" data-type="multiple">	
+				<span class="sol" data-forms="integer"><var>-MK</var></span>			
+				<code>x( </code>			
+				<span class="sol" data-forms="integer"><var>-K/MK</var></span>
+				<code>x + </code>
+				<span class="sol" data-forms="integer"><var>-M/MK</var></span>
+				<code> )</code>
+				<p class="example">整數，例 <code>6</code></p> 
+            </div>
+            <div class="hints">
+				<div>
+				    <p> <code><var>K</var>x^2+<var>M</var> x</code></p>
+				    <p><code>=<var>K_MK</var>x \cdot <var>MK_1</var>x + <var>M/MK</var>\cdot <var>MK_1</var>x</code></p>
+				</div>
+				<p><code>=<var>MK_1</var>x(<var>K_MK</var>x+<var>M/MK</var>)</code></p>
+				<p><code>=-<var>MK_1</var>x(<var>abs(K/MK)==1?(K/MK==1?"-":""):-K/MK</var>x+-<var>M/MK</var>)</code></p>
+				<p>所以，本題的答案為 <code class="hint_pink">-<var>MK_1</var>x(<var>abs(K/MK)==1?(K/MK==1?"-":""):-K/MK</var>x+-<var>M/MK</var>)</code> 。</p>
+            </div>
+		</div>
+		<div id="case4">
+			<div class="vars">
+				<var id="J">randRange(2,9)</var> 
+                <var id="M">randRangeNonZero(-10,10)</var> 
+				<var id="N">randRangeNonZero(-10,10)</var> 
+				<var id="N_1">abs(N)==1?(N==1?"":"-"):N</var> 
+				<var id="JN">getGCD(J,N)</var>
+				<var id="JN_1">JN==1?"":JN</var>
+            </div>
+            <p class="question">將下列各式因式分解：</p>
+			<p><code><var>J</var>x(x+<var>M</var>)+<var>N_1</var>(x+<var>M</var>)</code></p>
+			<div class="solution" data-type="multiple">	
+				<span class="sol" data-forms="integer"><var>JN</var></span>			
+				<code>(</code>
+				<span class="sol" data-forms="integer"><var>J/JN</var></span>	
+				<code>x+</code>
+				<span class="sol" data-forms="integer"><var>N/JN</var></span>
+				<code> )(x+ <var>M</var> </code>
+				
+				<code> )</code>
+				<p class="example">整數，例 <code>6</code></p> 
+            </div>
+            <div class="hints">
+				<p>因為 <code>(x+<var>M</var>)</code> 是 <code><var>J</var>x(x+<var>M</var>)</code> 和 <code><var>N_1</var>(x+<var>M</var>)</code> 的公因式。</p>
+				<div>
+				<p>所以 <code><var>J</var>x(x+<var>M</var>)+<var>N_1</var>(x+<var>M</var>)</code></p>
+				<p><code>=(<var>J</var>x+<var>N</var>)(x+<var>M</var>)</code></p>
+				</div>
+				<p data-if="JN!=1"><code>=<var>JN_1</var>(<var>abs(J/JN)==1?(J/JN==1?"":"-"):J/JN</var>x+<var>N/JN</var>)(x+<var>M</var>)</code></p>
+				<p>所以，本題的答案為: <code class="hint_pink"><var>JN_1</var>(<var>abs(J/JN)==1?(J/JN==1?"":"-"):J/JN</var>x+<var>N/JN</var>)(x+<var>M</var>)</code> 。</p>
+            </div>
+		</div>
+		<div id="case5">
+			<div class="vars">
+                <var id="M">randRangeNonZero(-10,10)</var> 
+				<var id="N">randRangeNonZero(-10,10)</var> 
+				<var id="N_1">abs(N)==1?(N==1?"":"-"):N</var> 
+            </div>
+            <p class="question">將下列各式因式分解：</p>
+			<p><code>(x-<var>M</var>)^2+<var>N_1</var>(<var>M</var>-x)</code></p>
+			<div class="solution" data-type="set">			
+				<span class="set-sol"><var>-M</var></span>
+				<span class="set-sol"><var>-N-M</var></span>
+				<div class="input-format">
+				    </p><code>(x+\enspace</code><span class="entry" data-forms="integer"></span><code>)\enspace (x+\enspace</code><span class="entry" data-forms="integer"></span><code>)</code></p>
+                </div>
+				<p class="example">整數，例 <code>6</code></p> 
+            </div>
+            <div class="hints">
+				<div>
+				    <p> <code>(x-<var>M</var>)^2+<var>N_1</var>(<var>M</var>-x)</code></p>
+				    <p><code>=(x-<var>M</var>)(x-<var>M</var>)+<var>N_1</var>(<var>M</var>-x)</code></p>
+				</div>
+				<p><code>=(x-<var>M</var>)(x-<var>M</var>)-<var>N_1</var>(x+<var>-M</var>)</code></p>
+				<p><code>=(x-<var>M</var>)((x-<var>M</var>)-<var>N</var>)</code></p>
+				<p><code>=(x-<var>M</var>)<var>-M-N==0?"x":"(x+"</var><var>-M-N==0?"":-M-N</var><var>-M-N==0?"":")"</var></code></p>
+				<p>所以，本題的答案為: <code class="hint_pink">(x-<var>M</var>)<var>-M-N==0?"x":"(x+"</var><var>-M-N==0?"":-M-N</var><var>-M-N==0?"":")"</var></code> 。</p>
+            </div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

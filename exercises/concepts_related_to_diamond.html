@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>與菱形相關的概念</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+	    <div id="case1">
+            <div class="vars">
+			    <var id="JK">randFromArray([[3,5],[4,5],[8,10],[12,15],[16,20],[20,25],[24,30],[24,25],[7,25],[5,13]])</var>
+				<var id="J">JK[0]</var>
+				<var id="K">JK[1]</var>
+				<var id="L">sqrt(K*K-J*J)</var>
+				<var id="smm">
+				(function(){
+				    var sm = J/3;
+					if(L/sm&gt;6){
+					    sm*=2;
+					}
+					return sm;
+				})()</var>
+            </div>
+			<p class="question">如下圖， <code>\overline{AB}=\overline{BC}=\overline{CD}=\overline{DA}=<var>K</var></code>，<code>\overline{OA}=<var>J</var></code>，求 <code>x、a、b</code> 的值。</p>
+			<div class="problem">
+			    <div class="graphie" id="diamond_1">
+				    init({
+                        range: [ [-1, 12], [-J/smm-0.6, J/smm+0.8] ],
+                        scale: 40
+                    });
+					line([0,0],[2*L/smm,0]);
+					line([L/smm,J/smm],[L/smm,-J/smm]);
+					path([[0,0],[L/smm,J/smm],[2*L/smm,0],[L/smm,-J/smm],[0,0]],{stroke:"black"});
+					label( [L/smm,J/smm],  "A", "above", { color: "black" });
+					label( [0,0],  "B", "left", { color: "black" });
+					label( [L/smm,-J/smm],  "C", "below", { color: "black" });
+					label( [2*L/smm,0],  "D", "right", { color: "black" });
+					label( [L/smm,0],  "O", "above left", { color: "black" });
+					label( [L/smm,0],  "x^{\\circ}", "below right", { color: "black" });
+					style({stroke:"red"});
+					line([L/smm,0],[L/smm,-J/smm]);
+					style({stroke:"green"});
+					line([L/smm,0],[2*L/smm,0]);
+					label( [L/smm/2,J/smm/2],  K, "above left", { color: "black" });
+					label( [L/smm/2,-J/smm/2],  K, "below left", { color: "black" });
+					label( [L/smm*1.5,-J/smm/2],  K, "below right", { color: "black" });
+					label( [L/smm*1.5,J/smm/2],  K, "above right", { color: "black" });
+					label( [L/smm,-J/smm/2],  "a", "left", { color: "black" });
+					label( [L/smm,J/smm/2],  J, "left", { color: "black" });
+					label( [L/smm*1.5,0],  "b", "above", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">	
+				<code>x\enspace = \enspace</code><span class="sol" data-forms="integer"><var>90</var></span><br />
+                <code>a\enspace = \enspace</code><span class="sol" data-forms="integer"><var>J</var></span><br />
+                <code>b\enspace = \enspace</code><span class="sol" data-forms="integer"><var>L</var></span>		
+                <p class="example">整數，例：<code>6</code></p>		
+            </div>
+            <div class="hints">
+			    <p>菱形是箏形的一種。利用箏形的線對稱性質，菱形有下面的性質：</p>
+				<p><code>(1)\enspace \overline{AB}=\overline{AD}，\overline{CB}=\overline{CD} ，</code>所以 <code>\overline{AC}</code> 為四邊形 <code>ABCD</code> 的對稱軸，由此， <code>\angle{BAC}=\angle{DAC}</code> ，<code>\angle{BCA}=\angle{DCA}</code> ， <code>\angle{B}=\angle{D}</code> ，而且 <code>\overline{AC}</code> 垂直平分 <code>\overline{BD}</code> 。</p>
+				<p><code>(2)\enspace \overline{BA}=\overline{BC}，\overline{DA}=\overline{DC} ，</code>所以 <code>\overline{BD}</code> 也是四邊形 <code>ABCD</code> 的對稱軸，由此， <code>\angle{ABD}=\angle{CBD}</code> ，<code>\angle{ADB}=\angle{CDB}</code> ， <code>\angle{A}=\angle{C}</code> ，而且 <code>\overline{BD}</code> 垂直平分 <code>\overline{AC}</code> 。</p>
+				<p>所以 <code>\angle{COD}</code> 為直角， <code class="hint_green">x=90</code> 度，且 <code class="hint_green">a=<var>J</var></code> 。</p>
+				<p><code>\triangle{COD}</code> 為直角三角形，利用畢氏定理可以求出 <code>b</code> 的長，</p>
+				<p><code>b^{2}+<var>J</var>^{2}=<var>K</var>^{2}</code></p>
+				<p><code>b^{2}=<var>K</var>^{2}-<var>J</var>^{2}</code></p>
+				<p><code>b^{2}=<var>L*L</var></code></p>
+			    <p><code>b=\pm <var>L</var></code> (負不合)，所以 <code class="hint_green">b=<var>L</var></code> 。</p>
+				<p>因此，本題的答案為 <code class="hint_pink">x=90</code> 、<code class="hint_pink">a=<var>J</var></code> 、<code class="hint_pink">b=<var>L</var></code> 。</p>
+            </div>
+        </div>
+
+		<div id="case2">
+            <div class="vars">
+			    <var id="JK">randFromArray([[3,5],[4,5],[8,10],[12,15],[16,20],[20,25],[24,30],[24,25],[7,25],[5,13],[5,12]])</var>
+				<var id="J">JK[0]</var>
+				<var id="K">JK[1]</var>
+				<var id="L">sqrt(K*K-J*J)</var>
+				<var id="smm">
+				(function(){
+				    var sm = J/3;
+					if(L/sm&gt;6){
+					    sm*=2;
+					}
+					return sm;
+				})()</var>
+            </div>
+			<p class="question">如下圖， 四邊形 <code>ABCD</code> 中，若 <code>\overline{AC}\perp\overline{BD}</code> ，而且 <code>\overline{OA}=\overline{OC}</code> ，<code>\overline{OB}=\overline{OD}</code> ，說明 <code>ABCD</code> 為菱形。</p>
+			<div class="problem">
+			    <div class="graphie" id="diamond_2">
+				    init({
+                        range: [ [-1, 12], [-J/smm-0.6, J/smm+0.8] ],
+                        scale: 40
+                    });
+					line([0,0],[2*L/smm,0]);
+					line([L/smm,J/smm],[L/smm,-J/smm]);
+					path([[0,0],[L/smm,J/smm],[2*L/smm,0],[L/smm,-J/smm],[0,0]],{stroke:"black"});
+					label( [L/smm,J/smm],  "A", "above", { color: "black" });
+					label( [0,0],  "B", "left", { color: "black" });
+					label( [L/smm,-J/smm],  "C", "below", { color: "black" });
+					label( [2*L/smm,0],  "D", "right", { color: "black" });
+					label( [L/smm,0],  "O", "above left", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">	
+                <p>由於兩對角線互相 <span class="sol" data-type="text"><var>"垂直平分"</var></span>，</p>
+				<p>這表示線段 <input type="text" style="width:30px" id="a_1">、<code>\overline{BD}</code> 互為對方之 <span class="sol" data-type="text"><var>"對稱軸"</var></span>，</p>
+				<p>所以四邊形 <code>ABCD</code> 的四邊皆 <input type="text" style="width:50px" id="a_2"> ，因此是 <span class="sol" data-type="text"><var>"菱"</var></span>形。</p>
+                <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value]</div>
+				    <div class="validator-function">
+					var ng = guess[0].replace(/[ ]/g,"");
+					var ng2 = guess[1].replace(/[ ]/g,"");
+					if ((ng=="AC"||ng=="CA")&&(ng2=="一樣長"||ng2=="相等"||ng2=="等長"||ng2=="長度一樣")){
+					    return true;
+					}
+                    </div>
+				</div>
+				<p class="example">大寫字母，例如 <code>BD</code> 表示線段 <code>\overline{BD}</code></p>	
+                <p class="example">繁體中文，例如 相等 </p>
+            </div>
+            <div class="hints">
+			    <p>由於兩對角線互相垂直平分，</p>
+				<p>這表示 <code>\overline{AC}</code> 、<code>\overline{BD}</code> 互為對方之對稱軸，</p>
+				<p>所以四邊形 <code>ABCD</code> 的四邊皆相等，因此是菱形。</p>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+				<var id="L">2*randRange(2,6)</var>
+				<var id="K">2*L</var>
+				<var id="J">sqrt(K*K-L*L)</var>
+				<var id="smm">
+				(function(){
+				    var sm = J/3;
+					if(L/sm&gt;6){
+					    sm*=2;
+					}
+					return sm;
+				})()</var>
+            </div>
+			<p class="question">如下圖， 若 <code>\overline{AC}</code> 、<code>\overline{BD}</code> 為四邊形 <code>ABCD</code> 的對稱軸，求 <code>a、x、y、z</code> 的值。</p>
+			<div class="problem">
+			    <div class="graphie" id="diamond_2">
+				    init({
+                        range: [ [-1, 12], [-J/smm-0.6, J/smm+0.8] ],
+                        scale: 40
+                    });
+					line([0,0],[2*L/smm,0]);
+					line([L/smm,J/smm],[L/smm,-J/smm]);
+					path([[0,0],[L/smm,J/smm],[2*L/smm,0],[L/smm,-J/smm],[0,0]],{stroke:"black"});
+					label( [L/smm,J/smm],  "A", "above", { color: "black" });
+					label( [0,0],  "B", "left", { color: "black" });
+					label( [L/smm,-J/smm],  "C", "below", { color: "black" });
+					label( [2*L/smm,0],  "D", "right", { color: "black" });
+					label( [L/smm,0],  "O", "below right", { color: "black" });
+					label( [L/smm/2,-J/smm/2],  K, "below left", { color: "black" });
+					label( [L/smm*1.5,0],  "\\color{GREEN}{"+L+"}", "above", { color: "black" });
+					label( [L/smm*1.1,-0.2],  "x^{\\circ}", "above left", { color: "black" });
+					label( [L/smm*1.1,J/smm*0.9],  "y^{\\circ}", "below left", { color: "black" });
+					label( [L/smm*2,0],  "z^{\\circ}", "below left", { color: "black" });
+					label( [L/smm/2,0.2],  "\\color{RED}{a}", "below", { color: "black" });
+					style({stroke:"red"});
+					line([0,0],[L/smm,0]);
+					style({stroke:"green"});
+					line([L/smm*2,0],[L/smm,0]);
+					
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <code>a\enspace = \enspace</code><span class="sol" data-forms="integer"><var>L</var></span><br />
+				<code>x\enspace = \enspace</code><span class="sol" data-forms="integer"><var>90</var></span><br />
+				<code>y\enspace = \enspace</code><span class="sol" data-forms="integer"><var>30</var></span><br />
+				<code>z\enspace = \enspace</code><span class="sol" data-forms="integer"><var>60</var></span>
+				<p class="example">整數，例：<code>6</code></p>	
+            </div>
+            <div class="hints">
+			    <p>由於 <code>\overline{AC}</code> 、<code>\overline{BD}</code> 為四邊形 <code>ABCD</code> 的對稱軸</p>
+				<p>因此 <code>x=90</code> ，<code>a=<var>L</var></code><code>\enspace\enspace\enspace\enspace\overline{AC}</code> 為對稱軸</p>
+				<p>而且 <code>\overline{BD}=2a=<var>K</var></code><code>\enspace\enspace\enspace\enspace\overline{AC}</code> 為對稱軸</p>
+				<p>另外 <code>\overline{CD}=\overline{CB}=<var>K</var></code><code>\enspace\enspace\enspace\enspace\overline{AC}</code> 為對稱軸</p>
+				<p>可知 <code>\triangle{BCD}</code> 和 <code>\triangle{BAD}</code> 都是正三角形，<code>\enspace\enspace\enspace\enspace\overline{BD}</code> 為對稱軸</p>
+				<p>因此，<code>z=60</code></p>
+				<p>且 <code>\enspace\enspace y=60\times \dfrac{1}{2}=30</code><code>\enspace\enspace\enspace\enspace\overline{AC}</code> 為對稱軸</p>
+				<p>因此，本題的答案為 <code class="hint_pink">a=<var>L</var>、x=90、y=30、z=60</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case4">
+            <div class="vars">
+			    <var id="LK">randFromArray([[4,5],[8,10],[12,15],[16,20],[20,25],[24,25],[24,26],[36,39],[12,13]])</var>
+				<var id="L">LK[0]</var>
+				<var id="K">LK[1]</var>
+				<var id="J">sqrt(K*K-L*L)</var>
+				<var id="smm">
+				(function(){
+				    var sm = J/3;
+					if(L/sm&gt;6){
+					    sm*=2;
+					}
+					return sm;
+				})()</var>
+            </div>
+			<p class="question">如下圖， <code>\overline{AB}=\overline{BC}=\overline{CD}=\overline{DA}=<var>K</var></code>，<code>\overline{OA}=<var>J</var></code>，求 <code>A、B、C</code> 的座標。</p>
+			<div class="problem">
+			    <div class="graphie" id="diamond_1">
+				    init({
+                        range: [ [-1, 12], [-J/smm-2, J/smm+2] ],
+                        scale: 40
+                    });
+					line([-1,0],[2*L/smm+1,0],{ arrows: "-&gt;" });
+					line([L/smm,-J/smm-1],[L/smm,J/smm+1],{ arrows: "&lt;-" });
+					label( [2*L/smm+1,0],  "x", "right", { color: "black" });
+					label( [L/smm,J/smm+1],  "y", "above", { color: "black" });
+					path([[0,0],[L/smm,J/smm],[2*L/smm,0],[L/smm,-J/smm],[0,0]],{stroke:"black"});
+					label( [L/smm,J/smm],  "A", "above right", { color: "black" });
+					label( [0,0],  "B", "below left", { color: "black" });
+					label( [L/smm,-J/smm],  "C", "below right", { color: "black" });
+					label( [2*L/smm,0],  "D", "below right", { color: "black" });
+					label( [2*L/smm,0],  "("+L+",0)", "above right", { color: "black" });
+					label( [L/smm,0],  "O", "below right", { color: "black" });
+					label( [L/smm/2,J/smm/2],  K, "above left", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">	
+				<code>A\enspace = \enspace(</code><span class="sol" data-forms="integer"><var>0</var></span>，<span class="sol" data-forms="integer"><var>J</var></span><code>)</code><br />
+                <code>B\enspace = \enspace(</code><span class="sol" data-forms="integer"><var>-L</var></span>，<span class="sol" data-forms="integer"><var>0</var></span><code>)</code><br />
+                <code>C\enspace = \enspace(</code><span class="sol" data-forms="integer"><var>0</var></span>，<span class="sol" data-forms="integer"><var>-J</var></span><code>)</code><br />	
+                <p class="example">整數，例：<code>6</code></p>		
+            </div>
+            <div class="hints">
+			    <p>由於 <code>B</code> 、<code>D</code> 互為對稱軸 <code>y</code> 軸之對稱點，因此 <code>\overline{OB}=\overline{OD}</code> ，</p>
+				<p>所以 <code>B</code> 的座標為 <code class="hint_green">(<var>-L</var>,0)</code> 。</p>
+				<p>又因為 <code>\overline{AD}=\overline{AB}=<var>K</var></code> ，<code>\overline{OD}=<var>L</var></code> ，</p>
+				<div>
+				    <p>由畢氏定理得</p>
+					<p><code>\overline{OA}=\sqrt{\overline{AD}^{2}-\overline{OD}^{2}}=\sqrt{<var>K*K</var>-<var>L*L</var>}=\sqrt{<var>K*K-L*L</var>}=<var>J</var></code></p>
+				</div>
+				<p>因此 <code>A</code> 的座標為 <code class="hint_green">(0,<var>J</var>)</code> ，而且 <code>A</code> ，<code>C</code> 互為對 <code>x</code> 軸之對稱點，所以 <code>\overline{OA}=\overline{OC}</code> ，</p>
+				<p>因此 <code>C</code> 的座標為 <code class="hint_green">(0,<var>-J</var>)</code> 。</p>
+				<p>所以，本題的答案為 <code class="hint_pink">A=(0,<var>J</var>)\enspace 、B=(<var>-L</var>,0)\enspace 、C=(0,<var>-J</var>)</code> 。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

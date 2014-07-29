@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html data-require="math">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>絕對值的意義</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+                    <var id="J">randRange(3,20)</var>
+					<var id="RESULT">J*2-1</var>
+				    <var id="TEXT">
+					    (function() {
+						    var s = "";
+							var num = 1;
+						    for(var i = -J+1 ; i &lt;= J-1 ; i++){
+							    s+=i +",";
+								num++;
+							}
+							var arr = s.substr(0,s.length-1).split(",");
+							return arr;
+                        })()
+					</var>
+					<var id="TEXT_FIRST">
+					    (function() {
+				            var fs = "";
+							    fs=TEXT.length>10?TEXT.slice(0,10).join(",")+",":TEXT.slice(0,TEXT.length).join(",");
+								return fs;
+						})()
+					</var>
+					<var id="TEXT_SECOND">
+					    (function() {
+				            var ss = "";
+							if(TEXT.length>20){
+							    ss=TEXT.slice(10,20).join(",")+",";
+								return ss;
+							}
+							if(TEXT.length>10&&TEXT.length&lt;=20){
+							    ss=TEXT.slice(10,TEXT.length).join(",");
+								return ss;
+							}
+						})()
+					</var>
+					<var id="TEXT_THIRD">
+					    (function() {
+				            var ts = "";
+							if(TEXT.length>30){
+							    ts=TEXT.slice(20,30).join(",")+",";
+								return ts;
+							}
+							if(TEXT.length>20&&TEXT.length&lt;30){
+							    ts=TEXT.slice(20,TEXT.length).join(",");
+								return ts;
+							}
+						})()
+					</var>
+					<var id="TEXT_FOURTH">
+					     (function() {
+						     var fos = "";
+							 if(TEXT.length>30){
+							 fos = TEXT.slice(30,TEXT.length).join(",");
+							 return fos;
+							 }
+						 })()
+					</var>
+                </div>
+                <p class="question">絕對值小於 <code class="hint_green"><var>J</var></code> 的整數共有幾個？ </p>
+                <div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>RESULT</var></span>
+				</div>
+
+            <div class="hints">
+			<div>
+		    <p>絕對值小於 <code><var>J</var></code> 的整數，就是到原點的距離小於 <code><var>J</var></code> 的整數</p>
+			</div>
+			<div>
+			<p>絕對值小於 <code><var>J</var></code> 的整數，應該是如下整數： </p>
+				<div>
+				<p><code class="hint_blue"><var>TEXT_FIRST</var></code></p>
+				<p data-if="TEXT.length>10"><code class="hint_blue"><var>TEXT_SECOND</var></code></p>
+				<p data-if="TEXT.length>20"><code class="hint_blue"><var>TEXT_THIRD</var></code></p>
+				<p data-if="TEXT.length>30"><code class="hint_blue"><var>TEXT_FOURTH</var></code></p>
+				</div>
+			</div>
+			<div>
+			<p>因此絕對值小於 <code><var>J</var></code> 的整數共有 <code>(<var>J-1</var>+<var>1</var>+<var>J-1</var>)</code> 個，總共 <code class="hint_pink"><var>RESULT</var></code> 個。</p>
+			</div>
+            </div>
+        </div>
+
+        <div id="case2">
+            <div class="vars" data-ensure="NUMERATOR &lt; DENOMINATOR && GCD === 1 && DECIMAL !== 3">
+					<var id="DECIMAL">randRange(300,1999)/100</var>
+					<var id="INT_NUM">floorTo(0,DECIMAL)</var>
+					<var id="DENOMINATOR">randRange(2,5)</var>
+					<var id="NUMERATOR">randRange(1,5)</var>
+					<var id="GCD">getGCD(DENOMINATOR,NUMERATOR)</var>
+					<var id="CHOICE_TYPE">randRange(1,2)</var>
+					<var id="RESULT">INT_NUM*2+1</var>
+					<var id="ARRAY">
+					    (function() {
+						    var s = "";
+						    for(var i = -INT_NUM ; i &lt;= INT_NUM ; i++){
+							    s+=i+",";
+							}
+							var arr = s.substr(0,s.length-1).split(",");
+							return arr;
+                        })()
+					</var>
+					<var id="arrFirst">
+					    (function() {
+					        var arrFirst = "";
+							if(INT_NUM&lt;=8){
+							    arrFirst=ARRAY.slice(0,ARRAY.length);
+							}
+							if(INT_NUM>8&&ARRAY.length &lt;=14){
+							    arrFirst=ARRAY.slice(0,ARRAY.length).join(",");
+							}
+							if(INT_NUM>8&&ARRAY.length >14){
+							    arrFirst=ARRAY.slice(0,14).join(",")+","
+							}
+							return arrFirst;
+					    })()
+					</var>
+					<var id="arrSecond">
+					     (function() {
+						     var arrSecond = "";	 
+							 if(ARRAY.length &gt;14&&ARRAY.length &lt;=35){
+							    arrSecond = ARRAY.slice(14,ARRAY.length).join(",");
+							 }
+							 if(ARRAY.length &gt;35){
+							    arrSecond = ARRAY.slice(14,35).join(",")+","
+							 }
+							 return arrSecond;
+						 })()
+					</var>
+					<var id="arrThird">
+					     (function() {
+						     var arrThird = "";
+							 if(ARRAY.length &gt;=36){
+							     arrThird = ARRAY.slice(35,ARRAY.length).join(",");
+							 }
+							 return arrThird;
+						 })()
+					</var>
+                </div>
+				<p class="question">滿足 <code>\lvert</code> A <code>\rvert</code> &lt; <code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2"><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的整數A共有幾個？ </p>
+                <div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>RESULT</var></span>
+				</div>
+
+            <div class="hints">
+		    <p><code>\lvert A \rvert &lt;  </code><code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2"><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的意思是指 A 點所代表的整數到原點的距離小於 <code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2"><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 。</p>
+			<p data-if="ARRAY.length>=36">絕對值小於 <code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2" ><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的整數，應該是如下整數：<br><br>
+			<code class="hint_blue"><var>arrFirst</var></code><br><br>
+			<code class="hint_blue"><var>arrSecond</var></code><br><br>
+			<code class="hint_blue"><var>arrThird</var></code>
+			</p>
+			<p data-if="ARRAY.length>14&&ARRAY.length&lt;=35&&INT_NUM>8">絕對值小於 <code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2" ><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的整數，應該是如下整數：<br><br>
+			<code class="hint_blue"><var>arrFirst</var></code><br><br>
+			<code class="hint_blue"><var>arrSecond</var></code>
+			</p>
+			<p data-if="ARRAY.length>14&&ARRAY.length&lt;=35&&INT_NUM&lt;=8">絕對值小於 <code data-if="CHOICE_TYPE==1" ><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2"><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的整數，應該是如下整數：<br><br>
+			<code class="hint_blue"><var>arrFirst</var></code>
+			</p>
+			<p data-if="ARRAY.length&lt;=14">絕對值小於 <code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2"><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的整數，應該是如下整數：<br><br>
+			<code class="hint_blue"><var>arrFirst</var></code>
+			</p>
+			<p>所以整數A的個數為 <code><var>INT_NUM</var>+1+<var>INT_NUM</var>=</code> <code class="hint_pink"><var>RESULT</var></code> 個。</p>
+			</div>
+        </div>
+
+        <div id="case3">
+                <div class="vars">
+                    <var id="J">2*randRange( 2,6 )+1</var>
+					<var id="RESULT">(J+1)/2</var>
+                </div>
+				<p class="question">若甲數為整數，且絕對值小於甲數的整數共有 <code class="hint_green"><var>J</var></code> 個，求甲數。</p>
+                <div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>RESULT</var></span>
+				</div>
+
+            <div class="hints">
+		    <p data-if="RESULT ===3">我們可以知道這 <code>5</code> 個整數是指：<br></br><code class="hint_blue">-2,-1,0,1,2</code></p>
+			<p data-if="RESULT ===3">因為 <code>\lvert -2 \rvert ,\lvert -1 \rvert ,\lvert 0 \rvert ,\lvert 1 \rvert ,\lvert 2 \rvert</code> 的值都小於 <code>3</code> ，</p>
+			<p data-if="RESULT ===4">我們可以知道這 <code>7</code> 個整數是指：<br></br><code class="hint_blue">-3,-2,-1,0,1,2,3</code></p>
+			<p data-if="RESULT ===4">因為 <code>\lvert -3 \rvert ,\lvert -2 \rvert ,\lvert -1 \rvert , \lvert 0 \rvert , \lvert 1 \rvert , \lvert 2 \rvert , \lvert 3 \rvert</code> 的值都小於 <code>4</code> ，</p>
+			<p data-if="RESULT ===5">我們可以知道這 <code>9</code> 個整數是：<br></br><code class="hint_blue">-4,-3,-2,-1,0,1,2,3,4</code></p>
+			<p data-if="RESULT ===5">因為 <code>\lvert -4 \rvert ,\lvert -3 \rvert ,\lvert -2 \rvert ,\lvert -1 \rvert , \lvert 0 \rvert , \lvert 1 \rvert , \lvert 2 \rvert , \lvert 3 \rvert , \lvert 4 \rvert</code> 的值都小於 <code>5</code> ，</p>
+			<p data-if="RESULT ===6">我們可以知道這 <code>11</code> 個整數是指：<br></br><code class="hint_blue">-5,-4,-3,-2,-1,0,1,2,3,4,5</code></p>
+			<p data-if="RESULT ===6">因為 <code>\lvert -5 \rvert ,\lvert -4 \rvert ,\lvert -3 \rvert ,\lvert -2 \rvert ,\lvert -1 \rvert , \lvert 0 \rvert , \lvert 1 \rvert , \lvert 2 \rvert , \lvert 3 \rvert , \lvert 4 \rvert , \lvert 5 \rvert</code> 的值都小於 <code>6</code> ，</p>
+			<p data-if="RESULT ===7">我們可以知道這 <code>13</code> 個整數是指：<br></br><code class="hint_blue">-6,-5-4,-3,-2,-1,0,1,2,3,4,5,6</code></p>
+			<p data-if="RESULT ===7">因為 <code>\lvert -6 \rvert,\lvert-5\rvert,\lvert-4\rvert,\lvert-3\rvert,\lvert-2\rvert,\lvert-1\rvert,\lvert0\rvert,\lvert1\rvert,\lvert2\rvert,\lvert3\rvert,\lvert4\rvert,\lvert5\rvert,\lvert6\rvert</code> 的值都小於 <code>7</code> ，</p>
+			<p>因此，本題的答案為 <code class="hint_pink"><var>RESULT</var></code> 。</p>
+        </div>
+        </div>
+
+    </div>
+    </div>
+</body>
+</html>

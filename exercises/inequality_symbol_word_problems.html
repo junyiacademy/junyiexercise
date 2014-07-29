@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>運用不等式的符號</title>
+    <script src="../khan-exercise.js"></script>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+        </style>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+            <div class="vars">
+			    <var id="J">accAdd(randRange(-5,4),accDiv(randRange(1,9),10))</var>
+				<var id="names">randFromArray(["玉山","合歡山","阿里山","陽明山","擎天崗"])</var>
+            </div>
+			<p class="question">用符號 <code>&lt;、&gt;、&le;、&ge;</code> 表示下列的敘述：</p>
+			<div class="problem"><p>如果溫度用 <code>t\,^{\circ}\mathrm{C}</code> 表示，今天 <code><var>names</var></code> 山頂的最高溫度是 <code><var>J</var>\,^{\circ}\mathrm{C}</code> 。</p></div>
+			<p class="solution" data-type="radio"><code><var>"t&le;"+J</var></code></p>
+                <ul class="choices" data-category="true">
+                    <li><code>t&gt;<var>J</var></code></li>
+                    <li><code>t&ge;<var>J</var></code></li>
+					<li><code>t&lt;<var>J</var></code></li>
+					<li><code>t&le;<var>J</var></code></li>
+                </ul>
+
+    <div class="hints">
+	    <p>最高溫度是 <code><var>J</var></code> 度時，</p>
+		<p>我們知道溫度 <code>t</code> 一定要比 <code><var>J</var></code> 度來得低，或者是一樣。</p>
+		<div><p>所以我們可以列出：</p><p><code>t&le;<var>J</var></code></p></div>
+		<p>因此，本題的答案為 <code class="hint_pink">t&le;<var>J</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case2">
+            <div class="vars">
+			    <var id="J">randRange(50,100)</var>
+				<var id="names">randFromArray(["鄭伯伯","李叔叔","王阿姨","嘉豪","信宏","志銘"])</var>
+            </div>
+			<p class="question">用符號 <code>&lt;、&gt;、&le;、&ge;</code> 表示下列的敘述：</p>
+			<div class="problem"><p>如果速度用每小時 <code>v</code> 公里表示，<code><var>names</var></code> 開車的速度比每小時 <code><var>J</var></code> 公里還快 。</p></div>
+			<p class="solution" data-type="radio"><code><var>"v&gt;"+J</var></code></p>
+                <ul class="choices" data-category="true">
+                    <li><code>v&gt;<var>J</var></code></li>
+                    <li><code>v&ge;<var>J</var></code></li>
+					<li><code>v&lt;<var>J</var></code></li>
+					<li><code>v&le;<var>J</var></code></li>
+                </ul>
+
+    <div class="hints">
+	    <p><code><var>names</var></code> 開車的速度比每小時 <code><var>J</var></code> 公里還快，</p>
+		<p>如果用 <code>v</code> 來表示速度，</p>
+		<div><p>我們可以列出：</p><p><code>v&gt;<var>J</var></code></p></div>
+		<p>因此，本題的答案為 <code class="hint_pink">v&gt;<var>J</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case3">
+            <div class="vars">
+			    <var id="J">randRange(15,100)</var>
+				<var id="names">randFromArray(["美華","靜宜","雅慧","嘉豪","信宏","志銘"])</var>
+            </div>
+			<p class="question">用符號 <code>&lt;、&gt;、&le;、&ge;</code> 表示下列的敘述：</p>
+			<div class="problem"><p>如果面積用 <code>a</code> 坪表示， <code><var>names</var></code> 家的面積小於 <code><var>J</var></code> 坪。</p></div>
+			<p class="solution" data-type="radio"><code><var>"a&lt;"+J</var></code></p>
+                <ul class="choices" data-category="true">
+                    <li><code>a&gt;<var>J</var></code></li>
+                    <li><code>a&ge;<var>J</var></code></li>
+					<li><code>a&lt;<var>J</var></code></li>
+					<li><code>a&le;<var>J</var></code></li>
+                </ul>
+
+    <div class="hints">
+	    <p><code><var>names</var></code> 家的面積小於 <code><var>J</var></code> 坪，</p>
+		<p>如果以 <code>a</code> 來表示面積的話，</p>
+		<div><p>我們可以列出：</p><p><code>a&lt;<var>J</var></code></p></div>
+		<p>因此，本題的答案為 <code class="hint_pink">a&lt;<var>J</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case4">
+            <div class="vars">
+			    <var id="J">randRange(50,100)</var>
+				<var id="names">randFromArray(["鄭伯伯","李叔叔","王阿姨","嘉豪","信宏","志銘"])</var>
+            </div>
+			<p class="question">用符號 <code>&lt;、&gt;、&le;、&ge;</code> 表示下列的敘述：</p>
+			<div class="problem"><p>如果速度用每小時 <code>v</code> 公里表示，<code><var>names</var></code> 開車的速度每小時不超過 <code><var>J</var></code> 公里。</p></div>
+			<p class="solution" data-type="radio"><code><var>"v&le;"+J</var></code></p>
+                <ul class="choices" data-category="true">
+                    <li><code>v&gt;<var>J</var></code></li>
+                    <li><code>v&ge;<var>J</var></code></li>
+					<li><code>v&lt;<var>J</var></code></li>
+					<li><code>v&le;<var>J</var></code></li>
+                </ul>
+
+    <div class="hints">
+	    <p><code><var>names</var></code> 開車的速度每小時不超過 <code><var>J</var></code> 公里，</p>
+		<p>如果用 <code>v</code> 來表示速度，</p>
+		<div><p>我們可以列出：</p><p><code>v&le;<var>J</var></code></p></div>
+		<p>因此，本題的答案為 <code class="hint_pink">v&le;<var>J</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case5">
+            <div class="vars">
+			    <var id="J">randRange(100,800)</var>
+				<var id="names">randFromArray(["演奏廳","活動中心"])</var>
+            </div>
+			<p class="question">用符號 <code>&lt;、&gt;、&le;、&ge;</code> 表示下列的敘述：</p>
+			<div class="problem"><p><code><var>names</var></code> 最多可以容納的觀眾人數為 <code><var>J</var></code> 人。用 <code>v</code> 來表示 <code><var>names</var></code> 可容納的觀眾人數。</p></div>
+			<p class="solution" data-type="radio"><code><var>"v&le;"+J</var></code></p>
+                <ul class="choices" data-category="true">
+                    <li><code>v&gt;<var>J</var></code></li>
+                    <li><code>v&ge;<var>J</var></code></li>
+					<li><code>v&lt;<var>J</var></code></li>
+					<li><code>v&le;<var>J</var></code></li>
+                </ul>
+
+    <div class="hints">
+	    <p><code><var>names</var></code> 最多可以容納的觀眾人數為 <code><var>J</var></code> 人，</p>
+		<p>如果用 <code>v</code> 來表示觀眾人數的話，</p>
+		<div><p>我們可以列出：</p><p><code>v&le;<var>J</var></code></p></div>
+		<p>因此，本題的答案為 <code class="hint_pink">v&le;<var>J</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case6">
+            <div class="vars">
+			    <var id="J">randRange(100,800)</var>
+				<var id="names">randFromArray([["a","b"],["b","a"]])</var>
+				<var id="size_type">randRange(1,3)</var>
+				<var id="sizes">
+				(function(){
+				    if(size_type==3){
+					    return fraction(2,3,true,true,false);
+					}
+					if(size_type==1){
+					    return "一半";
+					}
+					if(size_type==2){
+					    return fraction(1,2,true,true,false);
+					}
+				})()</var>
+            </div>
+			<p class="question">用符號 <code>&lt;、&gt;、&le;、&ge;</code> 表示下列的敘述：</p>
+			<div class="problem">
+			    <p>如果全班人數用 <code><var>names[0]</var></code> 表示，投票同意人數用 <code><var>names[1]</var></code> 表示。</p>
+				<p>假設投票同意的人數超過全班人數的 <code><var>sizes</var></code>，提案就通過。</p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <code><var>names[1]</var>\enspace</code>
+				<span class="sol" data-type="list" data-choices="['', '&gt;', '&lt;','&ge;','&le;']">
+                        <var>"&gt;"</var>
+                </span>
+				<span class="sol" data-type="rational"><var>size_type==3?2/3:1/2</var></span> <code><var>names[0]</var></code>
+				<p class="example">例，<code>a&lt;\dfrac{1}{2}b</code></p>
+			</div>
+			
+
+    <div class="hints">
+	    <p>投票同意的人數超過全班人數的 <code><var>sizes</var></code>，提案就通過，</p>
+		<p>全班人數是 <code><var>names[0]</var></code> ，所以全班人數的 <code><var>sizes</var></code> 為： <code><var>size_type==3?fraction(2,3,true,true,false):fraction(1,2,true,true,false)</var><var>names[0]</var></code> 。</p>
+		<div><p>我們可以列出：</p><p><code><var>names[1]</var>&gt;<var>size_type==3?fraction(2,3,true,true,false):fraction(1,2,true,true,false)</var><var>names[0]</var></code></p></div>
+		<p>因此，本題的答案為 <code class="hint_pink"><var>names[1]</var>&gt;<var>size_type==3?fraction(2,3,true,true,false):fraction(1,2,true,true,false)</var><var>names[0]</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case7">
+            <div class="vars">
+			    <var id="J">randRange(3,5)</var>
+				<var id="K">accMul(10,randRange(15,16))</var>
+            </div>
+			<p class="question">用符號 <code>&lt;、&gt;、&le;、&ge;</code> 表示下列的敘述：</p>
+			<div class="problem">
+			    <p>到郵局寄長方體的包裹時，郵局有這樣的規定：</p>
+				<p>長方體的最長邊不得超過 <code><var>K</var></code> 公分，而且另外兩邊和的兩倍加上最長邊不得超過 <code><var>J</var></code> 公尺。</p>
+				<p>如何利用不等號來表示這個規定？</p>
+				<p>如果用 <code>a</code> 公分表示最長邊的長度， <code>b</code> 公分、 <code>c</code> 公分表示另外兩邊的長度。</p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <code>a \enspace</code><span class="sol" data-type="list" data-choices="['', '&gt;', '&lt;','&le;','&ge;']">
+                        <var>"&le;"</var>
+                </span><span class="sol" data-forms="integer"><var>K</var></span><br />
+				<code>a+</code><code>2b+</code><code>2c</code>
+				<span class="sol" data-type="list" data-choices="['', '&gt;', '&lt;','&le;','&ge;']">
+                        <var>"&le;"</var>
+				</span><span class="sol" data-forms="integer"><var>J*100</var></span>
+				<p class="example">例，<code>a&gt;300</code></p>
+				<p class="example"><code>a+2b+2c&gt;400</code></p>
+			</div>
+
+    <div class="hints">
+	    <p>如果用 <code>a</code> 公分表示最長邊的長度， <code>b</code> 公分、 <code>c</code> 公分表示另外兩邊的長度，</p>
+		<p>則，最長邊不得超過 <code><var>K</var></code> 公分可以用 <code>a&le;<var>K</var></code> 來表示；</p>
+		<p>而另外兩邊和的兩倍加上最長邊不得超過 <code><var>J</var></code> 公尺可以用 <code>2(b+c)+a&le;<var>J*100</var></code> 來表示。</p>
+		<div>
+		    <p>所以，若長方體三邊長為 <code>a、b、c</code> ，且 <code>a</code> 為最長邊，則該規定可改寫為 ：</p>
+		    <p><code class="hint_pink">a&le;<var>K</var></code> 而且 <code class="hint_pink">a+2b+2c&le;<var>J*100</var></code></p>
+		</div>
+    </div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

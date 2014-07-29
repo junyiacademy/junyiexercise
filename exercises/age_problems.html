@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie expressions interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>年齡問題</title>
+    <script src="../khan-exercise.js"></script>
+	<script script="text/javascript">
+	    function accMul(arg1,arg2) { 
+            var m=0,s1=arg1.toString(),s2=arg2.toString(); 
+            try{m+=s1.split(".")[1].length}catch(e){} 
+            try{m+=s2.split(".")[1].length}catch(e){} 
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m) 
+        } 
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+            <div class="vars">
+			    <var id="names_1">randFromArray(["李四","張三","正達","致勤","張晨","俊豪"])</var>
+				<var id="names_2">randFromArray(["向南","景博","書白","新之","易云","憶文"])</var>
+				<var id="J">randRange(60,70)</var>
+				<var id="K">randRange(90,104)</var>
+				<var id="R">K-J</var>
+            </div>
+			<p class="question"><code><var>names_1</var></code> 先生出生於民國 <code><var>J</var></code> 年，他的兒子 <code><var>names_2</var></code> 出生於民國 <code><var>K</var></code> 年，他們的年齡相差幾歲？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>歲</code><br />
+			</div>
+
+    <div class="hints">
+	    <div>
+	        <p>我們可以通過觀察下圖來解題：</p>
+			<div class="graphie" id="age">
+			    init({ range:[[-2,20],[-2,3]],scale: 30});
+				    line( [ 1, 0.1], [1, -0.1],{stroke:"black"});
+					line( [ 10, 0.1], [10, -0.1],{stroke:"black"});
+				    line( [ 1, 0], [10, 0],{stroke:"red"});
+					line( [ 1, 0], [4.5, 1],{stroke:"dimgray"});
+					line( [ 10, 0], [6.5, 1],{stroke:"dimgray"});
+					line( [ 10, 1.5], [10, 0.4],{stroke:"dimgray"});
+					line( [ 1, 1.5], [1, 0.4],{stroke:"dimgray"});
+					label( [ 5.5, 1 ],  "？", "center", { color: "dimgray" });
+                    label( [ 0, 0 ],  names_1, "left", { color: "dimgray" });
+					label( [ 1, -0.2 ],  "民國", "below", { color: "dimgray" });
+					label( [ 1, -0.9 ],  J+"年", "below", { color: "dimgray" });
+					label( [ 10, -0.2 ],  "民國", "below", { color: "dimgray" });
+					label( [ 10, -0.9 ],  K+"年", "below", { color: "dimgray" });
+					label( [ 1, 1.9 ],  names_1, "above", { color: "dimgray" });
+					label( [ 1, 1.2 ],  "出生", "above", { color: "dimgray" });
+					label( [ 10, 1.9 ],  names_2, "above", { color: "dimgray" });
+					label( [ 10, 1.2 ],  "出生", "above", { color: "dimgray" });
+			</div>
+		</div>
+	    <p>因此，他們的年齡相差 <code><var>K</var>-<var>J</var>=<var>R</var></code> 歲。</p>
+		<div>
+			<p>所以，本題的答案爲 <code class="hint_pink"><var>R</var></code> 歲。</p>
+		</div>
+    </div>
+	</div>
+	
+	<div id="case2">
+            <div class="vars">
+			    <var id="names_1">randFromArray(["媽媽","阿姨"])</var>
+				<var id="names_2">randFromArray(["向南","小可","書雁","芷容","采藍","語馨"])</var>
+				<var id="J">randRange(24,35)</var>
+				<var id="R">2*J</var>
+            </div>
+			<p class="question"><code><var>names_1</var></code> 的年齡和 <code><var>names_2</var></code> 的年齡相差 <code><var>J</var></code> 歲。當 <code><var>names_1</var></code> 的年齡是 <code><var>names_2</var></code> 的 <code>2</code> 倍時， <code><var>names_1</var></code> 是幾歲？ <code><var>names_2</var></code> 是幾歲？</p>
+			<div class="solution" data-type="multiple">
+				<code><var>names_1</var>=\enspace</code><span class="sol" data-forms="integer"><var>R</var></span><code>歲</code><br />
+				<code><var>names_2</var>=\enspace</code><span class="sol" data-forms="integer"><var>J</var></span><code>歲</code>
+				<p class="example">整數，例 ：8</p>
+			</div>
+
+    <div class="hints">
+	    <div>
+	        <p>我們可以通過觀察下圖來解題：</p>
+			<div class="graphie" id="age">
+			    init({ range:[[-2,20],[-1,3]],scale: 30});
+				    line( [ 1, 1.6], [1, 1.4],{stroke:"black"});
+					line( [ 10, 1.6], [10, 1.4],{stroke:"black"});
+				    line( [ 1, 1.5], [10, 1.5],{stroke:"red"});
+					line( [ 1, 1.5], [4.5, 2],{stroke:"dimgray"});
+					line( [ 10, 1.5], [6.5, 2],{stroke:"dimgray"});
+					label( [ 5.5, 2 ],  "？", "center", { color: "dimgray" });
+                    label( [ 0, 1.5 ],  names_1, "left", { color: "dimgray" });
+					line( [ 5.5, 1.5], [7.25, 1.1],{stroke:"dimgray"});
+					line( [ 10, 1.5], [8.25, 1.1],{stroke:"dimgray"});
+					line( [ 5.5, 1.6], [5.5, 1.4],{stroke:"black"});
+					line( [ 1, 1.5], [2.75, 1.1],{stroke:"dimgray"});
+					line( [ 5.5, 1.5], [3.75, 1.1],{stroke:"dimgray"});
+					label( [ 3.25, 1 ],  J, "center", { color: "dimgray" });
+					line( [ 5.5, 0.1], [5.5, -0.1],{stroke:"black"});
+					line( [ 10, 0.1], [10, -0.1],{stroke:"black"});
+				    line( [ 5.5, 0], [10, 0],{stroke:"deepskyblue"});
+					line( [ 5.5, 0], [7.25, 0.5],{stroke:"dimgray"});
+					line( [ 10, 0], [8.25, 0.5],{stroke:"dimgray"});
+					label( [ 7.75, 0.8 ],  "？", "center", { color: "dimgray" });
+                    label( [ 0, 0 ],  names_2, "left", { color: "dimgray" });
+					line( [ 5.5, 1.5], [5.5, 0],{stroke:"dimgray","stroke-dasharray": "-"});
+					line( [ 10, 1.5], [10, 0],{stroke:"dimgray","stroke-dasharray": "-"});
+			</div>
+		</div>
+		<div><p>當 <code><var>names_1</var></code> 的年齡是 <code><var>names_2</var></code> 年齡的 <code>2</code> 倍時，<code><var>names_2</var></code> 的年齡就會是兩人的年齡差，也就是 <code><var>J</var></code> 歲。<p></div>
+		<p>因此，<code><var>names_1</var></code> 的年齡為 <code><var>J</var>\times 2=<var>R</var></code> 歲</p>
+		<p>所以，本題的答案為 <code><var>names_1</var></code> <code class="hint_pink"><var>R</var></code> 歲， <code><var>names_2</var></code> <code class="hint_pink"><var>J</var></code> 歲。</p>
+    </div>
+	</div>
+	
+	<div id="case3">
+            <div class="vars">
+			    <var id="names_1">randFromArray(["爸爸","叔叔","媽媽","阿姨"])</var>
+				<var id="names_2">randFromArray(["向南","小可","書雁","芷容","采藍","語馨"])</var>
+				<var id="J">randRange(18,29)</var>
+				<var id="R">J-13</var>
+            </div>
+			<p class="question"><code><var>names_2</var></code> 今年 <code>13</code> 歲， <code><var>names_1</var></code> 與 <code><var>names_2</var></code> 的年齡相差 <code><var>J</var></code> 歲，再過幾年 <code><var>names_1</var></code> 的年齡是 <code><var>names_2</var></code> 的 <code>2</code> 倍？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>年</code><br />
+			</div>
+
+    <div class="hints">
+	    <div>
+	        <p>依據題意， <code><var>names_1</var><var>J</var></code> 歲時， <code><var>names_2</var></code> 出生，下圖是 <code><var>names_1</var></code> 和 <code><var>names_2</var></code> 到今年的年齡線段圖。</p>
+		</div>
+		<div>
+		    <div class="graphie" id="age">
+			var blue_end = 8+13*7/J;
+			var position = (blue_end+8)/2;
+		    init({ range:[[-2,20],[-1,4]],scale: 30});
+				    line( [ 1, 1.5], [blue_end, 1.5],{stroke:"red"});
+					line( [ 8, 0], [blue_end, 0],{stroke:"deepskyblue"});
+					line( [ 8, 0.1], [8, -0.1],{stroke:"black"});
+					line( [ blue_end, 0.1], [blue_end, -0.1],{stroke:"black"});
+					line( [ 1, 1.4], [1, 1.6],{stroke:"black"});
+					line( [ 8, 1.4], [8, 1.6],{stroke:"black"});
+					line( [ 1, 1.5], [4, 1.8],{stroke:"dimgray"});
+					line( [ 8, 1.5], [5, 1.8],{stroke:"dimgray"});
+					line( [ 8, 0], [position-0.5, 0.3],{stroke:"dimgray"});
+					line( [ blue_end, 0], [position+0.5, 0.3],{stroke:"dimgray"});
+					line( [ blue_end, 1.4], [blue_end, 1.6],{stroke:"black"});
+                    label( [ 0, 1.5 ],  names_1, "left", { color: "dimgray" });
+					label( [ 4.5, 1.8 ],  J, "center", { color: "dimgray" });
+					label( [ position, 0.3 ], 13, "center", { color: "dimgray" });
+                    label( [ 0, 0 ],  names_2, "left", { color: "dimgray" });
+					line( [ 8, 1.5], [8, 0],{stroke:"dimgray","stroke-dasharray": "-"});
+					line( [ blue_end, 1.5], [blue_end, 0],{stroke:"dimgray","stroke-dasharray": "-"});
+					label( [ 1, 2.9 ], names_1, "center", { color: "dimgray" });
+					label( [ 1, 2.2 ], "出生", "center", { color: "dimgray" });
+					label( [ 8, 2.9 ], names_2, "center", { color: "dimgray" });
+					label( [ 8, 2.2 ], "出生", "center", { color: "dimgray" });
+					label( [ blue_end, 2.2 ], "今年", "center", { color: "dimgray" });
+			</div>
+		</div>
+		<div><p>再過幾年後，紅線會變成藍線的 <code>2</code> 倍，所以藍線長是 <code><var>J</var></code> ，如下圖：</p></div>
+		<div>
+		    <div class="graphie" id="age2">
+			var blue_end = 8+13*7/J;
+			var position = (blue_end+8)/2;
+			var position2 = (blue_end+15)/2;
+		    init({ range:[[-2,20],[-1,4]],scale: 30});
+				    line( [ 1, 1.5], [15, 1.5],{stroke:"red"});
+					line( [ 15, 1.4], [15, 1.6],{stroke:"black"});
+					line( [ 8, 0], [15, 0],{stroke:"deepskyblue"});
+					line( [ 8, 0.1], [8, -0.1],{stroke:"black"});
+					line( [ 15, 0.1], [15, -0.1],{stroke:"black"});
+					line( [ blue_end, 0.1], [blue_end, -0.1],{stroke:"black"});
+					line( [ 1, 1.4], [1, 1.6],{stroke:"black"});
+					line( [ 8, 1.4], [8, 1.6],{stroke:"black"});
+					line( [ 1, 1.5], [4, 1.8],{stroke:"dimgray"});
+					line( [ 8, 1.5], [5, 1.8],{stroke:"dimgray"});
+					line( [ 8, 0], [position-0.5, 0.3],{stroke:"dimgray"});
+					line( [ blue_end, 0], [position+0.5, 0.3],{stroke:"dimgray"});
+					line( [ blue_end, 1.4], [blue_end, 1.6],{stroke:"black"});
+                    label( [ 0, 1.5 ],  names_1, "left", { color: "dimgray" });
+					label( [ 4.5, 1.8 ],  J, "center", { color: "dimgray" });
+					label( [ position, 0.3 ], 13, "center", { color: "dimgray" });
+                    label( [ 0, 0 ],  names_2, "left", { color: "dimgray" });
+					line( [ 8, 1.5], [8, 0],{stroke:"dimgray","stroke-dasharray": "-"});
+					line( [ blue_end, 1.5], [blue_end, 0],{stroke:"dimgray","stroke-dasharray": "-"});
+					label( [ 1, 2.9 ], names_1, "center", { color: "dimgray" });
+					label( [ 1, 2.2 ], "出生", "center", { color: "dimgray" });
+					label( [ 8, 2.9 ], names_2, "center", { color: "dimgray" });
+					label( [ 8, 2.2 ], "出生", "center", { color: "dimgray" });
+					label( [ blue_end, 2.2 ], "今年", "center", { color: "dimgray" });
+					line( [ blue_end, 1.5], [(blue_end+15)/2-0.5, 1.8],{stroke:"dimgray"});
+					line( [ 15, 1.5], [(blue_end+15)/2+0.5, 1.8],{stroke:"dimgray"});
+					line( [ blue_end, 0], [(blue_end+15)/2-0.5, 0.3],{stroke:"dimgray"});
+					line( [ 15, 0], [(blue_end+15)/2+0.5, 0.3],{stroke:"dimgray"});
+					line( [ 15, 1.5], [7, 1.1],{stroke:"#ADADAD"});
+					line( [ 1, 1.5], [5, 1.1],{stroke:"#ADADAD"});
+					label( [ 6, 1 ], "2(倍)", "center", { color: "dimgray" });
+					line( [ 15, 0], [12.3, -0.3],{stroke:"#ADADAD"});
+					line( [ 8, 0], [10.7, -0.3],{stroke:"#ADADAD"});
+					label( [ 11.5, -0.5 ], "1(倍)", "center", { color: "dimgray" });
+					label( [ position2, 0.3 ], "?年", "center", { color: "dimgray" });
+					label( [ position2, 1.8 ], "?年", "center", { color: "dimgray" });
+					line( [ 15, 1.5], [15, 0],{stroke:"dimgray","stroke-dasharray": "-"});
+			</div>
+		</div>
+		<div><p>當 <code><var>names_1</var></code> 的年齡是 <code><var>names_2</var></code> 的 <code>2</code> 倍時， <code><var>names_2</var></code> 的年齡是 <code><var>J</var></code> 歲。</p></div>
+		<p><code><var>J</var>-13=<var>R</var></code></p>
+		<p>所以，本題的答案為再過 <code class="hint_pink"><var>R</var></code> 年。</p>
+    </div>
+	</div>
+	
+		<div id="case4">
+            <div class="vars">
+			    <var id="names_1">randFromArray(["爸爸","爺爺","媽媽","奶奶"])</var>
+				<var id="names_2">randFromArray(["小華","景博","書白","新之","易云","憶文"])</var>
+				<var id="J">10*randRange(4,9)</var>
+				<var id="K">10*randRange(9,14)</var>
+				<var id="R">K-J</var>
+            </div>
+			<p class="question"><code><var>names_2</var></code> 有 <code><var>J</var></code> 元，哥哥的錢比 <code><var>names_2</var></code> 多 <code><var>K</var></code> 元，<code><var>names_1</var></code> 再各給兩兄弟一樣多的錢後，哥哥的錢就變成 <code><var>names_2</var></code> 的 <code>2</code> 倍，<code><var>names_1</var></code> 各給他們多少錢？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>元</code><br />
+			</div>
+
+    <div class="hints">
+	    <div>
+	        <p>依據題意，哥哥比 <code><var>names_2</var></code> 多 <code><var>K</var></code> 元。</p>
+		</div>
+		<div>
+		    <div class="graphie" id="age">
+			var blue_end = 8+J*7/K;
+			var position = (blue_end+8)/2;
+		    init({ range:[[-2,20],[-1,4]],scale: 30});
+				    line( [ 1, 1.5], [blue_end, 1.5],{stroke:"red"});
+					line( [ 8, 0], [blue_end, 0],{stroke:"deepskyblue"});
+					line( [ 8, 0.1], [8, -0.1],{stroke:"black"});
+					line( [ blue_end, 0.1], [blue_end, -0.1],{stroke:"black"});
+					line( [ 1, 1.4], [1, 1.6],{stroke:"black"});
+					line( [ 8, 1.4], [8, 1.6],{stroke:"black"});
+					line( [ 1, 1.5], [4, 1.8],{stroke:"dimgray"});
+					line( [ 8, 1.5], [5, 1.8],{stroke:"dimgray"});
+					line( [ 8, 0], [position-0.5, 0.3],{stroke:"dimgray"});
+					line( [ blue_end, 0], [position+0.5, 0.3],{stroke:"dimgray"});
+					line( [ blue_end, 1.4], [blue_end, 1.6],{stroke:"black"});
+                    label( [ 0, 1.5 ],  "哥哥", "left", { color: "dimgray" });
+					label( [ 4.5, 1.8 ],  K, "center", { color: "dimgray" });
+					label( [ position, 0.3 ], J, "center", { color: "dimgray" });
+                    label( [ 0, 0 ],  names_2, "left", { color: "dimgray" });
+					line( [ 8, 1.5], [8, 0],{stroke:"dimgray","stroke-dasharray": "-"});
+					line( [ blue_end, 1.5], [blue_end, 0],{stroke:"dimgray","stroke-dasharray": "-"});
+			</div>
+		</div>
+		<div><p><code><var>names_1</var></code> 給錢後，紅線會變成藍線的 <code>2</code> 倍，所以藍線長是  <code><var>K</var></code> 。</p></div>
+		<div>
+		    <div class="graphie" id="age2">
+			var blue_end = 8+J*7/K;
+			var position = (blue_end+8)/2;
+			var position2 = (blue_end+15)/2;
+		    init({ range:[[-2,20],[-1,4]],scale: 30});
+				    line( [ 1, 1.5], [15, 1.5],{stroke:"red"});
+					line( [ 15, 1.4], [15, 1.6],{stroke:"black"});
+					line( [ 8, 0], [15, 0],{stroke:"deepskyblue"});
+					line( [ 8, 0.1], [8, -0.1],{stroke:"black"});
+					line( [ 15, 0.1], [15, -0.1],{stroke:"black"});
+					line( [ blue_end, 0.1], [blue_end, -0.1],{stroke:"black"});
+					line( [ 1, 1.4], [1, 1.6],{stroke:"black"});
+					line( [ 8, 1.4], [8, 1.6],{stroke:"black"});
+					line( [ 1, 1.5], [4, 1.8],{stroke:"dimgray"});
+					line( [ 8, 1.5], [5, 1.8],{stroke:"dimgray"});
+					line( [ 8, 0], [position-0.5, 0.3],{stroke:"dimgray"});
+					line( [ blue_end, 0], [position+0.5, 0.3],{stroke:"dimgray"});
+					line( [ blue_end, 1.4], [blue_end, 1.6],{stroke:"black"});
+                    label( [ 0, 1.5 ],  "哥哥", "left", { color: "dimgray" });
+					label( [ 4.5, 1.8 ],  K, "center", { color: "dimgray" });
+					label( [ position, 0.3 ], J, "center", { color: "dimgray" });
+                    label( [ 0, 0 ],  names_2, "left", { color: "dimgray" });
+					line( [ 8, 1.5], [8, 0],{stroke:"dimgray","stroke-dasharray": "-"});
+					line( [ blue_end, 1.5], [blue_end, 0],{stroke:"dimgray","stroke-dasharray": "-"});
+					line( [ 15, 1.5], [15, 0],{stroke:"dimgray","stroke-dasharray": "-"});
+					line( [ blue_end, 1.5], [(blue_end+15)/2-0.5, 1.8],{stroke:"dimgray"});
+					line( [ 15, 1.5], [(blue_end+15)/2+0.5, 1.8],{stroke:"dimgray"});
+					line( [ blue_end, 0], [(blue_end+15)/2-0.5, 0.3],{stroke:"dimgray"});
+					line( [ 15, 0], [(blue_end+15)/2+0.5, 0.3],{stroke:"dimgray"});
+					line( [ 15, 1.5], [7, 1.1],{stroke:"#ADADAD"});
+					line( [ 1, 1.5], [5, 1.1],{stroke:"#ADADAD"});
+					label( [ 6, 1 ], "2(倍)", "center", { color: "dimgray" });
+					line( [ 15, 0], [12.3, -0.3],{stroke:"#ADADAD"});
+					line( [ 8, 0], [10.7, -0.3],{stroke:"#ADADAD"});
+					label( [ 11.5, -0.5 ], "1(倍)", "center", { color: "dimgray" });
+					label( [ position2, 0.3 ], "?元", "center", { color: "dimgray" });
+					label( [ position2, 1.8 ], "?元", "center", { color: "dimgray" });
+			</div>
+		</div>
+		<div><p>當哥哥的錢是 <code><var>names_2</var></code> 的 <code>2</code> 倍時， <code><var>names_2</var></code> 的錢是 <code><var>K</var></code> 元。</p></div>
+		<p><code><var>K</var>-<var>J</var>=<var>R</var></code></p>
+		<p>所以，本題的答案為各給 <code class="hint_pink"><var>R</var></code> 元。</p>
+    </div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

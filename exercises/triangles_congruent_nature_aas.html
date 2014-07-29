@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>AAS全等性質</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 40px;
+        }
+        </style>
+<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+		function getPoint(low,anga,angb){
+		    //case1
+			var angc = 180-anga-angb;
+			var h = low*Math.tan(angb*Math.PI/180)*Math.tan(angc*Math.PI/180)/(Math.tan(angb*Math.PI/180)+Math.tan(angc*Math.PI/180));
+			var m = h/Math.tan(angb*Math.PI/180);
+			return [h,m];
+		}
+	</script>
+
+
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+			    <var id="ANGLE_A">randRange(45,90)</var>
+				<var id="ANGLE_B">randRange(30,60)</var>
+				<var id="ANGLE_C">180-ANGLE_A-ANGLE_B</var>
+            </div>
+            <p class="question">如下圖，已知 <code>\triangle{ABC}</code> 與 <code>\triangle{DEF}</code> 中， <code>\displaystyle \angle {A}=\displaystyle \angle {D}</code> ， <code>\displaystyle \angle {B}=\displaystyle \angle {E}</code> ，且 <code>\overline{BC}=\overline{EF}</code> ， 試說明 <code>\triangle{ABC} \cong \triangle{DEF}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="triangle_1">
+				    var point_A = getPoint(4,ANGLE_A,ANGLE_B);
+					var high = point_A[0];
+					var m_length = point_A[1];
+                    init({
+                        range: [ [-1, 12], [-1, high+1] ],
+                        scale: 40
+                    });
+					path([[0,0],[4,0],[m_length,high],[0,0]],{stroke:"black"});
+					path([[6,0],[10,0],[6+m_length,high],[6,0]],{stroke:"black"});
+					style({ stroke: "red", strokeWidth: 1.5 });
+					line([1.9,-0.15],[2.1,0.15]);
+					line([7.9,-0.15],[8.1,0.15]);
+					label( [ 0, 0 ],  "B", "left", { color: "black" });
+					label( [ m_length,high ],  "A", "above", { color: "black" });
+					label( [ 4, 0 ],  "C", "right", { color: "black" });
+					label( [ 6, 0 ],  "E", "left", { color: "black" });
+					label( [ 6+m_length,high ],  "D", "above", { color: "black" });
+					label( [ 10, 0 ],  "F", "right", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">	
+				根據 <input type="text" id="a_1" style="width:30px"> 全等性質，所以<code>\triangle{ABC} \cong \triangle{DEF}</code>
+                <p class="example">大寫字母，例如 <code>ASA</code> 表示角邊角全等性質</p>
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("a_1").value</div>
+				    <div class="validator-function">
+					    if(guess.replace(/[ ]/g,"")=="AAS"||guess.replace(/[ ]/g,"")=="ASA"){
+						    return true;
+						}
+                    </div>
+				</div>
+            </div>
+            <div class="hints">
+			    <p>由題意知 <code>\displaystyle \angle {A}=\displaystyle \angle {D}</code> ， <code>\displaystyle \angle {B}=\displaystyle \angle {E}</code> ，<code>\overline{BC}=\overline{EF}</code> ，</p>
+				<p>所以，根據 <code class="hint_pink">AAS全等性質</code> ，得到 <code>\triangle{ABC} \cong \triangle{DEF}</code> 。</p>
+				
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+			    <var id="ANGLE_A">30</var>
+				<var id="ANGLE_B">60</var>
+				<var id="ANGLE_C">90</var>
+				<var id="A">randFromArray(['A','B','C','D','E','F','G'])</var>
+				<var id="B">randFromArray(['H','I','J','K','L','M','N'])</var>
+				<var id="C">randFromArray(['O','P','Q','R','S','T'])</var>
+				<var id="D">randFromArray(['U','V','W','X','Y','Z'])</var>
+            </div>
+            <p class="question">如下圖，<code>\overline{<var>A</var><var>B</var>}</code> 爲 <code>\angle{<var>A</var>}</code> 的角平分線，若 <code>\overline{<var>B</var><var>C</var>}\bot \overline{<var>A</var><var>C</var>}</code> ，<code>\overline{<var>B</var><var>D</var>}\bot \overline{<var>A</var><var>D</var>}</code> ，說明 <code>\overline{<var>B</var><var>C</var>}=\overline{<var>B</var><var>D</var>}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="triangle_2">
+                    init({
+                        range: [ [-1, 12], [-3, 3] ],
+                        scale: 40
+                    });
+					line([0,0],[3*sqrt(3),3]);
+					line([3*sqrt(3),0],[2.25*sqrt(3),2.25]);
+					line([0,0],[7,0]);
+					line([0,0],[3*sqrt(3),-3]);
+					line([3*sqrt(3),0],[2.25*sqrt(3),-2.25]);
+					
+					line([2.25*sqrt(3),1.85],[2.15*sqrt(3),2.15]);
+					line([2.25*sqrt(3),1.85],[2.35*sqrt(3),2]);
+					line([2.25*sqrt(3),-1.85],[2.15*sqrt(3),-2.15]);
+					line([2.25*sqrt(3),-1.85],[2.35*sqrt(3),-2]);
+					
+					label( [ 0, 0 ],  A, "left", { color: "black" });
+					label( [ 3*sqrt(3), 0 ],  B, "above", { color: "black" });
+					label( [ 2.25*sqrt(3),2.25 ],  C, "above", { color: "black" });
+					label( [ 2.25*sqrt(3),-2.25 ],  D, "below", { color: "black" });
+					style({ stroke: "red" });
+					circle([0.5, 0.15], 0.05);
+					circle([0.5, -0.15], 0.05);
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">	
+				<p>因為 <code>\angle{<var>A</var><var>C</var><var>B</var>}=\angle{<var>B</var><var>D</var><var>A</var>}</code></p>
+				<p>又 <code>\angle{<var>C</var><var>A</var><var>B</var>}=\angle{} \enspace</code><input type="text" id="a_21" style="width:30px"></p>
+				<p>以及共邊： <code>\enspace \overline{<var>A</var><var>B</var>}= \enspace</code><input type="text" id="a_22" style="width:30px"></p>
+				<p>所以，根據 <span class="sol" data-type="text"><var>"AAS"</var></span> 全等性質可知 <code>\triangle{<var>A</var><var>B</var><var>C</var>} \cong \triangle{}</code><span class="sol" data-type="text"><var>A+B+D</var></span></p>
+				<p>因此 <code>\overline{<var>B</var><var>C</var>}=\overline{<var>B</var><var>D</var>}</code></p>
+                <p class="example">大寫字母，例如 <code>ASA</code> 表示角邊角全等性質</p>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_21").value,document.getElementById("a_22").value]</div>
+				    <div class="validator-function">
+					    if((guess[0].replace(/[ ]/g,"")==(D+A+B)||guess[0].replace(/[ ]/g,"")==(B+A+D))&&(guess[1].replace(/[ ]/g,"")==(A+B)||guess[1].replace(/[ ]/g,"")==(B+A))){
+						    return true;
+						}
+                    </div>
+				</div>
+            </div>
+            <div class="hints">
+				<p>已知 <code>\angle{<var>A</var><var>C</var><var>B</var>}=\angle{<var>B</var><var>D</var><var>A</var>}=90^{\circ}</code> ，</p>
+				<p>又知 <code>\overline{<var>A</var><var>B</var>}</code> 爲角平分線，所以 <code>\angle{<var>C</var><var>A</var><var>B</var>}=\angle{<var>D</var><var>A</var><var>B</var>}</code> ，</p>
+				<p>以及共邊： <code>\enspace \overline{<var>A</var><var>B</var>}=\overline{<var>A</var><var>B</var>}</code> ，</p>
+				<p>所以，根據 <code class="hint_pink">AAS全等性質</code> 可知 <code>\triangle{<var>A</var><var>B</var><var>C</var>} \cong \triangle{<var>A</var><var>B</var><var>D</var>}</code> ，</p>
+				<p>因此 <code>\overline{<var>B</var><var>C</var>}=\overline{<var>B</var><var>D</var>}</code> 。</p>
+				
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+			    <var id="ANGLE_A">30</var>
+				<var id="ANGLE_B">60</var>
+				<var id="ANGLE_C">90</var>
+				<var id="A">randFromArray(['A','B','C','D','E','F','G'])</var>
+				<var id="B">randFromArray(['H','I','J','K','L','M','N'])</var>
+				<var id="C">randFromArray(['R','S','T'])</var>
+				<var id="D">randFromArray(['U','V','W','X','Y','Z'])</var>
+				<var id="O">randFromArray(['O','P','Q'])</var>
+            </div>
+            <p class="question">如下圖，已知 <code>\overline{<var>A</var><var>B</var>} // \overline{<var>C</var><var>D</var>}</code> ，且 <code>\overline{<var>A</var><var>B</var>}=\overline{<var>C</var><var>D</var>}</code> ，試說明 <code>\triangle{<var>A</var><var>B</var><var>O</var>}</code> 全等於 <code>\triangle{<var>C</var><var>D</var><var>O</var>}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="triangle_3">
+                    init({
+                        range: [ [-1, 12], [-2, 2] ],
+                        scale: 40
+                    });
+					line([1,-1.5],[2,1.5]);
+					line([8,-1.5],[9,1.5]);
+					line([2,1.5],[8,-1.5]);
+					line([1,-1.5],[9,1.5]);
+					label( [ 5, 0 ],  O, "above", { color: "black" });
+					label( [ 1,-1.5 ],  B, "left", { color: "black" });
+					label( [ 2,1.5 ],  A, "left", { color: "black" });
+					label( [ 8,-1.5 ],  C, "right", { color: "black" });
+					label( [ 9,1.5 ],  D, "right", { color: "black" });
+					
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">	
+				<p>因爲 <code>\angle{<var>A</var><var>O</var><var>B</var>}</code> 與 <code>\angle{<var>C</var><var>O</var><var>D</var>}</code> 爲 <span class="sol" data-type="text"><var>"對頂角"</var></span> ，所以 <code>\angle{<var>A</var><var>O</var><var>B</var>}=\angle{<var>C</var><var>O</var><var>D</var>}</code></p>
+				<div>
+				    <p>已知 <code>\overline{<var>A</var><var>B</var>} // \overline{<var>C</var><var>D</var>}</code></p>
+				    <p>所以 <code>\angle{<var>B</var>}</code> 與 <code>\angle{<var>D</var>}</code> 爲 <span class="sol" data-type="text"><var>"內錯角"</var></span> ，那麼 <code>\angle{<var>B</var>}=\angle{<var>D</var>}</code></p>
+				</div>
+				<p>且 <code>\overline{<var>A</var><var>B</var>}=\overline{<var>C</var><var>D</var>}</code></p>
+				<p>所以，根據 <span class="sol" data-type="text"><var>"AAS"</var></span> 全等性質， <code>\triangle{<var>A</var><var>B</var><var>O</var>}</code> 全等於 <code>\triangle{<var>C</var><var>D</var><var>O</var>}</code></p>
+                <p class="example">大寫字母，例如 <code>ASA</code> 表示角邊角全等性質</p>	
+                <p class="example">繁體中文，例如 對頂角 </p>				
+            </div>
+            <div class="hints">
+			    <p>因爲 <code>\angle{<var>A</var><var>O</var><var>B</var>}</code> 與 <code>\angle{<var>C</var><var>O</var><var>D</var>}</code> 爲對頂角，所以 <code>\angle{<var>A</var><var>O</var><var>B</var>}=\angle{<var>C</var><var>O</var><var>D</var>}</code> ，</p>
+				<div>
+				    <p>已知 <code>\overline{<var>A</var><var>B</var>} // \overline{<var>C</var><var>D</var>}</code></p>
+				    <p>所以 <code>\angle{<var>B</var>}</code> 與 <code>\angle{<var>D</var>}</code> 爲內錯角，那麼 <code>\angle{<var>B</var>}=\angle{<var>D</var>}</code> ，</p>
+				</div>
+				<p>且 <code>\overline{<var>A</var><var>B</var>}=\overline{<var>C</var><var>D</var>}</code> ，</p>
+				<p>所以，根據 <code class="hint_pink">AAS全等性質</code>， <code>\triangle{<var>A</var><var>B</var><var>O</var>}</code> 全等於 <code>\triangle{<var>C</var><var>D</var><var>O</var>}</code> 。</p>
+				
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

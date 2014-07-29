@@ -81,8 +81,8 @@ end
 
 # uglifier sanity check
 [
-  ["(A + B)", ["A+B", "A+B;"]],
-  ["(function() { return 5; })", ["(function(){return 5})", "(function(){return 5});"]],
+  ["C = (A + B)", ["C=A+B", "C=A+B;"]],
+  ["A = (function() { return 5; })", ["A=function(){return 5}", "A=function(){return 5};"]],
 ].each do |input, expected|
   output = @uglifier.compile(input)
   uglifier_insane unless expected.include? output
@@ -136,7 +136,8 @@ Dir["exercises/**/*.html"].each do |filename|
     uglified = @uglifier.compile(js)
 
     # Strip out the anonymous function wrapper to put things back the way they were
-    match = uglified.match(/^\(function\(\)\{(.*)\}\)\(\);?$/)
+    # match = uglified.match(/^!function\(\)\{(.*)\}\(\);?$/) --for uglifier version 2.5.0
+    match = uglified.match(/^\(function\(\)\{(.*)\}\)\(\);?$/) #--for uglifier version 1.2.6
     if match
       validator.content = match[1]
     else

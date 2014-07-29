@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>數一數2</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        </style>
+<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+
+
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+				<var id="J">randRange(5,100)</var>
+            </div>
+            <p class="question"><code><var>J-4</var></code> 、<code><var>J-3</var></code> 、<code><var>J-2</var></code> 、<code><var>J-1</var></code> 、<code>\underline{\enspace\enspace}</code></p>
+			<div class="problem">
+				<p>下一個數字是多少？</p>
+				<div>
+					<p><input type="radio" name="choice_1" id="a_1"><code><var>J-1</var></code><br /></p>
+				    <p><input type="radio" name="choice_1" id="a_2"><code><var>J</var></code><br /></p>
+					<p><input type="radio" name="choice_1" id="a_3"><code><var>J+1</var></code></p>
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("a_1").value</div>
+				    <div class="validator-function">
+					    if(document.getElementById("a_2").checked){
+						    return true;
+						}
+					</div>
+				</div>			
+            </div>
+            <div class="hints">
+				<p>下一個數字應該是 <code class="hint_pink"><var>J</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars" data-ensure="aJ!=J+4">
+				<var id="J">randRange(4,100)</var>
+				<var id="aJ">randRange(1,100)</var>
+            </div>
+            <p class="question"><code><var>J-2</var></code> 、<code><var>J-1</var></code> 、<code>\underline{\enspace\enspace}</code></p>
+			<div class="problem">
+				<p>下一個數字是多少？</p>
+				<div>
+					<p><input type="radio" name="choice_1" id="a_1"><code><var>J-3</var></code><br /></p>
+				    <p><input type="radio" name="choice_1" id="a_2"><code><var>J+1</var></code><br /></p>
+					<p><input type="radio" name="choice_1" id="a_3"><code><var>J</var></code></p>
+				</div>
+				<p>讓我們繼續數下去</p>
+				<p><code><var>J+1</var></code> 、<code><var>J+2</var></code> 、<code><var>J+3</var></code> 、<code>\underline{\enspace\enspace}</code></p>
+				<div>
+					<p><input type="radio" name="choice_2" id="a_4"><code><var>J+5</var></code><br /></p>
+				    <p><input type="radio" name="choice_2" id="a_5"><code><var>aJ</var></code><br /></p>
+					<p><input type="radio" name="choice_2" id="a_6"><code><var>J+4</var></code></p>
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("a_3").value</div>
+				    <div class="validator-function">
+					    if(document.getElementById("a_3").checked&&document.getElementById("a_6").checked){
+						    return true;
+						}
+					</div>
+				</div>			
+            </div>
+            <div class="hints">
+				<p><code><var>J-2</var></code> 、<code><var>J-1</var></code> 的下一個數字應該是 <code class="hint_pink"><var>J</var></code> 。</p>
+				<p><code><var>J+1</var></code> 、<code><var>J+2</var></code> 、<code><var>J+3</var></code> 的下一個數字應該是 <code class="hint_pink"><var>J+4</var></code> 。</p>
+            </div>
+        </div>
+		
+    </div>
+		
+	</div>
+	</div>
+</body>
+</html>

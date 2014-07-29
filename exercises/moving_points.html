@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>直角坐標上點的平移</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 40px;
+        }
+        </style>
+		<style type="text/css">
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+
+
+
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+				<var id="J">randRange(3,9)</var>
+				<var id="K">randRange(3,9)</var>
+				<var id="M">randRange(3,9)</var>
+				<var id="N">randRange(3,9)</var>
+				<var id="DY">randFromArray(["向下","向上"])</var>
+				<var id="DX">randFromArray(["向左","向右"])</var>
+				<var id="L">randFromArray(["A","B","C","M","N","P"])</var>
+				<var id="J1">DY=="向下"?J:-1*J</var>
+				<var id="K1">DX=="向左"?K:-1*K</var>
+            </div>
+            <p class="question">坐標平面上有一點 <var>L</var> ，若沿著過 <var>L</var> 點的鉛直線<var>DY</var>走 <code><var>J</var></code> 個單位，然後再沿著水平線<var>DX</var>走 <code><var>K</var></code> 個單位後，所得到的點坐標為 <code>(<var>M</var>,<var>N</var>)</code> ，請問<var>L</var>點的坐標為何？</p>
+			<div class="graphie" id="move">
+                        graphInit({
+                            range: 18,
+                            scale: 15,
+                            axisArrows: "&lt;-&gt;",
+                            tickStep: 2,
+                            labelStep: 1,
+                            gridOpacity: 0.05,
+                            axisOpacity: 0.2,
+                            tickOpacity: 0.4,
+                            labelOpacity: 0.5
+                        });
+
+                        label( [ 0, 18 ], "y", "above" );
+                        label( [ 18, 0 ], "x", "right" );
+						circle([M,N],0.05);
+						label([ M, N ], "\\color{blue}{"+ "("+M+","+N+")}", "below");
+
+                    </div>
+			
+			<div class="solution" data-type="multiple">		
+				<code>( </code>			
+				<span class="sol" data-forms="integer"><var>M+K1</var></span>
+				<code>,</code>		
+				<span class="sol" data-forms="integer"><var>N+J1</var></span>
+				<code>) </code>		
+				 <p class="example">整數，例 <code>6</code></p> 
+            </div>
+            <div class="hints">
+				<p>如果是從<code class="hint_blue"><var>L</var></code> 移動<code class="hint_blue"><var>DY</var></code> <code class="hint_blue"><var>J</var> </code> 步、<code class="hint_blue"><var>DX</var></code> <code class="hint_blue"><var>K</var></code> 步，來到圖上這一個點，我們可以從圖上面這一點反方向倒推回去就可以找到 <code class="hint_blue"><var>L</var></code> 。</p>
+				<div>
+					<p>如上圖，由 <code>(<var>M</var>,<var>N</var>)</code> 點，先沿水平線<var>DX=="向左"?"向右":"向左"</var>回走 <code><var>K</var></code> 個單位到 <code>(<var>M+K1</var>,<var>N</var>)</code>，</p>
+					  <div class="graphie" data-update="move">
+                            style({
+                                stroke: RED,
+                                strokeWidth: 1,
+                                arrows: "-&gt;"
+                            }, function() {
+                                line( [M, N ], [ M+K1, N ]);
+                            });
+							label([ M+K1, N ], "\\color{blue}{"+ "("+(M+K1)+","+N+")}", "below");
+                        </div>
+				</div>
+				<div>
+					<p>再沿鉛直線<var>DY=="向下"?"向上":"向下"</var>回走 <code><var>J</var></code> 個單位到 <code>(<var>M+K1</var>,<var>N+J1</var>)</code> ，這就是 <var>L</var> 點的坐標。</p>
+					<div class="graphie" data-update="move">
+                            style({
+                                stroke: RED,
+                                strokeWidth: 1,
+                                arrows: "-&gt;"
+                            }, function() {
+                                line( [ M+K1, N ], [ M+K1, N+J1 ]);
+                            });
+							label([ M+K1, N+J1 ],"\\color{blue}{"+ L+" ("+(M+K1)+","+(N+J1)+")}", "below");
+							circle([M+K1,N+J1],0.05);
+                        </div>
+				</div>
+				
+				<p>所以，本題答案為 <code class="hint_pink">(<var>M+K1</var>,<var>N+J1</var>)</code> 。</p>
+				
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

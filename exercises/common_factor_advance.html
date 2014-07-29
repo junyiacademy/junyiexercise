@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>提公因式做因式分解（進階）</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 25px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 25px;
+        }
+        </style>
+
+</head>
+<body >
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+                <var id="M">randRange(1,10)</var>
+				<var id="J">randRange(2,9)</var>
+				<var id="N">randRange(2,9)</var>
+				<var id="Gys">getGCD(J+1,J*N-M)</var>
+				<var id="Gys_1">Gys==1?"":Gys</var>
+				<var id="W_1">(J+1)/Gys</var>
+				<var id="W_2">(J*N-M)/Gys</var>
+            </div>
+            <p class="question">將下列各因式分解：</p>
+			<p><code>(x-<var>M</var>)^2+<var>J</var>( x -<var>M</var>)(x+<var>N</var>)</code></p>
+			<div class="solution" data-type="multiple">	
+				<span class="sol" data-forms="integer"><var>Gys</var></span>			
+				<code>(x-</code>
+				<span class="sol" data-forms="integer"><var>M</var></span>
+				<code>)( </code>			
+				<span class="sol" data-forms="integer"><var>W_1</var></span>
+				<code>x + </code>
+				<span class="sol" data-forms="integer"><var>W_2</var></span>
+				<code> ) </code>
+				<p class="example">整數，例 <code>6</code></p> 
+            </div>
+            <div class="hints">
+				<div>
+					<p> <code>(x-<var>M</var>)^2+<var>J</var>( x -<var>M</var>)(x+<var>N</var>)</code></p>
+					<p> <code>=(x-<var>M</var>)(x-<var>M</var>)+<var>J</var>( x -<var>M</var>)(x+<var>N</var>)</code></p>
+				</div>
+				<p> <code>=(x-<var>M</var>)((x-<var>M</var>)+<var>J</var>(x+<var>N</var>))</code></p>
+				<p> <code>=(x-<var>M</var>)(x-<var>M</var>+<var>J</var>x+<var>N*J</var>)</code></p>
+				<p> <code>=(x-<var>M</var>)(<var>J+1</var>x+<var>N*J-M</var>)</code></p>
+				<p> <code data-if="Gys!=1">=<var>Gys_1</var>(x-<var>M</var>)(<var>W_1==1?"":W_1</var>x+<var>W_2</var>)</code></p>
+				
+				<p>所以，本題的答案為 <code class="hint_pink"><var>Gys_1</var>(x-<var>M</var>)(<var>W_1==1?"":W_1</var>x+<var>W_2</var>)</code></p>
+				
+            </div>
+        </div>
+		
+		<div id="case2">
+			<div class="vars">
+                <var id="M">randRange(1,10)</var>
+				<var id="P">randRange(2,9)</var>
+				<var id="N">randRange(2,9)</var>
+				<var id="Gys">-getGCD(1-P,-N)</var>
+				<var id="Gys_1">Gys==-1?"-":Gys</var>
+				<var id="W_1">(1-P)/Gys</var>
+				<var id="W_2">-N/Gys</var>
+            </div>
+            <p class="question">將下列各因式分解：</p>
+			<p><code>x(x-<var>M</var>)+( <var>M</var> -x)(<var>P</var>x+<var>N</var>)</code></p>
+			<div class="solution" data-type="multiple">	
+				<input type="text" id="test" style="width: 25px">
+				<code>(x-</code>
+				<span class="sol" data-forms="integer"><var>M</var></span>
+				<code>)(  </code>
+				<input type="text" id="t1" style="width: 25px">
+				<code>x + </code>
+				<input type="text" id="t2" style="width: 25px">
+				<code> ) </code>
+
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("test").value</div>
+				    <div class="validator-function">
+					if(guess==Gys&&document.getElementById("t1").value==W_1&&document.getElementById("t2").value==W_2)
+						return true;
+					if(guess==-Gys&&document.getElementById("t1").value==-W_1&&document.getElementById("t2").value==-W_2)
+						return true;
+                    </div>
+				</div>
+				
+			</div>
+            <div class="hints">
+				<div>
+					<p> <code>x(x-<var>M</var>)+( <var>M</var> -x)(<var>P</var>x+<var>N</var>)</code></p>
+					<p> <code>=x(x-<var>M</var>)-(<var>P</var>x+<var>N</var>)( x-<var>M</var> )</code></p>
+				</div>
+				<p> <code>=(x-(<var>P</var>x+<var>N</var>))( x-<var>M</var> )</code></p>
+				<p> <code>=(x-<var>P</var>x-<var>N</var>)( x-<var>M</var> )</code></p>
+				<p> <code>=(<var>1-P==-1?"-":1-P</var>x-<var>N</var>)( x-<var>M</var> )</code></p>
+				<p> <code>=<var>Gys_1</var>(<var>W_1==1?"":W_1</var>x+<var>W_2</var>)(x-<var>M</var>)</code></p>
+				<div>
+				<p>所以，本題的答案為 <code class="hint_pink"><var>Gys_1</var>(x-<var>M</var>)(<var>W_1==1?"":W_1</var>x+<var>W_2</var>)</code> ，</p>
+				<p>也可以寫成 <code class="hint_pink"> <var>-Gys==1?"":-Gys</var>(x-<var>M</var>)(<var>-W_1==-1?"-":-W_1</var>x+<var>-W_2</var>)</code> 。</p>
+				</div>
+				
+            </div>
+		</div>
+		<div id="case3">
+			<div class="vars">
+                <var id="M">randRange(4,9)</var>
+            </div>
+            <p class="question">將下列各因式分解：</p>
+			<p><code>(x-<var>M</var>)^2+2x-<var>M*2</var></code></p>
+			<div class="solution" data-type="set">
+                <div class="set-sol"><var>M</var></div>
+                <div class="set-sol"><var>M-2</var></div>
+                <div class="input-format">
+				    </p><code>(x-\enspace</code><span class="entry" data-forms="integer"></span><code>)\enspace (x-\enspace</code><span class="entry" data-forms="integer"></span><code>)</code></p>
+                </div>
+				<p class="example">整數，例如 <code>6</code></p>
+            </div>
+            <div class="hints">
+				<div>
+					<p> <code>(x-<var>M</var>)^2+2x-<var>M*2</var></code></p>
+					<p> <code>=(x-<var>M</var>)^2+2( x-<var>M</var> )</code></p>
+				</div>
+				<p> <code>=(x-<var>M</var>)( x-<var>M</var> +2)</code></p>
+				<p> <code>=(x-<var>M</var>)( x-<var>M-2</var> )</code></p>
+				<p>所以，本題的答案為 <code class="hint_pink">(x-<var>M</var>)( x-<var>M-2</var> )</code> 。</p>
+				
+            </div>
+		</div>
+		<div id="case4">
+			<div class="vars">
+                <var id="M">randRange(4,9)</var>
+            </div>
+            <p class="question">將下列各因式分解：</p>
+			<p><code>(x-<var>M</var>)^2-3x+<var>M*3</var></code></p>
+			<div class="solution" data-type="set">
+                <div class="set-sol"><var>M</var></div>
+                <div class="set-sol"><var>M+3</var></div>
+                <div class="input-format">
+				    </p><code>(x-\enspace</code><span class="entry" data-forms="integer"></span><code>)\enspace (x-\enspace</code><span class="entry" data-forms="integer"></span><code>)</code></p>
+                </div>
+				<p class="example">整數，例如 <code>6</code></p>
+            </div>
+            <div class="hints">
+				<div>
+					<p> <code>(x-<var>M</var>)^2-3x+<var>M*3</var></code></p>
+					<p> <code>=(x-<var>M</var>)^2-( 3x-<var>M*3</var> )</code></p>
+				</div>
+				<p> <code>=(x-<var>M</var>)^2-3( x-<var>M</var> )</code></p>
+				<p> <code>=(x-<var>M</var>)( x-<var>M</var> -3)</code></p>
+				<p> <code>=(x-<var>M</var>)( x-<var>M+3</var> )</code></p>
+				<p>所以，本題的答案為：<code class="hint_pink">(x-<var>M</var>)( x-<var>M+3</var> )</code></p>
+				
+            </div>
+		</div>
+		<div id="case5">
+			<div class="vars">
+                <var id="M">randRange(2,5)</var>
+            </div>
+            <p class="question">將下列各因式分解：</p>
+			<p><code><var>M</var>x^2+<var>M</var>x+x+1</code></p>
+			<div class="solution" data-type="multiple">				
+				<code>(</code>
+				<span class="sol" data-forms="integer"><var>M</var></span>
+				<code>x+1)(x+1)</code>			
+				<p class="example">整數，例 <code>6</code></p> 
+            </div>
+            <div class="hints">
+				<div>
+					<p> <code><var>M</var>x^2+<var>M</var>x+x+1</code></p>
+					<p> <code>=(<var>M</var>x^2+<var>M</var>x)+(x+1)</code></p>
+				</div>
+				<p> <code>=<var>M</var>x(x+1)+(x+1)</code></p>
+				<p> <code>=(<var>M</var>x+1)(x+1)</code></p>
+				<p>所以，本題的答案為：<code class="hint_pink">(<var>M</var>x+1)(x+1)</code> 。</p>
+				
+            </div>
+		</div>
+		<div id="case6">
+			<div class="vars" data-ensure="Gys!=M">
+                <var id="M">randRange(2,9)</var>
+				<var id="N">randRange(5,15)</var>
+				<var id="Gys">getGCD(M,N)</var>
+				<var id="Gys_1">Gys==1?"":Gys</var>
+            </div>
+            <p class="question">將下列各因式分解：</p>
+			<p><code><var>M</var>x^2+<var>M</var>x-<var>N</var>x-<var>N</var></code></p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>Gys</var></span>
+				<code>(</code>
+				<span class="sol" data-forms="integer"><var>M/Gys</var></span>
+				<code>x-</code>	
+				<span class="sol" data-forms="integer"><var>N/Gys</var></span>
+				<code>)(x+</code><span class="sol" data-forms="integer"><var>1</var></span><code>)</code>			
+				<p class="example">整數，例 <code>6</code></p> 
+            </div>
+            <div class="hints">
+				<div>
+					<p> <code><var>M</var>x^2+<var>M</var>x-<var>N</var>x-<var>N</var></code></p>
+					<p> <code>=(<var>M</var>x^2+<var>M</var>x)-(<var>N</var>x+<var>N</var>)</code></p>
+				</div>
+				<p> <code>=<var>M</var>x(x+1)-<var>N</var>(x+1)</code></p>
+				<p> <code>=(<var>M</var>x-<var>N</var>)(x+1)</code></p>
+				<p> <code data-if="Gys!=1">=<var>Gys_1</var>(<var>M/Gys==1?"":M/Gys</var>x-<var>N/Gys</var>)(x+1)</code></p>
+				<p>所以，本題的答案為：<code class="hint_pink"><var>Gys_1</var>(<var>M/Gys==1?"":M/Gys</var>x-<var>N/Gys</var>)(x+1)</code> 。</p>
+				
+            </div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

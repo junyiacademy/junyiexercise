@@ -1,4 +1,4 @@
-
+﻿
 /*
 TODO:
 -prune givens
@@ -353,10 +353,10 @@ function nextStatementHint() {
 
             var useToProve = checkTriangleForHint(triangle1, triangle2, knownEqualities);
             if (useToProve.length > 0) {
-                return ["You know that " + prettifyEquality(useToProve[0][0] + "," + useToProve[0][1])
-                + ", " + prettifyEquality(useToProve[1][0] + "," + useToProve[1][1])
-                + ", and " + prettifyEquality(useToProve[2][0] + "," + useToProve[2][1]) + ". What can you prove from this?", 
-                "A useful thing to prove here is " + prettifyEquality(triangle1 + "," + triangle2)];
+                return ["你已經知道" + prettifyEquality(useToProve[0][0] + "," + useToProve[0][1])
+                + "，" + prettifyEquality(useToProve[1][0] + "," + useToProve[1][1])
+                + "，而且" + prettifyEquality(useToProve[2][0] + "," + useToProve[2][1]) + "。用這些可以證明什麼?", 
+                "一個有用的方式是證明" + prettifyEquality(triangle1 + "," + triangle2)];
             }
         }
 
@@ -370,8 +370,8 @@ function nextStatementHint() {
 
             var useToProve = checkSegForHint(seg1, seg2, knownEqualities);
             if (useToProve.length > 0) {
-                return ["You know that " + prettifyEquality(useToProve[0] + "," + useToProve[1]) + ". What segments can you prove equal from this?",
-                "A useful thing to prove here is " + prettifyEquality(seg1 + "," + seg2)];
+                return ["你已經知道 " + prettifyEquality(useToProve[0] + "," + useToProve[1]) + ". 有哪些線段因此會全等?",
+                "一個有用的方式是證明" + prettifyEquality(seg1 + "," + seg2)];
             }
         }
 
@@ -386,24 +386,24 @@ function nextStatementHint() {
 
             var useToProve = checkAngForHint(ang1, ang2, knownEqualities);
             if (useToProve.length > 0 && useToProve[0] instanceof Triang) {
-                return ["You know that " + prettifyEquality(useToProve[0] + "," + useToProve[1]) + ". What angles can you prove equal from this?",
-                "A useful thing to prove here is " + prettifyEquality(ang1 + "," + ang2)];
+                return ["你已經知道 " + prettifyEquality(useToProve[0] + "," + useToProve[1]) + ". What angles can you prove equal from this?",
+                "一個有用的方式是證明" + prettifyEquality(ang1 + "," + ang2)];
             }
             else if (useToProve.length > 0) {
-                return ["Try using " + useToProve + " to prove some useful pair of angles equal.",
-                 "A useful thing to prove here is " + prettifyEquality(ang1 + "," + ang2)];
+                return ["試試看用" + useToProve + "來證明一雙可以用的角度相等",
+                 "一個有用的方式是證明" + prettifyEquality(ang1 + "," + ang2)];
             }
         }
 
     }
-    return "Sorry, there seems to be a problem with the hint system. Please report this bug.";
+    return "對不起，提示好像有些問題。請回報這一個問題。";
 }
 
 
 // return the entire finished proof generated, formatted to look all pretty and etc.
 // used in "find the wrong statement" exercise, so also picks two statements for that exercise
 function outputFinishedProof() {
-    var proofText = "<h3>Givens</h3>";
+    var proofText = "<h3>已知</h3>";
 
     var unsortedKeyList = _.clone(finishedEqualitiesList);
     var finishedKeysList = sortEqualityList(unsortedKeyList.reverse(), finishedEqualities);
@@ -418,7 +418,7 @@ function outputFinishedProof() {
         }
     });
     for (var i = 0; i < finishedKeys.length; i ++) {
-        if (finishedEqualities[finishedKeys[i]].substring(0, 4) != "Same") {
+        if (finishedEqualities[finishedKeys[i]].substring(0, 4) != "相同") {
             if (finishedEqualities[finishedKeys[i]] === "given") {
                 numberGivens--;
                 proofText += "<div style=\"float:left\" class=\"" + divName(finishedKeys[i]) + "\">";
@@ -427,10 +427,10 @@ function outputFinishedProof() {
                     proofText += "<code>, \\ </code> </div>";
                 }
                 else if (numberGivens > 0) {
-                    proofText += "<code>, \\  </code>and<code>\\  </code></div>";
+                    proofText += "<code>, \\  </code>而且<code>\\  </code></div>";
                 }
                 else {
-                    proofText += "</div><br><br><h3 style=\"clear:both\">Proof</h3>";
+                    proofText += "</div><br><br><h3 style=\"clear:both\">證明</h3>";
                 }
 
                 possibleValids.push(prettifyEquality(finishedKeys[i]));
@@ -438,7 +438,7 @@ function outputFinishedProof() {
             else {
                 proofText += "<div class=\"" + divName(finishedKeys[i]) + "\">";
                 proofText += prettifyEquality(finishedKeys[i]);
-                proofText += " because " + finishedEqualities[finishedKeys[i]] + "</div><br>";
+                proofText += "因為" + finishedEqualities[finishedKeys[i]] + "</div><br>";
 
                 possibleValids.push(prettifyEquality(finishedKeys[i]));
             }
@@ -453,7 +453,7 @@ function outputFinishedProof() {
 
 // return the proof the user has done so far, formatted nicely
 function outputKnownProof() {
-    var proofText = "<h3>Givens</h3>";
+    var proofText = "<h3>已知</h3>";
 
     var knownKeysList = sortEqualityList(knownEqualitiesList, knownEqualities);
     var knownKeys = _.map(knownKeysList, function(key){ return key.toString(); });
@@ -466,7 +466,7 @@ function outputKnownProof() {
     });
 
     for (var i = 0; i < knownKeys.length; i ++) {
-        if (knownEqualities[knownKeys[i]].substring(0, 4) != "Same") {
+        if (knownEqualities[knownKeys[i]].substring(0, 4) != "相同") {
             if (knownEqualities[knownKeys[i]] === "given") {
                 numberGivens--;
                 proofText += "<div style=\"float:left\" class=\"" + divName(knownKeys[i]) + "\">";
@@ -475,16 +475,16 @@ function outputKnownProof() {
                     proofText += "<code>, \\ </code> </div>";
                 }
                 else if (numberGivens > 0) {
-                    proofText += "<code>, \\  </code>and<code>\\  </code></div>";
+                    proofText += "<code>, \\  </code>而且<code>\\  </code></div>";
                 }
                 else {
-                    proofText += "</div><br><br><h3 style=\"clear:both\">Proof</h3>";
+                    proofText += "</div><br><br><h3 style=\"clear:both\">證明</h3>";
                 }
             }
             else {
                 proofText += "<div class=\"" + divName(knownKeys[i]) + "\">";
                 proofText += prettifyEquality(knownKeys[i]);
-                proofText += " because " + knownEqualities[knownKeys[i]] + "</div>" + "<br>";
+                proofText += "因為" + knownEqualities[knownKeys[i]] + "</div>" + "<br>";
             }
 
         }
@@ -496,9 +496,9 @@ function outputKnownProof() {
 
 // returns a proof with a few blanks, blank statement fields will be wrapped by a div with id formatted according to divName
 function outputFillBlanksProof() {
-    var reasonCodes = {"SSS" : 0, "ASA" : 1, "SAS" : 2, "AAS" : 3, "corresponding parts of congruent triangles are congruent" : 4,
-     "vertical angles are equal" : 5, "alternate interior angles are equal" : 6};
-    var proofText = "<h3>Givens</h3>";
+    var reasonCodes = {"SSS" : 0, "ASA" : 1, "SAS" : 2, "AAS" : 3, "全等三角形相對應的部分會相等" : 4,
+     "對頂角相等" : 5, "內錯角相等" : 6};
+    var proofText = "<h3>已知</h3>";
     var blanks = 0;
     var blankStatements = 0;
 
@@ -516,7 +516,7 @@ function outputFillBlanksProof() {
     var newEqualities = {};
 
     for (var i = 0; i < finishedKeys.length; i++) {
-        if (finishedEqualities[finishedKeys[i]].substring(0, 4) != "Same") {
+        if (finishedEqualities[finishedKeys[i]].substring(0, 4) != "相同") {
             if (finishedEqualities[finishedKeys[i]] === "given") {
                 numberGivens--;
                 if(i % 3 != 2){
@@ -530,10 +530,10 @@ function outputFillBlanksProof() {
                     proofText += "<code>, \\ </code> </div>";
                 }
                 else if (numberGivens > 0) {
-                    proofText += "<code>, \\  </code>and<code>\\  </code></div>";
+                    proofText += "<code>, \\  </code>而且<code>\\  </code></div>";
                 }
                 else {
-                    proofText += "</div><br><br><h3 style=\"clear:both\">Proof</h3>";
+                    proofText += "</div><br><br><h3 style=\"clear:both\">證明</h3>";
                 }
                 newEqualities[finishedKeys[i]] = "given";
                 //knownEqualities[finishedKeys[i].reverse()] = "given";
@@ -542,15 +542,15 @@ function outputFillBlanksProof() {
                 if (KhanUtil.random() < 0.2) {
                     proofText += "<div class=\"" + divName(finishedKeys[i]) + "\">";
                     proofText += prettifyEquality(finishedKeys[i]);
-                    proofText += " because <select class=\"missing missingReason\" id=\"" + finishedKeys[i] + "\">"
+                    proofText += "因為<select class=\"missing missingReason\" id=\"" + finishedKeys[i] + "\">"
                     + "<option></option>"
-                    + "<option value=\"SSS\">side-side-side congruence</option>"
-                    + "<option value=\"ASA\">angle-side-angle congruence</option>"
-                    + "<option value=\"SAS\">side-angle-side congruence</option>"
-                    + "<option value=\"AAS\">angle-angle-side congruence</option>"
-                    + "<option>corresponding parts of congruent triangles are congruent</option>"
-                    + "<option>vertical angles are equal</option>"
-                    + "<option>alternate interior angles are equal</option>"
+                    + "<option value=\"SSS\">SSS 全等</option>"
+                    + "<option value=\"ASA\">ASA 全等</option>"
+                    + "<option value=\"SAS\">SAS 全等</option>"
+                    + "<option value=\"AAS\">AAS 全等</option>"
+                    + "<option>全等三角形相對應的部分會相等</option>"
+                    + "<option>對頂角相等</option>"
+                    + "<option>內錯角相等</option>"
                     + "</select> </div>" + "<br>";
                     blanks++;
                 }
@@ -570,14 +570,14 @@ function outputFillBlanksProof() {
                         + "<code> \\angle </code> <input class=\"missingStatement\"></input>"
                         + "<code> = \\angle </code> <input class=\"missingStatement\"></input>";
                     }
-                    proofText += " because " + finishedEqualities[finishedKeys[i]] + "</div><br>";
+                    proofText += "因為" + finishedEqualities[finishedKeys[i]] + "</div><br>";
                     blanks++;
                     blankStatements++;
                 }
                 else {
                     proofText += "<div class=\"" + divName(finishedKeys[i]) + "\">";
                     proofText += prettifyEquality(finishedKeys[i]);
-                    proofText += " because " + finishedEqualities[finishedKeys[i]] + "</div>" + "<br>";
+                    proofText += "因為" + finishedEqualities[finishedKeys[i]] + "</div>" + "<br>";
                     newEqualities[finishedKeys[i]] = finishedEqualities[finishedKeys[i]];
                     // knownEqualities[finishedKeys[i].reverse()] = finishedEqualities[finishedKeys[i]];
                 }
@@ -748,9 +748,9 @@ function getFillBlanksHint(giveAway) {
 
                 var useToProve = checkTriangleForHint(triangle1, triangle2, beforeEqualities);
                 if (useToProve.length > 0) {
-                    return "You know that " + prettifyEquality(useToProve[0][0] + "," + useToProve[0][1])
+                    return "你已經知道 " + prettifyEquality(useToProve[0][0] + "," + useToProve[0][1])
                     + ", " + prettifyEquality(useToProve[1][0] + "," + useToProve[1][1])
-                    + ", and " + prettifyEquality(useToProve[2][0] + "," + useToProve[2][1]) + ". What can you prove from this?";
+                    + ", and " + prettifyEquality(useToProve[2][0] + "," + useToProve[2][1]) + ". 用這些可以證明什麼?";
                 }
             }
             else if (components[0] === "a") {
@@ -759,10 +759,10 @@ function getFillBlanksHint(giveAway) {
 
                 var useToProve = checkAngForHint(angle1, angle2, beforeEqualities);
                 if (useToProve.length > 0 && useToProve[0] instanceof Triang) {
-                    return "You know that " + prettifyEquality(useToProve[0] + "," + useToProve[1]) + ". What angles can you prove equal from this?";
+                    return "你已經知道 " + prettifyEquality(useToProve[0] + "," + useToProve[1]) + "。你可以證明哪些角度相等?";
                 }
                 else if (useToProve.length > 0) {
-                    return "Try using " + useToProve + " to prove some useful pair of angles equal.";
+                    return "試試看用" + useToProve + "來證明一對可以使用的角度相等。";
                 }
             }
             else {
@@ -771,19 +771,19 @@ function getFillBlanksHint(giveAway) {
 
                 var useToProve = checkSegForHint(seg1, seg2, beforeEqualities);
                 if (useToProve.length > 0) {
-                    return "You know that " + prettifyEquality(useToProve[0] + "," + useToProve[1]) + ". What segments can you prove equal from this?";
+                    return "你已經知道 " + prettifyEquality(useToProve[0] + "," + useToProve[1]) + ". 有哪些線段因此會全等?";
                 }
             }
         }
         // if the next open spot is a justification
         else{
             if(firstMissing[0].id[0] === "t"){
-                return "You know that triangles are congruent because segments or angles in them are congruent. What segments or angles do you know "
-                + "are equal? Which can you use?";
+                return "你已經知道三角形因為一些線段還有角度的相等而全等。是哪些線段與角度"
+                + "相等? 你可以使用哪些?";
             }
             else{
-                return "Is this segment/angle pair part of a pair of congruent triangles? If not, there are only two other reasons they could be equal "
-                + "(in this exercise).";
+                return "這一組線段/角度是否在一對全等三角形中有對應? 如果不是，(在這一個練習題中)只有另外兩種可能讓他們相等"
+                + "。";
             }
         }
     }
@@ -796,11 +796,11 @@ function getFillBlanksHint(giveAway) {
             if (!firstMissing.hasClass("missingReason")) {
                 var components = firstMissing[0].id.split("-");
                 firstMissing.removeClass("missing");
-                return "The next equality you have to fill in is " + prettifyEquality([finishedKeys[components[1]][0], finishedKeys[components[1]][1]]);
+                return "下一個需要填入的等式是 " + prettifyEquality([finishedKeys[components[1]][0], finishedKeys[components[1]][1]]);
             }
             else {
                 firstMissing.removeClass("missing");
-                return "The next equality with a missing reason is true by " + finishedEqualities[firstMissing[0].id];
+                return "下一個等式所缺少的原因是 " + finishedEqualities[firstMissing[0].id];
             }
         }
     }
@@ -847,8 +847,8 @@ function outputBadProof() {
 
             if (!checkSegEqual(seg1, seg2, "CPCTC")) {
                 invalid = [seg1, seg2];
-                knownEqualities[invalid] = "corresponding parts of congruent triangles are congruent";
-                knownEqualities[invalid.reverse()] = "corresponding parts of congruent triangles are congruent";
+                knownEqualities[invalid] = "全等三角形相對應的部分會相等";
+                knownEqualities[invalid.reverse()] = "全等三角形相對應的部分會相等";
                 invalidStatements++;
             }
         }
@@ -856,8 +856,8 @@ function outputBadProof() {
             var ang1 = KhanUtil.randFromArray(ANGLES);
             var ang2 = KhanUtil.randFromArray(ANGLES);
 
-            var reasons = KhanUtil.shuffle(["corresponding parts of congruent triangles are congruent",
-                 "vertical angles are equal", "alternate interior angles are equal"]);
+            var reasons = KhanUtil.shuffle(["全等三角形相對應的部分會相等",
+                 "對頂角相等", "內錯角相等"]);
             for (var i = 0; i < reasons.length; i++) {
                 if (!checkAngEqual(ang1, ang2, reasons[i])) {
                     invalid = [ang1, ang2];
@@ -912,7 +912,7 @@ function outputBadProof() {
             var ang2 = KhanUtil.randFromArray(ANGLES);
 
             if (isRelationPossible([ang1, ang2]) && !eqIn([ang1, ang2], knownEqualities) && !ang1.equals(ang2) &&
-                (checkAngEqual(ang1, ang2, "vertical angles") || checkAngEqual(ang1, ang2, "alternate angles")
+                (checkAngEqual(ang1, ang2, "對頂角") || checkAngEqual(ang1, ang2, "內錯角")
                     || checkAngEqual(ang1, ang2, "CPCTC"))) {
                 validStatements++;
             }
@@ -944,7 +944,7 @@ function outputBadProof() {
     }
 
     // now construct the proof we want to hand to the exercise
-    var proofText = "<h3>Givens</h3>";
+    var proofText = "<h3>已知</h3>";
     var knownKeys = sortEqualityStringList(_.keys(knownEqualities), knownEqualities);
 
     var numberGivens = 0;
@@ -965,16 +965,16 @@ function outputBadProof() {
                     proofText += "<code>, \\ </code> </div>";
                 }
                 else if (numberGivens > 0) {
-                    proofText += "<code>, \\  </code>and<code>\\  </code></div>";
+                    proofText += "<code>, \\  </code>而且<code>\\  </code></div>";
                 }
                 else {
-                    proofText += "</div><br><br><h3 style=\"clear:both\">Proof</h3>";
+                    proofText += "</div><br><br><h3 style=\"clear:both\">證明</h3>";
                 }
             }
             else {
                 proofText += "<div class=\"" + divName(knownKeys[i]) + "\">";
                 proofText += prettifyEquality(knownKeys[i]);
-                proofText += " because " + knownEqualities[knownKeys[i]] + "</div><br>";
+                proofText += "因為" + knownEqualities[knownKeys[i]] + "</div><br>";
             }
         }
 
@@ -984,21 +984,21 @@ function outputBadProof() {
         if (eqIn(finalRelation, finishedEqualities)) {
             proofText += "<div class=\"" + divName(finalRelation.toString()) + "\">";
             proofText += prettifyEquality(finalRelation);
-            proofText += " because " + finishedEqualities[finalRelation] + "</div>" + "<br>";
+            proofText += "因為" + finishedEqualities[finalRelation] + "</div>" + "<br>";
         }
         else {
             proofText += "<div class=\"" + divName(finalRelation.toString()) + "\">";
             proofText += prettifyEquality(finalRelation);
             if (finalRelation[0] instanceof Triang) {
-                proofText += " because " + KhanUtil.randFromArray(["SSS", "ASA", "SAS", "AAS"]) + "</div>" + "<br>";
+                proofText += "因為" + KhanUtil.randFromArray(["SSS", "ASA", "SAS", "AAS"]) + "</div>" + "<br>";
             }
             else if (finalRelation[0] instanceof Ang) {
-                proofText += " because "
-                + KhanUtil.randFromArray(["vertical angles are equal", "alternate angles are equal", "corresponding parts of congruent triangles are congruent"])
+                proofText += "因為"
+                + KhanUtil.randFromArray(["對頂角相等", "內錯角相等", "全等三角形相對應的部分會相等"])
                 + "</div>" + "<br>";
             }
             else {
-                proofText += " because " + "corresponding parts of congruent triangles are congruent" + "</div>" + "<br>";
+                proofText += "因為" + "全等三角形相對應的部分會相等" + "</div>" + "<br>";
             }
         }
     }
@@ -1312,8 +1312,8 @@ function traceBack(statementKey, depth) {
                     verticalAngs[0] = verticalAngs[1];
                 }
 
-                finishedEqualities[[triangle1.angs[verticalAngs[0]], triangle2.angs[verticalAngs[0]]]] = "vertical angles are equal";
-                finishedEqualities[[triangle2.angs[verticalAngs[0]], triangle1.angs[verticalAngs[0]]]] = "vertical angles are equal";
+                finishedEqualities[[triangle1.angs[verticalAngs[0]], triangle2.angs[verticalAngs[0]]]] = "對頂角相等";
+                finishedEqualities[[triangle2.angs[verticalAngs[0]], triangle1.angs[verticalAngs[0]]]] = "對頂角相等";
                 finishedEqualitiesList.push([triangle1.angs[verticalAngs[0]], triangle2.angs[verticalAngs[0]]]);
                 finishedEqualitiesList.push([triangle2.angs[verticalAngs[0]], triangle1.angs[verticalAngs[0]]]);
 
@@ -1369,8 +1369,8 @@ function traceBack(statementKey, depth) {
                     alternateAngs[0] = alternateAngs[1];
                 }
 
-                finishedEqualities[[triangle1.angs[alternateAngs[0]], triangle2.angs[alternateAngs[0]]]] = "alternate interior angles are equal";
-                finishedEqualities[[triangle2.angs[alternateAngs[0]], triangle1.angs[alternateAngs[0]]]] = "alternate interior angles are equal";
+                finishedEqualities[[triangle1.angs[alternateAngs[0]], triangle2.angs[alternateAngs[0]]]] = "內錯角相等";
+                finishedEqualities[[triangle2.angs[alternateAngs[0]], triangle1.angs[alternateAngs[0]]]] = "內錯角相等";
                 finishedEqualitiesList.push([triangle1.angs[alternateAngs[0]], triangle2.angs[alternateAngs[0]]]);
                 finishedEqualitiesList.push([triangle2.angs[alternateAngs[0]], triangle1.angs[alternateAngs[0]]]);
 
@@ -1513,7 +1513,7 @@ function traceBack(statementKey, depth) {
                 fixedTriangles[trianglePair[0]] = true;
                 fixedTriangles[trianglePair[1]] = true;
 
-                setGivenOrTraceBack([[trianglePair[0], trianglePair[1]]], "corresponding parts of congruent triangles are congruent",
+                setGivenOrTraceBack([[trianglePair[0], trianglePair[1]]], "全等三角形相對應的部分會相等",
                 statementKey, depth - 1);
             }
         }
@@ -1587,7 +1587,7 @@ function traceBack(statementKey, depth) {
                 fixedTriangles[trianglePair[0]] = true;
                 fixedTriangles[trianglePair[1]] = true;
 
-                setGivenOrTraceBack([[trianglePair[0], trianglePair[1]]], "corresponding parts of congruent triangles are congruent",
+                setGivenOrTraceBack([[trianglePair[0], trianglePair[1]]], "全等三角形相對應的部分會相等",
                 statementKey, depth - 1);
             }
         }
@@ -1853,9 +1853,9 @@ function checkSegEqual(seg1, seg2, reason) {
             if (checkTriangleCongruent(seg1.triangles[i][0], seg2.triangles[j][0])
                 && _.indexOf(seg1.triangles[i][0].segs, seg1) === _.indexOf(seg2.triangles[j][0].segs, seg2)) {
 
-                if (reason === "CPCTC" || reason === "corresponding parts of congruent triangles are congruent") {
-                    knownEqualities[[seg1, seg2]] = "corresponding parts of congruent triangles are congruent";
-                    knownEqualities[[seg2, seg1]] = "corresponding parts of congruent triangles are congruent";
+                if (reason === "CPCTC" || reason === "全等三角形相對應的部分會相等") {
+                    knownEqualities[[seg1, seg2]] = "全等三角形相對應的部分會相等";
+                    knownEqualities[[seg2, seg1]] = "全等三角形相對應的部分會相等";
                     knownEqualitiesList.push([seg1, seg2]);
                     return true;
                 }
@@ -1882,9 +1882,9 @@ function checkAngEqual(ang1, ang2, reason) {
             if (checkTriangleCongruent(ang1.triangles[i][0], ang2.triangles[j][0])
                 && _.indexOf(ang1.triangles[i][0].angs, ang1) === _.indexOf(ang2.triangles[j][0].angs, ang2)) {
 
-                if (reason === "CPCTC" || reason === "corresponding parts of congruent triangles are congruent") {
-                    knownEqualities[[ang1, ang2]] = "corresponding parts of congruent triangles are congruent";
-                    knownEqualities[[ang2, ang1]] = "corresponding parts of congruent triangles are congruent";
+                if (reason === "CPCTC" || reason === "全等三角形相對應的部分會相等") {
+                    knownEqualities[[ang1, ang2]] = "全等三角形相對應的部分會相等";
+                    knownEqualities[[ang2, ang1]] = "全等三角形相對應的部分會相等";
                     knownEqualitiesList.push([ang1, ang2]);
                     return true;
                 }
@@ -1909,9 +1909,9 @@ function checkAngEqual(ang1, ang2, reason) {
         }
 
         if (sharedLines === 4) {
-            if (reason === "vertical angles" || reason === "vertical angles are equal") {
-                knownEqualities[[ang1, ang2]] = "vertical angles are equal";
-                knownEqualities[[ang2, ang1]] = "vertical angles are equal";
+            if (reason === "對頂角" || reason === "對頂角相等") {
+                knownEqualities[[ang1, ang2]] = "對頂角相等";
+                knownEqualities[[ang2, ang1]] = "對頂角相等";
                 knownEqualitiesList.push([ang1, ang2]);
                 return true;
             }
@@ -1920,9 +1920,9 @@ function checkAngEqual(ang1, ang2, reason) {
 
     if (eqIn([ang1, ang2], altInteriorAngs) || eqIn([ang2, ang1], altInteriorAngs)) {
 
-        if (reason === "alternate angles" || reason === "alternate interior angles are equal") {
-            knownEqualities[[ang1, ang2]] = "alternate interior angles are equal";
-            knownEqualities[[ang2, ang1]] = "alternate interior angles are equal";
+        if (reason === "內錯角" || reason === "內錯角相等") {
+            knownEqualities[[ang1, ang2]] = "內錯角相等";
+            knownEqualities[[ang2, ang1]] = "內錯角相等";
             knownEqualitiesList.push([ang1, ang2]);
             return true;
         }
@@ -2090,12 +2090,12 @@ function checkAngForHint(ang1, ang2, equalityObject) {
         }
 
         if (sharedLines === 4) {
-            return "vertical angles";
+            return "對頂角";
         }
     }
 
     if (eqIn([ang1, ang2], altInteriorAngs) || eqIn([ang2, ang1], altInteriorAngs)) {
-        return "alternate interior angles";
+        return "內錯角";
     }
 
 
@@ -2208,7 +2208,7 @@ function sortEqualityList(equalityList, equalityObject) {
     if(equalityObject === finishedEqualities) {
         var sortedEqualityList = _.clone(newEqualityList);
         for (var i = 0; i < newEqualityList.length; i++) {
-            if (equalityObject[newEqualityList[i]] === "vertical angles are equal" || equalityObject[newEqualityList[i]] === "alternate interior angles are equal") {
+            if (equalityObject[newEqualityList[i]] === "對頂角相等" || equalityObject[newEqualityList[i]] === "內錯角相等") {
                 sortedEqualityList[i - 1] = newEqualityList[i];
                 sortedEqualityList[i] = newEqualityList[i - 1];
             }
@@ -2233,7 +2233,7 @@ function sortEqualityStringList(equalityList, equalityObject) {
     }
     var sortedEqualityList = _.clone(newEqualityList);
     for (var i = 0; i < newEqualityList.length; i++) {
-        if (equalityObject[newEqualityList[i]] === "vertical angles are equal" || equalityObject[newEqualityList[i]] === "alternate interior angles are equal") {
+        if (equalityObject[newEqualityList[i]] === "對頂角相等" || equalityObject[newEqualityList[i]] === "內錯角相等") {
             sortedEqualityList[i - 2] = newEqualityList[i];
             sortedEqualityList[i] = newEqualityList[i - 2];
         }

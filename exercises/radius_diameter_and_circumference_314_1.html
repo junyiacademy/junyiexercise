@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html data-require="math graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>圓周長的計算</title>
+    <script src="../khan-exercise.js"></script>
+    <script type="text/javascript">
+        var R_COLOR = "purple";
+        var D_COLOR = "green";
+        var C_COLOR = "blue";
+        var K_COLOR = "red";
+
+        function initCircle( R ) {
+            var graph = KhanUtil.currentGraph;
+
+            graph.init({
+                range: [ [-1.1, 1.1], [-1.1, 1.1] ],
+                scale: 100
+            });
+
+            graph.circle( [0, 0], 1, { "fill-opacity": 0 } );
+        }
+
+        function drawRadius( R ) {
+            var graph = KhanUtil.currentGraph;
+
+            graph.line( [0, 0], [1, 0], { "fill": "none", "stroke": R_COLOR } );
+            graph.label( [1/2, 0], "\\color{" + R_COLOR + "}{半徑 = " + R + "}", "below" );
+        }
+
+        function drawDiameter( R ) {
+            var graph = KhanUtil.currentGraph;
+
+            graph.line( [-1, 0], [1, 0], { "stroke": D_COLOR } );
+            graph.label( [0, 0], "\\color{" + D_COLOR + "}{直徑 = " + 2 * R + "}", "above" );
+        }
+
+        function drawCircumference( R ) {
+            var graph = KhanUtil.currentGraph;
+            var a = 2*R*314/Math.pow(10,2);
+            graph.circle( [0, 0], 1, { "stroke": C_COLOR } );
+            graph.label( [0, -1], "\\color{" + C_COLOR + "}{圓周長 = " + a + "}", "below" );
+        }
+
+        function drawArea( R ) {
+            var graph = KhanUtil.currentGraph;
+
+            var c = graph.circle( [0, 0], 1, { "fill": "#ffcccc", "stroke-width": 0 } );
+            $(c.node).insertBefore($(graph.raphael.canvas).find("ellipse")[0]);
+
+            graph.label( [0, 0.5], "\\color{" + K_COLOR + "}{K = " + R*R + "\\pi}", "above" );
+        }
+    </script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        
+        <div id="circle-r-to-c">
+            <div class="vars">
+                <var id="R">randRange(1, 30)</var>
+            </div>
+
+            <div class="question">
+                <p>圓的半徑為 <code>\color{<var>R_COLOR</var>}{<var>R</var>}</code>。請問圓周長為何？</p>
+            </div>
+
+            <div class="solution" data-forms="integer, proper, improper, mixed, decimal, pi"><var>2 * R *314/pow(10,2)</var></div>
+
+            <div class="hints">
+                <div class="graphie" id="circle">
+                    initCircle( R );
+                    drawRadius( R );
+                </div>
+                <div>
+                    <p>我們知道周長的計算方式為直徑<code>\times</code>圓周率3.14</p> 
+                </div>
+                <div>
+                    <p><code>直徑＝半徑\times2＝\color{<var>R_COLOR</var>}{<var>R</var>}\times2 = \color{<var>D_COLOR</var>}{<var>R*2</var>}</code></p>
+                    <div class="graphie" data-update="circle">
+                        drawDiameter( R );
+                    </div>
+                </div>
+                <div>
+                    <p><code>圓周長 = 直徑 \times 3.14 </code>，所以 <code>圓周長 = <var>R*2</var> \times 3.14 = \color{<var>C_COLOR</var>}{<var>2 * R *314/pow(10,2)</var>}</code>。</p>
+
+                    <div class="graphie" data-update="circle">
+                        drawCircumference( R );
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="circle-c-to-r">
+            <div class="vars">
+                <var id="R">randRange(1, 30)</var>
+            </div>
+
+            <div class="question">
+                <p>圓的圓周長為 <code>\color{<var>C_COLOR</var>}{<var>2 * R * 314 / pow(10,2)</var>}</code>。請問半徑為何？</p>
+            </div>
+
+            <div class="solution" data-forms="integer, proper, improper, mixed, decimal, pi"><var>R</var></div>
+
+            <div class="hints">
+                <div class="graphie" id="circle">
+                    initCircle( R );
+                    drawCircumference( R );
+                </div>
+                <div>
+                    <p>我們知道周長的計算方式為直徑<code>\times</code>圓周率3.14</p> 
+                </div>
+                <div>
+                    <p>所以直徑 = 圓周長 &divide; 圓周率 = <code>\color{<var>C_COLOR</var>}{<var>2 * R * 314 / pow(10,2)</var>}&divide; 3.14 </code>
+                </div>
+                <div>
+                    <p>算出直徑 = <var>R * 2</var><br>
+                    <code>而直徑＝半徑\times2</code></p>
+                    <div class="graphie" data-update="circle">
+                        drawDiameter( R );
+                    </div>
+                </div>
+                <div>
+                    <p><code>所以半徑 = \color{<var>D_COLOR</var>}{<var>R*2</var>}&divide;2 = \color{<var>R_COLOR</var>}{<var>R</var>}</code></p>
+                    <div class="graphie" data-update="circle">
+                        drawRadius( R );
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="circle-d-to-c">
+            <div class="vars">
+                <var id="R">randRange(1,30)</var>
+            </div>
+
+            <div class="question">
+                <p>圓的直徑為 <code>\color{<var>D_COLOR</var>}{<var>2 * R</var>}</code>。請問圓周長為何？</p>
+            </div>
+
+            <div class="solution" data-forms="integer, proper, improper, mixed, decimal, pi"><var>2 * R * 314 / pow(10,2)</var></div>
+
+            <div class="hints">
+                <div class="graphie" id="circle">
+                    initCircle( R );
+
+                    drawDiameter( R );
+                </div>
+                <div>
+                    <p>我們知道 <code>圓周長 = 直徑 \times 圓周率</code></p>
+                </div>
+                <div>
+                    <p>所以 <code>圓周長 = \color{<var>D_COLOR</var>}{<var>2 * R</var>}  \times 3.14 = \color{<var>C_COLOR</var>}{<var>2 * R * 314 / pow(10,2)</var>}</code>。</p>
+
+                    <div class="graphie" data-update="circle">
+                        drawCircumference( R );
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="circle-c-to-d">
+            <div class="vars">
+                <var id="R">randRange(1, 30)</var>
+            </div>
+
+            <div class="question">
+                <p>圓的圓周長為 <code>\color{<var>C_COLOR</var>}{<var>2 * R * 314 / pow(10,2)</var>}</code>。請問直徑為何？</p>
+            </div>
+
+            <div class="solution" data-forms="integer, proper, improper, mixed, decimal, pi"><var>2 * R</var></div>
+
+            <div class="hints">
+                <div class="graphie" id="circle">
+                    initCircle( R );
+
+                    drawCircumference( R );
+                </div>
+                <div>
+                    <p>我們知道周長的計算方式為直徑<code>\times</code>圓周率3.14</p> 
+                </div>
+                <div>
+                    <p>所以直徑 = 圓周長 &divide; 圓周率 = <code>\color{<var>C_COLOR</var>}{<var>2 * R * 314 / pow(10,2)</var>}&divide; 3.14 </code>
+                </div>
+                <div>
+                    <p><code>算出直徑 = \color{<var>D_COLOR</var>}{<var>2 * R</var>}</code></p>
+                    <div class="graphie" data-update="circle">
+                        drawDiameter( R );
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+</body>
+</html>

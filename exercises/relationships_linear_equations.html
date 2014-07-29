@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions graphie interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>線性方程式圖形的關係</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+            <div class="vars" data-ensure="K!=1">
+				<var id="a">randRangeNonZero(-10,10)</var>
+				<var id="b">randRangeNonZero(-10,10)</var>
+				<var id="c">randRangeNonZero(-10,10)</var>
+				<var id="K">randRangeNonZero(-5,5)</var>
+				<var id="point_x_1">10</var>
+				<var id="point_y_1">(c-10*a)/b</var>
+				<var id="point_x_2">-10</var>
+				<var id="point_y_2">(c+10*a)/b</var>
+				<var id="d">a * K</var>
+				<var id="e">b * K</var>
+				<var id="f">c * K</var>
+            </div>
+			<p class="question">請判別 <code>L_1</code>、<code>L_2</code> 兩線性方程式的圖形在平面中的關係</p>
+			<div class="problem">
+				<p><code>L_1:</code><code data-if="abs(a)!=1"><var>a</var></code><code data-if="a==-1">-</code><code>x</code><code data-if="abs(b)!=1">+<var>b</var></code><code data-if="b==1">+</code><code data-if="b==-1">-</code><code>y=<var>c</var></code></p>
+				<p><code>L_2:</code><code data-if="abs(d)!=1"><var>d</var></code><code data-if="d==-1">-</code><code>x</code><code data-if="abs(e)!=1">+<var>e</var></code><code data-if="e==1">+</code><code data-if="e==-1">-</code><code>y=<var>f</var></code></p>
+			</div>
+            <div class="solution"><var>"重疊"</var></div> 
+                <ul class="choices" data-category="true">
+                    <li>平行</li>
+					<li>重疊</li>
+					<li>交於一點</li>
+                </ul>
+
+    <div class="hints">
+		<div>
+			<p>我們知道 <code>L_1</code>、<code>L_2</code> 為兩條直線，在平面中會有3種關係：</p>
+			<p>平行(兩條線永遠不相交)</p>
+			<p>重疊(兩條線其實是同一條線)</p>
+			<p>交於一點(兩條直線交於一點)</p>
+		</div>
+		<p>我們先在直角座標系上畫出 <code>L_1</code> ：</p>
+		<div>
+                <div class="graphie" id="grid">
+                    graphInit({
+                        range: 11,
+                        scale: 20,
+                        axisArrows: "&lt;-&gt;",
+                        tickStep: 1,
+                        labelStep: 1,
+                        gridOpacity: 0.05,
+                        axisOpacity: 0.2,
+                        tickOpacity: 0.4,
+                        labelOpacity: 0.5
+                    });
+                    line([point_x_1,point_y_1], [point_x_2,point_y_2], { stroke: "#2894FF" });
+
+                    addMouseLayer();
+                </div>
+        </div>
+		<p>接着，我們再畫出 <code>L_2</code> 。</p>
+		<div>
+		    <div class="graphie" data-update="grid">
+			    line([point_x_1,point_y_1], [point_x_2,point_y_2], { stroke: "blue" });
+			</div>
+		</div>
+		<p>我們發現這兩條直線<code class="hint_green">重疊</code>了。讓我們通過其它方式去驗證它！</p>
+        <div>
+            <p>我們可以觀察 <code>L_1</code>、<code>L_2</code> 的 <code>x</code> 、<code>y</code> 的係數和常數的關係。</p>
+		</div>
+		<div>
+			<p>我們發現 <code>L_1</code>、<code>L_2</code> 的<code>x</code> 、<code>y</code> 的係數和常數呈現固定的比例<code><var>K</var></code> 。</p>
+        </div>
+        <div>
+			<p><code>L_1:</code><code data-if="abs(a)!=1"><var>a</var></code><code data-if="a==-1">-</code><code>x</code><code data-if="abs(b)!=1">+<var>b</var></code><code data-if="b==1">+</code><code data-if="b==-1">-</code><code>y=<var>c</var></code></p>
+			<p><code>L_2:</code><code data-if="abs(d)!=1"><var>d</var></code><code data-if="d==-1">-</code><code>x</code><code data-if="abs(e)!=1">+<var>e</var></code><code data-if="e==1">+</code><code data-if="e==-1">-</code><code>y=<var>f</var></code></p>
+			<p><code>L_2:<span data-if="K&lt;0">(</span><var>K</var><span data-if="K&lt;0">)</span>\times<span data-if="a&lt;0">(</span></code><code data-if="a!=1"><var>a</var></code><code><span data-if="a&lt;0">)</span>x+<span data-if="K&lt;0">(</span><var>K</var><span data-if="K&lt;0">)</span>\times<span data-if="b&lt;0">(</span></code><code data-if="b!=1"><var>b</var></code><code><span data-if="b&lt;0">)</span>y=<span data-if="K&lt;0">(</span><var>K</var><span data-if="K&lt;0">)</span>\times<span data-if="c&lt;0">(</span><var>c</var><span data-if="c&lt;0">)</span></code></p>
+        </div>
+		<div>
+			<p>因此我們知道，當<code data-if="a>0">L_2:\frac{<var>d</var>}{<var>K</var>}x</code><code data-if="a&lt;0">L_2:-\frac{<var>abs(d)</var>}{<var>abs(K)</var>}x</code>
+			<code data-if="b>0">+\frac{<var>e</var>}{<var>K</var>}y=</code><code data-if="b&lt;0">-\frac{<var>abs(e)</var>}{<var>abs(K)</var>}y=</code>
+			<code data-if="c>0">\frac{<var>f</var>}{<var>K</var>}</code><code data-if="c&lt;0">-\frac{<var>abs(f)</var>}{<var>abs(K)</var>}</code>
+			就會等於<code>L_1</code></p>
+        </div>
+		<div>
+			<p>所以 <code>L_1</code> 和 <code>L_2</code> 兩個方程式其實是表示同一條直線，也可以說這兩條直線重疊。</p>
+		</div>
+    </div>
+	</div>
+	
+	<div id="case2">
+            <div class="vars" data-ensure="K!=M">
+				<var id="a">randRangeNonZero(-10,10)</var>
+				<var id="b">randRangeNonZero(-10,10)</var>
+				<var id="c">randRangeNonZero(-10,10)</var>
+				<var id="K">randRangeNonZero(-5,5)</var>
+				<var id="M">randRangeNonZero(-5,5)</var>
+				<var id="d">a * K</var>
+				<var id="e">b * K</var>
+				<var id="f">c * M</var>
+				<var id="point_x_1">10</var>
+				<var id="point_y_1">(c-10*a)/b</var>
+				<var id="point_x_2">-10</var>
+				<var id="point_y_2">(c+10*a)/b</var>
+				<var id="point_x_3">10</var>
+				<var id="point_y_3">(f-10*d)/e</var>
+				<var id="point_x_4">-10</var>
+				<var id="point_y_4">(f+10*d)/e</var>
+            </div>
+			<p class="question">請判別 <code>L_1</code>、<code>L_2</code> 兩線性方程式的圖形在平面中的關係</p>
+			<div class="problem">
+				<p><code>L_1:</code><code data-if="abs(a)!=1"><var>a</var></code><code data-if="a==-1">-</code><code>x</code><code data-if="abs(b)!=1">+<var>b</var></code><code data-if="b==1">+</code><code data-if="b==-1">-</code><code>y=<var>c</var></code></p>
+				<p><code>L_2:</code><code data-if="abs(d)!=1"><var>d</var></code><code data-if="d==-1">-</code><code>x</code><code data-if="abs(e)!=1">+<var>e</var></code><code data-if="e==1">+</code><code data-if="e==-1">-</code><code>y=<var>f</var></code></p>
+			</div>
+            <div class="solution"><var>"平行"</var></div> 
+                <ul class="choices" data-category="true">
+                    <li>平行</li>
+					<li>重疊</li>
+					<li>交於一點</li>
+                </ul>
+
+    <div class="hints">
+		<div>
+			<p>我們知道 <code>L_1</code>、<code>L_2</code> 為兩條直線，在平面中會有3種關係：</p>
+			<p>平行(兩條線永遠不相交)</p>
+			<p>重疊(兩條線其實是同一條線)</p>
+			<p>交於一點(兩條直線交於一點)</p>
+		</div>
+		<p>我們先在直角座標系上畫出 <code>L_1</code> ：</p>
+		<div>
+                <div class="graphie" id="grid">
+                    graphInit({
+                        range: 11,
+                        scale: 20,
+                        axisArrows: "&lt;-&gt;",
+                        tickStep: 1,
+                        labelStep: 1,
+                        gridOpacity: 0.05,
+                        axisOpacity: 0.2,
+                        tickOpacity: 0.4,
+                        labelOpacity: 0.5
+                    });
+                    line([point_x_1,point_y_1], [point_x_2,point_y_2], { stroke: "#2894FF" });
+
+                    addMouseLayer();
+                </div>
+        </div>
+		<p>接着，我們再畫出 <code>L_2</code> 。</p>
+		<div>
+		    <div class="graphie" data-update="grid">
+			    line([point_x_3,point_y_3], [point_x_4,point_y_4], { stroke: "blue" });
+			</div>
+		</div>
+		<p>我們發現這兩條直線<code class="hint_green">平行</code>了。讓我們通過其它方式去驗證它！</p>
+        <div>
+            <p>我們可以觀察 <code>L_1</code>、<code>L_2</code> 的 <code>x</code> 、<code>y</code> 的係數和常數的關係。</p>
+		</div>
+		<div>
+			<p>我們發現 <code>L_1</code>、<code>L_2</code> 的<code>x</code> 、<code>y</code> 的係數呈現固定的比例 <code><var>K</var></code> 。</p>
+        </div>
+        <div>
+			<p><code>L_1:</code><code data-if="abs(a)!=1"><var>a</var></code><code data-if="a==-1">-</code><code>x</code><code data-if="abs(b)!=1">+<var>b</var></code><code data-if="b==1">+</code><code data-if="b==-1">-</code><code>y=<var>c</var></code></p>
+			<p><code>L_2:</code><code data-if="abs(d)!=1"><var>d</var></code><code data-if="d==-1">-</code><code>x</code><code data-if="abs(e)!=1">+<var>e</var></code><code data-if="e==1">+</code><code data-if="e==-1">-</code><code>y=<var>f</var></code></p>
+			<p><code><span data-if="K&lt;0">(</span><var>K</var><span data-if="K&lt;0">)</span>\times <span data-if="a&lt;0">(</span><var>a</var><span data-if="a&lt;0">)</span>=<var>d</var>且<span data-if="K&lt;0">(</span><var>K</var><span data-if="K&lt;0">)</span> \times <span data-if="b&lt;0">(</span><var>b</var><span data-if="b&lt;0">)</span>=<var>e</var>，但
+			<span data-if="K&lt;0">(</span><var>K</var><span data-if="K&lt;0">)</span>\times<span data-if="c&lt;0">(</span><var>c</var><span data-if="c&lt;0">)</span> \ne <var>f</var></code></p>
+        </div>
+		<div>
+			<p>所以<code>L_1</code>和<code>L_2</code>是平行的兩條直線，也可以說這兩條直線永遠不相交。</p>
+		</div>
+    </div>
+	</div>
+	
+		<div id="case3_new">
+            <div class="vars" data-ensure="K !== M && K !== N && M !== N">
+				<var id="a">randRangeNonZero(-10,10)</var>
+				<var id="b">randRangeNonZero(-10,10)</var>
+				<var id="c">randRangeNonZero(-10,10)</var>
+				<var id="K">randRangeNonZero(-5,5)</var>
+				<var id="M">randRangeNonZero(-5,5)</var>
+				<var id="N">randRangeNonZero(-5,5)</var>
+				<var id="d">a * K</var>
+				<var id="e">b * N</var>
+				<var id="f">c * M</var>
+				<var id="point_x_1">10</var>
+				<var id="point_y_1">(c-10*a)/b</var>
+				<var id="point_x_2">-10</var>
+				<var id="point_y_2">(c+10*a)/b</var>
+				<var id="point_x_3">10</var>
+				<var id="point_y_3">(f-10*d)/e</var>
+				<var id="point_x_4">-10</var>
+				<var id="point_y_4">(f+10*d)/e</var>
+            </div>
+			<p class="question">請判別 <code>L_1</code>、<code>L_2</code> 兩線性方程式的圖形在平面中的關係</p>
+			<div class="problem">
+				<p><code>L_1:</code><code data-if="abs(a)!=1"><var>a</var></code><code data-if="a==-1">-</code><code>x</code><code data-if="abs(b)!=1">+<var>b</var></code><code data-if="b==1">+</code><code data-if="b==-1">-</code><code>y=<var>c</var></code></p>
+				<p><code>L_2:</code><code data-if="abs(d)!=1"><var>d</var></code><code data-if="d==-1">-</code><code>x</code><code data-if="abs(e)!=1">+<var>e</var></code><code data-if="e==1">+</code><code data-if="e==-1">-</code><code>y=<var>f</var></code></p>
+			</div>
+            <div class="solution"><var>"交於一點"</var></div> 
+                <ul class="choices" data-category="true">
+                    <li>平行</li>
+					<li>重疊</li>
+					<li>交於一點</li>
+                </ul>
+
+    <div class="hints">
+		<div>
+			<p>我們知道 <code>L_1</code>、<code>L_2</code> 為兩條直線，在平面中會有3種關係：</p>
+			<p>平行(兩條線永遠不相交)</p>
+			<p>重疊(兩條線其實是同一條線)</p>
+			<p>交於一點(兩條直線交於一點)</p>
+		</div>
+		<p>我們先在直角座標系上畫出 <code>L_1</code> ：</p>
+		<div>
+                <div class="graphie" id="grid">
+                    graphInit({
+                        range: 11,
+                        scale: 20,
+                        axisArrows: "&lt;-&gt;",
+                        tickStep: 1,
+                        labelStep: 1,
+                        gridOpacity: 0.05,
+                        axisOpacity: 0.2,
+                        tickOpacity: 0.4,
+                        labelOpacity: 0.5
+                    });
+                    line([point_x_1,point_y_1], [point_x_2,point_y_2], { stroke: "#2894FF" });
+
+                    addMouseLayer();
+                </div>
+        </div>
+		<p>接着，我們再畫出 <code>L_2</code> 。</p>
+		<div>
+		    <div class="graphie" data-update="grid">
+			    line([point_x_3,point_y_3], [point_x_4,point_y_4], { stroke: "blue" });
+			</div>
+		</div>
+		<p>我們發現這兩條直線<code class="hint_green">交於一點</code>了。讓我們通過其它方式去驗證它！</p>
+        <div>
+            <p>我們可以觀察 <code>L_1</code>、<code>L_2</code> 的 <code>x</code> 、<code>y</code> 的係數和常數的關係。</p>
+		</div>
+		<div>
+			<p>我們發現 <code>L_1</code>、<code>L_2</code> 的 <code>x</code> 、<code>y</code> 的係數和常數彼此之間不成固定比例。</p>
+			<p><code>\frac{<var>a</var>}{<var>d</var>} \ne \frac{<var>b</var>}{<var>e</var>} \ne \frac{<var>c</var>}{<var>f</var>}</code></p>
+        </div>
+		<div>
+			<p>所以我們知道 <code>L_1</code> 和 <code>L_2</code> 在平面中是兩條交於一點的直線。</p>
+		</div>
+    </div>
+	</div>
+
+</div>
+</div>
+</body>
+</html>

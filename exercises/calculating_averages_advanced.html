@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>平均數的計算(進階)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+	    <div id="case1">
+            <div class="vars">
+				<var id="J">5*randRange(10,14)</var>
+				<var id="K">randRange(-1,2)</var>
+				<var id="middleVal">J+10+2.5+2.5*K</var>
+				<var id="rmv">middleVal+12.5</var>
+				<var id="lmv">middleVal-12.5</var>
+            </div>
+			<p class="question">下圖是小克班上同學工藝成績折線圖。根據圖中的數據，判斷該班平均工藝成績為幾分。</p>
+			<div class="problem">
+			    <div class="graphie" id="average">
+				    init({
+                        range: [ [-1, 12], [-1.5, 5.2 ]],
+                        scale: 40
+                    });
+					line([1,0],[10,0]);
+					line([1,-0.5],[1,5]);
+					for(var i=2;i&lt;=8;i++){
+					    line([i,0],[i,0.3]);
+						line([i+0.5,0],[i+0.5,0.2]);
+						label( [i,0],  "\\small{"+(J+(i-2)*5)+"}", "below", { color: "black" });
+					}
+					for(var j=0.3;j&lt;5;j+=0.6){
+					    line([1,j],[1.2,j]);
+						line([1,j+0.3],[1.3,j+0.3]);
+						label( [1,j+0.3],  "\\small{"+Math.floor(2*(j+0.3)/0.6)+"}", "left", { color: "black" });
+					}
+					var leftMove = 0.5*K;
+					line([2+leftMove,1.8],[3+leftMove,3.6]);
+					line([3+leftMove,3.6],[4+leftMove,2.4]);
+					line([4+leftMove,2.4],[5+leftMove,2.4]);
+					line([5+leftMove,2.4],[6+leftMove,3.6]);
+					line([6+leftMove,3.6],[7+leftMove,1.8]);
+					style({fill:"black"});
+					circle([2+leftMove,1.8],0.05);
+					circle([3+leftMove,3.6],0.05);
+					circle([4+leftMove,2.4],0.05);
+					circle([5+leftMove,2.4],0.05);
+					circle([6+leftMove,3.6],0.05);
+					circle([7+leftMove,1.8],0.05);
+					style({strokeDasharray: "-"});
+					line([1,1.8],[7+leftMove,1.8]);
+					line([1,2.4],[4+leftMove,2.4]);
+					line([1,3.6],[6+leftMove,3.6]);
+					label( [0,4.8],  "\\small{次}", "center", { color: "black" });
+					label( [0,4.2],  "\\small{數}", "center", { color: "black" });
+					label( [0,3.6],  "\\small{(人)}", "center", { color: "black" });
+					label( [8,-1],  "\\small{成績(分)}", "center", { color: "black" });
+				</div>
+			</div>
+			<div class="solution">
+			    <span class="sol" data-type="rational"><var>middleVal</var></span>
+            </div>
+            <div class="hints">
+		        <div>
+				    <p>注意到這個折線圖是一個線對稱圖形，對稱點的資料值( 例如 <code><var>lmv</var></code> 和 <code><var>rmv</var></code>) 的中點位於對稱軸，</p>
+				    <p>也就是成績是 <code>\dfrac{<var>middleVal-2.5</var>+<var>middleVal+2.5</var>}{2}=<var>middleVal</var></code> 的鉛直線上。</p>
+				</div>
+				<div>
+				    <p>因此平均數等於：</p>
+					<p><code>\dfrac{(<var>lmv</var>+<var>rmv</var>)\cdot 6+(<var>lmv+5</var>+<var>rmv-5</var>)\cdot 12+(<var>middleVal-2.5</var>+<var>middleVal+2.5</var>)\cdot 8}{6\cdot 2+12\cdot 2+8\cdot 2}</code></p>
+					<p><code>=\dfrac{<var>middleVal</var>\cdot(6\cdot 2+12\cdot 2+8\cdot 2)}{6\cdot 2+12\cdot 2+8\cdot 2}=<var>middleVal</var></code></p>
+				</div>
+				<p>事實上，只要觀察到這六個數，兩兩互為對稱點，就知道答案是 <code class="hint_pink"><var>middleVal</var></code> 分。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+			    <var id="basedVal">100*randRange(10,60)</var>
+				<var id="J_dis">randRangeNonZero(-100,100)</var>
+				<var id="K_dis">randRangeNonZero(-100,100)</var>
+				<var id="L_dis">randRangeNonZero(-100,100)</var>
+				<var id="M_dis">randRangeNonZero(-100,100)</var>
+				<var id="N_dis">randRangeNonZero(-100,100)</var>
+				<var id="J">basedVal+J_dis</var>
+				<var id="K">basedVal+K_dis</var>
+				<var id="L">basedVal+L_dis</var>
+				<var id="M">basedVal+M_dis</var>
+				<var id="N">basedVal+N_dis</var>
+				<var id="disAvg">accDiv(J_dis+K_dis+L_dis+M_dis+N_dis,5)</var>
+            </div>
+			<p class="question">求資料 <code><var>J</var></code> 、<code><var>K</var></code> 、<code><var>L</var></code> 、<code><var>M</var></code> 、<code><var>N</var></code> 的平均數。</p>
+			<div class="solution">
+			    <span class="sol" data-type="rational"><var>disAvg+basedVal</var></span>
+            </div>
+            <div class="hints">
+		        <div>
+				    <p>直接計算看起來很複雜，但是我們可以將這筆資料想成是</p>
+				    <p><code><var>J_dis</var>+<var>basedVal</var>、<var>K_dis</var>+<var>basedVal</var>、<var>L_dis</var>+<var>basedVal</var>、<var>M_dis</var>+<var>basedVal</var>、<var>N_dis</var>+<var>basedVal</var></code> 。</p>
+				</div>
+				<p>也就是想成資料 <code>[<var>J_dis</var>、<var>K_dis</var>、<var>L_dis</var>、<var>M_dis</var>、<var>N_dis</var>]</code> 加上定數 <code class="hint_blue"><var>basedVal</var></code> ，</p>
+				<p>因此，其平均數等於 <code><var>J_dis</var>、<var>K_dis</var>、<var>L_dis</var>、<var>M_dis</var>、<var>N_dis</var></code> 的平均數再加上 <code class="hint_blue"><var>basedVal</var></code> 。</p>
+				<div>
+				    <p>由於 <code><var>J_dis</var>、<var>K_dis</var>、<var>L_dis</var>、<var>M_dis</var>、<var>N_dis</var></code> 的平均數為</p>
+				    <p><code>\dfrac{<var>J_dis</var>+<var>K_dis</var>+<var>L_dis</var>+<var>M_dis</var>+<var>N_dis</var>}{5}=</code><code class="hint_green">\enspace<var>disAvg</var></code> ，</p>
+				</div>
+				<div>
+				    <p>因此 <code><var>J</var></code> 、<code><var>K</var></code> 、<code><var>L</var></code> 、<code><var>M</var></code> 、<code><var>N</var></code> 的平均數就是：</p>
+					<p><code class="hint_green"><var>disAvg</var>+</code><code class="hint_blue">\enspace<var>basedVal</var></code><code>\enspace=</code><code class="hint_orange">\enspace <var>disAvg+basedVal</var></code> 。</p>
+				</div>
+				<p>所以，本題的答案為 <code class="hint_pink"><var>disAvg+basedVal</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+			    <var id="J">randRange(80,89)+randRange(1,9)/10</var>
+				<var id="K">randRange(70,79)+randRange(1,9)/10</var>
+				<var id="L">randRange(75,84)+randRange(1,9)/10</var>
+				<var id="MNP">randFromArray([[4,4,2],[4,2,4],[2,4,4],[4,3,3],[3,4,3],[3,3,4]])</var>
+				<var id="M">MNP[0]</var>
+				<var id="N">MNP[1]</var>
+				<var id="P">MNP[2]</var>
+				<var id="R">Math.round((J*M+K*N+L*P)*10)/100</var>
+				<var id="Rr">Math.round(R*10)/10</var>
+            </div>
+			<p class="question">甲、乙、丙三國中舉行國三數學聯合考試，各校平均成績依序為 <code><var>J</var></code> 、<code><var>K</var></code> 、<code><var>L</var></code> 。若三校國三生之人數比例依序為 <code><var>M</var>:<var>N</var>:<var>P</var></code> ，求合起來的總平均成績。</p>
+			<p class="problem">用四捨五入法，取概數到小數點後第一位</p>
+			<div class="solution" data-type="decimal">
+			    <span class="sol" data-type="decimal"><var>Rr</var></span>
+            </div>
+            <div class="hints">
+			    <p>由於三校國三生人數比例依序為 <code><var>M</var>:<var>N</var>:<var>P</var></code> ，</p>
+				<div>
+				    <p>因此總平均成績為</p>
+					<p><code><var>J</var>\cdot\dfrac{<var>M</var>}{<var>M</var>+<var>N</var>+<var>P</var>}+<var>K</var>\cdot\dfrac{<var>N</var>}{<var>M</var>+<var>N</var>+<var>P</var>}+<var>L</var>\cdot\dfrac{<var>P</var>}{<var>M</var>+<var>N</var>+<var>P</var>}</code></p>
+				</div>
+				<p><code>=\dfrac{1}{10}\cdot(<var>accMul(J,M)</var>+<var>accMul(K,N)</var>+<var>accMul(L,P)</var>)=\dfrac{1}{10}\cdot<var>accMul(J,M)+accMul(K,N)+accMul(L,P)</var>=<var>R</var></code></p>
+				<p>若用四捨五入法取到小數后一位，則三校成績總平均約為 <code class="hint_pink"><var>Rr.toFixed(1)</var></code> 。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

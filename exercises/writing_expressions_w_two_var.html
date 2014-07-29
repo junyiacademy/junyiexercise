@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>二元一次式列式問題</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+            <div class="vars">
+			    <var id="a">2*randRange(1,4)+1</var>
+				<var id="b">2*randRange(1,5)</var>
+            </div>
+			<p class="question">曉華到書局買筆，買了每枝 <code>x</code> 元的鉛筆 <code><var>a</var></code> 枝，再買每枝 <code>y</code> 元的原子筆 <code><var>b</var></code> 枝，請問曉華總共花了多少錢買筆？</p>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>a</var></span><code>\enspace x+ \enspace</code><span class="sol" data-forms="integer"><var>b</var></span><code>\enspace y</code>
+				<p class="example">例如： <code>3x+6y</code></p>
+			</div>
+
+    <div class="hints">
+	    <p>每枝 <code>x</code> 元的鉛筆買 <code><var>a</var></code> 枝 <code>= x\times <var>a</var> = <var>a</var>x</code> ，</p>
+		<p>每枝 <code>y</code> 元的原子筆買 <code><var>b</var></code> 枝 <code>= y \times <var>b</var> = <var>b</var>y</code> 。</p>
+		<p>總共花的錢 <code>= <var>a</var></code> 枝鉛筆 <code>+ <var>b</var></code> 枝原子筆</p>
+		<p><code>=<var>a</var>\times x+<var>b</var>\times y</code></p>
+		<p><code>=<var>a</var>x+<var>b</var>y</code></p>
+		<p>所以，本題的答案應分別填入 <code>x</code> 的係數 <code class="hint_pink"><var>a</var></code> 和 <code>y</code> 的係數 <code class="hint_pink"><var>b</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case2">
+            <div class="vars">
+			    <var id="a">randFromArray([["a","b"],["s","t"],["m","n"],["x","y"]])</var>
+				<var id="k">randRange(2,9)</var>
+            </div>
+			<p class="question">英傑的撲滿裡有 <code>50</code> 元的硬幣 <code><var>a[0]</var></code> 個， <code>10</code> 元的硬幣 <code><var>a[1]</var></code> 個， <code>1</code> 元的硬幣 <code><var>k</var></code> 個，那麼他的撲滿裡一共有多少錢？</p>
+			<div class="solution" data-type="multiple">
+			    <code>50 \cdot\enspace</code><span class="sol" data-type="text"><var>a[0]</var></span><code>\enspace +10 \cdot\enspace</code><span class="sol" data-type="text"><var>a[1]</var></span><code>\enspace +\enspace</code><span class="sol" data-forms="integer"><var>k</var></span>
+				<p class="example">例如： <code>50p+10q+12</code></p>
+			</div>
+    <div class="hints">
+	    <p><code>50</code> 元的硬幣 <code><var>a[0]</var></code> 個，總共 <code>50\times <var>a[0]</var>=50<var>a[0]</var></code> ，</p>
+		<p><code>10</code> 元的硬幣 <code><var>a[1]</var></code> 個，總共 <code>10\times <var>a[1]</var>=10<var>a[1]</var></code> ，</p>
+		<p><code>1</code> 元的硬幣 <code><var>k</var></code> 個，總共 <code>1\times <var>k</var>=<var>k</var></code> ，</p>
+		<p>那麼，英傑的撲滿裡一共有 <code>50<var>a[0]</var>+10<var>a[1]</var>+<var>k</var></code> 元。</p>
+		<p>所以，本題的答案應依次填入 <code class="hint_pink"><var>a[0]</var>、<var>a[1]</var>、<var>k</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case3">
+            <div class="vars">
+			    <var id="a">randFromArray([["a","b"],["s","t"],["m","n"],["x","y"]])</var>
+				<var id="k">randFromArray([100,500,1000,2000])</var>
+            </div>
+			<p class="question">凱崴帶了 <code><var>k</var></code> 元到福利社買零食，已知科學麵一包 <code>6</code> 元，紅茶一瓶 <code>10</code> 元，凱威一共買了 <code><var>a[0]</var></code> 包的科學麵，以及 <code><var>a[1]</var></code> 瓶的紅茶，付了 <code><var>k</var></code> 元，請問老闆要找凱威多少錢？</p>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>k</var></span><code>\enspace - 6\cdot\enspace</code><span class="sol" data-type="text"><var>a[0]</var></span><code>\enspace -10 \cdot\enspace</code><span class="sol" data-type="text"><var>a[1]</var></span>
+				<p class="example">例如： <code>1500-6p-10q</code></p>
+			</div>
+    <div class="hints">
+		<p><code>6</code> 元的科學麵 <code><var>a[0]</var></code> 包，總共 <code>6\times <var>a[0]</var>=6<var>a[0]</var></code> ，</p>
+		<p><code>10</code> 元的紅茶 <code><var>a[1]</var></code> 瓶，總共 <code>10\times <var>a[1]</var>=10<var>a[1]</var></code> ，</p>
+		<p>付了 <code><var>k</var></code> 元，所以找回的錢 <code>=<var>k</var>-</code> 買科學麵的錢 <code>-</code> 買紅茶的錢 <code>=<var>k</var>-6<var>a[0]</var>-10<var>a[1]</var></code> 。</p>
+		<p>所以，本題的答案應依次填入 <code class="hint_pink"><var>k</var>、<var>a[0]</var>、<var>a[1]</var></code> 。</p>
+    </div>
+	</div>
+	
+	
+</div>
+</div>
+</body>
+</html>

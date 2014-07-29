@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>二元一次式化簡問題(2)-分配律(1)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 40px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+            <div class="vars" data-ensure="R_1!=0">
+			    <var id="a">randRangeNonZero(-9,9)</var>
+				<var id="b">randRangeNonZero(-9,9)</var>
+				<var id="c">randRangeNonZero(-9,9)</var>
+				<var id="R_1">a-b</var>
+				<var id="a_s">abs(a)!=1?a:(a==1?"":"-")</var>
+				<var id="b_s">abs(b)!=1?b:(b==1?"":"-")</var>
+				<var id="c_s">abs(c)!=1?c:(c==1?"":"-")</var>
+				<var id="tb_s">abs(b)!=1?-b:(b==-1?"":"-")</var>
+				<var id="tc_s">abs(c)!=1?-c:(c==-1?"":"-")</var>
+				<var id="r1_s">abs(R_1)!=1?R_1:(R_1==1?"":"-")</var>
+            </div>
+			<p class="question">化簡 <code><var>a_s</var>x-(<var>b_s</var>x+<var>c_s</var>y)=</code> ？</p>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>R_1</var></span><code>\enspace x+ \enspace</code><span class="sol" data-forms="integer"><var>-c</var></span><code>\enspace y</code>
+				<p class="example">例如： <code>3x+6y</code></p>
+			</div>
+
+    <div class="hints">
+	    <p>首先，運用分配律去括號，</p>
+		<p>得到 <code><var>a_s</var>x-<var>b_s</var>x-<var>c_s</var>y</code> ，</p>
+		<p>然後再利用同類項合併的概念進行運算，</p>
+		<p>其中 <code>x</code> 項有 <code><var>a_s</var>x</code> 與 <code><var>tb_s</var>x</code> ，合併後為 <code><var>r1_s</var>x</code> ，</p>
+		<p><code>y</code> 項只有 <code><var>tc_s</var>y</code> ，</p>
+		<p>所以同類項合併後為 <code><var>r1_s</var>x-<var>c_s</var>y</code> 。</p>
+		<p>所以，本題的答案應分別填入 <code>x</code> 的係數 <code class="hint_pink"><var>R_1</var></code> 和 <code>y</code> 的係數 <code class="hint_pink"><var>-c</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case2">
+            <div class="vars" data-ensure="R_1!=0">
+			    <var id="a">randRangeNonZero(-9,9)</var>
+				<var id="b">randRangeNonZero(-9,9)</var>
+				<var id="c">randRangeNonZero(-9,9)</var>
+				<var id="d">randRangeNonZero(-9,9)</var>
+				<var id="R_1">a-b</var>
+				<var id="a_s">abs(a)!=1?a:(a==1?"":"-")</var>
+				<var id="b_s">abs(b)!=1?b:(b==1?"":"-")</var>
+				<var id="c_s">abs(c)!=1?c:(c==1?"":"-")</var>
+				<var id="tb_s">abs(b)!=1?-b:(b==-1?"":"-")</var>
+				<var id="tc_s">abs(c)!=1?-c:(c==-1?"":"-")</var>
+				<var id="r1_s">abs(R_1)!=1?R_1:(R_1==1?"":"-")</var>
+            </div>
+			<p class="question">化簡 <code><var>a_s</var>x-(<var>b_s</var>x+<var>c_s</var>y+<var>d</var>)=</code> ？</p>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>R_1</var></span><code>\enspace x+ \enspace</code><span class="sol" data-forms="integer"><var>-c</var></span><code>\enspace y+\enspace</code><span class="sol" data-forms="integer"><var>-d</var></span>
+				<p class="example">例如： <code>3x+6y+7</code></p>
+			</div>
+
+    <div class="hints">
+	    <p>首先，運用分配律去括號，</p>
+		<p>得到 <code><var>a_s</var>x-<var>b_s</var>x-<var>c_s</var>y-<var>d</var></code> ，</p>
+		<p>然後再利用同類項合併的概念進行運算，</p>
+		<p>其中 <code>x</code> 項有 <code><var>a_s</var>x</code> 與 <code><var>tb_s</var>x</code> ，合併後為 <code><var>r1_s</var>x</code> ，</p>
+		<p><code>y</code> 項只有 <code><var>tc_s</var>y</code> ，常數項只有 <code><var>-d</var></code> ，</p>
+		<p>所以同類項合併後為 <code><var>r1_s</var>x-<var>c_s</var>y-<var>d</var></code> 。</p>
+		<p>所以，本題的答案應分別填入 <code>x</code> 的係數 <code class="hint_pink"><var>R_1</var></code> 、<code>y</code> 的係數 <code class="hint_pink"><var>-c</var></code> 和常數項 <code class="hint_pink"><var>-d</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case3">
+            <div class="vars" data-ensure="R_1!=0">
+			    <var id="a">randRangeNonZero(-9,9)</var>
+				<var id="b">randRange(-9,-2)</var>
+				<var id="c">randRangeNonZero(-9,9)</var>
+				<var id="d">randRangeNonZero(-9,9)</var>
+				<var id="R_1">a+b*c</var>
+				<var id="R_2">b*d</var>
+				<var id="a_s">abs(a)!=1?a:(a==1?"":"-")</var>
+				<var id="c_s">abs(c)!=1?c:(c==1?"":"-")</var>
+				<var id="d_s">abs(d)!=1?d:(d==1?"":"-")</var>
+				<var id="r1_s">abs(R_1)!=1?R_1:(R_1==1?"":"-")</var>
+            </div>
+			<p class="question">化簡 <code><var>a_s</var>x+<var>b</var>(<var>c_s</var>x+<var>d_s</var>y)=</code> ？</p>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>R_1</var></span><code>\enspace x+ \enspace</code><span class="sol" data-forms="integer"><var>R_2</var></span><code>\enspace y</code>
+				<p class="example">例如： <code>3x+6y</code></p>
+			</div>
+
+    <div class="hints">
+	    <p>首先，運用分配律去括號，</p>
+		<p>得到 <code><var>a_s</var>x+<var>b*c</var>x+<var>R_2</var>y</code> ，</p>
+		<p>然後再利用同類項合併的概念進行運算，</p>
+		<p>其中 <code>x</code> 項有 <code><var>a_s</var>x</code> 與 <code><var>b*c</var>x</code> ，合併後為 <code><var>r1_s</var>x</code> ，</p>
+		<p><code>y</code> 項只有 <code><var>R_2</var>y</code> ，</p>
+		<p>所以同類項合併後為 <code><var>r1_s</var>x+<var>R_2</var>y</code> 。</p>
+		<p>所以，本題的答案應分別填入 <code>x</code> 的係數 <code class="hint_pink"><var>R_1</var></code> 和 <code>y</code> 的係數 <code class="hint_pink"><var>R_2</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case4">
+            <div class="vars" data-ensure="R_1!=0">
+			    <var id="a">randRangeNonZero(-9,9)</var>
+				<var id="b">randRange(-9,-2)</var>
+				<var id="c">randRangeNonZero(-9,9)</var>
+				<var id="d">randRangeNonZero(-9,9)</var>
+				<var id="e">randRangeNonZero(-9,9)</var>
+				<var id="R_1">a+b*c</var>
+				<var id="R_2">b*d</var>
+				<var id="R_3">b*e</var>
+				<var id="a_s">abs(a)!=1?a:(a==1?"":"-")</var>
+				<var id="c_s">abs(c)!=1?c:(c==1?"":"-")</var>
+				<var id="d_s">abs(d)!=1?d:(d==1?"":"-")</var>
+				<var id="r1_s">abs(R_1)!=1?R_1:(R_1==1?"":"-")</var>
+            </div>
+			<p class="question">化簡 <code><var>a_s</var>x+<var>b</var>(<var>c_s</var>x+<var>d_s</var>y+<var>e</var>)=</code> ？</p>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>R_1</var></span><code>\enspace x+ \enspace</code><span class="sol" data-forms="integer"><var>R_2</var></span><code>\enspace y+ \enspace</code><span class="sol" data-forms="integer"><var>R_3</var></span>
+				<p class="example">例如： <code>3x+6y+7</code></p>
+			</div>
+
+    <div class="hints">
+	    <p>首先，運用分配律去括號，</p>
+		<p>得到 <code><var>a_s</var>x+<var>b*c</var>x+<var>R_2</var>y+<var>R_3</var></code> ，</p>
+		<p>然後再利用同類項合併的概念進行運算，</p>
+		<p>其中 <code>x</code> 項有 <code><var>a_s</var>x</code> 與 <code><var>b*c</var>x</code> ，合併後為 <code><var>r1_s</var>x</code> ，</p>
+		<p><code>y</code> 項只有 <code><var>R_2</var>y</code> ，常數項只有 <code><var>R_3</var></code> ，</p>
+		<p>所以同類項合併後為 <code><var>r1_s</var>x+<var>R_2</var>y+<var>R_3</var></code> 。</p>
+		<p>所以，本題的答案應分別填入 <code>x</code> 的係數 <code class="hint_pink"><var>R_1</var></code> 、<code>y</code> 的係數 <code class="hint_pink"><var>R_2</var></code> 和常數項 <code class="hint_pink"><var>R_3</var></code> 。</p>
+    </div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>
