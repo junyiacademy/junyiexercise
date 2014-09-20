@@ -1,0 +1,1122 @@
+﻿<!DOCTYPE html>
+<html data-require="math word-problems graphie jquery.mobile.vmouse interactive expressions">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>10以內的數序</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        .hanzi {
+	        line-height:1em; 
+            font-size:1.5em;
+            vertical-align:middle;
+            padding:0px 0px 0px 0px;
+            margin:0px 0px 0px 0px;
+        }
+	    .pinyin {
+	        line-height:1em; 
+            font-size:0.4em;
+            vertical-align:middle;
+            padding:0px 0px 0px 0px;
+            margin:0px 0px 0px 0px;
+        }
+        .box {
+            border:1px solid black;
+            width:2em;
+            height:2em;
+            text-align:center;
+            vertical-align:middle;
+            background-color:white;
+        }
+        .box_2 {
+            border:1px solid black;
+            width:2.5em;
+            height:1.8em;
+            text-align:center;
+            vertical-align:middle;
+            background-color:white;
+        }
+        .selectPoint {
+            border:0px;
+        }
+        .rect {
+            
+        }
+        .blank {
+            widht:2em;
+            height:2em;
+            display:inline;
+        }
+        .selector {
+            float:left; 
+            width:35px;
+            height:35px;
+            /*border:1px solid black;*/
+            position:relative;
+            z-index:1;
+            margin-top:3px;
+            margin:1px 1px 1px 1px;
+        }
+        .firstColumn {
+            width:4.5em;
+            vertical-align:middle;
+            text-align:center;
+            border:1px solid black;
+        }
+        .secondColumn {
+            vertical-align:middle;
+            text-align:center;
+            border:1px solid black;
+        }
+        .selected {
+        }
+        .line_1 {}
+        .line_2 {}
+        .line_3 {}
+        .line_4 {}
+        .line_5 {}
+        .line_6 {}
+    </style>
+</head>
+<script>
+    function setStyle_2(elemId) {
+        var obj = document.getElementById(elemId);
+        obj.readOnly = "true";
+		obj.style.color='black';
+    }
+    function loadImg(elem, url, count, width, height) {
+        var loimg = document.getElementById(elem);
+        var inner = "";
+        for (var i = 1; i <= count; i++) {
+            inner += "<img id="+"image"+ elem + i + " width=" + width +" height="+height+ ">";
+        }
+        loimg.innerHTML += inner;
+        for (var j = 1; j <= count; j++) {
+            document.getElementById("image" + elem + j).src = url;
+        }
+    }
+    function isIn(array, elem) {
+        for (var v in array) {
+            if (elem == array[v])
+                return true;
+        }
+        return false;
+    }
+    function isClose(coordA, coordB) {
+        //alert(coordA);
+        //alert(coordB);
+        if (Math.abs(coordA[0] - coordB[0]) < 0.3 && Math.abs(coordA[1] - coordB[1]) < 0.3)
+            return true;
+        else
+            return false;
+    }
+    function exclude(array, exc) {
+        var values=[];
+        for(var i in array){
+            if (array[i] != exc)
+                values.push(array[i]);
+        }
+        return values;
+    }
+    function procIndex(array) {
+        var indexes=[];
+        for (var i in array) {
+            if (array[i] == true)
+                indexes.push(i);
+        }
+        return indexes;
+    }
+    function getIndex(array, value) {
+        for (var i in array)
+            if (array[i] == value)
+                return i;
+    }
+</script>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars">
+                    <var id="data">
+                        (function(){
+                            var obj;
+                            firstNums_1=randRangeUnique(1,4,2);
+                            firstNums_2=randRangeUnique(1,5,2);
+                            midPosition=randRangeUnique(4,7,2);
+                            answers=[[firstNums_1[0]+1,firstNums_1[0]+3,firstNums_1[0]+5,firstNums_1[0]+7],[firstNums_1[1]+1,firstNums_1[1]+3,firstNums_1[1]+5,firstNums_1[1]+7],[firstNums_2[0]+2,firstNums_2[0]+3,firstNums_2[0]+4,firstNums_2[0]+5,firstNums_2[0]+6],[firstNums_2[1]+2,firstNums_2[1]+3,firstNums_2[1]+4,firstNums_2[1]+5,firstNums_2[1]+6],midPosition];
+                            document.getElementById("grid11").value=firstNums_1[0];
+                            document.getElementById("grid13").value=firstNums_1[0]+2;
+                            document.getElementById("grid15").value=firstNums_1[0]+4;
+                            document.getElementById("grid17").value=firstNums_1[0]+6;
+                            document.getElementById("grid21").value=firstNums_1[1];
+                            document.getElementById("grid23").value=firstNums_1[1]+2;
+                            document.getElementById("grid25").value=firstNums_1[1]+4;
+                            document.getElementById("grid27").value=firstNums_1[1]+6;
+                            document.getElementById("grid31").value=firstNums_2[0];
+                            document.getElementById("grid32").value=firstNums_2[0]+1;
+                            document.getElementById("grid3"+midPosition[0]).value=firstNums_2[0]+midPosition[0]-1;
+                            setStyle_2("grid31");
+                            setStyle_2("grid32");
+                            setStyle_2("grid3"+midPosition[0]);
+                            document.getElementById("grid41").value=firstNums_2[1];
+                            document.getElementById("grid42").value=firstNums_2[1]+1;
+                            document.getElementById("grid4"+midPosition[1]).value=firstNums_2[1]+midPosition[1]-1;
+                            setStyle_2("grid41");
+                            setStyle_2("grid42");    
+                            setStyle_2("grid4"+midPosition[1]);
+                            return [answers,midPosition,firstNums_2,[exclude([3,4,5,6,7],midPosition[0]),exclude([3,4,5,6,7],midPosition[1])]];
+                        })()
+                    </var>
+                    <var id="ans_1">data[0][0]</var>
+                    <var id="ans_2">data[0][1]</var>
+                    <var id="ans_3">data[0][2]</var>
+                    <var id="ans_4">data[0][3]</var>
+					<var id="ans_5">data[3][0]</var>
+					<var id="ans_6">data[3][1]</var>
+                </div>
+                <div class="question">
+                    <p>寫寫看，在方框裡寫出正確的數。</p>
+                    
+                    <div>
+                        (1)
+                        <input type="text" id="grid11" readonly="true" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid12" style="color:red" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid13" readonly="true" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid14" style="color:red" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid15" readonly="true" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid16" style="color:red" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid17" readonly="true" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid18" style="color:red" class="box" /><br /><br />
+                        (2)
+                        <input type="text" id="grid21" readonly="true" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid22" style="color:red" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid23" readonly="true" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid24" style="color:red" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid25" readonly="true" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid26" style="color:red" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid27" readonly="true" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid28" style="color:red" class="box" /><br /><br />
+                        (3)
+                        <input type="text" id="grid31" readonly="true" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid32" readonly="true" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid33" style="color:red" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid34" style="color:red" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid35" style="color:red" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid36" style="color:red" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid37" style="color:red" class="box" /><br /><br />
+                        (4)
+                        <input type="text" id="grid41" readonly="true" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid42" readonly="true" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid43" style="color:red" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid44" style="color:red" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid45" style="color:red" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid46" style="color:red" class="box" /><span><code>\rightarrow</code></span><input type="text" id="grid47" style="color:red" class="box" /><br /><br />
+                    </div>
+                    
+                </div>
+                <div class="solution" data-type="multiple">
+                    <div class="sol" data-type="custom">
+                        <div class="guess">[ans_1,ans_2,ans_3,ans_4]</div>
+                        <div class="validator-function">
+							
+							for(i=0;i&lt;4;i++)
+							{
+								
+									if(document.getElementById("grid1"+(i+1)*2).value=="")
+									return "";
+									
+							}
+							for(i=0;i&lt;4;i++)
+							{
+								
+									if(document.getElementById("grid2"+(i+1)*2).value=="")
+									return "";
+									
+							}
+							for(i=0;i&lt;4;i++)
+							{
+									if(document.getElementById("grid3"+ans_5[i]).value=="")
+									return "";
+							}
+							for(i=0;i&lt;4;i++)
+							{
+									if(document.getElementById("grid4"+ans_6[i]).value=="")
+									return "";
+							}
+                            for(i=0;i&lt;4;i++)
+                            {
+                                if(document.getElementById("grid1"+(i+1)*2).value!=guess[0][i])
+                                    return false;
+                            }
+                            for(i=0;i&lt;4;i++)
+                            {
+                                if(document.getElementById("grid2"+(i+1)*2).value!=guess[1][i])
+                                    return false;
+                            }
+                            for(i=0;i&lt;5;i++)
+                            {
+                                if(document.getElementById("grid3"+(i+3)).value!=guess[2][i])
+                                    return false;
+                            }
+                            for(i=0;i&lt;5;i++)
+                            {
+                                if(document.getElementById("grid4"+(i+3)).value!=guess[3][i])
+                                {
+                                    
+                                    return false;
+                                }
+                            }
+                            return true;
+                        </div>
+                    </div>
+					<p class="example">請在方框裡填入正確的數</p>
+                </div>
+                <div class="hints">
+					<p>第一行應分別填入 <code>:</code> <code class="hint_pink"><var>ans_1[0]</var></code> 、<code class="hint_pink"><var>ans_1[1]</var></code> 、<code class="hint_pink"><var>ans_1[2]</var></code> 、<code class="hint_pink"><var>ans_1[3]</var></code> ，</p>
+					<p>第二行應分別填入 <code>:</code> <code class="hint_pink"><var>ans_2[0]</var></code> 、<code class="hint_pink"><var>ans_2[1]</var></code> 、<code class="hint_pink"><var>ans_2[2]</var></code> 、<code class="hint_pink"><var>ans_2[3]</var></code> ，</p>
+					<p>第三行應分別填入 <code>:</code> <code class="hint_pink"><var>data[3][0][0]+data[2][0]-1</var></code> 、<code class="hint_pink"><var>data[3][0][1]+data[2][0]-1</var></code> 、<code class="hint_pink"><var>data[3][0][2]+data[2][0]-1</var></code> 、<code class="hint_pink"><var>data[3][0][3]+data[2][0]-1</var></code> ，</p>
+					<p style="font-weight:normal">第四行應分別填入 <code>:</code> <code class="hint_pink"><var>data[3][1][0]+data[2][1]-1</var></code> 、<code class="hint_pink"><var>data[3][1][1]+data[2][1]-1</var></code> 、<code class="hint_pink"><var>data[3][1][2]+data[2][1]-1</var></code> 、<code class="hint_pink"><var>data[3][1][3]+data[2][1]-1</var></code> 。</p>
+                </div>
+            </div>
+            <div id="case2">
+                <div class="vars">
+                    <var id="data">
+                        (function(){
+                            var baseNum=[1,2,3,1,2];
+                            var blankFlag=new Array(new Array(8),new Array(8),new Array(8),new Array(8),new Array(8));
+                            var blankPosition;
+                            for(i=0;i&lt;5;i++)
+                            {
+                                for(j=0;j&lt;8;j++)
+                                {
+                                    blankFlag[i][j]=false;
+                                }
+                            }
+                            for(i=0;i&lt;3;i++)
+                            {
+                                blankPosition=randRangeUnique(2,9,4);
+                                for(j=0;j&lt;4;j++)
+                                    blankFlag[i][blankPosition[j]-1]=true;
+                            }
+                            blankFlag[3][0]=true;
+                            blankFlag[4][0]=true;
+                            for(i=3;i&lt;5;i++)
+                            {
+                                blankPosition=randRangeUnique(3,6,2);
+                                blankFlag[i][blankPosition[0]-1]=true;
+                                blankFlag[i][blankPosition[1]-1]=true;
+                                blankPosition=randRangeUnique(6,9,2);
+                                blankFlag[i][blankPosition[0]-1]=true;
+                                blankFlag[i][blankPosition[1]-1]=true;
+                            }
+                            for(i=0;i&lt;5;i++)
+                            {
+                                for(j=0;j&lt;8;j++)
+                                {
+                                    if(blankFlag[i][j]==false)
+                                    {
+                                        document.getElementById("grid"+(i+1)+(j+1)).value=baseNum[i]+j;
+                                        document.getElementById("grid"+(i+1)+(j+1)).readOnly=true;
+                                    }
+                                    else
+                                        document.getElementById("grid"+(i+1)+(j+1)).style.color="red";
+                                }
+                            }
+                            indexes=[];
+                            for(i=0;i&lt;5;i++)
+                                indexes[i]=procIndex(blankFlag[i]);
+                            return [indexes];
+                         })()
+                    </var>
+					<var id="J">data[0]</var>
+                </div>
+                <div class="question">
+                        <p>在方框裡寫出正確的數。</p>
+                    (1)
+                    <input type="text" id="grid11" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid12" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid13" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid14" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid15" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid16" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid17" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid18" class="box" /><br /><br />
+                    (2)
+                    <input type="text" id="grid21" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid22" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid23" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid24" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid25" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid26" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid27" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid28" class="box" /><br /><br />
+                    (3)
+                    <input type="text" id="grid31" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid32" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid33" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid34" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid35" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid36" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid37" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid38" class="box" /><br /><br />
+                    (4)
+                    <input type="text" id="grid41" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid42" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid43" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid44" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid45" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid46" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid47" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid48" class="box" /><br /><br />
+                    (5)
+                    <input type="text" id="grid51" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid52" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid53" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid54" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid55" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid56" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid57" class="box" /><span style="color:red;"><code>\rightarrow</code></span><input type="text" id="grid58" class="box" /><br /><br />
+                </div>
+                <div class="solution" data-type="multiple">
+                    <div class="sol" data-type="custom">
+                        <div class="guess">[[1,2,3,4,5,6,7,8],[2,3,4,5,6,7,8,9],[3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8],[2,3,4,5,6,7,8,9]]</div>
+                        <div class="validator-function">
+							for(i=0;i&lt;4;i++)
+							{
+								
+									if(document.getElementById("grid1"+(parseInt(J[0][i])+1)).value=="")
+									return "";
+									
+							}
+							for(i=0;i&lt;4;i++)
+							{
+								
+									if(document.getElementById("grid2"+(parseInt(J[1][i])+1)).value=="")
+									return "";
+									
+							}
+							for(i=0;i&lt;4;i++)
+							{
+									if(document.getElementById("grid3"+(parseInt(J[2][i])+1)).value=="")
+									return "";
+							}
+							for(i=0;i&lt;5;i++)
+							{
+									if(document.getElementById("grid4"+(parseInt(J[3][i])+1)).value=="")
+									return "";
+							}
+							for(i=0;i&lt;5;i++)
+							{
+									if(document.getElementById("grid5"+(parseInt(J[4][i])+1)).value=="")
+									return "";
+							}
+							
+                            for(i=0;i&lt;5;i++)
+                            {
+                                for(j=0;j&lt;8;j++)
+                                {
+                                    if(guess[i][j]!=document.getElementById("grid"+(i+1)+(j+1)).value)
+                                        return false;
+                                }
+                            }
+                            return true;
+                        </div>
+                    </div>
+					<p class="example">請在方框裡填入正確的數</p>
+                </div>
+                <div class="hints">
+					<p>第一行應分別填入 <code class="hint_pink"><var>parseInt(data[0][0][0])+1</var>、<var>parseInt(data[0][0][1])+1</var>、<var>parseInt(data[0][0][2])+1</var>、<var>parseInt(data[0][0][3])+1</var></code></p>
+					<p>第二行應分別填入 <code class="hint_pink"><var>parseInt(data[0][1][0])+2</var>、<var>parseInt(data[0][1][1])+2</var>、<var>parseInt(data[0][1][2])+2</var>、<var>parseInt(data[0][1][3])+2</var></code></p>
+					<p>第三行應分別填入 <code class="hint_pink"><var>parseInt(data[0][2][0])+3</var>、<var>parseInt(data[0][2][1])+3</var>、<var>parseInt(data[0][2][2])+3</var>、<var>parseInt(data[0][2][3])+3</var></code></p>
+					<p>第四行應分別填入 <code class="hint_pink"><var>parseInt(data[0][3][0])+1</var>、<var>parseInt(data[0][3][1])+1</var>、<var>parseInt(data[0][3][2])+1</var>、<var>parseInt(data[0][3][3])+1</var>、<var>parseInt(data[0][3][4])+1</var></code></p>
+					<p style="font-weight:normal">第五行應分別填入 <code class="hint_pink"><var>parseInt(data[0][4][0])+2</var>、<var>parseInt(data[0][4][1])+2</var>、<var>parseInt(data[0][4][2])+2</var>、<var>parseInt(data[0][4][3])+2</var>、<var>parseInt(data[0][4][4])+2</var></code></p>
+                </div>
+            </div>
+            <div id="case3">
+                <div class="vars">
+                    <var id="data">
+                        (function(){
+                            var counts=randRangeUnique(1,10,3);
+                            var extras=new Array(2);
+                            var n=0;
+                            while(n&lt;2)
+							{
+								var v=randRange(1,10);
+								if(isIn(counts,v))
+									continue;
+								extras[n]=v;
+								n++;
+							}
+                            var counts2=shuffle([counts[0],counts[1],counts[2],extras[0]]);
+                            var counts3=shuffle([counts[0],counts[1],counts[2],extras[0],extras[1]]);
+                            loadImg("img1",Khan.urlBase+"images/cherry_1.jpg",counts[0],"30%","30%");
+                            loadImg("img2",Khan.urlBase+"images/strawberry_1.jpg",counts[1],"30%","30%");
+                            loadImg("img3",Khan.urlBase+"images/apple_1.jpg",counts[2],"30%","30%");
+                            var next=new Array(7);
+                            next[0]=getIndex(counts2,counts[0]);
+                            next[1]=getIndex(counts2,counts[1]);
+                            next[2]=getIndex(counts2,counts[2]);
+                            var uIndex=getIndex(counts2,exclude(exclude(exclude(counts2,counts[0]),counts[1]),counts[2]));
+                            next[3]=getIndex(counts3,counts2[0]);
+                            next[4]=getIndex(counts3,counts2[1]);
+                            next[5]=getIndex(counts3,counts2[2]);
+                            next[6]=getIndex(counts3,counts2[3]);
+                            next[parseInt(uIndex)+3]=-1;
+                            return [counts,counts2,counts3,next];
+                        })()
+                    </var>
+                    <var id="counts">data[0]</var>
+                    <var id="counts2">data[1]</var>
+                    <var id="counts3">data[2]</var>
+                    <var id="selection">null</var>
+                    <var id="next">data[3]</var>
+                </div>
+                <div class="question">
+                    <p>畫線連連看，把正確的數畫線連起來。</p>
+                    <div style="float:left;width:120px;text-align:center;">
+                        <div id="img1" style="height:100px;border:1px solid black;"></div>
+                        <div id="img2" style="height:100px;border:1px solid black;"></div>
+                        <div id="img3" style="height:100px;border:1px solid black;"></div>
+                    </div>
+                    <div style="position:absolute; width:100px;left:273px;">
+                        <div style="height:50px;border:1px solid black;margin-top:20px;margin-bottom:20px;"></div>
+                        <div style="height:50px;border:1px solid black;margin-top:20px;margin-bottom:20px;"></div>
+                        <div style="height:50px;border:1px solid black;margin-top:20px;margin-bottom:20px;"></div>
+                        <div style="height:50px;border:1px solid black;margin-top:20px;margin-bottom:20px;"></div>
+                    </div>
+                    <div style="position:absolute; width:50px;left:498px;">
+                        <div style="height:50px;border:1px solid black;margin-top:9px;margin-bottom:9px;vertical-align:middle;text-align:center;line-height:50px;overflow:hidden;"><var>counts3[0]</var></div>
+                        <div style="height:50px;border:1px solid black;margin-top:9px;margin-bottom:9px;vertical-align:middle;text-align:center;line-height:50px;overflow:hidden;"><var>counts3[1]</var></div>
+                        <div style="height:50px;border:1px solid black;margin-top:9px;margin-bottom:9px;vertical-align:middle;text-align:center;line-height:50px;overflow:hidden;"><var>counts3[2]</var></div>
+                        <div style="height:50px;border:1px solid black;margin-top:9px;margin-bottom:9px;vertical-align:middle;text-align:center;line-height:50px;overflow:hidden;"><var>counts3[3]</var></div>
+                        <div style="height:50px;border:1px solid black;margin-top:9px;margin-bottom:9px;vertical-align:middle;text-align:center;line-height:50px;overflow:hidden;"><var>counts3[4]</var></div>
+                    </div>
+                    <div class="graphie" id="grid">
+                        init({
+                                range:[[0,13],[-10,0]]
+                            });
+                        addMouseLayer();
+                        graph.pointA = addMovablePoint({
+                            coord: [ 3 ,-1.2 ],
+                            visible:false,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+                        graph.pointB = addMovablePoint({
+                            coord: [ 3, -3.8 ],
+                            visible:false,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+                        graph.pointC = addMovablePoint({
+                            coord: [ 3, -6.4 ],
+                            visible:false,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+                        graph.pointD = addMovablePoint({
+                            coord: [ 8.5 ,-1 ],
+                            visible:false,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+                        graph.pointE = addMovablePoint({
+                            coord: [ 8.5 ,-2.9 ],
+                            visible:false,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+                        graph.pointF = addMovablePoint({
+                            coord: [ 8.5 ,-4.7 ],
+                            visible:false,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+                        graph.pointG = addMovablePoint({
+                            coord: [ 8.5 ,-6.5 ],
+                            visible:false,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+                        graph.point_d = addMovablePoint({
+                            coord: [ 8.65 ,-1 ],
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            },
+                        });						graph.point_d.normalStyle.scale = 1.75;						graph.point_d.highlightStyle.scale = 1.75;
+                        graph.point_e = addMovablePoint({
+                            coord: [ 8.65 ,-2.9 ],
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });						graph.point_e.normalStyle.scale = 1.75;						graph.point_e.highlightStyle.scale = 1.75;						
+                        graph.point_f = addMovablePoint({
+                            coord: [ 8.65 ,-4.7 ],
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });						graph.point_f.normalStyle.scale = 1.75;						graph.point_f.highlightStyle.scale = 1.75;						
+                        graph.point_g = addMovablePoint({
+                            coord: [ 8.65 ,-6.5 ],
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });						graph.point_g.normalStyle.scale = 1.75;						graph.point_g.highlightStyle.scale = 1.75;
+                        graph.point_a = addMovablePoint({
+                            coord: [ 3.05 ,-1.2 ],
+                            visible:true,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });						graph.point_a.normalStyle.scale = 1.75;						graph.point_a.highlightStyle.scale = 1.75;
+                        graph.point_b = addMovablePoint({
+                            coord: [ 3.05, -3.8 ],
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });						graph.point_b.normalStyle.scale = 1.75;						graph.point_b.highlightStyle.scale = 1.75;
+                        graph.point_c = addMovablePoint({
+                            coord: [ 3.05, -6.4 ],
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });						graph.point_c.normalStyle.scale = 1.75;						graph.point_c.highlightStyle.scale = 1.75;
+                        graph.line1 = addMovableLineSegment({
+                            pointA: graph.pointA,
+                            pointZ: graph.point_a,
+                            fixed: true,
+                            extendLine: false,
+                            normalStyle: {
+                                "stroke": KhanUtil.GREEN,
+                                "stroke-width": 2
+                            }
+                        });
+                        graph.line2 = addMovableLineSegment({
+                            pointA: graph.pointB,
+                            pointZ: graph.point_b,
+                            fixed: true,
+                            extendLine: false,
+                            normalStyle: {
+                                "stroke": KhanUtil.GREEN,
+                                "stroke-width": 2
+                            }
+                        });
+                        graph.line3 = addMovableLineSegment({
+                            pointA: graph.pointC,
+                            pointZ: graph.point_c,
+                            fixed: true,
+                            extendLine: false,
+                            normalStyle: {
+                                "stroke": KhanUtil.GREEN,
+                                "stroke-width": 2
+                            }
+                        });
+                        graph.line4 = addMovableLineSegment({
+                            pointA: graph.pointD,
+                            pointZ: graph.point_d,
+                            fixed: true,
+                            extendLine: false,
+                            normalStyle: {
+                                "stroke": KhanUtil.GREEN,
+                                "stroke-width": 2
+                            }
+                        });
+                        graph.line5 = addMovableLineSegment({
+                            pointA: graph.pointE,
+                            pointZ: graph.point_e,
+                            fixed: true,
+                            extendLine: false,
+                            normalStyle: {
+                                "stroke": KhanUtil.GREEN,
+                                "stroke-width": 2
+                            }
+                        });
+                        graph.line6 = addMovableLineSegment({
+                            pointA: graph.pointF,
+                            pointZ: graph.point_f,
+                            fixed: true,
+                            extendLine: false,
+                            normalStyle: {
+                                "stroke": KhanUtil.GREEN,
+                                "stroke-width": 2
+                            }
+                        });
+                        graph.line7 = addMovableLineSegment({
+                            pointA: graph.pointG,
+                            pointZ: graph.point_g,
+                            fixed: true,
+                            extendLine: false,
+                            normalStyle: {
+                                "stroke": KhanUtil.GREEN,
+                                "stroke-width": 2
+                            }
+                        });
+                        for(i=0;i&lt;4;i++)
+                        {
+                            var c1,c2;
+                            var offset=-1.8;
+                            if(counts2[i]&lt;5){c1=counts2[i];c2=0;}
+                            else {c1=5;c2=counts2[i]-5;}
+                            for(j=0;j&lt;c1;j++)
+                            {
+                                circle([6.4+j*0.45,-0.9+offset*i],0.22,{stroke: '#f99'});
+                            }
+                            for(j=0;j&lt;c2;j++)
+                            {
+                                circle([6.4+j*0.45,-1.38+offset*i],0.22,{stroke: '#f99'});
+                            }
+                        }
+
+                        var coords=[[6,-1],[6,-2.9],[6,-4.7],[6,-6.5],[11.6,-0.9],[11.6,-2.4],[11.6,-3.9],[11.6,-5.4],[11.6,-6.9]];
+                        var corrds_2=[[3,-1.2],[3,-3.8],[3,-6.4],[8.6,-1],[8.6,-2.9],[8.6,-4.7],[8.6,-6.5]];
+                        var next=new Array(new Array(3),new Array(4));
+                        for(i=0;i&lt;3;i++)next[0][i]=-1;
+                        for(i=0;i&lt;4;i++)next[1][i]=-1;
+                        selection=next;
+                        graph.isClose=function(coord_1,coord_2){
+                            if(Math.abs(coord_1[0]-coord_2[0])&lt;0.3 && Math.abs(coord_1[1]-coord_2[1])&lt;0.3)
+                                return true;
+                            else
+                                return false;
+                        }
+
+                        graph.circleA = circle([3,-1.2],0.1,{stroke: '#999'});
+                        graph.circleB = circle([3,-3.8],0.1,{stroke: '#999'});
+                        graph.circleC = circle([3,-6.4],0.1,{stroke: '#999'});
+                        graph.circleD = circle([6,-1],0.1,{stroke: '#999'});
+                        graph.circleE = circle([6,-2.9],0.1,{stroke: '#999'});
+                        graph.circleF = circle([6,-4.7],0.1,{stroke: '#999'});
+                        graph.circleG = circle([6,-6.5],0.1,{stroke: '#999'});
+                        graph.circleH = circle([8.6,-1],0.1,{stroke: '#999'});
+                        graph.circleI = circle([8.6,-2.9],0.1,{stroke: '#999'});
+                        graph.circleJ = circle([8.6,-4.7],0.1,{stroke: '#999'});
+                        graph.circleK = circle([8.6,-6.5],0.1,{stroke: '#999'});
+                        graph.circleL = circle([11.6,-0.9],0.1,{stroke: '#999'});
+                        graph.circleM = circle([11.6,-2.4],0.1,{stroke: '#999'});
+                        graph.circleN = circle([11.6,-3.9],0.1,{stroke: '#999'});
+                        graph.circleO = circle([11.6,-5.4],0.1,{stroke: '#999'});
+                        graph.circleP = circle([11.6,-6.9],0.1,{stroke: '#999'});
+                        
+                        
+
+
+                        graph.point_a.onMove = function( x, y ) {
+                            for(i=0;i&lt;4;i++){
+                                if(graph.isClose(graph.point_a.coord,coords[i]))
+                                {
+                                    next[0][0]=i;
+                                    break;
+                                }
+                                else
+                                    next[0][0]=-1;
+                            }
+                            return ( x &lt;6 && x&gt;3 );
+                        }
+                        graph.point_b.onMove = function( x, y ) {
+                            for(i=0;i&lt;4;i++){
+                                if(graph.isClose(graph.point_b.coord,coords[i]))
+                                {
+                                    next[0][1]=i;
+                                    break;
+                                }
+                                else
+                                    next[0][1]=-1;
+                            }
+                            return ( x &lt;6 && x&gt;3 );
+                        }
+                        graph.point_c.onMove = function( x, y ) {
+                            for(i=0;i&lt;4;i++){
+                                if(graph.isClose(graph.point_c.coord,coords[i]))
+                                {
+                                    next[0][2]=i;
+                                    break;
+                                }
+                                else
+                                    next[0][2]=-1;
+                            }
+                            return ( x &lt;6 && x&gt;3 );
+                        }
+                        graph.point_d.onMove = function( x, y ) {
+                            for(i=0;i&lt;5;i++){
+                                if(graph.isClose(graph.point_d.coord,coords[i+4]))
+                                {
+                                    next[1][0]=i;
+                                    break;
+                                }
+                                else
+                                    next[1][0]=-1;
+                            }
+                            return ( x &lt;11.6 && x&gt;8.5 );
+                        }
+                        graph.point_e.onMove = function( x, y ) {
+                            for(i=0;i&lt;5;i++){
+                                if(graph.isClose(graph.point_e.coord,coords[i+4]))
+                                {
+                                    next[1][1]=i;
+                                    break;
+                                }
+                                else
+                                    next[1][1]=-1;
+                            }
+                            return ( x &lt;11.6 && x&gt;8.5 );
+                        }
+                        graph.point_f.onMove = function( x, y ) {
+                            for(i=0;i&lt;5;i++){
+                                if(graph.isClose(graph.point_f.coord,coords[i+4]))
+                                {
+                                    next[1][2]=i;
+                                    break;
+                                }
+                                else
+                                    next[1][2]=-1;
+                            }
+                            return ( x &lt;11.6 && x&gt;8.5 );
+                        }
+                        graph.point_g.onMove = function( x, y ) {
+                            for(i=0;i&lt;5;i++){
+                                if(graph.isClose(graph.point_g.coord,coords[i+4]))
+                                {
+                                    next[1][3]=i;
+                                    break;
+                                }
+                                else
+                                    next[1][3]=-1;
+                            }
+                            return ( x &lt;11.6 && x>8.5 );
+                        }
+                    </div>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <div class="sol" data-type="custom">
+                        <div class="guess">selection</div>
+                        <div class="validator-function">
+							if(graph.point_a.coord[0]== 3.05 && graph.point_b.coord[0]== 3.05 && graph.point_c.coord[0]== 3.05 && graph.point_d.coord[0]== 8.65 && graph.point_e.coord[0]== 8.65 && graph.point_f.coord[0]== 8.65 && graph.point_g.coord[0]== 8.65 )
+							{
+								return "";
+							}
+                            var n1=0;
+                            var n2=0;
+                            for(i=0;i&lt;3;i++)
+                            {
+                                if(guess[0][i]!=-1)
+                                {
+                                    n1++;
+                                }
+                            }
+                            for(i=0;i&lt;4;i++)
+                            {
+                                if(guess[1][i]!=-1)
+                                {
+                                    n2++;
+                                }
+                            }
+                            if(n1!=3||n2!=3)
+                                return false;
+                            index=[guess[1][guess[0][0]],guess[1][guess[0][1]],guess[1][guess[0][2]]];
+                            if(counts2[guess[0][0]]!=counts[0]||counts2[guess[0][1]]!=counts[1]||counts2[guess[0][2]]!=counts[2])
+                                return false;
+                            if(counts3[index[0]]!=counts[0]||counts3[index[1]]!=counts[1]||counts3[index[2]]!=counts[2])
+                                return false;
+                            return true;
+                        </div>
+                    </div>
+					<p class="example">請用線將對應的圖片連起來</p>
+                </div>
+                <div class="hints">
+                    <div class="graphie" data-update="grid">
+                        coord=[[6,-1],[6,-2.9],[6,-4.7],[6,-6.5]];
+                        graph.point_a.moveTo(coord[next[0]][0],coord[next[0]][1],"graph.line1");
+                    </div>
+                    <div class="graphie" data-update="grid">
+                        coord=[[6,-1],[6,-2.9],[6,-4.7],[6,-6.5]];
+                        graph.point_b.moveTo(coord[next[1]][0],coord[next[1]][1],"graph.line1");
+                    </div>
+                    <div class="graphie" data-update="grid">
+                        coord=[[6,-1],[6,-2.9],[6,-4.7],[6,-6.5]];
+                        graph.point_c.moveTo(coord[next[2]][0],coord[next[2]][1],"graph.line1");
+                    </div>
+                    <div class="graphie" data-update="grid" data-if="next[3]!=-1">
+                        coord=[[11.6,-0.9],[11.6,-2.4],[11.6,-3.9],[11.6,-5.4],[11.6,-6.9]];
+                        graph.point_d.moveTo(coord[next[3]][0],coord[next[3]][1],"graph.line1");
+                    </div>
+                    <div class="graphie" data-update="grid" data-if="next[4]!=-1">
+                        coord=[[11.6,-0.9],[11.6,-2.4],[11.6,-3.9],[11.6,-5.4],[11.6,-6.9]];
+                        graph.point_e.moveTo(coord[next[4]][0],coord[next[4]][1],"graph.line1");
+                    </div>
+                    <div class="graphie" data-update="grid" data-if="next[5]!=-1">
+                        coord=[[11.6,-0.9],[11.6,-2.4],[11.6,-3.9],[11.6,-5.4],[11.6,-6.9]];
+                        graph.point_f.moveTo(coord[next[5]][0],coord[next[5]][1],"graph.line1");
+                    </div>
+                    <div class="graphie" data-update="grid" data-if="next[6]!=-1">
+                        coord=[[11.6,-0.9],[11.6,-2.4],[11.6,-3.9],[11.6,-5.4],[11.6,-6.9]];
+                        graph.point_g.moveTo(coord[next[6]][0],coord[next[6]][1],"graph.line1");
+                    </div>
+
+                </div>
+            </div>
+            <div id="case4">
+                <div class="vars">
+                    <var id="data">
+                        (function(){
+                            var info=[["鋼筆","小刀","電話","筆記本","垃圾桶","計算機","滑鼠","公事包"],
+                                        ["pen_2.png","knife.png","telephone.png","notebook.png","trash.png","calculator.png","mouse.png","bag.png"],
+                                        [["ㄍㄤ","ㄅㄧ"],["ㄒㄧㄠ","ㄉㄠ"],["ㄉㄧㄢ","ㄏㄨㄚ","ㄐㄧ"],["ㄅㄧ","ㄐㄧ","ㄅㄣ"],["ㄌㄚ","ㄐㄧ","ㄒㄧㄤ"],["ㄐㄧ","ㄙㄨㄢ","ㄐㄧ"],["ㄕㄨ","ㄅㄧㄠ"],["ㄍㄨㄥ","ㄨㄣ","ㄅㄠ"]],
+                                        [["","ˇ"],["ˇ",""],["ˋ","ˋ",""],["ˇ","ˋ","ˇ"],["","",""],["ˋ","ˋ",""],["ˇ",""],["","ˊ",""]]];
+                            var pic=shuffle([0,1,2,3,4,5,6,7]);
+                            var p=randRangeUnique(0,8,4);
+                            var select=new Array(new Array(4),new Array(4),new Array(4),new Array(4));
+                            for(j=0;j&lt;4;j++)
+                            {  
+                                for(i=0;i&lt;4;i++)
+                                    {
+                                        select[j][i]=info[j][pic[p[i]]];
+                                    }
+                            }
+                            for(i=0;i&lt;8;i++)
+                            {
+                                var j=pic[i];
+                                loadImg("imgs"+(i+1),Khan.urlBase+"images/"+info[1][j],1,"11.4%");
+                            }
+                            for(i=0;i&lt;4;i++)
+                                loadImg("img"+(i+1),Khan.urlBase+"images/"+select[1][i],1,"10%");
+                            loadImg("img5",Khan.urlBase+"images/"+select[1][3],1,"10%");
+                            return [select,p];
+                        })()
+                    </var>
+                    <var id="name1">data[0][0][0]</var>
+                    <var id="name2">data[0][0][1]</var>
+                    <var id="name3">data[0][0][2]</var>
+                    <var id="name4">data[0][0][3]</var>
+                    <var id="zhuyin">data[0][2]</var>
+                    <var id="shengdiao">data[0][3]</var>
+                    <var id="ans">[8-data[1][0],8-data[1][1],data[1][2]+1,data[1][3]+1,8-data[1][3]]</var>
+                </div>
+                <div class="question">
+                    <p>看圖回答問題，在方框裡填入正確的數序。</p>
+                    <div id="imgs1" style="display:inline;"></div>
+                    <div id="imgs2" style="display:inline;"></div>
+                    <div id="imgs3" style="display:inline;"></div>
+                    <div id="imgs4" style="display:inline;"></div>
+                    <div id="imgs5" style="display:inline;"></div>
+                    <div id="imgs6" style="display:inline;"></div>
+                    <div id="imgs7" style="display:inline;"></div>
+                    <div id="imgs8" style="display:inline;"></div>
+                    <br />
+                    <p>(1)&nbsp;從右邊開始數，<var>name1</var><span id="img1""></span>是第幾個？</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第&nbsp;<input id="textbox1" type="text" class="box_2"/>&nbsp;個</p>
+                    <p>(2)&nbsp;從右邊開始數，<var>name2</var><span id="img2""></span>是第幾個？</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第&nbsp;<input id="textbox2" type="text" class="box_2"/>&nbsp;個</p>
+                    <p>(3)&nbsp;從左邊開始數，<var>name3</var><span id="img3""></span>是第幾個？</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第&nbsp;<input id="textbox3" type="text" class="box_2"/>&nbsp;個</p>
+                    <p>(4)&nbsp;從左邊開始數，<var>name4</var><span id="img4""></span>是第幾個？</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第&nbsp;<input id="textbox4" type="text" class="box_2"/>&nbsp;個</p>
+                    <p>(5)&nbsp;從右邊開始數，<var>name4</var><span id="img5""></span>是第幾個？</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第&nbsp;<input id="textbox5" type="text" class="box_2"/>&nbsp;個</p>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <div class="sol" data-type="custom">
+                        <div class="guess">[ans[0],ans[1],ans[2],ans[3],ans[4]]</div>
+                        <div class="validator-function">
+							for(i=0;i&lt;5;i++)
+							{
+								if(document.getElementById("textbox"+(i+1)).value=="")
+								return "";
+							}
+                            for(i=0;i&lt;5;i++){
+                                if(guess[i]!=document.getElementById("textbox"+(i+1)).value)
+                                    return false;
+                            }
+                            return true;
+                        </div>
+                    </div>
+					<p class="example">請在方框裡填入正確的數</p>
+                </div>
+                <div class="hints">
+					<div>
+						<p>答案為：</p>
+						<p><code>(1)</code> 第 <code class="hint_pink"><var>ans[0]</var></code> 個</p>
+					</div>
+					<p><code>(2)</code> 第 <code class="hint_pink"><var>ans[1]</var></code> 個</p>
+					<p><code>(3)</code> 第 <code class="hint_pink"><var>ans[2]</var></code> 個</p>
+					<p><code>(4)</code> 第 <code class="hint_pink"><var>ans[3]</var></code> 個</p>
+					<p style="font-weight:normal"><code>(5)</code> 第 <code class="hint_pink"><var>ans[4]</var></code> 個</p>
+                </div>
+            </div>
+            <div id="case5">
+                <div class="vars">
+                    <var id="data">randRangeUnique(1,11,3)</var>
+                </div>
+                <div class="question">
+                    <div class="problem">
+                        <p>請依指定的數量與數序塗上顏色。</p>
+                        <div style="position:absolute;width:105%">
+                            <table>
+                                <tr>
+                                    <th rowspan="2"">(1)&nbsp;&nbsp;</th>
+                                    <td class="firstColumn">
+                                        <var>data[0]</var>個
+                                    </td>
+                                    <td class="secondColumn"><div data-each="10 times" class="selector line_1""></div></td>
+                                </tr>
+                                <tr>
+                                    <td class="firstColumn">
+                                        第<var>data[0]</var>個
+                                    </td>
+                                    <td class="secondColumn"><div data-each="10 times" class="selector line_2"></div></td>
+                                </tr>
+                            </table>
+                            <br />
+                            <table>
+                                <tr>
+                                    <th rowspan="2"">(2)&nbsp;&nbsp;</th>
+                                    <td class="firstColumn">
+                                        <var>data[1]</var>個
+                                    </td>
+                                    <td class="secondColumn"><div data-each="10 times" class="selector line_3"></div></td>
+                                </tr>
+                                <tr>
+                                    <td class="firstColumn">
+                                        第<var>data[1]</var>個
+                                    </td>
+                                    <td class="secondColumn"><div data-each="10 times" class="selector line_4"></div></td>
+                                </tr>
+                            </table>
+                            <br />
+                            <table>
+                                <tr>
+                                    <th rowspan="2"">(3)&nbsp;&nbsp;</th>
+                                    <td class="firstColumn">
+                                        <var>data[2]</var>個
+                                    </td>
+                                    <td class="secondColumn"><div data-each="10 times" class="selector line_5"></div></td>
+                                </tr>
+                                <tr>
+                                    <td class="firstColumn">
+                                        第<var>data[2]</var>個
+                                    </td>
+                                    <td class="secondColumn"><div data-each="10 times" class="selector line_6"></div></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="graphie" id="graph1">
+                            init({
+                                range:[[0,13],[-9,0.6]]
+                            });
+                            var offset_y=4.15;
+                            var factor_y=0.922;
+                            graph.circles_1=[];
+                            graph.circles_2=[];
+                            graph.circles_3=[];
+                            graph.circles_4=[];
+                            graph.circles_5=[];
+                            graph.circles_6=[];
+                            for(i=0;i&lt;10;i++)
+                            {
+                                graph.circles_1.push(circle([i*factor_y+offset_y,0],0.43,{stroke: '#999'}));
+                                graph.circles_2.push(circle([i*factor_y+offset_y,-1.2],0.43,{stroke: '#999'}));
+                                graph.circles_3.push(circle([i*factor_y+offset_y,-3],0.43,{stroke: '#999'}));
+                                graph.circles_4.push(circle([i*factor_y+offset_y,-4.2],0.43,{stroke: '#999'}));
+                                graph.circles_5.push(circle([i*factor_y+offset_y,-6],0.43,{stroke: '#999'}));
+                                graph.circles_6.push(circle([i*factor_y+offset_y,-7.2],0.43,{stroke: '#999'}));
+                            }
+                            graph.selectorToCircle=function(selectorId){
+                                if($(selectorId).hasClass("line_1"))
+                                    return graph.circles_1[$(selectorId).index()];
+                                else if($(selectorId).hasClass("line_2"))
+                                    return graph.circles_2[$(selectorId).index()];
+                                else if($(selectorId).hasClass("line_3"))
+                                        return graph.circles_3[$(selectorId).index()];
+                                else if($(selectorId).hasClass("line_4"))
+                                        return graph.circles_4[$(selectorId).index()];
+                                else if($(selectorId).hasClass("line_5"))
+                                        return graph.circles_5[$(selectorId).index()];
+                                else
+                                        return graph.circles_6[$(selectorId).index()];
+                            }
+                            $("#problemarea .selector").bind("vmousedown", function( event ) {
+                                event.preventDefault();
+                                //alert("clicked1");
+                                $(this).toggleClass("selected");
+                                if($(this).hasClass("selected"))
+                                {
+                                    graph.selectorToCircle(this).attr({ fill:'#00ff00'});
+                                }
+                                else{
+                                    graph.selectorToCircle(this).attr({ fill:'#f8f8f8'});
+                            }
+                            });
+                            $("#problemarea .selector").bind("vmouseover", function( event ) {
+                                event.preventDefault();
+                                    graph.selectorToCircle(this).attr({stroke: 'red' });
+                            });
+                            $("#problemarea .selector").bind("vmouseout", function( event ) {
+                                event.preventDefault();
+                                    graph.selectorToCircle(this).attr({stroke: '#999' });
+                            });
+
+                        </div>
+                    </div>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <div class="sol" data-type="custom">
+                        <div class="guess">[
+                            $("div.line_1.selected").length,
+                            $("div.line_2.selected").length,
+                            $("div.line_3.selected").length,
+                            $("div.line_4.selected").length,
+                            $("div.line_5.selected").length,
+                            $("div.line_6.selected").length,
+                            $("div.line_2.selected").index()+1,
+                            $("div.line_4.selected").index()+1,
+                            $("div.line_6.selected").index()+1
+                            ]
+                        </div>
+                        <div class="validator-function">
+							if(guess[0]=="" && guess[1]=="" && guess[2]=="" && guess[3]=="" && guess[4]==""&& guess[5]=="" && guess[6]=="" && guess[7]=="" && guess[8]=="")
+							return "";
+                            if(guess[0]!=data[0]||guess[2]!=data[1]||guess[4]!=data[2]||guess[6]!=data[0]||guess[7]!=data[1]||guess[8]!=data[2]||guess[1]!=1||guess[3]!=1||guess[5]!=1)
+                                return false;
+                            else
+                                return true;
+                        </div>
+                    </div>
+					<p class="example">請依指定的數量與數序塗上顏色</p>
+                </div>
+                <div class="hints">
+                    <div class="graphie" data-update="graph1">
+                        var s = $("div.selector.line_1");
+                        $("div.selector.line_1").each(function(){
+                            if($(this).index()&lt;data[0])
+                                $(this).addClass("selected");
+							else
+								$(this).removeClass("selected");
+                        })
+                        $("div.selector.line_2").each(function(){
+                            if($(this).index()==data[0]-1)
+                                $(this).addClass("selected");
+							else
+								$(this).removeClass("selected");
+                        })
+                        for(i=0;i&lt;data[0];i++)
+                        {
+                            graph.circles_1[i].attr({ fill:'#00ff00'});
+                        }
+                        for(i=data[0];i&lt;10;i++)
+                            graph.circles_1[i].attr({ fill:'#f8f8f8'});
+						for(i=0;i&lt;10;i++)
+                            graph.circles_2[i].attr({ fill:'#f8f8f8'});
+                        graph.circles_2[data[0]-1].attr({ fill:'#00ff00'});
+                    </div>
+                    <div class="graphie" data-update="graph1">
+                        $("div.selector.line_3").each(function(){
+                            if($(this).index()&lt;data[1])
+                                $(this).addClass("selected");
+							else
+								$(this).removeClass("selected");
+                        })
+                        $("div.selector.line_4").each(function(){
+                            if($(this).index()==data[1]-1)
+                                $(this).addClass("selected");
+							else
+								$(this).removeClass("selected");
+                        })
+                        for(i=0;i&lt;data[1];i++)
+                        {
+                            graph.circles_3[i].attr({ fill:'#00ff00'});
+                        }
+                        for(i=data[1];i&lt;10;i++)
+                            graph.circles_3[i].attr({ fill:'#f8f8f8'});
+						for(i=0;i&lt;10;i++)
+                            graph.circles_4[i].attr({ fill:'#f8f8f8'});
+                        graph.circles_4[data[1]-1].attr({ fill:'#00ff00'});
+                    </div>
+                    <div class="graphie" data-update="graph1">
+                        $("div.selector.line_5").each(function(){
+                            if($(this).index()&lt;data[2])
+                                $(this).addClass("selected");
+							else
+								$(this).removeClass("selected");
+                        })
+                        $("div.selector.line_6").each(function(){
+                            if($(this).index()==data[2]-1)
+                                $(this).addClass("selected");
+							else
+								$(this).removeClass("selected");
+                        })
+                        for(i=0;i&lt;data[2];i++)
+                        {
+                            graph.circles_5[i].attr({ fill:'#00ff00'});
+                        }
+                        for(i=data[2];i&lt;10;i++)
+                            graph.circles_5[i].attr({ fill:'#f8f8f8'});
+						for(i=0;i&lt;10;i++)
+                            graph.circles_6[i].attr({ fill:'#f8f8f8'});
+                        graph.circles_6[data[2]-1].attr({ fill:'#00ff00'});
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

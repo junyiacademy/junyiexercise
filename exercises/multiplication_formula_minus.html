@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>乘法公式-差平方公式</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+    </style>
+	<script script="text/javascript">
+	    function accMul(arg1,arg2) { 
+            var m=0,s1=arg1.toString(),s2=arg2.toString(); 
+            try{m+=s1.split(".")[1].length}catch(e){} 
+            try{m+=s2.split(".")[1].length}catch(e){} 
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m) 
+        } 
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+            <div class="vars">
+			    <var id="J_decimal">randRange(1,9)/10</var>
+				<var id="J">10-J_decimal</var>
+				<var id="R">100-accMul(20,J_decimal)+accMul(J_decimal,J_decimal)</var>
+            </div>
+			<p class="question">運用差平方公式計算 <code><var>J</var>^{2}</code> 的值。</p>
+			<div class="solution" data-type="decimal">
+				<span class="sol" data-forms="decimal"><var>R</var></span>
+			</div>
+
+    <div class="hints">
+	    <p><code><var>J</var>^{2}=(10-<var>J_decimal</var>)^{2}</code></p>
+		<p><code>=10^{2}-2\times 10 \times <var>J_decimal</var>+<var>J_decimal</var>^{2}</code></p>
+		<p><code>=100-<var>accMul(20,J_decimal)</var>+<var>accMul(J_decimal,J_decimal)</var></code></p>
+		<p><code>=<var>R</var></code></p>
+		<div>
+			<p>所以，本題的答案爲 <code class="hint_pink"><var>R</var></code> 。</p>
+		</div>
+    </div>
+	</div>
+	
+	<div id="case2">
+            <div class="vars">
+			    <var id="J_decimal">randRange(1,9)/10</var>
+				<var id="J">10-J_decimal</var>
+				<var id="A_R">accMul(10,J_decimal)</var>
+            </div>
+			<p class="question">已知 <code><var>J</var>^{2}=100-2 \times a + <var>accMul(J_decimal,J_decimal)</var></code> ，求 <code>a</code> 的值。</p>
+			<div class="solution" data-type="multiple">
+				<code>a=\enspace</code><span class="sol" data-forms="integer"><var>A_R</var></span>
+			</div>
+
+    <div class="hints">
+	    <p><code><var>J</var>^{2}=(10-<var>J_decimal</var>)^{2}</code></p>
+		<p><code>=10^{2}-2\times 10 \times <var>J_decimal</var>+<var>J_decimal</var>^{2}</code></p>
+		<p><code>=100-2\times 10 \times <var>J_decimal</var>+<var>accMul(J_decimal,J_decimal)</var></code></p>
+		<p>所以 <code>a=</code><code class="hint_green">\enspace 10 \times <var>J_decimal</var></code><code>\enspace=<var>A_R</var></code></p>
+		<div>
+			<p>所以，本題的答案爲 <code class="hint_pink"><var>A_R</var></code> 。</p>
+		</div>
+    </div>
+	</div>
+	
+	<div id="case3">
+            <div class="vars">
+			    <var id="J_last">randRange(1,9)</var>
+				<var id="J">100-J_last</var>
+				<var id="R">J*J</var>
+            </div>
+			<p	 class="question">通用差平方公式計算 <code><var>J</var>^{2}</code> 的值。</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span>
+			</div>
+
+    <div class="hints">
+	    <p><code><var>J</var>^{2}=(100-<var>J_last</var>)^{2}</code></p>
+		<p><code>=100^{2}-2\times 100 \times <var>J_last</var>+<var>J_last</var>^{2}</code></p>
+		<p><code>=10000-<var>200*J_last</var>+<var>J_last*J_last</var></code></p>
+		<p><code>=<var>R</var></code></p>
+		<div>
+			<p>所以，本題的答案爲 <code class="hint_pink"><var>R</var></code> 。</p>
+		</div>
+    </div>
+	</div>
+	
+	<div id="case4">
+            <div class="vars">
+			    <var id="J_last">randRange(1,9)</var>
+				<var id="J">1000-J_last</var>
+				<var id="R">J*J</var>
+				<var id="A_R">-2000*J_last</var>
+            </div>
+			<p class="question">已知 <code><var>J</var>^{2}=1000000 + A + <var>J_last*J_last</var></code> ，求 <code>A</code> 的值。</p>
+			<div class="solution" data-type="multiple">
+				<code>A=\enspace</code><span class="sol" data-forms="integer"><var>A_R</var></span>
+			</div>
+
+    <div class="hints">
+	    <p><code><var>J</var>^{2}=(1000-<var>J_last</var>)^{2}</code></p>
+		<p><code>=1000^{2}-2\times 1000 \times <var>J_last</var>+<var>J_last</var>^{2}</code></p>
+		<p><code>=1000000-2\times 1000 \times <var>J_last</var>+<var>J_last*J_last</var></code></p>
+		<p>所以 <code>A=</code><code class="hint_green">\enspace -2\times 1000 \times <var>J_last</var></code><code>\enspace=<var>A_R</var></code></p>
+		<div>
+			<p>所以，本題的答案爲 <code class="hint_pink"><var>A_R</var></code> 。</p>
+		</div>
+    </div>
+	</div>
+	
+	<div id="case5">
+            <div class="vars">
+			    <var id="J">randFromArray([1,2,3,4,0.5])</var>
+				<var id="K">randFromArray([0.5,1/3,0.25,2/3,0.75,0.2,0.4,0.6,0.8])</var>
+				<var id="R">J*J</var>
+            </div>
+			<p class="question">
+			    <code data-if="J==1">(a-</code>
+			    <code data-if="J==2">(2a-</code>
+				<code data-if="J==3">(3a-</code>
+				<code data-if="J==4">(4a-</code>
+				<code data-if="J==0.5">(\dfrac{a}{2}-</code>
+				<code data-if="K==0.5">\dfrac{b}{2})^{2}=</code>
+				<code data-if="K==1/3">\dfrac{b}{3})^{2}=</code>
+				<code data-if="K==0.25">\dfrac{b}{4})^{2}=</code>
+				<code data-if="K==2/3">\dfrac{2b}{3})^{2}=</code>
+				<code data-if="K==0.75">\dfrac{3b}{4})^{2}=</code>
+				<code data-if="K==0.2">\dfrac{b}{5})^{2}=</code>
+				<code data-if="K==0.4">\dfrac{2b}{5})^{2}=</code>
+				<code data-if="K==0.6">\dfrac{3b}{5})^{2}=</code>
+				<code data-if="K==0.8">\dfrac{4b}{5})^{2}=</code> ？
+			</p>
+			<div class="solution" data-type="multiple">
+					<span class="sol"><var>J*J</var></span><code>a^{2}-</code><span class="sol"><var>2*J*K</var></span><code>ab+</code><span class="sol"><var>K*K</var></span><code>b^{2}</code>
+					<p class="example">格式例如：<code>3a^{2}-\dfrac{4}{25}ab+\dfrac{1}{25}b^{2}</code></p>
+			</div>
+
+    <div class="hints">
+	    <div><p>通用和平方公式 <code>(a+b)^{2}=a^{2}+2ab+b^{2}</code> 拆開括號</p></div>
+		<div>
+		    <p> <code data-if="J==1">(a-</code>
+			    <code data-if="J==2">(2a-</code>
+				<code data-if="J==3">(3a-</code>
+				<code data-if="J==4">(4a-</code>
+				<code data-if="J==0.5">(\dfrac{a}{2}-</code>
+				<code data-if="K==0.5">\dfrac{b}{2})^{2}=</code>
+				<code data-if="K==1/3">\dfrac{b}{3})^{2}=</code>
+				<code data-if="K==0.25">\dfrac{b}{4})^{2}=</code>
+				<code data-if="K==2/3">\dfrac{2b}{3})^{2}=</code>
+				<code data-if="K==0.75">\dfrac{3b}{4})^{2}=</code>
+				<code data-if="K==0.2">\dfrac{b}{5})^{2}=</code>
+				<code data-if="K==0.4">\dfrac{2b}{5})^{2}=</code>
+				<code data-if="K==0.6">\dfrac{3b}{5})^{2}=</code>
+				<code data-if="K==0.8">\dfrac{4b}{5})^{2}=</code>
+				<code data-if="J==1">a^{2}-2\times a\times</code>
+			    <code data-if="J==2">(2a)^{2}-2\times 2a\times</code>
+				<code data-if="J==3">(3a)^{2}-2\times 3a\times</code>
+				<code data-if="J==4">(4a)^{2}-2\times 4a\times</code>
+				<code data-if="J==0.5">\left(\dfrac{a}{2}\right)^{2}-2\times \dfrac{a}{2}\times</code>
+				<code data-if="K==0.5">\dfrac{b}{2}+</code>
+				<code data-if="K==1/3">\dfrac{b}{3}+</code>
+				<code data-if="K==0.25">\dfrac{b}{4}+</code>
+				<code data-if="K==2/3">\dfrac{2b}{3}+</code>
+				<code data-if="K==0.75">\dfrac{3b}{4}+</code>
+				<code data-if="K==0.2">\dfrac{b}{5}+</code>
+				<code data-if="K==0.4">\dfrac{2b}{5}+</code>
+				<code data-if="K==0.6">\dfrac{3b}{5}+</code>
+				<code data-if="K==0.8">\dfrac{4b}{5}+</code>
+				
+				<code data-if="K==0.5">\left(\dfrac{b}{2}\right)^{2}</code>
+				<code data-if="K==1/3">\left(\dfrac{b}{3}\right)^{2}</code>
+				<code data-if="K==0.25">\left(\dfrac{b}{4}\right)^{2}</code>
+				<code data-if="K==2/3">\left(\dfrac{2b}{3}\right)^{2}</code>
+				<code data-if="K==0.75">\left(\dfrac{3b}{4}\right)^{2}</code>
+				<code data-if="K==0.2">\left(\dfrac{b}{5}\right)^{2}</code>
+				<code data-if="K==0.4">\left(\dfrac{2b}{5}\right)^{2}</code>
+				<code data-if="K==0.6">\left(\dfrac{3b}{5}\right)^{2}</code>
+				<code data-if="K==0.8">\left(\dfrac{4b}{5}\right)^{2}</code>
+			</p>
+		</div>
+		<div>
+		    <p>
+			    <code data-if="J!=0.5&&J!=1">=<var>J*J</var>a^{2}-</code>
+				<code data-if="J==1">=a^{2}-</code>
+				<code data-if="J==0.5">=\dfrac{1}{4} a^{2}-</code>
+				<code data-if="accMul(J,K)!=1 && accMul(J,K)!=0.5"><var>decimalFraction(accMul(accMul(2,J),K),true,true,true,false,false)</var>ab+</code>
+				<code data-if="accMul(J,K)==0.5">ab+</code>
+				<code data-if="accMul(J,K)==1">2ab+</code>
+				<code><var>decimalFraction(accMul(K,K),true,true,true,false,false)</var>b^{2}</code>
+			</p>
+		</div>
+		<div>
+			<p>所以，本題的答案應分別填入 <code>a^{2}</code> 的係數 <code class="hint_pink"><var>decimalFraction(accMul(J,J),true,true,false,false)</var></code> 、<code>-ab</code> 的係數 <code class="hint_pink"><var>decimalFraction(accMul(accMul(2,J),K),true,true,false,false)</var></code> 和 <code>b^{2}</code> 的係數 <code class="hint_pink"><var>decimalFraction(accMul(K,K),true,true,false,false)</var></code> 。</p>
+		</div>
+    </div>
+	</div>
+	
+	<div id="case6">
+            <div class="vars">
+			    <var id="J_decimal">randRange(1,9)/10</var>
+				<var id="J">10-J_decimal</var>
+				<var id="A_R">-accMul(10,J_decimal)</var>
+            </div>
+			<p class="question">已知 <code><var>J</var>^{2}=100+2 \times a + <var>accMul(J_decimal,J_decimal)</var></code> ，求 <code>a</code> 的值。</p>
+			<div class="solution" data-type="multiple">
+				<code>a=\enspace</code><span class="sol" data-forms="integer"><var>A_R</var></span>
+			</div>
+
+    <div class="hints">
+	    <p><code><var>J</var>^{2}=(10-<var>J_decimal</var>)^{2}</code></p>
+		<p><code>=10^{2}-2\times 10 \times <var>J_decimal</var>+<var>J_decimal</var>^{2}</code></p>
+		<p><code>=100-2\times 10 \times <var>J_decimal</var>+<var>accMul(J_decimal,J_decimal)</var></code></p>
+		<p>所以 <code>a=</code><code class="hint_green">\enspace -10 \times <var>J_decimal</var></code><code>\enspace=<var>A_R</var></code></p>
+		<div>
+			<p>所以，本題的答案爲 <code class="hint_pink"><var>A_R</var></code> 。</p>
+		</div>
+    </div>
+	</div>
+	
+	<div id="case7">
+            <div class="vars">
+			    <var id="J">randFromArray([1,2,3,4,0.5])</var>
+				<var id="K">randFromArray([0.5,1/3,0.25,2/3,0.75,0.2,0.4,0.6,0.8])</var>
+				<var id="R">J*J</var>
+            </div>
+			<p class="question">
+				<code data-if="K==0.5">(\dfrac{b}{2}-</code>
+				<code data-if="K==1/3">(\dfrac{b}{3}-</code>
+				<code data-if="K==0.25">(\dfrac{b}{4}-</code>
+				<code data-if="K==2/3">(\dfrac{2b}{3}-</code>
+				<code data-if="K==0.75">(\dfrac{3b}{4}-</code>
+				<code data-if="K==0.2">(\dfrac{b}{5}-</code>
+				<code data-if="K==0.4">(\dfrac{2b}{5}-</code>
+				<code data-if="K==0.6">(\dfrac{3b}{5}-</code>
+				<code data-if="K==0.8">(\dfrac{4b}{5}-</code> 
+			    <code data-if="J==1">a)^{2}=</code>
+			    <code data-if="J==2">2a)^{2}=</code>
+				<code data-if="J==3">3a)^{2}=</code>
+				<code data-if="J==4">4a)^{2}=</code>
+				<code data-if="J==0.5">\dfrac{a}{2})^{2}=</code>？
+			</p>
+			<div class="solution" data-type="multiple">
+					<span class="sol"><var>K*K</var></span><code>b^{2}-</code><span class="sol"><var>2*J*K</var></span><code>ab+</code><span class="sol"><var>J*J</var></span><code>a^{2}</code>
+					<p class="example">格式例如：<code>\dfrac{1}{25}b^{2}-\dfrac{4}{25}ab+3a^{2}</code></p>
+			</div>
+
+    <div class="hints">
+	    <div><p>通用和平方公式 <code>(a+b)^{2}=a^{2}+2ab+b^{2}</code> 拆開括號</p></div>
+		<div>
+		    <p> 				
+				<code data-if="K==0.5">(\dfrac{b}{2}-</code>
+				<code data-if="K==1/3">(\dfrac{b}{3}-</code>
+				<code data-if="K==0.25">(\dfrac{b}{4}-</code>
+				<code data-if="K==2/3">(\dfrac{2b}{3}-</code>
+				<code data-if="K==0.75">(\dfrac{3b}{4}-</code>
+				<code data-if="K==0.2">(\dfrac{b}{5}-</code>
+				<code data-if="K==0.4">(\dfrac{2b}{5}-</code>
+				<code data-if="K==0.6">(\dfrac{3b}{5}-</code>
+				<code data-if="K==0.8">(\dfrac{4b}{5}-</code> 
+			    <code data-if="J==1">a)^{2}=</code>
+			    <code data-if="J==2">2a)^{2}=</code>
+				<code data-if="J==3">3a)^{2}=</code>
+				<code data-if="J==4">4a)^{2}=</code>
+				<code data-if="J==0.5">\dfrac{a}{2})^{2}=</code>
+				<code data-if="K==0.5">\left(\dfrac{b}{2}\right)^{2}-2\times \dfrac{b}{2}\times</code>
+				<code data-if="K==1/3">\left(\dfrac{b}{3}\right)^{2}-2\times \dfrac{b}{3}\times</code>
+				<code data-if="K==0.25">\left(\dfrac{b}{4}\right)^{2}-2\times \dfrac{b}{4}\times</code>
+				<code data-if="K==2/3">\left(\dfrac{2b}{3}\right)^{2}-2\times \dfrac{2b}{3}\times</code>
+				<code data-if="K==0.75">\left(\dfrac{3b}{4}\right)^{2}-2\times \dfrac{3b}{4}\times</code>
+				<code data-if="K==0.2">\left(\dfrac{b}{5}\right)^{2}-2\times \dfrac{b}{5}\times</code>
+				<code data-if="K==0.4">\left(\dfrac{2b}{5}\right)^{2}-2\times \dfrac{2b}{5}\times</code>
+				<code data-if="K==0.6">\left(\dfrac{3b}{5}\right)^{2}-2\times \dfrac{3b}{5}\times</code>
+				<code data-if="K==0.8">\left(\dfrac{4b}{5}\right)^{2}-2\times \dfrac{4b}{5}\times</code>
+				<code data-if="J==1">a+</code>
+			    <code data-if="J==2">2a+</code>
+				<code data-if="J==3">3a+</code>
+				<code data-if="J==4">4a+</code>
+				<code data-if="J==0.5">\dfrac{a}{2}+</code>
+				<code data-if="J==1">a^{2}</code>
+			    <code data-if="J==2">(2a)^{2}</code>
+				<code data-if="J==3">(3a)^{2}</code>
+				<code data-if="J==4">(4a)^{2}</code>
+				<code data-if="J==0.5">\left(\dfrac{a}{2}\right)^{2}</code>
+				
+
+			</p>
+		</div>
+		<div>
+		    <p>
+			    <code>=<var>decimalFraction(accMul(K,K),true,true,true,false,false)</var>b^{2}-</code>
+				<code data-if="accMul(J,K)!=1 && accMul(J,K)!=0.5"><var>decimalFraction(accMul(accMul(2,J),K),true,true,true,false,false)</var>ab+</code>
+				<code data-if="accMul(J,K)==0.5">ab+</code>
+				<code data-if="accMul(J,K)==1">2ab+</code>
+				<code data-if="J!=0.5&&J!=1"><var>J*J</var>a^{2}</code>
+				<code data-if="J==1">a^{2}</code>
+				<code data-if="J==0.5">\dfrac{1}{4} a^{2}</code>
+				
+			</p>
+		</div>
+		<div>
+			<p>所以，本題的答案應分別填入 <code>b^{2}</code> 的係數 
+			<code class="hint_pink"><var>decimalFraction(accMul(K,K),true,true,false,false)</var></code> 、<code>-ab</code> 的係數 
+			<code class="hint_pink"><var>decimalFraction(accMul(accMul(2,J),K),true,true,false,false)</var></code> 和 
+			<code>a^{2}</code> 的係數 
+			<code class="hint_pink"><var>decimalFraction(accMul(J,J),true,true,false,false)</var></code>。</p>
+		</div>
+    </div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie time interactive graphie-geometry graphie-helpers angles">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能理解等量公理6-a-01</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+		#left{float:left;border:1px   solid   red;   padding:10px;width:200px}
+		#right{float:left;border:1px   solid   red;   padding:10px;width:200px}
+        </style>
+	<script type="text/javascript">
+		function Cube( lb,ule){
+			var graph = KhanUtil.currentGraph;
+			graph.path([[-lb+ule, lb], [-lb+0.4+ule, lb], [-lb+0.4+ule, lb-0.4],[-lb+ule,lb-0.4],[-lb+ule,lb]],{"stroke-width":0.2,fill:"#F9F900"});
+			graph.path([[-lb+ule, lb], [-lb+0.2+ule, lb+0.15],[-lb+0.6+ule,lb+0.15],[-lb+0.4+ule,lb],[-lb+ule,lb]],{"stroke-width":0.2,fill:"#F9F900"});
+			graph.path([[-lb+0.6+ule,lb+0.15],[-lb+0.6+ule,lb-0.25],[-lb+0.4+ule,lb-0.4],[-lb+0.4+ule,lb],[-lb+0.6+ule,lb+0.15]],{"stroke-width":0.2,fill:"#C4C400"});
+		}
+		function Cylinder(center){
+			var graph = KhanUtil.currentGraph;
+			graph.ellipse([center[0],center[1]-0.4], [0.12,0.05],{"stroke-width":0.3,fill:"#FF5151"});
+			graph.path([[center[0]-0.12,center[1]],[center[0]+0.12,center[1]],[center[0]+0.12,center[1]-0.4],[center[0]-0.12,center[1]-0.4],[center[0]-0.12,center[1]]],{"stroke-width":0.2,fill:"#FF5151",stroke:"#FF5151"});
+			graph.ellipse(center, [0.12,0.05],{"stroke-width":0.3,fill:"#FF5151"});
+		}
+		function addCylinders(){
+			var graph = KhanUtil.currentGraph;
+			var ans_val = document.getElementById("ans").value;
+			if(ans_val<=19){
+				document.getElementById("ans").value=parseInt(ans_val)+1;
+				ans_val = parseInt(ans_val)+1;
+				if(ans_val<=11){
+					if(ans_val==1){
+						Cylinder([3,2.7]);
+					} else {
+						Cylinder([3+Math.pow(-1,ans_val)*0.3*Math.floor(ans_val/2),2.7]);
+					}
+				} else {
+					Cylinder([3+Math.pow(-1,ans_val)*0.3*Math.floor((ans_val-11)/2),3.3]);
+				}
+			}
+		}
+		function deleteCylinders(){
+			var graph = KhanUtil.currentGraph;
+			var ans_val = document.getElementById("ans").value;
+			function delCylinders(center){
+				graph.ellipse([center[0],center[1]-0.4], [0.12,0.05],{stroke:"#CAFFFF","stroke-width":1,fill:"#CAFFFF"});
+				graph.path([[center[0]-0.12,center[1]],[center[0]+0.12,center[1]],[center[0]+0.12,center[1]-0.4],[center[0]-0.12,center[1]-0.4],[center[0]-0.12,center[1]]],{"stroke-width":0.5,fill:"#CAFFFF",stroke:"#CAFFFF"});
+				graph.ellipse(center, [0.12,0.05],{stroke:"#CAFFFF","stroke-width":1,fill:"#CAFFFF"});
+			}
+			if(ans_val>0){
+				document.getElementById("ans").value=parseInt(ans_val)-1;
+				ans_val = parseInt(ans_val)-1;
+				if(ans_val>=11){
+					delCylinders([3+Math.pow(-1,ans_val+1)*0.3*Math.floor((ans_val-10)/2),3.3]);
+				} else {
+					delCylinders([3+Math.pow(-1,ans_val+1)*0.3*(Math.floor((ans_val+1)/2)),2.7]);
+				}
+			}
+		}
+		
+		// case2 for add cylinders
+		function addCylinders_new(){
+			var graph = KhanUtil.currentGraph;
+			var ans_val = document.getElementById("ans").value;
+			if(ans_val<=11){
+				document.getElementById("ans").value=parseInt(ans_val)+1;
+				ans_val = parseInt(ans_val)+1;
+				if(ans_val==1){
+					Cylinder([-3,2.7]);
+				} else {
+					Cylinder([-3+Math.pow(-1,ans_val)*0.3*Math.floor(ans_val/2),2.7]);
+				}
+			}
+		}
+		// case2 for delete cylinders
+		function deleteCylinders_new(){
+			var graph = KhanUtil.currentGraph;
+			var ans_val = document.getElementById("ans").value;
+			function delCylinders(center){
+				graph.ellipse([center[0],center[1]-0.4], [0.12,0.05],{stroke:"#CAFFFF","stroke-width":1,fill:"#CAFFFF"});
+				graph.path([[center[0]-0.12,center[1]],[center[0]+0.12,center[1]],[center[0]+0.12,center[1]-0.4],[center[0]-0.12,center[1]-0.4],[center[0]-0.12,center[1]]],{"stroke-width":0.5,fill:"#CAFFFF",stroke:"#CAFFFF"});
+				graph.ellipse(center, [0.12,0.05],{stroke:"#CAFFFF","stroke-width":1,fill:"#CAFFFF"});
+			}
+			if(ans_val>0){
+				document.getElementById("ans").value=parseInt(ans_val)-1;
+				ans_val = parseInt(ans_val)-1;
+				delCylinders([-3+Math.pow(-1,ans_val+1)*0.3*(Math.floor((ans_val+1)/2)),2.7]);
+			}
+		}
+		// case2 for add cubes
+		function addCubes(){
+			var graph = KhanUtil.currentGraph;
+			var ans_val = document.getElementById("ans_new").value;
+			if(ans_val<=5){
+				document.getElementById("ans_new").value=parseInt(ans_val)+1;
+				ans_val = parseInt(ans_val)+1;
+				if(ans_val==1){
+					Cube(3.3,-0.5);
+				} else {
+					Cube(3.3,-0.5+Math.pow(-1,ans_val)*0.6*Math.floor(ans_val/2));
+				}
+			}
+		}
+		// case2 for delete cubes
+		function deleteCubes(){
+			var graph = KhanUtil.currentGraph;
+			var ans_val = document.getElementById("ans_new").value;
+			function deleteCubes(lb,ule){
+				graph.path([[-lb+ule, lb], [-lb+0.4+ule, lb], [-lb+0.4+ule, lb-0.4],[-lb+ule,lb-0.4],[-lb+ule,lb]],{"stroke-width":1,fill:"#CAFFFF",stroke:"#CAFFFF"});
+				graph.path([[-lb+ule, lb], [-lb+0.2+ule, lb+0.15],[-lb+0.6+ule,lb+0.15],[-lb+0.4+ule,lb],[-lb+ule,lb]],{"stroke-width":1,fill:"#CAFFFF",stroke:"#CAFFFF"});
+				graph.path([[-lb+0.6+ule,lb+0.15],[-lb+0.6+ule,lb-0.25],[-lb+0.4+ule,lb-0.4],[-lb+0.4+ule,lb],[-lb+0.6+ule,lb+0.15]],{"stroke-width":1,fill:"#CAFFFF",stroke:"#CAFFFF"});
+			}
+			if(ans_val>0){
+				document.getElementById("ans_new").value=parseInt(ans_val)-1;
+				ans_val = parseInt(ans_val)-1;
+				deleteCubes(3.3,-0.5+Math.pow(-1,ans_val+1)*0.6*(Math.floor((ans_val+1)/2)));
+			}
+		}
+	</script>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+	 <div id="case1">
+            <div class="vars">
+				<var id="cubes">randRange(1,5)</var>
+				<var id="cylinders">randRange(1,8)</var>
+				<var id="R">2*cubes+cylinders</var>
+			</div>
+			<div class="problem">
+				<table style="font-weight: bold;">
+					<tr>
+					<td><div class="graphie" id="up_1">
+						init({ range: [[-5.15, -4.3], [4.5, 5.1]], scale: 45 });
+						Cube(5,0);
+					</div></td>
+					<td><p>和</p></td>
+					<td><div class="graphie" id="up_2">
+						init({ range: [[-0.2, 0.7], [-0.5, 0.1]], scale: 45 });
+						Cylinder([0,0]);
+						Cylinder([0.5,0]);
+					</div></td>
+					<td><p>一樣重</p></td>
+					</tr>
+				</table>
+				<div class="graphie" id="ques">
+					init({ range: [[-5.5, 5.5], [-2, 5.5]], scale: 45 });
+					path([[1,-1],[0,2],[-1,-1],[1,-1]],{stroke:"black",fill:"#BBFFBB"});
+					line([-3,1.5],[3,1.5]);
+					line([-3,1.5],[-3,2]);
+					line([3,1.5],[3,2]);
+					ellipse([-3,2.75],[2.5,0.75],{fill:"#CAFFFF"});
+					ellipse([3,2.75],[2.5,0.75],{fill:"#CAFFFF"});
+					for(var i=1;i&lt;=cubes;i++){
+						i==1?Cube(3.5,0.3):Cube(3.5,0.3+pow(-1,i)*0.7*Math.floor(i/2));
+					}
+					for(var j=1;j&lt;=cylinders;j++){
+						j==1?Cylinder([-3,2.7]):Cylinder([-3+pow(-1,j)*0.3*Math.floor(j/2),2.7]);
+					}
+				</div>
+				<table>
+					<tr>
+					<td>請問天秤的右邊要放幾個</td>
+					<td><div class="graphie" id="under">
+						init({ range: [[-0.3, 0.3], [-0.5, 0.1]], scale: 45 });
+						Cylinder([0,0]);
+					</div></td>
+					<td>才會平衡？</td>
+					</tr>
+				</table>
+				<div class="graphie" data-update="ques">
+				</div>
+			</div>
+            <div class="solution" data-type="multiple">
+				<input type="button" id="bbb" value="-" onClick="deleteCylinders();">&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="ans" readonly="true" style="width:20px;" value="0">&nbsp;&nbsp;個&nbsp;&nbsp;<input type="button" id="aaa" value="+" onClick="addCylinders();">
+				<div class="sol" data-type="custom">
+					<div class="guess">$("#ans").val()</div>
+				    <div class="validator-function">
+						if(R==guess){
+							return true;
+						}
+					</div>
+				</div>
+				<p class="example">增加 或 減少 個數</p>
+            </div>
+			<div class="hints">
+				<div>
+					<p><code>要讓天秤平衡，必須讓左邊的重量等於右邊，</code></p>
+				</div>
+				<div>
+				<table>
+					<tr>
+					<td style="width:300px">我們先看看左邊的重量等於多少個</td>
+					<td><div class="graphie" id="hint_under">
+						init({ range: [[-0.3, 0.3], [-0.5, 0.1]], scale: 45 });
+						Cylinder([0,0]);
+					</div></td>
+					<td style="width:90px">的重量，</td>
+					</tr>
+				</table>
+				</div>
+				<div>
+				<table>
+					<tr>
+					<td><div class="graphie" id="hint_up_1">
+						init({ range: [[-5.15, -4.3], [4.5, 5.1]], scale: 45 });
+						Cube(5,0);
+					</div></td>
+					<td>和</td>
+					<td><div class="graphie" id="hint_up_2">
+						init({ range: [[-0.2, 0.7], [-0.5, 0.1]], scale: 45 });
+						Cylinder([0,0]);
+						Cylinder([0.5,0]);
+					</div></td>
+					<td style="width:90px">一樣重</td>
+					</tr>
+				</table>
+				</div>
+				<div>
+				<table>
+					<tr>
+					<td style="width:155px">我們可以將 <code class="hint_green">1</code> 個</td>
+					<td><div class="graphie" id="hint_up_4">
+						init({ range: [[-5.15, -4.3], [4.5, 5.1]], scale: 45 });
+						Cube(5,0);
+					</div></td>
+					<td style="width:90px">換成 <code class="hint_green">2</code> 個</td>
+					<td><div class="graphie" id="hint_up_3">
+						init({ range: [[-0.3, 0.3], [-0.5, 0.1]], scale: 45 });
+						Cylinder([0,0]);
+					</div></td>
+					<td>。</td>
+					</tr>
+				</table>
+				</div>
+				<div>
+				<table>
+					<tr>
+					<td style="width:260px">所以天秤的右邊要放 <code class="hint_pink"><var>R</var></code> 個</td>
+					<td>
+						<div class="graphie" id="hint_up_5">
+							init({ range: [[-0.3, 0.3], [-0.5, 0.1]], scale: 45 });
+							Cylinder([0,0]);
+						</div>
+					</td>
+					<td>。</td>
+					</tr>
+				</table>
+				</div>
+            </div>
+		</div>
+		
+		<div id="case2">
+            <div class="vars">
+				<var id="cubes">randRange(1,2)</var>
+				<var id="cylinders">randRange(1,10)</var>
+				<var id="R">2*cubes+cylinders</var>
+			</div>
+			<div class="problem">
+				<table style="font-weight: bold;">
+					<tr>
+					<td><div class="graphie" id="up_1">
+						init({ range: [[-5.15, -4.3], [4.5, 5.1]], scale: 45 });
+						Cube(5,0);
+					</div></td>
+					<td><p>和</p></td>
+					<td><div class="graphie" id="up_2">
+						init({ range: [[-0.2, 0.7], [-0.5, 0.1]], scale: 45 });
+						Cylinder([0,0]);
+						Cylinder([0.5,0]);
+					</div></td>
+					<td><p>一樣重</p></td>
+					</tr>
+				</table>
+				<div class="graphie" id="ques">
+					init({ range: [[-5.5, 5.5], [-2, 5.5]], scale: 45 });
+					path([[1,-1],[0,2],[-1,-1],[1,-1]],{stroke:"black",fill:"#BBFFBB"});
+					line([-3,1.5],[3,1.5]);
+					line([-3,1.5],[-3,2]);
+					line([3,1.5],[3,2]);
+					ellipse([-3,2.75],[2.5,1],{fill:"#CAFFFF"});
+					ellipse([3,2.75],[2.5,1],{fill:"#CAFFFF"});
+					for(var i=1;i&lt;=cubes;i++){
+						i==1?Cube(3.5,6.3):Cube(3.5,6.3+pow(-1,i)*0.7*Math.floor(i/2));
+					}
+					for(var j=1;j&lt;=cylinders;j++){
+						j==1?Cylinder([3,2.7]):Cylinder([3+pow(-1,j)*0.3*Math.floor(j/2),2.7]);
+					}
+				</div>
+				<table>
+					<tr>
+					<td style="width:230px">請問天秤的左邊要放幾個</td>
+					<td><div class="graphie" id="under">
+						init({ range: [[-0.3, 0.3], [-0.5, 0.1]], scale: 45 });
+						Cylinder([0,0]);
+					</div></td>
+					<td>和</td>
+					<td>
+						<div class="graphie" id="under_2">
+							init({ range: [[-5.15, -4.3], [4.5, 5.1]], scale: 45 });
+							Cube(5,0);
+						</div>
+					</td>
+					<td style="width:110px">才會平衡？</td>
+					</tr>
+					</table>
+					<table>
+					<tr>
+					<td style="width:170px"><code>(</code> 至少要用到一個</td>
+					<td>
+						<div class="graphie" id="under_3">
+							init({ range: [[-5.15, -4.3], [4.5, 5.15]], scale: 45 });
+							Cube(5,0);
+						</div>
+					</td>
+					<td><code>)</code>。</td>
+					</tr>
+				</table>
+			</div>
+            <div class="solution" data-type="multiple">
+				<p><input type="button" id="bbb" value="-" onClick="deleteCylinders_new();">&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="ans" readonly="true" style="width:20px;" value="0">&nbsp;&nbsp;個&nbsp;&nbsp;<input type="button" id="aaa" value="+" onClick="addCylinders_new();">&nbsp;&nbsp;圓柱體</p>
+				<p><input type="button" id="bb2" value="-" onClick="deleteCubes();">&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="ans_new" readonly="true" style="width:20px;" value="0">&nbsp;&nbsp;個&nbsp;&nbsp;<input type="button" id="aaa2" value="+" onClick="addCubes();">&nbsp;&nbsp;立方體</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">[$("#ans").val(),$("#ans_new").val()]</div>
+				    <div class="validator-function">
+						if((R==(parseInt(guess[0])+2*parseInt(guess[1]))) &amp;&amp; parseInt(guess[1])!=0){
+							return true;
+						}
+					</div>
+				</div>
+				<p class="example">增加 或 減少 個數</p>
+            </div>
+			<div class="hints">
+				<p><code>要讓天秤平衡，必須讓左邊的重量等於右邊，</code></p>
+				<div>
+				<table>
+					<tr>
+					<td style="width:300px">我們先看看右邊的重量等於多少個</td>
+					<td><div class="graphie" id="hint_under">
+						init({ range: [[-0.3, 0.3], [-0.5, 0.1]], scale: 45 });
+						Cylinder([0,0]);
+					</div></td>
+					<td style="width:90px">的重量，</td>
+					</tr>
+				</table>
+				</div>
+				<div>
+				<table>
+					<tr>
+					<td><div class="graphie" id="hint_up_1">
+						init({ range: [[-5.15, -4.3], [4.5, 5.15]], scale: 45 });
+						Cube(5,0);
+					</div></td>
+					<td>和</td>
+					<td><div class="graphie" id="hint_up_2">
+						init({ range: [[-0.2, 0.7], [-0.5, 0.1]], scale: 45 });
+						Cylinder([0,0]);
+						Cylinder([0.5,0]);
+					</div></td>
+					<td style="width:90px">一樣重</td>
+					</tr>
+				</table>
+				</div>
+				<div>
+				<table>
+					<tr>
+					<td style="width:155px">我們可以將 <code class="hint_green">2</code> 個</td>
+					<td><div class="graphie" id="hint_up_3">
+						init({ range: [[-0.3, 0.3], [-0.5, 0.1]], scale: 45 });
+						Cylinder([0,0]);
+					</div></td>
+					<td style="width:90px">換成 <code class="hint_green">1</code> 個</td>
+					<td><div class="graphie" id="hint_up_4">
+						init({ range: [[-5.15, -4.3], [4.5, 5.15]], scale: 45 });
+						Cube(5,0);
+					</div></td>
+					<td>。</td>
+					</tr>
+				</table>
+				</div>
+				<div>
+				<table>
+					<tr>
+					<td style="width:260px">所以天秤的左邊可以放 <code class="hint_pink"><var>Math.floor(R/2)</var></code> 個 </td>
+					<td>
+						<div class="graphie" id="hint_up_5">
+							init({ range: [[-5.15, -4.3], [4.5, 5.1]], scale: 45 });
+							Cube(5,0);
+						</div>
+					</td>
+					<td data-if="R%2==1"style="width:70px">和 <code class="hint_pink">1</code> 個</td>
+					<td data-if="R%2==1"><div class="graphie" id="hint_up_6">
+						init({ range: [[-0.3, 0.3], [-0.5, 0.1]], scale: 45 });
+						Cylinder([0,0]);
+					</div></td>
+					<td>。</td>
+					</tr>
+				</table>
+				</div>
+            </div>
+		</div>
+		
+		<div id="case3">
+			<div class="vars">
+				<var id="J">randRange(5,20)</var>
+			</div>
+			<p class="question">哥哥和弟弟有一樣多的遊戲卡，爸爸又給了哥哥 <code><var>J</var></code> 張遊戲卡，媽媽又給了弟弟 <code><var>J</var></code> 張遊戲卡，誰的遊戲卡比較多？</p>
+			<p class="solution"><code>一樣多</code></p>
+                <ul class="choices">
+                    <li><code>哥哥</code></li>
+                    <li><code>弟弟</code></li>
+                </ul>
+			<div class="hints">
+				<p>哥哥和弟弟原本的卡片數目一樣多，</p>
+				<div>
+					<p>爸爸又給哥哥 <code><var>J</var></code> 張，</p>
+					<p>媽媽又給弟弟 <code><var>J</var></code> 張，</p>
+				</div>
+				<p>如果用數學的式子來表示，則 <code>A=B</code> ，<code>A+<var>J</var>=B+<var>J</var></code> ，</p>
+				<p>因此兩個人的數量還是 <code class="hint_pink">一樣多</code> 。</p>
+			</div>
+		</div>
+		
+		<div id="case4">
+			<div class="vars">
+				<var id="J">randRange(5,15)</var>
+				<var id="names">randFromArray(["阿光","小玉","小珍","小紅","小明","小雅","小惠"])</var>
+			</div>
+			<p class="question"><var>names</var>在天秤的左邊放了 <code>1</code> 根玉米和 <code><var>J</var></code> 個小積木，右邊放了 <code>1</code> 個茄子和 <code><var>J</var></code> 個小積木，發現天秤的兩端一樣重，<var>names</var>又拿走天秤兩端的小積木，請問現在天秤哪一端比較重？</p>
+			<p class="solution"><code>一樣重</code></p>
+                <ul class="choices">
+                    <li><code>左邊</code></li>
+                    <li><code>右邊</code></li>
+                </ul>
+			<div class="hints">
+				<p>雖然不知道玉米、茄子、積木有多重，</p>
+				<div>
+					<p>但我們可以</p>
+					<p>用 <code class="hint_green">甲</code> 表示 <code>1</code> 根玉米和 <code><var>J</var></code> 個小積木的重量，</p>
+					<p>用 <code class="hint_green">乙</code> 表示 <code>1</code> 個茄子和 <code><var>J</var></code> 個小積木的重量，</p>
+				</div>
+				<p>所以可以記成 <code class="hint_green">甲</code> <code>=</code> <code class="hint_green">乙</code> 。</p>
+				<p><var>names</var>又拿走天秤兩端的 <code><var>J</var></code> 個小積木，兩端減少的積木數量一樣，</p>
+				<p>也就是說，天秤兩端減少的重量是一樣的</p>
+				<p>因此，此時天秤兩端的重量可以記為 <code class="hint_green">甲</code> <code>-</code> <code class="hint_green"><var>J</var></code> <code>=</code> <code class="hint_green">乙</code> <code>-</code> <code class="hint_green"><var>J</var></code></p>
+				<p>即天秤兩邊 <code class="hint_pink">一樣重</code> 。</p>
+			</div>
+		</div>
+		
+		<div id="case5">
+			<div class="vars">
+				<var id="J">randRange(5,15)</var>
+			</div>
+			<p class="question"><code>1</code> 個蘋果和 <code>1</code> 個芭樂的價格一樣，姐姐買了 <code><var>J</var></code> 個蘋果，哥哥買了 <code><var>J</var></code> 個芭樂，誰花的錢比較多？</p>
+			<p class="solution"><code>一樣多</code></p>
+                <ul class="choices">
+                    <li><code>姐姐</code></li>
+                    <li><code>哥哥</code></li>
+                </ul>
+			<div class="hints">
+				<p>雖然不知道蘋果和芭樂的價格，但可以想成 <code>1</code> 個蘋果 <code class="hint_green">A</code> 元， <code>1</code> 個芭樂 <code class="hint_green">B</code> 元。</p>
+				<div>
+					<p>因為 <code>1</code> 個蘋果和 <code>1</code> 個芭樂的價格一樣，所以可以記成</p>
+					<p><code>A=B</code></p>
+				</div>
+				<div>
+					<p><code>1</code> 個蘋果 <code class="hint_green">A</code> 元，所以 <code><var>J</var></code> 個蘋果的價格可記成 <code class="hint_green">A\times<var>J</var></code> ，</p>
+					<p><code>1</code> 個芭樂 <code class="hint_green">B</code> 元，所以 <code><var>J</var></code> 個芭樂的價格可記成 <code class="hint_green">B\times<var>J</var></code> ，</p>
+				</div>
+				<div>
+					<p>因為 <code>1</code> 個蘋果和 <code>1</code> 個芭樂的價格一樣，所以買 <code><var>J</var></code> 個蘋果花的錢和買 <code><var>J</var></code> 個芭樂花的錢，一樣多，</p>
+					<p>記為 <code class="hint_green">A\times<var>J</var></code> <code>=</code> <code class="hint_green">B\times<var>J</var></code></p>
+				</div>
+				<p>所以，本題的答案為姐姐和哥哥花的錢 <code class="hint_pink">一樣多</code> 。</p>
+			</div>
+		</div>
+		
+		<div id="case6">
+			<div class="vars">
+				<var id="J">randRangeUnique(5,15,3)</var>
+			</div>
+			<p class="question"><code>A=B</code> ，<code>A\times<var>J[0]</var>=B\times (\enspace\enspace\enspace)</code> ，<code>(\enspace\enspace\enspace)</code> 內應填入幾？</p>
+			<p class="solution"><code><var>J[0]</var></code></p>
+                <ul class="choices">
+                    <li><code><var>J[1]</var></code></li>
+                    <li><code><var>J[2]</var></code></li>
+                </ul>
+			<div class="hints">
+				<p>因為 <code>A=B</code> ，所以 <code>A\times<var>J[0]</var>=B\times\color{#FF00AF}{<var>J[0]</var>}</code> 。</p>
+			</div>
+		</div>
+		
+		<div id="case7">
+			<div class="vars">
+				<var id="J">randRangeUnique(5,15,3)</var>
+			</div>
+			<p class="question"><code>A=B</code> ，<code>A\div<var>J[0]</var>=B\div (\enspace\enspace\enspace)</code> ，<code>(\enspace\enspace\enspace)</code> 內應填入幾？</p>
+			<p class="solution"><code><var>J[0]</var></code></p>
+                <ul class="choices">
+                    <li><code><var>J[1]</var></code></li>
+                    <li><code><var>J[2]</var></code></li>
+                </ul>
+			<div class="hints">
+				<p>因為 <code>A=B</code> ，所以 <code>A\div<var>J[0]</var>=B\div\color{#FF00AF}{<var>J[0]</var>}</code> 。</p>
+			</div>
+		</div>
+		
+		<div id="case8">
+			<div class="vars">
+				<var id="J">randRange(5,15)</var>
+				<var id="names">randFromArray(["阿光","小玉","小珍","小紅","小明","小雅","小惠"])</var>
+			</div>
+			<p class="question"><var>names</var>在天秤的左端放了 <code><var>J</var></code> 個橡皮擦，右端放了 <code><var>J</var></code> 枝鉛筆，發現天秤的兩端一樣重，<var>names</var>重新在天秤的左端放了 <code>1</code> 個橡皮擦，右端放了 <code>1</code> 枝鉛筆，請問現在天秤哪一端比較重？用算式記記看。</p>
+			<p class="solution"><code>一樣重</code></p>
+                <ul class="choices">
+                    <li><code>左邊</code></li>
+                    <li><code>右邊</code></li>
+                </ul>
+			<div class="hints">
+				<p>雖然不知道 <code><var>J</var></code> 個橡皮擦和 <code><var>J</var></code> 枝鉛筆各有多重，</p>
+				<div>
+					<p>但我們可以</p>
+					<p>用 <code class="hint_green">X</code> 表示 <code><var>J</var></code> 個橡皮擦的重量，</p>
+					<p>用 <code class="hint_green">Y</code> 表示 <code><var>J</var></code> 枝鉛筆的重量，</p>
+				</div>
+				<p>所以可以記成 <code class="hint_green">X</code> <code>=</code> <code class="hint_green">Y</code> ，</p>
+				<p><var>names</var>重新在天秤的左端放了 <code>1</code> 個橡皮擦，右端放了 <code>1</code> 枝鉛筆，</p>
+				<p>所以此時天秤左右兩端重量的關係可記為 <code class="hint_green">X</code> <code>\div</code> <code class="hint_orange"><var>J</var></code> <code>=</code> <code class="hint_green">Y</code> <code>\div</code> <code class="hint_orange"><var>J</var></code> ，</p>
+				<p>因此，天秤兩端 <code class="hint_pink">一樣重</code> 。</p>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

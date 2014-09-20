@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能用約分、擴分處理等值</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area input[type=text] {
+            width: 40px;
+        }
+        .ttable {
+            text-align: left;
+            margin-top: 20px;
+            margin-left: 5px;
+        }
+
+        .ttable tr {
+            height: 23px;
+        }
+
+        .ttable td {
+            padding: 0px 5px;
+            text-align: right;
+        }
+
+        .ttable .labels td {
+            padding-left: 5px;
+            text-align: left;
+            border-bottom: 2px solid black;
+        }
+
+        .ttable .cross-bar td {
+            padding-top: 5px;
+        }
+
+        .ttable .second-col {
+            border-left: 2px solid black;
+        }
+
+        .ttable .third-col {
+            border-left: 2px solid black;
+        }
+        .ttable .cross-bar2 td {
+            padding-top: 5px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars" data-ensure="getGCD(N1, D1) != 1">
+                    <var id="N1">randRange(2, 50)</var>
+                    <var id="D1" data-ensure="D1>N1">randRange(20, 100)</var>
+                    <var id="GCD">getGCD( N1, D1 )</var>
+                    <var id="SIMP_N1">N1/GCD</var>
+                    <var id="SIMP_D1">D1/GCD</var>
+                </div>
+                <p class="question">請將分數<code>\dfrac{<var>N1</var>}{<var>D1</var>}</code>進行約分。</p>
+                <div class="solution" data-type="multiple">
+                    <div class="instruction">
+                        <span>約分後的分子是﹕</span>
+                        <table class="ttable">
+                            <tr class="labels">
+                                <td><span class="sol"><var>SIMP_N1</var></span></td>
+                            </tr>
+                            <tr class="cross-bar2">
+                                <td><var>SIMP_D1</var></td>
+                            </tr>
+                        </table>
+                        <p class="example">整數， 例： <code>2</code></p>
+                    </div>
+                </div>
+                <div class="hints">
+                    <p>找出分母 <code><var>D1</var></code> 與 分子 <code><var>N1</var></code> 的最大公因數<code><var>GCD</var></code></p>
+                    <p>我們可以將分母分子同時除以 <code><var>GCD</var></code></p>
+                    <p><code><var>fraction( N1, D1 )</var> = \color{#F62217}{<var>fraction( SIMP_N1, SIMP_D1 )</var>}</code></p>
+                </div>
+            </div>
+            <div id="case2">
+                <div class="vars" data-ensure="getGCD(N1, D1) != 1">
+                    <var id="N1">randRange(2, 50)</var>
+                    <var id="D1" data-ensure="D1>N1">randRange(20, 100)</var>
+                    <var id="FACTOR">randRange(2, 6)</var>
+                    <var id="EXP_N1">N1 * FACTOR</var>
+                    <var id="EXP_D1">D1 * FACTOR</var>
+                </div>
+                <p class="question">請將分數<code>\dfrac{<var>N1</var>}{<var>D1</var>}</code>進行擴分。</p>
+                <div class="solution" data-type="multiple">
+                    <div class="instruction">
+                        <span>擴分後的分子是﹕</span>
+                        <table class="ttable">
+                            <tr class="labels">
+                                <td><span class="sol"><var>EXP_N1</var></span></td>
+                            </tr>
+                            <tr class="cross-bar2">
+                                <td><var>EXP_D1</var></td>
+                            </tr>
+                        </table>
+                        <p class="example">整數， 例： 12</p>
+                    </div>
+                </div>
+                <div class="hints">
+                    <p>我們要算出<code>\Large{\frac{<var>N1</var>}{<var>D1</var>} = \frac{?}{<var>EXP_D1</var>}}</code></p>
+                    <p>可以觀察 <var>EXP_D1</var> 是 <var>D1</var> 的幾倍</p>
+                    <p><code><var>EXP_D1</var> \div <var>D1</var> = <var>FACTOR</var></code></p>
+                    <p>等值分數的概念是當分母乘以 <var>FACTOR</var> 後，分子也要乘以 <var>FACTOR</var>， 他的值才不會改變</p>
+                    <p>所以擴分後的分子是 <code><var>N1</var> \times <var>FACTOR</var> = \color{#F62217}{<var>EXP_N1</var>}</code></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

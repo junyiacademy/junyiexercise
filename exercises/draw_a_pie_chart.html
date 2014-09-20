@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie time interactive angles">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能報讀生活中常用的圓形圖，並能整理日常生活中的資料，繪製成圓形圖6-d-03</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+		table.nLimit{margin:5px ;border:1px }
+		table.nLimit td { text-align:center;min-width:60px;max-width:100px;border: 1px solid #AAA; padding: 5px;}
+        </style>
+		<script type="text/javascript">
+		function bubbleSort(array) {
+			var i = 0,
+			len = array.length,
+			j, d;
+			for (; i < len; i++) {
+				for (j = 0; j < len; j++) {
+					if (array[i][1] < array[j][1]) {
+						d = array[j];
+						array[j] = array[i];
+						array[i] = d;
+					}
+				}
+			}
+			return array;
+		}
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+	 <div id="case1">
+            <div class="vars" data-ensure="M&lt;=45 && K&lt;=45 && L&lt;=45 && J&lt;=45 ">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="numsArray">
+				(function(){
+					var arr = sortNumbers(randRangeUnique(1,100,3));
+					var retArr = [arr[0],arr[1]-arr[0],arr[2]-arr[1],100-arr[2]];
+					return retArr;
+				})()</var>
+				<var id="J">numsArray[0]</var>
+				<var id="K">numsArray[1]</var>
+				<var id="L">numsArray[2]</var>
+				<var id="M">numsArray[3]</var>
+			</div>
+			
+			<div class="question">
+				<p style="font-weight: bold">將圓周分為 <code>100</code> 等分，每 <code>1</code> 等分表示 <code>1\%</code> ，畫出 </p>
+				<p style="font-weight: bold"><code><var>J</var>\%</code>、<code><var>K</var>\%</code>、<code><var>L</var>\%</code>、<code><var>M</var>\%</code> 。</p>
+			</div>
+			<div class="problem">
+				<div class="graphie" id="clock">
+                        init({ range: [[-4, 4], [-4, 4]], scale: 45 });
+
+                        var clockRadius = 3.75;
+                        var outerPointRadius = clockRadius * 1.01;
+                        minuteStartAngle = 90;
+                        hourStartAngle = 0;
+						thirdStartAngle = 180;
+						lastStartAngle = 270;
+
+                        var percentCircle = addAnalogCircle({ radius: clockRadius, minuteTicks: 100 });
+                        percentCircle.draw();
+                        addMouseLayer();
+
+                        function movePartnerPoint(options) {
+                            var x = options.x;
+                            var y = options.y;
+                            var point = options.point;
+                            var outerPoint = options.outerPoint;
+                            var isOuterPoint = options.isOuterPoint;
+				
+                            var ratio = outerPoint.constraints.fixedDistance.dist / point.constraints.fixedDistance.dist;
+                            if (isOuterPoint) {
+                                ratio = 1 / ratio;
+                                point.setCoord([x * ratio , y * ratio]);
+                                outerPoint.setCoord([x, y]);
+                            } else {
+                                point.setCoord([x, y]);
+                                outerPoint.setCoord([x * ratio, y * ratio]);
+                            }
+
+                            point.updateLineEnds();
+                            return point;
+                        }
+
+                        minutePoint = addMovablePoint({
+                            coord: polar( clockRadius, minuteStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+								label1.remove(); 
+								label1 = label(
+									[(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "orange" });
+								label4.remove(); 
+								label4 = label(
+									[(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "#28AE7B" });
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerMinutePoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+						
+						thirdPoint = addMovablePoint({
+                            coord: polar( clockRadius, thirdStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+								label3.remove(); 
+								label3 = label(
+									[(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "red" });
+									
+								label4.remove(); 
+								label4 = label(
+									[(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "#28AE7B" });
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerThirdPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+						
+						lastPoint = addMovablePoint({
+                            coord: polar( clockRadius, lastStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+								label2.remove(); 
+								label2 = label(
+									[(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "#6495ED" });
+									
+								label3.remove(); 
+								label3 = label(
+									[(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "red" });
+									
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerLastPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        outerMinutePoint = addMovablePoint({
+                            coord: polar(outerPointRadius, minuteStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: minutePoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+						
+						outerThirdPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, thirdStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: thirdPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+						
+						outerLastPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, lastStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: lastPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        hourPoint = addMovablePoint({
+                            coord: polar(clockRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+								label1.remove(); 
+								label1 = label(
+									[(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "orange" });
+								label2.remove(); 
+								label2 = label(
+									[(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "#6495ED" });
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerHourPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        outerHourPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: hourPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        minuteHand = addMovableLineSegment({
+                            pointA: minutePoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: ORANGE,
+                                "stroke-width": 5
+                            }
+                        });
+						
+						thirdHand = addMovableLineSegment({
+                            pointA: thirdPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: GREEN,
+                                "stroke-width": 5
+                            }
+                        });
+						
+						lastHand = addMovableLineSegment({
+                            pointA: lastPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: RED,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        hourHand = addMovableLineSegment({
+                            pointA: hourPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: BLUE,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        centerPoint = addMovablePoint({
+                            coord: [0, 0],
+                            constraints: {
+                                fixed: true
+                            },
+                            normalStyle: {
+                                fill: "#fff",
+                                stroke: "#000",
+                                "stroke-width": 2
+                            }
+                        });
+						
+						label1 = label(
+									[(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
+									25+"{\\rm{\\% }}",
+									"center", 
+									{ color: "orange" });
+
+						label2 = label(
+									[(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
+									25+"{\\rm{\\% }}",
+									"center", 
+									{ color: "#6495ED" });
+									
+						label3 = label(
+									[(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
+									25+"{\\rm{\\% }}",
+									"center", 
+									{ color: "red" });
+						
+						label4 = label(
+									[(minutePoint.coord[0]+thirdPoint.coord[0])/2,(minutePoint.coord[1]+thirdPoint.coord[1])/2],
+									25+"{\\rm{\\% }}",
+									"center", 
+									{ color: "#28AE7B" });
+                    </div>
+			</div>
+            <div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[minutePoint.coord,hourPoint.coord,thirdPoint.coord,lastPoint.coord]</div>
+				    <div class="validator-function">
+						var greenAns = KhanUtil.findAngle(guess[2],[0,0])-KhanUtil.findAngle(guess[0],[0,0]);
+						greenAns&gt;360?greenAns-=360:(greenAns&lt;0?greenAns+=360:greenAns=greenAns);
+						var orangeAns = KhanUtil.findAngle(guess[0],[0,0])-KhanUtil.findAngle(guess[1],[0,0]);
+						orangeAns&gt;360?orangeAns-=360:(orangeAns&lt;0?orangeAns+=360:orangeAns=orangeAns);
+						var redAns = KhanUtil.findAngle(guess[3],[0,0])-KhanUtil.findAngle(guess[2],[0,0]);
+						redAns&gt;360?redAns-=360:(redAns&lt;0?redAns+=360:redAns=redAns);
+						var blueAns = 360-KhanUtil.findAngle(guess[3],[0,0])+KhanUtil.findAngle(guess[1],[0,0]);
+						blueAns&gt;360?blueAns-=360:(blueAns&lt;0?blueAns+=360:blueAns=blueAns);
+						var arr = KhanUtil.sortNumbers([Math.round(greenAns/3.6),Math.round(orangeAns/3.6),Math.round(redAns/3.6),Math.round(blueAns/3.6)]);
+						var ansArr = KhanUtil.sortNumbers([J,K,L,M]);
+						if(arr[0]==ansArr[0] && arr[1]==ansArr[1] && arr[2]==ansArr[2] && arr[3]==ansArr[3]){
+							return true;
+						}
+                    </div>
+				</div>
+				<p class="example">移動圓內直線，使其滿足題目中給出的條件</p>
+            </div>
+			
+			<div class="hints">
+				<div>
+					<div class="graphie" data-update="clock">
+                        init({ range: [[-4, 4], [-4, 4]], scale: 45 });
+
+                        var clockRadius = 3.75;
+                        var outerPointRadius = clockRadius * 1.01;
+                        minuteStartAngle = 90;
+                        hourStartAngle = 90-J*3.6;
+						thirdStartAngle = 90+K*3.6;
+						lastStartAngle = 90-J*3.6-L*3.6;
+						minutePoint1 = circle( polar( clockRadius, minuteStartAngle ), 0.05,{stroke: "#FFF0AC",fill:"#FFF0AC"});
+						thirdPoint1 = circle(polar( clockRadius, thirdStartAngle ),0.05,{stroke: "#C2FF68",fill:"#C2FF68"});
+						lastPoint1 = circle(polar( clockRadius, lastStartAngle ),0.05,{stroke: "#FF9797",fill:"#FF9797"});
+                        hourPoint1 = circle(polar(clockRadius, hourStartAngle),0.05,{stroke: "#D2E9FF",fill:"#D2E9FF"});
+                        minuteHand1 = line(polar( clockRadius, minuteStartAngle ),[0,0],{stroke: "#FFF0AC","stroke-width": 2});
+						thirdHand1 = line(polar( clockRadius, thirdStartAngle ),[0,0],{stroke: "#C2FF68","stroke-width": 2});
+						lastHand1 = line(polar( clockRadius, lastStartAngle ),[0,0],{stroke: "#FF9797","stroke-width": 2});
+                        hourHand1 = line(polar(clockRadius, hourStartAngle),[0,0],{stroke: "#D2E9FF","stroke-width": 2});
+                    </div>
+				</div>
+            </div>
+		</div>
+		
+		<div id="case2">
+        <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="numsArray">
+				(function(){
+					var arr = sortNumbers(randRangeUnique(1,360,3));
+					var retArr = [arr[0],arr[1]-arr[0],arr[2]-arr[1],360-arr[2]];
+					return retArr;
+				})()</var>
+				<var id="J">numsArray[0]</var>
+				<var id="K">numsArray[1]</var>
+				<var id="L">numsArray[2]</var>
+				<var id="M">numsArray[3]</var>
+		</div>
+		<div class="question">
+			<p style="font-weight:bold">下表是調查學生心中首選寵物的統計表，表中的分數表示每一種寵物得票數占全部票數的比率。</p>
+			<table class="nLimit" style="background-color:sandybrown">
+				<tr><td>動物名稱</td><td>狗</td><td>貓</td><td>兔子</td><td>天竺鼠</td></tr>
+				<tr><td>比率</td><td><code><var>fraction(J,360,true,true,false,false)</var></code></td><td><code><var>fraction(K,360,true,true,false,false)</var></code></td><td><code><var>fraction(L,360,true,true,false,false)</var></code></td><td><code><var>fraction(M,360,true,true,false,false)</var></code></td></tr>
+			</table>
+		</div>
+		<div class="problem"><p>請算出每種動物所占圓心角的度數並將答案填寫入下表。</p></div>
+		<table class="nLimit" style="background-color:sandybrown">
+				<tr><td>動物名稱</td><td>狗</td><td>貓</td><td>兔子</td><td>天竺鼠</td></tr>
+				<tr><td>比率</td><td><input type="text" id="a_1" style="height:60px;width:50px;background:sandybrown;border:0px;text-align:center"></td><td><input type="text" id="a_2" style="height:60px;width:50px;background:sandybrown;border:0px;text-align:center"></td><td><input type="text" id="a_3" style="height:60px;width:50px;background:sandybrown;border:0px;text-align:center"></td><td><input type="text" id="a_4" style="height:60px;width:50px;background:sandybrown;border:0px;text-align:center"></td></tr>
+		</table>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value]</div>
+				    <div class="validator-function">
+						if(guess[0].replace(/[ ]/g,"")==J && guess[1].replace(/[ ]/g,"")==K && guess[2].replace(/[ ]/g,"")==L && guess[3].replace(/[ ]/g,"")==M){
+							return true;
+						}
+                    </div>
+				</div>
+				<p class="example">在表中填入整數，例如 <code>6</code></p>
+		</div>
+		<div class="hints">
+			<p>狗占全部的比率是 <code><var>fraction(J,360,true,true,false,false)</var></code> ，表示它在圓形圖中是 <code><var>fraction(J,360,true,true,false,false)</var></code> 圓 的扇形，</p>
+			<div>
+				<p>所以，狗：<code>360^{\circ}\times<var>fraction(J,360,true,true,false,false)</var>=<var>J</var>^{\circ}</code> ，圓心角為 <code><var>J</var>^{\circ}</code> 。</p>
+				<div class="graphie" id="dog">
+					init({ range: [[-1.5, 2.5], [-1.5, 1.5]], scale: 45 });
+					circle([0,0],1);
+					arc([0,0],1,0,J,{stroke:"red"});
+					line([0,0],polar(1,J),{stroke:"red"});
+					line([0,0],polar(1,0),{stroke:"red"});
+					arc([0,0],0.1,0,J,{stroke:"red"});
+					label( [1.5,0.5],  "\\small{"+J+"}^{\\circ}", "center", { color: "red" });
+				</div>
+			</div>
+			
+			<p>貓占全部的比率是 <code><var>fraction(K,360,true,true,false,false)</var></code> ，表示它在圓形圖中是 <code><var>fraction(K,360,true,true,false,false)</var></code> 圓 的扇形，</p>
+			<div>
+				<p>所以，貓：<code>360^{\circ}\times<var>fraction(K,360,true,true,false,false)</var>=<var>K</var>^{\circ}</code> ，圓心角為 <code><var>K</var>^{\circ}</code> 。</p>
+				<div class="graphie" id="cat">
+					init({ range: [[-1.5, 2.5], [-1.5, 1.5]], scale: 45 });
+					circle([0,0],1);
+					arc([0,0],1,0,K,{stroke:"orange"});
+					line([0,0],polar(1,K),{stroke:"orange"});
+					line([0,0],polar(1,0),{stroke:"orange"});
+					arc([0,0],0.1,0,K,{stroke:"orange"});
+					label( [1.5,0.5],  "\\small{"+K+"}^{\\circ}", "center", { color: "orange" });
+				</div>
+			</div>
+			
+			<p>兔子占全部的比率是 <code><var>fraction(L,360,true,true,false,false)</var></code> ，表示它在圓形圖中是 <code><var>fraction(L,360,true,true,false,false)</var></code> 圓 的扇形，</p>
+			<div>
+				<p>所以，兔子：<code>360^{\circ}\times<var>fraction(L,360,true,true,false,false)</var>=<var>L</var>^{\circ}</code> ，圓心角為 <code><var>L</var>^{\circ}</code> 。</p>
+				<div class="graphie" id="rabbit">
+					init({ range: [[-1.5, 2.5], [-1.5, 1.5]], scale: 45 });
+					circle([0,0],1);
+					arc([0,0],1,0,L,{stroke:"#6495ED"});
+					line([0,0],polar(1,L),{stroke:"#6495ED"});
+					line([0,0],polar(1,0),{stroke:"#6495ED"});
+					arc([0,0],0.1,0,L,{stroke:"#6495ED"});
+					label( [1.5,0.5],  "\\small{"+L+"}^{\\circ}", "center", { color: "#6495ED" });
+				</div>
+			</div>
+			
+			<p>天竺鼠占全部的比率是 <code><var>fraction(M,360,true,true,false,false)</var></code> ，表示它在圓形圖中是 <code><var>fraction(M,360,true,true,false,false)</var></code> 圓 的扇形，</p>
+			<div>
+				<p>所以，天竺鼠：<code>360^{\circ}\times<var>fraction(M,360,true,true,false,false)</var>=<var>M</var>^{\circ}</code> ，圓心角為 <code><var>M</var>^{\circ}</code> 。</p>
+				<div class="graphie" id="mouse">
+					init({ range: [[-1.5, 2.5], [-1.5, 1.5]], scale: 45 });
+					circle([0,0],1);
+					arc([0,0],1,0,M,{stroke:"#28AE7B"});
+					line([0,0],polar(1,M),{stroke:"#28AE7B"});
+					line([0,0],polar(1,0),{stroke:"#28AE7B"});
+					arc([0,0],0.1,0,M,{stroke:"#28AE7B"});
+					label( [1.5,0.5],  "\\small{"+M+"}^{\\circ}", "center", { color: "#28AE7B" });
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="case3">
+            <div class="vars" data-ensure="M&lt;=45 && K&lt;=45 && L&lt;=45 && J&lt;=45 ">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="numsArray">
+				(function(){
+					var arr = sortNumbers(randRangeUnique(1,50,3));
+					var retArr = [arr[0],arr[1]-arr[0],arr[2]-arr[1],50-arr[2]];
+					return retArr;
+				})()</var>
+				<var id="Jb">numsArray[0]</var>
+				<var id="Kb">numsArray[1]</var>
+				<var id="Lb">numsArray[2]</var>
+				<var id="Mb">numsArray[3]</var>
+				<var id="J">Jb*2</var>
+				<var id="K">Kb*2</var>
+				<var id="L">Lb*2</var>
+				<var id="M">Mb*2</var>
+			</div>
+			
+			<div class="question">
+				<p style="font-weight: bold">下表是調查 <code>50</code> 位民眾最喜歡的披薩口味統計表。</p>
+			</div>
+			<table class="nLimit" style="background-color:sandybrown">
+				<tr><td>披薩口味</td><td>海鮮</td><td>什錦</td><td>烤鴨</td><td>鮮蔬</td><td>合計</td></tr>
+				<tr><td>人數<code>(</code>人<code>)</code></td><td><code><var>Jb</var></code></td><td><code><var>Kb</var></code></td><td><code><var>Lb</var></code></td><td><code><var>Mb</var></code></td><td><code>50</code></td></tr>
+			</table>
+			<div class="problem">
+				<p>根據此表畫出圓形圖。</p>
+				<div class="graphie" id="clock">
+                        init({ range: [[-4, 4], [-4, 4]], scale: 45 });
+
+                        var clockRadius = 3.75;
+                        var outerPointRadius = clockRadius * 1.01;
+                        minuteStartAngle = 90;
+                        hourStartAngle = 0;
+						thirdStartAngle = 180;
+						lastStartAngle = 270;
+
+                        var percentCircle = addAnalogCircle({ radius: clockRadius, minuteTicks: 100 });
+                        percentCircle.draw();
+                        addMouseLayer();
+
+                        function movePartnerPoint(options) {
+                            var x = options.x;
+                            var y = options.y;
+                            var point = options.point;
+                            var outerPoint = options.outerPoint;
+                            var isOuterPoint = options.isOuterPoint;
+				
+                            var ratio = outerPoint.constraints.fixedDistance.dist / point.constraints.fixedDistance.dist;
+                            if (isOuterPoint) {
+                                ratio = 1 / ratio;
+                                point.setCoord([x * ratio , y * ratio]);
+                                outerPoint.setCoord([x, y]);
+                            } else {
+                                point.setCoord([x, y]);
+                                outerPoint.setCoord([x * ratio, y * ratio]);
+                            }
+
+                            point.updateLineEnds();
+                            return point;
+                        }
+
+                        minutePoint = addMovablePoint({
+                            coord: polar( clockRadius, minuteStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+								label1.remove(); 
+								label1 = label(
+									[(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "orange" });
+								label4.remove(); 
+								label4 = label(
+									[(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "#28AE7B" });
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerMinutePoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+						
+						thirdPoint = addMovablePoint({
+                            coord: polar( clockRadius, thirdStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+								label3.remove(); 
+								label3 = label(
+									[(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "red" });
+									
+								label4.remove(); 
+								label4 = label(
+									[(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "#28AE7B" });
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerThirdPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+						
+						lastPoint = addMovablePoint({
+                            coord: polar( clockRadius, lastStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+								label2.remove(); 
+								label2 = label(
+									[(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "#6495ED" });
+									
+								label3.remove(); 
+								label3 = label(
+									[(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "red" });
+									
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerLastPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        outerMinutePoint = addMovablePoint({
+                            coord: polar(outerPointRadius, minuteStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: minutePoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+						
+						outerThirdPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, thirdStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: thirdPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+						
+						outerLastPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, lastStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: lastPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        hourPoint = addMovablePoint({
+                            coord: polar(clockRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+								label1.remove(); 
+								label1 = label(
+									[(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "orange" });
+								label2.remove(); 
+								label2 = label(
+									[(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
+									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									"center", 
+									{ color: "#6495ED" });
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerHourPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        outerHourPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: hourPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        minuteHand = addMovableLineSegment({
+                            pointA: minutePoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: ORANGE,
+                                "stroke-width": 5
+                            }
+                        });
+						
+						thirdHand = addMovableLineSegment({
+                            pointA: thirdPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: GREEN,
+                                "stroke-width": 5
+                            }
+                        });
+						
+						lastHand = addMovableLineSegment({
+                            pointA: lastPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: RED,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        hourHand = addMovableLineSegment({
+                            pointA: hourPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: BLUE,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        centerPoint = addMovablePoint({
+                            coord: [0, 0],
+                            constraints: {
+                                fixed: true
+                            },
+                            normalStyle: {
+                                fill: "#fff",
+                                stroke: "#000",
+                                "stroke-width": 2
+                            }
+                        });
+						
+						label1 = label(
+									[(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
+									25+"{\\rm{\\% }}",
+									"center", 
+									{ color: "orange" });
+
+						label2 = label(
+									[(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
+									25+"{\\rm{\\% }}",
+									"center", 
+									{ color: "#6495ED" });
+									
+						label3 = label(
+									[(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
+									25+"{\\rm{\\% }}",
+									"center", 
+									{ color: "red" });
+						
+						label4 = label(
+									[(minutePoint.coord[0]+thirdPoint.coord[0])/2,(minutePoint.coord[1]+thirdPoint.coord[1])/2],
+									25+"{\\rm{\\% }}",
+									"center", 
+									{ color: "#28AE7B" });
+                    </div>
+			</div>
+            <div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[minutePoint.coord,hourPoint.coord,thirdPoint.coord,lastPoint.coord]</div>
+				    <div class="validator-function">
+						var greenAns = KhanUtil.findAngle(guess[2],[0,0])-KhanUtil.findAngle(guess[0],[0,0]);
+						greenAns&gt;360?greenAns-=360:(greenAns&lt;0?greenAns+=360:greenAns=greenAns);
+	
+						var orangeAns = KhanUtil.findAngle(guess[0],[0,0])-KhanUtil.findAngle(guess[1],[0,0]);
+						orangeAns&gt;360?orangeAns-=360:(orangeAns&lt;0?orangeAns+=360:orangeAns=orangeAns);
+						var redAns = KhanUtil.findAngle(guess[3],[0,0])-KhanUtil.findAngle(guess[2],[0,0]);
+						redAns&gt;360?redAns-=360:(redAns&lt;0?redAns+=360:redAns=redAns);
+						var blueAns = 360-KhanUtil.findAngle(guess[3],[0,0])+KhanUtil.findAngle(guess[1],[0,0]);
+						blueAns&gt;360?blueAns-=360:(blueAns&lt;0?blueAns+=360:blueAns=blueAns);
+						var arr = KhanUtil.sortNumbers([Math.round(greenAns/3.6),Math.round(orangeAns/3.6),Math.round(redAns/3.6),Math.round(blueAns/3.6)]);
+						var ansArr = KhanUtil.sortNumbers([J,K,L,M]);
+						if(arr[0]==ansArr[0] && arr[1]==ansArr[1] && arr[2]==ansArr[2] && arr[3]==ansArr[3]){
+							return true;
+						}
+                    </div>
+				</div>
+				<p class="example">移動圓內直線，使其滿足題目中給出的條件</p>
+            </div>
+			
+			<div class="hints">
+				<p>先算出每種口味所佔全體的比率，</p>
+				<p>海鮮：<code><var>Jb</var>\div 50=<var>J/100</var>=<var>J</var>\%</code></p>
+				<p>什錦：<code><var>Kb</var>\div 50=<var>K/100</var>=<var>K</var>\%</code></p>
+				<p>烤鴨：<code><var>Lb</var>\div 50=<var>L/100</var>=<var>L</var>\%</code></p>
+				<p>鮮蔬：<code><var>Mb</var>\div 50=<var>M/100</var>=<var>M</var>\%</code></p>
+				<div>
+					<p>將圓周分為 <code>100</code> 等分，每 <code>1</code> 等分表示 <code>1\%</code> ，再依序畫出，</p>
+					<div class="graphie" id="circle">
+						init({ range: [[-4, 4], [-4, 4]], scale: 45 });
+						var percentCircle = addAnalogCircle({ radius: 3.75, minuteTicks: 100 });
+                        percentCircle.draw();
+					</div>
+				</div>
+				<div class="graphie" data-update="circle">
+					var minuteStartAngle = 90;
+                    var hourStartAngle = 90-J*3.6;
+					var thirdStartAngle = 90+K*3.6;
+					var lastStartAngle = 90-J*3.6-L*3.6;
+					minutePoint1 = circle( polar( 3.75, minuteStartAngle ), 0.05,{stroke: "orange",fill:"orange"});
+					thirdPoint1 = circle(polar( 3.75, thirdStartAngle ),0.05,{stroke: "#28AE7B",fill:"#28AE7B"});
+					minuteHand1 = line(polar( 3.75, minuteStartAngle ),[0,0],{stroke: "orange","stroke-width": 2});
+					thirdHand1 = line(polar( 3.75, thirdStartAngle ),[0,0],{stroke: "#28AE7B","stroke-width": 2});
+					hourPoint1 = circle(polar(3.75, hourStartAngle),0.05,{stroke: "#6495ED",fill:"#6495ED"});
+					hourHand1 = line(polar(3.75, hourStartAngle),[0,0],{stroke: "#6495ED","stroke-width": 2});
+					
+					label( polar(1,45+hourStartAngle/2),  "\\small{"+J+"{\\rm{\\% }}}", "center", { color: "orange" });
+					label( polar(1,thirdStartAngle/2+minuteStartAngle/2),  "\\small{"+K+"{\\rm{\\% }}}", "center", { color: "green" });
+				</div>
+				<div class="graphie" data-update="circle">
+					var minuteStartAngle = 90;
+                    var hourStartAngle = 90-J*3.6;
+					var thirdStartAngle = 90+K*3.6;
+					var lastStartAngle = 90-J*3.6-L*3.6;
+					lastPoint1 = circle(polar( 3.75, lastStartAngle ),0.05,{stroke: "red",fill:"red"});
+					lastHand1 = line(polar( 3.75, lastStartAngle ),[0,0],{stroke: "red","stroke-width": 2});
+					
+					label( polar(1,lastStartAngle/2+hourStartAngle/2),  "\\small{"+L+"{\\rm{\\% }}}", "center", { color: "#6495ED" });
+					label( polar(1,thirdStartAngle/2+(360+lastStartAngle)/2),  "\\small{"+M+"{\\rm{\\% }}}", "center", { color: "red" });
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+                        init({ range: [[-4, 4], [-4, 4]], scale: 45 });
+
+                        var clockRadius = 3.75;
+                        var minuteStartAngle = 90;
+                        var hourStartAngle = 90-J*3.6;
+						var thirdStartAngle = 90+K*3.6;
+						var lastStartAngle = 90-J*3.6-L*3.6;
+						minutePoint1 = circle( polar( clockRadius, minuteStartAngle ), 0.05,{stroke: "#FFF0AC",fill:"#FFF0AC"});
+						thirdPoint1 = circle(polar( clockRadius, thirdStartAngle ),0.05,{stroke: "#C2FF68",fill:"#C2FF68"});
+						lastPoint1 = circle(polar( clockRadius, lastStartAngle ),0.05,{stroke: "#FF9797",fill:"#FF9797"});
+                        hourPoint1 = circle(polar(clockRadius, hourStartAngle),0.05,{stroke: "#D2E9FF",fill:"#D2E9FF"});
+                        minuteHand1 = line(polar( clockRadius, minuteStartAngle ),[0,0],{stroke: "#FFF0AC","stroke-width": 2});
+						thirdHand1 = line(polar( clockRadius, thirdStartAngle ),[0,0],{stroke: "#C2FF68","stroke-width": 2});
+						lastHand1 = line(polar( clockRadius, lastStartAngle ),[0,0],{stroke: "#FF9797","stroke-width": 2});
+                        hourHand1 = line(polar(clockRadius, hourStartAngle),[0,0],{stroke: "#D2E9FF","stroke-width": 2});
+                    </div>
+				</div>
+            </div>
+		</div>
+		
+		<div id="case4">
+        <div class="vars" data-ensure="abs(a5-a1)&gt;5 && abs(a5-a2)&gt;5 && abs(a5-a3)&gt;5 && abs(a5-a4)&gt;5">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="a1">randRange(5,8)</var>
+				<var id="a2">randRange(12,18)</var>
+				<var id="a3">randRange(22,28)</var>
+				<var id="a4">randRange(32,38)</var>
+				<var id="a5">100-a1-a2-a3-a4</var>
+				<var id="numsArray">
+				(function(){
+					var retArr = [a1,a2,a3,a4,100-a1-a2-a3-a4].sort(function(){ return 0.5 - Math.random() });
+					return retArr;
+				})()</var>
+				<var id="J">numsArray[0]</var>
+				<var id="K">numsArray[1]</var>
+				<var id="L">numsArray[2]</var>
+				<var id="M">numsArray[3]</var>
+				<var id="N">numsArray[4]</var>
+				<var id="sortArray">sortNumbers(numsArray)</var>
+				<var id="names">randFromArray(["小玉","小珍","小紅","小明","小雅","小惠","阿光"])</var>
+				<var id="SORT_ALL">(function(){
+					var all = [['零食',K],['門票',L],['飲料',M],['車資',N],['午餐',J]];
+					return bubbleSort(all);
+				})()</var>
+				
+		</div>
+		<div class="question">
+			<p>下面是<var>names</var>到水上樂園遊玩一日花費的圓形圖。如果圖中五項花費所占的百分率分別為 <code><var>J</var>\%</code> 、<code><var>K</var>\%</code> 、<code><var>L</var>\%</code> 、<code><var>M</var>\%</code> 、<code><var>N</var>\%</code> ，請將百分率填入下面的括號中。</p>
+		</div>
+		<div class="problem">
+			<div class="graphie" id="circle" style="float:left">
+				init({ range: [[-4, 4], [-4, 4]], scale: 45 });
+				circle([0,0],4);
+				line([0,0],[4,0]);
+				line([0,0],polar(4,J*3.6));
+				line([0,0],polar(4,J*3.6+K*3.6));
+				line([0,0],polar(4,J*3.6+K*3.6+L*3.6));
+				line([0,0],polar(4,J*3.6+K*3.6+L*3.6+M*3.6));
+				
+				label( polar(2,J*1.8),  "\\small{午餐}", "center", { color: "#6495ED" });
+				label( polar(2,J*3.6+K*1.8),  "\\small{零食}", "center", { color: "#FFA500" });
+				label( polar(2,J*3.6+K*3.6+L*1.8),  "\\small{門票}", "center", { color: "red" });
+				label( polar(2,J*3.6+K*3.6+L*3.6+M*1.8),  "\\small{飲料}", "center", { color: "#28AE7B" });
+				label( polar(2,J*1.8+K*1.8+L*1.8+M*1.8+180),  "\\small{車資}", "center", { color: "purple" });
+			</div>
+			<div style="float:right">
+				<table>
+					<tr><td>零食：<input type="text" style="width:40px" id="a_1"><code>\%</code></td></tr>
+					<tr><td>門票：<input type="text" style="width:40px" id="a_2"><code>\%</code></td></tr>
+					<tr><td>車資：<input type="text" style="width:40px" id="a_3"><code>\%</code></td></tr>
+					<tr><td>飲料：<input type="text" style="width:40px" id="a_4"><code>\%</code></td></tr>
+					<tr><td>午餐：<input type="text" style="width:40px" id="a_5"><code>\%</code></td></tr>
+				</table>
+			</div>
+		</div>
+		<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value]</div>
+				    <div class="validator-function">
+						if(guess[0].replace(/[ ]/g,"")==K && guess[1].replace(/[ ]/g,"")==L && guess[2].replace(/[ ]/g,"")==N && guess[3].replace(/[ ]/g,"")==M && guess[4].replace(/[ ]/g,"")==J){
+							return true;
+						}
+                    </div>
+				</div>
+				<p class="example">在圖中填空處填入整數，<br/>例如 <code>6</code></p>
+		</div>
+		<div class="hints">
+			<div style="clear:both">
+				<p><br/>我們先依這五項花費的大小順序排列 <code>:</code><br /><code><var>sortArray[4]</var>\%><var>sortArray[3]</var>\%><var>sortArray[2]</var>\%><var>sortArray[1]</var>\%><var>sortArray[0]</var>\%</code></p>
+			</div>
+			<div>
+				<p>所以，我們可以知道 <code>:</code></p>
+				<p><var>SORT_ALL[4][0]</var> 是 <code><var>SORT_ALL[4][1]</var>\%</code></p>
+			</div>
+			<p><var>SORT_ALL[3][0]</var> 是 <code><var>SORT_ALL[3][1]</var>\%</code></p>
+			<p><var>SORT_ALL[2][0]</var> 是 <code><var>SORT_ALL[2][1]</var>\%</code></p>
+			<p><var>SORT_ALL[1][0]</var> 是 <code><var>SORT_ALL[1][1]</var>\%</code></p>
+			<p><var>SORT_ALL[0][0]</var> 是 <code><var>SORT_ALL[0][1]</var>\%</code></p>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

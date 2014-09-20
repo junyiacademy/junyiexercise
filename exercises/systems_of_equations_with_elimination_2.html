@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>加減消去法_2</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area input[type=text] {
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">        
+        <div class="problems">
+            <div id="elimination-x">
+				<div class="vars" >
+					<var id="X">randRangeNonZero( -10, 10 )</var>
+					<var id="Y" data-ensure="X !== Y">randRangeNonZero( -10, 10 )</var>
+					<var id="A1">randRangeNonZero( -5, 5 )</var>
+					<var id="M">randRange(2, 4)</var>
+					<var id="A2">(A1 * M) * randRangeNonZero( -1, 1 )</var>
+					<var id="B1">randRangeExclude( -5, 5 ,[0, 1, -1])</var>										
+					<var id="B2" data-ensure=" getGCD( B1, B2 ) === 1 ">randRangeNonZero( -5, 5 )</var>						
+					<var id="C1">A1 * X + B1 * Y</var>								
+					<var id="C2">A2 * X + B2 * Y</var>
+				</div>
+				<p class="problem">使用加減法消去法解<code>x</code>和<code>y</code></p>
+                <div class="question">
+                    <p><code>\color{BLUE}{<var>expr(["+", ["*", A1, "x"], ["*", B1, "y"]])</var> = <var>C1</var>}</code><br />
+                    <code class="hint_green"><var>expr(["+", ["*", A2, "x"], ["*", B2, "y"]])</var> = <var>C2</var></code></p>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <p><code>x</code> = <span class="sol"><var>X</var></span></p>
+                    <p><code>y</code> = <span class="sol"><var>Y</var></span></p>
+                </div>
+                <div class="hints">
+					<p>當兩式直接相加或相減無法消去其中一項未知數時，應先調整係數</p>
+                    <div>
+						<p>由兩式可知<code>x</code>的係數呈倍數關係</p>
+						<p>所以將<code>\color{BLUE}{<var>expr(["+", ["*", A1, "x"], ["*", B1, "y"]])</var> = <var>C1</var>}</code>乘<code>\color{#FF00AF}{<var>M</var>}</code></p>
+						<p>可得</p>
+						<p><code>\color{ORANGE}{<var>expr(["+", ["*", A1 * M, "x"], ["*", B1 * M, "y"]])</var> = <var>C1 * M</var>}</code></p>						
+                    </div>	
+					<p>觀察<code>\color{ORANGE}{<var>expr(["+", ["*", A1 * M, "x"], ["*", B1 * M, "y"]])</var> = <var>C1 * M</var>}</code>與<code>\color{GREEN}{<var>expr(["+", ["*", A2, "x"], ["*", B2, "y"]])</var> = <var>C2</var>}</code>兩式，發現<code>x</code>項系數值<span data-if="A1 * M === A2">相同</span><span data-if="A1 * M === -A2">互為相反數</span>，可利用兩式相<span data-if="A1 * M === A2">減</span><span data-if="A1 * M === -A2">加</span>將<code>x</code>項消除</p>
+                    <div>
+						<p>故可得</p>
+						<p><code><span data-if="A1 * M === A2"><var>B1 * M - B2</var>y = <var>C1 * M - C2</var></span><span data-if="A1 * M === -A2"><var>B1 * M + B2</var>y = <var>C1 * M + C2</var></span></code></p>
+						<p data-if="A1 * M === A2"><code>\dfrac{<var>expr(["*", B1 * M - B2, "y"])</var>}{\color{#FF00AF}{<var>B1 * M - B2</var>}} = \dfrac{<var>C1 * M - C2</var>}{\color{#FF00AF}{<var>B1 * M - B2</var>}}</code></p>
+						<p data-if="A1 * M === -A2"><code>\dfrac{<var>expr(["*", B1 * M + B2, "y"])</var>}{\color{#FF00AF}{<var>B1 * M + B2</var>}} = \dfrac{<var>C1 * M + C2</var>}{\color{#FF00AF}{<var>B1 * M + B2</var>}}</code></p>
+						<p><code>\color{red}{y = <var>Y</var>}</code></p>
+                    </div>
+                    <div>
+						<p>現在你知道<code>\color{RED}{y = <var>Y</var>}</code>，將值放回<code>\thinspace \color{BLUE}{<var>expr(["+", ["*", A1, "x"], ["*", B1, "y"]])</var> = <var>C1</var>}\thinspace</code>來找<code>x</code></p>
+                    </div>
+                    <div>
+                        <p><code>\color{BLUE}{<var>expr(["*", A1, "x"])</var> + <span data-if="abs( B1 ) !== 1"><var>B1</var></span><span data-if="B1 === -1">-</span>}\color{ORANGE}{(<var>Y</var>)}\color{BLUE}{= <var>C1</var>}</code></p>
+                        <p><code><var>expr(["+", ["*", A1, "x"], B1 * Y])</var> = <var>C1</var></code></p>
+                        <p data-if="A1 !== 1"><code><var>expr(["*", A1, "x"])</var> = <var>C1 - B1 * Y</var></code></p>
+                        <p data-if="A1 !== 1"><code>\dfrac{<var>expr(["*", A1, "x"])</var>}{\color{BLUE}{<var>A1</var>}} = \dfrac{<var>C1 - B1 * Y</var>}{\color{BLUE}{<var>A1</var>}}</code></p>
+                        <p><code>\color{red}{x = <var>X</var>}</code></p>
+                    </div>
+                    <div>
+						<p>你也可以將<code>\color{ORANGE}{y = <var>Y</var>}</code>放到<code>\thinspace \color{GREEN}{<var>expr(["+", ["*", A2, "x"], ["*", B2, "y"]])</var> = <var>C2</var>}\thinspace</code>得到同樣的<code>x</code>:</p>
+                        <p><code>\color{GREEN}{<var>expr(["*", A2, "x"])</var> + <span data-if="abs( B2 ) !== 1"><var>B2</var></span><span data-if="B2 === -1">-</span>}\color{ORANGE}{(<var>Y</var>)}\color{GREEN}{= <var>C2</var>}</code></p>
+						<p><code><var>expr(["+", ["*", A2, "x"], B2 * Y])</var> = <var>C2</var></code></p>
+						<p><code>\dfrac{<var>expr(["*", A2, "x"])</var>}{\color{BLUE}{<var>A2</var>}} = \dfrac{<var>C2 - B2 * Y</var>}{\color{BLUE}{<var>A2</var>}}</code></p>
+                        <p><code>\color{red}{x = <var>X</var>}</code></p>
+                    </div>
+                </div>
+            </div>
+            
+			<div id="elimination-y">
+				<div class="vars" >
+					<var id="X">randRangeNonZero( -10, 10 )</var>
+					<var id="Y" data-ensure="X !== Y">randRangeNonZero( -10, 10 )</var>
+					<var id="A1">randRangeExclude( -5, 5 ,[0, 1, -1])</var>
+					<var id="A2" data-ensure=" getGCD( A1, A2 ) === 1 ">randRangeNonZero( -5, 5 )</var>
+					<var id="M">randRange(2, 4)</var>					
+					<var id="B1">randRangeNonZero( -5, 5 )</var>										
+					<var id="B2">(B1 * M) * randRangeNonZero( -1, 1 )</var>						
+					<var id="C1">A1 * X + B1 * Y</var>								
+					<var id="C2">A2 * X + B2 * Y</var>
+				</div>
+				<p class="problem">使用加減法消去法解<code>x</code>和<code>y</code></p>
+                <div class="question">
+                    <p><code>\color{#6495ED}{<var>expr(["+", ["*", A2, "x"], ["*", B2, "y"]])</var> = <var>C2</var>}</code><br />
+                    <code class="hint_green"><var>expr(["+", ["*", A1, "x"], ["*", B1, "y"]])</var> = <var>C1</var></code></p>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <p><code>x</code> = <span class="sol"><var>X</var></span></p>
+                    <p><code>y</code> = <span class="sol"><var>Y</var></span></p>
+                </div>
+                <div class="hints">
+					<p>當兩式直接相加或相減無法消去其中一項未知數時，應先調整係數</p>
+                    <div>
+						<p>由兩式可知<code>y</code>的係數呈倍數關係</p>
+						<p>所以將<code>\color{#28AE7B}{<var>expr(["+", ["*", A1, "x"], ["*", B1, "y"]])</var> = <var>C1</var>}</code>乘<code>\color{#FF00AF}{<var>M</var>}</code></p>
+						<p>可得</p>
+						<p><code>\color{#FFA500}{<var>expr(["+", ["*", A1 * M, "x"], ["*", B1 * M, "y"]])</var> = <var>C1 * M</var>}</code></p>						
+                    </div>	
+					<p>觀察<code>\color{#FFA500}{<var>expr(["+", ["*", A1 * M, "x"], ["*", B1 * M, "y"]])</var> = <var>C1 * M</var>}</code>與<code>\color{#6495ED}{<var>expr(["+", ["*", A2, "x"], ["*", B2, "y"]])</var> = <var>C2</var>}</code>兩式，發現<code>y</code>項系數值<span data-if="B1 * M === B2">相同</span><span data-if="B1 * M === -B2">互為相反數</span>，可利用兩式相<span data-if="B1 * M === B2">減</span><span data-if="B1 * M === -B2">加</span>將<code>y</code>項消除</p>
+                    <div>
+						<p>故可得</p>
+						<p><code><span data-if="B1 * M === B2"><var>A1 * M - A2</var>x = <var>C1 * M - C2</var></span><span data-if="B1 * M === -B2"><var>A1 * M + A2</var>x = <var>C1 * M + C2</var></span></code></p>
+						<p data-if="B1 * M === B2"><code>\dfrac{<var>expr(["*", A1 * M - A2, "x"])</var>}{\color{#FF00AF}{<var>A1 * M - A2</var>}} = \dfrac{<var>C1 * M - C2</var>}{\color{#FF00AF}{<var>A1 * M - A2</var>}}</code></p>
+						<p data-if="B1 * M === -B2"><code>\dfrac{<var>expr(["*", A1 * M + A2, "x"])</var>}{\color{#FF00AF}{<var>A1 * M + A2</var>}} = \dfrac{<var>C1 * M + C2</var>}{\color{#FF00AF}{<var>A1 * M + A2</var>}}</code></p>
+						<p><code>\color{red}{x = <var>X</var>}</code></p>
+                    </div>
+                    <div>
+						<p>現在你知道<code>\color{RED}{x = <var>X</var>}</code>，將值放回<code>\thinspace \color{#28AE7B}{<var>expr(["+", ["*", A1, "x"], ["*", B1, "y"]])</var> = <var>C1</var>}\thinspace</code>來找<code>y</code></p>
+                    </div>
+                    <div>
+                        <p><code>\color{#28AE7B}{<var>A1</var>} \color{#FFA500}{(<var>X</var>)} + \color{#28AE7B}{<var>expr(["*", B1, "y"])</var> = <var>C1</var>}</code></p>
+                        <p><code><var>expr(["+", A1 * X, ["*", B1, "y"]])</var> = <var>C1</var></code></p>
+                        <p data-if="B1 !== 1"><code><var>expr(["*", B1, "y"])</var> = <var>C1 - A1 * X</var></code></p>
+                        <p data-if="B1 !== 1"><code>\dfrac{<var>expr(["*", B1, "y"])</var>}{\color{#28AE7B}{<var>B1</var>}} = \dfrac{<var>C1 - A1 * X</var>}{\color{#28AE7B}{<var>B1</var>}}</code></p>
+                        <p><code>\color{red}{y = <var>Y</var>}</code></p>
+                    </div>
+                    <div>
+						<p>你也可以將<code>\color{#FFA500}{x = <var>X</var>}</code>放到<code>\thinspace \color{#6495ED}{<var>expr(["+", ["*", A2, "x"], ["*", B2, "y"]])</var> = <var>C2</var>}\thinspace</code>得到同樣的<code>y</code>:</p>
+                        <p><code>\color{#6495ED}{<var>A2</var>}\color{#FFA500}{(<var>X</var>)}\color{#6495ED}{<var>expr(["*", B2, "y"])</var>= <var>C2</var>}</code></p>
+						<p data-if="B1 !== 1"><code><var>expr(["+", A2 * X, ["*", B2, "y"]])</var> = <var>C2</var></code></p>
+						<p data-if="B1 !== 1"><code>\dfrac{<var>expr(["*", B2, "y"])</var>}{\color{#6495ED}{<var>B2</var>}} = \dfrac{<var>C2 - A2 * X</var>}{\color{#6495ED}{<var>B2</var>}}</code></p>
+                        <p><code>\color{red}{y = <var>Y</var>}</code></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

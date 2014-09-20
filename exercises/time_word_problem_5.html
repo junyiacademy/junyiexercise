@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html data-require="math word-problems">
+<head>
+	<title>能解決時間乘除計算問題</title>
+	<meta http-equiv="Content-Type" content="text\html; charset=UTF-8">
+	<script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .short input[type=text] {
+            width: 35px;
+        }
+    </style>
+</head>
+<body>
+	<div class="exercise">
+		<div class="problems">
+			
+			<div class="case1">
+				<div class="vars">
+					<var id="MIN">randRange(2,15)</var>
+					<var id="SEC">randRange(20,59)</var>
+					<var id="R">randRange(5,9)</var>
+				</div>
+				<div class="question">
+					<p><var>person(1)</var>跑操場，跑一圈平均要花<var>MIN</var>分<var>SEC</var>秒，跑<var>R</var>圈共要花多少時間？</p>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p class="short"><span class="sol"><var>MIN*R+floor(SEC*R/60)</var></span>分<span class="sol"><var>SEC*R%60</var></span>秒</p>
+					<p class="example">整數，例：<code>6</code></p>
+				</div>
+				<div class="hints">
+					<p><var>MIN</var>分<var>SEC</var>秒 &times; <var>R</var> = <var>MIN*R</var>分<var>SEC*R</var>秒</p>
+					<p>因為一分鐘=60秒，所以<var>SEC*R</var>秒=<var>floor(SEC*R/60)</var>分<var>SEC*R%60</var>秒</p>
+					<p>所以<var>person(1)</var>一共跑了<var>MIN*R</var>分 + <var>floor(SEC*R/60)</var> 分 <var>SEC*R%60</var>秒</p>
+					<p>= <var>MIN*R+floor(SEC*R/60)</var>分<var>SEC*R%60</var>秒</p>
+				</div>
+			</div>
+			
+			<div class="case2">
+				<div class="vars">
+					<var id="HOUR">randRange(5,11)</var>
+					<var id="MIN">randRange(20,59)</var>
+					<var id="R">randRange(15,29)</var>
+				</div>
+				<div class="question">
+					<p><var>person(1)</var>做一件工程，每天平均工作<var>HOUR</var>時<var>MIN</var>分，連續做了<var>R</var>天才完成。那<var>person(1)</var>完成整件工程總共花了多少時間？</p>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p class="short"><span class="sol"><var>floor((HOUR*R+floor(MIN*R/60))/24)</var></span>天<span class="sol"><var>(HOUR*R+floor(MIN*R/60))%24</var></span>時<span class="sol"><var>MIN*R%60</var></span>分</p>
+					<p class="example">整數，例：<code>6</code></p>
+				</div>
+				<div class="hints">
+					<p><var>HOUR</var>時<var>MIN</var>分 &times; <var>R</var> = <var>HOUR*R</var>時<var>MIN*R</var>分</p>
+					<p>一天=24小時，一小時=60分鐘</p>
+					<p>所以<var>MIN*R</var>分=<var>floor(MIN*R/60)</var>時<font color="green"><var>MIN*R%60</var>分</font></p>
+					<p><var>HOUR*R</var>時+<var>floor(MIN*R/60)</var>時 = <var>HOUR*R+floor(MIN*R/60)</var>小時 =<font color="green"><var>floor((HOUR*R+floor(MIN*R/60))/24)</var>天<var>(HOUR*R+floor(MIN*R/60))%24</var>時</font></p>
+					<p>所以<var>person(1)</var>一共花了<font color="fuchsia"><var>floor((HOUR*R+floor(MIN*R/60))/24)</var>天<var>(HOUR*R+floor(MIN*R/60))%24</var>時<var>MIN*R%60</var>分</font></p>
+				</div>
+			</div>
+			
+			<div class="case3">
+				<div class="vars" data-ensure="(GOAL*60)%(MIN*60+SEC)==0">
+					<var id="MIN">randRange(1,4)</var>
+					<var id="SEC">randRange(20,59)</var>
+					<var id="GOAL">randRange(10,20)</var>
+				</div>
+				<div class="question">
+					<p><var>person(1)</var>折一架紙飛機平均要花<var>MIN</var>分<var>SEC</var>秒，那<var>person(1)</var><var>GOAL</var>分可以折幾架紙飛機？</p>
+				</div>
+				<div class="solution" data-type="set">
+					<div class="set-sol"><var>(GOAL*60)/(MIN*60+SEC)</var></div>
+                    <div class="example">
+                        整數，例：<code>6</code><br>
+                     </div> 
+                    <div class="input-format">
+                    <p><span class="entry"></span>架</p>
+                    </div>
+                </div>
+				<div class="hints">
+					<p>"<var>GOAL</var>分可以折幾架紙飛機" 可以想成 "<var>GOAL</var>分是<var>MIN</var>分<var>SEC</var>秒的幾倍"</p>
+					<p><var>GOAL</var>分 = <var>GOAL*60</var>秒</p>
+					<p><var>MIN</var>分<var>SEC</var>秒 = <var>MIN*60+SEC</var>秒</p>
+					<p><var>GOAL*60</var> &divide; <var>MIN*60+SEC</var> = <var>(GOAL*60)/(MIN*60+SEC)</var></p>
+					<p>所以總共可以做<var>(GOAL*60)/(MIN*60+SEC)</var>架</p>
+				</div>
+			</div>
+			
+			<div class="case4">
+				<div class="vars" data-ensure="(GOAL*24)%(HOUR+DAY*24)==0">
+					<var id="DAY">randRange(1,4)</var>
+					<var id="HOUR">randRange(1,23)</var>
+					<var id="GOAL">randRange(10,20)</var>
+				</div>
+				<div class="question" >
+					<p>有一人造衛星繞地球一圈平均需要<var>DAY</var>日<var>HOUR</var>時，人造衛星<var>GOAL</var>日可以繞地球幾圈？</p>
+				</div>
+				<div class="solution" data-type="set">
+					<div class="set-sol"><var>(GOAL*24)/(HOUR+DAY*24)</var></div>
+                    <div class="example">
+                        整數，例：<code>6</code><br>
+                     </div> 
+                    <div class="input-format">
+                    <p><span class="entry"></span>圈</p>
+                    </div>
+                </div>
+				<div class="hints">
+					<p><var>DAY</var>日<var>HOUR</var>時 = <var>DAY*24+HOUR</var>時</p>
+					<p><var>GOAL</var>日 = <var>GOAL*24</var>時</p>
+					<p>人造衛星<var>GOAL</var>日可以繞地球幾圈我們可以用<var>GOAL</var>日 &divide; <var>DAY</var>日<var>HOUR</var>時</p>
+					<p>=<var>GOAL*24</var> &divide; <var>DAY*24+HOUR</var></p>
+					<p>=<var>(GOAL*24)/(HOUR+DAY*24)</var>圈
+					</p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>

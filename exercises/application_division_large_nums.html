@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie-helpers-arithmetic graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>大數除法的應用問題</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars" data-ensure="K&lt;=9999&&K&gt;=3000">
+			<var id="names">randFromArray(["螞蟻","瓢蟲"])</var>
+			<var id="J">randRange(11,99)</var>
+			<var id="MAX_QUOTIENT_DIGIT">floor( 9 / J )</var>
+			<var id="QUOTIENT">randRange( 100, 300 )</var>
+			<var id="K">J * QUOTIENT</var>
+        </div>
+		<p class="question"><code><var>J</var></code> 隻<var>names</var>要搬完 <code><var>K</var></code> 粒米，每隻<var>names</var>搬一些的米。一隻<var>names</var>要搬幾粒米？</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>QUOTIENT</var></span> <code>粒</code>
+		</div>
+
+		<div class="hints">
+			<p>總共有 <code><var>K</var></code> 粒米要平分給 <code><var>J</var></code> 隻<var>names</var>，</p>
+			<p>我們要用 <code><var>K</var></code> 除以 <code><var>J</var></code> 算出每隻<var>names</var>要搬幾粒米，</p>
+			<div>
+				<p>運用直式計算：</p>
+				<div class="graphie" id="numbers">
+					graph.divider = new Divider( J, K );
+					graph.divider.show();
+				</div>
+			</div>
+			<div class="graphie" data-update="numbers" data-each="Array( new Divider( J, K ).getNumHints() ) as dummy">
+				graph.divider.showHintNew();
+			</div>
+			<p>因此，本題的答案為 <code class="hint_pink"><var>QUOTIENT</var></code> 粒。</p>
+		</div>
+	</div>
+	
+	<div id="case2">
+        <div class="vars" data-ensure="K&lt;=9999&&K&gt;=3000">
+			<var id="names">randFromArray(["螞蟻","瓢蟲"])</var>
+			<var id="J">randRange(11,99)</var>
+			<var id="MAX_QUOTIENT_DIGIT">floor( 9 / J )</var>
+			<var id="QUOTIENT">randRange( 100, 300 )</var>
+			<var id="K">J * QUOTIENT</var>
+        </div>
+		<p class="question"><code><var>K</var></code> 隻<var>names</var>要渡過水溝，每片葉子可以載 <code><var>J</var></code> 隻<var>names</var>，請問共需要幾片葉子？</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>QUOTIENT</var></span> <code>片</code>
+		</div>
+
+		<div class="hints">
+			<p>總共有 <code><var>K</var></code> 隻<var>names</var>要渡河，每片葉子可載 <code><var>J</var></code> 隻<var>names</var>，要算出需要幾片葉子就必須用 <code><var>K</var></code> 除以 <code><var>J</var></code> ，</p>
+			<div>
+				<p>我們可以用除法直式來計算：</p>
+				<div class="graphie" id="numbers">
+					graph.divider = new Divider( J, K );
+					graph.divider.show();
+				</div>
+			</div>
+			<div class="graphie" data-update="numbers" data-each="Array( new Divider( J, K ).getNumHints() ) as dummy">
+				graph.divider.showHintNew();
+			</div>
+			<p>因此，本題的答案為 <code class="hint_pink"><var>QUOTIENT</var></code> 片。</p>
+		</div>
+	</div>
+	
+	<div id="case3">
+        <div class="vars" data-ensure="K&lt;=9999&&K&gt;=3000">
+			<var id="names">randFromArray(["螞蟻","瓢蟲","蜜蜂"])</var>
+			<var id="J">randRange(11,99)</var>
+			<var id="MAX_QUOTIENT_DIGIT">floor( 9 / J )</var>
+			<var id="QUOTIENT">randRange( 100, 300 )</var>
+			<var id="K">J * QUOTIENT</var>
+        </div>
+		<p class="question"><var>names</var>要出去找食物了， <code><var>K</var></code> 隻<var>names</var>每 <code><var>J</var></code> 隻分成一隊，共可以分成幾隊呢？</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>QUOTIENT</var></span> <code>隊</code>
+		</div>
+
+		<div class="hints">
+			<p>總共有 <code><var>K</var></code> 隻<var>names</var>，每 <code><var>J</var></code> 隻分成一隊，要算出總共可以分成幾隊，</p>
+			<div>
+				<p>我們可以用除法直式來計算 <code><var>K</var></code> 除以 <code><var>J</var></code> ：</p>
+				<div class="graphie" id="numbers">
+					graph.divider = new Divider( J, K );
+					graph.divider.show();
+				</div>
+			</div>
+			<div class="graphie" data-update="numbers" data-each="Array( new Divider( J, K ).getNumHints() ) as dummy">
+				graph.divider.showHintNew();
+			</div>
+			<p>因此，本題的答案為 <code class="hint_pink"><var>QUOTIENT</var></code> 隊。</p>
+		</div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

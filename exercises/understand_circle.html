@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers geom interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能使用圓規畫圓，認識圓的圓心、圓周、半徑、與直徑(3-s-03)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		#answer_area .sol input[type=text] {
+			width: 30px;
+		}
+		#answer_area .entry input[type=text] {
+			width: 30px;
+		}
+		table.nLimit{margin:0px ;border:0px }
+		table.nLimit td { text-align:center;max-width:250px;border: 0px solid #AAA; }
+		table.nLimit td { padding: 5px; }
+</script>
+	</style>
+    <script type="text/javascript">
+	</script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+        <div id="case1">
+			<div class="vars">
+				
+				<var id="name">randFromArray(["阿光","阿嘉","阿山","阿康"])</var>
+			</div>	
+			<p class="problem"><var>name</var>用圓規畫了一個圓，從圓心到圓周的距離叫做什麼？</p>			
+            <div class="solution" data-type="custom">
+				<div class="instruction">
+					<ul>
+						<li><input type="radio" name="sol" id="r1" value="半徑" /><label for="r1">半徑</label></li>
+						<li><input type="radio" name="sol" id="r2" value="直徑" /><label for="r2">直徑</label></li>
+						<li><input type="radio" name="sol" id="r3" value="心周長" /><label for="r3">心周長</label></li>
+						<li><input type="radio" name="sol" id="r4" value="以上都不是" /><label for="r4">以上都不是</label></li>
+					</ul>
+				</div>
+				 <div class="guess">[$( "#solutionarea" ).find( "input:checked" ).val()]</div>
+				 <div class="validator-function">
+                        if ( guess[ 0 ] === null ) {
+                            return "";
+                        }
+                        return guess[ 0 ] === "半徑";
+                    </div>
+				   <div class="show-guess-solutionarea">
+                        $( "#solutionarea" ).find( "input" ).prop( 'checked', false );
+                        if ( guess[ 0 ] != null ) {
+                            $( "#solutionarea" ).find( "input[value=" + guess[ 0 ] + "]" ).prop( 'checked', true );
+                        }
+                    </div>
+			</div>
+			<div class="hints">
+				<p>圓心到圓周的距離我們叫做 <code class="hint_pink">半徑</code> 。</p>
+				<div class="graphie" id="radius_angle_1">
+					init({
+						range: [ [-1, 12], [-3, 3] ],
+						scale: 40
+					});
+					circle([2,0],2);
+				
+					line([2,0],[2,-2],{stroke:" #6495ED"});
+					
+					line([4,0],[6,0],{stroke:" #6495ED"});
+					line([4.15,0.15],[4,0],{stroke:" #6495ED"});
+					line([4.15,-0.15],[4,0],{stroke:" #6495ED"});
+					
+					line([2.01,-1],[5,-1],{stroke:" #6495ED"});
+					line([2.15,-0.85],[2,-1],{stroke:" #6495ED"});
+					line([2.15,-1.15],[2,-1],{stroke:" #6495ED"});
+					
+					line([2.1,0.1],[3,2],{stroke:" #6495ED"});
+					line([2.25,0.15],[2.1,0.1],{stroke:" #6495ED"});
+					line([2.08,0.3],[2.1,0.1],{stroke:" #6495ED"});
+					circle([2,0],0.1,{stroke:" red",fill:"red"});
+					label( [6,0],  "\\small{圓周}", "right", { color: "black" });
+					label( [5,-1],  "\\small{半徑}", "right", { color: "black" });
+					label( [3,2],  "\\small{圓心}", "above", { color: "black" })
+					label( [2,0],  "\\small{.}", "center", { color: "black" })
+				</div>
+				
+			</div>
+		</div>
+		
+		 <div id="case2">
+			<div class="vars">
+				<var id="scratchpad">
+				(function(){
+					document.getElementById("scratchpad-show").innerText="";
+					document.getElementById("scratchpad-not-available").innerText="";
+				})()</var>
+				<var id="r">randRange(5,10)</var>
+				<var id="d">2*r</var>
+				<var id="r1">randRange(10,15)</var>
+				<var id="a">2*r1</var>
+				<var id="r2">randRange(1,5)</var>
+				<var id="b">2*r2</var>
+				<var id="r3">randRange(1,5)</var>
+				<var id="c">2*r3</var>
+				<var id="r4">randRange(5,10)</var>
+				<var id="e">2*r4</var>
+				<var id="r5">randRange(10,15)</var>
+				<var id="f">2*r5</var>
+			</div>
+			<div class="question">
+				<div class="problem">
+					<table class="nLimit">
+							<tr>
+								<td>
+									<div class="graphie" id="circle">
+									init({
+										range: [ [-6, 6], [-6, 6] ],
+										scale: 10
+										});
+										circle([0,0],4, { fill: "green" });
+										line([0,4],[0,-4],{stroke:"red"});
+										line([0,4],[1,1],{stroke:"white"})
+										line([0,-4],[1,-1],{stroke:"white"})
+										label([2,0], "\\small{"+d+"}", "center", { color: "black" });
+									</div>
+									<br />
+									直徑長(<input type="text" id="a_1" style="height:10px;width:30px;background:snow;text-align:center">)公分
+								</td>
+								<td>
+									<div class="graphie" id="circle1">
+										init({
+										range: [ [-5, 5], [-5, 5] ],
+										scale: 10
+										});
+										circle([0,0],5, { fill: "brown" });
+										line([-5,0],[5,0],{stroke:"red"});
+										line([-5,0],[-1,1],{stroke:"white"});
+										line([5,0],[1,1],{stroke:"white"});
+										label([0,1], "\\small{"+a+"}", "center", { color: "black" });
+									</div>
+									<br />
+									直徑長(<input type="text" id="a_2" style="height:10px;width:30px;background:snow;text-align:center">)公分
+								</td>						
+								<td>
+									<div class="graphie" id="circle2">
+										init({
+										range: [ [-4, 4], [-4, 4] ],
+										scale: 10
+										});
+										circle([0,0],3, { fill: "#6495ED" });
+										line([-3,0],[3,0],{stroke:"red"});
+										line([-3,0],[-1,1],{stroke:"white"});
+										line([3,0],[1,1],{stroke:"white"});
+										label([0,1], "\\small{"+b+"}", "center", { color: "black" });
+									</div>
+									<br />
+									直徑長(<input type="text" id="a_3" style="height:10px;width:30px;background:snow;text-align:center">)公分
+								</td>							
+							</tr>
+							<tr>
+								<td>
+									<div class="graphie" id="circle3">
+										init({
+										range: [ [-4, 4], [-4, 4] ],
+										scale: 10
+										});
+										circle([0,0],3, { fill: "pink" });
+										line([-3,0],[3,0],{stroke:"red"});
+										
+										line([-3,0],[-1,1],{stroke:"white"});
+										line([3,0],[1,1],{stroke:"white"});
+										label([0,1], "\\small{"+c+"}", "center", { color: "black" });
+									</div>
+									<br />
+									半徑長(<input type="text" id="a_4" style="height:10px;width:30px;background:snow;text-align:center">)公分
+								</td>
+								<td>
+									<div class="graphie" id="circle4">
+										init({
+										range: [ [-5, 5], [-5, 5] ],
+										scale: 10
+										});
+										circle([0,0],4, { fill: "tomato" });
+										line([-4,0],[4,0],{stroke:"red"});
+										
+										line([-4,0],[-1,1],{stroke:"white"});
+										line([4,0],[1,1],{stroke:"white"});
+										label([0,1], "\\small{"+e+"}", "center", { color: "black" });
+									</div>
+									<br />
+									半徑長(<input type="text" id="a_5" style="height:10px;width:30px;background:snow;text-align:center">)公分
+								</td>	
+								<td>
+									<div class="graphie" id="circle5">
+										init({
+										range: [ [-6, 6], [-6, 6] ],
+										scale: 10
+										});
+										circle([0,0],5, { fill: "gray" });
+										line([0,5],[0,-5],{stroke:"red"});
+										
+										line([0,5],[1,1],{stroke:"white"})
+										line([0,-5],[1,-1],{stroke:"white"})
+										label([2,0], "\\small{"+f+"}", "center", { color: "black" });
+									</div>
+									<br />
+									半徑長(<input type="text" id="a_6" style="height:10px;width:30px;background:snow;text-align:center">)公分
+								</td>												
+							</tr>
+					</table>
+				</div>
+				<p>請填入正確的長度</p>
+			</div>
+			
+			 <div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value]</div>
+				    <div class="validator-function">
+						var bol1=false;
+						if(guess[0].replace(/[ ]/g,"")==d&&guess[1].replace(/[ ]/g,"")==a&&guess[2].replace(/[ ]/g,"")==b&&guess[3].replace(/[ ]/g,"")==r3&&guess[4].replace(/[ ]/g,"")==r4&&guess[5].replace(/[ ]/g,"")==r5)
+						{
+							bol1=true;
+						}
+						return bol1;					
+                    </div>
+				</div>
+				<p class="example">在填空處填入答案，例 <code>6</code></p>
+			</div>
+			
+			<div class="hints">
+				<p>圓心到圓周的距離我們叫做半徑，</p>
+				<p>直徑的長度是半徑的 <code class="hint_blue">2</code> 倍，</p>
+				<div>
+					<p>例如：</p>
+					<p>直徑長是 <code>20</code> 公分時，則半徑長為 <code>10</code> 公分。</p>
+					<p>半徑長是 <code>10</code> 公分時，則直徑長為 <code>20</code> 公分。</p>					
+				</div>
+				<div>
+				<p>所以第一行圓的直徑分別為 <code>:</code> <code class="hint_pink"><var>d</var>、<var>a</var>、<var>b</var> </code> 。</p>
+				<p>第二行圓的半徑分別為 <code>:</code> <code class="hint_pink"><var>r3</var>、<var>r4</var>、<var>r5</var> </code> 。</p>
+				</div>
+			</div>
+		</div>
+		
+		<div id="case3">
+			<div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="R">randRange(2, 10)</var>
+				<var id="d">2*R</var>
+				 <var id="HULL">([[-1,-5],[0.5,-5],[0.5,-4],[-0.2,-4],[0.5,-4],[0.5,-3],[-0.2,-3],[0.5,-3],[0.5,-2],[-0.2,-2],[0.5,-2],[0.5,-1],[-0.2,-1],[0.5,-1],
+				[0.5,0],[-1,0],[0.5,0],[0.5,1],[-0.2,1],[0.5,1],[0.5,2],[-0.2,2],[0.5,2],[0.5,3],[-0.2,3],[0.5,3],[0.5,4],[-0.2,4],[0.5,4],[0.5,5],[-1,5],[0.5,5],
+				[0.5,6],[-0.2,6],[0.5,6],[0.5,7],[-0.2,7],[0.5,7],[0.5,8],[-0.2,8],[0.5,8],[0.5,9],[-0.2,9],[0.5,9],[0.5,10],[-1,10],[0.5,10],[0.5,11],[-0.2,11],[0.5,11],
+				[0.5,12],[-0.2,12],[0.5,12],[0.5,13],[-0.2,13],[0.5,13],[0.5,14],[-0.2,14],[0.5,14],[0.5,15],[-1,15]])</var>
+            </div>			
+            <div class="problem">	
+				<p>量量看，下圖中圓的半徑有多長，並算出直徑。<code>(</code>尺的每 <code>1</code> 格代表 <code>1</code> 公分<code>)</code></p>			
+				<div class="problem">				
+				<div class="graphie" id="number-line">
+					init({
+						range: [[-12, 12], [-21, 21]],
+						scale: 13,
+					});	
+					circle([0, 0], R, { stroke: BLUE });															
+					addMouseLayer();
+					graph.points = _.map(HULL, function(point) { return addMovablePoint({ coord: point, visible: false }); });					
+					graph.lines = [];
+					for (var i=0; i &lt; graph.points.length; i++) {
+						graph.lines.push(addMovableLineSegment({ pointA: graph.points[i], pointZ: graph.points[(i+1) % graph.points.length], snapX: 0.1, snapY: 0.1}));
+					}
+					
+					_.each(graph.lines, function(line) { line.onMove = function(dX, dY){ graph.updatePolygon(dX, dY); }});
+
+					graph.updatePolygon = function(dX, dY) {
+						_.each(graph.points, function(point){ point.setCoord([point.coord[0] + dX, point.coord[1] + dY]); point.updateLineEnds(); });
+						graph.curPoints = _.map(graph.points, function(point){ return point.coord; });
+					}
+					circle([0, 0], 0.2, { stroke: "black" ,fill:"black"});
+                </div>
+			
+				</div>			
+            </div> 
+			<div class="solution" data-type="multiple">
+				<p>直徑長：<span class="sol" data-forms="integer"><var>d</var></span> 公分</p>
+				<p>半徑長：<span class="sol" data-forms="integer"><var>R</var></span> 公分</p>
+				<p class="example">答案填入對應位置下的方框中，例如 <code>6</code></p>
+			</div>
+			<div class="hints">
+				<p>圓心到圓周的距離我們叫做 半徑 ，</p>
+				<p>而且我們知道直徑是半徑的 兩倍 ，</p>
+				<p>比如當半徑是 <code>10</code> 公分時，因為 <code> 10 \times 2=20</code> ，</p>
+				<p>所以，我們可以知道直徑長為 <code>20</code> 公分。</p>
+				<div>
+					<p>我們使用尺可以量出這個圓的半徑為 <code class="hint_pink"><var>R</var></code> 公分，</p>
+					<p>所以直徑是 <code><var>R</var>\times 2=\color{#FF00AF}{<var>d</var>}</code> 公分。</p>
+				</div>
+            </div>
+        </div>
+		
+		<div id="case4">
+			<div class="vars">
+				
+				<var id="r">randRange(10,50)</var>
+				<var id="d">2*r</var>
+			</div>
+			<p class="problem">一個圓的半徑是<var>r</var>公分，直徑是幾公分？</p>	
+			<div class="solution" data-type="multiple">				
+				<span class="sol" data-forms="integer"><var>d</var></span><code>\enspace</code>公分
+            </div>
+			
+			<div class="hints">
+			    <p>我們知道直徑是半徑的  <code class="hint_blue">兩倍</code> ，</p>
+				<p>當半徑是 <code class="hint_blue"><var>r</var></code> 公分時，因為 <code class="hint_blue"><var>r</var> \times 2 =<var>d</var></code> ，</p>
+				<p>所以，我們可以知道直徑長為 <code class="hint_pink"><var>d</var></code> 公分。</p>
+            </div>
+		</div>
+		
+		<div id="case5">
+			<div class="vars" data-ensure="d%2==0">
+				
+				<var id="d">randRange(2,100)</var>
+				<var id="r">d/2</var>
+			</div>
+			<div class="question">
+				<div class="problem">
+				<p>一個圓的直徑是 <var>d</var> 公分，請問這個圓的半徑是幾公分？</p>
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">				
+				<p><span class="sol" data-forms="integer"><var>r</var></span><code>\enspace</code>公分</p>
+            </div>
+			<div class="hints">
+			    <p>我們知道直徑是半徑的 <code class="hint_blue">兩倍</code> ，</p>
+				<p>當直徑是 <code class="hint_blue"><var>d</var></code> 公分時，因為 <code class="hint_blue"><var>d</var> \div 2 =<var>r</var></code></p>
+				<p>因此半徑長 <code class="hint_pink"><var>r</var></code> 公分。</p>
+            </div>
+		</div>
+	</div>
+	</div>
+</body>		
+</html>

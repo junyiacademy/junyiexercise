@@ -1,0 +1,579 @@
+﻿<!DOCTYPE html>
+<html data-require="math graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能認識角，並比較角的大小。</title>
+    <script src="../khan-exercise.js"></script>
+    <style>
+        .selector {
+            width:0px;
+            height:0px;
+            position:absolute;
+            border:5px solid black;
+            z-index:1;
+            opacity:0;
+            cursor:pointer;
+        }
+        .selected {
+        }
+        .ruler {
+            -ms-transform:rotate(-90deg);
+            -moz-transform:rotate(-90deg);
+            -webkit-transform:rotate(-90deg);
+            opacity:0.5;   
+        }
+    </style>
+    <script>
+        function loadImg(elem, url, count, width, height) {
+            var loimg = document.getElementById(elem);
+            var inner = "";
+            for (var i = 1; i <= count; i++) {
+                inner += "<img id=" + "image" + elem + i + " width=" + width + " height=" + height + ">";
+            }
+            loimg.innerHTML += inner;
+            for (var j = 1; j <= count; j++) {
+                document.getElementById("image" + elem + j).src = url;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars">
+                    <var id="data">
+                        (function(){
+                            loadImg("bg",Khan.urlBase+"images/under_angle.png",+1,"514px","394px");
+                            return 0;
+                        })()
+                    </var>
+                </div>
+                <div class="question">
+                    <p class="question">生活中的物品常常有角。下面的物品中，哪些地方有角？在圖中直接點有角的地方。</p>
+                    <div id="bg" style="width:514px;height:394px;position:absolute;"></div>
+                    <div class="graphie" id="graph">
+                        init({
+                            range:[[0,13],[-10,0]]
+                        });
+                        arcCoords=new Array(new Array(),new Array(),new Array(),new Array(),new Array(),new Array());
+                        angles=new Array(new Array(),new Array(),new Array(),new Array(),new Array(),new Array());
+                        arcs=new Array(new Array(),new Array(),new Array(),new Array(),new Array(),new Array());
+                        arcCoords[0].push([1.2,-1.15]);angles[0].push([-90,0]);
+                        arcCoords[0].push([1.2,-2.65]);angles[0].push([0,90]);
+                        arcCoords[0].push([5.78,-1.15]);angles[0].push([-180,-90]);
+                        arcCoords[0].push([5.78,-2.65]);angles[0].push([90,180]);
+                        arcCoords[1].push([9.0,-0.92]);angles[1].push([-60,45]);
+                        arcCoords[1].push([9.86,-0.15]);angles[1].push([-135,-43]);
+                        arcCoords[1].push([9.86,-2.35]);angles[1].push([60,120]);
+                        arcCoords[1].push([10.75,-0.92]);angles[1].push([135,240]);
+                        arcCoords[2].push([3.05,-4.88]);angles[2].push([-90,45]);
+                        arcCoords[2].push([3.05,-5.98]);angles[2].push([0,90]);
+                        arcCoords[2].push([4.15,-3.85]);angles[2].push([-135,-45]);
+                        arcCoords[2].push([5.25,-4.88]);angles[2].push([135,270]);
+                        arcCoords[2].push([5.25,-5.98]);angles[2].push([90,180]);
+                        arcCoords[3].push([9.1,-5.77]);angles[3].push([-4,65]);
+                        arcCoords[3].push([9.92,-4.2]);angles[3].push([-120,-60]);
+                        arcCoords[3].push([10.71,-5.77]);angles[3].push([115,184]);
+                        arcCoords[4].push([4.0,-8.15]);angles[4].push([108,235]);
+                        arcCoords[4].push([4.23,-7.72]);angles[4].push([52,120]);
+                        arcCoords[4].push([4.30,-8.45]);angles[4].push([-130,-55]);
+                        arcCoords[4].push([4.46,-8.15]);angles[4].push([-50,70]);
+                        arcCoords[5].push([9.21,-9.41]);angles[5].push([120,270]);
+                        arcCoords[5].push([9.21,-9.41]);angles[5].push([0,110]);
+                        style({stroke:'red',opacity:0});
+                        for(j=0;j&lt;6;j++)
+                        {
+                            for(i=0;i&lt;arcCoords[j].length;i++)
+                            {
+                                arcs[j].push(arc(arcCoords[j][i],0.3,angles[j][i][0],angles[j][i][1]));
+                            }
+                        }
+                        $(".selector").bind("click",function(){
+                            $(this).toggleClass("selected");
+                            var id=$(this).attr("id");
+                            if($(this).hasClass("selected"))
+                                arcs[parseInt(id.substring(2,3))][parseInt(id.substring(3,4))].attr({opacity:1});
+                            else
+                                arcs[parseInt(id.substring(2,3))][parseInt(id.substring(3,4))].attr({opacity:0});
+                        });
+                    </div>
+						<div id="sl00" class="selector" style="left:73px;top:129px;"></div>
+						<div id="sl01" class="selector" style="left:73px;top:184px;"></div>
+						<div id="sl02" class="selector" style="left:250px;top:129px;"></div>
+						<div id="sl03" class="selector" style="left:250px;top:184px;"></div>
+						<div id="sl10" class="selector" style="left:385px;top:119px;"></div>
+						<div id="sl11" class="selector" style="left:418px;top:94px;"></div>
+						<div id="sl12" class="selector" style="left:418px;top:171px;"></div>
+						<div id="sl13" class="selector" style="left:450px;top:119px;"></div>
+						<div id="sl20" class="selector" style="left:147px;top:278px;"></div>
+						<div id="sl21" class="selector" style="left:147px;top:318px;"></div>
+						<div id="sl22" class="selector" style="left:189px;top:243px;"></div>
+						<div id="sl23" class="selector" style="left:229px;top:278px;"></div>
+						<div id="sl24" class="selector" style="left:229px;top:318px;"></div>
+						<div id="sl30" class="selector" style="left:392px;top:311px;"></div>
+						<div id="sl31" class="selector" style="left:420px;top:253px;"></div>
+						<div id="sl32" class="selector" style="left:448px;top:311px;"></div>
+						<div id="sl40" class="selector" style="left:180px;top:408px;"></div>
+						<div id="sl41" class="selector" style="left:193px;top:388px;"></div>
+						<div id="sl42" class="selector" style="left:195px;top:423px;"></div>
+						<div id="sl43" class="selector" style="left:205px;top:408px;"></div>
+						<div id="sl50" class="selector" style="left:383px;top:460px;"></div>
+						<div id="sl51" class="selector" style="left:397px;top:453px;"></div>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <div class="sol" data-type="custom">
+                        <div class="guess">1</div>
+                        <div class="validator-function">
+                            var result=true;
+							var empty_check = 0;
+                            $(".selector").each(function()							{
+                                if(!$(this).hasClass("selected")){
+                                    result=false;
+									empty_check+=1;
+								}
+                            });
+							if(empty_check==$(".selector").length)							{
+								return "";
+							}
+                            return result;
+                        </div>
+                    </div>
+					<p class="example">點選圖中有角的地方</p>
+                </div>
+                <div class="hints">
+                    <div class="graphie" data-update="graph">						for(var i=0;i&lt;arcs[0].length;i++)						{							arcs[0][i].attr({opacity:1});						}                       
+                        for(i=0;i&lt;4;i++)
+                        {
+                            $("#sl0"+i).addClass("selected");
+                        }
+                    </div>
+                    <div class="graphie" data-update="graph">						for(var i=0;i&lt;arcs[1].length;i++)						{							arcs[1][i].attr({opacity:1});						} 
+                        for(i=0;i&lt;4;i++)
+                        {
+                            $("#sl1"+i).addClass("selected");
+                        }
+                    </div>
+                    <div class="graphie" data-update="graph">						for(var i=0;i&lt;arcs[2].length;i++)						{							arcs[2][i].attr({opacity:1});						} 
+                        for(i=0;i&lt;5;i++)
+                        {
+                            $("#sl2"+i).addClass("selected");
+                        }
+                    </div>
+                    <div class="graphie" data-update="graph">						for(var i=0;i&lt;arcs[3].length;i++)						{							arcs[3][i].attr({opacity:1});						} 
+                        for(i=0;i&lt;3;i++)
+                        {
+                            $("#sl3"+i).addClass("selected");
+                        }
+                    </div>
+                    <div class="graphie" data-update="graph">						for(var i=0;i&lt;arcs[4].length;i++)						{							arcs[4][i].attr({opacity:1});						} 
+                        for(i=0;i&lt;4;i++)
+                        {
+                            $("#sl4"+i).addClass("selected");
+                        }
+                    </div>
+                    <div class="graphie" data-update="graph">						for(var i=0;i&lt;arcs[5].length;i++)						{							arcs[5][i].attr({opacity:1});						} 
+                        for(i=0;i&lt;2;i++)
+                        {
+                            $("#sl5"+i).addClass("selected");
+                        }
+                    </div>
+                </div>
+            </div>
+            <div id="case2">
+                <div class="vars">
+                    <var id="data">
+                        (function(){
+                            var angles=new Array(4);
+                            var max=randRange(95,130);
+                            angles[0]=max;
+                            angles[1]=randRange(20,30);
+                            angles[2]=180-angles[0]-angles[1];
+                            angles.sort(function(){ return 0.5 - Math.random() })
+                            for(i=0;i&lt;3;i++)
+                            {
+                                if(angles[i]==max)
+                                    angles[3]=i+1;
+                            }
+                            return angles;
+                        })()
+                    </var>
+                    <var id="A">data[1]*Math.PI/180</var>
+                    <var id="B">data[0]*Math.PI/180</var>
+                    <var id="C">data[2]*Math.PI/180</var>
+                </div>
+                <div class="question">
+                    <p>這個三角形中哪個角比直角大？</p>
+                    <div class="graphie" id="graph">
+                        var Bx,By;
+                        var AC=1;
+                        var AB,BC,pA,pB,pC;
+                        var factor;
+                        var padding=1;
+                        AB=Math.sin(C)*AC/Math.sin(B);
+                        BC=Math.sin(A)*AC/Math.sin(B);
+                        if(A&gt;Math.PI/2)
+                        {
+                            Bx=-1*AB*Math.cos(Math.PI-A);
+                            By=BC*Math.sin(C);
+                        }
+                        else
+                        {
+                            Bx=AB*Math.cos(A);
+                            By=AB*Math.sin(A);
+                        }
+                        left=Math.min(Bx,0);
+                        right=Math.max(Bx,1);
+                        up=Math.abs(BC*Math.sin(C));
+                        factor=8/Math.max(right-left,up);
+                        if(A&gt;Math.PI/2) 
+                            pA=polar(0.5,A/2/Math.PI*180);
+                        else
+                            pA=polar(1.2,A/2/Math.PI*180); 
+                        if(B&gt;Math.PI/2) 
+                        {
+                            var coord=polar(0.5,-1*(B/2+C)*180/Math.PI);
+                            pB=[coord[0]+Bx*factor,coord[1]+By*factor];
+                        }
+                        else
+                        {
+                            var coord=polar(1.2,-1*(B/2+C)*180/Math.PI);
+                            pB=[coord[0]+Bx*factor,coord[1]+By*factor];
+                        }
+                        if(C&gt;Math.PI/2) 
+                        {
+                            var coord=polar(0.5,(A+B+C/2)*180/Math.PI);
+                            pC=[coord[0]+1*factor,coord[1]];
+                        }
+                        else
+                        {
+                            var coord=polar(1.2,(A+B+C/2)*180/Math.PI);
+                            pC=[coord[0]+1*factor,coord[1]];
+                        }
+                        init({range:[[left*factor-padding,right*factor+padding],[-1,up*factor+padding]]});
+                        path([[0,0],[Bx*factor,By*factor],[1*factor,0],[0,0]]);
+                        label(pA,"2");
+                        label(pB,"1");
+                        label(pC,"3");
+
+                        graph.arcCoord;
+                        graph.arcStart;
+                        graph.arcEnd;
+                        if(data[3]==1)
+                        {
+                            graph.arcCoord=[Bx*factor,By*factor];
+                            graph.arcStart=0-(B+C)/Math.PI*180;
+                            graph.arcEnd=0-C/Math.PI*180;
+                        }
+                        else if(data[3]==2)
+                        {
+                            graph.arcCoord=[0,0];
+                            graph.arcStart=0;
+                            graph.arcEnd=A/Math.PI*180;
+                        }
+                        else
+                        {
+                            graph.arcCoord=[factor,0];
+                            graph.arcStart=180-C/Math.PI*180;
+                            graph.arcEnd=180;
+                        }
+                        style({stroke:'red'});
+                    </div>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <input type="radio" name="option" class="rbtn" id="option_1" value="1" />&nbsp;&nbsp;<code>\angle1</code><br />
+                    <input type="radio" name="option" class="rbtn" id="option_2" value="2"/>&nbsp;&nbsp;<code>\angle2</code><br />
+					<input type="radio" name="option" class="rbtn" id="option_3" value="3"/>&nbsp;&nbsp;<code>\angle3</code><br />
+                    <div class="sol" data-type="custom">
+                        <div class="guess">
+                            (function(){
+                                var check=false;
+                                var ans;
+                                $(".rbtn").each(function(){
+                                    if($(this).is(":checked"))
+                                    {
+                                        check=true;
+                                        ans=$(this).attr("value");
+                                    }
+                                });
+                                if(check)
+                                    return ans;
+                            })()
+                        </div>
+                        <div class="validator-function">
+                            if(guess==data[3])
+                                return true;
+                        </div>
+                        <p class="example">單選</p>
+                    </div>
+                </div>
+                <div class="hints">
+                    <div class="graphie" data-update="graph">
+                        arc(graph.arcCoord,1.3,graph.arcStart,graph.arcEnd);
+                    </div>
+					<p>如上圖所示， <code>\angle{<var>data[3]</var>}</code> 大於直角 <code>90^{\circ}</code> 。</p>
+                </div>
+            </div>
+            <div id="case3">
+                <div class="vars">
+                    <var id="data">
+                        (function(){
+                            var angles=new Array(7);
+                            var max=randRange(95,120);
+                            angles[0]=max;
+                            angles[1]=randRange(25,(180-angles[0])/2);
+                            angles[2]=180-angles[0]-angles[1];
+                            angles.sort(function(){ return 0.5 - Math.random() })
+                            var count=0;
+                            for(i=0;i&lt;3;i++)
+                            {
+                                if(angles[i]&lt;90)
+                                {    
+                                    angles[i+3]=true;
+                                    count++;
+                                }
+                                else
+                                    angles[i+3]=false;
+                            }
+                            angles[6]=count;
+                            return angles;
+                        })()
+                    </var>
+                    <var id="A">data[1]*Math.PI/180</var>
+                    <var id="B">data[0]*Math.PI/180</var>
+                    <var id="C">data[2]*Math.PI/180</var>
+                </div>
+                <div class="question">
+                    <p>這個三角形中哪些角比直角小？</p>
+                    <div class="graphie" id="graph">
+                        var Bx,By;
+                        var AC=1;
+                        var AB,BC,pA,pB,pC;
+                        var factor;
+                        var padding=1;
+                        AB=Math.sin(C)*AC/Math.sin(B);
+                        BC=Math.sin(A)*AC/Math.sin(B);
+                        if(A&gt;Math.PI/2)
+                        {
+                            Bx=-1*AB*Math.cos(Math.PI-A);
+                            By=BC*Math.sin(C);
+                        }
+                        else
+                        {
+                            Bx=AB*Math.cos(A);
+                            By=AB*Math.sin(A);
+                        }
+                        left=Math.min(Bx,0);
+                        right=Math.max(Bx,1);
+                        up=Math.abs(BC*Math.sin(C));
+                        factor=8/Math.max(right-left,up);
+                        if(A&gt;Math.PI/2) 
+                            pA=polar(0.5,A/2/Math.PI*180);
+                        else
+                            pA=polar(1.2,A/2/Math.PI*180); 
+                        if(B&gt;Math.PI/2) 
+                        {
+                            var coord=polar(0.5,-1*(B/2+C)*180/Math.PI);
+                            pB=[coord[0]+Bx*factor,coord[1]+By*factor];
+                        }
+                        else
+                        {
+                            var coord=polar(1.2,-1*(B/2+C)*180/Math.PI);
+                            pB=[coord[0]+Bx*factor,coord[1]+By*factor];
+                        }
+                        if(C&gt;Math.PI/2) 
+                        {
+                            var coord=polar(0.5,(A+B+C/2)*180/Math.PI);
+                            pC=[coord[0]+1*factor,coord[1]];
+                        }
+                        else
+                        {
+                            var coord=polar(1.2,(A+B+C/2)*180/Math.PI);
+                            pC=[coord[0]+1*factor,coord[1]];
+                        }
+                        init({range:[[left*factor-padding,right*factor+padding],[-1,up*factor+padding]]});
+                        path([[0,0],[Bx*factor,By*factor],[1*factor,0],[0,0]]);
+                        label(pA,"2");
+                        label(pB,"1");
+                        label(pC,"3");
+
+                        graph.arcCoord=new Array();
+                        graph.arcStart=new Array();
+                        graph.arcEnd=new Array();
+                        graph.name=[];
+                        if(data[3]==true)
+                        {
+                            graph.arcCoord.push([Bx*factor,By*factor]);
+                            graph.arcStart.push(0-(B+C)/Math.PI*180);
+                            graph.arcEnd.push(0-C/Math.PI*180);
+                            graph.name.push("1");
+                        }
+                        if(data[4]==true)
+                        {
+                            graph.arcCoord.push([0,0]);
+                            graph.arcStart.push(0);
+                            graph.arcEnd.push(A/Math.PI*180);
+                            graph.name.push("2");
+                        }
+                        if(data[5]==true)
+                        {
+                            graph.arcCoord.push([factor,0]);
+                            graph.arcStart.push(180-C/Math.PI*180);
+                            graph.arcEnd.push(180);
+                            graph.name.push("3");
+                        }
+                        style({stroke:'red'});
+                    </div>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <p><input id="option_1" type="checkbox"/>&nbsp;<code>\angle1</code></p>
+                    <p><input id="option_2" type="checkbox"/>&nbsp;<code>\angle2</code></p>
+                    <p><input id="option_3" type="checkbox"/>&nbsp;<code>\angle3</code></p>
+                    <div class="sol" data-type="custom">
+                        <div class="guess">
+							(function(){
+								if($("#option_1").is(":checked"))
+									return 1;
+								if($("#option_2").is(":checked"))
+									return 1;
+								if($("#option_3").is(":checked"))
+									return 1;
+							})()
+						</div>
+                        <div class="validator-function">
+                            if($("#option_1").is(":checked")==data[3]&&$("#option_2").is(":checked")==data[4]&&$("#option_3").is(":checked")==data[5])
+                                return true;
+                            else 
+                                return false;
+                        </div>
+                    </div>
+					<p class="example">複選</p>
+                </div>
+                    
+                <div class="hints">
+					<div data-if="data[6]&gt;0">
+						<div class="graphie" data-update="graph">
+							arc(graph.arcCoord[0],1.5,graph.arcStart[0],graph.arcEnd[0]);
+						</div>
+						<p style="font-weight:normal">如上圖所示，<code>\angle{<var>data[3]==true? "1":"2"</var>}</code> 小於直角 <code>90</code> 度。</p>
+					</div>
+					<div data-if="data[6]&gt;1">
+						<div class="graphie" data-update="graph">
+							arc(graph.arcCoord[1],1.5,graph.arcStart[1],graph.arcEnd[1]);
+						</div>
+						<p style="font-weight:normal">如上圖所示，<code>\angle{<var>data[5]==true? "3":"2"</var>}</code> 小於直角 <code>90</code> 度。</p>
+					</div>
+                </div>
+            </div>
+            <div id="case4">
+                <div class="vars">
+                    <var id="data">
+                        (function(){
+                            var angles=new Array(4);
+                            angles[0]=randRange(95,150);
+                            angles[1]=randRange(20,85);
+                            if(Math.random()>0.5)
+                            {
+                                var temp=angles[0];
+                                angles[0]=angles[1];
+                                angles[1]=temp;
+                            }
+                            if(angles[0]>90)
+                            {
+                                angles[2]="大";
+                                angles[3]="小";
+                            }
+                            else
+                            {
+                                angles[2]="小";
+                                angles[3]="大";
+                            }
+                            loadImg("trianglePlate",Khan.urlBase+"images/triangleruler.png",3,"200px","150px");
+                            for(i=0;i&lt;3;i++)
+                            {
+                                $("#imagetrianglePlate"+(i+1)).addClass("ruler");
+                                $("#imagetrianglePlate"+(i+1)).css({"position":"absolute"});
+                            }
+                            return angles;
+                        })()
+                    </var>
+                </div>
+                <div class="question">
+                    <p>用三角板比一比，下面的角比直角大？還是比直角小？</p>
+                    <div id="trianglePlate" style="width:500px;height:300px;position:absolute;z-index:1;"></div>
+                    <div class="graphie" id="graph">
+                        var radius=3;
+                        var left;
+                        if(data[0]&gt;90)
+                            left=-3+radius*Math.cos(data[0]/180*Math.PI);
+                        else
+                            left=-3;
+                        var b;
+                        if(data[1]&gt;90)
+                            b=Math.abs(radius*Math.cos(data[1]/180*Math.PI));
+                        else
+                            b=0;
+
+                        
+                        $("#imagetrianglePlate2").css({"margin-left":11+(-3-left)*40+"px","margin-top":"-10px","display":"none"});
+                        $("#imagetrianglePlate3").css({"margin-left":11+(-left+b+1.5)*40+"px","margin-top":"-10px","display":"none"});
+
+                        var origins=[[-3,0],[b+1.5,0]];
+                        init({range:[[left-1,7],[-1,4]]});
+                        line(origins[0],[origins[0][0]+polar(radius,data[0])[0],origins[0][1]+polar(radius,data[0])[1]]);
+                        line(origins[0],[origins[0][0]+polar(radius,0)[0],origins[0][1]+polar(radius,0)[1]]);
+                        arc(origins[0],0.5,0,data[0]);
+
+                        line(origins[1],[origins[1][0]+polar(radius,data[1])[0],origins[1][1]+polar(radius,data[1])[1]]);
+                        line(origins[1],[origins[1][0]+polar(radius,0)[0],origins[1][1]+polar(radius,0)[1]]);
+                        arc(origins[1],0.5,0,data[1]);
+
+                        label([left-0.5,3.5],"(1)");
+                        label([1,3.5],"(2)");
+                        function moveImg(event){
+                            var e = event || window.event;
+                            var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+                            var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+                            var x = e.pageX || e.clientX + scrollX;
+                            var y = e.pageY || e.clientY + scrollY;
+                            var left=x-215;
+                            var top=y-255;
+                            if(left&lt;500&&top&lt;300&&left&gt;0&&top&gt;0)
+                            {
+                                $("#imagetrianglePlate1").css("margin-left",left-100+"px");
+                                $("#imagetrianglePlate1").css("margin-top",top-150+"px");
+                            }
+                        }
+                        $("#trianglePlate").mousemove(moveImg);
+                    </div>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <code>(1)\enspace</code>&nbsp;比直角&nbsp;&nbsp;<span class="sol" data-type="list" data-choices="['','大','小']"><var>data[2]</var></span><br />
+                    <code>(2)\enspace</code>&nbsp;比直角&nbsp;&nbsp;<span class="sol" data-type="list" data-choices="['','大','小']"><var>data[3]</var></span>
+					<p class="example">在下拉列表中選擇 大 或 小</p>
+                </div>
+                <div class="hints">
+					<div>
+						<p>
+							<var>
+								(function(){
+									myFun=function() {
+											$("#imagetrianglePlate1").css("display","none");
+											$("#imagetrianglePlate2").css("display","block");
+											$("#imagetrianglePlate3").css("display","block");
+										}
+									$("#hint").bind("click",myFun);
+									$("#check-answer-button").click(function(){if($("#check-answer-button").css('display')=="none")$("#hint").unbind("click",myFun);});
+								})()
+							</var>
+						</p>
+                </div>
+				<div>
+					<p><code>(1)\</code> 拿三角板來量量看，會發現這個角比直角還<span class="hint_pink"><var>data[2]</var>。</p>
+					<p><code>(2)\</code> 拿三角板來量量看，會發現這個角比直角還<span class="hint_pink"><var>data[3]</var>。</p>
+				</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,276 +1,553 @@
 <!DOCTYPE html>
+
 <html data-require="math math-format graphie graphie-helpers">
+
 <head>
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
     <title>等腰三角形的性質</title>
+
     <script src="../khan-exercise.js"></script>
+
 	<style type="text/css">
+
         #answer_area .sol input[type=text] {
+
             width: 50px;
+
         }
+
         #answer_area .entry input[type=text] {
+
             width: 30px;
+
         }
+
         </style>
+
 	<script type="text/javascript">
+
 	    function accDiv(arg1,arg2){
+
             var t1=0,t2=0,r1,r2;
+
             try{t1=arg1.toString().split(".")[1].length}catch(e){}
+
             try{t2=arg2.toString().split(".")[1].length}catch(e){}
+
             with(Math){
+
                 r1=Number(arg1.toString().replace(".",""))
+
                 r2=Number(arg2.toString().replace(".",""))
+
                 return (r1/r2)*pow(10,t2-t1);
+
             }
+
         }
+
 		function accMul(arg1,arg2){
+
             var m=0,s1=arg1.toString(),s2=arg2.toString();
+
             try{m+=s1.split(".")[1].length}catch(e){}
+
             try{m+=s2.split(".")[1].length}catch(e){}
+
             return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+
         }
+
         function accAdd(arg1,arg2){
+
             var r1,r2,m;
+
             try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+
             try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+
             m=Math.pow(10,Math.max(r1,r2))
+
             return (arg1*m+arg2*m)/m
+
         }
+
         function Subtr(arg1,arg2){
+
             var r1,r2,m,n;
+
             try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+
             try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+
             m=Math.pow(10,Math.max(r1,r2));
+
             //last modify by deeka
+
             //动态控制精度长度
+
             n=(r1>=r2)?r1:r2;
+
             return ((arg1*m-arg2*m)/m).toFixed(n);
+
         }
+
 	</script>
+
 </head>
+
 <body>
+
     <div class="exercise">
+
     <div class="problems">
+
 	    <div id="case1">
+
             <div class="vars">
+
 			    <var id="J_initial">randRange(3,15)</var>
+
 				<var id="J">10*J_initial</var>
+
 				<var id="tri_l_ides">5/Math.pow(1.025,J_initial)</var>
+
 				<var id="tri_high">Math.cos(J/2*Math.PI/180)*tri_l_ides</var>
+
 				<var id="tri_bottom_half">Math.sin(J/2*Math.PI/180)*tri_l_ides</var>
+
 				<var id="R">90-J/2</var>
+
             </div>
+
 			<p class="question">如下圖，已知 <code>\triangle{ABC}</code> 中，<code>\overline{AB}=\overline{AC}</code>，<code>\angle{A}=<var>J</var>^{\circ}</code>，求 <code>\angle{B}</code> 和 <code>\angle{C}</code> 。</p>
+
 			<div class="problem">
+
 			    <div class="graphie" id="angle_edge">
+
 				    init({
+
                         range: [ [-1, 2*tri_bottom_half+1], [-1,tri_high+1] ],
+
                         scale: 40
+
                     });
+
 					path([[0,0],[2*tri_bottom_half,0],[tri_bottom_half,tri_high],[0,0]],{stroke:"black"});
+
 					label( [tri_bottom_half,tri_high],  "A", "above", { color: "black" });
+
 					label( [0,0],  "B", "left", { color: "black" });
+
 					label( [2*tri_bottom_half,0],  "C", "right", { color: "black" });
+
 					var belows = 0;
+
 					if(J_initial==4||J_initial==3){
+
 					    belows = -0.2*J_initial+0.9;
+
 					}
+
 					label( [tri_bottom_half,tri_high*0.9-belows],  "\\small{"+J+"^{\\circ}}", "below", { color: "black" });
+
 					line([tri_bottom_half/2+0.1,tri_high/2-0.15],[tri_bottom_half/2-0.1,tri_high/2+0.15],{stroke:"red"});
+
 					line([tri_bottom_half*1.5+0.1,tri_high/2+0.15],[tri_bottom_half*1.5-0.1,tri_high/2-0.15],{stroke:"red"});
+
 				</div>
+
 			</div>
+
 			<div class="solution" data-type="multiple">
+
 			    <span class="sol" data-forms="integer"><var>R</var></span><code>\enspace^{\circ}</code>
+
             </div>
+
             <div class="hints">
+
 			    <p>由 <code>\overline{AB}=\overline{AC}</code> 可知 <code>\triangle{ABC}</code> 是等腰三角形，</p>
+
 				<p>所以 <code>\angle{B}=\angle{C}\enspace\enspace\enspace\enspace\enspace\enspace\color{BLUE}{等腰三角形兩底角相等}</code></p>
+
 				<p>又因為 <code>\angle{A}+\angle{B}+\angle{C}=180^{\circ}\enspace\enspace\enspace\enspace\enspace\enspace\color{BLUE}{三角形內角和性質}</code></p>
+
 				<p>得 <code>2\angle{B}+\angle{A}=180^{\circ}</code></p>
+
 				<p>即 <code>2\angle{B}=180^{\circ}-<var>J</var>^{\circ}=<var>180-J</var>^{\circ}</code></p>
+
 				<p>因此 <code class="hint_pink">\angle{C}=\angle{B}=<var>R</var>^{\circ}</code> 。</p>
+
             </div>
+
         </div>
+
 		
+
 		<div id="case2">
+
             <div class="vars">
+
 			    <var id="J_initial">randRange(6,12)</var>
+
 				<var id="J">10*J_initial</var>
+
 				<var id="tri_l_ides">5/Math.pow(1.025,J_initial)</var>
+
 				<var id="tri_high">Math.cos(J/2*Math.PI/180)*tri_l_ides</var>
+
 				<var id="tri_bottom_half">Math.sin(J/2*Math.PI/180)*tri_l_ides</var>
+
 				<var id="R">90-J/2</var>
+
             </div>
+
 			<p class="question">如下圖，已知 <code>\triangle{ABC}</code> 中，<code>\angle{B}=\angle{C}</code>。試說明 <code>\overline{AB}=\overline{AC}</code> 。</p>
+
 			<div class="problem">
+
 			    <div class="graphie" id="angle_edge_2">
+
 				    init({
+
                         range: [ [-1, 2*tri_bottom_half+1], [-1,tri_high+1] ],
+
                         scale: 40
+
                     });
+
 					path([[0,0],[2*tri_bottom_half,0],[tri_bottom_half,tri_high],[0,0]],{stroke:"black"});
+
 					label( [tri_bottom_half,tri_high],  "A", "above", { color: "black" });
+
 					label( [0,0],  "B", "left", { color: "black" });
+
 					label( [2*tri_bottom_half,0],  "C", "right", { color: "black" });
+
 					arc([0,0],0.4,0,R,{stroke:"red"});
+
 					arc([2*tri_bottom_half,0],0.4,180-R,180,{stroke:"red"});
+
 				</div>
+
 			</div>
+
 			<div class="solution" data-type="multiple">
+
 			    <div>
-				    <p>先作 <code>\overline{BC}</code> 上的高 <code>\overline{AD}</code> ，</p>
+
+			    	<!-- <p></p> -->
+
+				    先作 <code>\overline{BC}</code> 上的高 <code>\overline{AD}</code> ，<br>
+
 					<div class="graphie" data-update="angle_edge_2">
+
 					    line([tri_bottom_half,tri_high],[tri_bottom_half,0]);
+
 						line([tri_bottom_half,0.3],[tri_bottom_half+0.3,0.3]);
+
 						line([tri_bottom_half+0.3,0.3],[tri_bottom_half+0.3,0]);
+
 						label( [tri_bottom_half,0],  "D", "below", { color: "black" });
+
 					</div>
+
 				</div>
+
 				<div>
-				    <p>在 <code>\triangle{ABD}</code> 和 <code>\triangle{ACD}</code> 中，</p>
-				    <p>因為 <code>\angle{}\enspace</code><input type="text" id="a_1" style="width:30px"><code>\enspace=\angle{}\enspace</code><input type="text" id="a_2" style="width:30px"></p>
-					<p><code>\enspace\enspace\enspace\enspace\enspace\enspace\color{BLUE}{已知}</code></p>
+
+				    在 <code>\triangle{ABD}</code> 和 <code>\triangle{ACD}</code> 中，<br>
+
+				    因為 <code>\angle{}\enspace</code><input type="text" id="a_1" style="width:30px"><code>\enspace=\angle{}\enspace</code><input type="text" id="a_2" style="width:30px"><br>
+
+					<code>\enspace\enspace\enspace\enspace\enspace\enspace\color{BLUE}{已知}</code>
+
 				</div>
-				<p><code>\enspace\enspace\enspace\enspace\enspace\enspace\angle{ADB}=\angle{ADC}=90^{\circ}</code></p>
-				<p><code>\enspace\enspace\enspace\enspace\enspace\enspace\color{BLUE}{\overline{BC}\perp\overline{AD}}</code></p>
-				<p><code>\enspace\enspace\enspace\enspace\enspace\enspace\overline{AD}=\overline{AD}</code></p>
-				<p><code>\enspace\enspace\enspace\enspace\enspace\enspace\color{BLUE}{共邊}</code></p>
+
+				<code>\enspace\enspace\enspace\enspace\enspace\enspace\angle{ADB}=\angle{ADC}=90^{\circ}</code>
+
+				<code>\enspace\enspace\enspace\enspace\enspace\enspace\color{BLUE}{\overline{BC}\perp\overline{AD}}</code><br>
+
+				<code>\enspace\enspace\enspace\enspace\enspace\enspace\overline{AD}=\overline{AD}</code><br>
+
+				<code>\enspace\enspace\enspace\enspace\enspace\enspace\color{BLUE}{共邊}</code>
+
 				<div>
-				    <p>所有由 <input type="text" id="a_3" style="width:30px"> 三角形全等性質，得</p>
-				    <p><code>\enspace\enspace\enspace\enspace\enspace\enspace\triangle{ABD}\cong\triangle{ACD}</code></p>
+
+				    所有由 <input type="text" id="a_3" style="width:30px"> 三角形全等性質，<br>
+
+				    得<code><!-- \enspace\enspace\enspace\enspace\enspace\enspace -->\triangle{ABD}\cong\triangle{ACD}</code>
+
 				</div>
-				<p>因此 線段<input type="text" id="a_4" style="width:30px"><code>\enspace=\overline{AC}</code> 。</p>
+
+				因此 <span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="a_4"></span> <code>\enspace=\overline{AC}</code> 。
+
 				<div class="sol" data-type="custom">
+
 				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value]</div>
+
 				    <div class="validator-function">
+
 					var ng_1 = guess[0].replace(/[ ]/g,"");
+
 					var ng_2 = guess[1].replace(/[ ]/g,"");
+
 					var ng_3 = guess[2].replace(/[ ]/g,"");
+
 					var ng_4 = guess[3].replace(/[ ]/g,"");
+
 					
+
 					var ng_1_arr = new Array();
+
 					var ng_2_arr = new Array();
+
 					ng_1_arr = ["B","ABC","CBA","ABD","DBA"];
+
 					ng_2_arr = ["C","ACB","BCA","ACD","DCA"];
+
 					var ng_1_bool = false;
+
 					var ng_2_bool = false;
+
 					var arr_where = 0;
+
 					for(var i = 0;i&lt;=4;i++){
+
 					    if(ng_1_arr[i]==ng_1){
+
 						    ng_1_bool = true;
+
 						}
+
 						if(ng_2_arr[i]==ng_1){
+
 						    ng_1_bool = true;
+
 							arr_where = 1;
+
 						}
+
 					}
+
 					for(var j = 0;j&lt;=4;j++){
+
 					    if(arr_where==0&&ng_2==ng_2_arr[j]){
+
 						    ng_2_bool = true;
+
 						}
+
 						if(arr_where==1&&ng_2==ng_1_arr[j]){
+
 						    ng_2_bool = true;
+
 						}
+
 					}
+
 					
+
 					
+
 					
+
 					if(ng_1_bool&&ng_2_bool&&ng_3=="AAS"&&(ng_4=="AB"||ng_4=="BA")){
+
 					    return true;
+
 					}
+
                     </div>
+
 				</div>
+
 				<p class="example">大寫英文字母</p>
+
             </div>
+
             <div class="hints">
+
 			    <div>
+
 				    <p>先作 <code>\overline{BC}</code> 上的高 <code>\overline{AD}</code> ，</p>
+
 					<div class="graphie" data-update="angle_edge_2">
+
 					    line([tri_bottom_half,tri_high],[tri_bottom_half,0]);
+
 						line([tri_bottom_half,0.3],[tri_bottom_half+0.3,0.3]);
+
 						line([tri_bottom_half+0.3,0.3],[tri_bottom_half+0.3,0]);
+
 						label( [tri_bottom_half,0],  "D", "below", { color: "black" });
+
 					</div>
+
 				</div>
+
 				<div>
+
 				    <p>在 <code>\triangle{ABD}</code> 和 <code>\triangle{ACD}</code> 中，</p>
+
 				    <p>因為 <code>\enspace\angle{B}=\angle{C}\enspace\enspace\enspace\enspace\enspace\enspace\color{BLUE}{已知}</code></p>
+
 				</div>
+
 				<p><code>\enspace\enspace\enspace\enspace\enspace\enspace\angle{ADB}=\angle{ADC}=90^{\circ}\enspace\enspace\enspace\enspace\enspace\enspace\color{BLUE}{\overline{BC}\perp\overline{AD}}</code></p>
+
 				<p><code>\enspace\enspace\enspace\enspace\enspace\enspace\overline{AD}=\overline{AD}\enspace\enspace\enspace\enspace\enspace\enspace\color{BLUE}{共邊}</code></p>
+
 				<div>
+
 				    <p>所有由 <code class="hint_green">AAS</code> 三角形全等性質，得</p>
+
 				    <p><code>\enspace\enspace\enspace\enspace\enspace\enspace\triangle{ABD}\cong\triangle{ACD}</code></p>
+
 				</div>
+
 				<p>因此 <code class="hint_pink">\overline{AB}=\overline{AC}</code> 。</p>
+
             </div>
+
         </div>
+
 		
+
 		<div id="case3">
+
             <div class="vars">
+
 			    <var id="J_initial">randRange(7,8)</var>
+
 				<var id="J">10*J_initial</var>
+
 				<var id="tri_l_ides">5/Math.pow(1.025,J_initial)</var>
+
 				<var id="tri_high">Math.cos(J/2*Math.PI/180)*tri_l_ides</var>
+
 				<var id="tri_bottom_half">Math.sin(J/2*Math.PI/180)*tri_l_ides</var>
+
 				<var id="q_types">
+
 				(function(){
+
 				    var arr_to_7 = randFromArray([[2,-15],[1,20]]);
+
 					var arr_to_8 = randFromArray([[2,-30],[1,10]]);
+
 					if(J_initial==7){
+
 					    return arr_to_7;
+
 					}
+
 					if(J_initial==8){
+
 					    return arr_to_8;
+
 					}
+
 				})()</var>
+
 				<var id="q_1">q_types[0]</var>
+
 				<var id="q_2">q_types[1]</var>
+
 				<var id="angleB">Math.atan(tri_high/tri_bottom_half)*180/Math.PI</var>
+
 				<var id="nq1">q_1==1?"":q_1</var>
+
 				<var id="R">(90-q_2)/(1+q_1)</var>
+
             </div>
+
 			<p class="question">如下圖，<code>\triangle{ABC}</code> 為等腰三角形，<code>\overline{AD}\perp\overline{BC}</code> ，求 <code>x</code> 的值。</p>
+
 			<div class="problem">
+
 			    <div class="graphie" id="angle_edge">
+
 				    init({
+
                         range: [ [-1, 2*tri_bottom_half+1], [-1,tri_high+1] ],
+
                         scale: 40
+
                     });
+
 					path([[0,0],[2*tri_bottom_half,0],[tri_bottom_half,tri_high],[0,0]],{stroke:"black"});
+
 					label( [tri_bottom_half,tri_high],  "A", "above", { color: "black" });
+
 					label( [0,0],  "B", "left", { color: "black" });
+
 					label( [2*tri_bottom_half,0],  "C", "right", { color: "black" });
+
 					label( [tri_bottom_half,tri_high*0.8],  "\\small{x^{\\circ}}", "below right", { color: "black" });
+
 					line([tri_bottom_half/2+0.1,tri_high/2-0.15],[tri_bottom_half/2-0.1,tri_high/2+0.15],{stroke:"red"});
+
 					line([tri_bottom_half*1.5+0.1,tri_high/2+0.15],[tri_bottom_half*1.5-0.1,tri_high/2-0.15],{stroke:"red"});
+
 					line([tri_bottom_half,tri_high],[tri_bottom_half,0]);
+
 					line([tri_bottom_half,0.3],[tri_bottom_half+0.3,0.3]);
+
 					line([tri_bottom_half+0.3,0.3],[tri_bottom_half+0.3,0]);
+
 					label( [tri_bottom_half,0],  "D", "below", { color: "black" });
+
 					var nq2 = q_2&gt;0?("+"+q_2):q_2
+
 					label( [0.2,-0.2],  "\\small{("+nq1+"x"+nq2+")^{\\circ}}", "above right", { color: "red" });
+
 					arc([0,0],0.3,0,angleB,{stroke:"red"});
+
 				</div>
+
 			</div>
+
 			<div class="solution" data-type="multiple">
+
 			    <span class="sol" data-forms="integer"><var>R</var></span>
+
             </div>
+
             <div class="hints">
+
 			    <p>等腰三角形頂角的角平分線、底邊的中線、底邊的中垂線與底邊的高均為同一直線。</p>
+
 				<p>所以 <code>\angle{BAD}=\angle{CAD}=x</code> ，</p>
+
 				<p>又 <code>\angle{ABD}=<var>nq1</var>x+<var>q_2</var></code> ，</p>
+
 				<p><code>\triangle{ABD}</code> 的內角和為 <code>180^{\circ}</code></p>
+
 				<p>因此 <code>x+(<var>nq1</var>x+<var>q_2</var>)+90=180</code></p>
+
 				<p><code><var>1+q_1</var>x+<var>q_2</var>=90</code></p>
+
 				<p><code><var>1+q_1</var>x=<var>90-q_2</var></code></p>
+
 				<p><code>x=<var>R</var></code></p>
+
 				<p>因此，本題的答案為 <code class="hint_pink"><var>R</var></code> 。</p>
+
             </div>
+
         </div>
+
 		
+
 	</div>
+
 	</div>
+
 </body>
+
 </html>

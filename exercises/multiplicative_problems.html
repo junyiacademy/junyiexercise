@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能在具體情境中，解決兩步驟問題-連乘(3-n-08)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+        </style>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="J">randRange(3,9)</var>
+				<var id="K">randRange(5,8)</var>
+				<var id="M">randRange(1,4)</var>
+				<var id="R">J*K+M</var>
+			</div>
+			<p class="question">一箱水果分給 <code><var>J</var></code> 個人，每人分 <code><var>K</var></code> 顆，還剩下 <code><var>M</var></code> 顆，這箱水果有幾顆？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>\enspace顆</code>
+			</div>
+			<div class="hints">
+				<div class="graphie" id="fruits">
+					init({ range: [[0, 7], [-2, 2]], scale: 45 });
+					line([0.5,0],[J*K/R*5+0.5,0],{stroke:"#6495ED"});
+					line([J*K/R*5+0.5,0],[5.5,0],{stroke:"red"});
+					line([0.5,0.1],[0.5,-0.1]);
+					line([5.5,0.1],[5.5,-0.1]);
+					line([J*K/R*5+0.5,0.1],[J*K/R*5+0.5,-0.1]);
+					label([3,0],"\\small{一箱水果}","above", { color: "#28AE7B" });
+					label([J*K/R*2.5+0.5,0],"\\small{"+J+"人共分到？顆}","below", { color: "#6495ED" });
+					label([J*K/R*2.5+3,0],"\\small{剩下"+M+"顆}","below", { color: "red" });
+				</div>
+				<p>每人分到 <code><var>K</var></code> 顆，<code><var>J</var></code> 人共分到幾顆？</p>
+				<p>先算： <code><var>K</var>\times<var>J</var>=</code> <code class="hint_blue"><var>J*K</var></code></p>
+				<p>再加上剩下的 <code><var>M</var></code> 顆，</p>
+				<p>再算： <code><var>J*K</var>+</code> <code class="hint_red"><var>M</var></code> <code>=</code> <code class="hint_pink"><var>R</var></code></p>
+				<p>所以這箱水果有 <code class="hint_pink"><var>R</var></code> 顆。</p>
+			</div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="J">randRange(7,9)</var>
+				<var id="K">randRange(7,10)</var>
+				<var id="M">randRange(1,5)</var>
+				<var id="R">J*K+M</var>
+			</div>
+			<p class="question">一條繩子分成 <code><var>J</var></code> 段，每段 <code><var>K</var></code> 公分，還剩下 <code><var>M</var></code> 公分，繩子原來有多長？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>\enspace公分</code>
+			</div>
+			<div class="hints">
+				<div class="graphie" id="fruits">
+					init({ range: [[0, 7], [-2, 2]], scale: 45 });
+					line([0.5,0],[J*K/R*5+0.5,0],{stroke:"#6495ED"});
+					line([J*K/R*5+0.5,0],[5.5,0],{stroke:"red"});
+					line([0.5,0.1],[0.5,-0.1]);
+					line([5.5,0.1],[5.5,-0.1]);
+					line([J*K/R*5+0.5,0.1],[J*K/R*5+0.5,-0.1]);
+					label([3,0],"\\small{繩子全長}","above", { color: "#28AE7B" });
+					label([J*K/R*2.5+0.5,0],"\\small{"+J+"段共？公分}","below", { color: "#6495ED" });
+					label([J*K/R*2.5+3,0],"\\small{剩下"+M+"公分}","below", { color: "red" });
+				</div>
+				<p>每段長 <code><var>K</var></code> 公分，<code><var>J</var></code> 段共有多少公分？</p>
+				<p>先算： <code><var>K</var>\times<var>J</var>=</code> <code class="hint_blue"><var>J*K</var></code></p>
+				<p>再加上剩下的 <code><var>M</var></code> 公分，</p>
+				<p>再算： <code><var>J*K</var>+</code> <code class="hint_red"><var>M</var></code> <code>=</code> <code class="hint_pink"><var>R</var></code></p>
+				<p>所以繩子原來有 <code class="hint_pink"><var>R</var></code> 公分。</p>
+			</div>
+		</div>
+		
+		<div id="case3">
+			<div class="vars">
+				<var id="J">randRange(7,9)</var>
+				<var id="K">randRange(7,10)</var>
+				<var id="M">randRange(3,6)</var>
+				<var id="R">J*K*M</var>
+			</div>
+			<p class="question">一包糖果有 <code><var>J</var></code> 顆， <code><var>K</var></code> 包糖果裝一盒， <code><var>M</var></code> 盒裝成一箱。請問一箱糖果有幾顆？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>\enspace顆</code>
+			</div>
+			<div class="hints">
+				<p>先算一盒糖果有幾顆，</p>
+				<p><code><var>J</var>\times<var>K</var>=</code> <code class="hint_blue"><var>J*K</var></code> 顆</p>
+				<p>再算一箱糖果有幾顆，</p>
+				<p><code><var>J*K</var>\times<var>M</var>=</code> <code class="hint_green"><var>R</var></code> 顆</p>
+				<p>因此，一箱糖果有 <code class="hint_pink"><var>R</var></code> 顆。</p>
+			</div>
+		</div>
+		
+		<div id="case4">
+			<div class="vars">
+				<var id="J">randRange(2,5)</var>
+				<var id="K">randRange(5,9)</var>
+				<var id="R">J*12*K</var>
+				<var id="names">randFromArray(["飲料","果汁","汽水"])</var>
+			</div>
+			<p class="question">一箱<var>names</var>有 <code><var>J</var></code> 打，媽媽買了 <code><var>K</var></code> 箱，共有幾瓶飲料？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>\enspace瓶</code>
+			</div>
+			<div class="hints">
+				<p>一打有 <code class="hint_blue">12</code> 瓶，</p>
+				<p>一箱<var>names</var>有 <code><var>J</var></code> 打 <code>=</code> <code class="hint_blue">12</code> <code>\times<var>J</var>=</code> <code class="hint_green"><var>J*12</var></code> 瓶，</p>
+				<p>媽媽買了 <code><var>K</var></code> 箱，</p>
+				<p><code><var>K</var></code> 箱有 <code class="hint_green"><var>J*12</var></code> <code>\times <var>K</var>=</code> <code class="hint_pink"><var>R</var></code> 瓶。</p>
+				<p>因此，共有 <code class="hint_pink"><var>R</var></code> 瓶。</p>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

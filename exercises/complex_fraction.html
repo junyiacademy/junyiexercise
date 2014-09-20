@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>化簡繁分數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+	<div class="exercise">
+		<div class="problems">
+			<div id="case1">
+				<div class="vars" data-ensure = "getGCD(B,C) === 1">
+					<var id="A">randRange(2,15)</var>
+					<var id="B">randRange(2,15)</var>
+					<var id="C">randRange(2,15)</var>
+					<var id="GCD_AB">getGCD(A, B)</var>
+					<var id="SIMP_A">A/GCD_AB</var>
+					<var id="SIMP_B">B/GCD_AB</var>
+				</div>
+				<p class="question">計算下列式子的值<code>\dfrac{<var>A</var>}{\dfrac{<var>B</var>}{<var>C</var>}}</code>
+				</p>
+				<p class="solution" ><var>A*C/B</var>
+				</p>
+				<div class="hints">
+					<p><code>\dfrac{<var>A</var>}{\dfrac{<var>B</var>}{<var>C</var>}}</code> = <code><var>A</var> \div \dfrac{<var>B</var>}{<var>C</var>}</code></p>
+					<p>=<code><var>A</var> \times \dfrac{<var>C</var>}{<var>B</var>}</code></p>
+					<p data-if="GCD_AB != 1">=<code>\cancel{<var>A</var>}^{<var>SIMP_A</var>} \times \dfrac{<var>C</var>}{\cancel{<var>B</var>}_{<var>SIMP_B</var>}}</code></p>
+					<p>=<code>\dfrac{<var>SIMP_A*C</var>}{<var>SIMP_B</var>}</code></p>
+				</div>
+			</div>
+			<div id="case2">
+				<div class="vars" data-ensure="GCDcheck === 1">
+					<var id="A">randRange(2,15)</var>
+					<var id="B">randRange(2,15)</var>
+					<var id="C">randRange(2,15)</var>
+					<var id="D">randRange(2,15)</var>
+					<var id="GCD_AC">getGCD(A,C)</var>
+					<var id="SIMP_A">A/GCD_AC</var>
+					<var id="SIMP_C">C/GCD_AC</var>
+					<var id="GCD_BD">getGCD(B,D)</var>
+					<var id="SIMP_B">B/GCD_BD</var>
+					<var id="SIMP_D">D/GCD_BD</var>
+					<var id="AD">SIMP_A*SIMP_D</var>
+					<var id="BC">SIMP_B*SIMP_C</var>
+					<var id="GCDcheck">getGCD(AD,BC)</var>
+				</div>
+				<p class="question">計算下列式子的值<code>\dfrac{\dfrac{<var>A</var>}{<var>B</var>}}{\dfrac{<var>C</var>}{<var>D</var>}}</code>
+				</p>
+				<p class="solution"><var>(A*D)/(B*C)</var>
+				</p>
+				<div class="hints">
+					<p><code>\dfrac{\dfrac{<var>A</var>}{<var>B</var>}}{\dfrac{<var>C</var>}{<var>D</var>}} = \dfrac{<var>A</var>}{<var>B</var>} \div \dfrac{<var>C</var>}{<var>D</var>}</code></p>
+					<p><code> = \dfrac{<var>A</var>}{<var>B</var>} \times \dfrac{<var>D</var>}{<var>C</var>}</code></p>
+					<p data-if="GCD_AC != 1"><code>=\dfrac{\cancel{<var>A</var>}^{<var>SIMP_A</var>}}{<var>B</var>} \times \dfrac{<var>D</var>}{\cancel{<var>C</var>}_{<var>SIMP_C</var>}}</code></p>
+					<p data-if="GCD_BD != 1"><code>=\dfrac{<var>SIMP_A</var>}{\cancel{<var>B</var>}_{<var>SIMP_B</var>}} \times \dfrac{\cancel{<var>D</var>}^{<var>SIMP_D</var>}}{<var>SIMP_C</var>}</code></p>
+					<p><code>=\dfrac{<var>SIMP_A*SIMP_D</var>}{<var>SIMP_B*SIMP_C</var>}</code></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>

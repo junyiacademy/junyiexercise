@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie-helpers graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>大數的加減</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars">
+			<var id="J">randRange(10,50)</var>
+			<var id="K">randRange(100,500)</var>
+			<var id="L">randRange(1000,9000)</var>
+        </div>
+		<p class="question"><code><var>J</var></code> 億 <code><var>K</var></code> 萬公里 <code>-<var>L</var></code> 萬公里 <code>=(\enspace\enspace\enspace)</code> </p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>J-1</var></span><code>億</code><span class="sol" data-forms="integer"><var>10000-L+K</var></span><code>萬</code>
+			<p class="example">整數，例：<code>6</code></p>
+		</div>
+
+		<div class="hints">
+			<div>
+				<div class="graphie" id="add_large_1">
+					init({
+                        range: [ [-1, 12], [-0.5, 3] ],
+                        scale: 40
+                    });
+					l1=label( [1,2],  "\\small{億}", "center", { color: "gray" });
+					l2=label( [3,2],  "\\small{萬}", "center", { color: "gray" });
+					label( [1,1.5],  "\\small{"+J+"}", "center", { color: "black" });
+					label( [3,1.5],  "\\small{"+K+"}", "center", { color: "black" });
+					label( [3,1],  "\\small{"+L+"}", "center", { color: "black" });
+					label( [0,1],  "\\small{-}", "center", { color: "black" });
+					line([-0.3,0.5],[4,0.5]);
+				</div>
+			</div>
+			<p><code><var>K</var></code> 萬 <code>-<var>L</var></code> 萬不夠，所以要和億位借位，</p>
+			<p><code>1</code> 億 <code>=10000</code> 萬，</p>
+			<div>
+				<p>億位的部分要減 <code>1=(<var>J</var>-1)=</code><code class="hint_green"><var>J-1</var></code> 億，</p>
+				<div class="graphie" data-update="add_large_1">
+					l1.remove();
+					l2.remove();
+					label( [1,2.5],  "\\small{億}", "center", { color: "gray" });
+					label( [3,2.5],  "\\small{萬}", "center", { color: "gray" });
+					label( [1,2],  "\\small{"+(J-1)+"}", "center", { color: "red" });
+					line([0.5,1.25],[1.5,1.75],{stroke: "red"});
+				</div>
+			</div>
+			<div>
+				<p>萬位的部分變成 <code>(10000-<var>L</var>+<var>K</var>)=</code><code class="hint_green"><var>10000-L+K</var></code> 萬，</p>
+				<div class="graphie" data-update="add_large_1">
+					label( [3,2],  "\\small{10000}", "center", { color: "red" });
+					label( [1,0],  "\\small{"+(J-1)+"}", "center", { color: "black" });
+					label( [3,0],  "\\small{"+(10000-L+K)+"}", "center", { color: "black" });
+				</div>
+			</div>
+			<p>因此，本題的答案為 <code class="hint_pink"><var>J-1</var></code> 億 <code class="hint_pink"><var>10000-L+K</var></code> 萬。</p>
+		</div>
+	</div>
+	
+	<div id="case2">
+        <div class="vars">
+			<var id="J">randRange(1,20)</var>
+			<var id="K">randRange(5001,9999)</var>
+			<var id="L">randRange(1,20)</var>
+			<var id="M">randRange(5001,9999)</var>
+        </div>
+		<p class="question"><code><var>J</var></code> 億 <code><var>K</var></code> 萬 <code>+<var>L</var></code> 億 <code><var>M</var></code> 萬 <code>=(\enspace\enspace\enspace)</code> </p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>J+L+1</var></span><code>億</code><span class="sol" data-forms="integer"><var>K+M-10000</var></span><code>萬</code>
+			<p class="example">整數，例：<code>6</code></p>
+		</div>
+
+		<div class="hints">
+			<div>
+				<div class="graphie" id="add_large_2">
+					init({
+                        range: [ [-1, 12], [-0.5, 3] ],
+                        scale: 40
+                    });
+					label( [1,2.5],  "\\small{億}", "center", { color: "gray" });
+					label( [3,2.5],  "\\small{萬}", "center", { color: "gray" });
+					label( [1,2],  "\\small{"+J+"}", "center", { color: "black" });
+					label( [3,2],  "\\small{"+K+"}", "center", { color: "black" });
+					label( [1,1.5],  "\\small{"+L+"}", "center", { color: "black" });
+					label( [3,1.5],  "\\small{"+M+"}", "center", { color: "black" });
+					label( [0,1.5],  "\\small{+}", "center", { color: "black" });
+					line([-0.3,1],[4,1]);
+				</div>
+			</div>
+			<div>
+				<p><code><var>J</var></code> 億 <code><var>K</var></code> 萬 <code>+<var>L</var></code> 億 <code><var>M</var></code> 萬 <code>=<var>J+L</var></code> 億 <code><var>K+M</var></code> 萬，</p>
+				<div class="graphie" data-update="add_large_2">
+					label( [3,0.5],  "\\small{"+(K+M)+"}", "center", { color: "black" });
+					label( [1,0.5],  "\\small{"+(L+J)+"}", "center", { color: "black" });
+				</div>
+			</div>
+			<div>
+				<p><code><var>K+M</var></code> 萬已經超過 <code>10000</code> 萬了，所以必須進位到億，</p>
+				<div class="graphie" data-update="add_large_2">
+					line([0.5,0.25],[1.5,0.75],{stroke: "red"});
+					line([2.5,0.25],[3.5,0.75],{stroke: "red"});
+					label( [3,0],  "\\small{"+(K+M-10000)+"}", "center", { color: "red" });
+					label( [1,0],  "\\small{"+(L+J+1)+"}", "center", { color: "red" });
+				</div>
+			</div>
+			<p>因此， <code><var>J</var></code> 億 <code><var>K</var></code> 萬 <code>+<var>L</var></code> 億 <code><var>M</var></code> 萬 <code>=</code><code class="hint_pink"><var>(J+L+1)</var></code> 億 <code class="hint_pink"><var>(K+M-10000)</var></code> 萬。</p>
+		</div>
+	</div>
+	
+	<div id="case3">
+        <div class="vars">
+			<var id="J">randRange(5001,9999)</var>
+			<var id="K">randRange(5001,9999)</var>
+        </div>
+		<p class="question"><code><var>J</var></code> 萬 <code>+<var>K</var></code> 萬 <code>=(\enspace\enspace\enspace)</code> 億 <code>(\enspace\enspace\enspace)</code> 萬</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>1</var></span><code>億</code><span class="sol" data-forms="integer"><var>J+K-10000</var></span><code>萬</code>
+			<p class="example">整數，例：<code>6</code></p>
+		</div>
+
+		<div class="hints">
+			<p><code><var>J</var></code> 萬 <code>+<var>K</var></code> 萬 <code>=<var>J+K</var></code> 萬，</p>
+			<p>因為 <code><var>J+K</var></code> 萬已經超過 <code>10000</code> 萬了，所以必須進位到億位，</p>
+			<p>所以 <code><var>J</var></code> 萬 <code>+<var>K</var></code> 萬 <code>=\enspace</code><code class="hint_pink">1</code> 億 <code class="hint_pink"><var>J+K-10000</var></code> 萬。</p>
+		</div>
+	</div>
+	
+	<div id="case4">
+        <div class="vars">
+			<var id="J">randRange(5001,9999)</var>
+			<var id="K">randRange(5001,9999)</var>
+        </div>
+		<p class="question"><code><var>J</var></code> 億 <code>+<var>K</var></code> 億 <code>=(\enspace\enspace\enspace)</code> 兆 <code>(\enspace\enspace\enspace)</code> 億</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>1</var></span><code>兆</code><span class="sol" data-forms="integer"><var>J+K-10000</var></span><code>億</code>
+			<p class="example">整數，例：<code>6</code></p>
+		</div>
+
+		<div class="hints">
+			<p><code><var>J</var></code> 億 <code>+<var>K</var></code> 億 <code>=<var>J+K</var></code> 億，</p>
+			<p>因為 <code><var>J+K</var></code> 億已經超過 <code>10000</code> 億了，所以必須進位到兆位，</p>
+			<p>所以 <code><var>J</var></code> 億 <code>+<var>K</var></code> 億 <code>=\enspace</code><code class="hint_pink">1</code> 兆 <code class="hint_pink"><var>J+K-10000</var></code> 億。</p>
+		</div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

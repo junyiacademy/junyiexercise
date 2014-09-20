@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <title>相反數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+        <div id="case1">
+		        <div class="vars" data-ensure="NUMERATOR &lt; DENOMINATOR && GCD === 1 ">
+                    <var id="J_INT">randRangeNonZero( -19,19 )</var>
+					<var id="J_DECIMAL">randRangeNonZero( -200,200 )/10</var>
+					<var id="DENOMINATOR">randRange(2,10)</var>
+					<var id="NUMERATOR">randRange(1,10)</var>
+					<var id="GCD">getGCD(DENOMINATOR,NUMERATOR)</var>
+					<var id="TYPE">randRange(1,3)</var>
+                </div>
+				<div>
+				<p class="question">請寫出 <code data-if="TYPE==2"><var>J_DECIMAL</var></code> 
+				<code data-if="TYPE!=2" ><var>J_INT</var></code><code data-if="TYPE==3"><var>fraction(NUMERATOR,DENOMINATOR)</var></code> 的相反數。</p>
+				</div>
+				<div class="solution" data-type="number">
+					<span class="sol"><var>TYPE==3?(J_INT>0?-J_INT-NUMERATOR / DENOMINATOR:-J_INT+NUMERATOR / DENOMINATOR):(TYPE==2?-J_DECIMAL:-J_INT)</var></span>
+				</div>
+        
+		<div class="hints">
+		    <div>
+			    <p>在數線上分別位於原點左右兩側，且與原點距離相等的兩點所代表的數，就稱為相反數。</p>
+			</div>
+			<div>
+			    <p>本題中，我們可以先在數線上表示出 <code data-if="TYPE==2"><var>J_DECIMAL</var></code> 
+				<code data-if="TYPE!=2" ><var>J_INT</var></code><code data-if="TYPE==3"><var>fraction(NUMERATOR,DENOMINATOR)</var></code> ：</p>
+				<div class="graphie">
+            init({
+                range: [ [-6 , 50 ], [-1, 1] ],
+                scale: [ 10, 30 ]
+            });
+			var len = TYPE==3?(J_INT>0?J_INT+NUMERATOR / DENOMINATOR:J_INT-NUMERATOR / DENOMINATOR):(TYPE==2?J_DECIMAL:J_INT);
+			var originX = 20;
+			var x = 20+len;
+			numberLine( -20,20,5 );
+			style({ stroke: "#6495ED", fill: "#6495ED" });
+            graph.pt = circle( [ x, 0 ], 0.15 );
+			var lengt = abs(len)&lt;2?(len&gt;0?21.5+len:18.5+len):20+len;
+			label([lengt],TYPE==3?J_INT+"\\frac{" + NUMERATOR + "}{" + DENOMINATOR + "}":(TYPE==2?J_DECIMAL:J_INT),"");
+            style({ stroke: "#FFA500", fill: "#FFA500", strokeWidth: 3.5, arrows: "->" });
+            path( [ [ originX, 0 ], [ x, 0 ] ] );
+            circle( [ originX, 0 ], 0.10 );
+        </div>
+
+			</div>
+			<div>
+			    <p>然後，我們在原點另一側表示出與原點距離相同的另一點：</p>
+				<div class="graphie">
+            init({
+                range: [ [-6 , 50 ], [-1, 1] ],
+                scale: [ 10, 30 ]
+            });
+			
+			var len = TYPE==3?(J_INT>0?J_INT+NUMERATOR / DENOMINATOR:J_INT-NUMERATOR / DENOMINATOR):(TYPE==2?J_DECIMAL:J_INT);
+			var originX = 20;
+			var x = 20+len;
+			numberLine( -20,20,5 );
+			style({ stroke: "#6495ED", fill: "#6495ED" });
+            graph.pt = circle( [ x, 0 ], 0.15 );
+            style({ stroke: "#FFA500", fill: "#FFA500", strokeWidth: 3.5, arrows: "->" });
+            path( [ [ originX, 0 ], [ x, 0 ] ] );
+            circle( [ originX, 0 ], 0.10 );
+			
+			
+			var len_opposite = TYPE==3?(J_INT>0?-J_INT-NUMERATOR / DENOMINATOR:-J_INT+NUMERATOR / DENOMINATOR):(TYPE==2?-J_DECIMAL:-J_INT);
+			x = 20+len_opposite;
+			style({ stroke: "#6495ED", fill: "#6495ED" });
+            graph.pt = circle( [ x, 0 ], 0.15 );
+			var lengt_op = abs(len_opposite)&lt;2?(len_opposite&gt;0?21.5+len_opposite:18.5+len_opposite):20+len_opposite;
+			label([lengt_op],TYPE==3?-J_INT+"\\frac{" + NUMERATOR + "}{" + DENOMINATOR + "}":(TYPE==2?-J_DECIMAL:-J_INT),"");
+			label([40-lengt_op],TYPE==3?J_INT+"\\frac{" + NUMERATOR + "}{" + DENOMINATOR + "}":(TYPE==2?J_DECIMAL:J_INT),"");
+            style({ stroke: "#28AE7B", fill: "#28AE7B", strokeWidth: 3.5, arrows: "->" });
+            path( [ [ originX, 0 ], [ x, 0 ] ] );
+            circle( [ originX, 0 ], 0.10 );
+        </div>
+			</div>
+			<div>
+			    <p>我們可以看出，<code data-if="TYPE==2"><var>J_DECIMAL</var></code> 
+				<code data-if="TYPE!=2" ><var>J_INT</var></code><code data-if="TYPE==3"><var>fraction(NUMERATOR,DENOMINATOR)</var></code> 與 <code data-if="TYPE==2"><var>-J_DECIMAL</var></code> 
+				<code data-if="TYPE!=2" ><var>-J_INT</var></code><code data-if="TYPE==3"><var>fraction(NUMERATOR,DENOMINATOR)</var></code> 是在數線上分別位於原點左右兩側，且與原點距離相等的兩點所代表的數，所以 <code data-if="TYPE==2"><var>J_DECIMAL</var></code> 
+				<code data-if="TYPE!=2" ><var>J_INT</var></code><code data-if="TYPE==3"><var>fraction(NUMERATOR,DENOMINATOR)</var></code> 與 <code data-if="TYPE==2"><var>-J_DECIMAL</var></code> 
+				<code data-if="TYPE!=2" ><var>-J_INT</var></code><code data-if="TYPE==3"><var>fraction(NUMERATOR,DENOMINATOR)</var></code> 是一組相反數。</p>
+			</div>
+			<div>
+				<p>因此，本題的答案為 <code class="hint_pink" data-if="TYPE==2"><var>-J_DECIMAL</var></code> 
+				</code><code class="hint_pink" data-if="TYPE!=2" ><var>-J_INT</var></code><code class="hint_pink" data-if="TYPE==3"><var>fraction(NUMERATOR,DENOMINATOR)</var></code>。</p>
+			</div>
+        </div>
+		</div>>
+		
+		<div id="case2">
+		    <div class="vars" data-ensure="abs(J)!=abs(K)&&abs(J)!=abs(L)&&abs(J)!=abs(M)&&abs(K)!=abs(L)&&abs(K)!=abs(M)&&abs(L)!=abs(M) && J_GCD === 1 && K_GCD === 1 && L_GCD === 1 && M_GCD === 1 ">
+                    <var id="J_INT">randRangeNonZero( 0,5 )</var>
+					<var id="J_DECIMAL">randRangeNonZero( 0,50 )/10</var>
+					<var id="J_DENOMINATOR">randRange(2,10)</var>
+					<var id="J_NUMERATOR">randRange(1,J_DENOMINATOR-1)</var>
+					<var id="J_GCD">getGCD(J_DENOMINATOR,J_NUMERATOR)</var>
+					<var id="K_INT">randRangeNonZero( -5,0 )</var>
+					<var id="K_DECIMAL">randRangeNonZero( -50,0 )/10</var>
+					<var id="K_DENOMINATOR">randRange(2,10)</var>
+					<var id="K_NUMERATOR">randRange(1,K_DENOMINATOR-1)</var>
+					<var id="K_GCD">getGCD(K_DENOMINATOR,K_NUMERATOR)</var>
+					<var id="L_INT">randRangeNonZero( -5,0 )</var>
+					<var id="L_DECIMAL">randRangeNonZero( -50,0 )/10</var>
+					<var id="L_DENOMINATOR">randRange(2,10)</var>
+					<var id="L_NUMERATOR">randRange(1,L_DENOMINATOR-1)</var>
+					<var id="L_GCD">getGCD(L_DENOMINATOR,L_NUMERATOR)</var>
+					<var id="M_INT">randRangeNonZero( -10,10 )</var>
+					<var id="M_DECIMAL">randRangeNonZero( -100,100 )/10</var>
+					<var id="M_DENOMINATOR">randRange(2,10)</var>
+					<var id="M_NUMERATOR">randRange(1,M_DENOMINATOR-1)</var>
+					<var id="M_GCD">getGCD(M_DENOMINATOR,M_NUMERATOR)</var>
+					<var id="J_TYPE">randRange(1,3)</var>
+					<var id="K_TYPE">randRange(1,3)</var>
+					<var id="L_TYPE">randRange(1,3)</var>
+					<var id="M_TYPE">randRange(1,3)</var>
+					<var id="J">J_TYPE==2?-J_DECIMAL:(J_TYPE==3?-J_INT-J_NUMERATOR/J_DENOMINATOR:-J_INT)</var>
+					<var id="K">K_TYPE==2?-K_DECIMAL:(K_TYPE==3?-K_INT+K_NUMERATOR/K_DENOMINATOR:-K_INT)</var>
+					<var id="L">L_TYPE==2?L_DECIMAL:(L_TYPE==3?L_INT-L_NUMERATOR/L_DENOMINATOR:L_INT)</var>
+					<var id="M">M_TYPE==2?-M_DECIMAL:(M_TYPE==3?(M_INT>0?-M_INT-M_NUMERATOR/M_DENOMINATOR:-M_INT+M_NUMERATOR/M_DENOMINATOR):-M_INT)</var>
+					<var id="ASC_ARRAY">
+					(function(){
+					    var array = [J,K,L,M];
+						array.sort(function(a,b){return a>b?1:-1});
+						return array;
+					})()</var>
+					<var id="ASC_ARRAY_MODIFY">
+					(function(){
+					    var array = ["","","",""];
+						switch(ASC_ARRAY[0])
+						{
+							case J:
+							array[0]=J_TYPE==2?-J_DECIMAL:(J_TYPE==3?-J_INT-fraction(J_NUMERATOR,J_DENOMINATOR):-J_INT);
+							break;
+							
+						}
+					})()</var>
+					<var id="ASC_A">
+					(function(){
+					    var array = [J,K,L,M];
+						array.sort(function(a,b){return a>b?1:-1});
+						array[0]=Math.round(array[0]*100)/100;
+						array[1]=Math.round(array[1]*100)/100;
+						array[2]=Math.round(array[2]*100)/100;
+						array[3]=Math.round(array[3]*100)/100;
+						return array;
+					})()</var>
+					<var id="MIN_VALUE_POSITION">
+					(function(){
+					    var array = [J,K,L,M];
+						if(abs(ASC_ARRAY[0])==abs(array[0])){
+						    return 1;
+						}else if(abs(ASC_ARRAY[0])==abs(array[1])){
+						    return 2;
+						}else if(abs(ASC_ARRAY[0])==abs(array[2])){
+						    return 3;
+						}else if(abs(ASC_ARRAY[0])==abs(array[3])){
+						    return 4;
+							}
+					})()
+					</var>
+					<var id="MIN">
+					(function(){
+						var min_value=0;
+						min_value = Math.min(J,K);
+						min_value = Math.min(min_value,L);
+						min_value = Math.min(min_value,M);
+						return min_value;
+					})()
+					</var>
+					<var id="check">
+					(function(){
+						if(MIN == J){
+							if(J_TYPE == 1){
+								return J_INT;
+							}if(J_TYPE == 2){
+								return J_DECIMAL;
+							}if(J_TYPE == 3){
+								return(J_INT+fraction(J_NUMERATOR,J_DENOMINATOR));
+							}
+						}
+						if(MIN == K){
+							if(K_TYPE == 1){
+								return K_INT;
+							}if(K_TYPE == 2){
+								return K_DECIMAL;
+							}if(K_TYPE == 3){
+								return(K_INT+fraction(K_NUMERATOR,K_DENOMINATOR));
+							}
+						}
+						if(MIN == L){
+							if(L_TYPE == 1){
+								return ("|" + L_INT + "|");
+							}if(L_TYPE == 2){
+								return ("|" + L_DECIMAL + "|");
+							}if(L_TYPE == 3){
+								return("|" + L_INT+fraction(L_NUMERATOR,L_DENOMINATOR) + "|");
+							}
+						}
+						if(MIN == M){
+							if(M_TYPE == 1){
+								return M_INT;
+							}if(M_TYPE == 2){
+								return M_DECIMAL;
+							}if(M_TYPE == 3){
+								return(M_INT+fraction(M_NUMERATOR,M_DENOMINATOR));
+							}
+						}
+					})()
+					</var>
+                </div>
+				<div>
+				<p class="question">
+				    <code data-if="J_TYPE==2"><var>J_DECIMAL</var></code><code data-if="J_TYPE!=2" ><var>J_INT</var></code><code data-if="J_TYPE==3"><var>fraction(J_NUMERATOR,J_DENOMINATOR)</var></code><code>、</code>
+					<code data-if="K_TYPE==2"><var>K_DECIMAL</var></code><code data-if="K_TYPE!=2" ><var>K_INT</var></code><code data-if="K_TYPE==3"><var>fraction(K_NUMERATOR,K_DENOMINATOR)</var></code><code>、</code>
+					<code>\lvert</code><code data-if="L_TYPE==2"><var>L_DECIMAL</var></code><code data-if="L_TYPE!=2" ><var>L_INT</var></code><code data-if="L_TYPE==3"><var>fraction(L_NUMERATOR,L_DENOMINATOR)</var></code><code>\rvert 、</code>
+					<code data-if="M_TYPE==2"><var>M_DECIMAL</var></code><code data-if="M_TYPE!=2" ><var>M_INT</var></code><code data-if="M_TYPE==3"><var>fraction(M_NUMERATOR,M_DENOMINATOR)</var></code>
+					四個數中，哪一個數的相反數最小？</p>
+				
+				<p class="solution"><code><var>check</var></code></p>
+                <ul class="choices" data-category="true">
+                    <li><code data-if="J_TYPE==2"><var>J_DECIMAL</var></code><code data-else-if="J_TYPE==1" ><var>J_INT</var></code><code data-else-if="J_TYPE==3" ><var>(J_INT+fraction(J_NUMERATOR,J_DENOMINATOR))</var></code></li>
+					<li><code data-if="K_TYPE==2"><var>K_DECIMAL</var></code><code data-else-if="K_TYPE==1" ><var>K_INT</var></code><code data-else-if="K_TYPE==3" ><var>(K_INT+fraction(K_NUMERATOR,K_DENOMINATOR))</var></code></li>
+					<li><code data-if="L_TYPE==2"><var>("|"+L_DECIMAL+"|")</var></code><code data-else-if="L_TYPE==1" ><var>("|"+L_INT+"|")</var></code><code data-else-if="L_TYPE==3" ><var>("|"+L_INT+fraction(L_NUMERATOR,L_DENOMINATOR)+"|")</var></code></li>
+					<li><code data-if="M_TYPE==2"><var>M_DECIMAL</var></code><code data-else-if="M_TYPE==1" ><var>M_INT</var></code><code data-else-if="M_TYPE==3" ><var>(M_INT+fraction(M_NUMERATOR,M_DENOMINATOR))</var></code></li>
+                </ul>
+                </div>
+				
+				<div class="hints">
+		    <div>
+			    <p>在數線上分別位於原點左右兩側，且與原點距離相等的兩點所代表的數，就稱為相反數。</p>
+			</div>
+			<div>
+			    <p>本題中， 
+				<code data-if="J_TYPE==2"><var>J_DECIMAL</var></code><code data-if="J_TYPE!=2" ><var>J_INT</var></code><code data-if="J_TYPE==3"><var>fraction(J_NUMERATOR,J_DENOMINATOR)</var></code>
+				與 <code data-if="J_TYPE==2"><var>-J_DECIMAL</var></code><code data-if="J_TYPE!=2" ><var>-J_INT</var></code><code data-if="J_TYPE==3"><var>fraction(J_NUMERATOR,J_DENOMINATOR)</var></code> 
+				到原點的距離都是 <code data-if="J_TYPE==2"><var>J_DECIMAL</var></code><code data-if="J_TYPE!=2" ><var>J_INT</var></code><code data-if="J_TYPE==3"><var>fraction(J_NUMERATOR,J_DENOMINATOR)</var></code> 
+				，所以 <code data-if="J_TYPE==2"><var>J_DECIMAL</var></code><code data-if="J_TYPE!=2" ><var>J_INT</var></code><code data-if="J_TYPE==3"><var>fraction(J_NUMERATOR,J_DENOMINATOR)</var></code>
+				與 <code data-if="J_TYPE==2"><var>-J_DECIMAL</var></code><code data-if="J_TYPE!=2" ><var>-J_INT</var></code><code data-if="J_TYPE==3"><var>fraction(J_NUMERATOR,J_DENOMINATOR)</var></code> 是一組相反數。</p>
+				<div class="graphie">
+					init({
+						range: [ [-1 , 23 ], [-1, 1] ],
+						scale: [ 20, 40 ]
+					});
+			
+					var len = J_TYPE==3?(J_INT>0?J_INT+J_NUMERATOR / J_DENOMINATOR:J_INT-J_NUMERATOR / J_DENOMINATOR):(J_TYPE==2?J_DECIMAL:J_INT);
+					var originX = 10;
+					var x = 10+len;
+					numberLine( -10,10,2);
+					style({ stroke: "#6495ED", fill: "#6495ED" });
+					graph.pt = circle( [ x, 0 ], 0.15 );
+					style({ stroke: "#FFA500", fill: "#FFA500", strokeWidth: 3.5, arrows: "->" });
+					path( [ [ originX, 0 ], [ x, 0 ] ] );
+					circle( [ originX, 0 ], 0.10 );
+				
+					var len_opposite = J_TYPE==3?(J_INT>0?-J_INT-J_NUMERATOR / J_DENOMINATOR:-J_INT+J_NUMERATOR / J_DENOMINATOR):(J_TYPE==2?-J_DECIMAL:-J_INT);
+					x = 10+len_opposite;
+					style({ stroke: "#6495ED", fill: "#6495ED" });
+					graph.pt = circle( [ x, 0 ], 0.15 );
+					var lengt_op = abs(len_opposite)&lt;2?(len_opposite&gt;0?11.5+len_opposite:8.5+len_opposite):10+len_opposite;
+					label([lengt_op],J_TYPE==3?-J_INT+"\\frac{" + J_NUMERATOR + "}{" + J_DENOMINATOR + "}":(J_TYPE==2?-J_DECIMAL:-J_INT),"");
+					label([20-lengt_op],J_TYPE==3?J_INT+"\\frac{" + J_NUMERATOR + "}{" + J_DENOMINATOR + "}":(J_TYPE==2?J_DECIMAL:J_INT),"");
+					style({ stroke: "#28AE7B", fill: "#28AE7B", strokeWidth: 3.5, arrows: "->" });
+					path( [ [ originX, 0 ], [ x, 0 ] ] );
+					circle( [ originX, 0 ], 0.10 );
+				</div>
+			</div>
+			<div>
+			    <p>同樣的， 
+				<code data-if="K_TYPE==2"><var>K_DECIMAL</var></code><code data-if="K_TYPE!=2" ><var>K_INT</var></code><code data-if="K_TYPE==3"><var>fraction(K_NUMERATOR,K_DENOMINATOR)</var></code>
+				與 <code data-if="K_TYPE==2"><var>-K_DECIMAL</var></code><code data-if="K_TYPE!=2" ><var>-K_INT</var></code><code data-if="K_TYPE==3"><var>fraction(K_NUMERATOR,K_DENOMINATOR)</var></code> 
+				到原點的距離都是 <code data-if="K_TYPE==2"><var>-K_DECIMAL</var></code><code data-if="K_TYPE!=2" ><var>-K_INT</var></code><code data-if="K_TYPE==3"><var>fraction(K_NUMERATOR,K_DENOMINATOR)</var></code> 
+				，所以 <code data-if="K_TYPE==2"><var>K_DECIMAL</var></code><code data-if="K_TYPE!=2" ><var>K_INT</var></code><code data-if="K_TYPE==3"><var>fraction(K_NUMERATOR,K_DENOMINATOR)</var></code>
+				與 <code data-if="K_TYPE==2"><var>-K_DECIMAL</var></code><code data-if="K_TYPE!=2" ><var>-K_INT</var></code><code data-if="K_TYPE==3"><var>fraction(K_NUMERATOR,K_DENOMINATOR)</var></code> 是一組相反數。</p>
+				<div class="graphie">
+					init({
+						range: [ [-1 , 23 ], [-1, 1] ],
+						scale: [ 20, 40 ]
+					});
+			
+					var len = K_TYPE==3?(K_INT>0?K_INT+K_NUMERATOR / K_DENOMINATOR:K_INT-K_NUMERATOR / K_DENOMINATOR):(K_TYPE==2?K_DECIMAL:K_INT);
+					var originX = 10;
+					var x = 10+len;
+					numberLine( -10,10,2 );
+					style({ stroke: "#6495ED", fill: "#6495ED" });
+					graph.pt = circle( [ x, 0 ], 0.15 );
+					style({ stroke: "#FFA500", fill: "#FFA500", strokeWidth: 3.5, arrows: "->" });
+					path( [ [ originX, 0 ], [ x, 0 ] ] );
+					circle( [ originX, 0 ], 0.10 );
+				
+					var len_opposite = K_TYPE==3?(K_INT>0?-K_INT-K_NUMERATOR / K_DENOMINATOR:-K_INT+K_NUMERATOR / K_DENOMINATOR):(K_TYPE==2?-K_DECIMAL:-K_INT);
+					x = 10+len_opposite;
+					style({ stroke: "#6495ED", fill: "#6495ED" });
+					graph.pt = circle( [ x, 0 ], 0.15 );
+					var lengt_op = abs(len_opposite)&lt;2?(len_opposite&gt;0?11.5+len_opposite:8.5+len_opposite):10+len_opposite;
+					label([lengt_op],K_TYPE==3?-K_INT+"\\frac{" + K_NUMERATOR + "}{" + K_DENOMINATOR + "}":(K_TYPE==2?-K_DECIMAL:-K_INT),"");
+					label([20-lengt_op],K_TYPE==3?K_INT+"\\frac{" + K_NUMERATOR + "}{" + K_DENOMINATOR + "}":(K_TYPE==2?K_DECIMAL:K_INT),"");
+					style({ stroke: "#28AE7B", fill: "#28AE7B", strokeWidth: 3.5, arrows: "->" });
+					path( [ [ originX, 0 ], [ x, 0 ] ] );
+					circle( [ originX, 0 ], 0.10 );
+				</div>
+			</div>
+			<div>
+			    <p><code>\lvert</code><code data-if="L_TYPE==2"><var>L_DECIMAL</var></code><code data-if="L_TYPE!=2" ><var>L_INT</var></code><code data-if="L_TYPE==3"><var>fraction(L_NUMERATOR,L_DENOMINATOR)</var></code><code>\rvert</code>
+				與 <code data-if="L_TYPE==2"><var>L_DECIMAL</var></code><code data-if="L_TYPE!=2" ><var>L_INT</var></code><code data-if="L_TYPE==3"><var>fraction(L_NUMERATOR,L_DENOMINATOR)</var></code> 
+				到原點的距離都是 <code data-if="L_TYPE==2"><var>-L_DECIMAL</var></code><code data-if="L_TYPE!=2" ><var>-L_INT</var></code><code data-if="L_TYPE==3"><var>fraction(L_NUMERATOR,L_DENOMINATOR)</var></code> 
+				，所以 <code>\lvert</code><code data-if="L_TYPE==2"><var>L_DECIMAL</var></code><code data-if="L_TYPE!=2" ><var>L_INT</var></code><code data-if="L_TYPE==3"><var>fraction(L_NUMERATOR,L_DENOMINATOR)</var></code><code>\rvert</code>
+				與 <code data-if="L_TYPE==2"><var>L_DECIMAL</var></code><code data-if="L_TYPE!=2" ><var>L_INT</var></code><code data-if="L_TYPE==3"><var>fraction(L_NUMERATOR,L_DENOMINATOR)</var></code> 是一組相反數。</p>
+				<div class="graphie">
+					init({
+						range: [ [-1 , 23 ], [-1, 1] ],
+						scale: [ 20, 40 ]
+					});
+			
+					var len = L_TYPE==3?(L_INT>0?-L_INT-L_NUMERATOR / L_DENOMINATOR:-L_INT+L_NUMERATOR / L_DENOMINATOR):(L_TYPE==2?-L_DECIMAL:-L_INT);
+					var originX = 10;
+					var x = 10+len;
+					numberLine( -10,10,2 );
+					style({ stroke: "#6495ED", fill: "#6495ED" });
+					graph.pt = circle( [ x, 0 ], 0.15 );
+					style({ stroke: "#FFA500", fill: "#FFA500", strokeWidth: 3.5, arrows: "->" });
+					path( [ [ originX, 0 ], [ x, 0 ] ] );
+					circle( [ originX, 0 ], 0.10 );
+					
+					var len_opposite = L_TYPE==3?(L_INT>0?L_INT+L_NUMERATOR / L_DENOMINATOR:L_INT-L_NUMERATOR / L_DENOMINATOR):(L_TYPE==2?L_DECIMAL:L_INT);
+					x = 10+len_opposite;
+					style({ stroke: "#6495ED", fill: "#6495ED" });
+					graph.pt = circle( [ x, 0 ], 0.15 );
+					var lengt_op = abs(len_opposite)&lt;2?(len_opposite&gt;0?11.5+len_opposite:8.5+len_opposite):10+len_opposite;
+					label([lengt_op],L_TYPE==3?L_INT+ "\\frac{" + L_NUMERATOR + "}{" + L_DENOMINATOR + "}":(L_TYPE==2?L_DECIMAL:L_INT),"");
+					label([20-lengt_op],L_TYPE==3?"\\lvert"+(L_INT)+"\\frac{" + L_NUMERATOR + "}{" + L_DENOMINATOR + "}"+"\\lvert":(L_TYPE==2?"\\lvert"+(L_DECIMAL)+"\\lvert":"\\lvert"+(L_INT)+"\\lvert"),"");				
+					style({ stroke: "#28AE7B", fill: "#28AE7B", strokeWidth: 3.5, arrows: "->" });
+					path( [ [ originX, 0 ], [ x, 0 ] ] );
+					circle( [ originX, 0 ], 0.10 );
+				</div>
+			</div>
+			<div>
+			    <p><code data-if="M_TYPE==2"><var>M_DECIMAL</var></code><code data-if="M_TYPE!=2" ><var>M_INT</var></code><code data-if="M_TYPE==3"><var>fraction(M_NUMERATOR,M_DENOMINATOR)</var></code>
+				與 <code data-if="M_TYPE==2"><var>-M_DECIMAL</var></code><code data-if="M_TYPE!=2" ><var>-M_INT</var></code><code data-if="M_TYPE==3"><var>fraction(M_NUMERATOR,M_DENOMINATOR)</var></code> 
+				到原點的距離都是 <code data-if="M_TYPE==2"><var>abs(M_DECIMAL)</var></code><code data-if="M_TYPE!=2" ><var>abs(M_INT)</var></code><code data-if="M_TYPE==3"><var>fraction(M_NUMERATOR,M_DENOMINATOR)</var></code> 
+				，所以 <code data-if="M_TYPE==2"><var>M_DECIMAL</var></code><code data-if="M_TYPE!=2" ><var>M_INT</var></code><code data-if="M_TYPE==3"><var>fraction(M_NUMERATOR,M_DENOMINATOR)</var></code>
+				與 <code data-if="M_TYPE==2"><var>-M_DECIMAL</var></code><code data-if="M_TYPE!=2" ><var>-M_INT</var></code><code data-if="M_TYPE==3"><var>fraction(M_NUMERATOR,M_DENOMINATOR)</var></code> 是一組相反數。</p>
+				<div class="graphie">
+					init({
+						range: [ [-1 , 23 ], [-1, 1] ],
+						scale: [ 20, 40 ]
+					});
+			
+					var len = M_TYPE==3?(M_INT>0?M_INT+M_NUMERATOR / M_DENOMINATOR:M_INT-M_NUMERATOR / M_DENOMINATOR):(M_TYPE==2?M_DECIMAL:M_INT);
+					var originX = 10;
+					var x = 10+len;
+					numberLine( -10,10,2 );
+					style({ stroke: "#6495ED", fill: "#6495ED" });
+					graph.pt = circle( [ x, 0 ], 0.15 );
+					style({ stroke: "#FFA500", fill: "#FFA500", strokeWidth: 3.5, arrows: "->" });
+					path( [ [ originX, 0 ], [ x, 0 ] ] );
+					circle( [ originX, 0 ], 0.10 );
+				
+					var len_opposite = M_TYPE==3?(M_INT>0?-M_INT-M_NUMERATOR / M_DENOMINATOR:-M_INT+M_NUMERATOR / M_DENOMINATOR):(M_TYPE==2?-M_DECIMAL:-M_INT);
+					x = 10+len_opposite;
+					style({ stroke: "#6495ED", fill: "#6495ED" });
+					graph.pt = circle( [ x, 0 ], 0.15 );
+					var lengt_op = abs(len_opposite)&lt;2?(len_opposite&gt;0?11.5+len_opposite:8.5+len_opposite):10+len_opposite;
+					label([lengt_op],M_TYPE==3?-M_INT+"\\frac{" + M_NUMERATOR + "}{" + M_DENOMINATOR + "}":(M_TYPE==2?-M_DECIMAL:-M_INT),"");
+					label([20-lengt_op],M_TYPE==3?M_INT+"\\frac{" + M_NUMERATOR + "}{" + M_DENOMINATOR + "}":(M_TYPE==2?M_DECIMAL:M_INT),"");
+					style({ stroke: "#28AE7B", fill: "#28AE7B", strokeWidth: 3.5, arrows: "->" });
+					path( [ [ originX, 0 ], [ x, 0 ] ] );
+					circle( [ originX, 0 ], 0.10 );
+				</div>
+			</div>
+			<div>
+			    <p>我們分別找出題目中 <code>4</code> 個數的相反數後，再來比較大小。</p>
+				<p>我們發現 <code><var>ASC_A[3]</var>&gt;<var>ASC_A[2]</var>&gt;<var>ASC_A[1]</var>&gt;<var>ASC_A[0]</var></code></p>
+		    </div>
+			<div>
+				<p>所以最小的就是 <code data-if="J_TYPE==2&&MIN_VALUE_POSITION==1"><var>J_DECIMAL</var></code><code data-if="J_TYPE!=2&&MIN_VALUE_POSITION==1" ><var>J_INT</var></code><code data-if="J_TYPE==3&&MIN_VALUE_POSITION==1"><var>fraction(J_NUMERATOR,J_DENOMINATOR)</var></code>
+				                   <code data-if="K_TYPE==2&&MIN_VALUE_POSITION==2"><var>K_DECIMAL</var></code><code data-if="K_TYPE!=2&&MIN_VALUE_POSITION==2" ><var>K_INT</var></code><code data-if="K_TYPE==3&&MIN_VALUE_POSITION==2"><var>fraction(K_NUMERATOR,K_DENOMINATOR)</var></code>
+								   <code data-if="L_TYPE==2&&MIN_VALUE_POSITION==3">\lvert<var>L_DECIMAL</var>\rvert</code><code data-if="L_TYPE!=2&&MIN_VALUE_POSITION==3" >\lvert<var>L_INT</var></code><code data-if="L_TYPE==3&&MIN_VALUE_POSITION==3"><var>fraction(L_NUMERATOR,L_DENOMINATOR)</var></code><code data-if="L_TYPE!=2&&MIN_VALUE_POSITION==3">\rvert</code>
+								   <code data-if="M_TYPE==2&&MIN_VALUE_POSITION==4"><var>M_DECIMAL</var></code><code data-if="M_TYPE!=2&&MIN_VALUE_POSITION==4" ><var>M_INT</var></code><code data-if="M_TYPE==3&&MIN_VALUE_POSITION==4"><var>fraction(M_NUMERATOR,M_DENOMINATOR)</var></code> 
+								   的相反數 <code data-if="J_TYPE==2&&MIN_VALUE_POSITION==1"><var>-J_DECIMAL</var></code><code data-if="J_TYPE!=2&&MIN_VALUE_POSITION==1" ><var>-J_INT</var></code><code data-if="J_TYPE==3&&MIN_VALUE_POSITION==1"><var>fraction(J_NUMERATOR,J_DENOMINATOR)</var></code>
+								            <code data-if="K_TYPE==2&&MIN_VALUE_POSITION==2"><var>-K_DECIMAL</var></code><code data-if="K_TYPE!=2&&MIN_VALUE_POSITION==2" ><var>-K_INT</var></code><code data-if="K_TYPE==3&&MIN_VALUE_POSITION==2"><var>fraction(K_NUMERATOR,K_DENOMINATOR)</var></code>
+											<code data-if="L_TYPE==2&&MIN_VALUE_POSITION==3"><var>L_DECIMAL</var></code><code data-if="L_TYPE!=2&&MIN_VALUE_POSITION==3" ><var>L_INT</var></code><code data-if="L_TYPE==3&&MIN_VALUE_POSITION==3"><var>fraction(L_NUMERATOR,L_DENOMINATOR)</var></code>
+											<code data-if="M_TYPE==2&&MIN_VALUE_POSITION==4"><var>-M_DECIMAL</var></code><code data-if="M_TYPE!=2&&MIN_VALUE_POSITION==4" ><var>-M_INT</var></code><code data-if="M_TYPE==3&&MIN_VALUE_POSITION==4"><var>fraction(M_NUMERATOR,M_DENOMINATOR)</var></code> 。
+								   </p>
+			</div>
+        </div>
+		</div>
+    </div>
+</body>
+</html>

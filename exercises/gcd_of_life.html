@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html data-require="math math-format">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>最大公因數的生活應用問題</title>
+
+    <script src="../khan-exercise.js"></script>
+
+</head>
+
+<body>
+
+    <div class="exercise">
+
+	<div class="problems">
+
+		<div id="case1">
+
+			<div class="vars" data-ensure = "J < 1000 && K < 1000">
+
+				<var id="a">randRange(1,3)</var>
+
+				<var id="b">randRange(1,3)</var>
+
+				<var id="d">randRange(1,3)</var>
+
+				<var id="e">randRange(1,3)</var>
+
+				<var id="J">pow(3,a)*pow(5,b)*13</var>
+
+				<var id="K">pow(3,d)*pow(5,e)*11</var>
+
+				<var id="R">getGCD(J,K)</var>
+
+			</div>
+
+
+
+            <p class="question">某校有男生 <code><var>J</var></code> 人、女生 <code><var>K</var></code> 人，若把男女生分別編隊，每隊人數要相等，隊數要最少，請問每隊人數有幾人？</p>
+
+
+
+            <div class="solution" data-type="multiple">
+
+			    <span class="sol" data-forms="integer"><var>R</var></span><code> 人 </code>
+
+            </div>
+
+
+
+            <div class="hints">
+
+			    <div><p>要將男生 <code><var>J</var></code> 人、女生 <code><var>K</var></code> 人分別編隊，且每隊人數要相當，也就是要找出 <code><var>J</var></code> 和 <code><var>K</var></code> 的最大公因數。</p></div>
+
+				<div>
+
+				    <p>首先，我們對 <code><var>J</var></code> 和 <code><var>K</var></code> 進行質因數分解：</p>
+
+					<p><code><var>J</var>=3^{<var>a</var>} \times 5^{<var>b</var>} \times 13</code></p>
+
+					<p><code><var>K</var>=3^{<var>d</var>} \times 5^{<var>e</var>} \times 11</code></p>
+
+				</div>
+
+				<div>
+
+				    <p>所以，<code><var>J</var></code> 和 <code><var>K</var></code> 的最大公因數為：</p>
+
+					<p><code>3^{<var>a</var> 和 <var>d</var> 選擇小的數} \times 5^{<var>b</var> 和 <var>e</var> 選擇小的數}</code></p>
+
+			    </div>
+
+				<div>
+
+					<p><code>=3^{<var>Math.min(a,d)</var>} \times 5^{<var>Math.min(b,e)</var>}</code></p>
+
+					<p><code>=<var>R</var></code></p>
+
+				</div>
+
+				<div><p>因此，本題的答案為 <code class="hint_pink"><var>R</var></code> 。</p></div>
+
+            </div>
+
+		</div>
+
+		
+
+		<div id="case2">
+
+			<div class="vars" data-ensure="J < 1000 && K < 1000">
+
+			    <var id="index_1">randRange(0,4)</var>
+
+			    <var id="index_2">randRange(0,1)</var>
+
+				<var id="a">randRange(1,3)</var>
+
+				<var id="b">randRange(1,3)</var>
+
+				<var id="MN_ARRAY">
+
+				   (function(){
+
+				       var arr = [[11,13],[13,17],[17,19],[19,23],[23,29]];
+
+					   return arr;
+
+				   })()</var>
+
+				<var id="M">MN_ARRAY[index_1][index_2]</var>
+
+				<var id="N">MN_ARRAY[index_1][1-index_2]</var>
+
+				<var id="J">pow(3,a)*pow(5,b)*M</var>
+
+				<var id="K">pow(3,a)*pow(5,b)*N</var>
+
+			</div>
+
+
+
+			<p class="question">某校有男生 <code><var>J</var></code> 人、女生 <code><var>K</var></code> 人，若把男女生分別編隊，每隊人數要相等，隊數要最少，則男、女生各可編成多少隊？</p>
+
+
+
+			<div class="solution" data-type="multiple">
+
+				<code>男生 = \space</code> <span class="sol" data-forms="integer"><var>M</var></span><code> 隊 </code><br>
+
+				<code>女生 = \space</code> <span class="sol" data-forms="integer"><var>N</var></span><code> 隊 </code>
+
+			</div>
+
+
+
+			<div class="hints">
+
+				<div><p>要將男生 <code><var>J</var></code> 人、女生 <code><var>K</var></code> 人分別編隊，且每隊人數要相當，也就是要找出 <code><var>J</var></code> 和 <code><var>K</var></code> 的最大公因數。</p></div>
+
+				<div>
+
+				    <p>首先，我們對 <code><var>J</var></code> 和 <code><var>K</var></code> 進行質因數分解：</p>
+
+					<p><code><var>J</var>=3^{<var>a</var>} \times 5^{<var>b</var>} \times <var>M</var></code></p>
+
+					<p><code><var>K</var>=3^{<var>a</var>} \times 5^{<var>b</var>} \times <var>N</var></code></p>
+
+				</div>
+
+				<div>
+
+				    <p>所以，<code><var>J</var></code> 和 <code><var>K</var></code> 的最大公因數 <code>=3^{<var>a</var>} \times 5^{<var>b</var>}</code> 為每隊人數。</p>
+
+			    </div>
+
+				<div>
+
+					<p>那麼，男生可編為 <code><var>M</var></code> 隊，女生可編為 <code><var>N</var></code> 隊。</p>
+
+				</div>
+
+				<div><p>因此，本題的答案應分別填入 <code class="hint_pink"><var>M</var></code> 和 <code class="hint_pink"><var>N</var></code> 。</p></div>
+
+			</div>
+
+		</div>
+
+		<div id="case3">
+
+			<div class="vars" data-ensure="J < 1000 && K < 1000 && L < 1000">
+
+				 <var id="a">randRange(1,4)</var>
+
+				 <var id="b">randRange(1,4)</var>
+
+				 <var id="J">pow(3,a)*pow(5,b)*5</var>
+
+				 <var id="K">pow(3,a)*pow(5,b)*7</var>
+
+				 <var id="L">pow(3,a)*pow(5,b)*11</var>
+
+				 <var id="R">J/5</var>
+
+			</div>
+
+
+
+			<p class="question">有一三角形的水池，各邊的長分別是 <code><var>J</var></code> 公尺、<code><var>K</var></code> 公尺、<code><var>L</var></code> 公尺，若在池旁的三個頂點各設置一盞路燈，且在三路燈之間，按相等的距離種一棵樹，請問相鄰兩棵樹之間的距離最長為多少公尺？</p>
+
+
+
+			<div class="solution" data-type="multiple">
+
+				<span class="sol" data-forms="integer"><var>R</var></span><code> 公尺 </code>
+
+			</div>
+
+
+
+			<div class="hints">
+
+				<div>
+
+				    <p>要計算相鄰兩棵樹之間的距離最長是多少公尺，我們必須找出 <code><var>J</var></code> 、<code><var>K</var></code> 、<code><var>L</var></code> 三數的最大公因數。</p>
+
+				</div>
+
+				<div>
+
+				    <p>首先，我們對 <code><var>J</var></code> 、 <code><var>K</var></code> 和 <code><var>L</var></code> 進行質因數分解：</p>
+
+					<p><code><var>J</var>=3^{<var>a</var>} \times 5^{<var>b</var>} \times 5</code></p>
+
+					<p><code><var>K</var>=3^{<var>a</var>} \times 5^{<var>b</var>} \times 7</code></p>
+
+					<p><code><var>L</var>=3^{<var>a</var>} \times 5^{<var>b</var>} \times 11</code></p>
+
+				</div>
+
+				<div>
+
+				    <p>所以 <code>(<var>J</var></code> ,<code><var>K</var></code>, <code><var>L</var>)=3^{<var>a</var>} \times 5^{<var>b</var>}</code> 。</p>
+
+				</div>
+
+				<div>
+
+				    <p>經計算，兩棵樹之間最長的距離是 <code><var>R</var></code> 公尺。</p>
+
+				</div>
+
+				<div>
+
+				    <p>因此，本題的答案為 <code class="hint_pink"><var>R</var></code> 。</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		
+
+		<div id="case4">
+
+			<div class="vars" data-ensure="J < 1000 && K < 1000 && L < 1000">
+
+			     <var id="a">randRange(2,4)</var>
+
+				 <var id="b">randRange(1,3)</var>
+
+			     <var id="index">randRange(0,4)</var>
+
+			     <var id="MNP_ARRAY">
+
+				     (function(){
+
+					     var arr = [[4,5,6],[5,6,7],[6,7,8],[7,8,11],[11,13,8]];
+
+					     return arr;
+
+					 })()
+
+			     </var>
+
+				 <var id="M">MNP_ARRAY[index][0]</var>
+
+				 <var id="N">MNP_ARRAY[index][1]</var>
+
+				 <var id="P">MNP_ARRAY[index][2]</var>
+
+				 <var id="J">pow(3,a)*pow(5,b)*M</var>
+
+				 <var id="K">pow(3,a)*pow(5,b)*N</var>
+
+				 <var id="L">pow(3,a)*pow(5,b)*P</var>
+
+				 <var id="R">M+N+P-3</var>
+
+			</div>
+
+
+
+			<p class="question">有一三角形的水池，各邊的長分別是 <code><var>J</var></code> 公尺、<code><var>K</var></code> 公尺、<code><var>L</var></code> 公尺，若在池旁的三個頂點各設置一盞路燈，且在三路燈之間，按相等的距離種一棵樹，請問最少需要種幾棵樹呢？</p>
+
+
+
+			<div class="solution" data-type="multiple">
+
+				<span class="sol" data-forms="integer"><var>R</var></span><code> 棵 </code>
+
+			</div>
+
+
+
+			<div class="hints">
+
+				<div>
+
+				    <p>要計算相鄰兩棵樹之間的距離最長是多少公尺，我們必須找出 <code><var>J</var></code> 、<code><var>K</var></code> 、<code><var>L</var></code> 三數的最大公因數。</p>
+
+				</div>
+
+				<div>
+
+				    <p>首先，我們對 <code><var>J</var></code> 、 <code><var>K</var></code> 和 <code><var>L</var></code> 進行質因數分解：</p>
+
+					<p><code><var>J</var>=3^{<var>a</var>} \times 5^{<var>b</var>} \times <var>M</var></code></p>
+
+					<p><code><var>K</var>=3^{<var>a</var>} \times 5^{<var>b</var>} \times <var>N</var></code></p>
+
+					<p><code><var>L</var>=3^{<var>a</var>} \times 5^{<var>b</var>} \times <var>P</var></code></p>
+
+				</div>
+
+				<div>
+
+				    <p>所以 <code>(<var>J</var></code> ,<code><var>K</var></code>, <code><var>L</var>)=3^{<var>a</var>} \times 5^{<var>b</var>}</code> 。</p>
+
+				</div>
+
+				<div>
+
+				    <p>經計算，兩棵樹之間最長的距離是 <code><var>J/M</var></code> 公尺，因此在邊長為 <code><var>J</var></code> 公尺的這一邊需要種 <code><var>M</var></code> 棵樹，在邊長 <code><var>K</var></code> 公尺的這一邊需要種 <code><var>N</var></code> 棵樹，在邊長 <code><var>L</var></code> 公尺的這一邊需要種 <code><var>P</var></code> 棵樹。但因為三頂點已經設置路燈了，不能種樹，所以最少要種 <code>(<var>M</var>+<var>N</var>+<var>P</var>-3)</code> 棵樹。</p>
+
+				</div>
+
+				<div>
+
+				    <p>因此，本題的答案為 <code class="hint_pink"><var>R</var></code> 。</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	</div>
+
+</body>
+
+</html>
+

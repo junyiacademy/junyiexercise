@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html data-require="math math-format graphie graphie-helpers">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>用符號代表數-解決被乘數或乘數未知的問題</title>
+
+    <script src="../khan-exercise.js"></script>
+
+	<style type="text/css">
+
+        #answer_area .sol input[type=text] {
+
+            width: 30px;
+
+        }
+
+    </style>
+
+	<script type="text/javascript">
+
+	    function accDiv(arg1,arg2){
+
+            var t1=0,t2=0,r1,r2;
+
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+
+            with(Math){
+
+                r1=Number(arg1.toString().replace(".",""))
+
+                r2=Number(arg2.toString().replace(".",""))
+
+                return (r1/r2)*pow(10,t2-t1);
+
+            }
+
+        }
+
+		function accMul(arg1,arg2){
+
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+
+            try{m+=s1.split(".")[1].length}catch(e){}
+
+            try{m+=s2.split(".")[1].length}catch(e){}
+
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+
+        }
+
+        function accAdd(arg1,arg2){
+
+            var r1,r2,m;
+
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+
+            m=Math.pow(10,Math.max(r1,r2))
+
+            return (arg1*m+arg2*m)/m
+
+        }
+
+        function Subtr(arg1,arg2){
+
+            var r1,r2,m,n;
+
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+
+            m=Math.pow(10,Math.max(r1,r2));
+
+            //last modify by deeka
+
+            //动态控制精度长度
+
+            n=(r1>=r2)?r1:r2;
+
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+
+        }
+
+	</script>
+
+</head>
+
+<body>
+
+    <div class="exercise">
+
+    <div class="problems">	
+
+		<div id="case1">
+
+            <div class="vars">
+
+				<var id="J">randRange(4,20)</var>
+
+				<var id="A">randRange(5,50)</var>
+
+				<var id="K">J*A</var>
+
+				<var id="names">randFromArray([["盒","餅乾","片"],["包","糖果","顆"],["箱","蘋果","個"],["盒","鉛筆","支"]])</var>
+
+            </div>
+
+            <p class="question">一<var>names[0]+names[1]</var>有 <code><var>J</var></code> <var>names[2]</var>，幾<var>names[0]+names[1]</var>合起來有 <code><var>K</var></code> <var>names[2]</var>？</p>
+
+			<div class="solution" data-type="multiple">
+
+				<span class="sol" data-forms="integer"><var>A</var></span><code>\enspace<var>names[0]</var></code>
+
+			</div>
+
+            <div class="hints">
+
+				<p>現在我們不知道<var>names[1]</var>到底有幾<var>names[0]</var>，所以先用 <code>B</code> <var>names[0]</var>來表示，</p>
+
+				<p>我們可以列出 <code><var>J</var>\times B=<var>K</var></code> 的式子，</p>
+
+				<p>要算出 <code>B</code> 等於多少，我們可以用 <code><var>K</var>\div<var>J</var></code> 就能算出 <code>B</code> 了。</p>
+
+				<p>因此，本題的答案為 <code><var>K</var>\div<var>J</var>=</code><code class="hint_pink"><var>A</var></code> 。</p>
+
+            </div>
+
+        </div>
+
+		
+
+		<div id="case2">
+
+            <div class="vars" data-ensure="K&lt;=100&&K&gt;=4">
+
+				<var id="J">randRange(4,20)</var>
+
+				<var id="A">randRange(0,24)+randRange(1,10)/10</var>
+
+				<var id="K">accMul(A,J)</var>
+
+				<var id="names">randFromArray([["綑","繩子"],["條","緞帶"],["條","棉線"],["根","木頭"]])</var>
+
+            </div>
+
+            <p class="question">一<var>names[0]+names[1]</var>長幾公尺時，<code><var>J</var></code> <var>names[0]</var>就會長 <code><var>K</var></code> 公尺？</p>
+
+			<div class="solution" data-type="multiple">
+
+				<span class="sol" data-type="rational"><var>A</var></span><code>\enspace 公尺</code>
+
+			</div>
+
+            <div class="hints">
+
+				<p>根據題目的敘述我們可列出 <code>(\enspace\enspace\enspace\enspace)\times<var>J</var>=<var>K</var></code></p>
+
+				<p>要算出 <code>(\enspace\enspace\enspace\enspace)</code> 等於多少時，我們可以思考如 <code>(\enspace\enspace\enspace\enspace)\times 2=6</code> 時，</p>
+
+				<p>用 <code>6</code> 除以 <code>2=3</code> ，<code>3\times 2=6</code> 來得知 <code>(\enspace\enspace\enspace\enspace)=3</code>。</p>
+
+				<div>
+
+					<p>所以當我們知道 <code>(\enspace\enspace\enspace\enspace)\times<var>J</var>=<var>K</var></code> ，要算出 <code>(\enspace\enspace\enspace\enspace)</code> 等於多少時，</p>
+
+					<p>我們可以用 <code><var>K</var>\div<var>J</var></code> 算出 <code>(\enspace\enspace\enspace\enspace)=<var>A</var></code> 公尺。</p>
+
+				</div>
+
+				<p>因此，本題的答案為 <code class="hint_pink"><var>A</var></code> 公尺。</p>
+
+            </div>
+
+        </div>
+
+		
+
+	</div>
+
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie time word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>認識大數，並作位值單位換算 (含億、兆)</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .short input[type=text] {
+            width: 30px;
+        }
+        #answer_area input[type=text] {
+            width: 40px;
+        }
+        .ttable {
+            text-align: left;
+            margin-top: 20px;
+            margin-left: 5px;
+        }
+
+        .ttable tr {
+            height: 23px;
+        }
+
+        .ttable td {
+            padding: 0px 5px;
+            text-align: right;
+        }
+
+        .ttable .labels td {
+            padding-left: 5px;
+            text-align: left;
+            border-bottom: 2px solid black;
+			font-size:15px;
+        }
+
+        .ttable .cross-bar td {
+            padding-top: 5px;
+        }
+
+        .ttable .second-col {
+            border-left: 2px solid black;
+        }
+
+        .ttable .third-col {
+            border-left: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div class="case1">
+                <div class="vars">
+                    <var id="MAP">[5, 50, 500, 5000, 50000, 500000]</var>
+                    <var id="LEFTDIGIT5">5</var>
+                    <var id="RIGHTDIGIT5">randRange(0, 4)</var>
+                    <var id="ALLDIGITS">
+                        (function() {
+                            var result = [];
+                            var dummy = 0;
+                            for (var i = 0; i &lt; 5; i++) {
+                                if (i == RIGHTDIGIT5) {
+                                    result[i] = 5;
+                                } else {
+                                    result[i] = randRangeExclude(0, 9, [5]);
+                                }
+                            }
+                            result[5] = 5;
+                            return result;
+                        })()
+                    </var>
+                    <var id="TARGET">
+                        (function() {
+                            var result = 0;
+                            for ( var i = 0; i &lt; 6; i++ ) {
+                                result = result + ALLDIGITS[i]*Math.pow(10, i);
+                            }
+                            return result;
+                        })()
+                    </var>
+                </div>
+                <p class="question"><var>TARGET</var>中最左邊的「５」是最右邊的「５」的多少倍？</p>
+                <div class="solution" data-type="multiple">
+                    <p><span class="sol" data-forms="integer"><var>pow(10, (LEFTDIGIT5 - RIGHTDIGIT5))</var></span>倍</p>
+                    <p class="example">整數，例：6</p>
+                </div>
+                <div class="hints">
+                    <p>在<var>TARGET</var>中</p>
+                    <p>最左邊的5代表<var>5 * pow(10, LEFTDIGIT5)</var></p>
+                    <p>最右邊的5代表<var>5 * pow(10, RIGHTDIGIT5)</var></p>
+                    <p><code><var>5 * pow(10, LEFTDIGIT5)</var>是<var>5 * pow(10, RIGHTDIGIT5)</var>的 \color{#F62217}{<var>pow(10, (LEFTDIGIT5 - RIGHTDIGIT5))</var>倍}</code></p>
+                </div>
+            </div>
+            <div class="case2">
+                <div class="vars">
+                    <var id="NUMBER">randFromArray(["20", "30", "40", "50", "60", "70", "80", "90"])</var>
+                    <var id="PRODUCT">NUMBER * 10</var>
+                </div>
+                <p class="question"><var>NUMBER</var>個十萬是幾萬？</p>
+                <div class="solution" data-type="multiple">
+                    <p><span class="sol" data-forms="integer"><var>PRODUCT</var></span>萬</p>
+                    <p class="example">整數，例：6</p>
+                </div>
+                <div class="hints">
+                    <table class="ttable">
+                        <tr class="labels">
+                            <td><code>百萬位</code></td>
+                            <td class="second-col"><code>\color{#F62217}{十萬位}</code></td>
+                            <td class="second-col"><code>萬位</code></td>
+                            <td class="second-col"><code>千位</code></td>
+                            <td class="second-col"><code>百位</code></td>
+                            <td class="second-col"><code>十位</code></td>
+                            <td class="second-col"><code>個位</code></td>
+                        </tr>
+                        <tr class="cross-bar">
+                            <td><code>\color{#F62217}{<var>NUMBER/10</var>}</code></td>
+                            <td class="second-col"><code>\color{#F62217}{0}</code></td>
+                            <td class="second-col"><code>0</code></td>
+                            <td class="second-col"><code>0</code></td>
+                            <td class="second-col"><code>0</code></td>
+                            <td class="second-col"><code>0</code></td>
+                            <td class="second-col"><code>0</code></td>
+                        </tr>
+                    </table>
+                    <p><code><var>NUMBER</var> 個十萬代表 \color{#F62217}{<var>PRODUCT</var>} 萬</code></p>                </div>
+            </div>
+            <div class="case3">
+                <div class="vars">
+                    <var id="NUMBER">randRange(11, 99)</var>
+                    <var id="K1">parseInt(NUMBER / 10)</var>
+                    <var id="K2">NUMBER % 10</var>
+                </div>
+                <p class="question"><var>NUMBER</var> 個 100 萬有幾個千萬和幾個百萬？</p>
+                <div class="solution" data-type="multiple">
+                    <p><span class="sol" data-forms="integer"><var>K1</var></span> 個千萬和</p>
+                    <p><span class="sol" data-forms="integer"><var>K2</var></span> 個百萬。</p>
+                    <p class="example">整數，例：6</p>
+                </div>
+                <div class="hints">
+                    <table class="ttable">
+                        <tr class="labels">
+                            <td><code>千萬位</code></td>
+                            <td class="second-col"><code>\color{#F62217}{百萬位}</code></td>
+                            <td class="second-col"><code>十萬位</code></td>
+                            <td class="second-col"><code>萬位</code></td>
+                            <td class="second-col"><code>千位</code></td>
+                            <td class="second-col"><code>百位</code></td>
+                            <td class="second-col"><code>十位</code></td>
+                            <td class="second-col"><code>個位</code></td>
+                        </tr>
+                        <tr class="cross-bar">
+                            <td><code>\color{#F62217}{<var>K1</var>}</code></td>
+                            <td class="second-col"><code>\color{#F62217}{<var>K2</var>}</code></td>
+                            <td class="second-col"><code>0</code></td>
+                            <td class="second-col"><code>0</code></td>
+                            <td class="second-col"><code>0</code></td>
+                            <td class="second-col"><code>0</code></td>
+                            <td class="second-col"><code>0</code></td>
+                            <td class="second-col"><code>0</code></td>
+                        </tr>
+                    </table>
+                    <p><code>\color{#F62217}{<var>K1</var>} 個千萬和 \color{#F62217}{<var>K2</var>} 個百萬。</code></p>
+                </div>
+            </div>
+            <div class="case4">
+                <div class="vars">
+                    <var id="MAP">[5, 50, 500, 5000, 50000, 500000, 5000000, 50000000, 500000000]</var>
+                    <var id="LEFTDIGIT5">8</var>
+                    <var id="RIGHTDIGIT5">randRange(0, 7)</var>
+                    <var id="ALLDIGITS">
+                        (function() {
+                        var result = [];
+                        var dummy = 0;
+                        for (var i = 0; i &lt; 8; i++) {
+                        if (i == RIGHTDIGIT5) {
+                        result[i] = 5;
+                        } else {
+                        result[i] = randRangeExclude(0, 9, [5]);
+                        }
+                        }
+                        result[8] = 5;
+                        return result;
+                        })()
+                    </var>
+                    <var id="TARGET">
+                        (function() {
+                        var result = 0;
+                        for ( var i = 0; i &lt; 9; i++ ) {
+                        result = result + ALLDIGITS[i]*Math.pow(10, i);
+                        }
+                        return result;
+                        })()
+                    </var>
+                </div>
+                <p class="question"><var>TARGET</var>中最左邊的「５」是最右邊的「５」的多少倍？</p>
+                <div class="solution" data-type="multiple">
+                    <p><span class="sol" data-forms="integer"><var>pow(10, (LEFTDIGIT5 - RIGHTDIGIT5))</var></span>倍</p>
+                    <p class="example">整數，例：6</p>
+                </div>
+                <div class="hints">
+                    <p>在<var>TARGET</var>中</p>
+                    <p>最左邊的5代表<var>5 * pow(10, LEFTDIGIT5)</var></p>
+                    <p>最右邊的5代表<var>5 * pow(10, RIGHTDIGIT5)</var></p>
+                    <p><code><var>5 * pow(10, LEFTDIGIT5)</var>是<var>5 * pow(10, RIGHTDIGIT5)</var>的 \color{#F62217}{<var>pow(10, (LEFTDIGIT5 - RIGHTDIGIT5))</var>倍}</code></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

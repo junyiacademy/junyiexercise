@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers expressions interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>在具體情境中解決兩步驟問題，並學習併式的記法與計算(4-n-04)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+        </style>
+		<script type="text/javascript">
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+	 <div id="case1">
+            <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="a">randRange(60,100)</var>
+				<var id="b">randRange(35,55)</var>
+				<var id="c">randRange(100,150)</var>
+				<var id="name">randFromArray(["爺爺","奶奶","爸爸","媽媽"])</var>
+				<var id="a_add_b">accAdd(a,b)</var>
+				<var id="a_add_c">accAdd(a,c)</var>
+				<var id="b_add_c">accAdd(b,c)</var>
+				<var id="add">accAdd(a_add_b,c)</var>
+			</div>
+			
+			<p class="question">先寫成一個算式，再算算看</p>
+			<div class="problem">
+				<p><var>name</var>到超市買了一瓶鮮奶 <code><var>a</var></code> 元，一條土司 <code><var>b</var></code> 元，一串衛生紙 <code><var>c</var></code> 元，<var>name</var>一共花了多少元？</p>
+				<p><code>\enspace</code><code>\enspace</code><code>\enspace</code><input type="text" id="a_1" style="width:30px"><code>\enspace+\enspace</code><input type="text" id="a_2" style="width:30px"><code>\enspace</code><code>+</code><code>\enspace</code><input type="text" id="a_3" style="width:30px"></p>
+				<p><code>=</code><code>\enspace</code><input type="text" id="a_4" style="width:30px"><code>\enspace</code><code>+</code><code>\enspace</code><input type="text" id="a_5" style="width:30px"></p>
+				<p><code>=</code><code>\enspace</code><input type="text" id="a_6" style="width:30px"></p>
+				<p>請在上面空格填入適當答案。</p>
+			</div>
+            <div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value]</div>
+				    <div class="validator-function">
+						var bol1=false;
+						var bol2=false;
+						var bol3=false;
+						if((guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==b&&guess[2].replace(/[ ]/g,"")==c)||(guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==c&&guess[2].replace(/[ ]/g,"")==b)||(guess[0].replace(/[ ]/g,"")==b&&guess[1].replace(/[ ]/g,"")==a&&guess[2].replace(/[ ]/g,"")==c)||(guess[0].replace(/[ ]/g,"")==b&&guess[1].replace(/[ ]/g,"")==c&&guess[2].replace(/[ ]/g,"")==a)||(guess[0].replace(/[ ]/g,"")==c&&guess[1].replace(/[ ]/g,"")==b&&guess[2].replace(/[ ]/g,"")==a)||(guess[0].replace(/[ ]/g,"")==c&&guess[1].replace(/[ ]/g,"")==a&&guess[2].replace(/[ ]/g,"")==b))
+						{
+							bol1=true;
+						}
+						if((guess[3].replace(/[ ]/g,"")==a_add_b&&guess[4].replace(/[ ]/g,"")==c) || (guess[3].replace(/[ ]/g,"")==b_add_c&&guess[4].replace(/[ ]/g,"")==a) || (guess[3].replace(/[ ]/g,"")==a_add_c&&guess[4].replace(/[ ]/g,"")==b))
+						{
+							bol2=true;
+						}
+						if(guess[5].replace(/[ ]/g,"")==add)
+						{
+						bol3=true;
+						}
+						return bol1&&bol2&&bol3;
+                    </div>
+				</div>
+				<p class="example">答案填入框中，整數，例如 <code>6</code></p>
+            </div>
+			
+			<div class="hints">
+			<p><code>\enspace</code><code>\enspace</code><code>\enspace</code><code class="hint_pink"><var>a</var>+<var>b</var>+<var>c</var></code></p>
+			<p><code class="hint_pink">=<code>\enspace</code><var>a_add_b</var>+<var>c</var></code></p>
+			<p><code class="hint_pink">=<code>\enspace</code><var>add</var></code></p>
+			<p><var>name</var>總共花了 <code class="hint_pink"><var>add</var></code> 元。</p>
+            </div>
+		</div>
+		
+		<div id="case2">
+            <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="a">randRange(30,50)</var>
+				<var id="b">randRange(10,15)</var>
+				<var id="c">randRange(10,20)</var>
+				<var id="a_add_b">accAdd(a,b)</var>
+				<var id="sub">Subtr(a_add_b,c)</var>
+			</div>
+			
+			<p class="question">先寫成一個算式，再算算看</p>
+			<div class="problem">
+				<p>公車上原來有 <code><var>a</var></code> 人，到快樂國小上來 <code><var>b</var></code> 人，到火車站又下去 <code><var>c</var></code> 人，公車上現在有多少人？</p>
+				<p><code>\enspace</code><code>\enspace</code><code>\enspace</code><input type="text" id="a_1" style="width:30px"><code><code>\enspace</code>+<code>\enspace</code></code><input type="text" id="a_2" style="width:30px"><code>\enspace</code><code>-</code><code>\enspace</code><input type="text" id="a_3" style="width:30px"></p>
+				<p><code>=</code><code>\enspace</code><input type="text" id="a_4" style="width:30px"><code><code>\enspace</code>-<code>\enspace</code></code><input type="text" id="a_5" style="width:30px"></p>
+				<p><code>=</code><code>\enspace</code><input type="text" id="a_6" style="width:30px"></p>
+				<p>請在上面空格填入適當答案。</p>
+			</div>
+            <div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value]</div>
+				    <div class="validator-function">
+						var bol1=false;
+						var bol2=false;
+						var bol3=false;
+						if((guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==b&&guess[2].replace(/[ ]/g,"")==c)||(guess[0].replace(/[ ]/g,"")==b&&guess[1].replace(/[ ]/g,"")==a&&guess[2].replace(/[ ]/g,"")==c))
+						{
+							bol1=true;
+						}
+						if((guess[3].replace(/[ ]/g,"")==a_add_b&&guess[4].replace(/[ ]/g,"")==c))
+						{
+							bol2=true;
+						}
+						if(guess[5].replace(/[ ]/g,"")==sub)
+						{
+						bol3=true;
+						}
+						return bol1&&bol2&&bol3;
+                    </div>
+				</div>
+				<p class="example">答案填入框中，整數，例如 <code>6</code></p>
+            </div>
+			
+			<div class="hints">
+			<p><code class="hint_pink"><code>\enspace</code><code>\enspace</code><code>\enspace</code><var>a</var><code>\enspace</code>+<code>\enspace</code><var>b</var>-<var>c</var></code></p>
+			<p><code class="hint_pink">=<code>\enspace</code><var>a_add_b</var><code>\enspace</code>-<code>\enspace</code><var>c</var></code></p>
+			<p><code class="hint_pink">=<code>\enspace</code><var>sub</var></code></p>
+			<p>公車上現在還有 <code class="hint_pink"><var>sub</var></code> 人。</p>
+            </div>
+		</div>
+		
+        <div id="case3">
+            <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="a">randRange(230,250)</var>
+				<var id="b">randRange(110,125)</var>
+				<var id="c">randRange(70,90)</var>
+				<var id="a_sub_b">Subtr(a,b)</var>
+				<var id="add">accAdd(a_sub_b,c)</var>
+			</div>
+			
+			<p class="question">先寫成一個算式，再算算看</p>
+			<div class="problem">
+				<p>捷運列車上原來有 <code><var>a</var></code> 人，到台北車站後先下去了 <code><var>b</var></code> 人，又上來 <code><var>c</var></code> 人，現在捷運列車上還有多少人？</p>
+				<p><code>\enspace</code><code>\enspace</code><code>\enspace</code><input type="text" id="a_1" style="width:30px"><code>\enspace</code><code>-</code><code>\enspace</code><input type="text" id="a_2" style="width:30px"><code>\enspace</code><code>+</code><code>\enspace</code><input type="text" id="a_3" style="width:30px"></p>
+				<p><code>=</code><code>\enspace</code><input type="text" id="a_4" style="width:30px"><code>\enspace</code><code>+</code><code>\enspace</code><input type="text" id="a_5" style="width:30px"></p>
+				<p><code>=</code><code>\enspace</code><input type="text" id="a_6" style="width:30px"></p>
+				<p>請在上面空格填入適當答案。</p>
+			</div>
+            <div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value]</div>
+				    <div class="validator-function">
+						var bol1=false;
+						var bol2=false;
+						var bol3=false;
+						if(guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==b&&guess[2].replace(/[ ]/g,"")==c)
+						{
+							bol1=true;
+						}
+						if((guess[3].replace(/[ ]/g,"")==a_sub_b&&guess[4].replace(/[ ]/g,"")==c))
+						{
+							bol2=true;
+						}
+						if(guess[5].replace(/[ ]/g,"")==add)
+						{
+						bol3=true;
+						}
+						return bol1&&bol2&&bol3;
+                    </div>
+				</div>
+				<p class="example">答案填入框中，整數，例如 <code>6</code></p>
+			</div>
+			<div class="hints">
+				<p><code class="hint_pink"><code>\enspace</code><code>\enspace</code><code>\enspace</code><var>a</var><code>\enspace</code>-<code>\enspace</code><var>b</var><code>\enspace</code>+<code>\enspace</code><var>c</var></code></p>
+				<p><code class="hint_pink">=<code>\enspace</code><var>a_sub_b</var><code>\enspace</code>+<code>\enspace</code><var>c</var></code></p>
+				<p><code class="hint_pink">=<code>\enspace</code><var>add</var></code></p>
+				<p>捷運列車上目前還有 <code class="hint_pink"><var>add</var></code> 人。</p>
+            </div>
+		</div>
+		
+		<div id="case4">
+            <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="a">randRange(1400,2000)</var>
+				<var id="b">randRange(600,800)</var>
+				<var id="c">randRange(370,490)</var>
+				<var id="a_sub_b">Subtr(a,b)</var>
+				<var id="a_sub_c">Subtr(a,c)</var>
+				<var id="sub">Subtr(a_sub_b,c)</var>
+			</div>
+			
+			<div class="problem">
+				<p>阿傑帶 <code><var>a</var></code> 元到百貨公司，買褲子花了 <code><var>b</var></code> 元，買上衣花了 <code><var>c</var></code> 元，阿傑還剩多少錢？</p>
+				<p><code>\enspace</code><code>\enspace</code><code>\enspace</code><input type="text" id="a_1" style="width:30px"><code>\enspace</code><code>-</code><code>\enspace</code><input type="text" id="a_2" style="width:30px"><code>\enspace</code><code>-</code><code>\enspace</code><input type="text" id="a_3" style="width:30px"></p>
+				<p><code>=</code><code>\enspace</code><input type="text" id="a_4" style="width:30px"><code><code>\enspace</code>-<code>\enspace</code></code><input type="text" id="a_5" style="width:30px"></p>
+				<p><code>=</code><code>\enspace</code><input type="text" id="a_6" style="width:30px"></p>
+				<p>請在上面空格填入適當答案。</p>
+			</div>
+            <div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value]</div>
+				    <div class="validator-function">
+						var bol1=false;
+						var bol2=false;
+						var bol3=false;
+						if((guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==b&&guess[2].replace(/[ ]/g,"")==c)||(guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==c&&guess[2].replace(/[ ]/g,"")==b))
+						{
+							bol1=true;
+						}
+						if((guess[3].replace(/[ ]/g,"")==a_sub_b&&guess[4].replace(/[ ]/g,"")==c)||(guess[3].replace(/[ ]/g,"")==a_sub_c&&guess[4].replace(/[ ]/g,"")==b))
+						{
+							bol2=true;
+						}
+						if(guess[5].replace(/[ ]/g,"")==sub)
+						{
+						bol3=true;
+						}
+						return bol1&&bol2&&bol3;
+                    </div>
+				</div>
+				<p class="example">答案填入框中，整數，例如 <code>6</code></p>
+			</div>
+			<div class="hints">
+				<p><code class="hint_pink"><code>\enspace</code><code>\enspace</code><var>a</var><code>\enspace</code>-<code>\enspace</code><var>b</var><code>\enspace</code>-<code>\enspace</code><var>c</var></code></p>
+				<p><code class="hint_pink">=<code>\enspace</code><var>a_sub_b</var><code>\enspace</code>-<code>\enspace</code><var>c</var></code></p>
+				<p><code class="hint_pink">=<code>\enspace</code><var>sub</var></code></p>
+				<p>阿傑還剩 <code class="hint_pink"><var>sub</var></code> 元。</p>
+            </div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

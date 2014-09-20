@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html data-require="math graphie time">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>理解旋轉角4-s-05</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        
+    </style>
+</head>
+<script>
+    
+</script>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars">
+                    <var id="data">
+                        (function(){
+                            var target=randRange(2,11);
+                            return target;
+                        })()
+                    </var>
+                </div>
+                <div class="question">
+					<p class="question">鐘面上，指針從 <code>12</code> 開始轉。</p>
+					<p>轉到 <code><var>data</var></code> ，是轉了幾度？</p>
+				</div>
+                <div class="problem">
+                    <div class="graphie" id="graph">
+                        init({ range: [ [-4, 4 ], [ -4, 4 ] ]});
+                        circle([0,0],3.5,{fill:'#ffffcc'});
+                        clock=addAnalogClock({ minuteTicks: 60 ,hourTickLength: 0.85});
+                        clock.draw();
+                        graph.drawArcArrow=function(center,radius,start,end,direction)
+                        {
+                            var endAng=start;
+                            var arrowLength=0.2;
+                            if(direction=="clockwise")
+                            {
+                                endAng=end;
+                                arrowLength=-0.2;
+                            }
+                            var endCoord=[center[0]+Math.cos(endAng*Math.PI/180)*radius,center[1]+Math.sin(endAng*Math.PI/180)*radius];
+                            arc(center,radius,start,end);
+                            line(endCoord,[endCoord[0]+Math.cos((endAng-45)*Math.PI/180+Math.PI/2)*arrowLength,endCoord[1]+Math.sin((endAng-45)*Math.PI/180+Math.PI/2)*arrowLength]);
+                            line(endCoord,[endCoord[0]+Math.cos((endAng+45)*Math.PI/180+Math.PI/2)*arrowLength,endCoord[1]+Math.sin((endAng+45)*Math.PI/180+Math.PI/2)*arrowLength]);
+                        }
+
+                        var endAngle=data*30;
+                        var arcCoord=polar(0.4,(180-endAngle)/2);
+                        circle([0,0],3.5,{stroke:'#006699',"stroke-width":4});
+                        line([0,0],[0,2.2],{stroke:'red',"stroke-dasharray": "-","stroke-width":3,arrows:"->"});
+                        line([0,0],polar(2.2,90-endAngle),{stroke:'red',"stroke-width":3,arrows:"->"});
+                        circle([0,0],0.07,{fill:'black'});
+                        style({stroke:'red'});
+                        graph.drawArcArrow([0,0],1.4,90-endAngle+5,85,"anticlockwise");　
+                    </div>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <span class="sol" style="width:50px;" data-forms="integer"><var>data*30</var></span><code>\enspace</code>度
+                </div>
+                <div class="hints">
+                    <p><code>1.</code> 指針轉一圈是轉了 <code>360</code> 度，我們稱 <code>360</code> 度的角是<b>周角</b>。</p>
+                    <p><code>2.</code> 整個時鐘共分成 <code>12</code> 大格。所以 <code>1</code> 大格是 <code>30</code> 度。</p>
+                    <p>&nbsp;&nbsp;從 <code>12</code> 轉到 <code><var>data</var></code> 是 <code><var>data</var></code> 大格，</p>
+					<p>所以轉了 <code><var>30</var>\times<var>data</var>=\color{#FF00AF}{<var>30*data</var>}</code> 度。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

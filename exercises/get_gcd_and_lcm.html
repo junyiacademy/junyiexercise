@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能用短除法求兩數的最大公因數、最小公倍數(6-n-02)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+		table.nLimit{margin:5px ;border:1px }
+		table.nLimit td { width:300px;border: 1px solid #AAA;font-size:15px;padding: 5px;}
+        </style>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="arr">randFromArray([[54,63,3,3],[12,16,2,2],[30,45,3,5],[20,32,2,2],[30,36,2,3],[20,24,2,2]])</var>
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+			</div>
+			<p class="question">請用短除法找出 <code><var>arr[0]</var></code> 和 <code><var>arr[1]</var></code> 的最大公因數，填填看。</p>
+			<div class="problem">
+				<div class="graphie" id="gcd">
+					init({
+                        range: [ [-5, 5], [-2, 2] ],
+                        scale: 40
+                    });
+					label([-3,1],"A","left");
+					label([-2.5,-0.2],"B","left");
+					line([-2.5,1.5],[-2.5,0.5]);
+					line([-2.5,0.5],[1.5,0.5]);
+					label([-1,1],arr[0],"center");
+					label([0.5,1],arr[1],"center");
+					line([-1.75,-0.5],[-1.75,0.5]);
+					line([-1.75,-0.5],[1.5,-0.5]);
+					
+					label([-1,0],arr[0]/arr[2],"center");
+					label([0.5,0],arr[1]/arr[2],"center");
+					label([-1,-1],arr[0]/arr[2]/arr[3],"center");
+					label([0.5,-1],arr[1]/arr[2]/arr[3],"center");
+				</div>
+				<p><code>A=</code> <input type="text" id="a_8" style="width:30px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <code>B=</code> <input type="text" id="a_9" style="width:30px"></p>
+				<p><code><var>arr[0]</var>=</code> <input type="text" id="a_1" style="width:30px"> <code class="hint_red">\times</code> <input type="text" id="a_2" style="width:30px"> <code>\times<var>arr[0]/arr[2]/arr[3]</var></code> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <code><var>arr[1]</var>=</code> <input type="text" id="a_3" style="width:30px"> <code class="hint_red">\times</code> <input type="text" id="a_4" style="width:30px"> <code>\times<var>arr[1]/arr[2]/arr[3]</var></code></p>
+				<p><input type="text" id="a_5" style="width:30px"> <code class="hint_red">\times</code> <input type="text" id="a_6" style="width:30px"> <code>=<var>arr[2]*arr[3]</var></code></p>
+				<p><input type="text" id="a_7" style="width:30px"> 是 <code><var>arr[0]</var></code> 和 <code><var>arr[1]</var></code> 的最大公因數</p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="guess">[$("#a_1").val(),$("#a_2").val(),$("#a_3").val(),$("#a_4").val(),$("#a_5").val(),$("#a_6").val(),$("#a_7").val(),$("#a_8").val(),$("#a_9").val()]</div>
+				    <div class="validator-function">
+						var bol_1 = false;
+						var bol_2 = false;
+						var bol_3 = false;
+						var bol_4 = false;
+						if(guess[7].replace(/[ ]/g,"")==arr[2]&&guess[8].replace(/[ ]/g,"")==arr[3]){
+							bol_1 = true;
+						}
+						if((guess[0].replace(/[ ]/g,"")==arr[2]&&guess[1].replace(/[ ]/g,"")==arr[3])||(guess[0].replace(/[ ]/g,"")==arr[3]&&guess[1].replace(/[ ]/g,"")==arr[2])){
+							bol_2 = true;
+						}
+						if((guess[2].replace(/[ ]/g,"")==arr[2]&&guess[3].replace(/[ ]/g,"")==arr[3])||(guess[2].replace(/[ ]/g,"")==arr[3]&&guess[3].replace(/[ ]/g,"")==arr[2])){
+							bol_3 = true;
+						}
+						if((guess[4].replace(/[ ]/g,"")==arr[2]&&guess[5].replace(/[ ]/g,"")==arr[3])||(guess[4].replace(/[ ]/g,"")==arr[3]&&guess[5].replace(/[ ]/g,"")==arr[2])){
+							bol_4 = true;
+						}
+						if(guess[6].replace(/[ ]/g,"")==arr[2]*arr[3] && bol_1 && bol_2 && bol_3 && bol_4){
+							return true;
+						}
+					</div>
+				</div>
+				<p class="example">在填空处寫上正確的整數</p>
+			</div>
+			<div class="hints">
+				<div class="graphie" id="gcd_hint">
+					init({
+                        range: [ [-5, 5], [-2, 2] ],
+                        scale: 40
+                    });
+					label([-3,1],arr[2],"left",{color:"red"});
+					label([-2.5,-0.2],arr[3],"left",{color:"red"});
+					line([-2.5,1.5],[-2.5,0.5]);
+					line([-2.5,0.5],[1.5,0.5]);
+					label([-1,1],arr[0],"center");
+					label([0.5,1],arr[1],"center");
+					line([-1.75,-0.5],[-1.75,0.5]);
+					line([-1.75,-0.5],[1.5,-0.5]);
+					
+					label([-1,0],arr[0]/arr[2],"center");
+					label([0.5,0],arr[1]/arr[2],"center");
+					label([-1,-1],arr[0]/arr[2]/arr[3],"center");
+					label([0.5,-1],arr[1]/arr[2]/arr[3],"center");
+				</div>
+				<p><code><var>arr[0]</var>=</code> <code class="hint_red"><var>arr[2]</var>\times<var>arr[3]</var></code> <code>\times<var>arr[0]/arr[2]/arr[3]</var></code> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <code><var>arr[1]</var>=</code> <code class="hint_red"><var>arr[2]</var>\times<var>arr[3]</var></code> <code>\times<var>arr[1]/arr[2]/arr[3]</var></code></p>
+				<p><code class="hint_red"><var>arr[2]</var>\times<var>arr[3]</var></code> <code>=<var>arr[2]*arr[3]</var></code></p>
+				<p>所以 <code class="hint_pink"><var>arr[2]*arr[3]</var></code> 是 <code><var>arr[0]</var></code> 和 <code><var>arr[1]</var></code> 的最大公因數。</p>
+			</div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="arr">randFromArray([[12,15,3],[16,18,2],[14,26,2],[15,25,5],[26,39,13]])</var>
+				<var id="lcm">getLCM(arr[0],arr[1])</var>
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+			</div>
+			<p class="question">請用短除法找出 <code><var>arr[0]</var></code> 和 <code><var>arr[1]</var></code> 的最小公倍數，填填看。</p>
+			<div class="problem">
+				<div class="graphie" id="lcm">
+					init({
+                        range: [ [-5, 5], [-1, 2] ],
+                        scale: 40
+                    });
+					label([-3,1],"A","left");
+					line([-2.5,1.5],[-2.5,0.5]);
+					line([-2.5,0.5],[1.5,0.5]);
+					label([-1,1],arr[0],"center");
+					label([0.5,1],arr[1],"center");
+					label([-1,0],arr[0]/arr[2],"center");
+					label([0.5,0],arr[1]/arr[2],"center");
+				</div>
+				<p><code>A=</code> <input type="text" id="a_1" style="width:30px"></p>
+				<p><code><var>arr[0]</var>=</code> <input type="text" id="a_2" style="width:30px"> <code>\times</code> <code><var>arr[0]/arr[2]</var></code> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <code><var>arr[1]</var>=</code> <input type="text" id="a_3" style="width:30px"> <code>\times</code> <code><var>arr[1]/arr[2]</var></code></p>
+				<p><input type="text" id="a_4" style="width:30px"> <code>\times</code> <code><var>arr[0]/arr[2]</var>\times<var>arr[1]/arr[2]</var>=<var>lcm</var></code></p>
+				<p><input type="text" id="a_5" style="width:30px"> 是 <code><var>arr[0]</var></code> 和 <code><var>arr[1]</var></code> 的最小公倍數</p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="guess">[$("#a_1").val(),$("#a_2").val(),$("#a_3").val(),$("#a_4").val(),$("#a_5").val()]</div>
+				    <div class="validator-function">
+						if(guess[0].replace(/[ ]/g,"")==arr[2] && guess[1].replace(/[ ]/g,"")==arr[2] && guess[2].replace(/[ ]/g,"")==arr[2] && guess[3].replace(/[ ]/g,"")==arr[2] && guess[4].replace(/[ ]/g,"")==lcm){
+							return true;
+						}
+					</div>
+				</div>
+				<p class="example">在填空处寫上正確的整數</p>
+			</div>
+			<div class="hints">
+				<div class="graphie" id="lcm_hint">
+					init({
+                        range: [ [-5, 5], [-1, 2] ],
+                        scale: 40
+                    });
+					label([-3,1],arr[2],"left",{color:"red"});
+					line([-2.5,1.5],[-2.5,0.5]);
+					line([-2.5,0.5],[1.5,0.5]);
+					label([-1,1],arr[0],"center");
+					label([0.5,1],arr[1],"center");
+					
+					label([-1,0],arr[0]/arr[2],"center");
+					label([0.5,0],arr[1]/arr[2],"center");
+				</div>
+				<p><code><var>arr[0]</var>=</code> <code class="hint_red"><var>arr[2]</var></code> <code>\times<var>arr[0]/arr[2]</var></code> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <code><var>arr[1]</var>=</code> <code class="hint_red"><var>arr[2]</var></code> <code>\times<var>arr[1]/arr[2]</var></code></p>
+				<p><code class="hint_red"><var>arr[2]</var></code> <code>\times<var>arr[0]/arr[2]</var>\times<var>arr[1]/arr[2]</var>=<var>lcm</var></code></p>
+				<p>所以 <code class="hint_pink"><var>lcm</var></code> 是 <code><var>arr[0]</var></code> 和 <code><var>arr[1]</var></code> 的最小公倍數。</p>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

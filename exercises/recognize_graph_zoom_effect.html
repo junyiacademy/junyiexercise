@@ -1,0 +1,473 @@
+﻿<!DOCTYPE html>
+<html data-require="math word-problems math graphie interactive ast math-model">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能認識平面圖形放大、縮小對長度、角度與面積的影響</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="line">
+                <div class="vars">
+                    <var id="Length">randRange(3, 9)</var>
+                    <var id="Rate">randRange(2, 4)</var>
+                    <var id="Answer">Length*Rate</var>
+                </div>
+                <div class="question">
+                    <p><var>person(1)</var>將一長<code><var>Length</var></code>公分的線段放大成<code><var>Rate</var></code>倍，這條線段變成多少公分？</p>
+                </div>
+                <div class="solution" data-type="rational">
+                    <var>Answer</var>
+                </div>
+                <div class="hints">
+                    <div class="graphie">
+                        graphInit({
+                                range: [ [0,40], [0,10] ],
+                                scale: 13,
+                                axisArrows:0,
+                                tickStep: 1,
+                                labelStep: 1,
+                                gridOpacity: 0.2,
+                                axisOpacity: 0.05,
+                                tickOpacity: 0.4,
+                                labelOpacity: 0.01,
+                            });
+                        init({ range: [[0, 40], [0, 10]], scale: 13});
+                        path([[2, 8], [2+Length, 8], true], { stroke: RED });
+                        label( [ 2, 8 ], "1", "below" );
+                        label( [ 2+Length, 8 ], Length, "below" );
+                        path([[2, 4], [2+Answer, 4], true], { stroke: RED });
+                        label( [ 2, 4 ], "1", "below" );
+                        label( [ 2+Answer, 4 ], Answer, "below" );
+                    </div>
+                    <div>
+                        <p>
+                            <code><var>Length</var></code>公分的<code><var>Rate</var></code>倍是<font color="RED"><code><var>Answer</var></code></font>公分
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div id="rect">
+                <div class="vars">
+                    <var id="Length">randRange(6, 9)</var>
+                    <var id="Width">randRange(2, 5)</var>
+                    <var id="Rate">randRange(2, 4)</var>
+                    <var id="scaleLength">Length*Rate</var>
+                    <var id="scaleWidth">Width*Rate</var>
+                </div>
+                <div class="question">
+                    <p>長方形ㄅ的長為<code><var>Length</var></code>公分、寬為<code><var>Width</var></code>公分，將長方形ㄅ的長寬各別放大成<code><var>Rate</var></code>倍成為長方形ㄆ，長方形ㄆ的長和寬變成多少公分？</p>
+                </div>
+                <div class="solution" data-type="set">
+                    <div class="set-sol" data-type="multiple">
+                    <span class="sol"><var>scaleLength</var></span>        
+                    <span class="sol"><var>scaleWidth</var></span>
+                    </div>
+                    <div class="example">整數，例：<code>6</code></div>
+                    <div class="input-format">
+                    <div class="entry" data-type="multiple">
+                    <p>長<code>=</code><span class="sol"></span>公分</p>
+                    <p>寬<code>=</code><span class="sol"></span>公分</p>
+                    </div>
+                    </div>
+                </div>
+                <div class="hints">
+                    <div class="graphie" id = "rect">
+                        graphInit({
+                                range: [ [0,40], [0,30] ],
+                                scale: 14,
+                                axisArrows:0,
+                                tickStep: 1,
+                                labelStep: 1,
+                                gridOpacity: 0.2,
+                                axisOpacity: 0.05,
+                                tickOpacity: 0.4,
+                                labelOpacity: 0.01,
+                            });
+                        init({ range: [[0, 40], [0, 30]], scale: 14});
+                        path([[2, 29], [2+Length, 29], [2+Length, 29-Width], [2, 29-Width], true], { stroke: RED , fill: BLUE});
+                        label( [ (4+Length)/2, (58-Width)/2 ], "ㄅ");
+                        label( [2, 29], "1", "left" );
+                        label( [2+Length, 29], Length, "right" );
+                        label( [2, 29-Width], Width, "left" );
+                    </div>
+                    <div>
+                        <p>
+                            長方形ㄅ長<code><var>Length</var></code>公分
+                            放大<code><var>Rate</var></code>倍變成<code><var>scaleLength</var></code>公分<br>
+                        </p>
+                        <p>
+                            長方形ㄅ寬<code><var>Width</var></code>公分
+                            放大<code><var>Rate</var></code>倍變成<code><var>scaleWidth</var></code>公分
+                        </p>
+                    </div>
+                    <div class="graphie" data-update="rect">
+                        init({ range: [[0, 40], [0, 30]], scale: 14});
+                        path([[2, 21], [2+scaleLength, 21], [2+scaleLength, 21-scaleWidth], [2, 21-scaleWidth], true], { stroke: RED , fill: BLUE});
+                        label( [ (4+scaleLength)/2, (42-scaleWidth)/2 ], "ㄆ");
+                        label( [2, 21], "1", "left" );
+                        label( [2+scaleLength, 21], scaleLength, "right" );
+                        label( [2, 21-scaleWidth], scaleWidth, "left" );
+                    </div>
+                    <div>
+                         <p>
+                            長方形ㄆ的長為<font color="RED"><code><var>scaleLength</var></code></font>公分、寬為<font color="RED"><code><var>scaleWidth</var></code></font>公分，是長方形ㄅ的<code><var>Rate</var></code>倍圖。
+                        </p> 
+                    </div>
+                </div>
+            </div>
+             <div id="triangle">
+                <div class="vars">
+                    <var id="Side">randRange(6, 9)</var>
+                    <var id="Rate">randRange(2, 3)</var>
+                    <var id="scaleside">Rate*Side</var>
+                </div>
+                <div class="question">
+                    <p>ㄅ圖是底<code><var>Side</var></code>公分、高<code><var>Side</var></code>公分的三角形。</p>
+                    <div class="graphie" id = "triangle">
+                        graphInit({
+                                range: [ [0,40], [0,40] ],
+                                scale: 14,
+                                axisArrows:0,
+                                tickStep: 1,
+                                labelStep: 1,
+                                gridOpacity: 0.2,
+                                axisOpacity: 0.05,
+                                tickOpacity: 0.4,
+                                labelOpacity: 0.01,
+                            });
+                        init({ range: [[0, 40], [0, 40]], scale: 14});
+                        path([[2, 39], [2, 39-Side], [2+Side, 39-Side], true], { stroke: RED , fill: BLUE});
+                        label( [2, 39-Side], "1", "left");
+                        label( [2, 39], Side, "left");
+                        label( [2+Side, 39-Side], Side, "right");
+                        label( [(4+Side)/2, 39-Side], "ㄅ圖", "below");
+                        path([[2, 28], [2, 28-scaleside], [2+scaleside, 28-scaleside], true], { stroke: RED , fill: BLUE});
+                        label( [(4+scaleside)/2, 28-scaleside], "ㄆ圖", "below");
+                    </div>
+                </div>
+                <div class="solution" data-type="set">
+                    <div class="set-sol" data-type="multiple">
+                    <span class="sol"><var>scaleside</var></span>        
+                    <span class="sol"><var>scaleside</var></span>
+                    <span class="sol"><var>Rate</var></span>
+                    </div>
+                    <div class="example">整數，例：<code>6</code></div>
+                    <div class="input-format">
+                    <div class="entry" data-type="multiple">
+                    <p>ㄆ圖的底長幾公分？<span class="sol"></span>公分</p>
+                    <p>ㄆ圖的高長幾公分？<span class="sol"></span>公分</p>
+                    <p>ㄆ圖的高是ㄅ圖高的幾倍？<span class="sol"></span>倍</p>
+                    </div>
+                    </div>
+                </div>
+                <div class="hints">
+                    <div class="graphie" data-update="triangle">
+                        init({ range: [[0, 40], [0, 40]], scale: 14});
+                        label( [2, 28-scaleside], "1", "left");
+                        label( [2, 28], scaleside, "left");
+                        label( [2+scaleside, 28-scaleside], scaleside, "right");
+                    </div>
+                    <div>
+                        <p>
+                            ㄆ圖的底長<font color="RED"><code><var>scaleside</var></code></font>公分
+                        </p>
+                    </div>
+                    <div>
+                        <p>
+                            ㄆ圖的高長<font color="RED"><code><var>scaleside</var></code></font>公分
+                        </p>
+                    </div>
+                    <div>
+                        <p>
+                            ㄆ圖的高是ㄅ圖高的<code><var>scaleside</var>\div<var>Side</var>=</code><font color="RED"><code><var>Rate</var></code></font>倍
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div id="rect1">
+                <div class="vars">
+                    <var id="J">randRange(2,4)</var>
+                    <var id="Rate">1/J</var>
+                    <var id="Length">24</var>
+                    <var id="Width">12</var>
+                    <var id="scaleLength">24/J</var>
+                    <var id="scaleWidth">12/J</var>
+                </div>
+                <div class="question">
+                    <p>請將此圖縮小成<code>\dfrac{1}{<var>J</var>}</code>倍</p>
+                    <div class="graphie" id = "rectangle">
+                        graphInit({
+                                range: [ [-1,25], [-1,13] ],
+                                scale: 20,
+                                axisArrows:0,
+                                tickStep: 1,
+                                labelStep: 1,
+                                gridOpacity: 0.2,
+                                axisOpacity: 0.05,
+                                tickOpacity: 0.4,
+                                labelOpacity: 0.01,
+                            });
+
+                        init({ range: [[-1, 25], [-1, 13]], scale: 20});
+                        path([[0, 0], [Length, 0], [Length, Width], [0, Width], true],{ stroke: GRAY }); 
+
+                        addMouseLayer();
+                        
+                        graph.pointA = addMovablePoint({
+                            coord: [ 0, 0 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.pointB = addMovablePoint({
+                            coord: [ Length, 0],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.pointC = addMovablePoint({
+                            coord: [ Length, Width ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.pointD = addMovablePoint({
+                            coord: [ 0, Width ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.line1 = addMovableLineSegment({
+                            pointA: graph.pointA,
+                            pointZ: graph.pointB,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        graph.line2 = addMovableLineSegment({
+                            pointA: graph.pointB,
+                            pointZ: graph.pointC,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+
+                        graph.line3 = addMovableLineSegment({
+                            pointA: graph.pointC,
+                            pointZ: graph.pointD,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        graph.line4 = addMovableLineSegment({
+                            pointA: graph.pointD,
+                            pointZ: graph.pointA,
+                            fixed: true,
+                            //extendLine: true
+                        });
+                        
+                        graph.pointA.toFront();
+                        graph.pointB.toFront();
+                        graph.pointC.toFront();
+                        graph.pointD.toFront(); 
+
+                    </div>
+                </div>
+                <div class="solution" data-type="custom">
+                    <div class="instruction">
+                        直接在題目區用拉的呈現
+                    </div>
+                    <div class="guess"> [ graph.pointA.coord, graph.pointB.coord,graph.pointC.coord,graph.pointD.coord ] 
+                    </div>
+                    <div class="validator-function">
+                        var AB = guess[1][0] - guess[0][0];
+                        var AD = guess[3][1] - guess[0][1];
+                        return(AB == scaleLength && AD == scaleWidth);
+                    </div>
+                    <div class="show-guess">
+                        graph.pointA.setCoord( guess[0] );
+                        graph.pointB.setCoord( guess[1] );
+                        graph.pointC.setCoord( guess[2] );
+                        graph.pointD.setCoord( guess[3] );
+                        graph.line1.transform( true );
+                        graph.line2.transform( true );
+                        graph.line3.transform( true );
+                        graph.line4.transform( true );
+                    </div>
+                </div>
+                <div class="hints">
+                    <div class="graphie" data-update="rectangle">
+                        init({ range: [[-1, 25], [-1, 13]], scale: 20});
+                        label( [ 0, 0 ], "1", "left" );
+                        label( [ 0, Width ], Width, "left" );
+                        label( [ 0, scaleWidth ], scaleWidth, "left" );
+                        label( [ Length, 0 ], Length, "left" );
+                        label( [ scaleLength, 0 ], scaleLength, "left" ); 
+                    </div>
+                    <div class="graphie" data-update="rectangle">
+                        path([[0, 0], [(Length/J), 0], [(Length/J), (Width/J)], [0, (Width/J)], true],{ stroke: RED }); 
+                    </div>
+                </div>
+            </div>
+            <div id="rect2">
+                <div class="vars">
+                    <var id="J">randRange(2,5)</var>
+                    <var id="Length">5</var>
+                    <var id="Width">3</var>
+                    <var id="scaleLength">Length*J</var>
+                    <var id="scaleWidth">Width*J</var>
+                </div>
+                <div class="question">
+                    <p>請將此圖放大成<code><var>J</var></code>倍</p>
+                    <div class="graphie" id = "rectangle">
+                        graphInit({
+                                range: [ [-1,26], [-1,16] ],
+                                scale: 20,
+                                axisArrows:0,
+                                tickStep: 1,
+                                labelStep: 1,
+                                gridOpacity: 0.2,
+                                axisOpacity: 0.05,
+                                tickOpacity: 0.4,
+                                labelOpacity: 0.01,
+                            });
+
+                        init({ range: [[-1, 26], [-1, 16]], scale: 20});
+                        path([[0, 0], [Length, 0], [Length, Width], [0, Width], true],{ stroke: GRAY }); 
+
+                        addMouseLayer();
+                        
+                        graph.pointA = addMovablePoint({
+                            coord: [ 0, 0 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.pointB = addMovablePoint({
+                            coord: [ Length, 0],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.pointC = addMovablePoint({
+                            coord: [ Length, Width ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.pointD = addMovablePoint({
+                            coord: [ 0, Width ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.line1 = addMovableLineSegment({
+                            pointA: graph.pointA,
+                            pointZ: graph.pointB,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        graph.line2 = addMovableLineSegment({
+                            pointA: graph.pointB,
+                            pointZ: graph.pointC,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+
+                        graph.line3 = addMovableLineSegment({
+                            pointA: graph.pointC,
+                            pointZ: graph.pointD,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        graph.line4 = addMovableLineSegment({
+                            pointA: graph.pointD,
+                            pointZ: graph.pointA,
+                            fixed: true,
+                            //extendLine: true
+                        });
+                        
+                        graph.pointA.toFront();
+                        graph.pointB.toFront();
+                        graph.pointC.toFront();
+                        graph.pointD.toFront(); 
+
+                    </div>
+                </div>
+                <div class="solution" data-type="custom">
+                    <div class="instruction">
+                        直接在題目區用拉的呈現
+                    </div>
+                    <div class="guess"> [ graph.pointA.coord, graph.pointB.coord,graph.pointC.coord,graph.pointD.coord ] 
+                    </div>
+                    <div class="validator-function">
+                        var AB = guess[1][0] - guess[0][0];
+                        var AD = guess[3][1] - guess[0][1];
+                        return(AB == scaleLength && AD == scaleWidth);
+                    </div>
+                    <div class="show-guess">
+                        graph.pointA.setCoord( guess[0] );
+                        graph.pointB.setCoord( guess[1] );
+                        graph.pointC.setCoord( guess[2] );
+                        graph.pointD.setCoord( guess[3] );
+                        graph.line1.transform( true );
+                        graph.line2.transform( true );
+                        graph.line3.transform( true );
+                        graph.line4.transform( true );
+                    </div>
+                </div>
+                <div class="hints">
+                    <div class="graphie" data-update="rectangle">
+                        init({ range: [[-1, 26], [-1, 16]], scale: 20});
+                        label( [ 0, 0 ], "1", "left" );
+                        label( [ 0, Width ], Width, "left" );
+                        label( [ 0, scaleWidth ], scaleWidth, "left" );
+                        label( [ Length, 0 ], Length, "left" );
+                        label( [ scaleLength, 0 ], scaleLength, "right" ); 
+                    </div>
+                    <div class="graphie" data-update="rectangle">
+                        path([[0, 0], [scaleLength, 0], [scaleLength, scaleWidth], [0, scaleWidth], true],{ stroke: RED }); 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

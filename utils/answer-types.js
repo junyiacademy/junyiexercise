@@ -825,6 +825,9 @@ $.extend(Khan.answerTypes, {
             possibleChoices.splice(0, 0, solution);
         }
 
+        var isNodupe = true;
+        if (choices.data("nodupe") == false){ isNodupe = false; }
+
         var dupes = {};
         var shownChoices = [];
         var solutionTextSquish = solution.text().replace(/\s+/g, "");
@@ -838,7 +841,7 @@ $.extend(Khan.answerTypes, {
             }
 
             if (!dupes[choiceTextSquish]) {
-                dupes[choiceTextSquish] = true;
+                if (isNodupe){ dupes[choiceTextSquish] = true; }
 
                 // i == 0 is the solution except in category mode; skip it when none is correct
                 if (!(noneIsCorrect && i === 0) || isCategory) {

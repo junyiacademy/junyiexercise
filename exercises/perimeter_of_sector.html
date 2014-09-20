@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>扇形周長的計算</title>
+        <script src="../khan-exercise.js"></script>
+    </head>
+    <body>
+        <div class="exercise">
+            <div class="problems">
+
+
+                <div id="Ac-angle-to-As">
+                    <div class="vars">
+                        <var id="ROTATE_ARC">0</var>
+                        <var id="ANGLE">randFromArray([45,72,90,135,180,270])</var>
+                        <var id="R">randFromArray([5,10,15])</var>
+                        <var id="C">2 * 314 * R / pow(10,2)</var>
+                        <var id="S">parseFloat((ANGLE * C/360).toFixed(3))</var>
+                        <var id="ans">S+2*R</var>
+                    </div>
+                    <p class="problem">
+                        一個半徑為<code><var>R</var></code>公分，圓心角為<code><var>ANGLE</var></code>度的扇形，周長是多少公分呢?(圓周率以3.14計算)
+                    </p>
+                    
+                    <div class="graphie" id="circle1">
+                        init({
+                            range: [[-R - 2, R + 2], [-R - 2, R + 2]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R, { stroke: BLUE });
+
+                        arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + ANGLE, true, { stroke: ORANGE, fill: ORANGE, "fill-opacity": 0.1 });
+
+                        graph.aAngle = (ROTATE_ARC * 2 + ANGLE) / 2;
+
+                        graph.angle = arc([0, 0], R * 0.12, ROTATE_ARC, ROTATE_ARC + ANGLE, { stroke: PURPLE });
+
+                        graph.angleL = label([0, 0], "\\color{"+PURPLE+"}{"+ANGLE+"^\\circ}", labelDirection(graph.aAngle));
+                        $(graph.angleL).hide();
+
+                        graph.radiusL = label([R/2, 0], "\\color{"+BLUE+"}{半徑="+R+"}", "below");
+                        $(graph.radiusL).hide();
+
+                        graph.arcL = label(polar(R, graph.aAngle), "\\color{"+ORANGE+"}{弧長="+S+"}", labelDirection(graph.aAngle));
+                        $(graph.arcL).hide();
+                    </div>
+                    
+                    <div class="graphie" data-update="circle1">
+                        $(graph.radiusL).show();
+                        $(graph.angleL).show();
+                    </div>
+                    <p class="solution" data-forms="decimal"><var>ans</var></p>
+
+                    <div class="hints">
+                        <p>要計算扇形的周長必須先算出扇形的弧長再加上兩段半徑</p>
+                        <p>扇形弧長的計算方式為<code>直徑\times3.14\times\dfrac{<var>ANGLE</var>}{360}=</code></p>
+                        <div>
+                            <p><code>(半徑\times 2)\times 3.14 \times \dfrac{<var>ANGLE</var>}{360}=<var>S</var></code></p>
+                            <div class="graphie" data-update="circle1">
+                                $(graph.arcL).show();
+                            </div>
+                        </div>
+                        <p>兩段半徑長<code> = <var>R</var>\times 2 = <var>R*2</var></code></p>
+                        <p>扇形的周長 <code>=</code> 扇形的弧長<code><var>S</var></code> + 兩段半徑長<code><var>2*R</var> = <var>ans</var></code></p>
+                    </div>
+                </div>
+
+
+
+
+                <div id="r-angle-to-As">
+                    <div class="vars" data-ensure="ans>0.25  && C<500 && S<500">
+                        <var id="ROTATE_ARC">0</var>
+                        <var id="R">15</var>
+                        <var id="v1">randRange(1,10)</var>
+                        <var id="v2">v1&gt;5?randFromArray([2,5,7,10]) : randFromArray([1,2])</var>
+                        <var id="C">78.5 * v1</var>
+                        <var id="S">314 * v2/pow(10,1)</var>
+                        <var id="ANGLE">
+                            parseFloat(((v2*2)/(v1*5)*360).toFixed(5))
+                        </var>
+                        <var id="ans">(v2*2)/(v1*5)</var>
+                        <var id="PRETTY_ANS">
+                            (function(){
+                                var i;
+                                var down = v1*5;
+                                var up = v2*2;
+                                for(i=v2*2;i&gt;1;i--){
+                                    if(
+                                    (parseFloat((down/i).toFixed(5))*10%10===0)
+                                    &&
+                                    (parseFloat((up/i).toFixed(5))*10%10===0))
+                                    {
+                                        down = down/i; 
+                                        up = up/i;
+                                    }
+                                    if(up===1){
+                                        break;
+                                    }
+                                }
+								return [up,down];
+                                <!--return "\\dfrac{"+up+"}{"+down+"}";-->
+                            })()
+                        </var>
+                    </div>
+                    <p class="problem">
+                        一個圓周長為<code><var>C</var></code>公分的圓，圓裡有一扇形，弧長是<code><var>S</var></code>公分，請問這個扇形是幾分之幾圓？
+                    </p>
+                    <p class="solution" data-type="rational"><var>ans</var></p>
+                    <div class="graphie" id="circle2">
+                        init({
+                            range: [[-R - 2, R + 2], [-R - 2, R + 2]],
+                            scale: [15, 15]
+                        });
+                        <!--圓形-->
+                        graph.cir = circle([0, 0], R, { stroke: BLUE });
+                        <!--扇形-->
+                        arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + ANGLE, true, { stroke: ORANGE, fill: ORANGE, "fill-opacity": 0.1 });
+                        <!--角度位置-->
+                        graph.aAngle = (ROTATE_ARC * 2 + ANGLE) / 2;
+                        $(graph.aAngle).hide();
+                        <!--角度顯示小圈圈-->
+                        <!--graph.angle = arc([0, 0], R * 0.12, ROTATE_ARC, ROTATE_ARC + ANGLE, { stroke: PURPLE });
+                        $(graph.angle).hide();-->
+                        <!--角度顯示-->
+                        graph.angleL = label([0, 0], "\\color{"+PURPLE+"}{"+ANGLE+"^\\circ}", labelDirection(graph.aAngle));
+                        $(graph.angleL).hide();
+                        <!--半徑-->
+                        graph.radius = label([R/2, 0], "\\color{"+BLUE+"}{半徑="+R+"}", "below");
+                        $(graph.radius).hide();
+                        <!--圓周顯示-->
+                        graph.circumference = label([0,R],"\\color{"+BLUE+"}{圓周="+C+"}","above");
+                        <!--扇形顯示-->
+                        graph.arcL = label(polar(R, graph.aAngle), "\\color{"+ORANGE+"}{"+S+"}", labelDirection(graph.aAngle));
+                        $(graph.arcL).hide();
+                        <!--扇形的弧長顯示-->
+                        graph.arch = label([0, 0], "\\color{"+ORANGE+"}{扇形弧長="+ S +"}", labelDirection(graph.aAngle));
+                        
+                    </div>
+
+                    <div class="hints">
+                        <p>要計算弧長<code><var>S</var></code>公分的扇形是圓周長<code><var>C</var></code>公分的圓形的幾分之幾</p>
+                        <p>我們可以用扇形弧長與圓周長的比例<code><var>S</var>公分\div<var>C</var></code>公分，就可以知道這個扇形是圓的幾分之幾了</p>
+                        <p>接下來需要算出<code><var>S</var>\div<var>C</var></code></p>
+                        <p>答案<code> = \dfrac{<var>PRETTY_ANS[0]</var>}{<var>PRETTY_ANS[1]</var>}</code>，此即為扇形與圓的比例。</p>
+                    </div>
+                </div>
+
+                <div id="As-angle-to-Ac">
+                    <div class="vars">
+                        <var id="ROTATE_ARC">0</var>
+                        <var id="R">randRange(10,15)</var>
+                        <var id="ratioUpDown">
+                            (function(){
+                                var i = R;
+                                var j;
+                                var divisor = [];
+                                for(i=R;i>1;i--){
+                                    if(R%i===0){
+                                        for(j=i-1;j>1;j--){
+                                            for(k=j;k>1;k--){
+                                                if(j%k===0&&i%k===0){
+                                                    break;
+                                                }
+                                            }
+                                            if(k===1){
+                                                divisor.push(j);
+                                                divisor.push(i);
+                                            }
+                                        }
+                                        divisor.push(1);
+                                        divisor.push(i);
+                                    }
+                                }
+                                return divisor;
+                            })()
+                        </var>
+                        <var id="pickUpBound">ratioUpDown.length/2-1</var>
+                        <var id="pick">randRange(0,pickUpBound)</var>
+                        <var id="RATIO">ratioUpDown[pick*2]/ratioUpDown[pick*2+1]</var>
+                        <var id="PRETTY_RATIO">
+                            (function(){
+                                return "\\dfrac{"+ratioUpDown[pick*2]+"}{"+ratioUpDown[pick*2+1]+"}"
+                            })()
+                        </var>
+                        <var id="ANGLE">
+                            parseFloat((RATIO*360).toFixed(5))
+                        </var>
+                        <var id="C">parseFloat((R*314*2/pow(10,2)).toFixed(3))</var>
+                        <var id="S">parseFloat((R*314*2/pow(10,2)*RATIO).toFixed(3))</var>
+                        <var id="ans">parseFloat((2*R+S).toFixed(3))</var>
+                    </div>
+                    <p class="problem">
+                        直徑<code><var>2*R</var></code>公分的<code><var>PRETTY_RATIO</var></code>圓的扇形周長是幾公分?(圓周率以<code>3.14</code>計算)
+                    </p>
+                    <div class="graphie" id="circle3">
+                        init({
+                            range: [[-R - 2, R + 2], [-R - 2, R + 2]],
+                            scale: [15, 15]
+                        });
+                        <!--圓形-->
+                        graph.cir = circle([0, 0], R, { stroke: BLUE });
+                        <!--扇形-->
+                        arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + ANGLE, true, { stroke: ORANGE, fill: ORANGE, "fill-opacity": 0.1 });
+                        <!--角度位置-->
+                        graph.aAngle = (ROTATE_ARC * 2 + ANGLE) / 2;
+                        $(graph.aAngle).hide();
+                        <!--角度顯示小圈圈-->
+                        <!--graph.angle = arc([0, 0], R * 0.12, ROTATE_ARC, ROTATE_ARC + ANGLE, { stroke: PURPLE });
+                        $(graph.angle).hide();-->
+                        <!--角度顯示-->
+                        graph.angleL = label([0, 0], "\\color{"+PURPLE+"}{"+ANGLE+"^\\circ}", labelDirection(graph.aAngle));
+                        $(graph.angleL).hide();
+                        <!--半徑-->
+                        graph.radius = label([R/2, 0], "\\color{"+BLUE+"}{半徑="+R+"}", "below");
+                        $(graph.radius).hide();
+                        <!--直徑-->
+                        graph.diameter = label([0, -R/2], "\\color{"+BLUE+"}{直徑="+2*R+"}", "below");
+                        <!--扇形弧長顯示-->
+                        graph.arcL = label(polar(R, graph.aAngle), "\\color{"+ORANGE+"}{弧長為"+S+"}", labelDirection(graph.aAngle));
+                        $(graph.arcL).hide();
+                        <!--圓周顯示-->
+                        graph.circumference = label([0,R],"\\color{"+BLUE+"}{圓周="+C+"}","above");
+                        $(graph.circumference).hide();
+                        <!--扇形的比例顯示-->
+                        graph.arch = label([0, 0], "\\color{"+ORANGE+"}{"+PRETTY_RATIO+"圓}", labelDirection(graph.aAngle));
+                        
+                    </div>
+                    <p class="solution" data-forms="integer, proper, improper, mixed, decimal"><var>ans</var></p>
+
+                    <div class="hints">
+                        <p>要計算扇形的周長必須先算出扇形的弧長再加上兩段半徑</p>
+                        <p>扇形弧長的計算方式為直徑<code>\times</code>圓周率<code>\times</code>圓的比例</p>
+                        <div>
+                            <p><code><var>2*R</var> \times 3.14 \times <var>PRETTY_RATIO</var> = <var>S</var></code></p>
+                            <div class="graphie" data-update="circle3">
+                                $(graph.arcL).show();
+                            </div>
+                        </div>
+                        <p>扇形的周長 <code>=</code> 弧長 <code><var>S</var> + </code>半徑 <code>\times2</code></p>
+                        <p> <code>= <var>S</var> + <var>R*2</var> = <var>ans</var></code> 此即為扇形周長。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

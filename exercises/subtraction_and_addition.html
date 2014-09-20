@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie-helpers graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能在具體情境中，解決兩步驟問題-加減與除，不含併式(3-n-07)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars">
+			<var id="J">randRange(20,90)</var>
+			<var id="K">randRange(20,90)</var>
+			<var id="M">randRange(20,90)</var>
+			<var id="R">J+K+M</var>
+        </div>
+		<div class="question">
+                <P><code><var>J</var>+<var>K</var>+<var>M</var></code> 等於多少？</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>R</var></span>
+		</div>
+
+		<div class="hints">		
+			<p>先算 <code>\enspace<var>J</var>+<var>K</var>+<var>M</var></code></p>
+			<p><code>=\color{red}{<var>J+K</var>}+<var>M</var></code></p>
+			<p><code>=\color{#FF00AF}{<var>R</var>}</code></p>
+		</div>
+	</div>
+	
+	<div id="case2">
+        <div class="vars">
+			<var id="J">randRange(120,190)</var>
+			<var id="K">randRange(20,70)</var>
+			<var id="M">randRange(20,40)</var>
+			<var id="R">J-K-M</var>
+        </div>
+		<div class="question">
+                <P><code><var>J</var>-<var>K</var>-<var>M</var></code> 等於多少？</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>R</var></span>
+		</div>
+
+		<div class="hints">
+			<p>先算<code>\enspace<var>J</var>-<var>K</var>-<var>M</var></code></p>
+			<p><code>=\color{red}{<var>J-K</var>}-<var>M</var></code></p>
+			<p><code>=\color{#FF00AF}{<var>R</var>}</code></p>
+		</div>
+	</div>
+	
+	<div id="case3">
+        <div class="vars">
+			<var id="J">randRange(1000,1300)</var>
+			<var id="K">randRange(200,300)</var>
+			<var id="M">randRange(700,900)</var>
+			<var id="R">J+K+M</var>
+			<var id="names">randFromArray([["可","雅","ㄎ","ㄜ·","ㄧ","ㄚ·"],["樂","野","ㄌ","ㄜ·","ㄧ","ㄝ·"],["雅","福","ㄧ","ㄚ·","ㄈ","ㄨ·"],["酥","麗","ㄙ","ㄨ·","ㄌ","ㄧ·"]])</var>
+        </div>
+		<div class="problem">
+			<p>從 小<var>names[0]</var> 家經過學校、便利商店，到 小<var>names[1]</var> 家要走多少公尺？</p>
+			<div class="graphie" id="graphie_1">
+				init({
+                    range: [ [-1, 12], [-3.5, 3.5] ],
+                    scale: 40
+                });
+				label( [2,2],  "小"+names[1]+"家", "left", { color: "black"});
+
+				
+				circle([2.2,2],0.1,{fill:"red",stroke:"red"});
+				line([2.3,2],[7.3,2]);
+				line([7.4,2],[7.4,-3]);
+				label( [7.4,2],  "便利商店", "above", { color: "black"});
+				
+				circle([7.4,2],0.1,{fill:"red",stroke:"red"});
+				circle([7.4,0.8],0.1,{fill:"red",stroke:"red"});
+				label( [7,0.8],  "學校", "left", { color: "black"});
+				
+				circle([7.4,-3],0.1,{fill:"red",stroke:"red"});
+				
+				label( [7.4,-3],  "小"+names[0]+"家", "right", { color: "black"});
+				
+				
+				label( [4.8,2],  "\\small{"+J+"公尺}", "above", { color: "black"});
+				label( [7.3,1.4],  "\\small{"+K+"公尺}", "right", { color: "black"});
+				label( [7.3,-1.1],  "\\small{"+M+"公尺}", "right", { color: "black"});
+			</div>
+		</div>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>R</var></span>
+		</div>
+
+		<div class="hints">
+			<div>
+				<p><code>\enspace\enspace\enspace\enspace<var>J</var>+<var>K</var>+<var>M</var></code></p>
+				<p><code>=\color{red}{<var>J+K</var>}+<var>M</var></code></p>
+			</div>
+			<p><code>=\color{#FF00AF}{<var>R</var>}</code></p>
+			<p>答：<code class="hint_pink"><var>R</var></code> 公尺</p>
+		</div>
+	</div>
+	
+	<div id="case4">
+        <div class="vars">
+			<var id="J">randRange(1000,1300)</var>
+			<var id="K">randRange(200,300)</var>
+			<var id="M">randRange(300,500)</var>
+			<var id="R">J-K-M</var>
+			<var id="names">randFromArray([["王","ㄨ","ㄤ·"],["張","ㄓ","ㄤ·"]])</var>
+        </div>
+		<div class="question">
+                <P><var>names[0]</var>媽媽店裡有 <code><var>J</var></code> 顆珠子，其中，綠色的有 <code><var>K</var></code> 顆，紅色的有 <code><var>M</var></code> 顆，剩下的是黑色珠子，黑子珠子有幾顆？</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>R</var></span>
+		</div>
+
+		<div class="hints">
+			<div>
+				<p><code>\enspace\enspace\enspace\enspace<var>J</var>-<var>K</var>-<var>M</var></code></p>
+				<p><code>=\color{red}{<var>J-K</var>}-<var>M</var></code></p>
+			</div>
+			<p><code>=\color{#FF00AF}{<var>R</var>}</code></p>
+			<p>答：<code class="hint_pink"><var>R</var></code> 顆。</p>
+			
+		</div>
+	</div>
+	
+	<div id="case5">
+          <div class="vars">
+			<var id="J">randRange(1000,1300)</var>
+			<var id="K">randRange(200,300)</var>
+			<var id="M">randRange(300,500)</var>
+			<var id="R">J-K-M</var>
+			<var id="names">randFromArray([["王","ㄨ","ㄤ·"],["張","ㄓ","ㄤ·"]])</var>
+        </div>
+		<div class="question">
+                <P><var>names[0]</var>媽媽店裡有 <code><var>J</var></code> 顆珠子，其中，綠色的有 <code><var>K</var></code> 顆，紅色的有 <code><var>M</var></code> 顆，剩下的是黑色珠子，黑子珠子有幾顆？</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>R</var></span>
+		</div>
+
+		<div class="hints">
+			<div>
+				<p><code>\enspace\enspace\enspace\enspace<var>J</var>-<var>K</var>-<var>M</var></code></p>
+				<p><code>=\color{red}{<var>J-K</var>}-<var>M</var></code></p>
+			</div>
+			<p><code>=\color{#FF00AF}{<var>R</var>}</code></p>
+			<p>答：<code class="hint_pink"><var>R</var></code> 顆。</p>
+			
+		</div>
+	</div>
+	
+	<div id="case6">
+        <div class="vars">
+			<var id="J">randRange(400,700)</var>
+			<var id="K">randRange(40,90)</var>
+			<var id="M">randRange(300,400)</var>
+			<var id="R">J-K+M</var>
+        </div>		
+		<div class="question">
+                <P>一列火車上有 <code><var>J</var></code> 人，到站後下去 <code><var>K</var></code> 人，上來 <code><var>M</var></code> 人，現在火車上有多少人？</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>R</var></span>
+		</div>
+
+		<div class="hints">		
+			<p><code>\enspace\enspace\enspace\enspace<var>J</var>-<var>K</var>+<var>M</var></code></p>
+			<p><code>=\color{red}{<var>J-K</var>}+<var>M</var></code></p>
+			<p><code>=\color{#FF00AF}{<var>R</var>}</code></p>
+			<p>答：<code class="hint_pink"><var>R</var></code> 人</p>
+		</div>
+	</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html data-require="math word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能運用分數除法解決生活中的問題</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="pancake">
+                <div class="vars">
+                    <var id="s">randRange(1,5)</var>
+                    <var id="count">2*s</var>
+                    <var id="num1">2</var>
+                    <var id="num2">randFromArray([3, 5, 7, 9])</var>
+                    <var id="people">s*num2</var>
+                </div>
+                <div class="question">
+                    <p><var>person(1)</var>和他朋友合買了<code><var>count</var></code>張蔥油餅，全部分完，每人分到<code>\dfrac{<var>num1</var>}{<var>num2</var>}</code>張，<var>person(1)</var>和他朋友共有幾人？</p>
+                </div>
+                <div class="solution" data-type="rational">
+                    <var>people</var>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>可以想成：</p>
+                        <p><code><var>count</var></code>是<code>\dfrac{<var>num1</var>}{<var>num2</var>}</code>的幾倍。</p>
+                    </div>
+                    <div>
+                        <p><code><var>count</var>\div\dfrac{<var>num1</var>}{<var>num2</var>}</code></p>
+                    </div>
+                    <div>
+                        <p><code>=\cancel{<var>count</var>}^{<var>s</var>}\times\dfrac{<var>num2</var>}{\cancel{<var>num1</var>}_{1}}</code></p>
+                    </div>
+                    <div>
+                        <p><code>=<var>people</var></code>（人）</p>
+                    </div>
+                </div>
+            </div>
+            <div id="rice">
+                <div class="vars">
+                    <var id="numKG">randRange(10,20)</var>
+                    <var id="numG">500</var>
+                    <var id="s">(numKG*2)+1</var>
+                    <var id="weight_1">randRange(1,5)</var>
+                    <var id="weight_2">1</var>
+                    <var id="weight_3">randRange(2,5)</var>
+                    <var id="a">(weight_1*weight_3)+1</var>
+                    <var id="ans">(s*weight_3)/(a*2)</var>
+                    <var id="GCD1">getGCD(s,a)</var>
+                    <var id="GCD2">getGCD(2,weight_3)</var>
+                    <var id="SIMP_s">s/GCD1</var>
+                    <var id="SIMP_a">a/GCD1</var>
+                    <var id="SIMP_2">2/GCD2</var>
+                    <var id="SIMP_weight_3">weight_3/GCD2</var>
+                    <var id="ans_1">Math.floor((SIMP_s*SIMP_weight_3)/(SIMP_2*SIMP_a))</var>
+                    <var id="ans_2">(SIMP_s*SIMP_weight_3)-((ans_1*SIMP_2)*SIMP_a)</var>
+                    <var id="ans_3">SIMP_2*SIMP_a</var>
+                </div>
+                <div class="question">
+                    <p>一桶米重<code><var>numKG</var></code>公斤<code><var>numG</var></code>公克，每<code><var>weight_1</var>\dfrac{<var>weight_2</var>}{<var>weight_3</var>}</code>公斤裝成<code>1</code>袋，全部裝完，這桶米可以裝成多少袋？</p>
+                </div>
+                <div class="solution" data-type="rational">
+                    <var>ans</var>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p><code><var>numKG</var></code>公斤<code><var>numG</var></code>公克<code>=<var>numKG</var>\dfrac{1}{2}</code>公斤</p>
+                    </div>
+                    <div>
+                        <p>可以想成：</p>
+                        <p><code><var>numKG</var>\dfrac{1}{2}</code>是<code><var>weight_1</var>\dfrac{<var>weight_2</var>}{<var>weight_3</var>}</code>的幾倍。</p>
+                    </div>
+                    <div>
+                        <p><code><var>numKG</var>\dfrac{1}{2}\div<var>weight_1</var>\dfrac{<var>weight_2</var>}{<var>weight_3</var>}</code></p>
+                    </div>
+                    <div>
+                        <p><code>=\dfrac{<var>s</var>}{2}\times\dfrac{<var>weight_3</var>}{<var>a</var>}</code></p>
+                    </div>
+                    <div data-if="GCD1 != 1">
+                        <p><code>=\dfrac{\cancel{<var>s</var>}^{<var>SIMP_s</var>}}{2}\times\dfrac{<var>weight_3</var>}{\cancel{<var>a</var>}_{<var>SIMP_a</var>}}</code></p>
+                    </div>
+                    <div data-if="GCD2 != 1">
+                        <p><code>=\dfrac{<var>SIMP_s</var>}{\cancel{2}_{<var>SIMP_2</var>}}\times\dfrac{\cancel{<var>weight_3</var>}^{<var>SIMP_weight_3</var>}}{<var>SIMP_a</var>}</code></p>
+                    </div>
+                    <div data-if="ans_2 != 0">
+                        <p><code>=\dfrac{<var>SIMP_s*SIMP_weight_3</var>}{<var>SIMP_2*SIMP_a</var>}=<var>ans_1</var>\dfrac{<var>ans_2</var>}{<var>ans_3</var>}</code>（袋）</p>
+                    </div>
+                    <div data-if="ans_2 === 0">
+                        <p><code>=\dfrac{<var>SIMP_s*SIMP_weight_3</var>}{<var>SIMP_2*SIMP_a</var>}=<var>ans_1</var></code>（袋）</p>
+                    </div>
+                </div>
+            </div>
+            <div id="ribbon"><!-- GCD1 === 1 && GCD2 === 1 && -->
+                <div class="vars" data-ensure="GCD3 === 1">
+                    <var id="a">randRange(10,25)</var>
+                    <var id="b">1</var>
+                    <var id="c">randRange(2,4)</var>
+                    <var id="num1_1">(a*c)+b</var>
+                    <var id="num1_2">c</var>
+                    <var id="num1">num1_1/num1_2</var>
+                    <var id="d">randRange(1,3)</var>
+                    <var id="e">1</var>
+                    <var id="f">randRange(2,5)</var>
+                    <var id="num2_1">(d*f)+e</var>
+                    <var id="num2_2">f</var>
+                    <var id="num2">num2_1/num2_2</var>
+                    <var id="GCD1">getGCD(num1_1,num2_1)</var>
+                    <var id="SIMP_1_1">num1_1/GCD1</var>
+                    <var id="SIMP_2_1">num2_1/GCD1</var>
+                    <var id="GCD2">getGCD(num1_2,num2_2)</var>
+                    <var id="SIMP_1_2">num1_2/GCD2</var>
+                    <var id="SIMP_2_2">num2_2/GCD2</var>
+                    <var id="SIMP_1">SIMP_1_1*SIMP_2_2</var>
+                    <var id="SIMP_2">SIMP_1_2*SIMP_2_1</var>
+                    <var id="GCD3">getGCD(SIMP_1,SIMP_2)</var>
+                    <var id="ans1">SIMP_1/SIMP_2</var>
+                    <var id="ans1_1">Math.floor(SIMP_1/SIMP_2)</var>
+                    <var id="ans1_2">SIMP_1-(ans1_1*SIMP_2)</var>
+                    <var id="ans1_3">SIMP_2</var>
+                    <var id="GCD4">getGCD(num2_1,ans1_3)</var>
+                    <var id="SIMP_a">num2_1/GCD4</var>
+                    <var id="SIMP_d">ans1_3/GCD4</var>
+                    <var id="GCD5">getGCD(num2_2,ans1_2)</var>
+                    <var id="SIMP_b">num2_2/GCD5</var>
+                    <var id="SIMP_c">ans1_2/GCD5</var>
+                    <var id="num3">SIMP_a*SIMP_c</var>
+                    <var id="num4">SIMP_b*SIMP_d</var>
+                    <var id="ans2">num3/num4</var>
+                    <var id="ans2_1">Math.floor(ans2)</var>
+                    <var id="ans2_2">num3 - (ans2_1*num4)</var>
+                    <var id="ans2_3">num4</var>
+                </div>
+                <div class="question">
+                    <p>有一個<code><var>a</var>\dfrac{<var>b</var>}{<var>c</var>}</code>公尺長的緞帶，每<code><var>d</var>\dfrac{<var>e</var>}{<var>f</var>}</code>公尺剪成一段，一段可以包裝一個禮盒，最多可以包裝幾個禮盒？剩下多少公尺？</p>
+                </div>
+                <div class="solution" data-type="set">
+                    <div class="set-sol" data-type="multiple">
+                        <span class="sol"><var>ans1_1</var></span>        
+                        <span class="sol"><var>ans2</var></span>
+                    </div>
+                    <div class="example">
+                        整數，例：<code>6</code><br>
+                    </div> 
+                    <div class="example">
+                       真分數的最簡分數，例：<code>3/5</code><br>
+                    </div>
+                    <div class="example">
+                        假分數的最簡分數，例：<code>7/4</code><br>
+                    </div>                    
+                    <div class="example">
+                        帶分數，例：<code>1 3/4</code><br>
+                    </div>
+                    <div class="example">
+                        小數，例：<code>0.75</code><br>
+                    </div>
+                    <div class="input-format">
+                    <div class="entry" data-type="multiple">
+                        <p><span class="sol"></span>個</p>
+                        <p><span class="sol"></span>公尺</p>
+                    </div>
+                    </div>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>可以說是：</p>
+                        <p><code><var>a</var>\dfrac{<var>b</var>}{<var>c</var>}</code>是<code><var>d</var>\dfrac{<var>e</var>}{<var>f</var>}</code>的幾倍</p>
+                    </div>
+                    <div>
+                        <p><code><var>a</var>\dfrac{<var>b</var>}{<var>c</var>}\div<var>d</var>\dfrac{<var>e</var>}{<var>f</var>}</code></p>
+                    </div>
+                    <div>
+                        <p><code>=\dfrac{<var>num1_1</var>}{<var>num1_2</var>}\div\dfrac{<var>num2_1</var>}{<var>num2_2</var>}</code></p>
+                    </div>
+                    <div>
+                        <p><code>=\dfrac{<var>num1_1</var>}{<var>num1_2</var>}\times\dfrac{<var>num2_2</var>}{<var>num2_1</var>}</code></p>
+                    </div>
+                    <div data-if="GCD1 != 1">
+                        <p><code>=\dfrac{\cancel{<var>num1_1</var>}^{<var>SIMP_1_1</var>}}{<var>num1_2</var>}\times\dfrac{<var>num2_2</var>}{\cancel{<var>num2_1</var>}_{<var>SIMP_2_1</var>}}</code></p>
+                    </div>
+                    <div data-if="GCD2 != 1">
+                        <p><code>=\dfrac{<var>SIMP_1_1</var>}{\cancel{<var>num1_2</var>}_{<var>SIMP_1_2</var>}}\times\dfrac{\cancel{<var>num2_2</var>}^{<var>SIMP_2_2</var>}}{<var>SIMP_2_1</var>}</code></p>
+                    </div>
+                    <div>
+                        <p><code>=\dfrac{<var>SIMP_1</var>}{<var>SIMP_2</var>}=<var>ans1_1</var>\dfrac{<var>ans1_2</var>}{<var>ans1_3</var>}</code></p>
+                    </div>
+                    <div>
+                        <p><code><var>ans1_1</var>\dfrac{<var>ans1_2</var>}{<var>ans1_3</var>}</code>段表示可以剪成<font color="RED"><code><var>ans1_1</var></code></font>段，剩下<code>\dfrac{<var>ans1_2</var>}{<var>ans1_3</var>}</code>段</p>
+                    </div>
+                    <div>
+                        <p><code>\dfrac{<var>ans1_2</var>}{<var>ans1_3</var>}</code>段是<code>1</code>段的<code>\dfrac{<var>ans1_2</var>}{<var>ans1_3</var>}</code>，也就是<code><var>d</var>\dfrac{<var>e</var>}{<var>f</var>}</code>公尺的<code>\dfrac{<var>ans1_2</var>}{<var>ans1_3</var>}</code>倍</p>
+                    </div>
+                    <div>
+                        <p><code><var>d</var>\dfrac{<var>e</var>}{<var>f</var>}\times\dfrac{<var>ans1_2</var>}{<var>ans1_3</var>}</code></p>
+                    </div>
+                    <div data-if="GCD4 != 1">
+                        <p><code>=\dfrac{\cancel{<var>num2_1</var>}^{<var>SIMP_a</var>}}{<var>num2_2</var>}\times\dfrac{<var>ans1_2</var>}{\cancel{<var>ans1_3</var>}_{<var>SIMP_d</var>}}</code></p>
+                    </div>
+                    <div data-if="GCD5 != 1">
+                        <p><code>=\dfrac{<var>SIMP_a</var>}{\cancel{<var>num2_2</var>}_{<var>SIMP_b</var>}}\times\dfrac{\cancel{<var>ans1_2</var>}^{<var>SIMP_c</var>}}{<var>SIMP_d</var>}</code></p>
+                    </div>
+                    <div data-if="ans2_2 !=0 && ans2_1 != 0">
+                        <p><code>=\dfrac{<var>SIMP_a*SIMP_c</var>}{<var>SIMP_b*SIMP_d</var>}=<var>ans2_1</var>\dfrac{<var>ans2_2</var>}{<var>ans2_3</var>}</code>（公尺）</p>
+                    </div>
+                    <div data-if="ans2_2 !=0 && ans2_1 == 0">
+                        <p><code>=\dfrac{<var>SIMP_a*SIMP_c</var>}{<var>SIMP_b*SIMP_d</var>}（公尺）</code></p>
+                    </div>
+                    <div data-if="ans2_2 ===0">
+                        <p><code>=\dfrac{<var>SIMP_a*SIMP_c</var>}{<var>SIMP_b*SIMP_d</var>}=<var>ans2_1</var></code>（公尺）</p>
+                    </div>
+                </div>
+            </div>
+            <div id="sugar">
+                <div class="vars" data-ensure="boKG_1 < boKG_2 && GCDcheck === 1 && GCDcheck2 === 1">
+                    <var id="paKG_1">randRange(1,3)</var>
+                    <var id="paKG_2">1</var>
+                    <var id="paKG_3">randRange(2,5)</var>
+                    <var id="s">(paKG_1*paKG_3)+1</var>
+                    <var id="boKG_1">randRange(2,8)</var>
+                    <var id="boKG_2">randRange(3,9)</var>
+                    <var id="GCD1">getGCD(s,boKG_1)</var>
+                    <var id="GCD2">getGCD(paKG_3,boKG_2)</var>
+                    <var id="GCDcheck">getGCD(paKG_3,s)</var>
+                    <var id="GCDcheck2">getGCD(boKG_1,boKG_2)</var>
+                    <var id="SIMP_s">s/GCD1</var>
+                    <var id="SIMP_p3">paKG_3/GCD2</var>
+                    <var id="SIMP_b1">boKG_1/GCD1</var>
+                    <var id="SIMP_b2">boKG_2/GCD2</var>
+                    <var id="ans">(SIMP_b1*SIMP_p3)/(SIMP_b2*SIMP_s)</var>
+                    <var id="ans_1">Math.floor((SIMP_b1*SIMP_p3)/(SIMP_b2*SIMP_s))</var>
+                    <var id="ans_3">SIMP_b2*SIMP_s</var>
+                    <var id="ans_2">(SIMP_b1*SIMP_p3)-(ans_1*ans_3)</var>
+                </div>
+                <div class="question">
+                    <p><code>1</code>包糖重<code><var>paKG_1</var>\dfrac{<var>paKG_2</var>}{<var>paKG_3</var>}</code>公斤，媽媽將其中的<code>\dfrac{<var>boKG_1</var>}{<var>boKG_2</var>}</code>公斤裝成<code>1</code>罐。<code>1</code>罐糖是幾分之幾包？</p>
+                </div>
+                <div class="solution" data-type="rational">
+                    <var>ans</var>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p><code><var>paKG_1</var>\dfrac{<var>paKG_2</var>}{<var>paKG_3</var>}</code>公斤<code>=\dfrac{<var>s</var>}{<var>paKG_3</var>}</code>公斤</p>
+                    </div>
+                    <div>
+                        <p>可以說是<code>\dfrac{<var>boKG_1</var>}{<var>boKG_2</var>}</code>公斤（一罐糖）佔<code>\dfrac{<var>s</var>}{<var>paKG_3</var>}</code>公斤（一包糖）的比例</p>
+                    </div>
+                    <div>
+                        <p><code>\dfrac{<var>boKG_1</var>}{<var>boKG_2</var>}\div\dfrac{<var>s</var>}{<var>paKG_3</var>}</code></p>
+                    </div>
+                    <div>
+                        <p><code>=\dfrac{<var>boKG_1</var>}{<var>boKG_2</var>}\times\dfrac{<var>paKG_3</var>}{<var>s</var>}</code></p>
+                    </div>
+                    <div data-if="GCD1 != 1">
+                        <p><code>=\dfrac{\cancel{<var>boKG_1</var>}^{<var>SIMP_b1</var>}}{<var>boKG_2</var>}\times\dfrac{<var>paKG_3</var>}{\cancel{<var>s</var>}_{<var>SIMP_s</var>}}</code></p>
+                    </div>
+                    <div data-if="GCD2 != 1">
+                        <p><code>=\dfrac{<var>SIMP_b1</var>}{\cancel{<var>boKG_2</var>}_{<var>SIMP_b2</var>}}\times\dfrac{\cancel{<var>paKG_3</var>}_{<var>SIMP_p3</var>}}{<var>SIMP_s</var>}</code></p>
+                    </div>
+                    <div>
+                        <p><code>=\dfrac{<var>ans_2</var>}{<var>ans_3</var>}</code></p>
+                    </div>
+                </div>
+            </div>
+            <div id="milk">
+                <div class="vars" data-ensure="num1 > num2 && b > a && d > c && GCD3 === 1">
+                    <var id="a">randRange(2,8)</var>
+                    <var id="b">randRange(3,9)</var>
+                    <var id="num1">a/b</var>
+                    <var id="c">randRange(1,3)</var>
+                    <var id="d">randRange(2,5)</var>
+                    <var id="num2">c/d</var>
+                    <var id="ans">num2/num1</var>
+                    <var id="GCD1">getGCD(a,c)</var>
+                    <var id="SIMP_a">a/GCD1</var>
+                    <var id="SIMP_c">c/GCD1</var>
+                    <var id="GCD2">getGCD(b,d)</var>
+                    <var id="SIMP_b">b/GCD2</var>
+                    <var id="SIMP_d">d/GCD2</var>
+                    <var id="e">SIMP_c*SIMP_b</var>
+                    <var id="f">SIMP_a*SIMP_d</var>
+                    <var id="GCD3">getGCD(e,f)</var>
+                </div>
+                <div class="question">
+                    <p>一瓶牛奶，<var>person(1)</var>喝了這瓶牛奶的<code>\dfrac{<var>a</var>}{<var>b</var>}</code>，<var>person(2)</var>喝了這瓶牛奶的<code>\dfrac{<var>c</var>}{<var>d</var>}</code>，<var>person(2)</var>喝的牛奶是<var>person(1)</var>的幾倍？</p>
+                </div>
+                <div class="solution" data-type="rational">
+                    <var>ans</var>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>可以想成：</p>
+                        <p><code>\dfrac{<var>c</var>}{<var>d</var>}</code>瓶牛奶是<code>\dfrac{<var>a</var>}{<var>b</var>}</code>瓶牛奶的幾倍</p>
+                    </div>
+                    <div>
+                        <p><code>\dfrac{<var>c</var>}{<var>d</var>}\div\dfrac{<var>a</var>}{<var>b</var>}</code></p>
+                    </div>
+                    <div>
+                        <p><code>=\dfrac{<var>c</var>}{<var>d</var>}\times\dfrac{<var>b</var>}{<var>a</var>}</code></p>
+                    </div>
+                    <div data-if="GCD1 != 1">
+                        <p><code>=\dfrac{\cancel{<var>c</var>}^{<var>SIMP_c</var>}}{<var>d</var>}\times\dfrac{<var>b</var>}{\cancel{<var>a</var>}_{<var>SIMP_a</var>}}</code></p>
+                    </div>
+                    <div data-if="GCD2 != 1">
+                        <p><code>=\dfrac{<var>SIMP_c</var>}{\cancel{<var>d</var>}_{<var>SIMP_d</var>}}\times\dfrac{\cancel{<var>b</var>}^<var>SIMP_b</var>}{<var>SIMP_a</var>}</code></p>
+                    </div>
+                    <div>
+                        <p><code>=\dfrac{<var>SIMP_c*SIMP_b</var>}{<var>SIMP_a*SIMP_d</var>}</code>（倍）</p>
+                    </div>
+                </div>
+            </div>                    
+        </div>
+    </div>
+</body>
+</html>

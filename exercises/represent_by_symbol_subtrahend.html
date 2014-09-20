@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>用符號代表數-解決減數或被減數未知的問題</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+    </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+            <div class="vars">
+				<var id="J">accAdd(randRange(30,79),accDiv(randRange(0,10),10))</var>
+				<var id="K">accAdd(randRange(10,28),accDiv(randRange(0,10),10))</var>
+				<var id="A">Subtr(J,K)</var>
+            </div>
+            <p class="question">原有 <code><var>J</var></code> 公升的汽油，用掉了一些後還剩下 <code><var>K</var></code> 公升，請問用掉了多少公升的汽油呢？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-type="rational"><var>A</var></span> <code>公升</code>
+				<p class="example">整數，例：<code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace\enspace3/4</code></p>
+				<p class="example">小數，例：<code>0.75</code></p>
+			</div>
+            <div class="hints">
+				<p>我們不知道用掉多少公升的汽油，所以先假設用掉 <code>A</code> 公升的汽油。</p>
+				<p>原有 <code><var>J</var></code> 公升用去了 <code>A</code> 公升後還剩下 <code><var>K</var></code> 公升，我們就可以依照題目的敘述，列出 <code><var>J</var>-A=<var>K</var></code> 。</p>
+				<div>
+					<p>要算出 <code>A</code> 有多少，我們可以用線段來思考</p>
+					<div class="graphie" id="subend_line_1">
+						init({
+                        range: [ [-1, 12], [-1, 1] ],
+                        scale: 40
+						});
+						line([-1,0.5],[5,0.5],{stroke:"#6495ED"});
+						line([-1,0],[K/J*6-1,0],{stroke:"#FFA500"});
+						line([-1+K/J*6,-0.5],[5,-0.5],{stroke:"#28AE7B"});
+						label( [5,0.5],  "\\small{藍線代表原有的汽油\\color{blue}{"+J+"}公升}", "right", { color: "black" });
+						label( [5,0],  "\\small{橘線代表剩下的汽油\\color{orange}{"+K+"}公升}", "right", { color: "black" });
+						label( [5,-0.5],  "\\small{綠線代表用去的汽油\\color{green}{A}公升}", "right", { color: "black" });
+					</div>
+				</div>
+				<p>用藍線<code>(</code>等於 <code><var>J</var></code> 公升<code>)</code>減去橘線<code>(</code>等於 <code><var>K</var></code> 公升<code>)=</code> 綠線<code>(</code>等於 <code>A</code> 公升<code>)</code> ，</p>
+				<p>因此，本題的答案為 <code><var>J</var>-<var>K</var>=</code><code class="hint_pink"><var>A</var></code> 公升。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+				<var id="J">accAdd(randRange(60,99),accDiv(randRange(0,10),10))</var>
+				<var id="K">accAdd(randRange(10,58),accDiv(randRange(0,10),10))</var>
+				<var id="names">randFromArray(["飲料店","咖啡店","早餐店","簡餐店"])</var>
+				<var id="foods">randFromArray(["咖啡豆","可可粉","奶粉","抹茶粉"])</var>
+				<var id="A">Subtr(J,K)</var>
+            </div>
+            <p class="question"><var>names</var>原有 <code><var>J</var></code> 公斤的<var>foods</var>，這個月用掉一些後，還剩下 <code><var>K</var></code> 公斤，請問這個月用掉了多少公斤的<var>foods</var>？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-type="rational"><var>A</var></span> <code>公斤</code>
+				<p class="example">整數，例：<code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace\enspace3/4</code></p>
+				<p class="example">小數，例：<code>0.75</code></p>
+			</div>
+            <div class="hints">
+				<p>我們不知道用掉多少公斤的<var>foods</var>，所以先假設用掉 <code>A</code> 公斤的<var>foods</var>。</p>
+				<p>原有 <code><var>J</var></code> 公斤用去了 <code>A</code> 公斤後還剩下 <code><var>K</var></code> 公斤，我們就可以依照題目的敘述，列出 <code><var>J</var>-A=<var>K</var></code> 。</p>
+				<div>
+					<p>要算出 <code>A</code> 有多少，我們可以用線段來思考</p>
+					<div class="graphie" id="subend_line_2">
+						init({
+                        range: [ [-1, 12], [-1, 1] ],
+                        scale: 40
+						});
+						line([-1,0.5],[5,0.5],{stroke:"#6495ED"});
+						line([-1,0],[K/J*6-1,0],{stroke:"#FFA500"});
+						line([-1+K/J*6,-0.5],[5,-0.5],{stroke:"#28AE7B"});
+						label( [5,0.5],  "\\small{藍線代表原有的"+foods+"\\color{blue}{"+J+"}公斤}", "right", { color: "black" });
+						label( [5,0],  "\\small{橘線代表剩下的"+foods+"\\color{orange}{"+K+"}公斤}", "right", { color: "black" });
+						label( [5,-0.5],  "\\small{綠線代表用去的"+foods+"\\color{green}{A}公斤}", "right", { color: "black" });
+					</div>
+				</div>
+				<p>用藍線<code>(</code>等於 <code><var>J</var></code> 公斤<code>)</code>減去橘線<code>(</code>等於 <code><var>K</var></code> 公斤<code>)=</code>綠線<code>(</code>等於 <code>A</code> 公斤<code>)</code> ，</p>
+				<p>因此，本題的答案為 <code><var>J</var>-<var>K</var>=</code><code class="hint_pink"><var>A</var></code> 公斤。</p>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+				<var id="J">randRange(5000,15000)/100</var>
+				<var id="K">randRange(5000,15000)/100</var>
+				<var id="names">randFromArray(["王老闆","李爺爺","張奶奶","方大哥","陳大姊"])</var>
+				<var id="foods">randFromArray(["蓋房子","種花","種有機蔬菜","養雞","養鴨"])</var>
+				<var id="A">accAdd(J,K)</var>
+            </div>
+            <p class="question"><var>names</var>原有一塊土地，<var>foods</var>用去 <code><var>J</var></code> 平方公尺，還剩下 <code><var>K</var></code> 平方公尺，請問<var>names</var>原有的土地有多少平方公尺？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-type="rational"><var>A</var></span> <code>平方公尺</code>
+				<p class="example">整數，例：<code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace\enspace3/4</code></p>
+				<p class="example">小數，例：<code>0.75</code></p>
+			</div>
+            <div class="hints">
+				<p><var>names</var>原有土地的面積不知道，我們先假設<var>names</var>有 <code>A</code> 平方公尺的土地。</p>
+				<p><var>foods</var>用去了 <code><var>J</var></code> 平方公尺，還剩下 <code><var>K</var></code> 平方公尺，我們就可以依照題目的敘述，列出 <code>A-<var>J</var>=<var>K</var></code> 。</p>
+				<div>
+					<p>要算出 <code>A</code> 有多少，我們可以用線段來思考</p>
+					<div class="graphie" id="subend_line_3">
+						init({
+                        range: [ [-1, 12], [-1, 1] ],
+                        scale: 40
+						});
+						line([-1,0.5],[5,0.5],{stroke:"#6495ED"});
+						line([-1,0],[J/A*6-1,0],{stroke:"#FFA500"});
+						line([-1+J/A*6,-0.5],[5,-0.5],{stroke:"#28AE7B"});
+						label( [5,0.5],  "\\small{藍線代表原有的土地\\color{blue}{A}平方公尺}", "right", { color: "black" });
+						label( [5,0],  "\\small{橘線代表用去的土地\\color{orange}{"+J+"}平方公尺}", "right", { color: "black" });
+						label( [5,-0.5],  "\\small{綠線代表剩下的土地\\color{green}{"+K+"}平方公尺}", "right", { color: "black" });
+					</div>
+				</div>
+				<div>
+					<p>要算出原有的土地的面積有多少平方公尺，就可以用用去的土地面積 <code><var>J</var></code> 平方公尺，加上剩下的土地面積 <code><var>K</var></code> 平方公尺。</p>
+					<p>式子為 <code>A=<var>K</var>+<var>J</var></code> </p>
+				</div>
+				<p>也就是說藍線<code>(A</code> 平方公尺<code>)=</code> 橘線<code>(<var>J</var></code> 平方公尺<code>)+</code> 綠線<code>(<var>K</var></code> 平方公尺<code>)</code></p>
+				<p>因此，本題的答案為 <code><var>J</var>+<var>K</var>=</code><code class="hint_pink"><var>A</var></code> 平方公尺。</p>
+            </div>
+        </div>
+		
+		<div id="case4">
+            <div class="vars">
+				<var id="J">randRange(100,1000)/10</var>
+				<var id="K">randRange(100,1000)/10</var>
+				<var id="names">randFromArray(["小明","小莉","阿華","阿珍","小騰","小菲"])</var>
+				<var id="foods">randFromArray(["色紙","圖卡紙","圖畫紙","廣告傳單"])</var>
+				<var id="A">accAdd(J,K)</var>
+            </div>
+            <p class="question"><var>names</var>有一張<var>foods</var>，摺紙飛機用去了 <code><var>J</var></code> 平方公分，還剩下 <code><var>K</var></code> 平方公分，請問<var>names</var>原有的<var>foods</var>面積為多少平方公分？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-type="rational"><var>A</var></span> <code>平方公分</code>
+				<p class="example">整數，例：<code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace\enspace3/4</code></p>
+				<p class="example">小數，例：<code>0.75</code></p>
+			</div>
+            <div class="hints">
+				<p><var>names</var>原有<var>foods</var>的面積不知道，我們先假設<var>names</var>有 <code>A</code> 平方公分的<var>foods</var>。</p>
+				<p>摺飛機用去了 <code><var>J</var></code> 平方公分，還剩下 <code><var>K</var></code> 平方公分，我們就可以依照題目的敘述，列出 <code>A-<var>J</var>=<var>K</var></code> 。</p>
+				<div>
+					<p>要算出 <code>A</code> 有多少，我們可以用線段來思考</p>
+					<div class="graphie" id="subend_line_4">
+						init({
+                        range: [ [-1, 12], [-4, 1] ],
+                        scale: 40
+						});
+						line([-1,0.5],[5,0.5],{stroke:"#6495ED"});
+						line([-1,-1],[J/A*6-1,-1],{stroke:"#FFA500"});
+						line([-1+J/A*6,-2.5],[5,-2.5],{stroke:"#28AE7B"});
+						label( [0,0],  "\\small{藍線代表原有的"+foods+"面積\\color{blue}{A}平方公分}", "right", { color: "black" });
+						label( [0,-1.5],  "\\small{橘線代表用去的"+foods+"面積\\color{orange}{"+J+"}平方公分}", "right", { color: "black" });
+						label( [0,-3],  "\\small{綠線代表剩下的"+foods+"面積\\color{green}{"+K+"}平方公分}", "right", { color: "black" });
+					</div>
+				</div>
+				<div>
+					<p>要算出原有的<var>foods</var>的面積有多少平方公分，就可以用用去的<var>foods</var>面積 <code><var>J</var></code> 平方公分，加上剩下的<var>foods</var>面積 <code><var>K</var></code> 平方公分。</p>
+					<p>式子為 <code>A=<var>K</var>+<var>J</var></code> </p>
+				</div>
+				<p>也就是說藍線<code>(A</code> 平方公分<code>)=</code> 橘線<code>(<var>J</var></code> 平方公分<code>)+</code> 綠線<code>(<var>K</var></code> 平方公分<code>)</code></p>
+				<p>因此，本題的答案為 <code><var>J</var>+<var>K</var>=</code><code class="hint_pink"><var>A</var></code> 平方公分。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

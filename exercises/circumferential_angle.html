@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>圓周角</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+        </style>
+<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+
+
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+				<var id="half_j">randRange(15,30)</var>
+				<var id="J">2*half_j</var>
+				<var id="K">randRange(180,225)</var>
+            </div>
+            <p class="question">如下圖，<code>\overline{AB}</code>、<code>\overline{CD}</code> 是圓上的弦，且 <code>\overline{AB}//\overline{CD}</code> 。若 <code>\widehat{AC}=<var>J</var>^{\circ}</code> ，則 <code>\angle{ABC}</code> 、<code>\angle{BCD}</code> 及 <code>\widehat{BD}</code> 各是幾度？</p>
+			<div class="problem">
+			    <div class="graphie" id="circumferential_angle_1">
+                    init({
+                        range: [ [-3, 3], [-3, 3] ],
+                        scale: 40
+                    });
+					circle([0,0],2);
+					var startVector = polar(2, K-J);
+					var endVector = polar(2, K);
+					line(startVector,[-startVector[0],startVector[1]]);
+					line(endVector,[-endVector[0],endVector[1]]);
+					line([-startVector[0],startVector[1]],endVector);
+					label( startVector,  "\\small{A}", "left", { color: "black" });
+					label( [-startVector[0],startVector[1]],  "\\small{B}", "right", { color: "black" });
+					label( endVector,  "\\small{C}", "left", { color: "black" });
+					label( [-endVector[0],endVector[1]],  "\\small{D}", "right", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<code>\angle{ABC}=\enspace</code><span class="sol" data-forms="integer"><var>half_j</var></span><code>^{\circ}</code><br />
+				<code>\angle{BCD}=\enspace</code><span class="sol" data-forms="integer"><var>half_j</var></span><code>^{\circ}</code><br />
+				<code>\widehat{BD}=\enspace</code><span class="sol" data-forms="integer"><var>J</var></span><code>^{\circ}</code>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+            <div class="hints">
+				<p><code>(1)\enspace\because\enspace\angle{ABC}</code> 是圓周角<code>\enspace\enspace\enspace\therefore\enspace\angle{ABC}=\dfrac{1}{2}\widehat{AC}=</code><code class="hint_pink"><var>half_j</var>^{\circ}</code></p>
+				<p><code>(2)\enspace\because\enspace\overline{AB}//\overline{CD}\enspace\enspace\enspace\therefore\enspace\angle{BCD}=\angle{ABC}=</code><code class="hint_pink"><var>half_j</var>^{\circ}\enspace</code><code class="hint_blue">(內錯角相等)</code></p>
+				<p><code>(3)\enspace\because\enspace\angle{BCD}</code> 是圓周角</p>
+				<p><code>\enspace\enspace\enspace\enspace\enspace\therefore\enspace\widehat{BD}=2\angle{BCD}=</code><code class="hint_pink"><var>J</var>^{\circ}</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+				<var id="J">2*randRange(2,6)</var>
+				<var id="K">2*randRange(20,25)</var>
+				<var id="L">2*randRange(10,15)</var>
+            </div>
+            <p class="question">如下圖，圓 <code>O</code> 上有 <code>P</code>、<code>Q</code>、<code>A</code>、<code>B</code> 四點，<code>\overline{PQ}</code> 為圓 <code>O</code> 的直徑。已知圓的半徑是 <code class="hint_green"><var>J</var></code> 公分、<code>\angle{QPB}=<var>K</var>^{\circ}</code>、<code>\angle{AQB}=<var>L</var>^{\circ}</code>，則 <code>\widehat{PA}</code> 的長度是多少？</p>
+			<div class="problem">
+			    <div class="graphie" id="circumferential_angle_2">
+                    init({
+                        range: [ [-3, 3], [-3, 3] ],
+                        scale: 40
+                    });
+					circle([0,0],2);
+					circle([0,0],0.03);
+					var startVector = polar(2, 180+180-2*K);
+					var endVector = polar(2, 360);
+					var endVec_n = polar(2, 180+180-2*K);
+					var startVec_n = polar(2, 180+180-2*K-2*L);
+					line(startVector,endVector);
+					line([-2,0],[2,0]);
+					line([-2,0],startVector);
+					line(startVec_n,[2,0]);
+					label( [0,0],  "\\small{O}", "above", { color: "black" });
+					
+					label( [-2,0],  "\\small{P}", "left", { color: "black" });
+					label( [2,0],  "\\small{Q}", "right", { color: "black" });
+					label( startVec_n,  "\\small{A}", "below left", { color: "black" });
+					label( startVector,  "\\small{B}", "below right", { color: "black" });
+					
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<code>\widehat{PA}=\enspace</code><span class="sol" data-type="rational"><var>J*(90-K-L)/90</var></span><code>\pi\enspace公分</code>
+            </div>
+            <div class="hints">
+				<p><code>\because\enspace\overline{PQ}</code> 為直徑 <code>\Longrightarrow\enspace\angle{PBQ}=\dfrac{1}{2}\widehat{QP}=\dfrac{1}{2}\cdot 180^{\circ}=90^{\circ}</code></p>
+				<p><code>\therefore\enspace\angle{PQB}=180^{\circ}-\angle{PBQ}-\angle{QPB}=180^{\circ}-90^{\circ}-<var>K</var>^{\circ}=<var>90-K</var>^{\circ}</code></p>
+				<div>
+					<p>連接 <code>\overline{AO}</code></p>
+					<div class="graphie" data-update="circumferential_angle_2">
+						var startVec_n = polar(2, 180+180-2*K-2*L);
+						line(startVec_n,[0,0],{stroke:"red"});
+					</div>
+				</div>
+				<p>則 <code>\widehat{PA}</code> 度數 <code>=2\angle{PQA}=2(\angle{PQB}-\angle{AQB})=<var>2*(90-K-L)</var>^{\circ}=\angle{POA}</code></p>
+				<p><code>\widehat{PA}</code> 長 <code>=2\times<var>J</var>\times\pi\times\dfrac{\angle{POA}}{360^{\circ}}</code></p>
+				<p><code>=<var>2*J</var>\pi\times\dfrac{<var>2*(90-K-L)</var>^{\circ}}{360^{\circ}}</code></p>
+				<p><code>=</code><code class="hint_pink"><var>fraction(2*J*2*(90-K-L),360,true,true,false,false)</var>\pi</code> (公分)</p>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+				<var id="J">randRange(100,150)</var>
+				<var id="ang">J-90</var>
+				<var id="K">randRange(30,60)</var>
+            </div>
+            <p class="question">如圖，<code>A</code>、<code>B</code>、<code>C</code> 為圓 <code>O</code> 上三點，已知 <code>\angle{BAC}=<var>J</var>^{\circ}</code>，則 <code>\angle{BOC}=</code> ？</p>
+			<div class="problem">
+			    <div class="graphie" id="circumferential_angle_3">
+                    init({
+                        range: [ [-4, 4], [-4, 4] ],
+                        scale: 40
+                    });
+					circle([0,0],3);
+					circle([0,0],0.03);
+					
+					var startVector = polar(3, ang);
+					var endVector = polar(3, 180-ang);
+					line(startVector,endVector);
+					line([0,0],startVector);
+					line(endVector,[0,0]);
+					
+					var endVector_n = polar(3, ang+K);
+					var endVector_l = polar(3, 180-ang+K+100);
+					line(startVector,endVector_n);
+					line(endVector,endVector_n);
+					circle(endVector_l,0.03);
+					label( [0,0],  "\\small{O}", "below", { color: "black" });
+					
+					label( endVector,  "\\small{B}", "left", { color: "black" });
+					label( startVector,  "\\small{C}", "right", { color: "black" });
+					label( endVector_n,  "\\small{A}", "above", { color: "black" });
+					label( endVector_l,  "\\small{D}", "below", { color: "black" });
+					
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<code>\angle{BOC}=\enspace</code><span class="sol" data-forms="integer"><var>360-2*J</var></span><code>^{\circ}</code>
+            </div>
+            <div class="hints">
+				<p><code>\because\enspace\angle{BAC}</code> 為圓周角</p>
+				<p><code>\therefore\enspace\widehat{BDC}=2\angle{BAC}=<var>2*J</var>^{\circ}</code></p>
+				<p><code>\angle{BOC}=\widehat{BAC}</code><code class="hint_blue">(圓心角)</code></p>
+				<p><code>=360^{\circ}-\widehat{BDC}</code></p>
+				<p><code>=<var>360-2*J</var>^{\circ}</code></p>
+				<p>因此，本題的答案為 <code class="hint_pink">\angle{BOC}=<var>360-2*J</var>^{\circ}</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case4">
+            <div class="vars">
+				<var id="J">randRange(90,120)</var>
+				<var id="K">randRange(60,80)</var>
+				<var id="angC">180-J</var>
+				<var id="angD">180-K</var>
+				<var id="angle">randRange(15,60)</var>
+				<var id="R">angD+J-angC-K</var>
+            </div>
+            <p class="question">如下圖，圖上四點 <code>A</code>、<code>B</code>、<code>C</code>、<code>D</code> 構成一四邊形。已知 <code>\angle{A}=<var>J</var>^{\circ}</code>、<code>\angle{B}=<var>K</var>^{\circ}</code>，則 <code>\widehat{BC}-\widehat{AD}</code> 是多少度數？</p>
+			<div class="problem">
+			    <div class="graphie" id="circumferential_angle_4">
+                    init({
+                        range: [ [-3, 3], [-3, 3] ],
+                        scale: 40
+                    });
+					circle([0,0],2);
+					circle([0,0],0.03);
+					label( [0,0],  "\\small{O}", "above", { color: "black" });
+					var pointD = polar(2, angle);
+					var pointB = polar(2, angle+2*angC);
+					var pointC = polar(2, angle+360-2*K-2*K+360-2*K);
+					var pointA = polar(2, angle+360-2*K-2*K);
+					label( pointD,  "\\small{D}", "above right", { color: "black" });
+					label( pointB,  "\\small{B}", "below left", { color: "black" });
+					label( pointC,  "\\small{C}", "below right", { color: "black" });
+					label( pointA,  "\\small{A}", "above left", { color: "black" });
+					path([pointD,pointA,pointB,pointC,pointD],{stroke: "black"});
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>^{\circ}</code>
+            </div>
+            <div class="hints">
+				<p><code>\because\enspace ABCD</code> 為圓內接四邊形</p>
+				<div>
+					<p><code>\therefore\enspace\angle{C}=180^{\circ}-\angle{A}=<var>angC</var>^{\circ}</code></p>
+					<p><code>\enspace\enspace\enspace\enspace\angle{D}=180^{\circ}-\angle{B}=<var>angD</var>^{\circ}</code></p>
+				</div>
+				<p>又 <code>\angle{A}</code>、<code>\angle{B}</code>、<code>\angle{C}</code>、<code>\angle{D}</code> 為圓周角</p>
+				<p>
+					<code>\therefore\enspace\left\{\begin{array}{2}
+					\widehat{AB}+\widehat{AD}=2\angle{C}=<var>2*angC</var>^{\circ} \\
+					\widehat{AD}+\widehat{CD}=2\angle{B}=<var>2*K</var>^{\circ}\end{array}\right.
+					</code>
+				</p>
+				<p><code>\Longrightarrow\enspace 2\widehat{AD}+\widehat{AB}+\widehat{CD}=<var>2*angC+2*K</var>^{\circ}\cdots\enspace (1)</code></p>
+				<p>
+					<code>\enspace\enspace\enspace\left\{\begin{array}{2}
+					\widehat{AB}+\widehat{BC}=2\angle{D}=<var>2*angD</var>^{\circ} \\
+					\widehat{BC}+\widehat{CD}=2\angle{A}=<var>2*J</var>^{\circ}\end{array}\right.
+					</code>
+				</p>
+				<p><code>\Longrightarrow\enspace 2\widehat{BC}+\widehat{AB}+\widehat{CD}=<var>2*angD+2*J</var>^{\circ}\cdots\enspace (2)</code></p>
+				<p><code>(2)-(1)：2\widehat{BC}-2\widehat{AD}=<var>2*R</var></code></p>
+				<p><code>\enspace\enspace\enspace\therefore\enspace\widehat{BC}-\widehat{AD}=</code><code class="hint_pink"><var>R</var></code> 。</p>
+            </div>
+        </div>
+		
+    </div>
+		
+	</div>
+</body>
+</html>

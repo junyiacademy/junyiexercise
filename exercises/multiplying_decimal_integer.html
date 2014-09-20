@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers-arithmetic word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>整數乘以小數</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars">
+			<var id="J">randRange( 11, 99 )</var>
+			<var id="K">randRange( 1, 99 )</var>
+            <var id="PRODUCT">K * J</var>
+            <div data-ensure="BIG_FACTOR_DECIMAL > 0 || SMALL_FACTOR_DECIMAL > 0">
+                <var id="BIG_FACTOR_DECIMAL">0</var>
+                <var id="SMALL_FACTOR_DECIMAL">2</var>
+            </div>
+            <var id="SMALL_FACTOR_DIGITS">padDigitsToNum( digits( K ), SMALL_FACTOR_DECIMAL + 1 )</var>
+            <var id="BIG_FACTOR_DIGITS">padDigitsToNum( digits( J ), BIG_FACTOR_DECIMAL + 1 )</var>
+			<var id="R">J*K/100</var>
+        </div>
+		<p class="question">請計算 <code><var>J</var>\times <var>K/100</var>=</code> ？</p>
+		<div class="solution">
+			<span class="sol" data-type="rational"><var>R</var></span>
+		</div>
+
+		<div class="hints">
+			<div class="graphie" id="numbers">
+				graph.multiplier = new Multiplier( J, K, BIG_FACTOR_DIGITS, SMALL_FACTOR_DIGITS, BIG_FACTOR_DECIMAL, SMALL_FACTOR_DECIMAL );
+                graph.multiplier.show();
+				graph.multiplier.showDecimals();
+			</div>
+			<div class="graphie" data-update="numbers" data-each="Array( new Multiplier( J, K, BIG_FACTOR_DIGITS, SMALL_FACTOR_DIGITS, BIG_FACTOR_DECIMAL, SMALL_FACTOR_DECIMAL ).getNumHints() ) as dummy">
+                graph.multiplier.showHint();
+            </div>
+            <div class="graphie" data-update="numbers">
+                graph.multiplier.showDecimalsInProduct();
+            </div>
+			<p>因此，本題的答案為 <code class="hint_pink"><var>R</var></code> 。</p>
+		</div>
+	</div>
+	
+	<div id="case2">
+        <div class="vars">
+			<var id="J">randRange( 11, 50 )</var>
+			<var id="K">randRange( 1, 599 )</var>
+            <var id="PRODUCT">K * J</var>
+            <div data-ensure="BIG_FACTOR_DECIMAL > 0 || SMALL_FACTOR_DECIMAL > 0">
+                <var id="BIG_FACTOR_DECIMAL">0</var>
+                <var id="SMALL_FACTOR_DECIMAL">2</var>
+            </div>
+            <var id="SMALL_FACTOR_DIGITS">padDigitsToNum( digits( K ), SMALL_FACTOR_DECIMAL + 1 )</var>
+            <var id="BIG_FACTOR_DIGITS">padDigitsToNum( digits( J ), BIG_FACTOR_DECIMAL + 1 )</var>
+			<var id="R">J*K/100</var>
+        </div>
+		<p class="question">長 <code><var>J</var></code> 公分、寬 <code><var>K/100</var></code> 公分的長方形，面積為幾平方公分？</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-type="decimal"><var>R</var></span><code>平方公分</code>
+			<p class="example">整數，例：<code>6</code></p>
+			<p class="example">小數，例：<code>0.75</code></p>
+		</div>
+
+		<div class="hints">
+			<p>長方形的面積計算方式為長 <code>\times</code> 寬，</p>
+			<p>所以用 <code><var>J</var>\times<var>K/100</var>=</code> 長方形的面積</p>
+			<div class="graphie" id="numbers">
+				graph.multiplier = new Multiplier( J, K, BIG_FACTOR_DIGITS, SMALL_FACTOR_DIGITS, BIG_FACTOR_DECIMAL, SMALL_FACTOR_DECIMAL );
+                graph.multiplier.show();
+				graph.multiplier.showDecimals();
+			</div>
+			<div class="graphie" data-update="numbers" data-each="Array( new Multiplier( J, K, BIG_FACTOR_DIGITS, SMALL_FACTOR_DIGITS, BIG_FACTOR_DECIMAL, SMALL_FACTOR_DECIMAL ).getNumHints() ) as dummy">
+                graph.multiplier.showHint();
+            </div>
+            <div class="graphie" data-update="numbers">
+                graph.multiplier.showDecimalsInProduct();
+            </div>
+			<p>因此，本題的答案為 <code class="hint_pink"><var>R</var></code> 平方公分。</p>
+		</div>
+	</div>
+	
+	<div id="case3">
+        <div class="vars">
+			<var id="names">randFromArray([["盒","餅乾","片"],["包","糖果","顆"]])</var>
+			<var id="J">10*randRange( 1,9 )</var>
+			<var id="K">randRange( 1, 9 )</var>
+            <var id="PRODUCT">K * J</var>
+            <div data-ensure="BIG_FACTOR_DECIMAL > 0 || SMALL_FACTOR_DECIMAL > 0">
+                <var id="BIG_FACTOR_DECIMAL">0</var>
+                <var id="SMALL_FACTOR_DECIMAL">1</var>
+            </div>
+            <var id="SMALL_FACTOR_DIGITS">padDigitsToNum( digits( K ), SMALL_FACTOR_DECIMAL + 1 )</var>
+            <var id="BIG_FACTOR_DIGITS">padDigitsToNum( digits( J ), BIG_FACTOR_DECIMAL + 1 )</var>
+			<var id="R">J*K/10</var>
+        </div>
+		<p class="question">一<var>names[0]</var><var>names[1]</var>有 <code><var>J</var></code> <var>names[2]</var>，吃了 <code><var>K/10</var></code> <var>names[0]</var>是吃了幾<var>names[2]</var>？</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>R</var></span><code><var>names[2]</var></code>
+		</div>
+
+		<div class="hints">
+			<p>我們可以用 <code><var>J</var>\times<var>K/10</var></code> 算出來到底是吃了幾<var>names[2]</var>，</p>
+			<div class="graphie" id="numbers">
+				graph.multiplier = new Multiplier( J, K, BIG_FACTOR_DIGITS, SMALL_FACTOR_DIGITS, BIG_FACTOR_DECIMAL, SMALL_FACTOR_DECIMAL );
+                graph.multiplier.show();
+				graph.multiplier.showDecimals();
+			</div>
+			<div class="graphie" data-update="numbers" data-each="Array( new Multiplier( J, K, BIG_FACTOR_DIGITS, SMALL_FACTOR_DIGITS, BIG_FACTOR_DECIMAL, SMALL_FACTOR_DECIMAL ).getNumHints() ) as dummy">
+                graph.multiplier.showHint();
+            </div>
+            <div class="graphie" data-update="numbers">
+				var graph = KhanUtil.currentGraph;
+				deciA = BIG_FACTOR_DECIMAL || 0;
+				deciB = SMALL_FACTOR_DECIMAL || 0;
+				digitsA = BIG_FACTOR_DIGITS || KhanUtil.digits(J);
+				digitsB = SMALL_FACTOR_DIGITS || KhanUtil.digits(K);
+				var digitsProduct = KhanUtil.integerToDigits(J * K);
+				var maxNumDigits = Math.max(deciA + deciB, digitsProduct.length);
+                var x = -maxNumDigits;
+				var y = -digitsB.length * digitsA.length;
+				graph.label([x, y + 1],
+					"\\text{上面的數字，小數點右邊有 " + KhanUtil.plural(deciA, "位數") + "}", "right");
+				graph.label([x, y],
+					"\\text{下面的數字，小數點右邊有 " + KhanUtil.plural(deciB, "位數") + "}", "right");
+				graph.label([x, y-1],
+					"\\text{所以這兩個數字的乘積在小數點右邊有 " + deciA + " + " + deciB + " = " + (deciA + deciB)
+					+ " 位數}", "right");
+				graph.style({
+					fill: "#000"
+				}, function() {
+					graph.ellipse([-deciB - deciA + 0.5, -0.2 - digitsB.length], [0.09, 0.06]);
+				});
+            </div>
+			<p>也就是說 <code><var>J</var>\times<var>K/10</var></code> 的結果為 <code><var>R</var></code>，代表吃了 <code><var>R</var></code> <var>names[2]</var>，</p>
+			<p>因此，本題的答案為 <code class="hint_pink"><var>R</var></code> <var>names[2]</var> 。</p>
+		</div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

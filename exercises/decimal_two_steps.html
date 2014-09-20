@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能在具體情境中，解決小數的兩步驟問題，並能併式計算(6-n-08)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars" data-ensure="J!=K">
+			<var id="ans">randRange(1,3)</var>
+			<var id="J">
+			(function(){
+				switch(ans)
+					{
+					case 1:return randRange(18,30);break;
+					case 2:return randFromArray([1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9]);break;
+					case 3:return randRange(3,8);break;
+					default:return 0;
+					}
+			})()</var>
+			<var id="K">
+			(function(){
+				switch(ans)
+					{
+					case 1:return randRange(17,30);break;
+					case 2:return randFromArray([0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]);break;
+					case 3:return randRange(3,8);break;
+					default:return 0;
+					}
+			})()</var>
+			<var id="L">
+			(function(){
+				switch(ans)
+					{
+					case 1:return randFromArray([1.5,2.5,3.5,4.5,5.5]);break;
+					case 2:return randRange(2,5);break;
+					case 3:return randFromArray([1.5,2.5,3.5,4.5,5.5]);break;
+					default:return 0;
+					}
+			})()</var>
+			<var id="R">accAdd(accMul(J,L),accMul(K,L))</var>
+        </div>
+		<div class="question">
+			<p class="question" data-if="ans==1"><code>1</code> 公斤香蕉賣 <code><var>J</var></code> 元， <code>1</code> 公斤鳳梨賣 <code><var>K</var></code> 元，媽媽買香蕉和鳳梨各 <code><var>L</var></code> 公斤，共要付多少元？</p>
+			<p class="question" data-if="ans==2">大玩偶重 <code><var>J</var></code> 公斤，小玩偶重 <code><var>K</var></code> 公斤，學校各買了 <code><var>L</var></code> 個大、小玩偶。共重多少公斤？</p>
+			<p class="question" data-if="ans==3">阿姨買了 <code><var>J</var></code> 包紅豆和 <code><var>K</var></code> 包綠豆，每包紅豆、綠豆的重量是 <code><var>L</var></code> 公斤，全部共重多少公斤？</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-type="rational"><var>R</var></span><code>\enspace<var>ans==1?"元":"公斤"</var></code>
+		</div>
+
+		<div class="hints">
+			<div data-if="ans==1">
+				<p>先算 <code><var>L</var></code> 公斤香蕉的價錢，</p>
+				<p>再算 <code><var>L</var></code> 公斤鳳梨的價錢，</p>
+				<p>再把兩價錢合起來。</p>
+			</div>
+			<p data-if="ans==1"><code><var>J</var>\times<var>L</var>=<var>accMul(J,L)</var></code></p>
+			<p data-if="ans==1"><code><var>K</var>\times<var>L</var>=<var>accMul(K,L)</var></code></p>
+			<p data-if="ans==1"><code><var>accMul(J,L)</var>+<var>accMul(K,L)</var>=<var>R</var></code></p>
+			<p data-if="ans==1">答：共要付 <code class="hint_pink"><var>R</var></code> 元。</p>
+			
+			<div data-if="ans==2">
+				<p>先算 <code><var>L</var></code> 個大玩偶的重量，</p>
+				<p>再算 <code><var>L</var></code> 個小玩偶的重量，</p>
+				<p>再把兩重量合起來。</p>
+			</div>
+			<p data-if="ans==2"><code><var>J</var>\times<var>L</var>=<var>accMul(J,L)</var></code></p>
+			<p data-if="ans==2"><code><var>K</var>\times<var>L</var>=<var>accMul(K,L)</var></code></p>
+			<p data-if="ans==2"><code><var>accMul(J,L)</var>+<var>accMul(K,L)</var>=<var>R</var></code></p>
+			<p data-if="ans==2">答：共重 <code class="hint_pink"><var>R</var></code> 公斤。</p>
+			
+			<div data-if="ans==3">
+				<p>先算 <code><var>J</var></code> 包紅豆的重量，</p>
+				<p>再算 <code><var>K</var></code> 包綠豆的重量，</p>
+				<p>再把兩重量合起來。</p>
+			</div>
+			<p data-if="ans==3"><code><var>J</var>\times<var>L</var>=<var>accMul(J,L)</var></code></p>
+			<p data-if="ans==3"><code><var>K</var>\times<var>L</var>=<var>accMul(K,L)</var></code></p>
+			<p data-if="ans==3"><code><var>accMul(J,L)</var>+<var>accMul(K,L)</var>=<var>R</var></code></p>
+			<p data-if="ans==3">答：共重 <code class="hint_pink"><var>R</var></code> 公斤。</p>
+		</div>
+	</div>
+	
+	<div id="case2">
+        <div class="vars" data-ensure="J!=K">
+			<var id="ans">randRange(1,3)</var>
+			<var id="J">
+			(function(){
+				switch(ans)
+					{
+					case 1:return randRange(18,30);break;
+					case 2:return randFromArray([1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9]);break;
+					case 3:return randRange(3,8);break;
+					default:return 0;
+					}
+			})()</var>
+			<var id="K">
+			(function(){
+				switch(ans)
+					{
+					case 1:return randRange(17,30);break;
+					case 2:return randFromArray([0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]);break;
+					case 3:return randRange(3,8);break;
+					default:return 0;
+					}
+			})()</var>
+			<var id="L">
+			(function(){
+				switch(ans)
+					{
+					case 1:return randFromArray([1.5,2.5,3.5,4.5,5.5]);break;
+					case 2:return randRange(2,5);break;
+					case 3:return randFromArray([1.5,2.5,3.5,4.5,5.5]);break;
+					default:return 0;
+					}
+			})()</var>
+			<var id="R">accAdd(accMul(J,L),accMul(K,L))</var>
+        </div>
+		<div class="question">
+			<p class="question" data-if="ans==1"><code>1</code> 公斤香蕉賣 <code><var>J</var></code> 元， <code>1</code> 公斤鳳梨賣 <code><var>K</var></code> 元，媽媽買香蕉和鳳梨各 <code><var>L</var></code> 公斤，共要付多少元？</p>
+			<p class="question" data-if="ans==2">大玩偶重 <code><var>J</var></code> 公斤，小玩偶重 <code><var>K</var></code> 公斤，學校各買了 <code><var>L</var></code> 個大、小玩偶。共重多少公斤？</p>
+			<p class="question" data-if="ans==3">阿姨買了 <code><var>J</var></code> 包紅豆和 <code><var>K</var></code> 包綠豆，每包紅豆、綠豆的重量是 <code><var>L</var></code> 公斤，全部共重多少公斤？</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-type="rational"><var>R</var></span><code>\enspace<var>ans==1?"元":"公斤"</var></code>
+		</div>
+
+		<div class="hints">
+			<div data-if="ans==1">
+				<p>寫成一個算式，把先算的 <code><var>J</var></code> 加 <code><var>K</var></code> 用括號表示，再做乘法計算。</p>
+			</div>
+			<p data-if="ans==1"><code>(<var>J</var>+<var>K</var>)\times<var>L</var></code></p>
+			<p data-if="ans==1"><code>=<var>J+K</var>\times<var>L</var></code></p>
+			<p data-if="ans==1"><code>=<var>R</var></code></p>
+			<p data-if="ans==1">答：共要付 <code class="hint_pink"><var>R</var></code> 元。</p>
+			
+			<div data-if="ans==2">
+				<p>寫成一個算式，把先算的 <code><var>J</var></code> 加 <code><var>K</var></code> 用括號表示，再做乘法計算。</p>
+			</div>
+			<p data-if="ans==2"><code>(<var>J</var>+<var>K</var>)\times<var>L</var></code></p>
+			<p data-if="ans==2"><code>=<var>accAdd(J,K)</var>\times<var>L</var></code></p>
+			<p data-if="ans==2"><code>=<var>R</var></code></p>
+			<p data-if="ans==2">答：共重 <code class="hint_pink"><var>R</var></code> 公斤。</p>
+			
+			<div data-if="ans==3">
+				<p>寫成一個算式，把先算的 <code><var>J</var></code> 加 <code><var>K</var></code> 用括號表示，再做乘法計算。</p>
+			</div>
+			<p data-if="ans==3"><code>(<var>J</var>+<var>K</var>)\times<var>L</var></code></p>
+			<p data-if="ans==3"><code>=<var>J+K</var>\times<var>L</var></code></p>
+			<p data-if="ans==3"><code>=<var>R</var></code></p>
+			<p data-if="ans==3">答：共重 <code class="hint_pink"><var>R</var></code> 公斤。</p>
+		</div>
+	</div>
+	
+	<div id="case3">
+        <div class="vars">
+			<var id="ans">randRange(1,3)</var>
+			<var id="jz">randRange(2,4)</var>
+			<var id="kz">randRange(2,4)</var>
+			<var id="J">ans==3?accMul(jz/10,6):accMul(jz/10,randRange(12,32))</var>
+			<var id="K">ans==3?accMul(kz/10,3):accMul(kz/10,randRange(14,32))</var>
+			<var id="R">accAdd(accDiv(J*10,jz*10),accDiv(K*10,kz*10))</var>
+        </div>
+		<div class="question">
+			<p class="question" data-if="ans==1">爸爸買 <code><var>jz</var></code> 盒梨子和 <code><var>kz</var></code> 盒蘋果， <code><var>jz</var></code> 盒梨子重 <code><var>J</var></code> 公斤， <code><var>kz</var></code> 盒蘋果重 <code><var>K</var></code> 公斤， <code>1</code> 盒梨子和 <code>1</code> 盒蘋果共重多少公斤？</p>
+			<p class="question" data-if="ans==2">媽媽做 <code><var>jz</var></code> 個窗簾用了 <code><var>J</var></code> 公尺的布，做 <code><var>kz</var></code> 個門簾用了 <code><var>K</var></code> 公尺的布，做 <code>1</code> 個窗簾和 <code>1</code> 個門簾要用幾公尺的布？</p>
+			<p class="question" data-if="ans==3">阿光買了 <code><var>jz</var></code> 瓶礦泉水，共有 <code><var>J</var></code> 公升，又買了 <code><var>kz</var></code> 罐可樂，容量有 <code><var>K</var></code> 公升， <code>1</code> 瓶礦泉水和 <code>1</code> 罐可樂共有幾公升？</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-type="rational"><var>R</var></span><code>\enspace<var>ans==1?"公斤":(ans==2?"公尺":"公升")</var></code>
+		</div>
+
+		<div class="hints">
+			<p data-if="ans==1"><code><var>J</var>\div<var>jz</var>+<var>K</var>\div<var>kz</var></code></p>
+			<p data-if="ans==1"><code>=<var>accDiv(J*10,jz*10)</var>+<var>accDiv(K*10,kz*10)</var></code></p>
+			<p data-if="ans==1"><code>=<var>R</var></code></p>
+			<p data-if="ans==1">答：共重 <code class="hint_pink"><var>R</var></code> 公斤。</p>
+			
+			<p data-if="ans==2"><code><var>J</var>\div<var>jz</var>+<var>K</var>\div<var>kz</var></code></p>
+			<p data-if="ans==2"><code>=<var>accDiv(J*10,jz*10)</var>+<var>accDiv(K*10,kz*10)</var></code></p>
+			<p data-if="ans==2"><code>=<var>R</var></code></p>
+			<p data-if="ans==2">答：共用 <code class="hint_pink"><var>R</var></code> 公尺。</p>
+			
+			<p data-if="ans==3"><code><var>J</var>\div<var>jz</var>+<var>K</var>\div<var>kz</var></code></p>
+			<p data-if="ans==3"><code>=<var>accDiv(J*10,jz*10)</var>+<var>accDiv(K*10,kz*10)</var></code></p>
+			<p data-if="ans==3"><code>=<var>R</var></code></p>
+			<p data-if="ans==3">答：共有 <code class="hint_pink"><var>R</var></code> 公升。</p>
+		</div>
+	</div>
+	
+	<div id="case4">
+        <div class="vars" data-ensure="J!=K">
+			<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+			<var id="ans">randRange(2,3)</var>
+			<var id="jz">1</var>
+			<var id="kz">1</var>
+			<var id="lz">3</var>
+			<var id="J">randFromArray([2.8,3,3.2,3.4,3.6,3.8,4,4.2,4.4,4.6,4.8,5,5.2,5.4,5.6,5.8,6,6.2,6.4])</var>
+			<var id="K">randFromArray([3.6,3.9,4.2,4.5,4.8,5.1,5.4,5.7,6,6.3,6.6,6.9,7.2,7.5,7.8,8.1,8.4,8.7,9,9.3,9.6])</var>
+			<var id="R">abs(accDiv((J*10-K*10),10))</var>
+			<var id="rr">3*accMul(R,10)/10</var>
+        </div>
+		<div class="question">
+			<p class="question" data-if="ans==1">奇奇 <code><var>jz</var></code> 小時走 <code><var>J</var></code> 公里，丁丁 <code><var>kz</var></code> 小時走 <code><var>K</var></code> 公里，兩人同時走 <code>1</code> 小時，<var>J&gt;K?"奇奇":"丁丁"</var>比<var>J&lt;K?"奇奇":"丁丁"</var>多走幾公里？</p>
+			<p class="question" data-if="ans==2">奇奇 <code><var>1</var></code> 小時走 <code><var>J</var></code> 公里，宗宗 <code><var>1</var></code> 小時走 <code><var>K</var></code> 公里，兩人同時走 <code>3</code> 小時，<var>J&gt;K?"奇奇":"宗宗"</var>比<var>J&lt;K?"奇奇":"宗宗"</var>多走幾公里？</p>
+			<p class="question" data-if="ans==3">一包麵粉重 <code><var>J</var></code> 公斤，一包砂糖重 <code><var>K</var></code> 公斤，媽媽各買 <code>3</code> 包麵粉和砂糖， <code>3</code> 包<var>J&gt;K?"麵粉":"砂糖"</var>比 <code>3</code> 包<var>J&lt;K?"麵粉":"砂糖"</var>重幾公斤？</p>
+		</div>
+		<div class="problem">
+			<p>填填看、算算看</p>
+			<p><code>(</code><input type="text" id="a_1" style="width:30px"><code>\enspace-\enspace</code><input type="text" id="a_2" style="width:30px"><code>)\times 3</code></p>
+			<p><code>=</code>&nbsp;<input type="text" id="a_3" style="width:30px">&nbsp;<code>\times 3</code></p>
+			<p><code>=</code>&nbsp;<input type="text" id="a_4" style="width:30px"></p>
+			<p>答：<var>ans==2?"多走":"重"</var>&nbsp;<input type="text" id="a_5" style="width:30px">&nbsp;<var>ans==2?"公里":"公斤"</var>。</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value]</div>
+				<div class="validator-function">
+					var bol1 = false;
+					var bol2 = false;
+					var bol3 = false;
+					var bol4 = false;
+					if(abs(guess[0].replace(/[ ]/g,"")-max(J,K))&lt;0.00001){
+						bol1 = true;
+					}
+					if(abs(guess[1].replace(/[ ]/g,"")-min(J,K))&lt;0.00001){
+						bol2 = true;
+					}
+					if(abs(guess[2].replace(/[ ]/g,"")-R)&lt;0.00001){
+						bol3 = true;
+					}
+					if((abs(guess[3].replace(/[ ]/g,"")-rr)&lt;0.00001)&&(abs(guess[4].replace(/[ ]/g,"")-rr)&lt;0.00001)){
+						bol4 = true;
+					}
+				    return bol1&&bol2&&bol3&&bol4;
+				</div>
+			</div>
+			<p class="example">在題目下方填入正確答案</p>
+		</div>
+
+		<div class="hints">
+			<p data-if="ans==2">寫成一個算式，先用括號算出 <code>1</code> 個小時<var>J&gt;K?"奇奇":"宗宗"</var>比<var>J&lt;K?"奇奇":"宗宗"</var>多走幾公里，再乘以 <code>3</code> 。</p>
+			<p data-if="ans==3">寫成一個算式，先用括號算出 <code>1</code> 包<var>J&gt;K?"麵粉":"砂糖"</var>比<code>1</code> 包<var>J&lt;K?"麵粉":"砂糖"</var>重多少公斤，再乘以 <code>3</code> 。</p>
+			<p><code>(<var>max(J,K)</var>-<var>min(J,K)</var>)\times 3</code></p>
+			<p><code>=<var>R</var>\times 3</code></p>
+			<p><code>=<var>rr</var></code></p>
+			<p data-if="ans==2">答：多走 <code class="hint_pink"><var>rr</var></code> 公里。</p>
+			<p data-if="ans==3">答：重 <code class="hint_pink"><var>rr</var></code> 公斤。</p>
+		</div>
+	</div>
+	
+	<div id="case5">
+        <div class="vars" data-ensure="J/3!=K/2">
+			<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+			<var id="ans">randRange(1,3)</var>
+			<var id="K">randFromArray([2.8,3,3.2,3.4,3.6,3.8,4,4.2,4.4,4.6,4.8,5,5.2,5.4,5.6,5.8,6,6.2,6.4])</var>
+			<var id="J">randFromArray([3.6,3.9,4.2,4.5,4.8,5.1,5.4,5.7,6,6.3,6.6,6.9,7.2,7.5,7.8,8.1,8.4,8.7,9,9.3,9.6])</var>
+			<var id="R">accDiv(max(K*10/2/10,J*10/3/10)*10-min(K*10/2/10,J*10/3/10)*10,10)</var>
+        </div>
+		<div class="question">
+			<p class="question" data-if="ans==1">奇奇 <code>2</code> 小時走 <code><var>K</var></code> 公里，丁丁 <code>3</code> 小時走 <code><var>J</var></code> 公里，兩人同時走 <code>1</code> 小時，<var>J/3&lt;K/2?"奇奇":"丁丁"</var>比<var>J/3&gt;K/2?"奇奇":"丁丁"</var>多走幾公里？</p>
+			<p class="question" data-if="ans==2">爸爸買 <code>2</code> 公尺銅線重 <code><var>K</var></code> 公斤和 <code>3</code> 公尺鐵線重 <code><var>J</var></code> 公斤， <code>1</code> 公尺<var>J/3&lt;K/2?"銅線":"鐵線"</var>比 <code>1</code> 公尺<var>J/3&gt;K/2?"銅線":"鐵線"</var>重幾公斤？</p>
+			<p class="question" data-if="ans==3">哥哥游泳 <code>3</code> 分鐘游了 <code><var>J*10/100</var></code> 公里，阿光游泳 <code>2</code> 分鐘游了 <code><var>K*10/100</var></code> 公里，兩人游 <code>1</code> 分鐘，<var>J/3&gt;K/2?"哥哥":"阿光"</var>比<var>J/3&lt;K/2?"哥哥":"阿光"</var>多游幾公里？</p>
+		</div>
+		<div class="problem">
+			<p>填填看、算算看</p>
+			<p>&nbsp;&nbsp;<input type="text" id="a_1" style="width:30px">&nbsp;<code>\div <var>K/2&gt;J/3?2:3</var>\enspace-\enspace</code><input type="text" id="a_2" style="width:30px">&nbsp;<code>\div <var>K/2&lt;J/3?2:3</var></code></p>
+			<p><code>=</code>&nbsp;<input type="text" id="a_3" style="width:30px">&nbsp;<code>-</code>&nbsp;<input type="text" id="a_4" style="width:30px"></p>
+			<p><code>=</code>&nbsp;<input type="text" id="a_5" style="width:30px"></p>
+			<p>答：<var>ans==1?"多走":(ans==2?"重":"多游")</var>&nbsp;<input type="text" id="a_6" style="width:30px">&nbsp;<var>ans!=2?"公里":"公斤"</var>。</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value]</div>
+				<div class="validator-function">
+					var bol1 = false;
+					var bol2 = false;
+					var bol3 = false;
+					var bol4 = false;
+					var bol5 = false;
+					if(ans==3){
+					var maxVal = K/2&gt;J/3?K:J;
+					var minVal = K/2&lt;J/3?K:J;
+					if(abs(guess[0].replace(/[ ]/g,"")-maxVal/10)&lt;0.00001){
+						bol1 = true;
+					}
+					if(abs(guess[1].replace(/[ ]/g,"")-minVal/10)&lt;0.00001){
+						bol2 = true;
+					}
+					if(abs(guess[2].replace(/[ ]/g,"")-max(K*10/2/10,J*10/3/10)/10)&lt;0.00001){
+						bol3 = true;
+					}
+					if(abs(guess[3].replace(/[ ]/g,"")-min(K*10/2/10,J*10/3/10)/10)&lt;0.00001){
+						bol4 = true;
+					}
+					if((abs(guess[4].replace(/[ ]/g,"")-R/10)&lt;0.00001)&&(abs(guess[5].replace(/[ ]/g,"")-R/10)&lt;0.00001)){
+						bol5 = true;
+					}}
+					
+					if(ans==2||ans==1){
+					var maxVal = K/2&gt;J/3?K:J;
+					var minVal = K/2&lt;J/3?K:J;
+					if(abs(guess[0].replace(/[ ]/g,"")-maxVal)&lt;0.00001){
+						bol1 = true;
+					}
+					if(abs(guess[1].replace(/[ ]/g,"")-minVal)&lt;0.00001){
+						bol2 = true;
+					}
+					if(abs(guess[2].replace(/[ ]/g,"")-max(K*10/2/10,J*10/3/10))&lt;0.00001){
+						bol3 = true;
+					}
+					if(abs(guess[3].replace(/[ ]/g,"")-min(K*10/2/10,J*10/3/10))&lt;0.00001){
+						bol4 = true;
+					}
+					if((abs(guess[4].replace(/[ ]/g,"")-R)&lt;0.00001)&&(abs(guess[5].replace(/[ ]/g,"")-R)&lt;0.00001)){
+						bol5 = true;
+					}}
+				    return bol1&&bol2&&bol3&&bol4&&bol5;
+				</div>
+			</div>
+			<p class="example">在題目下方填入正確答案</p>
+		</div>
+
+		<div class="hints">
+			<p>將兩步驟的算式寫成一個算式算算看，先做除法計算再做減法計算。</p>
+			<p data-if="ans!=3">&nbsp;&nbsp;<code data-if="K/2&gt;J/3"><var>K</var>\div 2- <var>J</var>\div 3</code><code data-if="K/2&lt;J/3"><var>J</var>\div 3- <var>K</var>\div 2</code></p>
+			<p data-if="ans!=3"><code>=<var>max(K*10/2/10,J*10/3/10)</var>-<var>min(K*10/2/10,J*10/3/10)</var></code></p>
+			<p data-if="ans!=3"><code>=<var>R</var></code></p>
+			
+			<p data-if="ans==3">&nbsp;&nbsp;<code data-if="K/2&gt;J/3"><var>K*10/100</var>\div 2- <var>J*10/100</var>\div 3</code><code data-if="K/2&lt;J/3"><var>J*10/100</var>\div 3- <var>K*10/100</var>\div 2</code></p>
+			<p data-if="ans==3"><code>=<var>max(K*10/2/10,J*10/3/10)*10/100</var>-<var>min(K*10/2/10,J*10/3/10)*10/100</var></code></p>
+			<p data-if="ans==3"><code>=<var>R*10/100</var></code></p>
+			
+			<p data-if="ans==1">答：多走 <code class="hint_pink"><var>R</var></code> 公里。</p>
+			<p data-if="ans==2">答：重 <code class="hint_pink"><var>R</var></code> 公斤。</p>
+			<p data-if="ans==3">答：多游 <code class="hint_pink"><var>R*10/100</var></code> 公里。</p>
+		</div>
+	</div>
+</div>
+</div>
+</body>
+</html>

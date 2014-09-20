@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers time word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能認識二位小數與百分位的位名，並做比較</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area input[type=text] {
+            width: 40px;
+        }
+        .ttable {
+            text-align: left;
+            margin-top: 20px;
+            margin-left: 5px;
+        }
+
+        .ttable tr {
+            height: 23px;
+        }
+
+        .ttable td {
+            padding: 0px 5px;
+            text-align: right;
+        }
+
+        .ttable .labels td {
+            padding-left: 5px;
+            text-align: left;
+            border-bottom: 2px solid black;
+        }
+
+        .ttable .cross-bar td {
+            padding-top: 5px;
+        }
+
+        .ttable .second-col {
+            border-left: 2px solid black;
+        }
+
+        .ttable .third-col {
+            border-left: 2px solid black;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars" data-ensure="K>9">
+                    <var id="K0">randRange(0, 9)</var>
+                    <var id="K1">randRange(0, 9)</var>
+                    <var id="K2">0</var>
+                    <var id="K">K1*10 + K0</var>
+                </div>
+                <p class="question">一包糖果有100顆，<var>K</var>顆是幾包糖果呢？</p>
+                <div class="solution" data-type="multiple">
+                     <div class="instruction">
+                         <span>用小數記在位值板上。</span>
+                         <table class="ttable">
+                             <tr class="labels">
+                                 <td><code>個位</code></td>
+                                 <td class="second-col"><code>十分位</code></td>
+                                 <td class="third-col"><code>百分位</code></td>
+                             </tr>
+                             <tr class="cross-bar">
+                                 <td><span class="sol"><var>K2</var></span><code>\huge{.}</code></td>
+                                 <td class="second-col"><span class="sol"><var>K1</var></span></td>
+                                 <td class="third-col"><span class="sol"><var>K0</var></span></td>
+                             </tr>
+                         </table>
+                         <p class="example">整數， 例：6</p>
+                     </div>
+                </div>
+                <div class="hints">
+                    <p>一顆糖是<code>\frac{1}{100}</code>包，也可以說是0.01包</p>
+                    <table class="ttable">
+                        <tr class="labels">
+                            <td><code>個位</code></td>
+                            <td class="second-col"><code>十分位</code></td>
+                            <td class="third-col"><code>百分位</code></td>
+                        </tr>
+                        <tr class="cross-bar">
+                            <td>0<code>\huge{.}</code></td>
+                            <td class="second-col">0</td>
+                            <td class="third-col">1</td>
+                        </tr>
+                    </table>
+                    <p><var>K</var>顆糖是<var>K</var>個<code>\frac{1}{100}</code>包</p>
+                    <p>也可以說是<var>K</var>個0.01包，也就是<var>K/100</var>包</p>
+                    <table class="ttable">
+                        <tr class="labels">
+                            <td><code>個位</code></td>
+                            <td class="second-col"><code>十分位</code></td>
+                            <td class="third-col"><code>百分位</code></td>
+                        </tr>
+                        <tr class="cross-bar">
+                            <td><code>\color{#F62217}{0}\huge{.}</code></td>
+                            <td class="second-col"><code>\color{#F62217}{<var>K1</var>}</code></td>
+                            <td class="third-col"><code>\color{#F62217}{<var>K0</var>}</code></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="case2">
+                <div class="vars">
+                    <var id="K">randRange(5, 99)</var>
+                </div>
+                <p class="question">有1條繩子平分成100段後，其中的<var>K</var>段是幾條繩子？</p>
+                <div class="solution" data-type="multiple">
+                    <p><span class="sol" data-forms="decimal"><var>K/100</var></span>條</p>
+                    <p class="example">小數， 例： 0.05 條</p>
+                </div>
+                <div class="hints">
+                    <p>一條繩子平分成100段後，其中的1段是<code>\frac{1}{100}</code>條，也等於0.01條</p>
+                    <p><code><var>K</var>段就是 \frac{<var>K</var>}{100} =  \color{#F62217}{<var>K/100</var>}條</code></p>
+                </div>
+            </div>
+            <div id="case3">
+                <div class="vars">
+                    <var id="K">randRange(1, 99)</var>
+                    <var id="MAP">["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"]</var>
+                    <var id="C">(function() {
+                        result = "零點";
+                        result = result + MAP[parseInt(K/10)];
+                        result = result + MAP[K%10];
+                        return result;
+                        })()
+                    </var>
+                </div>
+                <p class="question">寫出<var>C</var>的小數。</p>
+                <div class="solution" data-type="multiple">
+                    <p>小數是<span class="sol" data-forms="decimal"><var>K/100</var></span></p>
+                    <p class="example">小數， 例： 0.05</p>
+                </div>
+                <div class="hints">
+                    <p><code>小數是 \color{#F62217}{<var>K/100</var>}</code></p>
+                    <div class="graphie">
+                        init({ range: [ [0, 1], [0, 10] ], scale: [250, 25] });
+                        var R = 0;
+                        var B = 0;
+                        for (var i = 0; i &lt; 10; i++) {
+                        R = K - (i + 1) * 10;
+                        if (R &lt; 0) {
+                        R = 10 + R;
+                        B = 10 - R;
+                        } else {
+                        R = 10;
+                        B = 0;
+                        }
+                        rectchart([R, B], ["#e00", "#999"],i);
+                        }
+                    </div>
+                </div>
+            </div>
+            <div id="case4">
+                <div class="vars">
+                    <var id="K0">randRange(2, 9)</var>
+                    <var id="K1">randRange(2, 9)</var>
+                    <var id="K2">randRange(2, 9)</var>
+                    <var id="K">(K0*100 + K1*10 + K2)/100</var>
+                </div>
+                <p class="question"><var>K0</var> 個 1， <var>K1</var> 個 0.1， <var>K2</var> 個 0.01 寫成小數是:</p>
+                <div class="solution" data-type="multiple">
+                    <p>小數是 <span class="sol" data-forms="decimal"><var>K</var></span></p>
+                    <p class="example">小數， 例: 8.63 </p>
+                </div>
+                <div class="hints">
+                    <p><var>K0</var>個 1 等於 <var>K0</var></p>
+                    <p><var>K1</var>個 0.1 等於 <var>K1/10</var></p>
+                    <p><var>K2</var>個 0.01 等於 <var>K2/100</var></p>
+                    <p><code>加起來一共是 \color{#F62217}{<var>K</var>}</code></p>
+                </div>
+            </div>
+            <div id="case5">
+                <div class="vars">
+                    <var id="J">randRange(1, 9)</var>
+                    <var id="K">randRange(1, 9)</var>
+                    <var id="M">randRange(1, 9)</var>
+                    <var id="N">randRange(1, 9)</var>
+                    <var id="D1">(J * 10 + K) / 100</var>
+                    <var id="D2">(M * 10 + N) / 100</var>
+                    <var id="SOLUTION">(function() {
+                        if ( D1 &gt; D2 ) {
+                        return "&gt;";
+                        } else if ( D1 &lt; D2 ) {
+                        return "&lt;";
+                        } else {
+                        return "=";
+                        }
+                        })()</var>
+                </div>
+                <div class="question">
+                    <p>比較下列二小數大小:</p>
+                    <p>
+                        <code><var>D1</var></code>
+                        ____ <code><var>D2</var></code>
+                    </p>
+                </div>
+                <div class="solution"><code><var>SOLUTION</var></code></div>
+                <ul class="choices" data-category="true">
+                    <li><code>&lt;</code></li>
+                    <li><code>=</code></li>
+                    <li><code>&gt;</code></li>
+                </ul>
+                <div class="hints">
+                    <p>進行小數的比大小時，要從左邊的位值先比。</p>
+                    <p>我們可以先比比看十分位的大小，看看哪邊比較大</p>
+                    <p>如果十分位一樣大的話，再比較百分位</p>
+                    <p><code><var>D1</var> \color{#F62217}{<var>SOLUTION</var>} <var>D2</var></code></p>
+                </div>
+            </div>
+            <div id="case6">
+                <div class="vars">
+                    <var id="L">randRange(1, 9)</var>
+                    <var id="J">randRange(1, 9)</var>
+                    <var id="K">randRange(1, 9)</var>
+                    <var id="P">randRange(1, 9)</var>
+                    <var id="M">randRange(1, 9)</var>
+                    <var id="N">randRange(1, 9)</var>
+                    <var id="D1">(L * 100 + J * 10 + K) / 100</var>
+                    <var id="D2">(P * 100 + M * 10 + N) / 100</var>
+                    <var id="SOLUTION">(function() {
+                        if ( D1 &gt; D2 ) {
+                        return "&gt;";
+                        } else if ( D1 &lt; D2 ) {
+                        return "&lt;";
+                        } else {
+                        return "=";
+                        }
+                        })()</var>
+                </div>
+                <div class="question">
+                    <p>比較下列二小數大小:</p>
+                    <p>
+                        <code><var>D1</var></code>
+                        ____ <code><var>D2</var></code>
+                    </p>
+                </div>
+                <div class="solution"><code><var>SOLUTION</var></code></div>
+                <ul class="choices" data-category="true">
+                    <li><code>&lt;</code></li>
+                    <li><code>=</code></li>
+                    <li><code>&gt;</code></li>
+                </ul>
+                <div class="hints">
+                    <p>進行小數的比大小時，要從左邊的位值先比。</p>
+                    <p>我們可以先比比看個位的大小，看看哪邊比較大</p>
+                    <p>如果個位一樣大的話，再比較十分位</p>
+                    <p>如果十分位一樣大的話，再比較百分位</p>
+                    <p><code><var>D1</var> \color{#F62217}{<var>SOLUTION</var>} <var>D2</var></code></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

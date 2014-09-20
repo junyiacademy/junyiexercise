@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>正負分數的減法</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars" data-ensure="K!=J && L!=J">
+			<var id="J">randRange(11,30)</var>
+			<var id="K">randRange(5,11)</var>
+			<var id="L">randRange(12,29)</var>
+        </div>
+		<div class="question spin">
+		<p>計算下列式子的值</p>
+		<p class="question"><code>(-\dfrac{<var>K</var>}{<var>J</var>})-(-\dfrac{<var>L</var>}{<var>J</var>})</code></p>
+		</div>
+		<div class="solution">
+			<span class="sol" data-type="rational"><var>(L-K)/J</var></span>
+		</div>
+		<div class="hints">
+			<div>
+				<p><code>\enspace\enspace(-\dfrac{<var>K</var>}{<var>J</var>})-(-\dfrac{<var>L</var>}{<var>J</var>})</code></p>
+				<p><code>=(-\dfrac{<var>K</var>}{<var>J</var>})+(\dfrac{<var>L</var>}{<var>J</var>})</code></p>
+			</div>
+			<p><code>=(\dfrac{<var>L</var>}{<var>J</var>})-(\dfrac{<var>K</var>}{<var>J</var>})</code></p>
+			<p><code>=\dfrac{(<var>L</var>-<var>K</var>)}{<var>J</var>}</code></p>
+			<p data-if="getGCD(L-K,J)!=1"><code>=\dfrac{<var>L-K</var>}{<var>J</var>}</code></p>
+			<p><code>=</code><code class="hint_pink">\enspace <var>fraction(L-K,J,true,true,false,false)</var></code></p>
+		</div>
+	</div>
+	
+	<div id="case2">
+        <div class="vars" data-ensure="K!=J && L!=J">
+			<var id="J">randRange(11,30)</var>
+			<var id="K">randRange(12,29)</var>
+			<var id="L">randRange(5,11)</var>
+        </div>
+		<div class="question spin">
+		<p>計算下列式子的值</p>
+		<p class="question"><code>(-\dfrac{<var>K</var>}{<var>J</var>})-(-\dfrac{<var>L</var>}{<var>J</var>})</code></p>
+		</div>
+		<div class="solution">
+			<span class="sol" data-type="rational"><var>-(K-L)/J</var></span>
+		</div>
+		<div class="hints">
+			<div>
+				<p><code>\enspace\enspace(-\dfrac{<var>K</var>}{<var>J</var>})-(-\dfrac{<var>L</var>}{<var>J</var>})</code></p>
+				<p><code>=(-\dfrac{<var>K</var>}{<var>J</var>})+(\dfrac{<var>L</var>}{<var>J</var>})</code></p>
+			</div>
+			<p><code>=-(\dfrac{<var>K</var>}{<var>J</var>}-\dfrac{<var>L</var>}{<var>J</var>})</code></p>
+			<p><code>=-\dfrac{(<var>K</var>-<var>L</var>)}{<var>J</var>}</code></p>
+			<p data-if="getGCD(K-L,J)!=1"><code>=-\dfrac{<var>K-L</var>}{<var>J</var>}</code></p>
+			<p><code>=</code><code class="hint_pink">\enspace <var>fraction(L-K,J,true,true,false,false)</var></code></p>
+		</div>
+	</div>
+	
+	<div id="case3">
+        <div class="vars" data-ensure="K!=J && L!=J">
+			<var id="J">randRange(11,30)</var>
+			<var id="K">randRange(5,18)</var>
+			<var id="L">randRange(5,18)</var>
+        </div>
+		<div class="question spin">
+		<p>計算下列式子的值</p>
+		<p class="question"><code>(-\dfrac{<var>K</var>}{<var>J</var>})-(\dfrac{<var>L</var>}{<var>J</var>})</code></p>
+		</div>
+		<div class="solution">
+			<span class="sol" data-type="rational"><var>-(K+L)/J</var></span>
+		</div>
+		<div class="hints">
+			<div>
+				<p><code>\enspace\enspace(-\dfrac{<var>K</var>}{<var>J</var>})-(\dfrac{<var>L</var>}{<var>J</var>})</code></p>
+				<p><code>=-(\dfrac{<var>K</var>}{<var>J</var>}+\dfrac{<var>L</var>}{<var>J</var>})</code></p>
+			</div>
+			<p><code>=-(\dfrac{<var>K</var>+<var>L</var>}{<var>J</var>})</code></p>
+			<p data-if="getGCD(K+L,J)!=1"><code>=-\dfrac{<var>K+L</var>}{<var>J</var>}</code></p>
+			<p><code>=</code><code class="hint_pink">\enspace <var>fraction(-(K+L),J,true,true,false,false)</var></code></p>
+		</div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

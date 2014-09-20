@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html data-require="math stat graphie interactive ast math-model">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>繪製放大圖與縮小圖</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="triangle">
+                <div class="vars">
+					<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+                    <var id="J">randRange(3,5)</var>
+                    <var id="X">randRange(1,2)</var>
+                    <var id="Y">randRange(1,2)</var>
+                    <var id="AREA">(X*Y)/2</var>
+                </div>
+                <div class="question">
+                    <p>圖<code>1</code>是一個直角三角形，將圖<code>1</code>以<code><var>J</var></code>倍放大</p>
+                    <div class="graphie" id="area">
+                        graphInit({
+                                range: [ [-1,20], [-1,15] ],
+                                scale: 25,
+                                axisArrows:0,
+                                tickStep: 1,
+                                labelStep: 1,
+                                gridOpacity: 0.2,
+                                axisOpacity: 0.05,
+                                tickOpacity: 0.4,
+                                labelOpacity: 0.01,
+                            });
+
+                        init({ range: [[-1, 20], [-1, 15]], scale: 25});
+                        path([[0, 0], [0, Y], [X, 0], true],
+                        { stroke: GRAY });
+
+                        addMouseLayer();
+
+                        label( [ 1, 0 ], "圖1", "below" );
+                        label( [ 0, 0 ], "A", "left" );
+                        graph.pointA = addMovablePoint({
+                            coord: [ 0, 0 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        label( [ X, 0 ], "B", "right" );
+                        graph.pointB = addMovablePoint({
+                            coord: [ X, 0 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        label( [ 0, Y ], "C", "above" );
+                        graph.pointC = addMovablePoint({
+                            coord: [ 0, Y ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+
+                        graph.line1 = addMovableLineSegment({
+                            pointA: graph.pointA,
+                            pointZ: graph.pointB,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        graph.line2 = addMovableLineSegment({
+                            pointA: graph.pointB,
+                            pointZ: graph.pointC,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+
+                        graph.line3 = addMovableLineSegment({
+                            pointA: graph.pointC,
+                            pointZ: graph.pointA,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        // A and B can't be in the same place
+                        graph.pointA.onMove = function( x, y ) {
+                            return ( x != graph.pointB.coord[0] || y != graph.pointB.coord[1] );
+                        }
+                        graph.pointB.onMove = function( x, y ) {
+                            return ( x != graph.pointA.coord[0] || y != graph.pointA.coord[1] );
+                        }
+                        // C 的點也要檢查
+
+                        graph.pointA.toFront();
+                        graph.pointB.toFront();
+                        graph.pointC.toFront();
+
+                    </div>
+                </div>
+                 <div class="solution" data-type="custom">
+                    <div class="instruction">
+                        直接在題目區用拉的呈現
+                    </div>
+                    <div class="guess"> [ graph.pointA.coord, graph.pointB.coord,graph.pointC.coord ] 
+                    </div>
+                    <div class="validator-function">
+                        var B = guess[1][0] - guess[0][0];
+                        var H = guess[2][1] - guess[0][1];
+                        return (B == X*J && H == Y*J);
+                    </div>
+                    <div class="show-guess">
+                        graph.pointA.setCoord( guess[0] );
+                        graph.pointB.setCoord( guess[1] );
+                        graph.pointC.setCoord( guess[2] );
+                        graph.line1.transform( true );
+                        graph.line2.transform( true );
+                        graph.line3.transform( true );
+                    </div>
+                </div>
+                <div class="hints">
+                    <p>放大後的邊長<code>=</code>原邊長<code>\times</code>放大倍數<br>對應角相等。
+                    </p>
+                    <div class="graphie" data-update="area">  
+                        init({ range: [[-1, 20], [-1, 15]], scale: 25});
+                        path([[9, 0], [9, J*Y], [9+(J*X), 0], true],
+                        { stroke: BLUE });
+
+                        label( [ 13, 0 ], "圖2", "below" );
+                        label( [ 9, 0 ], "D", "left" );
+                        label( [ 9+(J*X), 0], "E", "right" );
+                        label( [ 9, J*Y ], "F", "above" );
+                    </div>
+                </div>
+            </div>
+            <<div id="square">
+                <div class="vars">
+					<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+                    <var id="J">randFromArray([8,10,12,16,20])</var>
+                    <var id="K">J/2</var>
+                </div>
+                <div class="question">
+                    <p>甲圖是邊長為<code><var>J</var></code>公分的正方形，將甲圖以<code>\dfrac{1}{2}</code>倍縮小</p>
+                    <div class="graphie" id="area">
+                        graphInit({
+                                range: [ [-1,35], [-1,25] ],
+                                scale: 15,
+                                axisArrows:0,
+                                tickStep: 1,
+                                labelStep: 1,
+                                gridOpacity: 0.2,
+                                axisOpacity: 0.05,
+                                tickOpacity: 0.4,
+                                labelOpacity: 0.01,
+                            });
+                        init({ range: [[-1, 35], [-1, 25]], scale: 15});
+                        path([[0, 0], [J, 0], [J, J], [0, J], true],
+                        { stroke: GRAY });
+
+                        addMouseLayer();
+
+                        label( [ J/2, 0 ], "甲圖", "below" );
+                        label( [ 0, 0 ], "A", "left" );
+                        graph.pointA = addMovablePoint({
+                            coord: [ 0, 0 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        label( [ J, 0 ], "B", "right" );
+                        graph.pointB = addMovablePoint({
+                            coord: [ J, 0 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        label( [ 0, J ], "D", "above" );
+                        graph.pointD = addMovablePoint({
+                            coord: [ 0, J ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        label( [ J, J ], "C", "above" );
+                        graph.pointC = addMovablePoint({
+                            coord: [ J, J ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.line1 = addMovableLineSegment({
+                            pointA: graph.pointA,
+                            pointZ: graph.pointB,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        graph.line2 = addMovableLineSegment({
+                            pointA: graph.pointB,
+                            pointZ: graph.pointC,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+
+                        graph.line3 = addMovableLineSegment({
+                            pointA: graph.pointC,
+                            pointZ: graph.pointD,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        graph.line4 = addMovableLineSegment({
+                            pointA: graph.pointD,
+                            pointZ: graph.pointA,
+                            fixed: true,
+                            //extendLine: true
+                        });
+                        
+                        graph.pointA.toFront();
+                        graph.pointB.toFront();
+                        graph.pointC.toFront();
+                        graph.pointD.toFront();
+
+                    </div>
+                </div>
+                <div class="solution" data-type="custom">
+                    <div class="instruction">
+                        直接在題目區用拉的呈現
+                    </div>
+                    <div class="guess"> [ graph.pointA.coord, graph.pointB.coord,graph.pointD.coord,graph.pointC.coord ] 
+                    </div>
+                    <div class="validator-function">
+                        var AB = guess[1][0] - guess[0][0];
+                        var AD = guess[2][1] - guess[0][1];
+                        var CD = guess[3][0] - guess[2][0];
+                        var CB = guess[3][1] - guess[1][1];
+                        var area = (J/2)*(J/2);
+                        return (AB == AD && AB == CD && CD == CB && area == ((J*J)/4));
+                    </div>
+                    <div class="show-guess">
+                        graph.pointA.setCoord( guess[0] );
+                        graph.pointB.setCoord( guess[1] );
+                        graph.pointD.setCoord( guess[2] );
+                        graph.pointC.setCoord( guess[3] );
+                        graph.line1.transform( true );
+                        graph.line2.transform( true );
+                        graph.line3.transform( true );
+                        graph.line4.transform( true );
+                    </div>
+                </div>
+                <div class="hints">
+                    <p>縮小後的邊長<code>=</code>原邊長<code>\times</code>縮小的倍數<br>縮小後的角度<code>=</code>原來圖形的角度
+                    </p>
+                    <div class="graphie" data-update="area">
+                        init({ range: [[-1, 35], [-1, 25]], scale: 15});
+                        path([[J+3, 0], [J+3, K], [J+3+K, K], [J+3+K, 0], true],
+                        { stroke: BLUE });
+
+                        label( [ ((J+3+K+J+3)/2), 0 ], "乙圖", "below" );
+                        label( [ J+3, 0 ], "D", "left" );
+                        label( [ J+3+K, 0 ], "E", "right" );
+                        label( [ J+3, K ], "G", "above" );
+                        label( [ J+3+K, K ], "F", "above" );
+                    </div>
+                </div>
+            </div>
+            <div id="Trapezoid">
+                <div class="vars">
+					<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+                    <var id="J">2</var>
+                    <var id="K">J/2</var>
+                </div>
+                <div class="question">
+                    <p>畫出甲圖的<code>\dfrac{1}{<var>J</var>}</code>縮小圖</p>
+                    <div class="graphie" id="area">
+                        graphInit({
+                                range: [ [-1,25], [-1,11] ],
+                                scale: 20,
+                                axisArrows:0,
+                                tickStep: 1,
+                                labelStep: 1,
+                                gridOpacity: 0.2,
+                                axisOpacity: 0.05,
+                                tickOpacity: 0.4,
+                                labelOpacity: 0.01,
+                            });
+
+                        init({ range: [[-1, 25], [-1, 11]], scale: 20});
+                        path([[0, 0], [12, 0], [6, 6], [0, 6], true],
+                        {  stroke: GRAY  });
+
+                        addMouseLayer();
+
+                        label( [ 6, 0 ], "甲圖", "below" );
+                        
+                        graph.pointA = addMovablePoint({
+                            coord: [ 0, 0 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.pointB = addMovablePoint({
+                            coord: [ 12, 0 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.pointC = addMovablePoint({
+                            coord: [ 6, 6 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.pointD = addMovablePoint({
+                            coord: [ 0, 6 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.line1 = addMovableLineSegment({
+                            pointA: graph.pointA,
+                            pointZ: graph.pointB,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        graph.line2 = addMovableLineSegment({
+                            pointA: graph.pointB,
+                            pointZ: graph.pointC,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+
+                        graph.line3 = addMovableLineSegment({
+                            pointA: graph.pointC,
+                            pointZ: graph.pointD,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        graph.line4 = addMovableLineSegment({
+                            pointA: graph.pointD,
+                            pointZ: graph.pointA,
+                            fixed: true,
+                            //extendLine: true
+                        });
+                        
+                        graph.pointA.toFront();
+                        graph.pointB.toFront();
+                        graph.pointC.toFront();
+                        graph.pointD.toFront();
+
+                    </div>
+                </div>
+                <div class="solution" data-type="custom">
+                    <div class="instruction">
+                        直接在題目區用拉的呈現
+                    </div>
+                    <div class="guess"> [ graph.pointA.coord, graph.pointB.coord,graph.pointC.coord,graph.pointD.coord ] 
+                    </div>
+                    <div class="validator-function">
+                        var BA = guess[1][0] - guess[0][0];
+                        var DA = guess[3][1] - guess[0][1];
+                        var CD = guess[2][0] - guess[3][0];
+                        var CB = guess[2][1] - guess[1][1];
+                        var area = ((BA+CD)*DA)/2;
+                        return (area == (54/(J*J)));
+                    </div>
+                    <div class="show-guess">
+                        graph.pointA.setCoord( guess[0] );
+                        graph.pointB.setCoord( guess[1] );
+                        graph.pointC.setCoord( guess[2] );
+                        graph.pointD.setCoord( guess[3] );
+                        graph.line1.transform( true );
+                        graph.line2.transform( true );
+                        graph.line3.transform( true );
+                        graph.line4.transform( true );
+                    </div>
+                </div>
+                <div class="hints">
+                    <p>縮小後的邊長<code>=</code>原邊長<code>\times</code>縮小的倍數<br>縮小後的角度<code>=</code>原來圖形的角度
+                    </p>
+                    <div class="graphie" data-update="area">
+                        init({ range: [[-1, 25], [-1, 11]], scale: 20});
+                        path([[12+3, 0], [12+3, 6/J], [12+3+(6/J), 6/J], [12+3+(12/J), 0], true],
+                        { stroke: BLUE });
+
+                        label( [ ((12+3+(12/J)+12+3)/2), 0 ], "乙圖", "below" );
+                    </div>
+                </div>
+            </div>
+            <div id="kiteshape">
+                <div class="vars">
+					<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+                    <var id="J">randFromArray([2,3])</var>
+                    <var id="K">6*J</var>
+                    <var id="L">2*J</var>
+                </div>
+                <div class="question">
+                    <p>在下面方格中，畫出乙圖的<code><var>J</var></code>倍放大圖</p>
+                    <div class="graphie" id="area">
+                        graphInit({
+                                range: [ [-1,20], [-1,20] ],
+                                scale: 20,
+                                axisArrows:0,
+                                tickStep: 1,
+                                labelStep: 1,
+                                gridOpacity: 0.2,
+                                axisOpacity: 0.05,
+                                tickOpacity: 0.4,
+                                labelOpacity: 0.01,
+                            });
+
+                        init({ range: [[-1, 20], [-1, 20]], scale: 20});
+                        path([[0,13], [2, 15], [6, 13], [2, 11], true], { stroke: GRAY });
+
+                        addMouseLayer();
+
+                        label( [ 2, 11 ], "乙圖", "below" );
+                        
+                        graph.pointA = addMovablePoint({
+                            coord: [ 0, 13 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.pointB = addMovablePoint({
+                            coord: [ 2, 15 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.pointC = addMovablePoint({
+                            coord: [ 6, 13 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.pointD = addMovablePoint({
+                            coord: [ 2, 11 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.line1 = addMovableLineSegment({
+                            pointA: graph.pointA,
+                            pointZ: graph.pointB,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        graph.line2 = addMovableLineSegment({
+                            pointA: graph.pointB,
+                            pointZ: graph.pointC,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+
+                        graph.line3 = addMovableLineSegment({
+                            pointA: graph.pointC,
+                            pointZ: graph.pointD,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        graph.line4 = addMovableLineSegment({
+                            pointA: graph.pointD,
+                            pointZ: graph.pointA,
+                            fixed: true,
+                            //extendLine: true
+                        });
+                        
+                        graph.pointA.toFront();
+                        graph.pointB.toFront();
+                        graph.pointC.toFront();
+                        graph.pointD.toFront();
+
+                    </div>
+                </div>
+                <div class="solution" data-type="custom">
+                    <div class="instruction">
+                        直接在題目區用拉的呈現
+                    </div>
+                    <div class="guess"> [ graph.pointA.coord, graph.pointB.coord,graph.pointC.coord,graph.pointD.coord ] 
+                    </div>
+                    <div class="validator-function">
+                        var BD = guess[1][1]-guess[3][1];
+                        var CA = guess[2][0]-guess[0][0];
+                        var Bx = guess[0][0] + 2*J;
+                        return (BD == (J*4) && CA == (J*6) && Bx==guess[1][0] );
+                    </div>
+                    <div class="show-guess">
+                        graph.pointA.setCoord( guess[0] );
+                        graph.pointB.setCoord( guess[1] );
+                        graph.pointC.setCoord( guess[2] );
+                        graph.pointD.setCoord( guess[3] );
+                        graph.line1.transform( true );
+                        graph.line2.transform( true );
+                        graph.line3.transform( true );
+                        graph.line4.transform( true );
+                    </div>
+                </div>
+                <div class="hints">
+                    <p>放大後的邊長<code>=</code>原邊長<code>\times</code>放大的倍數<br>放大後的角度<code>=</code>原來圖形的角度
+                    <br>
+                        要繪製出乙圖的<font color = "RED"><code><var>J</var></code></font>倍放大圖可以找到乙圖對角線的中心點後，將乙圖的對角線放大成原長的<font color = "RED"><code><var>J</var></code></font>倍
+                    </p>
+                    <div class="graphie" data-update="area">
+                        init({ range: [[-1, 20], [-1, 20]], scale: 20});
+                        path([[0,13], [6*J,13], true], { stroke: RED });
+                        path([[(2*J), (13+L)], [(2*J), (13-L)], true], { stroke: RED });
+                    </div>
+                    <div class="graphie" data-update="area">
+                        init({ range: [[-1, 30], [-1, 20]], scale: 20});
+                        path([[0,13], [(2*J), (13+L)], [6*J,13], [(2*J), (13-L)], true], { stroke: RED });
+                    </div>
+                </div>
+            </div>
+            <div id="parallelogram">
+                <div class="vars">
+					<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+                    <var id="J">randFromArray([2,3])</var>
+                    <var id="K">6*J</var>
+                    <var id="L">2*J</var>
+                </div>
+                <div class="question">
+                    <p>在下面方格中，畫出甲圖的<code>\dfrac{1}{<var>J</var>}</code>縮小圖</p>
+                    <div class="graphie" id="area">
+                        graphInit({
+                                range: [ [-1,25], [-1,20] ],
+                                scale: 20,
+                                axisArrows:0,
+                                tickStep: 1,
+                                labelStep: 1,
+                                gridOpacity: 0.2,
+                                axisOpacity: 0.05,
+                                tickOpacity: 0.4,
+                                labelOpacity: 0.01,
+                            });
+
+                        init({ range: [[-1, 25], [-1, 20]], scale: 20});
+                        path([[0, 15], [12, 15], [15, 9], [3, 9], true], { stroke: GRAY });
+
+                        addMouseLayer();
+
+                        label( [ 9, 9 ], "甲圖", "below" );
+                        
+                        graph.pointA = addMovablePoint({
+                            coord: [ 0, 15 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.pointB = addMovablePoint({
+                            coord: [ 12, 15 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.pointC = addMovablePoint({
+                            coord: [ 15, 9 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.pointD = addMovablePoint({
+                            coord: [ 3, 9 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.line1 = addMovableLineSegment({
+                            pointA: graph.pointA,
+                            pointZ: graph.pointB,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        graph.line2 = addMovableLineSegment({
+                            pointA: graph.pointB,
+                            pointZ: graph.pointC,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+
+                        graph.line3 = addMovableLineSegment({
+                            pointA: graph.pointC,
+                            pointZ: graph.pointD,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        graph.line4 = addMovableLineSegment({
+                            pointA: graph.pointD,
+                            pointZ: graph.pointA,
+                            fixed: true,
+                            //extendLine: true
+                        });
+                        
+                        graph.pointA.toFront();
+                        graph.pointB.toFront();
+                        graph.pointC.toFront();
+                        graph.pointD.toFront();
+                    </div>
+                </div>
+                <div class="solution" data-type="custom">
+                    <div class="instruction">
+                        直接在題目區用拉的呈現
+                    </div>
+                    <div class="guess"> [ graph.pointA.coord, graph.pointB.coord,graph.pointC.coord,graph.pointD.coord ] 
+                    </div>
+                    <div class="validator-function">
+                        var AB = guess[1][0] - guess[0][0];
+                        var CD = guess[2][0] - guess[3][0];
+                        var ADx = guess[3][0] - guess[0][0];
+                        var ADy = guess[0][1] - guess[3][1];
+                        var BCx = guess[2][0] - guess[1][0];
+                        var BCy = guess[1][1] - guess[2][1];
+                        return(AB == 12/J && CD == 12/J && ADx == 3/J && BCx == 3/J);                     
+                    </div>
+                    <div class="show-guess">
+                        graph.pointA.setCoord( guess[0] );
+                        graph.pointB.setCoord( guess[1] );
+                        graph.pointC.setCoord( guess[2] );
+                        graph.pointD.setCoord( guess[3] );
+                        graph.line1.transform( true );
+                        graph.line2.transform( true );
+                        graph.line3.transform( true );
+                        graph.line4.transform( true );
+                    </div>
+                </div>
+                <div class="hints">
+                    <p>
+                        縮小後的邊長<code>=</code>原邊長<code>\times</code>縮小的倍數<br>
+                        縮小後的角度<code>=</code>原來圖形的角度<br>
+                        要繪製出甲圖的<font color="RED"><code>\dfrac{1}{<var>J</var>}</code></font>倍縮小圖可以將甲圖的上下兩邊先縮小成原先的<font color="RED"><code>\dfrac{1}{<var>J</var>}</code></font>後，逐一點出相對應的頂點，再將其頂點連線。<br>
+                    </p>
+                    <div class="graphie" data-update="area">
+                        init({ range: [[-1, 25], [-1, 20]], scale: 20});
+                        path([[0, 15], [12/J, 15], true], { stroke: RED });
+                        path([[0+(3/J), 15-(6/J)], [0+(12/J)+(3/J), 15-(6/J)], true], { stroke: RED });
+                    </div>
+                    <div class="graphie" data-update="area">
+                        init({ range: [[-1, 30], [-1, 20]], scale: 20});
+                        path([[0, 15], [0+(3/J), 15-(6/J)], true], { stroke: RED });
+                        path([[12/J, 15], [0+(12/J)+(3/J), 15-(6/J)], true], { stroke: RED });
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

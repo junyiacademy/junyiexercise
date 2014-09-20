@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers-arithmetic word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能熟練三位數不進位加減直式計算(3-n-02)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars" data-ensure="(J+M)&lt;10&&(K+N)&lt;10&&(L+P)&lt;10">
+			<var id="J">randRange(1,6)</var>
+			<var id="K">randRange(1,6)</var>
+			<var id="L">randRange(1,6)</var>
+			<var id="M">randRange(1,6)</var>
+			<var id="N">randRange(1,6)</var>
+			<var id="P">randRange(1,6)</var>
+			<var id="JKL">J*100+K*10+L</var>
+			<var id="MNP">M*100+N*10+P</var>
+            <var id="DUMMY">[]</var>
+        </div>
+		<div class="question spin">
+		<p>寫成直式算算看</p>
+		<p class="question"><code><var>JKL</var>+<var>MNP</var></code></p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>JKL+MNP</var></span>
+		</div>
+
+		<div class="hints">
+			<div class="graphie" id="numbers">
+                graph.adder = new Adder( JKL, MNP );
+                graph.adder.show();
+                DUMMY = Array( graph.adder.getNumHints() );
+            </div>
+            <div class="graphie" data-update="numbers" data-each="Array( new Adder( JKL, MNP ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+			<p>因此，本題的答案為 <code class="hint_pink"><var>JKL+MNP</var></code> 。</p>
+		</div>
+	</div>
+	
+	<div id="case2">
+        <div class="vars" data-ensure="(J+M)&lt;10&&(K+N)&lt;10&&(L+P)&lt;10">
+			<var id="J">randRange(1,6)</var>
+			<var id="K">randRange(1,6)</var>
+			<var id="L">randRange(1,6)</var>
+			<var id="M">randRange(1,6)</var>
+			<var id="N">randRange(1,6)</var>
+			<var id="P">randRange(1,6)</var>
+			<var id="JKL">J*100+K*10+L</var>
+			<var id="MNP">M*100+N*10+P</var>
+            <var id="DUMMY">[]</var>
+			<var id="names">randFromArray(["礦泉水","汽水","果汁","茶"])</var>
+        </div>
+		<div class="question spin">
+		<p>寫成直式算算看</p>
+		<p class="question">合作社昨天進貨 <code><var>JKL</var></code> 瓶<var>names</var>，今天又進貨 <code><var>MNP</var></code> 瓶<var>names</var>，二天共進貨幾瓶<var>names</var>？</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>JKL+MNP</var></span> <code>瓶</code>
+		</div>
+
+		<div class="hints">
+			<p>題目是希望我們把昨天進貨的數量再加上今天進貨的數量，算算看總共進貨多少瓶，</p>
+			<div class="graphie" id="numbers">
+                graph.adder = new Adder( JKL, MNP );
+                graph.adder.show();
+                DUMMY = Array( graph.adder.getNumHints() );
+            </div>
+            <div class="graphie" data-update="numbers" data-each="Array( new Adder( JKL, MNP ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+			<p>因此，本題的答案為 <code class="hint_pink"><var>JKL+MNP</var></code> 瓶。</p>
+		</div>
+	</div>
+	
+	<div id="case3">
+        <div class="vars" data-ensure="(J+M)&lt;10&&(K+N)&lt;10&&(L+P)&lt;10">
+			<var id="J">randRange(1,6)</var>
+			<var id="K">randRange(1,6)</var>
+			<var id="L">randRange(1,6)</var>
+			<var id="M">randRange(1,6)</var>
+			<var id="N">randRange(1,6)</var>
+			<var id="P">randRange(1,6)</var>
+			<var id="JKL">J*100+K*10+L</var>
+			<var id="MNP">M*100+N*10+P</var>
+            <var id="DUMMY">[]</var>
+			<var id="names">randFromArray(["包子","饅頭","麵包"])</var>
+        </div>
+		<div class="question spin">
+		<p>寫成直式算算看</p>
+		<p class="question"><var>names</var>店今天上午賣出 <code><var>JKL</var></code> 個<var>names</var>，下午又賣出 <code><var>MNP</var></code> 個<var>names</var>，今天共賣了多少個<var>names</var>？</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>JKL+MNP</var></span> <code>個</code>
+		</div>
+
+		<div class="hints">
+			<p>題目是希望我們把上午賣出的數量加上下午賣出的數量，看看一共是賣出多少個<var>names</var>，</p>
+			<div class="graphie" id="numbers">
+                graph.adder = new Adder( JKL, MNP );
+                graph.adder.show();
+                DUMMY = Array( graph.adder.getNumHints() );
+            </div>
+            <div class="graphie" data-update="numbers" data-each="Array( new Adder( JKL, MNP ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+			<p>因此，本題的答案為 <code class="hint_pink"><var>JKL+MNP</var></code> 個。</p>
+		</div>
+	</div>
+	
+	<div id="case4">
+        <div class="vars" data-ensure="(K+N)&lt;10&&(L+P)&lt;10">
+			<var id="J">randRange(1,6)</var>
+			<var id="K">randRange(1,6)</var>
+			<var id="L">randRange(1,6)</var>
+			<var id="N">randRange(1,6)</var>
+			<var id="P">randRange(1,6)</var>
+			<var id="JKL">J*100+K*10+L</var>
+			<var id="MNP">N*10+P</var>
+            <var id="DUMMY">[]</var>
+			<var id="names">randFromArray([["小玉","小珍"],["小紅","小明"],["小雅","小惠"]])</var>
+			<var id="sports">randFromArray([["搖","呼啦圈","搖呼拉圈"],["做","仰臥起坐","做仰臥起坐"],["跳","繩","跳繩"]])</var>
+        </div>
+		<div class="question spin">
+		<p>寫成直式算算看</p>
+		<p class="question">兩人一起<var>sports[2]</var>，<var>names[0]</var><var>sports[0]</var>了 <code><var>JKL</var></code> 下，<var>names[1]</var><var>sports[0]</var>了 <code><var>MNP</var></code> 下，二人共<var>sports[0]</var>了多少下的<var>sports[1]</var>？</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>JKL+MNP</var></span> <code>下</code>
+		</div>
+
+		<div class="hints">
+			<p>題目的意思是希望我們算出兩個人一共<var>sports[0]</var>了幾下，</p>
+			<div class="graphie" id="numbers">
+                graph.adder = new Adder( JKL, MNP );
+                graph.adder.show();
+                DUMMY = Array( graph.adder.getNumHints() );
+            </div>
+            <div class="graphie" data-update="numbers" data-each="Array( new Adder( JKL, MNP ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+			<p>因此，本題的答案為 <code class="hint_pink"><var>JKL+MNP</var></code> 下。</p>
+		</div>
+	</div>
+	
+	<div id="case5">
+        <div class="vars" data-ensure="(K+N)&lt;10&&(L+P)&lt;10">
+			<var id="J">randRange(1,6)</var>
+			<var id="K">randRange(1,6)</var>
+			<var id="L">randRange(1,6)</var>
+			<var id="N">randRange(1,6)</var>
+			<var id="P">randRange(1,6)</var>
+			<var id="JKL">J*100+K*10+L</var>
+			<var id="MNP">N*10+P</var>
+            <var id="DUMMY">[]</var>
+			<var id="names">randFromArray(["小玉","小珍","小紅","小明","小雅","小惠","阿光"])</var>
+			<var id="sports">randFromArray([["讀","故事書","閱讀故事書"],["看","小說","看小說"],["看","雜誌","看雜誌"]])</var>
+        </div>
+		<div class="question spin">
+		<p>寫成直式算算看</p>
+		<p class="question"><var>sports[2]</var>，<var>names</var>上午<var>sports[0]</var>了 <code><var>JKL</var></code> 頁，下午又<var>sports[0]</var>了 <code><var>MNP</var></code> 頁，這天共<var>sports[0]</var>了多少頁<var>sports[1]</var>？</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>JKL+MNP</var></span> <code>頁</code>
+		</div>
+
+		<div class="hints">
+			<p>題目的意思是希望我們算出上午和下午一共<var>sports[0]</var>了多少頁<var>sports[1]</var>，</p>
+			<div class="graphie" id="numbers">
+                graph.adder = new Adder( JKL, MNP );
+                graph.adder.show();
+                DUMMY = Array( graph.adder.getNumHints() );
+            </div>
+            <div class="graphie" data-update="numbers" data-each="Array( new Adder( JKL, MNP ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+			<p>因此，本題的答案為 <code class="hint_pink"><var>JKL+MNP</var></code> 頁。</p>
+		</div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

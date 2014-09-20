@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-3d math-format interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>圓柱與圓錐的表面積</title>
+    <script src="../khan-exercise.js"></script>	<style type="text/css">        #answer_area .sol input[type=text] {            width: 40px;        }</style>
+    <script type="text/javascript">
+        var makeSquare = function(left, width, bottom, height, color) {
+            KhanUtil.currentGraph.path([
+                    [left, bottom],
+                    [left, bottom + height],
+                    [left + width, bottom + height],
+                    [left + width, bottom],
+                    true
+                ],
+                { stroke: "black", strokeWidth: 1, fill: color }
+            );
+        };
+
+        var normalize = function(vect) {
+            var length = Math.sqrt(vect[0] * vect[0] +
+                                   vect[1] * vect[1] +
+                                   vect[2] * vect[2]);
+            return _.map(vect, function(e) { return e / length; });
+        };
+    </script>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+		<div id="cone-T">
+            <div class="vars">
+                <var id="r">randRange( 2, 5 )</var>
+                <var id="h">randRange( r+1, 10 )</var>
+                <var id="ans">r/h</var>
+                <var id="PRETTY_ANS">
+                    (function(){
+                        var i;
+                        var down = h;
+                        var up = r;
+                        for(i=r;i&gt;1;i--){
+                            if(
+                            (parseFloat((down/i).toFixed(5))*10%10===0)
+                            &&
+                            (parseFloat((up/i).toFixed(5))*10%10===0))
+                            {
+                                down = down/i; 
+                                up = up/i;
+                            }
+                            if(up===1){
+                                break;
+                            }
+                        }
+                        return "&lt;code&gt;\\dfrac{"+up+"}{"+down+"}&lt;/code&gt;";
+                    })()
+                </var>
+            </div>
+
+            <div class="question">
+                <p>底面半徑為 <code><var>r</var></code> 、
+                    側面半徑是 <code><var>h</var></code> 公分的直圓錐，側面的扇形是幾分之幾圓？</p>
+
+                <div class="graphie">
+                    init({
+                        range: [[-1, 4], [-2, 4]]
+                    });
+
+                    path([[0, -1], [1.5, 3]]);
+                    path([[3, -1], [1.5, 3]]);
+                    arc([1.5, -1], [1.5, 0.4], 0, 180, {
+                        strokeDasharray: "- "
+                    });
+                    arc([1.5, -1], [1.5, 0.4], 180, 360);
+
+                    path([[1.5, -1], [3, -1]]);
+                    label([2.25, -1.25], r, "below");
+                    label([2.5, 1], h, "right");
+                </div>
+
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p><span class="sol"><var>ans</var></span><code>\space</code> 圓</p>
+                <p class="example">分數</p>
+            </div>
+                    
+            
+            <div class="hints">
+                <div>
+                    <p> 直圓錐的展開圖如下圖</p>
+                    <img src="/khan-exercises/images/cone.png"></img>
+                </div>
+                <p>要算出側面扇形弧長佔側面整個圓的幾分之幾，</br>
+                    將側面扇形弧長&divide;整個圓的圓周，即可知道弧長佔整個圓的比
+                </p>
+                <p>側面扇形的圓周 = 直徑 &times; 圓周率 (先不用算出答案)</p>
+                <p>扇形的弧長 = 半徑<var>r</var>公分底圓的圓周長</p>
+                <p>半徑<var>r</var>公分的圓周長<code> = <var>r</var> &times; 2 &times; 3.14</code></p>
+                <p>要算出側面的扇形是幾分之幾圓，就要用<br>
+                    <code>\dfrac{扇形的弧長}{側面扇形的圓周}</code> = 
+                <code>\dfrac{<var>r</var> &times; 2 &times; 3.14}{<var>h</var> &times; 2 &times; 3.14}</code></p>
+                <p>側面扇形是<var>PRETTY_ANS</var>圓</p>
+            </div>
+        </div>
+        <div id="cone-ArcLength">
+            <div class="vars">
+                <var id="r">randRange( 2, 5 )</var>
+                <var id="h">randRange( r+1, 10 )</var>
+                <var id="ans">r*2*314/pow(10,2)</var>
+            </div>
+
+            <div class="question">
+                <p>底面半徑為 <code><var>r</var></code> 、
+                    側面半徑是 <code><var>h</var></code> 公分的直圓錐，請問側面扇形的弧長是多少?(圓周率用3.14計算)</p>
+
+                <div class="graphie">
+                    init({
+                        range: [[-1, 4], [-2, 4]]
+                    });
+
+                    path([[0, -1], [1.5, 3]]);
+                    path([[3, -1], [1.5, 3]]);
+                    arc([1.5, -1], [1.5, 0.4], 0, 180, {
+                        strokeDasharray: "- "
+                    });
+                    arc([1.5, -1], [1.5, 0.4], 180, 360);
+
+                    path([[1.5, -1], [3, -1]]);
+                    label([2.25, -1.25], r, "below");
+                    label([2.5, 1], h, "right");
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p>
+                    <span class="sol" data-forms="decimal"><var>ans</var></span>
+                </p>
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>側面扇形的弧長等於底圓的周長</p>
+                    <img src="/khan-exercises/images/cone2.png"></img>
+                </div>
+                <p>扇形弧長 = 底圓的圓周長</p>
+                <p> = 底圓半徑<code> &times; 2 &times; 3.14</code></p>
+                <p> =<code> <var>r</var> &times; 2 &times; 3.14</code></p>
+                <p> = <code><var>ans</var></code> 此即為側面扇形的弧長。</p>
+            </div>
+        </div>
+        <div id="cylinder-T">
+            <div class="vars">
+                <var id="r">randRange( 2, 5 )</var>
+                <var id="h">randRange( 6, 10 )</var>
+                <var id="ans">314 * 2 * r * ( r + h )/pow(10,2)</var>
+            </div>
+
+            <div class="question">
+                <p>求下面直圓柱的表面積（圓周率用3.14算）</p>
+
+                <div class="graphie">
+                    init({
+                        range: [[-1, 4], [-2, 4]]
+                    });
+
+                    arc([1.5, 3], [1.5, 0.4], 0, 48);
+                    arc([1.5, 3], [1.5, 0.4], 70, 360);
+                    path([[0, -1], [0, 3]]);
+                    path([[3, -1], [3, 3]]);
+                    arc([1.5, -1], [1.5, 0.4], 0, 180, {
+                        strokeDasharray: "- "
+                    });
+                    arc([1.5, -1], [1.5, 0.4], 180, 360);
+
+                    path([[1.5, 3], [3, 3]]);
+                    label([2.25, 3], r, "above");
+                    label([3, 1], h, "right");
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p>
+                    <span class="sol" data-forms="decimal">
+                        <var>ans</var>
+                    </span>
+                    平方單位
+                </p>
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>圓柱的展開圖如下圖</p>
+                    <img src="/khan-exercises/images/cylinder.png"></img>
+                </div>
+                <p>要計算圓柱的表面積 = 要算出底面的兩個圓形 + 側面的長方形</p>
+                <p>底面積 = 半徑 &times; 半徑 &times; 圓周率</br>
+                    <code> = <var>r</var> &times; <var>r</var> &times; 3.14</code></br>
+                        <code> = <var>r*r*314/pow(10,2)</var></code></p>
+                <p>側面積的長方形 = 長&times;寬</p>
+                <p>長方形的長=底面圓的圓周長</p>
+                <p>長&times;寬 = 底面的圓周長&times;柱體的高</br>
+                     <code>= 2 &times; <var>r</var> &times; 3.14 &times; <var>h</var></code>
+                     <code>= <var>2*r*314*h/pow(10,2)</var></code></p>
+                <p>圓柱的表面積 = 兩個底面 + 側面</p>
+                <p> <code>= 2\times<var>r*r*314/pow(10,2)</var>+<var>2*r*314*h/pow(10,2)</var></code><br>
+                   <code> = <var>(2*r*314*h+2*r*r*314)/pow(10,2)</var></code>平方單位</p>
+            </div>
+        </div>
+    </div>
+	</div>
+</div>
+</body>
+</html>

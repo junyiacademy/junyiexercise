@@ -263,6 +263,7 @@ $.extend(KhanUtil, {
             if(DigitNum[i]===0){zero_tail += 1}
             else{break;}
             }
+
             if (DigitNum[15])
             {
                 str += cardinalUnits[DigitNum[15]] + "千"
@@ -270,14 +271,36 @@ $.extend(KhanUtil, {
             }
             if (DigitNum[14])
             {
+                //增加這段IV開始
+                DigitNum[14] = true;
+                //增加這段IV結束
                 str += cardinalUnits[DigitNum[14]] + "百"
                 add_zero = true;
             }
+            else if (add_zero===true && zero_tail <= 1){
+                str += "零"
+                add_zero = false;
+            }
+
             if (DigitNum[13])
             {
-                str += cardinalUnits[DigitNum[13]] + "十"
-                add_zero = true;
+                if(Boolean(DigitNum[14]) === true)
+                {
+                    str += cardinalUnits[DigitNum[13]] + "十"
+                    add_zero = true;
+                }
+
+                else
+                {
+                    str +="十"
+                    add_zero = true;
+                }
             }
+            else if (add_zero===true && zero_tail <= 1){
+                str += "零"
+                add_zero = false;
+            }
+
             if (DigitNum[12])
             {
                 str += cardinalUnits[DigitNum[12]] + "兆"
@@ -288,45 +311,121 @@ $.extend(KhanUtil, {
                 str += cardinalUnits[DigitNum[11]] + "千"
                 add_zero = true;
             }
+            else if (add_zero===true && zero_tail <= 1){
+                str += "零"
+                add_zero = false;
+            }
+
             if (DigitNum[10])
             {
                 str += cardinalUnits[DigitNum[10]] + "百"
                 add_zero = true;
             }
+            else if (add_zero===true && zero_tail <= 1){
+                //增加這段IV開始
+                DigitNum[10] = true;
+                //增加這段IV結束
+                str += "零"
+                add_zero = false;
+            }
+
             if (DigitNum[9])
             {
-                str += cardinalUnits[DigitNum[9]] + "十"
-                add_zero = true;
+
+                if(Boolean(DigitNum[10]) === true)
+                {
+                    str += cardinalUnits[DigitNum[9]] + "十"
+                    add_zero = true;
+                }
+
+                else
+                {
+                    str +="十"
+                    add_zero = true;
+                }
+
             }
+            else if (add_zero===true && zero_tail <= 1){
+                str += "零"
+                add_zero = false;
+            }
+
             if (DigitNum[8])
             {
                 str += cardinalUnits[DigitNum[8]] + "億"
                 add_zero = true;
             }
+            //增加這段IV開始
+            else if(Boolean(DigitNum[8]) === false)
+            {
+                str +="億"
+                add_zero = true;
+            }
+            //增加這段IV結束
             if (DigitNum[7])
             {
                 str += cardinalUnits[DigitNum[7]] + "千"
                 add_zero = true;
             }
+            else if (add_zero===true && zero_tail <= 1){
+                str += "零"
+                add_zero = false;
+            }
+
             if (DigitNum[6])
             {
                 str += cardinalUnits[DigitNum[6]] + "百"
                 add_zero = true;
             }
+            else if (add_zero===true && zero_tail <= 1){
+                //增加這段IV開始
+                DigitNum[6] = true;
+                //增加這段IV結束
+                str += "零"
+                add_zero = false;
+            }
+
             if (DigitNum[5])
             {
-                str += cardinalUnits[DigitNum[5]] + "十"
-                add_zero = true;
+
+                if(Boolean(DigitNum[6]) === true)
+                {
+                    str += cardinalUnits[DigitNum[5]] + "十"
+                    add_zero = true;
+                }
+                else
+                {
+                    str +="十"
+                    add_zero = true;
+                }
             }
+
+            else if (add_zero===true && zero_tail <= 1){
+                str += "零"
+                add_zero = false;
+            }
+
             if (DigitNum[4])
             {
                 str += cardinalUnits[DigitNum[4]] + "萬"
                 add_zero = true;
             }
+            //增加這段IV開始
+            else if(Boolean(DigitNum[4]) === false)
+            {
+                str +="萬"
+                add_zero = true;
+            }
+            //增加這段IV結束
             if (DigitNum[3])
             {
                 str += cardinalUnits[DigitNum[3]] + "千"
                 add_zero = true;
+            }
+            else if (add_zero===true && zero_tail == 0)
+            {
+                str += "零"
+                add_zero = false;
             }
             if (DigitNum[2]) {
                 str += cardinalUnits[DigitNum[2]] + "百";

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie-helpers graphie interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能認識平面圖形的內部、外部與其周長(3-s-01)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+		.td_chinese { line-height:1em; font-size:1.5em; }
+		.td_cchar_1{line-height:2.5em; font-size:0.5em;vertical-align:top;padding:5px 5px 5px 0px;}
+		.td_cchar_2{line-height:1.5em; font-size:0.5em;vertical-align:top;padding:5px 5px 5px 0px;}
+		.td_cchar_3{line-height:1em; font-size:0.5em;vertical-align:top;padding:5px 5px 5px 0px;}
+		
+        </style>
+	<script type="text/javascript">
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars">
+			<var id="arr_lu">[randRangeUnique(1,4,3),randRange(1,3)]</var>
+			<var id="arr_ru">[randRangeUnique(1,4,3),randRange(1,3)]</var>
+			<var id="arr_lb">[randRangeUnique(1,4,3),randRange(1,3)]</var>
+			<var id="arr_rb">[randRangeUnique(1,4,3),randRange(1,3)]</var>
+			<var id="s">randRange(10,20)/10</var>
+			<var id="x">randRange(10,20)/10</var>
+			<var id="y">randRange(10,20)/10</var>
+			<var id="z">randRange(10,20)/10</var>
+        </div>
+		<p class="question">圓點是在圖形的內部、外部或周界上？選選看。</p>
+		<div class="problem">
+			<div class="graphie" id="edge1">
+				init({
+                    range: [ [-1, 12], [-5, 5] ],
+                    scale: 40
+                });
+				line([-1,0],[12,0],{stroke:"#6495ED"});
+				line([5.5,5],[5.5,-5],{stroke:"#6495ED"});
+				label([-1,5],"(1)","below right");
+				label([5.5,5],"(2)","below right");
+				label([-1,0],"(3)","below right");
+				label([5.5,0],"(4)","below right");
+				path([[-1,5],[12,5],[12,-5],[-1,-5],[-1,5]],{stroke:"#6495ED"});
+				if(arr_lu[0][0]==1){
+					var sss = randRange(10,25)/10;
+					circle([2.25,2.5],sss,{stroke:"#28AE7B",fill:"#CEFFCE"});
+					if(arr_lu[1]==1){
+						circle([2.25,2.5],0.1,{fill:"black"});
+					}else if(arr_lu[1]==2){
+						circle([2.25+randFromArray([sss,-sss]),2.5],0.1,{fill:"black"});
+					}else {
+						circle([5.2,2.2],0.1,{fill:"black"});
+					}
+				} else if(arr_lu[0][0]==2){
+					path([[2.25-s,2.5+s],[2.25+s,2.5+s],[2.25+s,2.5-s],[2.25-s,2.5-s],[2.25-s,2.5+s]],{stroke:"#28AE7B",fill:"#CEFFCE"});
+					if(arr_lu[1]==1){
+						circle([2.25,2.5],0.1,{fill:"black"});
+					}else if(arr_lu[1]==2){
+						circle([2.25+randFromArray([s,-s]),2.5],0.1,{fill:"black"});
+					}else {
+						circle([5.2,2.2],0.1,{fill:"black"});
+					}
+				} else {
+					path([[2.25-s,2.5+s],[2.25+s,2.5+s],[2.25,2.5-s],[2.25-s,2.5+s]],{stroke:"#28AE7B",fill:"#CEFFCE"});
+					if(arr_lu[1]==1){
+						circle([2.25,2.5],0.1,{fill:"black"});
+					}else if(arr_lu[1]==2){
+						circle([2.25+randFromArray([s,-s]),2.5+s],0.1,{fill:"black"});
+					}else {
+						circle([5.2,2.2],0.1,{fill:"black"});
+					}
+				}
+				
+				if(arr_ru[0][0]==1){
+					var rrr = randRange(10,25)/10;
+					circle([8.75,2.5],rrr,{stroke:"red",fill:"#FF9797"});
+					if(arr_ru[1]==1){
+						circle([8.75,2.5],0.1,{fill:"black"});
+					}else if(arr_ru[1]==2){
+						circle([8.75+randFromArray([rrr,-rrr]),2.5],0.1,{fill:"black"});
+					}else {
+						circle([11.5,2.2],0.1,{fill:"black"});
+					}
+				} else if(arr_ru[0][0]==2){
+					path([[8.75-x,2.5+x],[8.75+x,2.5+x],[8.75+x,2.5-x],[8.75-x,2.5-x],[8.75-x,2.5+x]],{stroke:"red",fill:"#FF9797"});
+					if(arr_ru[1]==1){
+						circle([8.75,2.5],0.1,{fill:"black"});
+					}else if(arr_ru[1]==2){
+						circle([8.75+randFromArray([x,-x]),2.5],0.1,{fill:"black"});
+					}else {
+						circle([11.5,2.2],0.1,{fill:"black"});
+					}
+				} else {
+					path([[8.75-x,2.5+x],[8.75+x,2.5+x],[8.75,2.5-x],[8.75-x,2.5+x]],{stroke:"red",fill:"#FF9797"});
+					if(arr_ru[1]==1){
+						circle([8.75,2.5],0.1,{fill:"black"});
+					}else if(arr_ru[1]==2){
+						circle([8.75+randFromArray([x,-x]),2.5+x],0.1,{fill:"black"});
+					}else {
+						circle([11.5,2.2],0.1,{fill:"black"});
+					}
+				}
+				
+				if(arr_lb[0][0]==1){
+					var lll = randRange(10,25)/10;
+					circle([2.25,-2.5],lll,{stroke:"#FFA500",fill:"#FFFFAA"});
+					if(arr_lb[1]==1){
+						circle([2.25,-2.5],0.1,{fill:"black"});
+					}else if(arr_lb[1]==2){
+						circle([2.25+randFromArray([lll,-lll]),-2.5],0.1,{fill:"black"});
+					}else {
+						circle([5.2,-2.2],0.1,{fill:"black"});
+					}
+				} else if(arr_lb[0][0]==2){
+					path([[2.25-y,-2.5+y],[2.25+y,-2.5+y],[2.25+y,-2.5-y],[2.25-y,-2.5-y],[2.25-y,-2.5+y]],{stroke:"#FFA500",fill:"#FFFFAA"});
+					if(arr_lb[1]==1){
+						circle([2.25,-2.5],0.1,{fill:"black"});
+					}else if(arr_lb[1]==2){
+						circle([2.25+randFromArray([y,-y]),-2.5],0.1,{fill:"black"});
+					}else {
+						circle([5.2,-2.2],0.1,{fill:"black"});
+					}
+				} else {
+					path([[2.25-y,-2.5+y],[2.25+y,-2.5+y],[2.25,-2.5-y],[2.25-y,-2.5+y]],{stroke:"#FFA500",fill:"#FFFFAA"});
+					if(arr_lb[1]==1){
+						circle([2.25,-2.5],0.1,{fill:"black"});
+					}else if(arr_lb[1]==2){
+						circle([2.25+randFromArray([y,-y]),-2.5+y],0.1,{fill:"black"});
+					}else {
+						circle([5.2,-2.2],0.1,{fill:"black"});
+					}
+				}
+				
+				if(arr_rb[0][0]==1){
+					var zzz = randRange(10,25)/10;
+					circle([8.75,-2.5],zzz,{stroke:"purple",fill:"#DAB1D5"});
+					if(arr_rb[1]==1){
+						circle([8.75,-2.5],0.1,{fill:"black"});
+					}else if(arr_rb[1]==2){
+						circle([8.75+randFromArray([zzz,-zzz]),-2.5],0.1,{fill:"black"});
+					}else {
+						circle([11.2,-2.2],0.1,{fill:"black"});
+					}
+				} else if(arr_rb[0][0]==2){
+					path([[8.75-z,-2.5+z],[8.75+z,-2.5+z],[8.75+z,-2.5-z],[8.75-z,-2.5-z],[8.75-z,-2.5+z]],{stroke:"purple",fill:"#DAB1D5"});
+					if(arr_rb[1]==1){
+						circle([8.75,-2.5],0.1,{fill:"black"});
+					}else if(arr_rb[1]==2){
+						circle([8.75+randFromArray([z,-z]),-2.5],0.1,{fill:"black"});
+					}else {
+						circle([11.2,-2.2],0.1,{fill:"black"});
+					}
+				} else {
+					path([[8.75-z,-2.5+z],[8.75+z,-2.5+z],[8.75,-2.5-z],[8.75-z,-2.5+z]],{stroke:"purple",fill:"#DAB1D5"});
+					if(arr_rb[1]==1){
+						circle([8.75,-2.5],0.1,{fill:"black"});
+					}else if(arr_rb[1]==2){
+						circle([8.75+randFromArray([z,-z]),-2.5+z],0.1,{fill:"black"});
+					}else {
+						circle([11.2,-2.2],0.1,{fill:"black"});
+					}
+				}
+			</div>
+		</div>
+		<div class="solution" data-type="multiple">
+			<p><code>(1)\enspace</code><span class="sol" data-type="list" data-choices="['', '內部', '周界上', '外部']"><var>arr_lu[1]==1?"內部":(arr_lu[1]==2?"周界上":"外部")</var></span></p>
+			<p><code>(2)\enspace</code><span class="sol" data-type="list" data-choices="['', '內部', '周界上', '外部']"><var>arr_ru[1]==1?"內部":(arr_ru[1]==2?"周界上":"外部")</var></span></p>
+			<p><code>(3)\enspace</code><span class="sol" data-type="list" data-choices="['', '內部', '周界上', '外部']"><var>arr_lb[1]==1?"內部":(arr_lb[1]==2?"周界上":"外部")</var></span></p>
+			<p><code>(4)\enspace</code><span class="sol" data-type="list" data-choices="['', '內部', '周界上', '外部']"><var>arr_rb[1]==1?"內部":(arr_rb[1]==2?"周界上":"外部")</var></span></p>
+			<p class="example">在下拉列表中選擇正確答案</p>
+		</div>
+
+		<div class="hints">
+			<p><code>(1)\enspace</code><span class="hint_pink"><var>arr_lu[1]==1?"內部":(arr_lu[1]==2?"周界上":"外部")</var></span></p>
+			<p><code>(2)\enspace</code><span class="hint_pink"><var>arr_ru[1]==1?"內部":(arr_ru[1]==2?"周界上":"外部")</var></span></p>
+			<p><code>(3)\enspace</code><span class="hint_pink"><var>arr_lb[1]==1?"內部":(arr_lb[1]==2?"周界上":"外部")</var></span></p>
+			<p style="font-weight:normal"><code>(4)\enspace</code><span class="hint_pink"><var>arr_rb[1]==1?"內部":(arr_rb[1]==2?"周界上":"外部")</var></span></p>
+		</div>
+	</div>
+	
+	<div id="case2">
+        <div class="vars">
+			<var id="nums">randRange(2,5)</var>
+			<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+        </div>
+		<p class="question">將 <code><var>nums</var></code> 個圈圈移動到圖形的內部。</p>
+		<div class="problem">
+			<div class="graphie" id="circle_move_1">
+				init({
+                    range: [ [-1, 12], [-3, 3] ],
+                    scale: 40
+                });
+				path([[0,-2],[6,-2],[6,1],[0,1],[0,-2]],{stroke:"#6495ED"})
+				addMouseLayer();
+				a1 = addMovableCircle([1,1],[0,2]);
+				a2 = addMovableCircle([1,1],[1,2]);
+				if(nums&gt;=3){
+					a3 = addMovableCircle([1,1],[2,2]);
+				}
+				if(nums&gt;=4){
+					a4 = addMovableCircle([1,1],[3,2]);
+				}
+				if(nums&gt;=5){
+					a5 = addMovableCircle([1,1],[4,2]);
+				}
+			</div>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">
+				(function(){
+					if(nums == 2){
+						return [a1.coord,a2.coord];
+					}
+					if(nums == 3){
+						return [a1.coord,a2.coord,a3.coord];
+					}
+					if(nums == 4){
+						return [a1.coord,a2.coord,a3.coord,a4.coord];
+					}
+					if(nums == 5){
+						return [a1.coord,a2.coord,a3.coord,a4.coord,a5.coord];
+					}
+				})()</div>
+				<div class="validator-function">
+					for(var i = 0;i&lt;guess.length;i++){
+						if(guess[i][0]==i&&guess[i][1]==2){
+							return "";
+						}
+					}
+					for(var i = 0;i&lt;guess.length;i++){
+						if(guess[i][0]&lt;6 && guess[i][0]&gt;0 && guess[i][1]&lt;1 && guess[i][1]&gt;-2){
+							continue;
+						} else return false;
+					}
+				    return true;
+				</div>
+			</div>
+			<div class="example">請將圓圈移動到合適的位置</div>
+		</div>
+
+		<div class="hints">
+			<div class="graphie" data-update="circle_move_1">
+				a1.moveTo(1,-0.5);
+				a2.moveTo(2,-0.5);
+				if(nums &gt;=3){
+					a3.moveTo(3,-0.5);
+				}
+				if(nums &gt;=4){
+					a4.moveTo(4,-0.5);
+				}
+				if(nums &gt;=5){
+					a5.moveTo(5,-0.5);
+				}
+			</div>
+		</div>
+	</div>
+	
+	<div id="case3">
+        <div class="vars">
+			<var id="nums">randRange(2,5)</var>
+			<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+        </div>
+		<p class="question">將 <code><var>nums</var></code> 個圈圈移動到圖形的外部。</p>
+		<div class="problem">
+			<div class="graphie" id="circle_move_1">
+				init({
+                    range: [ [-1, 12], [-3, 3] ],
+                    scale: 40
+                });
+				path([[0,-2],[6,-2],[6,1],[0,1],[0,-2]],{stroke:"#6495ED"})
+				addMouseLayer();
+				a1 = addMovableCircle([1,1],[1,-0.5]);
+				a2 = addMovableCircle([1,1],[2,-0.5]);
+				if(nums&gt;=3){
+					a3 = addMovableCircle([1,1],[3,-0.5]);
+				}
+				if(nums&gt;=4){
+					a4 = addMovableCircle([1,1],[4,-0.5]);
+				}
+				if(nums&gt;=5){
+					a5 = addMovableCircle([1,1],[5,-0.5]);
+				}
+			</div>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">
+				(function(){
+					if(nums == 2){
+						return [a1.coord,a2.coord];
+					}
+					if(nums == 3){
+						return [a1.coord,a2.coord,a3.coord];
+					}
+					if(nums == 4){
+						return [a1.coord,a2.coord,a3.coord,a4.coord];
+					}
+					if(nums == 5){
+						return [a1.coord,a2.coord,a3.coord,a4.coord,a5.coord];
+					}
+				})()</div>
+				<div class="validator-function">
+					for(var i = 0;i&lt;guess.length;i++){
+						if(guess[i][0]==i+1&&guess[i][1]==-0.5){
+							return "";
+						}
+					}
+					for(var i = 0;i&lt;guess.length;i++){
+						if(guess[i][0]&gt;6 || guess[i][0]&lt;0 || guess[i][1]&gt;1 || guess[i][1]&lt;-2){
+							continue;
+						} else return false;
+					}
+				    return true;
+				</div>
+			</div>
+			<div class="example">請將圓圈移動到合適的位置</div>
+		</div>
+
+		<div class="hints">
+			<div class="graphie" data-update="circle_move_1">
+				a1.moveTo(0,2);
+				a2.moveTo(1,2);
+				if(nums &gt;=3){
+					a3.moveTo(2,2);
+				}
+				if(nums &gt;=4){
+					a4.moveTo(3,2);
+				}
+				if(nums &gt;=5){
+					a5.moveTo(4,2);
+				}
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+</body>
+</html>

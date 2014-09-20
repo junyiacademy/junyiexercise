@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>用符號代表數-加數或被加數未知的問題</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+    </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+		function checkNum(num){
+			var arr = num.toString().split('.');
+			var arrLen = arr.length;
+			if(arrLen==2){
+				if(arr[1].length>1){return false;}
+			}
+			return true;
+			
+		}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">	
+		<div id="case1">
+            <div class="vars">
+				<var id="J">accAdd(randRange(5,39),accDiv(randRange(0,10),10))</var>
+				<var id="K">accAdd(randRange(50,99),accDiv(randRange(0,10),10))</var>
+				<var id="names">randFromArray(["哥哥","媽媽","爸爸","姊姊","爺爺","奶奶"])</var>
+				<var id="foods">randFromArray(["紅豆","綠豆","米","豬肉","牛肉","雞肉"])</var>
+				<var id="A">Subtr(K,J)</var>
+            </div>
+            <p class="question">家裡原有一些<var>foods</var>，<var>names</var>又買了 <code><var>J</var></code> 公斤，合起來總共有 <code><var>K</var></code> 公斤。請問家裡原來有多少公斤的<var>foods</var>？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-type="rational"><var>A</var></span> <code>公斤</code>
+				<p class="example">整數，例：<code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace\enspace3/4</code></p>
+				<p class="example">小數，例：<code>0.75</code></p>
+			</div>
+            <div class="hints">
+				<p>我們現在不知道家裡原有多少公斤的<var>foods</var>，所以先用 <code>A</code> 替代，</p>
+				<div>
+					<p><var>names</var>買了 <code><var>J</var></code> 公斤後，總共有 <code><var>K</var></code> 公斤，所以依據題目的敘述，列出 </p>
+					<p><code>A+<var>J</var>=<var>K</var></code></p>
+				</div>
+				<div>
+					<p>要算出 <code>A</code> 有多少，我們可以用線段來思考</p>
+					<div class="graphie" id="addend_line_1">
+						init({
+                        range: [ [-1, 12], [-1, 1] ],
+                        scale: 40
+						});
+						var lenA = A/K*6;
+						line([0,0],[lenA,0],{stroke:"#6495ED"});
+						line([lenA+0.2,0],[6.2,0],{stroke:"orange"});
+					</div>
+					<p>藍線(等於<code>A</code>)加上橘線(等於<code><var>J</var></code>)等於<code><var>K</var></code></p>
+				</div>
+				<div>
+					<p>要算出 <code>A</code> 有多少就可以用 <code><var>K</var></code> 去減掉 <code><var>J</var></code> ，所以 </p>
+					<p><code>A=<var>K</var>-<var>J</var>=<var>A</var></code></p>
+				</div>
+				<p>因此，本題的答案為 <code class="hint_pink"><var>A</var></code> 公斤。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+				<var id="J">randRange(5,30)</var>
+				<var id="K">randRange(31,99)</var>
+				<var id="names">randFromArray(["水族箱","養殖箱","魚缸"])</var>
+				<var id="foods">randFromArray(["蝦子","小魚","烏龜","小青蛙"])</var>
+				<var id="A">K-J</var>
+            </div>
+            <p class="question"><var>names</var>有 <code><var>J</var></code> 隻<var>foods</var>，爸爸又買了一些後，<var>names</var>內總共有 <code><var>K</var></code> 隻<var>foods</var>。請問爸爸買了幾隻<var>foods</var>？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>A</var></span> <code>隻</code>
+			</div>
+            <div class="hints">
+				<p>我們現在不知道爸爸買了幾隻<var>foods</var>回來，所以可以假設為 <code>A</code> 隻。</p>
+				<div>
+					<p><var>names</var>內原有 <code><var>J</var></code> 隻<var>foods</var>，再加上 <code>A</code> 隻後就會等於 <code><var>K</var></code> 隻。因此，我們列出 </p>
+					<p><code><var>J</var>+A=<var>K</var></code></p>
+				</div>
+				<div>
+					<p>要算出 <code>A</code> 有多少，我們可以用線段來思考</p>
+					<div class="graphie" id="addend_line_2">
+						init({
+                        range: [ [-1, 12], [-1, 1] ],
+                        scale: 40
+						});
+						var lenJ = J/K*6;
+						line([0,0],[lenJ,0],{stroke:"#6495ED"});
+						line([lenJ+0.2,0],[6.2,0],{stroke:"orange"});
+					</div>
+					<p>藍線(等於<code><var>J</var></code>)加上橘線(等於<code>A</code>)等於<code><var>K</var></code></p>
+				</div>
+				<p>要算出 <code>A</code> 有多少就可以用 <code><var>K</var></code> 去減掉 <code><var>J</var></code> ，所以 <code>A=<var>K</var>-<var>J</var>=<var>A</var></code> ，</p>
+				<p>因此，本題的答案為 <code class="hint_pink"><var>A</var></code> 隻。</p>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+				<var id="J">randRange(5,30)</var>
+				<var id="K">randRange(31,99)</var>
+				<var id="names">randFromArray(["動物園","馬戲團","遊樂園"])</var>
+				<var id="foods">randFromArray(["斑馬","猴子","犀牛","大象","猩猩","熊貓","貓熊","老虎","獅子"])</var>
+				<var id="A">K-J</var>
+            </div>
+            <p class="question"><var>names</var>裡原有 <code><var>J</var></code> 隻<var>foods</var>，經過幾年後，<var>names</var>裡的<var>foods</var>數量變成 <code><var>K</var></code> 隻，請問這幾年<var>foods</var>的數量增加幾隻？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>A</var></span> <code>隻</code>
+			</div>
+            <div class="hints">
+				<p>我們現在不知道這幾年<var>names</var>增加了幾隻<var>foods</var>，所以可以假設為A隻。</p>
+				<div>
+					<p><var>names</var>內原有 <code><var>J</var></code> 隻<var>foods</var>，再加上 <code>A</code> 隻後就會等於 <code><var>K</var></code> 隻。因此，我們列出 </p>
+					<p><code><var>J</var>+A=<var>K</var></code></p>
+				</div>
+				<div>
+					<p>要算出 <code>A</code> 有多少，我們可以用線段來思考</p>
+					<div class="graphie" id="addend_line_3">
+						init({
+                        range: [ [-1, 12], [-1, 1] ],
+                        scale: 40
+						});
+						var lenJ = J/K*6;
+						line([0,0],[lenJ,0],{stroke:"#6495ED"});
+						line([lenJ+0.2,0],[6.2,0],{stroke:"orange"});
+					</div>
+					<p>藍線(等於<code><var>J</var></code>)加上橘線(等於<code>A</code>)等於<code><var>K</var></code></p>
+				</div>
+				<p>要算出 <code>A</code> 有多少就可以用 <code><var>K</var></code> 去減掉 <code><var>J</var></code> ，所以 <code>A=<var>K</var>-<var>J</var>=<var>A</var></code> ，</p>
+				<p>因此，本題的答案為 <code class="hint_pink"><var>A</var></code> 隻。</p>
+            </div>
+        </div>
+		
+		<div id="case4">
+            <div class="vars">
+				<var id="J">accAdd(randRange(5,39),accDiv(randRange(0,10),10))</var>
+				<var id="K">accAdd(randRange(50,99),accDiv(randRange(0,10),10))</var>
+				<var id="names">randFromArray(["老闆","老闆娘","店長","經理"])</var>
+				<var id="foods">randFromArray(["咖啡豆","茶葉","奶粉","抹茶粉","巧克力粉","水果香料"])</var>
+				<var id="A">Subtr(K,J)</var>
+            </div>
+            <p class="question">飲料店原有一些<var>foods</var>，<var>names</var>又買了 <code><var>J</var></code> 公斤後，現在飲料店總共有 <code><var>K</var></code> 公斤的<var>foods</var>，請問飲料店原有多少公斤的<var>foods</var>呢？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-type="rational"><var>A</var></span> <code>公斤</code>
+				<p class="example">整數，例：<code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace\enspace3/4</code></p>
+				<p class="example">小數，例：<code>0.75</code></p>
+			</div>
+            <div class="hints">
+				<p>我們現在不知道飲料店裡原有多少公斤的<var>foods</var>，所以先用 <code>A</code> 替代。</p>
+				<div>
+					<p><var>names</var>買了 <code><var>J</var></code> 公斤後，總共有 <code><var>K</var></code> 公斤，所以依據題目的敘述，可以列出</p>
+					<p><code>A+<var>J</var>=<var>K</var></code></p>
+				</div>
+				<div>
+					<p>要算出 <code>A</code> 有多少，我們可以用線段來思考</p>
+					<div class="graphie" id="addend_line_4">
+						init({
+                        range: [ [-1, 12], [-1, 1] ],
+                        scale: 40
+						});
+						var lenA = A/K*6;
+						line([0,0],[lenA,0],{stroke:"#6495ED"});
+						line([lenA+0.2,0],[6.2,0],{stroke:"orange"});
+					</div>
+					<p>藍線(等於<code>A</code>)加上橘線(等於<code><var>J</var></code>)等於<code><var>K</var></code></p>
+				</div>
+				<div>
+					<p>要算出 <code>A</code> 有多少就可以用 <code><var>K</var></code> 去減掉 <code><var>J</var></code> ，所以</p>
+					<p><code>A=<var>K</var>-<var>J</var>=<var>A</var></code></p>
+				</div>
+				<p>因此，本題的答案為 <code class="hint_pink"><var>A</var></code> 公斤。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

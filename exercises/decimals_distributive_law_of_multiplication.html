@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie-helpers-arithmetic word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>小數乘法對加法與減法的分配律</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <!--西瓜一斤賣J元，蘋果一斤賣K元，各買L斤共要多少元?(試著練習運用乘法對加法的分配律來計算)-->
+                <div class="vars">
+                    <var id="fruit1">randFromArray(["西瓜","芒果","水梨","鳳梨","香蕉","蓮霧","葡萄"])</var>
+                    <var id="fruit2">randFromArray(["蘋果","草莓","李子","梨子","釋迦","水蜜桃"])</var>
+                    <var id="small">randRange(1,9)</var>
+                    <var id="J">randRange(20,70)*10+small</var>
+                    <var id="J_display">(J/pow(10,1)).toString()</var>
+                    <var id="K">randRange(20,70)*10+10-small</var>
+                    <var id="K_display">(K/pow(10,1)).toString()</var>
+                    <var id="L">randRange(1,4)*10+randRange(1,9)</var>
+                    <var id="L_display">(L/pow(10,1)).toString()</var>
+                    <var id="ans">(((J+K)*L)/pow(10,2)).toString()</var>
+                </div>
+                <div class="question">
+                    <p><var>fruit1</var>一斤賣<var>J_display</var>元，<var>fruit2</var>一斤賣<var>K_display</var>元，各買<var>L_display</var>斤共要多少元?<br>(試著練習運用乘法對加法的分配律來計算)</p>
+                </div>
+                <div class="solution" data-type="decimal">
+                    <span><var>ans</var>元</span>
+                </div>
+                <div class="hints">
+                    <p>用分配律來思考。<br>
+                    先算一斤<var>fruit1</var>加上一斤<var>fruit2</var>共要多少元，再乘以買多少斤</p>
+
+                    <p>一斤<var>fruit1</var>加上一斤<var>fruit2</var>共要<var>J_display</var>+<var>K_display</var> = <var>(J+K)/pow(10,1)</var>元</p>
+
+                    <p>總共需要的價錢為<var>(J+K)/pow(10,1)</var>乘以<var>L_display</var>=<var>ans</var></p>
+
+                    <p>也就是需要<var>ans</var>元</p>
+                </div>
+            </div>
+            
+            <div id="case2">
+                <!--豬肉一公斤賣J元，爸爸買了K公斤、叔叔買了L公斤，兩個人應付的錢相差多少元?(試著練習運用乘法對減法的分配律來計算)-->
+                <div class="vars">
+                    <var id="foods">randFromArray(["豬肉","牛肉","羊肉","雞肉","雞蛋"])</var>
+                    <var id="person1">randFromArray(["爸爸","爺爺","伯伯","舅舅"])</var>
+                    <var id="person2">randFromArray(["媽媽","奶奶","姊姊","阿姨"])</var>
+                    <var id="J">randRange(20,69)*10+randRange(1,9)</var>
+                    <var id="J_display">(J/pow(10,1)).toString()</var>
+                    <var id="K">randRange(2,7)*10+randRange(1,9)</var>
+                    <var id="K_display">(K/pow(10,1)).toString()</var>
+                    <var id="L">randRange(2,7)*10+randRange(1,9)</var>
+                    <var id="L_display">(L/pow(10,1)).toString()</var>
+                    <var id="ans">(abs(K-L)*J)/pow(10,2)</var>
+                </div>
+                <div class="problem">
+                    <p><var>foods</var>一公斤賣<var>J_display</var>元，<var>person1</var>買了<var>K_display</var>公斤、<var>person2</var>買了<var>L_display</var>公斤，兩個人應付的錢相差多少元?<br>(試著練習運用乘法對減法的分配律來計算)</p>
+                </div>
+                <div class="solution" data-type="decimal">
+                    <span><var>ans</var>元</span>
+                </div>
+                <div class="hints">
+
+                    <p>用分配律來思考。<br>
+                    先算<var>person1</var>和<var>person2</var>兩個人買的<var>foods</var>相差幾公斤，再將相差公斤數乘上一公斤<var>foods</var>的價錢。</p>
+
+                    <p data-if="K>L">
+                    <var>K_display</var> - <var>L_display</var> = <var>(K-L)/pow(10,1)</var>
+                    </p>
+                    <p data-else>
+                        <var>L_display</var> - <var>K_display</var> = <var>(L-K)/pow(10,1)</var>
+                    </p>
+
+                    <p>算出兩個人買的<var>foods</var>相差幾公斤之後再乘上<var>foods</var>一公斤的價格<var>J_display</var>元</p>
+
+                    <p>總共相差的價錢為<var>(abs(L-K))/pow(10,1)</var>乘以<var>J_display</var> = <var>ans</var>元</p>
+
+                </div>
+            </div>
+            <div id="case3">
+                <!--練習用分配律來算出答案
+                    JxK+JxL=Jx(@+L)=()
+                    例如 5.9x3.8+5.9x6.2=5.9x(@+6.2)=(    )，求＠和（）
+                -->
+                <div class="vars">
+                    <var id="J">randRange(10,49)*10+randRange(1,9)</var>
+                    <var id="J_display">(J/pow(10,1)).toString()</var>
+                    <var id="small">randRange(1,9)</var>
+                    <var id="K">randRange(2,19)*10+small</var>
+                    <var id="K_display">(K/pow(10,1)).toString()</var>
+                    <var id="L">randRange(2,19)*10+10-small</var>
+                    <var id="L_display">(L/pow(10,1)).toString()</var>
+                    <var id="at_location">randRange(1,3)</var>
+                    <var id="ans">(J*K+J*L)/pow(10,2)</var>
+
+                </div>
+                <div class="problem">
+                    <p>練習用分配律來算出答案</p>
+                    <p data-if="at_location===1"><code><var>J_display</var>\times<var>K_display</var>+<var>J_display</var>\times<var>L_display</var>=@\times(<var>K_display</var>+<var>L_display</var>) = ?</code></p>
+                    <p data-if="at_location===2"><code><var>J_display</var>\times<var>K_display</var>+<var>J_display</var>\times<var>L_display</var>=<var>J_display</var>\times(@+<var>L_display</var>) = ?</code></p>
+                    <p data-if="at_location===3"><code><var>J_display</var>\times<var>K_display</var>+<var>J_display</var>\times<var>L_display</var>=<var>J_display</var>\times(<var>K_display</var>+@) = ?</code></p>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <p>@位置的數字為
+                        <span class="sol" data-if="at_location===1"><var>J_display</var></span>
+                        <span class="sol" data-if="at_location===2"><var>K_display</var></span>
+                        <span class="sol" data-if="at_location===3"><var>L_display</var></span>
+                        <br>
+                        答案為<span class="sol"><var>ans</var></span>
+                    </p>
+                    <div class="example">
+                    整數，例：<code>6</code><br>
+                    </div> 
+                    <div class="example">
+                    小數，例：<code>0.75</code><br>
+                    </div> 
+                </div>
+                <div class="hints">
+                    <p>我們有兩種方法可以做，第一種是直接計算，第二種則是利用分配律計算。</p>
+                    
+                    <p>我們先從第一種開始，<br>
+                    <code><var>J_display</var>\times<var>K_display</var>=<var>((J*K)/pow(10,2)).toString()</var></code></p>
+                    
+                    <p><code><var>J_display</var>\times<var>L_display</var>=<var>((J*L)/pow(10,2)).toString()</var></code></p>
+                    
+                    <p><code><var>((J*K)/pow(10,2)).toString()</var>+<var>((J*L)/pow(10,2)).toString()</var> = <var>ans</var></code></p>
+                    
+                    <p>或是用第二種方式計算，<code><var>J_display</var>\times (<var>K_display</var>+<var>L_display</var>) = <var>J_display</var>\times<var>((K+L)/pow(10,1)).toString()</var>=<var>ans</var></code></p>
+
+                    <p data-if="at_location===1">兩種方式答案相同，而計算上第二種簡便許多。<br>
+                    所以<code>@</code>位置的數字為<code><var>J_display</var></code><br>
+                    答案為<code><var>ans</var></code></p>
+
+                    <p data-if="at_location===2">兩種方式答案相同，而計算上第二種簡便許多。<br>
+                    所以<code>@</code>位置的數字為<code><var>K_display</var></code><br>
+                    答案為<code><var>ans</var></code></p>
+
+                    <p data-if="at_location===3">兩種方式答案相同，而計算上第二種簡便許多。<br>
+                    所以<code>@</code>位置的數字為<code><var>L_display</var></code><br>
+                    答案為<code><var>ans</var></code></p>
+                </div>
+            </div>
+            <div id="case4">
+                <!--練習用分配律來算出答案
+                    JxK-JxL=Jx(@-L)=()
+                    例如 5.9x6.8-5.9x6.2=5.9x(@-6.2)=()-->
+                <div class="vars" data-ensure="K > L">
+                    <var id="J">randRange(10,49)*10+randRange(1,9)</var>
+                    <var id="J_display">(J/pow(10,1)).toString()</var>
+                    <var id="small">randRange(1,9)</var>
+                    <var id="K">randRange(2,19)*10+small</var>
+                    <var id="K_display">(K/pow(10,1)).toString()</var>
+                    <var id="L">randRange(2,19)*10+small</var>
+                    <var id="L_display">(L/pow(10,1)).toString()</var>
+                    <var id="at_location">randRange(1,3)</var>
+                    <var id="ans">(J*K-J*L)/pow(10,2)</var>
+
+                </div>
+                <div class="problem">
+                    <p>練習用分配律來算出答案</p>
+                    <p data-if="at_location===1"><code><var>J_display</var>\times<var>K_display</var>-<var>J_display</var>\times<var>L_display</var>=@\times(<var>K_display</var>-<var>L_display</var>) = ?</code></p>
+                    <p data-if="at_location===2"><code><var>J_display</var>\times<var>K_display</var>-<var>J_display</var>\times<var>L_display</var>=<var>J_display</var>\times(@-<var>L_display</var>) = ?</code></p>
+                    <p data-if="at_location===3"><code><var>J_display</var>\times<var>K_display</var>-<var>J_display</var>\times<var>L_display</var>=<var>J_display</var>\times(<var>K_display</var>-@) = ?</code></p>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <p>@位置的數字為
+                        <span class="sol" data-if="at_location===1"><var>J_display</var></span>
+                        <span class="sol" data-if="at_location===2"><var>K_display</var></span>
+                        <span class="sol" data-if="at_location===3"><var>L_display</var></span>
+                        <br>
+                        答案為<span class="sol"><var>ans</var></span>
+                    </p>
+                    <div class="example">
+                    整數，例：<code>6</code><br>
+                    </div> 
+                    <div class="example">
+                    小數，例：<code>0.75</code><br>
+                    </div> 
+                </div>
+                <div class="hints">
+                    <p>我們有兩種方法可以做，第一種是直接計算，第二種則是利用分配律計算。</p>
+                    
+                    <p>我們先從第一種開始，<br>
+                    <code><var>J_display</var>\times<var>K_display</var>=<var>((J*K)/pow(10,2)).toString()</var></code></p>
+                    
+                    <p><code><var>J_display</var>\times<var>L_display</var>=<var>((J*L)/pow(10,2)).toString()</var></code></p>
+                    
+                    <p><code><var>((J*K)/pow(10,2)).toString()</var> - <var>((J*L)/pow(10,2)).toString()</var> = <var>ans</var></code></p>
+                    
+                    <p>或是用第二種方式計算，<code>
+                        <var>J_display</var>\times (<var>K_display</var> - <var>L_display</var>) 
+                        = <var>J_display</var>\times<var>((K-L)/pow(10,1)).toString()</var> = <var>ans</var></code></p>
+
+                    <p data-if="at_location===1">兩種方式答案相同，而計算上第二種簡便許多。<br>
+                    所以<code>@</code>位置的數字為<code><var>J_display</var></code><br>
+                    答案為<code><var>ans</var></code></p>
+
+                    <p data-if="at_location===2">兩種方式答案相同，而計算上第二種簡便許多。<br>
+                    所以<code>@</code>位置的數字為<code><var>K_display</var></code><br>
+                    答案為<code><var>ans</var></code></p>
+
+                    <p data-if="at_location===3">兩種方式答案相同，而計算上第二種簡便許多。<br>
+                    所以<code>@</code>位置的數字為<code><var>L_display</var></code><br>
+                    答案為<code><var>ans</var></code></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

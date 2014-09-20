@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers-arithmetic word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能用併式紀錄加減兩步驟的問題(3-n-03)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars" data-ensure="(J+M+X)&lt;9&&(K+N+Y)&gt;10&&(L+P+Z)&gt;10">
+			<var id="J">randRange(1,9)</var>
+			<var id="K">randRange(1,9)</var>
+			<var id="L">randRange(1,9)</var>
+			<var id="M">randRange(1,9)</var>
+			<var id="N">randRange(1,9)</var>
+			<var id="P">randRange(1,9)</var>
+			<var id="X">randRange(1,9)</var>
+			<var id="Y">randRange(1,9)</var>
+			<var id="Z">randRange(1,9)</var>
+			<var id="JKL">J*100+K*10+L</var>
+			<var id="MNP">M*100+N*10+P</var>
+			<var id="XYZ">X*100+Y*10+Z</var>
+			<var id="R">JKL+MNP+XYZ</var>
+            <var id="DUMMY">[]</var>
+			<var id="names">randFromArray([["阿光","小玉","小珍"],["小紅","小明","小雅"],["小惠","小明","小雅"],["小紅","小珍","阿光"]])</var>
+			<var id="toys">randFromArray(["彈珠","小番茄","荔枝","葡萄","糖果"])</var>
+        </div>
+		<p class="question"><var>names[0]</var>有 <code><var>JKL</var></code> 顆<var>toys</var>，<var>names[1]</var>比<var>names[0]</var>多 <code><var>MNP</var></code> 顆<var>toys</var>，<var>names[2]</var>比<var>names[1]</var>多 <code><var>XYZ</var></code> 顆<var>toys</var>，<var>names[2]</var>有多少顆<var>toys</var>？</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>R</var></span>
+		</div>
+
+		<div class="hints">
+			<p>我們可以先算<var>names[1]</var>有幾顆<var>toys</var>，再算<var>names[2]</var>有幾顆<var>toys</var>。</p>
+			<div>
+				<p>根據題目的意思我們可以畫出下面這個圖：</p>
+				<div class="graphie" id="line_1">
+					init({
+                        range: [ [-1, 12], [-2, 1] ],
+                        scale: 40
+                    });
+					var line1 = 6*JKL/R;
+					var line2 = 6*MNP/R;
+					var line3 = 6*XYZ/R;
+					label( [0,0],  "\\small{"+names[0]+"}", "left", { color: "gray" });
+					label( [0,-0.8],  "\\small{"+names[1]+"}", "left", { color: "gray" });
+					label( [0,-1.6],  "\\small{"+names[2]+"}", "left", { color: "gray" });
+					line([0,0],[line1,0],{stroke: "black"});
+					
+					line([0,-0.8],[line1,-0.8],{stroke: "black"});
+					line([line1+line2,-0.8],[line1,-0.8],{stroke: "red"});
+					
+					line([0,-1.6],[line1,-1.6],{stroke: "black"});
+					line([line1+line2,-1.6],[line1,-1.6],{stroke: "red"});
+					line([line1+line2,-1.6],[line1+line2+line3,-1.6],{stroke: "blue"});
+					
+					line([0,0.2],[0,-0.2]);
+					line([0,-1],[0,-0.6]);
+					line([0,-1.4],[0,-1.8]);
+					line([line1,0.2],[line1,-0.2]);
+					line([line1,-1],[line1,-0.6]);
+					line([line1,-1.4],[line1,-1.8]);
+					line([line1+line2,-1],[line1+line2,-0.6]);
+					line([line1+line2,-1.4],[line1+line2,-1.8]);
+					line([line1+line2+line3,-1.4],[line1+line2+line3,-1.8]);
+					label( [line1/2,-0.2],  "\\small{"+JKL+"}", "above", { color: "gray" });
+					label( [line1/2,-1],  "\\small{"+JKL+"}", "above", { color: "gray" });
+					label( [line1/2,-1.8],  "\\small{"+JKL+"}", "above", { color: "gray" });
+					label( [line1+line2/2,-1],  "\\small{"+MNP+"}", "above", { color: "red" });
+					label( [line1+line2/2,-1.8],  "\\small{"+MNP+"}", "above", { color: "red" });
+					label( [line1+line2+line3/2,-1.8],  "\\small{"+XYZ+"}", "above", { color: "blue" });
+				</div>
+			</div>
+			<div>
+				<p><var>names[1]</var>有幾顆<var>toys</var>？</p>
+				<div class="graphie" id="numbers_1">
+					graph.adder = new Adder( JKL, MNP );
+					graph.adder.show();
+				</div>
+			</div>
+            <div class="graphie" data-update="numbers_1" data-each="Array( new Adder( JKL, MNP ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+			<div>
+				<p><var>names[2]</var>有幾顆<var>toys</var>？</p>
+				<div class="graphie" id="numbers_2">
+					graph.adder = new Adder( JKL+MNP, XYZ );
+					graph.adder.show();
+				</div>
+			</div>
+            <div class="graphie" data-update="numbers_2" data-each="Array( new Adder( JKL+MNP, XYZ ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+			<p>因此，本題的答案為<var>names[2]</var>有 <code class="hint_pink"><var>R</var></code> 顆<var>toys</var>。</p>
+		</div>
+	</div>
+	
+	<div id="case2">
+        <div class="vars" data-ensure="(J+M+X)&lt;9&&(K+N+Y)&gt;10&&(L+P+Z)&gt;10">
+			<var id="J">randRange(1,9)</var>
+			<var id="K">randRange(1,9)</var>
+			<var id="L">randRange(1,9)</var>
+			<var id="M">randRange(1,9)</var>
+			<var id="N">randRange(1,9)</var>
+			<var id="P">randRange(1,9)</var>
+			<var id="X">randRange(1,9)</var>
+			<var id="Y">randRange(1,9)</var>
+			<var id="Z">randRange(1,9)</var>
+			<var id="JKL">J*100+K*10+L</var>
+			<var id="MNP">M*100+N*10+P</var>
+			<var id="XYZ">X*100+Y*10+Z</var>
+			<var id="R">JKL+MNP+XYZ</var>
+            <var id="DUMMY">[]</var>
+			<var id="names">randFromArray(["阿光","小玉","小珍","小紅","小明","小雅","小惠"])</var>
+			<var id="books">randFromArray(["書","雜誌","漫畫"])</var>
+			<var id="color_pens">randFromArray(["彩色筆","色鉛筆","水彩筆","廣告顏料"])</var>
+			<var id="write_pens">randFromArray(["蠟筆","釘書機","麥克筆"])</var>
+        </div>
+		<p class="question"><var>names</var>到書局買了 <code>1</code> 本 <code><var>JKL</var></code> 元的<var>books</var>，<code>1</code> 盒 <code><var>MNP</var></code> 元的<var>color_pens</var>和 <code>1</code> 盒 <code><var>XYZ</var></code> 元的<var>write_pens</var>，<var>names</var>共要付多少元？</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>R</var></span>
+		</div>
+		<div class="hints">
+			<p>我們可以先算一本<var>books</var>和一盒<var>color_pens</var>需要多少錢，記為 <code>A</code>，再加上一盒<var>write_pens</var>的錢，就是<var>names</var>總共需要付的錢。</p>
+			<div>
+				<p>根據題目的意思我們可以畫出下面這個圖：</p>
+				<div class="graphie" id="line_21">
+					init({
+                        range: [ [-1, 12], [-2, 1] ],
+                        scale: 40
+                    });
+					var line1 = 6*JKL/R;
+					var line2 = 6*MNP/R;
+					var line3 = 6*XYZ/R;
+					label( [0,0],  "\\small{"+books+"}", "left", { color: "gray" });
+					label( [0,-0.8],  "\\small{A}", "left", { color: "gray" });
+					label( [0,-1.6],  "\\small{總共}", "left", { color: "gray" });
+					line([0,0],[line1,0],{stroke: "black"});
+					
+					line([0,-0.8],[line1,-0.8],{stroke: "black"});
+					line([line1+line2,-0.8],[line1,-0.8],{stroke: "red"});
+					
+					line([0,-1.6],[line1,-1.6],{stroke: "black"});
+					line([line1+line2,-1.6],[line1,-1.6],{stroke: "red"});
+					line([line1+line2,-1.6],[line1+line2+line3,-1.6],{stroke: "blue"});
+					
+					line([0,0.2],[0,-0.2]);
+					line([0,-1],[0,-0.6]);
+					line([0,-1.4],[0,-1.8]);
+					line([line1,0.2],[line1,-0.2]);
+					line([line1,-1],[line1,-0.6]);
+					line([line1,-1.4],[line1,-1.8]);
+					line([line1+line2,-1],[line1+line2,-0.6]);
+					line([line1+line2,-1.4],[line1+line2,-1.8]);
+					line([line1+line2+line3,-1.4],[line1+line2+line3,-1.8]);
+					label( [line1/2,-0.2],  "\\small{"+JKL+"}", "above", { color: "gray" });
+					label( [line1/2,-1],  "\\small{"+JKL+"}", "above", { color: "gray" });
+					label( [line1/2,-1.8],  "\\small{"+JKL+"}", "above", { color: "gray" });
+					label( [line1+line2/2,-1],  "\\small{"+MNP+"}", "above", { color: "red" });
+					label( [line1+line2/2,-1.8],  "\\small{"+MNP+"}", "above", { color: "red" });
+					label( [line1+line2+line3/2,-1.8],  "\\small{"+XYZ+"}", "above", { color: "blue" });
+				</div>
+			</div>
+			<div>
+				<p>一本<var>books</var>和一盒<var>color_pens</var>需要多少錢？</p>
+				<div class="graphie" id="numbers_21">
+					graph.adder = new Adder( JKL, MNP );
+					graph.adder.show();
+				</div>
+			</div>
+			<div class="graphie" data-update="numbers_21" data-each="Array( new Adder( JKL, MNP ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+			<div>
+				<p>再加上一盒<var>write_pens</var>的錢，就是<var>names</var>總共需要付的錢，</p>
+				<div class="graphie" id="numbers_22">
+					graph.adder = new Adder( JKL+MNP, XYZ );
+					graph.adder.show();
+				</div>
+			</div>
+            <div class="graphie" data-update="numbers_22" data-each="Array( new Adder( JKL+MNP, XYZ ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+			<p>因此，本題的答案為<var>names</var>總共要付 <code class="hint_pink"><var>R</var></code> 元。</p>
+		</div>
+	</div>
+	
+	<div id="case3">
+        <div class="vars" data-ensure="(J+M-X)&gt;0&&(K+N-Y)&gt;0&&(L+P-Z)&gt;0">
+			<var id="J">randRange(1,9)</var>
+			<var id="K">randRange(1,9)</var>
+			<var id="L">randRange(1,9)</var>
+			<var id="M">randRange(1,9)</var>
+			<var id="N">randRange(1,9)</var>
+			<var id="P">randRange(1,9)</var>
+			<var id="X">randRange(1,9)</var>
+			<var id="Y">randRange(1,9)</var>
+			<var id="Z">randRange(1,9)</var>
+			<var id="JKL">J*100+K*10+L</var>
+			<var id="MNP">M*100+N*10+P</var>
+			<var id="XYZ">X*100+Y*10+Z</var>
+			<var id="R">JKL+MNP-XYZ</var>
+            <var id="DUMMY">[]</var>
+			<var id="names">randFromArray([["小玉","阿光","小珍"],["小紅","小明","小雅"],["小惠","小明","小雅"],["小紅","阿光","小珍"]])</var>
+			<var id="fruits">randFromArray(["彈珠","蘋果","荔枝","小番茄"])</var>
+        </div>
+		<p class="question"><var>names[0]</var>有 <code><var>JKL</var></code> 顆<var>fruits</var>，<var>names[1]</var>又給<var>names[0]</var> <code><var>MNP</var></code> 顆<var>fruits</var>，<var>names[0]</var>把 <code><var>XYZ</var></code> 顆<var>fruits</var>送給<var>names[2]</var>，現在<var>names[0]</var>還有多少顆<var>fruits</var>？</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>R</var></span>
+		</div>
+		<div class="hints">
+			<p><var>names[0]</var>有 <code><var>JKL</var></code> 顆<var>fruits</var>，<var>names[1]</var>又給<var>names[0]</var> <code><var>MNP</var></code> 顆<var>fruits</var>，先算<var>names[0]</var>現在總共有幾顆<var>fruits</var>，</p>
+			<div class="graphie" id="numbers_31">
+				graph.adder = new Adder( JKL, MNP );
+				graph.adder.show();
+			</div>
+			<div class="graphie" data-update="numbers_31" data-each="Array( new Adder( JKL, MNP ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+			<p><var>names[0]</var>把 <code><var>XYZ</var></code> 顆<var>fruits</var>送給<var>names[2]</var>，所以要減去 <code><var>XYZ</var></code> 顆，</p>
+			<div>
+				<div class="graphie" id="numbers_32">
+                graph.subtractor = new Subtractor( JKL+MNP, XYZ );
+                graph.subtractor.show();
+				</div>
+			</div>
+            <div class="graphie" data-update="numbers_32" data-each="new Subtractor( JKL+MNP, XYZ ).getNumHints() times">
+				graph.subtractor.showHint();
+			</div>
+			<p>因此，本題的答案為<var>names[0]</var>還有 <code class="hint_pink"><var>R</var></code> 顆<var>fruits</var>。</p>
+		</div>
+	</div>
+	
+	<div id="case4">
+        <div class="vars" data-ensure="(J+M-X)&gt;0&&(K+N-Y)&gt;0&&(L+P-Z)&gt;0">
+			<var id="J">randRange(1,9)</var>
+			<var id="K">randRange(1,9)</var>
+			<var id="L">randRange(1,9)</var>
+			<var id="M">randRange(1,9)</var>
+			<var id="N">randRange(1,9)</var>
+			<var id="P">randRange(1,9)</var>
+			<var id="X">randRange(1,9)</var>
+			<var id="Y">randRange(1,9)</var>
+			<var id="Z">randRange(1,9)</var>
+			<var id="JKL">J*100+K*10+L</var>
+			<var id="MNP">M*100+N*10+P</var>
+			<var id="XYZ">X*100+Y*10+Z</var>
+			<var id="R">JKL+MNP-XYZ</var>
+            <var id="DUMMY">[]</var>
+			<var id="names">randFromArray([["小玉","阿光","小珍"],["小紅","小明","小雅"],["小惠","小明","小雅"],["小紅","阿光","小珍"]])</var>
+        </div>
+		<p class="question"><var>names[0]</var>身上有 <code><var>JKL</var></code> 元，<var>names[1]</var>比<var>names[0]</var>多了 <code><var>MNP</var></code> 元，<var>names[2]</var>比<var>names[1]</var>少了 <code><var>XYZ</var></code> 元，<var>names[2]</var>身上有多少元？</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>R</var></span>
+		</div>
+		<div class="hints">
+			<div>
+				<p>根據題目的意思我們可以畫出下圖：</p>
+				<div class="graphie" id="line_4">
+					init({
+                        range: [ [-1, 12], [-2, 1] ],
+                        scale: 40
+                    });
+					var newR = JKL+MNP;
+					var line1 = 6*JKL/newR;
+					var line2 = 6*MNP/newR;
+					var line3 = 6*(JKL+MNP-XYZ)/newR;
+					var line4 = 6*XYZ/newR;
+					label( [0,0],  "\\small{"+names[0]+"}", "left", { color: "gray" });
+					label( [0,-0.8],  "\\small{"+names[1]+"}", "left", { color: "gray" });
+					label( [0,-1.6],  "\\small{"+names[2]+"}", "left", { color: "gray" });
+					line([0,0],[line1,0],{stroke: "black"});
+					
+					line([0,-0.8],[line1,-0.8],{stroke: "black"});
+					line([line1+line2,-0.8],[line1,-0.8],{stroke: "red"});
+					
+					line([line3,-1.6],[line3+line4,-1.6],{stroke: "blue","stroke-dasharray": "-"});
+					line([0,-1.6],[line3,-1.6],{stroke: "black"});
+					
+					line([0,0.2],[0,-0.2]);
+					line([0,-1],[0,-0.6]);
+					line([0,-1.4],[0,-1.8]);
+					line([line1,0.2],[line1,-0.2]);
+					line([line1,-1],[line1,-0.6]);
+					line([line3,-1.4],[line3,-1.8]);
+					line([line1+line2,-1],[line1+line2,-0.6]);
+					line([line1+line2,-1.4],[line1+line2,-1.8]);
+					
+					label( [line1/2,-0.2],  "\\small{"+JKL+"}", "above", { color: "gray" });
+					label( [line1/2,-1],  "\\small{"+JKL+"}", "above", { color: "gray" });
+					label( [line3/2,-1.8],  "\\small{？}", "above", { color: "green" });
+					label( [line1+line2/2,-1],  "\\small{"+MNP+"}", "above", { color: "red" });
+					label( [line3+line4/2,-1.8],  "\\small{"+XYZ+"}", "above", { color: "blue" });
+				</div>
+			</div>
+			<div>
+				<p><var>names[1]</var>比<var>names[0]</var>多 <code><var>MNP</var></code> 元，所以<var>names[1]</var>有</p>
+				<div class="graphie" id="numbers_41">
+					graph.adder = new Adder( JKL, MNP );
+					graph.adder.show();
+				</div>
+			</div>
+			<div class="graphie" data-update="numbers_41" data-each="Array( new Adder( JKL, MNP ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+			<div>
+				<p><var>names[2]</var>比<var>names[1]</var>少 <code><var>XYZ</var></code> 元，所以<var>names[2]</var>有</p>
+				<div class="graphie" id="numbers_42">
+                graph.subtractor = new Subtractor( JKL+MNP, XYZ );
+                graph.subtractor.show();
+				</div>
+			</div>
+            <div class="graphie" data-update="numbers_42" data-each="new Subtractor( JKL+MNP, XYZ ).getNumHints() times">
+				graph.subtractor.showHint();
+			</div>
+			<p>因此，本題的答案為<var>names[2]</var>身上有 <code class="hint_pink"><var>R</var></code> 元。</p>
+		</div>
+	</div>
+	
+	<div id="case5">
+        <div class="vars" data-ensure="(J+M-X)&gt;0&&(K+N-Y)&gt;0&&(L+P-Z)&gt;0">
+			<var id="J">randRange(1,9)</var>
+			<var id="K">randRange(1,9)</var>
+			<var id="L">randRange(1,9)</var>
+			<var id="M">randRange(1,9)</var>
+			<var id="N">randRange(1,9)</var>
+			<var id="P">randRange(1,9)</var>
+			<var id="X">randRange(1,9)</var>
+			<var id="Y">randRange(1,9)</var>
+			<var id="Z">randRange(1,9)</var>
+			<var id="JKL">J*100+K*10+L</var>
+			<var id="MNP">M*100+N*10+P</var>
+			<var id="XYZ">X*100+Y*10+Z</var>
+			<var id="R">JKL+MNP-XYZ</var>
+            <var id="DUMMY">[]</var>
+			<var id="names">randFromArray([["小玉","阿光","小珍"],["小紅","小明","小雅"],["小惠","小明","小雅"],["小紅","阿光","小珍"]])</var>
+        </div>
+		<p class="question"><var>names[0]</var>收集 <code><var>JKL</var></code> 張圖卡，<var>names[1]</var>收集 <code><var>MNP</var></code> 張圖卡，<var>names[2]</var>收集的圖卡比<var>names[0]</var>和<var>names[1]</var>合起來的圖卡還少 <code><var>XYZ</var></code> 張，<var>names[2]</var>收集的圖卡有多少張？</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>R</var></span>
+		</div>
+		<div class="hints">
+			<div>
+				<p>根據題目的意思我們可以畫出下圖：</p>
+				<div class="graphie" id="line_4">
+					init({
+                        range: [ [-1, 12], [-3, 1] ],
+                        scale: 40
+                    });
+					var newR = JKL+MNP;
+					var line1 = 6*JKL/newR;
+					var line2 = 6*MNP/newR;
+					var line3 = 6*(JKL+MNP-XYZ)/newR;
+					var line4 = 6*XYZ/newR;
+					
+					line([0,0],[line1,0],{stroke: "black"});
+					line([line1+line2,0],[line1,0],{stroke: "red"});
+					
+					line([line3,-1.6],[line3+line4,-1.6],{stroke: "blue","stroke-dasharray": "-"});
+					line([0,-1.6],[line3,-1.6],{stroke: "black"});
+					
+					line([0,0.2],[0,-0.2]);
+					line([0,-1.4],[0,-1.8]);
+					line([line1,-0.2],[line1,0.2]);
+					line([line3,-1.4],[line3,-1.8]);
+					line([line1+line2,-0.2],[line1+line2,0.2]);
+					line([line1+line2,-1.4],[line1+line2,-1.8]);
+		
+					label( [line1/2,-0.2],  "\\small{"+JKL+"}", "above", { color: "gray" });
+					label( [line1/2,0],  "\\small{"+names[0]+"}", "below", { color: "gray" });
+					label( [line3/2,-1.8],  "\\small{？}", "above", { color: "green" });
+					label( [line3/2,-1.8],  "\\small{"+names[2]+"}", "below", { color: "green" });
+					label( [line1+line2/2,-0.2],  "\\small{"+MNP+"}", "above", { color: "red" });
+					label( [line1+line2/2,0],  "\\small{"+names[1]+"}", "below", { color: "red" });
+					label( [line3+line4/2,-1.8],  "\\small{"+XYZ+"}", "above", { color: "blue" });
+				</div>
+			</div>
+			<div>
+				<p>先算<var>names[0]</var>和<var>names[1]</var>共有幾張，</p>
+				<div class="graphie" id="numbers_51">
+					graph.adder = new Adder( JKL, MNP );
+					graph.adder.show();
+				</div>
+			</div>
+			<div class="graphie" data-update="numbers_51" data-each="Array( new Adder( JKL, MNP ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+			<div>
+				<p>再減去他們比<var>names[2]</var>多的圖卡，就是<var>names[2]</var>的圖卡張數。</p>
+				<div class="graphie" id="numbers_52">
+                graph.subtractor = new Subtractor( JKL+MNP, XYZ );
+                graph.subtractor.show();
+				</div>
+			</div>
+            <div class="graphie" data-update="numbers_52" data-each="new Subtractor( JKL+MNP, XYZ ).getNumHints() times">
+				graph.subtractor.showHint();
+			</div>
+			<p>因此，本題的答案為<var>names[2]</var>有 <code class="hint_pink"><var>R</var></code> 張圖卡。</p>
+		</div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

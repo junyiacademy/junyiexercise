@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>化成最簡根式</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+            <div class="vars" data-ensure="J!=4 && J!=9">
+			    <var id="J">randFromArray([2,3,5,6,7,10,11,13,14,15])</var>
+            </div>
+			<p class="question">化成最簡根式：</p>
+			<div class="problem"><p><code>\sqrt{\dfrac{1}{<var>J</var>}}</code></p></div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-type="rational"><var>1/J</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart_2"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("sqrtPart_2").value</div>
+				    <div class="validator-function">
+				        if(guess==J){
+					        return true;
+				 	    }
+				    </div>
+				</div>
+				<p class="example">根號前可使用分數或整數表示</p>
+			    <p class="example">根號內請使用整數</p>
+			</div>
+
+    <div class="hints">
+	    <p><code>\sqrt{\dfrac{1}{<var>J</var>}}=\sqrt{\dfrac{1\cdot <var>J</var>}{<var>J</var>\cdot <var>J</var>}}</code></p>
+		<p><code>=\sqrt{(\dfrac{1}{<var>J</var>})^{2}\cdot <var>J</var>}</code></p>
+		<p><code>=\dfrac{1}{<var>J</var>}\cdot \sqrt{<var>J</var>}</code></p>
+		<p><code>=\dfrac{\sqrt{<var>J</var>}}{<var>J</var>}</code></p>
+		<p><code>=<var>fraction(1,J,true,true,false,false)</var>\sqrt{<var>J</var>}</code></p>
+		<p>所以，本題的答案爲 <code class="hint_pink"><var>fraction(1,J,true,true,false,false)</var>\sqrt{<var>J</var>}</code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case2">
+            <div class="vars">
+			    <var id="J_1">randRange(1,9)</var>
+			    <var id="J">accDiv(J_1,10)</var>
+				<var id="sqrt_arr">splitRadical(J_1*10)</var>
+            </div>
+			<p class="question">化成最簡根式：</p>
+			<div class="problem"><p><code>\sqrt{<var>J</var>}</code></p></div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-type="rational"><var>sqrt_arr[0]/10</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart_22"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("sqrtPart_22").value</div>
+				    <div class="validator-function">
+				        if(guess==sqrt_arr[1]){
+					        return true;
+				 	    }
+				    </div>
+				</div>
+				<p class="example">根號前可使用分數或整數表示</p>
+			    <p class="example">根號內請使用整數</p>
+			</div>
+
+    <div class="hints">
+	    <p><code>\sqrt{<var>J</var>}=\sqrt{\dfrac{<var>J_1</var>}{10}}</code></p>
+		<p><code>=\sqrt{(\dfrac{<var>formattedSquareRootOf(J_1)</var>}{10})^{2}\cdot 10}</code></p>
+		<p><code>=\dfrac{<var>formattedSquareRootOf(J_1)</var>}{10}\cdot \sqrt{10}</code></p>
+		<p data-if="J_1!=9"><code>=\dfrac{\sqrt{<var>10*J_1</var>}}{10}</code></p>
+		<p data-if="J_1!=1&&J_1!=9&&J_1!=3&&J_1!=7"><code>=\dfrac{<var>formattedSquareRootOf(J_1*10)</var>}{10}</code></p>
+		<p data-if="J_1!=1&&J_1!=3&&J_1!=7"><code>=<var>fraction(sqrt_arr[0],10,true,true,false,false)</var>\sqrt{<var>sqrt_arr[1]</var>}</code></p>
+		<p>所以，本題的答案爲 <code class="hint_pink"><var>fraction(sqrt_arr[0],10,true,true,false,false)</var>\sqrt{<var>sqrt_arr[1]</var>}</code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case3">
+            <div class="vars" data-ensure="J!=K[1]&&J*sqrt_arr[0]/K[1]!=1">
+			    <var id="J">randRange(2,9)</var>
+				<var id="K">randFromArray([[1,3],[2,3],[1,4],[3,4],[1,5],[2,5],[3,5],[4,5],[1,6],[5,6],[1,7],[2,7],[3,7],[4,7],[5,7],[6,7],[5,2],[4,3],[5,4],[5,3],[6,5],[7,6],[7,5],[7,4],[7,3],[7,2]])</var>
+				<var id="sqrt_arr">splitRadical(K[1]*K[0])</var>
+            </div>
+			<p class="question">化成最簡根式：</p>
+			<div class="problem"><p><code><var>J</var>\sqrt{<var>fraction(K[0],K[1],true,true,false,false)</var>}</code></p></div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-type="rational"><var>J*sqrt_arr[0]/K[1]</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart_22"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("sqrtPart_22").value</div>
+				    <div class="validator-function">
+					    if(sqrt_arr[1]==1){
+						    return true;
+						}
+				        if(guess==sqrt_arr[1]){
+					        return true;
+				 	    }
+				    </div>
+				</div>
+				<p class="example">根號前可使用分數或整數表示</p>
+			    <p class="example">根號內請使用整數</p>
+			</div>
+
+    <div class="hints">
+	    <p><code><var>J</var>\sqrt{<var>fraction(K[0],K[1],true,true,false,false)</var>}=<var>J</var>\sqrt{\dfrac{<var>K[0]</var>\cdot<var>K[1]</var>}{<var>K[1]</var>\cdot<var>K[1]</var>}}</code></p>
+		<p><code>=\dfrac{<var>J</var>\cdot\sqrt{<var>K[0]*K[1]</var>}}{<var>K[1]</var>}</code></p>
+		<p><code>=<var>fraction(J,K[1],true,true,false,false)</var>\sqrt{<var>K[0]*K[1]</var>}</code></p>
+		<p data-if="sqrt_arr[0]!=1"><code>=<var>fraction(J,K[1],true,true,false,false)</var>\cdot<var>formattedSquareRootOf(K[0]*K[1])</var></code></p>
+		<p data-if="sqrt_arr[0]!=1"><code data-if="J*sqrt_arr[0]/K[1]!=1">=<var>fraction(J*sqrt_arr[0],K[1],true,true,false,false)</var></code><code data-if="J*sqrt_arr[0]/K[1]==1">=\enspace</code><code data-if="sqrt_arr[1]!=1">\sqrt{<var>sqrt_arr[1]</var>}</code></p>
+    </div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>指數律的應用</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars" data-ensure="J!=K">
+			<var id="J">randRange(5,20)</var>
+			<var id="K">randRange(5,20)</var>
+        </div>
+		<p class="question"><code>2^{<var>J</var>}\times 5^{<var>K</var>}</code> 乘積後面有幾個 <code>0</code> 。</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>min(J,K)</var></span><code>\enspace 個</code>
+		</div>
+		<div class="hints">
+			<p>一個 <code>2</code> 乘上一個 <code>5</code> 就會產生一個 <code>0</code> ，</p>
+			<p>要算出 <code>2^{<var>J</var>}\times 5^{<var>K</var>}</code> 乘積後面有幾個 <code>0</code> ，我們可以觀察 <code><var>J</var></code> 和 <code><var>K</var></code> 的大小，並且以次方小的為主。</p>
+			<p data-if="J&gt;K"><code>2^{<var>J</var>}\times 5^{<var>K</var>}=(2\times 5)^{<var>K</var>}\times 2^{<var>J-K</var>}</code> 。</p>
+			<p data-if="J&gt;K">則 <code>2^{<var>J</var>}\times 5^{<var>K</var>}</code> 的乘積末尾有 <code class="hint_pink"><var>K</var></code> 個 <code>0</code> 。</p>
+			<p data-if="J&lt;K"><code>2^{<var>J</var>}\times 5^{<var>K</var>}=(2\times 5)^{<var>J</var>}\times 5^{<var>K-J</var>}</code> 。</p>
+			<p data-if="J&lt;K">則 <code>2^{<var>J</var>}\times 5^{<var>K</var>}</code> 的乘積末尾有 <code class="hint_pink"><var>J</var></code> 個 <code>0</code> 。</p>
+		</div>
+	</div>
+	
+	<div id="case2">
+        <div class="vars" data-ensure="t1!=t2">
+			<var id="J">randRange(2,10)</var>
+			<var id="K">randRange(2,5)</var>
+			<var id="L">randRange(2,5)</var>
+			<var id="M">randRange(1,3)</var>
+			<var id="t1">J+3*L</var>
+			<var id="t2">2*K+3*M</var>
+        </div>
+		<p class="question"><code>2^{<var>J</var>}\times 25^{<var>K</var>}\times 8^{<var>L</var>}\times 125^{<var>M==1?"":M</var>}</code> 乘積後面有幾個 <code>0</code> 。</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>min(t1,t2)</var></span><code>\enspace 個</code>
+		</div>
+		<div class="hints">
+			<p>一個 <code>2</code> 乘上一個 <code>5</code> 就會產生一個 <code>0</code> ，</p>
+			<p>要算出 <code>2^{<var>J</var>}\times 25^{<var>K</var>}\times 8^{<var>L</var>}\times 125^{<var>M==1?"":M</var>}</code> 乘積後面有幾個 <code>0</code> ，我們可以先將式子整理合併。</p>
+			<p><code>25^{<var>K</var>}=5^{<var>2*K</var>}</code></p>
+			<p><code>8^{<var>L</var>}=2^{<var>3*L</var>}</code></p>
+			<p><code>125^{<var>M==1?"":M</var>}=5^{<var>3*M</var>}</code></p>
+			<div>
+				<p>所以 <code>2^{<var>J</var>}\times 25^{<var>K</var>}\times 8^{<var>L</var>}\times 125^{<var>M==1?"":M</var>}</code></p>
+				<p><code>=2^{<var>J</var>}\times 5^{<var>2*K</var>}\times 2^{<var>3*L</var>}\times 5^{<var>3*M</var>}</code></p>
+				<p><code>=2^{<var>t1</var>}\times 5^{<var>t2</var>}</code></p>
+			</div>
+			<div>
+				<p>觀察 <code class="hint_green"><var>t1</var></code> 和 <code class="hint_green"><var>t2</var></code> 的大小，並且以次方小的為主，</p>
+				<p>可得 <code>2^{<var>t1</var>}\times 5^{<var>t2</var>}=(2\times 5)^{<var>min(t1,t2)</var>}\times <var>t1&gt;t2?2:5</var>^{<var>abs(t1-t2)</var>}</code></p>
+			</div>
+			<p data-if="t1&gt;t2">則 <code>2^{<var>t1</var>}\times 5^{<var>t2</var>}</code> 的乘積會產生 <code class="hint_pink"><var>t2</var></code> 個 <code>0</code> 。</p>
+			<p data-if="t1&lt;t2">則 <code>2^{<var>t1</var>}\times 5^{<var>t2</var>}</code> 的乘積會產生 <code class="hint_pink"><var>t1</var></code> 個 <code>0</code> 。</p>
+		</div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html data-require="math interactive graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>點的繪製2</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+
+<body>
+    <div class="summary">Plotting points on a coordinate plane and tell quadrant.
+        Common Core State Standard: 6.NS.6c
+        Related Videos: Quadrants of Coordinate Plane, The Coordinate Plane
+        Prerequisite: Number line, (coming soon) Plotting points 0.5
+        Required/helpful For: Graphing linear equations, (coming soon) Graphing using x and y intercepts
+    </div>
+    <div class="exercise">
+        <div class="problems">
+            <div>
+                <div class="vars">
+                    <var id="X">randRange(0, 8 )</var>
+                    <var id="Y">randRange(0, 8 )</var>
+                    <var id="base_X">randRange(2,5)</var>
+                    <var id="base_Y">randRange(2,5)</var>
+                    <var id="up_X">
+                        randRange(1,base_X-1)
+                    </var>
+                    <var id="up_Y">
+                        randRange(1,base_Y-1)
+                    </var>
+                    <var id="QUADRANT">X &gt; 0 ? ( Y &gt; 0 ? "QI" : "QIV" ) : ( Y &gt; 0 ? "QII" : "QIII" )</var>
+                    <var id="value_X">X + up_X/base_X</var>
+                    <var id="value_Y">Y + up_Y/base_Y</var>
+                </div>
+                <p class="question">
+                    請指出 <code>(<span data-if="X!==0"><var>X</var></span> \dfrac{ <var>up_X</var> }{ <var>base_X</var> }, <span data-if="Y!==0"><var>Y</var></span> \dfrac{ <var>up_Y</var> }{ <var>base_Y</var>})</code> 在下面這張座標圖上的位置。
+                </p>
+                <div class="problem">
+                    <br />
+                    <div class="graphie" id="grid">
+                        graphInit({
+                            range: [[-1,9],[-1,9]],
+                            scale: 50,
+                            axisArrows: "&lt;-&gt;",
+                            tickStep: 1,
+                            labelStep: 1,
+                            gridOpacity: 0.05,
+                            axisOpacity: 0.2,
+                            tickOpacity: 0.4,
+                            labelOpacity: 0.5
+                        });
+
+                        label( [ 0, 9 ], "y", "above" );
+                        label( [ 9, 0 ], "x", "right" );
+
+                        addMouseLayer();
+                        
+                        graph.movablePoint = addMovablePoint({ coord: [ 0, 0 ], snapY: 1/base_Y, snapX: 1/base_X });
+
+                        graph.movablePoint.onMove = function( x, y ) {
+                            return [ max( -10, min( x, 10 ) ), max( -10, min( y, 10 ) ) ];
+                        };
+                    </div>
+                </div>
+                <div class="solution" data-type="custom">
+                    <div class="instruction">
+                        把橘點移到你的答案上。
+                    </div>
+                    <div class="guess">graph.movablePoint.coord</div>
+                    <div class="validator-function">
+                        if ( guess[0] === 0 &amp;&amp; guess[1] === 0 ) {
+                            return "";
+                        }
+                        return ( guess[0] &gt;= value_X-0.00001 &amp;&amp;guess[0] &lt;= value_X+0.00001 &amp;&amp; guess[1] &gt;= value_Y-0.00001 &amp;&amp; guess[1] &lt;= value_Y+0.00001);
+                    </div>
+                    <div class="show-guess">
+                        graph.movablePoint.setCoord( guess );
+                    </div>
+                </div>
+
+                <div class="hints">
+                    <p>座標是表示為 <code>(\blue{x},\green{y})</code>。</p>
+
+                    <p>
+                        因此，以 
+                        <code>( \blue{<span data-if="X!==0"><var>X</var></span>\dfrac{ <var>up_X</var> }{ <var>base_X</var> }
+                        }, \green{<span data-if="Y!==0"><var>Y</var></span>\dfrac{ <var>up_Y</var> }{ <var>base_Y</var> }} )</code>
+                        為例，我們的 <span class="hint_blue"><code>x</code>座標</span>是 
+                        <code>\blue{<span data-if="X!==0"><var>X</var></span>\dfrac{ <var>up_X</var> }{ <var>base_X</var> }}</code> 
+                        且我們的 <span class="hint_green"><code>y</code>座標</span> 是 
+                        <code>\green{<span data-if="Y!==0"><var>Y</var></span>\dfrac{ <var>up_Y</var> }{ <var>base_Y</var> }}</code>。
+                    </p>
+
+                    <p>
+                         <span class="hint_blue"><code>x</code>座標</span> 告訴我們從原點向右移多少 且 
+                        <span class="hint_green"><code>y</code>座標</span> 告訴我們從原點向上移多少。
+                    </p>
+
+                    <div>
+                        <p>
+                            因為我們的 <span class="hint_blue"><code>x</code>座標</span> 是 <span data-if="X > 0">正的</span><span data-else>負的</span>，
+                            我們<span data-if="X > 0">向右移</span><span data-else>向左移</span> <code>\blue{<var>abs( X )</var>\dfrac{ <var>up_X</var> }{ <var>base_X</var> }}</code>。
+                        </p>
+                        <div class="graphie" data-update="grid">
+                            style({
+                                stroke: BLUE,
+                                strokeWidth: 3,
+                                arrows: "-&gt;"
+                            }, function() {
+                                line( [ 0, 0 ], [ value_X, 0 ]);
+                            });
+                            graph.movablePoint.toFront();
+                        </div>
+                    </div>
+
+                    <div>
+                        <p>
+                            因為我們的 <span class="hint_blue"><code>y</code>座標</span> 是 <span data-if="Y > 0">正的</span><span data-else>負的</span>，
+                            我們<span data-if="Y > 0">向上移</span><span data-else>向下移</span> <code>\blue{<var>abs( Y )</var>\dfrac{ <var>up_Y</var> }{ <var>base_Y</var> }}</code>。
+                        </p>
+                        <div class="graphie" data-update="grid">
+                            style({
+                                stroke: GREEN,
+                                strokeWidth: 3,
+                                arrows: "-&gt;"
+                            }, function() {
+                                line( [ value_X, 0 ], [ value_X, value_Y ] );
+                            });
+                            graph.movablePoint.toFront();
+                        </div>
+                    </div>
+                    <div>
+                        <p>
+                            在圖表上，將黃色點點移至 <code>( \blue{<span data-if="X!==0"><var>X</var></span>\dfrac{ <var>up_X</var> }{ <var>base_X</var> }}, \green{<span data-if="Y!==0"><var>Y</var></span>\dfrac{ <var>up_Y</var> }{ <var>base_Y</var> }} )</code>。
+                            <input type="button" value="秀給你看" onClick="javascript:KhanUtil.currentGraph.graph.movablePoint.moveTo( KhanUtil.tmpl.getVAR('value_X'), KhanUtil.tmpl.getVAR('value_Y') );" />
+                        </p>
+                        <div class="graphie" data-update="grid">
+                            style({
+                            stroke: PINK,
+                            strokeWidth: 3
+                            }, function() {
+                            line( [ value_X - 0.3, value_Y - 0.3 ], [ value_X + 0.3, value_Y + 0.3 ] );
+                            line( [ value_X + 0.3, value_Y - 0.3 ], [ value_X - 0.3, value_Y + 0.3 ] );
+                            });
+                            graph.movablePoint.toFront();
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

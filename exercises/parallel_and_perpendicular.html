@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能認識面與面的平行與垂直，線與面的垂直。6-s-04</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        </style>
+	<script type="text/javascript">
+	</script>
+
+
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+				<var id="plane_s">randRange(0,5)</var>
+				<var id="plane_arr">["ㄅ","ㄆ","ㄇ","ㄈ","ㄉ","ㄊ"]</var>
+				<var id="plane">plane_arr[plane_s]</var>
+				<var id="plane_to">
+				(function(){
+					if(plane_s==0){return plane_arr[2];}
+					if(plane_s==1){return plane_arr[3];}
+					if(plane_s==2){return plane_arr[0];}
+					if(plane_s==3){return plane_arr[1];}
+					if(plane_s==4){return plane_arr[5];}
+					if(plane_s==5){return plane_arr[4];}
+				})()</var>
+				<var id="perp_to">
+				(function(){
+					if(plane_s==0){return [plane_arr[1],plane_arr[3],plane_arr[4],plane_arr[5]];}
+					if(plane_s==1){return [plane_arr[0],plane_arr[2],plane_arr[4],plane_arr[5]];}
+					if(plane_s==2){return [plane_arr[1],plane_arr[3],plane_arr[4],plane_arr[5]];}
+					if(plane_s==3){return [plane_arr[0],plane_arr[2],plane_arr[4],plane_arr[5]];}
+					if(plane_s==4){return [plane_arr[0],plane_arr[1],plane_arr[2],plane_arr[3]];}
+					if(plane_s==5){return [plane_arr[0],plane_arr[1],plane_arr[2],plane_arr[3]];}
+				})()
+				</var>
+				<var id="types_s">randRange(1,2)</var>
+				<var id="types_arr">["平行","垂直"]</var>
+				<var id="types">types_arr[types_s-1]</var>
+            </div>
+            <p class="question">下圖為正方體的展開圖，下面哪<var>types_s==1?"一個":"幾個"</var>面與<var>plane</var>面<var>types</var>？</p>
+			<div class="problem">
+				<div class="graphie" id="plane_types">
+					init({
+						range: [ [-1, 12], [-3.5, 3.5] ],
+						scale: 40
+					});
+					path([[1,-1],[1,1],[3,1],[3,3],[5,3],[5,1],[7,1],[9,1],[9,-1],[7,-1],[5,-1],[5,-3],[3,-3],[3,-1],[1,-1]],{fill:"#FFFFB9"});
+					line([3,1],[5,1]);
+					line([3,-1],[5,-1]);
+					line([3,1],[3,-1]);
+					line([5,-1],[5,1]);
+					line([7,1],[7,-1]);
+					p1 = plane_s==0?label( [2,0],  "\\small{ㄅ}", "center", { color: "red" }):label( [2,0],  "\\small{ㄅ}", "center", { color: "black" });
+					p2 = plane_s==1?label( [4,0],  "\\small{ㄆ}", "center", { color: "red" }):label( [4,0],  "\\small{ㄆ}", "center", { color: "black" });
+					p3 = plane_s==2?label( [6,0],  "\\small{ㄇ}", "center", { color: "red" }):label( [6,0],  "\\small{ㄇ}", "center", { color: "black" });
+					p4 = plane_s==3?label( [8,0],  "\\small{ㄈ}", "center", { color: "red" }):label( [8,0],  "\\small{ㄈ}", "center", { color: "black" });
+					p5 = plane_s==4?label( [4,2],  "\\small{ㄉ}", "center", { color: "red" }):label( [4,2],  "\\small{ㄉ}", "center", { color: "black" });
+					p6 = plane_s==5?label( [4,-2],  "\\small{ㄊ}", "center", { color: "red" }):label( [4,-2],  "\\small{ㄊ}", "center", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="instruction" data-if="types_s==1">
+						<p data-if="plane!='ㄅ'"><input name="planes_ans" type="radio" id="a_1" value="ㄅ"><var>"ㄅ"</var></p>
+						<p data-if="plane!='ㄆ'"><input name="planes_ans" type="radio" id="a_2" value="ㄆ"><var>"ㄆ"</var></p>
+						<p data-if="plane!='ㄇ'"><input name="planes_ans" type="radio" id="a_3" value="ㄇ"><var>"ㄇ"</var></p>
+						<p data-if="plane!='ㄈ'"><input name="planes_ans" type="radio" id="a_4" value="ㄈ"><var>"ㄈ"</var></p>
+						<p data-if="plane!='ㄉ'"><input name="planes_ans" type="radio" id="a_5" value="ㄉ"><var>"ㄉ"</var></p>
+						<p data-if="plane!='ㄊ'"><input name="planes_ans" type="radio" id="a_6" value="ㄊ"><var>"ㄊ"</var></p>
+					</div>
+					<div class="instruction" data-if="types_s==2">
+						<p data-if="plane!='ㄅ'"><input name="planes_ans_prep" type="checkbox" id="s_1" value="ㄅ"><var>"ㄅ"</var></p>
+						<p data-if="plane!='ㄆ'"><input name="planes_ans_prep" type="checkbox" id="s_2" value="ㄆ"><var>"ㄆ"</var></p>
+						<p data-if="plane!='ㄇ'"><input name="planes_ans_prep" type="checkbox" id="s_3" value="ㄇ"><var>"ㄇ"</var></p>
+						<p data-if="plane!='ㄈ'"><input name="planes_ans_prep" type="checkbox" id="s_4" value="ㄈ"><var>"ㄈ"</var></p>
+						<p data-if="plane!='ㄉ'"><input name="planes_ans_prep" type="checkbox" id="s_5" value="ㄉ"><var>"ㄉ"</var></p>
+						<p data-if="plane!='ㄊ'"><input name="planes_ans_prep" type="checkbox" id="s_6" value="ㄊ"><var>"ㄊ"</var></p>
+					</div>
+					<div class="guess">1</div>
+					<div class="validator-function">
+						if(types_s==1){
+							if($("input[name='planes_ans']:checked").val()==undefined){
+								return "";
+							}
+							if(plane_to==$("input[name='planes_ans']:checked").val()){
+								return true;
+							}
+						}
+						if(types_s==2){
+							var arr = ["","","",""];
+							var prep = $("input[name='planes_ans_prep']:checked");
+							var j = 0;
+							for(var i = 0; i &lt; prep.length; i++){   
+								if(prep[i].checked == true){   
+									arr[j] = prep[i].value;
+									j++;
+								}
+							}
+							arr = arr.sort();
+							perp_to = perp_to.sort();
+							if(arr[0]==""&&arr[1]==""&&arr[2]==""&&arr[3]==""){
+								return "";
+							}
+							if(arr[0]==perp_to[0] && arr[1]==perp_to[1] && arr[2]==perp_to[2] && arr[3]==perp_to[3]){
+								return true;
+							}
+						}
+					</div>
+				</div>
+				<p class="example" data-if="types_s==2">複選</p>
+				<p class="example" data-if="types_s==1">單選</p>
+			</div>
+            <div class="hints">
+				<div>
+				<div class="graphie" id="plane_types_hints">
+					init({
+						range: [ [-1, 11], [-1.5, 2.5] ],
+						scale: 40
+					});
+					path([[1,-1],[1,1],[3,1],[3,-1],[1,-1]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					path([[1,1],[2,2],[4,2],[3,1],[1,1]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					path([[3,-1],[4,0],[4,2],[3,1],[3,-1]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					line([1,-1],[2,0],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					line([2,2],[2,0],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					line([4,0],[2,0],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					if(types_s==1){
+						if(plane_s==1||plane_s==3){
+							label( [2,-0.5],  "\\small{ㄆ下}", "center", { color: "red" });
+							label( [2,1.5],  "\\small{ㄈ上}", "center", { color: "red" });
+						} else {
+							label( [2,-0.5],  "\\small{ㄆ下}", "center", { color: "#FF9224" });
+							label( [2,1.5],  "\\small{ㄈ上}", "center", { color: "#FF9224" });
+						}
+						if(plane_s==0||plane_s==2){
+							label( [1.5,0],  "\\small{ㄅ左}", "center", { color: "red" });
+							label( [3.5,0],  "\\small{ㄇ右}", "center", { color: "red" });
+						} else {
+							label( [1.5,0],  "\\small{ㄅ左}", "center", { color: "#8080C0" });
+							label( [3.5,0],  "\\small{ㄇ右}", "center", { color: "#8080C0" });
+						}
+						if(plane_s==4||plane_s==5){
+							label( [3,1.5],  "\\small{ㄉ後}", "center", { color: "red" });
+							label( [2.5,0.5],  "\\small{ㄊ前}", "center", { color: "red" });
+						} else {
+							label( [3,1.5],  "\\small{ㄉ後}", "center", { color: "#FF60AF" });
+							label( [2.5,0.5],  "\\small{ㄊ前}", "center", { color: "#FF60AF" });
+						}
+					}
+					
+					if(types_s==2){
+						if(plane_s==1){
+							label( [2,-0.5],  "\\small{ㄆ下}", "center", { color: "red" });
+							label( [2,1.5],  "\\small{ㄈ上}", "center", { color: "gray" });
+							label( [1.5,0],  "\\small{ㄅ左}", "center", { color: "#ff7575" });
+							label( [3.5,0],  "\\small{ㄇ右}", "center", { color: "#ff7575" });
+							label( [3,1.5],  "\\small{ㄉ後}", "center", { color: "#ff7575" });
+							label( [2.5,0.5],  "\\small{ㄊ前}", "center", { color: "#ff7575" });
+						}
+						if(plane_s==3){
+							label( [2,-0.5],  "\\small{ㄆ下}", "center", { color: "gray" });
+							label( [2,1.5],  "\\small{ㄈ上}", "center", { color: "red" });
+							label( [1.5,0],  "\\small{ㄅ左}", "center", { color: "#ff7575" });
+							label( [3.5,0],  "\\small{ㄇ右}", "center", { color: "#ff7575" });
+							label( [3,1.5],  "\\small{ㄉ後}", "center", { color: "#ff7575" });
+							label( [2.5,0.5],  "\\small{ㄊ前}", "center", { color: "#ff7575" });
+						}
+						
+						if(plane_s==0){
+							label( [1.5,0],  "\\small{ㄅ左}", "center", { color: "red" });
+							label( [3.5,0],  "\\small{ㄇ右}", "center", { color: "gray" });
+							label( [2,-0.5],  "\\small{ㄆ下}", "center", { color: "#ff7575" });
+							label( [2,1.5],  "\\small{ㄈ上}", "center", { color: "#ff7575" });
+							label( [3,1.5],  "\\small{ㄉ後}", "center", { color: "#ff7575" });
+							label( [2.5,0.5],  "\\small{ㄊ前}", "center", { color: "#ff7575" });
+						}
+						if(plane_s==2){
+							label( [1.5,0],  "\\small{ㄅ左}", "center", { color: "gray" });
+							label( [3.5,0],  "\\small{ㄇ右}", "center", { color: "red" });
+							label( [2,-0.5],  "\\small{ㄆ下}", "center", { color: "#ff7575" });
+							label( [2,1.5],  "\\small{ㄈ上}", "center", { color: "#ff7575" });
+							label( [3,1.5],  "\\small{ㄉ後}", "center", { color: "#ff7575" });
+							label( [2.5,0.5],  "\\small{ㄊ前}", "center", { color: "#ff7575" });
+						}
+						
+						if(plane_s==4){
+							label( [3,1.5],  "\\small{ㄉ後}", "center", { color: "red" });
+							label( [2.5,0.5],  "\\small{ㄊ前}", "center", { color: "gray" });
+							label( [1.5,0],  "\\small{ㄅ左}", "center", { color: "#ff7575" });
+							label( [3.5,0],  "\\small{ㄇ右}", "center", { color: "#ff7575" });
+							label( [2,-0.5],  "\\small{ㄆ下}", "center", { color: "#ff7575" });
+							label( [2,1.5],  "\\small{ㄈ上}", "center", { color: "#ff7575" });
+						}
+						if(plane_s==5){
+							label( [3,1.5],  "\\small{ㄉ後}", "center", { color: "gray" });
+							label( [2.5,0.5],  "\\small{ㄊ前}", "center", { color: "red" });
+							label( [1.5,0],  "\\small{ㄅ左}", "center", { color: "#ff7575" });
+							label( [3.5,0],  "\\small{ㄇ右}", "center", { color: "#ff7575" });
+							label( [2,-0.5],  "\\small{ㄆ下}", "center", { color: "#ff7575" });
+							label( [2,1.5],  "\\small{ㄈ上}", "center", { color: "#ff7575" });
+						}
+					}
+				</div>
+				<p><code>(</code> 面與面兩兩平行的關係為 <code class="hint_red">ㄅ // ㄇ</code> 、<code class="hint_red">ㄆ // ㄈ</code> 、<code class="hint_red">ㄉ // ㄊ</code> <code>)</code>。 </p>
+				</div>
+				<p>和正方體<span class="hint_red"><var>plane</var>面</span>互相<var>types</var>的面是<span class="hint_pink" data-if="types_s==1"><var>plane_to</var>面</span><span class="hint_pink" data-if="types_s==2"><var>perp_to[0]</var>、<var>perp_to[1]</var>、<var>perp_to[2]</var>、<var>perp_to[3]</var>四個面</span>。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+				<var id="plane_s">randRange(0,5)</var>
+				<var id="plane_arr">["ㄅ","ㄆ","ㄇ","ㄈ","ㄉ","ㄊ"]</var>
+				<var id="plane">plane_arr[plane_s]</var>
+				<var id="plane_to">
+				(function(){
+					if(plane_s==0){return plane_arr[2];}
+					if(plane_s==1){return plane_arr[3];}
+					if(plane_s==2){return plane_arr[0];}
+					if(plane_s==3){return plane_arr[1];}
+					if(plane_s==4){return plane_arr[5];}
+					if(plane_s==5){return plane_arr[4];}
+				})()</var>
+				<var id="perp_to">
+				(function(){
+					if(plane_s==0){return [plane_arr[1],plane_arr[3],plane_arr[4],plane_arr[5]];}
+					if(plane_s==1){return [plane_arr[0],plane_arr[2],plane_arr[4],plane_arr[5]];}
+					if(plane_s==2){return [plane_arr[1],plane_arr[3],plane_arr[4],plane_arr[5]];}
+					if(plane_s==3){return [plane_arr[0],plane_arr[2],plane_arr[4],plane_arr[5]];}
+					if(plane_s==4){return [plane_arr[0],plane_arr[1],plane_arr[2],plane_arr[3]];}
+					if(plane_s==5){return [plane_arr[0],plane_arr[1],plane_arr[2],plane_arr[3]];}
+				})()
+				</var>
+				<var id="types_s">randRange(1,2)</var>
+				<var id="types_arr">["平行","垂直"]</var>
+				<var id="types">types_arr[types_s-1]</var>
+            </div>
+            <p class="question">下圖為長方體的展開圖，下面哪<var>types_s==1?"一個":"幾個"</var>面與<var>plane</var>面是互相<var>types</var>的？</p>
+			<div class="problem">
+				<div class="graphie" id="plane_types">
+					init({
+						range: [ [0.5, 6.5], [-1.5, 3.5] ],
+						scale: 80
+					});
+					path([[1,0],[1,2],[1.5,2],[1.5,2.5],[3.5,2.5],[3.5,2],[4,2],[6,2],[6,0],[4,0],[3.5,0],[3.5,-0.5],[1.5,-0.5],[1.5,0],[1,0]],{fill:"#FFFFB9"});
+					line([1.5,2],[1.5,0]);
+					line([1.5,2],[3.5,2]);
+					line([3.5,0],[1.5,0]);
+					line([3.5,2],[3.5,0]);
+					line([4,2],[4,0]);
+					p1 = plane_s==0?label( [1.25,1],  "ㄅ", "center", { color: "red" }):label( [1.25,1],  "ㄅ", "center", { color: "black" });
+					p2 = plane_s==1?label( [2.5,1],  "ㄆ", "center", { color: "red" }):label( [2.5,1],  "ㄆ", "center", { color: "black" });
+					p3 = plane_s==2?label( [3.75,1],  "ㄇ", "center", { color: "red" }):label( [3.75,1],  "ㄇ", "center", { color: "black" });
+					p4 = plane_s==3?label( [5,1],  "ㄈ", "center", { color: "red" }):label( [5,1],  "ㄈ", "center", { color: "black" });
+					p5 = plane_s==4?label( [2.5,2.25],  "ㄉ", "center", { color: "red" }):label( [2.5,2.25],  "ㄉ", "center", { color: "black" });
+					p6 = plane_s==5?label( [2.5,-0.25],  "ㄊ", "center", { color: "red" }):label( [2.5,-0.25],  "ㄊ", "center", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="instruction" data-if="types_s==1">
+						<p data-if="plane!='ㄅ'"><input name="planes_ans" type="radio" id="a_1" value="ㄅ"><var>"ㄅ"</var></p>
+						<p data-if="plane!='ㄆ'"><input name="planes_ans" type="radio" id="a_2" value="ㄆ"><var>"ㄆ"</var></p>
+						<p data-if="plane!='ㄇ'"><input name="planes_ans" type="radio" id="a_3" value="ㄇ"><var>"ㄇ"</var></p>
+						<p data-if="plane!='ㄈ'"><input name="planes_ans" type="radio" id="a_4" value="ㄈ"><var>"ㄈ"</var></p>
+						<p data-if="plane!='ㄉ'"><input name="planes_ans" type="radio" id="a_5" value="ㄉ"><var>"ㄉ"</var></p>
+						<p data-if="plane!='ㄊ'"><input name="planes_ans" type="radio" id="a_6" value="ㄊ"><var>"ㄊ"</var></p>
+					</div>
+					<div class="instruction" data-if="types_s==2">
+						<p data-if="plane!='ㄅ'"><input name="planes_ans_prep" type="checkbox" id="s_1" value="ㄅ"><var>"ㄅ"</var></p>
+						<p data-if="plane!='ㄆ'"><input name="planes_ans_prep" type="checkbox" id="s_2" value="ㄆ"><var>"ㄆ"</var></p>
+						<p data-if="plane!='ㄇ'"><input name="planes_ans_prep" type="checkbox" id="s_3" value="ㄇ"><var>"ㄇ"</var></p>
+						<p data-if="plane!='ㄈ'"><input name="planes_ans_prep" type="checkbox" id="s_4" value="ㄈ"><var>"ㄈ"</var></p>
+						<p data-if="plane!='ㄉ'"><input name="planes_ans_prep" type="checkbox" id="s_5" value="ㄉ"><var>"ㄉ"</var></p>
+						<p data-if="plane!='ㄊ'"><input name="planes_ans_prep" type="checkbox" id="s_6" value="ㄊ"><var>"ㄊ"</var></p>
+					</div>
+					<div class="guess">1</div>
+					<div class="validator-function">
+						if(types_s==1){
+							if($("input[name='planes_ans']:checked").val()==undefined){
+								return "";
+							}
+							if(plane_to==$("input[name='planes_ans']:checked").val()){
+								return true;
+							}
+						}
+						if(types_s==2){
+							var arr = ["","","",""];
+							var prep = $("input[name='planes_ans_prep']:checked");
+							var j = 0;
+							for(var i = 0; i &lt; prep.length; i++){   
+								if(prep[i].checked == true){   
+									arr[j] = prep[i].value;
+									j++;
+								}
+							}
+							arr = arr.sort();
+							perp_to = perp_to.sort();
+							if(arr[0]==""&&arr[1]==""&&arr[2]==""&&arr[3]==""){
+								return "";
+							}
+							if(arr[0]==perp_to[0] && arr[1]==perp_to[1] && arr[2]==perp_to[2] && arr[3]==perp_to[3]){
+								return true;
+							}
+						}
+					</div>
+				</div>
+				<p class="example" data-if="types_s==2">複選</p>
+				<p class="example" data-if="types_s==1">單選</p>
+			</div>
+            <div class="hints">
+				<div>
+				<div class="graphie" id="plane_types_hints">
+					init({
+						range: [ [0.5, 6.5], [-0.5, 2.5] ],
+						scale: 80
+					});
+					path([[1,0],[3,0],[3,0.5],[1,0.5],[1,0]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					path([[1,0.5],[3,0.5],[3.5,1.5],[1.5,1.5],[1,0.5]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					path([[1,0.5],[3,0.5],[3.5,1.5],[1.5,1.5],[1,0.5]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					path([[3,0.5],[3.5,1.5],[3.5,1],[3,0],[3,0.5]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					line([1.5,1],[1.5,1.5],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					line([1.5,1],[1,0],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					line([1.5,1],[3.5,1],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					if(types_s==1){
+						if(plane_s==1||plane_s==3){
+							label( [2.2,0.7],  "ㄆ下", "center", { color: "red" });
+							label( [2.3,1.2],  "ㄈ上", "center", { color: "red" });
+						} else {
+							label( [2.2,0.7],  "ㄆ下", "center", { color: "#FF9224" });
+							label( [2.3,1.2],  "ㄈ上", "center", { color: "#FF9224" });
+						}
+						if(plane_s==0||plane_s==2){
+							label( [1.3,0.7],  "ㄅ左", "center", { color: "red" });
+							label( [3.3,0.7],  "ㄇ右", "center", { color: "red" });
+						} else {
+							label( [1.3,0.7],  "ㄅ左", "center", { color: "#8080C0" });
+							label( [3.3,0.7],  "ㄇ右", "center", { color: "#8080C0" });
+						}
+						if(plane_s==4||plane_s==5){
+							label( [3,1.2],  "ㄉ後", "center", { color: "red" });
+							label( [2.5,0.2],  "ㄊ前", "center", { color: "red" });
+						} else {
+							label( [3,1.2],  "ㄉ後", "center", { color: "#FF60AF" });
+							label( [2.5,0.2],  "ㄊ前", "center", { color: "#FF60AF" });
+						}
+					}
+					
+					if(types_s==2){
+						if(plane_s==1){
+							label( [2.2,0.7],  "ㄆ下", "center", { color: "red" });
+							label( [2.3,1.2],  "ㄈ上", "center", { color: "gray" });
+							label( [1.3,0.7],  "ㄅ左", "center", { color: "#ff7575" });
+							label( [3.3,0.7],  "ㄇ右", "center", { color: "#ff7575" });
+							label( [3,1.2],  "ㄉ後", "center", { color: "#ff7575" });
+							label( [2.5,0.2],  "ㄊ前", "center", { color: "#ff7575" });
+						}
+						if(plane_s==3){
+							label( [2.2,0.7],  "ㄆ下", "center", { color: "gray" });
+							label( [2.3,1.2],  "ㄈ上", "center", { color: "red" });
+							label( [1.3,0.7],  "ㄅ左", "center", { color: "#ff7575" });
+							label( [3.3,0.7],  "ㄇ右", "center", { color: "#ff7575" });
+							label( [3,1.2],  "ㄉ後", "center", { color: "#ff7575" });
+							label( [2.5,0.2],  "ㄊ前", "center", { color: "#ff7575" });
+						}
+						
+						if(plane_s==0){
+							label( [1.3,0.7],  "ㄅ左", "center", { color: "red" });
+							label( [3.3,0.7],  "ㄇ右", "center", { color: "gray" });
+							label( [2.2,0.7],  "ㄆ下", "center", { color: "#ff7575" });
+							label( [2.3,1.2],  "ㄈ上", "center", { color: "#ff7575" });
+							label( [3,1.2],  "ㄉ後", "center", { color: "#ff7575" });
+							label( [2.5,0.2],  "ㄊ前", "center", { color: "#ff7575" });
+						}
+						if(plane_s==2){
+							label( [1.3,0.7],  "ㄅ左", "center", { color: "gray" });
+							label( [3.3,0.7],  "ㄇ右", "center", { color: "red" });
+							label( [2.2,0.7],  "ㄆ下", "center", { color: "#ff7575" });
+							label( [2.3,1.2],  "ㄈ上", "center", { color: "#ff7575" });
+							label( [3,1.2],  "ㄉ後", "center", { color: "#ff7575" });
+							label( [2.5,0.2],  "ㄊ前", "center", { color: "#ff7575" });
+						}
+						
+						if(plane_s==4){
+							label( [3,1.2],  "ㄉ後", "center", { color: "red" });
+							label( [2.5,0.2],  "ㄊ前", "center", { color: "gray" });
+							label( [1.3,0.7],  "ㄅ左", "center", { color: "#ff7575" });
+							label( [3.3,0.7],  "ㄇ右", "center", { color: "#ff7575" });
+							label( [2.2,0.7],  "ㄆ下", "center", { color: "#ff7575" });
+							label( [2.3,1.2],  "ㄈ上", "center", { color: "#ff7575" });
+						}
+						if(plane_s==5){
+							label( [3,1.2],  "ㄉ後", "center", { color: "gray" });
+							label( [2.5,0.2],  "ㄊ前", "center", { color: "red" });
+							label( [1.3,0.7],  "ㄅ左", "center", { color: "#ff7575" });
+							label( [3.3,0.7],  "ㄇ右", "center", { color: "#ff7575" });
+							label( [2.2,0.7],  "ㄆ下", "center", { color: "#ff7575" });
+							label( [2.3,1.2],  "ㄈ上", "center", { color: "#ff7575" });
+						}
+					}
+				</div>
+				<p><code>(</code> 面與面兩兩平行的關係為 <code class="hint_red">ㄅ // ㄇ</code> 、<code class="hint_red">ㄆ // ㄈ</code> 、<code class="hint_red">ㄉ // ㄊ</code> <code>)</code>。 </p>
+				</div>
+				<p>和長方體<span class="hint_red"><var>plane</var>面</span>互相<var>types</var>的面是<span class="hint_pink" data-if="types_s==1"><var>plane_to</var>面</span><span class="hint_pink" data-if="types_s==2"><var>perp_to[0]</var>、<var>perp_to[1]</var>、<var>perp_to[2]</var>、<var>perp_to[3]</var>四個面</span>。</p>
+            </div>
+        </div>
+		
+		<div id="case4">
+            <div class="vars">
+				<var id="plane_s">randRange(0,8)</var>
+				<var id="plane_arr">["AB","AD","BC","DC","DH","AE","BF","FG","EH"]</var>
+				<var id="plane">plane_arr[plane_s]</var>
+				<var id="plane_to">
+				(function(){
+					if(plane_s==0){return ["EF","DC","HG"];}
+					if(plane_s==1){return ["BC","FG","EH"];}
+					if(plane_s==2){return ["FG","EH","AD"];}
+					if(plane_s==3){return ["HG","EF","AB"];}
+					if(plane_s==4){return ["CG","BF","AE"];}
+					if(plane_s==5){return ["BF","DH","CG"];}
+					if(plane_s==6){return ["AE","DH","CG"];}
+					if(plane_s==7){return ["BC","AD","EH"];}
+					if(plane_s==8){return ["BC","AD","FG"];}
+				})()</var>
+            </div>
+            <p class="question">下圖中的長方體，有哪幾個邊和邊<var>plane</var>是互相平行的邊？</p>
+			<div class="problem">
+				<div class="graphie" id="plane_types">
+					init({
+						range: [ [0.5, 6.5], [-0.5, 2.5] ],
+						scale: 80
+					});
+					path([[1,0],[3,0],[3,0.5],[1,0.5],[1,0]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					path([[1,0.5],[3,0.5],[3.5,1.5],[1.5,1.5],[1,0.5]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					path([[3,0.5],[3.5,1.5],[3.5,1],[3,0],[3,0.5]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					line([1.5,1],[1.5,1.5],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					line([1.5,1],[1,0],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					line([1.5,1],[3.5,1],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					
+					label( [1.5,1.5],  "\\small{A}", "left", { color: "black" });
+					label( [1,0.5],  "\\small{B}", "left", { color: "black" });
+					label( [3,0.5],  "\\small{C}", "above left", { color: "black" });
+					label( [3.5,1.5],  "\\small{D}", "right", { color: "black" });
+					label( [1.5,1],  "\\small{E}", "below right", { color: "black" });
+					label( [1,0],  "\\small{F}", "left", { color: "black" });
+					label( [3,0],  "\\small{G}", "right", { color: "black" });
+					label( [3.5,1],  "\\small{H}", "right", { color: "black" });
+					if(plane_s==0){
+						line([1.5,1.5],[1,0.5],{stroke:"red"});
+					}
+					if(plane_s==1){
+						line([1.5,1.5],[3.5,1.5],{stroke:"red"});
+					}
+					if(plane_s==2){
+						line([1,0.5],[3,0.5],{stroke:"red"});
+					}
+					if(plane_s==3){
+						line([3.5,1.5],[3,0.5],{stroke:"red"});
+					}
+					if(plane_s==4){
+						line([3.5,1.5],[3.5,1],{stroke:"red"});
+					}
+					if(plane_s==5){
+						line([1.5,1.5],[1.5,1],{stroke:"red"});
+					}
+					if(plane_s==6){
+						line([1,0.5],[1,0],{stroke:"red"});
+					}
+					if(plane_s==7){
+						line([1,0],[3,0],{stroke:"red"});
+					}
+					if(plane_s==8){
+						line([1.5,1],[3.5,1],{stroke:"red"});
+					}
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="instruction">
+						<p data-if="plane!='AB'"><input name="planes_ans_prep" type="checkbox" id="s_1" value="AB"><var>"AB"</var></p>
+						<p data-if="plane!='EF'"><input name="planes_ans_prep" type="checkbox" id="s_2" value="EF"><var>"EF"</var></p>
+						<p data-if="plane!='HG'"><input name="planes_ans_prep" type="checkbox" id="s_3" value="HG"><var>"HG"</var></p>
+						<p data-if="plane!='DC'"><input name="planes_ans_prep" type="checkbox" id="s_4" value="DC"><var>"DC"</var></p>
+						<p data-if="plane!='BC'"><input name="planes_ans_prep" type="checkbox" id="s_5" value="BC"><var>"BC"</var></p>
+						<p data-if="plane!='FG'"><input name="planes_ans_prep" type="checkbox" id="s_6" value="FG"><var>"FG"</var></p>
+						<p data-if="plane!='EH'"><input name="planes_ans_prep" type="checkbox" id="s_7" value="EH"><var>"EH"</var></p>
+						<p data-if="plane!='AD'"><input name="planes_ans_prep" type="checkbox" id="s_8" value="AD"><var>"AD"</var></p>
+						<p data-if="plane!='BF'"><input name="planes_ans_prep" type="checkbox" id="s_9" value="BF"><var>"BF"</var></p>
+						<p data-if="plane!='AE'"><input name="planes_ans_prep" type="checkbox" id="s_10" value="AE"><var>"AE"</var></p>
+						<p data-if="plane!='CG'"><input name="planes_ans_prep" type="checkbox" id="s_11" value="CG"><var>"CG"</var></p>
+						<p data-if="plane!='DH'"><input name="planes_ans_prep" type="checkbox" id="s_12" value="DH"><var>"DH"</var></p>
+					</div>
+					<div class="guess">1</div>
+					<div class="validator-function">
+						var arr = ["","",""];
+						var prep = $("input[name='planes_ans_prep']:checked");
+						var j = 0;
+						if(prep.length==0){return "";}
+						if(prep.length!=3){return false;}
+						for(var i = 0; i &lt; 3; i++){   
+							if(prep[i].checked == true){   
+								arr[j] = prep[i].value;
+								j++;
+							}
+						}
+						arr = arr.sort();
+						plane_to = plane_to.sort();
+						if(arr[0]==plane_to[0] && arr[1]==plane_to[1] && arr[2]==plane_to[2] && arr[3]==plane_to[3]){
+							return true;
+						}
+					</div>
+				</div>
+				<p class="example">複選</p>
+			</div>
+            <div class="hints">
+				<div>
+				<div class="graphie" id="plane_types_hints">
+					init({
+						range: [ [0.5, 6.5], [-0.5, 2.5] ],
+						scale: 80
+					});
+					path([[1,0],[3,0],[3,0.5],[1,0.5],[1,0]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					path([[1,0.5],[3,0.5],[3.5,1.5],[1.5,1.5],[1,0.5]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					path([[3,0.5],[3.5,1.5],[3.5,1],[3,0],[3,0.5]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					line([1.5,1],[1.5,1.5],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					line([1.5,1],[1,0],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					line([1.5,1],[3.5,1],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					
+					label( [1.5,1.5],  "\\small{A}", "left", { color: "black" });
+					label( [1,0.5],  "\\small{B}", "left", { color: "black" });
+					label( [3,0.5],  "\\small{C}", "above left", { color: "black" });
+					label( [3.5,1.5],  "\\small{D}", "right", { color: "black" });
+					label( [1.5,1],  "\\small{E}", "below right", { color: "black" });
+					label( [1,0],  "\\small{F}", "left", { color: "black" });
+					label( [3,0],  "\\small{G}", "right", { color: "black" });
+					label( [3.5,1],  "\\small{H}", "right", { color: "black" });
+					if(plane_s==0){
+						line([1.5,1.5],[1,0.5],{stroke:"red"});
+						line([1.5,1],[1,0],{stroke:"blue"});
+						line([3.5,1],[3,0],{stroke:"blue"});
+						line([3,0.5],[3.5,1.5],{stroke:"blue"});
+					}
+					if(plane_s==1){
+						line([1.5,1.5],[3.5,1.5],{stroke:"red"});
+						line([1,0.5],[3,0.5],{stroke:"blue"});
+						line([1,0],[3,0],{stroke:"blue"});
+						line([1.5,1],[3.5,1],{stroke:"blue"});
+					}
+					if(plane_s==2){
+						line([1,0.5],[3,0.5],{stroke:"red"});
+						line([1.5,1.5],[3.5,1.5],{stroke:"blue"});
+						line([1,0],[3,0],{stroke:"blue"});
+						line([1.5,1],[3.5,1],{stroke:"blue"});
+					}
+					if(plane_s==3){
+						line([3.5,1.5],[3,0.5],{stroke:"red"});
+						line([3,0],[3.5,1],{stroke:"blue"});
+						line([1.5,1],[1,0],{stroke:"blue"});
+						line([1.5,1.5],[1,0.5],{stroke:"blue"});
+					}
+					if(plane_s==4){
+						line([3.5,1.5],[3.5,1],{stroke:"red"});
+						line([3,0.5],[3,0],{stroke:"blue"});
+						line([1,0.5],[1,0],{stroke:"blue"});
+						line([1.5,1.5],[1.5,1],{stroke:"blue"});
+					}
+					if(plane_s==5){
+						line([1.5,1.5],[1.5,1],{stroke:"red"});
+						line([1,0.5],[1,0],{stroke:"blue"});
+						line([3,0.5],[3,0],{stroke:"blue"});
+						line([3.5,1.5],[3.5,1],{stroke:"blue"});
+					}
+					if(plane_s==6){
+						line([1,0.5],[1,0],{stroke:"red"});
+						line([3,0.5],[3,0],{stroke:"blue"});
+						line([3.5,1.5],[3.5,1],{stroke:"blue"});
+						line([1.5,1.5],[1.5,1],{stroke:"blue"});
+					}
+					if(plane_s==7){
+						line([1,0],[3,0],{stroke:"red"});
+						line([1,0.5],[3,0.5],{stroke:"blue"});
+						line([1.5,1.5],[3.5,1.5],{stroke:"blue"});
+						line([1.5,1],[3.5,1],{stroke:"blue"});
+					}
+					if(plane_s==8){
+						line([1.5,1],[3.5,1],{stroke:"red"});
+						line([1,0],[3,0],{stroke:"blue"});
+						line([1,0.5],[3,0.5],{stroke:"blue"});
+						line([1.5,1.5],[3.5,1.5],{stroke:"blue"});
+					}
+				</div>
+				</div>
+				<p>圖中深藍色標示的線為與邊 <code><var>plane</var></code> 互相平行的邊，</p>
+				<p>所以與邊 <code><var>plane</var></code> 互相平行的邊為 <code class="hint_pink"><var>plane_to[0]</var></code> 、<code class="hint_pink"><var>plane_to[1]</var></code> 、<code class="hint_pink"><var>plane_to[2]</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case5">
+            <div class="vars">
+				<var id="plane_s">randRange(0,8)</var>
+				<var id="plane_arr">["AB","AD","BC","DC","DH","AE","BF","FG","EH"]</var>
+				<var id="plane">plane_arr[plane_s]</var>
+				<var id="plane_to">
+				(function(){
+					if(plane_s==0){return ['BC','FG','EH','AD','BF','AE','CG','DH'];}
+					if(plane_s==1){return ['AB','EF','HG','DC','BF','AE','CG','DH'];}
+					if(plane_s==2){return ['AB','EF','HG','DC','BF','AE','CG','DH'];}
+					if(plane_s==3){return ['BC','FG','EH','AD','BF','AE','CG','DH'];}
+					if(plane_s==4){return ['AB','EF','HG','DC','BC','FG','EH','AD'];}
+					if(plane_s==5){return ['AB','EF','HG','DC','BC','FG','EH','AD'];}
+					if(plane_s==6){return ['AB','EF','HG','DC','BC','FG','EH','AD'];}
+					if(plane_s==7){return ['AB','EF','HG','DC','BF','AE','CG','DH'];}
+					if(plane_s==8){return ['AB','EF','HG','DC','BF','AE','CG','DH'];}
+				})()</var>
+            </div>
+            <p class="question">下圖中的長方體，有哪幾個和邊<var>plane</var>是互相垂直的邊？</p>
+			<div class="problem">
+				<div class="graphie" id="plane_types">
+					init({
+						range: [ [0.5, 6.5], [-0.5, 2.5] ],
+						scale: 80
+					});
+					path([[1,0],[3,0],[3,0.5],[1,0.5],[1,0]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					path([[1,0.5],[3,0.5],[3.5,1.5],[1.5,1.5],[1,0.5]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					path([[3,0.5],[3.5,1.5],[3.5,1],[3,0],[3,0.5]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					line([1.5,1],[1.5,1.5],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					line([1.5,1],[1,0],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					line([1.5,1],[3.5,1],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					
+					label( [1.5,1.5],  "\\small{A}", "left", { color: "black" });
+					label( [1,0.5],  "\\small{B}", "left", { color: "black" });
+					label( [3,0.5],  "\\small{C}", "above left", { color: "black" });
+					label( [3.5,1.5],  "\\small{D}", "right", { color: "black" });
+					label( [1.5,1],  "\\small{E}", "below right", { color: "black" });
+					label( [1,0],  "\\small{F}", "left", { color: "black" });
+					label( [3,0],  "\\small{G}", "right", { color: "black" });
+					label( [3.5,1],  "\\small{H}", "right", { color: "black" });
+					if(plane_s==0){
+						line([1.5,1.5],[1,0.5],{stroke:"red"});
+					}
+					if(plane_s==1){
+						line([1.5,1.5],[3.5,1.5],{stroke:"red"});
+					}
+					if(plane_s==2){
+						line([1,0.5],[3,0.5],{stroke:"red"});
+					}
+					if(plane_s==3){
+						line([3.5,1.5],[3,0.5],{stroke:"red"});
+					}
+					if(plane_s==4){
+						line([3.5,1.5],[3.5,1],{stroke:"red"});
+					}
+					if(plane_s==5){
+						line([1.5,1.5],[1.5,1],{stroke:"red"});
+					}
+					if(plane_s==6){
+						line([1,0.5],[1,0],{stroke:"red"});
+					}
+					if(plane_s==7){
+						line([1,0],[3,0],{stroke:"red"});
+					}
+					if(plane_s==8){
+						line([1.5,1],[3.5,1],{stroke:"red"});
+					}
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="instruction">
+						<p data-if="plane!='AB'"><input name="planes_ans_prep" type="checkbox" id="s_1" value="AB"><var>"AB"</var></p>
+						<p data-if="plane!='EF'"><input name="planes_ans_prep" type="checkbox" id="s_2" value="EF"><var>"EF"</var></p>
+						<p data-if="plane!='HG'"><input name="planes_ans_prep" type="checkbox" id="s_3" value="HG"><var>"HG"</var></p>
+						<p data-if="plane!='DC'"><input name="planes_ans_prep" type="checkbox" id="s_4" value="DC"><var>"DC"</var></p>
+						<p data-if="plane!='BC'"><input name="planes_ans_prep" type="checkbox" id="s_5" value="BC"><var>"BC"</var></p>
+						<p data-if="plane!='FG'"><input name="planes_ans_prep" type="checkbox" id="s_6" value="FG"><var>"FG"</var></p>
+						<p data-if="plane!='EH'"><input name="planes_ans_prep" type="checkbox" id="s_7" value="EH"><var>"EH"</var></p>
+						<p data-if="plane!='AD'"><input name="planes_ans_prep" type="checkbox" id="s_8" value="AD"><var>"AD"</var></p>
+						<p data-if="plane!='BF'"><input name="planes_ans_prep" type="checkbox" id="s_9" value="BF"><var>"BF"</var></p>
+						<p data-if="plane!='AE'"><input name="planes_ans_prep" type="checkbox" id="s_10" value="AE"><var>"AE"</var></p>
+						<p data-if="plane!='CG'"><input name="planes_ans_prep" type="checkbox" id="s_11" value="CG"><var>"CG"</var></p>
+						<p data-if="plane!='DH'"><input name="planes_ans_prep" type="checkbox" id="s_12" value="DH"><var>"DH"</var></p>
+					</div>
+					<div class="guess">1</div>
+					<div class="validator-function">
+						var arr = ["","",""];
+						var prep = $("input[name='planes_ans_prep']:checked");
+						var j = 0;
+						if(prep.length==0){return "";}
+						if(prep.length!=8){return false;}
+						for(var i = 0; i &lt; 8; i++){   
+							if(prep[i].checked == true){   
+								arr[j] = prep[i].value;
+								j++;
+							}
+						}
+						arr = arr.sort();
+						plane_to = plane_to.sort();
+						if(arr[0]==plane_to[0] && arr[1]==plane_to[1] && arr[2]==plane_to[2] && arr[3]==plane_to[3] && arr[4]==plane_to[4] && arr[5]==plane_to[5] && arr[6]==plane_to[6] && arr[7]==plane_to[7]){
+							return true;
+						}
+					</div>
+				</div>
+				<p class="example">複選</p>
+			</div>
+            <div class="hints">
+				<div>
+				<div class="graphie" id="plane_types_hints">
+					init({
+						range: [ [0.5, 6.5], [-0.5, 2.5] ],
+						scale: 80
+					});
+					path([[1,0],[3,0],[3,0.5],[1,0.5],[1,0]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					path([[1,0.5],[3,0.5],[3.5,1.5],[1.5,1.5],[1,0.5]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					path([[3,0.5],[3.5,1.5],[3.5,1],[3,0],[3,0.5]],{fill:"#CAFFFF",stroke:"#66B3FF"});
+					line([1.5,1],[1.5,1.5],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					line([1.5,1],[1,0],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					line([1.5,1],[3.5,1],{stroke:"#66B3FF","stroke-dasharray": "-"});
+					
+					label( [1.5,1.5],  "\\small{A}", "left", { color: "black" });
+					label( [1,0.5],  "\\small{B}", "left", { color: "black" });
+					label( [3,0.5],  "\\small{C}", "above left", { color: "black" });
+					label( [3.5,1.5],  "\\small{D}", "right", { color: "black" });
+					label( [1.5,1],  "\\small{E}", "below right", { color: "black" });
+					label( [1,0],  "\\small{F}", "left", { color: "black" });
+					label( [3,0],  "\\small{G}", "right", { color: "black" });
+					label( [3.5,1],  "\\small{H}", "right", { color: "black" });
+					if(plane_s==0){
+						line([1.5,1.5],[1,0.5],{stroke:"red"});
+						line([1,0.5],[3,0.5],{stroke:"#FFA500"});
+						line([1,0],[3,0],{stroke:"#FFA500"});
+						line([1.5,1],[3.5,1],{stroke:"#FFA500"});
+						line([1.5,1.5],[3.5,1.5],{stroke:"#FFA500"});
+						line([1,0.5],[1,0],{stroke:"#FFA500"});
+						line([1.5,1.5],[1.5,1],{stroke:"#FFA500"});
+						line([3,0.5],[3,0],{stroke:"#FFA500"});
+						line([3.5,1.5],[3.5,1],{stroke:"#FFA500"});
+					}
+					if(plane_s==1){
+						line([1.5,1.5],[3.5,1.5],{stroke:"red"});
+						line([1.5,1.5],[1,0.5],{stroke:"#FFA500"});
+						line([1.5,1],[1,0],{stroke:"#FFA500"});
+						line([3.5,1],[3,0],{stroke:"#FFA500"});
+						line([3,0.5],[3.5,1.5],{stroke:"#FFA500"});
+						line([1,0.5],[1,0],{stroke:"#FFA500"});
+						line([1.5,1.5],[1.5,1],{stroke:"#FFA500"});
+						line([3,0.5],[3,0],{stroke:"#FFA500"});
+						line([3.5,1.5],[3.5,1],{stroke:"#FFA500"});
+					}
+					if(plane_s==2){
+						line([1,0.5],[3,0.5],{stroke:"red"});
+						line([1.5,1.5],[1,0.5],{stroke:"#FFA500"});
+						line([1.5,1],[1,0],{stroke:"#FFA500"});
+						line([3.5,1],[3,0],{stroke:"#FFA500"});
+						line([3,0.5],[3.5,1.5],{stroke:"#FFA500"});
+						line([1,0.5],[1,0],{stroke:"#FFA500"});
+						line([1.5,1.5],[1.5,1],{stroke:"#FFA500"});
+						line([3,0.5],[3,0],{stroke:"#FFA500"});
+						line([3.5,1.5],[3.5,1],{stroke:"#FFA500"});
+					}
+					if(plane_s==3){
+						line([3.5,1.5],[3,0.5],{stroke:"red"});
+						line([1,0.5],[3,0.5],{stroke:"#FFA500"});
+						line([1,0],[3,0],{stroke:"#FFA500"});
+						line([1.5,1],[3.5,1],{stroke:"#FFA500"});
+						line([1.5,1.5],[3.5,1.5],{stroke:"#FFA500"});
+						line([1,0.5],[1,0],{stroke:"#FFA500"});
+						line([1.5,1.5],[1.5,1],{stroke:"#FFA500"});
+						line([3,0.5],[3,0],{stroke:"#FFA500"});
+						line([3.5,1.5],[3.5,1],{stroke:"#FFA500"});
+					}
+					if(plane_s==4){
+						line([3.5,1.5],[3.5,1],{stroke:"red"});
+						line([1.5,1.5],[1,0.5],{stroke:"#FFA500"});
+						line([1.5,1],[1,0],{stroke:"#FFA500"});
+						line([3.5,1],[3,0],{stroke:"#FFA500"});
+						line([3,0.5],[3.5,1.5],{stroke:"#FFA500"});
+						line([1,0.5],[3,0.5],{stroke:"#FFA500"});
+						line([1,0],[3,0],{stroke:"#FFA500"});
+						line([1.5,1],[3.5,1],{stroke:"#FFA500"});
+						line([1.5,1.5],[3.5,1.5],{stroke:"#FFA500"});
+					}
+					if(plane_s==5){
+						line([1.5,1.5],[1.5,1],{stroke:"red"});
+						line([1.5,1.5],[1,0.5],{stroke:"#FFA500"});
+						line([1.5,1],[1,0],{stroke:"#FFA500"});
+						line([3.5,1],[3,0],{stroke:"#FFA500"});
+						line([3,0.5],[3.5,1.5],{stroke:"#FFA500"});
+						line([1,0.5],[3,0.5],{stroke:"#FFA500"});
+						line([1,0],[3,0],{stroke:"#FFA500"});
+						line([1.5,1],[3.5,1],{stroke:"#FFA500"});
+						line([1.5,1.5],[3.5,1.5],{stroke:"#FFA500"});
+					}
+					if(plane_s==6){
+						line([1,0.5],[1,0],{stroke:"red"});
+						line([1.5,1.5],[1,0.5],{stroke:"#FFA500"});
+						line([1.5,1],[1,0],{stroke:"#FFA500"});
+						line([3.5,1],[3,0],{stroke:"#FFA500"});
+						line([3,0.5],[3.5,1.5],{stroke:"#FFA500"});
+						line([1,0.5],[3,0.5],{stroke:"#FFA500"});
+						line([1,0],[3,0],{stroke:"#FFA500"});
+						line([1.5,1],[3.5,1],{stroke:"#FFA500"});
+						line([1.5,1.5],[3.5,1.5],{stroke:"#FFA500"});
+					}
+					if(plane_s==7){
+						line([1,0],[3,0],{stroke:"red"});
+						line([1.5,1.5],[1,0.5],{stroke:"#FFA500"});
+						line([1.5,1],[1,0],{stroke:"#FFA500"});
+						line([3.5,1],[3,0],{stroke:"#FFA500"});
+						line([3,0.5],[3.5,1.5],{stroke:"#FFA500"});
+						line([1,0.5],[1,0],{stroke:"#FFA500"});
+						line([1.5,1.5],[1.5,1],{stroke:"#FFA500"});
+						line([3,0.5],[3,0],{stroke:"#FFA500"});
+						line([3.5,1.5],[3.5,1],{stroke:"#FFA500"});
+					}
+					if(plane_s==8){
+						line([1.5,1],[3.5,1],{stroke:"red"});
+						line([1.5,1.5],[1,0.5],{stroke:"#FFA500"});
+						line([1.5,1],[1,0],{stroke:"#FFA500"});
+						line([3.5,1],[3,0],{stroke:"#FFA500"});
+						line([3,0.5],[3.5,1.5],{stroke:"#FFA500"});
+						line([1,0.5],[1,0],{stroke:"#FFA500"});
+						line([1.5,1.5],[1.5,1],{stroke:"#FFA500"});
+						line([3,0.5],[3,0],{stroke:"#FFA500"});
+						line([3.5,1.5],[3.5,1],{stroke:"#FFA500"});
+					}
+				</div>
+				</div>
+				<p>圖中除了淺藍色標示的線為與邊 <code><var>plane</var></code> 互相平行的邊外，其他都是與邊 <code><var>plane</var></code> 互相垂直的邊，</p>
+				<p>所以與邊 <code><var>plane</var></code> 互相垂直的邊為 <code class="hint_pink"><var>plane_to[0]</var></code> 、<code class="hint_pink"><var>plane_to[1]</var></code> 、<code class="hint_pink"><var>plane_to[2]</var></code>、<code class="hint_pink"><var>plane_to[3]</var></code>、<code class="hint_pink"><var>plane_to[4]</var></code>、<code class="hint_pink"><var>plane_to[5]</var></code> 、<code class="hint_pink"><var>plane_to[6]</var></code>、<code class="hint_pink"><var>plane_to[7]</var></code>。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

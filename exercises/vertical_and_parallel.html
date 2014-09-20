@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie-helpers graphie interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>理解平面直角、垂直與平行的意義</title>
+    <script src="../khan-exercise.js"></script>
+<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+</style>
+<script type="text/javascript">
+	function moveCoord(arr,len){
+		var arr_length = 4;
+		for(var i=0;i<4;i++){
+			arr[i][0]+=len;
+		}
+		return arr;
+	}
+</script>
+</head>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars" >
+			<var id="J">randRange(1,4)</var>
+			<var id="K">(function(){
+				if(J==1) return "是";
+				if(J==2) return "否";
+				if(J==3) return "是";
+				if(J==4) return "否";
+			})()</var>
+		</div>
+		 <div class="problem">
+			<p>下面的四邊形中，對邊是否互相平行？</p>
+				<div class="graphie" id="square1" data-if="J==1">
+					init({
+                    range: [ [0, 13], [0, 4] ],
+                    scale: 40
+                });
+				
+				line([3,3] ,[7,3],{stroke:"#6495ED"});
+				line([3,3] ,[2,1],{stroke:"red"});
+				line([2,1] ,[6,1],{stroke:"#6495ED"});
+				line([6,1] ,[7,3],{stroke:"red"});
+				</div>
+				
+				<div class="graphie" id="square2" data-if="J==2">
+					init({
+                    range: [ [0, 13], [0, 4] ],
+                    scale: 40
+                });
+				
+				line([3,3] ,[7,3],{stroke:"red"});
+				line([3,3] ,[2,1],{stroke:"#6495ED"});
+				line([2,1] ,[6,1],{stroke:"red"});
+				line([6,1] ,[7,3],{stroke:"#6495ED"});
+				</div>
+				
+				<div class="graphie" id="square3" data-if="J==3">
+					init({
+                    range: [ [0, 13], [0, 4] ],
+                    scale: 40
+                });
+				
+				line([3,3] ,[7,3],{stroke:"red"});
+				line([3,3] ,[2,1],{stroke:"#6495ED"});
+				line([2,1] ,[8,1],{stroke:"red"});
+				line([8,1] ,[7,3],{stroke:"#6495ED"});
+				</div>
+				<div class="graphie" id="square4" data-if="J==4">
+					init({
+                    range: [ [0, 13], [0, 4] ],
+                    scale: 40
+                });
+				line([3,3] ,[7,3],{stroke:"#6495ED"});
+				line([3,3] ,[2,1],{stroke:"red"});
+				line([2,1] ,[8,1],{stroke:"#6495ED"});
+				line([8,1] ,[7,3],{stroke:"red"});
+				</div>
+				<p><code>(1)\enspace</code>蓝邊是否平行？</p>
+				<p><code>(2)\enspace</code>紅邊是否平行？</p>
+			</div>
+			 <div class="solution" data-type="multiple">
+					<table>
+					<td><code>(1)</code></td>
+						<td>
+							<input type="radio" name="option" class="rbtn" id="a1" value="1" />&nbsp;&nbsp;是<br />
+							<input type="radio" name="option" class="rbtn" id="a2" value="2"/>&nbsp;&nbsp;否<br />
+						</td>
+					</table>
+					<table>
+					<td><code>(2)</code></td>
+						<td>
+							<input type="radio" name="option1" class="rbtn" id="a3" value="1" />&nbsp;&nbsp;是<br />
+							<input type="radio" name="option1" class="rbtn" id="a4" value="2"/>&nbsp;&nbsp;否<br />
+						</td>
+					</table>
+			
+					<div class="sol" data-type="custom">
+                        <div class="guess">-1</div>
+						<div class="validator-function">
+							if(a1.checked==false && a2.checked==false && a3.checked==false && a4.checked==false )
+								return "";
+                            if(J==1){
+								if(a1.checked==true && a3.checked==true)
+                                return true;
+							}
+							if(J==2){
+								if(a1.checked==true && a3.checked==true)
+                                return true;
+							}
+							if(J==3){
+								if(a2.checked==true && a3.checked==true)
+                                return true;
+							}if(J==4){
+								if(a1.checked==true && a4.checked==true)
+                                return true;
+							}
+						</div>
+					</div>
+					<p class="example">單選</p>
+			</div>
+			<div class="hints">
+					<p data-if="J==1"><code>(1)\enspace</code> 先檢查較長的對邊(藍邊)</p>
+					<div class="graphie" data-update="square1" data-if="J==1">
+						init({
+						range: [ [0, 13], [0, 4] ],
+						scale: 40
+						});
+							line([4,3] ,[4,1],{stroke:"#FFA500"});
+							line([4,2.7] ,[4.3,2.7],{stroke:"black"});
+							line([4.3,2.7] ,[4.3,3],{stroke:"black"});
+							line([4,1.3] ,[4.3,1.3],{stroke:"black"});
+							line([4.3,1.3] ,[4.3,1],{stroke:"black"});
+					</div>
+					<p data-if="J==1">可以看出兩條藍邊都與橘黃色線垂直，所以這一對邊相互平行</p>
+					<p data-if="J==1"><code>(2)\enspace</code> 接著檢查較短的對邊(紅邊)</p>
+					<div class="graphie" data-update="square1" data-if="J==1">
+						init({
+						range: [ [0, 13], [0, 4] ],
+						scale: 40
+						});
+						line([6,1] ,[2.7,2.4],{stroke:"PURPLE"});
+						line([5.65,1.1] ,[5.8,1.4],{stroke:"black"});
+						line([6.15,1.22] ,[5.8,1.4],{stroke:"black"});
+						line([3,2.3] ,[3.1,2.5],{stroke:"black"});
+						line([2.8,2.65] ,[3.1,2.5],{stroke:"black"});
+					</div>
+					<p data-if="J==1">可以看出兩條紅邊都與紫線垂直，所以這一對邊也相互平行。</p>
+					
+					<p class="hint_pink" data-if="J==1">所以，藍邊相互平行，紅邊相互平行。</p>
+					
+					
+					
+					<p data-if="J==2"><code>(1)\enspace</code> 先檢查較長的對邊(紅邊)</p>
+					<div class="graphie" data-update="square2" data-if="J==2">
+						init({
+						range: [ [0, 13], [0, 4] ],
+						scale: 40
+						});
+							line([4,3] ,[4,1],{stroke:"#FFA500"});
+							line([4,2.7] ,[4.3,2.7],{stroke:"black"});
+							line([4.3,2.7] ,[4.3,3],{stroke:"black"});
+							line([4,1.3] ,[4.3,1.3],{stroke:"black"});
+							line([4.3,1.3] ,[4.3,1],{stroke:"black"});
+					</div>
+					<p data-if="J==2">可以看出兩條紅邊都與橘黃色線垂直，所以這一對邊相互平行</p>
+					<p data-if="J==2"><code>(2)\enspace</code> 接著檢查較短的對邊(藍邊)</p>
+					<div class="graphie" data-update="square2" data-if="J==2">
+						init({
+						range: [ [0, 13], [0, 4] ],
+						scale: 40
+						});
+						line([6,1] ,[2.7,2.4],{stroke:"PURPLE"});
+						line([5.65,1.1] ,[5.8,1.4],{stroke:"black"});
+						line([6.15,1.22] ,[5.8,1.4],{stroke:"black"});
+						line([3,2.3] ,[3.1,2.5],{stroke:"black"});
+						line([2.8,2.65] ,[3.1,2.5],{stroke:"black"});
+					</div>
+					<p data-if="J==2">可以看出兩條藍邊都與紫線垂直，所以這一對邊也相互平行。</p>
+					<p class="hint_pink" data-if="J==2">所以，藍邊相互平行，紅邊相互平行。</p>
+					
+					
+					<p data-if="J==3"><code>(1)\enspace</code> 先檢查較長的對邊(紅邊)</p>
+					<div class="graphie" data-update="square3" data-if="J==3" >
+						init({
+							range: [ [0, 13], [0, 4] ],
+							scale: 40
+						});
+						
+						line([4,3] ,[4,1],{stroke:"yellow"});
+						line([4,2.7] ,[4.3,2.7],{stroke:"black"});
+						line([4.3,2.7] ,[4.3,3],{stroke:"black"});
+						line([4,1.3] ,[4.3,1.3],{stroke:"black"});
+						line([4.3,1.3] ,[4.3,1],{stroke:"black"});
+						
+					</div>
+					<p data-if="J==3">可以看出兩條紅邊都與黃線垂直，所以這一對邊相互平行</p>
+					<p data-if="J==3"><code>(2)\enspace</code> 接著檢查較短的對邊(藍邊)</p>
+					<p data-if="J==3">從圖中可以明顯地看出這一對邊不平行</p>
+					<p class="hint_pink" data-if="J==3">所以，藍邊不平行，紅邊相互平行。</p>
+					
+					
+					
+					
+					<p data-if="J==4"><code>(1)\enspace</code> 先檢查較長的對邊(藍邊)</p>
+					<div class="graphie" data-update="square4" data-if="J==4" >
+						init({
+							range: [ [0, 13], [0, 4] ],
+							scale: 40
+						});
+						
+						line([4,3] ,[4,1],{stroke:"yellow"});
+						line([4,2.7] ,[4.3,2.7],{stroke:"black"});
+						line([4.3,2.7] ,[4.3,3],{stroke:"black"});
+						line([4,1.3] ,[4.3,1.3],{stroke:"black"});
+						line([4.3,1.3] ,[4.3,1],{stroke:"black"});
+						
+					</div>
+					<p data-if="J==4">可以看出兩條藍邊都與黃線垂直，所以這一對邊相互平行</p>
+					<p data-if="J==4"><code>(2)\enspace</code>接著檢查較短的對邊(紅邊)</p>
+					<p data-if="J==4">從圖中可以明顯地看出這一對邊不平行</p>
+					<p class="hint_pink" data-if="J==4">所以，藍邊相互平行，紅邊不平行。</p>
+			</div>
+	</div>
+	<div id="case2">
+        <div class="vars" >
+			<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+			<var id="J">randRange(1,10)</var>
+			<var id="arr_index">randRangeUnique(4,11,3)</var>
+			<var id="arr_index1">randRangeUnique(1,4,2)</var>
+			<var id="index">(function(){	
+									
+									if(J==1)	return	[arr_index1[0],arr_index1[1],arr_index[2],arr_index[0],arr_index[1],1,2];
+									if(J==2)	return	[arr_index1[0],arr_index[0],arr_index1[1],arr_index[1],arr_index[2],1,3];
+									if(J==3)	return	[arr_index1[0],arr_index[0],arr_index[1],arr_index1[1],arr_index[2],1,4];
+									if(J==4)	return	[arr_index1[0],arr_index[0],arr_index[2],arr_index[1],arr_index1[1],1,5];
+									if(J==5)	return	[arr_index[0],arr_index1[0],arr_index1[1],arr_index[1],arr_index[2],2,3];
+									if(J==6)	return	[arr_index[0],arr_index1[0],arr_index[1],arr_index1[1],arr_index[2],2,4];
+									if(J==7)	return	[arr_index[0],arr_index1[0],arr_index[1],arr_index[2],arr_index1[1],2,5];
+									if(J==8)	return	[arr_index[0],arr_index[1],arr_index1[1],arr_index1[0],arr_index[2],3,4];
+									if(J==9)	return  [arr_index[0],arr_index[1],arr_index1[0],arr_index[2],arr_index1[1],3,5];
+									if(J==10)	return	[arr_index[0],arr_index[1],arr_index[2],arr_index1[0],arr_index1[1],4,5];
+			})()</var>
+			<var id="path_arr">[[[0,0],[2,0],[0,3],[0,0]],[[0,0],[0,3],[2,3],[0,0]],[[0,0],[2,0],[2,3],[0,0]],[[0,0],[2,0],[1,3],[0,0]],
+								[[0,0],[1,0],[2,3],[0,0]],[[0,3],[1.5,0],[2,2],[0,3]],[[0,1],[0,3],[2,0],[0,1]],[[1,0],[0,3],[2,3],[1,0]],[[0,0],[1,2],[2,3],[0,0]],[[0,1.5],[0.5,0],[2,3],[0,1.5]]]</var>
+			<var id="get_path">
+			(function(){
+				var arr_1 = new Array();
+				arr_1[0]=path_arr[index[0]-1];
+				arr_1[1]=path_arr[index[1]-1];
+				arr_1[2]=path_arr[index[2]-1];
+				arr_1[3]=path_arr[index[3]-1];
+				arr_1[4]=path_arr[index[4]-1];
+				return arr_1;
+			})()</var>
+			<var id="a">get_path[1]</var>
+		</div>
+		<div class="problem">
+			<p>下面三角形中，哪一個三角形有直角？</p>
+			<table>
+			<tr><td>(1)</td><td>(2)</td><td>(3)</td><td>(4)</td><td>(5)</td></tr>
+			<tr><td></td></tr>
+			
+				<tr>
+					<td>
+						<div class="graphie" id="angle" >
+							init({
+								range: [ [0, 2.2], [0, 3] ],
+								scale: 40
+								});
+							path(moveCoord(get_path[0],0.1),{stroke:"black"});
+						</div>
+					</td>
+					<td>
+						<div class="graphie" id="angle1" >
+							init({
+								range: [ [0, 2.2], [0, 3] ],
+								scale: 40
+								});
+							path(moveCoord(get_path[1],0.1),{stroke:"black"});
+						</div>
+					</td>
+					<td>
+						<div class="graphie" id="angle2" >
+							init({
+									range: [ [0, 2.2], [0, 3] ],
+									scale: 40
+									});
+							path(moveCoord(get_path[2],0.1),{stroke:"black"});
+						</div>
+						</td>
+					<td>
+						<div class="graphie" id="angle3" >
+							init({
+								range: [ [0, 2.2], [0, 3] ],
+								scale: 40
+								});
+							path(moveCoord(get_path[3],0.1),{stroke:"black"});
+						</div>
+					</td>
+					<td>
+						<div class="graphie" id="angle4" >
+							init({
+								range: [ [0, 2.2], [0, 3] ],
+								scale: 40
+								});
+							path(moveCoord(get_path[4],0.1),{stroke:"black"});
+						</div>
+					</td>
+				</tr>
+				
+			</table>
+		</div>
+		 <div class="solution" data-type="multiple">
+					<p><input id="a1" type="checkbox"/>&nbsp;<code>1</code></p>
+                    <p><input id="a2" type="checkbox"/>&nbsp;<code>2</code></p>
+                    <p><input id="a3" type="checkbox"/>&nbsp;<code>3</code></p>
+					<p><input id="a4" type="checkbox"/>&nbsp;<code>4</code></p>
+					<p><input id="a5" type="checkbox"/>&nbsp;<code>5</code></p>
+                    <div class="sol" data-type="custom">
+                        <div class="guess">
+							(function(){
+								if($("#a1").is(":checked"))
+									return 1;
+								if($("#a2").is(":checked"))
+									return 1;
+								if($("#a3").is(":checked"))
+									return 1;
+								if($("#a4").is(":checked"))
+									return 1;
+								if($("#a5").is(":checked"))
+									return 1;
+							})()
+						</div>
+						<div class="validator-function">
+                           if(J==1){
+								if(	a1.checked==true && a2.checked==true && a3.checked==false && a4.checked==false && a5.checked==false)	
+								return true;
+						   }
+						    if(J==2){
+								if(	a1.checked==true && a2.checked==false && a3.checked==true && a4.checked==false && a5.checked==false)	
+								return true;
+						   }
+						    if(J==3){
+								if(	a1.checked==true && a2.checked==false && a3.checked==false && a4.checked==true && a5.checked==false)	
+								return true;
+						   }
+						    if(J==4){
+								if(	a1.checked==true && a2.checked==false&& a3.checked==false && a4.checked==false && a5.checked==true)	
+								return true;
+						   }
+						    if(J==5){
+								if(	a1.checked==false && a2.checked==true && a3.checked==true && a4.checked==false && a5.checked==false)	
+								return true;
+						   }
+						    if(J==6){
+								if(	a1.checked==false && a2.checked==true && a3.checked==false && a4.checked==true && a5.checked==false)	
+								return true;
+						   }
+						    if(J==7){
+								if(	a1.checked==false && a2.checked==true && a3.checked==false && a4.checked==false && a5.checked==true)	
+								return true;
+						   }
+						    if(J==8){
+								if(	a1.checked==false && a2.checked==false && a3.checked==true && a4.checked==true && a5.checked==false)	
+								return true;
+						   }
+						    if(J==9){
+								if(	a1.checked==false && a2.checked==false && a3.checked==true && a4.checked==false && a5.checked==true)	
+								return true;
+						   }
+						    if(J==10){
+								if(	a1.checked==false && a2.checked==false && a3.checked==false && a4.checked==true && a5.checked==true)	
+								return true;
+						   }
+						   
+                        </div>
+					</div>
+					<p class="example">複選</p>
+		</div>
+		<div class="hints">
+			<div class="graphie" data-update="angle">
+				init({
+                        range: [ [0, 25], [-5, 10] ],
+                        scale: 20
+                    });
+				
+					 addMouseLayer();
+                    graph.protractor = new Protractor( [18, 0] );
+			</div>
+			<p>量一量，通過量角器可以得出第<code class="hint_pink">\enspace<var>index[5]</var>\enspace</code>個和第<code class="hint_pink">\enspace<var>index[6]</var>\enspace</code>個是直角三角形。</p>
+		</div>
+	</div>
+	<div id="case3">
+		 <div class="vars" >
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="L"> 18</var>
+				<var id="W"> 12</var>
+				<var id="M">18</var>
+				<var id="b">randRange(4,9)</var>
+				<var id="bx">randRange(2,8)</var>
+				<var id="by">randRange(3,10)</var>
+				<var id="type">randRange(1,2)</var>
+		 </div>
+		<div class="problem">
+			<div data-if="type==1">
+			<p>小可正在畫平行四邊形，她已經畫好平行四邊形的兩個鄰邊，剩下的部分要怎麼畫呢？</p>
+			<div class="graphie" id="square" >
+				init({ range: [[-2, L + 1], [-1, W + 1]], scale: 25 });
+						path([[0, 0], [0, W], [L, W], [L, 0], true],
+							{stroke: GRAY, fill: "#eee"});
+						
+						style({
+								stroke: GRAY,
+								strokeWidth: 1,
+								strokeDasharray: "-"
+							}, function() {
+								_(L - 1).times(function(x) {
+									path([[x + 61 / 60, 0], [x + 61 / 60, W]]);
+								});
+								_(W - 1).times(function(y) {
+									path([[0, y + 61 / 60], [L, y + 61 / 60]]);
+								});
+							});
+				addMouseLayer();
+				pointa = addMovablePoint({ coord: [   1, 1 ], visible: false});
+				point_a = addMovablePoint({ coord: [   b, 1 ], visible: false });
+				graph.line1 = addMovableLineSegment({
+							pointA: pointa,
+							pointZ: point_a,  
+							constraints: { fixed:true} ,
+							
+				});
+				pointb=addMovablePoint({ coord: [bx, by ], visible: false});
+				graph.line2 = addMovableLineSegment({
+							pointA: pointa, 
+							pointZ: pointb,  
+							
+							constraints: { fixed:true} ,
+							normalStyle:{
+								stroke:"red"
+							}
+				});
+				point_b=addMovablePoint({ coord: [ bx+0.1, by ], visible: true, snapX: 1 ,snapY:1});
+				graph.line3 = addMovableLineSegment({
+						pointA: pointb, 
+						pointZ: point_b,  
+						constraints: { fixed:true} ,
+						
+				});
+				pointc=addMovablePoint({ coord: [   b+0.1, 1 ], visible: true,snapX:1,snapY:1});
+				graph.line4 = addMovableLineSegment({
+						pointA: pointc, 
+						pointZ: point_a,  
+						constraints: { 
+							fixed:true
+						} ,
+						normalStyle:{
+								stroke:"red"
+						}
+				});
+				
+			</div>
+			</div>
+			<div data-if="type==2">
+				<p>小可正在畫梯形，她已經畫好梯形的兩個鄰邊，剩下的部分怎麼畫呢？</p>
+				<div class="graphie" id="square1" >
+					init({ range: [[-2, L + 1], [-1, M + 1]], scale: 25 });
+							path([[0, 0], [0, M], [L, M], [L, 0], true],
+								{stroke: GRAY, fill: "#eee"});
+							
+							style({
+									stroke: GRAY,
+									strokeWidth: 1,
+									strokeDasharray: "-"
+								}, function() {
+									_(L - 1).times(function(x) {
+										path([[x + 61 / 60, 0], [x + 61 / 60, M]]);
+									});
+									_(M - 1).times(function(y) {
+										path([[0, y + 61 / 60], [L, y + 61 / 60]]);
+									});
+								});
+					addMouseLayer();
+					pointa = addMovablePoint({ coord: [1, 1], visible: false});
+					point_a = addMovablePoint({ coord: [b, 1], visible: false });
+					graph.line1 = addMovableLineSegment({
+							pointA: pointa,
+							pointZ: point_a,  
+							constraints: { fixed:true} ,
+							normalStyle:{
+								stroke:"RED"
+							},
+							
+					});
+					pointb=addMovablePoint({ coord: [bx, by ], visible: false});
+					graph.line2 = addMovableLineSegment({
+								pointA: pointa, 
+								pointZ: pointb,  
+								
+								constraints: { fixed:true} ,
+								
+					});
+					point_b=addMovablePoint({ coord: [ bx+0.1, by ], visible: true, snapX: 1 ,snapY:1});
+					graph.line3 = addMovableLineSegment({
+							pointA: pointb, 
+							pointZ: point_b,  
+							constraints: { fixed:true} ,
+							normalStyle:{
+									stroke:"RED"
+								},
+							
+					});
+					pointc=addMovablePoint({ coord: [   b+0.1, 1 ], visible: true,snapX:1,snapY:1});
+					graph.line4 = addMovableLineSegment({
+							pointA: pointc, 
+							pointZ: point_a,  
+							constraints: { 
+								fixed:true
+							} ,	
+					});
+				
+				</div>
+			</div>
+		</div>
+		<div class="solution" data-type="custom">
+		<div class="guess" >[point_b.coord,pointc.coord]</div>
+				<div class="validator-function">
+					if(guess[0][0]==bx+0.1 && guess[0][1]==by && guess[1][0]==b+0.1 && guess[1][1]==1)
+							return "";
+					if(type==1)
+					{	
+						
+						if(guess[0][0]-pointb.coord[0]==(b-1) && guess[0][1]==pointb.coord[1] && guess[0][0]==guess[1][0] && guess[0][1]==guess[1][1])
+							return true;
+							
+					}
+					
+					if(type==2)
+					{
+							if(((guess[1][1]-1)/(guess[1][0]-b) == (by-1)/(bx-1) && (guess[0][1]-by)/(guess[0][0]-bx)!=0 )  || ((guess[0][1]-by)/(guess[0][0]-bx)==0 && (guess[1][1]-1)/(guess[1][0]-b) != (by-1)/(bx-1)))
+								return true;	
+							return false;
+						
+					}
+				</div>
+				<p class="example">請拉線畫出適當的圖形</p>
+        </div>   
+		<div class="hints">
+				<p data-if="type==1">平行四邊形是指兩組對邊分別平行且長度相等的四邊形。</p>
+				<p data-if="type==1">在紅線另一端，沿著格子線畫一條紫線，長度與藍線相同。</p>
+				<p class="graphie" data-update="square" data-if="type==1">line([bx,by],[bx+(b-1),by],{ stroke: PURPLE })</p>	
+				<p data-if="type==1">再在藍線的另一端畫一條綠線與紫線前端相接，這樣就得到一個平行四邊形。</p>
+				<p class="graphie" data-update="square" data-if="type==1">line([b,1],[bx+(b-1),by],{ stroke: GREEN })</p>	
+				
+				<p data-if="type==2">梯形是指只有一組對邊平行且長度不相等的四邊形。</p>
+				<p data-if="type==2">在藍線另一端，沿著格子線畫一條紫線，長度與紅線不相同。</p>
+				<p class="graphie" data-update="square1" data-if="type==2">line([bx,by],[bx+b,by],{ stroke: PURPLE })</p>	
+				<p data-if="type==2">再在紅線的另一端畫一條綠線與紫線前端相接，這樣就得到一個梯形。</p>
+				<p class="graphie" data-update="square1" data-if="type==2">line([b,1],[bx+b,by],{ stroke: GREEN })</p>	
+		</div>
+	</div>
+</div>
+</div>
+</body>
+</html>

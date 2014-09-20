@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html data-require="math graphie word-problems jquery.mobile.vmouse">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能透過位值概念，延伸整數的認識到大數(含億、兆)</title>
+    <script src="../khan-exercise.js"></script>
+		<style type="text/css">
+			#answer_area .sol input[type=text] {
+				width: 30px;
+			}
+			#answer_area .entry input[type=text] {
+				width: 30px;
+			}
+			table.nLimit{margin:5px ;border:1px }
+			table.nLimit td { text-align:center;max-width:100px;border: 1px solid #AAA; }
+			table.nLimit td { padding: 5px; }
+			.inputbox{
+				height:60px;
+				width:25px;
+				background:sandybrown;
+				border:0px;
+				text-align:center;
+				font-size:20px;
+			}
+        </style>
+		<script type="text/javascript" language="javascript">
+			function getchinese(p)
+			{
+				var input=p;
+				 if(input=="0")
+					 return "零";
+					else if(input=="1")
+					 return "壹";
+				 else if(input=="2")
+					 return "贰";
+				 else if(input=="3")
+					 return "叁";
+				 else if(input=="4")
+					 return "肆";
+				 else if(input=="5")
+					 return "伍";
+				 else if(input=="6")
+				  return "陸";
+				 else if(input=="7")
+					 return "柒";
+				 else if(input=="8")
+					 return "捌";
+				 else if(input=="9")
+					 return "玖";
+			}
+		</script>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<div data-ensure="(!(MIS == MS)&& !(MIS==THS)&& !(MS==THS)&&(num==MIS||num==MS||num==THS))">
+					<var id="MIS">randRange( 1, 9 )</var>
+					<var id="MS">randRange( 0, 9 )</var>
+					<var id="THS">randRange( 0, 9 )</var>
+					<var id="num">randRange( 0, 9 )</var>
+					
+				</div>
+				<var id="HUS">randRange( 0, 9 )</var>
+				<var id="TRS">randRange( 0, 9 )</var>
+				<var id="OS">randRange( 0, 9 )</var>
+				<var id="a">MIS*100000+MS*10000+THS*1000+HUS*100+TRS*10+OS</var>
+			</div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>將 <code><var>a</var></code> 記入定位板中，請依照下方表格依序填入相對應的位數。</p>
+					<div>
+						<table class="nLimit" style="background-color:sandybrown">
+							<tr><td>十<br />萬<br />位</td><td>萬<br /><br />位</td><td>千<br /><br />位</td><td>百<br /><br />位</td><td>十<br /><br />位</td><td>個<br /><br />位</td></tr>
+							<tr><td><input type="text" id="a_1" class="inputbox"></td><td><input type="text" id="a_2" class="inputbox"></td><td><input type="text" id="a_3" class="inputbox"></td><td><input type="text" id="a_4" class="inputbox"></td><td><input type="text" id="a_6" class="inputbox"></td><td><input type="text" id="a_5" class="inputbox"></td></tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			
+			 <div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value]</div>
+				    <div class="validator-function">
+						var bol1=false;
+						if(guess[0].replace(/[ ]/g,"")==MIS&&guess[1].replace(/[ ]/g,"")==MS&&guess[2].replace(/[ ]/g,"")==THS&&guess[3].replace(/[ ]/g,"")==HUS&&guess[4].replace(/[ ]/g,"")==OS&&guess[5].replace(/[ ]/g,"")==TRS)
+						{
+							bol1=true;
+						}
+						return bol1;					
+                    </div>
+				</div>
+				<p class="example">答案填入對應位置下的方框中，例如 <code>6</code></p>
+			</div>
+			
+			<div class="hints">
+				<p><var>(function(){
+							$("#hint").click(function() {
+								document.getElementById("a_1").value=MIS;								
+								document.getElementById("a_2").value=MS;
+								document.getElementById("a_3").value=THS;
+								document.getElementById("a_4").value=HUS;
+								document.getElementById("a_5").value=OS;
+								document.getElementById("a_6").value=TRS;
+								});
+							})()</var></p>		
+				<P>答案為： <code class="hint_pink"><var>a</var></code></P>
+			</div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars">
+					<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+					<var id="IS">randRange( 1, 9 )</var>
+					<var id="MIS">randRange( 0, 9 )</var>
+					<var id="MS">randRange( 1, 9 )</var>
+					<var id="THS">randRange( 0, 9 )</var>
+					<var id="HUS">randRange( 1, 9 )</var>
+					<var id="TRS">randRange( 0, 9 )</var>
+					<var id="OS">randRange( 1, 9 )</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+					<p><code><var>getchinese(IS)</var>佰<var>getchinese(MIS)</var></code><code data-if="MIS!==0">拾</code><code><var>getchinese(MS)</var>萬</code><code><var>getchinese(THS)</var></code><code data-if="THS!==0">仟</code><code><var>getchinese(HUS)</var>佰</code><code><var>getchinese(TRS)</var></code><code data-if="TRS!==0">拾</code><code><var>getchinese(OS)</var></code></P>
+				    <table class="nLimit" style="background-color:sandybrown">
+					    <tr><td>百<br />萬<br />位</td><td>十<br />萬<br />位</td><td>萬<br /><br />位</td><td>千<br /><br />位</td><td>百<br /><br />位</td><td>十<br /><br />位</td><td>個<br /><br />位</td></tr>
+						<tr><td><input type="text" id="a_1" class="inputbox"></td><td><input type="text" id="a_2" class="inputbox"></td><td><input type="text" id="a_3" class="inputbox"></td><td><input type="text" id="a_4" class="inputbox"></td><td><input type="text" id="a_5" class="inputbox"></td><td><input type="text" id="a_6" class="inputbox"></td><td><input type="text" id="a_7" class="inputbox"></td></tr>
+					</table>
+					<p>請將上面的數目填入定位板中。</p>				
+				</div>
+			</div>
+			
+				 <div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value,document.getElementById("a_7").value]</div>
+				    <div class="validator-function">
+						var bol1=false;
+						if(guess[0].replace(/[ ]/g,"")==IS&&guess[1].replace(/[ ]/g,"")==MIS&&guess[2].replace(/[ ]/g,"")==MS&&guess[3].replace(/[ ]/g,"")==THS&&guess[4].replace(/[ ]/g,"")==HUS&&guess[5].replace(/[ ]/g,"")==TRS&&guess[6].replace(/[ ]/g,"")==OS)
+						{
+							bol1=true;
+						}
+						return bol1;					
+                    </div>
+					<p class="example">答案填入對應位置下的方框中，例如 <code>6</code></p>
+				</div>
+			</div>
+			
+			<div class="hints">
+				<p><var>(function(){
+							$("#hint").click(function() {
+								document.getElementById("a_1").value=IS;
+								document.getElementById("a_2").value=MIS;
+								document.getElementById("a_3").value=MS;
+								document.getElementById("a_4").value=THS;
+								document.getElementById("a_5").value=HUS;
+								document.getElementById("a_6").value=TRS;
+								document.getElementById("a_7").value=OS;
+								});
+							})()</var></p>
+							<P>答案為： <code class="hint_pink"><var>IS</var><var>MIS</var><var>MS</var><var>THS</var><var>HUS</var><var>TRS</var><var>OS</var></code></P>
+            </div>	
+			
+		</div>
+		
+		<div id="case3">
+			<div class="vars">
+					<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+					<var id="IS">randRange( 1, 9 )</var>
+					<var id="MIS">randRange( 0, 9 )</var>
+					<var id="MS">randRange( 1, 9 )</var>
+					<var id="THS">randRange( 0, 9 )</var>
+					<var id="HUS">randRange( 1, 9 )</var>
+					<var id="TRS">randRange( 0, 9 )</var>
+					<var id="OS">randRange( 1, 9 )</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+					<p><code><var>getchinese(IS)</var>佰<var>getchinese(MIS)</var></code><code data-if="MIS!==0">拾</code><code><var>getchinese(MS)</var>萬</code><code><var>getchinese(THS)</var></code><code data-if="THS!==0">仟</code><code><var>getchinese(HUS)</var>佰</code><code><var>getchinese(TRS)</var></code><code data-if="TRS!==0">拾</code><code><var>getchinese(OS)</var></code></P>
+					<table class="nLimit" style="background-color:sandybrown">
+					    <tr><td>百<br />萬<br />位</td><td>十<br />萬<br />位</td><td>萬<br /><br />位</td><td>千<br /><br />位</td><td>百<br /><br />位</td><td>十<br /><br />位</td><td>個<br /><br />位</td></tr>
+						<tr><td><input type="text" id="a_1" class="inputbox"></td><td><input type="text" id="a_2" class="inputbox"></td><td><input type="text" id="a_3" class="inputbox"></td><td><input type="text" id="a_4" class="inputbox"></td><td><input type="text" id="a_5" class="inputbox"></td><td><input type="text" id="a_6" class="inputbox"></td><td><input type="text" id="a_7" class="inputbox"></td></tr>
+					</table>
+					<p>請將上面的數目填入定位板中。</p>
+				</div>
+			</div>
+			
+				 <div class="solution" data-type="multiple">
+					<div class="sol" data-type="custom">
+						<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value,document.getElementById("a_7").value]</div>
+						<div class="validator-function">
+							var bol1=false;
+							if(guess[0].replace(/[ ]/g,"")==IS&&guess[1].replace(/[ ]/g,"")==MIS&&guess[2].replace(/[ ]/g,"")==MS&&guess[3].replace(/[ ]/g,"")==THS&&guess[4].replace(/[ ]/g,"")==HUS&&guess[5].replace(/[ ]/g,"")==TRS&&guess[6].replace(/[ ]/g,"")==OS)
+							{
+								bol1=true;
+							}
+							return bol1;					
+						</div>
+					</div>
+					<p class="example">答案填入對應位置下的方框中，例如 <code>6</code></p>
+				</div>
+			
+			<div class="hints">
+				<p><var>(function(){
+							$("#hint").click(function() {
+								document.getElementById("a_1").value=IS;
+								document.getElementById("a_2").value=MIS;
+								document.getElementById("a_3").value=MS;
+								document.getElementById("a_4").value=THS;
+								document.getElementById("a_5").value=HUS;
+								document.getElementById("a_6").value=TRS;
+								document.getElementById("a_7").value=OS;
+								});
+							})()</var></p>
+							<P>答案為： <code class="hint_pink"><var>IS</var><var>MIS</var><var>MS</var><var>THS</var><var>HUS</var><var>TRS</var><var>OS</var></code></P>
+            </div>	
+			
+		</div>
+    
+		<div id="case4">
+			<div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="a">randRange(1,9)</var>
+				<var id="b">randRange(0,9)</var>
+				<var id="c">randRange(1,9)</var>
+				<var id="d">randRange(0,9)</var>
+				<var id="e">randRange(1,9)</var>
+				<var id="f">randRange(0,9)</var>
+				<var id="a1">randRange(1,9)</var>
+				<var id="b1">randRange(0,9)</var>
+				<var id="c1">randRange(1,9)</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+					<p><code><var>getchinese(a)</var>億<var>getchinese(b)</var></code><code data-if="b!==0">仟</code><code><var>getchinese(c)</var>佰</code><code><var>getchinese(d)</var></code><code data-if="d!==0">拾</code><code><var>getchinese(e)</var>萬</code><code><var>getchinese(f)</var></code><code data-if="f!==0">仟</code><code><var>getchinese(a1)</var>佰</code><code><var>getchinese(b1)</var></code><code data-if="b1!==0">拾</code><code><var>getchinese(c1)</var></code></P>
+				    <table class="nLimit" style="background-color:sandybrown">
+						<tr><td>億<br /></td><td>千<br />萬</td><td>百<br />萬</td><td>十<br />萬</td><td>萬<br /></td><td>千<br /></td><td>百<br /></td><td>十<br /></td><td>個<br /></td></tr>
+						<tr><td><input type="text" id="a_1" class="inputbox"></td><td><input type="text" id="a_2" class="inputbox"></td><td><input type="text" id="a_3" class="inputbox"></td><td><input type="text" id="a_4" class="inputbox"></td><td><input type="text" id="a_5" class="inputbox"></td><td><input type="text" id="a_6" class="inputbox"></td><td><input type="text" id="a_7" class="inputbox"></td><td><input type="text" id="a_8" class="inputbox"></td><td><input type="text" id="a_9" class="inputbox"></td></tr>
+					</table>
+					<p>請將上面的數目填入定位板中。</p>					
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value,document.getElementById("a_7").value,document.getElementById("a_8").value,document.getElementById("a_9").value]</div>
+				    <div class="validator-function">
+						var bol1=false;
+						var bol2=false;
+						if(guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==b&&guess[2].replace(/[ ]/g,"")==c&&guess[3].replace(/[ ]/g,"")==d&&guess[4].replace(/[ ]/g,"")==e&&guess[5].replace(/[ ]/g,"")==f)
+						{
+							bol1=true;
+						}
+						if(guess[6].replace(/[ ]/g,"")==a1&&guess[7].replace(/[ ]/g,"")==b1&&guess[8].replace(/[ ]/g,"")==c1)
+						{
+							bol2=true;
+						}
+						return bol1&& bol2;					
+                    </div>	
+					<p class="example">答案填入對應位置下方框中，例如 <code>6</code></p>
+				</div>
+			</div>
+		
+			<div class="hints">
+				<p><var>(function(){
+							$("#hint").click(function() {
+								document.getElementById("a_1").value=a;
+								document.getElementById("a_2").value=b;
+								document.getElementById("a_3").value=c;
+								document.getElementById("a_4").value=d;
+								document.getElementById("a_5").value=e;
+								document.getElementById("a_6").value=f;
+								document.getElementById("a_7").value=a1;
+								document.getElementById("a_8").value=b1;
+								document.getElementById("a_9").value=c1;
+								});
+							})()</var></p>
+							<P>答案為： <code class="hint_pink"><var>a</var><var>b</var><var>c</var><var>d</var><var>e</var><var>f</var><var>a1</var><var>b1</var><var>c1</var></code></P>
+			</div>	
+		</div>	
+		
+		<div id="case5">
+            <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="a">1</var>
+				<var id="b">randRange(1,9)</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+					<p><code><var>a</var><var>b</var>\enspace</code>個<code>\enspace<var>a</var>\enspace</code>千萬</p>
+						<table class="nLimit" style="background-color:sandybrown">
+							<tr><td>億<br /></td><td>千<br />萬</td><td>百<br />萬</td><td>十<br />萬</td><td>萬<br /></td><td>千<br /></td><td>百<br /></td><td>十<br /></td><td>個<br /></td></tr>
+							<tr><td><input type="text" id="a_1" class="inputbox"></td><td><input type="text" id="a_2" class="inputbox"></td><td><input type="text" id="a_3" class="inputbox"></td><td><input type="text" id="a_4" class="inputbox"></td><td><input type="text" id="a_5" class="inputbox"></td><td><input type="text" id="a_6" class="inputbox"></td><td><input type="text" id="a_7" class="inputbox"></td><td><input type="text" id="a_8" class="inputbox"></td><td><input type="text" id="a_9" class="inputbox"></td></tr>
+						</table>
+						<p>請將上面的數目填入定位板中。</p>						
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value,document.getElementById("a_7").value,document.getElementById("a_8").value,document.getElementById("a_9").value]</div>
+				    <div class="validator-function">
+						var bol1=false;
+						var bol2=false;
+						if(guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==b)
+						{
+							bol1=true;
+						}
+						if(guess[2].replace(/[ ]/g,"")==0&&guess[3].replace(/[ ]/g,"")==0&&guess[4].replace(/[ ]/g,"")==0&&guess[5].replace(/[ ]/g,"")==0&&guess[6].replace(/[ ]/g,"")==0&&guess[7].replace(/[ ]/g,"")==0&&guess[8].replace(/[ ]/g,"")==0)
+						{
+							bol2=true;
+						}
+						return bol1&& bol2;					
+                    </div>
+					<p class="example">答案填入對應位置下方框中，例如 <code>6</code></p>					
+				</div>
+			</div>
+			
+			<div class="hints">
+				<p>
+					<code><var>a</var></code><code><var>b</var><code>\enspace</code></code>個<code>\enspace</code> <code><var>a</var></code> </code><code>\enspace</code>千萬，就是<code><var>a</var></code><code>\enspace</code>億<code>\enspace</code><code><var>b</var></code><code>\enspace</code>千萬。
+					<var>(function(){
+								$("#hint").click(function() {
+									document.getElementById("a_1").value=a;
+									document.getElementById("a_2").value=b;
+									document.getElementById("a_3").value=0;
+									document.getElementById("a_4").value=0;
+									document.getElementById("a_5").value=0;
+									document.getElementById("a_6").value=0;
+									document.getElementById("a_7").value=0;
+									document.getElementById("a_8").value=0;
+									document.getElementById("a_9").value=0;
+									});
+								})()
+					</var>
+				</p>
+				<P>答案為：<code class="hint_pink"><var>a</var><var>b</var>0000000</code></P>
+			</div>	
+
+		</div>
+		
+		<div id="case6">
+            <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="a">randRange(1,9)</var>
+				<var id="b">randRange(0,9)</var>
+				<var id="c">randRange(1,9)</var>
+				<var id="d">randRange(0,9)</var>
+				<var id="e">randRange(0,9)</var>
+				<var id="f">randRange(0,9)</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+					<table class="nLimit" style="background-color:sandybrown">
+						<tr><td colspan=10><code><var>a</var></code><code><var>b</var></code>億<code><var>c</var></code><code><var>d</var></code><code><var>e</var></code><code><var>f</var></code>萬</p></td></tr>
+						<tr><td>十<br />億<br />位</td><td>億<br /><br />位</td><td>千<br />萬<br />位</td><td>百<br />萬<br />位</td><td>十<br />萬<br />位</td><td>萬<br /><br />位</td><td>千<br /><br />位</td><td>百<br /><br />位</td><td>十<br /><br />位</td><td>個<br /><br />位</td></tr>
+						<tr><td><input type="text" id="a_1" class="inputbox"></td><td><input type="text" id="a_2" class="inputbox"></td><td><input type="text" id="a_3" class="inputbox"></td><td><input type="text" id="a_4" class="inputbox"></td><td><input type="text" id="a_5" class="inputbox"></td><td><input type="text" id="a_6" class="inputbox"></td><td><input type="text" id="a_7" class="inputbox"></td><td><input type="text" id="a_8" class="inputbox"></td><td><input type="text" id="a_9" class="inputbox"></td><td><input type="text" id="a_10" class="inputbox"></td></tr>
+					</table>
+					<p>請將上面的數目填入定位板中。</p>					
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value,document.getElementById("a_7").value,document.getElementById("a_8").value,document.getElementById("a_9").value,document.getElementById("a_10").value]</div>
+				    <div class="validator-function">
+						var bol1=false;
+						var bol2=false;
+						if(guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==b&&guess[2].replace(/[ ]/g,"")==c&&guess[3].replace(/[ ]/g,"")==d&&guess[4].replace(/[ ]/g,"")==e&&guess[5].replace(/[ ]/g,"")==f)
+						{
+							bol1=true;
+						}
+						if(guess[6].replace(/[ ]/g,"")==0&&guess[7].replace(/[ ]/g,"")==0&&guess[8].replace(/[ ]/g,"")==0&&guess[9].replace(/[ ]/g,"")==0)
+						{
+							bol2=true;
+						}
+						return bol1&& bol2;					
+                    </div>	
+				<p class="example">答案填入對應位置下方框中，例如 <code>6</code></p>
+				</div>
+			</div>
+		
+			<div class="hints">
+				<p><var>(function(){
+							$("#hint").click(function() {
+								document.getElementById("a_1").value=a;
+								document.getElementById("a_2").value=b;
+								document.getElementById("a_3").value=c;
+								document.getElementById("a_4").value=d;
+								document.getElementById("a_5").value=e;
+								document.getElementById("a_6").value=f;
+								document.getElementById("a_7").value=0;
+								document.getElementById("a_8").value=0;
+								document.getElementById("a_9").value=0;
+								document.getElementById("a_10").value=0;
+								});
+							})()</var></p>
+				<P>答案為：<code class="hint_pink"><var>a</var><var>b</var><var>c</var><var>d</var><var>e</var><var>f</var>0000</code></P>
+			</div>	
+		
+		</div>
+		
+		<div id="case7">
+            <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="a">randRange(1,9)</var>
+				<var id="b">randRange(0,9)</var>
+				<var id="c">randRange(0,9)</var>
+				<var id="d">randRange(0,9)</var>
+				<var id="e">randRange(0,9)</var>
+				<var id="f">randRange(0,9)</var>
+				<var id="a1">randRange(0,9)</var>
+				<var id="b1">randRange(0,9)</var>
+				<var id="c1">randRange(0,9)</var>
+				<var id="d1">randRange(1,9)</var>
+			</div>
+		
+			<div class="question">
+				<div class="problem">
+					<table class="nLimit" style="background-color:sandybrown">
+						<tr><td colspan=10><code><var>a</var></code><code><var>b</var></code><code><var>c</var></code><code><var>d</var></code><code><var>e</var></code><code><var>f</var></code><code><var>a1</var></code><code><var>b1</var></code><code><var>c1</var></code><code><var>d1</var></code></td></tr>
+						<tr><td>十<br />億<br />位</td><td>億<br /><br />位</td><td>千<br />萬<br />位</td><td>百<br />萬<br />位</td><td>十<br />萬<br />位</td><td>萬<br /><br />位</td><td>千<br /><br />位</td><td>百<br /><br />位</td><td>十<br /><br />位</td><td>個<br /><br />位</td></tr>
+						<tr><td><input type="text" id="a_1" class="inputbox"></td><td><input type="text" id="a_2" class="inputbox"></td><td><input type="text" id="a_3" class="inputbox"></td><td><input type="text" id="a_4" class="inputbox"></td><td><input type="text" id="a_5" class="inputbox"></td><td><input type="text" id="a_6" class="inputbox"></td><td><input type="text" id="a_7" class="inputbox"></td><td><input type="text" id="a_8" class="inputbox"></td><td><input type="text" id="a_9" class="inputbox""></td><td><input type="text" id="a_10" class="inputbox"></td></tr>
+					</table>
+					<p>請將上面的數目填入定位板中。</p>					
+				</div>
+			</div>
+		
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value,document.getElementById("a_7").value,document.getElementById("a_8").value,document.getElementById("a_9").value,document.getElementById("a_10").value]</div>
+				    <div class="validator-function">
+						var bol1=false;
+						var bol2=false;
+						var bol3=false;
+						if(guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==b&&guess[2].replace(/[ ]/g,"")==c&&guess[3].replace(/[ ]/g,"")==d&&guess[4].replace(/[ ]/g,"")==e&&guess[5].replace(/[ ]/g,"")==f)
+						{
+							bol1=true;
+						}
+						if(guess[6].replace(/[ ]/g,"")==a1&&guess[7].replace(/[ ]/g,"")==b1&&guess[8].replace(/[ ]/g,"")==c1&&guess[9].replace(/[ ]/g,"")==d1)
+						{
+							bol2=true;
+						}
+						if(guess[0].replace(/[ ]/g,"")!==""&&guess[1].replace(/[ ]/g,"")!==""&&guess[2].replace(/[ ]/g,"")!==""&&guess[3].replace(/[ ]/g,"")!==""&&guess[4].replace(/[ ]/g,"")!==""&&guess[5].replace(/[ ]/g,"")!==""&&guess[6].replace(/[ ]/g,"")!==""&&guess[7].replace(/[ ]/g,"")!==""&&guess[8].replace(/[ ]/g,"")!==""&&guess[9].replace(/[ ]/g,"")!=="")
+						{
+							bol3=true;
+						}
+						return bol1&& bol2&&bol3;					
+                    </div>	
+				</div>
+				<p class="example">答案填入對應位置下方框中，例如 <code>6</code></p>
+			</div>
+		
+			<div class="hints">
+				<p><var>(function(){
+							$("#hint").click(function() {
+								document.getElementById("a_1").value=a;
+								document.getElementById("a_2").value=b;
+								document.getElementById("a_3").value=c;
+								document.getElementById("a_4").value=d;
+								document.getElementById("a_5").value=e;
+								document.getElementById("a_6").value=f;
+								document.getElementById("a_7").value=a1;
+								document.getElementById("a_8").value=b1;
+								document.getElementById("a_9").value=c1;
+								document.getElementById("a_10").value=d1;
+								});
+							})()</var></p>
+				<P>答案為：<code class="hint_pink"><var>a</var><var>b</var><var>c</var><var>d</var><var>e</var><var>f</var><var>a1</var><var>b1</var><var>c1</var><var>d1</var></code></P>
+			</div>	
+		
+		</div>
+		
+		<div id="case8">
+            <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="a">randRange(1,9)</var>
+				<var id="b">randRange(0,9)</var>
+				<var id="c">randRange(1,9)</var>
+				<var id="A">
+				(function(){
+					 if(a=="1")
+					 return "壹";
+				 else if(a=="2")
+					 return "貳";
+				 else if(a=="3")
+					 return "叁";
+				 else if(a=="4")
+					 return "肆";
+				 else if(a=="5")
+					 return "伍";
+				 else if(a=="6")
+					 return "陸";
+				 else if(a=="7")
+					 return "柒";
+				 else if(a=="8")
+					 return "捌";
+				 else if(a=="9")
+					 return "玖";
+					})()
+				</var>
+				<var id="B">
+				(function(){
+					if(b=="0")
+					 return "零";
+				 else if(b=="1")
+					 return "壹";
+				 else if(b=="2")
+					 return "貳";
+				 else if(b=="3")
+					 return "叁";
+				 else if(b=="4")
+					 return "肆";
+				 else if(b=="5")
+					 return "伍";
+				 else if(b=="6")
+				  return "陸";
+				 else if(b=="7")
+					 return "柒";
+				 else if(b=="8")
+					 return "捌";
+				 else if(b=="9")
+					 return "玖";
+					})()
+				</var>
+				<var id="C">
+				(function(){
+					 if(c=="1")
+					 return "壹";
+				 else if(c=="2")
+					 return "貳";
+				 else if(c=="3")
+					 return "叁";
+				 else if(c=="4")
+					 return "肆";
+				 else if(c=="5")
+					 return "伍";
+				 else if(c=="6")
+				  return "陸";
+				 else if(c=="7")
+					 return "柒";
+				 else if(c=="8")
+					 return "捌";
+				 else if(c=="9")
+					 return "玖";
+					})()
+				</var>
+			</div>
+			<div class="question">
+				<div class="problem">
+					<p><code><var>a</var></code><code><var>b</var></code><code><var>c</var></code><code>00000000</code><code>\enspace</code>可以讀作(<code>\enspace</code><code>\enspace</code><code>\enspace</code>)，在定位板上寫寫看。</p>
+					<table class="nLimit" style="background-color:sandybrown">
+						<tr><td>百億<br />位</td><td>十億<br />位</td><td>億<br />位</td><td>千萬<br />位</td><td>百萬<br />位</td><td>十萬<br />位</td><td>萬<br />位</td><td>千<br />位</td><td>百<br />位</td><td>十<br />位</td><td>個<br />位</td></tr>
+						<tr><td><input type="text" id="a_1" class="inputbox"></td><td><input type="text" id="a_2" class="inputbox"></td><td><input type="text" id="a_3" class="inputbox"></td><td><input type="text" id="a_4" class="inputbox"></td><td><input type="text" id="a_5" class="inputbox"></td><td><input type="text" id="a_6" class="inputbox"></td><td><input type="text" id="a_7" class="inputbox"></td><td><input type="text" id="a_8" class="inputbox"></td><td><input type="text" id="a_9" class="inputbox"></td><td><input type="text" id="a_10" class="inputbox"></td><td><input type="text" id="a_11" class="inputbox"></td></tr>
+					</table>
+					<p>請將上面的數目填入定位板中。</p>
+					
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">	
+				<p>可以讀作 <span class="sol" data-forms="literal"><var>A</var></span> 佰 <span class="sol" data-forms="literal"><var>B</var></span> <span data-if="b!==0">拾</span> <span class="sol" data-forms="literal"><var>C</var></span> 億</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value,document.getElementById("a_7").value,document.getElementById("a_8").value,document.getElementById("a_9").value,document.getElementById("a_10").value,document.getElementById("a_10").value,document.getElementById("a_11").value]</div>
+					<div class="validator-function">
+						var bol1=false;
+						var bol2=false;
+						if(guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==b&&guess[2].replace(/[ ]/g,"")==c)
+						{
+							bol1=true;
+						}
+						if(guess[3].replace(/[ ]/g,"")==0&&guess[4].replace(/[ ]/g,"")==0&&guess[5].replace(/[ ]/g,"")==0&&guess[6].replace(/[ ]/g,"")==0&&guess[7].replace(/[ ]/g,"")==0&&guess[8].replace(/[ ]/g,"")==0&&guess[9].replace(/[ ]/g,"")==0&&guess[10].replace(/[ ]/g,"")==0)
+						{
+							bol2=true;
+						}
+						return bol1&& bol2;					
+					</div>								
+				</div>
+				<p class="example">定位板中填入答案，例如 <code>:6</code></p>
+				<p class="example"> 答案區請填入中文大寫數字，例如<code>:</code>壹、伍、柒</p>
+			</div>
+			<div class="hints">
+				<p><code><var>a</var></code><code><var>b</var></code><code><var>c</var></code><code>00000000</code><code>\enspace</code>可以讀作<code>\enspace</code><code><var>A</var></code><code>佰</code><code><var>B</var></code><code data-if="b!==0">拾</code><code data-if="c!==0"><var>C</var></code><code>億</code>。
+				<var>(function(){
+							$("#hint").click(function() {
+								document.getElementById("a_1").value=a;
+								document.getElementById("a_2").value=b;
+								document.getElementById("a_3").value=c;
+								document.getElementById("a_4").value=0;
+								document.getElementById("a_5").value=0;
+								document.getElementById("a_6").value=0;
+								document.getElementById("a_7").value=0;
+								document.getElementById("a_8").value=0;
+								document.getElementById("a_9").value=0;
+								document.getElementById("a_10").value=0;
+								document.getElementById("a_11").value=0;
+								});
+							})()</var></p>
+				<P>答案為：<code class="hint_pink"><var>a</var><var>b</var><var>c</var>00000000</code></P>
+			</div>
+		</div>
+		
+		<div id="case9">
+            <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="a">randRange(1,9)</var>
+				<var id="b">randRange(0,9)</var>
+				<var id="c">randRange(1,9)</var>
+				<var id="d">randRange(0,9)</var>
+				<var id="e">randRange(1,9)</var>
+				<var id="f">randRange(0,9)</var>
+				<var id="a1">randRange(1,9)</var>
+				<var id="b1">randRange(0,9)</var>
+				<var id="c1">randRange(1,9)</var>
+				<var id="d1">randRange(0,9)</var>
+				<var id="e1">randRange(1,9)</var>
+			</div>
+			<div class="question">
+				<div class="problem">
+					<p><code><var>getchinese(a)</var>百<var>getchinese(b)</var></code><code data-if="b!==0">十</code><code><var>getchinese(c)</var>億<var>getchinese(d)</var></code><code data-if="d!==0">千</code><code><var>getchinese(e)</var>百<var>getchinese(f)</var></code><code data-if="f!==0">十</code><code><var>getchinese(a1)</var>萬<var>getchinese(b1)</var></code><code data-if="b1!==0">千</code><code><var>getchinese(c1)</var>百<var>getchinese(d1)</var></code><code data-if="d1!==0">十</code><code><var>getchinese(e1)</var></code></P>
+				   <table class="nLimit" style="background-color:sandybrown">
+						<tr><td>百億<br />位</td><td>十億<br />位</td><td>億<br />位</td><td>千萬<br />位</td><td>百萬<br />位</td><td>十萬<br />位</td><td>萬<br />位</td><td>千<br />位</td><td>百<br />位</td><td>十<br />位</td><td>個<br />位</td></tr>
+						<tr><td><input type="text" id="a_1" class="inputbox"></td><td><input type="text" id="a_2" class="inputbox"></td><td><input type="text" id="a_3" class="inputbox"></td><td><input type="text" id="a_4" class="inputbox"></td><td><input type="text" id="a_5" class="inputbox"></td><td><input type="text" id="a_6" class="inputbox"></td><td><input type="text" id="a_7" class="inputbox"></td><td><input type="text" id="a_8" class="inputbox"></td><td><input type="text" id="a_9" class="inputbox"></td><td><input type="text" id="a_10" class="inputbox"></td><td><input type="text" id="a_11" class="inputbox"></td></tr>
+					</table>
+					<p>請將上面的數目填入定位板中。</p>					
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value,document.getElementById("a_7").value,document.getElementById("a_8").value,document.getElementById("a_9").value,document.getElementById("a_10").value,document.getElementById("a_11").value]</div>
+					<div class="validator-function">
+						var bol1=false;
+						var bol2=false;
+						if(guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==b&&guess[2].replace(/[ ]/g,"")==c)
+						{
+							bol1=true;
+						}
+						if(guess[3].replace(/[ ]/g,"")==d&&guess[4].replace(/[ ]/g,"")==e&&guess[5].replace(/[ ]/g,"")==f&&guess[6].replace(/[ ]/g,"")==a1&&guess[7].replace(/[ ]/g,"")==b1&&guess[8].replace(/[ ]/g,"")==c1&&guess[9].replace(/[ ]/g,"")==d1&&guess[10].replace(/[ ]/g,"")==e1)
+						{
+							bol2=true;
+						}
+						return bol1&& bol2;					
+					</div>
+				<p class="example">答案填入對應位置下方框中，例如 <code>6</code></p>					
+				</div>
+			</div>
+			<div class="hints">
+				<p><var>(function(){
+							$("#hint").click(function() {
+								document.getElementById("a_1").value=a;
+								document.getElementById("a_2").value=b;
+								document.getElementById("a_3").value=c;
+								document.getElementById("a_4").value=d;
+								document.getElementById("a_5").value=e;
+								document.getElementById("a_6").value=f;
+								document.getElementById("a_7").value=a1;
+								document.getElementById("a_8").value=b1;
+								document.getElementById("a_9").value=c1;
+								document.getElementById("a_10").value=d1;
+								document.getElementById("a_11").value=e1;
+								});
+							})()</var></p>
+				<P>答案為：<code class="hint_pink"><var>a</var><var>b</var><var>c</var><var>d</var><var>e</var><var>f</var><var>a1</var><var>b1</var><var>c1</var><var>d1</var><var>e1</var></code></P>
+			</div>
+		</div>	
+		
+		<div id="case10">
+			<div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="a">randRange(1,9)</var>
+				<var id="b">randRange(0,9)</var>
+				<var id="c">randRange(0,9)</var>
+				<var id="d">randRange(0,9)</var>
+				<var id="e">randRange(1,9)</var>
+			</div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>將<code>\enspace</code><code><var>a</var></code><code><var>b</var></code><code><var>c</var></code><code><var>d</var></code><code><var>e</var></code>億<code>\enspace</code>這個數記在定位板上。</p>
+					<div>
+						<table class="nLimit" style="background-color:sandybrown">
+							<tr><td>兆</td><td>千<br />億</td><td>百<br />億</td><td>十<br />億</td><td>億<br /></td><td>千<br />萬</td><td>百<br />萬</td><td>十<br />萬</td><td>萬<br /></td><td>千<br /></td><td>百<br /></td><td>十<br /></td><td>個<br /></td></tr>
+							<tr><td><input type="text" id="a_1" class="inputbox"></td><td><input type="text" id="a_2" class="inputbox"></td><td><input type="text" id="a_3" class="inputbox"></td><td><input type="text" id="a_4" class="inputbox"></td><td><input type="text" id="a_5" class="inputbox"></td><td><input type="text" id="a_6" class="inputbox"></td><td><input type="text" id="a_7" class="inputbox"></td><td><input type="text" id="a_8" class="inputbox"></td><td><input type="text" id="a_9" class="inputbox"></td><td><input type="text" id="a_10" class="inputbox"></td><td><input type="text" id="a_11" class="inputbox"></td><td><input type="text" id="a_12" class="inputbox"></td><td><input type="text" id="a_13" class="inputbox"></td></tr>
+						</table>
+					</div>					
+				</div>
+			</div>
+		
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value,document.getElementById("a_7").value,document.getElementById("a_8").value,document.getElementById("a_9").value,document.getElementById("a_10").value,document.getElementById("a_10").value,document.getElementById("a_11").value,document.getElementById("a_12").value,document.getElementById("a_13").value]</div>
+					<div class="validator-function">
+						var bol1=false;
+						var bol2=false;
+						if(guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==b&&guess[2].replace(/[ ]/g,"")==c&&guess[3].replace(/[ ]/g,"")==d&&guess[4].replace(/[ ]/g,"")==e)
+						{
+							bol1=true;
+						}
+						if(guess[5].replace(/[ ]/g,"")==0&&guess[6].replace(/[ ]/g,"")==0&&guess[7].replace(/[ ]/g,"")==0&&guess[8].replace(/[ ]/g,"")==0&&guess[9].replace(/[ ]/g,"")==0&&guess[10].replace(/[ ]/g,"")==0&&guess[11].replace(/[ ]/g,"")==0&&guess[12].replace(/[ ]/g,"")==0)
+						{
+							bol2=true;
+						}
+						return bol1&& bol2;					
+					</div>
+				<p class="example">答案填入對應位置下方框中，例如 <code>6</code></p>					
+				</div>
+			</div>
+		
+			<div class="hints">
+				<p><code><var>a</var></code><code><var>b</var></code><code><var>c</var></code><code><var>d</var></code><code><var>e</var></code>億<code>\enspace</code>=<code>\enspace</code><code><var>a</var>兆</code><code><var>b</var></code>千<code><var>c</var></code>百<code><var>d</var></code>十<code><var>e</var></code>億。
+				<var>(function(){
+							$("#hint").click(function() {
+								document.getElementById("a_1").value=a;
+								document.getElementById("a_2").value=b;
+								document.getElementById("a_3").value=c;
+								document.getElementById("a_4").value=d;
+								document.getElementById("a_5").value=e;
+								document.getElementById("a_6").value=0;
+								document.getElementById("a_7").value=0;
+								document.getElementById("a_8").value=0;
+								document.getElementById("a_9").value=0;
+								document.getElementById("a_10").value=0;
+								document.getElementById("a_11").value=0;
+								document.getElementById("a_12").value=0;
+								document.getElementById("a_13").value=0;
+								});
+							})()</var></p>
+				<P>答案為：<code class="hint_pink"><var>a</var><var>b</var><var>c</var><var>d</var><var>e</var>00000000</code></P>
+			</div>
+		</div>		
+	</div>
+	</div>
+	
+</body>
+</html>

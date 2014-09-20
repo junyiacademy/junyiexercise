@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>根式的乘除運算</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 20px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 20px;
+        }
+        </style>
+	<script type="text/javascript">
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+            <div class="vars">
+				<var id="J">randRange(2,9)</var>
+			    <var id="K">randFromArray([2,3,5,6,7,8])</var>
+            </div>
+			<div class="question spin">
+				<p>化簡下列各式：</p>
+				<p class="question"><code>(<var>J</var>-<var>formattedSquareRootOf(K)</var>)^{2}</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>J*J+K</var></span><code>\enspace-\enspace</code><input type="text" id="intPart" style="width:20px"><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:20px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("intPart").value,document.getElementById("sqrtPart").value]</div>
+				    <div class="validator-function">
+				        if((K==8&&guess[0].replace(/[ ]/g,"")==4*J&&guess[1].replace(/[ ]/g,"")==2)||(K!=8&&guess[0].replace(/[ ]/g,"")==2*J&&guess[1].replace(/[ ]/g,"")==K)){
+							return true;
+						}
+				    </div>
+				</div>
+				<p class="example">整數，例：<code>	6</code></p>
+			</div>
+
+    <div class="hints">
+		<div>
+			<p>由差平方公式得到</p>
+			<p><code>(<var>J</var>-<var>formattedSquareRootOf(K)</var>)^{2}=<var>J*J</var>-2\cdot<var>J</var>\cdot<var>formattedSquareRootOf(K)</var>+(<var>formattedSquareRootOf(K)</var>)^{2}</code></p>
+		</div>
+		<p><code>=<var>J*J</var>-<var>formattedSquareRootOf(4*J*J*K)</var>+<var>K</var></code></p>
+		<p><code>=\enspace</code><code class="hint_pink"><var>J*J+K</var>-<var>formattedSquareRootOf(4*J*J*K)</var></code></p>
+    </div>
+	</div>
+	
+	<div id="case2">
+            <div class="vars" data-ensure="J!=M">
+				<var id="J">randRange(2,9)</var>
+				<var id="M">randRange(2,9)</var>
+			    <var id="K">randFromArray([2,3,5,6,7,8,11,13,15])</var>
+            </div>
+			<div class="question spin">
+				<p>化簡下列各式：</p>
+				<p class="question"><code>(<var>J</var>-<var>formattedSquareRootOf(K)</var>)(<var>M</var>-<var>formattedSquareRootOf(K)</var>)</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>J*M+K</var></span><code>\enspace-\enspace</code><input type="text" id="intPart" style="width:20px"><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:20px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("intPart").value,document.getElementById("sqrtPart").value]</div>
+				    <div class="validator-function">
+				        if((K==8&&guess[0].replace(/[ ]/g,"")==2*(J+M)&&guess[1].replace(/[ ]/g,"")==2)||(K!=8&&guess[0].replace(/[ ]/g,"")==(J+M)&&guess[1].replace(/[ ]/g,"")==K)){
+							return true;
+						}
+				    </div>
+				</div>
+				<p class="example">整數，例：<code>	6</code></p>
+			</div>
+
+    <div class="hints">
+		<div>
+			<p>由乘法公式得到</p>
+			<p><code>(<var>J</var>-<var>formattedSquareRootOf(K)</var>)(<var>M</var>-<var>formattedSquareRootOf(K)</var>)</code></p>
+			<p><code>=<var>J*M</var>-<var>formattedSquareRootOf(J*J*K)</var>-<var>formattedSquareRootOf(M*M*K)</var>+<var>formattedSquareRootOf(K)</var>\cdot<var>formattedSquareRootOf(K)</var></code></p>
+		</div>
+		<p><code>=<var>J*M</var>-<var>formattedSquareRootOf((J+M)*(J+M)*K)</var>+<var>K</var></code></p>
+		<p><code>=\enspace</code><code class="hint_pink"><var>J*M+K</var>-<var>formattedSquareRootOf((J+M)*(J+M)*K)</var></code></p>
+    </div>
+	</div>
+	
+	<div id="case3">
+            <div class="vars">
+				<var id="J">randRange(2,9)</var>
+			    <var id="K">randFromArray([2,3,5,6,7,11,13,17,19])</var>
+            </div>
+			<div class="question spin">
+				<p>化簡下列各式：</p>
+				<p class="question"><code>(<var>J</var>+<var>formattedSquareRootOf(K)</var>)(<var>J</var>-<var>formattedSquareRootOf(K)</var>)</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>J*J-K</var></span><code>\enspace-\enspace</code><input type="text" id="intPart" style="width:20px"><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:20px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("intPart").value,document.getElementById("sqrtPart").value]</div>
+				    <div class="validator-function">
+				        if((guess[0].replace(/[ ]/g,"")==""&&guess[1].replace(/[ ]/g,"")=="")){
+							return true;
+						}
+				    </div>
+				</div>
+				<p class="example">整數，例：<code>	6</code></p>
+				<p class="example">整數或根號為 <code>0</code> 時可不填</p>
+			</div>
+
+    <div class="hints">
+		<div>
+			<p>由平方差公式得到</p>
+			<p><code>(<var>J</var>+<var>formattedSquareRootOf(K)</var>)(<var>J</var>-<var>formattedSquareRootOf(K)</var>)</code></p>
+			<p><code>=<var>J</var>^{2}-(<var>formattedSquareRootOf(K)</var>)^{2}</code></p>
+		</div>
+		<p><code>=<var>J*J</var>-<var>K</var></code></p>
+		<p><code>=\enspace</code><code class="hint_pink"><var>J*J-K</var></code></p>
+    </div>
+	</div>
+	
+	<div id="case4">
+            <div class="vars">
+				<var id="J">randRange(2,9)</var>
+			    <var id="K">randFromArray([2,3,5,6,7,11,13,17,19])</var>
+            </div>
+			<div class="question spin">
+				<p>化簡下列各式：</p>
+				<p class="question"><code>(<var>J</var>+<var>formattedSquareRootOf(K)</var>)(<var>J</var>-<var>formattedSquareRootOf(K)</var>)</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>J*J-K</var></span><code>\enspace-\enspace</code><input type="text" id="intPart" style="width:20px"><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:20px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("intPart").value,document.getElementById("sqrtPart").value]</div>
+				    <div class="validator-function">
+				        if((guess[0].replace(/[ ]/g,"")==""&&guess[1].replace(/[ ]/g,"")=="")){
+							return true;
+						}
+				    </div>
+				</div>
+				<p class="example">整數，例：<code>	6、-4</code></p>
+				<p class="example">整數或根號為 <code>0</code> 時可不填</p>
+			</div>
+
+    <div class="hints">
+		<div>
+			<p>由平方差公式得到</p>
+			<p><code>(<var>J</var>+<var>formattedSquareRootOf(K)</var>)(<var>J</var>-<var>formattedSquareRootOf(K)</var>)</code></p>
+			<p><code>=<var>J</var>^{2}-(<var>formattedSquareRootOf(K)</var>)^{2}</code></p>
+		</div>
+		<p><code>=<var>J*J</var>-<var>K</var></code></p>
+		<p><code>=\enspace</code><code class="hint_pink"><var>J*J-K</var></code></p>
+    </div>
+	</div>
+	
+	<div id="case5">
+            <div class="vars" data-ensure="splitRadical(K)[0]==1&&splitRadical(M)[0]==1 && isInt(K/3)==false && getGCD(K,M)==1 && getGCD(3,M)==1">
+			    <var id="K">randRange(2,14)</var>
+				<var id="J">6*K</var>
+				<var id="M">randRange(5,40)</var>
+				<var id="L">2*M</var>
+            </div>
+			<div class="question spin">
+				<p>化簡下列各式：</p>
+				<p class="question"><code>\sqrt{<var>J</var>}\cdot\sqrt{<var>L</var>}</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <input type="text" id="intPart" style="width:20px"><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:20px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("intPart").value,document.getElementById("sqrtPart").value]</div>
+				    <div class="validator-function">
+				        if((guess[0].replace(/[ ]/g,"")==splitRadical(J*L)[0]&&guess[1].replace(/[ ]/g,"")==splitRadical(J*L)[1])){
+							return true;
+						}
+				    </div>
+				</div>
+				<p class="example">整數，例：<code>	6</code></p>
+			</div>
+
+    <div class="hints">
+		<div>
+			<p><code>\sqrt{<var>J</var>}\cdot\sqrt{<var>L</var>}</code></p>
+			<p><code>=\sqrt{<var>J</var>\cdot<var>L</var>}</code></p>
+		</div>
+		<p><code>=\sqrt{2\cdot 3\cdot<var>K</var>\cdot<var>M</var>\cdot 2}</code></p>
+		<p><code>=\sqrt{2^{2}\cdot<var>3*K*M</var>}</code></p>
+		<p><code>=\enspace</code><code class="hint_pink"><var>formattedSquareRootOf(J*L)</var></code></p>
+    </div>
+	</div>
+	
+	<div id="case6">
+            <div class="vars" data-ensure="P!=N && J&lt;50 && J&gt;15">
+				<var id="M">randRange(2,9)</var>
+				<var id="P">randRange(3,9)</var>
+				<var id="N">randRange(P,9)</var>
+				<var id="J">N*randRange(2,16)</var>
+				<var id="gcd">getGCD(N,P)</var>
+				<var id="spRadical">splitRadical(J/N*(M*N+P))</var>
+            </div>
+			<div class="question spin">
+				<p>化簡下列各式：</p>
+				<p class="question"><code>\sqrt{<var>J</var>}\cdot\sqrt{<var>mixedFraction(M,P,N,true,true,false,false)</var>}</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <input type="text" id="intPart" style="width:20px"><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:20px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("intPart").value,document.getElementById("sqrtPart").value]</div>
+				    <div class="validator-function">
+				        if(guess[0].replace(/[ ]/g,"")==spRadical[0]&&guess[1].replace(/[ ]/g,"")==spRadical[1]){
+							return true;
+						}
+						if(spRadical[1]==1){
+							if(guess[0].replace(/[ ]/g,"")==spRadical[0]&&guess[1].replace(/[ ]/g,"")==""){
+								return true;
+							}
+						}
+						if(spRadical[0]==1){
+							if(guess[0].replace(/[ ]/g,"")==""&&guess[1].replace(/[ ]/g,"")==spRadical[1]){
+								return true;
+							}
+						}
+				    </div>
+				</div>
+				<p class="example">整數，例：<code>	6</code></p>
+			</div>
+
+    <div class="hints">
+		<div>
+			<p><code>\sqrt{<var>J</var>}\cdot\sqrt{<var>mixedFraction(M,P,N,true,true,false,false)</var>}</code></p>
+			<p><code>=\sqrt{<var>J</var>}\cdot\sqrt{<var>fraction(M*N+P,N,true,true,false,false)</var>}</code></p>
+		</div>
+		<p><code><var>J</var></code> 和 <code><var>N/gcd</var></code> 進行約分，</p>
+		<p><code>=\sqrt{<var>J*gcd/N</var>\cdot<var>(M*N+P)/gcd</var>}</code></p>
+		<p><code>=\enspace</code><code class="hint_pink"><var>formattedSquareRootOf(J/N*(M*N+P))</var></code></p>
+    </div>
+	</div>
+	
+	<div id="case7">
+            <div class="vars" data-ensure="K!=M && J!=P">
+				<var id="J">randRange(2,9)</var>
+				<var id="K">randRange(3,20)</var>
+				<var id="M">randRange(2,8)</var>
+				<var id="P">randRange(2,15)</var>
+				<var id="spRadical">splitRadical(K*M)</var>
+            </div>
+			<div class="question spin">
+				<p>化簡下列各式：</p>
+				<p class="question"><code><var>J</var>\sqrt{<var>K</var>}\cdot\dfrac{\sqrt{<var>M</var>}}{<var>P</var>}</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-type="rational"><var>J*spRadical[0]/P</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:20px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("sqrtPart").value</div>
+				    <div class="validator-function">
+				        if(guess.replace(/[ ]/g,"")==spRadical[1]){
+							return true;
+						}
+				    </div>
+				</div>
+				<p class="example">整數，例：<code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace\enspace3/4</code></p>
+				<p class="example">小數，例：<code>0.75</code></p>
+			</div>
+
+    <div class="hints">
+		<div>
+			<p><code><var>J</var>\sqrt{<var>K</var>}\cdot\dfrac{\sqrt{<var>M</var>}}{<var>P</var>}</code></p>
+			<p><code>=<var>fraction(J,P,true,true,false,false)</var>\sqrt{<var>K</var>\cdot<var>M</var>}</code></p>
+		</div>
+		<p data-if="spRadical[0]==1"><code>=\enspace</code><code class="hint_pink"><var>fraction(J,P,true,true,false,false)</var><var>formattedSquareRootOf(K*M)</var></code></p>
+		<p data-if="spRadical[0]!=1"><code>=<var>fraction(J,P,true,true,false,false)</var>\cdot<var>formattedSquareRootOf(K*M)</var></code></p>
+		<p data-if="spRadical[0]!=1"><code>=\enspace</code><code class="hint_pink"><var>fraction(J*spRadical[0],P,true,true,false,false)</var></code><code data-if="spRadical[1]!=1" class="hint_pink">\enspace\sqrt{<var>spRadical[1]</var>}</code></p>
+    </div>
+	</div>
+	
+	<div id="case8">
+            <div class="vars" data-ensure="J!=P">
+				<var id="J">randFromArray([2,3,5,7])</var>
+				<var id="K">randRange(2,5)</var>
+				<var id="M">randRange(2,5)</var>
+				<var id="P">randFromArray([2,3,5,6,7])</var>
+				<var id="spRadical">splitRadical(J*P)</var>
+            </div>
+			<div class="question spin">
+				<p>化簡下列各式：</p>
+				<p class="question"><code>\sqrt{<var>J</var>}(<var>K</var>-<var>M</var>\sqrt{<var>P</var>})</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>K</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:20px" id="sqrtPart_1"></span><code>-</code><span class="sol" data-forms="integer"><var>M*spRadical[0]</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:20px" id="sqrtPart_2"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("sqrtPart_1").value,document.getElementById("sqrtPart_2").value]</div>
+				    <div class="validator-function">
+				        if(guess[0].replace(/[ ]/g,"")==J&&guess[1].replace(/[ ]/g,"")==spRadical[1]){
+							return true;
+						}
+				    </div>
+				</div>
+				<p class="example">整數，例：<code>	6</code></p>
+			</div>
+
+    <div class="hints">
+		<div>
+			<p><code>\sqrt{<var>J</var>}(<var>K</var>-<var>M</var>\sqrt{<var>P</var>})</code></p>
+			<p><code>=<var>K</var>\cdot\sqrt{<var>J</var>}-<var>M</var>\cdot\sqrt{<var>J</var>}\cdot\sqrt{<var>P</var>}</code></p>
+		</div>
+		<p><code>=<var>K</var>\sqrt{<var>J</var>}-<var>M</var>\sqrt{<var>J</var>\cdot<var>P</var>}</code></p>
+		<p><code>=<var>K</var>\sqrt{<var>J</var>}-<var>M</var>\cdot<var>formattedSquareRootOf(J*P)</var></code></p>
+		<p><code>=\enspace</code><code class="hint_pink"><var>K</var>\sqrt{<var>J</var>}-<var>M*spRadical[0]</var>\sqrt{<var>spRadical[1]</var>}</code></p>
+    </div>
+	</div>
+	
+	<div id="case9">
+            <div class="vars" data-ensure="J!=P">
+				<var id="J">randFromArray([2,3,5,7])</var>
+				<var id="K">randRange(2,5)</var>
+				<var id="M">randRange(2,5)</var>
+				<var id="P">randFromArray([2,3,5,6,7])</var>
+				<var id="spRadical">splitRadical(J*P)</var>
+            </div>
+			<div class="question spin">
+				<p>化簡下列各式：</p>
+				<p class="question"><code>\sqrt{<var>J</var>}(<var>K</var>-<var>M</var>\sqrt{<var>P</var>})</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>K</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:20px" id="sqrtPart_1"></span><code>-</code><span class="sol" data-forms="integer"><var>M*spRadical[0]</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:20px" id="sqrtPart_2"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("sqrtPart_1").value,document.getElementById("sqrtPart_2").value]</div>
+				    <div class="validator-function">
+				        if(guess[0].replace(/[ ]/g,"")==J&&guess[1].replace(/[ ]/g,"")==spRadical[1]){
+							return true;
+						}
+				    </div>
+				</div>
+				<p class="example">整數，例：<code>	6</code></p>
+			</div>
+
+    <div class="hints">
+		<div>
+			<p><code>\sqrt{<var>J</var>}(<var>K</var>-<var>M</var>\sqrt{<var>P</var>})</code></p>
+			<p><code>=<var>K</var>\cdot\sqrt{<var>J</var>}-<var>M</var>\cdot\sqrt{<var>J</var>}\cdot\sqrt{<var>P</var>}</code></p>
+		</div>
+		<p><code>=<var>K</var>\sqrt{<var>J</var>}-<var>M</var>\sqrt{<var>J</var>\cdot<var>P</var>}</code></p>
+		<p><code>=<var>K</var>\sqrt{<var>J</var>}-<var>M</var>\cdot<var>formattedSquareRootOf(J*P)</var></code></p>
+		<p><code>=\enspace</code><code class="hint_pink"><var>K</var>\sqrt{<var>J</var>}-<var>M*spRadical[0]</var>\sqrt{<var>spRadical[1]</var>}</code></p>
+    </div>
+	</div>
+	
+	<div id="case10">
+            <div class="vars" data-ensure="spRadical[1]!=1">
+				<var id="J">randRange(2,8)</var>
+				<var id="K">randRange(5,20)</var>
+				<var id="spRadical">splitRadical(K)</var>
+            </div>
+			<div class="question spin">
+				<p>化簡下列各式：</p>
+				<p class="question"><code>\dfrac{<var>J</var>}{\sqrt{<var>K</var>}}</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-type="rational"><var>spRadical[0]==1?J/K:J/(spRadical[0]*spRadical[1])</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:20px" id="sqrtPart_1"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("sqrtPart_1").value</div>
+				    <div class="validator-function">
+				        if(guess.replace(/[ ]/g,"")==spRadical[1]){
+							return true;
+						}
+				    </div>
+				</div>
+				<p class="example">整數，例：<code>	6</code></p>
+				<p class="example">帶分數，例：<code>1\enspace 3/4</code></p>
+                <p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>	
+                <p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>
+			</div>
+
+    <div class="hints">
+		<div data-if="spRadical[0]!=1">
+			<p><code>\dfrac{<var>J</var>}{\sqrt{<var>K</var>}}</code></p>
+			<p><code>=\dfrac{<var>J</var>}{<var>formattedSquareRootOf(K)</var>}</code></p>
+		</div>
+		<p data-if="spRadical[0]!=1"><code>=\enspace</code><code data-if="J!=spRadical[0]"><var>fraction(J,spRadical[0],true,true,false,false)</var>\cdot\dfrac{1}{\sqrt{<var>spRadical[1]</var>}}</code><code data-if="J==spRadical[0]">\dfrac{1}{\sqrt{<var>spRadical[1]</var>}}</code></p>
+		<p data-if="spRadical[0]!=1"><code>=\enspace</code><code data-if="J!=spRadical[0]"><var>fraction(J,spRadical[0],true,true,false,false)</var>\cdot\dfrac{1\cdot\sqrt{<var>spRadical[1]</var>}}{\sqrt{<var>spRadical[1]</var>}\cdot\sqrt{<var>spRadical[1]</var>}}</code><code data-if="J==spRadical[0]">\dfrac{1\cdot\sqrt{<var>spRadical[1]</var>}}{\sqrt{<var>spRadical[1]</var>}\cdot\sqrt{<var>spRadical[1]</var>}}</code></p>
+		<p data-if="spRadical[0]!=1"><code>=\enspace</code><code data-if="J!=spRadical[0]"><var>fraction(J,spRadical[0],true,true,false,false)</var>\cdot\dfrac{\sqrt{<var>spRadical[1]</var>}}{<var>spRadical[1]</var>}</code><code data-if="J==spRadical[0]">\dfrac{\sqrt{<var>spRadical[1]</var>}}{<var>spRadical[1]</var>}</code></p>
+		<p data-if="spRadical[0]!=1"><code>=\enspace</code><code class="hint_pink"><var>fraction(J,spRadical[0]*spRadical[1],true,true,false,false)</var>\sqrt{<var>spRadical[1]</var>}</code></p>
+		<div data-if="spRadical[0]==1">
+			<p><code>\dfrac{<var>J</var>}{\sqrt{<var>K</var>}}</code></p>
+			<p><code>=\dfrac{<var>J</var>\cdot<var>formattedSquareRootOf(K)</var>}{<var>formattedSquareRootOf(K)</var>\cdot<var>formattedSquareRootOf(K)</var>}</code></p>
+		</div>
+		<p data-if="spRadical[0]==1"><code>=\dfrac{<var>J</var>\cdot<var>formattedSquareRootOf(K)</var>}{<var>K</var>}</code></p>
+		<p data-if="spRadical[0]==1"><code>=\enspace</code><code class="hint_pink"><var>fraction(J,K,true,true,false,false)</var><var>formattedSquareRootOf(K)</var></code></p>
+    </div>
+	</div>
+	
+	<div id="case11">
+		<div class="vars" data-ensure="getGCD(toFra[0],toFra[1])==1 && check_1 && check_2 &J!=K">
+			<var id="J">randRange(20,50)</var>
+			<var id="K">randRange(40,80)</var>
+			<var id="gcd">getGCD(J,K)</var>
+			<var id="toFra">KhanUtil.toFraction(J/K)</var>
+			<var id="check_1">
+			(function(){
+				var count = 1;
+				var primes = [1];
+				for(var i = 2, half = toFra[0]/2; i &lt;= half; i++){
+					if (toFra[0] % i == 0) {
+						primes[count] = i;
+						count++;
+					}
+				}
+				primes[count] = toFra[0];
+				for(var j=1;j&lt;=count;j++){
+					if(!isInt(sqrt(primes[j])) || primes[j]==1){
+					continue;
+				}else return false;
+				}
+				return true; 
+				
+			})()</var>
+			<var id="check_2">
+			(function(){
+				var count = 1;
+				var primes = [1];
+				for(var i = 2, half = toFra[1]/2; i &lt;= half; i++){
+					if (toFra[1] % i == 0) {
+						primes[count] = i;
+						count++;
+					}
+				}
+				primes[count] = toFra[1];
+				for(var j=1;j&lt;=count;j++){
+					if(!isInt(sqrt(primes[j])) || primes[j]==1){
+					continue;
+				}else return false;
+				}
+				return true; 
+				
+			})()</var>
+		</div>
+		<div class="question spin">
+			<p>化簡下列各式：</p>
+			<p class="question"><code>\dfrac{\sqrt{<var>J</var>}}{\sqrt{<var>K</var>}}</code></p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-type="rational"><var>1/toFra[1]</var></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:20px" id="sqrtPart_1"></span>
+			<div class="sol" data-type="custom">
+				<div class="guess">document.getElementById("sqrtPart_1").value</div>
+				<div class="validator-function">
+					if(guess.replace(/[ ]/g,"")==toFra[0]*toFra[1]){
+						return true;
+					}
+				</div>
+			</div>
+			<p class="example">整數，例：<code>	6</code></p>
+			<p class="example">帶分數，例：<code>1\enspace 3/4</code></p>
+			<p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>	
+			<p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>
+		</div>
+
+		<div class="hints">
+			<p><br /><code>\dfrac{\sqrt{<var>J</var>}}{\sqrt{<var>K</var>}}</code></p>
+			<p><code>=\sqrt{\dfrac{<var>J</var>}{<var>K</var>}}</code></p>
+			<p data-if="gcd!=1"><code>=\sqrt{<var>fraction(J,K,true,true,false,false)</var>}</code></p>
+			<p><code>=\sqrt{\dfrac{<var>toFra[0]</var>\cdot<var>toFra[1]</var>}{<var>toFra[1]</var>\cdot<var>toFra[1]</var>}}</code></p>
+			<p><code>=\enspace</code><code class="hint_pink">\dfrac{1}{<var>toFra[1]</var>}\sqrt{<var>toFra[0]*toFra[1]</var>}</code></p>
+		</div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

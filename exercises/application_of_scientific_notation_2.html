@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>科學記號的應用</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+		 #answer_area .exp input { vertical-align: top; font-size: 6px; width：30px;height: 9px;}
+    </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars">
+			<var id="J">randRange(2,9)</var>
+        </div>
+		<p class="question">一個電子所帶的電量約為 <code>1.6\times 10^{-19}</code> 庫侖，則 <code><var>J</var></code> 莫耳電子所帶的電量約為多少庫侖(已知 <code>1</code> 莫耳 <code>=6\times 10^{23}</code> 個) ？</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-type="decimal"><var>9.6/10*J</var></span>
+            <code> \times 10 </code> <sup class="sol exp"><var>5</var></sup> <code>\enspace 庫侖</code>
+			<p class="example">整數，例：<code>6</code></p>
+			<p class="example">小數，例：<code>0.75</code></p>
+		</div>
+		<div class="hints">
+			<p>我們已經知道 <code>1</code> 個電子的帶電量為 <code>1.6\times 10^{-19}</code> 庫侖。</p>
+			<p>我們要算一算 <code><var>J</var></code> 莫耳電子的帶電量。</p>
+			<p>我們知道 <code>1</code> 莫耳 <code>=6\times 10^{23}</code> 個，現在有 <code><var>J</var></code> 莫耳，所以總共有 <code>=<var>J</var>\times 6 \times 10^{23}</code> 個電子。</p>
+			<div>
+				<p>因此，要計算 <code><var>J</var>\times 6 \times 10^{23}</code> 個電子的帶電量，就要用</p>
+				<p><code><var>J</var>\times 6\times 10^{23}\times 1.6\times 10^{-19}=(<var>J</var>\times 6\times 1.6)\times (10^{23} \times 10^{-19})</code></p>
+			</div>
+			<p>最後的答案要用科學記號的形式表示，</p>
+			<p>因此，本題的答案為 <code><var>J</var>\times 9.6\times 10^{4}=</code><code class="hint_pink">\enspace <var>accMul(9.6/10,J)</var>\times 10^{5}</code> 庫侖。</p>
+		</div>
+	</div>
+	
+	<div id="case2">
+        <div class="vars">
+			<var id="J">2*randRange(1,4)</var>
+        </div>
+		<p class="question">一個電子所帶的電量約為 <code>1.6\times 10^{-19}</code> 庫侖，則 <code><var>J</var></code> 庫侖大約是多少個電子的帶電量？</p>
+		<div class="solution" data-type="multiple" style="vertical-align:middle">
+			<span class="sol" data-type="rational"><var>J/1.6</var></span>
+            <code> \times 10</code> <sup class="sol exp"><var>19</var></sup> <code>\enspace 個</code>
+			<p class="example">整數，例：<code>6</code></p>
+			<p class="example">小數，例：<code>0.75</code></p>
+		</div>
+		<div class="hints">
+			<p>我們知道一個電子的帶電量約為 <code>1.6\times 10^{-19}</code> 庫侖，</p>
+			<p>要計算 <code><var>J</var></code> 庫侖大約是多少電子的帶電量時，</p>
+			<div>
+				<p>我們就要用</p>
+				<p><code><var>J</var>\div (1.6\times 10^{-19})=\dfrac{<var>J</var>}{1.6\times 10^{-19}}=<var>J/1.6</var>\times 10^{19}</code> 。</p>
+			</div>
+			<p>因此，本題的答案為 <code class="hint_pink"><var>J/1.6</var>\times 10^{19}</code> 個。</p>
+		</div>
+	</div>
+	
+	<div id="case3">
+        <div class="vars">
+			<var id="J">randRange(5,20)</var>
+        </div>
+		<p class="question"><code>6\times 10^{23}</code> 個碳原子的重量是 <code>12</code> 公克，則 <code><var>J</var></code> 個碳原子的重量是多少公克？(答案用科學記號的形式表示)</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-type="rational"><var>2*J/10</var></span>
+            <code> \times 10 </code> <sup class="sol exp"><var>-22</var></sup><code>\enspace 公克</code>
+			<p class="example">整數，例：<code>6</code></p>
+			<p class="example">小數，例：<code>0.75</code></p>
+		</div>
+		<div class="hints">
+			<p>我們知道 <code>6\times 10^{23}</code> 個碳原子的重量是 <code>12</code> 公克，現在要計算 <code><var>J</var></code> 個碳原子的重量時，我們先算出 <code>1</code> 個碳原子的重量是幾公克，</p>
+			<p><code>1</code> 個碳原子的重量 <code>=\dfrac{12}{6\times 10^{23}}=2\times 10^{-23}</code> 公克，</p>
+			<p><code><var>J</var></code> 個碳原子的重量 <code>=<var>J</var>\times 2\times 10^{-23}=<var>2*J</var>\times 10^{-23}</code> 公克，</p>
+			<p>要化成科學記號的形式 <code>a\times 10^{n}</code> ，且 <code>a</code> 要滿足 <code>1&le;a&lt;10</code> ，</p>
+			<p>所以答案為 <code>(<var>2*J</var>\div 10)\times 10^{-23+1}=</code><code class="hint_pink">\enspace<var>2*J/10</var>\times 10^{-22}</code> 公克。</p>
+		</div>
+	</div>
+	
+	<div id="case4">
+        <div class="vars">
+			<var id="J">randRange(51,89)/10</var>
+			<var id="L">randRange(51,89)/10</var>
+        </div>
+		<p class="question">已知實驗室有體長為 <code><var>J</var>\times 10^{-4}</code> 公尺的變形蟲和體長為 <code><var>L</var>\times 10^{-5}</code> 公尺的草履蟲，請問變形蟲的體長比草履蟲長多少公尺？(以科學記號表示)</p>
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-type="rational"><var>J-L/10</var></span>
+            <code> \times 10 </code> <sup class="sol exp"><var>-4</var></sup><code>\enspace 公尺</code>
+			<p class="example">整數，例：<code>6</code></p>
+			<p class="example">小數，例：<code>0.75</code></p>
+		</div>
+		<div class="hints">
+			<div>
+				<p>我們要算出變形蟲及草履蟲的長相差多少，所以要用 </p>
+				<p><code><var>J</var>\times 10^{-4}-<var>L</var>\times 10^{-5}</code> ，</p>
+			</div>
+			<p>首先我們應該先把指數的次方換成一樣後再相減，</p>
+			<p><code><var>L</var>\times 10^{-5}</code> 公尺 <code>=(<var>L</var>\div 10)\times 10^{(-5+1)}=<var>L*10/100</var>\times 10^{-4}</code> </p>
+			<p><code><var>J</var>\times 10^{-4}-<var>L*10/100</var>\times 10^{-4}=<var>Subtr(J,L*10/100)</var>\times 10^{-4}</code> 公尺</p>
+			<p>所以變形蟲比草履蟲長 <code class="hint_pink"><var>Subtr(J,L*10/100)</var>\times 10^{-4}</code> 公尺。</p>
+		</div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

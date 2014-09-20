@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>在具體情境中，理解先乘再除與先除再乘的結果相同(5-a-02)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars">
+			<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+			<var id="j_s">randRange(3,10)</var>
+			<var id="J">5*j_s</var>
+			<var id="K">randRange(4,9)</var>
+			<var id="R">j_s*K</var>
+        </div>
+		<p class="question"><code>1</code> 盒糖果有 <code><var>J</var></code> 顆， <code><var>K</var></code> 盒糖果平分給 <code>5</code> 人，每一個人分到多少顆糖果？</p>
+		<div class="problem">
+			<div>
+				<p>方法一：先算總共有幾顆糖果，再平分給 <code>5</code> 個人，</p>
+				<p><code><var>J</var>\enspace\times\enspace</code><input type="text" id="a_1" style="width:30px"><code>\enspace\div\enspace</code><input type="text" id="a_2" style="width:30px"><code>\enspace=\enspace</code><input type="text" id="a_3" style="width:30px"></p>
+			</div>
+			<div>
+				<p>方法二：先算 <code>1</code> 盒糖果分給 <code>5</code> 個人，一人可以得到幾顆，再乘以 <code><var>K</var></code> 盒，就知道每個人最後可以分得多少糖果了，</p>
+				<p><code><var>J</var>\enspace\div\enspace</code><input type="text" id="a_4" style="width:30px"><code>\enspace\times\enspace</code><input type="text" id="a_5" style="width:30px"><code>\enspace=\enspace</code><input type="text" id="a_6" style="width:30px"></p>
+			</div>
+			<p>兩種方法的答案一樣嗎？</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<p><input type="radio" name="choice_1" id="c_1"><var>"一樣"</var><br /></p>
+			<p><input type="radio" name="choice_1" id="c_2"><var>"不一樣"</var><br /></p>
+			<div class="sol" data-type="custom">
+				<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value]</div>
+				<div class="validator-function">
+					var aBoolean_1 = false;
+					var aBoolean_2 = false;
+					if(guess[0].replace(/[ ]/g,"")==K&&guess[1].replace(/[ ]/g,"")==5&&guess[2].replace(/[ ]/g,"")==R){
+						aBoolean_1 = true;
+					}
+					if(guess[3].replace(/[ ]/g,"")==5&&guess[4].replace(/[ ]/g,"")==K&&guess[5].replace(/[ ]/g,"")==R){
+						aBoolean_2 = true;
+					}
+				    return aBoolean_1&&aBoolean_2&&document.getElementById("c_1").checked;
+				</div>
+			</div>
+			<p class="problem">選擇並在題目下方空格內填入答案</p>
+		</div>
+
+		<div class="hints">
+			<div>
+				<p>方法一：先算總共有幾顆糖果，再平分給 <code>5</code> 個人，</p>
+				<p><code><var>J</var>\times</code><code class="hint_pink">\enspace<var>K</var></code><code>\enspace\div</code><code class="hint_pink">\enspace<var>5</var></code><code>\enspace=<var>J*K</var>\div<var>5</var>=</code><code class="hint_pink">\enspace<var>R</var></code></p>
+			</div>
+			<div>
+				<p>方法二：先算 <code>1</code> 盒糖果分給 <code>5</code> 個人，一人可以得到幾顆，再乘以 <code><var>K</var></code> 盒，就知道每個人最後可以分得多少糖果了，</p>
+				<p><code><var>J</var>\div</code><code class="hint_pink">\enspace<var>5</var></code><code>\enspace\times</code><code class="hint_pink">\enspace<var>K</var></code><code>\enspace=<var>j_s</var>\times<var>K</var>=</code><code class="hint_pink">\enspace<var>R</var></code></p>
+			</div>
+			<p>兩種方法的答案 <code class="hint_pink">一樣</code> 。</p>
+		</div>
+	</div>
+	
+	<div id="case2">
+        <div class="vars">
+			<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+			<var id="j_s">randRange(2,8)</var>
+			<var id="J">8*j_s</var>
+			<var id="K">4*randRange(5,9)</var>
+			<var id="R">2*j_s*K</var>
+        </div>
+		<div class="question spin question">
+			<p>寫成一個算式，再算算看：</p>
+			<p class="question">媽媽包了 <code><var>J</var></code> 串粽子，每串粽子有 <code><var>K</var></code> 顆，全部平分送給 <code>4</code> 所育幼院，每所育幼院分到幾顆粽子？</p>
+		</div>
+		<div class="problem">
+			<div>
+				<p>方法一：先算總共有幾顆粽子，再平分給 <code>4</code> 所育幼院，</p>
+				<p><code><var>J</var>\enspace\times\enspace</code><input type="text" id="a_1" style="width:30px"><code>\enspace\div\enspace</code><input type="text" id="a_2" style="width:30px"><code>\enspace=\enspace</code><input type="text" id="a_3" style="width:30px"></p>
+			</div>
+			<div>
+				<p>方法二：先算 <code>1</code> 所育幼院可以分得幾串粽子，再乘以 <code><var>K</var></code> 就可以知道每所育幼院得到幾顆粽子了，</p>
+				<p><code><var>J</var>\enspace\div\enspace</code><input type="text" id="a_4" style="width:30px"><code>\enspace\times\enspace</code><input type="text" id="a_5" style="width:30px"><code>\enspace=\enspace</code><input type="text" id="a_6" style="width:30px"></p>
+			</div>
+			<p>兩種方法的答案一樣嗎？</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<p><input type="radio" name="choice_1" id="c_1"><var>"一樣"</var><br /></p>
+			<p><input type="radio" name="choice_1" id="c_2"><var>"不一樣"</var><br /></p>
+			<div class="sol" data-type="custom">
+				<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value]</div>
+				<div class="validator-function">
+					var aBoolean_1 = false;
+					var aBoolean_2 = false;
+					if(guess[0].replace(/[ ]/g,"")==K&&guess[1].replace(/[ ]/g,"")==4&&guess[2].replace(/[ ]/g,"")==R){
+						aBoolean_1 = true;
+					}
+					if(guess[3].replace(/[ ]/g,"")==4&&guess[4].replace(/[ ]/g,"")==K&&guess[5].replace(/[ ]/g,"")==R){
+						aBoolean_2 = true;
+					}
+				    return aBoolean_1&&aBoolean_2&&document.getElementById("c_1").checked;
+				</div>
+			</div>
+			<p class="problem">選擇並在題目下方空格內填入答案</p>
+		</div>
+
+		<div class="hints">
+			<div>
+				<p>方法一：先算總共有幾顆粽子，再平分給 <code>4</code> 所育幼院，</p>
+				<p><code><var>J</var>\times</code><code class="hint_pink">\enspace<var>K</var></code><code>\enspace\div</code><code class="hint_pink">\enspace<var>4</var></code><code>\enspace=<var>J*K</var>\div<var>4</var>=</code><code class="hint_pink">\enspace<var>R</var></code></p>
+			</div>
+			<div>
+				<p>方法二：先算 <code>1</code> 所育幼院可以分得幾串粽子，再乘以 <code><var>K</var></code> 就可以知道每所育幼院得到幾顆粽子了，</p>
+				<p><code><var>J</var>\div</code><code class="hint_pink">\enspace<var>4</var></code><code>\enspace\times</code><code class="hint_pink">\enspace<var>K</var></code><code>\enspace=<var>2*j_s</var>\times<var>K</var>=</code><code class="hint_pink">\enspace<var>R</var></code></p>
+			</div>
+			<p>兩種方法的答案 <code class="hint_pink">一樣</code> 。</p>
+		</div>
+	</div>
+	
+	<div id="case3" data-ensure="isInt(R)">
+        <div class="vars">
+			<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+			<var id="J">100*randRange(4,10)</var>
+			<var id="K">randRange(4,5)</var>
+			<var id="subjects">
+			(function(){
+				var arr = [];
+				K==4?arr=["國語、數學、自然和社會","四"]:arr=["國語、數學、自然、藝術與人文","五"];
+				return arr;
+			})()</var>
+			<var id="grade">randFromArray(["五","七","八","九"])</var>
+			<var id="R">J/K*4</var>
+        </div>
+		<div class="question spin">
+			<p>寫成一個算式，再算算看：</p>
+			<p class="question">一包影印紙有 <code><var>J</var></code> 張，學校印<var>grade</var>年級<var>subjects[0]+subjects[1]</var>領域評量卷，共用 <code>4</code> 包影印紙，每領域印了多少張評量卷？</p>
+		</div>
+		<div class="problem">
+			<div>
+				<p>方法一：先算總共有幾張評量卷，再平分給 <code><var>K</var></code> 個領域，</p>
+				<p><code><var>J</var>\enspace\times\enspace</code><input type="text" id="a_1" style="width:30px"><code>\enspace\div\enspace</code><input type="text" id="a_2" style="width:30px"><code>\enspace=\enspace</code><input type="text" id="a_3" style="width:30px"></p>
+			</div>
+			<div>
+				<p>方法二：先算 <code>1</code> 包影印紙平分給 <code><var>K</var></code> 個領域時，每一領域用掉幾張紙，再乘以 <code>4</code> 包就可以知道每個領域總共印了多少張評量卷，</p>
+				<p><code><var>J</var>\enspace\div\enspace</code><input type="text" id="a_4" style="width:30px"><code>\enspace\times\enspace</code><input type="text" id="a_5" style="width:30px"><code>\enspace=\enspace</code><input type="text" id="a_6" style="width:30px"></p>
+			</div>
+			<p>兩種方法的答案一樣嗎？</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<p><input type="radio" name="choice_1" id="c_1"><var>"一樣"</var><br /></p>
+			<p><input type="radio" name="choice_1" id="c_2"><var>"不一樣"</var><br /></p>
+			<div class="sol" data-type="custom">
+				<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("a_6").value]</div>
+				<div class="validator-function">
+					var aBoolean_1 = false;
+					var aBoolean_2 = false;
+					if(guess[0].replace(/[ ]/g,"")==4&&guess[1].replace(/[ ]/g,"")==K&&guess[2].replace(/[ ]/g,"")==R){
+						aBoolean_1 = true;
+					}
+					if(guess[3].replace(/[ ]/g,"")==K&&guess[4].replace(/[ ]/g,"")==4&&guess[5].replace(/[ ]/g,"")==R){
+						aBoolean_2 = true;
+					}
+				    return aBoolean_1&&aBoolean_2&&document.getElementById("c_1").checked;
+				</div>
+			</div>
+			<p class="problem">選擇並在題目下方空格內填入答案</p>
+		</div>
+
+		<div class="hints">
+			<div>
+				<p>方法一：先算總共有幾張評量卷，再平分給 <code><var>K</var></code> 個領域，</p>
+				<p><code><var>J</var>\times</code><code class="hint_pink">\enspace 4</code><code>\enspace\div</code><code class="hint_pink">\enspace<var>K</var></code><code>\enspace=<var>J*4</var>\div<var>K</var>=</code><code class="hint_pink">\enspace<var>R</var></code></p>
+			</div>
+			<div>
+				<p>方法二：先算 <code>1</code> 包影印紙平分給 <code><var>K</var></code> 個領域時，每一領域用掉幾張紙，再乘以 <code>4</code> 包就可以知道每個領域總共印了多少張評量卷，</p>
+				<p><code><var>J</var>\div</code><code class="hint_pink">\enspace<var>K</var></code><code>\enspace\times</code><code class="hint_pink">\enspace<var>4</var></code><code>\enspace=<var>J/K</var>\times<var>4</var>=</code><code class="hint_pink">\enspace<var>R</var></code></p>
+			</div>
+			<p>兩種方法的答案 <code class="hint_pink">一樣</code> 。</p>
+		</div>
+	</div>
+</div>
+</div>
+</body>
+</html>

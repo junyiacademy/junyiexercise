@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie-helpers graphie interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>10以內的分合</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+		.box {
+            border:2px solid black;
+            width:2.5em;
+            height:2.5em;
+            text-align:center;
+            vertical-align:middle;
+            background-color:white;
+        }
+		.box1 {
+            border:2px solid black;
+            width:2.5em;
+            height:2.5em;
+            text-align:center;
+            vertical-align:middle;
+            background-color:white;
+			color:red;
+        }
+        </style>
+	<script type="text/javascript">
+	function procIndex(array) {
+        var indexes=[];
+        for (var i in array) {
+            if (array[i] == true)
+                indexes.push(i);
+        }
+        return indexes;
+    }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars" >
+		</div>
+		 <div class="problem">
+			<p>請你試著把上層的 <code>4</code> 個 <code>\bigcirc</code> 分成 <code>2</code> 個數。<code>(</code> 分的方式不可重複喔 <code>)</code></p>
+				<div class="graphie" id="circle_move_1">
+				init({
+                    range: [ [0, 13], [0, 9] ],
+                    scale: 40
+                });
+				path([[1,8],[5,8],[5,7],[1,7],[1,8]],{stroke:"#6495ED"})
+				line([3,7] ,[2,6],{stroke:"#6495ED"});
+				line([3,7] ,[4,6],{stroke:"#6495ED"});
+				path([[0,6],[2.5,6],[2.5,5],[0,5],[0,6]],{stroke:"#6495ED"})
+				path([[3.5,6],[6,6],[6,5],[3.5,5],[3.5,6]],{stroke:"#6495ED"})
+				addMouseLayer();
+				a1 = addMovableCircle([1,1],[1.5,7.5]);
+				a2 = addMovableCircle([1,1],[2.5,7.5]);
+				a3 = addMovableCircle([1,1],[3.5,7.5]);
+				a4 = addMovableCircle([1,1],[4.5,7.5]);
+				
+				path([[8,8],[12,8],[12,7],[8,7],[8,8]],{stroke:"#6495ED"})
+				line([10,7] ,[9,6],{stroke:"#6495ED"});
+				line([10,7] ,[11,6],{stroke:"#6495ED"});
+				path([[7,6],[9.5,6],[9.5,5],[7,5],[7,6]],{stroke:"#6495ED"})
+				path([[10.5,6],[13,6],[13,5],[10.5,5],[10.5,6]],{stroke:"#6495ED"})
+				a5 = addMovableCircle([1,1],[8.5,7.5]);
+				a6 = addMovableCircle([1,1],[9.5,7.5]);
+				a7 = addMovableCircle([1,1],[10.5,7.5]);
+				a8 = addMovableCircle([1,1],[11.5,7.5]);
+				
+				path([[1,4],[5,4],[5,3],[1,3],[1,4]],{stroke:"#6495ED"})
+				line([3,3] ,[2,2],{stroke:"#6495ED"});
+				line([3,3] ,[4,2],{stroke:"#6495ED"});
+				path([[0,2],[2.5,2],[2.5,1],[0,1],[0,2]],{stroke:"#6495ED"})
+				path([[3.5,2],[6,2],[6,1],[3.5,1],[3.5,2]],{stroke:"#6495ED"})
+				
+				a9 = addMovableCircle([1,1],[1.5,3.5]);
+				a10 = addMovableCircle([1,1],[2.5,3.5]);
+				a11 = addMovableCircle([1,1],[3.5,3.5]);
+				a12 = addMovableCircle([1,1],[4.5,3.5]);
+				</div>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">
+				(function(){
+					var a=[[a1.coord,a2.coord,a3.coord,a4.coord],[a5.coord,a6.coord,a7.coord,a8.coord],[a9.coord,a10.coord,a11.coord,a12.coord]];
+					var i,j,k;
+					var b=new Array(new Array(4),new Array(4),new Array(4));
+					for(i=0;i&lt;4;i++)
+					{
+						if( a[0][i][0]&gt;0 && a[0][i][0] &lt;2.5  && a[0][i][1] &gt;5 && a[0][i][1]&lt;6)
+						{
+							b[0][i]=1;
+						}
+						else if( a[0][i][0]&gt;3.5 && a[0][i][0]&lt;6 && a[0][i][1] &gt;5 && a[0][i][1]&lt;6)
+						{
+							b[0][i]=2;
+						}
+						else
+						{
+							b[0][i]=0;
+						}
+					}
+					for(j=0;j&lt;4;j++)
+					{
+						if( a[1][j][0]&gt;7 && a[1][j][0] &lt;9.5  && a[1][j][1] &gt;5 && a[1][j][1]&lt;6)
+						{
+							b[1][j]=1;
+						}
+						else if( a[1][j][0]&gt;10.5 && a[1][j][0]&lt;13 && a[1][j][1] &gt;5 && a[1][j][1]&lt;6)
+						{
+							b[1][j]=2;
+						}
+						else
+						{
+							b[1][j]=0;
+						}
+					}
+					for(k=0;k&lt;4;k++)
+					{
+						if( a[2][k][0]&gt;0 && a[2][k][0] &lt;2.5  && a[2][k][1] &gt;1 && a[2][k][1]&lt;2)
+						{
+							b[2][k]=1;
+						}
+						else if( a[2][k][0]&gt;3.5 && a[2][k][0]&lt;6 && a[2][k][1] &gt;1 && a[2][k][1]&lt;2)
+						{
+							b[2][k]=2;
+						}
+						else
+						{
+							b[2][k]=0;
+						}
+					}
+					J=b[0][0]+b[0][1]+b[0][2]+b[0][3];
+					K=b[1][0]+b[1][1]+b[1][2]+b[1][3];
+					L=b[2][0]+b[2][1]+b[2][2]+b[2][3];
+					var I=new Array(J,K,L);
+					return I;
+				 })()
+				</div>
+				<div class="validator-function">
+						if(guess[0]==0&&guess[1]==0&&guess[2]==0){
+							return "";
+						}
+						if(guess[0]&gt;=5 &&guess[0]&lt;=7 &&guess[1]&gt;=5 &&guess[1]&lt;=7 && guess[2]&gt;=5 &&guess[2]&lt;=7 )
+						{
+							if(guess[0]!=guess[1] && guess[0]!=guess[2] && guess[1]!=guess[2])
+							{
+								return  true;
+							}
+							return false;
+						}
+						return false;
+						
+				</div>
+			</div>
+			<div class="example">請將圓圈移動到合適的位置</div>
+		</div>
+		<div class="hints">
+			<div class="graphie" data-update="circle_move_1">
+				a1.moveTo(0.5,5.5);
+				a2.moveTo(1,5.5);
+				a3.moveTo(1.5,5.5);
+				a4.moveTo(4,5.5);
+				a5.moveTo(7.5,5.5);
+				a6.moveTo(8.5,5.5);
+				a7.moveTo(11,5.5);
+				a8.moveTo(12.5,5.5);
+				a9.moveTo(0.5,1.5);
+				a10.moveTo(4,1.5);
+				a11.moveTo(4.5,1.5);
+				a12.moveTo(5,1.5);
+			</div>
+		</div>
+	</div>
+	<div id="case2">
+        <div class="vars" >
+		</div>
+		<div class="problem">
+			<p>請你試著把上層的 <code>5</code> 個 <code>\bigcirc</code> 分成 <code>2</code> 個數。<code>(</code> 分的方式不可重複喔 <code>)</code></p>
+				<div class="graphie" id="circle_move_1">
+					init({
+						range: [ [0, 13], [0, 9] ],
+						scale: 40
+					});
+					path([[1,8],[5,8],[5,7],[1,7],[1,8]],{stroke:"#6495ED"})
+					line([3,7] ,[2,6],{stroke:"#6495ED"});
+					line([3,7] ,[4,6],{stroke:"#6495ED"});
+					path([[0,6],[2.5,6],[2.5,5],[0,5],[0,6]],{stroke:"#6495ED"})
+					path([[3.5,6],[6,6],[6,5],[3.5,5],[3.5,6]],{stroke:"#6495ED"})
+					addMouseLayer();
+					a1 = addMovableCircle([1,1],[1.5,7.5]);
+					a2 = addMovableCircle([1,1],[2,7.5]);
+					a3 = addMovableCircle([1,1],[2.5,7.5]);
+					a4 = addMovableCircle([1,1],[3,7.5]);
+					a5 = addMovableCircle([1,1],[3.5,7.5]);
+					
+					path([[8,8],[12,8],[12,7],[8,7],[8,8]],{stroke:"#6495ED"})
+					line([10,7] ,[9,6],{stroke:"#6495ED"});
+					line([10,7] ,[11,6],{stroke:"#6495ED"});
+					path([[7,6],[9.5,6],[9.5,5],[7,5],[7,6]],{stroke:"#6495ED"})
+					path([[10.5,6],[13,6],[13,5],[10.5,5],[10.5,6]],{stroke:"#6495ED"})
+					a6 = addMovableCircle([1,1],[8.5,7.5]);
+					a7 = addMovableCircle([1,1],[9,7.5]);
+					a8 = addMovableCircle([1,1],[9.5,7.5]);
+					a9 = addMovableCircle([1,1],[10,7.5]);
+					a10 = addMovableCircle([1,1],[10.5,7.5]);
+					
+					path([[1,4],[5,4],[5,3],[1,3],[1,4]],{stroke:"#6495ED"})
+					line([3,3] ,[2,2],{stroke:"#6495ED"});
+					line([3,3] ,[4,2],{stroke:"#6495ED"});
+					path([[0,2],[2.5,2],[2.5,1],[0,1],[0,2]],{stroke:"#6495ED"})
+					path([[3.5,2],[6,2],[6,1],[3.5,1],[3.5,2]],{stroke:"#6495ED"})
+					
+					a11 = addMovableCircle([1,1],[1.5,3.5]);
+					a12 = addMovableCircle([1,1],[2,3.5]);
+					a13 = addMovableCircle([1,1],[2.5,3.5]);
+					a14 = addMovableCircle([1,1],[3,3.5]);
+					a15 = addMovableCircle([1,1],[3.5,3.5]);
+					
+					path([[8,4],[12,4],[12,3],[8,3],[8,4]],{stroke:"#6495ED"})
+					line([10,3] ,[9,2],{stroke:"#6495ED"});
+					line([10,3] ,[11,2],{stroke:"#6495ED"});
+					path([[7,2],[9.5,2],[9.5,1],[7,1],[7,2]],{stroke:"#6495ED"})
+					path([[10.5,2],[13,2],[13,1],[10.5,1],[10.5,2]],{stroke:"#6495ED"})
+					a16 = addMovableCircle([1,1],[8.5,3.5]);
+					a17 = addMovableCircle([1,1],[9,3.5]);
+					a18 = addMovableCircle([1,1],[9.5,3.5]);
+					a19 = addMovableCircle([1,1],[10,3.5]);
+					a20 = addMovableCircle([1,1],[10.5,3.5]);
+				</div>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">
+				(function(){
+					var a=[[a1.coord,a2.coord,a3.coord,a4.coord,a5.coord],[a6.coord,a7.coord,a8.coord,a9.coord,a10.coord],
+							[a11.coord,a12.coord,a13.coord,a14.coord,a15.coord],[a16.coord,a17.coord,a18.coord,a19.coord,a20.coord]];
+					var i,j,k,l;
+					var b=new Array(new Array(4),new Array(4),new Array(4),new Array(4));
+					for(i=0;i&lt;5;i++)
+					{
+						if( a[0][i][0]&gt;0 && a[0][i][0] &lt;2.5  && a[0][i][1] &gt;5 && a[0][i][1]&lt;6)
+						{
+							b[0][i]=1;
+						}
+						else if( a[0][i][0]&gt;3.5 && a[0][i][0]&lt;6 && a[0][i][1] &gt;5 && a[0][i][1]&lt;6)
+						{
+							b[0][i]=2;
+						}
+						else
+						{
+							b[0][i]=0;
+						}
+					}
+					for(j=0;j&lt;5;j++)
+					{
+						if( a[1][j][0]&gt;7 && a[1][j][0] &lt;9.5  && a[1][j][1] &gt;5 && a[1][j][1]&lt;6)
+						{
+							b[1][j]=1;
+						}
+						else if( a[1][j][0]&gt;10.5 && a[1][j][0]&lt;13 && a[1][j][1] &gt;5 && a[1][j][1]&lt;6)
+						{
+							b[1][j]=2;
+						}
+						else
+						{
+							b[1][j]=0;
+						}
+					}
+					for(k=0;k&lt;5;k++)
+					{
+						if( a[2][k][0]&gt;0 && a[2][k][0] &lt;2.5  && a[2][k][1] &gt;1 && a[2][k][1]&lt;2)
+						{
+							b[2][k]=1;
+						}
+						else if( a[2][k][0]&gt;3.5 && a[2][k][0]&lt;6 && a[2][k][1] &gt;1 && a[2][k][1]&lt;2)
+						{
+							b[2][k]=2;
+						}
+						else
+						{
+							b[2][k]=0;
+						}
+					}
+					for(l=0;l&lt;5;l++)
+					{
+						if( a[3][l][0]&gt;7 && a[3][l][0] &lt;9.5  && a[3][l][1] &gt;1 && a[3][l][1]&lt;2)
+						{
+							b[3][l]=1;
+						}
+						else if( a[3][l][0]&gt;10.5 && a[3][l][0]&lt;13 && a[3][l][1] &gt;1 && a[3][l][1]&lt;2)
+						{
+							b[3][l]=2;
+						}
+						else
+						{
+							b[3][l]=0;
+						}
+					}
+					I=b[0][0]+b[0][1]+b[0][2]+b[0][3]+b[0][4];
+					J=b[1][0]+b[1][1]+b[1][2]+b[1][3]+b[1][4];
+					K=b[2][0]+b[2][1]+b[2][2]+b[2][3]+b[2][4];
+					L=b[3][0]+b[3][1]+b[3][2]+b[3][3]+b[3][4];
+					var M=new Array(I,J,K,L);
+					return M;
+				 })()
+				</div>
+				<div class="validator-function">
+					if(guess[0]==0&&guess[1]==0&&guess[2]==0&&guess[3]==0){
+						return "";
+					}
+					if(guess[0]&gt;=6 &&guess[0]&lt;=9 &&guess[1]&gt;=6 &&guess[1]&lt;=9 && guess[2]&gt;=6 &&guess[2]&lt;=9  && guess[3]&gt;=6 &&guess[3]&lt;=9)
+						{
+							if(guess[0]!=guess[1]!=guess[2]!=guess[3])
+							{
+								return  true;
+							}
+							return false;
+						}
+						return false;
+				</div>
+			</div>
+			<div class="example">請將圓圈移動到合適的位置</div>
+		</div>
+		<div class="hints">
+			<div class="graphie" data-update="circle_move_1">
+				a1.moveTo(0.5,5.5);
+				a2.moveTo(1,5.5);
+				a3.moveTo(1.5,5.5);
+				a4.moveTo(2,5.5);
+				
+				a5.moveTo(4,5.5);
+				a6.moveTo(7.5,5.5);
+				a7.moveTo(8,5.5);
+				a8.moveTo(8.5,5.5);
+				a9.moveTo(11,5.5);
+				a10.moveTo(12,5.5);
+				a11.moveTo(0.5,1.5);
+				a12.moveTo(1,1.5);
+				a13.moveTo(4,1.5);
+				a14.moveTo(4.5,1.5);
+				a15.moveTo(5,1.5);
+				
+				a16.moveTo(8,1.5);
+				
+				a17.moveTo(11,1.5);
+				a18.moveTo(11.5,1.5);
+				a19.moveTo(12,1.5);
+				a20.moveTo(12.5,1.5);
+			</div>
+		</div>
+	</div>
+	<div id="case3">
+        <div class="vars" >
+		</div>
+		<div class="problem">
+			<p>請你試著把上層的 <code>6</code> 個 <code>\bigcirc</code> 分成 <code>2</code> 個數。<code>(</code> 分的方式不可重複喔 <code>)</code></p>
+			<div class="graphie" id="circle_move_1">
+					init({
+						range: [ [0, 13], [0, 9] ],
+						scale: 40
+					});
+					path([[1,8],[5,8],[5,7],[1,7],[1,8]],{stroke:"#6495ED"})
+					line([3,7] ,[2,6],{stroke:"#6495ED"});
+					line([3,7] ,[4,6],{stroke:"#6495ED"});
+					path([[0,6],[2.5,6],[2.5,5],[0,5],[0,6]],{stroke:"#6495ED"})
+					path([[3.5,6],[6,6],[6,5],[3.5,5],[3.5,6]],{stroke:"#6495ED"})
+					addMouseLayer();
+					a1 = addMovableCircle([1,1],[1.5,7.5]);
+					a2 = addMovableCircle([1,1],[2,7.5]);
+					a3 = addMovableCircle([1,1],[2.5,7.5]);
+					a4 = addMovableCircle([1,1],[3,7.5]);
+					a5 = addMovableCircle([1,1],[3.5,7.5]);
+					a6 = addMovableCircle([1,1],[4,7.5]);
+					
+					path([[8,8],[12,8],[12,7],[8,7],[8,8]],{stroke:"#6495ED"})
+					line([10,7] ,[9,6],{stroke:"#6495ED"});
+					line([10,7] ,[11,6],{stroke:"#6495ED"});
+					path([[7,6],[9.5,6],[9.5,5],[7,5],[7,6]],{stroke:"#6495ED"})
+					path([[10.5,6],[13,6],[13,5],[10.5,5],[10.5,6]],{stroke:"#6495ED"})
+					a7 = addMovableCircle([1,1],[8.5,7.5]);
+					a8 = addMovableCircle([1,1],[9,7.5]);
+					a9 = addMovableCircle([1,1],[9.5,7.5]);
+					a10 = addMovableCircle([1,1],[10,7.5]);
+					a11 = addMovableCircle([1,1],[10.5,7.5]);
+					a12 = addMovableCircle([1,1],[11,7.5]);
+					
+					path([[1,4],[5,4],[5,3],[1,3],[1,4]],{stroke:"#6495ED"})
+					line([3,3] ,[2,2],{stroke:"#6495ED"});
+					line([3,3] ,[4,2],{stroke:"#6495ED"});
+					path([[0,2],[2.5,2],[2.5,1],[0,1],[0,2]],{stroke:"#6495ED"})
+					path([[3.5,2],[6,2],[6,1],[3.5,1],[3.5,2]],{stroke:"#6495ED"})
+					
+					a13 = addMovableCircle([1,1],[1.5,3.5]);
+					a14 = addMovableCircle([1,1],[2,3.5]);
+					a15 = addMovableCircle([1,1],[2.5,3.5]);
+					a16 = addMovableCircle([1,1],[3,3.5]);
+					a17 = addMovableCircle([1,1],[3.5,3.5]);
+					a18 = addMovableCircle([1,1],[4,3.5]);
+					
+					path([[8,4],[12,4],[12,3],[8,3],[8,4]],{stroke:"#6495ED"})
+					line([10,3] ,[9,2],{stroke:"#6495ED"});
+					line([10,3] ,[11,2],{stroke:"#6495ED"});
+					path([[7,2],[9.5,2],[9.5,1],[7,1],[7,2]],{stroke:"#6495ED"})
+					path([[10.5,2],[13,2],[13,1],[10.5,1],[10.5,2]],{stroke:"#6495ED"})
+					a19 = addMovableCircle([1,1],[8.5,3.5]);
+					a20 = addMovableCircle([1,1],[9,3.5]);
+					a21 = addMovableCircle([1,1],[9.5,3.5]);
+					a22 = addMovableCircle([1,1],[10,3.5]);
+					a23 = addMovableCircle([1,1],[10.5,3.5]);
+					a24 = addMovableCircle([1,1],[11,3.5]);
+			</div>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">
+				(function(){
+					var a=[[a1.coord,a2.coord,a3.coord,a4.coord,a5.coord,a6.coord],[a7.coord,a8.coord,a9.coord,a10.coord,a11.coord,a12.coord],
+							[a13.coord,a14.coord,a15.coord,a16.coord,a17.coord,a18.coord],[a19.coord,a20.coord,a21.coord,a22.coord,a23.coord,a24.coord]];
+					var i,j,k,l;
+					var b=new Array(new Array(6),new Array(6),new Array(6),new Array(6));
+					for(i=0;i&lt;6;i++)
+					{
+						if( a[0][i][0]&gt;0 && a[0][i][0] &lt;2.5  && a[0][i][1] &gt;5 && a[0][i][1]&lt;6)
+						{
+							b[0][i]=1;
+						}
+						else if( a[0][i][0]&gt;3.5 && a[0][i][0]&lt;6 && a[0][i][1] &gt;5 && a[0][i][1]&lt;6)
+						{
+							b[0][i]=2;
+						}
+						else
+						{
+							b[0][i]=0;
+						}
+					}
+					for(j=0;j&lt;6;j++)
+					{
+						if( a[1][j][0]&gt;7 && a[1][j][0] &lt;9.5  && a[1][j][1] &gt;5 && a[1][j][1]&lt;6)
+						{
+							b[1][j]=1;
+						}
+						else if( a[1][j][0]&gt;10.5 && a[1][j][0]&lt;13 && a[1][j][1] &gt;5 && a[1][j][1]&lt;6)
+						{
+							b[1][j]=2;
+						}
+						else
+						{
+							b[1][j]=0;
+						}
+					}
+					for(k=0;k&lt;6;k++)
+					{
+						if( a[2][k][0]&gt;0 && a[2][k][0] &lt;2.5  && a[2][k][1] &gt;1 && a[2][k][1]&lt;2)
+						{
+							b[2][k]=1;
+						}
+						else if( a[2][k][0]&gt;3.5 && a[2][k][0]&lt;6 && a[2][k][1] &gt;1 && a[2][k][1]&lt;2)
+						{
+							b[2][k]=2;
+						}
+						else
+						{
+							b[2][k]=0;
+						}
+					}
+					for(l=0;l&lt;6;l++)
+					{
+						if( a[3][l][0]&gt;7 && a[3][l][0] &lt;9.5  && a[3][l][1] &gt;1 && a[3][l][1]&lt;2)
+						{
+							b[3][l]=1;
+						}
+						else if( a[3][l][0]&gt;10.5 && a[3][l][0]&lt;13 && a[3][l][1] &gt;1 && a[3][l][1]&lt;2)
+						{
+							b[3][l]=2;
+						}
+						else
+						{
+							b[3][l]=0;
+						}
+					}
+					I=b[0][0]+b[0][1]+b[0][2]+b[0][3]+b[0][4]+b[0][5];
+					J=b[1][0]+b[1][1]+b[1][2]+b[1][3]+b[1][4]+b[1][5];
+					K=b[2][0]+b[2][1]+b[2][2]+b[2][3]+b[2][4]+b[2][5];
+					L=b[3][0]+b[3][1]+b[3][2]+b[3][3]+b[3][4]+b[3][5];
+					var M=new Array(I,J,K,L);
+					return M;
+				 })()
+				</div>
+				<div class="validator-function">
+					if(guess[0]==0&&guess[1]==0&&guess[2]==0&&guess[3]==0){
+						return "";
+					}
+					if(guess[0]&gt;=7 &&guess[0]&lt;=11 &&guess[1]&gt;=7 &&guess[1]&lt;=11 && guess[2]&gt;=7 &&guess[2]&lt;=11  && guess[3]&gt;=7 &&guess[3]&lt;=11)
+						{
+							if(guess[0]!=guess[1]!=guess[2]!=guess[3])
+							{
+								return  true;
+							}
+							return false;
+						}
+						return false;
+				</div>
+			</div>
+			<div class="example">請將圓圈移動到合適的位置</div>
+		</div>
+		<div class="hints">
+			<div class="graphie" data-update="circle_move_1">
+				a1.moveTo(0.5,5.5);
+				a2.moveTo(1,5.5);
+				a3.moveTo(1.5,5.5);
+				a4.moveTo(2,5.5);
+				a5.moveTo(4,5.5);
+				a6.moveTo(4.5,5.5);
+				
+				a7.moveTo(7.5,5.5);
+				a8.moveTo(8,5.5);
+				a9.moveTo(8.5,5.5);
+				
+				a10.moveTo(11,5.5);
+				a11.moveTo(12,5.5);
+				a12.moveTo(12.5,5.5);
+				
+				a13.moveTo(0.5,1.5);
+				a14.moveTo(1,1.5);
+				a15.moveTo(1.5,1.5);
+				a16.moveTo(2,1.75);
+				a17.moveTo(2,1.25);
+				a18.moveTo(4.5,1.5);
+				a19.moveTo(8,1.5);
+				a20.moveTo(11,1.5);
+				a21.moveTo(11.5,1.5);
+				a22.moveTo(12,1.5);
+				a23.moveTo(12.5,1.75);
+				a24.moveTo(12.5,1.25);
+			</div>
+		</div>
+	</div>
+	<div id="case4">
+        <div class="vars" >
+		</div>
+		<div class="problem">
+			<p>請你試著把上層的 <code>7</code> 個 <code>\bigcirc</code> 分成 <code>2</code> 個數。<code>(</code> 分的方式不可重複喔 <code>)</code></p>
+			<div class="graphie" id="circle_move_1">
+					init({
+						range: [ [0, 13], [0, 9] ],
+						scale: 40
+					});
+					path([[1,8],[5,8],[5,7],[1,7],[1,8]],{stroke:"#6495ED"})
+					line([3,7] ,[2,6],{stroke:"#6495ED"});
+					line([3,7] ,[4,6],{stroke:"#6495ED"});
+					path([[0,6],[2.5,6],[2.5,5],[0,5],[0,6]],{stroke:"#6495ED"})
+					path([[3.5,6],[6,6],[6,5],[3.5,5],[3.5,6]],{stroke:"#6495ED"})
+					addMouseLayer();
+					a1 = addMovableCircle([1,1],[1.5,7.5]);
+					a2 = addMovableCircle([1,1],[2,7.5]);
+					a3 = addMovableCircle([1,1],[2.5,7.5]);
+					a4 = addMovableCircle([1,1],[3,7.5]);
+					a5 = addMovableCircle([1,1],[3.5,7.5]);
+					a6 = addMovableCircle([1,1],[4,7.5]);
+					a7 = addMovableCircle([1,1],[4.5,7.5]);
+					
+					path([[8,8],[12,8],[12,7],[8,7],[8,8]],{stroke:"#6495ED"})
+					line([10,7] ,[9,6],{stroke:"#6495ED"});
+					line([10,7] ,[11,6],{stroke:"#6495ED"});
+					path([[7,6],[9.5,6],[9.5,5],[7,5],[7,6]],{stroke:"#6495ED"})
+					path([[10.5,6],[13,6],[13,5],[10.5,5],[10.5,6]],{stroke:"#6495ED"})
+					a8 = addMovableCircle([1,1],[8.5,7.5]);
+					a9 = addMovableCircle([1,1],[9,7.5]);
+					a10 = addMovableCircle([1,1],[9.5,7.5]);
+					a11 = addMovableCircle([1,1],[10,7.5]);
+					a12 = addMovableCircle([1,1],[10.5,7.5]);
+					a13 = addMovableCircle([1,1],[11,7.5]);
+					a14 = addMovableCircle([1,1],[11.5,7.5]);
+					
+					path([[1,4],[5,4],[5,3],[1,3],[1,4]],{stroke:"#6495ED"})
+					line([3,3] ,[2,2],{stroke:"#6495ED"});
+					line([3,3] ,[4,2],{stroke:"#6495ED"});
+					path([[0,2],[2.5,2],[2.5,1],[0,1],[0,2]],{stroke:"#6495ED"})
+					path([[3.5,2],[6,2],[6,1],[3.5,1],[3.5,2]],{stroke:"#6495ED"})
+					
+					a15 = addMovableCircle([1,1],[1.5,3.5]);
+					a16 = addMovableCircle([1,1],[2,3.5]);
+					a17 = addMovableCircle([1,1],[2.5,3.5]);
+					a18 = addMovableCircle([1,1],[3,3.5]);
+					a19 = addMovableCircle([1,1],[3.5,3.5]);
+					a20 = addMovableCircle([1,1],[4,3.5]);
+					a21 = addMovableCircle([1,1],[4.5,3.5]);
+					
+					path([[8,4],[12,4],[12,3],[8,3],[8,4]],{stroke:"#6495ED"})
+					line([10,3] ,[9,2],{stroke:"#6495ED"});
+					line([10,3] ,[11,2],{stroke:"#6495ED"});
+					path([[7,2],[9.5,2],[9.5,1],[7,1],[7,2]],{stroke:"#6495ED"})
+					path([[10.5,2],[13,2],[13,1],[10.5,1],[10.5,2]],{stroke:"#6495ED"})
+					a22 = addMovableCircle([1,1],[8.5,3.5]);
+					a23 = addMovableCircle([1,1],[9,3.5]);
+					a24 = addMovableCircle([1,1],[9.5,3.5]);
+					a25 = addMovableCircle([1,1],[10,3.5]);
+					a26 = addMovableCircle([1,1],[10.5,3.5]);
+					a27 = addMovableCircle([1,1],[11,3.5]);
+					a28 = addMovableCircle([1,1],[11.5,3.5]);
+			</div>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">
+				(function(){
+					var a=[[a1.coord,a2.coord,a3.coord,a4.coord,a5.coord,a6.coord,a7.coord],[a8.coord,a9.coord,a10.coord,a11.coord,a12.coord,a13.coord,a14.coord],
+							[a15.coord,a16.coord,a17.coord,a18.coord,a19.coord,a20.coord,a21.coord],[a22.coord,a23.coord,a24.coord,a25.coord,a26.coord,a27.coord,a8.coord]];
+					var i,j,k,l;
+					var b=new Array(new Array(7),new Array(7),new Array(7),new Array(7));
+					for(i=0;i&lt;7;i++)
+					{
+						if( a[0][i][0]&gt;0 && a[0][i][0] &lt;2.5  && a[0][i][1] &gt;5 && a[0][i][1]&lt;6)
+						{
+							b[0][i]=1;
+						}
+						else if( a[0][i][0]&gt;3.5 && a[0][i][0]&lt;6 && a[0][i][1] &gt;5 && a[0][i][1]&lt;6)
+						{
+							b[0][i]=2;
+						}
+						else
+						{
+							b[0][i]=0;
+						}
+					}
+					for(j=0;j&lt;7;j++)
+					{
+						if( a[1][j][0]&gt;7 && a[1][j][0] &lt;9.5  && a[1][j][1] &gt;5 && a[1][j][1]&lt;6)
+						{
+							b[1][j]=1;
+						}
+						else if( a[1][j][0]&gt;10.5 && a[1][j][0]&lt;13 && a[1][j][1] &gt;5 && a[1][j][1]&lt;6)
+						{
+							b[1][j]=2;
+						}
+						else
+						{
+							b[1][j]=0;
+						}
+					}
+					for(k=0;k&lt;7;k++)
+					{
+						if( a[2][k][0]&gt;0 && a[2][k][0] &lt;2.5  && a[2][k][1] &gt;1 && a[2][k][1]&lt;2)
+						{
+							b[2][k]=1;
+						}
+						else if( a[2][k][0]&gt;3.5 && a[2][k][0]&lt;6 && a[2][k][1] &gt;1 && a[2][k][1]&lt;2)
+						{
+							b[2][k]=2;
+						}
+						else
+						{
+							b[2][k]=0;
+						}
+					}
+					for(l=0;l&lt;7;l++)
+					{
+						if( a[3][l][0]&gt;7 && a[3][l][0] &lt;9.5  && a[3][l][1] &gt;1 && a[3][l][1]&lt;2)
+						{
+							b[3][l]=1;
+						}
+						else if( a[3][l][0]&gt;10.5 && a[3][l][0]&lt;13 && a[3][l][1] &gt;1 && a[3][l][1]&lt;2)
+						{
+							b[3][l]=2;
+						}
+						else
+						{
+							b[3][l]=0;
+						}
+					}
+					I=b[0][0]+b[0][1]+b[0][2]+b[0][3]+b[0][4]+b[0][5]+b[0][6];
+					J=b[1][0]+b[1][1]+b[1][2]+b[1][3]+b[1][4]+b[1][5]+b[1][6];
+					K=b[2][0]+b[2][1]+b[2][2]+b[2][3]+b[2][4]+b[2][5]+b[2][6];
+					L=b[3][0]+b[3][1]+b[3][2]+b[3][3]+b[3][4]+b[3][5]+b[3][6];
+					var M=new Array(I,J,K,L);
+					return M;
+				 })()
+				</div>
+				<div class="validator-function">
+					if(guess[0]==0&&guess[1]==0&&guess[2]==0&&guess[3]==0){
+						return "";
+					}
+					if(guess[0]&gt;=8 &&guess[0]&lt;=13 &&guess[1]&gt;=8 &&guess[1]&lt;=13 && guess[2]&gt;=8 &&guess[2]&lt;=13  && guess[3]&gt;=8 &&guess[3]&lt;=13)
+						{
+							if(guess[0]!=guess[1]!=guess[2]!=guess[3])
+							{
+								return  true;
+							}
+							return false;
+						}
+						return false;
+				</div>
+			</div>
+			<div class="example">請將圓圈移動到合適的位置</div>
+		</div>
+		<div class="hints">
+			<div class="graphie" data-update="circle_move_1">
+				a1.moveTo(0.5,5.5);
+				a2.moveTo(1,5.5);
+				a3.moveTo(1.5,5.75);
+				a4.moveTo(1.5,5.25);
+				a5.moveTo(2,5.75);
+				a6.moveTo(2,5.25);
+				a7.moveTo(4,5.5);
+				
+				a8.moveTo(7.5,5.5);
+				a9.moveTo(8,5.5);
+				a10.moveTo(8.5,5.5);
+				a11.moveTo(11,5.5);
+				a12.moveTo(11.5,5.5);
+				a13.moveTo(12,5.5);
+				a14.moveTo(12.5,5.5);
+				
+				
+				a15.moveTo(0.5,1.5);
+				a16.moveTo(1,1.5);
+				a17.moveTo(1.5,1.5);
+				a18.moveTo(2,1.75);
+				a19.moveTo(2,1.25);
+				
+				a20.moveTo(4.5,1.5);
+				a21.moveTo(5,1.5);
+				
+				a22.moveTo(7.5,1.5);
+				a23.moveTo(8,1.5);
+				a24.moveTo(8.5,1.5);
+				a25.moveTo(9,1.5);
+				
+				a26.moveTo(11,1.25);
+				a27.moveTo(11.5,1.25);
+				a28.moveTo(12,1.25);
+			</div>
+		</div>
+	</div>
+	<div id="case5">
+        <div class="vars" >
+		</div>
+		<div class="problem">
+			<p>請你試著把上層的 <code>8</code> 個 <code>\bigcirc</code> 分成 <code>2</code> 個數。<code>(</code> 分的方式不可重複喔 <code>)</code></p>
+			<div class="graphie" id="circle_move_1">
+					init({
+						range: [ [0, 13], [0, 9] ],
+						scale: 40
+					});
+					path([[1,8],[5,8],[5,7],[1,7],[1,8]],{stroke:"#6495ED"})
+					line([3,7] ,[2,6],{stroke:"#6495ED"});
+					line([3,7] ,[4,6],{stroke:"#6495ED"});
+					path([[0,6],[2.5,6],[2.5,4.5],[0,4.5],[0,6]],{stroke:"#6495ED"})
+					path([[3.5,6],[6,6],[6,4.5],[3.5,4.5],[3.5,6]],{stroke:"#6495ED"})
+					addMouseLayer();
+					a1 = addMovableCircle([1,1],[1.5,7.5]);
+					a2 = addMovableCircle([1,1],[2,7.5]);
+					a3 = addMovableCircle([1,1],[2.5,7.5]);
+					a4 = addMovableCircle([1,1],[3,7.5]);
+					a5 = addMovableCircle([1,1],[3.5,7.5]);
+					a6 = addMovableCircle([1,1],[4,7.5]);
+					a7 = addMovableCircle([1,1],[4.5,7.75]);
+					a8 = addMovableCircle([1,1],[4.5,7.25]);
+					
+					path([[8,8],[12,8],[12,7],[8,7],[8,8]],{stroke:"#6495ED"})
+					line([10,7] ,[9,6],{stroke:"#6495ED"});
+					line([10,7] ,[11,6],{stroke:"#6495ED"});
+					path([[7,6],[9.5,6],[9.5,4.5],[7,4.5],[7,6]],{stroke:"#6495ED"})
+					path([[10.5,6],[13,6],[13,4.5],[10.5,4.5],[10.5,6]],{stroke:"#6495ED"})
+					a9 = addMovableCircle([1,1],[8.5,7.5]);
+					a10 = addMovableCircle([1,1],[9,7.5]);
+					a11 = addMovableCircle([1,1],[9.5,7.5]);
+					a12 = addMovableCircle([1,1],[10,7.5]);
+					a13 = addMovableCircle([1,1],[10.5,7.5]);
+					a14 = addMovableCircle([1,1],[11,7.5]);
+					a15 = addMovableCircle([1,1],[11.5,7.75]);
+					a16 = addMovableCircle([1,1],[11.5,7.25]);
+					
+					path([[1,4],[5,4],[5,3],[1,3],[1,4]],{stroke:"#6495ED"})
+					line([3,3] ,[2,2],{stroke:"#6495ED"});
+					line([3,3] ,[4,2],{stroke:"#6495ED"});
+					path([[0,2],[2.5,2],[2.5,0.5],[0,0.5],[0,2]],{stroke:"#6495ED"})
+					path([[3.5,2],[6,2],[6,0.5],[3.5,0.5],[3.5,2]],{stroke:"#6495ED"})
+					
+					a17 = addMovableCircle([1,1],[1.5,3.5]);
+					a18 = addMovableCircle([1,1],[2,3.5]);
+					a19 = addMovableCircle([1,1],[2.5,3.5]);
+					a20 = addMovableCircle([1,1],[3,3.5]);
+					a21 = addMovableCircle([1,1],[3.5,3.5]);
+					a22 = addMovableCircle([1,1],[4,3.5]);
+					a23 = addMovableCircle([1,1],[4.5,3.75]);
+					a24 = addMovableCircle([1,1],[4.5,3.25]);
+					
+					path([[8,4],[12,4],[12,3],[8,3],[8,4]],{stroke:"#6495ED"})
+					line([10,3] ,[9,2],{stroke:"#6495ED"});
+					line([10,3] ,[11,2],{stroke:"#6495ED"});
+					path([[7,2],[9.5,2],[9.5,0.5],[7,0.5],[7,2]],{stroke:"#6495ED"})
+					path([[10.5,2],[13,2],[13,0.5],[10.5,0.5],[10.5,2]],{stroke:"#6495ED"})
+					a25 = addMovableCircle([1,1],[8.5,3.5]);
+					a26 = addMovableCircle([1,1],[9,3.5]);
+					a27 = addMovableCircle([1,1],[9.5,3.5]);
+					a28 = addMovableCircle([1,1],[10,3.5]);
+					a29 = addMovableCircle([1,1],[10.5,3.5]);
+					a30 = addMovableCircle([1,1],[11,3.5]);
+					a31 = addMovableCircle([1,1],[11.5,3.75]);
+					a32 = addMovableCircle([1,1],[11.5,3.25]);
+			</div>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">
+				(function(){
+					var a=[[a1.coord,a2.coord,a3.coord,a4.coord,a5.coord,a6.coord,a7.coord,a8.coord],[a9.coord,a10.coord,a11.coord,a12.coord,a13.coord,a14.coord,a15.coord,a16.coord],
+							[a17.coord,a18.coord,a19.coord,a20.coord,a21.coord,a22.coord,a23.coord,a24.coord],[a25.coord,a26.coord,a27.coord,a28.coord,a29.coord,a30.coord,a31.coord,a32.coord]];
+					var i,j,k,l;
+					var b=new Array(new Array(8),new Array(8),new Array(8),new Array(8));
+					for(i=0;i&lt;8;i++)
+					{
+						if( a[0][i][0]&gt;0 && a[0][i][0] &lt;2.5  && a[0][i][1] &gt;4.5 && a[0][i][1]&lt;6)
+						{
+							b[0][i]=1;
+						}
+						else if( a[0][i][0]&gt;3.5 && a[0][i][0]&lt;6 && a[0][i][1] &gt;4.5 && a[0][i][1]&lt;6)
+						{
+							b[0][i]=2;
+						}
+						else
+						{
+							b[0][i]=0;
+						}
+					}
+					for(j=0;j&lt;8;j++)
+					{
+						if( a[1][j][0]&gt;7 && a[1][j][0] &lt;9.5  && a[1][j][1] &gt;4.5 && a[1][j][1]&lt;6)
+						{
+							b[1][j]=1;
+						}
+						else if( a[1][j][0]&gt;10.5 && a[1][j][0]&lt;13 && a[1][j][1] &gt;4.5 && a[1][j][1]&lt;6)
+						{
+							b[1][j]=2;
+						}
+						else
+						{
+							b[1][j]=0;
+						}
+					}
+					for(k=0;k&lt;8;k++)
+					{
+						if( a[2][k][0]&gt;0 && a[2][k][0] &lt;2.5  && a[2][k][1] &gt;0.5 && a[2][k][1]&lt;2)
+						{
+							b[2][k]=1;
+						}
+						else if( a[2][k][0]&gt;3.5 && a[2][k][0]&lt;6 && a[2][k][1] &gt;0.5 && a[2][k][1]&lt;2)
+						{
+							b[2][k]=2;
+						}
+						else
+						{
+							b[2][k]=0;
+						}
+					}
+					for(l=0;l&lt;8;l++)
+					{
+						if( a[3][l][0]&gt;7 && a[3][l][0] &lt;9.5  && a[3][l][1] &gt;0.5 && a[3][l][1]&lt;2)
+						{
+							b[3][l]=1;
+						}
+						else if( a[3][l][0]&gt;10.5 && a[3][l][0]&lt;13 && a[3][l][1] &gt;0.5 && a[3][l][1]&lt;2)
+						{
+							b[3][l]=2;
+						}
+						else
+						{
+							b[3][l]=0;
+						}
+					}
+					I=b[0][0]+b[0][1]+b[0][2]+b[0][3]+b[0][4]+b[0][5]+b[0][6]+b[0][7];
+					J=b[1][0]+b[1][1]+b[1][2]+b[1][3]+b[1][4]+b[1][5]+b[1][6]+b[1][7];
+					K=b[2][0]+b[2][1]+b[2][2]+b[2][3]+b[2][4]+b[2][5]+b[2][6]+b[2][7];
+					L=b[3][0]+b[3][1]+b[3][2]+b[3][3]+b[3][4]+b[3][5]+b[3][6]+b[3][7];
+					var M=new Array(I,J,K,L);
+					return M;
+				 })()
+				</div>
+				<div class="validator-function">
+					if(guess[0]==0&&guess[1]==0&&guess[2]==0&&guess[3]==0){
+						return "";
+					}
+					if(guess[0]&gt;=9 &&guess[0]&lt;=15 &&guess[1]&gt;=9 &&guess[1]&lt;=15 && guess[2]&gt;=9 &&guess[2]&lt;=15  && guess[3]&gt;=9 &&guess[3]&lt;=15)
+						{
+							if(guess[0]!=guess[1]!=guess[2]!=guess[3])
+							{
+								return  true;
+							}
+							return false;
+						}
+						return false;
+				</div>
+			</div>
+			<div class="example">請將圓圈移動到合適的位置</div>
+		</div>
+		<div class="hints">
+			<div class="graphie" data-update="circle_move_1">
+				a1.moveTo(0.5,5.5);
+				a2.moveTo(1,5.5);
+				a3.moveTo(1.5,5.5);
+				a4.moveTo(2,5.5);
+				
+				a5.moveTo(4,5.5);
+				a6.moveTo(4.5,5.5);
+				a7.moveTo(5,5.5);
+				a8.moveTo(5.5,5.5);
+				
+				a9.moveTo(7.5,5.5);
+				a10.moveTo(8,5.5);
+				a11.moveTo(8.5,5.5);
+				
+				a12.moveTo(11,5.5);
+				a13.moveTo(11.5,5.5);
+				a14.moveTo(12,5.5);
+				a15.moveTo(12.5,5.75);
+				a16.moveTo(12.5,5.25);
+				a17.moveTo(0.5,1.5);
+				a18.moveTo(1,1.5);
+				a19.moveTo(1.5,1.75);
+				a20.moveTo(1.5,1.25);
+				a21.moveTo(2,1.75);
+				a22.moveTo(2,1.25);
+				a23.moveTo(5,1.5);
+				a24.moveTo(5.5,1.5);
+				
+				a25.moveTo(7.5,1.5);
+				a26.moveTo(8,1.75);
+				a27.moveTo(8,1.25);
+				a28.moveTo(8.5,1.75);
+				a29.moveTo(8.5,1.25);
+				a30.moveTo(9,1.75);
+				a31.moveTo(9,1.25);
+				
+				a32.moveTo(12,1.5);
+			</div>
+		</div>
+	</div>
+	<div id="case6">
+        <div class="vars" >
+		</div>
+		<div class="problem">
+			<p>請你試著把上層的 <code>9</code> 個 <code>\bigcirc</code> 分成 <code>2</code> 個數。<code>(</code> 分的方式不可重複喔 <code>)</code></p>
+			<div class="graphie" id="circle_move_1">
+					init({
+						range: [ [0, 13], [0, 9] ],
+						scale: 40
+					});
+					path([[1,8],[5,8],[5,7],[1,7],[1,8]],{stroke:"#6495ED"})
+					line([3,7] ,[2,6],{stroke:"#6495ED"});
+					line([3,7] ,[4,6],{stroke:"#6495ED"});
+					path([[0,6],[2.5,6],[2.5,4.5],[0,4.5],[0,6]],{stroke:"#6495ED"})
+					path([[3.5,6],[6,6],[6,4.5],[3.5,4.5],[3.5,6]],{stroke:"#6495ED"})
+					addMouseLayer();
+					a1 = addMovableCircle([1,1],[1.5,7.5]);
+					a2 = addMovableCircle([1,1],[2,7.5]);
+					a3 = addMovableCircle([1,1],[2.5,7.5]);
+					a4 = addMovableCircle([1,1],[3,7.5]);
+					a5 = addMovableCircle([1,1],[3.5,7.5]);
+					a6 = addMovableCircle([1,1],[4,7.75]);
+					a7 = addMovableCircle([1,1],[4,7.25]);
+					a8 = addMovableCircle([1,1],[4.5,7.75]);
+					a9 = addMovableCircle([1,1],[4.5,7.25]);
+					
+					
+					path([[8,8],[12,8],[12,7],[8,7],[8,8]],{stroke:"#6495ED"})
+					line([10,7] ,[9,6],{stroke:"#6495ED"});
+					line([10,7] ,[11,6],{stroke:"#6495ED"});
+					path([[7,6],[9.5,6],[9.5,4.5],[7,4.5],[7,6]],{stroke:"#6495ED"})
+					path([[10.5,6],[13,6],[13,4.5],[10.5,4.5],[10.5,6]],{stroke:"#6495ED"})
+					a10 = addMovableCircle([1,1],[8.5,7.5]);
+					a11 = addMovableCircle([1,1],[9,7.5]);
+					a12 = addMovableCircle([1,1],[9.5,7.5]);
+					a13 = addMovableCircle([1,1],[10,7.5]);
+					a14 = addMovableCircle([1,1],[10.5,7.5]);
+					a15 = addMovableCircle([1,1],[11,7.75]);
+					a16 = addMovableCircle([1,1],[11,7.25]);
+					a17 = addMovableCircle([1,1],[11.5,7.75]);
+					a18 = addMovableCircle([1,1],[11.5,7.25]);
+					
+					path([[1,4],[5,4],[5,3],[1,3],[1,4]],{stroke:"#6495ED"})
+					line([3,3] ,[2,2],{stroke:"#6495ED"});
+					line([3,3] ,[4,2],{stroke:"#6495ED"});
+					path([[0,2],[2.5,2],[2.5,0.5],[0,0.5],[0,2]],{stroke:"#6495ED"})
+					path([[3.5,2],[6,2],[6,0.5],[3.5,0.5],[3.5,2]],{stroke:"#6495ED"})
+					a19 = addMovableCircle([1,1],[1.5,3.5]);
+					a20 = addMovableCircle([1,1],[2,3.5]);
+					a21 = addMovableCircle([1,1],[2.5,3.5]);
+					a22 = addMovableCircle([1,1],[3,3.5]);
+					a23 = addMovableCircle([1,1],[3.5,3.5]);
+					a24 = addMovableCircle([1,1],[4,3.75]);
+					a25 = addMovableCircle([1,1],[4,3.25]);
+					a26 = addMovableCircle([1,1],[4.5,3.75]);
+					a27 = addMovableCircle([1,1],[4.5,3.25]);
+					
+					path([[8,4],[12,4],[12,3],[8,3],[8,4]],{stroke:"#6495ED"})
+					line([10,3] ,[9,2],{stroke:"#6495ED"});
+					line([10,3] ,[11,2],{stroke:"#6495ED"});
+					path([[7,2],[9.5,2],[9.5,0.5],[7,0.5],[7,2]],{stroke:"#6495ED"})
+					path([[10.5,2],[13,2],[13,0.5],[10.5,0.5],[10.5,2]],{stroke:"#6495ED"})
+					a28 = addMovableCircle([1,1],[8.5,3.5]);
+					a29 = addMovableCircle([1,1],[9,3.5]);
+					a30 = addMovableCircle([1,1],[9.5,3.5]);
+					a31 = addMovableCircle([1,1],[10,3.5]);
+					a32 = addMovableCircle([1,1],[10.5,3.5]);
+					a33 = addMovableCircle([1,1],[11,3.75]);
+					a34 = addMovableCircle([1,1],[11,3.25]);
+					a35 = addMovableCircle([1,1],[11.5,3.75]);
+					a36 = addMovableCircle([1,1],[11.5,3.25]);
+			</div>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">
+				(function(){
+					var a=[[a1.coord,a2.coord,a3.coord,a4.coord,a5.coord,a6.coord,a7.coord,a8.coord,a9.coord],
+							[a10.coord,a11.coord,a12.coord,a13.coord,a14.coord,a15.coord,a16.coord,a17.coord,a18.coord],
+							[a19.coord,a20.coord,a21.coord,a22.coord,a23.coord,a24.coord,a25.coord,a26.coord,a27.coord],
+							[a28.coord,a29.coord,a30.coord,a31.coord,a32.coord,a33.coord,a34.coord,a35.coord,a36.coord]];
+					var i,j,k,l;
+					var b=new Array(new Array(9),new Array(9),new Array(9),new Array(9));
+					for(i=0;i&lt;9;i++)
+					{
+						if( a[0][i][0]&gt;0 && a[0][i][0] &lt;2.5  && a[0][i][1] &gt;4.5 && a[0][i][1]&lt;6)
+						{
+							b[0][i]=1;
+						}
+						else if( a[0][i][0]&gt;3.5 && a[0][i][0]&lt;6 && a[0][i][1] &gt;4.5 && a[0][i][1]&lt;6)
+						{
+							b[0][i]=2;
+						}
+						else
+						{
+							b[0][i]=0;
+						}
+					}
+					for(j=0;j&lt;9;j++)
+					{
+						if( a[1][j][0]&gt;7 && a[1][j][0] &lt;9.5  && a[1][j][1] &gt;4.5 && a[1][j][1]&lt;6)
+						{
+							b[1][j]=1;
+						}
+						else if( a[1][j][0]&gt;10.5 && a[1][j][0]&lt;13 && a[1][j][1] &gt;4.5 && a[1][j][1]&lt;6)
+						{
+							b[1][j]=2;
+						}
+						else
+						{
+							b[1][j]=0;
+						}
+					}
+					for(k=0;k&lt;9;k++)
+					{
+						if( a[2][k][0]&gt;0 && a[2][k][0] &lt;2.5  && a[2][k][1] &gt;0.5 && a[2][k][1]&lt;2)
+						{
+							b[2][k]=1;
+						}
+						else if( a[2][k][0]&gt;3.5 && a[2][k][0]&lt;6 && a[2][k][1] &gt;0.5 && a[2][k][1]&lt;2)
+						{
+							b[2][k]=2;
+						}
+						else
+						{
+							b[2][k]=0;
+						}
+					}
+					for(l=0;l&lt;9;l++)
+					{
+						if( a[3][l][0]&gt;7 && a[3][l][0] &lt;9.5  && a[3][l][1] &gt;0.5 && a[3][l][1]&lt;2)
+						{
+							b[3][l]=1;
+						}
+						else if( a[3][l][0]&gt;10.5 && a[3][l][0]&lt;13 && a[3][l][1] &gt;0.5 && a[3][l][1]&lt;2)
+						{
+							b[3][l]=2;
+						}
+						else
+						{
+							b[3][l]=0;
+						}
+					}
+					I=b[0][0]+b[0][1]+b[0][2]+b[0][3]+b[0][4]+b[0][5]+b[0][6]+b[0][7]+b[0][8];
+					J=b[1][0]+b[1][1]+b[1][2]+b[1][3]+b[1][4]+b[1][5]+b[1][6]+b[1][7]+b[1][8];
+					K=b[2][0]+b[2][1]+b[2][2]+b[2][3]+b[2][4]+b[2][5]+b[2][6]+b[2][7]+b[2][8];
+					L=b[3][0]+b[3][1]+b[3][2]+b[3][3]+b[3][4]+b[3][5]+b[3][6]+b[3][7]+b[3][8];
+					var M=new Array(I,J,K,L);
+					return M;
+				 })()
+				</div>
+				<div class="validator-function">
+					if(guess[0]==0&&guess[1]==0&&guess[2]==0&&guess[3]==0){
+						return "";
+					}
+					if(guess[0]&gt;=10 &&guess[0]&lt;=17 &&guess[1]&gt;=10 &&guess[1]&lt;=17 && guess[2]&gt;=10 &&guess[2]&lt;=17  && guess[3]&gt;=10 &&guess[3]&lt;=17)
+						{
+							if(guess[0]!=guess[1]!=guess[2]!=guess[3])
+							{
+								return  true;
+							}
+							return false;
+						}
+						return false;
+				</div>
+			</div>
+			<div class="example">請將圓圈移動到合適的位置</div>
+		</div>
+		<div class="hints">
+			<div class="graphie" data-update="circle_move_1">
+				a1.moveTo(0.5,5.5);
+				a2.moveTo(1,5.5);
+				a3.moveTo(1.5,5.5);
+				a4.moveTo(2,5.5);
+				
+				a5.moveTo(4,5.5);
+				a6.moveTo(4.5,5.5);
+				a7.moveTo(5,5.5);
+				a8.moveTo(5.5,5.5);
+				a9.moveTo(5.5,5);
+				
+				a10.moveTo(7.5,5.5);
+				a11.moveTo(8,5.5);
+				a12.moveTo(8.5,5.5);
+				a13.moveTo(11.5,5.5);
+				a14.moveTo(12,5.5);
+				a15.moveTo(12.5,5.5);
+				a16.moveTo(11.5,5);
+				a17.moveTo(12,5);
+				a18.moveTo(12.5,5);
+				
+				a19.moveTo(0.5,1.5);
+				a20.moveTo(1,1.5);
+				a21.moveTo(1.5,1.5);
+				a22.moveTo(2,1.5);
+				a23.moveTo(0.5,1);
+				a24.moveTo(1,1);
+				a25.moveTo(1.5,1);
+				
+				a26.moveTo(4,1.5);
+				a27.moveTo(5,1.5);
+				
+				a28.moveTo(7.5,1.5);
+				a29.moveTo(8,1.5);
+				a30.moveTo(8.5,1.5);
+				a31.moveTo(9,1.5);
+				a32.moveTo(7.5,1);
+				a33.moveTo(8,1);
+				a34.moveTo(8.5,1);
+				a35.moveTo(9,1);
+				
+				a36.moveTo(12,1.5);
+			</div>
+		</div>
+		
+	</div>
+	<div id="case7">
+        <div class="vars" >
+		</div>
+		<div class="problem">
+			<p>請你試著把上層的 <code>10</code> 個 <code>\bigcirc</code> 分成 <code>2</code> 個數。<code>(</code> 分的方式不可重複喔 <code>)</code></p>
+			<div class="graphie" id="circle_move_1">
+					init({
+						range: [ [0, 13], [0, 9] ],
+						scale: 40
+					});
+					path([[1,8],[5,8],[5,7],[1,7],[1,8]],{stroke:"#6495ED"})
+					line([3,7] ,[2,6],{stroke:"#6495ED"});
+					line([3,7] ,[4,6],{stroke:"#6495ED"});
+					path([[0,6],[2.5,6],[2.5,4.5],[0,4.5],[0,6]],{stroke:"#6495ED"})
+					path([[3.5,6],[6,6],[6,4.5],[3.5,4.5],[3.5,6]],{stroke:"#6495ED"})
+					addMouseLayer();
+					a1 = addMovableCircle([1,1],[1.5,7.5]);
+					a2 = addMovableCircle([1,1],[2,7.5]);
+					a3 = addMovableCircle([1,1],[2.5,7.5]);
+					a4 = addMovableCircle([1,1],[3,7.5]);
+					a5 = addMovableCircle([1,1],[3.5,7.75]);
+					a6 = addMovableCircle([1,1],[3.5,7.25]);
+					a7 = addMovableCircle([1,1],[4,7.75]);
+					a8 = addMovableCircle([1,1],[4,7.25]);
+					a9 = addMovableCircle([1,1],[4.5,7.75]);
+					a10 = addMovableCircle([1,1],[4.5,7.25]);
+					
+					
+					path([[8,8],[12,8],[12,7],[8,7],[8,8]],{stroke:"#6495ED"})
+					line([10,7] ,[9,6],{stroke:"#6495ED"});
+					line([10,7] ,[11,6],{stroke:"#6495ED"});
+					path([[7,6],[9.5,6],[9.5,4.5],[7,4.5],[7,6]],{stroke:"#6495ED"})
+					path([[10.5,6],[13,6],[13,4.5],[10.5,4.5],[10.5,6]],{stroke:"#6495ED"})
+					a11 = addMovableCircle([1,1],[8.5,7.5]);
+					a12 = addMovableCircle([1,1],[9,7.5]);
+					a13 = addMovableCircle([1,1],[9.5,7.5]);
+					a14 = addMovableCircle([1,1],[10,7.5]);
+					a15 = addMovableCircle([1,1],[10.5,7.75]);
+					a16 = addMovableCircle([1,1],[10.5,7.25]);
+					a17 = addMovableCircle([1,1],[11,7.75]);
+					a18 = addMovableCircle([1,1],[11,7.25]);
+					a19 = addMovableCircle([1,1],[11.5,7.75]);
+					a20 = addMovableCircle([1,1],[11.5,7.25]);
+					
+					path([[1,4],[5,4],[5,3],[1,3],[1,4]],{stroke:"#6495ED"})
+					line([3,3] ,[2,2],{stroke:"#6495ED"});
+					line([3,3] ,[4,2],{stroke:"#6495ED"});
+					path([[0,2],[2.5,2],[2.5,0.5],[0,0.5],[0,2]],{stroke:"#6495ED"})
+					path([[3.5,2],[6,2],[6,0.5],[3.5,0.5],[3.5,2]],{stroke:"#6495ED"})
+					a21 = addMovableCircle([1,1],[1.5,3.5]);
+					a22 = addMovableCircle([1,1],[2,3.5]);
+					a23 = addMovableCircle([1,1],[2.5,3.5]);
+					a24 = addMovableCircle([1,1],[3,3.5]);
+					a25 = addMovableCircle([1,1],[3.5,3.75]);
+					a26 = addMovableCircle([1,1],[3.5,3.25]);
+					a27 = addMovableCircle([1,1],[4,3.75]);
+					a28 = addMovableCircle([1,1],[4,3.25]);
+					a29 = addMovableCircle([1,1],[4.5,3.75]);
+					a30 = addMovableCircle([1,1],[4.5,3.25]);
+					
+					path([[8,4],[12,4],[12,3],[8,3],[8,4]],{stroke:"#6495ED"})
+					line([10,3] ,[9,2],{stroke:"#6495ED"});
+					line([10,3] ,[11,2],{stroke:"#6495ED"});
+					path([[7,2],[9.5,2],[9.5,0.5],[7,0.5],[7,2]],{stroke:"#6495ED"})
+					path([[10.5,2],[13,2],[13,0.5],[10.5,0.5],[10.5,2]],{stroke:"#6495ED"})
+					a31 = addMovableCircle([1,1],[8.5,3.5]);
+					a32 = addMovableCircle([1,1],[9,3.5]);
+					a33 = addMovableCircle([1,1],[9.5,3.5]);
+					a34 = addMovableCircle([1,1],[10,3.5]);
+					a35 = addMovableCircle([1,1],[10.5,3.75]);
+					a36 = addMovableCircle([1,1],[10.5,3.25]);
+					a37 = addMovableCircle([1,1],[11,3.75]);
+					a38 = addMovableCircle([1,1],[11,3.25]);
+					a39 = addMovableCircle([1,1],[11.5,3.75]);
+					a40 = addMovableCircle([1,1],[11.5,3.25]);
+			</div>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">
+				(function(){
+					var a=[[a1.coord,a2.coord,a3.coord,a4.coord,a5.coord,a6.coord,a7.coord,a8.coord,a9.coord,a10.coord],
+							[a11.coord,a12.coord,a13.coord,a14.coord,a15.coord,a16.coord,a17.coord,a18.coord,a19.coord,a20.coord],
+							[a21.coord,a22.coord,a23.coord,a24.coord,a25.coord,a26.coord,a27.coord,a28.coord,a29.coord,a30.coord],
+							[a31.coord,a32.coord,a33.coord,a34.coord,a35.coord,a36.coord,a37.coord,a38.coord,a39.coord,a40.coord]];
+					var i,j,k,l;
+					var b=new Array(new Array(10),new Array(10),new Array(10),new Array(10));
+					for(i=0;i&lt;10;i++)
+					{
+						if( a[0][i][0]&gt;0 && a[0][i][0] &lt;2.5  && a[0][i][1] &gt;4.5 && a[0][i][1]&lt;6)
+						{
+							b[0][i]=1;
+						}
+						else if( a[0][i][0]&gt;3.5 && a[0][i][0]&lt;6 && a[0][i][1] &gt;4.5 && a[0][i][1]&lt;6)
+						{
+							b[0][i]=2;
+						}
+						else
+						{
+							b[0][i]=0;
+						}
+					}
+					for(j=0;j&lt;10;j++)
+					{
+						if( a[1][j][0]&gt;7 && a[1][j][0] &lt;9.5  && a[1][j][1] &gt;4.5 && a[1][j][1]&lt;6)
+						{
+							b[1][j]=1;
+						}
+						else if( a[1][j][0]&gt;10.5 && a[1][j][0]&lt;13 && a[1][j][1] &gt;4.5 && a[1][j][1]&lt;6)
+						{
+							b[1][j]=2;
+						}
+						else
+						{
+							b[1][j]=0;
+						}
+					}
+					for(k=0;k&lt;10;k++)
+					{
+						if( a[2][k][0]&gt;0 && a[2][k][0] &lt;2.5  && a[2][k][1] &gt;0.5 && a[2][k][1]&lt;2)
+						{
+							b[2][k]=1;
+						}
+						else if( a[2][k][0]&gt;3.5 && a[2][k][0]&lt;6 && a[2][k][1] &gt;0.5 && a[2][k][1]&lt;2)
+						{
+							b[2][k]=2;
+						}
+						else
+						{
+							b[2][k]=0;
+						}
+					}
+					for(l=0;l&lt;10;l++)
+					{
+						if( a[3][l][0]&gt;7 && a[3][l][0] &lt;9.5  && a[3][l][1] &gt;0.5 && a[3][l][1]&lt;2)
+						{
+							b[3][l]=1;
+						}
+						else if( a[3][l][0]&gt;10.5 && a[3][l][0]&lt;13 && a[3][l][1] &gt;0.5 && a[3][l][1]&lt;2)
+						{
+							b[3][l]=2;
+						}
+						else
+						{
+							b[3][l]=0;
+						}
+					}
+					I=b[0][0]+b[0][1]+b[0][2]+b[0][3]+b[0][4]+b[0][5]+b[0][6]+b[0][7]+b[0][8]+b[0][9];
+					J=b[1][0]+b[1][1]+b[1][2]+b[1][3]+b[1][4]+b[1][5]+b[1][6]+b[1][7]+b[1][8]+b[1][9];
+					K=b[2][0]+b[2][1]+b[2][2]+b[2][3]+b[2][4]+b[2][5]+b[2][6]+b[2][7]+b[2][8]+b[2][9];
+					L=b[3][0]+b[3][1]+b[3][2]+b[3][3]+b[3][4]+b[3][5]+b[3][6]+b[3][7]+b[3][8]+b[3][9];
+					var M=new Array(I,J,K,L);
+					return M;
+				 })()
+				</div>
+				<div class="validator-function">
+					if(guess[0]==0&&guess[1]==0&&guess[2]==0&&guess[3]==0){
+						return "";
+					}
+					if(guess[0]&gt;=11 &&guess[0]&lt;=19 &&guess[1]&gt;=11 &&guess[1]&lt;=19 && guess[2]&gt;=11 &&guess[2]&lt;=19  && guess[3]&gt;=11 &&guess[3]&lt;=19)
+						{
+							if(guess[0]!=guess[1]!=guess[2]!=guess[3])
+							{
+								return  true;
+							}
+							return false;
+						}
+						return false;
+				</div>
+			</div>
+			<div class="example">請將圓圈移動到合適的位置</div>
+		</div>
+		<div class="hints">
+			<div class="graphie" data-update="circle_move_1">
+				a1.moveTo(0.5,5.5);
+				a2.moveTo(1,5.5);
+				a3.moveTo(1.5,5.5);
+				a4.moveTo(2,5.5);
+				
+				a5.moveTo(4,5.5);
+				a6.moveTo(4.5,5.5);
+				a7.moveTo(5,5.5);
+				a8.moveTo(5.5,5.5);
+				a9.moveTo(4,5);
+				a10.moveTo(4.5,5);
+				
+				a11.moveTo(7.5,5.5);
+				a12.moveTo(8,5.5);
+				a13.moveTo(8.5,5.5);
+				a14.moveTo(9,5.5);
+				a15.moveTo(7.5,5);
+				
+				a16.moveTo(11,5.5);
+				a17.moveTo(11.5,5.5);
+				a18.moveTo(12,5.5);
+				a19.moveTo(12.5,5.5);
+				a20.moveTo(11,5);
+				
+				a21.moveTo(0.5,1.5);
+				a22.moveTo(1,1.5);
+				a23.moveTo(1.5,1.5);
+				a24.moveTo(2,1.5);
+				a25.moveTo(0.5,1);
+				a26.moveTo(1,1);
+				a27.moveTo(1.5,1);
+				
+				a28.moveTo(4,1.5);
+				a29.moveTo(4.5,1.5);
+				a30.moveTo(5,1.5);
+				
+				a31.moveTo(7.5,1.5);
+				a32.moveTo(8,1.5);
+				a33.moveTo(8.5,1.5);
+				a34.moveTo(9,1.5);
+				a35.moveTo(7.5,1);
+				a36.moveTo(8,1);
+				a37.moveTo(8.5,1);
+				a38.moveTo(9,1);
+				
+				a39.moveTo(11,1.5);
+				a40.moveTo(12,1.5);
+			</div>
+		</div>
+	</div>
+	<div id="case8">
+		<div class="vars">
+			<var id="data">
+                        (function(){
+                            var baseNum_1=randRangeUnique(5,11,4);
+							var baseNum_3=randRangeUnique(1,10,8);
+							var baseNum_5=new Array(8);
+                            var blankFlag=new Array(new Array(4),new Array(8),new Array(8),new Array(4));
+                            
+                            for(i=0;i&lt;4;i++)
+                            {    
+                                    blankFlag[0][i]=false;
+                            }
+							for(i=0;i&lt;8;i++)
+							{	
+								blankFlag[1][i]=true;
+							}
+							for(i=0;i&lt;8;i++)
+							{	
+								blankFlag[2][i]=false;
+							}
+							for(i=0;i&lt;4;i++)
+                            {    
+                                    blankFlag[3][i]=true;
+                            }
+                            
+                            for(i=0;i&lt;4;i++)
+                            {
+                                document.getElementById("grid1"+(i+1)).value=baseNum_1[i];
+                                document.getElementById("grid1"+(i+1)).readOnly=true;
+                            }
+							for(i=0;i&lt;8;i+=2)
+							{
+								baseNum_5[i]=baseNum_3[i];
+								baseNum_5[i+1]=randRange(1,10-baseNum_5[i]);
+							}
+							for(i=0;i&lt;8;i++)
+                            {
+                                document.getElementById("grid3"+(i+1)).value=baseNum_5[i];
+                                document.getElementById("grid3"+(i+1)).readOnly=true;
+                            }
+							
+                            return [baseNum_1,baseNum_3,baseNum_5];
+                         })()
+            </var>
+			<var id="Nums_2">data[2]</var>
+			<var id="Nums_1">data[0]</var>
+			<var id="J">randRangeUnique(1,5,4)</var>
+            <var id="steps">22</var>
+		</div>
+		<div class="problem">
+			<p>一、做做看，下列各數可以分為哪兩個數？</p>
+			<span><code>\enspace\enspace\enspace\enspace\enspace</code></span>
+			<input type="text"  id="grid11" class="box" /><span><code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace</code></span>
+			<input type="text"  id="grid12" class="box" /><span><code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace</code></span>
+			<input type="text"  id="grid13" class="box" /><span><code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace</code></span>
+			<input type="text"  id="grid14"class="box" /><br/>
+			<span><code>\enspace\enspace\enspace\enspace\enspace╱╲</code></span>
+			<span><code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace╱╲</code></span>
+			<span><code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace╱╲</code></span>
+			<span><code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace╱╲</code></span><br />
+			<span><code>\enspace\enspace</code></span>
+			<input type="text"  id="grid21" class="box1" /><span ><code>\enspace</code></span>
+			<input type="text"  id="grid22" class="box1" /><span ><code>\enspace\enspace\enspace\enspace</code></span>
+			<input type="text"  id="grid23" class="box1" /><span ><code>\enspace</code></span>
+			<input type="text"  id="grid24" class="box1" /><span ><code>\enspace\enspace\enspace</code></span>
+			<input type="text"  id="grid25" class="box1" /><span ><code>\enspace</code></span>
+			<input type="text"  id="grid26" class="box1" /><span ><code>\enspace\enspace\enspace</code></span>
+			<input type="text"  id="grid27" class="box1" /><span ><code>\enspace</code></span>
+			<input type="text"  id="grid28" class="box1" /><br />
+			<p>二、寫寫看，合起來是多少？</p>
+			<span><code>\enspace\enspace</code></span>
+			<input type="text"  id="grid31" class="box" /><span ><code>\enspace</code></span>
+			<input type="text"  id="grid32" class="box" /><span><code>\enspace\enspace\enspace\enspace</code></span>
+			<input type="text"  id="grid33" class="box" /><span><code>\enspace</code></span>
+			<input type="text"  id="grid34" class="box" /><span><code>\enspace\enspace\enspace</code></span>
+			<input type="text"  id="grid35" class="box" /><span><code>\enspace</code></span>
+			<input type="text"  id="grid36" class="box" /><span><code>\enspace\enspace\enspace</code></span>
+			<input type="text"  id="grid37" class="box" /><span><code>\enspace</code></span>
+			<input type="text"  id="grid38" class="box" /><br />
+			<span><code>\enspace\enspace\enspace\enspace\enspace╲╱</code></span>
+			<span><code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace╲╱</code></span>
+			<span><code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace╲╱</code></span>
+			<span><code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace╲╱</code></span><br />
+			<span><code>\enspace\enspace</code></span>
+			<span><code>\enspace\enspace</code></span>
+			<input type="text"  id="grid41" class="box1" /><span><code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace</code></span>
+			<input type="text"  id="grid42" class="box1" /><span ><code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace</code></span>
+			<input type="text"  id="grid43" class="box1" /><span><code>\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace\enspace</code></span>
+			<input type="text"  id="grid44"class="box1" /><br/>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">(function(){
+								
+								var yournums_1=new Array(8);
+								var yournums_2=new Array(4);
+								var yournums_3=new Array(4);
+								
+								for(i=0;i&lt;8;i++)
+								{
+									yournums_1[i]= document.getElementById("grid2"+(i+1)).value ;
+								}
+								yournums_2[0]=parseInt(yournums_1[0])+parseInt(yournums_1[1]);
+								yournums_2[1]=parseInt(yournums_1[2])+parseInt(yournums_1[3]);
+								yournums_2[2]=parseInt(yournums_1[4])+parseInt(yournums_1[5]);
+								yournums_2[3]=parseInt(yournums_1[6])+parseInt(yournums_1[7]);
+								
+								yournums_3[0]=Nums_2[0]+Nums_2[1];
+								yournums_3[1]=Nums_2[2]+Nums_2[3];
+								yournums_3[2]=Nums_2[4]+Nums_2[5];
+								yournums_3[3]=Nums_2[6]+Nums_2[7];
+								
+								var yournums=new Array(yournums_1,yournums_2);
+								return [yournums_2,yournums_3];
+				})()
+				</div>
+				<div class="validator-function">
+						if(guess[0][0]==null&&guess[0][1]==null&&guess[0][2]==null&&guess[0][3]==null){
+							return "";
+						}
+						if(guess[0][0]==Nums_1[0] && guess[0][1]==Nums_1[1] && guess[0][2]==Nums_1[2] && guess[0][3]==Nums_1[3] && guess[1][0]==(Nums_2[0]+Nums_2[1]) && guess[1][1]==(Nums_2[2]+Nums_2[3]) && guess[1][2]==(Nums_2[4]+Nums_2[5]) && guess[1][3]==(Nums_2[6]+Nums_2[7]))
+						{
+							return true;
+						}
+				</div>
+			</div>
+			<div class="example">請在方框內填入合適的整數</div>
+		</div>
+		<div class="hints">
+			<p>一、&nbsp;<code><var>Nums_1[0]</var></code> 可以分成 <code class="hint_blue"><var>J[0]</var></code> 和 <code class="hint_blue"><var>Nums_1[0]-J[0]</var></code> ，或可以分成其他相加等於 <code><var>Nums_1[0]</var></code> 的兩個整數。</p>
+			<p><code>\enspace\enspace\enspace\enspace</code><code><var>Nums_1[1]</var></code> 可以分成 <code class="hint_blue"><var>J[1]</var></code> 和 <code class="hint_blue"><var>Nums_1[1]-J[1]</var></code> ，或可以分成其他相加等於 <code><var>Nums_1[1]</var></code> 的兩個整數。</p>
+			<p><code>\enspace\enspace\enspace\enspace</code><code><var>Nums_1[2]</var></code> 可以分成 <code class="hint_blue"><var>J[2]</var></code> 和 <code class="hint_blue"><var>Nums_1[2]-J[2]</var></code> ，或可以分成其他相加等於 <code><var>Nums_1[2]</var></code> 的兩個整數。</p>
+			<p><code>\enspace\enspace\enspace\enspace</code><code><var>Nums_1[3]</var></code> 可以分成 <code class="hint_blue"><var>J[3]</var></code> 和 <code class="hint_blue"><var>Nums_1[3]-J[3]</var></code> ，或可以分成其他相加等於 <code><var>Nums_1[3]</var></code> 的兩個整數。</p>'
+			<p>二、&nbsp;<code><var>Nums_2[0]</var></code> 和 <code><var>Nums_2[1]</var></code> 合起來可以用加法 <code><var>Nums_2[0]</var>+<var>Nums_2[1]</var></code> 得到答案是 <code class="hint_orange"><var>Nums_2[0]+Nums_2[1]</var></code> ，</p>
+			<p><code>\enspace\enspace\enspace\enspace</code><code><var>Nums_2[2]</var></code> 和 <code><var>Nums_2[3]</var></code> 合起來可以用加法 <code><var>Nums_2[2]</var>+<var>Nums_2[3]</var></code> 得到答案是 <code class="hint_orange"><var>Nums_2[2]+Nums_2[3]</var></code> ，</p>
+			<p><code>\enspace\enspace\enspace\enspace</code><code><var>Nums_2[4]</var></code> 和 <code><var>Nums_2[5]</var></code> 合起來可以用加法 <code><var>Nums_2[4]</var>+<var>Nums_2[5]</var></code> 得到答案是 <code class="hint_orange"><var>Nums_2[4]+Nums_2[5]</var></code> ，</p>
+			<p><code>\enspace\enspace\enspace\enspace</code><code><var>Nums_2[6]</var></code> 和 <code><var>Nums_2[7]</var></code> 合起來可以用加法 <code><var>Nums_2[6]</var>+<var>Nums_2[7]</var></code> 得到答案是 <code class="hint_orange"><var>Nums_2[6]+Nums_2[7]</var></code> 。</p>
+		</div>
+</body>

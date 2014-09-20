@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>放大圖與縮小圖的面積關係</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        </style>
+<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+
+
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+            <div class="vars">
+				<var id="names">randFromArray(["菱形","圓形","長方形","正方形","梯形","平行四邊形"])</var>
+				<var id="J">randFromArray([100,200,400,500,800,1000])</var>
+				<var id="K">randFromArray([100,200,500,1000])</var>
+            </div>
+			<p class="question">面積是 <code><var>J</var></code> 平方公尺的<var>names</var>草地，在 <code>\dfrac{1}{<var>K</var>}</code> 倍縮小圖上的面積是幾平方公分？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-type="rational"><var>10000*J/K/K</var></span> <code>平方公分</code>
+				<p class="example">整數，例：<code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace\enspace3/4</code></p>
+				<p class="example">小數，例：<code>0.75</code></p>
+			</div>
+            <div class="hints">
+				<p>要計算 <code><var>J</var></code> 平方公尺的圖形在 <code>\dfrac{1}{<var>K</var>}</code> 倍縮小圖上的面積時，</p>
+				<div>
+					<p>我們必須知道在 <code>\dfrac{1}{<var>K</var>}</code> 倍縮小圖上的面積會變成原先的 </p>
+					<p><code>\dfrac{1}{<var>K</var>}\times\dfrac{1}{<var>K</var>}=</code><code class="hint_green">\dfrac{1}{<var>K*K</var>}</code> 倍，</p>
+				</div>
+				<p><code><var>J</var></code> 平方公尺 <code>=<var>J</var>\times 10000</code> 平方公分，</p>
+				<p>縮小後的面積 <code>=<var>10000*J</var>\times\dfrac{1}{<var>K*K</var>}=</code><code class="hint_pink"><var>mixedFractionFromImproper(10000*J,K*K,true,true,false,false)</var></code> 平方公分。</p>			
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+				<var id="J">randRange(20,40)</var>
+				<var id="K">randRange(5,20)</var>
+				<var id="L">10*randRange(2,8)</var>
+				<var id="sarea">J*L*K*L</var>
+            </div>
+			<p class="question">建設公司將長 <code><var>J</var></code> 公分、寬 <code><var>K</var></code> 公分的長方形照片放大 <code><var>L</var></code> 倍，做成一幅廣告看板，這一幅廣告看板的面積是幾平方公尺？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-type="rational"><var>sarea/10000</var></span> <code>平方公尺</code>
+				<p class="example">整數，例：<code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace\enspace3/4</code></p>
+				<p class="example">小數，例：<code>0.75</code></p>
+			</div>
+            <div class="hints">
+				<p>要算出將長 <code><var>J</var></code> 公分、寬 <code><var>K</var></code> 公分的長方形照片放大 <code><var>L</var></code> 倍時的面積，</p>
+				<p>我們可以先算出 <code><var>J</var>\times<var>L</var>=<var>J*L</var></code> 公分、 <code><var>K</var>\times<var>L</var>=<var>K*L</var></code> 公分，</p>
+				<p>放大的面積 <code>=<var>J*L</var>\times<var>K*L</var>=<var>sarea</var></code> 平方公分，</p>
+				<p>要將 <code><var>sarea</var></code> 平方公分換成平方公尺，</p>
+				<p><code><var>sarea</var>\div 10000=<var>sarea/10000</var></code> 平方公尺。</p>
+				<p>因此，本題的答案為 <code class="hint_pink"><var>sarea/10000</var></code> 平方公尺。</p>
+            </div>
+        </div>
+		
+    </div>
+	</div>
+</body>
+</html>

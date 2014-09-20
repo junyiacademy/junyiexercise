@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>認識公里</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		#answer_area .sol input[type=text] {
+			width: 30px;
+		}
+		#answer_area .entry input[type=text] {
+			width: 30px;
+		}
+		table.nLimit{margin:0px ;border:0px }
+		table.nLimit td { text-align:center;max-width:250px;border: 1px solid #AAA; }
+		table.nLimit td { padding: 5px; }
+</script>
+	</style>
+    <script type="text/javascript">
+	</script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+        <div id="case1">
+			<div class="vars">
+				<var id="citys">randFromArray([["新竹","臺南"],["新竹","基隆"],["臺中","新竹"],["嘉義","新竹"],["嘉義","臺中"],["基隆","臺南"],["高雄","臺南"],["嘉義","高雄"],["基隆","高雄"]] )</var>
+				<var id="A">
+					(function(){
+						if(citys[0]=="基隆"){return 24};
+						if(citys[0]=="新竹"){return 70};
+						if(citys[0]=="臺中"){return 153};
+						if(citys[0]=="嘉義"){return 239};
+						if(citys[0]=="臺南"){return 302};
+						if(citys[0]=="高雄"){return 342};
+					}())
+					</var>
+					<var id="B">
+					(function(){
+						if(citys[1]=="基隆"){return 24};
+						if(citys[1]=="新竹"){return 70};
+						if(citys[1]=="臺中"){return 153};
+						if(citys[1]=="嘉義"){return 239};
+						if(citys[1]=="臺南"){return 302};
+						if(citys[1]=="高雄"){return 342};						
+					}())
+					</var>
+			</div>
+		
+			<div class="question">
+				<div class="problem">
+					<table class="nLimit">
+						<tr style="background-color:olive"><td>臺北到<br />基隆</td><td>臺北到<br />新竹</td><td>臺北到<br />臺中</td><td>臺北到<br />嘉義</td><td>臺北到<br />臺南</td><td>臺北到<br />高雄</td></tr>
+						<tr><td><code>24km</code></td><td><code>70km</code></td><td><code>153km</code></td><td><code>239km</code></td><td><code>302km</code></td><td><code>342km</code></td></tr>
+					</table>
+					<p>請問 <code class="hint_red"><var>citys[0]</var></code> 到 <code class="hint_red"><var>citys[1]</var></code> 的距離是幾公里？</p>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				 <span class="sol" data-forms="integer"><var>abs(A-B)</var></span><code>\enspace 公里</code>
+			</div>
+			
+			<div class="hints">
+				<div>
+					<p>要計算 <code class="hint_red"><var>citys[0]</var></code> 到 <code class="hint_red"><var>citys[1]</var></code> 的距離是幾公里，我們可以畫出下面的數線圖：</p>
+					<div class="graphie" id="line">
+					init({
+						range: [ [-1, 12], [-1.5, 2] ],
+						scale: 40
+						});
+					var redLine = min(A,B)/max(A,B)*10;
+					line([0,0],[redLine,0],{stroke:"red"});
+					line([10,0],[redLine,0],{stroke:"#6495ED"});
+					line([0,0.05],[0.1,0.25],{stroke:"black"});
+					line([0.1,0.25],[4.9,0.25],{stroke:"black"});
+					line([4.9,0.25],[5.0,0.45],{stroke:"black"});
+					line([5.0,0.45],[5.1,0.25],{stroke:"black"});
+					line([5.1,0.25],[9.9,0.25],{stroke:"black"});
+					line([9.9,0.25],[10,0.05],{stroke:"black"});
+					label( [0,0.5],  "\\small{臺北}", "center", { color: "black" });
+					if(A&gt;B){
+						label( [10,0.5],  "\\small{"+citys[0]+"}", "center", { color: "black" });
+						label([redLine,-0.5],  "\\small{"+citys[1]+"}", "center", { color: "black" });
+						label([redLine/2,-1],  "\\small{"+B+"km}", "center", { color: "red" });
+						label([5,0.8],  "\\small{"+A+"km}", "center", { color: "black" });
+					}
+					if(A&lt;B){
+						label( [10,0.5],  "\\small{"+citys[1]+"}", "center", { color: "black" });
+						label([redLine,-0.5],  "\\small{"+citys[0]+"}", "center", { color: "black" });
+						label([redLine/2,-1],  "\\small{"+A+"km}", "center", { color: "red" });
+						label([5,0.8],  "\\small{"+B+"km}", "center", { color: "black" });
+					}
+					</div>
+				</div>
+				<p>要計算 <code class="hint_red"><var>citys[0]</var></code> 到 <code class="hint_red"><var>citys[1]</var></code> 的距離，就必須用 <code>\color{red}{台北}</code> 到 <code class="hint_red"><var>A&gt;B?citys[0]:citys[1]</var></code> 的距離 <code>-</code> <code>\color{red}{台北}</code> 到 <code class="hint_red"><var>A&gt;B?citys[1]:citys[0]</var></code> 的距離。</p>
+				<p><code class="hint_red"><var>max(A,B)</var>-<var>min(A,B)</var>=<var>abs(A-B)</var></code></p>
+				<p><code class="hint_red"><var>citys[0]</var></code> 到 <code class="hint_red"><var>citys[1]</var></code> 的距離是 <code class="hint_pink"><var>abs(A-B)</var></code> 公里。</p>
+			</div>
+		</div>
+	
+		<div id="case2">
+			<div class="vars">
+				<var id="name">randFromArray(["小可","小強","小紅"])</var>
+				<var id="trans">randFromArray(["搭公車","坐計程車","騎腳踏車"])</var>
+				<var id="stop">randFromArray(["市府站","石牌站","明德站","善導寺站","奇岩站","北投站"])</var>
+				<var id="home">randFromArray(["阿姨家","奶奶家","外婆家","舅舅家","叔叔家","伯伯家"])</var>
+				<var id="J">randRange( 2, 5 )</var>
+				<var id="K">randRange( 400, 999 )</var>
+				<var id="M">randRange( 2, 5 )</var>
+				<var id="N">randRange( 600, 999 )</var>
+				<var id="JM">J+M+1</var>
+				<var id="KN">K+N-1000</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+					<p>從<var>name</var>家<var>trans</var>到<var>stop</var>的距離是<var>J</var>公里<var>K</var>公尺，<var>stop</var>到<var>home</var>的距離是<var>M</var>公里
+					<var>N</var>公尺，<var>name</var><var>trans</var>到<var>home</var>的路程是幾公里幾公尺？</p>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>JM</var></span><code>\enspace 公里</code><span class="sol" data-forms="integer"><var>KN</var></span><code>\enspace 公尺</code>
+				<p class="example">整數，例 <code>：6</code></p>
+		</div>
+			
+			<div class="hints">
+				<p>把 <code class="hint_red"><var>name</var></code> 家到 <code class="hint_red"><var>stop</var></code> 的距離 <code>+</code> <code class="hint_red"><var>stop</var></code> 到 <code class="hint_red"><var>home</var></code> 的距離就是<code class="hint_red"><var>name</var></code> 家到 <code class="hint_red"><var>home</var></code>的距離。 </p>
+				<div>
+					<p>我們可以運用直式來運算</p>
+					<div class="graphie" id="add_large_2">
+					init({
+                        range: [ [-1, 12], [-0.5, 3] ],
+                        scale: 40
+                    });
+					label( [1,2.5],  "\\small{公里}", "center", { color: "gray" });
+					label( [3,2.5],  "\\small{公尺}", "center", { color: "gray" });
+					label( [1,2],  "\\small{"+J+"}", "center", { color: "black" });
+					label( [3,2],  "\\small{"+K+"}", "center", { color: "black" });
+					label( [1,1.5],  "\\small{"+M+"}", "center", { color: "black" });
+					label( [3,1.5],  "\\small{"+N+"}", "center", { color: "black" });
+					label( [0,1.5],  "\\small{+}", "center", { color: "black" });
+					line([-0.3,1],[4,1]);
+					label( [3,0.5],  "\\small{"+(K+N)+"}", "center", { color: "black" });
+					label( [1,0.5],  "\\small{"+(M+J)+"}", "center", { color: "black" });
+					</div>
+				</div>
+				<P>我們知道 <code>1</code> 公里 <code>=1000</code> 公尺，因此超過 <code>1000</code> 公尺時，要進位到公里。</P>
+				<div class="graphie" data-update="add_large_2">
+					line([0.5,0.25],[1.5,0.75],{stroke: "red"});
+					line([2.5,0.25],[3.5,0.75],{stroke: "red"});
+					label( [3,0],  "\\small{"+(K+N-1000)+"}", "center", { color: "red" });
+					label( [1,0],  "\\small{"+(M+J+1)+"}", "center", { color: "red" });
+				</div>
+				<P><var>name</var>家到<var>home</var>的距離為 <code class="hint_pink"><var>JM</var></code> 公里 <code class="hint_pink"><var>KN</var></code> 公尺。</P>
+			</div>
+		</div>
+		
+		<div id="case3">
+			<div class="vars">
+				<var id="name">randFromArray(["小可","小強","小紅"])</var>
+				<var id="name2">randFromArray(["小偉","小薇","小威"])</var>
+				<var id="stop">randFromArray(["學校","游泳池","公園","便利商店","棒球場","籃球場"])</var>
+				<var id="home">randFromArray(["阿姨家","奶奶家","外婆家","舅舅家","叔叔家","伯伯家"])</var>
+				<var id="J">randRange( 5, 9 )</var>
+				<var id="K">randRange( 100, 400 )</var>
+				<var id="M">randRange( 1, 4 )</var>
+				<var id="N">randRange( 401, 999 )</var>
+				<var id="KN">1000+K-N</var>
+				<var id="J1">J-1</var>
+				<var id="JM">J1-M</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+					<p><var>name</var>的家到<var>stop</var>的距離是<var>J</var>公里<var>K</var>公尺，<var>name2</var>的家到<var>stop</var>的距離是<var>M</var>公里
+					<var>N</var>公尺，<var>name</var>家到<var>stop</var>比<var>name2</var>家到<var>stop</var>多幾公里幾公尺？</p>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>JM</var></span><code>\enspace 公里</code><span class="sol" data-forms="integer"><var>KN</var></span><code>\enspace 公尺</code>
+				<p class="example">整數，例 <code>：6</code></p>
+			</div>
+			
+			<div class="hints">
+				<p>要計算 <code class="hint_red"><var>name</var></code> 家到 <code class="hint_red"><var>stop</var></code> 的距離比 <code class="hint_red"><var>name2</var></code> 家到 <code class="hint_red"><var>stop</var></code> 多幾公里幾公尺，
+					我們就要用 <code class="hint_red"><var>name</var></code> 家到 <code class="hint_red"><var>stop</var></code> 的距離 <code>-</code> <code class="hint_red"><var>name2</var></code> 家到 <code class="hint_red"><var>stop</var></code> 的距離。</p>
+				<div>
+					<p>我們可以運用直式來運算</p>
+					<div class="graphie" id="add_large_2">
+						init({
+							range: [ [-1, 12], [-0.5, 3] ],
+							scale: 40
+						});
+						label( [1,2.5],  "\\small{公里}", "center", { color: "gray" });
+						label( [3,2.5],  "\\small{公尺}", "center", { color: "gray" });
+						label( [1,1.5],  "\\small{"+J+"}", "center", { color: "black" });
+						label( [3,1.5],  "\\small{"+K+"}", "center", { color: "black" });
+						label( [1,1],  "\\small{"+M+"}", "center", { color: "black" });
+						label( [3,1],  "\\small{"+N+"}", "center", { color: "black" });
+						label( [0,1],  "\\small{-}", "center", { color: "black" });
+						line([-0.3,0.5],[4,0.5]);
+					</div>
+				</div>
+				<p>當我們發現公尺的部分不夠減時，可以跟公里借。</p>
+				<div>
+					<P>我們知道<code>1</code> 公里 <code>=1000</code> 公尺。所以將公里的 <code class="hint_red"><var>J</var></code> 劃掉後，公尺的部分就會多了<code>1000</code>
+					公尺，再用<code class="hint_red">1000+<var>K</var>-<var>N</var></code> 算出 <code class="hint_red"><var>KN</var></code> 公尺。<code class="hint_red"><var>J1</var></code> 公里 <code>-</code> <code class="hint_red"><var>M</var></code> 公里 <code>=</code><code class="hint_red"><var>JM</var></code>公里。</P>
+					<div class="graphie" data-update="add_large_2">
+						line([0.5,1.25],[1.5,1.75],{stroke: "red"});
+						label( [1,2],  "\\small{"+J1+"}", "center", { color: "red" });
+						label( [3,2],  "\\small{1000}", "center", { color: "red" });
+						label( [1,0],  "\\small{"+(JM)+"}", "center", { color: "red" });
+						label( [3,0],  "\\small{"+(KN)+"}", "center", { color: "red" });
+					</div>
+				</div>
+				<P><code class="hint_red"><var>name</var></code> 家到 <code class="hint_red"><var>stop</var></code>的距離比 <code class="hint_red"><var>name2</var></code> 家到 <code class="hint_red"><var>stop</var></code> 多 <code class="hint_pink"><var>JM</var></code> 公里 <code class="hint_pink"><var>KN</var></code> 公尺。</P>
+	</div>
+	</div>
+</body>
+</html>	

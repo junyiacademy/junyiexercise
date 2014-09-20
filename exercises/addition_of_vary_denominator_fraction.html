@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie-helpers graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>異分母的正負分數加法</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars" data-ensure="getGCD(K,J)==1 && getGCD(L,M)==1 && getGCD(J,M)==1">
+			<var id="J">randRange(2,20)</var>
+			<var id="M">randRange(2,20)</var>
+			<var id="K">randRange(5,15)</var>
+			<var id="L">randRange(5,15)</var>
+			<var id="kj">KhanUtil.toFraction(K/J)</var>
+			<var id="lm">KhanUtil.toFraction(L/M)</var>
+        </div>
+		<div class="question spin">
+		<p>計算下列各式的值</p>
+		<p class="question"><code>(-<var>fraction(K,J,true,true,false,false)</var>)+(-<var>fraction(L,M,true,true,false,false)</var>)</code></p>
+		</div>
+		<div class="solution">
+			<span class="sol" data-type="rational"><var>(-K*M-L*J)/J/M</var></span>
+		</div>
+
+		<div class="hints">
+			<div>
+				<p><code>\enspace\enspace(-<var>fraction(K,J,true,true,false,false)</var>)+(-<var>fraction(L,M,true,true,false,false)</var>)</code></p>
+				<p><code>=-(\dfrac{<var>kj[0]</var>\times<var>lm[1]</var>}{<var>kj[1]</var>\times<var>lm[1]</var>}+\dfrac{<var>lm[0]</var>\times<var>kj[1]</var>}{<var>lm[1]</var>\times<var>kj[1]</var>})</code></p>
+			</div>
+			<p><code>=-\dfrac{(<var>kj[0]</var>\times<var>lm[1]</var>+<var>lm[0]</var>\times<var>kj[1]</var>)}{<var>kj[1]</var>\times<var>lm[1]</var>}</code></p>
+			<p><code>=</code><code class="hint_pink">\enspace<var>fraction(-K*M-L*J,J*M,true,true,false,false)</var></code></p>
+		</div>
+	</div>
+	
+	<div id="case2">
+        <div class="vars" data-ensure="N&lt;60 && getGCD(K,J)==1 && getGCD(L,M)==1 && getGCD(J,M)==1">
+			<var id="J">randRange(2,20)</var>
+			<var id="M">randRange(2,20)</var>
+			<var id="K">randRange(2,9)</var>
+			<var id="L">randRange(2,9)</var>
+			<var id="N">getLCM(J,M)</var>
+			<var id="kj">KhanUtil.toFraction(K/J)</var>
+			<var id="lm">KhanUtil.toFraction(L/M)</var>
+        </div>
+		<div class="question spin">
+		<p>計算下列各式的值</p>
+		<p class="question"><code>(-<var>fraction(K,J,true,true,false,false)</var>)+(-<var>fraction(L,M,true,true,false,false)</var>)</code></p>
+		</div>
+		<div class="solution">
+			<span class="sol" data-type="rational"><var>(-K*N/J-L*N/M)/N</var></span>
+		</div>
+		<div class="hints">
+			<div>
+				<p><code>\enspace\enspace(-<var>fraction(K,J,true,true,false,false)</var>)+(-<var>fraction(L,M,true,true,false,false)</var>)</code></p>
+				<p><code>=-(\dfrac{<var>kj[0]</var>\times\frac{<var>N</var>}{<var>kj[1]</var>}}{<var>N</var>}+\dfrac{<var>lm[0]</var>\times\frac{<var>N</var>}{<var>lm[1]</var>}}{<var>N</var>})</code></p>
+			</div>
+			<p><code>=-\dfrac{(<var>kj[0]</var>\times\frac{<var>N</var>}{<var>kj[1]</var>}+<var>lm[0]</var>\times\frac{<var>N</var>}{<var>lm[1]</var>})}{<var>N</var>}</code></p>
+			<p><code>=-\dfrac{(<var>kj[0]</var>\times<var>N/kj[1]</var>+<var>lm[0]</var>\times<var>N/lm[1]</var>)}{<var>N</var>}</code></p>
+			<p><code>=</code><code class="hint_pink">\enspace<var>fraction(-K*N/J-L*N/M,N,true,true,false,false)</var></code></p>
+		</div>
+	</div>
+	
+	<div id="case3">
+        <div class="vars" data-ensure="N&lt;60 && knj&gt;lnm && getGCD(K,J)==1 && getGCD(L,M)==1 && J!=M">
+			<var id="J">randRange(2,20)</var>
+			<var id="M">randRange(2,20)</var>
+			<var id="N">getLCM(J,M)</var>
+			<var id="K">randRange(2,9)</var>
+			<var id="L">randRange(2,9)</var>
+			<var id="knj">K*N/J</var>
+			<var id="lnm">L*N/M</var>
+			<var id="kj">KhanUtil.toFraction(K/J)</var>
+			<var id="lm">KhanUtil.toFraction(L/M)</var>
+        </div>
+		<div class="question spin">
+		<p>計算下列各式的值</p>
+		<p class="question"><code>(<var>fraction(K,J,true,true,false,false)</var>)+(-<var>fraction(L,M,true,true,false,false)</var>)</code></p>
+		</div>
+		<div class="solution">
+			<span class="sol" data-type="rational"><var>(K*N/J-L*N/M)/N</var></span>
+		</div>
+
+		<div class="hints">
+			<div>
+				<p><code>\enspace\enspace(<var>fraction(K,J,true,true,false,false)</var>)+(-<var>fraction(L,M,true,true,false,false)</var>)</code></p>
+				<p><code>=(\dfrac{<var>kj[0]</var>\times\frac{<var>N</var>}{<var>kj[1]</var>}}{<var>N</var>}-\dfrac{<var>lm[0]</var>\times\frac{<var>N</var>}{<var>lm[1]</var>}}{<var>N</var>})</code></p>
+			</div>
+			<p><code>=\dfrac{(<var>kj[0]</var>\times\frac{<var>N</var>}{<var>kj[1]</var>}-<var>lm[0]</var>\times\frac{<var>N</var>}{<var>lm[1]</var>})}{<var>N</var>}</code></p>
+			<p><code>=\dfrac{(<var>kj[0]</var>\times<var>N/kj[1]</var>-<var>lm[0]</var>\times<var>N/lm[1]</var>)}{<var>N</var>}</code></p>
+			<p><code>=</code><code class="hint_pink">\enspace<var>fraction(K*N/J-L*N/M,N,true,true,false,false)</var></code></p>
+		</div>
+	</div>
+	
+	<div id="case4">
+        <div class="vars" data-ensure="N&lt;60 && knj&lt;lnm && getGCD(K,J)==1 && getGCD(L,M)==1 && J!=M">
+			<var id="J">randRange(2,20)</var>
+			<var id="M">randRange(2,20)</var>
+			<var id="N">getLCM(J,M)</var>
+			<var id="K">randRange(2,9)</var>
+			<var id="L">randRange(2,9)</var>
+			<var id="knj">K*N/J</var>
+			<var id="lnm">L*N/M</var>
+			<var id="kj">KhanUtil.toFraction(K/J)</var>
+			<var id="lm">KhanUtil.toFraction(L/M)</var>
+        </div>
+		<div class="question spin">
+		<p>計算下列各式的值</p>
+		<p class="question"><code>(<var>fraction(K,J,true,true,false,false)</var>)+(-<var>fraction(L,M,true,true,false,false)</var>)</code></p>
+		</div>
+		<div class="solution">
+			<span class="sol" data-type="rational"><var>(-L*N/M+K*N/J)/N</var></span>
+		</div>
+
+		<div class="hints">
+			<div>
+				<p><code>\enspace\enspace(<var>fraction(K,J,true,true,false,false)</var>)+(-<var>fraction(L,M,true,true,false,false)</var>)</code></p>
+				<p><code>=-(-\dfrac{<var>kj[0]</var>\times\frac{<var>N</var>}{<var>kj[1]</var>}}{<var>N</var>}+\dfrac{<var>lm[0]</var>\times\frac{<var>N</var>}{<var>lm[1]</var>}}{<var>N</var>})</code></p>
+			</div>
+			<p><code>=-\dfrac{(<var>lm[0]</var>\times\frac{<var>N</var>}{<var>lm[1]</var>}-<var>kj[0]</var>\times\frac{<var>N</var>}{<var>kj[1]</var>})}{<var>N</var>}</code></p>
+			<p><code>=-\dfrac{(<var>lm[0]</var>\times<var>N/lm[1]</var>-<var>kj[0]</var>\times<var>N/kj[1]</var>)}{<var>N</var>}</code></p>
+			<p><code>=</code><code class="hint_pink">\enspace<var>fraction(-L*N/M+K*N/J,N,true,true,false,false)</var></code></p>
+		</div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能由邊長和角的特性來認識正方形和長方形(3-s-07)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		#answer_area .sol input[type=text] {
+			width: 30px;
+		}
+		#answer_area .entry input[type=text] {
+			width: 30px;
+		}
+    </style>
+	<script type="text/javascript">
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="b">randRange(3,10)</var>
+				<var id="a">randRange(1,2)</var>				
+				<var id="b1">(function(){
+						if(a==1)
+						{
+							return b;
+						}
+						if(a==2)
+						{
+							return randRange(1,10)
+						}
+					})()</var>
+				<var id="ANGLE_ONE">randRange(0, 359)</var>
+				<var id="DIFF">(function(){
+						if(a==1)
+						{
+							return 90;
+						}
+						if(a==2)
+						{
+							return randRange(80, 100);
+						}
+					})()</var>
+				<var id="a1">(function(){
+					if(DIFF==90)
+					{
+						return 4;
+					}
+					if(DIFF !== 90)
+					{
+						return 0;
+					}
+				})()</var>
+				 <var id="FACTORS">[b, b, b1, b1]</var>
+			</div>			
+			<div class="question">
+			<p>量量看，下面四邊形的每一邊有多長？它有幾個角是直角？</p>
+				<div class="problem">
+					<div class="graphie" id="figure">
+						var ANGLE_TWO = ANGLE_ONE + DIFF;
+						var ANGLE_ONE_R = ANGLE_ONE * PI / 180;
+						var ANGLE_TWO_R = ANGLE_TWO * PI / 180;
+					
+						 init({
+                        range: [ [min(b * cos( ANGLE_ONE_R ),0,b1 * cos( ANGLE_TWO_R ),(b1 * cos( ANGLE_TWO_R )+b * cos( ANGLE_ONE_R )))-3, max(b * cos( ANGLE_ONE_R ),0,b1 * cos( ANGLE_TWO_R ),(b1 * cos( ANGLE_TWO_R )+b * cos( ANGLE_ONE_R )))+3], [-15, 15] ],
+                        scale:19
+							});
+					
+						path([ [b * cos( ANGLE_ONE_R ), b * sin( ANGLE_ONE_R )], [0, 0], [b1 * cos( ANGLE_TWO_R ), b1 * sin( ANGLE_TWO_R )] ,[(b1 * cos( ANGLE_TWO_R )+b * cos( ANGLE_ONE_R )), (b * sin( ANGLE_ONE_R )+b1 * sin( ANGLE_TWO_R ))],[b * cos( ANGLE_ONE_R ), b * sin( ANGLE_ONE_R )]]);					 
+						addMouseLayer();
+						graph.triangleruler = new Triangleruler( [0, 0] )
+					</div>					
+				</div>	
+			</div>
+			
+		   <div class="solution" data-type="set">  
+				
+				<div class="set-sol" data-type="multiple"> 					
+					<span class="sol"><var>b</var></span>          
+					<span class="sol"><var>b</var></span>           
+					<span class="sol"><var>b1</var></span>
+					<span class="sol"><var>b1</var></span> 	
+					<span class="sol"><var>a1</var></span>					
+				</div>
+				<div class="set-sol" data-type="multiple">       
+					<span class="sol"><var>b1</var></span>
+					<span class="sol"><var>b1</var></span> 
+					<span class="sol"><var>b</var></span>          
+					<span class="sol"><var>b</var></span> 
+					<span class="sol"><var>a1</var></span>
+				</div>
+				<div class="set-sol" data-type="multiple">         
+					<span class="sol"><var>b</var></span>          
+					<span class="sol"><var>b1</var></span>           
+					<span class="sol"><var>b</var></span>
+					<span class="sol"><var>b1</var></span>
+					<span class="sol"><var>a1</var></span>
+				</div>
+				<div class="set-sol" data-type="multiple">       
+					<span class="sol"><var>b</var></span>
+					<span class="sol"><var>b1</var></span> 
+					<span class="sol"><var>b1</var></span>          
+					<span class="sol"><var>b</var></span>
+					<span class="sol"><var>a1</var></span>
+				</div>
+				<div class="set-sol" data-type="multiple">       
+					<span class="sol"><var>b1</var></span>
+					<span class="sol"><var>b</var></span> 
+					<span class="sol"><var>b1</var></span>          
+					<span class="sol"><var>b</var></span> 
+					<span class="sol"><var>a1</var></span>
+				</div>
+				<div class="set-sol" data-type="multiple">       
+					<span class="sol"><var>b1</var></span>
+					<span class="sol"><var>b</var></span> 
+					<span class="sol"><var>b</var></span>          
+					<span class="sol"><var>b1</var></span> 
+					<span class="sol"><var>a1</var></span>
+				</div>
+				<div class="input-format">
+					<p class="entry" data-type="multiple">					
+						邊長分別為：<br />
+						<code>\enspace\enspace\enspace</code><span class="sol"></span>  公分<br />  
+						<code>\enspace\enspace\enspace</code><span class="sol"></span>  公分<br />		   
+						<code>\enspace\enspace\enspace</code><span class="sol"></span>  公分<br />
+						<code>\enspace\enspace\enspace</code><span class="sol"></span>  公分 <br />
+						有 <span class="sol"></span> 個直角
+					</p>
+				</div>
+				<p class="example">整數，例 <code>：6</code></p>
+			</div>
+			<div class="hints">
+				<p data-if="a==1">這個圖形邊長都是 <code><var>b</var></code> 公分，</p>
+				<p data-if="a==1">4 個邊都一樣長，</p>
+				<p data-if="a==1">這個圖形的四個角都是直角，</p>
+				<p data-if="a==1">所以它是正方形</p>
+				<p data-if="a==2 && DIFF==90">這個圖形邊長分別為： <code><var>b</var></code> 公分，<code><var>b</var></code> 公分，<code><var>b1</var></code> 公分，<code><var>b1</var></code> 公分，</p>
+				<p data-if="a==2 && DIFF==90">這個圖形的四個角都是直角，</p>
+				<p data-if="a==2 && DIFF==90">所以它是長方形</p>
+				<p data-if="a==2 && DIFF !==90">這個圖形邊長分別為： <code><var>b</var></code> 公分，<code><var>b</var></code> 公分，<code><var>b1</var></code> 公分，<code><var>b1</var></code> 公分</p>
+				<p data-if="a==2 && DIFF !==90">這個圖形的四個角都不是直角，且兩組對邊分别平行，</p>
+				<p data-if="a==2 && DIFF !==90">所以它是平行四邊形</p>
+			</div>
+		</div>
+		<div id="case2">
+			<div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="a">randFromArray([["長","ㄔ","ㄤˊ"],["正","ㄓ","ㄥˋ"]])</var>
+				<var id="L"> 12</var>
+				<var id="W"> 12</var>
+				<var id="b">randRange(2,10)</var>
+				<var id="c">(function()
+					{
+						if(a[0]=="長"){return 1;}
+						if(a[0]=="正"){return 2;}
+					})()</var>				
+			</div>	
+			 <div class="problem">
+			 <p>完成下圖方格中的<var>a[0]</var>方形</p>
+                <div class="graphie" id="barchart">
+                    init({ range: [[-2, L + 1], [-1, W + 1]], scale: 25 });
+						path([[0, 0], [0, W], [L, W], [L, 0], true],
+							{stroke: GRAY, fill: "#eee"});
+						label([1, 11.8], 1 + "\\text{ cm}", "above");
+						line([1,11],[1, 11-b],{stroke:"#6495ED"});
+						style({
+								stroke: GRAY,
+								strokeWidth: 1,
+								strokeDasharray: "-"
+							}, function() {
+								_(L - 1).times(function(x) {
+									path([[x + 61 / 60, 0], [x + 61 / 60, W]]);
+								});
+								_(W - 1).times(function(y) {
+									path([[0, y + 61 / 60], [L, y + 61 / 60]]);
+								});
+							});
+					
+                    addMouseLayer();
+					graph.leftPoints = addMovablePoint({ coord: [   1, 11 ], visible: false });
+					graph.rightPoints = addMovablePoint({ coord: [  1, 11.01 ], visible: true ,snapX: 1, constraints: { constrainY: true }});
+					graph.lines = addMovableLineSegment({ pointA: graph.leftPoints, pointZ: graph.rightPoints,  constraints: {  fixed:true} });
+					
+					graph.leftPoints1 = addMovablePoint({ coord: [   1, 11-b ], visible: false });
+					graph.rightPoints1 = addMovablePoint({ coord: [  1, 11.01-b ], visible: true,snapX: 1, constraints: { constrainY: true } });
+					graph.lines = addMovableLineSegment({ pointA: graph.leftPoints1, pointZ: graph.rightPoints1, snapX: 1, constraints: { fixed:true} });
+					graph.lines = addMovableLineSegment({ pointA: graph.rightPoints, pointZ: graph.rightPoints1, snapX: 1, constraints: { fixed:true} });    
+                </div>
+			</div>
+			<div class="solution" data-type="custom">
+				<div class="guess">[graph.rightPoints.coord,graph.rightPoints1.coord]</div>
+				<div class="validator-function">
+					var bol1=false;
+					if(c==2 && (guess[0][0]-1)==b && (guess[0][1]-guess[1][1])==b && (guess[1][0]-1)==b)
+					{
+							bol1=true;
+					}
+					if(c==1 && (guess[0][1]-guess[1][1])==b && (guess[0][0]==(guess[1][0])&& ((guess[0][0]-1)!==b) &&((guess[1][0]-1)!==b)))
+					{
+						bol1=true;
+					}
+					return bol1;
+					</div>
+				<p class="example">請移動題目中橙色的點繪出所需圖形</p>
+            </div>   
+			<div class="hints">
+				<P data-if="c==1">長方形：四個角均需為直角，兩個對邊需平行且等長。</P>
+				<P data-if="c==2">正方形：四個角均需為直角，四個邊需要平行且等長。</P>
+				<p>橙色線條為提示。</p>				
+				<p data-if="c==1" class="graphie" data-update="barchart">line([1,11],[b,11],{ stroke: ORANGE })</p>					
+				<p data-if="c==2" class="graphie" data-update="barchart">line([1,11],[b+1,11],{ stroke: ORANGE })</p>			
+				<p data-if="c==1" class="graphie" data-update="barchart">line([1,11-b],[b,11-b],{ stroke: ORANGE })</p>				
+				<p data-if="c==2" class="graphie" data-update="barchart">line([1,11-b],[b+1,11-b],{ stroke: ORANGE })</p>				
+				<p data-if="c==1" class="graphie" data-update="barchart">line([b,11],[b,11-b],{ stroke: ORANGE })</p>				
+				<p data-if="c==2" class="graphie" data-update="barchart">line([b+1,11],[b+1,11-b],{ stroke: ORANGE })</p>				
+			</div>
+		</div>	
+           
+	</div>
+	</div>
+</body>
+</html>
+		

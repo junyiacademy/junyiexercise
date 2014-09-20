@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers graphie-geometry math-format interactive triangle-congruence">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>平面圖形全等的意義4-s-03</title>
+    <script src="../khan-exercise.js"></script>
+	<script type="text/javascript">
+		function reflect(){
+			
+		}
+	</script>
+	<style type="text/css">
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+			<div id="case1">
+				<div class="vars" data-ensure="edge[1]-edge[0]&lt;18">
+					<var id="ans_type">randRange(1,2)</var>
+					<var id="question_type">randRange(1,2)</var>
+					<var id="grap">ans_type==1?"三角形":"四邊形"</var>
+					<var id="a">question_type==1?"全等":"不全等"</var>
+					<var id="b">question_type==2?"全等":"不全等"</var>
+					<var id="x,y">randRange(-2, 5,2)</var>
+					<var id="x1,y1">randRange(2, 5,2)</var>
+					<var id="x2,y2">randRange(5, 8,2)</var>
+					<var id="HULL">(function(){
+						if(ans_type==1)
+						{
+							return ([[x,y],[x+x1,y+y2],[x+x2,y+y1]])
+						}
+						if(ans_type==2)
+						{
+							return ([[x,y],[x+x1,y+y2],[x+x2,y+y1],[x+x1,y],[x,y]])
+						}
+					})()</var>
+					<var id="HULL_new">(function(){
+						if(ans_type==1)
+						{
+							if(question_type==1){
+								return [[2*x2-3,-3],[2*x2-x1-3,y2-3],[x2-3,y1-3],[2*x2-3,-3]];
+							}else {
+								var sss = randRange(4,20)/10;
+								return  [[2*x2-3+sss,-3+sss],[2*x2-x1-3,y2-3],[x2-3,y1-3],[2*x2-3+sss,-3+sss]];
+							}
+						}
+						if(ans_type==2)
+						{
+							if(question_type==1){
+								return [[-x-1,y],[-x-x1-1,y+y2],[-x-x2-1,y+y1],[-x-x1-1,y],[-x-1,y]];
+							}else {
+								var ss = randRange(4,20)/10;
+								return  [[-x-1+ss,y+ss],[-x-x1-1,y+y2],[-x-x2-1,y+y1],[-x-x1-1,y],[-x-1+ss,y+ss]];
+							}
+						}
+					})()</var>
+					<var id="edge">(function(){
+						left_edge = 0;
+						right_edge = 0;
+						above_edge = 0;
+						below_edge = 0;
+						if(ans_type==1){
+							left_edge = min(HULL_new[0][0],HULL_new[1][0],HULL_new[2][0],HULL[0][0],HULL[1][0],HULL[2][0]);
+							right_edge = max(HULL_new[0][0],HULL_new[1][0],HULL_new[2][0],HULL[0][0],HULL[1][0],HULL[2][0]);
+							above_edge = max(HULL_new[0][1],HULL_new[1][1],HULL_new[2][1],HULL[0][1],HULL[1][1],HULL[2][1]);
+							below_edge = min(HULL_new[0][1],HULL_new[1][1],HULL_new[2][1],HULL[0][1],HULL[1][1],HULL[2][1]);
+						} else {
+							left_edge = min(HULL_new[0][0],HULL_new[1][0],HULL_new[2][0],HULL_new[3][0],HULL[0][0],HULL[1][0],HULL[2][0],HULL[3][0]);
+							right_edge = max(HULL_new[0][0],HULL_new[1][0],HULL_new[2][0],HULL_new[3][0],HULL[0][0],HULL[1][0],HULL[2][0],HULL[3][0]);
+							above_edge = max(HULL_new[0][1],HULL_new[1][1],HULL_new[2][1],HULL_new[3][1],HULL[0][1],HULL[1][1],HULL[2][1],HULL[3][1]);
+							below_edge = min(HULL_new[0][1],HULL_new[1][1],HULL_new[2][1],HULL_new[3][1],HULL[0][1],HULL[1][1],HULL[2][1],HULL[3][1]);
+						}
+						return [left_edge,right_edge,above_edge,below_edge];
+					})()</var>
+				</div>
+				<div class="question">
+					<div class="problem">						
+						<p style="font-weight:bold">這兩個 <span class="hint_green"><var>grap</var></span> 全等嗎？我們可以怎麼做？</p>
+						<p>如果是全等的，請移動圖形使兩個圖形完全重疊</p>
+						<input type="button" value="翻轉圖形" onClick="javascript:
+                        KhanUtil.currentGraph.graph.update();
+                    " />
+						<div class="graphie" id="triangle">	
+						   init({
+							range: [ [left_edge-10, right_edge+10], [below_edge-10, above_edge+10] ],
+							scale: 15
+							});
+							path(HULL_new,{stroke:"black"})
+							addMouseLayer();
+							if(ans_type==1){
+								graph.pointA = addMovablePoint({
+									coord: HULL[0],
+									snapX: 0,
+									snapY: 0,
+									visible: false,
+									normalStyle: {
+										stroke: KhanUtil.BLUE,
+										fill: KhanUtil.BLUE
+									}
+								});
+								graph.pointB = addMovablePoint({
+									coord: HULL[1],
+									snapX: 0,
+									snapY: 0,
+									visible: false,
+									normalStyle: {
+										stroke: KhanUtil.GREEN,
+										fill: KhanUtil.GREEN
+									}
+								});
+								graph.pointC = addMovablePoint({
+									coord: HULL[2],
+									snapX: 0,
+									snapY: 0,
+									visible: false,
+									normalStyle: {
+										stroke: KhanUtil.ORANGE,
+										fill: KhanUtil.ORANGE
+									}
+								});
+								graph.line1 = addMovableLineSegment({
+									pointA: graph.pointA,
+									pointZ: graph.pointB,
+									fixed: false
+								});
+								graph.line2 = addMovableLineSegment({
+									pointA: graph.pointB,
+									pointZ: graph.pointC,
+									fixed: false
+								});
+								graph.line3 = addMovableLineSegment({
+									pointA: graph.pointC,
+									pointZ: graph.pointA,
+									fixed: false
+								});
+								var test = 0;
+								graph.update = function() {
+									test = 1;
+									var x1=2*graph.pointA.coord[0]-graph.pointB.coord[0];
+									var x2=2*graph.pointA.coord[0]-graph.pointC.coord[0];
+									graph.line1.pointZ.setCoord([x1,graph.pointB.coord[1]]);
+									graph.line3.pointA.setCoord([x2,graph.pointC.coord[1]]);
+									graph.line1.pointZ.updateLineEnds();
+									graph.line3.pointA.updateLineEnds();
+									HULL[0][0]=x1;
+									HULL[1][0]=x2;
+								}
+								_.each([graph.line1,graph.line2,graph.line3], function(line) { line.onMove = function(dX, dY){ graph.updatePolygon(dX, dY); }});
+								graph.updatePolygon = function(dX, dY) {
+								_.each([graph.pointA,graph.pointB,graph.pointC], function(point){ point.setCoord([point.coord[0] + dX, point.coord[1] + dY]); point.updateLineEnds(); });
+								}
+							}
+							if(ans_type==2){
+								graph.pointA = addMovablePoint({
+									coord: HULL[0],
+									snapX: 0,
+									snapY: 0,
+									visible: false,
+									normalStyle: {
+										stroke: KhanUtil.BLUE,
+										fill: KhanUtil.BLUE
+									}
+								});
+								graph.pointB = addMovablePoint({
+									coord: HULL[1],
+									snapX: 0,
+									snapY: 0,
+									visible: false,
+									normalStyle: {
+										stroke: KhanUtil.GREEN,
+										fill: KhanUtil.GREEN
+									}
+								});
+								graph.pointC = addMovablePoint({
+									coord: HULL[2],
+									snapX: 0,
+									snapY: 0,
+									visible: false,
+									normalStyle: {
+										stroke: KhanUtil.ORANGE,
+										fill: KhanUtil.ORANGE
+									}
+								});
+								graph.pointD = addMovablePoint({
+									coord: HULL[3],
+									snapX: 0,
+									snapY: 0,
+									visible: false,
+									normalStyle: {
+										stroke: KhanUtil.ORANGE,
+										fill: KhanUtil.ORANGE
+									}
+								});
+								graph.line1 = addMovableLineSegment({
+									pointA: graph.pointA,
+									pointZ: graph.pointB,
+									fixed: false
+								});
+								graph.line2 = addMovableLineSegment({
+									pointA: graph.pointB,
+									pointZ: graph.pointC,
+									fixed: false
+								});
+								graph.line3 = addMovableLineSegment({
+									pointA: graph.pointC,
+									pointZ: graph.pointD,
+									fixed: false
+								});
+								graph.line4 = addMovableLineSegment({
+									pointA: graph.pointD,
+									pointZ: graph.pointA,
+									fixed: false
+								});
+								var test = 0;
+								graph.update = function() {
+									test = 1;
+									var x1=2*graph.pointA.coord[0]-graph.pointB.coord[0];
+									var x2=2*graph.pointA.coord[0]-graph.pointC.coord[0];
+									var x3=2*graph.pointA.coord[0]-graph.pointD.coord[0];
+									graph.line1.pointZ.setCoord([x1,graph.pointB.coord[1]]);
+									graph.line2.pointA.setCoord([x1,graph.pointB.coord[1]]);
+									graph.line2.pointZ.setCoord([x2,graph.pointC.coord[1]]);
+									graph.line3.pointA.setCoord([x2,graph.pointC.coord[1]]);
+									graph.line3.pointZ.setCoord([x3,graph.pointD.coord[1]]);
+									graph.line4.pointA.setCoord([x3,graph.pointD.coord[1]]);
+									
+									graph.line1.pointZ.updateLineEnds();
+									graph.line2.pointA.updateLineEnds();
+									graph.line2.pointZ.updateLineEnds();
+									graph.line3.pointA.updateLineEnds();
+									graph.line3.pointZ.updateLineEnds();
+									graph.line4.pointA.updateLineEnds();
+									HULL[0][0]=x1;
+									HULL[1][0]=x2;
+									HULL[2][0]=x3;
+								}
+								_.each([graph.line1,graph.line2,graph.line3,,graph.line4], function(line) { line.onMove = function(dX, dY){ graph.updatePolygon(dX, dY); }});
+								graph.updatePolygon = function(dX, dY) {
+								_.each([graph.pointA,graph.pointB,graph.pointC,graph.pointD], function(point){ point.setCoord([point.coord[0] + dX, point.coord[1] + dY]); point.updateLineEnds(); });
+								}
+							}
+						</div>						
+					</div>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p><input type="radio" id="radio_1" name="radios" value="1">&nbsp;全等</p>
+					<p><input type="radio" id="radio_2" name="radios" value="2">&nbsp;不全等</p>
+                    <div class="sol" data-type="custom">
+                        <div class="guess">
+						(function(){
+							if(ans_type==1){
+								return [$("input[name='radios']:checked").val(),graph.line1.pointA.coord,graph.line1.pointZ.coord,graph.line2.pointA.coord,graph.line2.pointZ.coord,graph.line3.pointA.coord,graph.line3.pointZ.coord];
+							}else {
+								return [$("input[name='radios']:checked").val(),graph.line1.pointA.coord,graph.line1.pointZ.coord,graph.line2.pointA.coord,graph.line2.pointZ.coord,graph.line3.pointA.coord,graph.line3.pointZ.coord,graph.line4.pointA.coord,graph.line4.pointZ.coord];
+							}
+						})()</div>
+                        <div class="validator-function">
+							if(guess[0]==null){
+								return "";
+							}
+							var b1 = false;
+							var p1 = false;
+							var p2 = false;
+							var p3 = false;
+							var p4 = false;
+							if(parseInt(guess[0])==question_type){
+								b1 = true;
+							}
+							if(ans_type==1){
+								if(question_type==2){
+									p1 = true;
+									p2 = true;
+									p3 = true;
+									p4 = true;
+								} else {
+									if(abs(guess[1][0]-HULL_new[0][0])&lt;=0.2 && abs(guess[1][1]-HULL_new[0][1])&lt;=0.2){
+										p1 = true;
+									}
+									if(abs(guess[3][0]-HULL_new[1][0])&lt;=0.2 && abs(guess[3][1]-HULL_new[1][1])&lt;=0.2){
+										p2 = true;
+									}
+									if(abs(guess[5][0]-HULL_new[2][0])&lt;=0.2 && abs(guess[5][1]-HULL_new[2][1])&lt;=0.2){
+										p3 = true;
+									}
+									p4 = true;
+								}
+							}
+							
+							if(ans_type==2){
+								if(question_type==2){
+									p1 = true;
+									p2 = true;
+									p3 = true;
+									p4 = true;
+								} else {
+									if(abs(guess[1][0]-HULL_new[0][0])&lt;=0.2 && abs(guess[1][1]-HULL_new[0][1])&lt;=0.2){
+										p1 = true;
+									}
+									if(abs(guess[3][0]-HULL_new[1][0])&lt;=0.2 && abs(guess[3][1]-HULL_new[1][1])&lt;=0.2){
+										p2 = true;
+									}
+									if(abs(guess[5][0]-HULL_new[2][0])&lt;=0.2 && abs(guess[5][1]-HULL_new[2][1])&lt;=0.2){
+										p3 = true;
+									}
+									if(abs(guess[7][0]-HULL_new[3][0])&lt;=0.2 && abs(guess[7][1]-HULL_new[3][1])&lt;=0.2){
+										p4 = true;
+									}
+								}
+							}
+							return b1&&p1&&p2&&p3&&p4;
+                        </div>
+                    </div>
+					<p class="example">單選</p>
+					<p class="example">如果是全等的，請移動圖形使兩個圖形完全重疊</p>
+                </div>
+				<div class="hints">
+					<p><code>1.</code> 要看看這兩個圖形是否重疊，我們可以試著移動看看，這兩個圖形是否能夠完全的重疊在一起 <code>!</code></p>
+					<p data-if="question_type==1"><code>2.</code> 這兩個圖形的邊、角、頂點可以完全重疊，所以這兩個圖形 <span class="hint_pink">全等</span> 。</p>
+					<p data-if="question_type==2"><code>2.</code> 這兩個圖形的邊、角、頂點不可以完全重疊，所以這兩個圖形 <span class="hint_pink">不全等</span> 。</p>
+				</div>
+            </div>
+            </div>
+		</div>
+    </div>
+</body>
+</html>

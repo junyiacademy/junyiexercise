@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>基準量與比較量</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 60px;
+        }
+    </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+            <div class="vars">
+				<var id="J_type">randRange(1,2)</var>
+				<var id="K_type">randRange(1,2)</var>
+				<var id="J">
+				(function(){
+					var arrj = new Array();
+					var a1 = randRange(20,199)/10;
+					var below = randRange(2,10);
+					var up = randRange(1,below-1);
+					J_type==1?arrj=[a1,a1]:arrj=[mixedFraction(parseInt(a1),up,below,true,true,false,false),parseInt(a1)+(up/below)];
+					return arrj;
+				})()</var>
+				<var id="K">
+				(function(){
+					var arrk = new Array();
+					var a2 = randRange(20,199)/10;
+					var below2 = randRange(2,10);
+					var up2 = randRange(1,below2-1);
+					K_type==1?arrk=[a2,a2]:arrk=[mixedFraction(parseInt(a2),up2,below2,true,true,false,false),parseInt(a2)+(up2/below2)];
+					return arrk;
+				})()</var>
+				<var id="answer_type">randRange(1,2)</var>
+            </div>
+            <div class="problem">
+				<p data-if="answer_type==1">紅繩子長 <code><var>J[0]</var></code> 公尺，綠繩子長 <code><var>K[0]</var></code> 公尺，把紅繩子的長度當作 <code>1</code> ，綠繩子的長度是多少？</p>
+				<p data-if="answer_type==2">紅繩子長 <code><var>J[0]</var></code> 公尺，綠繩子長 <code><var>K[0]</var></code> 公尺，把綠繩子的長度當作 <code>1</code> ，紅繩子的長度是多少？</p>
+			</div>
+			<div class="solution">
+				<span class="sol" data-type="rational"><var>answer_type==1?K[1]/J[1]:J[1]/K[1]</var></span>
+			</div>
+            <div class="hints">
+				<p data-if="answer_type==1">因為紅繩子的長度當作 <code>1</code> ，為基準量，</p>
+				<p data-if="answer_type==1">求綠繩子的長度時要用 <code><var>K[0]</var>\div<var>J[0]</var></code> ，算算看 <code><var>K[0]</var></code> 是 <code><var>J[0]</var></code> 的幾倍，</p>
+				<p data-if="answer_type==1">所以綠繩子的長度為 <code class="hint_pink"><var>decimalFraction(K[1]/J[1],true,true,false,false)</var></code> 。</p>
+				<p data-if="answer_type==2">因為綠繩子的長度當作 <code>1</code> ，為基準量，</p>
+				<p data-if="answer_type==2">求紅繩子的長度時要用 <code><var>J[0]</var>\div<var>K[0]</var></code> ，算算看 <code><var>J[0]</var></code> 是 <code><var>K[0]</var></code> 的幾倍，</p>
+				<p data-if="answer_type==2">所以紅繩子的長度為 <code class="hint_pink"><var>decimalFraction(J[1]/K[1],true,true,false,false)</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+				<var id="J">randRange(60,95)</var>
+				<var id="K">randRange(40,70)</var>
+				<var id="name1">randFromArray(["曲老師","爸爸","媽媽","方大哥","叔叔","伯伯","阿姨"])</var>
+				<var id="name2">randFromArray(["小華","小明","小劉","小黑","小林","小白","天恩","倚恩"])</var>
+				<var id="answer_type">randRange(1,2)</var>
+            </div>
+            <div class="problem">
+				<p data-if="answer_type==1"><var>name1</var>的一步長是 <code><var>J</var></code> 公分，<var>name2</var>的一步長是 <code><var>K</var></code> 公分，如果將<var>name2</var>的一步長當作 <code>1</code> ，則<var>name1</var>的一步長是多少？</p>
+				<p data-if="answer_type==2"><var>name1</var>的一步長是 <code><var>J</var></code> 公分，<var>name2</var>的一步長是 <code><var>K</var></code> 公分，如果將<var>name1</var>的一步長當作 <code>1</code> ，則<var>name2</var>的一步長是多少？</p>
+			</div>
+			<div class="solution">
+				<span class="sol" data-type="rational"><var>answer_type==1?J/K:K/J</var></span>
+			</div>
+            <div class="hints">
+				<p data-if="answer_type==1">因為<var>name2</var>的一步長當作 <code>1</code>，為基準量，</p>
+				<p data-if="answer_type==1">求<var>name1</var>的一步長時要用 <code><var>J</var>\div<var>K</var></code> ，算算看 <code><var>J</var></code> 是<code><var>K</var></code> 的幾倍，</p>
+				<p data-if="answer_type==1">所以<var>name1</var>的一步長為 <code class="hint_pink"><var>fraction(J,K,true,true,false,false)</var></code> 。</p>
+				<p data-if="answer_type==2">因為<var>name1</var>的一步長當作 <code>1</code>，為基準量，</p>
+				<p data-if="answer_type==2">求<var>name2</var>的一步長時要用 <code><var>K</var>\div<var>J</var></code> ，算算看 <code><var>K</var></code> 是<code><var>J</var></code> 的幾倍，</p>
+				<p data-if="answer_type==2">所以<var>name2</var>的一步長為 <code class="hint_pink"><var>fraction(K,J,true,true,false,false)</var></code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars" data-ensure="toFraction(K[1]/J[1])[1]&lt;=300">
+				<var id="J_type">randRange(1,2)</var>
+				<var id="K_type">randRange(1,2)</var>
+				<var id="J">
+				(function(){
+					var arrj = new Array();
+					var a1 = randRange(30,90);
+					var below = randRange(2,10);
+					var up = randRange(1,below-1);
+					J_type==1?arrj=[a1,a1]:arrj=[mixedFraction(a1,up,below,true,true,false,false),a1+(up/below)];
+					return arrj;
+				})()</var>
+				<var id="K">
+				(function(){
+					var arrk = new Array();
+					var a2 = randRange(5,30);
+					if(a2==30&amp;&amp;K_type==2){
+						a2=29;
+					}
+					var below2 = randRange(2,10);
+					var up2 = randRange(1,below2-1);
+					K_type==1?arrk=[a2,a2]:arrk=[mixedFraction(a2,up2,below2,true,true,false,false),a2+(up2/below2)];
+					return arrk;
+				})()</var>
+				<var id="name1">randFromArray([["長方形","長","寬"],["平行四邊形","底","高"],["三角形","底","高"]])</var>
+            </div>
+            <div class="problem">
+				<p><var>name1[0]</var>的<var>name1[1]</var>為 <code><var>J[0]</var></code> 公分，<var>name1[2]</var>為 <code><var>K[0]</var></code> 公分，如果將<var>name1[1]</var>當作基準量，<var>name1[2]</var>為多少？</p>
+			</div>
+			<div class="solution">
+				<span class="sol" data-type="rational"><var>K[1]/J[1]</var></span>
+			</div>
+            <div class="hints">
+				<p>如果將<var>name1[1]</var>當作基準量，就是先把<var>name1[1]</var>當作 <code>1</code> ，</p>
+				<p><var>name1[2]</var>就為 <code><var>K[0]</var>\div<var>J[0]</var></code> ，也就是算 <code><var>K[0]</var></code> 為 <code><var>J[0]</var></code> 的多少倍，</p>
+				<p>因此，<var>name1[2]</var><code>=</code><code class="hint_pink"><var>decimalFraction(K[1]/J[1],true,true,false,false)</var></code> 。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

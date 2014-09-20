@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>用符號代表數-解決被除數或除數未知的問題</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+    </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+		function checkNum(num){
+			var arr = num.toString().split('.');
+			var arrLen = arr.length;
+			if(arrLen==2){
+				if(arr[1].length>1){return false;}
+			}
+			return true;
+			
+		}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">	
+		<div id="case1">
+            <div class="vars" data-ensure="J&lt;=200&&J&gt;=50">
+				<var id="A">randRange(3,40)</var>
+				<var id="K">randRange(5,20)</var>
+				<var id="J">A*K</var>
+				<var id="names">randFromArray([["哥哥",0],["弟弟",0],["姐姐",1],["妹妹",1],["小明",0],["小華",0]])</var>
+				<var id="toys">randFromArray([["彈珠","顆"],["玩具","個"],["圖釘","個"],["磁鐵","塊"]])</var>
+            </div>
+            <p class="question"><var>names[0]</var>有 <code><var>J</var></code> <var>toys[1]+toys[0]</var>，<var>names[1]==0?"他":"她"</var>將全部的<var>toys[0]</var>平分裝在一些盒子裡，每一盒裡有 <code><var>K</var></code> <var>toys[1]+toys[0]</var>，請問一共有幾個盒子？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>A</var></span> <code>盒</code>
+			</div>
+            <div class="hints">
+				<p>總共有 <code><var>J</var></code> <var>toys[1]+toys[0]</var>要平分在一些盒子中，而且每盒要有 <code><var>K</var></code> <var>toys[1]+toys[0]</var> ，</p>
+				<p>我們可以列出 <code><var>J</var>\div(\enspace\enspace\enspace)=<var>K</var></code> ，</p>
+				<p>要算出 <code>(\enspace\enspace\enspace)</code> 等於多少，就可以用 <code><var>J</var></code> 去除以 <code><var>K</var></code> 。</p>
+				<div>
+					<p>舉例來說，<code>8\div (\enspace\enspace\enspace)=4</code> ，</p>
+					<p>我們知道要算出 <code>(\enspace\enspace\enspace)</code> 就可以用 <code>8\div 4=2</code> ，因為 <code>8\div 2=4</code> 。</p>
+				</div>
+				<p>因此我們知道一共有 <code><var>J</var>\div<var>K</var>=</code><code class="hint_pink"><var>A</var></code> 盒。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+				<var id="J">randRange(4,20)</var>
+				<var id="K">accAdd(randRange(2,29),accDiv(randRange(0,10),10))</var>
+				<var id="names">randFromArray(["紅豆","綠豆","咖啡豆","奶粉","麵粉","沙糖","精鹽"])</var>
+            </div>
+            <p class="question">將一包<var>names</var>分給 <code><var>J</var></code> 個人，每人分得 <code><var>K</var></code> 公斤，請問一包<var>names</var>有幾公斤？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-type="rational"><var>J*K</var></span> <code>公斤</code>
+				<p class="example">整數，例：<code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace\enspace3/4</code></p>
+				<p class="example">小數，例：<code>0.75</code></p>
+			</div>
+            <div class="hints">
+				<p>我們不知道一包<var>names</var>有多少公斤，但我們知道分給 <code><var>J</var></code> 個人之後，每人得到 <code><var>K</var></code> 公斤。</p>
+				<p>依據題目的描述我們可以列出 <code>(\enspace\enspace\enspace)\div<var>J</var>=<var>K</var></code> 的式子，</p>
+				<p>我們要算出 <code>(\enspace\enspace\enspace)</code> 等於多少，可用 <code><var>K</var></code> 去乘以 <code><var>J</var></code> ，</p>
+				<p>舉例來說，如果 <code>(\enspace\enspace\enspace)\div 2=3</code> ，我們知道 <code>(\enspace\enspace\enspace)=3\times 2=6</code> ，</p>
+				<div>
+					<p>所以當 <code>(\enspace\enspace\enspace)\div<var>J</var>=<var>K</var></code> 時，</p>
+					<p>我們用 <code><var>K</var>\times<var>J</var></code> 之後得到 <code>(\enspace\enspace\enspace)=</code><code class="hint_pink"><var>accMul(J,K)</var></code> 公斤。</p>
+				</div>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars" data-ensure="checkNum(K)">
+				<var id="A">randRange(3,20)</var>
+				<var id="J">accAdd(randRange(50,199),accDiv(randRange(0,10),10))</var>
+				<var id="K">accDiv(J*10,A*10)</var>
+				<var id="names">randFromArray(["紅豆","綠豆","咖啡豆","奶粉","麵粉","沙糖","精鹽"])</var>
+            </div>
+            <p class="question">將一包<var>names</var> <code><var>J</var></code> 公斤，分給一些人後，每個人得到 <code><var>K</var></code> 公斤，請問總共分給幾個人？</p>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>A</var></span> <code>人</code>
+			</div>
+            <div class="hints">
+				<p>我們依據題目的描述可列出 <code><var>J</var>\div(\enspace\enspace\enspace)=<var>K</var></code> ，</p>
+				<p>要算出 <code>(\enspace\enspace\enspace)</code> 等於多少，就可以用 <code><var>J</var></code> 去除以 <code><var>K</var></code>。</p>
+				<div>
+					<p>舉例來說，<code>8\div (\enspace\enspace\enspace)=4</code> ，</p>
+					<p>我們知道要算出 <code>(\enspace\enspace\enspace)</code> 就可以用 <code>8\div 4=2</code> ，因為 <code>8\div 2=4</code> 。</p>
+				</div>
+				<p>因此我們知道總共分給 <code><var>J</var>\div<var>K</var>=</code><code class="hint_pink"><var>A</var></code> 人。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

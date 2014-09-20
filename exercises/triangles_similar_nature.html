@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>三角形相似性質</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	    function chg(num){
+		    var ansNums = KhanUtil.randRange(3,4);
+			var arr = KhanUtil.randRangeUnique(1,num,ansNums);
+			for(var i = 0;i<=ansNums-1;i++){
+			    document.getElementById("t_"+arr[i]).style.display="none";
+			}
+			return [num-ansNums,arr];
+		}
+		function chg2(num,quesMin,quesMax){
+		    var ansNums = KhanUtil.randRange(num-quesMax,num-quesMin);
+			var arr = KhanUtil.randRangeUnique(1,num,ansNums);
+			for(var i = 0;i<=ansNums-1;i++){
+			    document.getElementById("t_"+arr[i]).style.display="none";
+			}
+			return [num-ansNums,arr];
+		}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+	    <div id="case1">
+            <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+			    <var id="h_1">3.5*Math.sin(55/180*Math.PI)</var>
+				<var id="ll_1">3.5*Math.cos(55/180*Math.PI)</var>
+				<var id="ll_2">h_1/sqrt(3)</var>
+				<var id="h_2">h_1*0.8</var>
+				<var id="lr_1">ll_1*0.8</var>
+				<var id="lr_2">ll_2*0.8</var>
+				<var id="change">chg(6)</var>
+            </div>
+			<p class="question">有兩個三角形，其中 <code>\angle{A}=\angle{D}=65^{\circ}</code> ，<code>\angle{B}=\angle{E}=55^{\circ}</code> ，說明 <code>\triangle{ABC}\sim\triangle{DEF}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="similar_1">
+				    init({
+                        range: [ [-1, 12], [-0.5,3.5] ],
+                        scale: 40
+                    });
+					path([[0,0],[ll_1+ll_2,0],[ll_1,h_1],[0,0]],{stroke:"black"});
+					label( [0,0],  "B", "left", { color: "black" });
+					label( [ll_1+ll_2,0],  "C", "right", { color: "black" });
+					label( [ll_1,h_1],  "A", "above", { color: "black" });
+					arc([0,0],0.3,0,55);
+					arc([ll_1,h_1],0.3,235,300);
+					label( [0.3,0.3],  "\\small{55^{\\circ}}", "right", { color: "black" });
+					label( [ll_1,h_1-0.3],  "\\small{65^{\\circ}}", "below", { color: "black" });
+					
+					path([[6,0],[lr_1+lr_2+6,0],[lr_1+6,h_2],[6,0]],{stroke:"black"});
+					label( [6,0],  "E", "left", { color: "black" });
+					label( [lr_1+lr_2+6,0],  "F", "right", { color: "black" });
+					label( [lr_1+6,h_2],  "D", "above", { color: "black" });
+					arc([6,0],0.3,0,55,{stroke:"black"});
+					arc([lr_1+6,h_2],0.3,235,300,{stroke:"black"});
+					label( [6.3,0.3],  "\\small{55^{\\circ}}", "right", { color: "black" });
+					label( [lr_1+6,h_2-0.3],  "\\small{65^{\\circ}}", "below", { color: "black" });
+				</div>
+				<p>請在下列空格中填入適當的答案：</p>
+				<p>既然要說明三角形相似，因此可以想想要將 <code>\triangle{DEF}</code> 縮放幾倍，才會和 <code>\triangle{ABC}</code> 全等。</p>
+				<p>由於對應角要相等，因此 <code>D</code> 、<code>E</code> 的對應點必須是 <input type="text" id="t_1" style="width:30px"><code data-if="t_1.style.display=='none'">A</code> ，<input type="text" id="t_2" style="width:30px"><code data-if="t_2.style.display=='none'">B</code> ，</p>
+				<p>換句話說， <code>\overline{AB}</code> 應該就是 <span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_3" style="width:30px"><code data-if="t_3.style.display=='none'">DE</code></span> 的對應邊，</p>
+				<p>因此 <code>\dfrac{\overline{AB}}{\overline{DE}}</code> 就是縮放的倍數，我們用 <code class="hint_green">r</code> 表示 <code>\dfrac{\overline{AB}}{\overline{DE}}</code> 。</p>
+				<div>
+				    <p>現將 <code>\triangle{DEF}</code> 縮放 <code class="hint_green">r</code> 倍，得 <code>\triangle{D^{'}E^{'}F^{'}}</code> ，如下圖：</p>
+					<div class="graphie" id="similar_11">
+					    init({
+                        range: [ [-1, 12], [-0.5,3.5] ],
+                        scale: 40
+                        });
+					    path([[0,0],[ll_1+ll_2,0],[ll_1,h_1],[0,0]],{stroke:"black"});
+					    label( [0,0],  "E^{'}", "left", { color: "black" });
+					    label( [ll_1+ll_2,0],  "F^{'}", "right", { color: "black" });
+					    label( [ll_1,h_1],  "D^{'}", "above", { color: "black" });
+					    arc([0,0],0.3,0,55);
+					    arc([ll_1,h_1],0.3,235,300);
+					    label( [0.3,0.3],  "\\small{55^{\\circ}}", "right", { color: "black" });
+					    label( [ll_1,h_1-0.3],  "\\small{65^{\\circ}}", "below", { color: "black" });
+					</div>
+				</div>
+				<p>因為 <code>\overline{D^{'}E^{'}}=</code><code class="hint_green">r</code><code>\overline{DE}=\overline{AB}</code> ，</p>
+				<div>
+				    <p>且 <code>\angle{D^{'}}=\angle{D}=\angle{}</code><input type="text" id="t_4" style="width:30px"><code data-if="t_4.style.display=='none'">A</code><code>\enspace=65^{\circ}</code></p>
+					<p><code>\enspace\enspace\enspace\angle{E^{'}}=\angle{}</code><input type="text" id="t_5" style="width:30px"><code data-if="t_5.style.display=='none'">E</code><code>\enspace=\angle{B}=55^{\circ}</code></p>
+				</div>
+				<p>所以 <code>\triangle{D^{'}E^{'}F^{'}}\cong\triangle{ABC}\enspace\enspace\enspace\enspace\enspace\enspace</code><input type="text" id="t_6" style="width:50px"><code data-if="t_6.style.display=='none'" class="hint_blue">ASA</code><code>\color{blue}{全等性質}</code></p>
+				<p>這表示 <code>\triangle{DEF}</code> 縮放 <code class="hint_green">r</code> 倍後和 <code>\triangle{ABC}</code> 全等，</p>
+				<p>因此 <code class="hint_pink">\triangle{ABC}\sim\triangle{DEF}</code> 。</p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value,document.getElementById("t_2").value,document.getElementById("t_3").value,document.getElementById("t_4").value,document.getElementById("t_5").value,document.getElementById("t_6").value]</div>
+				    <div class="validator-function">
+					    var rightNums = 0;
+					    var ng1 = guess[0];
+						var ng2 = guess[1];
+						var ng3 = guess[2];
+						var ng4 = guess[3];
+						var ng5 = guess[4];
+						var ng6 = guess[5];
+						if(document.getElementById("t_1").style.display==""){
+						    ng1.replace(/[ ]/g,"")=="A"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_2").style.display==""){
+						    ng2.replace(/[ ]/g,"")=="B"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_3").style.display==""){
+						    (ng3.replace(/[ ]/g,"")=="DE"||ng3.replace(/[ ]/g,"")=="ED")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_4").style.display==""){
+						    ng4.replace(/[ ]/g,"")=="A"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_5").style.display==""){
+						    ng5.replace(/[ ]/g,"")=="E"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_6").style.display==""){
+						    ng6.replace(/[ ]/g,"")=="ASA"?rightNums+=1:rightNums+=0;
+						}
+						return rightNums==change[0]?true:false;
+					</div>
+				</div>
+				<p class="example">文字(國字或英文)</p>
+            </div>
+            <div class="hints">
+			    <p>既然要說明三角形相似，因此可以想想要將 <code>\triangle{DEF}</code> 縮放幾倍，才會和 <code>\triangle{ABC}</code> 全等。</p>
+				<p>由於對應角要相等，因此 <code>D、E</code> 的對應點必須是 <code>A、B</code> ，</p>
+				<p>換句話說， <code>\overline{AB}</code> 應該就是 <code>\overline{DE}</code> 的對應邊，</p>
+				<p>因此 <code>\dfrac{\overline{AB}}{\overline{DE}}</code> 就是縮放的倍數，我們用 <code class="hint_green">r</code> 表示 <code>\dfrac{\overline{AB}}{\overline{DE}}</code> 。</p>
+				<div>
+				    <p>現將 <code>\triangle{DEF}</code> 縮放 <code class="hint_green">r</code> 倍，得 <code>\triangle{D^{'}E^{'}F^{'}}</code> ，如下圖：</p>
+					<div class="graphie" id="similar_11">
+					    init({
+                        range: [ [-1, 12], [-0.5,3.5] ],
+                        scale: 40
+                        });
+					    path([[0,0],[ll_1+ll_2,0],[ll_1,h_1],[0,0]],{stroke:"black"});
+					    label( [0,0],  "E^{'}", "left", { color: "black" });
+					    label( [ll_1+ll_2,0],  "F^{'}", "right", { color: "black" });
+					    label( [ll_1,h_1],  "D^{'}", "above", { color: "black" });
+					    arc([0,0],0.3,0,55);
+					    arc([ll_1,h_1],0.3,235,300);
+					    label( [0.3,0.3],  "\\small{55^{\\circ}}", "right", { color: "black" });
+					    label( [ll_1,h_1-0.3],  "\\small{65^{\\circ}}", "below", { color: "black" });
+					</div>
+				</div>
+				<p>因為 <code>\overline{D^{'}E^{'}}=</code><code class="hint_green">r</code><code>\overline{DE}=\overline{AB}</code> ，</p>
+				<div>
+				    <p>且 <code>\angle{D^{'}}=\angle{D}=\angle{A}=65^{\circ}</code></p>
+					<p><code>\enspace\enspace\enspace\angle{E^{'}}=\angle{E}=\angle{B}=55^{\circ}</code></p>
+				</div>
+				<p>所以 <code>\triangle{D^{'}E^{'}F^{'}}\cong\triangle{ABC}\enspace\enspace\enspace\enspace\enspace\enspace\color{blue}{ASA全等性質}</code></p>
+				<p>這表示 <code>\triangle{DEF}</code> 縮放 <code class="hint_green">r</code> 倍後和 <code>\triangle{ABC}</code> 全等，</p>
+				<p>因此 <code class="hint_pink">\triangle{ABC}\sim\triangle{DEF}</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+			    <var id="h_1">2*Math.sin(75/180*Math.PI)</var>
+				<var id="ll_1">2*Math.cos(75/180*Math.PI)</var>
+				<var id="ll_2">h_1*sqrt(3)</var>
+				<var id="h_2">h_1*1.2</var>
+				<var id="lr_1">ll_1*1.2</var>
+				<var id="lr_2">ll_2*1.2</var>
+				<var id="change">chg(6)</var>
+            </div>
+			<p class="question">有兩個三角形，其中 <code>\angle{A}=\angle{D}=75^{\circ}</code> ，<code>\overline{AB}=10</code> ，<code>\overline{AC}=20</code> ，<code>\overline{DE}=12</code> ，<code>\overline{DF}=24</code> ，說明 <code>\triangle{ABC}\sim\triangle{DEF}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="similar_2">
+				    init({
+                        range: [ [-1, 12], [-0.5,3.5] ],
+                        scale: 40
+                    });
+					path([[0,0],[ll_1+ll_2,0],[ll_1,h_1],[0,0]],{stroke:"black"});
+					label( [0,0],  "B", "left", { color: "black" });
+					label( [ll_1+ll_2,0],  "C", "right", { color: "black" });
+					label( [ll_1,h_1],  "A", "above", { color: "black" });
+					arc([ll_1,h_1],0.3,255,330);
+					label( [ll_1+0.3,h_1-0.3],  "\\small{75^{\\circ}}", "below", { color: "black" });
+					label( [ll_1/2,h_1/2],  "\\small{10}", "left", { color: "black" });
+					label( [ll_1+ll_2/2,h_1/2],  "\\small{20}", "right", { color: "black" });
+					
+					path([[6,0],[lr_1+lr_2+6,0],[lr_1+6,h_2],[6,0]],{stroke:"black"});
+					label( [6,0],  "E", "left", { color: "black" });
+					label( [lr_1+lr_2+6,0],  "F", "right", { color: "black" });
+					label( [lr_1+6,h_2],  "D", "above", { color: "black" });
+					arc([lr_1+6,h_2],0.3,255,330,{stroke:"black"});
+					label( [lr_1+6.3,h_2-0.3],  "\\small{75^{\\circ}}", "below", { color: "black" });
+					label( [lr_1/2+6,h_2/2],  "\\small{12}", "left", { color: "black" });
+					label( [lr_1+6+lr_2/2,h_2/2],  "\\small{24}", "right", { color: "black" });
+				</div>
+				<p>請在下列空格中填入適當的答案：</p>
+				<div>
+				    <p>我們觀察到 <code>\angle{A}</code> 和 <code>\angle{D}</code> 的兩邊長成比例：</p>
+					<p><code>\overline{AB}:\overline{DE}=\overline{AC}:\overline{DF}=5:6</code></p>
+				</div>
+				<p>也就是說，<code>\angle{D}</code> 兩邊長是 <code>\angle{A}</code> 兩對應邊長的 <code>\dfrac{6}{5}</code> 倍。</p>
+				<div>
+				    <p>現將 <code>\triangle{ABC}</code> 縮放 <code>\dfrac{6}{5}</code> 倍後得 <code>\triangle{A^{'}B^{'}C^{'}}</code> ，如下圖：</p>
+					<div class="graphie" id="similar_22">
+					    init({
+                        range: [ [-1, 12], [-0.5,3.5] ],
+                        scale: 40
+                        });
+						path([[0,0],[lr_1+lr_2,0],[lr_1,h_2],[0,0]],{stroke:"black"});
+					    label( [0,0],  "B^{'}", "left", { color: "black" });
+					    label( [lr_1+lr_2,0],  "C^{'}", "right", { color: "black" });
+					    label( [lr_1,h_2],  "A^{'}", "above", { color: "black" });
+					    arc([lr_1,h_2],0.3,255,330,{stroke:"black"});
+					    label( [lr_1+0.3,h_2-0.3],  "\\small{75^{\\circ}}", "below", { color: "black" });
+					    label( [lr_1/2,h_2/2],  "\\small{12}", "left", { color: "black" });
+					    label( [lr_1+lr_2/2,h_2/2],  "\\small{24}", "right", { color: "black" });
+					</div>
+				</div>
+				<div>
+				    <p>因為 <code>\overline{A^{'}B^{'}}=\dfrac{6}{5}\overline{AB}=</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_1" style="width:30px"><code data-if="t_1.style.display=='none'">DE</code></span></p>
+					<p><code>\enspace\enspace\enspace\enspace\overline{A^{'}C^{'}}=\dfrac{6}{5}\overline{AC}=</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_2" style="width:30px"><code data-if="t_2.style.display=='none'">DF</code></span></p>
+					<p><code>\enspace\enspace\enspace\enspace\angle{A^{'}}=\angle{A}=\angle{}\enspace</code><input type="text" id="t_3" style="width:30px"><code data-if="t_3.style.display=='none'">D</code></p>
+				</div>
+				<p>所以 <code>\triangle{A^{'}B^{'}C^{'}}\cong\triangle{}</code><input type="text" id="t_4" style="width:30px"><code data-if="t_4.style.display=='none'">DEF</code><code>\enspace\enspace\enspace</code><input type="text" id="t_5" style="width:30px"><code data-if="t_5.style.display=='none'" class="hint_blue">SAS</code><code>\color{blue}{全等性質}</code></p>
+				<p>因此 <code class="hint_pink">\triangle{}</code><input type="text" id="t_6" style="width:30px"><code data-if="t_6.style.display=='none'" class="hint_pink">ABC</code><code class="hint_pink">\sim\triangle{DEF}</code> 。</p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value,document.getElementById("t_2").value,document.getElementById("t_3").value,document.getElementById("t_4").value,document.getElementById("t_5").value,document.getElementById("t_6").value]</div>
+				    <div class="validator-function">
+					    var rightNums = 0;
+					    var ng1 = guess[0];
+						var ng2 = guess[1];
+						var ng3 = guess[2];
+						var ng4 = guess[3];
+						var ng5 = guess[4];
+						var ng6 = guess[5];
+						if(document.getElementById("t_1").style.display==""){
+						    (ng1.replace(/[ ]/g,"")=="DE"||ng1.replace(/[ ]/g,"")=="ED")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_2").style.display==""){
+						    (ng2.replace(/[ ]/g,"")=="DF"||ng2.replace(/[ ]/g,"")=="FD")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_3").style.display==""){
+						    ng3.replace(/[ ]/g,"")=="D"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_4").style.display==""){
+						    ng4.replace(/[ ]/g,"")=="DEF"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_5").style.display==""){
+						    ng5.replace(/[ ]/g,"")=="SAS"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_6").style.display==""){
+						    ng6.replace(/[ ]/g,"")=="ABC"?rightNums+=1:rightNums+=0;
+						}
+						return rightNums==change[0]?true:false;
+					</div>
+				</div>
+				<p class="example">文字(國字或英文)</p>
+            </div>
+            <div class="hints">
+			    <div>
+				    <p>我們觀察到 <code>\angle{A}</code> 和 <code>\angle{D}</code> 的兩邊長成比例：</p>
+					<p><code>\overline{AB}:\overline{DE}=\overline{AC}:\overline{DF}=5:6</code></p>
+				</div>
+				<p>也就是說，<code>\angle{D}</code> 兩邊長是 <code>\angle{A}</code> 兩對應邊長的 <code>\dfrac{6}{5}</code> 倍。</p>
+				<div>
+				    <p>現將 <code>\triangle{ABC}</code> 縮放 <code>\dfrac{6}{5}</code> 倍後得 <code>\triangle{A^{'}B^{'}C^{'}}</code> ，如下圖：</p>
+					<div class="graphie" id="similar_22">
+					    init({
+                        range: [ [-1, 12], [-0.5,3.5] ],
+                        scale: 40
+                        });
+						path([[0,0],[lr_1+lr_2,0],[lr_1,h_2],[0,0]],{stroke:"black"});
+					    label( [0,0],  "B^{'}", "left", { color: "black" });
+					    label( [lr_1+lr_2,0],  "C^{'}", "right", { color: "black" });
+					    label( [lr_1,h_2],  "A^{'}", "above", { color: "black" });
+					    arc([lr_1,h_2],0.3,255,330,{stroke:"black"});
+					    label( [lr_1+0.3,h_2-0.3],  "\\small{75^{\\circ}}", "below", { color: "black" });
+					    label( [lr_1/2,h_2/2],  "\\small{12}", "left", { color: "black" });
+					    label( [lr_1+lr_2/2,h_2/2],  "\\small{24}", "right", { color: "black" });
+					</div>
+				</div>
+				<div>
+				    <p>因為 <code>\overline{A^{'}B^{'}}=\dfrac{6}{5}\overline{AB}=\overline{DE}</code></p>
+					<p><code>\enspace\enspace\enspace\enspace\overline{A^{'}C^{'}}=\dfrac{6}{5}\overline{AC}=\overline{DF}</code></p>
+					<p><code>\enspace\enspace\enspace\enspace\angle{A^{'}}=\angle{A}=\angle{D}</code></p>
+				</div>
+				<p>所以 <code>\triangle{A^{'}B^{'}C^{'}}\cong\triangle{DEF}\enspace\enspace\enspace\color{blue}{SAS全等性質}</code></p>
+				<p>因此 <code class="hint_pink">\triangle{ABC}\sim\triangle{DEF}</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="angB">Math.acos(29/36)*180/Math.PI</var>
+			    <var id="h_1">3*Math.sin(angB/180*Math.PI)</var>
+				<var id="ll_1">3*Math.cos(angB/180*Math.PI)</var>
+				<var id="ll_2">6-ll_1</var>
+				<var id="h_2">h_1*0.5</var>
+				<var id="lr_1">ll_1*0.5</var>
+				<var id="lr_2">ll_2*0.5</var>
+				<var id="change">chg2(10,2,3)</var>
+            </div>
+			<p class="question">有兩個三角形，依照圖中邊長的條件，說明 <code>\triangle{ABC}\sim\triangle{DEF}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="similar_3">
+				    init({
+                        range: [ [-1, 12], [-1,3] ],
+                        scale: 40
+                    });
+					path([[0,0],[ll_1+ll_2,0],[ll_1,h_1],[0,0]],{stroke:"black"});
+					label( [0,0],  "B", "left", { color: "black" });
+					label( [ll_1+ll_2,0],  "C", "right", { color: "black" });
+					label( [ll_1,h_1],  "A", "above", { color: "black" });
+					label( [ll_1/2,h_1/2],  "\\small{6}", "above left", { color: "black" });
+					label( [ll_1+ll_2/2,h_1/2],  "\\small{8}", "above right", { color: "black" });
+					label( [ll_1/2+ll_2/2,0],  "\\small{12}", "below", { color: "black" });
+					
+					path([[8,0],[lr_1+lr_2+8,0],[lr_1+8,h_2],[8,0]],{stroke:"black"});
+					label( [8,0],  "E", "left", { color: "black" });
+					label( [lr_1+lr_2+8,0],  "F", "right", { color: "black" });
+					label( [lr_1+8,h_2],  "D", "above", { color: "black" });
+					label( [lr_1/2+8,h_2/2],  "\\small{3}", "above left", { color: "black" });
+					label( [lr_1+8+lr_2/2,h_2/2],  "\\small{4}", "above right", { color: "black" });
+					label( [lr_1/2+lr_2/2+8,0],  "\\small{6}", "below", { color: "black" });
+				</div>
+				<p>請在下列空格中填入適當的答案：</p>
+				<div>
+				    <p>我們觀察到這兩個三角形的三組對應邊成比例：</p>
+					<p><code>\overline{AB}:</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_1" style="width:30px"><code data-if="t_1.style.display=='none'">DE</code></span><code>=\overline{BC}:</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_2" style="width:30px"><code data-if="t_2.style.display=='none'">EF</code></span><code>=</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_3" style="width:30px"><code data-if="t_3.style.display=='none'">AC</code></span><code>:\overline{DF}=</code><input type="text" id="t_4" style="width:20px"><code data-if="t_4.style.display=='none'">2</code><code>:1</code></p>
+				</div>
+				<div>
+				    <p>將 <code>\triangle{ABC}</code> 縮放 <code>\dfrac{1}{2}</code> 倍後得 <code>\triangle{A^{'}B^{'}C^{'}}</code> ，如下圖：</p>
+					<div class="graphie" id="similar_33">
+					    init({
+                        range: [ [-1, 6], [-1,2] ],
+                        scale: 40
+                        });
+						path([[0,0],[lr_1+lr_2,0],[lr_1,h_2],[0,0]],{stroke:"black"});
+						label( [0,0],  "B^{'}", "left", { color: "black" });
+						label( [lr_1+lr_2,0],  "C^{'}", "right", { color: "black" });
+						label( [lr_1,h_2],  "A^{'}", "above", { color: "black" });
+						label( [lr_1/2,h_2/2],  "\\small{3}", "above left", { color: "black" });
+						label( [lr_1+lr_2/2,h_2/2],  "\\small{4}", "above right", { color: "black" });
+						label( [lr_1/2+lr_2/2,0],  "\\small{6}", "below", { color: "black" });
+					</div>
+				</div>
+				<p>則 <code>\overline{A^{'}B^{'}}=</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_5" style="width:30px"><code data-if="t_5.style.display=='none'">DE</code></span>，<code>\overline{B^{'}C^{'}}=</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_6" style="width:30px"><code data-if="t_6.style.display=='none'">EF</code></span>，<code>\overline{A^{'}C^{'}}=</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_7" style="width:30px"><code data-if="t_7.style.display=='none'">DF</code></span>，</p>
+				<p>得 <code>\triangle{A^{'}B^{'}C^{'}}\cong\triangle{}</code><input type="text" id="t_8" style="width:30px"><code data-if="t_8.style.display=='none'">DEF</code><code>\enspace\enspace\enspace</code><input type="text" id="t_9" style="width:30px"><code data-if="t_9.style.display=='none'" class="hint_blue">SSS</code><code>\color{blue}{全等性質}</code></p>
+				<p>因此 <code class="hint_pink">\triangle{}</code><input type="text" id="t_10" style="width:30px"><code data-if="t_10.style.display=='none'">ABC</code><code class="hint_pink">\sim\triangle{DEF}</code> 。</p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value,document.getElementById("t_2").value,document.getElementById("t_3").value,document.getElementById("t_4").value,document.getElementById("t_5").value,document.getElementById("t_6").value,document.getElementById("t_7").value,document.getElementById("t_8").value,document.getElementById("t_9").value,document.getElementById("t_10").value]</div>
+				    <div class="validator-function">
+					    var rightNums = 0;
+					    var ng1 = guess[0];
+						var ng2 = guess[1];
+						var ng3 = guess[2];
+						var ng4 = guess[3];
+						var ng5 = guess[4];
+						var ng6 = guess[5];
+						var ng7 = guess[6];
+						var ng8 = guess[7];
+						var ng9 = guess[8];
+						var ng10 = guess[9];
+						if(document.getElementById("t_1").style.display==""){
+						    (ng1.replace(/[ ]/g,"")=="DE"||ng1.replace(/[ ]/g,"")=="ED")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_2").style.display==""){
+						    (ng2.replace(/[ ]/g,"")=="EF"||ng2.replace(/[ ]/g,"")=="FE")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_3").style.display==""){
+						    (ng3.replace(/[ ]/g,"")=="AC"||ng3.replace(/[ ]/g,"")=="CA")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_4").style.display==""){
+						    (ng4==2||ng4=="2")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_5").style.display==""){
+						    (ng5.replace(/[ ]/g,"")=="DE"||ng5.replace(/[ ]/g,"")=="ED")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_6").style.display==""){
+						    (ng6.replace(/[ ]/g,"")=="EF"||ng6.replace(/[ ]/g,"")=="FE")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_7").style.display==""){
+						    (ng7.replace(/[ ]/g,"")=="DF"||ng7.replace(/[ ]/g,"")=="FD")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_8").style.display==""){
+						    ng8.replace(/[ ]/g,"")=="DEF"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_9").style.display==""){
+						    ng9.replace(/[ ]/g,"")=="SSS"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_10").style.display==""){
+						    ng10.replace(/[ ]/g,"")=="ABC"?rightNums+=1:rightNums+=0;
+						}
+						return rightNums==change[0]?true:false;
+					</div>
+				</div>
+				<p class="example">文字(國字或英文)</p>
+            </div>
+            <div class="hints">
+			    <div>
+				    <p>我們觀察到這兩個三角形的三組對應邊成比例：</p>
+					<p><code>\overline{AB}:\overline{DE}=\overline{BC}:\overline{EF}=\overline{AC}:\overline{DF}=2:1</code></p>
+				</div>
+				<div>
+				    <p>將 <code>\triangle{ABC}</code> 縮放 <code>\dfrac{1}{2}</code> 倍後得 <code>\triangle{A^{'}B^{'}C^{'}}</code> ，如下圖：</p>
+					<div class="graphie" id="similar_33">
+					    init({
+                        range: [ [-1, 12], [-1,3] ],
+                        scale: 40
+                        });
+						path([[0,0],[lr_1+lr_2,0],[lr_1,h_2],[0,0]],{stroke:"black"});
+						label( [0,0],  "B^{'}", "left", { color: "black" });
+						label( [lr_1+lr_2,0],  "C^{'}", "right", { color: "black" });
+						label( [lr_1,h_2],  "A^{'}", "above", { color: "black" });
+						label( [lr_1/2,h_2/2],  "\\small{3}", "above left", { color: "black" });
+						label( [lr_1+lr_2/2,h_2/2],  "\\small{4}", "above right", { color: "black" });
+						label( [lr_1/2+lr_2/2,0],  "\\small{6}", "below", { color: "black" });
+					</div>
+				</div>
+				<p>則 <code>\overline{A^{'}B^{'}}=\overline{DE}，\overline{B^{'}C^{'}}=\overline{EF}，\overline{A^{'}C^{'}}=\overline{DF}\enspace ，</code></p>
+				<p>得 <code>\triangle{A^{'}B^{'}C^{'}}\cong\triangle{DEF}\enspace\enspace\enspace\color{blue}{SSS全等性質}</code></p>
+				<p>因此 <code class="hint_pink">\triangle{ABC}\sim\triangle{DEF}</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case4">
+            <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="angB">Math.acos(29/56)*180/Math.PI</var>
+			    <var id="h_1">2*Math.sin(angB/180*Math.PI)</var>
+				<var id="ll_1">2*Math.cos(angB/180*Math.PI)</var>
+				<var id="ll_2">3.5-ll_1</var>
+				<var id="h_e">h_1*1.5</var>
+				<var id="l_e">ll_1*1.5</var>
+				<var id="l_d">ll_1-ll_2/1.5+0.4</var>
+				<var id="change">chg2(9,2,3)</var>
+            </div>
+			<p class="question">如下圖，<code>\overline{BE}</code> 和 <code>\overline{CD}</code> 交於 <code>A</code> 點，<code>\overline{AD}=3</code> ，<code>\overline{AE}=2</code> ，<code>\overline{AB}=4</code> ，<code>\overline{AC}=6</code> ，說明 <code>\overline{DE}//\overline{BC}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="similar_4">
+				    init({
+                        range: [ [-1, 12], [-0.5,3.5] ],
+                        scale: 40
+                    });
+					path([[0,0],[ll_1+ll_2,0],[ll_1,h_1],[0,0]],{stroke:"black"});
+					path([[ll_1,h_1],[l_e,h_e],[l_d,h_e],[ll_1,h_1]],{stroke:"black"});
+					label( [0,0],  "B", "left", { color: "black" });
+					label( [ll_1+ll_2,0],  "C", "right", { color: "black" });
+					label( [ll_1,h_1],  "A", "below", { color: "black" });
+					label( [ll_1/2,h_1/2-0.3],  "\\small{4}", "above left", { color: "black" });
+					label( [ll_1+ll_2/2,h_1/2-0.3],  "\\small{6}", "above right", { color: "black" });
+					label( [l_d,h_e],  "D", "above", { color: "black" });
+					label( [l_e,h_e],  "E", "above", { color: "black" });
+					label( [ll_1/2+l_d/2,h_1/2+h_e/2+0.3],  "\\small{3}", "below left", { color: "black" });
+					label( [ll_1/2+l_e/2,h_1/2+h_e/2+0.3],  "\\small{2}", "below right", { color: "black" });
+				</div>
+				<p>請在下列空格中填入適當的答案：</p>
+				<p>因為 <code>\overline{AD}:\overline{AC}=1:2=</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_1" style="width:30px"><code data-if="t_1.style.display=='none'">AE</code></span><code>:\overline{AB}</code></p>
+				<p>且 <code>\angle{DAE}=\angle{}</code><input type="text" id="t_2" style="width:30px"><code data-if="t_2.style.display=='none'">CAB</code><code>\enspace\enspace\enspace</code><input type="text" id="t_3" style="width:30px"><code data-if="t_3.style.display=='none'" class="hint_blue">對頂</code><code>\color{blue}{角相等}</code></p>
+				<p>所以 <code>\triangle{}</code><input type="text" id="t_4" style="width:30px"><code data-if="t_4.style.display=='none'">DAE</code><code>\sim\triangle{CAB}\enspace\enspace\enspace</code><input type="text" id="t_5" style="width:30px"><code data-if="t_5.style.display=='none'" class="hint_blue">SAS</code><code>\color{blue}{相似性質}</code></p>
+				<p>因此 <code>\angle{DEA}=\angle{}</code><input type="text" id="t_6" style="width:30px"><code data-if="t_6.style.display=='none'">CBA</code><code>\enspace\enspace\enspace</code><input type="text" id="t_7" style="width:30px"><code data-if="t_7.style.display=='none'" class="hint_blue">對應</code><code>\color{blue}{角相等}</code></p>
+				<p>所以 <code class="hint_pink">\overline{DE}//</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="t_8" style="width:30px"><code data-if="t_8.style.display=='none'" class="hint_pink">BC</code></span><code>\enspace\enspace\enspace</code><input type="text" id="t_9" style="width:30px"><code data-if="t_9.style.display=='none'" class="hint_blue">內錯</code><code>\color{blue}{角相等}</code> 。</p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value,document.getElementById("t_2").value,document.getElementById("t_3").value,document.getElementById("t_4").value,document.getElementById("t_5").value,document.getElementById("t_6").value,document.getElementById("t_7").value,document.getElementById("t_8").value,document.getElementById("t_9").value]</div>
+				    <div class="validator-function">
+					    var rightNums = 0;
+					    var ng1 = guess[0];
+						var ng2 = guess[1];
+						var ng3 = guess[2];
+						var ng4 = guess[3];
+						var ng5 = guess[4];
+						var ng6 = guess[5];
+						var ng7 = guess[6];
+						var ng8 = guess[7];
+						var ng9 = guess[8];
+						if(document.getElementById("t_1").style.display==""){
+						    (ng1.replace(/[ ]/g,"")=="AE"||ng1.replace(/[ ]/g,"")=="EA")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_2").style.display==""){
+						    (ng2.replace(/[ ]/g,"")=="CAB"||ng2.replace(/[ ]/g,"")=="BAC")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_3").style.display==""){
+						    ng3.replace(/[ ]/g,"")=="對頂"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_4").style.display==""){
+						    ng4.replace(/[ ]/g,"")=="DAE"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_5").style.display==""){
+						    ng5.replace(/[ ]/g,"")=="SAS"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_6").style.display==""){
+						    (ng6.replace(/[ ]/g,"")=="CBA"||ng6.replace(/[ ]/g,"")=="ABC"||ng6.replace(/[ ]/g,"")=="B"||ng6.replace(/[ ]/g,"")=="CBE"||ng6.replace(/[ ]/g,"")=="EBC")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_7").style.display==""){
+						    ng7.replace(/[ ]/g,"")=="對應"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_8").style.display==""){
+						    (ng8.replace(/[ ]/g,"")=="CB"||ng8.replace(/[ ]/g,"")=="BC")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_9").style.display==""){
+						    ng9.replace(/[ ]/g,"")=="內錯"?rightNums+=1:rightNums+=0;
+						}
+						return rightNums==change[0]?true:false;
+					</div>
+				</div>
+				<p class="example">文字(國字或英文)</p>
+            </div>
+            <div class="hints">
+			    <p>因為 <code>\overline{AD}:\overline{AC}=1:2=\overline{AE}:\overline{AB}</code></p>
+				<p>且 <code>\angle{DAE}=\angle{CAB}\enspace\enspace\enspace\color{blue}{對頂角相等}</code></p>
+				<p>所以 <code>\triangle{DAE}\sim\triangle{CAB}\enspace\enspace\enspace\color{blue}{SAS相似性質}</code></p>
+				<p>因此 <code>\angle{DEA}=\angle{CBA}\enspace\enspace\enspace\color{blue}{對應角相等}</code></p>
+				<p>所以 <code class="hint_pink">\overline{DE}//\overline{BC}\enspace\enspace\enspace\color{blue}{內錯角相等}</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case5">
+            <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="change">chg2(6,2,3)</var>
+            </div>
+			<p class="question">如下圖，直角三角形 <code>ABC</code> 中，<code>\triangle{ACB}=90^{\circ}</code> ，<code>\overline{CD}</code> 是斜邊上的高，已知 <code>\overline{AD}=12</code> ，<code>\overline{BD}=3</code> 。以 <code>AA</code> 相似性質說明 <code>\triangle{ACD}\sim\triangle{CBD}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="similar_5">
+				    init({
+                        range: [ [-1, 12], [-0.7,4] ],
+                        scale: 40
+                    });
+					path([[0,0],[7.5,0],[6,3],[0,0]],{stroke:"black"});
+					line([0,0],[6,0],{stroke:"red"});
+					line([6,0],[7.5,0],{stroke:"green"});
+					label( [0,0],  "A", "left", { color: "black" });
+					label( [7.5,0],  "B", "right", { color: "black" });
+					label( [6,3],  "C", "above", { color: "black" });
+					label([6,0],"D","below", { color: "black" });
+					line([6,0],[6,3]);
+					label([3,0],"\\small{12}","below", { color: "red" });
+					label([6.75,0],"\\small{3}","below", { color: "green" });
+					line([5.7,0],[5.7,0.3]);
+					line([5.7,0.3],[6,0.3]);
+					line([6,2.5],[5.75,2.9]);
+					line([6,2.5],[6.2,2.6]);
+				</div>
+				<p>請在下列空格中填入適當的答案：</p>
+				<p>因為 <code>\angle{ACD}+\angle{}</code><input type="text" id="t_1" style="width:30px"><code data-if="t_1.style.display=='none'">A</code><code>=90^{\circ}\enspace\enspace\enspace\color{blue}{\angle{D}是直角}</code></p>
+				<p>且 <code>\angle{}</code><input type="text" id="t_2" style="width:30px"><code data-if="t_2.style.display=='none'">B</code><code>+\angle{A}=90^{\circ}\enspace\enspace\enspace\color{blue}{\angle{ACB}是直角}</code></p>
+				<p>所以 <code>\angle{}</code><input type="text" id="t_3" style="width:30px"><code data-if="t_3.style.display=='none'">ACD</code><code>=\angle{B}</code></p>
+				<p>又知 <code>\angle{}</code><input type="text" id="t_4" style="width:30px"><code data-if="t_4.style.display=='none'">ADC</code><code>=\angle{CDB}=90^{\circ}</code></p>
+				<p>因此 <code class="hint_pink">\triangle{ACD}\sim\triangle{}</code><input type="text" id="t_5" style="width:30px"><code data-if="t_5.style.display=='none'" class="hint_pink">CBD</code><code>\enspace\enspace\enspace</code><input type="text" id="t_6" style="width:30px"><code data-if="t_6.style.display=='none'" class="hint_blue">AA</code><code>\color{blue}{相似性質}</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value,document.getElementById("t_2").value,document.getElementById("t_3").value,document.getElementById("t_4").value,document.getElementById("t_5").value,document.getElementById("t_6").value]</div>
+				    <div class="validator-function">
+					    var rightNums = 0;
+					    var ng1 = guess[0];
+						var ng2 = guess[1];
+						var ng3 = guess[2];
+						var ng4 = guess[3];
+						var ng5 = guess[4];
+						var ng6 = guess[5];
+						if(document.getElementById("t_1").style.display==""){
+						    (ng1.replace(/[ ]/g,"")=="A"||ng1.replace(/[ ]/g,"")=="CAD"||ng1.replace(/[ ]/g,"")=="CAB"||ng1.replace(/[ ]/g,"")=="DAC"||ng1.replace(/[ ]/g,"")=="BAC")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_2").style.display==""){
+						    (ng2.replace(/[ ]/g,"")=="B"||ng2.replace(/[ ]/g,"")=="DBC"||ng2.replace(/[ ]/g,"")=="ABC"||ng2.replace(/[ ]/g,"")=="CBA"||ng2.replace(/[ ]/g,"")=="CBD")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_3").style.display==""){
+						    (ng3.replace(/[ ]/g,"")=="ACD"||ng3.replace(/[ ]/g,"")=="DCA")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_4").style.display==""){
+						    (ng4.replace(/[ ]/g,"")=="ADC"||ng4.replace(/[ ]/g,"")=="CDA")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_5").style.display==""){
+						    ng5.replace(/[ ]/g,"")=="CBD"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_6").style.display==""){
+						    ng6.replace(/[ ]/g,"")=="AA"?rightNums+=1:rightNums+=0;
+						}
+						return rightNums==change[0]?true:false;
+					</div>
+				</div>
+				<p class="example">文字(國字或英文)</p>
+            </div>
+            <div class="hints">
+			    <p>因為 <code>\angle{ACD}+\angle{A}=90^{\circ}\enspace\enspace\enspace\color{blue}{\angle{D}是直角}</code></p>
+				<p>且 <code>\angle{B}+\angle{A}=90^{\circ}\enspace\enspace\enspace\color{blue}{\angle{ACB}是直角}</code></p>
+				<p>所以 <code>\angle{ACD}=\angle{B}</code></p>
+				<p>又知 <code>\angle{ADC}=\angle{CDB}=90^{\circ}</code></p>
+				<p>因此 <code class="hint_pink">\triangle{ACD}\sim\triangle{CBD}\enspace\enspace\enspace\color{blue}{AA相似性質}</code></p>
+            </div>
+        </div>
+		
+		<div id="case6">
+            <div class="vars">
+				<var id="scratchpad">
+					(function(){
+							document.getElementById("scratchpad-show").innerText="";
+							document.getElementById("scratchpad-not-available").innerText="";})()</var>
+				<var id="change">chg2(10,2,3)</var>
+            </div>
+			<p class="question">如下圖，有一梯形 <code>ABCD</code> ，其中 <code>\overline{AD}//\overline{BC}</code> 。</p>
+			<div class="problem">
+			    <p>求 <code>\triangle{APD}</code> 面積 ：<code>\triangle{BPC}</code> 面積。</p>
+			    <div class="graphie" id="similar_6">
+				    init({
+                        range: [ [-1, 12], [-0.7,5] ],
+                        scale: 40
+                    });
+					path([[0,0],[6,0],[5,4],[2,4],[0,0]],{stroke:"black"});
+					label([3,0],"\\small{8}","below", { color: "black" });
+					label([3.5,4],"\\small{4}","above", { color: "black" });
+					line([0,0],[5,4]);
+					line([6,0],[2,4]);
+					label([2,4],"A","above", { color: "black" });
+					label([0,0],"B","below", { color: "black" });
+					label([6,0],"C","below", { color: "black" });
+					label([5,4],"D","above", { color: "black" });
+					label([3.3,2.5],"P","below", { color: "black" });
+				</div>
+				<p>請在下列空格中填入適當的答案：</p>
+				<div>
+				    <p>由於 <code>\angle{}</code><input type="text" id="t_1" style="width:30px"><code data-if="t_1.style.display=='none'">APD</code><code>=\angle{CPB}\enspace\enspace\enspace</code><input type="text" id="t_2" style="width:30px"><code data-if="t_2.style.display=='none'" class="hint_blue">對頂</code><code>\color{blue}{角相等}</code></p>
+				    <p><code>\enspace\enspace\enspace\enspace\angle{ADP}=\angle{}</code><input type="text" id="t_3" style="width:30px"><code data-if="t_3.style.display=='none'">CBP</code><code>\enspace\enspace\enspace</code><input type="text" id="t_4" style="width:30px"><code data-if="t_4.style.display=='none'" class="hint_blue">內錯</code><code>\color{blue}{角相等}</code></p>
+				</div>
+				<p>所以 <code>\triangle{}</code><input type="text" id="t_5" style="width:30px"><code data-if="t_5.style.display=='none'">APD</code><code>\sim\triangle{CPB}\enspace\enspace\enspace</code><input type="text" id="t_6" style="width:30px"><code data-if="t_6.style.display=='none'" class="hint_blue">AA</code><code>\color{blue}{相似性質}</code></p>
+				<p>因為 <code>\overline{AD}:\overline{BC}=4:</code><input type="text" id="t_7" style="width:30px"><code data-if="t_7.style.display=='none'">8</code><code>=</code><input type="text" id="t_8" style="width:30px"><code data-if="t_8.style.display=='none'">1</code><code>:2</code></p>
+				<p>所以 <code>\triangle{APD}</code> 面積 ：<code>\triangle{BPC}</code> 面積 <code>=\enspace</code><code>1^{2}:</code><input type="text" id="t_9" style="width:30px"><code data-if="t_9.style.display=='none'">2</code><code>^{2}=1:</code><input type="text" id="t_10" style="width:30px"><code data-if="t_10.style.display=='none'">4</code> 。</p>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value,document.getElementById("t_2").value,document.getElementById("t_3").value,document.getElementById("t_4").value,document.getElementById("t_5").value,document.getElementById("t_6").value,document.getElementById("t_7").value,document.getElementById("t_8").value,document.getElementById("t_9").value,document.getElementById("t_10").value]</div>
+				    <div class="validator-function">
+					    var rightNums = 0;
+					    var ng1 = guess[0];
+						var ng2 = guess[1];
+						var ng3 = guess[2];
+						var ng4 = guess[3];
+						var ng5 = guess[4];
+						var ng6 = guess[5];
+						var ng7 = guess[6];
+						var ng8 = guess[7];
+						var ng9 = guess[8];
+						var ng10 = guess[9];
+						if(document.getElementById("t_1").style.display==""){
+						    (ng1.replace(/[ ]/g,"")=="APD"||ng1.replace(/[ ]/g,"")=="DPA")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_2").style.display==""){
+						    ng2.replace(/[ ]/g,"")=="對頂"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_3").style.display==""){
+						    (ng3.replace(/[ ]/g,"")=="CBP"||ng3.replace(/[ ]/g,"")=="PBC"||ng3.replace(/[ ]/g,"")=="DBC"||ng3.replace(/[ ]/g,"")=="CBD")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_4").style.display==""){
+						    ng4.replace(/[ ]/g,"")=="內錯"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_5").style.display==""){
+						    ng5.replace(/[ ]/g,"")=="APD"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_6").style.display==""){
+						    ng6.replace(/[ ]/g,"")=="AA"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_7").style.display==""){
+						    (ng7.replace(/[ ]/g,"")=="8"||ng7.replace(/[ ]/g,"")==8)?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_8").style.display==""){
+						    (ng8.replace(/[ ]/g,"")=="1"||ng8.replace(/[ ]/g,"")==1)?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_9").style.display==""){
+						    (ng9.replace(/[ ]/g,"")=="2"||ng9.replace(/[ ]/g,"")==2)?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_10").style.display==""){
+						    (ng10.replace(/[ ]/g,"")=="4"||ng10.replace(/[ ]/g,"")==4)?rightNums+=1:rightNums+=0;
+						}
+						return rightNums==change[0]?true:false;
+					</div>
+				</div>
+				<p class="example">文字(國字或英文)</p>
+            </div>
+            <div class="hints">
+			    <div>
+				    <p>由於 <code>\angle{APD}=\angle{CPB}\enspace\enspace\enspace\color{blue}{對頂角相等}</code></p>
+				    <p><code>\enspace\enspace\enspace\enspace\angle{ADP}=\angle{CBP}\enspace\enspace\enspace\color{blue}{內錯角相等}</code></p>
+				</div>
+				<p>所以 <code>\triangle{APD}\sim\triangle{CPB}\enspace\enspace\enspace\color{blue}{AA相似性質}</code></p>
+				<p>因為 <code>\overline{AD}:\overline{BC}=4:8=1:2</code></p>
+				<p>所以 <code>\triangle{APD}</code> 面積 ：<code>\triangle{BPC}</code> 面積 <code>=\enspace</code><code class="hint_pink">1^{2}:2^{2}=1:4</code> 。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

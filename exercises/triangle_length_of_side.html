@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers-arithmetic word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>三角形邊長關係</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars">
+                    <var id="A"><!--the correct one-->
+                        (function(){
+                            var tri = new Array();
+                            tri[0]=randRange(2,15);
+                            tri[1]=randRange(2,15);
+                            var big;
+                            if((tri[0]-tri[1])>(tri[1]-tri[0])){
+                                big=tri[0]-tri[1];
+                            }
+                            else{
+                                big=tri[1]-tri[0];
+                            }
+                            tri[2]=randRange(big+1,tri[0]+tri[1]-1);
+                            return tri;
+                        })()
+                    </var>
+                    <var id="B"><!--the sum of the two sides equals to the third side-->
+                        (function(){
+                            var tri = new Array();
+                            tri[0]=randRange(2,15);
+                            tri[1]=randRange(2,15);
+                            tri[2]=tri[0]+tri[1];
+                            return tri;
+                        })()
+                    </var>
+                    <var id="C"><!--one side is super small-->
+                        (function(){
+                            var tri = new Array();
+                            tri[0]=randRange(2,15);
+                            tri[1]=randRangeExclude(2,15,[tri[0],tri[0]+1,tri[0]-1,tri[0]+2,tri[0]-2]);
+                            var big;
+                            if((tri[0]-tri[1])>(tri[1]-tri[0])){
+                                big=tri[0]-tri[1];
+                            }
+                            else{
+                                big=tri[1]-tri[0];
+                            }
+                            tri[2]=randRange(2,big-1);
+                            return tri;
+                        })()
+                    </var>
+                    <var id="D"><!--one side is super big-->
+                        (function(){
+                            var tri = new Array();
+                            tri[0]=randRange(2,6);
+                            tri[1]=randRange(2,7);
+                            var big;
+                            if((tri[0]+tri[1])>(tri[1]+tri[0])){
+                                big=tri[0]+tri[1];
+                            }
+                            else{
+                                big=tri[1]+tri[0];
+                            }
+                            tri[2]=randRange(tri[0]+tri[1]+1,15);
+                            return tri;
+                        })()
+                    </var>
+
+                    <var id="Tris">
+                        (function(){
+                            var tris = new Array();
+                            var a =new Array();
+                            var ans;
+                            tris[0]=randRange(1,4);
+                            tris[1]=randRangeExclude(1,4,[tris[0]]);
+                            tris[2]=randRangeExclude(1,4,[tris[0],tris[1]]);
+                            tris[3]=randRangeExclude(1,4,[tris[0],tris[1],tris[2]]);
+                            var i;
+                            for(i=0;i&lt;4;i++){
+                                if(tris[i]===1){a[i] = A; a[4]=i;}
+                                if(tris[i]===2)a[i]=B;
+                                if(tris[i]===3)a[i]=C;
+                                if(tris[i]===4)a[i]=D;
+                            }
+                            return a;
+                        })()
+                    </var>
+                    <var id="Hint">
+                        (function(){
+                            var hint = new Array();
+                            var a = new Array();
+                            var i;
+
+                            for(i=0;i &lt; 4;i++){
+                                if((Tris[i][0]+Tris[i][1])&gt;Tris[i][2])a[0]="&gt;";
+                                else if((Tris[i][0]+Tris[i][1])===Tris[i][2])a[0]=" =";
+                                else a[0]="&lt;";
+                                if((Tris[i][2]+Tris[i][0])&gt;Tris[i][1])a[1]="&gt;";
+                                else if((Tris[i][2]+Tris[i][0])===Tris[i][1]) a[1]=" =";
+                                else a[1]="&lt;";
+                                if((Tris[i][1]+Tris[i][2])&gt;Tris[i][0])a[2]="&gt;";
+                                else if((Tris[i][1]+Tris[i][2])===Tris[i][0]) a[2]=" =";
+                                else a[2]="&lt;";
+
+                                hint[i] = new Array();
+                                hint[i][0] = 
+                                ""+Tris[i][0]+"+"+Tris[i][1]+a[0]+Tris[i][2]+
+                                "&lt;br&gt;"+
+                                Tris[i][0]+"+"+Tris[i][2]+a[1]+Tris[i][1]+
+                                "&lt;br&gt;"+
+                                Tris[i][1]+"+"+Tris[i][2]+a[2]+Tris[i][0]+
+                                "&lt;br&gt;";
+
+                                if(a[0]===a[1]&&a[1]===a[2]){
+                                    hint[i][1]="符合條件，可以";
+                                }
+                                else {
+                                    hint[i][1]="不能夠";
+                                }
+                            }
+
+                            return hint;
+                        })()
+                        
+                    </var>
+                </div>
+                <div class="question">
+                    <p>用右側哪一組長度為邊長時，可以圍成三角形?</p>
+                </div>
+                <div class="solution"><var>Tris[Tris[4]][0]</var>公分、<var>Tris[Tris[4]][1]</var>公分、<var>Tris[Tris[4]][2]</var>公分</div>
+                <ul class="choices" data-category="true">
+                    <li><var>Tris[0][0]</var>公分、<var>Tris[0][1]</var>公分、<var>Tris[0][2]</var>公分</li>
+                    <li><var>Tris[1][0]</var>公分、<var>Tris[1][1]</var>公分、<var>Tris[1][2]</var>公分</li>
+                    <li><var>Tris[2][0]</var>公分、<var>Tris[2][1]</var>公分、<var>Tris[2][2]</var>公分</li>
+                    <li><var>Tris[3][0]</var>公分、<var>Tris[3][1]</var>公分、<var>Tris[3][2]</var>公分</li>
+                </ul>
+                
+                <div class="hints">
+                    <p>三邊長要能圍成三角形的條件為任意兩邊相加必須大於第三邊</p>
+                    <p>每一個選項我們都必須用這個條件去檢驗</p>
+                    <p>選項1<br>
+                        <var>Hint[0][0]</var></p>
+                    <p>我們可以知道，選項1<var>Hint[0][1]</var>形成三角形。</p>
+                    <p>選項2<br>
+                        <var>Hint[1][0]</var></p>
+                    <p>選項2<var>Hint[1][1]</var>形成三角形。</p>
+                    <p>選項3<br>
+                        <var>Hint[2][0]</var></p>
+                    <p>選項3<var>Hint[2][1]</var>形成三角形。</p>
+                    <p>選項4<br>
+                        <var>Hint[3][0]</var></p>
+                    <p>選項4<var>Hint[3][1]</var>形成三角形。</p>
+                    <p>所以答案是選項<var>Tris[4]+1</var></p>
+
+                </div>
+            </div>
+            <div id="case2">
+                <div class="vars">
+                    <var id="A">randRange(2,15)</var>
+                    <var id="B">randRangeExclude(2,15,[A])</var>
+                    <var id="C">randRangeExclude(2,15,[A,B])</var>
+                    <var id="D">randRangeExclude(2,15,[A,B,C])</var>
+                    <var id="ans ,right">
+                        (function(){
+                            var AB=A+B;
+                            var BC=B+C;
+                            var CD=C+D;
+                            var AD=A+D;
+                            var AC=A+C;
+                            var BD=B+D;
+                            var triCount=0;
+                            var right=["不可以","不可以","不可以","不可以"];
+                            if((AB>C)&&(BC>A)&&(AC>B)){
+                                triCount++;
+                                right[0]="可以";
+                            }
+                            if((AB>D)&&(BD>A)&&(AD>B)){
+                                triCount++;
+                                right[1]="可以";
+                            }
+                            if((AD>C)&&(AC>D)&&(CD>A)){
+                                triCount++;
+                                right[2]="可以";
+                            }
+                            if((BC>D)&&(BD>C)&&(CD>B)){
+                                triCount++;
+                                right[3]="可以";
+                            }
+                            return [triCount, right]; 
+                        })()
+                    </var>
+                </div>
+                <div class="question">
+                    <p>下面的長度可以圍成幾種三角形?</p>
+                    <p>A = <var>A</var><br>                   
+                    B = <var>B</var><br>                   
+                    C = <var>C</var><br>                   
+                    D = <var>D</var></p>                   
+                </div>
+                <div class="solution"><var>ans</var></div>
+                <div class="hints">
+                    <p>已知要成為三角形，兩邊長的和必大於第三邊。</p>
+                    <p>依序將(A,B,C)、(A,B,D)、(A,C,D)、(B,C,D)四組邊長帶入「兩邊長的和必大於第三邊」定理檢驗。</p>
+                    <p>首先，拿A、B、C三邊長來檢驗。<br>
+                        如果A+B大於C、B+C大於A、且A+C大於B則可以圍成三角形，只要三個條件有一組不符合則不能圍成三角形。</p>
+                    <p>A+B=<var>A+B</var>
+                        <span data-if="A+B>C">&gt;</span>
+                        <span data-if="A+B<C">&lt;</span>
+                        <span data-if="A+B===C">=</span>
+                        <var>C</var>、<br>
+                        B+C=<var>B+C</var>
+                        <span data-if="B+C>A">&gt;</span>
+                        <span data-if="B+C<A">&lt;</span>
+                        <span data-if="B+C===A">=</span>
+                        <var>A</var>、<br>
+                        A+C=<var>A+C</var>
+                        <span data-if="A+C>B">&gt;</span>
+                        <span data-if="A+C<B">&lt;</span>
+                        <span data-if="A+C===B">=</span>
+                        <var>B</var><br>
+                    </p>
+                    <p>所以我們可以知道A、B、C三邊<var>right[0]</var>圍成三角形。</p>
+                    <p>以此類推，我們可以得知A、B、D，(<var>A</var> ,<var>B</var> ,<var>D</var>)的邊長關係<var>right[1]</var>圍成三角形；</p>
+                    <p>A、C、D，(<var>A</var> ,<var>C</var> ,<var>D</var>)的邊長關係<var>right[2]</var>圍成三角形；</p>
+                    <p>B、C、D，(<var>B</var> ,<var>C</var> ,<var>D</var>)的邊長關係<var>right[3]</var>圍成三角形</p>
+                    <p>總共可以圍成<var>ans</var>種三角形。</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

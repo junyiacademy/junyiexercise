@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html data-require="math graphie">
+
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>未分組資料中位數的計算</title>
+
+    <script src="../khan-exercise.js"></script>
+
+</head>
+
+<body>
+
+	<div class="exercise">
+
+		<div class="problems">
+
+			<div id="case1">
+
+				<div class="vars">
+
+					<var id="K">randRange(11,15)</var>
+
+					<var id="ARRAY">randRange(155,180,K)</var>
+					<var id="arrStr">
+					(function(){
+						var str = "";
+						for(var i=0;i&lt;ARRAY.length;i++){
+							str+=ARRAY[i]+"，";
+						}
+						return str.substr(0,str.length-1);
+					})()</var>
+					<var id="arrStr1">
+					(function(){
+						
+						return arrStr.substr(0,36);
+					})()</var>
+					<var id="arrStr2">
+					(function(){
+						
+						return arrStr.substr(36,arrStr.length);
+					})()</var>
+					<var id="SORTED">sortNumbers(ARRAY)</var>
+
+					<var id="MEDIAN">K % 2 > 0 ? (SORTED[((K+1)/2-1)]) : (SORTED[K/2-1] + SORTED[K/2])/2</var>
+			
+				</div>
+
+				<p class="question">
+
+					<var>K</var>位同學的身高(cm)如下：<br>
+					<var>arrStr1</var><br>
+					<var>arrStr2</var><br>
+					求這群同學身高的中位數<br>
+
+				</p>
+
+				<p class="solution"><var>MEDIAN</var>
+
+				</p>
+
+				<div class="hints">
+					<div>
+						<p>將資料依照由小而大的順序排列：</p>
+						<p><code><var>SORTED</var></code></p>
+					</div>
+					<div>
+						<p>
+							若有奇數個數字則取中央一件，若有偶數個數字則取中央兩件的算數平均數。
+						</p>
+					</div>
+					<div data-if="K%2 !=0">
+						<p>共有<code><var>K</var></code>位同學</p>
+						<p>中位數為第<code><var>(K+1)/2</var></code>位同學身高</p>
+					</div>
+					<div data-if="K%2 !=0">
+						<p>故中位數為 <code><var>MEDIAN</var></code></p>
+					</div>
+					<div data-if="K%2 ===0">
+						<p>共有<code><var>K</var></code>位同學</p>
+						<p>中位數為第<code><var>(K/2)</var></code>位和第<code><var>(K/2+1)</var></code>位同學身高的平均</p>
+						<p><code>(<var>SORTED[K/2-1]</var> + <var>SORTED[K/2]</var>)\div2=<var>MEDIAN</var></code></p>
+					</div>
+					<div data-if="K%2 ===0">
+						<p>故中位數為 <code><var>MEDIAN</var></code></p>
+					</div>
+
+				</div>
+
+			</div>
+
+			<div id="case2">
+
+				<div class="vars">
+
+					<var id="GENERAL_MANAGER_COUNT">1</var>
+
+					<var id="MANAGER_COUNT">1</var>
+
+					<var id="DIRECTOR_COUNT">randRange(2,10)</var>
+
+					<var id="PROGRAMMER_COUNT">randRange(15,25)</var>
+
+					<var id="WORKER_COUNT">randRange(25,35)</var>
+
+					<var id="GENERAL_MANAGER_SALARY">randFromArray([60000,70000,80000,90000])</var>
+
+					<var id="MANAGER_SALARY">randFromArray([40000,50000])</var>
+
+					<var id="DIRECTOR_SALARY">randFromArray([35000,34000,33000,32000,31000])</var>
+
+					<var id="PROGRAMMER_SALARY">randFromArray([29000,28000,27000,26000])</var>
+
+					<var id="WORKER_SALARY">randFromArray([22000,23000,24000,25000])</var>
+
+					<var id="TOTAL">GENERAL_MANAGER_COUNT + MANAGER_COUNT + DIRECTOR_COUNT + PROGRAMMER_COUNT + WORKER_COUNT</var>
+
+					<var id="FIRST_NUM">TOTAL % 2 > 0 ? (TOTAL+1)/2 : (TOTAL/2) </var>
+
+					<var id="SECOND_NUM">TOTAL % 2 > 0 ? (TOTAL+1)/2 : (TOTAL/2+1)</var>
+
+					<var id="FIRST"> FIRST_NUM > WORKER_COUNT ? PROGRAMMER_SALARY : WORKER_SALARY</var>
+
+					<var id="SECOND"> SECOND_NUM > WORKER_COUNT ? PROGRAMMER_SALARY : WORKER_SALARY</var>
+
+				</div>
+
+				<p class="question">
+
+					假設有一工廠的各級員工薪資如下，求工廠員工薪資的中位數?
+
+					<table border="1">					
+
+					<td><font size="2">職位</font></td> <td><font size="2">每月收入</font></td> <td><font size="2">人數</font></td><tr>
+
+					<td><font size="2">總經理</font></td> <td><font size="2"><var>GENERAL_MANAGER_SALARY</var></font></td> <td><font size="2"><var>GENERAL_MANAGER_COUNT</var></font></td> <tr>
+
+					<td><font size="2">經理</font></td> <td><font size="2"><var>MANAGER_SALARY</var></font></td> <td><font size="2"><var>MANAGER_COUNT</var></font></td> <tr>
+
+					<td><font size="2">主任</font></td> <td><font size="2"><var>DIRECTOR_SALARY</var></font></td> <td><font size="2"><var>DIRECTOR_COUNT</var></font></td> <tr>
+
+					<td><font size="2">工程師</font></td> <td><font size="2"><var>PROGRAMMER_SALARY</var></font></td> <td><font size="2"><var>PROGRAMMER_COUNT</var></font></td> <tr>
+
+					<td><font size="2">普通工人</font></td> <td><font size="2"><var>WORKER_SALARY</var></font></td> <td><font size="2"><var>WORKER_COUNT</var></font></td> <tr>
+
+					</table>
+
+				</p>
+
+				<p class="solution"><var>(FIRST+SECOND)/2</var>
+
+				</p>
+
+				<div class="hints">
+					<div>
+						<p>總共有<code><var>TOTAL</var></code>個員工</p>
+					</div>
+					<div data-if="TOTAL%2 != 0">
+						<p>
+							中位數會在第<code><var>(FIRST_NUM+SECOND_NUM)/2</var></code>位中
+						</p>
+					</div>
+					<div data-if="TOTAL%2 != 0">
+						<p>所以中位數為<code><var>(FIRST+SECOND)/2</var></code></p>
+					</div>
+					<div data-if="TOTAL%2 === 0">
+						<p>
+							中位數會在第<code><var>FIRST_NUM</var>+<var>SECOND_NUM</var></code>位的平均中
+						</p>
+					</div>
+					<div data-if="TOTAL%2 === 0">
+						<p><code>(<var>FIRST</var>+<var>SECOND</var>)\div 2=<var>(FIRST+SECOND)/2</var></code></p>
+					</div>
+					<div data-if="TOTAL%2 === 0">
+						<p>所以中位數為<var>(FIRST+SECOND)/2</var></p>
+					</div>
+
+				</div>
+
+			</div>
+
+			<div id="case3">
+
+				<div class="vars">
+
+					<var id="NUMBER"> randRange(8,13)</var>
+
+					<var id="ARRAY"> randRange(1,25,(NUMBER-1))</var>
+
+					<var id="LAST_ONE"> randRange(1,25)</var>
+
+					<var id="SORTED">
+
+					(function() {
+
+						var sorted = [];
+
+						for (var i=0 ; ARRAY.length>i;i++){
+
+							sorted.push(ARRAY[i]);
+
+						}
+
+						sorted.push(LAST_ONE);
+
+						return sortNumbers(sorted);
+
+					})()
+
+					</var>
+
+					<var id="MEDIAN_CONTENT">NUMBER % 2 > 0 ?  (SORTED[((NUMBER+1)/2-1)]) : [ "("+ SORTED[NUMBER/2-1] + "+" + SORTED[NUMBER/2] + ")/2=" + (SORTED[NUMBER/2-1]+SORTED[NUMBER/2])/2] </var>
+
+					<var id="ANSWER">NUMBER % 2 > 0 ?  (SORTED[((NUMBER+1)/2-1)]) : (SORTED[NUMBER/2-1]+SORTED[NUMBER/2])/2</var>
+
+				</div>
+
+				<p class="question">某一組資料有<var>NUMBER</var>個正整數，已知其中<var>NUMBER-1</var>個數為<var>ARRAY</var>。若第<var>NUMBER</var>個正整數為<var>LAST_ONE</var>，則中位數=？
+
+				</p>
+
+				<p class="solution"><var>(SORTED[NUMBER/2-1]+SORTED[NUMBER/2])/2</var>
+
+				</p>
+
+				<div class="hints">
+
+					<div>
+						<p>先將前<code><var>NUMBER-1</var></code>個數字</p>
+						<p>由小到大排列為<code><var>sortNumbers(ARRAY)</var></var></code></p>
+					</div>
+					<div>
+						<p>加入第<code><var>NUMBER</var></code>個數字<code><var>LAST_ONE</var></code>後</p>
+						<p>由小到大排列為<code><var>SORTED</var></var></code></p>
+					</div>
+					<div data-if="NUMBER%2 !=0">
+						<p>中位數會落在第<code><var>(NUMBER+1)/2</var></code>個數字</p>
+					</div>
+					<div data-if="NUMBER%2 !=0">
+						<p>中位數<code>=<var>ANSWER</var></code></p>
+					</div>
+					<div data-if="NUMBER%2 ===0">
+						<p>中位數會落在第<code><var>NUMBER/2</var></code>和第<code><var>((NUMBER)/2)+1</var></code>個數字的平均</p>
+					</div>
+					<div data-if="NUMBER%2 ===0">
+						<p><code>(<var>SORTED[NUMBER/2-1]</var>+<var>SORTED[NUMBER/2]</var>)\div2=<var>ANSWER</var></code></p>
+					</div>
+					<div data-if="NUMBER%2 ===0">
+						<p>中位數<code>=<var>ANSWER</var></code></p>
+					</div>
+					<!-- <p>將資料依照由小而大的順序排列，若有奇數個數字則取中央一件，若有偶數個數字則取中央兩件的算數平均數。</p>
+
+					<p>所以我們要先將<var>NUMBER-1</var>個數字由小排到大依序為<var>sortNumbers(ARRAY)</var></p>
+
+					<p>若第<var>NUMBER</var>個正整數為<var>LAST_ONE</var>，則中位數=<var>MEDIAN_CONTENT</var></p> -->
+
+				</div>
+
+			</div>
+
+			<div id="case4">
+
+				<div class="vars">
+
+					<var id="K">randRange(11,20)</var>
+
+					<var id="ARRAY">randRange(2,30,K)</var>
+
+					<var id="SORTED">sortNumbers(ARRAY)</var>
+
+					<var id="ANSWER">K % 2 > 0 ?  (SORTED[((K+1)/2-1)]) : (SORTED[K/2-1]+SORTED[K/2])/2</var>
+
+				</div>
+
+				<p class="question">以下為某籃球隊員本季的平均得分資料：<br><var>ARRAY</var>，請問其得分的中位數為幾分？
+
+				</p>
+
+				<p class="solution"> <var>ANSWER</var>
+
+				</p>
+
+				<div class="hints">
+
+					<p>把資料由小而大排列為：<code><var>SORTED</var></code></p>
+
+					<p>此數值資料共<code><var>K</var></code>筆<!-- ，最中間的資料值為<var>ANSWER</var> --></p>
+					<p data-if="K%2 != 0">
+						中位數會落在第<code><var>(K+1)/2</var></code>個分數上
+					</p>
+					<p data-if="K%2 === 0">
+						中位數會落在第<code><var>(K/2)</var></code>和第<code><var>(K/2)+1</var></code>個分數平均上
+					</p>
+					<p data-if="K%2 === 0">
+						<code>(<var>SORTED[(K/2)-1]</var>+<var>SORTED[(K/2)]</var>)\div2=<var>ANSWER</var></code>
+					</p>
+					<p>所以這些資料的中位數是<var>ANSWER</var>分。</p>
+
+				</div>
+
+			<div>
+
+		</div>
+
+	</div>
+
+</body>

@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html data-require="math word-problems math graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>比例尺</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+             <div id="farm">
+                <div class="vars" data-ensure="Length > Width">
+                    <var id="J">randRange(10, 30)</var>
+                    <var id="K">J*100</var>
+                    <var id="scaleLength">randRange(1,10)</var>
+                    <var id="L">parseFloat((scaleLength/100).toFixed(2))</var>
+                    <var id="Length">parseFloat((L*K).toFixed(0))</var>
+                    <var id="scaleWidth">randRange(1,10)</var>
+                    <var id="W">parseFloat((scaleWidth/100).toFixed(2))</var>
+                    <var id="Width">parseFloat((W*K).toFixed(0))</var>
+                </div>
+                <div class="question">
+                    <p><var>person(1)</var>有一個長<code><var>Length</var></code>公尺、寬<code><var>Width</var></code>公尺的長方形菜園，地圖上的縮圖是長<code><var>scaleLength</var></code>公分、寬<code><var>scaleWidth</var></code>公分，是實際菜園邊長的幾分之幾縮小圖？</p>
+                </div>
+                <div class="solution" data-type="rational">
+                    <var>1/K</var>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>縮圖上的長度和實際長度的比或比值，叫作「<b>比例尺</b>」。</p>
+                    </div>
+                    <div>
+                        <p>
+                            <code><var>Length</var></code>公尺<code>=<var>Length*100</var></code>公分
+                        </p>
+                        <p>
+                            <code><var>scaleLength</var>\div<var>Length*100</var>=\dfrac{1}{<var>K</var>}<font color="red">...</font></code>
+                            <font color="red">縮圖和實際長的比值</font>
+                        </p>
+                    </div>
+                    <div>
+                        <p>
+                            <code><var>Width</var></code>公尺<code>=<var>Width*100</var></code>公分
+                        </p>
+                        <p>
+                            <code><var>scaleWidth</var>\div<var>Width*100</var>=\dfrac{1}{<var>K</var>}<font color="red">...</font></code>
+                            <font color="red">縮圖和實際寬的比值</font>
+                        </p>
+                    </div>
+                    <div>
+                        <p>
+                            <b>縮小圖是實際的<font color="red"><code>\dfrac{1}{<var>K</var>}</code></font>倍</b>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div id="scale">
+                <div class="vars">
+                    <var id="A">randRange(20,30)</var>
+                    <var id="B">2*A</var>
+                </div>
+                <div class="question">
+                    <p>導覽圖上的比例尺用下圖<code>1</code>表示，算算看，這張導覽圖的的比例尺是多少？（下圖<code>2</code>代表<code>1</code>公分）</p>
+                    <div class="graphie">
+                        init({ range: [[-2, 8], [-5, 4]], scale: 25});
+                        label( [ 2, 0 ], "圖1", "below" );
+                        label( [ 0, 1 ], "0", "above" );
+                        label( [ 2, 1 ], A, "above" );
+                        label( [ 4, 1 ], B, "above" );
+                        label( [ 6, 1 ], "（公尺）", "above" );
+                        path([[0, 0], [0, 1], [2, 1], [2, 0], true]);
+                        path([[2, 0], [4, 0], [4, 1], [2, 1], true], {fill: "#000"});
+                        path([[0, -3], [0, -2], [2, -2], [2, -3], true]);
+                        label([1,-3],"圖2", "below")
+                    </div>
+                </div>
+
+                <div class="solution" data-type="rational">
+                    <var>1/(A*100)</var>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>上圖<code>2</code>是<code>1</code>公分，它標示<code><var>A</var></code>公尺</p>
+                        <p>上圖<code>1</code>是<code>2</code>公分，它標示<code><var>B</var></code>公尺</p>
+                    </div>
+                    <div>
+                        <p><code><var>A</var>公尺=<var>A*100</var>公分</code></p>
+                        <p>縮圖長度<code>:</code>實際長度<code>=1:<var>A*100</var></code></p>
+                    </div>
+                    <div>比例尺為<code>\dfrac{1}{<var>A*100</var>}</code></div>
+                </div>
+            </div>
+            <div id="garden">
+                <div class="vars" data-ensure="scaleLength > scaleWidth">
+                    <var id="J">randRange(10,60)</var>
+                    <var id="Rate">J*100</var>
+                    <var id="scaleLength">randRange(1,10)</var>
+                    <var id="scaleWidth">randRange(1,10)</var>
+                    <var id="L">scaleLength*Rate</var>
+                    <var id="W">scaleWidth*Rate</var>
+                    <var id="Length">L/100</var>
+                    <var id="Width">W/100</var>
+                </div>
+                <div class="question">
+                    <p>縮圖上的地度和實際長度的比是<code>1:<var>Rate</var></code>，比值是<code>\dfrac{1}{<var>Rate</var>}</code>，長方形花園在地圖上長<code><var>scaleLength</var></code>公分、寬<code><var>scaleWidth</var></code>公分，長方型花園實際的長和寬各是多少公尺？
+                    </p>
+                </div>
+                <div class="solution" data-type="set">
+                    <div class="set-sol" data-type="multiple">
+                    <span class="sol"><var>Length</var></span>        
+                    <span class="sol"><var>Width</var></span>
+                    </div>
+                    <div class="example">整數，例：<code>6</code></div>
+                    <div class="input-format">
+                    <div class="entry" data-type="multiple">
+                    <p>長度為<span class="sol"></span>公尺</p>
+                    <p>寬度為<span class="sol"></span>公尺</p>
+                    </div>
+                </div>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>
+                            花園在地圖上長<code><var>scaleLength</var></code>公分、寬<code><var>scaleWidth</var></code>公分，實際上的長和寬是地圖的<code><var>Rate</var></code>倍。
+                        </p>
+                    </div>
+                    <div>
+                        <p><code><var>scaleLength</var>\times<var>Rate</var>=<var>L</var>(公分)</code></p>
+                        <p><code><var>L</var>公分=<var>Length</var>公尺</code></p>
+                        
+                    </div>
+                    <div>
+                        <p><code><var>scaleWidth</var>\times<var>Rate</var>=<var>W</var>(公分)</code></p>
+                        <p><code><var>W</var>公分=<var>Width</var>公尺</code></p>
+                    </div>
+                    <div>
+                        <p>長為<font color="red"><code><var>Length</var></code></font>公尺</p>
+                        <p>寬為<font color="red"><code><var>Width</var></code></font>公尺</p>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

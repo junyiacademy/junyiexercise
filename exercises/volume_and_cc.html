@@ -1,0 +1,266 @@
+﻿<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>體積與立方公分</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+</style>
+    <script type="text/javascript">
+		function graphie_volume(nums1,nums2,nums3){
+			var graph = KhanUtil.currentGraph;
+			var arr_m = [[0,0],[0.9,0.4],[0,0.8],[-0.9,0.4],[0,0]];
+			var arr_r = [[0,0],[0,-1],[0.9,-0.5],[0.9,0.4],[0,0]];
+			var arr_l = [[0,0],[0,-1],[-0.9,-0.5],[-0.9,0.4],[0,0]];
+			graph.path(arr_m,{fill:"#ECFFFF"});
+			graph.path(arr_r,{fill:"#80FFFF"});
+			graph.path(arr_l,{fill:"#BBFFFF"});
+			function move_volume(arr1,arr2,col1,col2,col3){
+				graph.path([[arr1[0][0]+arr2[0],arr1[0][1]+arr2[1]],[arr1[1][0]+arr2[0],arr1[1][1]+arr2[1]],[arr1[2][0]+arr2[0],arr1[2][1]+arr2[1]],[arr1[3][0]+arr2[0],arr1[3][1]+arr2[1]],[arr1[4][0]+arr2[0],arr1[4][1]+arr2[1]]],{fill:col1});
+				graph.path([[arr1[0][0]+arr2[0],arr1[0][1]+arr2[1]],[arr1[1][0]+arr2[0]-0.9,arr1[1][1]+arr2[1]-1.4],[arr1[2][0]+arr2[0]+0.9,arr1[2][1]+arr2[1]-1.4],[arr1[3][0]+arr2[0]+1.8,arr1[3][1]+arr2[1]],[arr1[4][0]+arr2[0],arr1[4][1]+arr2[1]]],{fill:col2});
+				graph.path([[arr1[0][0]+arr2[0],arr1[0][1]+arr2[1]],[arr1[1][0]+arr2[0]-0.9,arr1[1][1]+arr2[1]-1.4],[arr1[2][0]+arr2[0]-0.9,arr1[2][1]+arr2[1]-1.4],[arr1[3][0]+arr2[0],arr1[3][1]+arr2[1]],[arr1[4][0]+arr2[0],arr1[4][1]+arr2[1]]],{fill:col3});
+			}
+			var up = 1.5;
+			move_volume(arr_m,[0.9,-0.4],"#ECFFFF","#80FFFF","#BBFFFF");//r
+			move_volume(arr_m,[-0.9,-0.4],"#ECFFFF","#80FFFF","#BBFFFF");//l
+			move_volume(arr_m,[0,-0.8],"#ECFFFF","#80FFFF","#BBFFFF");//down
+			var points = [[[0.9,-0.4],1,2],[[-0.9,-0.4],1,2],[[0,-0.8],1,2]];
+			var arr_m_new = [[0,8+up],[0.9,8.4+up],[0,8.8+up],[-0.9,8.4+up],[0,8+up]];
+			var arr_r_new = [[0,8+up],[0,7+up],[0.9,7.5+up],[0.9,8.4+up],[0,8+up]];
+			var arr_l_new = [[0,8+up],[0,7+up],[-0.9,7.5+up],[-0.9,8.4+up],[0,8+up]];
+			graph.path(arr_m_new,{fill:"#ECFFFF"});
+			graph.path(arr_r_new,{fill:"#80FFFF"});
+			graph.path(arr_l_new,{fill:"#BBFFFF"});
+			move_volume(arr_m_new,[0.9,-0.4],"#ECFFFF","#80FFFF","#BBFFFF");//r
+			move_volume(arr_m_new,[-0.9,-0.4],"#ECFFFF","#80FFFF","#BBFFFF");//l
+			move_volume(arr_m_new,[0,-0.8],"#ECFFFF","#80FFFF","#BBFFFF");//down
+			
+			var arr_m_new3 = [[0,18],[0.9,18.4],[0,18.8],[-0.9,18.4],[0,18]];
+			var arr_r_new3 = [[0,18],[0,17],[0.9,17.5],[0.9,18.4],[0,18]];
+			var arr_l_new3 = [[0,18],[0,17],[-0.9,17.5],[-0.9,18.4],[0,18]];
+			graph.path(arr_m_new3,{fill:"#ECFFFF"});
+			graph.path(arr_r_new3,{fill:"#80FFFF"});
+			graph.path(arr_l_new3,{fill:"#BBFFFF"});
+			move_volume(arr_m_new3,[0.9,-0.4],"#ECFFFF","#80FFFF","#BBFFFF");//r
+			move_volume(arr_m_new3,[-0.9,-0.4],"#ECFFFF","#80FFFF","#BBFFFF");//l
+			move_volume(arr_m_new3,[0,-0.8],"#ECFFFF","#80FFFF","#BBFFFF");//down
+			
+			for(var i = 4;i<=nums1;i++){
+				var arrow = KhanUtil.randRange(1,3);
+				for(var j=0;j<1;j++){
+					if(arrow == 1){
+						points[0][0]=[0.9*points[0][2],-0.4*points[0][2]];
+						move_volume(arr_m,points[0][0],"#ECFFFF","#80FFFF","#BBFFFF");
+						move_volume(arr_m_new,points[0][0],"#ECFFFF","#80FFFF","#BBFFFF");
+						move_volume(arr_m_new3,points[0][0],"#ECFFFF","#80FFFF","#BBFFFF");
+						points[0][2]+=1;
+						break;
+					} else if(arrow == 2){
+						points[1][0]=[-0.9*points[1][2],-0.4*points[1][2]];
+						move_volume(arr_m,points[1][0],"#ECFFFF","#80FFFF","#BBFFFF");
+						move_volume(arr_m_new,points[1][0],"#ECFFFF","#80FFFF","#BBFFFF");
+						move_volume(arr_m_new3,points[1][0],"#ECFFFF","#80FFFF","#BBFFFF");
+						points[1][2]+=1;
+						break;
+					} else {
+						points[2][0]=[0,-0.8*points[2][2]];
+						move_volume(arr_m,points[2][0],"#ECFFFF","#80FFFF","#BBFFFF");
+						move_volume(arr_m_new,points[2][0],"#ECFFFF","#80FFFF","#BBFFFF");
+						move_volume(arr_m_new3,points[2][0],"#ECFFFF","#80FFFF","#BBFFFF");
+						points[2][2]+=1;
+						break;
+					}
+				}
+			}
+			points = [[[0.9,-0.4],1,2],[[-0.9,-0.4],1,2],[[0,-0.8],1,2]];
+			var arr_m_new2 = [[0,9+up],[0.9,9.4+up],[0,9.8+up],[-0.9,9.4+up],[0,9+up]];
+			var arr_r_new2 = [[0,9+up],[0,8+up],[0.9,8.5+up],[0.9,9.4+up],[0,9+up]];
+			var arr_l_new2 = [[0,9+up],[0,8+up],[-0.9,8.5+up],[-0.9,9.4+up],[0,9+up]];
+			graph.path(arr_m_new2,{fill:"#FFF8D7"});
+			graph.path(arr_r_new2,{fill:"#FFED97"});
+			graph.path(arr_l_new2,{fill:"#FFD306"});
+			move_volume(arr_m_new2,[0.9,-0.4],"#FFF8D7","#FFED97","#FFD306");//r
+			move_volume(arr_m_new2,[-0.9,-0.4],"#FFF8D7","#FFED97","#FFD306");//l
+			move_volume(arr_m_new2,[0,-0.8],"#FFF8D7","#FFED97","#FFD306");//down
+			arr_m = [[0,1],[0.9,1.4],[0,1.8],[-0.9,1.4],[0,1]];
+			arr_r = [[0,1],[0,0],[0.9,0.5],[0.9,1.4],[0,1]];
+			arr_l = [[0,1],[0,0],[-0.9,0.5],[-0.9,1.4],[0,1]];
+			graph.path(arr_m,{fill:"#FFF8D7"});
+			graph.path(arr_r,{fill:"#FFED97"});
+			graph.path(arr_l,{fill:"#FFD306"});
+			move_volume(arr_m,[0.9,-0.4],"#FFF8D7","#FFED97","#FFD306");//r
+			move_volume(arr_m,[-0.9,-0.4],"#FFF8D7","#FFED97","#FFD306");//l
+			move_volume(arr_m,[0,-0.8],"#FFF8D7","#FFED97","#FFD306");
+			for(var i = 4;i<=nums2;i++){
+				var arrow = KhanUtil.randRange(1,3);
+				for(var j=0;j<1;j++){
+					if(arrow == 1){
+						points[0][0]=[0.9*points[0][2],-0.4*points[0][2]];
+						move_volume(arr_m,points[0][0],"#FFF8D7","#FFD306","#FFED97");
+						move_volume(arr_m_new2,points[0][0],"#FFF8D7","#FFD306","#FFED97");
+						points[0][2]+=1;
+						break;
+					} else if(arrow == 2){
+						points[1][0]=[-0.9*points[1][2],-0.4*points[1][2]];
+						move_volume(arr_m,points[1][0],"#FFF8D7","#FFD306","#FFED97");
+						move_volume(arr_m_new2,points[1][0],"#FFF8D7","#FFD306","#FFED97");
+						points[1][2]+=1;
+						break;
+					} else {
+						points[2][0]=[0,-0.8*points[2][2]];
+						move_volume(arr_m,points[2][0],"#FFF8D7","#FFD306","#FFED97");
+						move_volume(arr_m_new2,points[2][0],"#FFF8D7","#FFD306","#FFED97");
+						points[2][2]+=1;
+						break;
+					}
+				}
+			}
+			points = [[[0.9,-0.4],1,2],[[-0.9,-0.4],1,2],[[0,-0.8],1,2]];
+			arr_m = [[0,2],[0.9,2.4],[0,2.8],[-0.9,2.4],[0,2]];
+			arr_r = [[0,2],[0,1],[0.9,1.5],[0.9,2.4],[0,2]];
+			arr_l = [[0,2],[0,1],[-0.9,1.5],[-0.9,2.4],[0,2]];
+			graph.path(arr_m,{fill:"#FFE6FF"});
+			graph.path(arr_r,{fill:"#ffa6ff"});
+			graph.path(arr_l,{fill:"#FF44FF"});
+			move_volume(arr_m,[0.9,-0.4],"#FFE6FF","#ffa6ff","#FF44FF");//r
+			move_volume(arr_m,[-0.9,-0.4],"#FFE6FF","#ffa6ff","#FF44FF");//l
+			move_volume(arr_m,[0,-0.8],"#FFE6FF","#ffa6ff","#FF44FF");
+			for(var i = 4;i<=nums3;i++){
+				var arrow = KhanUtil.randRange(1,3);
+				for(var j=0;j<1;j++){
+					if(arrow == 1){
+						points[0][0]=[0.9*points[0][2],-0.4*points[0][2]];
+						move_volume(arr_m,points[0][0],"#FFE6FF","#FF44FF","#ffa6ff");
+						points[0][2]+=1;
+						break;
+					} else if(arrow == 2){
+						points[1][0]=[-0.9*points[1][2],-0.4*points[1][2]];
+						move_volume(arr_m,points[1][0],"#FFE6FF","#FF44FF","#ffa6ff");
+						points[1][2]+=1;
+						break;
+					} else {
+						points[2][0]=[0,-0.8*points[2][2]];
+						move_volume(arr_m,points[2][0],"#FFE6FF","#FF44FF","#ffa6ff");
+						points[2][2]+=1;
+						break;
+					}
+				}
+			}
+		}
+    </script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars">
+					<var id="J">randRange(5,15)</var>
+                </div>
+                <div class="question">
+                    <p>下面圖形的體積是多少立方公分？</p>
+					<div class="graphie" id="circle_1">
+						init({
+                        range: [ [-9, 9], [-6, 6] ],
+                        scale: 30
+						});
+						function graphie_volume1(nums1){
+							var graph = KhanUtil.currentGraph;
+							var arr_m = [[0,0],[0.9,0.4],[0,0.8],[-0.9,0.4],[0,0]];
+							var arr_r = [[0,0],[0,-1],[0.9,-0.5],[0.9,0.4],[0,0]];
+							var arr_l = [[0,0],[0,-1],[-0.9,-0.5],[-0.9,0.4],[0,0]];
+							graph.path(arr_m,{fill:"white"});
+							graph.path(arr_r,{fill:"#E0E0E0"});
+							graph.path(arr_l,{fill:"#ADADAD"});
+							function move_volume(arr1,arr2,col1,col2,col3){
+								graph.path([[arr1[0][0]+arr2[0],arr1[0][1]+arr2[1]],[arr1[1][0]+arr2[0],arr1[1][1]+arr2[1]],[arr1[2][0]+arr2[0],arr1[2][1]+arr2[1]],[arr1[3][0]+arr2[0],arr1[3][1]+arr2[1]],[arr1[4][0]+arr2[0],arr1[4][1]+arr2[1]]],{fill:col1});
+								graph.path([[arr1[0][0]+arr2[0],arr1[0][1]+arr2[1]],[arr1[1][0]+arr2[0]-0.9,arr1[1][1]+arr2[1]-1.4],[arr1[2][0]+arr2[0]+0.9,arr1[2][1]+arr2[1]-1.4],[arr1[3][0]+arr2[0]+1.8,arr1[3][1]+arr2[1]],[arr1[4][0]+arr2[0],arr1[4][1]+arr2[1]]],{fill:col2});
+								graph.path([[arr1[0][0]+arr2[0],arr1[0][1]+arr2[1]],[arr1[1][0]+arr2[0]-0.9,arr1[1][1]+arr2[1]-1.4],[arr1[2][0]+arr2[0]-0.9,arr1[2][1]+arr2[1]-1.4],[arr1[3][0]+arr2[0],arr1[3][1]+arr2[1]],[arr1[4][0]+arr2[0],arr1[4][1]+arr2[1]]],{fill:col3});
+							}
+							move_volume(arr_m,[0.9,-0.4],"white","#E0E0E0","#ADADAD");//r
+							move_volume(arr_m,[-0.9,-0.4],"white","#E0E0E0","#ADADAD");//l
+							move_volume(arr_m,[0,-0.8],"white","#E0E0E0","#ADADAD");//down
+							var points = [[[0.9,-0.4],1,2],[[-0.9,-0.4],1,2],[[0,-0.8],1,2]];
+							for(var i = 4;i&lt;=nums1;i++){
+								var arrow = KhanUtil.randRange(1,3);
+								for(var j=0;j&lt;1;j++){
+									if(arrow == 1){
+										points[0][0]=[0.9*points[0][2],-0.4*points[0][2]];
+										move_volume(arr_m,points[0][0],"white","#E0E0E0","#ADADAD");
+										points[0][2]+=1;
+										break;
+									} else if(arrow == 2){
+										points[1][0]=[-0.9*points[1][2],-0.4*points[1][2]];
+										move_volume(arr_m,points[1][0],"white","#E0E0E0","#ADADAD");
+										points[1][2]+=1;
+										break;
+									} else {
+										points[2][0]=[0,-0.8*points[2][2]];
+										move_volume(arr_m,points[2][0],"white","#E0E0E0","#ADADAD");
+										points[2][2]+=1;
+										break;
+									}
+								}
+							}
+						}
+						graphie_volume1(J-1);
+					</div>
+                </div>
+				<div class="problem">
+					<p><code>(</code> 小方塊的邊都為 <code>1</code> 公分 <code>)</code></p>
+				</div>
+                <div class="solution" data-type="multiple">
+                    <p><span class="sol" data-forms="integer"><var>J</var></span><code>\enspace</code>個小方塊</p>
+					<p><span class="sol" data-forms="integer"><var>J</var></span><code>\enspace</code>立方公分</p>
+					<p class="example">整數，例 <code>6</code></p>
+                </div>
+                <div class="hints">
+					<p>數一數有幾個小方塊，</p>
+					<p>每一邊長都是 <code>1</code> 公分的正立方體，體積是 <code>1</code> 立方公分，</p>
+					<p>有 <code class="hint_pink"><var>J</var></code> 個小方塊，所以體積為 <code class="hint_pink"><var>J</var></code> 立方公分。</p>
+                </div>
+            </div>
+			
+			<div id="case2">
+                <div class="vars">
+					<var id="J">randRange(5,15)</var>
+					<var id="K">randRange(5,15)</var>
+					<var id="L">randRange(5,15)</var>
+                </div>
+                <div class="question">
+                    <p>下面圖形的體積是多少立方公分？</p>
+					<div class="graphie" id="circle_2">
+						init({
+                        range: [ [-9, 9], [-6, 22] ],
+                        scale: 30
+						});
+						graphie_volume(J-1,K-1,L-1);
+						label([3,18],"第一層","above right");
+						label([3,10],"第一層和第二層","above right");
+						label([3,2],"整體","above right");
+					</div>
+                </div>
+				<div class="problem">
+					<p><code>(</code> 小方塊的邊都為 <code>1</code> 公分 <code>)</code></p>
+				</div>
+                <div class="solution" data-type="multiple">
+                    <p><span class="sol" data-forms="integer"><var>J+K+L</var></span><code>\enspace</code>個小方塊</p>
+					<p><span class="sol" data-forms="integer"><var>J+K+L</var></span><code>\enspace</code>立方公分</p>
+					<p class="example">整數，例 <code>6</code></p>
+                </div>
+                <div class="hints">
+					<p>圖形可分成 <code>3</code> 層，</p>
+					<p>數一數每層有幾個小方塊，</p>
+					<p>每一邊長都是 <code>1</code> 公分的正立方體，體積是 <code>1</code> 立方公分，</p>
+					<p>第一層有 <code><var>J</var></code> 個小方塊，</p>
+					<p>第二層有 <code><var>K</var></code> 個小方塊，</p>
+					<p>第三層有 <code><var>L</var></code> 個小方塊，</p>
+					<p>總共有 <code>(<var>J</var>+<var>K</var>+<var>L</var>)=</code> <code class="hint_pink"><var>J+K+L</var></code> 個小方塊，所以體積為 <code class="hint_pink"><var>J+K+L</var></code> 立方公分。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

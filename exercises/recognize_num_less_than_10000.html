@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>認讀10000以內的數(3-n-01)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }		.img{			height:100px;			width:100px;		}
+        </style>
+	<script type="text/javascript">
+		function del_thous(){
+			var thous_num = parseInt(document.getElementById("thous_num").value);
+			var elem = "thous_"+thous_num;
+			if(thous_num!=0){
+				document.getElementById("thous_num").value = thous_num-1;
+				document.getElementById(elem).style.display = "none";
+			} else return ;
+		}
+		function add_thous(){
+			var thous_num = parseInt(document.getElementById("thous_num").value);
+			if(thous_num!=9){
+				document.getElementById("thous_num").value = thous_num+1;
+				document.getElementById("thous_"+(thous_num+1)).style.display = "block";
+			} else return ;
+		}
+		function del_hund(){
+			var hund_num = parseInt(document.getElementById("hund_num").value);
+			var elem = "hund_"+hund_num;
+			if(hund_num!=0){
+				document.getElementById("hund_num").value = hund_num-1;
+				document.getElementById(elem).style.display = "none";
+			} else return ;
+		}
+		function add_hund(){
+			var hund_num = parseInt(document.getElementById("hund_num").value);
+			if(hund_num!=9){
+				document.getElementById("hund_num").value = hund_num+1;
+				document.getElementById("hund_"+(hund_num+1)).style.display = "block";
+			} else return ;
+		}
+		function del_ten(){
+			var ten_num = parseInt(document.getElementById("ten_num").value);
+			var elem = "ten_"+ten_num;
+			if(ten_num!=0){
+				document.getElementById("ten_num").value = ten_num-1;
+				document.getElementById(elem).style.display = "none";
+			} else return ;
+		}
+		function add_ten(){
+			var ten_num = parseInt(document.getElementById("ten_num").value);
+			if(ten_num!=9){
+				document.getElementById("ten_num").value = ten_num+1;
+				document.getElementById("ten_"+(ten_num+1)).style.display = "block";
+			} else return ;
+		}
+		function del_one(){
+			var one_num = parseInt(document.getElementById("one_num").value);
+			var elem = "one_"+one_num;
+			if(one_num!=0){
+				document.getElementById("one_num").value = one_num-1;
+				document.getElementById(elem).style.display = "none";
+			} else return ;
+		}
+		function add_one(){
+			var one_num = parseInt(document.getElementById("one_num").value);
+			if(one_num!=9){
+				document.getElementById("one_num").value = one_num+1;
+				document.getElementById("one_"+(one_num+1)).style.display = "block";
+			} else return ;
+		}				function loadImg(elem,url,count){			for(var j=1;j<=count;j++){				document.getElementById(elem+j).src=url;			}				}
+	</script>
+
+
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+				<var id="thousand">randRange(3,9)</var>
+				<var id="hundred">randRange(3,9)</var>
+				<var id="R">1000*thousand+100*hundred</var>								<var id="loImg">				(function(){					loadImg("image1",Khan.urlBase+"images/thousand.png",thousand);					loadImg("image2",Khan.urlBase+"images/hundred.png",hundred);				})()</var>
+            </div>
+            <p class="question">數數看，合起來共有幾個積木？</p>
+			<div class="problem">
+				<div><img id="image11" class="img"><img id="image12" class="img"><img id="image13" class="img"><img id="image14" class="img" data-if="thousand&gt;=4"><img id="image15" class="img" data-if="thousand&gt;=5"><img id="image16" class="img" data-if="thousand&gt;=6"><img id="image17" class="img" data-if="thousand&gt;=7"><img id="image18" class="img" data-if="thousand&gt;=8"><img id="image19" class="img" data-if="thousand==9"></div>
+				<div><img id="image21" class="img"style="margin-right:2px;"><img id="image22" class="img" style="margin-right:2px;"><img id="image23" class="img" style="margin-right:2px;"><img id="image24" class="img" style="margin-right:2px;" data-if="hundred&gt;=4"><img id="image25" style="margin-right:2px;" class="img" style="margin-right:2px;" data-if="hundred&gt;=5"><img id="image26" style="margin-right:2px;" class="img" data-if="hundred&gt;=6"><img id="image27" class="img"style="margin-right:2px;"  data-if="hundred&gt;=7"><img id="image28" style="margin-right:2px;"  class="img" data-if="hundred&gt;=8"><img id="image29" class="img" style="margin-right:2px;" data-if="hundred&gt;=9"></div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>\enspace個</code>
+            </div>
+            <div class="hints">
+				<p>先算算看有幾個千，</p>
+				<p>總共有 <code><var>thousand</var></code> 個千，所以有 <code><var>1000*thousand</var></code> 個，</p>
+				<p>再算算看有幾個百，</p>
+				<p>總共有 <code><var>hundred</var></code> 個百，所以有 <code><var>hundred*100</var></code> 個，</p>
+				<p>一共是 <code class="hint_pink"><var>R</var></code> 個。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+				<var id="thousand">randRange(3,9)</var>
+				<var id="hundred">randRange(3,9)</var>
+				<var id="ten">randRange(3,9)</var>
+				<var id="R">1000*thousand+100*hundred+10*ten</var>				<var id="loImg">				(function(){					loadImg("image1",Khan.urlBase+"images/thousand.png",thousand);					loadImg("image2",Khan.urlBase+"images/hundred.png",hundred);					loadImg("image3",Khan.urlBase+"images/ten.png",ten);				})()</var>				
+            </div>
+            <p class="question">數數看，合起來共有幾個積木？</p>
+			<div class="problem">
+				<div><img id="image11" class="img"><img id="image12" class="img"><img id="image13" class="img"><img id="image14" class="img" data-if="thousand&gt;=4"><img id="image15" class="img" data-if="thousand&gt;=5"><img id="image16" class="img" data-if="thousand&gt;=6"><img id="image17" class="img" data-if="thousand&gt;=7"><img id="image18" class="img" data-if="thousand&gt;=8"><img id="image19" class="img" data-if="thousand==9"></div>
+				<div><img id="image21" class="img" style="margin-right:2px;"><img id="image22" class="img" style="margin-right:2px;"><img id="image23" class="img" style="margin-right:2px;"><img id="image24" class="img" style="margin-right:2px;" data-if="hundred&gt;=4"><img id="image25" class="img" style="margin-right:2px;" data-if="hundred&gt;=5"><img id="image26" class="img" style="margin-right:2px;" data-if="hundred&gt;=6"><img id="image27" class="img" style="margin-right:2px;" data-if="hundred&gt;=7"><img id="image28" class="img" style="margin-right:2px;" data-if="hundred&gt;=8"><img id="image29" class="img" style="margin-right:2px;" data-if="hundred&gt;=9"></div>
+				<div><img id="image31" ><img id="image32" ><img id="image33" data-if="ten&gt;=3"><img id="image34"  data-if="ten&gt;=4"><img id="image35" data-if="ten&gt;=5"><img id="image36"  data-if="ten&gt;=6"><img id="image37"  data-if="ten&gt;=7"><img id="image38"  data-if="ten&gt;=8"><img id="image39" data-if="ten&gt;=9"></div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>\enspace個</code>
+            </div>
+            <div class="hints">
+				<p>先算算看有幾個千，</p>
+				<p>總共有 <code><var>thousand</var></code> 個千，所以有 <code><var>1000*thousand</var></code> 個，</p>
+				<p>再算算看有幾個百，</p>
+				<p>總共有 <code><var>hundred</var></code> 個百，所以有 <code><var>hundred*100</var></code> 個，</p>
+				<p>最後，再算算看有幾個十，</p>
+				<p>總共有 <code><var>ten</var></code> 個十，所以有 <code><var>ten*10</var></code> 個，</p>
+				<p>一共是 <code class="hint_pink"><var>R</var></code> 個。</p>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+				<var id="thousand">randRange(3,9)</var>
+				<var id="hundred">randRange(3,9)</var>
+				<var id="ten">randRange(2,9)</var>
+				<var id="one">randRange(2,9)</var>
+				<var id="R">1000*thousand+100*hundred+10*ten+one</var>								<var id="loImg">				(function(){					loadImg("image1",Khan.urlBase+"images/thousand.png",thousand);					loadImg("image2",Khan.urlBase+"images/hundred.png",hundred);					loadImg("image3",Khan.urlBase+"images/ten.png",ten);					loadImg("image4",Khan.urlBase+"images/one.png",one);				})()</var>
+            </div>
+            <p class="question">數數看，合起來共有幾個積木？</p>
+			<div class="problem">
+				<div><img id="image11" class="img"><img id="image12" class="img"><img id="image13" class="img"><img id="image14" class="img" data-if="thousand&gt;=4"><img id="image15" class="img" data-if="thousand&gt;=5"><img id="image16" class="img" data-if="thousand&gt;=6"><img id="image17" class="img" data-if="thousand&gt;=7"><img id="image18" class="img" data-if="thousand&gt;=8"><img id="image19" class="img" data-if="thousand==9"></div>
+				<div><img id="image21" class="img" style="margin-right:2px;"><img id="image22" class="img" style="margin-right:2px;"><img id="image23" class="img" style="margin-right:2px;"><img id="image24" class="img" style="margin-right:2px;" data-if="hundred&gt;=4"><img id="image25" class="img" style="margin-right:2px;" data-if="hundred&gt;=5"><img id="image26" class="img" style="margin-right:2px;" data-if="hundred&gt;=6"><img id="image27" class="img" style="margin-right:2px;" data-if="hundred&gt;=7"><img id="image28" class="img" style="margin-right:2px;" data-if="hundred&gt;=8"><img id="image29" class="img" style="margin-right:2px;" data-if="hundred&gt;=9"></div>
+				<div><img id="image31" ><img id="image32" ><img id="image33" data-if="ten&gt;=3"><img id="image34" data-if="ten&gt;=4"><img id="image35" data-if="ten&gt;=5"><img id="image36" data-if="ten&gt;=6"><img id="image37" data-if="ten&gt;=7"><img id="image38" data-if="ten&gt;=8"><img id="image39" data-if="ten&gt;=9"></div>
+				<div><img id="image41" ><img id="image42"><img id="image43" data-if="one&gt;=3"><img id="image44" data-if="one&gt;=4"><img id="image45" data-if="one&gt;=5"><img id="image46" data-if="one&gt;=6"><img id="image47" data-if="one&gt;=7"><img id="image48" data-if="one&gt;=8"><img id="image49" data-if="one&gt;=9"></div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>R</var></span><code>\enspace個</code>
+            </div>
+            <div class="hints">
+				<p>先算算看有幾個千，</p>
+				<p>總共有 <code><var>thousand</var></code> 個千，所以有 <code><var>1000*thousand</var></code> 個，</p>
+				<p>再算算看有幾個百，</p>
+				<p>總共有 <code><var>hundred</var></code> 個百，所以有 <code><var>hundred*100</var></code> 個，</p>
+				<p>然後，再算算看有幾個十，</p>
+				<p>總共有 <code><var>ten</var></code> 個十，所以有 <code><var>ten*10</var></code> 個，</p>
+				<p>最後，再算算看有幾個一，</p>
+				<p>總共有 <code><var>one</var></code> 個一，所以有 <code><var>one</var></code> 個，</p>
+				<p>一共是 <code class="hint_pink"><var>R</var></code> 個。</p>
+            </div>
+        </div>
+		
+		<div id="case4">
+            <div class="vars">
+				<var id="thousand">randRange(3,9)</var>
+				<var id="hundred">randRange(3,9)</var>
+				<var id="ten">randRange(2,9)</var>
+				<var id="one">randRange(2,9)</var>
+				<var id="R">1000*thousand+100*hundred+10*ten+one</var>
+				<var id="steps">4</var>								<var id="loImg">				(function(){					loadImg("thous_",Khan.urlBase+"images/thousand.png",9);					loadImg("hund_",Khan.urlBase+"images/hundred.png",9);					loadImg("ten_",Khan.urlBase+"images/ten.png",9);					loadImg("one_",Khan.urlBase+"images/one.png",9);				})()</var>
+            </div>
+            <div class="question spin">請將題目指定數量放置在下面框框中。</div>
+			<div class="problem">
+				<p style="font-weight: bold;"><code><var>R</var></code></p>
+				<table>
+				<tr>
+					<th>千：</th><td><input type="button" value="-" id="del_thous" onclick="del_thous();"></td><td><input type="text" id="thous_num" style="text-align:center;width:30px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_thous" onclick="add_thous();"></td><td width="100px"></td>
+					<th>百：</th><td><input type="button" value="-" id="del_hund" onclick="del_hund();"></td><td><input type="text" id="hund_num" style="text-align:center;width:30px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_hund" onclick="add_hund();"></td><td width="100px"></td>
+				</tr>
+				<tr>
+					<th>十：</th><td><input type="button" value="-" id="del_ten" onclick="del_ten();"></td><td><input type="text" id="ten_num" style="text-align:center;width:30px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_ten" onclick="add_ten();"></td><td width="100px"></td>
+					<th>個：</th><td><input type="button" value="-" id="del_one" onclick="del_one();"></td><td><input type="text" id="one_num" style="text-align:center;width:30px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_one" onclick="add_one();"></td>
+				</tr>
+				</table>
+                <div style="border:1px solid black;height:630px;">
+					<div style="border:1px;height:100px">
+						<div style="float:left"><img style="display:none;" id="thous_1"></div>
+						<div style="float:left"><img style="display:none;" id="thous_2"></div>
+						<div style="float:left"><img style="display:none;" id="thous_3"></div>
+						<div style="float:left"><img style="display:none;" id="thous_4"></div>
+						<div style="float:left"><img style="display:none;" id="thous_5"></div>
+						<div style="float:left"><img style="display:none;" id="thous_6"></div>
+						<div style="float:left"><img style="display:none;" id="thous_7"></div>
+						<div style="float:left"><img style="display:none;" id="thous_8"></div>
+						<div style="float:left"><img style="display:none;" id="thous_9"></div>
+					</div>
+					<div style="border:1px;height:100px;">
+						<div style="float:left;margin-right:2px;"><img style="display:none;" id="hund_1"></div>
+						<div style="float:left;margin-right:2px;"><img style="display:none;" id="hund_2"></div>
+						<div style="float:left;margin-right:2px;"><img style="display:none;" id="hund_3"></div>
+						<div style="float:left;margin-right:2px;"><img style="display:none;" id="hund_4"></div>
+						<div style="float:left;margin-right:2px;"><img style="display:none;" id="hund_5"></div>
+						<div style="float:left;margin-right:2px;"><img style="display:none;" id="hund_6"></div>
+						<div style="float:left;margin-right:2px;"><img style="display:none;" id="hund_7"></div>
+						<div style="float:left;margin-right:2px;"><img style="display:none;" id="hund_8"></div>
+						<div style="float:left;margin-right:2px;"><img style="display:none;" id="hund_9"></div>
+					</div>
+					<div style="border:1px;height:100px;">
+						<div style="float:left"><img  style="display:none;" id="ten_1"></div>
+						<div style="float:left"><img  style="display:none;" id="ten_2"></div>
+						<div style="float:left"><img  style="display:none;" id="ten_3"></div>
+						<div style="float:left"><img  style="display:none;" id="ten_4"></div>
+						<div style="float:left"><img  style="display:none;" id="ten_5"></div>
+						<div style="float:left"><img  style="display:none;" id="ten_6"></div>
+						<div style="float:left"><img  style="display:none;" id="ten_7"></div>
+						<div style="float:left"><img  style="display:none;" id="ten_8"></div>
+						<div style="float:left"><img  style="display:none;" id="ten_9"></div>
+					</div>
+					<div style="border:1px;height:100px;">
+						<div style="float:left"><img style="display:none;" id="one_1"></div>
+						<div style="float:left"><img style="display:none;" id="one_2"></div>
+						<div style="float:left"><img style="display:none;" id="one_3"></div>
+						<div style="float:left"><img style="display:none;" id="one_4"></div>
+						<div style="float:left"><img style="display:none;" id="one_5"></div>
+						<div style="float:left"><img style="display:none;" id="one_6"></div>
+						<div style="float:left"><img style="display:none;" id="one_7"></div>
+						<div style="float:left"><img style="display:none;" id="one_8"></div>
+						<div style="float:left"><img style="display:none;" id="one_9"></div>
+					</div>
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+                    <div class="guess">[document.getElementById("thous_num").value,document.getElementById("hund_num").value,document.getElementById("ten_num").value,document.getElementById("one_num").value]</div>
+                    <div class="validator-function">
+						if(guess[0]==thousand&&guess[1]==hundred&&guess[2]==ten&&guess[3]==one){
+							return true;
+						}
+                    </div>
+				</div>
+				<p class="example">在框框上方選擇 <code>+</code> 、 <code>-</code> 按鈕</p>
+            </div>
+            <div class="hints">
+				<p><var>(function(){
+                                myFun=function() {
+									if(steps&gt;=4){
+									    document.getElementById("thous_num").value = 0;
+										for(var i=thousand;i&gt;0;i--){
+											document.getElementById("add_thous").click();
+										}  
+										}else if(steps&gt;=3){
+										document.getElementById("hund_num").value = 0;
+										for(var i=hundred;i&gt;0;i--){
+											document.getElementById("add_hund").click();
+										}
+									}else if(steps&gt;=2){
+										document.getElementById("ten_num").value = 0;
+										for(var i=ten;i&gt;0;i--){
+											document.getElementById("add_ten").click();
+										}
+									}else {
+										document.getElementById("one_num").value = 0;
+										for(var i=one;i&gt;0;i--){
+											document.getElementById("add_one").click();
+										}
+									}
+									steps--;
+									if(steps&gt;=1){steps==4;}
+								}
+                                myFun_2=function(){
+                                    $("#hint").unbind("click",myFun);
+                                }
+							    $("#hint").bind("click",myFun);
+                                $("#check-answer-button").click(myFun_2);
+				})()</var></p><p></p><p></p><p></p>
+            </div>
+        </div>
+	</div>
+	</div>
+</body>
+</html>

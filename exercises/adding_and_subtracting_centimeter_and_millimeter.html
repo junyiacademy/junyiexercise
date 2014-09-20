@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html data-require="math word-problems math graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>公分與毫米的加減法應用</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars">
+                    <var id="cm_1">randRange(1,2)</var>
+                     <var id="mm_1">randRange(5,20)</var>
+                    <var id="cm_2">randRange(1,2)</var>
+                    <var id="mm_2">randRange(1,10)</var>
+                    <var id="J">Math.floor((mm_1+mm_2)/10)</var>
+                    <var id="centimeter">(cm_1+cm_2)+J</var>
+                    <var id="millimeter">(mm_1+mm_2)-(J*10)</var>
+                </div>
+                <div class="question">
+                    <p>小樹苗第一個星期長了<code><var>cm_1</var></code>公分<code><var>mm_1</var></code>毫米，第二個星期長了<code><var>cm_2</var></code>公分<code><var>mm_2</var></code>毫米，它兩個星期共長了幾公分幾毫米？</p>
+                </div>
+				 <div class="solution"data-type="multiple">
+					<p><input type="text" id="a_1"> 公分</p>
+					<p><input type="text" id="a_2"> 毫米</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value]</div>
+						<div class="validator-function">
+							var bol1=false;						
+							if(guess[0].replace(/[ ]/g,"")==centimeter&&guess[1].replace(/[ ]/g,"")==millimeter)
+							{
+								bol1=true;
+							}
+							return bol1;					
+						</div>
+					</div>
+					<p class="example">整數，例：<code>6</code></p>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>先算有幾毫米，再算有幾公分</p>
+                    </div>
+                    <div class="graphie">
+                      
+                        init({ range: [[-1, 10], [-6, 0]], scale: 20});
+                        label( [ 5, -1 ], "公分" );
+                        label( [ 8, -1 ], "毫米" );
+                        label( [ 5, -2 ], cm_1 );
+                        label( [ 8, -2 ], mm_1 );
+                        label( [ 2, -3 ], "＋");
+                        label( [ 5, -3 ], cm_2 );
+                        label( [ 8, -3 ], mm_2 );
+                        path([[0, -4], [9, -4], true]);
+                        label( [ 5, -5 ], cm_1+cm_2 );
+                        label( [ 8, -5 ], mm_1+mm_2 );               
+                    </div>
+                    <div>
+                        <p><code><var>cm_1</var></code>公分<code><var>mm_1</var></code>毫米<code>+<var>cm_2</var></code>公分<code><var>mm_2</var></code>毫米<code>=<var>cm_1+cm_2</var></code>公分<code><var>mm_1+mm_2</var></code>毫米</p>
+                    </div>
+                    <div data-if="J != 0">
+                        <p>因為<code>1</code>公分<code>=10</code>毫米</p>
+                    </div>
+                    <div data-if="J != 0">
+                        <p>所以答案是<font color="red"><code><var>centimeter</var></code></font>公分<font color="red"><code><var>millimeter</var></code></font>毫米</p>
+                    </div>
+                </div>
+            </div>
+            <div id="case2">
+                <div class="vars">
+                    <var id="cm_1">randRange(15,20)</var>
+                    <var id="cm_2">randRange(1,2)</var>
+                    <var id="mm_2">randRange(1,10)</var>
+                    <var id="J">Math.floor(mm_2/10)</var>
+                    <var id="centimeter">(cm_1+cm_2)+J</var>
+                    <var id="millimeter">(mm_2)-(J*10)</var>
+                </div>
+                <div class="question">
+                    <p>小花貓出生時有<code><var>cm_1</var></code>公分，從出生到現在長了<code><var>cm_2</var></code>公分<code><var>mm_2</var></code>毫米，小花貓現在有多長？</p>
+                </div>
+                <div class="solution"data-type="multiple">
+					<p><input type="text" id="a_1"> 公分</p>
+					<p><input type="text" id="a_2"> 毫米</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value]</div>
+						<div class="validator-function">
+							var bol1=false;						
+							if(guess[0].replace(/[ ]/g,"")==centimeter&&guess[1].replace(/[ ]/g,"")==millimeter)
+							{
+								bol1=true;
+							}
+							return bol1;					
+						</div>
+					</div>
+					<p class="example">整數，例：<code>6</code></p>
+                </div>
+                <div class="hints">
+                    <div class="graphie">
+                        init({ range: [[-1, 10], [-6, 0]], scale: 20});
+                        label( [ 5, -1 ], "公分" );
+                        label( [ 8, -1 ], "毫米" );
+                        label( [ 5, -2 ], cm_1 );
+                        label( [ 2, -3 ], "＋");
+                        label( [ 5, -3 ], cm_2 );
+                        label( [ 8, -3 ], mm_2 );
+                        path([[0, -4], [9, -4], true]);
+                        label( [ 5, -5 ], cm_1+cm_2 );
+                        label( [ 8, -5 ], mm_2 ); 
+                    </div>
+                    <div>
+                        <p><code><var>cm_1</var></code>公分<code>+<var>cm_2</var></code>公分<code><var>mm_2</var></code>毫米<code>=<var>cm_1+cm_2</var></code>公分<code><var>mm_2</var></code>毫米</p>
+                    </div>
+                    <div data-if="J != 0">
+                        <p>因為<code>1</code>公分<code>=10</code>毫米</p>
+                    </div>
+                    <div data-if="J != 0">
+                        <p>所以答案是<font color="red"><code><var>centimeter</var></code></font>公分<font color="red"><code><var>millimeter</var></code></font>毫米</p>
+                    </div>
+                </div>
+            </div>
+            <div id="case3">
+                <div class="vars">
+                    <var id="cm_1">randRange(5,15)</var>
+                    <var id="mm_1">randRange(5,9)</var>
+                    <var id="J">Math.floor((mm_1*2)/10)</var>
+                    <var id="centimeter">(cm_1*2)+J</var>
+                    <var id="millimeter">(mm_1*2)-(J*10)</var>
+                </div>
+                <div class="question">
+                    <p>半徑是<code><var>cm_1</var></code>公分<code><var>mm_1</var></code>毫米的圓，直徑是幾公分幾毫米？</p>
+                </div>
+				<div class="solution"data-type="multiple">
+					<p><input type="text" id="a_1"> 公分</p>
+					<p><input type="text" id="a_2"> 毫米</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value]</div>
+						<div class="validator-function">
+							var bol1=false;						
+							if(guess[0].replace(/[ ]/g,"")==centimeter&&guess[1].replace(/[ ]/g,"")==millimeter)
+							{
+								bol1=true;
+							}
+							return bol1;					
+						</div>
+					</div>
+					<p class="example">整數，例：<code>6</code></p>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>先算有幾毫米，再算有幾公分</p>
+                    </div>
+                    <div>
+                        <p>直徑<code>=</code>半徑<code>+</code>半徑</p>
+                    </div>
+                    <div class="graphie">
+                        init({ range: [[-1, 10], [-6, 0]], scale: 20});
+                        label( [ 5, -1 ], "公分" );
+                        label( [ 8, -1 ], "毫米" );
+                        label( [ 5, -2 ], cm_1 );
+                        label( [ 8, -2 ], mm_1 );
+                        label( [ 2, -3 ], "＋");
+                        label( [ 5, -3 ], cm_1 );
+                        label( [ 8, -3 ], mm_1 );
+                        path([[0, -4], [9, -4], true]);
+                        label( [ 5, -5 ], cm_1*2 );
+                        label( [ 8, -5 ], mm_1*2 );               
+                    </div>
+                    <div>
+                        <p><code><var>cm_1</var></code>公分<code><var>mm_1</var></code>毫米<code>+<var>cm_1</var></code>公分<code><var>mm_1</var></code>毫米<code>=<var>cm_1+cm_1</var></code>公分<code><var>mm_1+mm_1</var></code>毫米</p>
+                    </div>
+                    <div data-if="J != 0">
+                        <p>因為<code>1</code>公分<code>=10</code>毫米</p>
+                    </div>
+                    <div data-if="J != 0">
+                        <p>所以答案為<font color="red"><code><var>centimeter</var></code></font>公分<font color="red"><code><var>millimeter</var></code></font>毫米</p>
+                    </div>
+                </div>
+            </div>
+            <div id="case4">
+                <div class="vars" data-ensure="(mm_2-mm_1) > 0">
+                    <var id="cm_1">randRange(2,5)</var>
+                    <var id="mm_1">randRange(2,9)</var>
+                    <var id="cm_2">randRange(12,20)</var>
+                    <var id="mm_2">randRange(2,9)</var>
+                    <var id="J">Math.floor((mm_2-mm_1)/10)</var>
+                    <var id="centimeter">(cm_2-cm_1)+J</var>
+                    <var id="millimeter">(mm_2-mm_1)-(J*10)</var>
+                </div>
+                <div class="question">
+                    <p>小黑貓從出生時到現在長了<code><var>cm_1</var></code>公分<code><var>mm_1</var></code>毫米，牠現在有<code><var>cm_2</var></code>公分<code><var>mm_2</var></code>毫米，小黑貓出生時有多長？</p>
+                </div>
+                <div class="solution" data-type="set">
+                    <div class="set-sol" data-type="multiple">
+                        <span class="sol"><var>centimeter</var></span>        
+                        <span class="sol"><var>millimeter</var></span>
+                    </div>
+                    <div class="example">
+                        整數，例：<code>6</code><br>
+                     </div> 
+                    <div class="input-format">
+                    <div class="entry" data-type="multiple">
+                        <p>
+                            <span class="sol"></span>公分
+                        </p>
+                        <p>
+                            <span class="sol"></span>毫米
+                        </p>
+                    </div>
+                    </div>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>用現在的長度減去從出生時到現在長的長度，就是出生時候的長度</p>
+                    </div>
+                    <div class="graphie" id="blackcat">
+                        init({ range: [[-1, 15], [-7, 4]], scale: 20});
+                        path([[0, 1], [9, 1], true], {stroke: BLUE});
+                        label( [ 5, 1 ], "出生時的長度", "above" );
+                        path([[9, 1], [14, 1], true], {stroke: RED});
+                        label( [ 12, 1 ], cm_1+"公分"+mm_1+"毫米", "above" );
+                        label( [ 7, 1 ], cm_2+"公分"+mm_2+"毫米", "below" );
+                    </div>
+                    <div class="graphie" data-update="blackcat">
+                        init({ range: [[-1, 15], [-7, 4]], scale: 20});
+                        label( [ 5, -2 ], "公分" );
+                        label( [ 8, -2 ], "毫米" );
+                        label( [ 5, -3 ], cm_2 );
+                        label( [ 8, -3 ], mm_2 );
+                        label( [ 2, -4 ], "－");
+                        label( [ 5, -4 ], cm_1 );
+                        label( [ 8, -4 ], mm_1 );
+                        path([[0, -5], [9, -5], true]);
+                        label( [ 5, -6 ], cm_2-cm_1 );
+                        label( [ 8, -6 ], mm_2-mm_1 );               
+                    </div>
+                    <div>
+                        <p><code><var>cm_2</var></code>公分<code><var>mm_2</var></code>毫米<code>-<var>cm_1</var></code>公分<code><var>mm_1</var></code>毫米<code>=<var>cm_2-cm_1</var></code>公分<code><var>mm_2-mm_1</var></code>毫米</p>
+                    </div>
+                </div>
+            </div>
+            <div id="case5">
+                <div class="vars">
+                    <var id="cm_1">randRange(30,50)</var>
+                    <var id="cm_2">randRange(12,20)</var>
+                    <var id="mm_2">randRange(2,9)</var>
+                    <var id="centimeter">((cm_1-1)-cm_2)</var>
+                    <var id="millimeter">(10-mm_2)</var>
+                </div>
+                <div class="question">
+                    <p>有一根竹竿長<code><var>cm_1</var></code>公分，一隻蝸牛從竹竿的最左邊向右爬了<code><var>cm_2</var></code>公分<code><var>mm_2</var></code>毫米，還要爬多遠才到竹竿的最右邊？</p>
+                </div>
+                <div class="solution" data-type="set">
+                    <div class="set-sol" data-type="multiple">
+                        <span class="sol"><var>centimeter</var></span>        
+                        <span class="sol"><var>millimeter</var></span>
+                    </div>
+                    <div class="example">
+                        整數，例：<code>6</code><br>
+                     </div> 
+                    <div class="input-format">
+                    <div class="entry" data-type="multiple">
+                        <p>
+                            <span class="sol"></span>公分
+                        </p>
+                        <p>
+                            <span class="sol"></span>毫米
+                        </p>
+                    </div>
+                    </div>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>竹竿長<code><var>cm_1</var></code>公分，已經爬了<code><var>cm_2</var></code>公分<code><var>mm_2</var></code>毫米，還要再爬多遠才能爬完呢？</p>
+                    </div>
+                    <div>
+                        <p>我們可以用全部的距離<code><var>cm_1</var></code>公分減去<code><var>cm_2</var></code>公分<code><var>mm_2</var></code>毫米就知道答案囉</p>
+                    </div>
+                    <div class="graphie" id="bamboo">
+                        init({ range: [[-1, 15], [-1, 4]], scale: 20});
+                        path([[0, 1], [5, 1], true], {stroke: BLUE});
+                        label( [ 2, 1 ], cm_2+"公分"+mm_2+"毫米", "above" );
+                        path([[5, 1], [14, 1], true], {stroke: RED});
+                        label( [ 10, 1 ], "還要爬？公分？毫米", "above" );
+                        label( [ 7, 1 ], cm_1+"公分", "below" );
+                    </div>
+                    <div>
+                        <p><code><var>cm_1</var></code>公分<code>=<var>cm_1-1</var></code>公分<code>10</code>毫米</p>
+                    </div>
+                    <div class="graphie" id="bamboo2">
+                        init({ range: [[-1, 10], [-7, -1]], scale: 20});
+                        label( [ 5, -2 ], "公分" );
+                        label( [ 8, -2 ], "毫米" );
+                        label( [ 5, -3 ], cm_1-1 );
+                        label( [ 8, -3 ], 10 );
+                        label( [ 2, -4 ], "－");
+                        label( [ 5, -4 ], cm_2 );
+                        label( [ 8, -4 ], mm_2 );
+                        path([[0, -5], [9, -5], true]);
+                        label( [ 5, -6 ], (cm_1-1)-cm_2 );
+                        label( [ 8, -6 ], 10-mm_2 );               
+                    </div>
+                    <div>
+                        <p><code><var>cm_1</var></code>公分<code>-<var>cm_2</var></code>公分<code><var>mm_2</var></code>毫米</p>
+                    </div>
+                    <div>
+                        <p><code>=<var>cm_1-1</var></code>公分<code>10</code>毫米<code>-<var>cm_2</var></code>公分<code><var>mm_2</var></code>毫米</p></p>
+                    </div>
+                    <div>
+                        <p><code>=<var>centimeter</var></code>公分<code><var>millimeter</var></code>毫米</p>
+                    </div>
+                </div>
+            </div>                  
+        </div>
+    </div>
+</body>
+</html>
