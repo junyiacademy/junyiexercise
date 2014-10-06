@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-require="math math-format graphie graphie-helpers">
+<html data-require="math graphie graphie-helpers graphie-geometry math-format interactive triangle-congruence">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>數到100</title>
@@ -91,9 +91,10 @@
             <div class="vars">
 				<var id="J">randRange(1,10)</var>
 				<var id="result">chg2(10,3,3,J)</var>
+				<var id="test">(function(){Khan.scratchpad.disable();})()</var>
             </div>
             <p class="question">讓我們 <code>10</code> 個 <code>10</code> 個一數，數到 <code>100</code></p>
-			<div class="problem">
+			<div class="problem">			
 				<p>
 					<code class="hint_green" data-if="J!=1">10，</code><code data-if="J==1">\underline{\enspace\enspace\enspace}，</code>
 					<code class="hint_pink" data-if="J!=2">20，</code><code data-if="J==2">\underline{\enspace\enspace\enspace}，</code>
@@ -107,7 +108,7 @@
 					<code class="hint_green" data-if="J!=10">100</code><code data-if="J==10">\underline{\enspace\enspace\enspace}</code>
 				</p>
 				<p>哪一個數字不見了？</p>
-				<p id="t_1"><input type="radio" name="count_numbers_1" checked id="c_1"><code>10</code></p>
+				<p id="t_1"><input type="radio" name="count_numbers_1" id="c_1"><code>10</code></p>
 				<p id="t_2"><input type="radio" name="count_numbers_1" id="c_2"><code>20</code></p>
 				<p id="t_3"><input type="radio" name="count_numbers_1" id="c_3"><code>30</code></p>
 				<p id="t_4"><input type="radio" name="count_numbers_1" id="c_4"><code>40</code></p>
@@ -122,6 +123,13 @@
 				<div class="sol" data-type="custom">
 				    <div class="guess">1</div>
 				    <div class="validator-function">
+						if($("#c_1").attr("checked")!='checked' && $("#c_2").attr("checked")!='checked' && $("#c_3").attr("checked")!='checked'
+							&& $("#c_4").attr("checked")!='checked' && $("#c_5").attr("checked")!='checked' && $("#c_6").attr("checked")!='checked'
+							&& $("#c_7").attr("checked")!='checked' && $("#c_8").attr("checked")!='checked' && $("#c_9").attr("checked")!='checked'
+							&& $("#c_10").attr("checked")!='checked'
+						){
+							return "";
+						}
 						if(document.getElementById("c_"+J).checked){
 							return true;
 						}
@@ -140,6 +148,7 @@
 				<var id="wro_2">randRange(1,100)</var>
 				<var id="change">chg3(right_1)</var>
 				<var id="change2">chg4(right_1,wro_1,wro_2)</var>
+				<var id="test">(function(){Khan.scratchpad.disable();})()</var>
             </div>
             <p class="question">哪一個數字不見了？</p>
 			<div class="problem">
@@ -265,17 +274,23 @@
 						<td><input id="100" type="text" value="100" class="input_style" readonly></td>
 					</tr>
 				</table>
-				<p><input type="radio" name="count_numbers_1" id="c_1"><code><var>change2[0]</var></code></p>
-				<p><input type="radio" name="count_numbers_1" id="c_2"><code><var>change2[1]</var></code></p>
-				<p><input type="radio" name="count_numbers_1" id="c_3"><code><var>change2[2]</var></code></p>
+				<p onclick="$('#c_1').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_1"><code><var>change2[0]</var></code></p>
+				<p onclick="$('#c_2').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_2"><code><var>change2[1]</var></code></p>
+				<p onclick="$('#c_3').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_3"><code><var>change2[2]</var></code></p>
 			</div>
 			<div class="solution" data-type="multiple">
 				<div class="sol" data-type="custom">
 				    <div class="guess">1</div>
 				    <div class="validator-function">
-						if((document.getElementById("c_1").checked&&document.getElementById("c_1").value==right_1)||(document.getElementById("c_2").checked&&document.getElementById("c_2").value==right_1)||(document.getElementById("c_3").checked&&document.getElementById("c_3").value==right_1)){
-							return true;
+						if($("#c_1").attr("checked")!='checked' && $("#c_2").attr("checked")!='checked' && $("#c_3").attr("checked")!='checked'){
+							return "";
 						}
+						var bol1=false;
+						if((document.getElementById("c_1").checked&&document.getElementById("c_1").value==right_1)||(document.getElementById("c_2").checked&&document.getElementById("c_2").value==right_1)||(document.getElementById("c_3").checked&&document.getElementById("c_3").value==right_1))
+						{
+							bol1=true;
+						}
+						return bol1;
 					</div>
 				</div>
             </div>

@@ -235,6 +235,8 @@ var Khan = (function() {
     // Values are number of remote exercises that are currently
     // pending in the middle of a load.
     loadingExercises = {},
+    loadingExercisesIndex = [],
+    loadingExercisesContent = {},
 
     urlBase = typeof urlBaseOverride !== "undefined" ? urlBaseOverride :
         testMode ? "../" : "/khan-exercises/",
@@ -541,7 +543,7 @@ var Khan = (function() {
                     var makeVisible = function() {
                         $("#workarea, #hintsarea").css("padding-left", 60);
                         $("#scratchpad").show();
-                        $("#scratchpad-show").text("隱藏練習區");
+                        $("#scratchpad-show").text("隱藏計算紙");
 
                         // If pad has never been created or if it's empty
                         // because it was removed from the DOM, recreate a new
@@ -565,7 +567,7 @@ var Khan = (function() {
 
                     $("#workarea, #hintsarea").css("padding-left", 0);
                     $("#scratchpad").hide();
-                    $("#scratchpad-show").text("顯示練習區");
+                    $("#scratchpad-show").text("顯示計算紙");
                 },
 
                 toggle: function() {
@@ -727,7 +729,7 @@ var Khan = (function() {
     randomSeed = testMode && parseFloat(Khan.query.seed) || userCRC32 || (new Date().getTime() & 0xffffffff);
 
     // Load in jQuery
-    var scripts = (typeof jQuery !== "undefined") ? [] : [{src: "../jquery.js"}];
+    var scripts = (typeof jQuery !== "undefined") ? [] : [{src: urlBase +"jquery.js"}];
 
     // Actually load the scripts. This is getting evaluated when the file is loaded.
     Khan.loadScripts(scripts, function() {
@@ -819,7 +821,7 @@ var Khan = (function() {
     // ensures that the proportions come out as fairly as possible with ints
     // (still usually a little bit random).
     // There has got to be a better way to do this.
-    function makeProblemBag(problems, n) {
+    function makeProblemBag(problems, n, force_random) {
         var bag = [], totalWeight = 0;
 
         if (testMode && Khan.query.test != null) {
@@ -864,7 +866,11 @@ var Khan = (function() {
             while (n) {
                 bag.push((function() {
                     // Figure out which item we're going to pick
-                    var index = totalWeight * KhanUtil.random();
+                    if (force_random !== undefined && force_random == true) {
+                        var index = totalWeight * Math.random();
+                    } else {
+                        var index = totalWeight * KhanUtil.random();
+                    }
 
                     for (var i = 0; i < problems.length; i++) {
                         if (index < weights[i] || i === problems.length - 1) {
@@ -906,7 +912,7 @@ var Khan = (function() {
         });
     }
 
-    function startLoadingExercise(exerciseId, exerciseName, exerciseFile) {
+    function startLoadingExercise(exerciseId, exerciseName, exerciseFile, exerciseIsQuiz) {
 
         if (typeof loadingExercises[exerciseId] !== "undefined") {
             // Already started loading this exercise.
@@ -921,7 +927,8 @@ var Khan = (function() {
             .data("name", exerciseId)
             .data("displayName", exerciseName)
             .data("fileName", exerciseFile)
-            .data("rootName", exerciseId);
+            .data("rootName", exerciseId)
+            .data("isQuiz", exerciseIsQuiz);
 
         // Queue up an exercise load
         loadExercise.call(exerciseElem, function() {
@@ -945,6 +952,7 @@ var Khan = (function() {
         exerciseId = userExercise.exerciseModel.name;
         exerciseName = userExercise.exerciseModel.displayName;
         exerciseFile = userExercise.exerciseModel.fileName;
+        isQuiz = userExercise.exerciseModel.isQuizExercise;
 
         // TODO(eater): remove this once all of the exercises in the datastore have filename properties
         if (exerciseFile == null || exerciseFile == "") {
@@ -959,7 +967,7 @@ var Khan = (function() {
             }).children(".problems").children();
 
             // ...and create a new problem bag with problems of our new exercise type.
-            problemBag = makeProblemBag(problems, 10);
+            problemBag = makeProblemBag(problems, 10, userExercise.exerciseModel.isQuizExercise);
 
             // Update related videos
             Khan.relatedVideos.setVideos(userExercise.exerciseModel);
@@ -973,14 +981,14 @@ var Khan = (function() {
             }
 
             // Generate a new problem
-            makeProblem(typeOverride, seedOverride);
+            makeProblem(0, typeOverride, seedOverride);
 
         }
 
         if (isExerciseLoaded(exerciseId)) {
             finishRender();
         } else {
-            startLoadingExercise(exerciseId, exerciseName, exerciseFile);
+            startLoadingExercise(exerciseId, exerciseName, exerciseFile, isQuiz);
 
             $(Khan)
                 .unbind("exerciseLoaded:" + exerciseId)
@@ -1045,7 +1053,7 @@ var Khan = (function() {
                  (validator.guess instanceof Array && $.trim(validator.guess.join("").replace(/,/g, "")) === "");
     }
 
-    function makeProblem(id, seed) {
+    function makeProblem(skipCount, id, seed) {
         debugLog("start of makeProblem");
 
         // Enable scratchpad (unless the exercise explicitly disables it later)
@@ -1082,7 +1090,11 @@ var Khan = (function() {
         // we made earlier to ensure that every problem gets shown the
         // appropriate number of times
         } else if (problemBag.length > 0) {
-            problem = problemBag[problemBagIndex];
+            if (typeof skipCount !== "undefined") {
+                problem = problemBag[(problemBagIndex + skipCount) % problemBag.length];
+            } else {
+                problem = problemBag[problemBagIndex];
+            }
             id = problem.data("id");
 
         // No valid problem was found, bail out
@@ -1193,13 +1205,18 @@ var Khan = (function() {
         problem.runModules(problem);
         debugLog("done with runModules");
 
-        if (typeof seed === "undefined" && shouldSkipProblem()) {
+        if (!(testMode || userExercise.readOnly) && typeof seed === "undefined" && shouldSkipProblem()) {
             // If this is a duplicate problem we should skip, just generate
             // another problem of the same problem type but w/ a different seed.
             debugLog("duplicate problem!");
             clearExistingProblem();
-            nextSeed(1);
-            return makeProblem();
+            if(userExercise.exerciseModel.isQuizExercise) {
+                return makeProblem(skipCount + 1);
+            } else {
+                nextSeed(1);
+                return makeProblem();
+            }
+            
         }
 
         // Store the solution to the problem
@@ -1266,7 +1283,7 @@ var Khan = (function() {
             // Making the problem failed, let's try again
             debugLog("validator was falsey");
             problem.remove();
-            makeProblem(id, randomSeed);
+            makeProblem(skipCount, id, randomSeed);
             return;
         }
 
@@ -2000,6 +2017,10 @@ var Khan = (function() {
 
                 //Get Custom Stack Id if it exists
                 custom_stack_id: !testMode && Exercises.completeStack.getCustomStackID()
+
+                // if it is a quiz_exercise, quiz_pid is set as the problem_type.
+                ,quiz_pid: problemID
+
             };
         }
 
@@ -2171,7 +2192,9 @@ var Khan = (function() {
                 }
             }
 
-            var fProdReadOnly = !testMode && userExercise.readOnly;
+            // userExercise.readOnly is actually no use here because when it's true, user cannot click the hint button.
+            // Anyway, I still keep it here and add a protection or it.
+            var fProdReadOnly = !testMode && typeof userExercise !== "undefined" && userExercise.readOnly;
             var fAnsweredCorrectly = $("#next-question-button").is(":visible");
             if (!fProdReadOnly && !fAnsweredCorrectly) {
                 // Resets the streak and logs history for exercise viewer
@@ -2591,7 +2614,7 @@ var Khan = (function() {
                 warn(data.text, data.showClose);
             })
             .bind("upcomingExercise", function(ev, data) {
-                startLoadingExercise(data.exerciseId, data.exerciseName, data.exerciseFile);
+                startLoadingExercise(data.exerciseId, data.exerciseName, data.exerciseFile, data.isQuiz);
             });
     }
 
@@ -2757,6 +2780,7 @@ var Khan = (function() {
         var weight = self.data("weight");
         var rootName = self.data("rootName");
         var fileName = self.data("fileName");
+        var isQuiz = self.data("isQuiz");
         // TODO(eater): remove this once all of the exercises in the datastore have filename properties
         if (fileName == null || fileName == "") {
             fileName = id + ".html";
@@ -2769,7 +2793,17 @@ var Khan = (function() {
         loadingExercises[rootName]++;
 
         // Packing occurs on the server but at the same "exercises/" URL
-        $.get(urlBase + "exercises/" + fileName, function(data, status, xhr) {
+
+        // isQuiz is set to true if loading a quiz exercise.
+        if (isQuiz && typeof userExercise !== "undefined" && userExercise.readOnly){
+            //history mode: load a single problem.
+            var pid = userExercise.quizPid;
+            var openfile =  "/khan-exercises/exercises/" + id + "/" + pid;           
+        }else{
+            var openfile = urlBase + "exercises/" + fileName;
+        }
+
+        $.get(openfile, function(data, status, xhr) {
             var match, newContents;
 
             if (!(/success|notmodified/).test(status)) {
@@ -2789,10 +2823,27 @@ var Khan = (function() {
             // Name of the top-most ancestor exercise
             newContents.data("rootName", rootName);
 
+            // Check whether id exists in loadingExercisesIndex; if not, push it in.
+            if ($.inArray(id, loadingExercisesIndex) == -1) {
+                loadingExercisesIndex.push(id);
+            }
+
             // Maybe the exercise we just loaded loads some others
+            var moreExercises = [];
             newContents.filter("[data-name]").each(function() {
+                var tmp_id = $(this).detach().data("name");
+                moreExercises.push(tmp_id);
                 loadExercise.call(this, callback);
             });
+
+            // If we do have more exercises to load, insert them into loadingExercisesIndex
+            // according to the position of their parent.
+            if (moreExercises.length > 0) {
+                var current_id_index = loadingExercisesIndex.indexOf(id);
+                var first_part = loadingExercisesIndex.slice(0, current_id_index + 1);
+                var second_part = loadingExercisesIndex.slice(current_id_index + 1, loadingExercisesIndex.length);
+                loadingExercisesIndex = first_part.concat(moreExercises, second_part);
+            }
 
             // Throw out divs that just load other exercises
             newContents = newContents.not("[data-name]");
@@ -2800,9 +2851,6 @@ var Khan = (function() {
             // Save the id, fileName and weights
             // TODO(david): Make sure weights work for recursively-loaded exercises.
             newContents.data("name", id).data("fileName", fileName).data("weight", weight);
-
-            // Add the new exercise elements to the exercises DOM set
-            exercises = exercises.add(newContents);
 
             // Extract data-require
             var requires = data.match(/<html(?:[^>]+)data-require=(['"])((?:(?!\1).)*)\1/);
@@ -2833,19 +2881,33 @@ var Khan = (function() {
                 newContents.data(tag, result);
             });
 
-            loadingExercises[rootName]--;
+            // Put newContents into a dict. We should add all newContents into exercises until
+            // we have no more new exercises to load, so we can keep their order.
+            loadingExercisesContent[id] = newContents;
 
-            if (loadingExercises[rootName] === 0) {
+            // We have no more new exercises to load! Put loaded ones into exercises.
+            if (Object.keys(loadingExercisesContent).length === loadingExercisesIndex.length) {
+                for (var i = 0; i < loadingExercisesIndex.length; i++) {
+                    var content_to_add = loadingExercisesContent[loadingExercisesIndex[i]];
 
-                if (!modulesLoaded) {
-                    modulesDeferred = $.Deferred();
-                    loadModules();
+                    // Add the new exercise elements to the exercises DOM set
+                    exercises = exercises.add(content_to_add);
+
+                    loadingExercises[rootName]--;
                 }
 
-                if (callback) {
-                    modulesDeferred.done(callback);
-                }
+                // All related exercises should be loaded.
+                if (loadingExercises[rootName] === 0) {
+                    if (!modulesLoaded) {
+                        modulesDeferred = $.Deferred();
+                        loadModules();
+                    }
 
+                    if (callback) {
+                        modulesDeferred.done(callback);
+                    }
+
+                }
             }
 
         });
@@ -2920,6 +2982,60 @@ var Khan = (function() {
     return Khan;
 
 })();
+
+function fixLabel(){
+    $(document).ready(function(){
+        $(".imageLabel").each(function(){
+            var align = $(this).attr("alignType");
+            var labelSpan = $("span:first",this); 
+            var fixWidth;
+            var fixHeight;
+            if(align == "center"){
+               fixWidth = labelSpan.width() / 2;
+               fixHeight = labelSpan.height() / 2;
+            }
+            else if(align == "above"){ 
+               fixWidth = labelSpan.width() / 2; 
+               fixHeight = labelSpan.height();
+            } 
+            else if(align == "above right"){
+               fixWidth = 0;
+               fixHeight = labelSpan.height();
+            } 
+            else if(align == "right"){
+               fixWidth = 0;
+               fixHeight = labelSpan.height() / 2;
+            } 
+            else if(align == "below right"){
+               fixWidth = 0;
+               fixHeight = 0;
+            }
+            else if(align == "below"){
+               fixWidth = labelSpan.width() / 2;
+               fixHeight = 0;
+            } 
+            else if(align == "below left"){
+               fixWidth = labelSpan.width();
+               fixHeight = 0;
+            } 
+            else if(align == "left"){
+               fixWidth = labelSpan.width();
+               fixHeight = labelSpan.height() / 2;
+            } 
+            else if(align == "above left"){
+               fixWidth = labelSpan.width();
+               fixHeight = labelSpan.height();
+            } 
+            else{}
+
+            var oriLeft = parseInt($(this).css("left"));
+            var oriTop = parseInt($(this).css("top"));
+            $(this).css('left', oriLeft - fixWidth ); 
+            $(this).css('top', oriTop - fixHeight);
+            
+        });
+    });
+}
 
 // Make this publicly accessible
 var KhanUtil = Khan.Util;

@@ -24,7 +24,7 @@
 	<div class="problems">
         <div id="case1">
 			<div class="vars">
-				<var id="citys">randFromArray([["新竹","臺南"],["新竹","基隆"],["臺中","新竹"],["嘉義","新竹"],["嘉義","臺中"],["基隆","臺南"],["高雄","臺南"],["嘉義","高雄"],["基隆","高雄"]] )</var>
+				<var id="citys">randFromArray([["新竹","臺南"],["新竹","高雄"],["臺中","新竹"],["嘉義","新竹"],["嘉義","臺中"],["基隆","臺南"],["高雄","臺南"],["嘉義","高雄"],["基隆","高雄"]] )</var>
 				<var id="A">
 					(function(){
 						if(citys[0]=="基隆"){return 24};
@@ -45,6 +45,12 @@
 						if(citys[1]=="高雄"){return 342};						
 					}())
 					</var>
+					<var id="AB">
+					(function(){
+						if(citys[0]=="基隆"){return [A+B,0];};
+						if(citys[0]!="基隆"){return [abs(A-B),1];};
+					}())
+					</var>
 			</div>
 		
 			<div class="question">
@@ -58,12 +64,12 @@
 			</div>
 			
 			<div class="solution" data-type="multiple">
-				 <span class="sol" data-forms="integer"><var>abs(A-B)</var></span><code>\enspace 公里</code>
+				 <span class="sol" data-forms="integer"><var>AB[0]</var></span><code>\enspace 公里</code>
 			</div>
 			
 			<div class="hints">
-				<div>
-					<p>要計算 <code class="hint_red"><var>citys[0]</var></code> 到 <code class="hint_red"><var>citys[1]</var></code> 的距離是幾公里，我們可以畫出下面的數線圖：</p>
+				<div data-if="AB[1] === 1">
+					<p>要计算 <code class="hint_red"><var>citys[0]</var></code> 到 <code class="hint_red"><var>citys[1]</var></code> 的距離是幾公里，我們可以畫出下面的數線圖：</p>
 					<div class="graphie" id="line">
 					init({
 						range: [ [-1, 12], [-1.5, 2] ],
@@ -93,9 +99,36 @@
 					}
 					</div>
 				</div>
-				<p>要計算 <code class="hint_red"><var>citys[0]</var></code> 到 <code class="hint_red"><var>citys[1]</var></code> 的距離，就必須用 <code>\color{red}{台北}</code> 到 <code class="hint_red"><var>A&gt;B?citys[0]:citys[1]</var></code> 的距離 <code>-</code> <code>\color{red}{台北}</code> 到 <code class="hint_red"><var>A&gt;B?citys[1]:citys[0]</var></code> 的距離。</p>
-				<p><code class="hint_red"><var>max(A,B)</var>-<var>min(A,B)</var>=<var>abs(A-B)</var></code></p>
-				<p><code class="hint_red"><var>citys[0]</var></code> 到 <code class="hint_red"><var>citys[1]</var></code> 的距離是 <code class="hint_pink"><var>abs(A-B)</var></code> 公里。</p>
+				<p data-if="AB[1] === 1">要計算 <code class="hint_red"><var>citys[0]</var></code> 到 <code class="hint_red"><var>citys[1]</var></code> 的距離，就必須用 <code>\color{red}{台北}</code> 到 <code class="hint_red"><var>A&gt;B?citys[0]:citys[1]</var></code> 的距離 <code>-</code> <code>\color{red}{台北}</code> 到 <code class="hint_red"><var>A&gt;B?citys[1]:citys[0]</var></code> 的距離。</p>
+				<p data-if="AB[1] === 1"><code class="hint_red"><var>max(A,B)</var>-<var>min(A,B)</var>=<var>abs(A-B)</var></code></p>
+				<p data-if="AB[1] === 1"><code class="hint_red"><var>citys[0]</var></code> 到 <code class="hint_red"><var>citys[1]</var></code> 的距離是 <code class="hint_pink"><var>abs(A-B)</var></code> 公里。</p>
+				<div data-if="AB[1] === 0">
+					<p>要计算 <code class="hint_red"><var>citys[0]</var></code> 到 <code class="hint_red"><var>citys[1]</var></code> 的距離是幾公里，我們可以畫出下面的數線圖：</p>
+					<div class="graphie" id="line1">
+					init({
+						range: [ [-1, 12], [-1.5, 2] ],
+						scale: 40
+						});
+					var redLine = min(A,B)/max(A,B)*10;
+					line([0,0],[redLine,0],{stroke:"red"});
+					line([10,0],[redLine,0],{stroke:"#6495ED"});
+					line([redLine,0.05],[redLine+0.1,0.25],{stroke:"black"});
+					line([redLine+0.1,0.25],[4.9,0.25],{stroke:"black"});
+					line([4.9,0.25],[5.0,0.45],{stroke:"black"});
+					line([5.0,0.45],[5.1,0.25],{stroke:"black"});
+					line([5.1,0.25],[9.9,0.25],{stroke:"black"});
+					line([9.9,0.25],[10,0.05],{stroke:"black"});
+					label( [0,0.5],  "\\small{基隆}", "center", { color: "black" });
+					label( [10,0.5],  "\\small{"+citys[1]+"}", "center", { color: "black" });
+					label([redLine,-0.5],  "\\small{臺北}", "center", { color: "black" });
+					label([redLine/2,-1],  "\\small{"+A+"km}", "center", { color: "red" });
+					label([5,0.8],  "\\small{"+B+"km}", "center", { color: "black" });
+					
+					</div>
+				</div>
+				<p data-if="AB[1] === 0">要計算 <code class="hint_red"><var>citys[0]</var></code> 到 <code class="hint_red"><var>citys[1]</var></code> 的距離，就必須用 <code>\color{red}{台北}</code> 到 <code class="hint_red"><var>citys[0]</var></code> 的距離 <code>+</code> <code>\color{red}{台北}</code> 到 <code class="hint_red"><var>citys[1]</var></code> 的距離。</p>
+				<p data-if="AB[1] === 0"><code class="hint_red"><var>A</var>+<var>B</var>=<var>abs(A+B)</var></code></p>
+				<p data-if="AB[1] === 0"><code class="hint_red"><var>citys[0]</var></code> 到 <code class="hint_red"><var>citys[1]</var></code> 的距離是 <code class="hint_pink"><var>abs(A+B)</var></code> 公里。</p>
 			</div>
 		</div>
 	
