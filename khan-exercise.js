@@ -235,7 +235,7 @@ var Khan = (function() {
     // Values are number of remote exercises that are currently
     // pending in the middle of a load.
     loadingExercises = {},
-    loadingExercisesIndex = [],
+    loadingExercisesIndex = {},
     loadingExercisesContent = {},
 
     urlBase = typeof urlBaseOverride !== "undefined" ? urlBaseOverride :
@@ -646,7 +646,8 @@ var Khan = (function() {
                 _.each(this.getVideos(), function(video, i) {
                     var thumbnailDiv = $(template({
                         href: this.makeHref(video),
-                        video: video
+                        video: video,
+                        isCN: window.config.site == "cn"
                     })).find("a.related-video").data("video", video).end();
 
                     var inlineLink = this.anchorElement(video)
@@ -2824,8 +2825,11 @@ var Khan = (function() {
             newContents.data("rootName", rootName);
 
             // Check whether id exists in loadingExercisesIndex; if not, push it in.
-            if ($.inArray(id, loadingExercisesIndex) == -1) {
-                loadingExercisesIndex.push(id);
+            if (!(rootName in loadingExercisesIndex)) {
+                loadingExercisesIndex[rootName] = [];
+            }
+            if ($.inArray(id, loadingExercisesIndex[rootName]) == -1) {
+                loadingExercisesIndex[rootName].push(id);
             }
 
             // Maybe the exercise we just loaded loads some others
@@ -2839,10 +2843,10 @@ var Khan = (function() {
             // If we do have more exercises to load, insert them into loadingExercisesIndex
             // according to the position of their parent.
             if (moreExercises.length > 0) {
-                var current_id_index = loadingExercisesIndex.indexOf(id);
-                var first_part = loadingExercisesIndex.slice(0, current_id_index + 1);
-                var second_part = loadingExercisesIndex.slice(current_id_index + 1, loadingExercisesIndex.length);
-                loadingExercisesIndex = first_part.concat(moreExercises, second_part);
+                var current_id_index = loadingExercisesIndex[rootName].indexOf(id);
+                var first_part = loadingExercisesIndex[rootName].slice(0, current_id_index + 1);
+                var second_part = loadingExercisesIndex[rootName].slice(current_id_index + 1, loadingExercisesIndex[rootName].length);
+                loadingExercisesIndex[rootName] = first_part.concat(moreExercises, second_part);
             }
 
             // Throw out divs that just load other exercises
@@ -2883,17 +2887,19 @@ var Khan = (function() {
 
             // Put newContents into a dict. We should add all newContents into exercises until
             // we have no more new exercises to load, so we can keep their order.
-            loadingExercisesContent[id] = newContents;
+            if (!(rootName in loadingExercisesContent)) {
+                loadingExercisesContent[rootName] = {};
+            }
+            loadingExercisesContent[rootName][id] = newContents;
+            loadingExercises[rootName]--;
 
             // We have no more new exercises to load! Put loaded ones into exercises.
-            if (Object.keys(loadingExercisesContent).length === loadingExercisesIndex.length) {
-                for (var i = 0; i < loadingExercisesIndex.length; i++) {
-                    var content_to_add = loadingExercisesContent[loadingExercisesIndex[i]];
+            if (Object.keys(loadingExercisesContent[rootName]).length === loadingExercisesIndex[rootName].length) {
+                for (var i = 0; i < loadingExercisesIndex[rootName].length; i++) {
+                    var content_to_add = loadingExercisesContent[rootName][loadingExercisesIndex[rootName][i]];
 
                     // Add the new exercise elements to the exercises DOM set
                     exercises = exercises.add(content_to_add);
-
-                    loadingExercises[rootName]--;
                 }
 
                 // All related exercises should be loaded.
