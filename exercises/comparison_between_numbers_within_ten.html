@@ -1,1218 +1,1 @@
-﻿<!DOCTYPE html>
-<html data-require="math math-format graphie graphie-helpers">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>10以內的數，兩兩比較大小</title>
-    <script src="../khan-exercise.js"></script>
-	<style type="text/css">
-        #answer_area .sol input[type=text] {
-            width: 30px;
-        }
-        .bordered {
-			border: 2px solid black;
-		}
-	    .hanzi {
-	        line-height:1em; 
-            font-size:1.5em;
-            vertical-align:middle;
-        }
-	    .pinyin {
-	        line-height:1em; 
-            font-size:0.4em;
-            vertical-align:middle;
-            padding:0px 0px 0px 0px;
-        }
-	    .tableGrid {
-	        position:relative;
-            vertical-align:middle;
-            border: 2px solid black;
-        }
-	    .centered {
-	        text-align:center;
-            vertical-align:middle;
-        }
-	    .radioBox {
-	        border:2px solid black;
-            width:1.2em;
-            height:1.2em;
-            vertical-align:middle;
-            text-align:center;
-            color:red;
-			cursor:pointer;
-        }
-	    .rightBottom {
-	        width:30px;
-            height:30px;
-            border:thin;
-            margin:0px;
-            border: 2px solid black;
-            position:absolute;right:-2px;bottom:-2px;
-        }
-	    .inputbox {
-	        width:3em;height:2em;text-align:center;border:2px;color:red;font-size:20px;
-        }
-        .inputbox_2 {
-	        width:4em;height:2em;text-align:center;border:2px;color:red;margin-left:20px;
-        }
-		.selectSpan{color:red;cursor:pointer;display:inline-block;width:2em;text-align:center;}
-	</style>
-</head>
-<script type="text/javascript">
-    function loadImg(elem, url, count, width) {
-        var loimg = document.getElementById(elem);
-        var inner = "";
-        for (var i = 1; i <= count; i++) {
-            inner += "<img id=\"image" + elem + i + "\" width=" + width + ">";
-        }
-        loimg.innerHTML += inner;
-        for (var j = 1; j <= count; j++) {
-            document.getElementById("image" + elem + j).src = url;
-        }
-    }
-    function isIn(array, elem) {
-        for (var v in array) {
-            if (elem == array[v])
-                return true;
-        }
-        return false;
-    }
-    function changeSelection(elemId,mutexElemId) {
-        var text = document.getElementById(elemId).innerHTML;
-        if (text != "√" || text == null) {
-            document.getElementById(elemId).innerText = "√";
-            document.getElementById(mutexElemId).innerHTML = "&nbsp;&nbsp;";
-        }
-    }
-    function mouseOverChangeBgColor(elemID) {
-        document.getElementById(elemID).style.backgroundColor = "gray";
-    }
-    function mouseOutChangeBgColor(elemID) {
-        document.getElementById(elemID).style.backgroundColor = "white";
-    }
-    function loadImg(elem, url, count, width) {
-        var loimg = document.getElementById(elem);
-        var inner = "";
-        for (var i = 1; i <= count; i++) {
-            inner += "<img id=\"image" + elem + i + "\" width=" + width + ">";
-        }
-        loimg.innerHTML += inner;
-        for (var j = 1; j <= count; j++) {
-            document.getElementById("image" + elem + j).src = url;
-        }
-    }
-</script>
-<body>
-    <div class="exercise">
-        <div class="problems">
-            <div id="case1">
-                <div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>
-                    <var id="data">
-                        (function(){
-                            var count=new Array()
-                            for(i=0;i&lt;2;i++){
-                                count[i*2] = randRange(3, 7);
-                                count[i*2+1] = count[i*2]+randFromArray([-2, -1, 1, 2]);
-                            }
-                            loadImg("img1",Khan.urlBase+"images/pen.png",1,"");
-                            loadImg("img2",Khan.urlBase+"images/pencil.png",1,"");
-                            loadImg("img3",Khan.urlBase+"images/eraser.png",1,"");
-                            loadImg("img4",Khan.urlBase+"images/knife.png",1,"");
-                            loadImg("grid11",Khan.urlBase+"images/pen.png",count[0],"30%");
-                            loadImg("grid12",Khan.urlBase+"images/pencil.png",count[1],"30%");
-                            loadImg("grid21",Khan.urlBase+"images/knife.png",count[2],"30%");
-                            loadImg("grid22",Khan.urlBase+"images/eraser.png",count[3],"30%");
-							$(".selectSpan").click(function(){$("#check").html("1")});
-                            return count;
-                        })()
-                    </var>
-                    <var id="elem1">data[0]>data[1]? "checkbox1":"checkbox2"</var>
-                    <var id="elem2">data[2]>data[3]? "checkbox3":"checkbox4"</var>
-					<var id="check">0</var>
-                </div>
-                <div class="question">
-                    <p class="problem">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td id="img1" style="height:1.5em;" class="hanzi"></td>
-                                    <td class="hanzi">和</td>
-                                    <td class="pinyin">ㄏ<br />ㄢ<code>^ˋ</code></td>
-                                    <td id="img2" style="height:1.5em;" class="hanzi"></td>
-                                    <td class="hanzi">,</td>
-                                    <td class="hanzi">哪</td>
-                                    <td class="pinyin">ㄋ<br />ㄚ<code>^ˇ</code></td>
-                                    <td class="hanzi">一</td>
-                                    <td class="pinyin">一<code>^ˋ</code></td>
-                                    <td class="hanzi">種</td>
-                                    <td class="pinyin">ㄓ<br />ㄨ<br />ㄥ<code>^ˇ</code></td>
-                                    <td class="hanzi">筆</td>
-                                    <td class="pinyin">ㄅ<br />一<code>^ˇ</code></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">比</td>
-                                    <td class="pinyin">ㄅ<br />一<code>^ˇ</code></td>
-                                    <td class="hanzi">較</td>
-                                    <td class="pinyin">ㄐ<br />一<br />ㄠ<code>^ˋ</code></td>
-                                    <td class="hanzi">多</td>
-                                    <td class="pinyin">ㄉ<br />ㄨ<br />ㄛ</td>
-                                    <td class="hanzi">？</td>
-                                    <td class="hanzi">&nbsp;</td>
-                                    <td id="img3" style="height:1.5em;" class="hanzi"></td>
-                                    <td class="hanzi">和</td>
-                                    <td class="pinyin">ㄏ<br />ㄢ<code>^ˋ</code></td>
-                                    <td id="img4" style="height:1.5em;" class="hanzi"></td>
-                                    <td class="hanzi">,</td>
-                                    <td class="hanzi">哪</td>
-                                    <td class="pinyin">ㄋ<br />ㄚ<code>^ˇ</code></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">一</td>
-                                    <td class="pinyin">一<code>^ˋ</code></td>
-                                    <td class="hanzi">種</td>
-                                    <td class="pinyin">ㄓ<br />ㄨ<br />ㄥ<code>^ˇ</code></td>
-                                    <td class="hanzi">比</td>
-                                    <td class="pinyin">ㄅ<br />一<code>^ˇ</code></td>
-                                    <td class="hanzi">較</td>
-                                    <td class="pinyin">ㄐ<br />一<br />ㄠ<code>^ˋ</code></td>
-                                    <td class="hanzi">多</td>
-                                    <td class="pinyin">ㄉ<br />ㄨ<br />ㄛ</td>
-                                    <td class="hanzi">?</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <p style="font-size:xx-large;">①</p>
-                        <table style="background-image:url(Khan.urlBase+'images/bg_03.jpg');background-size:cover"  width="100%" height="305px" >
-                            <tr>
-                                <td width="13%"></td>
-                                <td id="grid11" style="vertical-align:middle;padding-right:0px" width="37%"></td>
-                                <td id="grid12" style="vertical-align:middle;padding-left:25px;" width="40%"></td>
-                                <td width="10%"></td>
-                            </tr>
-                        </table>
-                        <table  style="text-align:center;" width="100%">
-                            <tr>
-                                <td width="50%">
-                                    （<span id="checkbox1" class="selectSpan" onclick="changeSelection(this.id,'checkbox2')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                                </td>
-                                <td width="50%">
-                                    （<span id="checkbox2" class="selectSpan" onclick="changeSelection(this.id,'checkbox1')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-
-                                </td>
-                            </tr>
-                        </table>
-                        <p style="font-size:xx-large;">②</p>
-                        <table style="background-image:url(Khan.urlBase+'images/bg_03.jpg');background-size:cover"  width="100%" height="305px" >
-                            <tr>
-                                <td width="13%"></td>
-                                <td id="grid21" style="vertical-align:middle;padding-right:0px" width="37%"></td>
-                                <td id="grid22" style="vertical-align:middle;padding-left:25px;" width="40%"></td>
-                                <td width="10%"></td>
-                            </tr>
-                        </table>
-                         <table  style="text-align:center;" width="100%">
-                            <tr>
-                                <td width="50%">
-                                    （<span id="checkbox3" class="selectSpan" onclick="changeSelection(this.id,'checkbox4')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                                </td>
-                                <td width="50%">
-									（<span id="checkbox4" class="selectSpan" onclick="changeSelection(this.id,'checkbox3')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-								</td>
-                            </tr>
-                        </table>
-                    </p>
-                </div>
-                <div class="solution" data-type="multiple">
-                    <div class="sol" data-type="custom">
-                        <div class="guess">
-							(function(){
-								if($("#check").html()!=0)
-									return 1;
-							})()
-                        </div>
-                        <div class="validator-function">
-                            if(document.getElementById(elem1).innerHTML=="√"&&document.getElementById(elem2).innerHTML=="√")
-                                return true;
-                            else
-                                return false;
-                        </div>
-                        <div class="example">請在正確答案的框裡打√</div>
-                    </div>
-                </div>
-				<div class="hints">
-					<p>(1)左邊有 <code class="hint_blue"><var>data[0]</var></code> 個，右邊有 <code class="hint_pink"><var>data[1]</var></code> 個，所以 <span class="hint_pink"><var>data[0]&gt;data[1]? "左":"右"</var></span> 邊比較多；</p>
-					<p style="font-weight:normal">(2)左邊有 <code class="hint_blue"><var>data[2]</var></code> 個，右邊有 <code class="hint_pink"><var>data[3]</var></code> 個，所以 <span class="hint_pink"><var>data[2]&gt;data[3]? "左":"右"</var></span> 邊比較多。</p>
-				</div>
-            </div>
-			<div id="case2">
-				<div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>
-                    <var id="data">
-                        (function(){
-                            var kind=new Array(4);
-                            var count=new Array(4);
-                            var width;
-                            var n1=0;
-						    var n2=0;
-						    while(n1&lt;6)
-						    {
-							    var v=randRange(1,6);//六種圖片
-							    if(isIn(kind,v))
-								    continue;
-							    kind[n1]=v;
-							    n1++;
-						    }
-						    while(n2&lt;4)
-						    {
-							    var v=randRange(3,9);
-							    if(isIn(count,v))
-								    continue;
-							    count[n2]=v;
-							    n2++;
-						    }
-                            for(i=0;i&lt;4;i++)
-						    {
-							    var elem="grid";
-							    var path="images/";
-							    switch(i)
-							    {
-								    case 0:elem+="11";break;
-								    case 1:elem+="12";break;
-                                    case 2:elem+="21";break;
-                                    case 3:elem+="22";break;
-							    }
-							    switch(kind[i])
-							    {
-								    case 1:path+="frog.png";width="22%";break;
-								    case 2:path+="lollipop.png";width="22%";break;
-								    case 3:path+="chocolate.png";width="19%";break;
-								    case 4:path+="milk.png";width="19%";break;
-								    case 5:path+="hat.png";width="22%";break;
-								    case 6:path+="spanner.png";width="29%";break;
-								    default:path+="圖片.jpg";
-							    }
-							    loadImg(elem,Khan.urlBase+path,count[i],width);
-								$(".radioBox").click(function(){$("#check").html("1")});
-						    }
-                            return count;
-                        })()
-                    </var>
-                    <var id="elem1">data[0]>data[1]? "checkbox1":"checkbox2"</var>
-                    <var id="elem2">data[2]>data[3]? "checkbox3":"checkbox4"</var>
-					<var id="check">0</var>
-				</div>
-				<div class="question">
-					<p class="problem">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">比</td>
-                                    <td class="pinyin">ㄅ<br />一<code>^ˇ</code></td>
-                                    <td class="hanzi">比</td>
-                                    <td class="pinyin">ㄅ<br />一<code>^ˇ</code></td>
-                                    <td class="hanzi">看</td>
-                                    <td class="pinyin">ㄎ<br />ㄢ<code>^ˋ</code></td>
-                                    <td class="hanzi">，</td>
-                                    <td class="hanzi">多</td>
-                                    <td class="pinyin">ㄉ<br />ㄨ<br />ㄛ<code></code></td>
-                                    <td class="hanzi">的</td>
-                                    <td class="pinyin">●<br />ㄉ<br />ㄜ<code></code></td>
-                                    <td class="hanzi">在</td>
-                                    <td class="pinyin">ㄗ<br />ㄞ<code>^ˋ</code></td>
-                                    <td class="hanzi"><div style="border:2px solid black;width:1em;height:1em;"></div></td>
-                                    <td class="hanzi">裏</td>
-                                    <td class="pinyin">ㄌ<br />一<code>^ˇ</code></td>
-                                    <td class="hanzi">打</td>
-                                    <td class="pinyin">ㄉ<br />ㄚ<code>^ˇ</code></td>
-                                    <td class="hanzi">√</td>
-                                </tr>
-                            </tbody>
-                        </table>
-			    	</p>
-                    <p style="font-size:xx-large;">①</p>
-					<table width="100%" class="bordered">	
-                        <tr height="100px">
-                            <td id="grid11" class="tableGrid" width="50%">
-                                <div id="checkbox1" class="radioBox rightBottom" onclick="changeSelection(this.id,'checkbox2')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">								</div>
-                            </td>
-                            <td id="grid12" class="tableGrid" width="50%">
-                                <div id="checkbox2" class="radioBox rightBottom" onclick="changeSelection(this.id,'checkbox1')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">								</div>
-                            </td>
-                        </tr>
-					</table>
-                    <br />
-                    <p style="font-size:xx-large;">②</p>
-                    <table width="100%" class="bordered">	
-                        <tr height="100px">
-                            <td id="grid21" class="tableGrid" width="50%">
-                                <div id="checkbox3" class="radioBox rightBottom" onclick="changeSelection(this.id,'checkbox4')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">								</div>
-                            </td>
-                            <td id="grid22" class="tableGrid" width="50%">
-                                <div id="checkbox4" class="radioBox rightBottom" onclick="changeSelection(this.id,'checkbox3')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">								</div>
-                            </td>
-                        </tr>
-					</table>
-				 </div>
-				<div class = "solution" data-type="multiple">
-                    <div class="sol" data-type="custom">
-                        <div class="guess">
-							(function(){
-								if($("#check").html()!=0)
-									return 1;
-							})()
-                        </div>
-                        <div class="validator-function">
-                            if(document.getElementById(elem1).innerHTML=="√"&&document.getElementById(elem2).innerHTML=="√")
-                                return true;
-                            else
-                                return false;
-                        </div>
-                        <div class="example">請在正確答案的框裡打√</div>
-                    </div>
-				</div>
-				<div class="hints">
-					<p>(1)左邊有 <code class="hint_blue"><var>data[0]</var></code> 個，右邊有 <code class="hint_blue"><var>data[1]</var></code> 個，所以 <span class="hint_pink"><var>data[0]&gt;data[1]? "左":"右"</var></span> 邊比較多；</p>
-					<p style="font-weight:normal">(2)左邊有 <code class="hint_blue"><var>data[2]</var></code> 個，右邊有 <code class="hint_blue"><var>data[3]</var></code> 個，所以 <span class="hint_pink"><var>data[2]&gt;data[3]? "左":"右"</var></span> 邊比較多。</p>
-				</div>
-			</div>
-            <div id="case3">
-                <div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>
-                    <var id="data">
-                        (function(){
-                            var count=new Array()
-                            for(i=0;i&lt;4;i++){
-                                count[i*2] = randRange(3, 7);
-                                count[i*2+1] = count[i*2]+randFromArray([-2, -1, 1, 2]);
-                            }
-                            loadImg("grid11",Khan.urlBase+"images/hat_2.png",count[0],"35%");
-                            loadImg("grid12",Khan.urlBase+"images/hat.png",count[1],"35%");
-                            loadImg("grid21",Khan.urlBase+"images/point_1.png",count[2],"35%");
-                            loadImg("grid22",Khan.urlBase+"images/point_2.png",count[3],"35%");
-                            loadImg("grid31",Khan.urlBase+"images/cup_1.png",count[4],"26%");
-                            loadImg("grid32",Khan.urlBase+"images/cup_2.png",count[5],"26%");
-                            loadImg("grid41",Khan.urlBase+"images/flower_2.png",count[6],"25%");
-                            loadImg("grid42",Khan.urlBase+"images/flower_3.png",count[7],"25%");
-							$(".selectSpan").click(function(){$("#check").html("1");});
-                            return count;
-                        })()
-                    </var>
-                    <var id="elem1">data[0]>data[1]? "checkbox1":"checkbox2"</var>
-                    <var id="elem2">data[2]>data[3]? "checkbox3":"checkbox4"</var>
-                    <var id="elem3">data[4]>data[5]? "checkbox5":"checkbox6"</var>
-                    <var id="elem4">data[6]>data[7]? "checkbox7":"checkbox8"</var>
-					<var id="check">0</var>
-                </div>
-                <div class="question">
-                    <p class="problem">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">各</td>
-                                    <td class="pinyin">ㄍ<br />ㄜ<code>^ˋ</code></td>
-                                    <td class="hanzi">有</td>
-                                    <td class="pinyin">一<br />ㄡ<code>^ˇ</code></td>
-                                    <td class="hanzi">多</td>
-                                    <td class="pinyin">ㄉ<br />ㄨ<br />ㄛ<code></code></td>
-                                    <td class="hanzi">少</td>
-                                    <td class="pinyin">ㄕ<br />ㄠ<code>^ˇ</code></td>
-                                    <td class="hanzi">？</td>
-                                    <td class="hanzi">先</td>
-                                    <td class="pinyin">ㄒ<br />一<br />ㄢ<code></code></td>
-                                    <td class="hanzi">寫</td>
-                                    <td class="pinyin">ㄒ<br />一<br />ㄝ<code>^ˇ</code></td>
-                                    <td class="hanzi">出</td>
-                                    <td class="pinyin">ㄔ<br />ㄨ<code></code></td>
-                                    <td class="hanzi">數</td>
-                                    <td class="pinyin">ㄕ<br />ㄨ<code>^ˋ</code></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">再</td>
-                                    <td class="pinyin">ㄗ<br />ㄞ<code>^ˋ</code></td>
-                                    <td class="hanzi">比</td>
-                                    <td class="pinyin">ㄅ<br />一<code>^ˇ</code></td>
-                                    <td class="hanzi">比</td>
-                                    <td class="pinyin">ㄅ<br />一<code>^ˇ</code></td>
-                                    <td class="hanzi">看</td>
-                                    <td class="pinyin">ㄎ<br />ㄢ<code>^ˋ</code></td>
-                                    <td class="hanzi">，</td>
-                                    <td class="hanzi">多</td>
-                                    <td class="pinyin">ㄉ<br />ㄨ<br />ㄛ<code></code></td>
-                                    <td class="hanzi">的</td>
-                                    <td class="pinyin">●<br />ㄉ<br />ㄜ<code></code></td>
-                                    <td class="hanzi">在</td>
-                                    <td class="pinyin">ㄗ<br />ㄞ<code>^ˋ</code></td>
-                                    <td class="hanzi">（</td>
-                                    <td class="hanzi">）</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">打</td>
-                                    <td class="pinyin">ㄉ<br />ㄚ<code>^ˇ</code></td>
-                                    <td class="hanzi">√</td>
-                                    <td class="hanzi">。</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </p>
-                    <p style="font-size:xx-large;">①</p>
-					<table width="100%" style="text-align:center;" class="bordered">
-                        <tr height="100px">
-                            <td id="grid11" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox1" style="width:2em;height:2em;text-align:center;border:2px solid black;color:red;font-size:20px;" />
-                            </td>
-                            <td id="grid12" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox2" style="width:2em;height:2em;text-align:center;border:2px solid black;color:red;font-size:20px;" />
-                            </td>
-                        </tr>
-                        <tr style="text-align:center;">
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox1" class="selectSpan" onclick="changeSelection(this.id,'checkbox2')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox2" class="selectSpan" onclick="changeSelection(this.id,'checkbox1')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                        </tr>
-                    </table>
-                    <p style="font-size:xx-large;">②</p>
-					<table width="100%" style="text-align:center;" class="bordered">
-                        <tr height="100px">
-                            <td id="grid21" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox3" style="font-size:20px;width:2em;height:2em;text-align:center;border:2px solid black;color:red;" />
-                            </td>
-                            <td id="grid22" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox4" style="font-size:20px;width:2em;height:2em;text-align:center;border:2px solid black;color:red;" />
-                            </td>
-                        </tr>
-                        <tr style="text-align:center;">
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox3" class="selectSpan" onclick="changeSelection(this.id,'checkbox4')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox4" class="selectSpan" onclick="changeSelection(this.id,'checkbox3')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                        </tr>
-                    </table>
-                    <p style="font-size:xx-large;">③</p>
-					<table width="100%" style="text-align:center;" class="bordered">
-                        <tr height="100px">
-                            <td id="grid31" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox5" style="font-size:20px;width:2em;height:2em;text-align:center;border:2px solid black;color:red;" />
-                            </td>
-                            <td id="grid32" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox6" style="font-size:20px;width:2em;height:2em;text-align:center;border:2px solid black;color:red;" />
-                            </td>
-                        </tr>
-                        <tr style="text-align:center;">
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox5" class="selectSpan" onclick="changeSelection(this.id,'checkbox6')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox6" class="selectSpan" onclick="changeSelection(this.id,'checkbox5')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                        </tr>
-                    </table>
-                    <p style="font-size:xx-large;">④</p>
-					<table width="100%" style="text-align:center;" class="bordered">
-                        <tr height="100px">
-                            <td id="grid41" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox7" style="font-size:20px;width:2em;height:2em;text-align:center;border:2px solid black;color:red;" />
-                            </td>
-                            <td id="grid42" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox8" style="font-size:20px;width:2em;height:2em;text-align:center;border:2px solid black;color:red;" />
-                            </td>
-                        </tr>
-                        <tr style="text-align:center;">
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox7" class="selectSpan" onclick="changeSelection(this.id,'checkbox8')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox8" class="selectSpan" onclick="changeSelection(this.id,'checkbox7')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="solution" data-type="multiple">
-                    <div class="sol" data-type="custom">
-                        <div class="guess">
-							(function(){
-								if($("#check").html()!=0)
-									return 1;
-								var check=false;
-								$(".rightBottom").each(function(){
-									if($(this).val().trim()!="")
-										check=true;
-								});
-								if(check)
-									return 1;
-							})()
-                        </div>
-                        <div class="validator-function">
-                            if(document.getElementById(elem1).innerHTML!="√"||document.getElementById(elem2).innerHTML!="√"||document.getElementById(elem3).innerHTML!="√"||document.getElementById(elem4).innerHTML!="√")
-                                return false;
-                            if(document.getElementById("textbox1").value!=data[0]||document.getElementById("textbox2").value!=data[1]||document.getElementById("textbox3").value!=data[2]||document.getElementById("textbox4").value!=data[3]||document.getElementById("textbox5").value!=data[4]||document.getElementById("textbox6").value!=data[5]||document.getElementById("textbox7").value!=data[6]||document.getElementById("textbox8").value!=data[7])
-                                return false;
-                            return true;
-                        </div>
-                        <div class="example">在方框裏寫出數量</div>
-                        <div class="example">請在正確答案的（）裡打√</div>
-                    </div>
-                </div>
-				<div class="hints">
-					<p>(1)左邊有 <code class="hint_blue"><var>data[0]</var></code> 個，右邊有 <code class="hint_blue"><var>data[1]</var></code> 個，<span class="hint_pink"><var>data[0]&gt;data[1]? "左":"右"</var></span> 邊比較多；</p>
-					<p>(2)左邊有 <code class="hint_blue"><var>data[2]</var></code> 個，右邊有 <code class="hint_blue"><var>data[3]</var></code> 個，<span class="hint_pink"><var>data[2]&gt;data[3]? "左":"右"</var></span> 邊比較多。</p>
-					<p>(3)左邊有 <code class="hint_blue"><var>data[4]</var></code> 個，右邊有 <code class="hint_blue"><var>data[5]</var></code> 個，<span class="hint_pink"><var>data[4]&gt;data[5]? "左":"右"</var></span> 邊比較多；</p>
-					<p style="font-weight:normal">(4)左邊有 <code class="hint_blue"><var>data[6]</var></code> 個，右邊有 <code class="hint_blue"><var>data[7]</var></code> 個，<span class="hint_pink"><var>data[6]&gt;data[7]? "左":"右"</var></span> 邊比較多。</p>
-				</div>
-            </div>
-            <div id="case4">				
-                <div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>
-                    <var id="data">
-                        (function(){
-                            var count=new Array()
-                            for(i=0;i&lt;4;i++){
-                                count[i*2] = randRange(3, 7);
-                                count[i*2+1] = count[i*2]+randFromArray([-2, -1, 1, 2]);
-                            }
-                            loadImg("grid11",Khan.urlBase+"images/hat_2.png",count[0],"35%");
-                            loadImg("grid12",Khan.urlBase+"images/hat.png",count[1],"35%");
-                            loadImg("grid21",Khan.urlBase+"images/point_1.png",count[2],"35%");
-                            loadImg("grid22",Khan.urlBase+"images/point_2.png",count[3],"35%");
-                            loadImg("grid31",Khan.urlBase+"images/cup_1.png",count[4],"26%");
-                            loadImg("grid32",Khan.urlBase+"images/cup.png",count[5],"26%");
-                            loadImg("grid41",Khan.urlBase+"images/flower_2.png",count[6],"25%");
-                            loadImg("grid42",Khan.urlBase+"images/flower_3.png",count[7],"25%");
-                            $(".selectSpan").click(function(){$("#check").html("1");});
-                            return count;
-                        })()
-                    </var>
-                    <var id="elem1">data[0]>data[1]? "checkbox1":"checkbox2"</var>
-                    <var id="elem2">data[2]>data[3]? "checkbox3":"checkbox4"</var>
-                    <var id="elem3">data[4]>data[5]? "checkbox5":"checkbox6"</var>
-                    <var id="elem4">data[6]>data[7]? "checkbox7":"checkbox8"</var>
-					<var id="check">0</var>
-                </div>
-                <div class="question">
-                    <p class="problem">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">各</td>
-                                    <td class="pinyin">ㄍ<br />ㄜ<code>^ˋ</code></td>
-                                    <td class="hanzi">有</td>
-                                    <td class="pinyin">一<br />ㄡ<code>^ˇ</code></td>
-                                    <td class="hanzi">多</td>
-                                    <td class="pinyin">ㄉ<br />ㄨ<br />ㄛ<code></code></td>
-                                    <td class="hanzi">少</td>
-                                    <td class="pinyin">ㄕ<br />ㄠ<code>^ˇ</code></td>
-                                    <td class="hanzi">？</td>
-                                    <td class="hanzi">先</td>
-                                    <td class="pinyin">ㄒ<br />一<br />ㄢ<code></code></td>
-                                    <td class="hanzi">寫</td>
-                                    <td class="pinyin">ㄒ<br />一<br />ㄝ<code>^ˇ</code></td>
-                                    <td class="hanzi">出</td>
-                                    <td class="pinyin">ㄔ<br />ㄨ<code></code></td>
-                                    <td class="hanzi">數</td>
-                                    <td class="pinyin">ㄕ<br />ㄨ<code>^ˋ</code></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">再</td>
-                                    <td class="pinyin">ㄗ<br />ㄞ<code>^ˋ</code></td>
-                                    <td class="hanzi">比</td>
-                                    <td class="pinyin">ㄅ<br />一<code>^ˇ</code></td>
-                                    <td class="hanzi">比</td>
-                                    <td class="pinyin">ㄅ<br />一<code>^ˇ</code></td>
-                                    <td class="hanzi">看</td>
-                                    <td class="pinyin">ㄎ<br />ㄢ<code>^ˋ</code></td>
-                                    <td class="hanzi">，</td>
-                                    <td class="hanzi">多</td>
-                                    <td class="pinyin">ㄉ<br />ㄨ<br />ㄛ<code></code></td>
-                                    <td class="hanzi">的</td>
-                                    <td class="pinyin">●<br />ㄉ<br />ㄜ<code></code></td>
-                                    <td class="hanzi">在</td>
-                                    <td class="pinyin">ㄗ<br />ㄞ<code>^ˋ</code></td>
-                                    <td class="hanzi">（</td>
-                                    <td class="hanzi">）</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">打</td>
-                                    <td class="pinyin">ㄉ<br />ㄚ<code>^ˇ</code></td>
-                                    <td class="hanzi">√</td>
-                                    <td class="hanzi">。</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </p>
-                    <p style="font-size:xx-large;">①</p>
-					<table width="100%" style="text-align:center;" class="bordered">
-                        <tr height="100px">
-                            <td id="grid11" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox1" style="width:2em;height:2em;text-align:center;border:2px solid black;color:red;font-size:20px;" />
-                            </td>
-                            <td id="grid12" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox2" style="width:2em;height:2em;text-align:center;border:2px solid black;color:red;font-size:20px;" />
-                            </td>
-                        </tr>
-                        <tr style="text-align:center;">
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox1" class="selectSpan" onclick="changeSelection(this.id,'checkbox2')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox2" class="selectSpan" onclick="changeSelection(this.id,'checkbox1')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                        </tr>
-                    </table>
-                    <p style="font-size:xx-large;">②</p>
-					<table width="100%" style="text-align:center;" class="bordered">
-                        <tr height="100px">
-                            <td id="grid21" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox3" style="width:2em;height:2em;text-align:center;border:2px solid black;color:red;font-size:20px;" />
-                            </td>
-                            <td id="grid22" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox4" style="width:2em;height:2em;text-align:center;border:2px solid black;color:red;font-size:20px;" />
-                            </td>
-                        </tr>
-                        <tr style="text-align:center;">
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox3" class="selectSpan" onclick="changeSelection(this.id,'checkbox4')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox4" class="selectSpan" onclick="changeSelection(this.id,'checkbox3')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                        </tr>
-                    </table>
-                    <p style="font-size:xx-large;">③</p>
-					<table width="100%" style="text-align:center;" class="bordered">
-                        <tr height="100px">
-                            <td id="grid31" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox5" style="width:2em;height:2em;text-align:center;border:2px solid black;color:red;font-size:20px;" />
-                            </td>
-                            <td id="grid32" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox6" style="width:2em;height:2em;text-align:center;border:2px solid black;color:red;font-size:20px;" />
-                            </td>
-                        </tr>
-                        <tr style="text-align:center;">
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox5" class="selectSpan" onclick="changeSelection(this.id,'checkbox6')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox6" class="selectSpan" onclick="changeSelection(this.id,'checkbox5')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                        </tr>
-                    </table>
-                    <p style="font-size:xx-large;">④</p>
-					<table width="100%" style="text-align:center;" class="bordered">
-                        <tr height="100px">
-                            <td id="grid41" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox7" style="width:2em;height:2em;text-align:center;border:2px solid black;color:red;font-size:20px;" />
-                            </td>
-                            <td id="grid42" class="tableGrid" width="50%">
-                                <input type="text" class="rightBottom" id="textbox8" style="width:2em;height:2em;text-align:center;border:2px solid black;color:red;font-size:20px;" />
-                            </td>
-                        </tr>
-                        <tr style="text-align:center;">
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox7" class="selectSpan" onclick="changeSelection(this.id,'checkbox8')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                            <td width="50%" class="bordered">
-                                （<span id="checkbox8" class="selectSpan" onclick="changeSelection(this.id,'checkbox7')"  onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;&nbsp;</span>）
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="solution" data-type="multiple">
-                    <div class="sol" data-type="custom">
-                        <div class="guess">
-							(function(){
-								if($("#check").html()!=0)
-									return 1;
-								var check=false;
-								$(".rightBottom").each(function(){
-									if($(this).val().trim()!="")
-										check=true;
-								});
-								if(check)
-									return 1;
-							})()
-                        </div>
-                        <div class="validator-function">
-                            if(document.getElementById(elem1).innerHTML!="√"||document.getElementById(elem2).innerHTML!="√"||document.getElementById(elem3).innerHTML!="√"||document.getElementById(elem4).innerHTML!="√")
-                                return false;
-                            if(document.getElementById("textbox1").value!=data[0]||document.getElementById("textbox2").value!=data[1]||document.getElementById("textbox3").value!=data[2]||document.getElementById("textbox4").value!=data[3]||document.getElementById("textbox5").value!=data[4]||document.getElementById("textbox6").value!=data[5]||document.getElementById("textbox7").value!=data[6]||document.getElementById("textbox8").value!=data[7])
-                                return false;
-                            return true;
-                        </div>
-                        <div class="example">在方框裏寫出數量</div>
-                        <div class="example">請在正確答案的（）裡打√</div>
-                    </div>
-                </div>
-				<div class="hints">
-					<p>(1)左邊有 <code class="hint_blue"><var>data[0]</var></code> 個，右邊有 <code class="hint_blue"><var>data[1]</var></code> 個，<span class="hint_pink"><var>data[0]&gt;data[1]? "左":"右"</var></span> 邊比較多；</p>
-					<p>(2)左邊有 <code class="hint_blue"><var>data[2]</var></code> 個，右邊有 <code class="hint_blue"><var>data[3]</var></code> 個，<span class="hint_pink"><var>data[2]&gt;data[3]? "左":"右"</var></span> 邊比較多。</p>
-					<p>(3)左邊有 <code class="hint_blue"><var>data[4]</var></code> 個，右邊有 <code class="hint_blue"><var>data[5]</var></code> 個，<span class="hint_pink"><var>data[4]&gt;data[5]? "左":"右"</var></span> 邊比較多；</p>
-					<p style="font-weight:normal">(4)左邊有 <code class="hint_blue"><var>data[6]</var></code> 個，右邊有 <code class="hint_blue"><var>data[7]</var></code> 個，<span class="hint_pink"><var>data[6]&gt;data[7]? "左":"右"</var></span> 邊比較多。</p>
-				</div>
-            </div>
-            <div id="case5">				
-                <div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>
-                    <var id="data">
-                        (function(){
-                            var count1,count2,count3_1,count3_2,count4;
-                            count1=randRange(1,5);
-                            var offset;
-                            switch(count1)
-                            {
-                                case 1:offset=randFromArray([1,2,3]);break;
-                                case 2:offset=randFromArray([-1,1,2,]);break;
-                                case 3:offset=randFromArray([-2,-1,1,2]);break;
-                                case 4:offset=randFromArray([-2,-1,1]);break;
-                                case 5:offset=randFromArray([-2,-1]);break;
-                                default:break;
-                            }
-                            count2=count1+offset;
-                            count3_1=randRange(1,2);
-                            count3_2=randRange(1,2);
-                            var n=count3_1*4+count3_2;
-                            switch(n)
-                            {
-                                case 5:count4=n+randFromArray([-3,-2,-1,1,2,3]);break;
-                                case 6:count4=n+randFromArray([-3,-2,-1,1,2,3]);break;
-                                case 9:count4=n+randFromArray([-3,-2,-1,1]);break;
-                                case 10:count4=n+randFromArray([-4,-3,-2,-1]);break;
-                                default:break;
-                            }
-                            loadImg("grid11",Khan.urlBase+"images/persimmon_2.png",count1,"45%");
-                            loadImg("grid12",Khan.urlBase+"images/strawberry_2.png",count2,"40%");
-                            loadImg("grid21_1",Khan.urlBase+"images/cherry_4.png",count3_1,"49%");
-                            loadImg("grid21_2",Khan.urlBase+"images/cherry_1.png",count3_2,"30%");
-                            loadImg("grid22",Khan.urlBase+"images/apple_1.png",count4,"30%");
-							$(".radioBox").click(function(){$("#check").html("!");});
-                            return [count1*2,count2*2,n,count4]
-                        })()
-                    </var>
-                    <var id="elem1">data[0]>data[1]? "checkbox1":"checkbox2"</var>
-                    <var id="elem2">data[2]>data[3]? "checkbox3":"checkbox4"</var>
-					<var id="check">0</var>
-                </div>
-                <div class="question">
-                    <p class="problem">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">先</td>
-                                    <td class="pinyin">ㄒ<br/>一<br />ㄢ<code></code></td>
-                                    <td class="hanzi">寫</td>
-                                    <td class="pinyin">ㄒ<br/>一<br />ㄝ<code>^ˇ</code></td>
-                                    <td class="hanzi">出</td>
-                                    <td class="pinyin">ㄔ<br/>ㄨ<code></code></td>
-                                    <td class="hanzi">圖</td>
-                                    <td class="pinyin">ㄊ<br/>ㄨ<code>^ˊ</code></td>
-                                    <td class="hanzi">中</td>
-                                    <td class="pinyin">ㄓ<br/>ㄨ<br/>ㄥ<code></code></td>
-                                    <td class="hanzi">水</td>
-                                    <td class="pinyin">ㄕ<br/>ㄨ<br/>ㄟ<code>^ˇ</code></td>
-                                    <td class="hanzi">果</td>
-                                    <td class="pinyin">ㄍ<br/>ㄨ<br/>ㄛ<code>^ˇ</code></td>
-                                    <td class="hanzi">的</td>
-                                    <td class="pinyin">●<br/>ㄉ<br/>ㄜ<code></code></td>
-                                    <td class="hanzi">個</td>
-                                    <td class="pinyin">ㄍ<br/>ㄜ<code>^ˋ</code></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">數</td>
-                                    <td class="pinyin">ㄕ<br/>ㄨ<code>^ˋ</code></td>
-                                    <td class="hanzi">，</td>
-                                    <td class="hanzi">再</td>
-                                    <td class="pinyin">ㄗ<br/>ㄞ<code>^ˋ</code></td>
-                                    <td class="hanzi">比</td>
-                                    <td class="pinyin">ㄅ<br/>一<code>^ˇ</code></td>
-                                    <td class="hanzi">比</td>
-                                    <td class="pinyin">ㄅ<br/>一<code>^ˇ</code></td>
-                                    <td class="hanzi">看</td>
-                                    <td class="pinyin">ㄎ<br/>ㄢ<code>^ˋ</code></td>
-                                    <td class="hanzi">，</td>
-                                    <td class="hanzi">多</td>
-                                    <td class="pinyin">ㄉ<br/>ㄨ<br />ㄛ<code></code></td>
-                                    <td class="hanzi">的</td>
-                                    <td class="pinyin">●<br/>ㄉ<br />ㄜ<code></code></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">在</td>
-                                    <td class="pinyin">ㄗ<br/>ㄞ<code>^ˋ</code></td>
-                                    <td class="hanzi"><div style="border:2px solid black;width:1em;height:1em;"></div></td>
-                                    <td class="hanzi">打</td>
-                                    <td class="pinyin">ㄉ<br/>ㄚ<code>^ˇ</code></td>
-                                    <td class="hanzi">√</td>
-                                    <td class="hanzi">。</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </p>
-                    <p style="font-size:xx-large;">①</p>
-                    <table width="100%" style="text-align:center;vertical-align:middle;" class="bordered">
-                        <tr class="bordered" >
-                            <td id="grid11" class="bordered centered" width="50%"></td>
-                            <td id="grid12" class="bordered centered" width="50%"></td>
-                        </tr>
-                        <tr class="bordered">
-                            <td class="bordered">
-                                <table style="margin-left:10px">
-                                    <tr>
-                                        <td class="hanzi">有</td>
-                                        <td class="pinyin">一<br />ㄡ<code>^ˇ</code></td>
-                                        <td class="hanzi">(</td>
-                                        <td><input type="text" id="textbox1" class="inputbox" /></td>
-                                        <td class="hanzi">)</td>
-                                        <td class="hanzi">個</td>
-                                        <td class="pinyin">●<br/>ㄍ<br />ㄜ</td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td class="bordered">
-                                <table style="margin-left:10px">
-                                    <tr>
-                                        <td class="hanzi">有</td>
-                                        <td class="pinyin">一<br />ㄡ<code>^ˇ</code></td>
-                                        <td class="hanzi">(</td>
-                                        <td><input type="text" id="textbox2" class="inputbox" /></td>
-                                        <td class="hanzi">)</td>
-                                        <td class="hanzi">個</td>
-                                        <td class="pinyin">●<br/>ㄍ<br />ㄜ</td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr class="bordered">
-                            <td class="bordered centered"><div id="checkbox1" class="radioBox" style=" margin-left:auto;margin-right:auto;" onclick="changeSelection(this.id,'checkbox2')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)"></div></td>
-                            <td class="bordered centered"><div id="checkbox2" class="radioBox" style=" margin-left:auto;margin-right:auto;" onclick="changeSelection(this.id, 'checkbox1')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)"></div></td>
-                        </tr>
-                    </table>
-                    <p style="font-size:xx-large;">②</p>
-                    <table width="100%" style="text-align:center;" class="bordered">
-                        <tr class="bordered">
-                            <td class="bordered centered" width="50%"><div id="grid21_1"></div><div  id="grid21_2"></div></td>
-                            <td id="grid22" class="bordered centered" width="50%"></td>
-                        </tr>
-                        <tr class="bordered">
-                            <td class="bordered">
-                                <table style="margin-left:10px">
-                                    <tr>
-                                        <td class="hanzi">有</td>
-                                        <td class="pinyin">一<br />ㄡ<code>^ˇ</code></td>
-                                        <td class="hanzi">(</td>
-                                        <td><input type="text" id="textbox3" class="inputbox" /></td>
-                                        <td class="hanzi">)</td>
-                                        <td class="hanzi">個</td>
-                                        <td class="pinyin">●<br/>ㄍ<br />ㄜ</td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td class="bordered">
-                                <table style="margin-left:10px">
-                                    <tr>
-                                        <td class="hanzi">有</td>
-                                        <td class="pinyin">一<br />ㄡ<code>^ˇ</code></td>
-                                        <td class="hanzi">(</td>
-                                        <td><input type="text" id="textbox4" class="inputbox" /></td>
-                                        <td class="hanzi">)</td>
-                                        <td class="hanzi">個</td>
-                                        <td class="pinyin">●<br/>ㄍ<br />ㄜ</td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr class="bordered">
-                            <td class="bordered"><div id="checkbox3" class="radioBox" style=" margin-left:auto;margin-right:auto;" onclick="changeSelection(this.id,'checkbox4')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)"></div></td>
-                            <td class="bordered"><div id="checkbox4" class="radioBox" style=" margin-left:auto;margin-right:auto;" onclick="changeSelection(this.id,'checkbox3')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)"></div></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="solution" data-type="multiple">
-                    <div class="sol" data-type="custom">
-                        <div class="guess">
-							(function(){
-								if($("#check").html()!=0)
-									return 1;
-								var check=false;
-								$(".inputbox").each(function(){
-									if($(this).val().trim()!="")
-										check=true;
-								});
-								if(check)
-									return 1;
-							})()
-                        </div>
-                        <div class="validator-function">
-                            if(document.getElementById(elem1).innerHTML!="√"||document.getElementById(elem2).innerHTML!="√")
-                                return false;
-                            if(document.getElementById("textbox1").value!=data[0]||document.getElementById("textbox2").value!=data[1]||document.getElementById("textbox3").value!=data[2]||document.getElementById("textbox4").value!=data[3])
-                                return false;
-                            return true;
-                        </div>
-                        <div class="example">在（）裏寫出數量</div>
-                        <div class="example">請在正確答案的框裡打√</div>
-                    </div>
-                </div>
-				<div class="hints">
-					<p>(1)左邊有 <code class="hint_blue"><var>data[0]</var></code> 個，右邊有 <code class="hint_blue"><var>data[1]</var></code> 個，<span class="hint_pink"><var>data[0]&gt;data[1]? "左":"右"</var></span> 邊比較多；</p>
-					<p style="font-weight:normal">(2)左邊有 <code class="hint_blue"><var>data[2]</var></code> 個，右邊有 <code class="hint_blue"><var>data[3]</var></code> 個，<span class="hint_pink"><var>data[2]&gt;data[3]? "左":"右"</var></span> 邊比較多。</p>
-				</div>
-            </div>
-            <div id="case6">
-                <div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>
-                    <var id="data">
-                        (function(){
-                            var count=new Array()
-                            for(i=0;i&lt;4;i++){
-                                count[i*2] = randRange(3, 7);
-                                count[i*2+1] = count[i*2]+randFromArray([-2, -1, 1, 2]);
-                            }
-                            var kind=new Array(10);
-                            var path=new Array(8);
-                            for(i=0;i&lt;10;i++)
-                                kind[i]=0;
-                            var n1=0;
-							while(n1&lt;10)
-							{
-								var v=randRange(1,10);
-								if(isIn(kind,v))
-									continue;
-								kind[n1]=v;
-								n1++;
-							}
-                            for(i=0;i&lt;8;i++)
-                            {   
-                                switch(kind[i])
-                                {
-                                    case 1:path[i]="apple_1.png";break;
-                                    case 2:path[i]="papaya_1.png";break;
-                                    case 3:path[i]="guava_1.png";break;
-                                    case 4:path[i]="cantaloupe_1.png";break;
-                                    case 5:path[i]="pineapple_1.png";break;
-                                    case 6:path[i]="watermelon_1.png";break;
-                                    case 7:path[i]="lemon_1.png";break;
-                                    case 8:path[i]="banana_1.png";break;
-                                    case 9:path[i]="strawberry_1.png";break;
-                                    case 10:path[i]="cherry_1.png";break;
-                                }
-                            }
-                            loadImg("grid11",Khan.urlBase+"images/"+path[0],count[0],"34%");
-                            loadImg("grid12",Khan.urlBase+"images/"+path[1],count[1],"34%");
-                            loadImg("grid21",Khan.urlBase+"images/"+path[2],count[2],"22%");
-                            loadImg("grid22",Khan.urlBase+"images/"+path[3],count[3],"22%");
-                            loadImg("grid31",Khan.urlBase+"images/"+path[4],count[4],"26%");
-                            loadImg("grid32",Khan.urlBase+"images/"+path[5],count[5],"26%");
-                            loadImg("grid41",Khan.urlBase+"images/"+path[6],count[6],"19%");
-                            loadImg("grid42",Khan.urlBase+"images/"+path[7],count[7],"19%");
-							$(".radioBox").click(function(){$("#check").html("!");});
-                            return count;
-                        })()
-                    </var>
-                    <var id="elem1">data[0]>data[1]? "checkbox1":"checkbox2"</var>
-                    <var id="elem2">data[2]>data[3]? "checkbox3":"checkbox4"</var>
-                    <var id="elem3">data[4]>data[5]? "checkbox5":"checkbox6"</var>
-                    <var id="elem4">data[6]>data[7]? "checkbox7":"checkbox8"</var>
-					<var id="check">0</var>
-                </div>
-                <div class="question">
-                    <p class="problem">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">先</td>
-                                    <td class="pinyin">ㄒ<br/>一<br />ㄢ<code></code></td>
-                                    <td class="hanzi">寫</td>
-                                    <td class="pinyin">ㄒ<br/>一<br />ㄝ<code>^ˇ</code></td>
-                                    <td class="hanzi">出</td>
-                                    <td class="pinyin">ㄔ<br/>ㄨ<code></code></td>
-                                    <td class="hanzi">圖</td>
-                                    <td class="pinyin">ㄊ<br/>ㄨ<code>^ˊ</code></td>
-                                    <td class="hanzi">中</td>
-                                    <td class="pinyin">ㄓ<br/>ㄨ<br/>ㄥ<code></code></td>
-                                    <td class="hanzi">水</td>
-                                    <td class="pinyin">ㄕ<br/>ㄨ<br/>ㄟ<code>^ˇ</code></td>
-                                    <td class="hanzi">果</td>
-                                    <td class="pinyin">ㄍ<br/>ㄨ<br/>ㄛ<code>^ˇ</code></td>
-                                    <td class="hanzi">的</td>
-                                    <td class="pinyin">●<br/>ㄉ<br/>ㄜ<code></code></td>
-                                    <td class="hanzi">個</td>
-                                    <td class="pinyin">ㄍ<br/>ㄜ<code>^ˋ</code></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">數</td>
-                                    <td class="pinyin">ㄕ<br/>ㄨ<code>^ˋ</code></td>
-                                    <td class="hanzi">，</td>
-                                    <td class="hanzi">再</td>
-                                    <td class="pinyin">ㄗ<br/>ㄞ<code>^ˋ</code></td>
-                                    <td class="hanzi">比</td>
-                                    <td class="pinyin">ㄅ<br/>一<code>^ˇ</code></td>
-                                    <td class="hanzi">比</td>
-                                    <td class="pinyin">ㄅ<br/>一<code>^ˇ</code></td>
-                                    <td class="hanzi">看</td>
-                                    <td class="pinyin">ㄎ<br/>ㄢ<code>^ˋ</code></td>
-                                    <td class="hanzi">，</td>
-                                    <td class="hanzi">多</td>
-                                    <td class="pinyin">ㄉ<br/>ㄨ<br />ㄛ<code></code></td>
-                                    <td class="hanzi">的</td>
-                                    <td class="pinyin">●<br/>ㄉ<br />ㄜ<code></code></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">在</td>
-                                    <td class="pinyin">ㄗ<br/>ㄞ<code>^ˋ</code></td>
-                                    <td class="hanzi"><div style="border:2px solid black;width:1em;height:1em;"></div></td>
-                                    <td class="hanzi">打</td>
-                                    <td class="pinyin">ㄉ<br/>ㄚ<code>^ˇ</code></td>
-                                    <td class="hanzi">√</td>
-                                    <td class="hanzi">。</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </p>
-                    <p style="font-size:xx-large;">①</p>
-					<table width="100%" style="text-align:center;" class="bordered">
-                        <tr height="130px">
-                            <td id="grid11" class="tableGrid" width="50%">
-                                <div id="checkbox1" class="radioBox rightBottom" onclick="changeSelection(this.id,'checkbox2')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)"></div>
-                            </td>
-                            <td id="grid12" class="tableGrid" width="50%">
-                                <div id="checkbox2" class="radioBox rightBottom" onclick="changeSelection(this.id,'checkbox1')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)"></div>
-                            </td>
-                        </tr>
-                        <tr style="text-align:center;">
-                            <td width="50%" class="bordered">
-                                <table style="margin-left:60px;"><tr><td>(<input type="text" id="textbox1" class="inputbox" />)</td><td class="hanzi">個</td><td class="pinyin">●<br/>ㄍ<br />ㄜ</td></tr></table>
-                            </td>
-                            <td width="50%" class="bordered">
-                                <table style="margin-left:60px;"><tr><td>(<input type="text" id="textbox2" class="inputbox" />)</td><td class="hanzi">個</td><td class="pinyin">●<br/>ㄍ<br />ㄜ</td></tr></table>
-                            </td>
-                        </tr>
-                    </table>
-                    <p style="font-size:xx-large;">②</p>
-					<table width="100%" style="text-align:center;" class="bordered">
-                        <tr height="130px">
-                            <td id="grid21" class="tableGrid" width="50%">
-                                <div id="checkbox3" class="radioBox rightBottom" onclick="changeSelection(this.id,'checkbox4')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)"></div>
-                            </td>
-                            <td id="grid22" class="tableGrid" width="50%">
-                                <div id="checkbox4" class="radioBox rightBottom" onclick="changeSelection(this.id,'checkbox3')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)"></div>
-                            </td>
-                        </tr>
-                        <tr style="text-align:center;">
-                            <td width="50%" class="bordered">
-                                <table style="margin-left:60px;"><tr><td>(<input type="text" id="textbox3" class="inputbox" />)</td><td class="hanzi">個</td><td class="pinyin">●<br/>ㄍ<br />ㄜ</td></tr></table>
-                            </td>
-                            <td width="50%" class="bordered">
-                                <table style="margin-left:60px;"><tr><td>(<input type="text" id="textbox4" class="inputbox" />)</td><td class="hanzi">個</td><td class="pinyin">●<br/>ㄍ<br />ㄜ</td></tr></table>
-                            </td>
-                        </tr>
-                    </table>
-                    <p style="font-size:xx-large;">③</p>
-					<table width="100%" style="text-align:center;" class="bordered">
-                        <tr height="130px">
-                            <td id="grid31" class="tableGrid" width="50%"><div id="checkbox5" class="radioBox rightBottom" onclick="changeSelection(this.id,'checkbox6')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)"></div>
-                            </td>
-                            <td id="grid32" class="tableGrid" width="50%"><div id="checkbox6" class="radioBox rightBottom" onclick="changeSelection(this.id,'checkbox5')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)"></div>
-                            </td>
-                        </tr>
-                        <tr style="text-align:center;">
-                            <td width="50%" class="bordered">
-                                <table style="margin-left:60px;"><tr><td>(<input type="text" id="textbox5" class="inputbox" />)</td><td class="hanzi">個</td><td class="pinyin">●<br/>ㄍ<br />ㄜ</td></tr></table>
-                            </td>
-                            <td width="50%" class="bordered">
-                                <table style="margin-left:60px;"><tr><td>(<input type="text" id="textbox6" class="inputbox" />)</td><td class="hanzi">個</td><td class="pinyin">●<br/>ㄍ<br />ㄜ</td></tr></table>
-                            </td>
-                        </tr>
-                    </table>
-                    <p style="font-size:xx-large;">④</p>
-					<table width="100%" style="text-align:center;" class="bordered">
-                        <tr height="130px">
-                            <td id="grid41" class="tableGrid" width="50%"><div id="checkbox7" class="radioBox rightBottom" onclick="changeSelection(this.id,'checkbox8')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)"></div>
-                            </td>
-                            <td id="grid42" class="tableGrid" width="50%"><div id="checkbox8" class="radioBox rightBottom" onclick="changeSelection(this.id,'checkbox7')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)"></div>
-                            </td>
-                        </tr>
-                        <tr style="text-align:center;">
-                            <td width="50%" class="bordered">
-                                <table style="margin-left:60px;"><tr><td>(<input type="text" id="textbox7" class="inputbox" />)</td><td class="hanzi">個</td><td class="pinyin">●<br/>ㄍ<br />ㄜ</td></tr></table>
-                            </td>
-                            <td width="50%" class="bordered">
-                                <table style="margin-left:60px;"><tr><td>(<input type="text" id="textbox8" class="inputbox" />)</td><td class="hanzi">個</td><td class="pinyin">●<br/>ㄍ<br />ㄜ</td></tr></table>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="solution" data-type="multiple">
-                    <div class="sol" data-type="custom">
-                        <div class="guess">
-							(function(){
-								if($("#check").html()!=0)
-									return 1;
-								var check=false;
-								$(".inputbox").each(function(){
-									if($(this).val().trim()!="")
-										check=true;
-								});
-								if(check)
-									return 1;
-							})()
-                        </div>
-                        <div class="validator-function">
-                            if(document.getElementById(elem1).innerHTML!="√"||document.getElementById(elem2).innerHTML!="√"||document.getElementById(elem3).innerHTML!="√"||document.getElementById(elem4).innerHTML!="√")
-                                return false;
-                            if(document.getElementById("textbox1").value!=data[0]||document.getElementById("textbox2").value!=data[1]||document.getElementById("textbox3").value!=data[2]||document.getElementById("textbox4").value!=data[3]||document.getElementById("textbox5").value!=data[4]||document.getElementById("textbox6").value!=data[5]||document.getElementById("textbox7").value!=data[6]||document.getElementById("textbox8").value!=data[7])
-                                return false;
-                            return true;
-                        </div>
-                        <div class="example">在（）裏寫出數量</div>
-                        <div class="example">請在正確答案的框裡打√</div>
-                    </div>
-                </div>
-				<div class="hints">
-					<p>(1)左邊有 <code class="hint_blue"><var>data[0]</var></code> 個，右邊有 <code class="hint_blue"><var>data[1]</var></code> 個，<span class="hint_pink"><var>data[0]&gt;data[1]? "左":"右"</var></span> 邊比較多；</p>
-					<p>(2)左邊有 <code class="hint_blue"><var>data[2]</var></code> 個，右邊有 <code class="hint_blue"><var>data[3]</var></code> 個，<span class="hint_pink"><var>data[2]&gt;data[3]? "左":"右"</var></span> 邊比較多。</p>
-					<p>(3)左邊有 <code class="hint_blue"><var>data[4]</var></code> 個，右邊有 <code class="hint_blue"><var>data[5]</var></code> 個，<span class="hint_pink"><var>data[4]&gt;data[5]? "左":"右"</var></span> 邊比較多；</p>
-					<p style="font-weight:normal">(4)左邊有 <code class="hint_blue"><var>data[6]</var></code> 個，右邊有 <code class="hint_blue"><var>data[7]</var></code> 個，<span class="hint_pink"><var>data[6]&gt;data[7]? "左":"右"</var></span> 邊比較多。</p>
-				</div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
-
-
+﻿<!DOCTYPE html><html data-require="math math-format graphie graphie-helpers"><head>    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">    <title>10以內的數，兩兩比較大小</title>    <script src="../khan-exercise.js"></script>	<style type="text/css">        #answer_area .sol input[type=text] {width: 30px;}		.img_td{text-align:center;width:30px;}        .bordered {border: 1px solid #DBDFE6;background-color:#FFFFFF;height:25px;}	</style></head><body>    <div class="exercise">        <div class="problems">            <div id="case1">                <div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>					<var id="counts_1,counts_2">randRangeUnique(1,10,2)</var>					<var id="index_1,index_2">randRangeUnique(0,4,2)</var>					<var id="randImg_1,randImg_2">[["pen.png","pencil.png","eraser.png","knife.png"][index_1],["pen.png","pencil.png","eraser.png","knife.png"][index_2]]</var>					<var id="loadImg">					(function(){						$('#img_1').attr("src",Khan.urlBase+"images/"+randImg_1);						$('#img_2').attr("src",Khan.urlBase+"images/"+randImg_2);						for(var i = 0;i &lt; counts_1;i++){							$('#img_11').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_1+"\'&gt;");						}						for(var j = 0;j &lt; counts_2;j++){							$('#img_22').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_2+"\'&gt;");						}					})()</var>                </div>                <div class="question">					<div class="problem">						<div style="height:85px;line-height:85px"><p><img id="img_1" style="vertical-align:middle;"/> 和 <img id="img_2" style="vertical-align:middle;"/>哪一種比較多？請在多的一邊的 <input type="text" readonly="true" class="img_td"> 裡打<code>\surd</code></p></div>						<table>							<tr align="center">								<td style="width:50%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_11"></td>								<td style="width:50%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_22"></td>							</tr>							<tr align="center" style="border-top:#DBDFE6 solid 2px;">								<td style="border:#DBDFE6 solid 2px;"><div id="in1" class="img_td bordered" onclick="$('#in2').text('');$('#in1').text('√');$('#in1').css('font-family',' MathJax_Main');"></div></td>								<td style="border:#DBDFE6 solid 2px;"><div id="in2" class="img_td bordered" onclick="$('#in1').text('');$('#in2').text('√');$('#in2').css('font-family',' MathJax_Main');"></div></td>							</tr>						</table>					</div>                </div>                <div class="solution" data-type="multiple">                    <div class="sol" data-type="custom">                        <div class="guess">[$('#in1').text(),$('#in2').text()]</div>                        <div class="validator-function">							if(guess[0]==""&&guess[1]==""){return "";}							return counts_1 &gt; counts_2 ? guess[0] != "":guess[1] != "";                        </div>                        <div class="example">請在正確答案的框裡打√</div>                    </div>                </div>				<div class="hints">					<p>左邊有 <code class="hint_blue"><var>counts_1</var></code> 個，右邊有 <code class="hint_green"><var>counts_2</var></code> 個，所以 <span class="hint_pink"><var>counts_1&gt;counts_2? "左":"右"</var></span> 邊比較多。</p>				</div>            </div>						<div id="case2">                <div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>					<var id="counts_1,counts_2">randRangeUnique(1,10,2)</var>					<var id="index_1,index_2">randRangeUnique(0,6,2)</var>					<var id="randImg_1,randImg_2">[["frog.png","lollipop.png","chocolate.png","milk.png","hat.png","spanner.png"][index_1],["frog.png","lollipop.png","chocolate.png","milk.png","hat.png","spanner.png"][index_2]]</var>					<var id="loadImg">					(function(){						for(var i = 0;i &lt; counts_1;i++){							$('#img_11').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_1+"\'&gt;");						}						for(var j = 0;j &lt; counts_2;j++){							$('#img_22').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_2+"\'&gt;");						}					})()</var>                </div>                <div class="question">					<div class="problem">						<p>比比看，請在多的一邊的 <input type="text" readonly="true" class="img_td"> 裡打<code>\surd</code></p>						<table>							<tr align="center">								<td style="width:50%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_11"></td>								<td style="width:50%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_22"></td>							</tr>							<tr align="center" style="border-top:#DBDFE6 solid 2px;">								<td style="border:#DBDFE6 solid 2px;"><div id="in1" class="img_td bordered" onclick="$('#in2').text('');$('#in1').text('√');$('#in1').css('font-family',' MathJax_Main');"></div></td>								<td style="border:#DBDFE6 solid 2px;"><div id="in2" class="img_td bordered" onclick="$('#in1').text('');$('#in2').text('√');$('#in2').css('font-family',' MathJax_Main');"></div></td>							</tr>						</table>					</div>                </div>                <div class="solution" data-type="multiple">                    <div class="sol" data-type="custom">                        <div class="guess">[$('#in1').text(),$('#in2').text()]</div>                        <div class="validator-function">							if(guess[0]==""&&guess[1]==""){return "";}							return counts_1 &gt; counts_2 ? guess[0] != "":guess[1] != "";                        </div>                        <div class="example">請在正確答案的框裡打√</div>                    </div>                </div>				<div class="hints">					<p>左邊有 <code class="hint_blue"><var>counts_1</var></code> 個，右邊有 <code class="hint_green"><var>counts_2</var></code> 個，所以 <span class="hint_pink"><var>counts_1&gt;counts_2? "左":"右"</var></span> 邊比較多。</p>				</div>            </div>						<div id="case3">                <div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>					<var id="counts_1,counts_2">randRangeUnique(1,10,2)</var>					<var id="index_1">2*randRange(0,3)</var>					<var id="index_2">1+index_1</var>					<var id="randImg_1,randImg_2">[["hat_2.png","hat.png","point_1.png","point_2.png","cup_1.png","cup_2.png","flower_2.png","flower_3.png"][index_1],["hat_2.png","hat.png","point_1.png","point_2.png","cup_1.png","cup_2.png","flower_2.png","flower_3.png"][index_2]]</var>					<var id="loadImg">					(function(){						$('#img_1').attr("src",Khan.urlBase+"images/"+randImg_1);						$('#img_2').attr("src",Khan.urlBase+"images/"+randImg_2);						for(var i = 0;i &lt; counts_1;i++){							$('#img_11').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_1+"\'&gt;");						}						for(var j = 0;j &lt; counts_2;j++){							$('#img_22').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_2+"\'&gt;");						}					})()</var>                </div>                <div class="question">					<div class="problem">						<p>各有多少？先寫出左右兩邊的數再比比看，多的一邊在 <input type="text" readonly="true" class="img_td"> 裡打<code>\surd</code></p>						<table>							<tr align="center">								<td style="width:50%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_11"></td>								<td style="width:50%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_22"></td>							</tr>							<tr align="center">								<td style="vertical-align: middle;border:#DBDFE6 solid 2px;">（<input type="text" class="img_td" id="counts_ans_1" style="background:transparent;border:0;font-size:15px">）</td>								<td style="vertical-align: middle;border:#DBDFE6 solid 2px;">（<input type="text" class="img_td" id="counts_ans_2" style="background:transparent;border:0;font-size:15px">）</td>							</tr>							<tr align="center" style="border-top:#DBDFE6 solid 2px;">								<td style="border:#DBDFE6 solid 2px;"><div id="in1" class="img_td bordered" onclick="$('#in2').text('');$('#in1').text('√');$('#in1').css('font-family',' MathJax_Main');"></div></td>								<td style="border:#DBDFE6 solid 2px;"><div id="in2" class="img_td bordered" onclick="$('#in1').text('');$('#in2').text('√');$('#in2').css('font-family',' MathJax_Main');"></div></td>							</tr>						</table>					</div>                </div>                <div class="solution" data-type="multiple">                    <div class="sol" data-type="custom">                        <div class="guess">[$('#in1').text(),$('#in2').text(),$('#counts_ans_1').val(),$('#counts_ans_2').val()]</div>                        <div class="validator-function">							if((guess[0]==""&&guess[1]=="")||guess[2]==""||guess[3]==""){return "";}							return (counts_1 &gt; counts_2 ? guess[0] != "":guess[1] != "")&&guess[2]==counts_1&&guess[3]==counts_2;                        </div>						<div class="example">分別在括號裡寫出數量</div>                        <div class="example">多的一邊在框裡打√</div>                    </div>                </div>				<div class="hints">					<p>左邊有 <code class="hint_blue"><var>counts_1</var></code> 個，右邊有 <code class="hint_green"><var>counts_2</var></code> 個，所以 <span class="hint_pink"><var>counts_1&gt;counts_2? "左":"右"</var></span> 邊比較多。</p>				</div>            </div>						<div id="case4">                <div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>					<var id="counts_1,counts_2">randRangeUnique(1,10,2)</var>					<var id="index_1">2*randRange(0,3)</var>					<var id="index_2">1+index_1</var>					<var id="randImg_1,randImg_2">[["hat_2.png","hat.png","point_1.png","point_2.png","cup_1.png","cup.png","flower_2.png","flower_3.png"][index_1],["hat_2.png","hat.png","point_1.png","point_2.png","cup_1.png","cup.png","flower_2.png","flower_3.png"][index_2]]</var>					<var id="loadImg">					(function(){						$('#img_1').attr("src",Khan.urlBase+"images/"+randImg_1);						$('#img_2').attr("src",Khan.urlBase+"images/"+randImg_2);						for(var i = 0;i &lt; counts_1;i++){							$('#img_11').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_1+"\'&gt;");						}						for(var j = 0;j &lt; counts_2;j++){							$('#img_22').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_2+"\'&gt;");						}					})()</var>                </div>                <div class="question">					<div class="problem">						<p>各有多少？先寫出左右兩邊的數再比比看，多的一邊在 <input type="text" readonly="true" class="img_td"> 裡打<code>\surd</code></p>						<table>							<tr align="center">								<td style="width:50%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_11"></td>								<td style="width:50%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_22"></td>							</tr>							<tr align="center">								<td style="vertical-align: middle;border:#DBDFE6 solid 2px;">（<input type="text" class="img_td" id="counts_ans_1" style="background:transparent;border:0;font-size:15px">）</td>								<td style="vertical-align: middle;border:#DBDFE6 solid 2px;">（<input type="text" class="img_td" id="counts_ans_2" style="background:transparent;border:0;font-size:15px">）</td>							</tr>							<tr align="center" style="border-top:#DBDFE6 solid 2px;">								<td style="border:#DBDFE6 solid 2px;"><div id="in1" class="img_td bordered" onclick="$('#in2').text('');$('#in1').text('√');$('#in1').css('font-family',' MathJax_Main');"></div></td>								<td style="border:#DBDFE6 solid 2px;"><div id="in2" class="img_td bordered" onclick="$('#in1').text('');$('#in2').text('√');$('#in2').css('font-family',' MathJax_Main');"></div></td>							</tr>						</table>					</div>                </div>                <div class="solution" data-type="multiple">                    <div class="sol" data-type="custom">                        <div class="guess">[$('#in1').text(),$('#in2').text(),$('#counts_ans_1').val(),$('#counts_ans_2').val()]</div>                        <div class="validator-function">							if((guess[0]==""&&guess[1]=="")||guess[2]==""||guess[3]==""){return "";}							return (counts_1 &gt; counts_2 ? guess[0] != "":guess[1] != "")&&guess[2]==counts_1&&guess[3]==counts_2;                        </div>						<div class="example">分別在括號裡寫出數量</div>                        <div class="example">多的一邊在框裡打√</div>                    </div>                </div>				<div class="hints">					<p>左邊有 <code class="hint_blue"><var>counts_1</var></code> 個，右邊有 <code class="hint_green"><var>counts_2</var></code> 個，所以 <span class="hint_pink"><var>counts_1&gt;counts_2? "左":"右"</var></span> 邊比較多。</p>				</div>            </div>						<div id="case5">                <div class="vars" data-ensure="counts_1 != counts_2">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>					<var id="counts_1_init,counts_2_init">randRangeUnique(1,5,2)</var>					<var id="index_1,index_2">randRangeUnique(0,5,2)</var>					<var id="counts_1,counts_2">					(function(){						var c1,c2;						switch(index_1){							case 0 : c1 = 2*counts_1_init;break;							case 1 : c1 = 2*counts_1_init;break;							case 2 : c1 = 4*counts_1_init;break;							default : c1 = counts_1_init;break;						}						switch(index_2){							case 0 : c2 = 2*counts_2_init;break;							case 1 : c2 = 2*counts_2_init;break;							case 2 : c2 = 4*counts_2_init;break;							default : c2 = counts_2_init;break;						}						return [c1,c2];					})()</var>					<var id="randImg_1,randImg_2">[["persimmon_2.png","strawberry_2.png","cherry_4.png","cherry_1.png","apple_1.png"][index_1],["persimmon_2.png","strawberry_2.png","cherry_4.png","cherry_1.png","apple_1.png"][index_2]]</var>					<var id="loadImg">					(function(){						$('#img_1').attr("src",Khan.urlBase+"images/"+randImg_1);						$('#img_2').attr("src",Khan.urlBase+"images/"+randImg_2);						for(var i = 0;i &lt; counts_1_init;i++){							$('#img_11').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_1+"\'&gt;");						}						for(var j = 0;j &lt; counts_2_init;j++){							$('#img_22').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_2+"\'&gt;");						}					})()</var>                </div>                <div class="question">					<div class="problem">						<p>先寫出左右兩邊水果的個數，再比比看，多的一邊在 <input type="text" readonly="true" class="img_td"> 裡打<code>\surd</code></p>						<table>							<tr align="center">								<td style="width:50%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_11"></td>								<td style="width:50%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_22"></td>							</tr>							<tr align="center">								<td style="vertical-align: middle;border:#DBDFE6 solid 2px;">（<input type="text" class="img_td" id="counts_ans_1" style="background:transparent;border:0;font-size:15px">）</td>								<td style="vertical-align: middle;border:#DBDFE6 solid 2px;">（<input type="text" class="img_td" id="counts_ans_2" style="background:transparent;border:0;font-size:15px">）</td>							</tr>							<tr align="center" style="border-top:#DBDFE6 solid 2px;">								<td style="border:#DBDFE6 solid 2px;"><div id="in1" class="img_td bordered" onclick="$('#in2').text('');$('#in1').text('√');$('#in1').css('font-family',' MathJax_Main');"></div></td>								<td style="border:#DBDFE6 solid 2px;"><div id="in2" class="img_td bordered" onclick="$('#in1').text('');$('#in2').text('√');$('#in2').css('font-family',' MathJax_Main');"></div></td>							</tr>						</table>					</div>                </div>                <div class="solution" data-type="multiple">                    <div class="sol" data-type="custom">                        <div class="guess">[$('#in1').text(),$('#in2').text(),$('#counts_ans_1').val(),$('#counts_ans_2').val()]</div>                        <div class="validator-function">							if((guess[0]==""&&guess[1]=="")||guess[2]==""||guess[3]==""){return "";}							return (counts_1 &gt; counts_2 ? guess[0] != "":guess[1] != "")&&guess[2]==counts_1&&guess[3]==counts_2;                        </div>						<div class="example">分別在括號裡寫出數量</div>                        <div class="example">多的一邊在框裡打√</div>                    </div>                </div>				<div class="hints">					<p>左邊有 <code class="hint_blue"><var>counts_1</var></code> 個，右邊有 <code class="hint_green"><var>counts_2</var></code> 個，所以 <span class="hint_pink"><var>counts_1&gt;counts_2? "左":"右"</var></span> 邊比較多。</p>				</div>            </div>						<div id="case6">                <div class="vars" data-ensure="counts_1 != counts_2">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>					<var id="counts_1,counts_2">randRangeUnique(1,10,2)</var>					<var id="index_1,index_2">randRangeUnique(0,10,2)</var>					<var id="randImg_1,randImg_2">[["apple_1.png","papaya_1.png","guava_1.png","cantaloupe_1.png","pineapple_1.png","watermelon_1.png","lemon_1.png","banana_1.png","strawberry_1.png","cherry_1.png"][index_1],["apple_1.png","papaya_1.png","guava_1.png","cantaloupe_1.png","pineapple_1.png","watermelon_1.png","lemon_1.png","banana_1.png","strawberry_1.png","cherry_1.png"][index_2]]</var>					<var id="loadImg">					(function(){						$('#img_1').attr("src",Khan.urlBase+"images/"+randImg_1);						$('#img_2').attr("src",Khan.urlBase+"images/"+randImg_2);						for(var i = 0;i &lt; counts_1;i++){							$('#img_11').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_1+"\'&gt;");						}						for(var j = 0;j &lt; counts_2;j++){							$('#img_22').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_2+"\'&gt;");						}					})()</var>                </div>                <div class="question">					<div class="problem">						<p>先寫出左右兩邊水果的個數，再比比看，多的一邊在 <input type="text" readonly="true" class="img_td"> 裡打<code>\surd</code></p>						<table>							<tr align="center">								<td style="width:50%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_11"></td>								<td style="width:50%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_22"></td>							</tr>							<tr align="center">								<td style="vertical-align: middle;border:#DBDFE6 solid 2px;">（<input type="text" class="img_td" id="counts_ans_1" style="background:transparent;border:0;font-size:15px">）</td>								<td style="vertical-align: middle;border:#DBDFE6 solid 2px;">（<input type="text" class="img_td" id="counts_ans_2" style="background:transparent;border:0;font-size:15px">）</td>							</tr>							<tr align="center" style="border-top:#DBDFE6 solid 2px;">								<td style="border:#DBDFE6 solid 2px;"><div id="in1" class="img_td bordered" onclick="$('#in2').text('');$('#in1').text('√');$('#in1').css('font-family',' MathJax_Main');"></div></td>								<td style="border:#DBDFE6 solid 2px;"><div id="in2" class="img_td bordered" onclick="$('#in1').text('');$('#in2').text('√');$('#in2').css('font-family',' MathJax_Main');"></div></td>							</tr>						</table>					</div>                </div>                <div class="solution" data-type="multiple">                    <div class="sol" data-type="custom">                        <div class="guess">[$('#in1').text(),$('#in2').text(),$('#counts_ans_1').val(),$('#counts_ans_2').val()]</div>                        <div class="validator-function">							if((guess[0]==""&&guess[1]=="")||guess[2]==""||guess[3]==""){return "";}							return (counts_1 &gt; counts_2 ? guess[0] != "":guess[1] != "")&&guess[2]==counts_1&&guess[3]==counts_2;                        </div>						<div class="example">分別在括號裡寫出數量</div>                        <div class="example">多的一邊在框裡打√</div>                    </div>                </div>				<div class="hints">					<p>左邊有 <code class="hint_blue"><var>counts_1</var></code> 個，右邊有 <code class="hint_green"><var>counts_2</var></code> 個，所以 <span class="hint_pink"><var>counts_1&gt;counts_2? "左":"右"</var></span> 邊比較多。</p>				</div>            </div>        </div>    </div></body></html>
