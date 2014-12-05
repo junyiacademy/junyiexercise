@@ -640,6 +640,71 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
             fShowFirstHalf = true;
         }
     }
+	
+	this.showHintNew = function() {
+        this.removeHighlights();
+        if (index === digitsDividend.length) {
+            while (leadingZeros.length) {
+                leadingZeros.pop().remove();
+            }
+            return;
+        }
+
+        if (fShowFirstHalf) {
+            value = digitsDividend[index];
+            var quotient = value / divisor;
+            var total = value + remainder;
+            highlights = highlights.concat(drawDigits([value], index, 0, KhanUtil.BLUE));
+            if (index !== 0) {
+                graph.style({
+                    arrows: "->"
+                }, function() {
+                    highlights.push(graph.path([[index, 0 - 0.5], [index, -2 * index + 0.5]]));
+                });
+            }
+
+            drawDigits([value], index, -2 * index);
+            var totalDigits = KhanUtil.integerToDigits(total);
+            highlights = highlights.concat(drawDigits(totalDigits, index - totalDigits.length + 1, -2 * index, KhanUtil.BLUE));
+
+            graph.label([digitsDividend.length + 0.5, -2 * index],
+                 "\\color{#6495ED}{" + total + "}"
+                + "\\text{ 是 }"
+                 + divisor
+               + "\\text{的幾倍?}", "right");
+
+            fShowFirstHalf = false;
+        } else {
+            value += remainder;
+            var quotient = Math.floor(value / divisor);
+            var diff = value - (quotient * divisor);
+            remainder = diff * 10;
+            var quotientLabel = drawDigits([quotient], index, 1);
+            if (quotient === 0 && fOnlyZeros && digitsDividend.length - deciDividend + deciDivisor > index + 1) {
+                leadingZeros = leadingZeros.concat(quotientLabel);
+            } else {
+                fOnlyZeros = false;
+            }
+            highlights = highlights.concat(drawDigits([quotient], index, 1, KhanUtil.GREEN));
+
+            var product = KhanUtil.integerToDigits(divisor * quotient);
+            drawDigits(product, index - product.length + 1, -2 * index - 1);
+            highlights = highlights.concat(drawDigits(product, index - product.length + 1, -2 * index - 1, KhanUtil.ORANGE));
+
+            var diffDigits = KhanUtil.integerToDigits(diff);
+            drawDigits(diffDigits, index - diffDigits.length + 1, -2 * index - 2);
+            graph.label([index - product.length, -2 * index - 1] , "-\\vphantom{0}");
+            graph.path([[index - product.length - 0.25, -2 * index - 1.5], [index + 0.5, -2 * index - 1.5]]);
+
+            graph.label([digitsDividend.length + 0.5, -2 * index - 1],
+                "\\color{#6495ED}{" + value + "}"
+                + "\\div"
+                + divisor + "的商是"
+                + "\\color{#28AE7B}{" + quotient + "}", "right");
+            index++;
+            fShowFirstHalf = true;
+        }
+    }
 
     this.addDecimalRemainder = function() {
         dividend = dividend * 10;
