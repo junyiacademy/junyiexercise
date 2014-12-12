@@ -1,0 +1,379 @@
+﻿<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>10以內的數，兩兩比較大小</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		table.nLimit{margin:0px ;border:0px }
+		table.nLimit td { border: 0px solid #AAA; }
+		table.nLimit td { padding: 1px; vertical-align:middle;}
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+        .bordered {
+			border: 2px solid black;
+		}
+	    .hanzi {
+	        line-height:1em; 
+            font-size:1.5em;
+            vertical-align:middle;
+        }
+	    .pinyin {
+	        line-height:1em; 
+            font-size:0.4em;
+            vertical-align:middle;
+            padding:0px 0px 0px 0px;
+        }
+	    .tableGrid {
+	        position:relative;
+            vertical-align:middle;
+            border: 2px solid black;
+        }
+	    .centered {
+	        text-align:center;
+            vertical-align:middle;
+        }
+	    .radioBox {
+	        border:2px solid black;
+            width:1.2em;
+            height:1.2em;
+            vertical-align:middle;
+            text-align:center;
+            color:red;
+        }
+	    .rightBottom {
+	        width:35px;
+            height:35px;
+            border:thin;
+            margin:0px;
+            border: 2px solid black;
+            position:absolute;right:-2px;bottom:-2px;
+        }
+	</style>
+</head>
+<script type="text/javascript">
+    function loadImg(elem, url, count, width) {
+        var loimg = document.getElementById(elem);
+        var inner = "";
+        for (var i = 1; i <= count; i++) {
+            inner += "<img id=\"image" + elem + i + "\" width=" + width + ">";
+        }
+        loimg.innerHTML += inner;
+        for (var j = 1; j <= count; j++) {
+            document.getElementById("image" + elem + j).src = url;
+        }
+    }
+    function isIn(array, elem) {
+        for (var v in array) {
+            if (elem == array[v])
+                return true;
+        }
+        return false;
+    }
+    function changeSelection(elemId,mutexElemId) {
+        var text = document.getElementById(elemId).innerHTML;
+        if (text != "√" || text == null) {
+			if(document.all)
+				document.getElementById(elemId).innerText = "√";
+			else
+				document.getElementById(elemId).textContent = "√";
+            document.getElementById(mutexElemId).innerHTML = "&nbsp;&nbsp;";
+        }
+        //else {
+        //    document.getElementById(elemId).innerHTML = "";
+        //    document.getElementById(mutexElemId).innerHTML = "√";
+        //}
+    }
+    function mouseOverChangeBgColor(elemID) {
+        document.getElementById(elemID).style.backgroundColor = "gray";
+    }
+    function mouseOutChangeBgColor(elemID) {
+        document.getElementById(elemID).style.backgroundColor = "white";
+    }
+    function loadImg(elem, url, count, width) {
+        var loimg = document.getElementById(elem);
+        var inner = "";
+        for (var i = 1; i <= count; i++) {
+            inner += "<img id=\"image" + elem + i + "\" width=" + width + ">";
+        }
+        loimg.innerHTML += inner;
+        for (var j = 1; j <= count; j++) {
+            document.getElementById("image" + elem + j).src = url;
+        }
+    }
+</script>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars">
+                    <var id="data">
+                        (function(){
+                            var count=new Array()
+                            for(i=0;i&lt;1;i++){
+                                count[i*2] = randRange(3, 7);
+                                count[i*2+1] = count[i*2]+randFromArray([-2, -1, 1, 2]);
+                            }
+                            var kind=new Array(10);
+                            var path=new Array(8);
+                            for(i=0;i&lt;10;i++)
+                                kind[i]=0;
+                            var n1=0;
+							while(n1&lt;10)
+							{
+								var v=randRange(1,10);
+								if(isIn(kind,v))
+									continue;
+								kind[n1]=v;
+								n1++;
+							}
+                            for(i=0;i&lt;1;i++)
+                            {   
+                                switch(kind[i])
+                                {
+                                    case 1:path[i]="apple_1.png";break;
+                                    case 2:path[i]="papaya_1.png";break;
+                                    case 3:path[i]="guava_1.png";break;
+                                    case 4:path[i]="cantaloupe_1.png";break;
+                                    case 5:path[i]="pineapple_1.png";break;
+                                    case 6:path[i]="watermelon_1.png";break;
+                                    case 7:path[i]="lemon_1.png";break;
+                                    case 8:path[i]="banana_1.png";break;
+                                    case 9:path[i]="strawberry_1.png";break;
+                                    case 10:path[i]="cherry_1.png";break;
+                                }
+                            }
+                            loadImg("grid11",Khan.urlBase+"/images/"+path[0],count[0],"34%");
+                            loadImg("grid12",Khan.urlBase+"/images/"+path[0],count[1],"34%");
+                            
+                            return count;
+                        })()
+                    </var>
+                    <var id="elem1">data[0]>data[1]? "checkbox1":"checkbox2"</var>
+                </div>
+                <div class="question">
+                    <p class="problem">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="hanzi">先</td>
+                                    <td class="pinyin">ㄒ<br/>一<br />ㄢ<code></code></td>
+                                    <td class="hanzi">寫</td>
+                                    <td class="pinyin">ㄒ<br/>一<br />ㄝ<code>^ˇ</code></td>
+                                    <td class="hanzi">出</td>
+                                    <td class="pinyin">ㄔ<br/>ㄨ<code></code></td>
+                                    <td class="hanzi">圖</td>
+                                    <td class="pinyin">ㄊ<br/>ㄨ<code>^ˊ</code></td>
+                                    <td class="hanzi">中</td>
+                                    <td class="pinyin">ㄓ<br/>ㄨ<br/>ㄥ<code></code></td>
+                                    <td class="hanzi">水</td>
+                                    <td class="pinyin">ㄕ<br/>ㄨ<br/>ㄟ<code>^ˇ</code></td>
+                                    <td class="hanzi">果</td>
+                                    <td class="pinyin">ㄍ<br/>ㄨ<br/>ㄛ<code>^ˇ</code></td>
+                                    <td class="hanzi">的</td>
+                                    <td class="pinyin">●<br/>ㄉ<br/>ㄜ<code></code></td>
+                                    <td class="hanzi">個</td>
+                                    <td class="pinyin">ㄍ<br/>ㄜ<code>^ˋ</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="hanzi">數</td>
+                                    <td class="pinyin">ㄕ<br/>ㄨ<code>^ˋ</code></td>
+                                    <td class="hanzi">，</td>
+                                    <td class="hanzi">再</td>
+                                    <td class="pinyin">ㄗ<br/>ㄞ<code>^ˋ</code></td>
+                                    <td class="hanzi">比</td>
+                                    <td class="pinyin">ㄅ<br/>一<code>^ˇ</code></td>
+                                    <td class="hanzi">比</td>
+                                    <td class="pinyin">ㄅ<br/>一<code>^ˇ</code></td>
+                                    <td class="hanzi">看</td>
+                                    <td class="pinyin">ㄎ<br/>ㄢ<code>^ˋ</code></td>
+                                    <td class="hanzi">，</td>
+                                    <td class="hanzi">多</td>
+                                    <td class="pinyin">ㄉ<br/>ㄨ<br />ㄛ<code></code></td>
+                                    <td class="hanzi">的</td>
+                                    <td class="pinyin">●<br/>ㄉ<br />ㄜ<code></code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="hanzi">在</td>
+                                    <td class="pinyin">ㄗ<br/>ㄞ<code>^ˋ</code></td>
+                                    <td class="hanzi"><div style="border:2px solid black;width:1em;height:1em;"></div></td>
+                                    <td class="hanzi">打</td>
+                                    <td class="pinyin">ㄉ<br/>ㄚ<code>^ˇ</code></td>
+                                    <td class="hanzi">√</td>
+                                    <td class="hanzi">。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
+					<table width="100%" style="text-align:center;" class="bordered">
+                        <tr height="100px">
+                            <td id="grid11" class="tableGrid" width="50%">
+                                <div id="checkbox1" class="radioBox rightBottom" onclick="changeSelection(this.id,'checkbox2')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)"></div>
+                            </td>
+                            <td id="grid12" class="tableGrid" width="50%">
+                                <div id="checkbox2" class="radioBox rightBottom" onclick="changeSelection(this.id,'checkbox1')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)"></div>
+                            </td>
+                        </tr>
+                        <tr style="text-align:center;">
+                            <td width="50%" class="bordered">
+                                (<input type="text" id="textbox1" style="width:4em;height:2em;text-align:center;border:2px;color:red;" />)
+                            </td>
+                            <td width="50%" class="bordered">
+                                (<input type="text" id="textbox2" style="width:4em;height:2em;text-align:center;border:2px;color:red;" />)
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <div class="sol" data-type="custom">
+                        <div class="guess">[[elem1],[data[0],data[1]],["textbox1","textbox2"]]
+                        </div>
+                        <div class="validator-function">
+                            if(document.getElementById(guess[0][0]).innerHTML!="√")
+                                return false;
+                            if(document.getElementById(guess[2][0]).value!=guess[1][0]||document.getElementById(guess[2][1]).value!=guess[1][1])
+                                return false;
+                            return true;
+                        </div>
+                        <div class="example">在方框裏寫出數量</div>
+                        <div class="example">多的在（）裏面打√</div>
+                    </div>
+                </div>
+				<div class="hints">
+					<p>左邊有 <code class="hint_blue"><var>data[0]</var></code> 個，右邊有 <code class="hint_blue"><var>data[1]</var></code> 個，
+					<span class="hint_pink"><var>data[0]&gt;data[1]? "左":"右"</var></span> 邊比較多；</p> 
+				</div>
+            </div>
+			<div id="case2">
+				<div class="vars">
+					<var id="data">
+						(function(){
+                            var count=new Array()
+                            for(i=0;i&lt;1;i++){
+                                count[i*2] = randRange(3, 7);
+                                count[i*2+1] = count[i*2]+randFromArray([-2, -1, 1, 2]);
+                            }
+                            var kind=new Array(1);
+                            var path=new Array(8);
+                            for(i=0;i&lt;1;i++)
+                                kind[i]=0;
+                            var n1=0;
+							while(n1&lt;1)
+							{
+								var v=randRange(1,3);
+								if(isIn(kind,v))
+									continue;
+								kind[n1]=v;
+								n1++;
+							}
+							var rename=new Array(1);
+                            for(i=0;i&lt;1;i++)
+                            {   
+                                switch(kind[i])
+                                {
+                                    case 1:path[i]="compare_flower.png";rename[i]="花";break;
+                                    case 2:path[i]="compare_apple.png";rename[i]="蘋果";break;
+									case 3:path[i]="compare_banana.png";rename[i]="香蕉";break;
+                                }
+                            }
+                            loadImg("grid11",Khan.urlBase+"/images/"+path[0],count[0],"10%");
+                            loadImg("grid12",Khan.urlBase+"/images/"+path[0],count[1],"10%");
+                            
+                            return [count,rename];
+                        })()
+					</var>
+					<var id="name_1">randFromArray(["小華","小明","小紅"])</var>
+					<var id="name_2">randFromArray(["小王","小倩","小林"])</var>
+					<var id="data_1">data[0][0]</var>
+					<var id="data_2">data[0][1]</var>
+					<var id="data_3">data[1]</var>
+					<var id="fruitflower">
+						(function(){
+							if(data_3=="花"){
+								return "朵";
+							}
+							else{
+								return "個";
+							}
+						})()
+					</var>
+					<var id="elem1">data_1>data_2? "pick_1":"pick_2"</var>
+				</div>
+				<div class="question" width="100%">
+                    <p class="problem">
+						<table class="nLimit" width="100%" style="padding-top:2px;valign:middle;font-size:15px">
+							<tr font-size="15px">
+								<td style="text-align:center;width:3em" >名字
+								</td>
+								<td style="text-align:center;"><var>data_3</var>的數量
+								</td>
+							</tr>
+							<tr Bgcolor="#F0F0F0">
+								<td style="text-align:center">
+									<var>name_1</var>
+								</td>
+								<td id="grid11" style="text-align:left;">
+								</td>
+							</tr>
+							<tr>
+								<td style="text-align:center;">
+									<var>name_2</var>
+								</td>
+								<td id="grid12" style="text-align:left;">
+								</td>
+							</tr>
+						</table>
+						<div>
+							<p>
+								<var>name_1</var>有 <input type="text" id="textbox1" style="width:4em;height:1em;text-align:center;border:2px;color:red;border:1px solid #E0E0E0;" /> <var>fruitflower</var><var>data_3</var>；
+								<br />
+								<var>name_2</var>有 <input type="text" id="textbox2" style="width:4em;height:1em;text-align:center;border:2px;color:red;border:1px solid #E0E0E0;" /> <var>fruitflower</var><var>data_3</var>；
+							</p>
+						</div>
+						<div>
+							<form style="font-size:15px">
+								誰擁有的<var>data_3</var>多呢？
+								<br />
+								<input type="radio" id="pick_1" name="name" value="xiaohua" /> <var>name_1</var>
+								<br />
+								<input type="radio" id="pick_2" name="name" value="xiaolin" /> <var>name_2</var>
+							</form>
+						</div>
+					</p>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>在方框裏寫出正確的數量並選擇花多的人</p>
+					<div class="sol" data-type="custom">
+                        <div class="guess">[[elem1],[data_1,data_2],["textbox1","textbox2"]]
+                        </div>
+                        <div class="validator-function">
+                            if(document.getElementById(guess[0][0]).checked==false)
+                                return false;
+                            if(document.getElementById(guess[2][0]).value!=guess[1][0]||document.getElementById(guess[2][1]).value!=guess[1][1])
+                                return false;
+                            return true;
+                        </div>
+                    </div>
+				</div>
+				<div class="hints">
+					<p><var>name_1</var>有 <code class="hint_pink"><var>data_1</var></code> <var>fruitflower</var><var>data_3</var></p>
+					<p><var>name_2</var>有 <code class="hint_blue"><var>data_2</var></code> <var>fruitflower</var><var>data_3</var>，</p>
+					<p><var>data_1&gt;data_2? "<var>name_1</var>":"<var>name_2</var>"</var>的<var>data_3</var>比較多；因為 <code class="hint_pink"><var>data_1</var></code>
+					 比 <code class="hint_blue"><var>data_2</var></code><var>data_1&lt;data_2? " 小":" 大"</var>。</p> 
+				</div>
+			</div>
+		</div>
+    </div>
+</body>
+</html>
+
+
