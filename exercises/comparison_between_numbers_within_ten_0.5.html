@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>10以內的數，兩兩比較大小</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		table.nLimit{margin:0px ;border:0px }
+		table.nLimit td { border: 0px solid #AAA; }
+		table.nLimit td { padding: 1px; vertical-align:middle;}
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+        .img_td{text-align:center;width:30px;}
+        .bordered {border: 1px solid #DBDFE6;background-color:#FFFFFF;height:25px;}
+	</style>
+</head>
+<script type="text/javascript">
+    function loadImg(elem, url, count, width) {
+        var loimg = document.getElementById(elem);
+        var inner = "";
+        for (var i = 1; i <= count; i++) {
+            inner += "<img id=\"image" + elem + i + "\" width=" + width + ">";
+        }
+        loimg.innerHTML += inner;
+        for (var j = 1; j <= count; j++) {
+            document.getElementById("image" + elem + j).src = url;
+        }
+    }
+    function isIn(array, elem) {
+        for (var v in array) {
+            if (elem == array[v])
+                return true;
+        }
+        return false;
+    }
+</script>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars">
+                    <var id="data">
+                        (function(){
+                            var count=new Array()
+                            for(i=0;i&lt;1;i++){
+                                count[i*2] = randRange(3, 7);
+                                count[i*2+1] = count[i*2]+randFromArray([-2, -1, 1, 2]);
+                            }
+                            var kind=new Array(10);
+                            var path=new Array(8);
+                            for(i=0;i&lt;10;i++)
+                                kind[i]=0;
+                            var n1=0;
+							while(n1&lt;10)
+							{
+								var v=randRange(1,10);
+								if(isIn(kind,v))
+									continue;
+								kind[n1]=v;
+								n1++;
+							}
+                            for(i=0;i&lt;1;i++)
+                            {   
+                                switch(kind[i])
+                                {
+                                    case 1:path[i]="apple_1.png";break;
+                                    case 2:path[i]="papaya_1.png";break;
+                                    case 3:path[i]="guava_1.png";break;
+                                    case 4:path[i]="cantaloupe_1.png";break;
+                                    case 5:path[i]="pineapple_1.png";break;
+                                    case 6:path[i]="watermelon_1.png";break;
+                                    case 7:path[i]="lemon_1.png";break;
+                                    case 8:path[i]="banana_1.png";break;
+                                    case 9:path[i]="strawberry_1.png";break;
+                                    case 10:path[i]="cherry_1.png";break;
+                                }
+                            }
+                            loadImg("grid11",Khan.urlBase+"images/"+path[0],count[0],"34%");
+                            loadImg("grid12",Khan.urlBase+"images/"+path[0],count[1],"34%");
+                            
+                            return count;
+                        })()
+                    </var>
+                    <var id="elem1">data[0]>data[1]? "checkbox1":"checkbox2"</var>
+                </div>
+                <div class="question">
+                    <p class="problem">
+                        <p>比比看，多的在 <input type="text" readonly="true" class="img_td"> 打 <code>\surd</code></p>
+                    </p>
+					<table width="100%" style="text-align:center;">
+                        <tr height="100px">
+                            <td id="grid11" style="width:50%;vertical-align: middle;border:#DBDFE6 solid 2px;" width="50%"></td>
+                            <td id="grid12" style="width:50%;vertical-align: middle;border:#DBDFE6 solid 2px;" width="50%"></td>
+                        </tr>
+						<tr align="center" style="border-top:#DBDFE6 solid 2px;">
+							<td style="border:#DBDFE6 solid 2px;"><div id="in1" class="img_td bordered" onclick="$('#in2').text('');$('#in1').text('√');$('#in1').css('font-family',' MathJax_Main');"></div></td>
+							<td style="border:#DBDFE6 solid 2px;"><div id="in2" class="img_td bordered" onclick="$('#in1').text('');$('#in2').text('√');$('#in2').css('font-family',' MathJax_Main');"></div></td>
+						</tr>
+                    </table>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <div class="sol" data-type="custom">
+                        <div class="guess">[$('#in1').text(),$('#in2').text()]</div>
+                        <div class="validator-function">
+							if(guess[0]==""&&guess[1]==""){return "";}
+                            return data[0] &gt; data[1] ? guess[0] != "":guess[1] != "";
+                        </div>
+                    </div>
+					<p>多的在方框裡打√</p>
+                </div>
+				<div class="hints">
+					<p>左邊有 <code class="hint_blue"><var>data[0]</var></code> 個，右邊有 <code class="hint_blue"><var>data[1]</var></code> 個，
+					<span class="hint_pink"><var>data[0]&gt;data[1]? "左":"右"</var></span> 邊比較多；</p> 
+				</div>
+            </div>
+			<div id="case2">
+				<div class="vars">
+					<var id="data">
+						(function(){
+                            var count=new Array()
+                            for(i=0;i&lt;1;i++){
+                                count[i*2] = randRange(3, 7);
+                                count[i*2+1] = count[i*2]+randFromArray([-2, -1, 1, 2]);
+                            }
+                            var kind=new Array(1);
+                            var path=new Array(8);
+                            for(i=0;i&lt;1;i++)
+                                kind[i]=0;
+                            var n1=0;
+							while(n1&lt;1)
+							{
+								var v=randRange(1,3);
+								if(isIn(kind,v))
+									continue;
+								kind[n1]=v;
+								n1++;
+							}
+							var rename=new Array(1);
+                            for(i=0;i&lt;1;i++)
+                            {   
+                                switch(kind[i])
+                                {
+                                    case 1:path[i]="compare_flower.png";rename[i]="花";break;
+                                    case 2:path[i]="compare_apple.png";rename[i]="蘋果";break;
+									case 3:path[i]="compare_banana.png";rename[i]="香蕉";break;
+                                }
+                            }
+                            loadImg("grid11",Khan.urlBase+"images/"+path[0],count[0],"10%");
+                            loadImg("grid12",Khan.urlBase+"images/"+path[0],count[1],"10%");
+                            
+                            return [count,rename];
+                        })()
+					</var>
+					<var id="name_1">randFromArray(["小華","小明","小紅"])</var>
+					<var id="name_2">randFromArray(["小王","小倩","小林"])</var>
+					<var id="fruitflower">
+						(function(){
+							if(data[1]=="花"){
+								return "朵";
+							}
+							else{
+								return "個";
+							}
+						})()
+					</var>
+					<var id="elem1">data[0][0]>data[0][1]? "pick_1":"pick_2"</var>
+				</div>
+				<div class="question" width="100%">
+                    <p class="problem">
+						<table class="nLimit" width="100%" style="padding-top:2px;valign:middle;font-size:15px">
+							<tr font-size="15px">
+								<td style="text-align:center;width:3em" >名字
+								</td>
+								<td style="text-align:center"><var>data[1]</var>的數量
+								</td>
+							</tr>
+							<tr Bgcolor="#F0F0F0">
+								<td style="text-align:center">
+									<var>name_1</var>
+								</td>
+								<td id="grid11" style="text-align:center;">
+								</td>
+							</tr>
+							<tr>
+								<td style="text-align:center;">
+									<var>name_2</var>
+								</td>
+								<td id="grid12" style="text-align:center;">
+								</td>
+							</tr>
+						</table>
+						<div>
+							<p>
+								<var>name_1</var>有 <input type="text" id="textbox1" style="width:4em;height:1em;text-align:center;border:2px;color:red;border:1px solid #E0E0E0;" /> <var>fruitflower</var><var>data[1]</var>；
+								<br />
+								<var>name_2</var>有 <input type="text" id="textbox2" style="width:4em;height:1em;text-align:center;border:2px;color:red;border:1px solid #E0E0E0;" /> <var>fruitflower</var><var>data[1]</var>；
+							</p>
+						</div>
+						<div>
+							<form style="font-size:15px">
+								誰擁有的<var>data[1]</var>多呢？
+								<br />
+								<input type="radio" id="pick_1" name="name" value="xiaohua" /><span  onclick="$('#pick_1').attr('checked','checked')"> <var>name_1</var></span>
+								<br />
+								<input type="radio" id="pick_2" name="name" value="xiaolin" /><span  onclick="$('#pick_2').attr('checked','checked')"> <var>name_2</var></span>
+							</form>
+						</div>
+					</p>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>在方框裏填入正確的數量並選擇<var>data[1]</var>多的人</p>
+					<div class="sol" data-type="custom">
+                        <div class="guess">[[elem1],[data[0][0],data[0][1]],["textbox1","textbox2"]]
+                        </div>
+                        <div class="validator-function">
+							if(document.getElementById(guess[2][0]).value=="" || document.getElementById(guess[2][1]).value==""){return "";}
+							if(document.getElementById("pick_1").checked==false && document.getElementById("pick_2").checked==false){return "";}
+                            if(document.getElementById(guess[0][0]).checked==false)
+                                return false;
+                            if(document.getElementById(guess[2][0]).value!=guess[1][0]||document.getElementById(guess[2][1]).value!=guess[1][1])
+                                return false;
+                            return true;
+                        </div>
+                    </div>
+				</div>
+				<div class="hints">
+					<p><var>name_1</var>有 <code class="hint_pink"><var>data[0][0]</var></code> <var>fruitflower</var><var>data[1]</var></p>
+					<p><var>name_2</var>有 <code class="hint_blue"><var>data[0][1]</var></code> <var>fruitflower</var><var>data[1]</var>，</p>
+					<p><var>data[0][0]&gt;data[0][1]? "<var>name_1</var>":"<var>name_2</var>"</var>的<var>data[1]</var>比較多；因為 <code class="hint_pink"><var>data[0][0]</var></code>
+					 比 <code class="hint_blue"><var>data[0][1]</var></code><var>data[0][0]&lt;data[0][1]? " 小":" 大"</var>。</p> 
+				</div>
+			</div>
+		</div>
+    </div>
+</body>
+</html>
+
+
