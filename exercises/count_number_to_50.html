@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers graphie-geometry math-format interactive triangle-congruence">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>數到50</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+		.input_style{width:24px;height:20px;text-align:center;font-size: 75%}
+		.margin_style{margin: 5px 1px 5px 1px}
+        </style>
+<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+		function chg2(num,quesMin,quesMax,showIndex){
+		    var ansNums = KhanUtil.randRange(num-quesMax,num-quesMin);
+			var arr = KhanUtil.randRangeUnique(1,num,ansNums);
+			for(var i = 0;i<=ansNums-1;i++){
+			    document.getElementById("t_"+arr[i]).style.display="none";
+			}
+			document.getElementById("t_"+showIndex).style.display="block";
+			return [num-ansNums,arr];
+		}
+		function chg3(num){
+			document.getElementById(num).value="";
+			return num;
+		}
+		function chg4(num1,num2,num3){
+			var randNum = KhanUtil.randRange(1,3);
+			if(randNum == 1){
+				document.getElementById("c_1").value=num1;
+				document.getElementById("c_2").value=num2;
+				document.getElementById("c_3").value=num3;
+				return [num1,num2,num3];
+			}
+			if(randNum == 2){
+				document.getElementById("c_1").value=num2;
+				document.getElementById("c_2").value=num1;
+				document.getElementById("c_3").value=num3;
+				return [num2,num1,num3];
+			}
+			if(randNum == 3){
+				document.getElementById("c_1").value=num2;
+				document.getElementById("c_2").value=num3;
+				document.getElementById("c_3").value=num1;
+				return [num2,num3,num1];
+			}
+		}
+	</script>
+
+
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+            <div class="vars">
+				<var id="J">randRange(1,10)</var>
+				<var id="result">chg2(10,3,3,J)</var>
+				<var id="test">(function(){Khan.scratchpad.disable();})()</var>
+            </div>
+            <p class="question">讓我們 <code>5</code> 個 <code>5</code> 個一數，數到 <code>50</code></p>
+			<div class="problem">			
+				<p>
+					<code class="hint_green" data-if="J!=1">5，</code><code data-if="J==1">\underline{\enspace\enspace\enspace}，</code>
+					<code class="hint_pink" data-if="J!=2">10，</code><code data-if="J==2">\underline{\enspace\enspace\enspace}，</code>
+					<code class="hint_blue" data-if="J!=3">15，</code><code data-if="J==3">\underline{\enspace\enspace\enspace}，</code>
+					<code class="hint_green" data-if="J!=4">20，</code><code data-if="J==4">\underline{\enspace\enspace\enspace}，</code>
+					<code class="hint_pink" data-if="J!=5">25，</code><code data-if="J==5">\underline{\enspace\enspace\enspace}，</code>
+					<code class="hint_blue" data-if="J!=6">30，</code><code data-if="J==6">\underline{\enspace\enspace\enspace}，</code>
+					<code class="hint_green" data-if="J!=7">35，</code><code data-if="J==7">\underline{\enspace\enspace\enspace}，</code>
+					<code class="hint_pink" data-if="J!=8">40，</code><code data-if="J==8">\underline{\enspace\enspace\enspace}，</code>
+					<code class="hint_blue" data-if="J!=9">45，</code><code data-if="J==9">\underline{\enspace\enspace\enspace}，</code>
+					<code class="hint_green" data-if="J!=10">50</code><code data-if="J==10">\underline{\enspace\enspace\enspace}</code>
+				</p>
+				<p>哪一個數字不見了？</p>
+				<p id="t_1"><input type="radio" name="count_numbers_1" id="c_1"><code>5</code></p>
+				<p id="t_2"><input type="radio" name="count_numbers_1" id="c_2"><code>10</code></p>
+				<p id="t_3"><input type="radio" name="count_numbers_1" id="c_3"><code>15</code></p>
+				<p id="t_4"><input type="radio" name="count_numbers_1" id="c_4"><code>20</code></p>
+				<p id="t_5"><input type="radio" name="count_numbers_1" id="c_5"><code>25</code></p>
+				<p id="t_6"><input type="radio" name="count_numbers_1" id="c_6"><code>30</code></p>
+				<p id="t_7"><input type="radio" name="count_numbers_1" id="c_7"><code>35</code></p>
+				<p id="t_8"><input type="radio" name="count_numbers_1" id="c_8"><code>40</code></p>
+				<p id="t_9"><input type="radio" name="count_numbers_1" id="c_9"><code>45</code></p>
+				<p id="t_10"><input type="radio" name="count_numbers_1" id="c_10"><code>50</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">1</div>
+				    <div class="validator-function">
+						if($("#c_1").attr("checked")!='checked' && $("#c_2").attr("checked")!='checked' && $("#c_3").attr("checked")!='checked'
+							&& $("#c_4").attr("checked")!='checked' && $("#c_5").attr("checked")!='checked' && $("#c_6").attr("checked")!='checked'
+							&& $("#c_7").attr("checked")!='checked' && $("#c_8").attr("checked")!='checked' && $("#c_9").attr("checked")!='checked'
+							&& $("#c_10").attr("checked")!='checked'
+						){
+							return "";
+						}
+						if(document.getElementById("c_"+J).checked){
+							return true;
+						}
+					</div>
+				</div>
+            </div>
+            <div class="hints">
+				<p><code class="hint_pink"><var>J*5</var></code> 這個數字不見了。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars" data-ensure="right_1!=wro_1&&right_1!=wro_1&&wro_1!=wro_2">
+				<var id="right_1">randRange(1,50)</var>
+				<var id="wro_1">randRange(1,50)</var>
+				<var id="wro_2">randRange(1,50)</var>
+				<var id="change">chg3(right_1)</var>
+				<var id="change2">chg4(right_1,wro_1,wro_2)</var>
+				<var id="test">(function(){Khan.scratchpad.disable();})()</var>
+            </div>
+            <p class="question">哪一個數字不見了？</p>
+			<div class="problem">
+			    <table class="margin_style">
+					<tr>
+						<td><input id="1" type="text" value="1" class="input_style" readonly></td>
+						<td><input id="2" type="text" value="2" class="input_style" readonly></td>
+						<td><input id="3" type="text" value="3" class="input_style" readonly></td>
+						<td><input id="4" type="text" value="4" class="input_style" readonly></td>
+						<td><input id="5" type="text" value="5" class="input_style" readonly></td>
+						<td><input id="6" type="text" value="6" class="input_style" readonly></td>
+						<td><input id="7" type="text" value="7" class="input_style" readonly></td>
+						<td><input id="8" type="text" value="8" class="input_style" readonly></td>
+						<td><input id="9" type="text" value="9" class="input_style" readonly></td>
+						<td><input id="10" type="text" value="10" class="input_style" readonly></td>
+					</tr>
+					<tr>
+						<td><input id="11" type="text" value="11" class="input_style" readonly></td>
+						<td><input id="12" type="text" value="12" class="input_style" readonly></td>
+						<td><input id="13" type="text" value="13" class="input_style" readonly></td>
+						<td><input id="14" type="text" value="14" class="input_style" readonly></td>
+						<td><input id="15" type="text" value="15" class="input_style" readonly></td>
+						<td><input id="16" type="text" value="16" class="input_style" readonly></td>
+						<td><input id="17" type="text" value="17" class="input_style" readonly></td>
+						<td><input id="18" type="text" value="18" class="input_style" readonly></td>
+						<td><input id="19" type="text" value="19" class="input_style" readonly></td>
+						<td><input id="20" type="text" value="20" class="input_style" readonly></td>
+					</tr>
+					<tr>
+						<td><input id="21" type="text" value="21" class="input_style" readonly></td>
+						<td><input id="22" type="text" value="22" class="input_style" readonly></td>
+						<td><input id="23" type="text" value="23" class="input_style" readonly></td>
+						<td><input id="24" type="text" value="24" class="input_style" readonly></td>
+						<td><input id="25" type="text" value="25" class="input_style" readonly></td>
+						<td><input id="26" type="text" value="26" class="input_style" readonly></td>
+						<td><input id="27" type="text" value="27" class="input_style" readonly></td>
+						<td><input id="28" type="text" value="28" class="input_style" readonly></td>
+						<td><input id="29" type="text" value="29" class="input_style" readonly></td>
+						<td><input id="30" type="text" value="30" class="input_style" readonly></td>
+					</tr>
+					<tr>
+						<td><input id="31" type="text" value="31" class="input_style" readonly></td>
+						<td><input id="32" type="text" value="32" class="input_style" readonly></td>
+						<td><input id="33" type="text" value="33" class="input_style" readonly></td>
+						<td><input id="34" type="text" value="34" class="input_style" readonly></td>
+						<td><input id="35" type="text" value="35" class="input_style" readonly></td>
+						<td><input id="36" type="text" value="36" class="input_style" readonly></td>
+						<td><input id="37" type="text" value="37" class="input_style" readonly></td>
+						<td><input id="38" type="text" value="38" class="input_style" readonly></td>
+						<td><input id="39" type="text" value="39" class="input_style" readonly></td>
+						<td><input id="40" type="text" value="40" class="input_style" readonly></td>
+					</tr>
+					<tr>
+						<td><input id="41" type="text" value="41" class="input_style" readonly></td>
+						<td><input id="42" type="text" value="42" class="input_style" readonly></td>
+						<td><input id="43" type="text" value="43" class="input_style" readonly></td>
+						<td><input id="44" type="text" value="44" class="input_style" readonly></td>
+						<td><input id="45" type="text" value="45" class="input_style" readonly></td>
+						<td><input id="46" type="text" value="46" class="input_style" readonly></td>
+						<td><input id="47" type="text" value="47" class="input_style" readonly></td>
+						<td><input id="48" type="text" value="48" class="input_style" readonly></td>
+						<td><input id="49" type="text" value="49" class="input_style" readonly></td>
+						<td><input id="50" type="text" value="50" class="input_style" readonly></td>
+					</tr>
+					
+				</table>
+				<p onclick="$('#c_1').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_1"><code><var>change2[0]</var></code></p>
+				<p onclick="$('#c_2').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_2"><code><var>change2[1]</var></code></p>
+				<p onclick="$('#c_3').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_3"><code><var>change2[2]</var></code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">1</div>
+				    <div class="validator-function">
+						if($("#c_1").attr("checked")!='checked' && $("#c_2").attr("checked")!='checked' && $("#c_3").attr("checked")!='checked'){
+							return "";
+						}
+						var bol1=false;
+						if((document.getElementById("c_1").checked&&document.getElementById("c_1").value==right_1)||(document.getElementById("c_2").checked&&document.getElementById("c_2").value==right_1)||(document.getElementById("c_3").checked&&document.getElementById("c_3").value==right_1))
+						{
+							bol1=true;
+						}
+						return bol1;
+					</div>
+				</div>
+            </div>
+            <div class="hints">
+				<p><code class="hint_pink"><var>right_1</var></code> 這個數字不見了。</p>
+            </div>
+        </div>
+		
+    </div>
+		
+	</div>
+	</div>
+</body>
+</html>
