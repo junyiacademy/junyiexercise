@@ -536,10 +536,6 @@ var Khan = (function() {
 
                 show: function() {
 
-                    if (actions.isVisible()) {
-                        return;
-                    }
-
                     var makeVisible = function() {
                         $("#workarea, #hintsarea").css("padding-left", 60);
                         $("#scratchpad").show();
@@ -576,8 +572,9 @@ var Khan = (function() {
 
                 clear: function() {
                     if (pad) {
-                        pad.clear();
+                        pad = null;
                     }
+                    $("#scratchpad div").children().remove();
                 },
 
                 resize: function() {
