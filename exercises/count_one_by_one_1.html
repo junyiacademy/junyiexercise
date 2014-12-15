@@ -9,1134 +9,37 @@
             width: 30px;
         }
 		.bordered {
-			border: 2px solid black;
+			width:40px; height:40px; background-color:#F8F8F8; border-radius:20px;border:2px solid #6495ED;vertical-align:middle;line-height:40px;
 		}
-	    .hanzi {
-	        line-height:1em; 
-            font-size:1.5em
-        }
-	    .pinyin {
-	        line-height:1em; 
-            font-size:0.5em;
-            vertical-align:middle;
-            padding:0px 0px 0px 0px;
-        }
-        .centered {
-	        text-align:center;
-            vertical-align:middle;
-        }
-	    .answerSelector {
-             width:25px;
-             height:25px;
-			 font-size:15px;
-             background-size:cover;
-			 background-position:
-             text-align:center;
-			 vertical-align:middle;
-             cursor:pointer;
-			 display:inline-block;
-        }
-		.inputbox{width:2em;height:2em;text-align:center;border:0px}
 	</style>
 </head>
-<script type="text/javascript">
-	function loadImg(elem,url,count,width)
-	{	
-		var loimg = document.getElementById(elem);
-		var inner = "";
-		for(var i=1;i<=count;i++){
-			inner+="<img id=\"image"+elem+i+"\" width="+width+">";
-		}
-		loimg.innerHTML+=inner;
-		for(var j=1;j<=count;j++){
-			document.getElementById("image"+elem+j).src=url;
-		}
-	}
-	function getOptions(num) {
-	    var offset;
-	    switch (num) {
-	        case 1: offset = 1;break;
-	        case 2: offset = randRange(0, 1);break;
-	        case 9: offset = -1; break;
-	        default: offset = randRange(-1, 1); break;
-	    }
-	    return [num - 1 + offset, num + offset, num + 1 + offset];
-	}
-	function isIn(array,elem)
-	{
-		for(var v in array)
-		{
-			if(elem==array[v])
-				return true;
-		}
-		return false;
-	}
-	function changeSelection_1(elemId,elemElse1,elemElse2, bgImg) {
-	    if (document.getElementById(elemId).style.backgroundImage == "")
-	        document.getElementById(elemId).style.backgroundImage = "url(" + Khan.urlBase + bgImg + ")";
-	        document.getElementById(elemElse1).style.backgroundImage = "";
-	        document.getElementById(elemElse2).style.backgroundImage = "";
-	}
-	function mouseOverChangeBgColor(elemID) {
-	    document.getElementById(elemID).style.backgroundColor = "gray";
-	}
-	function mouseOutChangeBgColor(elemID) {
-	    document.getElementById(elemID).style.backgroundColor = "white";
-	}
+<script type="text/javascript">	function change_color(id){		$('#ch_1').css("background-color","#F8F8F8");		$('#ch_2').css("background-color","#F8F8F8");		$('#ch_3').css("background-color","#F8F8F8");		$('#ch_'+id).css("background-color","red");	}
 </script>
 <body>
     <div class="exercise">
     <div class="problems">
 			<div id="case1">
-				<div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>
-					<var id="data">
-						(function()
-						{
-							var count=new Array(2);
-							var kind=new Array(2);
-							var picWidth=new Array(2);
-							for(i=0;i&lt;2;i++)
-							{
-								count[i]=0;
-								kind[i]=0;
-							}
-							var n1=0;
-							var n2=0;
-							while(n1&lt;2)
-							{
-								var v=randRange(1,10);
-								if(isIn(kind,v))
-									continue;
-								kind[n1]=v;
-								n1++;
-							}
-							while(n2&lt;2)
-							{
-								var v=randRange(1,9);
-								if(isIn(count,v))
-									continue;
-								count[n2]=v;
-								n2++;
-							}
-							for(i=0;i&lt;2;i++)
-							{
-								var elem="grid";
-								var path="images/";
-								switch(i)
-								{
-									case 0:elem+="11";break;
-									case 1:elem+="12";break;
-									case 2:elem+="21";break;
-									case 3:elem+="22";break;
-								}
-								switch(kind[i])
-								{
-									case 1:path+="apple_1.png";picWidth[i]="30%";break;
-								    case 2:path+="papaya_1.png";picWidth[i]="30%";break;
-								    case 3:path+="guava_1.png";picWidth[i]="30%";break;
-								    case 4:path+="cantaloupe_1.png";picWidth[i]="30%";break;
-								    case 5:path+="pineapple_1.png";picWidth[i]="30%";break;
-								    case 6:path+="watermelon_1.png";picWidth[i]="30%";break;
-								    case 7:path+="lemon_1.png";picWidth[i]="30%";break;
-								    case 8:path+="banana_1.png";picWidth[i]="30%";break;
-								    case 9:path+="strawberry_1.png";picWidth[i]="30%";break;
-								    case 10:path+="cherry_1.png";picWidth[i]="30%";break;
-									default:path+="圖片.jpg";picWidth[i]="30%";
-								}
-								loadImg(elem,Khan.urlBase+path,count[i],picWidth[i]);
-							}
-                            var options=new Array(2);
-                            var ansPosition=new Array(2)
-                            for(i=0;i&lt;2;i++){
-                                var offset=0;
-	                            switch (count[i]) {
-	                                case 1: offset = 1;break;
-	                                case 2: offset = randRange(0,1);break;
-	                                case 9: offset = -1; break;
-	                                default: offset = randRange(-1,1); break;
-	                            }
-                                switch(offset)
-                                {
-                                    case -1:ansPosition[i]=3;break;
-                                    case 0:ansPosition[i]=2;break;
-                                    case 1:ansPosition[i]=1;break;
-                                }
-                                options[i]=[count[i] - 1 + offset, count[i] + offset, count[i] + 1 + offset];
-                            }
-							$(".answerSelector").click(function(){$("#check").html("1");});
-							return [count,options,ansPosition];
-						})()
-					</var>
-					<var id="count1">data[0][0]</var>
-					<var id="count2">data[0][1]</var>
-                    <var id="options">data[1]</var>
-                    <var id="elem1">"option1_"+data[2][0]</var>
-                    <var id="elem2">"option2_"+data[2][1]</var>
-					<var id="check">0</var>
+				<div class="vars">					<var id="index">randRange(0,9)</var>					<var id="picture">["apple_1","papaya_1","guava_1","cantaloupe_1","pineapple_1","watermelon_1","lemon_1","banana_1","strawberry_1","cherry_1"][index]</var>					<var id="picture_name">["蘋果","木瓜","芭樂","香瓜","鳳梨","西瓜","檸檬","香蕉","草莓","櫻桃"][index]</var>					<var id="counts">randRange(3,9)</var>					<var id="set_pictures">					(function(){						for(var i = 0; i &lt; counts; i++){							$('#pictures').append("&lt;img src=\'"+Khan.urlBase+"images/"+picture+".png"+"\'&gt;");						}					})()</var>					<var id="ans">randRange(1,3)</var>					<var id="set_question">					(function(){						return [[counts,counts+1,counts+2],[counts-1,counts,counts+1],[counts-2,counts-1,counts]][ans-1];					})()</var>
 				</div>
-				<div class="question">
-					<p class="problem">
-						<table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">數</td>
-                                    <td class="pinyin">ㄕ<br />ㄨ<code>^ˇ</code></td>
-                                    <td class="hanzi">一</td>
-                                    <td class="pinyin">一<code>^ˋ</code></td>
-                                    <td class="hanzi">數</td>
-                                    <td class="pinyin">ㄕ<br />ㄨ<code>^ˇ</code></td>
-                                    <td class="hanzi">，</td>
-                                    <td class="hanzi">共</td>
-                                    <td class="pinyin">ㄍ<br />ㄨ<br />ㄥ<code>^ˋ</code></td>
-                                    <td class="hanzi">有</td>
-                                    <td class="pinyin">一<br />ㄡ<code>^ˇ</code></td>
-                                    <td class="hanzi">多</td>
-                                    <td class="pinyin">ㄉ<br />ㄨ<br />ㄛ<code></code></td>
-                                    <td class="hanzi">少</td>
-                                    <td class="pinyin">ㄕ<br />ㄠ<code>^ˇ</code></td>
-                                    <td class="hanzi">個</td>
-                                    <td class="pinyin">●<br />ㄍ<br />ㄛ</td>
-                                    <td class="hanzi">？</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="hanzi">把</td>
-                                    <td class="pinyin">ㄅ<br />ㄚ<code>^ˇ</code></td>
-                                    <td class="hanzi">正</td>
-                                    <td class="pinyin">ㄓ<br />ㄥ<code>^ˋ</code></td>
-                                    <td class="hanzi">確</td>
-                                    <td class="pinyin">ㄑ<br />ㄩ<br />ㄝ<code>^ˋ</code></td>
-                                    <td class="hanzi">的</td>
-                                    <td class="pinyin">●<br /> ㄉ<br />ㄛ</td>
-                                    <td class="hanzi">數</td>
-                                    <td class="pinyin">ㄕ<br />ㄨ<code>^ˋ</code></td>
-                                    <td class="hanzi">圈</td>
-                                    <td class="pinyin">ㄑ<br />ㄩ<br />ㄢ<code>^ˇ</code></td>
-                                    <td class="hanzi">起</td>
-                                    <td class="pinyin">ㄑ<br />一<code>^ˇ</code></td>
-                                    <td class="hanzi">來</td>
-                                    <td class="pinyin">ㄌ<br />ㄞ<code>^ˊ</code></td>
-                                    <td class="hanzi">。</td>
-                                </tr>
-                            </tbody>
-						</table>
-					</p>
-					<table class="bordered">	
-						<tr class="bordered">
-							<td class="bordered"  width="33%"><b style="text-align:left;">①</b></br>
-								<p id="grid11"style="text-align:center;"></p>
-                                <div style="text-align:center;">
-                                    <span id="option1_1" class="answerSelector" onclick="changeSelection_1(this.id,'option1_2','option1_3','images/circle.jpg')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;<var>options[0][0]</var>&nbsp;</span>
-                                    ,<span id="option1_2" class="answerSelector" onclick="changeSelection_1(this.id,'option1_1','option1_3','images/circle.jpg')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;<var>options[0][1]</var>&nbsp;</span>
-                                    ,<span id="option1_3" class="answerSelector" onclick="changeSelection_1(this.id,'option1_1','option1_2','images/circle.jpg')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;<var>options[0][2]</var>&nbsp;</span>
-                                </div>
-							</td>
-							<td class="bordered" width="33%"><b style="text-align:left;">②</b></br>
-								<p id="grid12"></p>
-                                <div style="text-align:center;">
-                                    <span id="option2_1" class="answerSelector" onclick="changeSelection_1(this.id,'option2_2','option2_3','images/circle.jpg')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;<var>options[1][0]</var>&nbsp;</span>
-                                    ,<span id="option2_2" class="answerSelector" onclick="changeSelection_1(this.id,'option2_1','option2_3','images/circle.jpg')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;<var>options[1][1]</var>&nbsp;</span>
-                                    ,<span id="option2_3" class="answerSelector" onclick="changeSelection_1(this.id,'option2_1','option2_2','images/circle.jpg')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;<var>options[1][2]</var>&nbsp;</span>
-                                </div>
-							</td>
-						</tr>					
-					</table>
-				</div>
+				<div class="question">					<p class="question">數一數，共有多少個<var>picture_name</var>？把正確的數圈起來。</p>
+				</div>				<div class="problem">					<hr>					<div id="pictures" style="text-align:center;"></div>					<hr>					<div style="text-align:center">						<table style="width:60%;margin:auto">							<tr>								<td><div class="bordered" id="ch_1" onClick="change_color(1);"><code><var>set_question[0]</var></code></div></td>								<td><div class="bordered" id="ch_2" onClick="change_color(2);"><code><var>set_question[1]</var></code></div></td>								<td><div class="bordered" id="ch_3" onClick="change_color(3);"><code><var>set_question[2]</var></code></div></td>							</tr>						</table>					</div>					<hr>				</div>
 				<div class="solution" data-type="multiple">
                     <div class="sol" data-type="custom">
-                        <div class="guess">
-							(function(){
-								if($("#check").html()!=0)
-									return 1;
-							})()
-                        </div>
-                        <div class="validator-function">
-                            if(document.getElementById(elem1).style.backgroundImage==""||document.getElementById(elem2).style.backgroundImage=="")
-                                return false;
-                            else
-                                return true;
+                        <div class="guess">$('#ch_'+ans).css("background-color")</div>
+                        <div class="validator-function">						if($('#ch_1').css("background-color")==$('#ch_2').css("background-color") && $('#ch_2').css("background-color")==$('#ch_3').css("background-color")){							return "";						}						var parts = guess.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);						delete(parts[0]);						for (var i = 1; i &lt;= 3; ++i) {							parts[i] = parseInt(parts[i]).toString(16);							if (parts[i].length == 1) parts[i] = '0' + parts[i];						}						var hexString = parts.join('');						return hexString == "ff0000";
                         </div>
                         <div class="example">把正確的數圈起來。</div>
                     </div>
                 </div>
 				<div class="hints">
-					<p>①&nbsp;<code class="hint_pink"><var>count1</var></code> 個</p>
-					<p>②&nbsp;<code class="hint_pink"><var>count2</var></code> 個</p>
+					<p>共有 <code class="hint_pink"><var>set_question[ans-1]</var></code> 個<var>picture_name</var>。</p>
 				</div>
 			</div>
 			
-		<div id="case2">
-			<div class="vars">				<var id="test">(function(){Khan.scratchpad.disable();})()</var>
-				<var id="data">
-					(function()
-					{
-						var count=new Array(2);
-						var kind=new Array(2);
-						var name=new Array(2);
-						var unit=new Array(2);
-						var picWidth=new Array(2);
-                        var zhuyin=new Array(new Array(),new Array());
-                        var shengdiao=new Array(new Array(),new Array());
-						for(i=0;i&lt;2;i++)
-						{
-							count[i]=0;
-							kind[i]=0;
-						}
-						var n1=0;
-						var n2=0;
-						while(n1&lt;2)
-						{
-							var v=randRange(1,10);
-							if(isIn(kind,v))
-								continue;
-							kind[n1]=v;
-							n1++;
-						}
-						while(n2&lt;2)
-						{
-							var v=randRange(1,9);
-							if(isIn(count,v))
-								continue;
-							count[n2]=v;
-							n2++;
-						}
-						for(i=0;i&lt;2;i++)
-						{
-							var elem="grid";
-							var elemQst="hanzi";
-                            var pyQst="pinyin";
-							var path="images/";
-							switch(i)
-							{
-								case 0:elem+="11";elemQst+="11";pyQst+="11";break;
-								case 1:elem+="12";elemQst+="12";pyQst+="12";break;
-								case 2:elem+="21";elemQst+="21";pyQst+="21";break;
-								case 3:elem+="22";elemQst+="22";pyQst+="22";break;
-							}
-							switch(kind[i])
-							{
-								case 1:path+="apple_1.png";picWidth[i]="30%";name[i]="蘋果";zhuyin[i][0]="ㄆ一ㄥ";zhuyin[i][1]="ㄍㄨㄛ";shengdiao[i][0]="ˊ";shengdiao[i][1]="ˇ";break;
-								case 2:path+="papaya_1.png";picWidth[i]="30%";name[i]="木瓜";zhuyin[i][0]="ㄇㄨ";zhuyin[i][1]="ㄍㄨㄚ";shengdiao[i][0]="ˋ";shengdiao[i][1]="";break;
-								case 3:path+="guava_1.png";picWidth[i]="30%";name[i]="芭樂";zhuyin[i][0]="ㄅㄚ";zhuyin[i][1]="ㄌㄜ";shengdiao[i][0]="";shengdiao[i][1]="ˋ";break;
-								case 4:path+="cantaloupe_1.png";picWidth[i]="30%";name[i]="香瓜";zhuyin[i][0]="ㄒ一ㄤ";zhuyin[i][1]="ㄍㄨㄚ";shengdiao[i][0]="";shengdiao[i][1]="";break;
-								case 5:path+="pineapple_1.png";picWidth[i]="30%";name[i]="鳳梨";zhuyin[i][0]="ㄈㄥ";zhuyin[i][1]="ㄌ一";shengdiao[i][0]="ˋ";shengdiao[i][1]="ˊ";break;
-								case 6:path+="watermelon_1.png";picWidth[i]="30%";name[i]="西瓜";zhuyin[i][0]="ㄒ一";zhuyin[i][1]="ㄍㄨㄚ";shengdiao[i][0]="";shengdiao[i][1]="";break;
-								case 7:path+="lemon_1.png";picWidth[i]="30%";name[i]="檸檬";zhuyin[i][0]="ㄋ一ㄥ";zhuyin[i][1]="ㄇㄥ";shengdiao[i][0]="ˊ";shengdiao[i][1]="ˊ";break;
-								case 8:path+="banana_1.png";picWidth[i]="30%";name[i]="香蕉";zhuyin[i][0]="ㄒ一ㄤ";zhuyin[i][1]="ㄐ一ㄠ";shengdiao[i][0]="";shengdiao[i][1]="";break;
-								case 9:path+="strawberry_1.png";picWidth[i]="30%";name[i]="草莓";zhuyin[i][0]="ㄘㄠ";zhuyin[i][1]="ㄇㄟ";shengdiao[i][0]="ˇ";shengdiao[i][1]="ˊ";break;
-								case 10:path+="cherry_1.png";picWidth[i]="30%";name[i]="櫻桃";zhuyin[i][0]="一ㄥ";zhuyin[i][1]="ㄊㄠ";shengdiao[i][0]="";shengdiao[i][1]="ˊ";break;
-								default:path+="圖片.jpg";picWidth[i]="20%";name[i]="圖片";unit[i]="張";
-							}
-							loadImg(elem,Khan.urlBase+path,count[i],picWidth[i]);
-						}
-						return [count,name,zhuyin,shengdiao];
-					})()
-				</var>
-				<var id="count1">data[0][0]</var>
-				<var id="count2">data[0][1]</var>
-				<var id="name1">data[1][0]</var>
-				<var id="name2">data[1][1]</var>
-                <var id="zhuyin">data[2]</var>
-                <var id="shengdiao">data[3]</var>
-				
-			</div>
-			<div class="question">
-				<p class="problem">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td class="hanzi">數</td>
-                                <td class="pinyin">ㄕ<br />ㄨ<code>^ˇ</code></td>
-                                <td class="hanzi">一</td>
-                                <td class="pinyin">一<code>^ˋ</code></td>
-                                <td class="hanzi">數</td>
-                                <td class="pinyin">ㄕ<br />ㄨ<code>^ˇ</code></td>
-                                <td class="hanzi">，</td>
-                                <td class="hanzi">寫</td>
-                                <td class="pinyin">ㄒ<br />一<br />ㄝ<code>^ˇ</code></td>
-                                <td class="hanzi">寫</td>
-                                <td class="pinyin">ㄒ<br />一<br />ㄝ<code>^ˇ</code></td>
-                                <td class="hanzi">看</td>
-                                <td class="pinyin">ㄎ<br />ㄢ<code>^ˋ</code></td>
-                                <td class="hanzi">，</td>
-                                <td class="hanzi">共</td>
-                                <td class="pinyin">ㄍ<br />ㄨ<br />ㄥ<code>^ˋ</code></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td class="hanzi">有</td>
-                                <td class="pinyin">一<br />ㄡ<code>^ˇ</code></td>
-                                <td class="hanzi">多</td>
-                                <td class="pinyin">ㄉ<br />ㄨ<br />ㄛ</td>
-                                <td class="hanzi">少</td>
-                                <td class="pinyin">ㄕ<br />ㄠ<code>ˇ</code></td>
-                                <td class="hanzi">個</td>
-                                <td class="pinyin">●<br />ㄍ<br />ㄜ</td>
-                                <td class="hanzi">？</td>
-                            </tr>
-                        </tbody>
-                    </table>
-				</p>
-				<table class="bordered">	
-					<tr class="bordered">
-						<td class="bordered" width="50%"><b>①</b></br>
-							<p id="grid11"></p>
-							<p id="qst11">
-                                <table>
-                                     <tbody>
-                                         <tr>
-                                            <td class="hanzi">共</td>
-                                            <td class="pinyin">ㄍ<br />ㄨ<br />ㄥ<code>^ˋ</code></td>
-                                            <td class="hanzi">有</td>
-                                            <td class="pinyin">一<br />ㄡ<code>^ˇ</code></td>
-                                            <td>(<input type="text" id="textbox1" class="inputbox" />)</td>
-                                            <td class="hanzi">個</td>
-                                            <td class="pinyin">●<br />ㄍ<br />ㄜ</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table>
-                                    <tbody>
-                                         <tr>
-                                            <td class="hanzi"><var>name1[0]</var></td>
-                                             <td class="pinyin">
-                                                 <div data-if="zhuyin[0][0].length==1">
-                                                    <var>zhuyin[0][0][0]</var>
-                                                    <code data-if="shengdiao[0][0]!=''">^<var>shengdiao[0][0]</var></code>
-                                                </div>
-                                                <div data-if="zhuyin[0][0].length==2">
-                                                    <var>zhuyin[0][0][0]</var><br />
-                                                    <var>zhuyin[0][0][1]</var>
-                                                    <code data-if="shengdiao[0][0]!=''">^<var>shengdiao[0][0]</var></code>
-                                                </div>
-                                                <div data-if="zhuyin[0][0].length==3">
-                                                    <var>zhuyin[0][0][0]</var><br />
-                                                    <var>zhuyin[0][0][1]</var><br />
-                                                    <var>zhuyin[0][0][2]</var>
-                                                    <code data-if="shengdiao[0][0]!=''">^<var>shengdiao[0][0]</var></code>
-                                                </div>
-                                             </td>
-                                             <td class="hanzi"><var>name1[1]</var></td>
-                                             <td class="pinyin">
-                                                 <div data-if="zhuyin[0][1].length==1">
-                                                    <var>zhuyin[0][1][0]</var>
-                                                    <code data-if="shengdiao[0][1]!=''">^<var>shengdiao[0][1]</var></code>
-                                                </div>
-                                                <div data-if="zhuyin[0][1].length==2">
-                                                    <var>zhuyin[0][1][0]</var><br />
-                                                    <var>zhuyin[0][1][1]</var>
-                                                    <code data-if="shengdiao[0][1]!=''">^<var>shengdiao[0][1]</var></code>
-                                                </div>
-                                                <div data-if="zhuyin[0][1].length==3">
-                                                    <var>zhuyin[0][1][0]</var><br />
-                                                    <var>zhuyin[0][1][1]</var><br />
-                                                    <var>zhuyin[0][1][2]</var>
-                                                    <code data-if="shengdiao[0][1]!=''">^<var>shengdiao[0][1]</var></code>
-                                                </div>
-                                             </td>
-                                         </tr>
-                                     </tbody>
-                                </table>
-							</p>
-						</td>
-						<td class="bordered" width="50%"><b>②</b></br>
-							<p id="grid12"></p>
-							<p id="qst12">
-                                <table>
-                                     <tbody>
-                                         <tr>
-                                            <td class="hanzi">共</td>
-                                            <td class="pinyin">ㄍ<br />ㄨ<br />ㄥ<code>^ˋ</code></td>
-                                            <td class="hanzi">有</td>
-                                            <td class="pinyin">一<br />ㄡ<code>^ˇ</code></td>
-                                            <td>(<input type="text" id="textbox2" class="inputbox" />)</td>
-                                            <td class="hanzi">個</td>
-                                            <td class="pinyin">●<br />ㄍ<br />ㄜ</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table>
-                                    <tbody>
-                                         <tr>
-                                            <td class="hanzi"><var>name2[0]</var></td>
-                                             <td class="pinyin">
-                                                 <div data-if="zhuyin[1][0].length==1">
-                                                    <var>zhuyin[1][0][0]</var>
-                                                    <code data-if="shengdiao[1][0]!=''">^<var>shengdiao[1][0]</var></code>
-                                                </div>
-                                                <div data-if="zhuyin[1][0].length==2">
-                                                    <var>zhuyin[1][0][0]</var><br />
-                                                    <var>zhuyin[1][0][1]</var>
-                                                    <code data-if="shengdiao[1][0]!=''">^<var>shengdiao[1][0]</var></code>
-                                                </div>
-                                                <div data-if="zhuyin[1][0].length==3">
-                                                    <var>zhuyin[1][0][0]</var><br />
-                                                    <var>zhuyin[1][0][1]</var><br />
-                                                    <var>zhuyin[1][0][2]</var>
-                                                    <code data-if="shengdiao[1][0]!=''">^<var>shengdiao[1][0]</var></code>
-                                                </div>
-                                             </td>
-                                             <td class="hanzi"><var>name2[1]</var></td>
-                                             <td class="pinyin">
-                                                 <div data-if="zhuyin[1][1].length==1">
-                                                    <var>zhuyin[1][1][0]</var>
-                                                    <code data-if="shengdiao[1][1]!=''">^<var>shengdiao[1][1]</var></code>
-                                                </div>
-                                                <div data-if="zhuyin[1][1].length==2">
-                                                    <var>zhuyin[1][1][0]</var><br />
-                                                    <var>zhuyin[1][1][1]</var>
-                                                    <code data-if="shengdiao[1][1]!=''">^<var>shengdiao[1][1]</var></code>
-                                                </div>
-                                                <div data-if="zhuyin[1][1].length==3">
-                                                    <var>zhuyin[1][1][0]</var><br />
-                                                    <var>zhuyin[1][1][1]</var><br />
-                                                    <var>zhuyin[1][1][2]</var>
-                                                    <code data-if="shengdiao[1][1]!=''">^<var>shengdiao[1][1]</var></code>
-                                                </div>
-                                             </td>
-                                         </tr>
-                                     </tbody>
-                                </table>
-							</p>
-						</td>
-					</tr>					
-				</table>
-			</div>	
-			<div class="solution" data-type="multiple">
-				<div class="sol" data-type="custom">
-                     <div class="guess">
-						(function(){
-							var check=false;
-							$(".inputbox").each(function(){
-								if($(this).val()!="")
-									check=true;
-							});
-							if(check)
-								return 1;
-						})()
-                    </div>
-                    <div class="validator-function">
-                        if(document.getElementById("textbox1").value!=count1||document.getElementById("textbox2").value!=count2)
-                            return false;
-                        else
-                            return true;
-                    </div>
-                    <div class="example">認為正確的在選擇框裏面打√</div>
-                </div>
-				<p class="example">整數，例：<code>3</code></p>
-			</div>
-			<div class="hints">
-					<p>①&nbsp;<code class="hint_pink"><var>count1</var></code> 個</p>
-					<p>②&nbsp;<code class="hint_pink"><var>count2</var></code> 個</p>
-				</div>
-		</div>
-		<div id="case3">
-			<div class="vars">				<var id="test">(function(){Khan.scratchpad.disable();})()</var>
-				<var id="data">
-					(function()
-					{
-						var count=new Array(4);
-                        var count2=1;
-						var kind=new Array(4);
-                        var combineType=new Array(4);
-                        var picWidth=new Array(4);
-                        for(i=0;i&lt;4;i++)
-						{
-							count[i]=0;
-							kind[i]=0;
-						}
-						var n1=0;
-						while(n1&lt;4)
-						{
-							var v=randRange(1,10);
-							if(isIn(kind,v))
-								continue;
-							kind[n1]=v;
-							n1++;
-						}
-                        count[0]=randRange(1,9);
-                        count[1]=randRange(1,5);
-                        count[2]=randRange(1,2);
-                        count[3]=randRange(1,2);
-                        picWidth[0]="32%";
-                        picWidth[1]="50%";
-                        picWidth[2]="50%";
-                        picWidth[3]="50%";
-						var path="images/";
-						var path2="images/";						
-						switch(kind[2])
-						{
-							case 1:path+="apple_4.png"; break;
-							case 2:path+="papaya_4.png"; break;
-							case 3:path+="guava_4.png"; break;
-							case 4:path+="cantaloupe_4.png"; break;
-							case 5:path+="pineapple_4.png"; break;
-							case 6:path+="watermelon_4.png"; break;
-							case 7:path+="lemon_4.png"; break;
-							case 8:path+="banana_4.png"; break;
-							case 9:path+="strawberry_4.png"; break;
-							case 10:path+="cherry_4.png"; break;
-							default:path+="圖片.jpg";
-						}
-						loadImg("grid12",Khan.urlBase+path,count[2],picWidth[2]);
-						path="images/";
-						switch(kind[3])
-						{
-							case 1:path+="apple_4.png";path2+="apple_2.png"; break;
-							case 2:path+="papaya_4.png";path2+="papaya_2.png"; break;
-							case 3:path+="guava_4.png";path2+="guava_2.png"; break;
-							case 4:path+="cantaloupe_4.png";path2+="cantaloupe_2.png"; break;
-							case 5:path+="pineapple_4.png";path2+="pineapple_2.png"; break;
-							case 6:path+="watermelon_4.png";path2+="watermelon_2.png"; break;
-							case 7:path+="lemon_4.png";path2+="lemon_2.png"; break;
-							case 8:path+="banana_4.png";path2+="banana_2.png"; break;
-							case 9:path+="strawberry_4.png";path2+="strawberry_2.png"; break;
-							case 10:path+="cherry_4.png";path2+="cherry_2.png"; break;
-							default:path+="圖片.jpg";
-						}
-						loadImg("grid111",Khan.urlBase+path,count[3],picWidth[3]);
-						loadImg("grid112",Khan.urlBase+path2,count2,"40%");
-                        count2=new Array(4);
-                        count2[0]=count[3]*4+2;
-                        count2[1]=count[2]*4;
-                        count2[2]=count[1]*2;
-                        count2[3]=count[0];
-                        var options=new Array(4);
-                            var ansPosition=new Array(4)
-                            for(i=0;i&lt;4;i++){
-                                var offset=0;
-	                            switch (count2[i]) {
-	                                case 1: offset = 1;break;
-	                                case 2: offset = randRange(0,1);break;
-	                                case 9: offset = -1; break;
-                                    case 10: offset = -1;break;
-	                                default: offset = randRange(-1,1); break;
-	                            }
-                                switch(offset)
-                                {
-                                    case -1:ansPosition[i]=3;break;
-                                    case 0:ansPosition[i]=2;break;
-                                    case 1:ansPosition[i]=1;break;
-                                }
-                                options[i]=[count2[i] - 1 + offset, count2[i] + offset, count2[i] + 1 + offset];
-                            }
-							$(".answerSelector").click(function(){$("#check").html("1");});
+		<div id="case2">				<div class="vars">					<var id="index">randRange(0,9)</var>					<var id="picture">["apple_1","papaya_1","guava_1","cantaloupe_1","pineapple_1","watermelon_1","lemon_1","banana_1","strawberry_1","cherry_1"][index]</var>					<var id="picture_name">["蘋果","木瓜","芭樂","香瓜","鳳梨","西瓜","檸檬","香蕉","草莓","櫻桃"][index]</var>					<var id="counts">randRange(3,9)</var>					<var id="set_pictures">					(function(){						for(var i = 0; i &lt; counts; i++){							$('#pictures').append("&lt;img src=\'"+Khan.urlBase+"images/"+picture+".png"+"\'&gt;");						}					})()</var>				</div>				<div class="question">					<p class="question">數一數，填填看，共有多少個<var>picture_name</var>？</p>				</div>				<div class="problem">					<hr>					<div id="pictures" style="text-align:center;"></div>					<hr>				</div>				<div class="solution" data-type="multiple">                    共有 <span class="sol" data-forms="integer"><var>counts</var></span> 個<var>picture_name</var>                    <p class="example">整數，例：<code>6</code></p>                </div>				<div class="hints">					<p>共有 <code class="hint_pink"><var>counts</var></code> 個<var>picture_name</var>。</p>				</div>		</div>
+		<div id="case3">				<div class="vars">					<var id="index">randRange(0,9)</var>					<var id="picture">["apple_4","papaya_4","guava_4","cantaloupe_4","pineapple_4","watermelon_4","lemon_4","banana_4","strawberry_4","cherry_4"][index]</var>					<var id="picture_name">["蘋果","木瓜","芭樂","香瓜","鳳梨","西瓜","檸檬","香蕉","草莓","櫻桃"][index]</var>					<var id="counts">randRange(1,2)</var>					<var id="set_pictures">					(function(){						for(var i = 0; i &lt; counts; i++){							$('#pictures').append("&lt;img src=\'"+Khan.urlBase+"images/"+picture+".png"+"\'&gt;");						}					})()</var>					<var id="ans">randRange(1,3)</var>					<var id="set_question">					(function(){						return [[counts*4,counts*4+4,counts*4+8],[counts*4-2,counts*4,counts*4+2],[counts*4-2,counts*4-1,counts*4]][ans-1];					})()</var>				</div>				<div class="question">					<p class="question">數一數，共有多少個<var>picture_name</var>？把正確的數圈起來。</p>				</div>				<div class="problem">					<hr>					<div id="pictures" style="text-align:center;"></div>					<hr>					<div style="text-align:center">						<table style="width:60%;margin:auto">							<tr>								<td><div class="bordered" id="ch_1" onClick="change_color(1);"><code><var>set_question[0]</var></code></div></td>								<td><div class="bordered" id="ch_2" onClick="change_color(2);"><code><var>set_question[1]</var></code></div></td>								<td><div class="bordered" id="ch_3" onClick="change_color(3);"><code><var>set_question[2]</var></code></div></td>							</tr>						</table>					</div>					<hr>				</div>				<div class="solution" data-type="multiple">                    <div class="sol" data-type="custom">                        <div class="guess">$('#ch_'+ans).css("background-color")</div>                        <div class="validator-function">						if($('#ch_1').css("background-color")==$('#ch_2').css("background-color") && $('#ch_2').css("background-color")==$('#ch_3').css("background-color")){							return "";						}						var parts = guess.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);						delete(parts[0]);						for (var i = 1; i &lt;= 3; ++i) {							parts[i] = parseInt(parts[i]).toString(16);							if (parts[i].length == 1) parts[i] = '0' + parts[i];						}						var hexString = parts.join('');						return hexString == "ff0000";                        </div>                        <div class="example">把正確的數圈起來。</div>                    </div>                </div>				<div class="hints">					<p>共有 <code class="hint_pink"><var>set_question[ans-1]</var></code> 個<var>picture_name</var>。</p>				</div>			</div>
 
-                        return [count[3]*4+2,count[2]*4,count[1]*2,count[0],options,ansPosition];
-					}
-					)()
-				</var>
-                <var id="count1">data[0]</var>
-                <var id="count2">data[1]</var>
-                <var id="options">data[4]</var>
-                <var id="elem1">"option1_"+data[5][0]</var>
-                <var id="elem2">"option2_"+data[5][1]</var>
-				<var id="check">0</var>
-			</div>
-            <div class="question">
-				<p class="problem">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td class="hanzi">數</td>
-                                <td class="pinyin">ㄕ<br />ㄨ<code>^ˇ</code></td>
-                                <td class="hanzi">一</td>
-                                <td class="pinyin">一<code>^ˋ</code></td>
-                                <td class="hanzi">數</td>
-                                <td class="pinyin">ㄕ<br />ㄨ<code>^ˇ</code></td>
-                                <td class="hanzi">，</td>
-                                <td class="hanzi">共</td>
-                                <td class="pinyin">ㄍ<br />ㄨ<br />ㄥ<code>^ˋ</code></td>
-                                <td class="hanzi">有</td>
-                                <td class="pinyin">一<br />ㄡ<code>^ˇ</code></td>
-                                <td class="hanzi">多</td>
-                                <td class="pinyin">ㄉ<br />ㄨ<br />ㄛ</td>
-                                <td class="hanzi">少</td>
-                                <td class="pinyin">ㄕ<br />ㄠ<code>^ˇ</code></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td class="hanzi">個</td>
-                                <td class="pinyin">●<br />ㄍ<br />ㄜ<code></code></td>
-                                <td class="hanzi">，</td>
-                                <td class="hanzi">把</td>
-                                <td class="pinyin">ㄅ<br />ㄚ<code>^ˇ</code></td>
-                                <td class="hanzi">正</td>
-                                <td class="pinyin">ㄓ<br />ㄥ<code>^ˋ</code></td>
-                                <td class="hanzi">確</td>
-                                <td class="pinyin">ㄑ<br />ㄩ<br />ㄝ<code>^ˋ</code></td>
-                                <td class="hanzi">的</td>
-                                <td class="pinyin">●<br />ㄉ<br />ㄜ</td>
-                                <td class="hanzi">數</td>
-                                <td class="pinyin">ㄕ<br />ㄨ<code>^ˋ</code></td>
-                                <td class="hanzi">圈</td>
-                                <td class="pinyin">ㄑ<br />ㄩ<br />ㄢ</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td class="hanzi">起</td>
-                                <td class="pinyin">ㄑ<br />一<code>^ˇ</code></td>
-                                <td class="hanzi">來</td>
-                                <td class="pinyin">ㄌ<br />ㄞ<code>^ˊ</code></td>
-                                <td class="hanzi">。</td>
-                            </tr>
-                        </tbody>
-                    </table>
-				</p>
-				<table class="bordered">	
-					<tr class="bordered">
-						<td class="bordered" width="25%">①</br>
-							<p id="grid111"></p>
-							<p id="grid112"></p>
-						</td>
-						<td class="bordered" width="25%">②</br>
-							<p id="grid12"></p>
-						</td>
-						</td>
-					</tr>
-                    <tr>
-                        <td class="bordered" style="text-align:center;">
-                            <span id="option1_1" class="answerSelector" onclick="changeSelection_1(this.id,'option1_2','option1_3','images/circle.jpg')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;<var>options[0][0]</var>&nbsp;</span>
-                            ,<span id="option1_2" class="answerSelector" onclick="changeSelection_1(this.id,'option1_1','option1_3','images/circle.jpg')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;<var>options[0][1]</var>&nbsp;</span>
-                            ,<span id="option1_3" class="answerSelector" onclick="changeSelection_1(this.id,'option1_1','option1_2','images/circle.jpg')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;<var>options[0][2]</var>&nbsp;</span>
-                        </td>
-                        <td class="bordered" style="text-align:center;">
-                            <span id="option2_1" class="answerSelector" onclick="changeSelection_1(this.id,'option2_2','option2_3','images/circle.jpg')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;<var>options[1][0]</var>&nbsp;</span>
-                            ,<span id="option2_2" class="answerSelector" onclick="changeSelection_1(this.id,'option2_1','option2_3','images/circle.jpg')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;<var>options[1][1]</var>&nbsp;</span>
-                            ,<span id="option2_3" class="answerSelector" onclick="changeSelection_1(this.id,'option2_1','option2_2','images/circle.jpg')" onmouseover="mouseOverChangeBgColor(this.id)" onmouseout="mouseOutChangeBgColor(this.id)">&nbsp;<var>options[1][2]</var>&nbsp;</span>
-                        </td>
-                    </tr>
-                    <tr class="bordered">
-                    </tr>
-				</table>
-			</div>
-			<div class = "solution" data-type="multiple">
-                <div class="sol" data-type="custom">
-                        <div class="guess">
-							(function(){
-								if($("#check").html()!=0)
-									return 1;
-							})()
-                        </div>
-                        <div class="validator-function">
-                            if(document.getElementById(elem1).style.backgroundImage==""||document.getElementById(elem2).style.backgroundImage=="")
-                                return false;
-                            else
-                                return true;
-                        </div>
-                        <div class="example">把正確的數圈起來。</div>
-                    </div>
-			</div>
-			<div class="hints">
-					<p>①&nbsp;<code class="hint_pink"><var>count1</var></code> 個</p>
-					<p>②&nbsp;<code class="hint_pink"><var>count2</var></code> 個</p>
-
-				</div>
-		</div>
-
-		<div id="case4">
-			<div class="vars">				<var id="test">(function(){Khan.scratchpad.disable();})()</var>
-				<var id="data">
-					(function()
-					{
-						var count=new Array(6); 
-						var kind=new Array(6);	
-						var name=new Array(6);	
-						var unit=new Array(6);	
-						var picWidth=new Array(6);	
-						var chCount=new Array(6);	
-                        var pinyin=new Array(new Array(),new Array(),new Array(),new Array(),new Array(),new Array());   
-                        var yindiao=new Array(new Array(),new Array(),new Array(),new Array(),new Array(),new Array());     
-						for(i=0;i&lt;6;i++)
-						{
-							count[i]=0;
-							kind[i]=0;
-						}
-						var n1=0;
-						var n2=0;
-						while(n1&lt;6)
-						{
-							var v=randRange(1,6);
-							if(isIn(kind,v))
-								continue;
-							kind[n1]=v;
-							n1++;
-						}
-						while(n2&lt;6)
-						{
-							var v=randRange(1,10);
-							if(isIn(count,v))
-								continue;
-							count[n2]=v;
-							n2++;
-						}
-						for(i=0;i&lt;6;i++)
-						{
-							switch(count[i])
-							{
-								case 1:chCount[i]="一";break;
-								case 2:chCount[i]="二";break;
-								case 3:chCount[i]="三";break;
-								case 4:chCount[i]="四";break;
-								case 5:chCount[i]="五";break;
-								case 6:chCount[i]="六";break;
-								case 7:chCount[i]="七";break;
-								case 8:chCount[i]="八";break;
-								case 9:chCount[i]="九";break;
-								case 10:chCount[i]="十";break;
-							}
-						}
-						for(i=0;i&lt;2;i++)
-						{
-							var elem="grid";
-							var elemQst="qst";
-							var path="images/";
-							switch(i)
-							{
-								case 0:elem+="11";elemQst+="11";break;
-								case 1:elem+="12";elemQst+="12";break;
-								case 2:elem+="21";elemQst+="21";break;
-								case 3:elem+="22";elemQst+="22";break;
-								case 4:elem+="31";elemQst+="31";break;
-								case 5:elem+="32";elemQst+="32";break;
-							}
-							switch(kind[i])
-							{
-								case 1:path+="frog.png";picWidth[i]="20%";name[i]="青蛙";unit[i]="隻";pinyin[i][0]="ㄓ";pinyin[i][1]="ㄑ一ㄥ";pinyin[i][2]="ㄨㄚ";yindiao[i][0]="";yindiao[i][1]="";yindiao[i][2]="";break;
-								case 2:path+="lollipop.png";picWidth[i]="25%";name[i]="棒棒糖";unit[i]="個";pinyin[i][0]="●ㄍㄜ";pinyin[i][1]="ㄅㄤ";pinyin[i][2]="ㄅㄤ";pinyin[i][3]="ㄊㄤ";yindiao[i][0]="";yindiao[i][1]="ˋ";yindiao[i][2]="ˋ";yindiao[i][3]="ˊ";break;
-								case 3:path+="chocolate.png";picWidth[i]="20%";name[i]="巧克力";unit[i]="顆";pinyin[i][0]="ㄎㄜ";pinyin[i][1]="ㄑ一ㄠ";pinyin[i][2]="ㄎㄜ";pinyin[i][3]="ㄌ一";yindiao[i][0]="";yindiao[i][1]="ˇ";yindiao[i][2]="ˋ";yindiao[i][3]="ˋ";break;
-								case 4:path+="milk.png";picWidth[i]="20%";name[i]="牛奶";unit[i]="瓶";pinyin[i][0]="ㄆ一ㄥ";pinyin[i][1]="ㄋ一ㄡ";pinyin[i][2]="ㄋㄞ";yindiao[i][0]="ˊ";yindiao[i][1]="ˊ";yindiao[i][2]="ˇ";break;
-								case 5:path+="hat.png";picWidth[i]="20%";name[i]="帽子";unit[i]="頂";pinyin[i][0]="ㄉ一ㄥ";pinyin[i][1]="ㄇㄠ";pinyin[i][2]="●ㄗ";yindiao[i][0]="ˇ";yindiao[i][1]="ˋ";yindiao[i][2]="";break;
-								case 6:path+="spanner.png";picWidth[i]="25%";name[i]="扳手";unit[i]="支";pinyin[i][0]="ㄓ";pinyin[i][1]="ㄅㄢ";pinyin[i][2]="ㄕㄡ";yindiao[i][0]="";yindiao[i][1]="";yindiao[i][2]="ˇ";break;
-								
-								default:path+="圖片.png";picWidth[i]="20%";name[i]="圖片";unit[i]="張";
-							}
-							loadImg(elem,Khan.urlBase+path,count[i],picWidth[i]);
-                            
-						}
-						return [count,chCount,unit,name,pinyin,yindiao];
-					})()
-				</var>
-				<var id="count1">data[0][0]</var>
-				<var id="count2">data[0][1]</var>
-				<var id="chCount1">data[1][0]</var>
-				<var id="chCount2">data[1][1]</var>
-                <var id="unit">data[2]</var>
-                <var id="hanzis">data[3]</var>
-                <var id="pinyins">data[4]</var>
-                <var id="yindiao">data[5]</var>
-			</div>
-			<div class="question">
-				<p class="problem">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td class="hanzi">數</td>
-                                <td class="pinyin">ㄕ<br />ㄨ<code>^ˇ</code></td>
-                                <td class="hanzi">一</td>
-                                <td class="pinyin">一<code>^ˋ</code></td>
-                                <td class="hanzi">數</td>
-                                <td class="pinyin">ㄕ<br />ㄨ<code>^ˇ</code></td>
-                                <td class="hanzi">，</td>
-                                <td class="hanzi">下</td>
-                                <td class="pinyin">ㄒ<br />一<br />ㄚ<code>^ˋ</code></td>
-                                <td class="hanzi">圖</td>
-                                <td class="pinyin">ㄊ<br />ㄨ<code>^ˊ</code></td>
-                                <td class="hanzi">中</td>
-                                <td class="pinyin">ㄓ<br />ㄨ<br />ㄥ</td>
-                                <td class="hanzi">各</td>
-                                <td class="pinyin">ㄍ<br />ㄜ<code>^ˋ</code></td>
-                                <td class="hanzi">有</td>
-                                <td class="pinyin">一<br />ㄡ<code>^ˇ</code></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td class="hanzi">多</td>
-                                <td class="pinyin">ㄉ<br />ㄨ<br />ㄛ</td>
-                                <td class="hanzi">少</td>
-                                <td class="pinyin">ㄕ<br />ㄠ<code>^ˇ</code></td>
-                                <td class="hanzi">個</td>
-                                <td class="pinyin">●<br />ㄍ<br />ㄜ<code></code></td>
-                                <td class="hanzi">，</td>
-                                <td class="hanzi">請</td>
-                                <td class="pinyin">ㄑ<br />一<br />ㄥ<code>^ˇ</code></td>
-                                <td class="hanzi">填</td>
-                                <td class="pinyin">ㄊ<br />一<br />ㄢ<code>^ˊ</code></td>
-                                <td class="hanzi">入</td>
-                                <td class="pinyin">ㄖ<br />ㄨ<code>^ˋ</code></td>																<td class="hanzi">數</td>                                <td class="pinyin">ㄕ<br />ㄨ<code>^ˋ</code></td>
-                                <td class="hanzi">字</td>
-                                <td class="pinyin">ㄗ<code>^ˋ</code></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td class="hanzi">與</td>
-                                <td class="pinyin">ㄩ<code>^ˇ</code></td>
-                               <td class="hanzi">國</td>                                <td class="pinyin">ㄍ<br />ㄨ<br />ㄛ<code>^ˊ</code></td>
-                                <td class="hanzi">字</td>
-                                <td class="pinyin">ㄗ<code>^ˋ</code></td>
-                                <td class="hanzi">。</td>
-                            </tr>
-                        </tbody>
-                    </table>
-				</p>
-				<table class="bordered">	
-					<tr class="bordered">
-						<td class="bordered" width="50%">①</br>
-							<p id="grid11"></p>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="hanzi">有</td>
-                                        <td class="pinyin">一<br />ㄡ<code>^ˇ</code></td>
-                                        <td class="pinyin"><input type="text" class="rightBottom" id="textbox1" style="width:2em;height:2em;text-align:center;border:2px solid black;color:red;" /></td>
-                                        <td class="hanzi"><var>unit[0]</var></td>
-                                        <td class="pinyin">
-                                            <div data-if="pinyins[0][0].length==1">
-                                                <var>pinyins[0][0][0]</var>
-                                                <code data-if="yindiao[0][0]!=''">^<var>yindiao[0][0]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[0][0].length==2">
-                                                <var>pinyins[0][0][0]</var><br />
-                                                <var>pinyins[0][0][1]</var>
-                                                <code data-if="yindiao[0][0]!=''">^<var>yindiao[0][0]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[0][0].length==3">
-                                                <var>pinyins[0][0][0]</var><br />
-                                                <var>pinyins[0][0][1]</var><br />
-                                                <var>pinyins[0][0][2]</var>
-                                                <code data-if="yindiao[0][0]!=''">^<var>yindiao[0][0]</var></code>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="hanzi"><var>hanzis[0][0]</var></td>
-                                        <td class="pinyin">
-                                            <div data-if="pinyins[0][1].length==1">
-                                                <var>pinyins[0][1][0]</var>
-                                                <code data-if="yindiao[0][1]!=''">^<var>yindiao[0][1]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[0][1].length==2">
-                                                <var>pinyins[0][1][0]</var><br />
-                                                <var>pinyins[0][1][1]</var>
-                                                <code data-if="yindiao[0][1]!=''">^<var>yindiao[0][1]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[0][1].length==3">
-                                                <var>pinyins[0][1][0]</var><br />
-                                                <var>pinyins[0][1][1]</var><br />
-                                                <var>pinyins[0][1][2]</var>
-                                                <code data-if="yindiao[0][1]!=''">^<var>yindiao[0][1]</var></code>
-                                            </div>
-                                        </td>
-                                        <td class="hanzi"><var>hanzis[0][1]</var></td>
-                                        <td class="pinyin">
-                                            <div data-if="pinyins[0][2].length==1">
-                                                <var>pinyins[0][2][0]</var>
-                                                <code data-if="yindiao[0][2]!=''">^<var>yindiao[0][2]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[0][2].length==2">
-                                                <var>pinyins[0][2][0]</var><br />
-                                                <var>pinyins[0][2][1]</var>
-                                                <code data-if="yindiao[0][2]!=''">^<var>yindiao[0][2]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[0][2].length==3">
-                                                <var>pinyins[0][2][0]</var><br />
-                                                <var>pinyins[0][2][1]</var><br />
-                                                <var>pinyins[0][2][2]</var>
-                                                <code data-if="yindiao[0][2]!=''">^<var>yindiao[0][2]</var></code>
-                                            </div>
-                                        </td>
-                                        <td data-if="hanzis[0].length>2" class="hanzi"><var>hanzis[0][2]</var></td>
-                                        <td data-if="hanzis[0].length>2" class="pinyin">
-                                            <div data-if="pinyins[0][3].length==1">
-                                                <var>pinyins[0][3][0]</var>
-                                                <code data-if="yindiao[0][3]!=''">^<var>yindiao[0][3]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[0][3].length==2">
-                                                <var>pinyins[0][3][0]</var><br />
-                                                <var>pinyins[0][3][1]</var>
-                                                <code data-if="yindiao[0][3]!=''">^<var>yindiao[0][3]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[0][3].length==3">
-                                                <var>pinyins[0][3][0]</var><br />
-                                                <var>pinyins[0][3][1]</var><br />
-                                                <var>pinyins[0][3][2]</var>
-                                                <code data-if="yindiao[0][3]!=''">^<var>yindiao[0][3]</var></code>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-							<table>
-                                <tbody>
-                                    <tr>
-                                        <td class="hanzi">寫</td>
-                                        <td class="pinyin">ㄒ<br />一<br />ㄝ<code>^ˇ</code></td>
-                                        <td class="hanzi">作</td>
-                                        <td class="pinyin">ㄗ<br />ㄨ<br />ㄛ<code>^ˋ</code></td>
-                                        <td>（<input type="text" id="textbox1_2" class="inputbox" />）</td>
-                                    </tr>
-                                </tbody>
-							</table>
-						</td>
-						<td class="bordered" width="50%">②</br>
-							<p id="grid12"></p>
-							<p id="qst12"></p>
-							 <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="hanzi">有</td>
-                                        <td class="pinyin">一<br />ㄡ<code>^ˇ</code></td>
-                                        <td style="font-size:3em"><input type="text" class="rightBottom" id="textbox2" style="width:2em;height:2em;text-align:center;border:2px solid black;color:red;" /></td>
-                                        <td class="hanzi"><var>unit[1]</var></td>
-                                        <td class="pinyin">
-                                            <div data-if="pinyins[1][0].length==1">
-                                                <var>pinyins[1][0][0]</var>
-                                                <code data-if="yindiao[1][0]!=''">^<var>yindiao[1][0]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[1][0].length==2">
-                                                <var>pinyins[1][0][0]</var><br />
-                                                <var>pinyins[1][0][1]</var>
-                                                <code data-if="yindiao[1][0]!=''">^<var>yindiao[1][0]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[1][0].length==3">
-                                                <var>pinyins[1][0][0]</var><br />
-                                                <var>pinyins[1][0][1]</var><br />
-                                                <var>pinyins[1][0][2]</var>
-                                                <code data-if="yindiao[1][0]!=''">^<var>yindiao[1][0]</var></code>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="hanzi"><var>hanzis[1][0]</var></td>
-                                        <td class="pinyin">
-                                            <div data-if="pinyins[1][1].length==1">
-                                                <var>pinyins[1][1][0]</var>
-                                                <code data-if="yindiao[1][1]!=''">^<var>yindiao[1][1]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[1][1].length==2">
-                                                <var>pinyins[1][1][0]</var><br />
-                                                <var>pinyins[1][1][1]</var>
-                                                <code data-if="yindiao[1][1]!=''">^<var>yindiao[1][1]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[1][1].length==3">
-                                                <var>pinyins[1][1][0]</var><br />
-                                                <var>pinyins[1][1][1]</var><br />
-                                                <var>pinyins[1][1][2]</var>
-                                                <code data-if="yindiao[1][1]!=''">^<var>yindiao[1][1]</var></code>
-                                            </div>
-                                        </td>
-                                        <td class="hanzi"><var>hanzis[1][1]</var></td>
-                                        <td class="pinyin">
-                                            <div data-if="pinyins[1][2].length==1">
-                                                <var>pinyins[1][2][0]</var>
-                                                <code data-if="yindiao[1][2]!=''">^<var>yindiao[1][2]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[1][2].length==2">
-                                                <var>pinyins[1][2][0]</var><br />
-                                                <var>pinyins[1][2][1]</var>
-                                                <code data-if="yindiao[1][2]!=''">^<var>yindiao[1][2]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[1][2].length==3">
-                                                <var>pinyins[1][2][0]</var><br />
-                                                <var>pinyins[1][2][1]</var><br />
-                                                <var>pinyins[1][2][2]</var>
-                                                <code data-if="yindiao[1][2]!=''">^<var>yindiao[1][2]</var></code>
-                                            </div>
-                                        </td>
-                                        <td data-if="hanzis[1].length>2" class="hanzi"><var>hanzis[1][2]</var></td>
-                                        <td data-if="hanzis[1].length>2" class="pinyin">
-                                            <div data-if="pinyins[1][3].length==1">
-                                                <var>pinyins[1][3][0]</var>
-                                                <code data-if="yindiao[1][3]!=''">^<var>yindiao[1][3]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[1][3].length==2">
-                                                <var>pinyins[1][3][0]</var><br />
-                                                <var>pinyins[1][3][1]</var>
-                                                <code data-if="yindiao[1][3]!=''">^<var>yindiao[1][3]</var></code>
-                                            </div>
-                                            <div data-if="pinyins[1][3].length==3">
-                                                <var>pinyins[1][3][0]</var><br />
-                                                <var>pinyins[1][3][1]</var><br />
-                                                <var>pinyins[1][3][2]</var>
-                                                <code data-if="yindiao[1][3]!=''">^<var>yindiao[1][3]</var></code>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-							<table>
-                                <tbody>
-                                    <tr>
-                                        <td class="hanzi">寫</td>
-                                        <td class="pinyin">ㄒ<br />一<br />ㄝ<code>^ˇ</code></td>
-                                        <td class="hanzi">作</td>
-                                        <td class="pinyin">ㄗ<br />ㄨ<br />ㄛ<code>^ˋ</code></td>
-                                        <td>（<input type="text" id="textbox2_2" class="inputbox" />）</td>
-                                    </tr>
-                                </tbody>
-							</table>
-						</td>
-					</tr>
-					
-				</table>
-			</div>	
-			<div class="solution" data-type="multiple">
-				<div class="sol" data-type="custom">
-                     <div class="guess">
-						(function(){
-								var check=false;
-								$(".inputbox").each(function(){
-									if($(this).val()!="")
-										check=true;
-								});
-								$(".rightBottom").each(function(){
-									if($(this).val()!="")
-										check=true;
-								});
-								if(check)
-									return 1;
-							})()
-                    </div>
-                    <div class="validator-function">
-                        if(document.getElementById("textbox1").value!=count1||document.getElementById("textbox2").value!=count2||document.getElementById("textbox1_2").value!=chCount1||document.getElementById("textbox2_2").value!=chCount2)
-                            return false;
-                        else
-                            return true;
-                    </div>
-                    <div class="example">數字和國字，例：1，一</div>
-                </div>
-			</div>
-			<div class="hints">
-					<p>①&nbsp;有 <code class="hint_pink"><var>count1</var></code> <var>unit[0]</var><var>hanzis[0]</var>，寫作：<span class="hint_pink"><var>chCount1</var></span></p>
-					<p>②&nbsp;有 <code class="hint_pink"><var>count2</var></code> <var>unit[1]</var><var>hanzis[1]</var>，寫作：<span class="hint_pink"><var>chCount2</var></span></p>
-				</div>
-		</div>
+		<div id="case4">				<div class="vars">					<var id="index">randRange(0,5)</var>					<var id="picture">["frog","lollipop","chocolate","milk","hat","spanner"][index]</var>					<var id="picture_name">["青蛙","棒棒糖","巧克力","牛奶","帽子","扳手"][index]</var>					<var id="picture_unit">["隻","個","顆","盒","頂","支"][index]</var>					<var id="counts">randRange(3,9)</var>					<var id="set_pictures">					(function(){						for(var i = 0; i &lt; counts; i++){							$('#pictures').append("&lt;img src=\'"+Khan.urlBase+"images/"+picture+".png"+"\'&gt;");						}					})()</var>					<var id="char">					(function(){						switch(counts){							case 3:return "三";break;							case 4:return "四";break;							case 5:return "五";break;							case 6:return "六";break;							case 7:return "七";break;							case 8:return "八";break;							case 9:return "九";break;						}					})()</var>				</div>				<div class="question">					<p class="question">數一數，下圖中共有多少<var>picture_unit</var><var>picture_name</var>，請在 <input type="text" style="width:50px;" readonly="readonly"> 內填入數字，在（ ）內填入國字。</p>				</div>				<div class="problem">					<hr>					<div id="pictures" style="text-align:center;"></div>					<hr>				</div>				<div class="solution" data-type="multiple">                    共有 <input type="text" style="width:30px;text-align:center" id="sol_1"> <var>picture_unit</var><var>picture_name</var><br />					寫作 （<input type="text" style="width:30px;border:0;background-color:#EEEEEE;border-bottom: 1px solid #000000;text-align:center" id="sol_2">）					<div class="sol" data-type="custom">						<div class="guess">[$('#sol_1').val(),$('#sol_2').val()]</div>						<div class="validator-function">							if(guess[0]=="" || guess[1]==""){								return "";							}							if(guess[0]==counts && guess[1]==char){								return true;							}							return false;						</div>					</div>                    <p class="example">數字和國字，例：<code>1</code> ，一</p>                </div>				<div class="hints">					<p style="font-weight:bold">共有 <code class="hint_pink"><var>counts</var></code> <var>picture_unit</var><var>picture_name</var>。</p>										<p>寫作 <span class="hint_pink"><var>char</var></span>。</p>				</div>		</div
 	</div>
 </body>
 </html>
