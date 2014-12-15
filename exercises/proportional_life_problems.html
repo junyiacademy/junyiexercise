@@ -301,18 +301,23 @@
             </div>
             <div id="bank_1">
                 <div class="vars">
-                    <var id="s">randRange(125,150)</var>
-                    <var id="temp">parseFloat((s/100).toFixed(2))</var>
-                    <var id="a">randRange(2,5)</var>
-                    <var id="rate">parseFloat((a/100).toFixed(2))</var>
-                    <var id="m">randRange(1500,2000)</var>
-                    <var id="principle1">m*100</var>
-                    <var id="principle2">parseFloat((principle1*temp).toFixed(0))</var>
-                    <var id="interest1">principle1*rate</var>
-                    <var id="interest2">parseFloat((principle2*rate).toFixed(0))</var>
-                    <var id="GCDs">getGCD(s, 100)</var>
-                    <var id="SIMP_s">s/GCDs</var>
+					<var id="s">randRange(125,150)</var>
+					<var id="GCDs">getGCD(s, 100)</var>
+					<var id="SIMP_s">s/GCDs</var>
                     <var id="SIMP_100">100/GCDs</var>
+					<var id="m">randRange(1500,2000)</var>
+                    <var id="principle1">m*100</var>
+					<var id="principle2">(function(){	
+						var nums=0
+						if(GCDs==1)
+							{nums=s*principle1/100;}
+						if(GCDs!=1)
+							{nums=SIMP_s*principle1/SIMP_100;}
+						return nums;
+					})()</var>
+					<var id="count">randRange(111,199)</var>
+					<var id="interest1">count*100</var>
+					<var id="interest2">count*s</var>
                 </div>
                 <div class="question">
                     <p><var>person(1)</var>和<var>person(2)</var>用相同的利率在銀行存款，一年後，<var>person(1)</var>和<var>person(2)</var>各領到<code><var>interest1</var></code>元和<code><var>interest2</var></code>元的利息，如果<var>person(1)</var>存<code><var>principle1</var></code>元，<var>person(2)</var>存了多少元？</p>
@@ -370,8 +375,9 @@
                 <div class="question">
                     <p>同一筆錢，如果存到甲銀行和乙銀行，一年的利息各是<code><var>interest1</var></code>元和<code><var>interest2</var></code>元，甲銀行存款的年利率是<code><var>m</var>\%</code>，乙銀行的年利率是多少？</p>
                 </div>
-                <div class="solution" data-type="decimal">
-                    <var>rate2</var>
+                <div class="solution" data-type="multiple">
+                    <span class="sol"><var>rate2</var></span> <code>\enspace \%</code>
+					<p class="example">小數，例：<code>0.7</code></p>
                 </div>
                 <div class="hints">
                     <div>
@@ -381,7 +387,7 @@
                         <p>本金相同時，利息和利率成<font color="RED">正比</font>。</p>
                     </div>
                     <div>
-                        <p><code><var>interest1</var>\div<var>interest2</var>=<var>temp</var></code>（倍）</p>
+                        <p><code><var>interest2</var>\div<var>interest1</var>=<var>temp</var></code>（倍）</p>
                     </div>
                     <div>
                         <p><code><var>m</var>\%\times<var>temp</var></code></p>
