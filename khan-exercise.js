@@ -1155,6 +1155,9 @@ var Khan = (function() {
 
         debugLog("ran tmplApply to [id]");
 
+        // Fix labels' position on the img
+        fixLabel();
+
         // Remove and store hints to delay running modules on it
         hints = problem.children(".hints").remove();
 
@@ -2987,56 +2990,54 @@ var Khan = (function() {
 })();
 
 function fixLabel(){
-    $(document).ready(function(){
-        $(".imageLabel").each(function(){
-            var align = $(this).attr("alignType");
-            var labelSpan = $("span:first",this); 
-            var fixWidth;
-            var fixHeight;
-            if(align == "center"){
-               fixWidth = labelSpan.width() / 2;
-               fixHeight = labelSpan.height() / 2;
-            }
-            else if(align == "above"){ 
-               fixWidth = labelSpan.width() / 2; 
-               fixHeight = labelSpan.height();
-            } 
-            else if(align == "above right"){
-               fixWidth = 0;
-               fixHeight = labelSpan.height();
-            } 
-            else if(align == "right"){
-               fixWidth = 0;
-               fixHeight = labelSpan.height() / 2;
-            } 
-            else if(align == "below right"){
-               fixWidth = 0;
-               fixHeight = 0;
-            }
-            else if(align == "below"){
-               fixWidth = labelSpan.width() / 2;
-               fixHeight = 0;
-            } 
-            else if(align == "below left"){
-               fixWidth = labelSpan.width();
-               fixHeight = 0;
-            } 
-            else if(align == "left"){
-               fixWidth = labelSpan.width();
-               fixHeight = labelSpan.height() / 2;
-            } 
-            else if(align == "above left"){
-               fixWidth = labelSpan.width();
-               fixHeight = labelSpan.height();
-            } 
-            else{}
+    $(".imageLabel").each(function(){
+        var align = $(this).attr("alignType");
+        var labelSpan = $("span:first",this); 
+        var fixWidth;
+        var fixHeight;
+        if(align == "center"){
+           fixWidth = labelSpan.width() / 2;
+           fixHeight = labelSpan.height() / 2;
+        }
+        else if(align == "above"){ 
+           fixWidth = labelSpan.width() / 2; 
+           fixHeight = labelSpan.height();
+        } 
+        else if(align == "above right"){
+           fixWidth = 0;
+           fixHeight = labelSpan.height();
+        } 
+        else if(align == "right"){
+           fixWidth = 0;
+           fixHeight = labelSpan.height() / 2;
+        } 
+        else if(align == "below right"){
+           fixWidth = 0;
+           fixHeight = 0;
+        }
+        else if(align == "below"){
+           fixWidth = labelSpan.width() / 2;
+           fixHeight = 0;
+        } 
+        else if(align == "below left"){
+           fixWidth = labelSpan.width();
+           fixHeight = 0;
+        } 
+        else if(align == "left"){
+           fixWidth = labelSpan.width();
+           fixHeight = labelSpan.height() / 2;
+        } 
+        else if(align == "above left"){
+           fixWidth = labelSpan.width();
+           fixHeight = labelSpan.height();
+        } 
+        else{}
 
-            var oriLeft = parseInt($(this).css("left"));
-            var oriTop = parseInt($(this).css("top"));
-            $(this).css('left', oriLeft - fixWidth ); 
-            $(this).css('top', oriTop - fixHeight);
-            
-        });
+        var oriLeft = parseInt($(this).css("left"));
+        var oriTop = parseInt($(this).css("top"));
+        $(this).css('left', oriLeft - fixWidth ); 
+        $(this).css('top', oriTop - fixHeight);
+        
     });
 }
 
