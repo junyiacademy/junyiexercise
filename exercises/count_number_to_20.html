@@ -103,7 +103,7 @@
 
             <div id="case1">
                 <div class="vars">
-					<var id="data_new">randFromArray([["Horse.png","匹馬"],["monkey.png","只猴子"],["squirrels.png","只松鼠"]])</var>
+					<var id="data_new">randFromArray([["Horse.png","匹馬"],["monkey.png","隻猴子"],["squirrels.png","隻松鼠"]])</var>
 					<var id="count">randRangeUnique(1,20,3)</var>
 					<var id="data">
 						(function(){
@@ -181,8 +181,8 @@
                             {   
                                 switch(kind[i])
                                 {
-									case 1:path[i]="compare_banana.png";rename[i]="個香蕉";s1=1;break;
-									case 2:path[i]="ladybugs.png";rename[i]="只瓢蟲";s1=2;break;
+									case 1:path[i]="compare_banana.png";rename[i]="根香蕉";s1=1;break;
+									case 2:path[i]="ladybugs.png";rename[i]="隻瓢蟲";s1=2;break;
 									case 3:path[i]="compare_apple.png";rename[i]="個蘋果";s1=3;break;
                                 }
                             }
@@ -347,7 +347,7 @@
             </div>
 			<div id="case3">
                 <div class="vars">				
-					<var id="data_new">randFromArray([["chicks.png","只小雞"],["ladybugs.png","只瓢蟲"],["compare_banana.png","個香蕉"]])</var>
+					<var id="data_new">randFromArray([["chicks.png","隻小雞"],["ladybugs.png","隻瓢蟲"],["compare_banana.png","根香蕉"]])</var>
 					<var id="count">randRangeUnique(1,20,3)</var>
 					<var id="data">
 						(function(){
@@ -403,7 +403,23 @@
 					<var id="a,b,c">randRangeUnique(1,20,3)</var>
 					<var id="ans">
 						(function(){
-						var aa=shuffle([a,b,c]);	
+						var num=randRange(1,5);
+						var aa=new Array();
+						
+						switch(num)
+						{
+
+							case 1:aa=[b,a,c];
+
+							case 2:aa=[b,c,a];
+
+							case 3:aa=[c,a,b];
+
+							case 4:aa=[c,b,a];
+							
+							case 5:aa=[a,c,b];
+
+						}
 						return aa;}
 					)()</var>
 					<var id="s">randRange(1,3)</var>
@@ -479,7 +495,7 @@
 
                <div class="question">
 				<p>請拖動下面的圖片按照 <code><var>ans[0]</var></code> ，<code><var>ans[1]</var></code> ，<code><var>ans[2]</var></code> 順序排列。</p>
-				<div id="div1" style="float:left;width:40px;margin-top:30px;border-right:solid 1px blue">
+				<div id="div1" style="float:left;width:40px;margin-top:30px;">
 					<div style="position:absolute;padding-top:20px;text-align:center;line-height:30px;"><code><var>ans[0]</var></code></div>
 					<div id="div1_2" style="position:absolute;text-align:center;"><code><var>ans[1]</var></code></div>
 					<div id="div1_1"style="position:absolute;text-align:center;"><code><var>ans[2]</var></code></div>
@@ -550,13 +566,17 @@
 			</div>
 
                <div class="solution" data-type="multiple">
-				<p>用鼠標拖動並獲得正確的順序</p>
+				<p>拖動圖片符合正確的順序</p>
 				<div class="sol" data-type="custom">
 					<div class="guess">$( ".sortable1" ).sortable( 'toArray'  )</div>
 				    <div class="validator-function">
 						var guessArr = new Array();
 						for(var j = 0;j&lt;guess.length;j++){
 							guessArr[j]=$('#'+guess[j]).val();
+						}
+						if(guessArr[0]==a &amp;&amp; guessArr[1]==b &amp;&amp; guessArr[2]==c)
+						{
+							return "";
 						}
 						if(guessArr[0]==ans[0] &amp;&amp; guessArr[1]==ans[1] &amp;&amp; guessArr[2]==ans[2])
 						{
