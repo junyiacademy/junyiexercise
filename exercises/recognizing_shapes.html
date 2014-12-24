@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>認識圖形</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+		<div class="problems">
+			<div id="case1">
+				<div class="vars" data-ensure="sum &lt; 4">
+				<var id="J">
+				(function(){
+					var num=new Array(5);
+					var n=randRange(0,4);
+					num[n]=4;
+					for(var i=0;i&lt;5;i++){
+						if(i==n)
+							continue;
+						num[i]=randRange(3,6);
+					}
+					return num;
+				})()
+				</var>
+				<var id="sum">
+				(function(){
+					var s = 0;
+					for(var k = 0;k&lt;5;k++){
+						if(J[k]==4){
+							s+=1;
+							$('#pic_'+(k+1)).val('true');
+						}else{
+							$('#pic_'+(k+1)).val('false');
+						}
+					}
+					return s;
+				})()</var>
+				<var id="clo_name">
+				(function(){
+					var name=new Array(5);
+					var color=new Array(5);
+					color=randRangeUnique(1,6,5);
+					for(var i=0;i&lt;5;i++){
+						switch(color[i]){
+							case 1:name[i]="GREEN";break;
+							case 2:name[i]="GOLD";break;
+							case 3:name[i]="RED";break;
+							case 4:name[i]="BLUE";break;
+							case 5:name[i]="PURPLE";break;
+						}
+					}
+					return name;
+				})()
+				</var>
+				<var id="point">
+				(function(){
+					var pArr=new Array();
+					for(var k=0;k&lt;5;k++){
+						var angle = 360/J[k];
+						var uAngle = 360/J[k];
+						if((k==1 || k==2 || k==3) && J[k]==4){
+							uAngle=uAngle+45;
+						}
+						pArr[k]=new Array();
+						for(var i=0;i&lt;J[k];i++){
+							pArr[k][i]=new Array(); 
+							for(var j=0;j&lt;2;j++){
+								pArr[k][i][j]=1;
+							}
+						}
+						for(var j=0;j&lt;J[k];j++){
+							pArr[k][j][0]=1*Math.sin(uAngle*Math.PI/180);
+							if(k==1 && J[k]==4){
+								if(j&lt;2){
+								pArr[k][j][0]=pArr[k][j][0]+0.5;
+								}
+							}
+							if(k==2 && J[k]==4){
+								if(j==3 || j==0){
+								pArr[k][j][0]=pArr[k][j][0]+0.8;
+								}
+							}
+							if(k==3 && J[k]==4){
+								if( j==0){
+								pArr[k][j][0]=pArr[k][j][0]+0.8;
+								}
+							}
+							if(k==4 && J[k]==4){
+								pArr[k][j][0]=pArr[k][j][0]+0.5;
+								if( j==0){
+								pArr[k][j][0]=pArr[k][j][0]+0.5;
+								}
+								if(j==2){
+									pArr[k][j][0]=pArr[k][j][0]-0.5;
+								}
+							}
+							pArr[k][j][1]=1*Math.cos(uAngle*Math.PI/180);
+							uAngle=uAngle+angle;
+						}
+					}
+					return pArr;
+				})()
+				</var>
+				</div>
+				<div class="question">
+					<p>下列哪些圖形是四邊形？（多選）</p>
+					<table>
+						<tr>
+							<td style="vertical-align:middle">
+								<input type="checkbox" name="checkbox" id="pic_1">
+							</td>
+							<td onclick="if($('#pic_1').attr('checked')){$('#pic_1').removeAttr('checked')}else{$('#pic_1').attr('checked','checked')}">
+								<div class="graphie" id="similar_1">
+								init({
+									range: [ [-1.1, 2], [-1.5,1.5] ],
+									scale: 40
+								});
+								var col = clo_name[0];
+								if(J[0]==3){
+									path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==4){
+									path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==5){
+									path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][4][0],point[0][4][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==6){
+									path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][4][0],point[0][4][1]],[point[0][5][0],point[0][5][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								</div>
+							</td>
+							<td style="vertical-align:middle">
+								<input type="checkbox" name="checkbox" id="pic_2">
+							</td>
+							<td onclick="if($('#pic_2').attr('checked')){$('#pic_2').removeAttr('checked')}else{$('#pic_2').attr('checked','checked')}">
+								<div class="graphie" id="similar_2">
+								init({
+									range: [ [-1.1, 2], [-1.5,1.5] ],
+									scale: 40
+								});
+								var col = clo_name[1];
+								if(J[1]==3){
+									path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==4){
+									path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==5){
+									path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][4][0],point[1][4][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==6){
+									path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][4][0],point[1][4][1]],[point[1][5][0],point[1][5][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								</div>
+							</td>
+							<td style="vertical-align:middle">
+								<input type="checkbox" name="checkbox" id="pic_3">
+							</td>
+							<td onclick="if($('#pic_3').attr('checked')){$('#pic_3').removeAttr('checked')}else{$('#pic_3').attr('checked','checked')}">
+								<div class="graphie" id="similar_3">
+									init({
+										range: [ [-1.1, 2], [-1.5,1.5] ],
+										scale: 40
+									});
+									var col = clo_name[2];
+									if(J[2]==3){
+										path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[2]==4){
+										path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[2]==5){
+										path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][4][0],point[2][4][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[2]==6){
+										path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][4][0],point[2][4][1]],[point[2][5][0],point[2][5][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td style="vertical-align:middle">
+								<input type="checkbox" name="checkbox" id="pic_4">
+							</td>
+							<td onclick="if($('#pic_4').attr('checked')){$('#pic_4').removeAttr('checked')}else{$('#pic_4').attr('checked','checked')}">
+								<div class="graphie" id="similar_4">
+									init({
+										range: [ [-1.1, 2], [-1.5,1.5] ],
+										scale: 40
+									});
+									var col = clo_name[3];
+									if(J[3]==3){
+										path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[3]==4){
+										path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[3]==5){
+										path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[3]==6){
+										path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][5][0],point[3][5][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								</div>
+							</td>
+							<td style="vertical-align:middle">
+								<input type="checkbox" name="checkbox" id="pic_5">
+							</td>
+							<td onclick="if($('#pic_5').attr('checked')){$('#pic_5').removeAttr('checked')}else{$('#pic_5').attr('checked','checked')}">
+								<div class="graphie" id="similar_5">
+									init({
+										range: [ [-1.1, 2], [-1.5,1.5] ],
+										scale: 40
+									});
+									var col = clo_name[4];
+									if(J[4]==3){
+										path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[4]==4){
+										path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[4]==5){
+										path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[4]==6){
+										path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][5][0],point[4][5][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>勾選所有正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">
+							(function(){
+								var chk_value =[];    
+								$('input[name="checkbox"]:checked').each(function(){    
+									chk_value.push($(this).val());    
+								});
+								return chk_value;
+							})()
+						</div>
+						<div class="validator-function">
+							if(guess.length==0){
+								return "";
+							}
+							if(guess.length!=sum){
+								return false;
+							}
+							var trueAns = 0;
+							for(var i = 0;i&lt;guess.length;i++){
+								if(guess[i]=='true'){
+									trueAns++;
+								}
+							}
+							if(trueAns==sum){
+								return true;
+							}
+						</div>
+					</div>
+				</div>
+				<div class="hints">
+					<p>所謂的四邊形，就是指一個圖形擁有 <code>4</code> 條邊；</p>
+					<div>
+					<p>以下這些圖形都有 <code>4</code> 條邊，所以它們都可以稱之為四邊形。</p>
+					<table>
+						<tr>
+							<td data-if="J[0]==4">
+							<div class="graphie" id="ans_gra_1">
+								init({
+									range: [ [-1.1, 2], [-1.5,1.5] ],
+									scale: 40
+								});
+								var col = clo_name[0];
+								if(J[0]==3){
+									path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==4){
+									path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==5){
+									path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][4][0],point[0][4][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==6){
+									path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][4][0],point[0][4][1]],[point[0][5][0],point[0][5][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+							</div>
+							</td>
+							<td data-if="J[1]==4">
+							<div class="graphie" id="ans_gra_2">
+								init({
+									range: [ [-1.1, 2], [-1.5,1.5] ],
+									scale: 40
+								});
+								var col = clo_name[1];
+								if(J[1]==3){
+									path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==4){
+									path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==5){
+									path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][4][0],point[1][4][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==6){
+									path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][4][0],point[1][4][1]],[point[1][5][0],point[1][5][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+							</div>
+							</td>
+							<td data-if="J[2]==4">
+							<div class="graphie" id="ans_gra_3">
+								init({
+									range: [ [-1.1, 2], [-1.5,1.5] ],
+									scale: 40
+								});
+								var col = clo_name[2];
+								if(J[2]==3){
+									path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[2]==4){
+									path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[2]==5){
+									path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][4][0],point[2][4][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[2]==6){
+									path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][4][0],point[2][4][1]],[point[2][5][0],point[2][5][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+							</div>
+							</td>
+							<td data-if="J[3]==4">
+							<div class="graphie" id="ans_gra_4">
+								init({
+									range: [ [-1.1, 2], [-1.5,1.5] ],
+									scale: 40
+								});
+								var col = clo_name[3];
+								if(J[3]==3){
+									path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[3]==4){
+									path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[3]==5){
+									path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[3]==6){
+									path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][5][0],point[3][5][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+							</div>
+							</td>
+							<td data-if="J[4]==4">
+							<div class="graphie" id="ans_gra_5">
+								init({
+									range: [ [-1.1, 2], [-1.5,1.5] ],
+									scale: 40
+								});
+								var col = clo_name[4];
+								if(J[4]==3){
+									path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[4]==4){
+									path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[4]==5){
+									path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[4]==6){
+									path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][5][0],point[4][5][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+							</div>
+							</td>
+						</tr>
+					</table>
+					</div>
+				</div>
+			</div>
+			<div id="case2">
+				<div class="vars" data-ensure="sum &lt; 4">
+				<var id="side_num">randFromArray([["六",6],["八",8],["五",5]])</var>
+				<var id="J">
+				(function(){
+					var num=new Array(5);
+					var n=randRange(0,4);
+					if(side_num[0]=="五"){
+						num[n]=5;
+					}
+					if(side_num[0]=="六"){
+						num[n]=6;
+					}
+					if(side_num[0]=="八"){
+						num[n]=8;
+					}
+					for(var i=0;i&lt;5;i++){
+						if(i==n)
+							continue;
+						num[i]=randRange(4,8);
+					}
+					return num;
+				})()
+				</var>
+				<var id="sum">
+				(function(){
+					var s = 0;
+					for(var k = 0;k&lt;5;k++){
+						if(side_num[0]=="五"){
+							if(J[k]==5 || J[k]==7){
+								s+=1;
+								$('#pic_'+(k+1)).val('true');
+							}else{
+								$('#pic_'+(k+1)).val('false');
+							}
+						}
+						if(side_num[0]=="六"){
+							if(J[k]==6 || J[k]==8){
+								s+=1;
+								$('#pic_'+(k+1)).val('true');
+							}else{
+								$('#pic_'+(k+1)).val('false');
+							}
+						}
+						if(side_num[0]=="八"){
+							if(J[k]==8){
+								s+=1;
+								$('#pic_'+(k+1)).val('true');
+							}else{
+								$('#pic_'+(k+1)).val('false');
+							}
+						}
+					}
+					return s;
+				})()</var>
+				<var id="clo_name">
+				(function(){
+					var name=new Array(5);
+					var color=new Array(5);
+					color=randRangeUnique(1,6,5);
+					for(var i=0;i&lt;5;i++){
+						switch(color[i]){
+							case 1:name[i]="GREEN";break;
+							case 2:name[i]="GOLD";break;
+							case 3:name[i]="RED";break;
+							case 4:name[i]="BLUE";break;
+							case 5:name[i]="PURPLE";break;
+						}
+					}
+					return name;
+				})()
+				</var>
+				<var id="point">
+				(function(){
+					var pArr=new Array();
+					for(var k=0;k&lt;5;k++){
+						var angle = 360/J[k];
+						var uAngle = 360/J[k];
+						pArr[k]=new Array();
+						for(var i=0;i&lt;J[k];i++){
+							pArr[k][i]=new Array(); 
+							for(var j=0;j&lt;2;j++){
+								pArr[k][i][j]=1;
+							}
+						}
+						for(var j=0;j&lt;J[k];j++){
+							pArr[k][j][0]=1*Math.sin(uAngle*Math.PI/180);
+							pArr[k][j][1]=1*Math.cos(uAngle*Math.PI/180);
+							uAngle=uAngle+angle;
+						}
+					}
+					return pArr;
+				})()
+				</var>
+				</div>
+				<div class="question">
+					<p>下列哪些圖形是<var>side_num[0]</var>邊形？（多選）</p>
+					<table>
+						<tr>
+							<td style="vertical-align:middle">
+								<input type="checkbox" name="checkbox" id="pic_1">
+							</td>
+							<td onclick="if($('#pic_1').attr('checked')){$('#pic_1').removeAttr('checked')}else{$('#pic_1').attr('checked','checked')}">
+								<div class="graphie" id="similar_1">
+								init({
+									range: [ [-1.1, 2], [-1.5,1.5] ],
+									scale: 40
+								});
+								var col = clo_name[0];
+								if(J[0]==4){
+									path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==5){
+									path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][4][0],point[0][4][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==6){
+									path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][4][0],point[0][4][1]],[point[0][5][0],point[0][5][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==7){
+									if(side_num[0]=="五"){
+										path([[point[0][0][0],point[0][0][1]],[point[0][2][0],point[0][2][1]],[point[0][4][0],point[0][4][1]],[point[0][5][0],point[0][5][1]],[point[0][6][0],point[0][6][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}else{
+										path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][4][0],point[0][4][1]],[point[0][5][0],point[0][5][1]],[point[0][6][0],point[0][6][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+								if(J[0]==8){
+									if(side_num[0]=="六"){
+										path([[point[0][0][0],point[0][0][1]],[point[0][2][0],point[0][2][1]],[point[0][4][0],point[0][4][1]],[point[0][5][0],point[0][5][1]],[point[0][6][0],point[0][6][1]],[point[0][7][0],point[0][7][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}else{
+										path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][4][0],point[0][4][1]],[point[0][5][0],point[0][5][1]],[point[0][6][0],point[0][6][1]],[point[0][7][0],point[0][7][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+								</div>
+							</td>
+							<td style="vertical-align:middle">
+								<input type="checkbox" name="checkbox" id="pic_2">
+							</td>
+							<td onclick="if($('#pic_2').attr('checked')){$('#pic_2').removeAttr('checked')}else{$('#pic_2').attr('checked','checked')}">
+								<div class="graphie" id="similar_2">
+								init({
+									range: [ [-1.1, 2], [-1.5,1.5] ],
+									scale: 40
+								});
+								var col = clo_name[1];
+								if(J[1]==4){
+									path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==5){
+									path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][4][0],point[1][4][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==6){
+									path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][4][0],point[1][4][1]],[point[1][5][0],point[1][5][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==7){
+									if(side_num[0]=="五"){
+										path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][4][0],point[1][4][1]],[point[1][5][0],point[1][5][1]],[point[1][6][0],point[1][6][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}else{
+										path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][4][0],point[1][4][1]],[point[1][5][0],point[1][5][1]],[point[1][6][0],point[1][6][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+								if(J[1]==8){
+									if(side_num[0]=="六"){
+										path([[point[1][0][0],point[1][0][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][5][0],point[1][5][1]],[point[1][6][0],point[1][6][1]],[point[1][7][0],point[1][7][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}else{
+										path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][4][0],point[1][4][1]],[point[1][5][0],point[1][5][1]],[point[1][6][0],point[1][6][1]],[point[1][7][0],point[1][7][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+								</div>
+							</td>
+							<td style="vertical-align:middle">
+								<input type="checkbox" name="checkbox" id="pic_3">
+							</td>
+							<td onclick="if($('#pic_3').attr('checked')){$('#pic_3').removeAttr('checked')}else{$('#pic_3').attr('checked','checked')}">
+								<div class="graphie" id="similar_3">
+									init({
+										range: [ [-1.1, 2], [-1.5,1.5] ],
+										scale: 40
+									});
+									var col = clo_name[2];
+									if(J[2]==4){
+										path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[2]==5){
+										path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][4][0],point[2][4][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[2]==6){
+										path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][4][0],point[2][4][1]],[point[2][5][0],point[2][5][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[2]==7){
+										if(side_num[0]=="五"){
+											path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][3][0],point[2][3][1]],[point[2][5][0],point[2][5][1]],[point[2][6][0],point[2][6][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+										}else{
+											path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][4][0],point[2][4][1]],[point[2][5][0],point[2][5][1]],[point[2][6][0],point[2][6][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+										}
+									}
+									if(J[2]==8){
+										if(side_num[0]=="六"){
+											path([[point[2][0][0],point[2][0][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][4][0],point[2][4][1]],[point[2][6][0],point[2][6][1]],[point[2][7][0],point[2][7][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+										}else{
+											path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][4][0],point[2][4][1]],[point[2][5][0],point[2][5][1]],[point[2][6][0],point[2][6][1]],[point[2][7][0],point[2][7][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+										}
+									}
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td style="vertical-align:middle">
+								<input type="checkbox" name="checkbox" id="pic_4">
+							</td>
+							<td onclick="if($('#pic_4').attr('checked')){$('#pic_4').removeAttr('checked')}else{$('#pic_4').attr('checked','checked')}">
+								<div class="graphie" id="similar_4">
+									init({
+										range: [ [-1.1, 2], [-1.5,1.5] ],
+										scale: 40
+									});
+									var col = clo_name[3];
+									if(J[3]==4){
+										path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[3]==5){
+										path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[3]==6){
+										path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][5][0],point[3][5][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[3]==7){
+										if(side_num[0]=="五"){
+											path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][6][0],point[3][6][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+										}else{
+											path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][5][0],point[3][5][1]],[point[3][6][0],point[3][6][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+										}
+									}
+									if(J[3]==8){
+										if(side_num[0]=="六"){
+											path([[point[3][0][0],point[3][0][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][5][0],point[3][5][1]],[point[3][7][0],point[3][7][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+										}else{
+											path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][5][0],point[3][5][1]],[point[3][6][0],point[3][6][1]],[point[3][7][0],point[3][7][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+										}
+									}
+								</div>
+							</td>
+							<td style="vertical-align:middle">
+								<input type="checkbox" name="checkbox" id="pic_5">
+							</td>
+							<td onclick="if($('#pic_5').attr('checked')){$('#pic_5').removeAttr('checked')}else{$('#pic_5').attr('checked','checked')}">
+								<div class="graphie" id="similar_5">
+									init({
+										range: [ [-1.1, 2], [-1.5,1.5] ],
+										scale: 40
+									});
+									var col = clo_name[4];
+									if(J[4]==4){
+										path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[4]==5){
+										path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[4]==6){
+										path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][5][0],point[4][5][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J[4]==7){
+										if(side_num[0]=="五"){
+											path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][5][0],point[4][5][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+										}else{
+											path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][5][0],point[4][5][1]],[point[4][6][0],point[4][6][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+										}
+									}
+									if(J[4]==8){
+										if(side_num[0]=="六"){
+											path([[point[4][0][0],point[4][0][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][5][0],point[4][5][1]],[point[4][6][0],point[4][6][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+										}else{
+											path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][5][0],point[4][5][1]],[point[4][6][0],point[4][6][1]],[point[4][7][0],point[4][7][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+										}
+									}
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>勾選所有正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">
+							(function(){
+								var chk_value =[];    
+								$('input[name="checkbox"]:checked').each(function(){    
+									chk_value.push($(this).val());    
+								});
+								return chk_value;
+							})()
+						</div>
+						<div class="validator-function">
+							if(guess.length==0){
+								return "";
+							}
+							if(guess.length!=sum){
+								return false;
+							}
+							var trueAns = 0;
+							for(var i = 0;i&lt;guess.length;i++){
+								if(guess[i]=='true'){
+									trueAns++;
+								}
+							}
+							if(trueAns==sum){
+								return true;
+							}
+						</div>
+					</div>
+				</div>
+				<div class="hints">
+					<p>所謂的<var>side_num[0]</var>邊形，就是指一個圖形擁有 <code><var>side_num[1]</var></code> 條邊；</p>
+					<div>
+					<p>以下這些圖形都有 <code><var>side_num[1]</var></code> 條邊，所以它們都可以稱之為<var>side_num[0]</var>邊形。</p>
+					<table>
+						<tr>
+							<td data-if="J[0]==side_num[1] || (J[0]==7 && side_num[1]==5) || (J[0]==8 && side_num[1]==6)">
+							<div class="graphie" id="ans_gra_1">
+								init({
+									range: [ [-1.1, 2], [-1.5,1.5] ],
+									scale: 40
+								});
+								var col = clo_name[0];
+								if(J[0]==4){
+									path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==5){
+									path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][4][0],point[0][4][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==6){
+									path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][4][0],point[0][4][1]],[point[0][5][0],point[0][5][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==7){
+									if(side_num[0]=="五"){
+										path([[point[0][0][0],point[0][0][1]],[point[0][2][0],point[0][2][1]],[point[0][4][0],point[0][4][1]],[point[0][5][0],point[0][5][1]],[point[0][6][0],point[0][6][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}else{
+										path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][4][0],point[0][4][1]],[point[0][5][0],point[0][5][1]],[point[0][6][0],point[0][6][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+								if(J[0]==8){
+									if(side_num[0]=="六"){
+										path([[point[0][0][0],point[0][0][1]],[point[0][2][0],point[0][2][1]],[point[0][4][0],point[0][4][1]],[point[0][5][0],point[0][5][1]],[point[0][6][0],point[0][6][1]],[point[0][7][0],point[0][7][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}else{
+										path([[point[0][0][0],point[0][0][1]],[point[0][1][0],point[0][1][1]],[point[0][2][0],point[0][2][1]],[point[0][3][0],point[0][3][1]],[point[0][4][0],point[0][4][1]],[point[0][5][0],point[0][5][1]],[point[0][6][0],point[0][6][1]],[point[0][7][0],point[0][7][1]],[point[0][0][0],point[0][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+							</div>
+							</td>
+							<td data-if="J[1]==side_num[1] || (J[1]==7 && side_num[1]==5) || (J[1]==8 && side_num[1]==6)">
+							<div class="graphie" id="ans_gra_2">
+								init({
+									range: [ [-1.1, 2], [-1.5,1.5] ],
+									scale: 40
+								});
+								var col = clo_name[1];
+								if(J[1]==4){
+									path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==5){
+									path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][4][0],point[1][4][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==6){
+									path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][4][0],point[1][4][1]],[point[1][5][0],point[1][5][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==7){
+									if(side_num[0]=="五"){
+										path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][4][0],point[1][4][1]],[point[1][5][0],point[1][5][1]],[point[1][6][0],point[1][6][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}else{
+										path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][4][0],point[1][4][1]],[point[1][5][0],point[1][5][1]],[point[1][6][0],point[1][6][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+								if(J[1]==8){
+									if(side_num[0]=="六"){
+										path([[point[1][0][0],point[1][0][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][5][0],point[1][5][1]],[point[1][6][0],point[1][6][1]],[point[1][7][0],point[1][7][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}else{
+										path([[point[1][0][0],point[1][0][1]],[point[1][1][0],point[1][1][1]],[point[1][2][0],point[1][2][1]],[point[1][3][0],point[1][3][1]],[point[1][4][0],point[1][4][1]],[point[1][5][0],point[1][5][1]],[point[1][6][0],point[1][6][1]],[point[1][7][0],point[1][7][1]],[point[1][0][0],point[1][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+							</div>
+							</td>
+							<td data-if="J[2]==side_num[1] || (J[2]==7 && side_num[1]==5) || (J[2]==8 && side_num[1]==6)">
+							<div class="graphie" id="ans_gra_3">
+								init({
+									range: [ [-1.1, 2], [-1.5,1.5] ],
+									scale: 40
+								});
+								var col = clo_name[2];
+								if(J[2]==4){
+									path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[2]==5){
+									path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][4][0],point[2][4][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[2]==6){
+									path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][4][0],point[2][4][1]],[point[2][5][0],point[2][5][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[2]==7){
+									if(side_num[0]=="五"){
+										path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][3][0],point[2][3][1]],[point[2][5][0],point[2][5][1]],[point[2][6][0],point[2][6][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}else{
+										path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][4][0],point[2][4][1]],[point[2][5][0],point[2][5][1]],[point[2][6][0],point[2][6][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+								if(J[2]==8){
+									if(side_num[0]=="六"){
+										path([[point[2][0][0],point[2][0][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][4][0],point[2][4][1]],[point[2][6][0],point[2][6][1]],[point[2][7][0],point[2][7][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}else{
+										path([[point[2][0][0],point[2][0][1]],[point[2][1][0],point[2][1][1]],[point[2][2][0],point[2][2][1]],[point[2][3][0],point[2][3][1]],[point[2][4][0],point[2][4][1]],[point[2][5][0],point[2][5][1]],[point[2][6][0],point[2][6][1]],[point[2][7][0],point[2][7][1]],[point[2][0][0],point[2][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+							</div>
+							</td>
+							<td data-if="J[3]==side_num[1] || (J[3]==7 && side_num[1]==5) || (J[3]==8 && side_num[1]==6)">
+							<div class="graphie" id="ans_gra_4">
+								init({
+									range: [ [-1.1, 2], [-1.5,1.5] ],
+									scale: 40
+								});
+								var col = clo_name[3];
+								if(J[3]==4){
+									path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[3]==5){
+									path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[3]==6){
+									path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][5][0],point[3][5][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[3]==7){
+									if(side_num[0]=="五"){
+										path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][6][0],point[3][6][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}else{
+										path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][5][0],point[3][5][1]],[point[3][6][0],point[3][6][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+								if(J[3]==8){
+									if(side_num[0]=="六"){
+										path([[point[3][0][0],point[3][0][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][5][0],point[3][5][1]],[point[3][7][0],point[3][7][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}else{
+										path([[point[3][0][0],point[3][0][1]],[point[3][1][0],point[3][1][1]],[point[3][2][0],point[3][2][1]],[point[3][3][0],point[3][3][1]],[point[3][4][0],point[3][4][1]],[point[3][5][0],point[3][5][1]],[point[3][6][0],point[3][6][1]],[point[3][7][0],point[3][7][1]],[point[3][0][0],point[3][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+							</div>
+							</td>
+							<td data-if="J[4]==side_num[1] || (J[4]==7 && side_num[1]==5) || (J[4]==8 && side_num[1]==6)">
+							<div class="graphie" id="ans_gra_5">
+								init({
+									range: [ [-1.1, 2], [-1.5,1.5] ],
+									scale: 40
+								});
+								var col = clo_name[4];
+								if(J[4]==4){
+									path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[4]==5){
+									path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[4]==6){
+									path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][5][0],point[4][5][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[4]==7){
+									if(side_num[0]=="五"){
+										path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][5][0],point[4][5][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}else{
+										path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][5][0],point[4][5][1]],[point[4][6][0],point[4][6][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+								if(J[4]==8){
+									if(side_num[0]=="六"){
+										path([[point[4][0][0],point[4][0][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][5][0],point[4][5][1]],[point[4][6][0],point[4][6][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}else{
+										path([[point[4][0][0],point[4][0][1]],[point[4][1][0],point[4][1][1]],[point[4][2][0],point[4][2][1]],[point[4][3][0],point[4][3][1]],[point[4][4][0],point[4][4][1]],[point[4][5][0],point[4][5][1]],[point[4][6][0],point[4][6][1]],[point[4][7][0],point[4][7][1]],[point[4][0][0],point[4][0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+							</div>
+							</td>
+						</tr>
+					</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
