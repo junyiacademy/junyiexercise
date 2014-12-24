@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html data-require="math polynomials expressions math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>配方法 2</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="original" data-weight="4">
+                <div class="vars">
+                    <var id="X1">randRange( 1, 4 ) / randRangeNonZero( -2, 2 )</var>
+                    <var id="X2" data-ensure="X1 !== X2">( randRange( -3, 3 ) * 2 + 1 ) / 2</var>
+                    <var id="B">( X1 + X2 ) * -1</var>
+                    <var id="B_SIGN">B &gt; 0 ? "+" : "-"</var>
+                    <var id="C">X1 * X2</var>
+                    <var id="MULT">getLCM( toFraction( B )[1], toFraction( C )[1] )</var>
+                    <var id="POLY">new Polynomial( 0, 2, [MULT*C, MULT*B, MULT], "x" )</var>
+                    <var id="POLY_TEXT">POLY.text()</var>
+                </div>
+                <p class="question">利用配方法，解出 <code>x</code> 的值。</p>
+                <p><code><var>POLY_TEXT</var> = 0</code></p>
+                <div class="solution" data-type="set">
+                    <div class="set-sol" data-type="multiple">
+                        <span class="sol"><var>B / 2</var></span>
+                        <span class="sol"><var>C * -1 + pow( B / 2, 2 )</var></span>
+                        <span class="sol"><var>X1</var></span>
+                        <span class="sol"><var>X2</var></span>
+                    </div>
+                    <div class="set-sol" data-type="multiple">
+                        <span class="sol"><var>B / 2</var></span>
+                        <span class="sol"><var>C * -1 + pow( B / 2, 2 )</var></span>
+                        <span class="sol"><var>X2</var></span>
+                        <span class="sol"><var>X1</var></span>
+                    </div>
+                    <div class="input-format">
+                        <div class="entry" data-type="multiple">
+                            <b>配方：</b> <br>
+                            <code>(x + {}</code><span class="sol short32"></span> <code>)^2 = {}</code> <span class="sol short40"></span> <br><br>
+                            <b><code>x</code> 的值：</b> <br>
+                            <code>x = {}</code><span class="sol short32"></span><code>\quad\text{<var>OR</var>}\quad x = {}</code><span class="sol short32"></span>
+                        </div>
+                    </div>
+                    <p class="example">整數，如 <code>6</code></p>
+                    <p class="example">經過約分的真分數，如 <code>3/5</code></p>
+                    <p class="example">經過約分的假分數，如 <code>7/4</code></p>
+                    <p class="example">或精準的小數，如 <code>0.75</code></p>
+                </div>
+            </div>
+            <div id="one-root" data-type="original" data-weight="1">
+                <div class="vars" ">
+                    <var id="X1">( randRange( -4, 4 ) * 2 + 1 ) / 2</var>
+                    <var id="X2">X1</var>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <p>
+                        <b>配方：</b> <br>
+                        <code>(x + {}</code><span class="sol short32"><var>-X1</var></span> <code>)^2 = {}</code> <span class="sol short40">0</span> <br><br>
+                        <b><code>x</code> 的值：</b> <br>
+                        <code>x = \quad</code><span class="sol short32"><var>X1</var></span>
+                    </p>
+                    <p class="example">整數，如 <code>6</code></p>
+                    <p class="example">經過約分的真分數，如 <code>3/5</code></p>
+                    <p class="example">經過約分的假分數，如 <code>7/4</code></p>
+                    <p class="example">或精準的小數，如 <code>0.75</code></p>
+                </div>
+            </div>
+            <div id="odds" data-type="original" data-weight="2">
+                <div class="vars">
+                    <var id="X1">randRangeNonZero( -8, 8 )</var>
+                    <var id="X2">randRange( -4, 4 ) * 2 + ( X1 % 2 - 1 )</var>
+                </div>
+            </div>
+        </div>
+        <div class="hints">
+            <div data-if="MULT !== 1">
+                <p>首先，把這個多項式除以 <code><var>MULT</var></code> ，也就是 <code>x^2</code> 項的係數。</p>
+                <p><code>x^2 <span data-if="B !== 0"><span data-if="abs( B ) !== 1"> + <var>decimalFraction( B, 1, 1 )</var></span><span data-else=""><var>B_SIGN</var></span>x</span> + <var>decimalFraction( C, 1, 1 )</var> = 0</code></p>
+            </div>
+            <div data-if="X1 !== X2" data-unwrap="">
+                <div data-if="C !== 0">
+                    <p>將常數項搬到等式的右邊。</p>
+                    <p><code>x^2 <span data-if="B !== 0"><span data-if="abs( B ) !== 1"> + <var>decimalFraction( B, 1, 1 )</var></span><span data-else=""><var>B_SIGN</var></span>x</span> = <var>decimalFraction( C * -1, 1, 1 )</var></code></p>
+                </div>
+                <div data-if="B !== 0">
+                    <p>要順利完成配方，我們只需要先看 <code>x</code> 項的係數；把這個係數的値減半再平方，然後把這個數字加到等式的兩邊。
+					<code>x</code> 項的的係數是 <code><var>decimalFraction( B, 1, 1 )</var></code>，所以減半後是 <code><var>decimalFraction( B / 2, 1, 1 )</var></code> ，而將這個數字平方後，我們會得到 <code>\color{blue}{<var>decimalFraction( pow( B / 2, 2 ), 1, 1 )</var>}</code> 。</p>
+                    <p><code>x^2 <span data-if="abs( B ) !== 1"> + <var>decimalFraction( B, 1, 1 )</var></span><span data-else=""><var>B_SIGN</var></span>x \color{blue}{ + <var>decimalFraction( pow( B / 2, 2 ), 1, 1 )</var>} = <var>decimalFraction( C * -1, 1, 1 )</var> \color{blue}{ + <var>decimalFraction( pow( B / 2, 2 ), 1, 1 )</var>}</code></p>
+                </div>
+                <div data-if="B !== 0">
+                    <p>現在，我們可以把等式的左邊寫成平方數的格式。</p>
+                    <p><code>( x + <var>decimalFraction( B / 2, 1, 1 )</var> )^2 = <var>decimalFraction( C * -1 + pow( B / 2, 2 ), 1, 1 )</var></code></p>
+                </div>
+            </div>
+            <div data-else="" data-unwrap="">
+				<p>等式左邊已經是一個完全平方項式的展開式了。 <code>x</code> 項的係數是 <code><var>decimalFraction( B, 1, 1 )</var></code>
+				，減半後是 <code><var>decimalFraction( B / 2, 1, 1 )</var></code> ，而將這個數字平方後，我們會得到
+				<code>\color{blue}{<var>decimalFraction( pow( B / 2, 2 ), 1, 1 )</var>}</code> ，也就是我們的常數項。</p>
+                <div>
+					<p>所以，我們可以把等式的左邊寫成平方數的格式。</p>
+                    <p><code>( x + <var>decimalFraction( B / 2, 1, 1 )</var> )^2 = <var>decimalFraction( C * -1 + pow( B / 2, 2 ), 1, 1 )</var></code></p>
+                </div>
+            </div>
+            <div>
+                <p>將兩邊同時開根號。</p>
+                <p><code>x <span data-if="B !== 0"> + <var>decimalFraction( B / 2, 1, 1 )</var></span> = <span data-if="sqrt( C * -1 + pow( B / 2, 2 ) ) !== 0">\pm</span><var>decimalFraction( sqrt( C * -1 + pow( B / 2, 2 ) ), 1, 1 )</var></code></p>
+            </div>
+            <div data-if="B !== 0">
+                <p>將 <code>x</code> 項孤立，以求出解。</p>
+                <p data-if="sqrt( C * -1 + pow( B / 2, 2 ) ) !== 0"><code>x = <var>decimalFraction( -B / 2, 1, 1 )</var>\pm<var>decimalFraction( sqrt( C * -1 + pow( B / 2, 2 ) ), 1, 1 )</var></code></p>
+            </div>
+            <div>
+                <div data-if="sqrt( C * -1 + pow( B / 2, 2 ) ) !== 0">
+                    <p>答案是： <code>x = <var>decimalFraction( -B / 2 + sqrt( C * -1 + pow( B / 2, 2 ) ), 1, 1 )</var></code> 或  <code>x = <var>decimalFraction( -B / 2 - sqrt( C * -1 + pow( B / 2, 2 ) ), 1, 1 )</var></code></p>
+                </div>
+                <div data-else="">
+                    <p>答案是： <code>x = <var>decimalFraction( -B / 2 + sqrt( C * -1 + pow( B / 2, 2 ) ), 1, 1 )</var></code></p>
+                </div>
+                <p>配方的格式是： <code>( x + <var>decimalFraction( B / 2, 1, 1 )</var> )^2 = <var>decimalFraction( C * -1 + pow( B / 2, 2 ), 1, 1 )</var></code></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
