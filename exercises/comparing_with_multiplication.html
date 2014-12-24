@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>乘法的比較</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+    </style>
+	<script type="text/javascript">
+		function chg2(num,quesMin,quesMax){
+		    var ansNums = KhanUtil.randRange(num-quesMax,num-quesMin);
+			var arr = KhanUtil.randRangeUnique(1,num,ansNums);
+			for(var i = 0;i<=ansNums-1;i++){
+			    document.getElementById("t_"+arr[i]).style.display="none";
+			}
+			return [num-ansNums,arr];
+		}
+		 function chg(num){
+		    var ansNums = 1;
+			var arr = KhanUtil.randRange(1,num);
+			for(var i = 0;i<=ansNums-1;i++){
+			    document.getElementById("t_"+arr).style.display="none";
+			}
+			return [num-ansNums,arr];
+		}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+	    <div id="case1">
+			<div class="vars">
+				<var id="A">randRangeUnique(2,9,2)</var>
+				<var id="B">
+					(function(){
+						if(A[0]&lt;A[1]){return [A[0],A[1]]}
+						else {return [A[1],A[0]];}
+					})()</var>
+				<var id="AB">A[0]*A[1]</var>
+				<var id="change">chg2(2,1,2)</var>
+				<var id="set_keypress">
+						(function(){
+							$('#t_2').bind('keypress',function(event){
+								if(event.keyCode == "13"){
+									$('#check-answer-button').click();
+								}
+							});
+						})()
+				</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+					<p>請重寫下面的乘式再進行比較。</p>
+					<p><code><var>A[0]</var> \times <var>A[1]</var> = <var>AB</var></code></p>
+					<p><input type="text" id="t_1" style="text-align:center;width:30px"><code data-if="t_1.style.display=='none'"><var>AB</var></code> 是 <input type="text" id="t_2" style="text-align:center;width:30px"><code data-if="t_2.style.display=='none'"><var>B[1]</var></code> 的 <code><var>B[0]</var></code> 倍。</p>				
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>請填入正確的答案</p>
+			    <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value,document.getElementById("t_2").value]</div>
+				    <div class="validator-function">
+					     var rightNums = 0;
+					    var ng1 = guess[0];
+						var ng2 = guess[1];
+						if(document.getElementById("t_1").style.display==""){
+						    ng1.replace(/[ ]/g,"")==AB?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_2").style.display==""){
+						    ng2.replace(/[ ]/g,"")==B[1]?rightNums+=1:rightNums+=0;
+						}
+						return rightNums==change[0]?true:false;
+					</div>
+				</div>
+				<p class="example">整數，例 <code>：6</code></p>
+            </div>
+            <div class="hints">
+			    <p>該乘式最大的數是 <code class="hint_blue"><var>AB</var></code> ，它大於 <code class="hint_red"><var>B[0]</var></code> 和 <code class="hint_green"><var>B[1]</var></code> ，</p>
+				<p>所以我們可以說： <code class="hint_blue"><var>AB</var></code> 是 <code class="hint_red"><var>B[1]</var></code> 的 <code class="hint_green"><var>B[0]</var></code> 倍。</p>				
+				<div>
+					<p>我們可以畫一個圖進行比較：</p>
+					<div class="graphie" id="similar_11">
+							init({
+							range: [ [-1, 11], [-1.8,1.8] ],
+							scale: 40
+							});
+							path([[0,-0.5],[0,-1],[10,-1],[10,-0.5],[0,-0.5]],{stroke:"black",fill:"blue","fill-opacity": 0.1});
+							label( [5,-1.5], "\\small{"+AB+"}", "center", { color: "black" });
+							path([[0,0.5],[0,1],[10,1],[10,0.5],[0,0.5]],{stroke:"black",fill:"green","fill-opacity": 0.1})
+							var aa=10/B[0];	
+							label( [aa/2,1.5], "\\small{"+B[1]+"}", "center", { color: "black" });						
+							for(var i=0;i &lt;B[0]-1;i++)
+							{
+								line([aa*(i+1),0.5],[aa*(i+1),1],{stroke:"black"});	
+								
+							}
+							for(var J=1;J &lt;B[0];J++)
+							{
+								label( [(aa*J+aa*(J+1))/2,1.5], "\\small{"+B[1]+"}", "center", { color: "black" });						
+							}
+					</div>
+				</div>
+				<div>
+					<p>或者我們可以說： <code class="hint_blue"><var>AB</var></code> 是 <code class="hint_green"><var>B[0]</var></code> 的 <code class="hint_red"><var>B[1]</var></code> 倍。</p>				
+					<div class="graphie" id="similar_12">
+							init({
+							range: [ [-1, 11], [-1.8,1.8] ],
+							scale: 40
+							});
+							path([[0,-0.5],[0,-1],[10,-1],[10,-0.5],[0,-0.5]],{stroke:"black",fill:"blue","fill-opacity": 0.1});
+							label( [5,-1.5], "\\small{"+AB+"}", "center", { color: "black" });
+							path([[0,0.5],[0,1],[10,1],[10,0.5],[0,0.5]],{stroke:"black",fill:"red","fill-opacity": 0.1})
+							var aa=10/B[1];	
+							label( [aa/2,1.5], "\\small{"+B[0]+"}", "center", { color: "black" });						
+							for(var i=0;i &lt;B[1]-1;i++)
+							{
+								line([aa*(i+1),0.5],[aa*(i+1),1],{stroke:"black"});	
+								
+							}
+							for(var J=1;J &lt;B[1];J++)
+							{
+								label( [(aa*J+aa*(J+1))/2,1.5], "\\small{"+B[0]+"}", "center", { color: "black" });						
+							}
+					</div>
+				</div>
+				<p>只有一種情況符合題目的描述情況。</p>
+				<p>所以正確答案為： <code class="hint_blue"><var>AB</var></code> 是 <code class="hint_red"><var>B[1]</var></code> 的 <code class="hint_green"><var>B[0]</var></code> 倍。</p>				
+			</div>
+        </div>
+		  <div id="case2">
+			<div class="vars">
+				<var id="A">randRangeUnique(2,9,2)</var>
+				<var id="B">
+					(function(){
+						if(A[0]&lt;A[1]){return [A[0],A[1]]}
+						else {return [A[1],A[0]];}
+					})()</var>
+				<var id="AB">A[0]*A[1]</var>
+				<var id="change">chg(2)</var>
+				<var id="C">
+					(function(){
+						if(change[1]==1){return ["？",AB]}
+						else {return [B[1],"？"];}
+					})()</var>
+				<var id="set_keypress">
+					(function(){
+						$('#t_1').bind('keypress',function(event){
+							if(event.keyCode == "13"){
+								$('#check-answer-button').click();
+							}
+						});
+						$('#t_2').bind('keypress',function(event){
+							if(event.keyCode == "13"){
+								$('#check-answer-button').click();
+							}
+						});
+					})()</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+					<p>請填完空后再進行比較。</p>
+					<p><input type="text" id="t_1" style="text-align:center;width:30px"><code data-if="t_1.style.display=='none'"><var>AB</var></code> 是 <input type="text" id="t_2" style="text-align:center;width:30px"><code data-if="t_2.style.display=='none'"><var>B[1]</var></code> 的 <code><var>B[0]</var></code> 倍。</p>				
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>請填入正確的答案</p>
+			    <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value,document.getElementById("t_2").value]</div>
+				    <div class="validator-function">
+					     var rightNums = 0;
+					    var ng1 = guess[0];
+						var ng2 = guess[1];
+						if(document.getElementById("t_1").style.display==""){
+						    ng1.replace(/[ ]/g,"")==AB?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_2").style.display==""){
+						    ng2.replace(/[ ]/g,"")==B[1]?rightNums+=1:rightNums+=0;
+						}
+						return rightNums==change[0]?true:false;
+					</div>
+				</div>
+				<p class="example">整數，例 <code>：6</code></p>
+            </div>
+            <div class="hints">
+				<p data-if="change[1]==1">我們可以把 <code class="hint_blue"><var>AB</var></code> 分為 <code class="hint_green"><var>B[0]</var></code> 組。</p>
+			    <p data-if="change[1]==2">這裡有一種方法： 這個數是 <code class="hint_red"><var>B[1]</var></code> 的 <code class="hint_green"><var>B[0]</var></code> 倍。</p>			
+				<div>
+					<p>我們可以畫一個圖：</p>
+					<div class="graphie" id="similar_11">
+							init({
+							range: [ [-1, 11], [-1.8,1.8] ],
+							scale: 40
+							});
+							path([[0,-0.5],[0,-1],[10,-1],[10,-0.5],[0,-0.5]],{stroke:"black",fill:"blue","fill-opacity": 0.1});
+							label( [5,-1.5], "\\small{"+C[1]+"}", "center", { color: "black" });
+							path([[0,0.5],[0,1],[10,1],[10,0.5],[0,0.5]],{stroke:"black",fill:"green","fill-opacity": 0.1})
+							var aa=10/B[0];	
+							label( [aa/2,1.5], "\\small{"+C[0]+"}", "center", { color: "black" });						
+							for(var i=0;i &lt;B[0]-1;i++)
+							{
+								line([aa*(i+1),0.5],[aa*(i+1),1],{stroke:"black"});	
+								
+							}
+							for(var J=1;J &lt;B[0];J++)
+							{
+								label( [(aa*J+aa*(J+1))/2,1.5], "\\small{"+C[0]+"}", "center", { color: "black" });						
+							}
+					</div>
+				</div>
+				<div data-if="change[1]==1">					
+					<p>我們一共分成了 <code class="hint_green"><var>B[0]</var></code> 組，如果我們每組有 <code class="hint_red"><var>B[1]</var></code> 個，這樣總數就是 <code class="hint_blue"><var>AB</var></code> 。</p>					
+				</div>
+				<div data-if="change[1]==2">					
+					<p>如果我們增加 <code class="hint_green"><var>B[0]</var></code> 組 <code class="hint_red"><var>B[1]</var></code> ，這樣總數就是 <code class="hint_blue"><var>AB</var></code> 。</p>					
+				</div>
+				<div>
+					<div class="graphie" id="similar_12">
+							init({
+							range: [ [-1, 11], [-1.8,1.8] ],
+							scale: 40
+							});
+							path([[0,-0.5],[0,-1],[10,-1],[10,-0.5],[0,-0.5]],{stroke:"black",fill:"blue","fill-opacity": 0.1});
+							label( [5,-1.5], "\\small{"+AB+"}", "center", { color: "black" });
+							path([[0,0.5],[0,1],[10,1],[10,0.5],[0,0.5]],{stroke:"black",fill:"green","fill-opacity": 0.1})
+							var aa=10/B[0];	
+							label( [aa/2,1.5], "\\small{"+B[1]+"}", "center", { color: "black" });						
+							for(var i=0;i &lt;B[0]-1;i++)
+							{
+								line([aa*(i+1),0.5],[aa*(i+1),1],{stroke:"black"});	
+								
+							}
+							for(var J=1;J &lt;B[0];J++)
+							{
+								label( [(aa*J+aa*(J+1))/2,1.5], "\\small{"+B[1]+"}", "center", { color: "black" });						
+							}
+					</div>
+				</div>
+				<p><code class="hint_green"><var>B[0]</var></code> <code>\times</code> <code class="hint_red"><var>B[1]</var></code> <code>=</code><code class="hint_blue"><var>AB</var></code> </p>
+				<p>所以正確答案為： <code class="hint_blue"><var>AB</var></code> 是 <code class="hint_red"><var>B[1]</var></code> 的 <code class="hint_green"><var>B[0]</var></code> 倍。</p>				
+			</div>
+          </div>
+		  
+		  <div id="case3">
+			<div class="vars">
+				<var id="A">randRange(3,9)</var>
+				<var id="B">randRange(3,9)</var>
+				<var id="AB">A*B</var>
+				<var id="A_B">AB-A</var>
+				<var id="set_keypress">
+						(function(){
+							$('#t_1').bind('keypress',function(event){
+								if(event.keyCode == "13"){
+									$('#check-answer-button').click();
+								}
+							});
+						})()
+				</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+					<p><code><var>AB</var></code> 比 <code><var>A_B</var></code> 多 <code><var>A</var></code> 。</p>
+					<P>我們可以使用加法和乘法對 <code><var>AB</var></code> 和 <code><var>A</var></code> 進行比較 。</P>
+					<p>請填完空后再進行比較。</p>
+					<p><code><var>AB</var></code> 是 <code><var>A</var></code> 的 <input type="text" id="t_1" style="text-align:center;width:30px"> 倍。</p>				
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>請填入正確的答案</p>
+			    <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value]</div>
+				    <div class="validator-function">
+					     var bol1=false;
+						if(guess[0].replace(/[ ]/g,"")==B)
+						{
+							bol1=true;
+						}
+						return bol1;
+					</div>
+				</div>
+				<p class="example">整數，例 <code>：6</code></p>
+            </div>
+            <div class="hints">
+			    <p>長度為 <code class="hint_blue"><var>AB</var></code> 的線段需要多少個長度為 <code class="hint_red"><var>A</var></code> 的線段組成 ？</p>
+				<div class="graphie" id="similar_11">
+					    init({
+                        range: [ [-1, 11], [-1,1] ],
+                        scale: 40
+                        });
+					    path([[0,-0.2],[0,-0.5],[10,-0.5],[10,-0.2],[0,-0.2]],{stroke:"black",fill:"blue","fill-opacity": 0.1});
+						label( [5,-0.8], "\\small{"+AB+"}", "center", { color: "black" });
+						path([[0,0.2],[0,0.5],[10/B,0.5],[10/B,0.2],[0,0.2]],{stroke:"black",fill:"red","fill-opacity": 0.1})
+						label( [5/B,0.7], "\\small{"+A+"}", "center", { color: "black" });										
+				</div>
+				<div>
+					<P></P>
+					<div class="graphie" id="similar_12">
+							init({
+							range: [ [-1, 11], [-1,1] ],
+							scale: 40
+							});
+							path([[0,-0.2],[0,-0.5],[10,-0.5],[10,-0.2],[0,-0.2]],{stroke:"black",fill:"blue","fill-opacity": 0.1});
+							label( [5,-0.8], "\\small{"+AB+"}", "center", { color: "black" });
+							path([[0,0.2],[0,0.5],[10,0.5],[10,0.2],[0,0.2]],{stroke:"black",fill:"red","fill-opacity": 0.1})
+							label( [5/B,0.7], "\\small{"+A+"}", "center", { color: "black" });	
+							var aa=10/B;						
+							for(var i=0;i &lt;B-1;i++)
+							{
+								line([aa*(i+1),0.2],[aa*(i+1),0.5],{stroke:"black"});								
+							}
+							for(var J=1;J &lt;B;J++)
+							{
+								label( [(aa*J+aa*(J+1))/2,0.7], "\\small{"+A+"}", "center", { color: "black" });						
+							}
+					</div>
+				</div>
+				<p><code class="hint_green"><var>AB</var></code> <code>=</code> <code class="hint_red"><var>A</var></code> <code>\times</code> <code class="hint_blue"><var>B</var></code> </p>
+				<p>所以正確答案為： <code class="hint_blue"><var>AB</var></code> 是 <code class="hint_red"><var>A</var></code> 的 <code class="hint_green"><var>B</var></code> 倍。</p>				
+			</div>
+          </div>
+		  
+		  <div id="case4">
+			<div class="vars">
+				<var id="A,B">randRangeUnique(3,9,2)</var>
+				<var id="C">randRange(1,2)</var>
+				<var id="AB">A*B</var>
+				<var id="set_keypress">
+						(function(){
+							$('#t_3').bind('keypress',function(event){
+								if(event.keyCode == "13"){
+									$('#check-answer-button').click();
+								}
+							});
+						})()
+				</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+					<p><code><var>AB</var></code> 是 <code><var>A</var></code> 的 <code><var>B</var></code> 倍。</p>
+					<P>請根據下面的格式寫出乘式，填完空后再進行比較。</P>
+					<p><input type="text" id="t_1" style="text-align:center;width:30px"> <code data-if="C==1">\times</code><code data-if="C==2">=</code> <input type="text" id="t_2" style="text-align:center;width:30px"> <code data-if="C==1">=</code><code data-if="C==2">\times</code> <input type="text" id="t_3" style="text-align:center;width:30px"></p>									
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>請填入正確的答案</p>
+			    <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value,document.getElementById("t_2").value,document.getElementById("t_3").value]</div>
+				    <div class="validator-function">
+					     var bol1=false;
+						 if(C==1)
+						 {
+							if(guess[0].replace(/[ ]/g,"")==A&&guess[1].replace(/[ ]/g,"")==B&&guess[2].replace(/[ ]/g,"")==AB||guess[0].replace(/[ ]/g,"")==B&&guess[1].replace(/[ ]/g,"")==A&&guess[2].replace(/[ ]/g,"")==AB)
+							{
+								bol1=true;
+							}
+						}
+						if(C==2)
+						 {
+							if(guess[0].replace(/[ ]/g,"")==AB&&guess[1].replace(/[ ]/g,"")==B&&guess[2].replace(/[ ]/g,"")==A||guess[0].replace(/[ ]/g,"")==AB&&guess[1].replace(/[ ]/g,"")==A&&guess[2].replace(/[ ]/g,"")==B)
+							{
+								bol1=true;
+							}
+						}
+						return bol1;
+					</div>
+				</div>
+				<p class="example">整數，例 <code>：6</code></p>
+            </div>
+            <div class="hints">
+				<div>
+					<p>我們可以畫一個圖進行比較：</p>
+					<div class="graphie" id="similar_12">
+							init({
+							range: [ [-1, 11], [-1,1] ],
+							scale: 40
+							});
+							path([[0,-0.2],[0,-0.5],[10,-0.5],[10,-0.2],[0,-0.2]],{stroke:"black",fill:"blue","fill-opacity": 0.1});
+							label( [5,-0.8], "\\small{"+AB+"}", "center", { color: "black" });
+							path([[0,0.2],[0,0.5],[10,0.5],[10,0.2],[0,0.2]],{stroke:"black",fill:"red","fill-opacity": 0.1})						
+							var aa=10/B;
+							label( [aa/2,0.7], "\\small{"+A+"}", "center", { color: "black" });	
+							for(var i=0;i &lt;B-1;i++)
+							{
+								line([aa*(i+1),0.2],[aa*(i+1),0.5],{stroke:"black"});								
+							}
+							for(var J=1;J &lt;B;J++)
+							{
+								label( [(aa*J+aa*(J+1))/2,0.7], "\\small{"+A+"}", "center", { color: "black" });						
+							}
+					</div>
+				</div>
+				<p><code class="hint_green"><var>AB</var></code> 可以由 <code class="hint_red"><var>B</var></code> 組的 <code class="hint_blue"><var>A</var></code> 組成，所以 <code class="hint_green"><var>AB</var></code> 是 <code class="hint_red"><var>A</var></code> 的 <code class="hint_blue"><var>B</var></code> 倍。</p>
+				<p>那麼，這個方程我們可以寫成什麼樣呢？<br/>它看起來應該像這樣的格式：<code class="hint_green">？</code> <code>=</code> <code class="hint_red">？</code> <code>\times</code> <code class="hint_blue">？</code></p>
+				<p>每個問號代表一個數字，現在我們需要決定把每個數字放在哪個位置。</p>
+				<p><code class="hint_green"><var>AB</var></code> 是 <code class="hint_red"><var>A</var></code> 的 <code class="hint_blue"><var>B</var></code> 倍，可以寫成：<code class="hint_green"><var>AB</var></code> <code>=</code> <code class="hint_red"><var>A</var></code> <code>\times</code> <code class="hint_blue"><var>B</var></code> </p>
+				<p>我們也可以寫成其他格式的方程，例如：<br/><code class="hint_green"><var>AB</var></code> <code>=</code> <code class="hint_blue"><var>B</var></code> <code>\times</code> <code class="hint_red"><var>A</var></code> 
+				<br/> <code class="hint_blue"><var>B</var></code> <code>\times</code> <code class="hint_red"><var>A</var></code> <code>=</code> <code class="hint_green"><var>AB</var></code> 
+				<br/> <code class="hint_red"><var>A</var></code> <code>\times</code> <code class="hint_blue"><var>B</var></code> <code>=</code> <code class="hint_green"><var>AB</var></code> </p>
+				<P> 重要的是 <code class="hint_red"><var>A</var></code> 和 <code class="hint_blue"><var>B</var></code> 在等號的一邊，而 <code class="hint_green"><var>AB</var></code> 在等號的另一邊。</P>
+				<p data-if="C==2">所以根據題目所給的作答格式，<br/>正確答案為： <code class="hint_green"><var>AB</var></code> <code>=</code> <code class="hint_red"><var>A</var></code> <code>\times</code> <code class="hint_blue"><var>B</var></code> ，或者
+					<code class="hint_green"><var>AB</var></code> <code>=</code> <code class="hint_blue"><var>B</var></code> <code>\times</code> <code class="hint_red"><var>A</var></code> 。</p>
+				<p data-if="C==1">所以根據題目所給的作答格式，<br/>正確答案為： <code class="hint_red"><var>A</var></code> <code>\times</code> <code class="hint_blue"><var>B</var></code> <code>=</code> <code class="hint_green"><var>AB</var></code> ，或者
+					<code class="hint_blue"><var>B</var></code> <code>\times</code> <code class="hint_red"><var>A</var></code> <code>=</code> <code class="hint_green"><var>AB</var></code> 。</p>				
+			</div>
+          </div>
+		
+	</div>
+	</div>
+</body>
+</html>
