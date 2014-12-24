@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>小數位值換算</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		table.nLimit{margin:0px ;}
+		table.nLimit td { border: 0px solid #AAA; }
+		table.nLimit td { padding: 1px; }
+		table.Limited td {width:90px;;text-align:center; vertical-align:middle;font-size:15px}
+		table.Limited th {text-align:center}
+		.inputbox{
+			width:50px;
+			height:10px
+			border:1px;
+			text-align:center;
+			font-size:12px;
+		}
+	</style>
+</head>
+<body>
+    <div class="exercise">
+		<div class="problems">		
+			<div id="case1">
+				<div class="vars" data-ensure="ensure_vars">
+					<var id="scale_exp">randRange(-1,3)</var>
+					<var id="scale">pow(10,2-scale_exp)</var>
+					<var id="unit_string">
+					(function(){
+						var arr = ["千","百","十","一","十分之一","百分之一","千分之一"];
+						return [arr[3-scale_exp],arr[4-scale_exp],arr[5-scale_exp]];
+					})()</var>
+					<var id="j,k,l">[randRange(1,9),randRange(0,9),randRange(0,9)]</var>
+					<var id="add_init">j*100+k*10+l</var>
+					<var id="add">add_init/scale</var>
+					<var id="add_s">add.toFixed(scale_exp==3?0:2-scale_exp)</var>
+					<var id="col_add_s">
+					(function(){
+						if(scale_exp==-1){
+							return "0."+j+k+l;
+						}
+					})()</var>
+					<var id="nj">randRange(1,j)</var>
+					<var id="ques_types">nj==j?randRange(2,3):randRange(1,3)</var>
+					<var id="jj,kk,ll">
+					(function(){
+						var n_add = add_init-100*nj;
+						var nk = 0;
+						if(nj==j){
+							nk = randRange(Math.floor(n_add/100)*10,Math.floor(n_add/10));
+						}else{
+							nk = Math.floor(n_add/10);
+						}
+						var nl = add_init-100*nj-10*nk;
+						return [nj,nk,nl];
+					})()</var>
+					<var id="ensure_vars">
+					(function(){
+						if(j==jj && k==kk && l==ll){
+							return false;
+						}else{
+							if(ques_types==1&&j==jj){return false;}
+							if(ques_types==2&&k==kk){return false;}
+							if(ques_types==3&&l==ll){return false;}
+							return true;
+						}
+					})()</var>
+					<var id="set_keypress">
+					(function(){
+						$("input[type=text][name='ans']").bind('keypress',function(event){
+							if(event.keyCode == "13"){
+								$('#check-answer-button').click();
+							}
+						});
+					})()
+					</var>
+				</div>
+				<div class="question">
+					<p class="question">通過位值換算，以不同的方式正確表達小數。</p>
+					<div class="problem">
+						<p><code><var>add_s</var>=<var>j</var>\enspace</code>個<span class="hint_orange"><var>unit_string[0]</var></span><code>\enspace+\enspace<var>k</var>\enspace</code>個<span class="hint_blue"><var>unit_string[1]</var></span> <code>+\enspace<var>l</var></code> 個<span class="hint_green"><var>unit_string[2]</var></span></p>
+						<p data-if="ques_types==1"><code><var>add_s</var>=\enspace</code><input type="text" name="ans" class="inputbox"><code>\enspace</code>個<span class="hint_orange"><var>unit_string[0]</var></span><code>\enspace+\enspace<var>kk</var>\enspace</code>個<span class="hint_blue"><var>unit_string[1]</var></span> <code>+\enspace<var>ll</var></code> 個<span class="hint_green"><var>unit_string[2]</var></span></p>
+						<p data-if="ques_types==2"><code><var>add_s</var>=<var>jj</var>\enspace</code>個<span class="hint_orange"><var>unit_string[0]</var></span><code>\enspace+\enspace</code><input type="text" name="ans" class="inputbox"><code>\enspace</code>個<span class="hint_blue"><var>unit_string[1]</var></span> <code>+\enspace<var>ll</var></code> 個<span class="hint_green"><var>unit_string[2]</var></span></p>
+						<p data-if="ques_types==3"><code><var>add_s</var>=<var>jj</var>\enspace</code>個<span class="hint_orange"><var>unit_string[0]</var></span><code>\enspace+\enspace<var>kk</var>\enspace</code>個<span class="hint_blue"><var>unit_string[1]</var></span> <code>+\enspace</code><input type="text" name="ans" class="inputbox"> 個<span class="hint_green"><var>unit_string[2]</var></span></p>
+					</div>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>填入正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">$("input[type=text][name='ans']").val().replace(/[ ]/g,"")</div>
+						<div class="validator-function">
+							if(guess==""){
+								return "";
+							}
+							switch(ques_types)
+								{ case 1:return guess==jj;break;
+								  case 2:return guess==kk;break;
+								  case 3:return guess==ll;break;
+								}
+						</div>
+					</div>
+					<p class="example">整數，例：6</p>
+				</div>
+				<div class="hints">
+					<p><code><var>add_s</var></code> 由 <code><var>j</var>\enspace</code>個<span class="hint_orange"><var>unit_string[0]</var></span><code>\enspace+\enspace<var>k</var>\enspace</code>個<span class="hint_blue"><var>unit_string[1]</var></span> <code>+\enspace<var>l</var></code> 個<span class="hint_green"><var>unit_string[2]</var></span> 組成。</p>
+					<p>我們可以通過位值換算，以不同的方式正確表達小數。</p>
+					<p data-if="ques_types==1 || (ques_types==2 && nj!=j)"><code><var>j</var></code> 個<span class="hint_orange"><var>unit_string[0]</var></span> 可以寫成 <code><var>jj</var></code> 個<span class="hint_orange"><var>unit_string[0]</var></span> <code>+</code> <code><var>j-jj</var></code> 個<span class="hint_orange"><var>unit_string[0]</var></span>。</p>
+					<div data-if="ques_types==1 || (ques_types==2 && nj!=j)">
+						<p>所以，<code><var>j</var>\enspace</code>個<span class="hint_orange"><var>unit_string[0]</var></span><code>\enspace+\enspace<var>k</var>\enspace</code>個<span class="hint_blue"><var>unit_string[1]</var></span> 可以這麼寫 ：</p>
+						<p><code>\enspace\enspace\enspace<var>j</var>\enspace</code>個<span class="hint_orange"><var>unit_string[0]</var></span><code>\enspace+\enspace<var>k</var>\enspace</code>個<span class="hint_blue"><var>unit_string[1]</var></span></p>
+						<p><code>=<var>jj</var></code> 個<span class="hint_orange"><var>unit_string[0]</var></span> <code>+\enspace<var>j-jj</var></code> 個<span class="hint_orange"><var>unit_string[0]</var></span> <code>+\enspace<var>k</var></code> 個<span class="hint_blue"><var>unit_string[1]</var></span></p>
+					</div>
+					<p data-if="ques_types==1 || (ques_types==2 && nj!=j)"><code>=<var>jj</var></code> 個<span class="hint_orange"><var>unit_string[0]</var></span> <code>+\enspace<var>(j-jj)*10</var></code> 個<span class="hint_blue"><var>unit_string[1]</var></span> <code>+\enspace<var>k</var></code> 個<span class="hint_blue"><var>unit_string[1]</var></span></p>
+					<p data-if="ques_types==1 || (ques_types==2 && nj!=j)"><code>=<var>jj</var></code> 個<span class="hint_orange"><var>unit_string[0]</var></span> <code>+\enspace<var>kk</var></code> 個<span class="hint_blue"><var>unit_string[1]</var></span></p>
+					<p data-if="ques_types==1 || (ques_types==2 && nj!=j)">其它位值不變。</p>
+					<p data-if="ques_types==1"><code><var>add_s</var>=</code> <code class="hint_red"><var>jj</var>\enspace</code>個<span class="hint_orange"><var>unit_string[0]</var></span><code>\enspace+\enspace<var>kk</var>\enspace</code>個<span class="hint_blue"><var>unit_string[1]</var></span> <code>+\enspace<var>ll</var></code> 個<span class="hint_green"><var>unit_string[2]</var></span></p>
+					<p data-if="ques_types==2 && nj!=j"><code><var>add_s</var>=<var>jj</var>\enspace</code>個<span class="hint_orange"><var>unit_string[0]</var></span><code>\enspace+\enspace</code> <code class="hint_red"><var>kk</var>\enspace</code>個<span class="hint_blue"><var>unit_string[1]</var></span> <code>+\enspace<var>ll</var></code> 個<span class="hint_green"><var>unit_string[2]</var></span></p>
+					<p data-if="(ques_types==2 && nj==j) || ques_types==3"><code><var>k</var></code> 個<span class="hint_blue"><var>unit_string[1]</var></span> 可以寫成 <code><var>kk</var></code> 個<span class="hint_blue"><var>unit_string[1]</var></span> <code>+</code> <code><var>k-kk</var></code> 個<span class="hint_blue"><var>unit_string[1]</var></span>。</p>
+					<div data-if="(ques_types==2 && nj==j) || ques_types==3">
+						<p>所以，<code><var>k</var>\enspace</code>個<span class="hint_blue"><var>unit_string[1]</var></span><code>\enspace+\enspace<var>l</var>\enspace</code>個<span class="hint_green"><var>unit_string[2]</var></span> 可以這麼寫 ：</p>
+						<p><code>\enspace\enspace\enspace<var>k</var>\enspace</code>個<span class="hint_blue"><var>unit_string[1]</var></span><code>\enspace+\enspace<var>l</var>\enspace</code>個<span class="hint_green"><var>unit_string[2]</var></span></p>
+						<p><code>=<var>kk</var></code> 個<span class="hint_blue"><var>unit_string[1]</var></span> <code>+\enspace<var>k-kk</var></code> 個<span class="hint_blue"><var>unit_string[1]</var></span> <code>+\enspace<var>l</var></code> 個<span class="hint_green"><var>unit_string[2]</var></span></p>
+					</div>
+					<p data-if="(ques_types==2 && nj==j) || ques_types==3"><code>=<var>kk</var></code> 個<span class="hint_blue"><var>unit_string[1]</var></span> <code>+\enspace<var>(k-kk)*10</var></code> 個<span class="hint_green"><var>unit_string[2]</var></span> <code>+\enspace<var>l</var></code> 個<span class="hint_green"><var>unit_string[2]</var></span></p>
+					<p data-if="(ques_types==2 && nj==j) || ques_types==3"><code>=<var>kk</var></code> 個<span class="hint_blue"><var>unit_string[1]</var></span> <code>+\enspace<var>ll</var></code> 個<span class="hint_green"><var>unit_string[2]</var></span></p>
+					<p data-if="(ques_types==2 && nj==j) || ques_types==3">其它位值不變。</p>
+					<p data-if="ques_types==2 && nj==j"><code><var>add_s</var>=<var>jj</var>\enspace</code>個<span class="hint_orange"><var>unit_string[0]</var></span><code>\enspace+\enspace</code> <code class="hint_red"><var>kk</var>\enspace</code>個<span class="hint_blue"><var>unit_string[1]</var></span> <code>+\enspace<var>ll</var></code> 個<span class="hint_green"><var>unit_string[2]</var></span></p>
+					<p data-if="ques_types==3"><code><var>add_s</var>=<var>jj</var>\enspace</code>個<span class="hint_orange"><var>unit_string[0]</var></span><code>\enspace+\enspace<var>kk</var>\enspace</code>個<span class="hint_blue"><var>unit_string[1]</var></span> <code>+\enspace</code> <code class="hint_red"><var>ll</var></code> 個<span class="hint_green"><var>unit_string[2]</var></span></p>
+				</div>
+			</div>
+
+			<div id="case2">
+				<div class="vars" data-ensure="ans_arr_add != 0 && ans_arr_add != 4">
+					<var id="ans_types">randRange(1,2)</var>
+					<var id="scale_exp">randRange(-1,1)</var>
+					<var id="scale">pow(10,2-scale_exp)</var>
+					<var id="arr">["千","百","十","一","十分之一","百分之一","千分之一"]</var>
+					<var id="unit_char">arr[4-scale_exp]</var>
+					<var id="unit_string">ans_types==2?[arr[3-scale_exp],arr[4-scale_exp],arr[5-scale_exp]]:[arr[3-scale_exp],arr[4-scale_exp]]</var>
+					<var id="j,k,l">[randRange(2,3),randRange(1,9),randRange(1,9)]</var>
+					<var id="add_init">ans_types==2?j*100+l:j*100+10*k</var>
+					<var id="add">add_init/scale</var>
+					<var id="ans_string">[unit_string[0],unit_string[ans_types]]</var>
+					<var id="ans_arr">[randRange(0,1),randRange(0,1),randRange(0,1),randRange(0,1)]</var>
+					<var id="ans_arr_add">
+					(function(){
+						var arr_add = 0;
+						for(var s = j==3?0:1;s&lt;4;s++){
+							arr_add+=ans_arr[s];
+						}
+						return arr_add;
+					})()</var>
+					<var id="ans_arr_2">
+					(function(){
+						if(j==3){
+							if(ans_types==2){
+								return [l,l+100,l+200,l+300];
+							}else{
+								return [k,k+10,k+20,k+30];
+							}
+						}else{
+							if(ans_types==2){
+								return [0,l,l+100,l+200];
+							}else{
+								return [0,k,k+10,k+20];
+							}
+						}
+					})()</var>
+				</div>
+				<div class="question">
+					<p class="question">以 <code><var>j+1</var></code> 種不同的方式在表格內填入整數來表達 <code class="hint_orange"><var>add</var></code>。</p>
+					<div class="problem">
+						<table class="Limited">
+							<tr style="border-bottom:solid 2px #D0D0D0;font-size:15px">
+								<th><var>ans_string[0]</var></th><th><var>ans_string[1]</var></th>
+							</tr>
+							<tr style="background:#F0F0F0" data-if="j==3">
+								<td data-if="ans_arr[0]==1"><var>3</var></td><td data-if="ans_arr[0]==0"><input type="text" class="inputbox" id="ans_1"></td>
+								<td data-if="ans_arr[0]==0"><var>ans_arr_2[0]</var></td><td data-if="ans_arr[0]==1"><input type="text" class="inputbox" id="ans_2"></td>
+							</tr>
+							<tr>
+								<td data-if="ans_arr[1]==1"><var>2</var></td><td data-if="ans_arr[1]==0"><input type="text" class="inputbox" id="ans_3"></td>
+								<td data-if="ans_arr[1]==0"><var>ans_arr_2[1]</var></td><td data-if="ans_arr[1]==1"><input type="text" class="inputbox" id="ans_4"></td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td data-if="ans_arr[2]==1"><var>1</var></td><td data-if="ans_arr[2]==0"><input type="text" class="inputbox" id="ans_5"></td>
+								<td data-if="ans_arr[2]==0"><var>ans_arr_2[2]</var></td><td data-if="ans_arr[2]==1"><input type="text" class="inputbox" id="ans_6"></td>
+							</tr>
+							<tr>
+								<td data-if="ans_arr[3]==1"><var>0</var></td><td data-if="ans_arr[3]==0"><input type="text" class="inputbox" id="ans_7"></td>
+								<td data-if="ans_arr[3]==0"><var>ans_arr_2[3]</var></td><td data-if="ans_arr[3]==1"><input type="text" class="inputbox" id="ans_8"></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>填入正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">
+							(function(){
+								var guess_arr = new Array();
+								if(j==3){
+									for(var i = 0;i&lt;4;i++){
+										guess_arr[i] = ans_arr[i]==1?$('#ans_'+(2*i+2)).val().replace(/[ ]/g,""):$('#ans_'+(2*i+1)).val().replace(/[ ]/g,"");
+									}
+								}else{
+									for(var i = 0;i&lt;3;i++){
+										guess_arr[i] = ans_arr[i+1]==1?$('#ans_'+(2*i+4)).val().replace(/[ ]/g,""):$('#ans_'+(2*i+3)).val().replace(/[ ]/g,"");
+									}
+								}
+								return guess_arr;
+							})()
+						</div>
+						<div class="validator-function">
+							for(var jjj = 0;jjj&lt;guess.length;jjj++){
+								if(guess[jjj]==""){
+									return "";
+								}
+							}
+							if(j==3){
+								for(var i = 0;i&lt;4;i++){
+									if(guess[i]==(ans_arr[i]==1?ans_arr_2[i]:3-i)){
+										continue;
+									}else return false;
+								}
+							}else{
+								for(var i = 0;i&lt;3;i++){
+									if(guess[i]==(ans_arr[i+1]==1?ans_arr_2[i+1]:2-i)){
+										continue;
+									}else return false;
+								}
+							}
+							return true;
+						</div>
+					</div>
+					<p class="example">整數，例：6</p>
+				</div>
+				<div class="hints">
+					<p><code><var>add</var></code> 由 <code class="hint_pink"><var>j</var>\enspace</code><span class="hint_pink">個<var>ans_string[0]</var></span><code>\enspace+\enspace<var>ans_types==2?l:k</var>\enspace</code>個<var>ans_string[1]</var> 組成。</p>
+					<p data-if="ans_types==2">我們知道 <code class="hint_pink"><var>j</var></code> <span class="hint_pink">個<var>ans_string[0]</var></span> <code>=</code> <code class="hint_purple"><var>j-1</var></code> <span class="hint_purple">個<var>ans_string[0]</var></span> <code class="hint_purple">+10</code> <span class="hint_purple">個<var>unit_char</var></span> 。</p>
+					<p data-if="ans_types==2">因為我們沒有對應<span><var>unit_char</var></span>位那一列，所以需要把<span><var>unit_char</var></span>位變成<span><var>ans_string[1]</var></span>位。</p>
+					<div data-if="ans_types==2">
+						<p><code>1</code> 個<var>unit_char</var> <code>=10</code> 個<var>ans_string[1]</var><br/>
+							<code class="hint_purple">10</code> <span class="hint_purple">個<var>unit_char</var></span> <code>=</code> <code class="hint_red">100</code> <span class="hint_red">個<var>ans_string[1]</var></span>
+						</p>
+					</div>
+					<div data-if="ans_types==2">
+						<p><code class="hint_pink"><var>j</var></code> <span class="hint_pink">個<var>ans_string[0]</var></span> <code>=</code> <code class="hint_purple"><var>j-1</var></code> <span class="hint_purple">個<var>ans_string[0]</var></span> <code class="hint_purple">+10</code> <span class="hint_purple">個<var>unit_char</var></span></p>
+						<p><code>\enspace\enspace\enspace\enspace\enspace\enspace=</code> <code class="hint_red"><var>j-1</var></code> <span class="hint_red">個<var>ans_string[0]</var></span> <code class="hint_red">+100</code> <span class="hint_red">個<var>ans_string[1]</var></span></p>
+					</div>
+					<div data-if="ans_types==2">
+						<p>所以， <code class="hint_pink"><var>j</var>\enspace</code><span class="hint_pink">個<var>ans_string[0]</var></span><code>\enspace+\enspace<var>ans_types==2?l:k</var>\enspace</code>個<var>ans_string[1]</var></p>
+						<p> <code>\enspace\enspace\enspace\enspace=</code> <code class="hint_purple"><var>j-1</var></code> <span class="hint_purple">個<var>ans_string[0]</var></span> <code class="hint_purple">+10</code> <span class="hint_purple">個<var>unit_char</var></span> <code>+</code> <code><var>l</var>\enspace</code>個<var>ans_string[1]</var></p>
+						<p> <code>\enspace\enspace\enspace\enspace=</code> <code class="hint_red"><var>j-1</var></code> <span class="hint_red">個<var>ans_string[0]</var></span> <code class="hint_red">+100</code> <span class="hint_red">個<var>ans_string[1]</var></span> <code>+</code> <code><var>l</var>\enspace</code>個<var>ans_string[1]</var></p>
+						<p> <code>\enspace\enspace\enspace\enspace=</code> <code><var>j-1</var></code> 個<var>ans_string[0]</var> <code>+<var>100+l</var></code> 個<var>ans_string[1]</var></p>
+					</div>
+					<div data-if="ans_types==2">
+						<p>我們還可以知道：</p>
+						<p><code class="hint_pink"><var>j</var></code> <span class="hint_pink">個<var>ans_string[0]</var></span> <code>=</code> <code class="hint_green"><var>j-2</var></code> <span class="hint_green">個<var>ans_string[0]</var></span> <code class="hint_green">+20</code> <span class="hint_green">個<var>unit_char</var></span></p>
+						<p data-if="j==3"><code class="hint_pink"><var>j</var></code> <span class="hint_pink">個<var>ans_string[0]</var></span> <code>=</code> <code class="hint_blue"><var>j-3</var></code> <span class="hint_blue">個<var>ans_string[0]</var></span> <code class="hint_blue">+30</code> <span class="hint_blue">個<var>unit_char</var></span></p>
+					</div>
+					<div data-if="ans_types==2">
+						<p>同理可得， <code class="hint_pink"><var>j</var>\enspace</code><span class="hint_pink">個<var>ans_string[0]</var></span><code>\enspace+\enspace<var>ans_types==2?l:k</var>\enspace</code>個<var>ans_string[1]</var></p>
+						<p> <code>\enspace\enspace\enspace\enspace=</code> <code><var>j-2</var></code> 個<var>ans_string[0]</var> <code>+<var>200+l</var></code> 個<var>ans_string[1]</var></p>
+						<p data-if="j==3">以及 <code class="hint_pink"><var>j</var>\enspace</code><span class="hint_pink">個<var>ans_string[0]</var></span><code>\enspace+\enspace<var>ans_types==2?l:k</var>\enspace</code>個<var>ans_string[1]</var></p>
+						<p data-if="j==3"> <code>\enspace\enspace\enspace\enspace=</code> <code><var>j-3</var></code> 個<var>ans_string[0]</var> <code>+<var>300+l</var></code> 個<var>ans_string[1]</var></p>
+					</div>
+					
+					<p data-if="ans_types==1"><code class="hint_pink"><var>j</var></code> <span class="hint_pink">個<var>ans_string[0]</var></span> 可以寫成 <code class="hint_green"><var>j-1</var></code> <span>個<var>ans_string[0]</var></span> <code class="hint_green">+10</code> <span class="hint_green">個<var>ans_string[1]</var></span> ，</p>
+					<p data-if="ans_types==1"><code class="hint_pink"><var>j</var></code> <span class="hint_pink">個<var>ans_string[0]</var></span> 也可以寫成 <code class="hint_blue"><var>j-2</var></code> <span>個<var>ans_string[0]</var></span> <code class="hint_blue">+20</code> <span class="hint_blue">個<var>ans_string[1]</var></span> ，</p>
+					<p data-if="ans_types==1 && j==3"><code class="hint_pink"><var>j</var></code> <span class="hint_pink">個<var>ans_string[0]</var></span> 還可以寫成 <code class="hint_purple"><var>j-3</var></code> <span>個<var>ans_string[0]</var></span> <code class="hint_purple">+30</code> <span class="hint_purple">個<var>ans_string[1]</var></span> ，</p>
+					<div>
+						<p>所以， <code class="hint_orange"><var>add</var></code> 可以寫成下面的形式：</p>
+						<table class="Limited">
+							<tr style="border-bottom:solid 2px #D0D0D0;font-size:15px">
+								<th><var>ans_string[0]</var></th><th><var>ans_string[1]</var></th>
+							</tr>
+							<tr style="background:#F0F0F0" data-if="j==3">
+								<td><var>3</var></td>
+								<td><var>ans_arr_2[0]</var></td>
+							</tr>
+							<tr>
+								<td><var>2</var></td>
+								<td><var>ans_arr_2[1]</var></td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td><var>1</var></td>
+								<td><var>ans_arr_2[2]</var></td>
+							</tr>
+							<tr>
+								<td><var>0</var></td>
+								<td><var>ans_arr_2[3]</var></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+		</div>
+	</div>
+</body>
+</html>
