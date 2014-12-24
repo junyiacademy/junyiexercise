@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>兩等份與四等份</title>
+    <script src="../khan-exercise.js"></script>
+	<script language="javascript">
+		function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">	
+		<div id="case1">
+		<div class="vars">
+			<var id="types">randFromArray([["長方形",1],["正方形",2],["圓形",3]])</var>
+			<var id="parts">2*randRange(1,2)</var>
+			<var id="ud_randge">types[1]==1?[-2.6, 2.6]:[-1.6, 1.6]</var>
+			<var id="colours">randFromArray([ORANGE,"#28AE7B","red","#6495ED"])</var>
+			<var id="set_right_lines">randRangeUnique(1,5,4)</var>
+			<var id="ans">(function(){for(var i = 0;i&lt;set_right_lines.length;i++){if(set_right_lines[i]==1){return i+1;}}})()</var>
+			<var id="path_arr">[[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]]</var>
+			<var id="index">randRange(0,3)</var>
+			<var id="t">randRange(1,2)</var>
+			<var id="angles1,angles2,angles3,angles4">[randRange(0,180),randRange(0,180),randRange(0,180),randRange(0,180)]</var>
+		</div>
+		<div class="question">
+			<p>以下哪一張圖顯示一個<var>types[0]</var>被分成<var>parts==2?"兩":"四"</var>份？</p>
+			<table>
+				<tr>
+				<td style="vertical-align:middle">
+					<input type="radio" name="checkbox" id="c1">
+				</td>
+				<td onclick="$('#c1').attr('checked','checked')">
+				<div class="graphie" id="filling1">
+					init({
+						range: [ [-1.6, 1.6], ud_randge ],scale: 40
+					});
+					style({stroke: colours});
+					if(types[1] != 3){
+						path(path_arr,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						if(set_right_lines[0]==1){
+							if(parts==2){
+								if(t==1){
+									line(path_arr[index%4],path_arr[(index+2)%4]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+								}
+							}else{
+								if(t==1){
+									line(path_arr[0],path_arr[2]);
+									line(path_arr[1],path_arr[3]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+									line([path_arr[(index+1)%4][0]/2+path_arr[(index+2)%4][0]/2,path_arr[(index+1)%4][1]/2+path_arr[(index+2)%4][1]/2],[path_arr[(index+3)%4][0]/2+path_arr[index%4][0]/2,path_arr[(index+3)%4][1]/2+path_arr[index%4][1]/2]);
+								}
+							}
+						}else if(set_right_lines[0]==2){
+							if(parts==4){
+								line(path_arr[index%4],path_arr[(index+2)%4]);
+							}else{
+								line(path_arr[0],path_arr[2]);
+								line(path_arr[1],path_arr[3]);
+							}
+						}else if(set_right_lines[0]==3){
+							if(parts==4){
+								line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[index%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+							}else{
+								line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+								line([path_arr[(index+1)%4][0]/2+path_arr[(index+2)%4][0]/2,path_arr[(index+1)%4][1]/2+path_arr[(index+2)%4][1]/2],[path_arr[(index+3)%4][0]/2+path_arr[index%4][0]/2,path_arr[(index+3)%4][1]/2+path_arr[index%4][1]/2]);
+							}
+						}else{
+							line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+							line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],path_arr[(index+2)%4]);
+						}
+					}else{
+						circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						if(set_right_lines[0]==1){
+							if(parts==2){
+								line(polar(1.5,angles1),polar(1.5,angles1+180));
+							}else{
+								line(polar(1.5,angles1),polar(1.5,angles1+180));
+								line(polar(1.5,angles1+90),polar(1.5,angles1+270));
+							}
+						}else if(set_right_lines[0]==2){
+							line(polar(1.5,angles1),polar(1.5,angles1+randRange(0,270)));
+						}else if(set_right_lines[0]==3){
+							line([0,0],polar(1.5,angles1));
+							line([0,0],polar(1.5,angles1+120));
+							line([0,0],polar(1.5,angles1+240));
+						}else{
+							if(t==1){
+								line(polar(1.5,angles1),polar(1.5,angles1+180));
+								line(polar(1.5,angles1+30),polar(1.5,angles1+150));
+								line(polar(1.5,angles1+330),polar(1.5,angles1+210));
+							}else{
+								line(polar(1.5,angles1+20),polar(1.5,angles1+160));
+								line(polar(1.5,angles1+340),polar(1.5,angles1+200));
+							}
+						}
+					}
+				</div>
+				</td>
+				<td style="vertical-align:middle">
+					<input type="radio" name="checkbox" id="c2">
+				</td>
+				<td onclick="$('#c2').attr('checked','checked')">
+				<div class="graphie" id="filling2">
+					init({
+						range: [ [-1.6, 1.6], ud_randge ],scale: 40
+					});
+					style({stroke: colours});
+					if(types[1] != 3){
+						path(path_arr,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						if(set_right_lines[1]==1){
+							if(parts==2){
+								if(t==1){
+									line(path_arr[index%4],path_arr[(index+2)%4]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+								}
+							}else{
+								if(t==1){
+									line(path_arr[0],path_arr[2]);
+									line(path_arr[1],path_arr[3]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+									line([path_arr[(index+1)%4][0]/2+path_arr[(index+2)%4][0]/2,path_arr[(index+1)%4][1]/2+path_arr[(index+2)%4][1]/2],[path_arr[(index+3)%4][0]/2+path_arr[index%4][0]/2,path_arr[(index+3)%4][1]/2+path_arr[index%4][1]/2]);
+								}
+							}
+						}else if(set_right_lines[1]==2){
+							if(parts==4){
+								line(path_arr[index%4],path_arr[(index+2)%4]);
+							}else{
+								line(path_arr[0],path_arr[2]);
+								line(path_arr[1],path_arr[3]);
+							}
+						}else if(set_right_lines[1]==3){
+							if(parts==4){
+								line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[index%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+							}else{
+								line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+								line([path_arr[(index+1)%4][0]/2+path_arr[(index+2)%4][0]/2,path_arr[(index+1)%4][1]/2+path_arr[(index+2)%4][1]/2],[path_arr[(index+3)%4][0]/2+path_arr[index%4][0]/2,path_arr[(index+3)%4][1]/2+path_arr[index%4][1]/2]);
+							}
+						}else{
+							line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+							line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],path_arr[(index+2)%4]);
+						}
+					}else{
+						circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						if(set_right_lines[1]==1){
+							if(parts==2){
+								line(polar(1.5,angles2),polar(1.5,angles2+180));
+							}else{
+								line(polar(1.5,angles2),polar(1.5,angles2+180));
+								line(polar(1.5,angles2+90),polar(1.5,angles2+270));
+							}
+						}else if(set_right_lines[1]==2){
+							line(polar(1.5,angles2),polar(1.5,angles2+randRange(0,270)));
+						}else if(set_right_lines[1]==3){
+							line([0,0],polar(1.5,angles2));
+							line([0,0],polar(1.5,angles2+120));
+							line([0,0],polar(1.5,angles2+240));
+						}else{
+							if(t==1){
+								line(polar(1.5,angles2),polar(1.5,angles2+180));
+								line(polar(1.5,angles2+30),polar(1.5,angles2+150));
+								line(polar(1.5,angles2+330),polar(1.5,angles2+210));
+							}else{
+								line(polar(1.5,angles2+20),polar(1.5,angles2+160));
+								line(polar(1.5,angles2+340),polar(1.5,angles2+200));
+							}
+						}
+					}
+				</div>
+				</td>
+				<td style="vertical-align:middle">
+					<input type="radio" name="checkbox" id="c3">
+				</td>
+				<td onclick="$('#c3').attr('checked','checked')">
+				<div class="graphie" id="filling3">
+					init({
+						range: [ [-1.6, 1.6], ud_randge ],scale: 40
+					});
+					style({stroke: colours});
+					if(types[1] != 3){
+						path(path_arr,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						if(set_right_lines[2]==1){
+							if(parts==2){
+								if(t==1){
+									line(path_arr[index%4],path_arr[(index+2)%4]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+								}
+							}else{
+								if(t==1){
+									line(path_arr[0],path_arr[2]);
+									line(path_arr[1],path_arr[3]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+									line([path_arr[(index+1)%4][0]/2+path_arr[(index+2)%4][0]/2,path_arr[(index+1)%4][1]/2+path_arr[(index+2)%4][1]/2],[path_arr[(index+3)%4][0]/2+path_arr[index%4][0]/2,path_arr[(index+3)%4][1]/2+path_arr[index%4][1]/2]);
+								}
+							}
+						}else if(set_right_lines[2]==2){
+							if(parts==4){
+								line(path_arr[index%4],path_arr[(index+2)%4]);
+							}else{
+								line(path_arr[0],path_arr[2]);
+								line(path_arr[1],path_arr[3]);
+							}
+						}else if(set_right_lines[2]==3){
+							if(parts==4){
+								line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[index%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+							}else{
+								line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+								line([path_arr[(index+1)%4][0]/2+path_arr[(index+2)%4][0]/2,path_arr[(index+1)%4][1]/2+path_arr[(index+2)%4][1]/2],[path_arr[(index+3)%4][0]/2+path_arr[index%4][0]/2,path_arr[(index+3)%4][1]/2+path_arr[index%4][1]/2]);
+							}
+						}else{
+							line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+							line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],path_arr[(index+2)%4]);
+						}
+					}else{
+						circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						if(set_right_lines[2]==1){
+							if(parts==2){
+								line(polar(1.5,angles3),polar(1.5,angles3+180));
+							}else{
+								line(polar(1.5,angles3),polar(1.5,angles3+180));
+								line(polar(1.5,angles3+90),polar(1.5,angles3+270));
+							}
+						}else if(set_right_lines[2]==2){
+							line(polar(1.5,angles3),polar(1.5,angles3+randRange(0,270)));
+						}else if(set_right_lines[2]==3){
+							line([0,0],polar(1.5,angles3));
+							line([0,0],polar(1.5,angles3+120));
+							line([0,0],polar(1.5,angles3+240));
+						}else{
+							if(t==1){
+								line(polar(1.5,angles3),polar(1.5,angles3+180));
+								line(polar(1.5,angles3+30),polar(1.5,angles3+150));
+								line(polar(1.5,angles3+330),polar(1.5,angles3+210));
+							}else{
+								line(polar(1.5,angles3+20),polar(1.5,angles3+160));
+								line(polar(1.5,angles3+340),polar(1.5,angles3+200));
+							}
+						}
+					}
+				</div>
+				</td>
+				</tr>
+				<tr>
+				<td style="vertical-align:middle">
+					<input type="radio" name="checkbox" id="c4">
+				</td>
+				<td onclick="$('#c4').attr('checked','checked')">
+				<div class="graphie" id="filling4">
+					init({
+						range: [ [-1.6, 1.6], ud_randge ],scale: 40
+					});
+					style({stroke: colours});
+					if(types[1] != 3){
+						path(path_arr,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						if(set_right_lines[3]==1){
+							if(parts==2){
+								if(t==1){
+									line(path_arr[index%4],path_arr[(index+2)%4]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+								}
+							}else{
+								if(t==1){
+									line(path_arr[0],path_arr[2]);
+									line(path_arr[1],path_arr[3]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+									line([path_arr[(index+1)%4][0]/2+path_arr[(index+2)%4][0]/2,path_arr[(index+1)%4][1]/2+path_arr[(index+2)%4][1]/2],[path_arr[(index+3)%4][0]/2+path_arr[index%4][0]/2,path_arr[(index+3)%4][1]/2+path_arr[index%4][1]/2]);
+								}
+							}
+						}else if(set_right_lines[3]==2){
+							if(parts==4){
+								line(path_arr[index%4],path_arr[(index+2)%4]);
+							}else{
+								line(path_arr[0],path_arr[2]);
+								line(path_arr[1],path_arr[3]);
+							}
+						}else if(set_right_lines[3]==3){
+							if(parts==4){
+								line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[index%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+							}else{
+								line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+								line([path_arr[(index+1)%4][0]/2+path_arr[(index+2)%4][0]/2,path_arr[(index+1)%4][1]/2+path_arr[(index+2)%4][1]/2],[path_arr[(index+3)%4][0]/2+path_arr[index%4][0]/2,path_arr[(index+3)%4][1]/2+path_arr[index%4][1]/2]);
+							}
+						}else{
+							line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+							line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],path_arr[(index+2)%4]);
+						}
+					}else{
+						circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						if(set_right_lines[3]==1){
+							if(parts==2){
+								line(polar(1.5,angles4),polar(1.5,angles4+180));
+							}else{
+								line(polar(1.5,angles4),polar(1.5,angles4+180));
+								line(polar(1.5,angles4+90),polar(1.5,angles4+270));
+							}
+						}else if(set_right_lines[3]==2){
+							line(polar(1.5,angles4),polar(1.5,angles4+randRange(0,270)));
+						}else if(set_right_lines[3]==3){
+							line([0,0],polar(1.5,angles4));
+							line([0,0],polar(1.5,angles4+120));
+							line([0,0],polar(1.5,angles4+240));
+						}else{
+							if(t==1){
+								line(polar(1.5,angles4),polar(1.5,angles4+180));
+								line(polar(1.5,angles4+30),polar(1.5,angles4+150));
+								line(polar(1.5,angles4+330),polar(1.5,angles4+210));
+							}else{
+								line(polar(1.5,angles4+20),polar(1.5,angles4+160));
+								line(polar(1.5,angles4+340),polar(1.5,angles4+200));
+							}
+						}
+					}
+				</div>
+				</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="solution" data-type="multiple">
+			<p>選擇正確的答案</p>
+			<div class="sol" data-type="custom">
+				<div class="guess">
+					(function(){
+						var chk_value =[];    
+						$('input[name="checkbox"]:checked').each(function(){    
+							chk_value.push($(this).val());    
+						});
+						return chk_value;
+					})()
+				</div>
+				<div class="validator-function">
+					if(guess.length==0){
+						return "";
+					}
+					if($('#c'+ans).is(':checked')){
+						return true;
+					}
+				</div>
+			</div>
+		</div>
+				
+		<div class="hints">
+			<p>當我們將一個完整的物體分成<var>parts==2?"兩":"四"</var>個相等的部分時，我們稱之為<b><var>parts==2?"兩":"四"</var>等份</b>。</p>
+			<div>
+				<p>這個<var>types[0]</var>被分成了<b><var>parts==2?"兩":"四"</var></b>份：</p>
+				<table><tr>
+					<td data-if="set_right_lines[0]==1">
+					<div class="graphie" id="filling11">
+						init({
+							range: [ [-1.6, 1.6], ud_randge ],scale: 40
+						});
+						style({stroke: colours});
+						if(types[1] != 3){
+							path(path_arr,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+							if(parts==2){
+								if(t==1){
+									line(path_arr[index%4],path_arr[(index+2)%4]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+								}
+							}else{
+								if(t==1){
+									line(path_arr[0],path_arr[2]);
+									line(path_arr[1],path_arr[3]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+									line([path_arr[(index+1)%4][0]/2+path_arr[(index+2)%4][0]/2,path_arr[(index+1)%4][1]/2+path_arr[(index+2)%4][1]/2],[path_arr[(index+3)%4][0]/2+path_arr[index%4][0]/2,path_arr[(index+3)%4][1]/2+path_arr[index%4][1]/2]);
+								}
+							}
+						}else{
+							circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+							if(parts==2){
+								line(polar(1.5,angles1),polar(1.5,angles1+180));
+							}else{
+								line(polar(1.5,angles1),polar(1.5,angles1+180));
+								line(polar(1.5,angles1+90),polar(1.5,angles1+270));
+							}
+						}
+					</div>
+					</td>
+					<td data-if="set_right_lines[1]==1">
+					<div class="graphie" id="filling22">
+						init({
+							range: [ [-1.6, 1.6], ud_randge ],scale: 40
+						});
+						style({stroke: colours});
+						if(types[1] != 3){
+							path(path_arr,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+							if(parts==2){
+								if(t==1){
+									line(path_arr[index%4],path_arr[(index+2)%4]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+								}
+							}else{
+								if(t==1){
+									line(path_arr[0],path_arr[2]);
+									line(path_arr[1],path_arr[3]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+									line([path_arr[(index+1)%4][0]/2+path_arr[(index+2)%4][0]/2,path_arr[(index+1)%4][1]/2+path_arr[(index+2)%4][1]/2],[path_arr[(index+3)%4][0]/2+path_arr[index%4][0]/2,path_arr[(index+3)%4][1]/2+path_arr[index%4][1]/2]);
+								}
+							}
+						}else{
+							circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+							if(parts==2){
+								line(polar(1.5,angles2),polar(1.5,angles2+180));
+							}else{
+								line(polar(1.5,angles2),polar(1.5,angles2+180));
+								line(polar(1.5,angles2+90),polar(1.5,angles2+270));
+							}
+						}
+					</div>
+					</td>
+					<td data-if="set_right_lines[2]==1">
+					<div class="graphie" id="filling33">
+						init({
+							range: [ [-1.6, 1.6], ud_randge ],scale: 40
+						});
+						style({stroke: colours});
+						if(types[1] != 3){
+							path(path_arr,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+							if(parts==2){
+								if(t==1){
+									line(path_arr[index%4],path_arr[(index+2)%4]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+								}
+							}else{
+								if(t==1){
+									line(path_arr[0],path_arr[2]);
+									line(path_arr[1],path_arr[3]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+									line([path_arr[(index+1)%4][0]/2+path_arr[(index+2)%4][0]/2,path_arr[(index+1)%4][1]/2+path_arr[(index+2)%4][1]/2],[path_arr[(index+3)%4][0]/2+path_arr[index%4][0]/2,path_arr[(index+3)%4][1]/2+path_arr[index%4][1]/2]);
+								}
+							}
+						}else{
+							circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+							if(parts==2){
+								line(polar(1.5,angles3),polar(1.5,angles3+180));
+							}else{
+								line(polar(1.5,angles3),polar(1.5,angles3+180));
+								line(polar(1.5,angles3+90),polar(1.5,angles3+270));
+							}
+						}
+					</div>
+					</td>
+					<td data-if="set_right_lines[3]==1">
+					<div class="graphie" id="filling44">
+						init({
+							range: [ [-1.6, 1.6], ud_randge ],scale: 40
+						});
+						style({stroke: colours});
+						if(types[1] != 3){
+							path(path_arr,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+							if(parts==2){
+								if(t==1){
+									line(path_arr[index%4],path_arr[(index+2)%4]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+								}
+							}else{
+								if(t==1){
+									line(path_arr[0],path_arr[2]);
+									line(path_arr[1],path_arr[3]);
+								}else{
+									line([path_arr[index%4][0]/2+path_arr[(index+1)%4][0]/2,path_arr[index%4][1]/2+path_arr[(index+1)%4][1]/2],[path_arr[(index+2)%4][0]/2+path_arr[(index+3)%4][0]/2,path_arr[(index+2)%4][1]/2+path_arr[(index+3)%4][1]/2]);
+									line([path_arr[(index+1)%4][0]/2+path_arr[(index+2)%4][0]/2,path_arr[(index+1)%4][1]/2+path_arr[(index+2)%4][1]/2],[path_arr[(index+3)%4][0]/2+path_arr[index%4][0]/2,path_arr[(index+3)%4][1]/2+path_arr[index%4][1]/2]);
+								}
+							}
+						}else{
+							circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+							if(parts==2){
+								line(polar(1.5,angles4),polar(1.5,angles4+180));
+							}else{
+								line(polar(1.5,angles4),polar(1.5,angles4+180));
+								line(polar(1.5,angles4+90),polar(1.5,angles4+270));
+							}
+						}
+					</div>
+					</td>
+				</tr></table>
+			</div>
+		</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>
