@@ -11,118 +11,114 @@
 		<div id="case1">
 			<div class="vars">
 				<var id="A">randRange(2,5)</var>				
-				<var id="ANS">6</var>
+				<var id="ANS">randRange(3,12)</var>
 				<var id="B">A*ANS</var>
 			</div>
 			<div class="question">
-				<p>莱戈拉斯在练习一次射 <code><var>A</var></code> 支箭，他现在一共有 <code><var>B</var></code> 支箭。</p>
-				<p>在他需要整理箭支之前，可以练习几次？</p>
+				<p>萊斯在練習一次射 <code><var>A</var></code> 支箭，他現在一共有 <code><var>B</var></code> 支箭。</p>
+				<p>在他箭用完之前，可以練習幾次？</p>
 			</div>
 			<div class="solution" data-forms="integer"><var>ANS</var></div>
 			<div class="hints">
 				<div>
-					<p>莱戈拉斯每次射 <code><var>A</var></code> 支箭，所以我们可以把 <code><var>A</var></code> 支箭当成一组箭， <code><var>B</var></code> 支箭可以分成几组？</p>
+					<p>萊斯每次射 <code><var>A</var></code> 支箭，所以我們可以把 <code><var>A</var></code> 支箭當成一組箭， <code><var>B</var></code> 支箭可以分成幾組？</p>
 					<div class="graphie" id="area">
-						init({ range: [[-1, 11], [-1, 3.5]], scale: 30 });
-						path([[0, 0], [1.5, 0], [1.5, 1], [0, 1], true],
+						init({ range: [[-1, ANS+1], [-1, 3.5]], scale: 30 });
+						path([[0, 0], [1, 0], [1, 1], [0, 1], true],
 						{ stroke: BLUE, fill: "#eee" });
 						line([0, 1],[0.5, 1.5]);
-						line([0.5, 1.5],[4, 2]);
-						line([4, 2],[4.5, 2.5]);
-						line([4.5, 2.5],[5, 2]);
-						line([5, 2],[8.5, 1.5]);
-						line([8.5, 1.5],[9, 1]);
-						label([4.5, 2.5], B, "above");
-						label([0.75, 0.5], A);
+						line([0.5, 1.5],[ANS/2-0.5, 2]);
+						line([ANS/2-0.5, 2],[ANS/2, 2.5]);
+						line([ANS/2, 2.5],[ANS/2+0.5, 2]);
+						line([ANS/2+0.5, 2],[ANS-0.5, 1.5]);
+						line([ANS-0.5, 1.5],[ANS, 1]);
+						label([ANS/2, 2.5], B, "above");
+						label([0.5, 0.5], A);
 					</div>
 				</div>
 				<div>
-					<p>如果把 <code>S</code> 看作组数，<code><var>A</var>\times</code><code>S=<var>B</var></code></p>
+					<p>如果把 <code>S</code> 看作組數，<code><var>A</var>\times</code><code>S=<var>B</var></code></p>
 				</div>
 				<div>
 					<p>即，<code><var>B</var>\div<var>A</var> = S</code></p>
 					<div class="graphie" id="uparea">
-						init({ range: [[-1, 11], [-1, 3.5]], scale: 30 });
-						path([[0, 0], [9, 0], [9, 1], [0, 1], true],
+						init({ range: [[-1, ANS+1], [-1, 3.5]], scale: 30 });
+						path([[0, 0], [ANS, 0], [ANS, 1], [0, 1], true],
 						{ stroke: BLUE, fill: "#eee" });
 						line([0, 1],[0.5, 1.5]);
-						line([0.5, 1.5],[4, 2]);
-						line([4, 2],[4.5, 2.5]);
-						line([4.5, 2.5],[5, 2]);
-						line([5, 2],[8.5, 1.5]);
-						line([8.5, 1.5],[9, 1]);
-						label([4.5, 2.5], B, "above");
-						label([0.75, 0.5], A);
-						line([1.5, 0],[1.5, 1], { stroke: BLUE, fill: "#eee" });
-						line([3, 0],[3, 1], { stroke: BLUE, fill: "#eee" });
-						line([4.5, 0],[4.5, 1], { stroke: BLUE, fill: "#eee" });
-						line([6, 0],[6, 1], { stroke: BLUE, fill: "#eee" });
-						line([7.5, 0],[7.5, 1], { stroke: BLUE, fill: "#eee" });
-						label([2.25, 0.5], A);
-						label([3.75, 0.5], A);
-						label([5.25, 0.5], A);
-						label([6.75, 0.5], A);
-						label([8.25, 0.5], A);
+						line([0.5, 1.5],[ANS/2-0.5, 2]);
+						line([ANS/2-0.5, 2],[ANS/2, 2.5]);
+						line([ANS/2, 2.5],[ANS/2+0.5, 2]);
+						line([ANS/2+0.5, 2],[ANS-0.5, 1.5]);
+						line([ANS-0.5, 1.5],[ANS, 1]);
+						for (var i = 1; i < ANS; i++) {
+							line([i, 0],[i, 1], { stroke: BLUE, fill: "#eee" });
+						}
+						label([ANS/2, 2.5], B, "above");
+						for (var i = 0; i < ANS; i++) {
+							label([i+0.5, 0.5], A);
+						}
 					</div>
 				</div>
-				<p><code><var>B</var>\div<var>A</var> = <var>ANS</var></code></p>
-				<p>即莱戈拉斯可以练习 <code class="hint_pink"><var>ANS</var></code> 次。(<code><var>A</var>\times</code><code><var>ANS</var> = <var>B</var></code>)</p>
+				<div>
+					<p><code><var>B</var>\div<var>A</var> = <var>ANS</var></code></p>
+				</div>
+				<div>
+					<p>即萊斯可以練習 <code class="hint_pink"><var>ANS</var></code> 次。(<code><var>A</var>\times</code><code><var>ANS</var> = <var>B</var></code>)</p>
+				</div>
 			</div>	
 		</div>
 		
 		<div id="case2">
 			<div class="vars">				
 				<var id="B">randRange(2,5)</var>
-				<var id="NUM">5</var>
+				<var id="NUM">randRange(3,12)</var>
 				<var id="A">NUM*B</var>
 			</div>
 			<div class="question">
-				<p>珍娜买了 <code><var>A</var></code> 颗糖，现在平均分给她的孩子，分给每个孩子 <code><var>B</var></code> 颗糖。</p>
-				<p>珍娜一共有几个孩子？</p>
+				<p>珍娜買了 <code><var>A</var></code> 顆糖，現在平均分給他的孩子，分給每個孩子 <code><var>B</var></code> 顆糖。</p>
+				<p>珍娜一共有幾個孩子？</p>
 			</div>
 			<div class="solution" data-forms="integer"><var>NUM</var></div>
 			<div class="hints">
-				<div><p>每个孩子分得到 <code><var>B</var></code> 颗糖，我们可以把 <code><var>B</var></code> 颗糖看作一组， <code><var>A</var></code> 颗糖可以分成几组？</p></div>
+				<div><p>每個孩子分得到 <code><var>B</var></code> 顆糖，我們可以把 <code><var>B</var></code> 顆糖看作一組， <code><var>A</var></code> 顆糖可以分成幾组？</p></div>
 				<div class="graphie" id="area">
-					init({ range: [[-1, 11], [-1, 3.5]], scale: 30 });
-					path([[0, 0], [2, 0], [2, 1], [0, 1], true],
+					init({ range: [[-1, NUM+1], [-1, 3.5]], scale: 30 });
+					path([[0, 0], [1, 0], [1, 1], [0, 1], true],
 					{ stroke: BLUE, fill: "#eee" });
 					line([0, 1],[0.5, 1.5]);
-					line([0.5, 1.5],[4.5, 2]);
-					line([4.5, 2],[5, 2.5]);
-					line([5, 2.5],[5.5, 2]);
-					line([5.5, 2],[9.5, 1.5]);
-					line([9.5, 1.5],[10, 1]);
-					label([5, 2.5], A, "above");
-					label([1, 0.5], B);
+					line([0.5, 1.5],[NUM/2-0.5, 2]);
+					line([NUM/2-0.5, 2],[NUM/2, 2.5]);
+					line([NUM/2, 2.5],[NUM/2+0.5, 2]);
+					line([NUM/2+0.5, 2],[NUM-0.5, 1.5]);
+					line([NUM-0.5, 1.5],[NUM, 1]);
+					label([NUM/2, 2.5], A, "above");
+					label([0.5, 0.5], B);
 				</div>
-				<div><p>如果把 <code>C</code> 看作组数，<code><var>B</var>\times</code><code>C = <var>A</var></code></p></div>
+				<div><p>如果把 <code>C</code> 看作組數，<code><var>B</var>\times</code><code>C = <var>A</var></code></p></div>
 				<div><p>即 <code><var>A</var>\div<var>B</var> = C</code></p></div>
 				
 				<div>
 					<div class="graphie" id="uparea">
-						init({ range: [[-1, 11], [-1, 3.5]], scale: 30 });
-						path([[0, 0], [10, 0], [10, 1], [0, 1], true],
+						init({ range: [[-1, NUM+1], [-1, 3.5]], scale: 30 });
+						path([[0, 0], [NUM, 0], [NUM, 1], [0, 1], true],
 						{ stroke: BLUE, fill: "#eee" });
 						line([0, 1],[0.5, 1.5]);
-						line([0.5, 1.5],[4.5, 2]);
-						line([4.5, 2],[5, 2.5]);
-						line([5, 2.5],[5.5, 2]);
-						line([5.5, 2],[9.5, 1.5]);
-						line([9.5, 1.5],[10, 1]);
-						label([5, 2.5], A, "above");
-						label([1, 0.5], B);
-						line([2, 0],[2, 1], { stroke: BLUE, fill: "#eee" });
-						line([4, 0],[4, 1], { stroke: BLUE, fill: "#eee" });
-						line([6, 0],[6, 1], { stroke: BLUE, fill: "#eee" });
-						line([8, 0],[8, 1], { stroke: BLUE, fill: "#eee" });
-						label([3, 0.5], B);
-						label([5, 0.5], B);
-						label([7, 0.5], B);
-						label([9, 0.5], B);
+						line([0.5, 1.5],[NUM/2-0.5, 2]);
+						line([NUM/2-0.5, 2],[NUM/2, 2.5]);
+						line([NUM/2, 2.5],[NUM/2+0.5, 2]);
+						line([NUM/2+0.5, 2],[NUM-0.5, 1.5]);
+						line([NUM-0.5, 1.5],[NUM, 1]);
+						for (var i = 1; i < NUM; i++) {
+							line([i, 0],[i, 1], { stroke: BLUE, fill: "#eee" });
+						}
+						label([NUM/2, 2.5], A, "above");
+						for (var i = 0; i < NUM; i++) {
+							label([i+0.5, 0.5], B);
+						}
 					</div>
 					<p><code><var>A</var>\div<var>B</var> = <var>NUM</var></code></p>
-					<p>珍娜有 <code class="hint_pink"><var>NUM</var></code> 个孩子。</p>
+					<p>珍娜有 <code class="hint_pink"><var>NUM</var></code> 個孩子。</p>
 				</div>
 			</div>
 		</div>
@@ -133,8 +129,8 @@
 				<var id="L">B-A</var>
 			</div>
 			<div class="question">
-				<p>瓦里安骑马奔跑了 <code><var>A</var></code> 千米，莱戈拉斯坐动力机器人行驶了 <code><var>B</var></code> 千米。</p>
-				<p>莱戈拉斯比瓦里安多行驶了多少公里？哪个表达式可以解决问题</p>
+				<p>安安騎馬奔跑了 <code><var>A</var></code> 公里，萊斯坐車子行駛了 <code><var>B</var></code> 公里。</p>
+				<p>萊斯比安安多行駛了多少公里？哪個表達式可以解決問題？</p>
 			</div>
 			<div class="solution"><code><var>A</var> + ？ = <var>B</var></code></div>
 				<ul class="choices">
@@ -144,144 +140,123 @@
 				</ul>
 				
 			<div class="hints">
-				<p>莱戈拉斯的机器人比瓦里安的马跑得远，我们可以用加法来比较两个距离。</p>
-				<p><code><var>A</var> + ？ = <var>B</var></code></p>
-				<p>即 <code><var>B</var>-<var>A</var> = ？</code></p>
-				<p><code><var>B</var>-<var>A</var> = <var>L</var></code></p>
-				<p>所以莱戈拉斯的机器人比瓦里安的马多跑了 <code class="hint_pink"><var>L</var></code> 千米</p>
+				<p>萊斯的車子比安安的馬跑得遠，我們可以用加法來比較兩個距離。</p>
+				<div>
+					<p>題目可以轉換成這樣的式子：</p>
+					<p>安安的馬跑了幾公里 + 萊斯比安安多行駛了幾公里 = 萊斯的車子行駛了幾公里</p>
+				</div>
+				<p>最後把數字代換進式子中： <code class="hint_pink"><var>A</var> + ？ = <var>B</var></code></p>
 			</div>
 		</div>
 		<div id="case4">
 			<div class="vars">
 				<var id="A">randRange(10,15)</var>
-				<var id="B">randRange(2,9)</var>
+				<var id="B">randRange(2,7)</var>
 				<var id="SUM">A*B</var>
 			</div>
 			<div class="question">
-				<p>孟德尔想通过豌豆实验来研究性状是如何从父代遗传到子代，现在孟德尔有 <code><var>A</var></code> 个豌豆荚，每个豌豆荚里面有 <code><var>B</var></code> 颗豌豆。</p>
-				<p>孟德尔一共有多少颗豌豆？</p>
+				<p>孟德爾想透過豌豆實驗來研究性狀是如何從父代遺傳到子代，現在孟德爾有 <code><var>A</var></code> 個豌豆莢，每個豌豆莢裡面有 <code><var>B</var></code> 顆豌豆。</p>
+				<p>孟德爾一共有多少顆豌豆？</p>
 			</div>
 			<div class="solution" data-forms="integer"><var>SUM</var></div>
 			<div class="hints">
-				<p>每个豌豆荚里有 <code><var>B</var></code> 颗豌豆，我们一共有 <code><var>A</var></code> 个豌豆荚</p>
+				<p>每個豌豆莢裡面有 <code><var>B</var></code> 顆豌豆，我們一共有 <code><var>A</var></code> 個豌豆莢</p>
 				<p><code><var>A</var>\times<var>B</var> = ？</code></p>
 				<p><code><var>A</var>\times<var>B</var> = <var>SUM</var></code></p>
-				<p>所以孟德尔有 <code class="hint_pink"><var>SUM</var></code> 颗豌豆。</p>
+				<p>所以孟德爾有 <code class="hint_pink"><var>SUM</var></code> 顆豌豆。</p>
 			</div>
 		</div>
 		<div id="case5">
 			<div class="vars">
-				<var id="A">5</var>
-				<var id="B">randRange(2,6)*5</var>
-				<var id="NUM">B/A</var>
+				<var id="A">randRange(3,12)</var>
+				<var id="NUM">randRange(2,9)</var>
+				<var id="B">NUM*A</var>
 			</div>
 			<div class="question">
-				<p>阿曼达正在组件 <code><var>A</var></code> 台遥控车，她一共使用了 <code><var>B</var></code> 节电池。</p>
-				<p>每台遥控车要使用多少节电池？</p>
+				<p>小曼正在組裝 <code><var>A</var></code> 台遙控車，她一共使用了 <code><var>B</var></code> 個電池。</p>
+				<p>每台遙控車要使用多少個電池？</p>
 			</div>
 			<div class="solution" data-forms="integer"><var>NUM</var></div>
 			<div class="hints">
-				<p>我们可以用一个图来表示题目的信息</p>
+				<p>我們可以用一個圖來表示題目的訊息</p>
 				<div class="graphie" id="area">
-					init({ range: [[-1, 11], [-1, 3.5]], scale: 30 });
-					path([[0, 0], [10, 0], [10, 1], [0, 1], true],
+					init({ range: [[-1, A+1], [-1, 3.5]], scale: 30 });
+					path([[0, 0], [A, 0], [A, 1], [0, 1], true],
 					{ stroke: BLUE, fill: "#eee" });
 					line([0, 1],[0.5, 1.5]);
-					line([0.5, 1.5],[4.5, 2]);
-					line([4.5, 2],[5, 2.5]);
-					line([5, 2.5],[5.5, 2]);
-					line([5.5, 2],[9.5, 1.5]);
-					line([9.5, 1.5],[10, 1]);
-					line([2, 0],[2, 1], { stroke: BLUE, fill: "#eee" });
-					line([4, 0],[4, 1], { stroke: BLUE, fill: "#eee" });
-					line([6, 0],[6, 1], { stroke: BLUE, fill: "#eee" });
-					line([8, 0],[8, 1], { stroke: BLUE, fill: "#eee" });
-					label([5, 2.5], B, "above");
-					label([1, 0.5], "\\small{？}");
-					label([3, 0.5], "\\small{？}");
-					label([5, 0.5], "\\small{？}");
-					label([7, 0.5], "\\small{？}");
-					label([9, 0.5], "\\small{？}");
+					line([0.5, 1.5],[A/2-0.5, 2]);
+					line([A/2-0.5, 2],[A/2, 2.5]);
+					line([A/2, 2.5],[A/2+0.5, 2]);
+					line([A/2+0.5, 2],[A-0.5, 1.5]);
+					line([A-0.5, 1.5],[A, 1]);
+					for (var i = 1; i < A; i++) {
+						line([i, 0],[i, 1], { stroke: BLUE, fill: "#eee" });
+					}
+					label([A/2, 2.5], B, "above");
+					for (var i = 0; i < A; i++) {
+						label([i+0.5, 0.5], "\\small{？}");
+					}
 				</div>
-				<p>题目可以写成下面的问题</p>
+				<p>題目可以寫成下面的問題</p>
 				<p><code>？ \times<var>A</var> = <var>B</var></code></p>
 				<p>即 <code><var>B</var>\div<var>A</var> = ？</code></p>
 				<div class="graphie" id="uparea">
-					init({ range: [[-1, 11], [-1, 3.5]], scale: 30 });
-					path([[0, 0], [10, 0], [10, 1], [0, 1], true],
+					init({ range: [[-1, A+1], [-1, 3.5]], scale: 30 });
+					path([[0, 0], [A, 0], [A, 1], [0, 1], true],
 					{ stroke: BLUE, fill: "#eee" });
 					line([0, 1],[0.5, 1.5]);
-					line([0.5, 1.5],[4.5, 2]);
-					line([4.5, 2],[5, 2.5]);
-					line([5, 2.5],[5.5, 2]);
-					line([5.5, 2],[9.5, 1.5]);
-					line([9.5, 1.5],[10, 1]);
-					line([2, 0],[2, 1], { stroke: BLUE, fill: "#eee" });
-					line([4, 0],[4, 1], { stroke: BLUE, fill: "#eee" });
-					line([6, 0],[6, 1], { stroke: BLUE, fill: "#eee" });
-					line([8, 0],[8, 1], { stroke: BLUE, fill: "#eee" });
-					label([5, 2.5], B, "above");
-					label([1, 0.5], NUM);
-					label([3, 0.5], NUM);
-					label([5, 0.5], NUM);
-					label([7, 0.5], NUM);
-					label([9, 0.5], NUM);
+					line([0.5, 1.5],[A/2-0.5, 2]);
+					line([A/2-0.5, 2],[A/2, 2.5]);
+					line([A/2, 2.5],[A/2+0.5, 2]);
+					line([A/2+0.5, 2],[A-0.5, 1.5]);
+					line([A-0.5, 1.5],[A, 1]);
+					for (var i = 1; i < A; i++) {
+						line([i, 0],[i, 1], { stroke: BLUE, fill: "#eee" });
+					}
+					label([A/2, 2.5], B, "above");
+					for (var i = 0; i < A; i++) {
+						label([i+0.5, 0.5], NUM);
+					}
 				</div>
 				<p><code><var>B</var>\div<var>A</var> = <var>NUM</var></code></p>
-				<p>每台遥控车需要使用 <code class="hint_pink"><var>NUM</var></code> 节电池。</p>
+				<p>每台遙控車需要使用 <code class="hint_pink"><var>NUM</var></code> 個電池。</p>
 			</div>
 		</div>
 		<div id="case6">
 			<div class="vars">
-				<var id="A">randRange(1,10)</var>
-				<var id="B">12</var>
+				<var id="A">randRange(1,4)</var>
+				<var id="M">randRange(2,3)</var>
+				<var id="B">A*M</var>
 				<var id="ANS">A*B</var>
 			</div>
 			<div class="question">
-				<p>莱戈拉斯在练习一次射 <code><var>A</var></code> 支箭，他在练习 <code><var>B</var></code> 次之后发现没有箭了。</p>
-				<p>他练习一共射出去多少支箭？</p>
+				<p>萊斯在練習一次射 <code><var>A</var></code> 支箭，他在練習 <code><var>B</var></code> 次之後發現剛好没有箭了。</p>
+				<p>他練習一共射出去多少支箭？</p>
 			</div>
-			<div class="solution">莱戈拉斯射出去 <code><var>ANS</var></code> 支箭，因为 <code><var>A</var>\times<var>B</var> = <var>ANS</var></code></div>
+			<div class="solution">萊斯射出去 <code><var>ANS</var></code> 支箭，因為 <code><var>A</var>\times<var>B</var> = <var>ANS</var></code></div>
 				<ul class="choices">
-					<li>莱戈拉斯射出去 <code><var>B/A</var></code> 支箭，因为 <code><var>B</var>\div<var>A</var> = <var>B/A</var></code></li>
-					<li>莱戈拉斯射出去 <code><var>B+A</var></code> 支箭，因为 <code><var>A</var> + <var>B</var> = <var>A+B</var></code></li>
+					<li>萊斯射出去 <code><var>B/A</var></code> 支箭，因為 <code><var>B</var>\div<var>A</var> = <var>B/A</var></code></li>
+					<li>萊斯射出去 <code><var>B+A</var></code> 支箭，因為 <code><var>A</var> + <var>B</var> = <var>A+B</var></code></li>
 				</ul>
 			<div class="hints">
-				<p>莱戈拉斯练习每次射 <code><var>A</var></code> 支箭，我们可以把 <code><var>A</var></code> 支箭看成一组。如果一共射出去 <code>N</code> 支箭，我们可以用下面的图来表示题目信息。</p>
+				<p>萊斯練習每次射 <code><var>A</var></code> 支箭，我們可以把 <code><var>A</var></code> 支箭看成一組。如果一共射出去 <code>N</code> 支箭，我们可以用下面的圖來表示題目表達的訊息。</p>
 				<div class="graphie" id="area">
-					init({ range: [[-1, 13], [-1, 3.5]], scale: 30 });
-					path([[0, 0], [12, 0], [12, 1], [0, 1], true],
-					{ stroke: BLUE, fill: "#eee" });	
+					init({ range: [[-1, B+1], [-1, 3.5]], scale: 30 });
+					path([[0, 0], [B, 0], [B, 1], [0, 1], true],
+					{ stroke: BLUE, fill: "#eee" });
 					line([0, 1],[0.5, 1.5]);
-					line([0.5, 1.5],[5.5, 2]);
-					line([5.5, 2],[6, 2.5]);
-					line([6, 2.5],[6.5, 2]);
-					line([6.5, 2],[11.5, 1.5]);
-					line([11.5, 1.5],[12, 1]);
-					line([1, 0],[1, 1], { stroke: BLUE, fill: "#eee" });
-					line([2, 0],[2, 1], { stroke: BLUE, fill: "#eee" });
-					line([3, 0],[3, 1], { stroke: BLUE, fill: "#eee" });
-					line([4, 0],[4, 1], { stroke: BLUE, fill: "#eee" });
-					line([5, 0],[5, 1], { stroke: BLUE, fill: "#eee" });
-					line([6, 0],[6, 1], { stroke: BLUE, fill: "#eee" });
-					line([7, 0],[7, 1], { stroke: BLUE, fill: "#eee" });
-					line([8, 0],[8, 1], { stroke: BLUE, fill: "#eee" });
-					line([9, 0],[9, 1], { stroke: BLUE, fill: "#eee" });
-					line([10, 0],[10, 1], { stroke: BLUE, fill: "#eee" });
-					line([11, 0],[11, 1], { stroke: BLUE, fill: "#eee" });
-					label([6, 2.5], "\\small{N}", "above");
-					label([0.5, 0.5], A);
-					label([1.5, 0.5], A);
-					label([2.5, 0.5], A);
-					label([3.5, 0.5], A);
-					label([4.5, 0.5], A);
-					label([5.5, 0.5], A);
-					label([6.5, 0.5], A);
-					label([7.5, 0.5], A);
-					label([8.5, 0.5], A);
-					label([9.5, 0.5], A);
-					label([10.5, 0.5], A);
-					label([11.5, 0.5], A);					
+					line([0.5, 1.5],[B/2-0.5, 2]);
+					line([B/2-0.5, 2],[B/2, 2.5]);
+					line([B/2, 2.5],[B/2+0.5, 2]);
+					line([B/2+0.5, 2],[B-0.5, 1.5]);
+					line([B-0.5, 1.5],[B, 1]);
+					for (var i = 1; i < B; i++) {
+						line([i, 0],[i, 1], { stroke: BLUE, fill: "#eee" });
+					}
+					label([B/2, 2.5], "\\small{N}", "above");
+					for (var i = 0; i < B; i++) {
+						label([i+0.5, 0.5], A);
+					}
 				</div>
 				<p><code>N</code> 是多少？</p>
 				<div>
@@ -289,41 +264,24 @@
 					<p><code><var>A</var>\times<var>B</var> = <var>ANS</var></code></p>
 				</div>
 				<div class="graphie" id="uparea">
-					init({ range: [[-1, 13], [-1, 3.5]], scale: 30 });
-					path([[0, 0], [12, 0], [12, 1], [0, 1], true],
+					init({ range: [[-1, B+1], [-1, 3.5]], scale: 30 });
+					path([[0, 0], [B, 0], [B, 1], [0, 1], true],
 					{ stroke: BLUE, fill: "#eee" });
 					line([0, 1],[0.5, 1.5]);
-					line([0.5, 1.5],[5.5, 2]);
-					line([5.5, 2],[6, 2.5]);
-					line([6, 2.5],[6.5, 2]);
-					line([6.5, 2],[11.5, 1.5]);
-					line([11.5, 1.5],[12, 1]);
-					line([1, 0],[1, 1], { stroke: BLUE, fill: "#eee" });
-					line([2, 0],[2, 1], { stroke: BLUE, fill: "#eee" });
-					line([3, 0],[3, 1], { stroke: BLUE, fill: "#eee" });
-					line([4, 0],[4, 1], { stroke: BLUE, fill: "#eee" });
-					line([5, 0],[5, 1], { stroke: BLUE, fill: "#eee" });
-					line([6, 0],[6, 1], { stroke: BLUE, fill: "#eee" });
-					line([7, 0],[7, 1], { stroke: BLUE, fill: "#eee" });
-					line([8, 0],[8, 1], { stroke: BLUE, fill: "#eee" });
-					line([9, 0],[9, 1], { stroke: BLUE, fill: "#eee" });
-					line([10, 0],[10, 1], { stroke: BLUE, fill: "#eee" });
-					line([11, 0],[11, 1], { stroke: BLUE, fill: "#eee" });
-					label([6, 2.5], ANS, "above");
-					label([0.5, 0.5], A);
-					label([1.5, 0.5], A);
-					label([2.5, 0.5], A);
-					label([3.5, 0.5], A);
-					label([4.5, 0.5], A);
-					label([5.5, 0.5], A);
-					label([6.5, 0.5], A);
-					label([7.5, 0.5], A);
-					label([8.5, 0.5], A);
-					label([9.5, 0.5], A);
-					label([10.5, 0.5], A);
-					label([11.5, 0.5], A);					
+					line([0.5, 1.5],[B/2-0.5, 2]);
+					line([B/2-0.5, 2],[B/2, 2.5]);
+					line([B/2, 2.5],[B/2+0.5, 2]);
+					line([B/2+0.5, 2],[B-0.5, 1.5]);
+					line([B-0.5, 1.5],[B, 1]);
+					for (var i = 1; i < B; i++) {
+						line([i, 0],[i, 1], { stroke: BLUE, fill: "#eee" });
+					}
+					label([B/2, 2.5], ANS, "above");
+					for (var i = 0; i < B; i++) {
+						label([i+0.5, 0.5], A);
+					}
 				</div>
-				<p>莱戈拉斯练习一共射出去 <code class="hint_pink"><var>ANS</var></code> 支箭。</p>
+				<p>萊斯練習一共射出去 <code class="hint_pink"><var>ANS</var></code> 支箭。</p>
 			</div>
 		</div>
 	</div>
