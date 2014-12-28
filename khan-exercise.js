@@ -2124,8 +2124,9 @@ var Khan = (function() {
                     $("#next-question-button")
                         .removeAttr("disabled")
                         .removeClass("buttonDisabled")
-                        .show()
-                        .focus();
+                        .show(10,function(){
+                            $(this).focus();
+                        });
                     $("#positive-reinforcement").show();
                 }
             } else {
