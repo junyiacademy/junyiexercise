@@ -33,10 +33,11 @@
 			</div>
 			<div class="hints">
 				<p><code><var>dividend_int</var></code> 公斤分成 <code><var>DIVISOR</var></code> 包，不夠分；我們可以怎麼樣來想呢？</p>
-				<p><code><var>dividend_int</var></code> 個 <code>1</code> 公斤可以換成 <code><var>dividend_int*10</var></code> 個 <code>0.1</code> 公斤，去分成 <code>4</code> 包，每包有 <code><var>quotient_int</var></code> 個 <code>0.1</code> 公斤<span data-if="last_quotient!=0">，剩下 <code><var>last_quotient*0.1</var></code> 公斤</span>；</p>
-				<p data-if="last_quotient!=0"><code><var>last_quotient*0.1</var></code> 公斤換成<code><var>last_quotient*10</var></code> 個 <code>0.01</code> 公斤，再分成 <code>4</code> 包，每包 <code><var>last_num</var></code> 個 <code>0.01</code> 公斤，</p>
-				<p data-if="last_quotient!=0">所以合起來是（ <code><var>last_quotient*0.1</var></code> + <code><var>last_num*0.01</var></code> ）公斤，共 <code><var>result*0.01</var></code> 公斤。</p>
+				<p><code><var>dividend_int</var></code> 個 <code>1</code> 公斤可以換成 <code><var>dividend_int*10</var></code> 個 <code>0.1</code> 公斤，分成 <code>4</code> 包 相當於除以<code><var>DIVISOR</var></code>，所以得到每包有 <code><var>quotient_int</var></code> 個 <code>0.1</code> 公斤<span data-if="last_quotient!=0">，剩下 <code><var>last_quotient</var></code> 個<code>0.1</code>公斤不夠分成<code><var>DIVISOR</var></code>包</span>；</p>
+				<p data-if="last_quotient!=0">所以把<code><var>last_quotient*0.1</var></code> 公斤換成<code><var>last_quotient*10</var></code> 個 <code>0.01</code> 公斤，再分成 <code>4</code> 包，每包有<code><var>last_num</var></code> 個 <code>0.01</code> 公斤：所以合起來是（ <code><var>quotient_int/10</var></code> + <code><var>last_num*0.01</var></code> ）公斤，共 <code><var>result*0.01</var></code> 公斤。</p>
+				
 				<p data-if="last_quotient==0">所以合起來是 <code><var>quotient_int*0.1</var></code> 公斤。</p>
+				<p>也可以用直式來計算：</p>
 				<div class="graphie" id="numbers">
 					graph.divider = new Divider( DIVISOR, DIVIDEND, DIVISOR_DECIMAL, DIVIDEND_DECIMAL );
 					graph.divider.show();
@@ -47,7 +48,7 @@
 				<div class="graphie" data-update="numbers" data-each="Array( new Divider( DIVISOR, DIVIDEND, DIVISOR_DECIMAL, DIVIDEND_DECIMAL ).getNumHints() ) as dummy">
 					graph.divider.showHint();
 				</div>
-				<p>所以， <code class="hint_red"><var>dividend_int</var>\div<var>DIVISOR</var>=<var>QUOTIENT  / round( pow( 10, QUOTIENT_DECIMAL ) )</var></code> 。</p>
+				<p>所以每包有 <code class="hint_red"><var>QUOTIENT  / round( pow( 10, QUOTIENT_DECIMAL ) )</var></code> 公斤。</p>
 			</div>
 		</div>
 		
