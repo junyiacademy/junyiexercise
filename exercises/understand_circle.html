@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers geom interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能使用圓規畫圓，認識圓的圓心、圓周、半徑、與直徑(3-s-03)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		#answer_area .sol input[type=text] {
+			width: 20px;
+		}
+		#answer_area .entry input[type=text] {
+			width: 30px;
+		}
+		table.nLimit{margin:0px ;border:0px }
+		table.nLimit td { text-align:center;max-width:250px;border: 0px solid #AAA; }
+		table.nLimit td { padding: 5px; }
+		.input{
+		height:20px;width:30px;
+		background:snow;
+		text-align:center;
+		font-size:18px;}
+</script>
+	</style>
+    <script type="text/javascript">
+        function loadImg(elem, url, count, width, height) {
+
+            var loimg = document.getElementById(elem);
+
+            var inner = "";
+
+            for (var i = 1; i <= count; i++) {
+
+                inner += "<img id=" + "image" + elem + i + " width=" + width + " height=" + height + ">";
+
+            }
+
+            loimg.innerHTML += inner;
+
+            for (var j = 1; j <= count; j++) {
+
+                document.getElementById("image" + elem + j).src = url;
+
+            }
+
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+        <div id="case1">
+			<div class="vars">
+				
+				<var id="name">randFromArray(["阿光","阿嘉","阿山","阿康"])</var>
+			</div>	
+			<p class="problem"><var>name</var>用圓規畫了一個圓，從圓心到圓周的距離叫做什麼？</p>			
+            <div class="solution" data-type="custom">
+				<div class="instruction">
+					<ul>
+						<li><input type="radio" name="sol" id="r1" value="半徑" /><label for="r1">半徑</label></li>
+						<li><input type="radio" name="sol" id="r2" value="直徑" /><label for="r2">直徑</label></li>
+						<li><input type="radio" name="sol" id="r3" value="心周長" /><label for="r3">心周長</label></li>
+						<li><input type="radio" name="sol" id="r4" value="以上都不是" /><label for="r4">以上都不是</label></li>
+					</ul>
+				</div>
+				 <div class="guess">[$( "#solutionarea" ).find( "input:checked" ).val()]</div>
+				 <div class="validator-function">
+                        if ( guess[ 0 ] === null ) {
+                            return "";
+                        }
+                        return guess[ 0 ] === "半徑";
+                    </div>
+				   <div class="show-guess-solutionarea">
+                        $( "#solutionarea" ).find( "input" ).prop( 'checked', false );
+                        if ( guess[ 0 ] != null ) {
+                            $( "#solutionarea" ).find( "input[value=" + guess[ 0 ] + "]" ).prop( 'checked', true );
+                        }
+                    </div>
+			</div>
+			<div class="hints">
+				<p>圓心到圓周的距離我們叫做 <code class="hint_pink">半徑</code> 。</p>
+				<div class="graphie" id="radius_angle_1">
+					init({
+						range: [ [-1, 12], [-3, 3] ],
+						scale: 40
+					});
+					circle([2,0],2);
+				
+					line([2,0],[2,-2],{stroke:" #6495ED"});
+					
+					line([4,0],[6,0],{stroke:" #6495ED"});
+					line([4.15,0.15],[4,0],{stroke:" #6495ED"});
+					line([4.15,-0.15],[4,0],{stroke:" #6495ED"});
+					
+					line([2.01,-1],[5,-1],{stroke:" #6495ED"});
+					line([2.15,-0.85],[2,-1],{stroke:" #6495ED"});
+					line([2.15,-1.15],[2,-1],{stroke:" #6495ED"});
+					
+					line([2.1,0.1],[3,2],{stroke:" #6495ED"});
+					line([2.25,0.15],[2.1,0.1],{stroke:" #6495ED"});
+					line([2.08,0.3],[2.1,0.1],{stroke:" #6495ED"});
+					circle([2,0],0.1,{stroke:" red",fill:"red"});
+					label( [6,0],  "\\small{圓周}", "right", { color: "black" });
+					label( [5,-1],  "\\small{半徑}", "right", { color: "black" });
+					label( [3,2],  "\\small{圓心}", "above", { color: "black" })
+					label( [2,0],  "\\small{.}", "center", { color: "black" })
+				</div>
+				
+			</div>
+		</div>
+		
+		 <div id="case2">
+			<div class="vars">
+				<var id="r">randRange(5,18)</var>
+				<var id="d">2*r</var>				
+			</div>
+			<div class="question">
+				<div class="problem">
+					<table class="nLimit">
+							<tr>
+								<td>
+									<div class="graphie" id="circle1">
+										init({
+										range: [ [-r-2, r+2], [-r-2, r+2] ],
+										scale: 10
+										});
+										circle([0,0],r, { fill: "brown" });
+										line([-r,0],[r,0],{stroke:"red"});
+										line([-r,0],[-1,1],{stroke:"white"});
+										line([r,0],[1,1],{stroke:"white"});
+										label([0,1], "\\small{"+d+"}", "center", { color: "black" });
+									</div>
+								</td>							
+							</tr>
+					</table>
+				</div>
+				<p>請填入正確的長度</p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>直徑長 <span class="sol" data-forms="integer"><var>d</var></span> 公分</p>
+
+				<p class="example">整數，例：<code>1</code></p>
+
+			</div>			
+			<div class="hints">
+				<p>圓心到圓周的距離我們叫做半徑，</p>
+				<p>直徑的長度是半徑的 <code class="hint_blue">2</code> 倍，</p>
+				<div>
+					<p>例如：</p>
+					<p>直徑長是 <code>20</code> 公分時，則半徑長為 <code>10</code> 公分。</p>
+					<p>半徑長是 <code>10</code> 公分時，則直徑長為 <code>20</code> 公分。</p>					
+				</div>
+				<div>
+				<p>所以直徑為 <code>:</code> <code class="hint_pink"><var>d</var></code> 。</p>
+				</div>
+			</div>
+		</div>
+		 
+		 <div id="case3">
+			<div class="vars">
+				<var id="r">randRange(5,18)</var>
+				<var id="d">2*r</var>				
+			</div>
+			<div class="question">
+				<div class="problem">
+					<table class="nLimit">
+							<tr>
+								<td>
+									<div class="graphie" id="circle1">
+										init({
+										range: [ [-r-2, r+2], [-r-2, r+2] ],
+										scale: 10
+										});
+										circle([0,0],r, { fill: "brown" });
+										line([-r,0],[r,0],{stroke:"red"});
+										line([-r,0],[-1,1],{stroke:"white"});
+										line([r,0],[1,1],{stroke:"white"});
+										label([0,1], "\\small{"+d+"}", "center", { color: "black" });
+									</div>
+								</td>							
+							</tr>
+					</table>
+				</div>
+				<p>請填入正確的長度</p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>半徑長 <span class="sol" data-forms="integer"><var>r</var></span> 公分</p>
+
+				<p class="example">整數，例：<code>1</code></p>
+
+			</div>			
+			<div class="hints">
+				<p>圓心到圓周的距離我們叫做半徑，</p>
+				<p>直徑的長度是半徑的 <code class="hint_blue">2</code> 倍，</p>
+				<div>
+					<p>例如：</p>
+					<p>直徑長是 <code>20</code> 公分時，則半徑長為 <code>10</code> 公分。</p>
+					<p>半徑長是 <code>10</code> 公分時，則直徑長為 <code>20</code> 公分。</p>					
+				</div>
+				<div>
+				<p>所以半徑為 <code>:</code> <code class="hint_pink"><var>r</var></code> 。</p>
+				</div>
+			</div>
+		</div>
+		
+		<div id="case4">
+			<div class="vars">
+				<var id="R">randRange(1, 7)</var>
+				<var id="d">2*R</var>	
+				<var id="data">
+                        (function(){                          
+                            loadImg("trianglePlate",Khan.urlBase+"images/triangleruler.png",1,322,161);                          
+                            return 1;
+
+                        })()
+                    </var>
+            </div>			
+            <div class="problem">	
+				<p>量量看，下圖中圓的半徑有多長，並算出直徑。</p>			
+				<div class="problem">	
+				<div id="trianglePlate" style="width:400px;height:500px;position:absolute;z-index:1;"></div>
+				<div class="graphie" id="number-line">
+					init({
+						range: [[-12, 12], [-10, 10]],
+						scale: 19,
+					});	
+					circle([0, 0], R, { stroke: BLUE });															
+					<!--addMouseLayer();
+					graph.Triangleruler = new Triangleruler( [0, 0] )-->
+					
+					circle([0, 0], 0.2, { stroke: "black" ,fill:"black"});
+					  function moveImg(event){
+
+                            var e = event || window.event;
+
+                            var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+
+                            var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+
+                            var x = e.pageX || e.clientX + scrollX;
+
+                            var y = e.pageY || e.clientY + scrollY;
+
+                            var left=x-205;
+
+                            var top=y-255;
+
+                            if(left&lt;300&&top&lt;400&&left&gt;0&&top&gt;0)
+
+                            {
+
+                                $("#imagetrianglePlate1").css("margin-left",left-100+"px");
+
+                                $("#imagetrianglePlate1").css("margin-top",top-150+"px");
+
+                            }
+
+                        }
+
+                        $("#trianglePlate").mousemove(moveImg);
+                </div>
+			
+				</div>			
+            </div> 
+			<div class="solution" data-type="multiple">
+				<p>直徑長：<span class="sol" data-forms="integer"><var>d</var></span> 公分</p>
+				<p>半徑長：<span class="sol" data-forms="integer"><var>R</var></span> 公分</p>
+				<p class="example">答案填入對應位置下的方框中，例如 <code>6</code></p>
+			</div>
+			<div class="hints">
+				<p>圓心到圓周的距離我們叫做 半徑 ，</p>
+				<p>而且我們知道直徑是半徑的 兩倍 ，</p>
+				<p>比如當半徑是 <code>10</code> 公分時，因為 <code> 10 \times 2=20</code> ，</p>
+				<p>所以，我們可以知道直徑長為 <code>20</code> 公分。</p>
+				<div>
+					<p>我們使用尺可以量出這個圓的半徑為 <code class="hint_pink"><var>R</var></code> 公分，</p>
+					<p>所以直徑是 <code><var>R</var>\times 2=\color{#FF00AF}{<var>d</var>}</code> 公分。</p>
+				</div>
+            </div>
+        </div>
+		
+		<div id="case5">
+			<div class="vars">
+				
+				<var id="r">randRange(10,50)</var>
+				<var id="d">2*r</var>
+			</div>
+			<p class="problem">一個圓的半徑是<var>r</var>公分，直徑是幾公分？</p>	
+			<div class="solution" data-type="multiple">				
+				<span class="sol" data-forms="integer"><var>d</var></span><code>\enspace</code>公分
+            </div>
+			
+			<div class="hints">
+			    <p>我們知道直徑是半徑的  <code class="hint_blue">兩倍</code> ，</p>
+				<p>當半徑是 <code class="hint_blue"><var>r</var></code> 公分時，因為 <code class="hint_blue"><var>r</var> \times 2 =<var>d</var></code> ，</p>
+				<p>所以，我們可以知道直徑長為 <code class="hint_pink"><var>d</var></code> 公分。</p>
+            </div>
+		</div>
+		
+		<div id="case6">
+			<div class="vars" data-ensure="d%2==0">
+				
+				<var id="d">randRange(2,100)</var>
+				<var id="r">d/2</var>
+			</div>
+			<div class="question">
+				<div class="problem">
+				<p>一個圓的直徑是 <var>d</var> 公分，請問這個圓的半徑是幾公分？</p>
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">				
+				<p><span class="sol" data-forms="integer"><var>r</var></span><code>\enspace</code>公分</p>
+            </div>
+			<div class="hints">
+			    <p>我們知道直徑是半徑的 <code class="hint_blue">兩倍</code> ，</p>
+				<p>當直徑是 <code class="hint_blue"><var>d</var></code> 公分時，因為 <code class="hint_blue"><var>d</var> \div 2 =<var>r</var></code></p>
+				<p>因此半徑長 <code class="hint_pink"><var>r</var></code> 公分。</p>
+            </div>
+		</div>
+	</div>
+	</div>
+</body>		
+</html>
