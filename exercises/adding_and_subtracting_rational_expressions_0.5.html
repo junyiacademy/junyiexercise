@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions rational-expressions">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>有理式的加減 0.5</title>
+    <script src="../khan-exercise.js"></script>
+	<script type="text/javascript">
+		function checkArr(str1,str2){
+			if(str1!=str2){
+				return false;
+			}
+			return true;
+		}
+		function reverseStr(str){
+			if(str.charAt(0)=='-'){
+				return str.substr(1,str.length);
+			}else return '-'+str;
+		}
+		function checkReverse(str1,str2){
+			if(reverseStr(str1)!=str2){
+				return false;
+			}
+			return true;
+		}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="X">randVar()</var>
+            <var id="Y" data-ensure="Y !== X">randVar()</var>
+            <var id="SIGN">randFromArray(["-", "+"])</var>
+        </div>
+
+        <div class="problems">
+            <div id="constant-denom">
+                <div class="vars">
+                    <div data-ensure="NUMERATORSUM.coefficient !== 0">
+                        <var id="NUMERATOR1">new Term(randRangeNonZero(-10, 10), X)</var>
+                        <var id="NUMERATOR2">new Term(randRangeNonZero(-10, 10), X)</var>
+                        <var id="NUMERATORSUM">
+                            SIGN === "+" ? new Term(NUMERATOR1.coefficient + NUMERATOR2.coefficient, X) :
+                                           new Term(NUMERATOR1.coefficient - NUMERATOR2.coefficient, X)
+                        </var>
+                    </div>
+                    <var id="DENOMINATOR">randRangeNonZero(2, 10)</var>
+                    <var id="FACTOR">getGCD(NUMERATORSUM.coefficient, DENOMINATOR)</var>
+                    <var id="NUMERSOL">NUMERATORSUM.divide(FACTOR)</var>
+                    <var id="DENOMSOL">DENOMINATOR / FACTOR</var>
+                </div>
+
+                <div class="solution" data-type="multiple">
+					<table>
+						<tr><td style="border-bottom:1px solid black"><input type="text" style="width:100px;text-align:center;" id="a1"></td></tr>
+						<tr><td style="border-top:1px solid black"><input type="text" style="width:100px;text-align:center" id="a2"></td></tr>
+					</table>
+					<div class="sol" data-type="custom">
+						<div class="guess">[$('#a1').val().toString().replace(/[ ]/g,"").replace(/−/g,'-'),$('#a2').val().toString().replace(/[ ]/g,"").replace(/−/g,'-'),FACTOR !== 1?NUMERSOL.toString().replace(/[ ]/g,"").replace(/−/g,'-'):NUMERATORSUM.toString().replace(/[ ]/g,"").replace(/−/g,'-'),FACTOR !== 1?DENOMSOL.toString().replace(/[ ]/g,"").replace(/−/g,'-'):DENOMINATOR.toString().replace(/[ ]/g,"").replace(/−/g,'-')]</div>
+						<div class="validator-function">
+							if(guess[0]==""||guess[1]==""){
+								return "";
+							}
+							if(DENOMSOL === 1 || DENOMINATOR === 1){
+								return checkArr(guess[0],guess[2])&&(guess[1]==""||guess[1]==1);
+							}
+							return (checkArr(guess[0],guess[2])&&checkArr(guess[1],guess[3]))||(checkReverse(guess[0],guess[2])&&checkReverse(guess[1],guess[3]));
+						</div>
+					</div>
+					<p class="example">分別填入分子與分母</p>
+					<p class="example">分子與分母的式子要最簡</p>
+					<p class="example"><code>x*3</code> 要寫成 <code>3x</code></p>
+					<p class="example"><code>y^{2}</code> 寫成 <code>y</code>^<code>2</code></p>
+				</div>
+            </div>
+
+            <div id="constant-num">
+                <div class="vars">
+                    <div data-ensure="NUMERATORSUM !== 0">
+                        <var id="NUMERATOR1">randRangeNonZero(-10, 10)</var>
+                        <var id="NUMERATOR2">randRangeNonZero(-10, 10)</var>
+                        <var id="NUMERATORSUM">SIGN === "+" ? NUMERATOR1 + NUMERATOR2 : NUMERATOR1 - NUMERATOR2</var>
+                    </div>
+                    <var id="DENOMINATOR">new Term(randRange(1, 10), X)</var>
+                    <var id="FACTOR">getGCD(NUMERATORSUM, DENOMINATOR.coefficient)</var>
+                    <var id="NUMERSOL">NUMERATORSUM / FACTOR</var>
+                    <var id="DENOMSOL">DENOMINATOR.divide(FACTOR)</var>
+                </div>
+
+                <div class="solution" data-type="multiple">
+					<table>
+						<tr><td style="border-bottom:1px solid black"><input type="text" style="width:100px;text-align:center;" id="a3"></td></tr>
+						<tr><td style="border-top:1px solid black"><input type="text" style="width:100px;text-align:center" id="a4"></td></tr>
+					</table>
+					<div class="sol" data-type="custom">
+						<div class="guess">[$('#a3').val().toString().replace(/[ ]/g,"").replace(/−/g,'-'),$('#a4').val().toString().replace(/[ ]/g,"").replace(/−/g,'-'),FACTOR !== 1?NUMERSOL.toString().replace(/[ ]/g,"").replace(/−/g,'-'):NUMERATORSUM.toString().replace(/[ ]/g,"").replace(/−/g,'-'),FACTOR !== 1?DENOMSOL.toString().replace(/[ ]/g,"").replace(/−/g,'-'):DENOMINATOR.toString().replace(/[ ]/g,"").replace(/−/g,'-')]</div>
+						<div class="validator-function">
+							if(guess[0]==""||guess[1]==""){
+								return "";
+							}
+							return (checkArr(guess[0],guess[2])&&checkArr(guess[1],guess[3]))||(checkReverse(guess[0],guess[2])&&checkReverse(guess[1],guess[3]));
+						</div>
+					</div>
+					<p class="example">分別填入分子與分母</p>
+					<p class="example">分子與分母的式子要最簡</p>
+					<p class="example"><code>x*3</code> 要寫成 <code>3x</code></p>
+					<p class="example"><code>y^{2}</code> 寫成 <code>y</code>^<code>2</code></p>
+				</div>
+            </div>
+
+        </div>
+
+        <p class="problem">化簡並展開下式 <code>:</code></p>
+        <p class="question">
+            <code><var>Y</var> = \dfrac{<var>NUMERATOR1</var>}{<var>DENOMINATOR</var>}
+                  <var>SIGN</var> \dfrac{<var>NUMERATOR2</var>}{<var>DENOMINATOR</var>}</code>
+        </p>
+
+        <div class="hints">
+            <div>
+                <p>由於該式有相同的分母，所以我們可以簡單的合併分子 <code>:</code></p>
+                <div data-if="SIGN === '+'">
+                    <p><code><var>Y</var> = \dfrac{<var>NUMERATOR1</var> <var>SIGN</var> <var>NUMERATOR2</var>}{<var>DENOMINATOR</var>}</code></p>
+                </div>
+                <div data-else="">
+                    <p><code><var>Y</var> = \dfrac{<var>NUMERATOR1</var> <var>SIGN</var> (<var>NUMERATOR2</var>)}{<var>DENOMINATOR</var>}</code></p>
+                </div>
+            </div>
+            <div>
+                <p>合併同類項 <code>:</code></p>
+                <code><var>Y</var> = \dfrac{<var>NUMERATORSUM</var>}{<var>DENOMINATOR</var>}</code>
+            </div>
+            <div data-if="FACTOR !== 1">
+                <p>將分子和分母同時除以 <code><var>FACTOR</var></code> ，化簡得 <code>:</code></p>
+                <p><code><var>Y</var> = \dfrac{<var>NUMERSOL</var>}{<var>DENOMSOL</var>}</code></p><p>
+                </p><p data-if="DENOMSOL === 1"><code><var>Y</var> = <var>NUMERSOL</var></code></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
