@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html data-require="math math-format rational-expressions">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>有理式的加減 6</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #solutionarea input[type=text] {
+            width: 150px;
+        }
+    </style>
+	<script type="text/javascript">
+		function addPlusChar(arr){
+			for(var i = 0;i<arr.length;i++){
+				if(arr[i].charAt(0)=="+"){
+					arr[i]=arr[i].substr(1,arr.length);
+				}
+			}
+			return arr;
+		}
+		function checkArr(arr1,arr2){
+			if(arr1.length!=arr2.length){
+				return false;
+			}
+			for(var i = 0;i<arr1.length;i++){
+				if(arr1[i]!=arr2[i]){
+					return false;
+				}
+			}
+			return true;
+		}
+		function reverseStr(str){
+			if(str.charAt(0)=='-'){
+				return str.substr(1,str.length);
+			}else return '-'+str;
+		}
+		function checkReverse(arr1,arr2){
+			if(arr1.length!=arr2.length){
+				return false;
+			}
+			var arrNew = arr2;
+			for(var i = 0;i<arr1.length;i++){
+				for(var j = 0;j<arrNew.length;j++){
+					if(reverseStr(arr1[i])==arrNew[j]){
+						arrNew.splice(j,1);
+					}
+				}
+			}
+			if(arrNew.length!=0){
+				return false;
+			}
+			return true;
+		}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div>
+                <div class="vars" data-ensure="!CAN_BE_FACTORED">
+                    <var id="X">randVar()</var>
+                    <var id="SIGN1">randFromArray(["+", "-"])</var>
+                    <var id="SIGN2">randFromArray(["+", "-"])</var>
+                    <var id="N1">randRange(1, 5)</var>
+                    <var id="N2">randRange(1, 5)</var>
+                    <var id="N3">rand(2) ? new Term(randRange(1, 5)) : new Term(randRange(1, 5), X)</var>
+                    <var id="TERM1">new RationalExpression([[1, X], randRangeNonZero(-10, 10)])</var>
+                    <var id="TERM2">new RationalExpression([[1, X], randRangeNonZero(-10, 10)])</var>
+                    <var id="F1" data-ensure="getGCD(N1, F1) === 1">randRangeWeighted(1, 5, 1, 0.4)</var>
+                    <var id="F2" data-ensure="getGCD(N2, F2) === 1">randRangeWeighted(1, 5, 1, 0.4)</var>
+                    <var id="F_GCD">getGCD(F1, F2)</var>
+                    <var id="D1">TERM1.multiply(F1)</var>
+                    <var id="D2">TERM2.multiply(F2)</var>
+                    <var id="D3">TERM1.multiply(TERM2)</var>
+                    <var id="COMMON_DENOM">coefficient(F1 * F2 / F_GCD) + "(" + TERM1 + ")(" + TERM2 + ")"</var>
+                    <var id="MULTIPLY1">D2.divide(F_GCD).toStringFactored()</var>
+                    <var id="MULTIPLY2">D1.divide(F_GCD).toStringFactored()</var>
+                    <var id="PRODUCT1">D2.multiply(N1).divide(F_GCD)</var>
+                    <var id="PRODUCT2">D1.multiply(N2).divide(F_GCD)</var>
+                    <var id="PRODUCT2a">SIGN1 === '+' ? PRODUCT2 : PRODUCT2.multiply(-1)</var>
+                    <var id="PRODUCT3">N3.multiply(F1 * F2 / F_GCD)</var>
+                    <var id="PRODUCT3a">SIGN2 === '+' ? PRODUCT3 : PRODUCT3.multiply(-1)</var>
+                    <var id="NUMERATOR">PRODUCT1.add(PRODUCT2a).add(PRODUCT3a)</var>
+                    <var id="DENOMINATOR">TERM1.multiply(TERM2).multiply(F1 * F2 / F_GCD)</var>
+                    <var id="GCD">DENOMINATOR.getGCD(NUMERATOR)</var>
+                    <var id="FINAL_N">NUMERATOR.divide(GCD)</var>
+                    <var id="FINAL_D">DENOMINATOR.divide(GCD)</var>
+                    <var id="CAN_BE_FACTORED">
+                        FINAL_D.getCoefficient("") / FINAL_N.getCoefficient("") === FINAL_D.getCoefficient(X + 1) - FINAL_N.getCoefficient("")
+                    </var>
+                    <var id="ANSWER">"(" + FINAL_N.toString() + ")/(" + FINAL_D.toString() + ")" </var>
+                </div>
+
+                <p class="problem">化簡並展開下式 <code>:</code></p>
+                <p class="question"><code>
+                    \dfrac{<var>N1</var>}{<var>D1</var>}<var>SIGN1</var>
+                    \dfrac{<var>N2</var>}{<var>D2</var>}<var>SIGN2</var>
+                    \dfrac{<var>N3</var>}{<var>D3</var>}
+                </code></p>
+				
+				<div class="solution" data-type="multiple" style="padding:0px">
+					<table>
+						<tr><td style="border-bottom:1px solid black"><input type="text" style="width:150px;text-align:center;" id="a1"></td></tr>
+						<tr><td style="border-top:1px solid black"><input type="text" style="width:150px;text-align:center" id="a2"></td></tr>
+					</table>
+					<div class="sol" data-type="custom">
+						<div class="guess">[$('#a1').val().replace(/[ ]/g,"").replace(/−/g,'-'),$('#a2').val().replace(/[ ]/g,"").replace(/−/g,'-'),FINAL_N.toString().trim().replace(/−/g,'-').replace(/[ ]/g,""),FINAL_D.toString().trim().replace(/−/g,'-').replace(/[ ]/g,"")]</div>
+						<div class="validator-function">
+							if(guess[0]==""||guess[1]==""){
+								return "";
+							}
+							var ansArr = new Array();
+							var ansArrBelow = new Array();
+							var ver1 = new Array();
+							var ver2 = new Array();
+							var ind1 = 0;
+							var ind2 = 0;
+							var ind3 = 0;
+							var ind4 = 0;
+							for(var i=1;i&lt;guess[0].length;i++){
+								if(guess[0].charAt(i)=="+"||guess[0].charAt(i)=="-"){
+									ansArr[ind1] = guess[0].substr(0,i);
+									ind1++;
+									guess[0] = guess[0].substr(i,guess[0].length);
+									i=1;
+								}
+							}
+							for(var i=1;i&lt;guess[1].length;i++){
+								if(guess[1].charAt(i)=="+"||guess[1].charAt(i)=="-"){
+									ansArrBelow[ind2] = guess[1].substr(0,i);
+									ind2++;
+									guess[1] = guess[1].substr(i,guess[1].length);
+									i=1;
+								}
+							}
+							for(var i=1;i&lt;guess[2].length;i++){
+								if(guess[2].charAt(i)=="+"||guess[2].charAt(i)=="-"){
+									ver1[ind3] = guess[2].substr(0,i);
+									ind3++;
+									guess[2] = guess[2].substr(i,guess[2].length);
+									i=1;
+								}
+							}
+							for(var i=1;i&lt;guess[3].length;i++){
+								if(guess[3].charAt(i)=="+"||guess[3].charAt(i)=="-"){
+									ver2[ind4] = guess[3].substr(0,i);
+									ind4++;
+									guess[3] = guess[3].substr(i,guess[3].length);
+									i=1;
+								}
+							}
+							ansArr.push(guess[0]);
+							ansArr.sort();
+							addPlusChar(ansArr);
+							ansArrBelow.push(guess[1]);
+							ansArrBelow.sort();
+							addPlusChar(ansArrBelow);
+							ver1.push(guess[2]);
+							ver1.sort();
+							addPlusChar(ver1);
+							ver2.push(guess[3]);
+							ver2.sort();
+							addPlusChar(ver2);
+							return (checkArr(ansArr,ver1)&&checkArr(ansArrBelow,ver2))||(checkReverse(ansArr,ver1)&&checkReverse(ansArrBelow,ver2));
+						</div>
+					</div>
+					<p class="example">分別填入分子與分母</p>
+					<p class="example">分子與分母的式子要最簡</p>
+					<p class="example"><code>x*3</code> 要寫成 <code>3x</code></p>
+					<p class="example"><code>y^{2}</code> 寫成 <code>y</code>^<code>2</code></p>
+				</div>
+
+                <div class="hints">
+                    <p>首先通過各分母的最小公倍數進行通分。</p>
+                    <p>嘗試對分母進行因式分解。</p>
+
+                    <div data-if="F1 !== 1">
+                        <p>我們可以在第一項分解出分母的因子 <code>:</code> <code><var>F1</var></code></p>
+                        <p><code>\qquad\dfrac{<var>N1</var>}{<var>D1</var>} = \dfrac{<var>N1</var>}{<var>F1</var>(<var>TERM1</var>)}</code></p>
+                    </div>
+
+                    <div data-if="F2 !== 1">
+                        <p>我們可以在第二項分解出分母的因子 <code>:</code> <code><var>F2</var></code></p>
+                        <p><code>\qquad\dfrac{<var>N2</var>}{<var>D2</var>} = \dfrac{<var>N2</var>}{<var>F2</var>(<var>TERM2</var>)}</code></p>
+                    </div>
+
+                    <div>
+                        <p>我們可以將第三項的分母分解成兩個式子的乘積 <code>:</code></p>
+                        <p><code>\qquad\dfrac{<var>N3</var>}{<var>D3</var>} = \dfrac{<var>N3</var>}{(<var>TERM1</var>)(<var>TERM2</var>)}</code></p>
+                    </div>
+
+                    <div>
+                        <p>現在，我們有 <code>:</code></p>
+                        <p><code>\qquad
+                            \dfrac{<var>N1</var>}{<var>D1.toStringFactored()</var>}<var>SIGN1</var>
+                            \dfrac{<var>N2</var>}{<var>D2.toStringFactored()</var>}<var>SIGN2</var>
+                            \dfrac{<var>N3</var>}{(<var>TERM1</var>)(<var>TERM2</var>)}
+                        </code></p>
+                    </div>
+
+                    <div>
+                        <p>然後，得到各分母的最小公倍數 <code>:</code></p>
+                        <p><code>\qquad<var>COMMON_DENOM</var></code></p>
+                    </div>
+
+                    <div>
+                        <p>為了使第一項的分母變成
+                            <code><var>COMMON_DENOM</var></code>， 乘以 
+                            <code>\dfrac{<var>MULTIPLY1</var>}{<var>MULTIPLY1</var>}</code><code>:</code>
+                        </p>
+                        <p><code>\qquad
+                            \dfrac{<var>N1</var>}{<var>D1.toStringFactored()</var>} \times
+                            \dfrac{<var>MULTIPLY1</var>}{<var>MULTIPLY1</var>} = 
+                            \dfrac{<var>PRODUCT1.toStringFactored()</var>}{<var>COMMON_DENOM</var>}
+                        </code></p>
+                    </div>
+
+                    <div>
+                        <p>為了使第二項的分母變成
+                            <code><var>COMMON_DENOM</var></code>， 乘以 
+                            <code>\dfrac{<var>MULTIPLY2</var>}{<var>MULTIPLY2</var>}</code><code>:</code>
+                        </p>
+                        <p><code>\qquad
+                            \dfrac{<var>N2</var>}{<var>D2.toStringFactored()</var>} \times
+                            \dfrac{<var>MULTIPLY2</var>}{<var>MULTIPLY2</var>} = 
+                            \dfrac{<var>PRODUCT2.toStringFactored()</var>}{<var>COMMON_DENOM</var>}
+                        </code></p>
+                    </div>
+
+                    <div data-if="F1 * F2 !== 1">
+                        <p>為了使第三項的分母變成
+                            <code><var>COMMON_DENOM</var></code>， 乘以
+                            <code>\dfrac{<var>F1 * F2 / F_GCD</var>}{<var>F1 * F2 / F_GCD</var>}</code><code>:</code>
+                        </p>
+                        <p><code>\qquad
+                            \dfrac{<var>N3</var>}{(<var>TERM1</var>)(<var>TERM2</var>)} \times
+                            \dfrac{<var>F1 * F2 / F_GCD</var>}{<var>F1 * F2 / F_GCD</var>} = 
+                            \dfrac{<var>PRODUCT3.toStringFactored()</var>}{<var>COMMON_DENOM</var>}
+                        </code></p>
+                    </div>
+
+                    <div>
+                        <p>現在，我們有 <code>:</code></p>
+                        <p><code>\qquad
+                            \dfrac{<var>PRODUCT1.toStringFactored()</var>}{<var>COMMON_DENOM</var>} <var>SIGN1</var>
+                            \dfrac{<var>PRODUCT2.toStringFactored()</var>}{<var>COMMON_DENOM</var>} <var>SIGN2</var>
+                            \dfrac{<var>PRODUCT3.toStringFactored()</var>}{<var>COMMON_DENOM</var>}
+                        </code></p>
+                    </div>
+
+                    <p><code>\qquad = \dfrac{
+                        <var>PRODUCT1.toStringFactored()</var> + <var>PRODUCT2a.toStringFactored()</var> + <var>PRODUCT3a.toStringFactored()</var>}
+                        {<var>COMMON_DENOM</var>}
+                    </code></p>
+
+                    <div>
+                        <p>展開 <code>:</code></p>
+                        <p><code>
+                            \qquad = \dfrac{<var>PRODUCT1</var> + <var>PRODUCT2a</var> + <var>PRODUCT3a</var>}{<var>DENOMINATOR</var>}
+                        </code></p>
+                    </div>
+
+                    <p><code>\qquad = \dfrac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code></p>
+
+                    <div data-if="!GCD.isOne()">
+                        <p>化簡 <code>:</code></p>
+                        <p><code>\qquad = \dfrac{<var>FINAL_N</var>}{<var>FINAL_D</var>}</code></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
