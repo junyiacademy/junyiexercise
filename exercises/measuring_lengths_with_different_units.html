@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>應用不同單位測量長度</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+        </style>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="J">randRange(4,7)</var>
+			</div>
+			<div class="question">
+				<p>這是一個長方形 <code>:</code></p>
+				<div class="graphie" id="rectangle">
+					init({
+                        range: [ [-0.75, 1], [-0.2, 1.2] ],
+                        scale: 40
+                    });
+					path( [[0,0],[0.5,0],[0.5,1],[0,1],[0,0]], { "stroke-width": 1,fill:"#6495ED" } );
+				</div>
+				<p>我們分別使用矩形和釐米刻度尺測量下面的 <span class="hint_green">綠線</span> 。</p>
+				<div class="graphie" id="measuring_length">
+					init({
+                        range: [ [-0.75, 11], [-2.5, 1.2] ],
+                        scale: 40
+                    });
+					path( [[0,0],[J,0],[J,1],[0,1],[0,0]], { "stroke-width": 1,fill:"#6495ED" } );
+					for(var i = 1;i&lt;2*J;i++){
+						line([i/2,0],[i/2,1]);
+					}
+					path( [[0,-0.5],[J,-0.5],[J,-0.3],[0,-0.3],[0,-0.5]], { "stroke-width": 1,fill:"#28AE7B" } );
+					path( [[0,-2.2],[10,-2.2],[10,-0.7],[0,-0.7],[0,-2.2]], { "stroke-width": 1 } );
+					for(var i = 1;i&lt;100;i++){
+						if((i%5)==0 &amp;&amp; !isInt(i/10)){
+							line([i/10,-2.2],[i/10,-1.45],{stroke:"gray","stroke-width": 0.5});
+						}else if(isInt(i/10)){
+							line([i/10,-2.2],[i/10,-0.7],{stroke:"gray","stroke-width": 0.5});
+							label([i/10,-0.95],"\\scriptsize{"+i/10+"}","left",{left:"#28AE7B"});
+						}else{
+							line([i/10,-2.2],[i/10,-1.7],{stroke:"gray","stroke-width": 0.5});
+						}
+					}
+					label([10,-0.95],"\\scriptsize{"+10+"}","left",{left:"#28AE7B"});
+					line([J+2,-0.4],[J+1,-0.4],{arrows: "&lt;-"});
+					label([J+2,-0.4],"\\small{绿线}","right",{color:"#28AE7B"});
+				</div>
+				<p><span class="hint_green">綠線</span> 長為 <input type="text" id="a1" style="width:30px;text-align:center"> 個長方形。</p>
+				<p><span class="hint_green">綠線</span> 長為 <input type="text" id="a2" style="width:30px;text-align:center"> 釐米。</p>
+				<p>長方形的寬度 <select id="a3"><option value ="1"></option><option value ="2">大於</option><option value="3">小於</option></select> 一厘米。</p>
+				<p>所以，相比較於釐米，綠線需要 <select id="a4"><option value ="1"></option><option value ="2">更多</option><option value="3">更少</option></select> 長方形來進行測量。</p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>填空並選擇正確的答案。</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">[$('#a1').val(),$('#a2').val(),$('#a3').val(),$('#a4').val()]</div>
+				    <div class="validator-function">
+						if(guess[0].replace(/[ ]/g,"")=="" || guess[1].replace(/[ ]/g,"")=="" || guess[2].replace(/[ ]/g,"")==1 || guess[3].replace(/[ ]/g,"")==1){
+							return "";
+						}
+						if(guess[0].replace(/[ ]/g,"")==2*J &amp;&amp; guess[1].replace(/[ ]/g,"")==J && guess[2].replace(/[ ]/g,"")==3 && guess[3].replace(/[ ]/g,"")==2){
+							return true;
+						}
+					</div>
+				</div>
+			</div>
+			<div class="hints">
+				<p><span class="hint_green">綠線</span> 長為 <code class="hint_red"><var>2*J</var></code> 個長方形。</p>
+				<p><span class="hint_green">綠線</span> 長為 <code class="hint_blue"><var>J</var></code> 釐米。</p>
+				<p>長方形的寬度 <span class="hint_red">小於</span> 一厘米。</p>
+				<p>所以，相比較於釐米，綠線需要 <span class="hint_red">更多</span> 長方形來進行測量。</p>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>
