@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>比較大小</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+    </style>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="J">randRange(1,2)</var>
+				<var id="bigger">randFromArray([["elephants_com.png","大象"],["shark_com.png","鯊魚"],["cheess_com.png","芝士"],["whale_com.png","鯨魚"]])</var>
+				<var id="smaller">randFromArray([["mouse_com.png","老鼠"],["cat_com.png","貓"],["apple_com.png","蘋果"],["ladybug_com.png","瓢蟲"]])</var>
+				<var id="imgs">
+				(function(){
+					if(J==1){
+						$('#mouse').attr("src",Khan.urlBase+"images/"+smaller[0]);
+						$('#elephant').attr("src",Khan.urlBase+"images/"+bigger[0]);
+					}else{
+						$('#elephant').attr("src",Khan.urlBase+"images/"+smaller[0]);
+						$('#mouse').attr("src",Khan.urlBase+"images/"+bigger[0]);
+					}
+				})()</var>
+			</div>
+			<div class="question">
+				<p class="question">哪一個更大？</p>
+				<table>
+					<tr onclick="$('#img_radio_1').attr('checked', 'checked')"><td style="vertical-align:middle"><input type="radio" id="img_radio_1" name="choices"></td><td><img id="mouse"></td></tr>
+					<tr onclick="$('#img_radio_2').attr('checked', 'checked')"><td style="vertical-align:middle"><input type="radio" id="img_radio_2" name="choices"></td><td><img id="elephant"></td></tr>
+				</table>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>單選</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">1</div>
+				    <div class="validator-function">
+						if(!$('#img_radio_1').attr('checked') &amp;&amp; !$('#img_radio_2').attr('checked')){
+							return "";
+						}
+						if(J==1 &amp;&amp; $('#img_radio_2').attr('checked')){
+							return true;
+						}
+						if(J==2 &amp;&amp; $('#img_radio_1').attr('checked')){
+							return true;
+						}
+					</div>
+				</div>
+			</div>
+			<div class="hints">
+				<div>
+					<p>讓我們排隊起來看看。</p>
+					<p>
+						<img data-if="bigger[0]=='elephants_com.png'" src="/khan-exercises/images/elephants_com.png">
+						<img data-if="bigger[0]=='cheess_com.png'" src="/khan-exercises/images/cheess_com.png">
+						<img data-if="bigger[0]=='shark_com.png'" src="/khan-exercises/images/shark_com.png">
+						<img data-if="bigger[0]=='whale_com.png'" src="/khan-exercises/images/whale_com.png">
+						<img data-if="smaller[0]=='mouse_com.png'" src="/khan-exercises/images/mouse_com.png">
+						<img data-if="smaller[0]=='cat_com.png'" src="/khan-exercises/images/cat_com.png">
+						<img data-if="smaller[0]=='apple_com.png'" src="/khan-exercises/images/apple_com.png">
+						<img data-if="smaller[0]=='ladybug_com.png'" src="/khan-exercises/images/ladybug_com.png">
+					</p>
+				</div>
+				<div>
+					<p><var>bigger[1]</var>更大。</p>
+					<p>
+						<img data-if="bigger[0]=='elephants_com.png'" src="/khan-exercises/images/elephants_com.png">
+						<img data-if="bigger[0]=='cheess_com.png'" src="/khan-exercises/images/cheess_com.png">
+						<img data-if="bigger[0]=='shark_com.png'" src="/khan-exercises/images/shark_com.png">
+						<img data-if="bigger[0]=='whale_com.png'" src="/khan-exercises/images/whale_com.png">
+					</p>
+				</div>
+			</div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="J">randRange(1,2)</var>
+				<var id="bigger">randFromArray([["elephants_com.png","大象"],["shark_com.png","鯊魚"],["cheess_com.png","芝士"],["whale_com.png","鯨魚"]])</var>
+				<var id="smaller">randFromArray([["mouse_com.png","老鼠"],["cat_com.png","貓"],["apple_com.png","蘋果"],["ladybug_com.png","瓢蟲"]])</var>
+				<var id="imgs">
+				(function(){
+					if(J==1){
+						$('#cheess').attr("src",Khan.urlBase+"images/"+bigger[0]);
+						$('#apple').attr("src",Khan.urlBase+"images/"+smaller[0]);
+					}else{
+						$('#apple').attr("src",Khan.urlBase+"images/"+bigger[0]);
+						$('#cheess').attr("src",Khan.urlBase+"images/"+smaller[0]);
+					}
+				})()</var>
+			</div>
+			<div class="question">
+				<p class="question">哪一個更小？</p>
+				<table>
+					<tr onclick="$('#img_radio_1').attr('checked', 'checked')"><td style="vertical-align:middle"><input type="radio" id="img_radio_1" name="choices"></td><td><img id="cheess"></td></tr>
+					<tr onclick="$('#img_radio_2').attr('checked', 'checked')"><td style="vertical-align:middle"><input type="radio" id="img_radio_2" name="choices"></td><td><img id="apple"></td></tr>
+				</table>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>單選</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">1</div>
+				    <div class="validator-function">
+						if(!$('#img_radio_1').attr('checked') &amp;&amp; !$('#img_radio_2').attr('checked')){
+							return "";
+						}
+						if(J==1 &amp;&amp; $('#img_radio_2').attr('checked')){
+							return true;
+						}
+						if(J==2 &amp;&amp; $('#img_radio_1').attr('checked')){
+							return true;
+						}
+					</div>
+				</div>
+			</div>
+			<div class="hints">
+				<div>
+					<p>讓我們排隊起來看看。</p>
+					<p>
+						<img data-if="bigger[0]=='cheess_com.png'" src="/khan-exercises/images/cheess_com.png">
+						<img data-if="bigger[0]=='elephants_com.png'" src="/khan-exercises/images/elephants_com.png">
+						<img data-if="bigger[0]=='shark_com.png'" src="/khan-exercises/images/shark_com.png">
+						<img data-if="bigger[0]=='whale_com.png'" src="/khan-exercises/images/whale_com.png">
+						<img data-if="smaller[0]=='apple_com.png'" src="/khan-exercises/images/apple_com.png">
+						<img data-if="smaller[0]=='cat_com.png'" src="/khan-exercises/images/cat_com.png">
+						<img data-if="smaller[0]=='mouse_com.png'" src="/khan-exercises/images/mouse_com.png">
+						<img data-if="smaller[0]=='ladybug_com.png'" src="/khan-exercises/images/ladybug_com.png">
+					</p>
+				</div>
+				<div>
+					<p><var>smaller[1]</var>更小。</p>
+					<p>
+						<img data-if="smaller[0]=='apple_com.png'" src="/khan-exercises/images/apple_com.png">
+						<img data-if="smaller[0]=='cat_com.png'" src="/khan-exercises/images/cat_com.png">
+						<img data-if="smaller[0]=='mouse_com.png'" src="/khan-exercises/images/mouse_com.png">
+						<img data-if="smaller[0]=='ladybug_com.png'" src="/khan-exercises/images/ladybug_com.png">
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>
