@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>長度的比較</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+		.moveable_li { margin:10px 0px 10px 0px;}
+		.empty_ele {margin:10px 0px 10px 0px; height:43px;line-height:43px;overflow:hidden;border:solid 2px #EEEEEE;background-color:#ADADAD}
+		.b1,.b2,.b3,.b4,.b1b,.b2b,.b3b,.b4b,.b{display:block;overflow:hidden;}
+		.b1,.b2,.b3,.b1b,.b2b,.b3b{height:1px;}
+		.b2,.b3,.b4,.b2b,.b3b,.b4b,.b{border-left:1px solid #999;border-right:1px solid #999;}
+		.b1,.b1b{margin:0 3px;background:#999;}
+		.b2,.b2b{margin:0 2px;border-width:1px;}
+		.b3,.b3b{margin:0 1px;}
+		.b4,.b4b{height:1px;margin:0 1px;}
+		.d1,{background:#F7F8F9;}
+		.k{height:35px;}
+    </style>
+	<script type="text/javascript">
+		function movein(ele){
+			$('#'+ele).css("border","2px solid #FFA500");
+		}
+		function moveout(ele){
+			$('#'+ele).css("border-width","0px");
+		}
+	</script>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars" data-ensure="sorts">
+				<var id="J,K,L">randRangeUnique(1,10,3)</var>
+				<var id="get_width">$('.sortable1').width()</var>
+				<var id="sort_lis">
+				(function() {
+					$("#1_li").css("width",J/10*get_width*0.9+"px");
+					$("#2_li").css("width",K/10*get_width*0.9+"px");
+					$("#3_li").css("width",L/10*get_width*0.9+"px");
+					
+					$("#1_a").val(J);
+					$("#2_a").val(K);
+					$("#3_a").val(L);
+					
+					$("#1_li").css("margin-top","14px");
+					$("#2_li").css("margin-top","14px");
+					$("#3_li").css("margin-top","14px");
+					$( ".sortable1" ).sortable({cursor: "move",helper: 'clone',placeholder: 'empty_ele',revert: true,opacity: 0.6});
+				})()</var>
+				<var id="question_type">randRange(1,2)</var>
+				<var id="ans_arr">question_type==1?['最長','最短']:['最短','最長']</var>
+				<var id="sorts">
+				(function(){
+					var arr = [];
+					for(var i = 1;i&lt;4;i++){
+						arr[i-1] = $('#'+i+'_a').val();
+					}
+					if(question_type==1 &amp;&amp; arr[0]&gt;arr[1] &amp;&amp; arr[1]&gt;arr[2]){
+						return false;
+					}
+					if(question_type==2 &amp;&amp; arr[0]&lt;arr[1] &amp;&amp; arr[1]&lt;arr[2]){
+						return false;
+					}
+					return true;
+				})()</var>
+			</div>
+			<div class="question">
+				<p class="question">從<span class="hint_red"><var>ans_arr[0]</var></span>到<span class="hint_red"><var>ans_arr[1]</var></span>排列下列線段。</p>
+				<p>將<var>ans_arr[0]</var>的線段放置在頂部。</p>
+				<ul class="sortable1">
+					<div id="1_a" class="moveable_li" onmouseover="movein('1_li')" onmouseout="moveout('1_li')">
+						<b class="b1"></b><b class="b2 d1"></b><b class="b3 d1"></b><b class="b4 d1"></b>
+						<div class="b d1 k">
+							<div id="1_li">
+								<div style="height:7px;background-color:black"></div>
+							</div>
+						</div>
+						<b class="b4b d1"></b><b class="b3b d1"></b><b class="b2b d1"></b><b class="b1b"></b>
+					</div>
+					<div id="2_a" class="moveable_li" onmouseover="movein('2_li')" onmouseout="moveout('2_li')">
+						<b class="b1"></b><b class="b2 d1"></b><b class="b3 d1"></b><b class="b4 d1"></b>
+						<div class="b d1 k">
+							<div id="2_li">
+								<div style="height:7px;background-color:black"></div>
+							</div>
+						</div>
+						<b class="b4b d1"></b><b class="b3b d1"></b><b class="b2b d1"></b><b class="b1b"></b>
+					</div>
+					<div id="3_a" class="moveable_li" onmouseover="movein('3_li')" onmouseout="moveout('3_li')">
+						<b class="b1"></b><b class="b2 d1"></b><b class="b3 d1"></b><b class="b4 d1"></b>
+						<div class="b d1 k">
+							<div id="3_li">
+								<div style="height:7px;background-color:black;"></div>
+							</div>
+						</div>
+						<b class="b4b d1"></b><b class="b3b d1"></b><b class="b2b d1"></b><b class="b1b"></b>
+					</div>
+				</ul>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>用鼠標拖動並獲得正確的順序</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">$( ".sortable1" ).sortable( 'toArray'  )</div>
+				    <div class="validator-function">
+						var guessArr = new Array();
+						for(var j = 0;j&lt;guess.length;j++){
+							guessArr[j]=$('#'+guess[j]).val();
+						}
+						if(question_type==1 &amp;&amp; guessArr[0]&gt;guessArr[1] &amp;&amp; guessArr[1]&gt;guessArr[2]){
+							return true;
+						}
+						if(question_type==2 &amp;&amp; guessArr[0]&lt;guessArr[1] &amp;&amp; guessArr[1]&lt;guessArr[2]){
+							return true;
+						}
+						return false;
+					</div>
+				</div>
+			</div>
+			<div class="hints">
+				<div>
+					<p>線段從<span class="hint_red"><var>ans_arr[0]</var></span>到<span class="hint_red"><var>ans_arr[1]</var></span>的排列順序為 <code>:</code></p>
+					<div class="graphie" id="lines">
+						init({
+							range: [ [-0.05, 12.4], [-2.5, 1] ],
+							scale: 40
+						});
+						nums = sortNumbers([J,K,L]);
+						len1 = nums[2]/10*12.3*0.9;
+						len2 = nums[1]/10*12.3*0.9;
+						len3 = nums[0]/10*12.3*0.9;
+						if(question_type==2){
+							len1 = nums[0]/10*12.3*0.9;
+							len2 = nums[1]/10*12.3*0.9;
+							len3 = nums[2]/10*12.3*0.9;
+						}
+						path([[0,0],[12.3,0],[12.3,1],[0,1],[0,0]],{stroke:"black","stroke-width":0.5});
+						path([[0,-1.2],[12.3,-1.2],[12.3,-0.2],[0,-0.2],[0,-1.2]],{stroke:"black","stroke-width":0.5});
+						path([[0,-2.4],[12.3,-2.4],[12.3,-1.4],[0,-1.4],[0,-2.4]],{stroke:"black","stroke-width":0.5});
+						
+						path([[0,0.44],[len1,0.44],[len1,0.58],[0,0.58],[0,0.44]],{stroke:"black",fill:"black"});
+						path([[0,-0.76],[len2,-0.76],[len2,-0.62],[0,-0.62],[0,-0.76]],{stroke:"black",fill:"black"});
+						path([[0,-1.96],[len3,-1.96],[len3,-1.82],[0,-1.82],[0,-1.96]],{stroke:"black",fill:"black"});
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>
