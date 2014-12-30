@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html data-require="math math-format rational-expressions">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>有理式的加減 5</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #solutionarea input[type=text] {
+            width: 150px;
+        }
+    </style>
+	<script type="text/javascript">
+		function addPlusChar(arr){
+			for(var i = 0;i<arr.length;i++){
+				if(arr[i].charAt(0)=="+"){
+					arr[i]=arr[i].substr(1,arr.length);
+				}
+			}
+			return arr;
+		}
+		function checkArr(arr1,arr2){
+			if(arr1.length!=arr2.length){
+				return false;
+			}
+			for(var i = 0;i<arr1.length;i++){
+				if(arr1[i]!=arr2[i]){
+					return false;
+				}
+			}
+			return true;
+		}
+		function reverseStr(str){
+			if(str.charAt(0)=='-'){
+				return str.substr(1,str.length);
+			}else return '-'+str;
+		}
+		function checkReverse(arr1,arr2){
+			if(arr1.length!=arr2.length){
+				return false;
+			}
+			var arrNew = arr2;
+			for(var i = 0;i<arr1.length;i++){
+				for(var j = 0;j<arrNew.length;j++){
+					if(reverseStr(arr1[i])==arrNew[j]){
+						arrNew.splice(j,1);
+					}
+				}
+			}
+			if(arrNew.length!=0){
+				return false;
+			}
+			return true;
+		}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div>
+                <div class="vars" data-ensure="!NUMERATOR1.divide(DENOMINATOR1) && !NUMERATOR2.divide(DENOMINATOR2) && !DENOMINATOR1.divide(DENOMINATOR2)">
+                    <var id="SIGN">randFromArray(["+", "-"])</var>
+                    <var id="X">randVar()</var>
+
+                    <div data-ensure="A1 !== 0 || B1 !== 0">
+                        <var id="A1">randRangeWeighted(0, 5, 1, 0.4)</var>
+                        <var id="B1">randRangeWeighted(-10, 10, 0, 0.4)</var>
+                    </div>
+                    <div data-ensure="A2 !== 0 || B2 !== 0">
+                        <var id="A2">randRangeWeighted(0, 5, 1, 0.4)</var>
+                        <var id="B2">randRangeWeighted(-10, 10, 0, 0.4)</var>
+                    </div>
+                    <var id="NUMERATOR1">new RationalExpression([[A1, X], B1])</var>
+                    <var id="NUMERATOR2">new RationalExpression([[A2, X], B2])</var>
+
+                    <div data-ensure="A3 !== A4 || B3 !== B4">
+                        <var id="A3">randRangeWeighted(1, 5, 1, 0.4)</var>
+                        <var id="B3">randRangeNonZero(-10, 10)</var>
+                        <var id="A4">randRangeWeighted(1, 5, 1, 0.4)</var>
+                        <var id="B4">randRangeNonZero(-10, 10)</var>
+                    </div>
+                    <var id="DENOMINATOR1">new RationalExpression([[A3, X], B3])</var>
+                    <var id="DENOMINATOR2">new RationalExpression([[A4, X], B4])</var>
+
+                    <var id="PRODUCT1">DENOMINATOR2.multiply(NUMERATOR1)</var>
+                    <var id="PRODUCT2">DENOMINATOR1.multiply(NUMERATOR2)</var>
+                    <var id="PRODUCT2a">SIGN === '+' ? PRODUCT2 : PRODUCT2.multiply(-1)</var>
+                    <var id="NUMERATOR">PRODUCT1.add(PRODUCT2a)</var>
+                    <var id="DENOMINATOR">DENOMINATOR1.multiply(DENOMINATOR2)</var>
+                    <var id="GCD">DENOMINATOR.getGCD(NUMERATOR)</var>
+                    <var id="FINAL_N">NUMERATOR.divide(GCD)</var>
+                    <var id="FINAL_D">DENOMINATOR.divide(GCD)</var>
+                    <var id="ANSWER">"(" + FINAL_N.toString() + ")/(" + FINAL_D.toString() + ")" </var>
+                </div>
+
+                <p class="problem">化簡並展開下式 <code>:</code></p>
+                <p class="question"><code>
+                    \dfrac{<var>NUMERATOR1</var>}{<var>DENOMINATOR1</var>}<var>SIGN</var>\dfrac{<var>NUMERATOR2</var>}{<var>DENOMINATOR2</var>}
+                </code></p>
+				
+				<div class="solution" data-type="multiple" style="padding:0px">
+					<table>
+						<tr><td style="border-bottom:1px solid black"><input type="text" style="width:150px;text-align:center;" id="a1"></td></tr>
+						<tr><td style="border-top:1px solid black"><input type="text" style="width:150px;text-align:center" id="a2"></td></tr>
+					</table>
+					<div class="sol" data-type="custom">
+						<div class="guess">[$('#a1').val().toString().replace(/[ ]/g,"").replace(/−/g,'-'),$('#a2').val().toString().replace(/[ ]/g,"").replace(/−/g,'-'),FINAL_N.toString().replace(/[ ]/g,"").replace(/−/g,'-'),FINAL_D.toString().replace(/[ ]/g,"").replace(/−/g,'-')]</div>
+						<div class="validator-function">
+							if(guess[0]==""||guess[1]==""){
+								return "";
+							}
+							var ansArr = new Array();
+							var ansArrBelow = new Array();
+							var ver1 = new Array();
+							var ver2 = new Array();
+							var ind1 = 0;
+							var ind2 = 0;
+							var ind3 = 0;
+							var ind4 = 0;
+							for(var i=1;i&lt;guess[0].length;i++){
+								if(guess[0].charAt(i)=="+"||guess[0].charAt(i)=="-"){
+									ansArr[ind1] = guess[0].substr(0,i);
+									ind1++;
+									guess[0] = guess[0].substr(i,guess[0].length);
+									i=1;
+								}
+							}
+							for(var i=1;i&lt;guess[1].length;i++){
+								if(guess[1].charAt(i)=="+"||guess[1].charAt(i)=="-"){
+									ansArrBelow[ind2] = guess[1].substr(0,i);
+									ind2++;
+									guess[1] = guess[1].substr(i,guess[1].length);
+									i=1;
+								}
+							}
+							for(var i=1;i&lt;guess[2].length;i++){
+								if(guess[2].charAt(i)=="+"||guess[2].charAt(i)=="-"){
+									ver1[ind3] = guess[2].substr(0,i);
+									ind3++;
+									guess[2] = guess[2].substr(i,guess[2].length);
+									i=1;
+								}
+							}
+							for(var i=1;i&lt;guess[3].length;i++){
+								if(guess[3].charAt(i)=="+"||guess[3].charAt(i)=="-"){
+									ver2[ind4] = guess[3].substr(0,i);
+									ind4++;
+									guess[3] = guess[3].substr(i,guess[3].length);
+									i=1;
+								}
+							}
+							ansArr.push(guess[0]);
+							ansArr.sort();
+							addPlusChar(ansArr);
+							ansArrBelow.push(guess[1]);
+							ansArrBelow.sort();
+							addPlusChar(ansArrBelow);
+							ver1.push(guess[2]);
+							ver1.sort();
+							addPlusChar(ver1);
+							ver2.push(guess[3]);
+							ver2.sort();
+							addPlusChar(ver2);
+							return (checkArr(ansArr,ver1)&&checkArr(ansArrBelow,ver2))||(checkReverse(ansArr,ver1)&&checkReverse(ansArrBelow,ver2));
+						</div>
+					</div>
+					<p class="example">分別填入分子與分母</p>
+					<p class="example">分子與分母的式子要最簡</p>
+					<p class="example"><code>x*3</code> 要寫成 <code>3x</code></p>
+					<p class="example"><code>y^{2}</code> 寫成 <code>y</code>^<code>2</code></p>
+				</div>
+
+                <div class="hints">
+                    <p data-if="SIGN === '+'">為了使式子可加，它們必須有一個公分母，</p>
+                    <p data-else="">為了使式子可減，它們必須有一個公分母，</p>
+
+                    <p>通過 <code>(<var>DENOMINATOR1</var>)(<var>DENOMINATOR2</var>)</code> 獲得兩個分數的公分母。</p>
+
+                    <p>將第一項乘以 <code>\dfrac{<var>DENOMINATOR2</var>}{<var>DENOMINATOR2</var>}\enspace :</code></p>
+
+                    <p><code>\qquad\begin{align*}
+                        \dfrac{<var>NUMERATOR1</var>}{<var>DENOMINATOR1</var>} \times \dfrac{<var>DENOMINATOR2</var>}{<var>DENOMINATOR2</var>}
+                        &amp; = \dfrac{(<var>NUMERATOR1</var>)(<var>DENOMINATOR2</var>)}{(<var>DENOMINATOR1</var>)(<var>DENOMINATOR2</var>)} \\
+                        &amp; = \dfrac{<var>PRODUCT1</var>}{(<var>DENOMINATOR1</var>)(<var>DENOMINATOR2</var>)}\end{align*}
+                    </code></p>
+
+                    <p>將第二項乘以 <code>\dfrac{<var>DENOMINATOR1</var>}{<var>DENOMINATOR1</var>}\enspace :</code></p>
+
+                    <p><code>\qquad\begin{align*}
+                        \dfrac{<var>NUMERATOR2</var>}{<var>DENOMINATOR2</var>} \times \dfrac{<var>DENOMINATOR1</var>}{<var>DENOMINATOR1</var>}
+                        &amp; = \dfrac{(<var>NUMERATOR2</var>)(<var>DENOMINATOR1</var>)}{(<var>DENOMINATOR2</var>)(<var>DENOMINATOR1</var>)} \\
+                        &amp; = \dfrac{<var>PRODUCT2</var>}{(<var>DENOMINATOR2</var>)(<var>DENOMINATOR1</var>)}\end{align*}
+                    </code></p>
+
+                    <div>
+                        <p>現在，我們有 <code>:</code></p>
+                        <p><code>\qquad =
+                            \dfrac{<var>PRODUCT1</var>}{(<var>DENOMINATOR1</var>)(<var>DENOMINATOR2</var>)} <var>SIGN</var>
+                            \dfrac{<var>PRODUCT2</var>}{(<var>DENOMINATOR2</var>)(<var>DENOMINATOR1</var>)}
+                        </code></p>
+                    </div>
+
+                    <div data-if="SIGN === '+'">
+                        <p >現在，這兩項都有同一個分母，我們可以簡單地讓分子相加 <code>:</code></p>
+                        <p><code>\qquad =
+                            \dfrac{<var>PRODUCT1</var> + <var>PRODUCT2</var>}{(<var>DENOMINATOR1</var>)(<var>DENOMINATOR2</var>)}
+                        </code></p>
+                    </div>
+
+                    <div data-else="">
+                        <p>現在，這兩項都有同一個分母，我們可以簡單地讓分子相減 <code>:</code></p>
+                        <p><code>\qquad =
+                            \dfrac{<var>PRODUCT1</var> - (<var>PRODUCT2</var>)}{(<var>DENOMINATOR1</var>)(<var>DENOMINATOR2</var>)}
+                        </code></p>
+                        <p><code>\qquad =
+                            \dfrac{<var>PRODUCT1</var> + <var>PRODUCT2a</var>}{(<var>DENOMINATOR1</var>)(<var>DENOMINATOR2</var>)}
+                        </code></p>
+                    </div>
+
+                    <p><code>\qquad = \dfrac{<var>NUMERATOR</var>}{(<var>DENOMINATOR1</var>)(<var>DENOMINATOR2</var>)}</code></p>
+
+                    <div>
+                        <p>展開分母 <code>:</code></p>
+                        <p><code>\qquad = \dfrac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code></p>
+                    </div>
+
+                    <div data-if="!GCD.isOne()">
+                        <p>化簡 <code>:</code></p>
+                        <p><code>\qquad = \dfrac{<var>FINAL_N</var>}{<var>FINAL_D</var>}</code></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
