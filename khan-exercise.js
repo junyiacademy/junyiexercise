@@ -2085,6 +2085,8 @@ var Khan = (function() {
                 // Problem has been completed but pending data request being
                 // sent to server.
                 $(Khan).trigger("problemDone");
+                $("#solutionarea").unbind("keypress");
+                $("#solutionarea").unbind("keyup");
             }
 
             // Save the problem results to the server
