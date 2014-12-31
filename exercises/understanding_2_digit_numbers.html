@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers time word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>認識二位數</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area input[type=text] {
+            width: 40px;
+        }
+        .ttable {
+            text-align: left;
+            margin-top: 20px;
+            margin-left: 5px;
+        }
+
+        .ttable tr {
+            height: 23px;
+        }
+
+        .ttable td {
+            padding: 0px 5px;
+            text-align: right;
+        }
+
+        .ttable .labels td {
+            padding-left: 5px;
+            text-align: left;
+            border-bottom: 2px solid black;
+        }
+
+        .ttable .cross-bar td {
+            padding-top: 5px;
+        }
+
+        .ttable .second-col {
+            border-left: 2px solid black;
+        }
+
+        .ttable .third-col {
+            border-left: 2px solid black;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div class="0:case1">
+                <div class="vars">
+                    <var id="K">randRange(20, 90)</var>
+                    <var id="C">randRange(2,9)</var>
+                    <var id="H1">(function() {
+                        result = K + "有\\color{#0000FF}{" + Math.floor(K/10) + "}個\\textbf{10}和\\color{#008000}{" + K%10 + "}個\\textbf{1}";
+                        return result;
+                        })()
+                    </var>
+                    <var id="H2">(function() {
+                        result = "再多加\\color{#008000}{" + C%10 + "}個\\textbf{1}";
+                        return result;
+                        })()
+                    </var>
+                    <var id="H4">(function() {
+                        var sum = C%10 + K%10;
+                        if (sum < 10) {
+                            result = "\\color{#0000FF}{" + Math.floor(K/10) + "}個\\textbf{10} + \\color{#0000FF}{" + Math.floor(C/10) +"}個\\textbf{10} = \\color{#0000FF}{" + (Math.floor(K/10) + Math.floor(C/10)) + "}個\\textbf{10}";
+                        } else {
+                            result = "\\color{#0000FF}{" + Math.floor(K/10) + "}個\\textbf{10} + \\color{#0000FF}{1}個\\textbf{10}(進位) = \\color{#0000FF}{" + (Math.floor(K/10) + Math.floor(C/10) + 1) + "}個\\textbf{10}";
+                        }
+                        return result;
+                        })()
+                    </var>
+                    <var id="H3">(function() {
+                        var sum = C%10 + K%10;
+                        if (sum < 10) {
+                            result = "\\color{#008000}{" + K%10 + "}個\\textbf{1} + \\color{#008000}{" + C%10 +"}個\\textbf{1} = \\color{#008000}{" + sum + "}個\\textbf{1}";
+                        } else { // sum > 10
+                            result = "\\color{#008000}{" + K%10 + "}個\\textbf{1} + \\color{#008000}{" + C%10 +"}個\\textbf{1} = \\color{#008000}{" + sum + "}個\\textbf{1} ，也就是 \\color{#0000FF}{1}個\\textbf{10}(進位)和\\color{#008000}{" + sum%10 + "}個\\textbf{1}";
+                        }
+                        return result;
+                        })()
+                    </var>
+                </div>
+                <p class="question">比紅色數字多<var>C</var>的是什麼數字？
+                <div class="graphie">
+                    init({ range: [ [0, 1], [0, 10] ], scale: [250, 25] });
+                    var R = 0;
+                    var B = 0;
+                    for (var i = 0; i < 10; i++) {
+                    if (i == Math.floor((K - 1)/10)) {
+                    R = 10;
+                    B = [((K-1) % 10), ((K-1) % 10)];
+                    } else {
+                    R = 10;
+                    B = [];
+                    }
+                    rectchart2([R, B], ["#999", "#e00"],i, i*10 + 1);
+                    }
+                </div>
+                </p>
+                <div class="solution" data-type="multiple">
+                    <p>比紅色數字多<var>C</var>的是<span class="sol" data-forms="decimal"><var>K+C</var></span></p>
+                    <p class="example">整數，例：33</p>
+                </div>
+                <div class="hints">
+                    <p><code>紅色數字是 \color{#F62217}{<var>K</var>}</code></p>
+                    <p><code><var>H1</var>，<var>H2</var>。</code></p>
+                    <p><code><var>H3</var></code></p>
+                    <p><code><var>H4</var></code></p>
+                    <p><code>比\color{#F62217}{<var>K</var>}多<var>C</var> 是 \color{#F62217}{<var>K + C</var>}</code></p>
+                </div>
+            </div>
+
+            <div class="1:case2">
+                <div class="vars">
+                    <!---
+                          avoid confusion so numbers with identical digits are not allowed
+                          avoid answer too long for display so numbers 79, 89-99 are not allowed
+                    --->
+                    <var id="K" data-ensure="((K%10) != 0) && ((K%10) != Math.floor(K/10))">randRange(21, 99)</var>
+                    <var id="K0">K%10</var>
+                    <var id="K1">Math.floor(K/10)</var>
+                    <!---
+                        10 possible answers
+                        result[0] = STRING of answer
+                        result[1] = true (correct) or false (not correct)
+                        result[2] = length of the answer STRING
+                    --->
+                    <var id="S1">(function() {
+                        result = K1 + "個\\textbf{10}， " + K0 + "個\\textbf{1}";
+                        length = 1 + 1 + 2 + 1 + 1 + 1;
+                        return [result, true, length];
+                        })()
+                    </var>
+                    <var id="S2">(function() {
+                        result = K1 + "個\\textbf{1}， " + K0 + "個\\textbf{10}";
+                        length = 1 + 1 + 1 + 1 + 1 + 2;
+                        return [result, false, length];
+                        })()
+                    </var>
+                    <var id="S3">(function() {
+                        result = K1 + "個\\textbf{10}， " + K0 + "個\\textbf{10}";
+                        length = 1 + 2 + 2 + 1 + 1 + 2;
+                        return [result, false, length];
+                        })()
+                    </var>
+                    <var id="S4">(function() {
+                        result = K1 + "個\\textbf{1}， " + K0 + "個\\textbf{1}";
+                        length = 1 + 1 + 1 + 1 + 1 + 1;
+                        return [result, false, length];
+                        })()
+                    </var>
+                    <var id="S5">(function() {
+                        result = K0 + "個\\textbf{10}， " + K1 + "個\\textbf{1}";
+                        length = 1 + 1 + 2 + 1 + 1 + 1;
+                        return [result, false, length];
+                        })()
+                    </var>
+                    <var id="S6">(function() {
+                        result = K + "個\\textbf{1}";
+                        length = 1 + 1 + 1;
+                        return [result, true, length];
+                        })()
+                    </var>
+                    <var id="S7">(function() {
+                        var i = 0;
+                        var result = "";
+                        for (i = 0; i &lt; K1; i++){
+                            result = result + 10 + " + ";
+                        }
+                        result = result + K0;
+                        length = K1 * 5 + 1;
+                        return [result, true, length];
+                        })()
+                    </var>
+                    <var id="S8">(function() {
+                        var i = 0;
+                        var result = K1 + "個\\textbf{10} + ";
+                        for (i = 0; i &lt; (K0-1); i++){
+                            result = result + 1 + " + ";
+                        }
+                        result = result + 1;
+                        length = 1 + 1 + 2 + (K0 - 1) * 4 + 1;
+                        return [result, true, length];
+                        })()
+                    </var>
+                    <var id="S9">(function() {
+                        var i = 0;
+                        var result = K0 + "個\\textbf{10} + ";
+                        for (i = 0; i &lt; (K1-1); i++){
+                            result = result + 1 + " + ";
+                        }
+                        result = result + 1;
+                        length = 1 + 1 + 2 + (K1 - 1) * 4 + 1;
+                        return [result, false, length];
+                        })()
+                    </var>
+                    <var id="S10">(function() {
+                        var i = 0;
+                        var result = "";
+                        for (i = 0; i &lt; K0; i++){
+                            result = result + 10 + " + ";
+                        }
+                        result = result + K1;
+                        length = K0 * 5 + 1;
+                        return [result, false, length];
+                        })()
+                    </var>
+                    <!---
+                           randomly select 4 answer from all 10 possible answers
+                           ensure at least 1 answer is correct
+                           ensure approximate length won't cause answer to be wrapped around
+                    --->
+                    <var id="SOL" data-ensure="((SOL[0][1] == true) || (SOL[1][1] == true) || (SOL[2][1] == true) || (SOL[3][1] == true)) && (Math.max(SOL[0][2], SOL[1][2], SOL[2][2], SOL[3][2]) < 37)">(function() {
+                        result = KhanUtil.shuffle([S1, S2, S3, S4, S5, S6, S7, S8, S9, S10], 4);
+                        return result;
+                        })()
+                    </var>
+                    <var id="H1">(function() {
+                        result = "\\color{#0000FF}{" + K1 + "} 個\\textbf{10} + \\color{#008000}{" + K0 + "}個\\textbf{1}";
+                        return result;
+                        })()
+                    </var>
+                    <var id="H2">(function() {
+                        result = "\\color{#0000FF}{" + K1 + "}\\color{#008000}{" + K0 + "}個\\textbf{1}";
+                        return result;
+                        })()
+                    </var>
+                    <var id="H3">(function() {
+                        var i = 0;
+                        var result = "";
+                        for (i = 0; i &lt; K1; i++){
+                        result = result + "\\color{#0000FF}{" + 10 + "} + ";
+                        }
+                        result = result + "\\color{#008000}{" + K0 + "}";
+                        return result;
+                        })()
+                    </var>
+                    <var id="H4">(function() {
+                        var i = 0;
+                        var result = "\\color{#0000FF}{" + K1 + "}個\\textbf{10} + ";
+                        for (i = 0; i &lt; (K0-1); i++){
+                            result = result + "\\color{#008000}{" + 1 + "} + ";
+                        }
+                        result = result + "\\color{#008000}{" + 1 +"}";
+                        return result;
+                        })()
+                    </var>
+                </div>
+                <p class="question">哪些選擇正確的代表<var>K</var>這個數字？
+                </p>
+                <div class="solution" data-type="multiple">
+                    <div class="sol" data-type="set">
+                        <div class="instruction">
+                            選擇所有正確的答案。
+                        </div>
+                        <p class="input-format">
+                            <span class="checkbox">SOL[0][1]</span><code><var>SOL[0][0]</var></code><br />
+                            <span class="checkbox">SOL[1][1]</span><code><var>SOL[1][0]</var></code><br />
+                            <span class="checkbox">SOL[2][1]</span><code><var>SOL[2][0]</var></code><br />
+                            <span class="checkbox">SOL[3][1]</span><code><var>SOL[3][0]</var></code><br />
+                        </p>
+                    </div>
+                    <p class="example">多選題，可選擇多個正確答案</p>
+                </div>
+                <div class="hints">
+                    <p><code>\color{#0000FF}{<var>K1</var>}\color{#008000}{<var>K0</var>}這個數字中，數字\color{#0000FF}{<var>K1</var>}和\color{#008000}{<var>K0</var>}意思是有\color{#0000FF}{<var>K1</var>}個\textbf{10}和\color{#008000}{<var>K0</var>}個\textbf{1}</code></p>
+                    <p><code><var>H1</var> = \color{#0000FF}{<var>K1</var>}\color{#008000}{<var>K0</var>}</code></p>
+                    <p><code><var>H2</var> = \color{#0000FF}{<var>K1</var>}\color{#008000}{<var>K0</var>}</code></p>
+                    <p><code><var>H3</var> = \color{#0000FF}{<var>K1</var>}\color{#008000}{<var>K0</var>}</code></p>
+                    <p><code><var>H4</var> = \color{#0000FF}{<var>K1</var>}\color{#008000}{<var>K0</var>}</code></p>
+                </div>
+            </div>
+
+            <div class="2:case3">
+                <div class="vars">
+                    <var id="K">randRange(20, 90)</var>
+                    <var id="C">randFromArray([10, 15, 20])</var>
+                    <var id="H1">(function() {
+                        result = K + "有\\color{#0000FF}{" + Math.floor(K/10) + "}個\\textbf{10}和\\color{#008000}{" + K%10 + "}個\\textbf{1}";
+                        return result;
+                        })()
+                    </var>
+                    <var id="H2">(function() {
+                        result = "再多加\\color{#0000FF}{" + Math.floor(C/10) + "}個\\textbf{10}和\\color{#008000}{" + C%10 + "}個\\textbf{1}";
+                        return result;
+                        })()
+                    </var>
+                    <var id="H4">(function() {
+                        var sum = C%10 + K%10;
+                        if (sum < 10) {
+                            result = "\\color{#0000FF}{" + Math.floor(K/10) + "}個\\textbf{10} + \\color{#0000FF}{" + Math.floor(C/10) +"}個\\textbf{10} = \\color{#0000FF}{" + (Math.floor(K/10) + Math.floor(C/10)) + "}個\\textbf{10}";
+                        } else {
+                            result = "\\color{#0000FF}{" + Math.floor(K/10) + "}個\\textbf{10} + \\color{#0000FF}{" + Math.floor(C/10) +"}個\\textbf{10}  + \\color{#0000FF}{1}個\\textbf{10}(進位) = \\color{#0000FF}{" + (Math.floor(K/10) + Math.floor(C/10) + 1) + "}個\\textbf{10}";
+                        }
+                        return result;
+                        })()
+                    </var>
+                    <var id="H3">(function() {
+                        var sum = C%10 + K%10;
+                        if (sum < 10) {
+                            result = "\\color{#008000}{" + K%10 + "}個\\textbf{1} + \\color{#008000}{" + C%10 +"}個\\textbf{1} = \\color{#008000}{" + sum + "}個\\textbf{1}";
+                        } else { // sum > 10
+                            result = "\\color{#008000}{" + K%10 + "}個\\textbf{1} + \\color{#008000}{" + C%10 +"}個\\textbf{1} = \\color{#008000}{" + sum + "}個\\textbf{1} ，也就是 \\color{#0000FF}{1}個\\textbf{10}(進位)和\\color{#008000}{" + sum%10 + "}個\\textbf{1}";
+                        }
+                        return result;
+                        })()
+                    </var>
+                </div>
+                <p class="question">比紅色數字多<var>C</var>的是什麼數字？
+                <div class="graphie">
+                    init({ range: [ [0, 1], [0, 10] ], scale: [250, 25] });
+                    var R = 0;
+                    var B = 0;
+                    for (var i = 0; i < 10; i++) {
+                    if (i == Math.floor((K - 1)/10)) {
+                    R = 10;
+                    B = [((K-1) % 10), ((K-1) % 10)];
+                    } else {
+                    R = 10;
+                    B = [];
+                    }
+                    rectchart2([R, B], ["#999", "#e00"],i, i*10 + 1);
+                    }
+                </div>
+                </p>
+                <div class="solution" data-type="multiple">
+                    <p>比紅色數字多<var>C</var>的是<span class="sol" data-forms="decimal"><var>K+C</var></span></p>
+                    <p class="example">整數，例：33</p>
+                </div>
+                <div class="hints">
+                    <p><code>紅色數字是 \color{#F62217}{<var>K</var>}</code></p>
+                    <p><code><var>H1</var>，<var>H2</var>。</code></p>
+                    <p><code><var>H3</var></code></p>
+                    <p><code><var>H4</var></code></p>
+                    <p><code>比\color{#F62217}{<var>K</var>}多<var>C</var> 是 \color{#F62217}{<var>K + C</var>}</code></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+
