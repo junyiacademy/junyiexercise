@@ -416,6 +416,9 @@ function Multiplier(a, b, digitsA, digitsB, deciA, deciB) {
     var indexB = 0;
     var maxNumDigits = Math.max(deciA + deciB, digitsProduct.length);
 
+    // for 5-n-11
+    var pass = 1;
+
     this.show = function() {
         graph.init({
             range: [[-2 - maxNumDigits, 12], [-1 - digitsB.length * digitsA.length, 3]],
@@ -484,14 +487,20 @@ function Multiplier(a, b, digitsA, digitsB, deciA, deciB) {
         }
     };
 
-    this.showFinalAddition = function() {
+    // modified for 5-n-11
+    // if color is given, it is used
+    // otherwise default is BLACK
+    this.showFinalAddition = function(color) {
+        if (typeof color === "undefined") {
+            color = KhanUtil.BLACK;
+        }
         if (digitsB.length > 1) {
             while (digitsProduct.length < deciA + deciB + 1) {
                 digitsProduct.unshift(0);
             }
             graph.path([[-1 - digitsProduct.length, 0.5 - digitsB.length], [1, 0.5 - digitsB.length]]);
             graph.label([-1 - digitsProduct.length, 1 - digitsB.length] , "\\huge{+\\vphantom{0}}");
-            drawDigits(digitsProduct, 1 - digitsProduct.length, -digitsB.length);
+            drawDigits(digitsProduct, 1 - digitsProduct.length, -digitsB.length, color);
         }
     }
 
@@ -510,9 +519,22 @@ function Multiplier(a, b, digitsA, digitsB, deciA, deciB) {
         });
     };
 
-    this.showDecimalsInProduct = function() {
-        var x = -maxNumDigits;
-        var y = -digitsB.length * digitsA.length;
+    // modified for 5-n-11
+    // if x and y are given, they are used
+    // otherwise default is original calculation
+    // if color is given, it is used
+    // otherwise default is BLACK
+    this.showDecimalsInProduct = function(color, x, y) {
+        if (typeof x === "undefined") {
+            x = -maxNumDigits;
+        }
+        if (typeof y === "undefined") {
+            y = -digitsB.length * digitsA.length;
+        }
+        if (typeof color === "undefined") {
+            color = KhanUtil.BLACK;
+        }
+
         graph.label([x, y + 2],
             "\\text{上面的數字，小數點右邊有 " + KhanUtil.plural(deciA, "位數") + "}", "right");
         graph.label([x, y + 1],
@@ -521,11 +543,86 @@ function Multiplier(a, b, digitsA, digitsB, deciA, deciB) {
             "\\text{所以這兩個數字的乘積在小數點右邊有 " + deciA + " + " + deciB + " = " + (deciA + deciB)
              + " 位數}", "right");
         graph.style({
-            fill: "#000"
+            fill: color,
+            stroke: color
         }, function() {
             graph.ellipse([-deciB - deciA + 0.5, -0.2 - digitsB.length], [0.09, 0.06]);
         });
     };
+
+    // added for 5-n-11
+    this.getNumHints2 = function() {
+        return digitsB.length + 1;
+    };
+
+    // added for 5-n-11
+    // Y range no longer depends on digitsA.length
+    this.show2 = function() {
+        graph.init({
+            range: [[-2 - maxNumDigits, 15], [-1 - 2.5 * digitsB.length, 3]],
+            scale: [30, 45]
+        });
+
+        drawDigits(digitsA.slice(0).reverse(), 1 - digitsA.length, 2);
+        drawDigits(digitsB.slice(0).reverse(), 1 - digitsB.length, 1);
+
+        graph.path([[-1 - digitsProduct.length, 0.5], [1, 0.5]]);
+        graph.label([- (Math.max(digitsA.length, digitsB.length)), 1] , "\\huge{\\times\\vphantom{0}}");
+    };
+
+    // added for 5-n-11
+    // display one full line at a time, instead of one digit at a time
+    this.showHint2 = function() {
+        if (pass == 1) {
+            this.show2();
+            this.showDecimals();
+        }
+        pass++;
+
+        this.removeHighlights();
+
+        if (indexB === digitsB.length) {
+            this.showFinalAddition("#F62217");
+            return;
+        }
+
+        var bigDigit = digitsA[indexA];
+        var bigDigitX = a;
+        var smallDigit = digitsB[indexB];
+
+        var product = smallDigit * bigDigit + carry;
+        var productX = smallDigit * bigDigitX + carry;
+        var ones = product % 10;
+        var currCarry = Math.floor(product / 10);
+
+        var productXLength = productX.toString().length;
+        var digitsProductX = KhanUtil.integerToDigits(productX);
+
+        // special case for productX == 0
+        if (productX == 0) {
+            productXLength = digitsA.length;
+            for (var i = 0; i < digitsA.length; i++) {
+                digitsProductX[i] = 0;
+            }
+        }
+
+        graph.label([2, -indexB - indexA + 2],
+            bigDigitX
+                + "\\times"
+                + smallDigit
+                + (carry ? "+" + carry : "")
+                + "="
+                + productX, "right");
+
+        drawDigits(digitsProductX, 1 - productXLength - indexB, -indexB, KhanUtil.BLACK, productXLength);
+
+        carry = currCarry;
+
+        indexB++;
+        indexA = 0;
+        carry = 0;
+    };
+    // for 5-n-11
 }
 
 function Divider(divisor, dividend, deciDivisor, deciDividend) {
@@ -598,7 +695,7 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
 
             graph.label([digitsDividend.length + 0.5, -2 * index],
                  "\\color{#6495ED}{" + total + "}"
-                + "\\text{是}"
+                + "\\text{ 是 }"
                  + divisor
                + "\\text{的幾倍?}", "right");
 
@@ -625,15 +722,88 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
             graph.label([index - product.length, -2 * index - 1] , "-\\vphantom{0}");
             graph.path([[index - product.length - 0.25, -2 * index - 1.5], [index + 0.5, -2 * index - 1.5]]);
 
-           graph.label([digitsDividend.length + 0.5, -2 * index - 1],
+            graph.label([digitsDividend.length + 0.5, -2 * index - 1],
                 "\\color{#6495ED}{" + value + "}"
                 + "\\div"
-                + divisor + " 的商是 "
+                + divisor + "="
+                + "\\color{#28AE7B}{" + quotient + "}"
+                + "\\text{ 或 }"
+                + divisor
+                + "\\times"
+                + "\\color{#28AE7B}{" + quotient + "}"
+                + " = "
+                + "\\color{#FFA500}{" + (divisor * quotient) + "}", "right");
+            index++;
+            fShowFirstHalf = true;
+        }
+    }
+
+//for [哪一個檔案有用到這個函式] add in 8/27
+    this.showHintNew = function() {
+        this.removeHighlights();
+        if (index === digitsDividend.length) {
+            while (leadingZeros.length) {
+                leadingZeros.pop().remove();
+            }
+            return;
+        }
+
+        if (fShowFirstHalf) {
+            value = digitsDividend[index];
+            var quotient = value / divisor;
+            var total = value + remainder;
+            highlights = highlights.concat(drawDigits([value], index, 0, KhanUtil.BLUE));
+            if (index !== 0) {
+                graph.style({
+                    arrows: "->"
+                }, function() {
+                    highlights.push(graph.path([[index, 0 - 0.5], [index, -2 * index + 0.5]]));
+                });
+            }
+
+            drawDigits([value], index, -2 * index);
+            var totalDigits = KhanUtil.integerToDigits(total);
+            highlights = highlights.concat(drawDigits(totalDigits, index - totalDigits.length + 1, -2 * index, KhanUtil.BLUE));
+
+            graph.label([digitsDividend.length + 0.5, -2 * index],
+                 "\\color{#6495ED}{" + total + "}"
+                + "\\text{ 是 }"
+                 + divisor
+               + "\\text{的幾倍?}", "right");
+
+            fShowFirstHalf = false;
+        } else {
+            value += remainder;
+            var quotient = Math.floor(value / divisor);
+            var diff = value - (quotient * divisor);
+            remainder = diff * 10;
+            var quotientLabel = drawDigits([quotient], index, 1);
+            if (quotient === 0 && fOnlyZeros && digitsDividend.length - deciDividend + deciDivisor > index + 1) {
+                leadingZeros = leadingZeros.concat(quotientLabel);
+            } else {
+                fOnlyZeros = false;
+            }
+            highlights = highlights.concat(drawDigits([quotient], index, 1, KhanUtil.GREEN));
+
+            var product = KhanUtil.integerToDigits(divisor * quotient);
+            drawDigits(product, index - product.length + 1, -2 * index - 1);
+            highlights = highlights.concat(drawDigits(product, index - product.length + 1, -2 * index - 1, KhanUtil.ORANGE));
+
+            var diffDigits = KhanUtil.integerToDigits(diff);
+            drawDigits(diffDigits, index - diffDigits.length + 1, -2 * index - 2);
+            graph.label([index - product.length, -2 * index - 1] , "-\\vphantom{0}");
+            graph.path([[index - product.length - 0.25, -2 * index - 1.5], [index + 0.5, -2 * index - 1.5]]);
+
+            graph.label([digitsDividend.length + 0.5, -2 * index - 1],
+                "\\color{#6495ED}{" + value + "}"
+                + "\\div"
+                + divisor + "的商是"
                 + "\\color{#28AE7B}{" + quotient + "}", "right");
             index++;
             fShowFirstHalf = true;
         }
     }
+    //for [哪一個檔案有用到這個函式] add in 8/27
 
     this.addDecimalRemainder = function() {
         dividend = dividend * 10;
@@ -644,7 +814,7 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
         this.addDecimal();
         this.show();
         graph.label([digitsDividend.length, 1],
-                "\\color{red}{\\small{\\text{將小數點寫上去並補上零之後繼續除}}}", "right");
+                "\\text{Write in a decimal and a zero and continue dividing.}", "right");
     };
 
     this.getNumHints = function() {
