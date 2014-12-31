@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>將分數分解</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+       .radio_style {background:blue;}
+    </style>
+	<script type="text/javascript">	    
+			function piechart1(divisions, colors, radius) {
+				var graph = KhanUtil.currentGraph;
+				var set = graph.raphael.set();
+				var sum = 0;
+				$.each(divisions, function(i, slice) {
+					sum += slice;
+				});
+
+				var partial = 0;
+				$.each(divisions, function(i, slice) {
+					set.push(graph.arc([0, 0], radius, partial * 360 / sum, (partial + slice) * 360 / sum, true, {
+						stroke: colors[3] || "none",
+						fill: colors[i]
+					}));
+					partial += slice;
+				});
+
+				for (var i = 0; i < sum; i++) {
+					set.push(graph.line([0, 0], graph.polar(radius, i * 360 / sum), { stroke: colors[3] || "#fff" }));
+				}
+
+				return set;
+			}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+		 <div class="vars">	
+				<var id="type">1</var>
+				<var id="num">randRange(5,25)</var>
+				<var id="number1">randRange(2,10)</var>
+				<var id="number2">(function(){
+					if(type==1){
+						return number1;
+					}
+					})()</var>	
+				<var id="B">randRangeUnique( 1,4,3)</var>
+				<var id="sum">
+						(function(){
+							var s = 0;
+							for(var k = 0;k&lt;3;k++){
+								if(type==1&& B[k]==1){
+									s+=1;
+									$('#c_'+(k+1)).val('true');
+								}else{
+									$('#c_'+(k+1)).val('false');
+								}
+							}
+							return s;
+						})()
+				</var>
+            </div>
+			<div class="question">
+				<div class="problem">
+					<p> 完成下面的不等式：</p>
+					<p><code><var>num</var> &times \dfrac{<var>number1</var>}{<var>number2</var>} </code>  
+					<select id="select_1">
+					<option ></option>
+
+					<option ><code>=</code></option>
+
+					<option ><code>&gt;</code></option>
+
+					<option ><code>&lt;</code></option>
+
+				</select> <code><var>num</var> </code></p>
+				<p>下面的選項哪一個是正確的？</p>
+				<p onclick="$('#c_1').attr('checked','checked')"><input type="radio" name="count_1" id="c_1">
+					<span data-if="B[0]==1 && type==1">因為我們用 <code><var>num</var></code> 乘以一個等於 <code>1</code> 的分數</span>
+					<span data-if="B[0]==2&&type==1">因為我們用 <code><var>num</var></code> 乘以一個大於 <code>1</code> 的分數</span>
+					<span data-if="B[0]==3&&type==1">因為我們用 <code><var>num</var></code> 乘以一個小於 <code>1</code> 的分數</span>
+				</p>
+				<p onclick="$('#c_2').attr('checked','checked')"><input type="radio" name="count_1" id="c_2">
+					<span data-if="B[1]==1 && type==1">因為我們用 <code><var>num</var></code> 乘以一個等於 <code>1</code> 的分數</span>
+					<span data-if="B[1]==2&&type==1">因為我們用 <code><var>num</var></code> 乘以一個大於 <code>1</code> 的分數</span>
+					<span data-if="B[1]==3&&type==1">因為我們用 <code><var>num</var></code> 乘以一個小於 <code>1</code> 的分數</span>
+				</p>
+				<p onclick="$('#c_3').attr('checked','checked')"><input type="radio" name="count_1" id="c_3">
+					<span data-if="B[2]==1 && type==1">因為我們用 <code><var>num</var></code> 乘以一個等於 <code>1</code> 的分數</span>
+					<span data-if="B[2]==2&&type==1">因為我們用 <code><var>num</var></code> 乘以一個大於 <code>1</code> 的分數</span>
+					<span data-if="B[2]==3&&type==1">因為我們用 <code><var>num</var></code> 乘以一個小於 <code>1</code> 的分數</span>
+				</p>
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">(function(){
+							var chk_value =[];    
+							$('input[name="count_1"]:checked').each(function(){    
+								chk_value.push($(this).val());    
+							});
+							return chk_value;
+						})()</div>
+				    <div class="validator-function">
+							if($("#c_1").attr("checked")!='checked' && $("#c_2").attr("checked")!='checked' && $("#c_3").attr("checked")!='checked'
+							&& document.getElementById("select_1").value==""){return "";}
+							if(guess.length==0){
+							return "";
+						}
+						if(guess.length!=sum){
+							return false;
+						}
+						var trueAns = 0;
+						for(var i = 0;i&lt;guess.length;i++){
+							if(guess[i]=='true'){
+								trueAns++;
+							}
+						}
+						if(trueAns==sum&&type==1&&document.getElementById("select_1").value=="="){
+						return true;
+						}
+							
+					</div>
+				</div>
+				<p>請選擇正確的答案</p>
+            </div>
+            <div class="hints">
+				<p data-if="type==1">哪一個數等於 <code>\dfrac{<var>number1</var>}{<var>number2</var>}</code> 呢？</p>
+				<p data-if="type==1"><code>\dfrac{<var>number1</var>}{<var>number2</var>} = 1</code>  ，所以</p>
+				<p data-if="type==1"></p>
+			</div>
+        </div>	
+
+	</div>
+	</div>
+</body>
+</html>
