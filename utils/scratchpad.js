@@ -66,11 +66,9 @@ function Scratchpad(elem) {
 
     function loadState(state) {
         shapes.remove();
-        if (state) {
-            for (var i = 0; i < state.length; i++) {
-                if (state[i].type == "path") {
-                    shapes.push(pad.path(state[i].path).attr(line_default).attr("stroke", state[i].stroke));
-                }
+        for (var i = 0; i < state.length; i++) {
+            if (state[i].type == "path") {
+                shapes.push(pad.path(state[i].path).attr(line_default).attr("stroke", state[i].stroke));
             }
         }
     }
