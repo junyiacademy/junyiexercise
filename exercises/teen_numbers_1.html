@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html data-require="math math-format word-problems graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>二位數 1</title>
+    <script src="../khan-exercise.js"></script>
+    <style>
+        .fake_header span, .fake_row span {
+            width: 38px;
+            height: 38px;
+            vertical-align: top;
+            line-height: 38px;
+        }
+        .fake_small_row span {
+            width: 26px;
+            height: 26px;
+            vertical-align: top;
+            line-height: 26px;
+        }
+    </style>
+</head>
+<body>
+<div class="exercise">
+    <div class="vars">
+        <var id="PICTURE,TYPE">
+            randFromArray([
+            ["apple_1","蘋果"],
+            ["lemon_1", "檸檬"],
+            ["papaya_1", "木瓜"],
+            ["pineapple_1", "鳳梨"],
+            ["strawberry_1", "草莓"],
+            ["watermelon_1", "西瓜"]
+            ])
+		</var>
+        <var id="FULL_IMAGE">"&lt;img src='" + "../images/" + PICTURE + ".png' width='30' height='30'&gt;"</var>
+        <var id="SMALL_IMAGE">"&lt;img src='" + "../images/" + PICTURE + ".png' width='21' height='21'&gt;"</var>
+    </div>
+    <div class="problems">
+        <div id="0:case1">
+            <div class="vars">
+                <var id="DATA">randRangeUnique(11, 20, 3)</var>
+                <var id="ANSWER">DATA[0] - 10</var>
+                <var id="QUIZ">shuffle([DATA[0], DATA[1], DATA[2]])</var>
+                <var id="R_ANSWER">(function() {
+                        if (QUIZ[0] == DATA[0]) {
+                            return "c_1";
+                        } else if (QUIZ[1] == DATA[0]) {
+                            return "c_2";
+                        } else {
+                            return "c_3";
+                        }
+                    })()
+                </var>
+            </div>
+            <div class="question">
+                <p>那一組有<var>DATA[0]</var>個<var>TYPE</var>?</p>
+                <p><var>DATA[0]</var> = 10 + <input type="text" id="a_1" style="width:30px"></p>
+            </div>
+            <div class="solution" data-type="multiple">
+                <table>
+                    <tr>
+                        <td>
+                            <p><input type="radio" name="choice_1" id="c_1" value="c_1"><br /></p>
+                        </td>
+                        <td>
+                            <div class="fake_small_row">
+                                <span data-each="QUIZ[0] times"><var>SMALL_IMAGE</var></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p><input type="radio" name="choice_1" id="c_2" value="c_2"><br /></p>
+                        </td>
+                        <td>
+                            <div class="fake_small_row">
+                                <span data-each="QUIZ[1] times"><var>SMALL_IMAGE</var></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p><input type="radio" name="choice_1" id="c_3" value="c_3"><br /></p>
+                        </td>
+                        <td>
+                            <div class="fake_small_row">
+                               <span data-each="QUIZ[2] times"><var>SMALL_IMAGE</var></span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="sol" data-type="custom">
+                    <div class="guess">-1</div>
+                    <div class="validator-function">
+                        var aBoolean_1 = false;
+                        var cBo0lean_1 = false;
+
+                        if(document.getElementById("a_1").value == ANSWER){
+                            aBoolean_1 = true;
+                        }
+                        if ((document.getElementById("c_1").checked) && (R_ANSWER == "c_1")) {
+                            cBoolean_1 = true;
+                        } else if ((document.getElementById("c_2").checked) && (R_ANSWER == "c_2")) {
+                            cBoolean_1 = true;
+                        } else if (R_ANSWER == "c_3") {
+                            cBoolean_1 = true;
+                        }
+                        return aBoolean_1 && cBoolean_1;
+                    </div>
+                </div>
+                <p class="problem">選擇並在題目下方空格內填入答案</p>
+            </div>
+            <div class="hints">
+                <div>
+                    <p><code><var>DATA[0]</var> = 10 + \color{#F62217}{<var>ANSWER</var>}</code></p>
+                </div>
+                <table>
+                    <tr>
+                        <td>
+                            <p><code>10</code></p>
+                        </td>
+                        <td>
+                            <div class="fake_small_row">
+                                <span data-each="10 times"><var>SMALL_IMAGE</var></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p><code><var>DATA[0]-10</var></code></p>
+                        </td>
+                        <td>
+                            <div class="fake_small_row">
+                                <span data-each="ANSWER times"><var>SMALL_IMAGE</var></span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>>
+                <div>
+                    <p>這圖裹有<var>DATA[0]</var>個<var>TYPE</var></p>
+                </div>
+            </div>
+        </div>
+        <div id="1:case2">
+            <div class="vars">
+                <var id="DATA">randRange(11, 19)</var>
+                <var id="ANSWER">DATA - 10</var>
+                <var id="SEQUENCE">(function() {
+                    result = "";
+                    for (i = 11; i < DATA; i++) {
+                        result = result + i.toString() + " ,";
+                    }
+                    result = result + DATA.toString();
+                    return result;
+                    })()
+                </var>
+            </div>
+            <div class="question">
+                <p>這裹有10個<var>TYPE</var></p>
+                <div class="fake_row">
+                    <span data-each="10 times"><var>FULL_IMAGE</var></span>
+                </div>
+                <p>再多幾個<var>TYPE</var>才會讓這裹有<var>DATA</var>個<var>TYPE</var>?</p>
+            </div>
+            <div class="solution" data-type="multiple">
+                <p><var>DATA</var> = 10 + <span style="padding-right: 5px" class="sol short40" data-forms="integer"><var>ANSWER</var></span></p>
+                <p class="example">整數，例：6</p>
+            </div>
+            <div class="hints">
+                <div>
+                    <p>從10數到<var>DATA</var></p>
+                </div>
+                <div>
+                    <p><var>SEQUENCE</var></p>
+                </div>
+                <div>
+                    <p><code>我們要多\color{#F62217}{<var>ANSWER</var>}個<var>TYPE</var></code></p>
+                </div>
+                <div>
+                    <p><code><var>DATA</var> = 10 + \color{#F62217}{<var>ANSWER</var>}</code></p>
+                </div>
+            </div>
+        </div>
+        <div id="2:case3">
+            <div class="vars">
+                <var id="DATA">randRange(14, 19)</var>
+                <var id="ANSWER">DATA - 10</var>
+            </div>
+
+            <div class="question">
+                <p>請看圖來回答問題:</p>
+                <div class="fake_row">
+                    <span data-each="10 times"><var>FULL_IMAGE</var></span>
+                    <span data-each="ANSWER times"><var>FULL_IMAGE</var></span>
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p><var>DATA</var> = 10 + <span style="padding-right: 5px" class="sol short40" data-forms="integer"><var>ANSWER</var></span></p>
+                <p class="example">整數，例：6</p>
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>
+                        <code>\color{#F62217}{10} 個 <var>TYPE</var> 可以看成是 \color{#F62217}{10} 個 1</code>
+                    </p>
+                    <span data-each="10 times"><var>FULL_IMAGE</var></span>
+                </div>
+                <div>
+                    <p>
+                        <code>\color{#F62217}{<var>ANSWER</var>} 個 <var>TYPE</var> 可以看成是 \color{#F62217}{<var>ANSWER</var>} 個 1</code>
+                    </p>
+                    <span data-each="ANSWER times"><var>FULL_IMAGE</var></span>
+                </div>
+                <div>
+                    <p>
+                        <code>\color{#F62217}{10} 個 1 + \color{#F62217}{<var>ANSWER</var>} 個 1 = \color{#F62217}{<var>DATA</var>} 個 1</code>
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        <code><var>DATA</var> = 10 + \color{#F62217}{<var>ANSWER</var>}</code>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
