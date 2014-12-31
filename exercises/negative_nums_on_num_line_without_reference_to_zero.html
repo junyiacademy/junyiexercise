@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html data-require="math graphie word-problems interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>生活中的負數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="vars">
+		<var id="type">randRange(1,2)</var>
+		<var id="distance">randRange(1,4)</var>
+		<var id="LOWER_BOUND">
+			(function(){
+			if(distance==1)
+					return randRange(-20,-11);
+				if(distance==2)
+					return randRange(-20,-11);
+				if(distance==3||distance==4)
+				{
+					var a=randRange(1,2);
+					return (-10*a*distance);
+				}
+		 })()</var>   
+		<var id="UPPER_BOUND">LOWER_BOUND+10*distance</var>
+		<var id="num1">LOWER_BOUND+4*distance</var>
+		<var id="num2">num1+2*distance</var>
+		 <var id="distance1">(function(){			
+			if(distance==1)
+					return 1;
+			if(distance==2)
+				return (randRange(0,3));
+			if(distance==3||distance==4)
+			{	var a=randRange(1,3);
+				if(a==1){return (randRange(0,3));}
+				if(a==2){return (randRange(7,9));}
+				if(a==3){return 5;}
+			}
+		 })()</var> 
+        <var id="NUMBER">
+					(function(){
+				if(distance==1)
+				{	var a=randRange(1,3);
+					if(a==1){return randRange( LOWER_BOUND, num1-1 );}
+					if(a==2){return randRange( num2+1, UPPER_BOUND );}
+					if(a==3){return num1+1;};
+				}
+				if(distance==2)
+					return LOWER_BOUND+distance*distance1;
+				if(distance==3||distance==4)
+					return LOWER_BOUND+distance*distance1;
+			})()</var>
+		<var id="point">(function(){
+				if(distance==1)
+					return (NUMBER-UPPER_BOUND);
+				if(distance==2)
+					return (distance1-10);
+				if(distance==3||distance==4)
+					return (distance1-10);
+			})()</var>
+    </div>
+    <div class="problems">
+        <div id="case1">
+            <div class="question">
+                <p>藍色的小點代表什麼數字？</p>
+                <div class="graphie" id="number-line-2">
+                    if(type==1){
+						init({
+							range: [ [ -11, 1], [-1, 1] ]
+						});					
+						 style({arrows: "&gt;"});
+						line( [ 0, 0 ], [ -10.6, 0 ] );
+						style({arrows: "-&gt;"});
+						line( [ -1, 0 ], [ 0.6, 0 ] );
+						style({arrows: ""});
+						for ( var x = -10; x &lt;= 0; x++ ) {
+							line( [ x, -0.2 ], [ x, 0.2 ] );
+						}                   
+						label( [ -6, -0.53 ],  num1, "center", { color: "black" });
+						label( [ -4, -0.53 ],  num2, "center", { color: "black" });
+
+						style({ stroke: "blue", fill: "blue" });
+						graph.blueDot = circle( [ point, 0 ], 0.10 );
+						label( [ point, -0.53 ],  "？", "center", { color: "blue" });}
+					if(type==2){
+							init({
+								range: [ [ -5, 5], [-11, 1] ]
+							});
+							  style({arrows: "&gt;"});
+							line( [ 0, 0 ], [ 0, -10.6 ] );
+							style({arrows: "-&gt;"});
+							line( [ 0, -1 ], [ 0, 0.6 ] );
+							style({arrows: ""});
+							for ( var x = -10; x &lt;= 0; x++ ) {
+								line( [ -0.2, x], [ 0.2, x ] );
+							} 
+							label( [ -0.65, -6 ],  num1, "center", { color: "black" });
+							label( [ -0.65, -4 ],  num2, "center", { color: "black" });
+
+						style({ stroke: "blue", fill: "blue" });
+						graph.blueDot2 = circle( [ 0,point ], 0.10 );
+						label( [ -0.65,point ],  "？", "center", { color: "blue" });}
+						
+                </div>
+            </div>
+            <div class="solution" data-forms="integer"><var>NUMBER</var></div>
+
+            <div class="hints">
+                <p>我們知道 <code><var>num1</var></code> 和 <code><var>num2</var></code> 在哪裡，因為已經被標註在數線上了。</p>
+                <p>兩個數字之間的距離為 <code><var>num2-num1</var></code> ，</p>
+                <p>因此，每個數字之間相距 <code><var>num2-num1</var> / 2 = <var>distance</var></code> 。</p>
+				<div>
+                    <div class="graphie" data-update="number-line-2">
+						for ( var x = -10; x &lt;= 0; x++ ) {
+							if(x==point)
+								continue;
+							else{
+								if(type==1){
+								label( [ x, -0.53 ],  LOWER_BOUND+(x+10)*distance, "center", { color: "black" });}
+								if(type==2){
+								label( [ -0.65, x ],  LOWER_BOUND+(x+10)*distance, "center", { color: "black" });}
+							}
+						}						
+                    </div>
+                    <p>我們可以標出各個數字在數線上的位置。</p>
+                </div>
+                <div>
+                    <div class="graphie" data-update="number-line-2">
+						if(type==1){label( [ point, 0.53 ],  NUMBER, "center", { color: "red" });}
+						if(type==2){label( [ 0.65, point ],  NUMBER, "center", { color: "red" });}
+                    </div>
+                    <p>所以藍色的小點代表 <code class="hint_pink"><var>NUMBER</var></code> 在數線上的位置。</p>
+                </div>
+				
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
+
+
