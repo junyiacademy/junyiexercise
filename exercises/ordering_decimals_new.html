@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html data-require="math math-format interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>小數大小的排列</title>
+    <script src="../khan-exercise.js"></script>
+    <style>
+        .sort-key {
+            visibility: hidden;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="NUMS">(function() {
+                var array = [];
+                var types = shuffle( [1, 1, 2, 2, 3, 3, 3], 5 );
+                var used = {};
+
+                while ( array.length &lt; 5 ) {
+                    var type = types[ array.length ], n, ns;
+                    switch ( type ) {
+                        case 1:
+							var k=randRange( 2, 99 );
+                            n =  k / 100;
+                            ns = n.toFixed( 2 );
+
+                            if ( !used[ ns ] ) {
+                                array.push([ type, n, ns, "= " + ns ,k,100,k*100]);
+                                used[ ns ] = true;
+                            }
+
+                            break;
+
+                        case 2: 
+							var k =randRange( 100, 999 );
+                            n =  k / 1000;
+                            ns = n.toFixed( 3 );
+
+                            if ( !used[ ns ] ) {
+                                array.push([ type, n, ns, "= " + ns ,k,1000,k*10]);
+                                used[ ns ] = true;
+                            }
+
+                            break;
+
+                        case 3: // fraction
+                            var k =randRange( 1000, 9999 );
+                            n =  k / 10000;
+                            ns = n.toFixed( 4 );
+
+                            if ( !used[ ns ] ) {
+                                array.push([ type, n, ns, "= " + ns ,k,10000,k]);
+                                used[ ns ] = true;
+                            }
+
+                            break;
+                    }
+                }
+
+                return array;
+            })()</var>
+
+            <var id="NUMS_TEX">$.map( NUMS, function( el ) {
+                return el[2];
+            } ).join( "," )</var>
+			 <var id="NUMS2">(function() {
+					var shape=[];						
+					for(var i=0;i&lt;5;i++)
+					{						
+						shape[i]=NUMS[i][6];
+					}
+					return sortNumbers(shape);
+            })()</var>
+            <var id="NUMS_SORT">$.extend( true, [], NUMS ).sort( function(a, b) {
+                return a[1] - b[1];
+            } )</var>
+            <var id="NUMS_SORT_TEX">$.map( NUMS_SORT, function( el ) {
+                return el[2];
+            } ).join( "," )</var>
+            <var id="NUMS_SORT_DECS">$.map( NUMS_SORT, function( el ) {
+                return el[3].match( / (.+)$/ )[1];
+            } ).join( "\\space,\\space" )</var>
+
+            <var id="SORTER">createSorter()</var>
+        </div>
+
+        <div class="problems">
+
+            <div>
+                <div class="question">
+                    <p>請將圖中的小數依照從左到右以小到大的順序排列：</p>
+                    <ul id="sortable">
+                        <li data-each="NUMS as NUM">
+                            <span class="sort-key"><var>NUM[2]</var></span>
+                            <code><var>NUM[2]</var></code>
+                        </li>
+                    </ul>
+                    <p><var>SORTER.init( "sortable" )</var></p>
+
+                </div>
+
+                <div class="solution" data-type="custom">
+                    <div class="instruction">
+                        把數字往左或往右拉，就可以排大小囉
+                    </div>
+                    <div class="guess">SORTER.getContent()</div>
+                    <div class="validator-function">
+                        return guess.join( "," ) === NUMS_SORT_TEX;
+                    </div>
+                    <div class="show-guess">
+                        SORTER.setContent( guess );
+                    </div>
+                </div>
+
+                <div class="hints">
+					<p>
+						<code>\enspace\enspace\enspace<var>NUMS[0][2]</var> = <var>NUMS[0][4]</var> / <var>NUMS[0][5]</var></code><br/>
+						<code>\enspace\enspace\enspace<var>NUMS[1][2]</var> = <var>NUMS[1][4]</var> / <var>NUMS[1][5]</var></code><br/>
+						<code>\enspace\enspace\enspace<var>NUMS[2][2]</var> = <var>NUMS[2][4]</var> / <var>NUMS[2][5]</var></code><br/>
+						<code>\enspace\enspace\enspace<var>NUMS[3][2]</var> = <var>NUMS[3][4]</var> / <var>NUMS[3][5]</var></code><br/>
+						<code>\enspace\enspace\enspace<var>NUMS[4][2]</var> = <var>NUMS[4][4]</var> / <var>NUMS[4][5]</var></code>
+					</p>
+                    <p>將所有分數通分，最大分母為 <code>10000</code></p>
+					<p>
+						<code>\enspace\enspace\enspace<var>NUMS[0][2]</var> = <var>NUMS[0][6]</var> / 10000</code><br/>
+						<code>\enspace\enspace\enspace<var>NUMS[1][2]</var> = <var>NUMS[1][6]</var> / 10000</code><br/>
+						<code>\enspace\enspace\enspace<var>NUMS[2][2]</var> = <var>NUMS[2][6]</var> / 10000</code><br/>
+						<code>\enspace\enspace\enspace<var>NUMS[3][2]</var> = <var>NUMS[3][6]</var> / 10000</code><br/>
+						<code>\enspace\enspace\enspace<var>NUMS[4][2]</var> = <var>NUMS[4][6]</var> / 10000</code>
+					</p>
+					<p>因為分母都相同，我們可以只看分子的部分，所以將分子按照從小到大排列： <code><var>NUMS2[0]</var></code> ，<code><var>NUMS2[1]</var></code> ，<code><var>NUMS2[2]</var></code> ，<code><var>NUMS2[3]</var></code> ，<code><var>NUMS2[4]</var></code> 。</p>
+					<div>
+						<P>同除以 <code>10000</code> 將他們再轉回小數得：</p>
+						<p><code><var>NUMS_SORT_DECS</var></code> 。</p>
+					</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
