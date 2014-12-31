@@ -22,6 +22,27 @@
 </script>
 	</style>
     <script type="text/javascript">
+        function loadImg(elem, url, count, width, height) {
+
+            var loimg = document.getElementById(elem);
+
+            var inner = "";
+
+            for (var i = 1; i <= count; i++) {
+
+                inner += "<img id=" + "image" + elem + i + " width=" + width + " height=" + height + ">";
+
+            }
+
+            loimg.innerHTML += inner;
+
+            for (var j = 1; j <= count; j++) {
+
+                document.getElementById("image" + elem + j).src = url;
+
+            }
+
+        }
 	</script>
 </head>
 <body>
@@ -90,99 +111,37 @@
 		
 		 <div id="case2">
 			<div class="vars">
-				<var id="test">(function(){Khan.scratchpad.disable();})()</var>
-				<var id="r">randRange(10,15)</var>
-				<var id="d">2*r</var>
-				<var id="r1">randRange(15,20)</var>
-				<var id="a">2*r1</var>
-				<var id="r2">randRange(5,10)</var>
-				<var id="b">2*r2</var>
-				<var id="r3">randRange(20,25)</var>
-				<var id="c">2*r3</var>				
+				<var id="r">randRange(5,18)</var>
+				<var id="d">2*r</var>				
 			</div>
 			<div class="question">
 				<div class="problem">
 					<table class="nLimit">
 							<tr>
 								<td>
-									<div class="graphie" id="circle">
-									init({
-										range: [ [-12, 12], [-12, 12] ],
-										scale: 10
-										});
-										circle([0,0],7, { fill: "green" });
-										line([0,7],[0,-7],{stroke:"red"});
-										line([0,7],[1,1],{stroke:"white"})
-										line([0,-7],[1,-1],{stroke:"white"})
-										label([2,0], "\\small{"+d+"}", "center", { color: "black" });
-									</div>
-								</td>
-								<td>
 									<div class="graphie" id="circle1">
 										init({
-										range: [ [-12, 12], [-12, 12] ],
+										range: [ [-r-2, r+2], [-r-2, r+2] ],
 										scale: 10
 										});
-										circle([0,0],10, { fill: "brown" });
-										line([-10,0],[10,0],{stroke:"red"});
-										line([-10,0],[-1,1],{stroke:"white"});
-										line([10,0],[1,1],{stroke:"white"});
-										label([0,1], "\\small{"+a+"}", "center", { color: "black" });
+										circle([0,0],r, { fill: "brown" });
+										line([-r,0],[r,0],{stroke:"red"});
+										line([-r,0],[-1,1],{stroke:"white"});
+										line([r,0],[1,1],{stroke:"white"});
+										label([0,1], "\\small{"+d+"}", "center", { color: "black" });
 									</div>
 								</td>							
-							</tr>
-							<tr><td>直徑長(<input type="text" id="a_1" class="input">)公分</td><td>直徑長(<input type="text" id="a_2" class="input">)公分</td></tr>
-							<tr>
-								<td>
-									<div class="graphie" id="circle3">
-										init({
-										range: [ [-12, 12], [-12, 12] ],
-										scale: 10
-										});
-										circle([0,0],5, { fill: "pink" });
-										line([-5,0],[5,0],{stroke:"red"});
-										
-										line([-5,0],[-1,1],{stroke:"white"});
-										line([5,0],[1,1],{stroke:"white"});
-										label([0,1], "\\small{"+b+"}", "center", { color: "black" });
-									</div>
-								</td>
-								<td>
-									<div class="graphie" id="circle4">
-										init({
-										range: [ [-12, 12], [-12, 12] ],
-										scale: 10
-										});
-										circle([0,0],11, { fill: "tomato" });
-										line([-11,0],[11,0],{stroke:"red"});
-										
-										line([-11,0],[-1,1],{stroke:"white"});
-										line([11,0],[1,1],{stroke:"white"});
-										label([0,1], "\\small{"+c+"}", "center", { color: "black" });
-									</div>									
-								</td>	
-								<tr><td>半徑長(<input type="text" id="a_3" class="input">)公分</td><td>半徑長(<input type="text" id="a_4" class="input">)公分</td></tr>
 							</tr>
 					</table>
 				</div>
 				<p>請填入正確的長度</p>
 			</div>
-			
-			 <div class="solution" data-type="multiple">
-				<div class="sol" data-type="custom">
-				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value]</div>
-				    <div class="validator-function">
-						var bol1=false;
-						if(guess[0].replace(/[ ]/g,"")==d&&guess[1].replace(/[ ]/g,"")==a&&guess[2].replace(/[ ]/g,"")==r2&&guess[3].replace(/[ ]/g,"")==r3)
-						{
-							bol1=true;
-						}
-						return bol1;					
-                    </div>
-				</div>
-				<p class="example">在填空處填入答案，例 <code>6</code></p>
-			</div>
-			
+			<div class="solution" data-type="multiple">
+				<p>直徑長 <span class="sol" data-forms="integer"><var>d</var></span> 公分</p>
+
+				<p class="example">整數，例：<code>1</code></p>
+
+			</div>			
 			<div class="hints">
 				<p>圓心到圓周的距離我們叫做半徑，</p>
 				<p>直徑的長度是半徑的 <code class="hint_blue">2</code> 倍，</p>
@@ -192,30 +151,113 @@
 					<p>半徑長是 <code>10</code> 公分時，則直徑長為 <code>20</code> 公分。</p>					
 				</div>
 				<div>
-				<p>所以第一行圓的直徑分別為 <code>:</code> <code class="hint_pink"><var>d</var>、<var>a</var></code> 。</p>
-				<p>第二行圓的半徑分別為 <code>:</code> <code class="hint_pink"><var>r2</var>、<var>r3</var></code> 。</p>
+				<p>所以直徑為 <code>:</code> <code class="hint_pink"><var>d</var></code> 。</p>
+				</div>
+			</div>
+		</div>
+		 
+		 <div id="case3">
+			<div class="vars">
+				<var id="r">randRange(5,18)</var>
+				<var id="d">2*r</var>				
+			</div>
+			<div class="question">
+				<div class="problem">
+					<table class="nLimit">
+							<tr>
+								<td>
+									<div class="graphie" id="circle1">
+										init({
+										range: [ [-r-2, r+2], [-r-2, r+2] ],
+										scale: 10
+										});
+										circle([0,0],r, { fill: "brown" });
+										line([-r,0],[r,0],{stroke:"red"});
+										line([-r,0],[-1,1],{stroke:"white"});
+										line([r,0],[1,1],{stroke:"white"});
+										label([0,1], "\\small{"+d+"}", "center", { color: "black" });
+									</div>
+								</td>							
+							</tr>
+					</table>
+				</div>
+				<p>請填入正確的長度</p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>半徑長 <span class="sol" data-forms="integer"><var>r</var></span> 公分</p>
+
+				<p class="example">整數，例：<code>1</code></p>
+
+			</div>			
+			<div class="hints">
+				<p>圓心到圓周的距離我們叫做半徑，</p>
+				<p>直徑的長度是半徑的 <code class="hint_blue">2</code> 倍，</p>
+				<div>
+					<p>例如：</p>
+					<p>直徑長是 <code>20</code> 公分時，則半徑長為 <code>10</code> 公分。</p>
+					<p>半徑長是 <code>10</code> 公分時，則直徑長為 <code>20</code> 公分。</p>					
+				</div>
+				<div>
+				<p>所以半徑為 <code>:</code> <code class="hint_pink"><var>r</var></code> 。</p>
 				</div>
 			</div>
 		</div>
 		
-		<div id="case3">
+		<div id="case4">
 			<div class="vars">
 				<var id="R">randRange(1, 7)</var>
-				<var id="d">2*R</var>				 
+				<var id="d">2*R</var>	
+				<var id="data">
+                        (function(){                          
+                            loadImg("trianglePlate",Khan.urlBase+"images/triangleruler.png",1,322,161);                          
+                            return 1;
+
+                        })()
+                    </var>
             </div>			
             <div class="problem">	
 				<p>量量看，下圖中圓的半徑有多長，並算出直徑。</p>			
-				<div class="problem">				
+				<div class="problem">	
+				<div id="trianglePlate" style="width:400px;height:500px;position:absolute;z-index:1;"></div>
 				<div class="graphie" id="number-line">
 					init({
 						range: [[-12, 12], [-10, 10]],
 						scale: 19,
 					});	
 					circle([0, 0], R, { stroke: BLUE });															
-					addMouseLayer();
-					graph.Triangleruler = new Triangleruler( [0, 0] )
+					<!--addMouseLayer();
+					graph.Triangleruler = new Triangleruler( [0, 0] )-->
 					
 					circle([0, 0], 0.2, { stroke: "black" ,fill:"black"});
+					  function moveImg(event){
+
+                            var e = event || window.event;
+
+                            var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+
+                            var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+
+                            var x = e.pageX || e.clientX + scrollX;
+
+                            var y = e.pageY || e.clientY + scrollY;
+
+                            var left=x-205;
+
+                            var top=y-255;
+
+                            if(left&lt;300&&top&lt;400&&left&gt;0&&top&gt;0)
+
+                            {
+
+                                $("#imagetrianglePlate1").css("margin-left",left-100+"px");
+
+                                $("#imagetrianglePlate1").css("margin-top",top-150+"px");
+
+                            }
+
+                        }
+
+                        $("#trianglePlate").mousemove(moveImg);
                 </div>
 			
 				</div>			
@@ -237,7 +279,7 @@
             </div>
         </div>
 		
-		<div id="case4">
+		<div id="case5">
 			<div class="vars">
 				
 				<var id="r">randRange(10,50)</var>
@@ -255,7 +297,7 @@
             </div>
 		</div>
 		
-		<div id="case5">
+		<div id="case6">
 			<div class="vars" data-ensure="d%2==0">
 				
 				<var id="d">randRange(2,100)</var>
