@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>圖形的比較</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+		<div class="problems">
+			<div id="case1">
+				<div class="vars">
+					<var id="J">randRangeUnique(3,6,2)</var>
+					<var id="J_S">
+						(function(){
+							if(J[0]==3){return "三角形";}
+							if(J[0]==4){return "正方形";}
+							if(J[0]==5){return "五邊形";}
+							if(J[0]==6){return "六邊形";}
+						})()</var>
+						<var id="J_S1">
+						(function(){
+							if(J[1]==3){return "三角形";}
+							if(J[1]==4){return "正方形";}
+							if(J[1]==5){return "五邊形";}
+							if(J[1]==6){return "六邊形";}
+						})()</var>
+						<var id="right">
+							(function(){
+							if(J[1]&lt;J[0]){return [J[0],J[1],"ORANGE"];}
+							if(J[0]&lt;J[1]){return [J[1],J[0],"RED"];}
+						})()</var>
+						<var id="rightshape">
+							(function(){
+							if(right[0]==3){return "三角形";}
+							if(right[0]==4){return "正方形";}
+							if(right[0]==5){return "五邊形";}
+							if(right[0]==6){return "六邊形";}
+						})()</var>
+						<var id="points">
+						(function(){
+							var angle = 360/J[0];
+							var uAngle = angle;
+							var pArr=new Array();
+							for(var i=0;i&lt;J[0];i++){
+							pArr[i]=new Array(); 
+							for(var j=0;j&lt;2;j++){
+							pArr[i][j]=1;
+							}
+							}
+							for(var j=0;j&lt;J[0];j++){
+								pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+								pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+								uAngle=uAngle+angle;
+							}
+							return pArr;				
+						})()</var>
+						<var id="points_2">
+						(function(){
+							var angle = 360/J[1];
+							var uAngle = angle;
+							var pArr=new Array();
+							for(var i=0;i&lt;J[1];i++){
+							pArr[i]=new Array(); 
+							for(var j=0;j&lt;2;j++){
+							pArr[i][j]=1;
+							}
+							}
+							for(var j=0;j&lt;J[1];j++){
+								pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+								pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+								uAngle=uAngle+angle;
+							}
+							return pArr;
+						})()</var>
+						<var id="points_3">
+						(function(){
+							var angle = 360/right[0];
+							var uAngle = angle;
+							var pArr=new Array();
+							for(var i=0;i&lt;right[0];i++){
+							pArr[i]=new Array(); 
+							for(var j=0;j&lt;2;j++){
+							pArr[i][j]=1;
+							}
+							}
+							for(var j=0;j&lt;right[0];j++){
+								pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+								pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+								uAngle=uAngle+angle;
+							}
+							return pArr;
+						})()</var>
+				</div>
+				<div class="question">
+					<p>下面兩個圖形，哪一個圖形它的邊數量比較多？</p>
+					<table>
+						<tr>
+							<td style="vertical-align:middle">
+								<input type="radio" name="c_1" id="pic_1" >
+							</td>
+							<td onclick="$('#pic_1').attr('checked','checked')">
+								<div class="graphie" id="similar_1">
+								init({
+									range: [ [-2, 2], [-2,2] ],
+									scale: 40
+								});
+								var col = ORANGE;
+								if(J[0]==3){
+									path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==4){
+									path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==5){
+									path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==6){
+									path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[5][0],points[5][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td style="vertical-align:middle">
+								<input type="radio" name="c_1" id="pic_2">
+							</td>
+							<td onclick="$('#pic_2').attr('checked','checked')">
+								<div class="graphie" id="similar_2">
+								init({
+									range: [ [-2, 2], [-2,2] ],
+									scale: 40
+								});
+								var col = RED;
+								if(J[1]==3){
+									path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==4){
+									path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==5){
+									path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[4][0],points_2[4][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==6){
+									path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[4][0],points_2[4][1]],[points_2[5][0],points_2[5][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>選擇正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">1</div>
+						<div class="validator-function">
+							document.getElementById("pic_1").value=J[0];
+							document.getElementById("pic_2").value=J[1];
+						   var bol1=false;
+							if($("#pic_1").attr("checked")!='checked' && $("#pic_2").attr("checked")!='checked'){
+								return "";
+							}
+							if((document.getElementById("pic_1").checked&&document.getElementById("pic_1").value==right[0])||(document.getElementById("pic_2").checked&&document.getElementById("pic_2").value==right[0]))
+							{
+								bol1=true;
+							}
+							return bol1;
+						</div>
+					</div>
+				</div>
+				<div class="hints">
+					<div>
+					<P>這個<var>J_S</var>有 <code><var>J[0]</var></code> 條邊：</P>
+					<div class="graphie" id="similar_3">
+						init({
+							range: [ [-2, 2], [-2,2] ],
+							scale: 40
+						});
+						var col = ORANGE;
+						if(J[0]==3){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]-0.4,points[0][1]+1.2],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]+0.4,points[1][1]+1.2],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0],points[2][1]-2.5],  "\\small{3}", "center", { color: "black" });
+						}
+						if(J[0]==4){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]-0.4,points[0][1]+1],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]+1.2,points[1][1]+0.5],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0]+0.5,points[2][1]-1],  "\\small{3}", "center", { color: "black" });
+							label( [points[3][0]-1,points[3][1]-0.6],  "\\small{4}", "center", { color: "black" });
+						}
+						if(J[0]==5){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]-0.4,points[0][1]+0.8],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]+0.5,points[1][1]+0.7],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0]+0.8,points[2][1]-0.3],  "\\small{3}", "center", { color: "black" });
+							label( [points[3][0],points[3][1]-0.9],  "\\small{4}", "center", { color: "black" });
+							label( [points[4][0]-0.7,points[4][1]-0.2],  "\\small{5}", "center", { color: "black" });
+						}
+						if(J[0]==6){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[5][0],points[5][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]-0.4,points[0][1]+0.6],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]+0.3,points[1][1]+0.7],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0]+0.8,points[2][1]],  "\\small{3}", "center", { color: "black" });
+							label( [points[3][0]+0.2,points[3][1]-0.6],  "\\small{4}", "center", { color: "black" });
+							label( [points[4][0]-0.3,points[4][1]-0.6],  "\\small{5}", "center", { color: "black" });
+							label( [points[5][0]-0.7,points[5][1]-0.15],  "\\small{6}", "center", { color: "black" });
+						}
+					</div>
+					</div>
+					<div>
+					<P>這個<var>J_S1</var>有 <code><var>J[1]</var></code> 條邊：</P>
+					<div class="graphie" id="similar_4">
+						init({
+							range: [ [-2, 2], [-2,2] ],
+							scale: 40
+						});
+						var col = RED;
+						if(J[1]==3){
+							path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points_2[0][0]-0.4,points_2[0][1]+1.2],  "\\small{1}", "center", { color: "black" });
+							label( [points_2[1][0]+0.4,points_2[1][1]+1.2],  "\\small{2}", "center", { color: "black" });
+							label( [points_2[2][0],points_2[2][1]-2.5],  "\\small{3}", "center", { color: "black" });
+						}
+						if(J[1]==4){
+							path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points_2[0][0]-0.4,points_2[0][1]+1],  "\\small{1}", "center", { color: "black" });
+							label( [points_2[1][0]+1.2,points_2[1][1]+0.5],  "\\small{2}", "center", { color: "black" });
+							label( [points_2[2][0]+0.5,points_2[2][1]-1],  "\\small{3}", "center", { color: "black" });
+							label( [points_2[3][0]-1,points_2[3][1]-0.6],  "\\small{4}", "center", { color: "black" });
+						}
+						if(J[1]==5){
+							path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[4][0],points_2[4][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points_2[0][0]-0.4,points_2[0][1]+0.8],  "\\small{1}", "center", { color: "black" });
+							label( [points_2[1][0]+0.5,points_2[1][1]+0.7],  "\\small{2}", "center", { color: "black" });
+							label( [points_2[2][0]+0.8,points_2[2][1]-0.3],  "\\small{3}", "center", { color: "black" });
+							label( [points_2[3][0],points_2[3][1]-0.9],  "\\small{4}", "center", { color: "black" });
+							label( [points_2[4][0]-0.7,points_2[4][1]-0.2],  "\\small{5}", "center", { color: "black" });
+						}
+						if(J[1]==6){
+							path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[4][0],points_2[4][1]],[points_2[5][0],points_2[5][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points_2[0][0]-0.4,points_2[0][1]+0.6],  "\\small{1}", "center", { color: "black" });
+							label( [points_2[1][0]+0.3,points_2[1][1]+0.7],  "\\small{2}", "center", { color: "black" });
+							label( [points_2[2][0]+0.8,points_2[2][1]],  "\\small{3}", "center", { color: "black" });
+							label( [points_2[3][0]+0.2,points_2[3][1]-0.6],  "\\small{4}", "center", { color: "black" });
+							label( [points_2[4][0]-0.3,points_2[4][1]-0.6],  "\\small{5}", "center", { color: "black" });
+							label( [points_2[5][0]-0.7,points_2[5][1]-0.15],  "\\small{6}", "center", { color: "black" });
+						}
+					</div>
+					</div>
+					<div>
+					<P>因為 <code class="hint_red"><var>right[0]</var></code> 大於 <code class="hint_red"><var>right[1]</var></code> ，所以 <span class="hint_pink"><var>rightshape</var></span> 的邊比較多。</P>
+					<div class="graphie" id="similar_5">
+						init({
+							range: [ [-2, 2], [-2,2] ],
+							scale: 40
+						});
+						var col = right[2];
+						if(right[0]==3){
+							path([[points_3[0][0],points_3[0][1]],[points_3[1][0],points_3[1][1]],[points_3[2][0],points_3[2][1]],[points_3[0][0],points_3[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+						}
+						if(right[0]==4){
+							path([[points_3[0][0],points_3[0][1]],[points_3[1][0],points_3[1][1]],[points_3[2][0],points_3[2][1]],[points_3[3][0],points_3[3][1]],[points_3[0][0],points_3[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+						}
+						if(right[0]==5){
+							path([[points_3[0][0],points_3[0][1]],[points_3[1][0],points_3[1][1]],[points_3[2][0],points_3[2][1]],[points_3[3][0],points_3[3][1]],[points_3[4][0],points_3[4][1]],[points_3[0][0],points_3[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+						}
+						if(right[0]==6){
+							path([[points_3[0][0],points_3[0][1]],[points_3[1][0],points_3[1][1]],[points_3[2][0],points_3[2][1]],[points_3[3][0],points_3[3][1]],[points_3[4][0],points_3[4][1]],[points_3[5][0],points_3[5][1]],[points_3[0][0],points_3[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+						}
+					</div></div>
+				</div>
+			</div>
+			
+			<div id="case2">
+				<div class="vars">
+					<var id="J">randRangeUnique(3,6,2)</var>
+					<var id="J_S">
+						(function(){
+							if(J[0]==3){return "三角形";}
+							if(J[0]==4){return "正方形";}
+							if(J[0]==5){return "五邊形";}
+							if(J[0]==6){return "六邊形";}
+						})()</var>
+						<var id="J_S1">
+						(function(){
+							if(J[1]==3){return "三角形";}
+							if(J[1]==4){return "正方形";}
+							if(J[1]==5){return "五邊形";}
+							if(J[1]==6){return "六邊形";}
+						})()</var>
+						<var id="right">
+							(function(){
+							if(J[1]&lt;J[0]){return [J[0],J[1],"ORANGE"];}
+							if(J[0]&lt;J[1]){return [J[1],J[0],"RED"];}
+						})()</var>
+						<var id="rightshape">
+							(function(){
+							if(right[0]==3){return "三角形";}
+							if(right[0]==4){return "正方形";}
+							if(right[0]==5){return "五邊形";}
+							if(right[0]==6){return "六邊形";}
+						})()</var>
+					<var id="points">
+						(function(){
+							var angle = 360/J[0];
+							var uAngle = angle;
+							var pArr=new Array();
+							for(var i=0;i&lt;J[0];i++){
+							pArr[i]=new Array(); 
+							for(var j=0;j&lt;2;j++){
+							pArr[i][j]=1;
+							}
+							}
+							for(var j=0;j&lt;J[0];j++){
+								pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+								pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+								uAngle=uAngle+angle;
+							}
+							return pArr;				
+					})()</var>
+					<var id="points_2">
+						(function(){
+							var angle = 360/J[1];
+							var uAngle = angle;
+							var pArr=new Array();
+							for(var i=0;i&lt;J[1];i++){
+							pArr[i]=new Array(); 
+							for(var j=0;j&lt;2;j++){
+							pArr[i][j]=1;
+							}
+							}
+							for(var j=0;j&lt;J[1];j++){
+								pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+								pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+								uAngle=uAngle+angle;
+							}
+							return pArr;
+					})()</var>
+					<var id="points_3">
+						(function(){
+							var angle = 360/right[0];
+							var uAngle = angle;
+							var pArr=new Array();
+							for(var i=0;i&lt;right[0];i++){
+							pArr[i]=new Array(); 
+							for(var j=0;j&lt;2;j++){
+							pArr[i][j]=1;
+							}
+							}
+							for(var j=0;j&lt;right[0];j++){
+								pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+								pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+								uAngle=uAngle+angle;
+							}
+							return pArr;
+					})()</var>
+				</div>
+				<div class="question">
+					<p>下面兩個圖形，哪一個圖形它的角的數量比較多？</p>
+					<table>
+						<tr>
+							<td style="vertical-align:middle">
+								<input type="radio" name="c_1" id="pic_1" >
+							</td>
+							<td onclick="$('#pic_1').attr('checked','checked')">
+								<div class="graphie" id="similar_1">
+								init({
+									range: [ [-2, 2], [-2,2] ],
+									scale: 40
+								});
+								var col = ORANGE;
+								if(J[0]==3){
+									path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==4){
+									path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==5){
+									path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==6){
+									path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[5][0],points[5][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td style="vertical-align:middle">
+								<input type="radio" name="c_1" id="pic_2">
+							</td>
+							<td onclick="$('#pic_2').attr('checked','checked')">
+								<div class="graphie" id="similar_2">
+								init({
+									range: [ [-2, 2], [-2,2] ],
+									scale: 40
+								});
+								var col = RED;
+								if(J[1]==3){
+									path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==4){
+									path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==5){
+									path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[4][0],points_2[4][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==6){
+									path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[4][0],points_2[4][1]],[points_2[5][0],points_2[5][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>選擇正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">1</div>
+						<div class="validator-function">
+							document.getElementById("pic_1").value=J[0];
+							document.getElementById("pic_2").value=J[1];
+						   var bol1=false;
+							if($("#pic_1").attr("checked")!='checked' && $("#pic_2").attr("checked")!='checked'){
+								return "";
+							}
+							if((document.getElementById("pic_1").checked&&document.getElementById("pic_1").value==right[0])||(document.getElementById("pic_2").checked&&document.getElementById("pic_2").value==right[0]))
+							{
+								bol1=true;
+							}
+							return bol1;
+						</div>
+					</div>
+				</div>
+				<div class="hints">
+				<div>
+					<P>這個<var>J_S</var>有 <code><var>J[0]</var></code> 個角：</P>
+					<div class="graphie" id="similar_3">
+						init({
+							range: [ [-2, 2], [-2,2] ],
+							scale: 40
+						});
+						var col = ORANGE;
+						if(J[0]==3){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]+0.2,points[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]-0.2,points[1][1]],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0],points[2][1]+0.2],  "\\small{3}", "center", { color: "black" });
+						}
+						if(J[0]==4){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]+0.2,points[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0],points[1][1]-0.2],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0]-0.2,points[2][1]],  "\\small{3}", "center", { color: "black" });
+							label( [points[3][0],points[3][1]+0.2],  "\\small{4}", "center", { color: "black" });
+						}
+						if(J[0]==5){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]+0.2,points[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]+0.2,points[1][1]],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0]-0.2,points[2][1]],  "\\small{3}", "center", { color: "black" });
+							label( [points[3][0]-0.2,points[3][1]],  "\\small{4}", "center", { color: "black" });
+							label( [points[4][0],points[4][1]+0.2],  "\\small{5}", "center", { color: "black" });
+						}
+						if(J[0]==6){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[5][0],points[5][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]+0.2,points[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]+0.2,points[1][1]],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0],points[2][1]-0.2],  "\\small{3}", "center", { color: "black" });
+							label( [points[3][0]-0.2,points[3][1]],  "\\small{4}", "center", { color: "black" });
+							label( [points[4][0]-0.2,points[4][1]],  "\\small{5}", "center", { color: "black" });
+							label( [points[5][0],points[5][1]+0.2],  "\\small{6}", "center", { color: "black" });
+						}
+					</div>
+					</div>
+					<div>
+					<P>這個<var>J_S1</var>有 <code><var>J[1]</var></code> 個角：</P>
+					<div class="graphie" id="similar_4">
+						init({
+							range: [ [-2, 2], [-2,2] ],
+							scale: 40
+						});
+						var col = RED;
+						if(J[1]==3){
+							path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points_2[0][0]+0.2,points_2[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points_2[1][0]-0.2,points_2[1][1]],  "\\small{2}", "center", { color: "black" });
+							label( [points_2[2][0],points_2[2][1]+0.2],  "\\small{3}", "center", { color: "black" });
+						}
+						if(J[1]==4){
+							path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points_2[0][0]+0.2,points_2[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points_2[1][0],points_2[1][1]-0.2],  "\\small{2}", "center", { color: "black" });
+							label( [points_2[2][0]-0.2,points_2[2][1]],  "\\small{3}", "center", { color: "black" });
+							label( [points_2[3][0],points_2[3][1]+0.2],  "\\small{4}", "center", { color: "black" });
+						}
+						if(J[1]==5){
+							path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[4][0],points_2[4][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points_2[0][0]+0.2,points_2[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points_2[1][0]+0.2,points_2[1][1]],  "\\small{2}", "center", { color: "black" });
+							label( [points_2[2][0]-0.2,points_2[2][1]],  "\\small{3}", "center", { color: "black" });
+							label( [points_2[3][0]-0.2,points_2[3][1]],  "\\small{4}", "center", { color: "black" });
+							label( [points_2[4][0],points_2[4][1]+0.2],  "\\small{5}", "center", { color: "black" });
+						}
+						if(J[1]==6){
+							path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[4][0],points_2[4][1]],[points_2[5][0],points_2[5][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points_2[0][0]+0.2,points_2[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points_2[1][0]+0.2,points_2[1][1]],  "\\small{2}", "center", { color: "black" });
+							label( [points_2[2][0],points_2[2][1]-0.2],  "\\small{3}", "center", { color: "black" });
+							label( [points_2[3][0]-0.2,points_2[3][1]],  "\\small{4}", "center", { color: "black" });
+							label( [points_2[4][0]-0.2,points_2[4][1]],  "\\small{5}", "center", { color: "black" });
+							label( [points_2[5][0],points_2[5][1]+0.2],  "\\small{6}", "center", { color: "black" });
+						}
+					</div>
+					</div>
+					<div>
+					<P>因為 <code class="hint_red"><var>right[0]</var></code> 大於 <code class="hint_green"><var>right[1]</var></code> ，所以 <span class="hint_pink"><var>rightshape</var></span> 角的數量比較多。</P>
+					<div class="graphie" id="similar_5">
+						init({
+							range: [ [-2, 2], [-2,2] ],
+							scale: 40
+						});
+						var col = right[2];
+						if(right[0]==3){
+							path([[points_3[0][0],points_3[0][1]],[points_3[1][0],points_3[1][1]],[points_3[2][0],points_3[2][1]],[points_3[0][0],points_3[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+						}
+						if(right[0]==4){
+							path([[points_3[0][0],points_3[0][1]],[points_3[1][0],points_3[1][1]],[points_3[2][0],points_3[2][1]],[points_3[3][0],points_3[3][1]],[points_3[0][0],points_3[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+						}
+						if(right[0]==5){
+							path([[points_3[0][0],points_3[0][1]],[points_3[1][0],points_3[1][1]],[points_3[2][0],points_3[2][1]],[points_3[3][0],points_3[3][1]],[points_3[4][0],points_3[4][1]],[points_3[0][0],points_3[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+						}
+						if(right[0]==6){
+							path([[points_3[0][0],points_3[0][1]],[points_3[1][0],points_3[1][1]],[points_3[2][0],points_3[2][1]],[points_3[3][0],points_3[3][1]],[points_3[4][0],points_3[4][1]],[points_3[5][0],points_3[5][1]],[points_3[0][0],points_3[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+						}
+					</div>
+					</div>
+				</div>
+			</div>
+			
+			<div id="case3">
+				<div class="vars">
+					<var id="J">randRange(3,6)</var>
+					<var id="num">randRange(1,2)</var>
+					<var id="r">randRange(10,19,2)</var>
+					<var id="J_S">
+					(function(){
+						if(J==3){return "三角形";}
+						if(J==4){return "正方形";}
+						if(J==5){return "五邊形";}
+						if(J==6){return "六邊形";}
+					})()</var>
+					<var id="points">
+					(function(){
+						var angle = 360/J;
+						var uAngle = angle;
+						var pArr=new Array();
+						for(var i=0;i&lt;J;i++){
+						pArr[i]=new Array(); 
+						for(var j=0;j&lt;2;j++){
+						pArr[i][j]=1;
+						}
+						}
+						for(var j=0;j&lt;J;j++){
+							pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+							pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+							uAngle=uAngle+angle;
+						}
+						return pArr;
+					})()</var>
+				</div>
+				<div class="question">
+					<p>下面兩個圖形，哪一個沒有角？</p>
+					<table>
+						<tr>
+							<td style="vertical-align:middle">
+								<input type="radio" name="c_1" id="pic_1" >
+							</td>
+							<td onclick="$('#pic_1').attr('checked','checked')">
+								<div class="graphie" id="similar_1">
+								init({
+									range: [ [-2, 2], [-2,2] ],
+									scale: 40
+								});
+								var col = ORANGE;
+								var col1 = RED;
+								if(num==1)
+								{
+									if(J==3){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J==4){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J==5){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J==6){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[5][0],points[5][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+								if(num==2)
+								{
+									ellipse([0, 0], [r[0]/10, r[1]/10],{stroke:" black",fill:col1});
+								}
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td style="vertical-align:middle">
+								<input type="radio" name="c_1" id="pic_2" >
+							</td>
+							<td onclick="$('#pic_2').attr('checked','checked')">
+								<div class="graphie" id="similar_2">
+								init({
+									range: [ [-2, 2], [-2,2] ],
+									scale: 40
+								});
+								var col1 = RED;
+								var col = ORANGE;
+								if(num==2)
+								{
+									if(J==3){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J==4){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J==5){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J==6){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[5][0],points[5][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+								if(num==1)
+								{
+									ellipse([0, 0], [r[0]/10, r[1]/10],{stroke:" black",fill:col1});
+								}
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>選擇正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">1</div>
+						<div class="validator-function">
+						   var bol1=false;
+							if($("#pic_1").attr("checked")!='checked' && $("#pic_2").attr("checked")!='checked'){
+								return "";
+							}
+							if((document.getElementById("pic_1").checked&&num==2)||(document.getElementById("pic_2").checked&&num==1))
+							{
+								bol1=true;
+							}
+							return bol1;
+						
+						</div>
+					</div>
+				</div>
+				<div class="hints">
+				<div>
+					<P>這個<var>J_S</var>有 <code><var>J</var></code> 個角：</P>
+					<div class="graphie" id="similar_3">
+						init({
+							range: [ [-2, 2], [-2,2] ],
+							scale: 40
+						});
+						var col = ORANGE;
+						
+						if(J==3){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]+0.2,points[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]-0.2,points[1][1]],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0],points[2][1]+0.2],  "\\small{3}", "center", { color: "black" });
+						}
+						if(J==4){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]+0.2,points[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0],points[1][1]-0.2],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0]-0.2,points[2][1]],  "\\small{3}", "center", { color: "black" });
+							label( [points[3][0],points[3][1]+0.2],  "\\small{4}", "center", { color: "black" });
+						}
+						if(J==5){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]+0.2,points[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]+0.2,points[1][1]],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0]-0.2,points[2][1]],  "\\small{3}", "center", { color: "black" });
+							label( [points[3][0]-0.2,points[3][1]],  "\\small{4}", "center", { color: "black" });
+							label( [points[4][0],points[4][1]+0.2],  "\\small{5}", "center", { color: "black" });
+						}
+						if(J==6){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[5][0],points[5][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]+0.2,points[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]+0.2,points[1][1]],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0],points[2][1]-0.2],  "\\small{3}", "center", { color: "black" });
+							label( [points[3][0]-0.2,points[3][1]],  "\\small{4}", "center", { color: "black" });
+							label( [points[4][0]-0.2,points[4][1]],  "\\small{5}", "center", { color: "black" });
+							label( [points[5][0],points[5][1]+0.2],  "\\small{6}", "center", { color: "black" });
+						}
+					</div>
+					</div>
+					<div><p>這個是一個<span data-if="r[0]!=r[1]" class="hint_pink">橢</span><span class="hint_pink">圓形</span>，所以它沒有角。</p>
+					<div class="graphie" id="similar_4">
+						init({
+							range: [ [-2, 2], [-2,2] ],
+							scale: 40
+						});
+						var col1 = RED;
+						ellipse([0, 0], [r[0]/10, r[1]/10],{stroke:" black",fill:col1});
+					</div>	
+					</div>					
+				</div>
+			</div>
+			
+			<div id="case4">
+				<div class="vars">
+					<var id="J">randRangeUnique(3,6,2)</var>
+					<var id="S">randRange(1,4)</var>
+					<var id="J_S">
+						(function(){
+							if(J[0]==3){return "三角形";}
+							if(J[0]==4){
+								if(S==1){return "長方形";}
+								if(S==2){return "正方形";}
+								if(S==3){return "平行四邊形";}
+								if(S==4){return "四邊形";}
+							}
+							if(J[0]==5){return "五邊形";}
+							if(J[0]==6){return "六邊形";}
+					})()</var>
+					<var id="J_S1">
+					(function(){
+						if(J[1]==3){return "三角形";}
+						if(J[1]==4){
+							if(S==1){return "長方形";}
+							if(S==2){return "正方形";}
+							if(S==3){return "平行四邊形";}
+							if(S==4){return "四邊形";}
+						}
+						if(J[1]==5){return "五邊形";}
+						if(J[1]==6){return "六邊形";}
+					})()</var>
+					<var id="right">
+						(function(){
+						if(J[1]&lt;J[0]){return [J[0],J[1],"ORANGE"];}
+						if(J[0]&lt;J[1]){return [J[1],J[0],"RED"];}
+					})()</var>
+					<var id="rightshape">
+						(function(){
+						if(right[0]==3){return "三角形";}
+						if(right[0]==4){
+							if(S==1){return "長方形";}
+							if(S==2){return "正方形";}
+							if(S==3){return "平行四邊形";}
+							if(S==4){return "四邊形";}
+						}
+						if(right[0]==5){return "五邊形";}
+						if(right[0]==6){return "六邊形";}
+					})()</var>
+					<var id="points">
+						(function(){
+							var angle = 360/J[0];
+							var uAngle = angle;
+							var pArr=new Array();
+							for(var i=0;i&lt;J[0];i++){
+							pArr[i]=new Array(); 
+							for(var j=0;j&lt;2;j++){
+							pArr[i][j]=1;
+							}
+							}
+							for(var j=0;j&lt;J[0];j++){
+								if(J[0]==4){
+									pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+									if(S==1){
+										if(j==3 || j==0){
+											pArr[j][0]=pArr[j][0]+0.8;
+										}
+									}
+									if(S==3)
+									{
+										if(j&lt;2){
+											pArr[j][0]=pArr[j][0]+0.5;
+										}
+									}
+									if(S==4)
+									{
+										if( j==0){
+											pArr[j][0]=pArr[j][0]+0.8;
+										}
+									}
+									pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+									uAngle=uAngle+angle;
+								}
+								if(J[0]!=4){
+									pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+									pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+									uAngle=uAngle+angle;
+								}								
+							}
+							return pArr;				
+					})()</var>
+					<var id="points_2">
+						(function(){
+							var angle = 360/J[1];
+							var uAngle = angle;
+							var pArr=new Array();
+							for(var i=0;i&lt;J[1];i++){
+								pArr[i]=new Array(); 
+								for(var j=0;j&lt;2;j++){
+								pArr[i][j]=1;
+								}
+							}
+							for(var j=0;j&lt;J[1];j++){
+								if(J[1]==4){
+									pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+									if(S==1){
+										if(j==3 || j==0){
+											pArr[j][0]=pArr[j][0]+0.8;
+										}
+									}
+									if(S==3)
+									{
+										if(j&lt;2){
+											pArr[j][0]=pArr[j][0]+0.5;
+										}
+									}
+									if(S==4)
+									{
+										if( j==0){
+											pArr[j][0]=pArr[j][0]+0.8;
+										}
+									}
+									pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+									uAngle=uAngle+angle;
+								}
+								if(J[1]!=4){
+									pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+									pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+									uAngle=uAngle+angle;
+								}							
+							}
+							return pArr;
+					})()</var>
+					<var id="points_3">
+						(function(){
+							var angle = 360/right[0];
+							var uAngle = angle;
+							var pArr=new Array();
+							for(var i=0;i&lt;right[0];i++){
+							pArr[i]=new Array(); 
+							for(var j=0;j&lt;2;j++){
+							pArr[i][j]=1;
+							}
+							}
+							for(var j=0;j&lt;right[0];j++){
+								if(right[0]==4){
+									pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+									if(S==1){
+										if(j==3 || j==0){
+											pArr[j][0]=pArr[j][0]+0.8;
+										}
+									}
+									pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+									uAngle=uAngle+angle;
+								}
+								if(S==3)
+									{
+										if(j&lt;2){
+											pArr[j][0]=pArr[j][0]+0.5;
+										}
+									}
+									if(S==4)
+									{
+										if( j==0){
+											pArr[j][0]=pArr[j][0]+0.8;
+										}
+									}
+								if(right[0]!=4){
+									pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+									pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+									uAngle=uAngle+angle;
+								}	
+							}
+							return pArr;
+					})()</var>
+				</div>
+				<div class="question">
+					<p>下面兩個圖形，哪一個圖形它的邊數量比較多？</p>
+					<table>
+						<tr>
+							<td style="vertical-align:middle">
+								<input type="radio" name="c_1" id="pic_1" >
+							</td>
+							<td onclick="$('#pic_1').attr('checked','checked')">
+								<div class="graphie" id="similar_1">
+								init({
+									range: [ [-2, 3], [-2,2] ],
+									scale: 40
+								});
+								var col = ORANGE;
+								if(J[0]==3){
+									path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==4){
+									path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==5){
+									path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[0]==6){
+									path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[5][0],points[5][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td style="vertical-align:middle">
+								<input type="radio" name="c_1" id="pic_2">
+							</td>
+							<td onclick="$('#pic_2').attr('checked','checked')">
+								<div class="graphie" id="similar_2">
+								init({
+									range: [ [-2, 3], [-2,2] ],
+									scale: 40
+								});
+								var col = RED;
+								if(J[1]==3){
+									path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==4){
+									path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==5){
+									path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[4][0],points_2[4][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								if(J[1]==6){
+									path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[4][0],points_2[4][1]],[points_2[5][0],points_2[5][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+								}
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>選擇正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">1</div>
+						<div class="validator-function">
+							document.getElementById("pic_1").value=J[0];
+							document.getElementById("pic_2").value=J[1];
+						   var bol1=false;
+							if($("#pic_1").attr("checked")!='checked' && $("#pic_2").attr("checked")!='checked'){
+								return "";
+							}
+							if((document.getElementById("pic_1").checked&&document.getElementById("pic_1").value==right[0])||(document.getElementById("pic_2").checked&&document.getElementById("pic_2").value==right[0]))
+							{
+								bol1=true;
+							}
+							return bol1;
+						</div>
+					</div>
+				</div>
+				<div class="hints">
+					<div><P>這個<var>J_S</var>有 <code><var>J[0]</var></code> 條邊：</P>
+					<div class="graphie" id="similar_3">
+						init({
+							range: [ [-2, 3], [-2,2] ],
+							scale: 40
+						});
+						var col = ORANGE;
+						if(J[0]==3){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]-0.4,points[0][1]+1.2],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]+0.4,points[1][1]+1.2],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0],points[2][1]-2.5],  "\\small{3}", "center", { color: "black" });
+						}
+						if(J[0]==4){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							if(S==2){
+								label( [points[0][0]-0.4,points[0][1]+1],  "\\small{1}", "center", { color: "black" });
+								label( [points[1][0]+1.2,points[1][1]+0.5],  "\\small{2}", "center", { color: "black" });
+								label( [points[2][0]+0.5,points[2][1]-1],  "\\small{3}", "center", { color: "black" });
+								label( [points[3][0]-1,points[3][1]-0.6],  "\\small{4}", "center", { color: "black" });
+							}
+							if(S==1){
+								label( [points[0][0]-0.4,points[0][1]+1],  "\\small{1}", "center", { color: "black" });
+								label( [points[1][0]+1.2,points[1][1]+0.5],  "\\small{2}", "center", { color: "black" });
+								label( [points[2][0]+0.5,points[2][1]-1],  "\\small{3}", "center", { color: "black" });
+								label( [points[3][0]-1.2,points[3][1]-0.4],  "\\small{4}", "center", { color: "black" });
+							}
+							if(S==3){
+								label( [points[0][0]-0.6,points[0][1]+1],  "\\small{1}", "center", { color: "black" });
+								label( [points[1][0]+1.1,points[1][1]+0.5],  "\\small{2}", "center", { color: "black" });
+								label( [points[2][0]+0.5,points[2][1]-1],  "\\small{3}", "center", { color: "black" });
+								label( [points[3][0]-1,points[3][1]-0.6],  "\\small{4}", "center", { color: "black" });
+							}
+							if(S==4){
+								label( [points[0][0]-0.8,points[0][1]+1],  "\\small{1}", "center", { color: "black" });
+								label( [points[1][0]+1.2,points[1][1]+0.5],  "\\small{2}", "center", { color: "black" });
+								label( [points[2][0]+0.5,points[2][1]-1],  "\\small{3}", "center", { color: "black" });
+								label( [points[3][0]-1,points[3][1]-0.4],  "\\small{4}", "center", { color: "black" });
+							}
+						}
+						if(J[0]==5){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]-0.4,points[0][1]+0.8],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]+0.5,points[1][1]+0.7],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0]+0.8,points[2][1]-0.3],  "\\small{3}", "center", { color: "black" });
+							label( [points[3][0],points[3][1]-0.9],  "\\small{4}", "center", { color: "black" });
+							label( [points[4][0]-0.7,points[4][1]-0.2],  "\\small{5}", "center", { color: "black" });
+						}
+						if(J[0]==6){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[5][0],points[5][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]-0.4,points[0][1]+0.6],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]+0.3,points[1][1]+0.7],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0]+0.8,points[2][1]],  "\\small{3}", "center", { color: "black" });
+							label( [points[3][0]+0.2,points[3][1]-0.6],  "\\small{4}", "center", { color: "black" });
+							label( [points[4][0]-0.3,points[4][1]-0.6],  "\\small{5}", "center", { color: "black" });
+							label( [points[5][0]-0.7,points[5][1]-0.15],  "\\small{6}", "center", { color: "black" });
+						}
+					</div></div>
+					<div><P>這個<var>J_S1</var>有 <code><var>J[1]</var></code> 條邊：</P>
+					<div class="graphie" id="similar_4">
+						init({
+							range: [ [-2, 3], [-2,2] ],
+							scale: 40
+						});
+						var col = RED;
+						if(J[1]==3){
+							path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points_2[0][0]-0.4,points_2[0][1]+1.2],  "\\small{1}", "center", { color: "black" });
+							label( [points_2[1][0]+0.4,points_2[1][1]+1.2],  "\\small{2}", "center", { color: "black" });
+							label( [points_2[2][0],points_2[2][1]-2.5],  "\\small{3}", "center", { color: "black" });
+						}
+						if(J[1]==4){
+							path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							if(S==2){
+								label( [points_2[0][0]-0.4,points_2[0][1]+1],  "\\small{1}", "center", { color: "black" });
+								label( [points_2[1][0]+1.2,points_2[1][1]+0.5],  "\\small{2}", "center", { color: "black" });
+								label( [points_2[2][0]+0.5,points_2[2][1]-1],  "\\small{3}", "center", { color: "black" });
+								label( [points_2[3][0]-1,points_2[3][1]-0.6],  "\\small{4}", "center", { color: "black" });
+							}
+							if(S==1){
+								label( [points_2[0][0]-0.4,points_2[0][1]+1],  "\\small{1}", "center", { color: "black" });
+								label( [points_2[1][0]+1.2,points_2[1][1]+0.5],  "\\small{2}", "center", { color: "black" });
+								label( [points_2[2][0]+0.5,points_2[2][1]-1],  "\\small{3}", "center", { color: "black" });
+								label( [points_2[3][0]-1.2,points_2[3][1]-0.4],  "\\small{4}", "center", { color: "black" });
+							}
+							if(S==3){
+								label( [points_2[0][0]-0.6,points_2[0][1]+1],  "\\small{1}", "center", { color: "black" });
+								label( [points_2[1][0]+1.1,points_2[1][1]+0.5],  "\\small{2}", "center", { color: "black" });
+								label( [points_2[2][0]+0.5,points_2[2][1]-1],  "\\small{3}", "center", { color: "black" });
+								label( [points_2[3][0]-1,points_2[3][1]-0.6],  "\\small{4}", "center", { color: "black" });
+							}
+							if(S==4){
+								label( [points_2[0][0]-0.8,points_2[0][1]+1],  "\\small{1}", "center", { color: "black" });
+								label( [points_2[1][0]+1.2,points_2[1][1]+0.5],  "\\small{2}", "center", { color: "black" });
+								label( [points_2[2][0]+0.5,points_2[2][1]-1],  "\\small{3}", "center", { color: "black" });
+								label( [points_2[3][0]-1,points_2[3][1]-0.4],  "\\small{4}", "center", { color: "black" });
+							}
+						}
+						if(J[1]==5){
+							path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[4][0],points_2[4][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points_2[0][0]-0.4,points_2[0][1]+0.8],  "\\small{1}", "center", { color: "black" });
+							label( [points_2[1][0]+0.5,points_2[1][1]+0.7],  "\\small{2}", "center", { color: "black" });
+							label( [points_2[2][0]+0.8,points_2[2][1]-0.3],  "\\small{3}", "center", { color: "black" });
+							label( [points_2[3][0],points_2[3][1]-0.9],  "\\small{4}", "center", { color: "black" });
+							label( [points_2[4][0]-0.7,points_2[4][1]-0.2],  "\\small{5}", "center", { color: "black" });
+						}
+						if(J[1]==6){
+							path([[points_2[0][0],points_2[0][1]],[points_2[1][0],points_2[1][1]],[points_2[2][0],points_2[2][1]],[points_2[3][0],points_2[3][1]],[points_2[4][0],points_2[4][1]],[points_2[5][0],points_2[5][1]],[points_2[0][0],points_2[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points_2[0][0]-0.4,points_2[0][1]+0.6],  "\\small{1}", "center", { color: "black" });
+							label( [points_2[1][0]+0.3,points_2[1][1]+0.7],  "\\small{2}", "center", { color: "black" });
+							label( [points_2[2][0]+0.8,points_2[2][1]],  "\\small{3}", "center", { color: "black" });
+							label( [points_2[3][0]+0.2,points_2[3][1]-0.6],  "\\small{4}", "center", { color: "black" });
+							label( [points_2[4][0]-0.3,points_2[4][1]-0.6],  "\\small{5}", "center", { color: "black" });
+							label( [points_2[5][0]-0.7,points_2[5][1]-0.15],  "\\small{6}", "center", { color: "black" });
+						}
+					</div></div>
+					<div><P>因為 <code class="hint_red"><var>right[0]</var></code> 大於 <code class="hint_red"><var>right[1]</var></code> ，所以 <span class="hint_pink"><var>rightshape</var></span> 的邊比較多。</P>
+					<div class="graphie" id="similar_5">
+						init({
+							range: [ [-2, 3], [-2,2] ],
+							scale: 40
+						});
+						var col = right[2];
+						if(right[0]==3){
+							path([[points_3[0][0],points_3[0][1]],[points_3[1][0],points_3[1][1]],[points_3[2][0],points_3[2][1]],[points_3[0][0],points_3[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+						}
+						if(right[0]==4){
+							path([[points_3[0][0],points_3[0][1]],[points_3[1][0],points_3[1][1]],[points_3[2][0],points_3[2][1]],[points_3[3][0],points_3[3][1]],[points_3[0][0],points_3[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+						}
+						if(right[0]==5){
+							path([[points_3[0][0],points_3[0][1]],[points_3[1][0],points_3[1][1]],[points_3[2][0],points_3[2][1]],[points_3[3][0],points_3[3][1]],[points_3[4][0],points_3[4][1]],[points_3[0][0],points_3[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+						}
+						if(right[0]==6){
+							path([[points_3[0][0],points_3[0][1]],[points_3[1][0],points_3[1][1]],[points_3[2][0],points_3[2][1]],[points_3[3][0],points_3[3][1]],[points_3[4][0],points_3[4][1]],[points_3[5][0],points_3[5][1]],[points_3[0][0],points_3[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+						}
+					</div></div>
+				</div>
+			</div>
+			
+			<div id="case5">
+				<div class="vars">
+					<var id="J">randRange(3,6)</var>
+					<var id="num">randRange(1,2)</var>
+					<var id="r">randRange(10,19,2)</var>
+					<var id="S">randRange(1,4)</var>
+					<var id="J_S">
+						(function(){
+							if(J==3){return "三角形";}
+							if(J==4){
+								if(S==1){return "長方形";}
+								if(S==2){return "正方形";}
+								if(S==3){return "平行四邊形";}
+								if(S==4){return "四邊形";}
+							}
+							if(J==5){return "五邊形";}
+							if(J==6){return "六邊形";}
+					})()</var>
+					<var id="points">
+						(function(){
+							var angle = 360/J;
+							var uAngle = angle;
+							var pArr=new Array();
+							for(var i=0;i&lt;J;i++){
+							pArr[i]=new Array(); 
+							for(var j=0;j&lt;2;j++){
+							pArr[i][j]=1;
+							}
+							}
+							for(var j=0;j&lt;J;j++){
+								if(J==4){
+									pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+									if(S==1){
+										if(j==3 || j==0){
+											pArr[j][0]=pArr[j][0]+0.8;
+										}
+									}
+									if(S==3)
+									{
+										if(j&lt;2){
+											pArr[j][0]=pArr[j][0]+0.5;
+										}
+									}
+									if(S==4)
+									{
+										if( j==0){
+											pArr[j][0]=pArr[j][0]+0.8;
+										}
+									}
+									pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+									uAngle=uAngle+angle;
+								}
+								if(J!=4){
+									pArr[j][0]=1.5*Math.sin(uAngle*Math.PI/180);
+									pArr[j][1]=1.5*Math.cos(uAngle*Math.PI/180);
+									uAngle=uAngle+angle;
+								}								
+							}
+							return pArr;				
+					})()</var>					
+				</div>
+				<div class="question">
+					<p>下面兩個圖形，哪一個沒有角？</p>
+					<table>
+						<tr>
+							<td style="vertical-align:middle">
+								<input type="radio" name="c_1" id="pic_1" >
+							</td>
+							<td onclick="$('#pic_1').attr('checked','checked')">
+								<div class="graphie" id="similar_1">
+								init({
+									range: [ [-2, 3], [-2,2] ],
+									scale: 40
+								});
+								var col = ORANGE;
+								var col1 = RED;
+								if(num==1)
+								{
+									if(J==3){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J==4){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J==5){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J==6){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[5][0],points[5][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+								if(num==2)
+								{
+									ellipse([0, 0], [r[0]/10, r[1]/10],{stroke:" black",fill:col1});
+								}
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td style="vertical-align:middle">
+								<input type="radio" name="c_1" id="pic_2">
+							</td>
+							<td onclick="$('#pic_2').attr('checked','checked')">
+								<div class="graphie" id="similar_2">
+								init({
+									range: [ [-2, 3], [-2,2] ],
+									scale: 40
+								});
+								var col = ORANGE;
+								var col1 = RED;
+								if(num==2)
+								{
+									if(J==3){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J==4){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J==5){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+									if(J==6){
+										path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[5][0],points[5][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+									}
+								}
+								if(num==1)
+								{
+									ellipse([0, 0], [r[0]/10, r[1]/10],{stroke:" black",fill:col1});
+								}
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>選擇正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">1</div>
+						<div class="validator-function">
+						   var bol1=false;
+							if($("#pic_1").attr("checked")!='checked' && $("#pic_2").attr("checked")!='checked'){
+								return "";
+							}
+							if((document.getElementById("pic_1").checked&&num==2)||(document.getElementById("pic_2").checked&&num==1))
+							{
+								bol1=true;
+							}
+							return bol1;
+						
+						</div>
+					</div>
+				</div>
+				<div class="hints">
+					<div><P>這個<var>J_S</var>有 <code><var>J</var></code> 個角：</P>
+					<div class="graphie" id="similar_3">
+						init({
+							range: [ [-2, 3], [-2,2] ],
+							scale: 40
+						});
+						var col = ORANGE;
+						
+						if(J==3){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]+0.2,points[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]-0.2,points[1][1]],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0],points[2][1]+0.2],  "\\small{3}", "center", { color: "black" });
+						}
+						if(J==4){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]+0.2,points[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0],points[1][1]-0.2],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0]-0.2,points[2][1]],  "\\small{3}", "center", { color: "black" });
+							label( [points[3][0],points[3][1]+0.2],  "\\small{4}", "center", { color: "black" });
+							
+						}
+						if(J==5){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]+0.2,points[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]+0.2,points[1][1]],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0]-0.2,points[2][1]],  "\\small{3}", "center", { color: "black" });
+							label( [points[3][0]-0.2,points[3][1]],  "\\small{4}", "center", { color: "black" });
+							label( [points[4][0],points[4][1]+0.2],  "\\small{5}", "center", { color: "black" });
+						}
+						if(J==6){
+							path([[points[0][0],points[0][1]],[points[1][0],points[1][1]],[points[2][0],points[2][1]],[points[3][0],points[3][1]],[points[4][0],points[4][1]],[points[5][0],points[5][1]],[points[0][0],points[0][1]]],{ fill: col, "fill-opacity": 0.1 });
+							label( [points[0][0]+0.2,points[0][1]],  "\\small{1}", "center", { color: "black" });
+							label( [points[1][0]+0.2,points[1][1]],  "\\small{2}", "center", { color: "black" });
+							label( [points[2][0],points[2][1]-0.2],  "\\small{3}", "center", { color: "black" });
+							label( [points[3][0]-0.2,points[3][1]],  "\\small{4}", "center", { color: "black" });
+							label( [points[4][0]-0.2,points[4][1]],  "\\small{5}", "center", { color: "black" });
+							label( [points[5][0],points[5][1]+0.2],  "\\small{6}", "center", { color: "black" });
+						}
+					</div></div>
+					<div><p>這是一個<span data-if="r[0]!=r[1]" class="hint_pink">橢</span><span class="hint_pink">圓形</span>，所以它沒有角。</p>
+					<div class="graphie" id="similar_4">
+						init({
+							range: [ [-2, 2], [-2,2] ],
+							scale: 40
+						});
+						var col1 = RED;
+						ellipse([0, 0], [r[0]/10, r[1]/10],{stroke:" black",fill:col1});
+					</div></div>	
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</body>
+</html>
