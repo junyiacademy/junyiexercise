@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>認識小數</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+        .bordered {
+			border: 2px solid black;
+		}
+		.hint_blue { color: #6495ED; }
+		.hint_orange { color: #FFA500; }
+		.hint_pink { color: #FF00AF; }
+		.hint_red { color: red; }
+		.hint_green { color: #28AE7B; }
+		.hint_gray { color: gray; }
+		.hint_purple{ color: purple; }
+	</style>
+	<script type="text/javascript">
+		function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+		<div class="problems">
+			<div id="case1">
+				<div class="vars">
+					<var id="decimal_value">randFromArray([["七",7],["二十八",28],["六十三",63]])</var>
+					<var id="intter_value">randFromArray([["三",3],["四",4],["五",5],["七",7]])</var>
+					<var id="hun_value">randFromArray([["百",100],["千",1000]])</var>
+					<var id="result">(intter_value[1]*hun_value[1]+decimal_value[1]/1000)</var>
+					<var id="set_keypress">
+						(function(){
+							$('#textbox1').bind('keypress',function(event){
+								if(event.keyCode == "13"){
+									$('#check-answer-button').click();
+								}
+							});
+						})()
+					</var>
+				</div>
+				<div class="question">
+					<p><var>intter_value[0]</var><var>hun_value[0]</var>加千分之<var>decimal_value[0]</var>等於多少？用小數表示：</p>
+					<p><input type="text" id="textbox1" style="width:8em;height:1.5em;text-align:center;" /></p>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>在左邊方框中填入正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">[document.getElementById("textbox1").value]</div>
+						<div class="validator-function">
+							var bol1=false;
+							if(guess[0].replace(/[ ]/g,"")==result)
+							{
+								bol1=true;
+							}
+							return bol1;					
+						</div>
+					</div>
+					<p class="example">小數，例：<code>0.75</code></p>
+				</div>
+				<div class="hints">
+					<p><var>intter_value[0]</var><var>hun_value[0]</var>加千分之<var>decimal_value[0]</var>的值如何用小數表示呢？小數點放在哪裡？</p>
+					<p>我們應該先寫<var>intter_value[0]</var><var>hun_value[0]</var>，再寫小數點，最後寫千分之<var>decimal_value[0]</var>。</p>
+					<p>如何表示<var>intter_value[0]</var><var>hun_value[0]</var>？應該寫成 <code class="hint_green"><var>intter_value[1]*hun_value[1]</var></code> 。</p>
+					<p>當我們表示千分之一時，我們應該把三位小數寫在小數點的右邊：<code>0.</code>___ ；</p>
+					<p data-if="decimal_value[1]&lt;10">千分之<var>decimal_value[0]</var>中的 <code><var>decimal_value[1]</var></code> 應該寫在小數點後第三位，在第一位和第二位寫 <code>0</code> ，所以千分之<var>decimal_value[0]</var>應寫成： <code class="hint_orange"><var>decimal_value[1]/1000</var></code> 。</p>
+					<p data-if="decimal_value[1]&gt;10">千分之<var>decimal_value[0]</var>中的 <code><var>decimal_value[1]</var></code> 應該寫在小數點後第二位和第三位，在第一位寫 <code>0</code> ，所以千分之<var>decimal_value[0]</var>應寫成： <code class="hint_orange"><var>decimal_value[1]/1000</var></code> 。</p>
+					<p>我們把 <code class="hint_green"><var>intter_value[1]*hun_value[1]</var></code> 和 <code class="hint_orange"><var>decimal_value[1]/1000</var></code> 合起來怎麼表示呢？</p>
+					<p>用小數表示<var>intter_value[0]</var><var>hun_value[0]</var>加千分之<var>decimal_value[0]</var>的值為： <code class="hint_pink"><var>result</var></code> 。</p>
+				</div>
+			</div>
+			<div id="case2">
+					<div class="vars">
+						<var id="decimal_value">randFromArray([902,438,26])</var>
+						<var id="intter_value">randFromArray([72,108,526])</var>
+						<var id="hundreds">parseInt(intter_value/100)</var>
+						<var id="tens">parseInt((intter_value-hundreds*100)/10)</var>
+						<var id="ones">(intter_value-hundreds*100-tens*10)</var>
+						<var id="tenths">parseInt(decimal_value/100)</var>
+						<var id="hundredths">parseInt((decimal_value-tenths*100)/10)</var>
+						<var id="thousandths">(decimal_value-tenths*100-hundredths*10)</var>
+						<var id="result">(intter_value+decimal_value/1000)</var> 
+						<var id="wrong_num">
+							(function(){
+								var num=new Array(4);
+								
+								num[0]=new Array(6);
+								num[0]=[100,10,1,1000,100,10];
+								num[1]=new Array(6);
+								num[1]=[100,10,1,10,100,1000];
+								num[2]=new Array(6);
+								num[2]=[100,10,1,0.001,0.01,0.1];
+								num[3]=new Array(6);
+								num[3]=[1000,100,10,10,100,1000];
+								return num;
+							})()
+						</var>
+						<var id="turns">randRangeUnique(0,4,4)</var>
+					</div>
+					<div class="question">
+						<p>下列哪個式子的值等於 <code><var>result</var></code> ？</p>
+						<p onclick="$('#c_0').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_0">
+							<span data-if="turns[0]!=2"><code data-if="hundreds!=0"><var>hundreds</var>\times <var>wrong_num[turns[0]][0]</var> + </code><code data-if="tens!=0"><var>tens</var>\times<var>wrong_num[turns[0]][1]</var> + </code><code><var>ones</var>\times<var>wrong_num[turns[0]][2]</var> + </code><code data-if="tenths!=0"><var>tenths</var>\times <var>fraction(1,wrong_num[turns[0]][3])</var> + </code><code data-if="hundredths!=0"><var>hundredths</var>\times<var>fraction(1,wrong_num[turns[0]][4])</var> + </code><code><var>thousandths</var>\times<var>fraction(1,wrong_num[turns[0]][5])</var></code></span>
+							<span data-if="turns[0]==2"><code data-if="hundreds!=0"><var>hundreds</var>\times <var>wrong_num[turns[0]][0]</var> + </code><code data-if="tens!=0"><var>tens</var>\times<var>wrong_num[turns[0]][1]</var> + </code><code><var>ones</var>\times<var>wrong_num[turns[0]][2]</var> +  </code><code data-if="tenths!=0"><var>tenths</var>\times 1000 + </code><code data-if="hundredths!=0"><var>hundredths</var>\times 100 + </code><code><var>thousandths</var>\times 10</code></span>
+						</p>
+						<p onclick="$('#c_1').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_1">
+							<span data-if="turns[1]!=2"><code data-if="hundreds!=0"><var>hundreds</var>\times <var>wrong_num[turns[1]][0]</var> + </code><code data-if="tens!=0"><var>tens</var>\times<var>wrong_num[turns[1]][1]</var> + </code><code><var>ones</var>\times<var>wrong_num[turns[1]][2]</var> + </code><code data-if="tenths!=0"><var>tenths</var>\times <var>fraction(1,wrong_num[turns[1]][3])</var> + </code><code data-if="hundredths!=0"><var>hundredths</var>\times<var>fraction(1,wrong_num[turns[1]][4])</var> + </code><code><var>thousandths</var>\times<var>fraction(1,wrong_num[turns[1]][5])</var></code></span>
+							<span data-if="turns[1]==2"><code data-if="hundreds!=0"><var>hundreds</var>\times <var>wrong_num[turns[1]][0]</var> + </code><code data-if="tens!=0"><var>tens</var>\times<var>wrong_num[turns[1]][1]</var> + </code><code><var>ones</var>\times<var>wrong_num[turns[1]][2]</var> +  </code><code data-if="tenths!=0"><var>tenths</var>\times 1000 + </code><code data-if="hundredths!=0"><var>hundredths</var>\times 100 + </code><code><var>thousandths</var>\times 10</code></span>
+						</p>
+						
+						<p onclick="$('#c_2').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_2">
+							<span data-if="turns[2]!=2"><code data-if="hundreds!=0"><var>hundreds</var>\times <var>wrong_num[turns[2]][0]</var> + </code><code data-if="tens!=0"><var>tens</var>\times<var>wrong_num[turns[2]][1]</var> + </code><code><var>ones</var>\times<var>wrong_num[turns[2]][2]</var> +  </code><code data-if="tenths!=0"><var>tenths</var>\times <var>fraction(1,wrong_num[turns[2]][3])</var> + </code><code data-if="hundredths!=0"><var>hundredths</var>\times<var>fraction(1,wrong_num[turns[2]][4])</var> + </code><code><var>thousandths</var>\times<var>fraction(1,wrong_num[turns[2]][5])</var></code></span>
+							<span data-if="turns[2]==2"><code data-if="hundreds!=0"><var>hundreds</var>\times <var>wrong_num[turns[2]][0]</var> + </code><code data-if="tens!=0"><var>tens</var>\times<var>wrong_num[turns[2]][1]</var> + </code><code><var>ones</var>\times<var>wrong_num[turns[2]][2]</var> +  </code><code data-if="tenths!=0"><var>tenths</var>\times 1000 + </code><code data-if="hundredths!=0"><var>hundredths</var>\times 100 + </code><code><var>thousandths</var>\times 10</code></span>
+						</p>
+						
+						<p onclick="$('#c_3').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_3">
+							<span data-if="turns[3]!=2"><code data-if="hundreds!=0"><var>hundreds</var>\times <var>wrong_num[turns[3]][0]</var> + </code><code data-if="tens!=0"><var>tens</var>\times<var>wrong_num[turns[3]][1]</var> + </code><code><var>ones</var>\times<var>wrong_num[turns[3]][2]</var> +  </code><code data-if="tenths!=0"><var>tenths</var>\times <var>fraction(1,wrong_num[turns[3]][3])</var> + </code><code data-if="hundredths!=0"><var>hundredths</var>\times<var>fraction(1,wrong_num[turns[3]][4])</var> + </code><code><var>thousandths</var>\times<var>fraction(1,wrong_num[turns[3]][5])</var></code></span>
+							<span data-if="turns[3]==2"><code data-if="hundreds!=0"><var>hundreds</var>\times <var>wrong_num[turns[3]][0]</var> + </code><code data-if="tens!=0"><var>tens</var>\times<var>wrong_num[turns[3]][1]</var> + </code><code><var>ones</var>\times<var>wrong_num[turns[3]][2]</var> +  </code><code data-if="tenths!=0"><var>tenths</var>\times 1000 + </code><code data-if="hundredths!=0"><var>hundredths</var>\times 100 + </code><code><var>thousandths</var>\times 10</code></span>
+						</p>
+					</div>
+					<div class="solution" data-type="multiple">
+						<p>請選擇正確的答案。</p>
+						<div class="sol" data-type="custom">
+							<div class="guess">1</div>
+							<div class="validator-function">
+								if($("#c_0").attr("checked")!='checked' && $("#c_1").attr("checked")!='checked'&& $("#c_2").attr("checked")!='checked'&& $("#c_3").attr("checked")!='checked'){
+									return "";
+								}
+								var bol1=false;
+								for(var i=0;i&lt;4;i++){
+									var name="c_"+i;
+									document.getElementById(name).value= turns[i];								
+								}
+								if((document.getElementById("c_0").checked&&document.getElementById("c_0").value==1)||
+								(document.getElementById("c_1").checked&&document.getElementById("c_1").value==1)||
+								(document.getElementById("c_2").checked&&document.getElementById("c_2").value==1)||
+								(document.getElementById("c_3").checked&&document.getElementById("c_3").value==1))
+								{
+									bol1=true;
+								}
+								return bol1;					
+							</div>
+						</div>
+						<p class="example">小數，例：<code>0.75</code></p>
+					</div>
+					<div class="hints">
+						<p>我們先表示出小數點左邊各個位數；</p>
+						<p><span data-if="hundreds!=0"><code><var>hundreds</var></code> 代表的是 <code><var>hundreds</var></code> 個一百，我們可以表示為：<code class="hint_green"><var>hundreds</var>\times 100</code><br /></span>
+						<span data-if="tens!=0"><code><var>tens</var></code> 代表的是 <code><var>tens</var></code> 個十，我們可以表示為：<code class="hint_green"><var>tens</var>\times 10</code><br /></span>
+						<span data-if="ones!=0"><code><var>ones</var></code> 代表的是 <code><var>ones</var></code> 個一，我們可以表示為：<code class="hint_green"><var>ones</var>\times 1</code></span>
+						</p>
+						<p>那小數點右邊的值如何來表示呢？</p>
+						<div><p><span data-if="tenths!=0"><code><var>tenths</var></code> 代表的是 <code><var>tenths</var></code> 個十分之一，我們可以表示為：<code class="hint_orange"><var>tenths</var>\times <var>fraction(1,10)</var></code></span></p>
+						<p><span data-if="hundredths!=0"><code><var>hundredths</var></code> 代表的是 <code><var>hundredths</var></code> 個百分之一，我們可以表示為：<code class="hint_orange"><var>hundredths</var>\times <var>fraction(1,100)</var></code></span></p>
+						<p><span data-if="thousandths!=0"><code><var>thousandths</var></code> 代表的是 <code><var>thousandths</var></code> 個千分之一，我們可以表示為：<code class="hint_orange"><var>thousandths</var>\times <var>fraction(1,1000)</var></code></span></p>
+						</div>
+						<div><p><code><var>result</var></code> 可寫為：</p>
+						<p><span class="hint_pink"><code data-if="hundreds!=0"><var>hundreds</var>\times <var>wrong_num[1][0]</var>+</code><code data-if="tens!=0"><var>tens</var>\times<var>wrong_num[1][1]</var>+</code><code><var>ones</var>\times<var>wrong_num[1][2]</var>+ </code><code data-if="tenths!=0"><var>tenths</var>\times <var>fraction(1,wrong_num[1][3])</var> + </code><code data-if="hundredths!=0"><var>hundredths</var>\times<var>fraction(1,wrong_num[1][4])</var> + </code><code><var>thousandths</var>\times<var>fraction(1,wrong_num[1][5])</var></code></span>
+						</p></div>
+					</div>
+			</div>
+			<div id="case3">
+				<div class="vars">
+					<var id="type">randRange(1,3)</var>
+					<var id="values">randFromArray([9207.28,6812.65,780.123,681.357])</var>
+					<var id="value_2">accMul(values,10)</var>
+					<var id="value_3">accMul(values,0.1)</var>
+					<var id="value_name">
+						(function(){
+							if(values==9207.68){
+								return ["九千二百零七","二十八","百分之"];
+							}
+							if(values==6812.65){
+								return ["六千八百一十二","六十五","百分之"];
+							}
+							if(values==780.123){
+								return ["七百八十","一百二十三","千分之"];
+							}
+							if(values==681.357){
+								return ["六百八十一","三百五十七","千分之"];
+							}
+						})()
+					</var>
+					<var id="intter_value">parseInt(values/1)</var>
+					<var id="decimal_value">(values*1000-intter_value*1000)</var>
+					<var id="thousands">parseInt(intter_value/1000)</var>
+					<var id="hundreds">parseInt((intter_value-thousands*1000)/100)</var>
+					<var id="tens">parseInt((intter_value-thousands*1000-hundreds*100)/10)</var>
+					<var id="ones">(intter_value-thousands*1000-hundreds*100-tens*10)</var>
+					<var id="tenths">parseInt(decimal_value/100)</var>
+					<var id="hundredths">parseInt((decimal_value-tenths*100)/10)</var>
+					<var id="thousandths">(decimal_value-tenths*100-hundredths*10)</var>
+					<var id="set_keypress">
+						(function(){
+							$('#textbox1').bind('keypress',function(event){
+								if(event.keyCode == "13"){
+									$('#check-answer-button').click();
+								}
+							});
+						})()
+					</var>
+					<var id="set_keypress_2">
+						(function(){
+							$('#textbox2').bind('keypress',function(event){
+								if(event.keyCode == "13"){
+									$('#check-answer-button').click();
+								}
+							});
+						})()
+					</var>
+				</div>
+				<div class="question">
+					<p>A = <code data-if="thousands!=0"><var>thousands</var>\times 1000+</code><code data-if="hundreds!=0"><var>hundreds</var>\times 100+</code><code data-if="tens!=0"><var>tens</var>\times 10+</code><code data-if="ones!=0"><var>ones</var>\times 1 + </code><code data-if="tenths!=0"><var>tenths</var>\times <var>fraction(1,10)</var> + </code><code data-if="hundredths!=0"><var>hundredths</var>\times<var>fraction(1,100)</var></code><code data-if="thousandths!=0">+<var>thousandths</var>\times<var>fraction(1,1000)</var></code></span></p>
+					<p>求A的值：</p>
+					<p><input type="text" id="textbox1" style="width:8em;height:1.5em;text-align:center;" /></p>
+					<p><span data-if="type==2">A的十倍的值為：</span><span data-if="type==3">A的十分之一的值為：</span></p>
+					<p><input data-if="type!=1" type="text" id="textbox2" style="width:8em;height:1.5em;text-align:center;" /></p>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>在左邊方框中填入正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess" data-if="type==1">[document.getElementById("textbox1").value]</div>
+						<div class="guess" data-if="type!=1">[document.getElementById("textbox1").value,document.getElementById("textbox2").value]</div>
+						<div class="validator-function">
+							var bol1=false;
+							if(type==1){
+								if(guess[0].replace(/[ ]/g,"")==values)
+								{
+									bol1=true;
+								}
+							}
+							if(type==2){
+								if((guess[0].replace(/[ ]/g,"")==values) &&(guess[1].replace(/[ ]/g,"")==value_2)){
+									bol1=true;
+								}
+							}
+							if(type==3){
+								if((guess[0].replace(/[ ]/g,"")==values) &&(guess[1].replace(/[ ]/g,"")==value_3)){
+									bol1=true;
+								}
+							}
+							return bol1;	
+						</div>
+					</div>
+					<p class="example">小數，例：<code>0.75</code></p>
+				</div>
+				<div class="hints">
+					<p>對於這個問題，我們先求出每項的值，然後加起來。</p>
+					<p>整數的部分該如何表示呢？</p>
+					<p><span data-if="thousands!=0"><code><var>thousands</var>\times 1000</code> 等於 <code><var>thousands*1000</var></code></span>
+					<span data-if="hundreds!=0"><br /><code><var>hundreds</var>\times 100</code> 等於 <code><var>hundreds*100</var></code></span>
+					<span data-if="tens!=0"><br /><code><var>tens</var>\times 10</code> 等於 <code><var>tens*10</var></code></span>
+					<span data-if="ones!=0"><br /><code><var>ones</var>\times 1</code> 等於 <code><var>ones</var></code></span>
+					<br /><br />將它們加起來，小數點左邊整數部分的值為： <code class="hint_green"><var>intter_value</var></code> 。</p>
+					<p>小數的部分該如何表示呢？</p>
+					<p><span data-if="tenths!=0"><code><var>tenths</var>\times<var>fraction(1,10)</var></code> 等於 <code><var>tenths/10</var></code></span>
+					<span data-if="hundredths!=0"><br /><br /><code><var>hundredths</var>\times <var>fraction(1,100)</var></code> 等於 <code><var>hundredths/100</var></code></span>
+					<span data-if="thousandths!=0"><br /><br /><code><var>thousandths</var>\times <var>fraction(1,1000)</var></code> 等於 <code><var>thousandths/1000</var></code></span>
+					<br /><br />將它們加起來，小數點右邊小數部分的值為： <code class="hint_orange"><var>decimal_value*0.001</var></code> 。</p>
+					<div><p><span data-if="type==1">我們把整數部分和小數部分加起來：<br /><br /><code class="hint_green"><var>intter_value</var></code><code>+</code><code class="hint_orange"><var>decimal_value*0.001</var>=？</code></span></p>
+					<p><span data-if="type!=1">我們把整數部分和小數部分加起來：<br /><br /><code class="hint_green"><var>intter_value</var></code><code>+</code><code class="hint_orange"><var>decimal_value*0.001</var></code><code>= </code><code class="hint_pink"><var>values</var></code></span></p></div>
+					<p><span data-if="type==1">整數和小數相加的結果就是A的值；</span><span data-if="type==2">A的十倍，就是將小數點向右移一位；</span><span data-if="type==3">A的十分之一，就是將小數點向左移一位；</span></p>
+					<div><p><span>所以A的值為： <code class="hint_pink"><var>values</var></code></span> 。</p>
+					<p><span data-if="type==2">A的十倍的值為： <code class="hint_pink"><var>value_2</var></code> 。</span></p>
+					<p><span data-if="type==3">A的十分之一的值為： <code class="hint_pink"><var>value_3</var></code> 。</span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+</body>
+</html>
