@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+
+<html data-require="math math-format graphie graphie-helpers interactive">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>解答線性圖表問題</title>
+
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		table.nLimit{margin:0px ;}
+		table.nLimit td { border: 0px solid #AAA; }
+		table.nLimit td { padding: 1px; }
+		.inputbox{
+				width:50px;
+				height:10px
+				border:1px;
+				text-align:center;
+				font-size:10px;
+			}
+		table.Limited td {width:90px;;text-align:center; vertical-align:middle;font-size:15px}
+		table.Limited th {text-align:center}
+	</style>
+	<script type="text/javascript">
+
+	</script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars">
+					<var id="a">randRange(1,3)</var>
+					<var id="arm">
+						(function(){
+							if(a==1)
+							{
+								return randRange(90,95);
+							}
+							if(a==2)
+							{
+								return randRange(35,40);
+							}
+							if(a==3)
+							{
+								return randRange(35,40);
+							}
+						})()</var>
+					<var id="name">
+					(function(){
+							if(a==1)
+							{
+								return '外國人的手臂';
+							}
+							if(a==2)
+							{
+								return '風箏線';
+							}
+							if(a==3)
+							{
+								return '爬行動物';
+							}
+							
+					})()</var>
+					<var id="type">randRange(1,3)</var>
+					<var id="arms">
+						 (function(){
+							if(type==1)
+							{
+								return [arm-2,arm-1,arm,arm+1,arm+2];
+							}
+							if(type==2)
+							{
+								return [arm-1,arm,arm+1,arm+2,arm+3];
+							}
+							if(type==3)
+							{
+								return [arm,arm+1,arm+2,arm+3,arm+4];
+							}
+						 })()</var>
+					<var id="count">randRange(1,6,5)</var>
+					<var id="s">
+						 (function(){
+							if(arm==arms[0])
+							{
+								a=2;
+								a2=count[1];
+								if(count[1] &lt;count[2])
+								{
+									a2=count[2];
+								}
+								if(a2&lt; count[3])
+								{a2=count[3];}
+								if(a2&lt; count[4])
+								{a2=count[4];}
+								a1=a2/2+0.8
+								return [a,a1];
+							}
+							if(arm==arms[1])
+							{
+								b=4.5;
+								b2=count[2];
+								if(count[2] &lt; count[3])
+								{
+									b2=count[3];
+								}
+								if(b2&lt; count[4])
+								{b2=count[4];}
+								b1=b2/2+0.8
+								return [b,b1];
+							}
+							if(arm==arms[2])
+							{
+								c=7;
+								c2=count[3];
+								if(count[3] &lt; count[4])
+								{
+									c2=count[4];
+								}
+								c1=c2/2+0.8
+								return [c,c1];
+							}
+						 })()</var>
+					<var id="ans">
+						 (function(){
+							if(arm==arms[0])
+							{
+								a=count[1]+count[2]+count[3]+count[4];
+								return a;
+							}
+							if(arm==arms[1])
+							{
+								b=count[2]+count[3]+count[4];
+								return b;
+							}
+							if(arm==arms[2])
+							{
+								c=count[3]+count[4];
+								return c;
+							}
+						 })()</var>
+				</div>
+				<div class="question">
+					<div class="problem">
+						<p><var>name</var>長度如下圖所示。 </p>
+						<p>請問有多少個<var>name</var>長度大與 <code><var>arm</var></code> 釐米？</p>
+						<div class="graphie" id="line">
+							init({
+								range: [ [-1, 11], [-1.8, 4] ],
+								scale: 40
+								});
+							line([0,0],[10,0],{stroke:"black"});
+							line([0,0.5],[0,-0.5],{stroke:"black"});
+							line([2.5,0.5],[2.5,-0.5],{stroke:"black"});
+							line([5,0.5],[5,-0.5],{stroke:"black"});
+							line([7.5,0.5],[7.5,-0.5],{stroke:"black"});
+							line([10,0.5],[10,-0.5],{stroke:"black"});
+							label( [0,-0.7],  "\\small{"+arms[0]+"}", "center", { color: "black" });
+							label( [2.5,-0.7],  "\\small{"+arms[1]+"}", "center", { color: "black" });
+							label( [5,-0.7],  "\\small{"+arms[2]+"}", "center", { color: "black" });
+							label( [7.5,-0.7],  "\\small{"+arms[3]+"}", "center", { color: "black" });
+							label( [10,-0.7],  "\\small{"+arms[4]+"}", "center", { color: "black" });
+							label( [5,-1.3],  "\\small{長度(cm)}", "center", { color: "black" });
+							var i=0;var i1=0;var i2=0;var i3=0;var i4=0;
+							for(i=0;i&lt;count[0];i++)
+							{
+								j=i/2;
+								circle([0,0.6+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i1=0;i1&lt;count[1];i1++)
+							{
+								j1=i1/2;
+								circle([2.5,0.6+j1],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i2=0;i2&lt;count[2];i2++)
+							{
+								j2=i2/2;
+								circle([5,0.6+j2],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i3=0;i3&lt;count[3];i3++)
+							{
+								j3=i3/2;
+								circle([7.5,0.6+j3],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i4=0;i4&lt;count[4];i4++)
+							{
+								j4=i4/2;
+								circle([10,0.6+j4],0.1,{stroke:" blue",fill:"blue"});
+							}
+						</div>
+					</div>
+				</div>
+				  
+				<div class="solution" data-forms="integer"><var>ans</var></div>
+				
+				<div class="hints">
+					<div>
+						<p>框框內代表<var>name</var>長於 <code class="hint_red"><var>arm</var></code> 釐米的數量，一共有 <code class="hint_pink"><var>ans</var></code> 個藍點。</p>
+						<div class="graphie" id="line1">
+							init({
+								range: [ [-1, 11], [-1.8, 4] ],
+								scale: 40
+								});
+							line([0,0],[10,0],{stroke:"black"});
+							line([0,0.5],[0,-0.5],{stroke:"black"});
+							line([2.5,0.5],[2.5,-0.5],{stroke:"black"});
+							line([5,0.5],[5,-0.5],{stroke:"black"});
+							line([7.5,0.5],[7.5,-0.5],{stroke:"black"});
+							line([10,0.5],[10,-0.5],{stroke:"black"});
+							label( [0,-0.7],  "\\small{"+arms[0]+"}", "center", { color: "black" });
+							label( [2.5,-0.7],  "\\small{"+arms[1]+"}", "center", { color: "black" });
+							label( [5,-0.7],  "\\small{"+arms[2]+"}", "center", { color: "black" });
+							label( [7.5,-0.7],  "\\small{"+arms[3]+"}", "center", { color: "black" });
+							label( [10,-0.7],  "\\small{"+arms[4]+"}", "center", { color: "black" });
+							label( [5,-1.3],  "\\small{長度(cm)}", "center", { color: "black" });
+							var i=0;var i1=0;var i2=0;var i3=0;var i4=0;
+							for(i=0;i&lt;count[0];i++)
+							{
+								j=i/2;
+								circle([0,0.6+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i1=0;i1&lt;count[1];i1++)
+							{
+								j1=i1/2;
+								circle([2.5,0.6+j1],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i2=0;i2&lt;count[2];i2++)
+							{
+								j2=i2/2;
+								circle([5,0.6+j2],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i3=0;i3&lt;count[3];i3++)
+							{
+								j3=i3/2;
+								circle([7.5,0.6+j3],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i4=0;i4&lt;count[4];i4++)
+							{
+								j4=i4/2;
+								circle([10,0.6+j4],0.1,{stroke:" blue",fill:"blue"});
+							}
+							path([[s[0],-1],[s[0],s[1]],[10.5,s[1]],[10.5,-1],[s[0],-1]],{stroke:"red"});
+						</div>
+					</div>
+					<p>所以一共有 <code class="hint_pink"><var>ans</var></code> 個<var>name</var>長於 <code class="hint_red"><var>arm</var></code> 釐米。</p>			
+				</div>
+			</div>
+			
+			<div id="case2">
+                <div class="vars">
+					<var id="rainfall">
+						(function(){
+							var count=new Array(5);
+							for(var i=0;i&lt;5;i++){
+								count[i]=randRange(3,7);
+							}
+							return count;
+						})()
+					</var>
+					<var id="type_name">randFromArray([["城市","下雨量","紐約","羅切斯特","奧爾巴尼","布法羅","錫拉丘茲",1],["學生","植物高度","愛麗思","伊莎","莎拉","恩卓","米格",2]])</var>
+					<var id="rain_num">randFromArray([rainfall[0], rainfall[1],rainfall[2],rainfall[3],rainfall[4]])</var>
+					<var id="num">
+						(function(){
+							var num=0;
+							for(var i=0;i&lt;5;i++){
+								if(rainfall[i]==rain_num){
+									num=num+1;
+								}
+							}
+							return num;
+						})()
+					</var>
+					<var id="city_num">
+						(function(){
+							var count=new Array(5);
+							for(var i=0;i&lt;5;i++){
+								count[i]=0;
+							}
+							for(var i=0;i&lt;5;i++){
+								if(rainfall[i]==3){
+									count[0]++;
+								}
+								if(rainfall[i]==4){
+									count[1]++;
+								}
+								if(rainfall[i]==5){
+									count[2]++;
+								}
+								if(rainfall[i]==6){
+									count[3]++;
+								}
+								if(rainfall[i]==7){
+									count[4]++;
+								}
+							}
+							return count;
+						})()
+					</var>
+				</div>
+				<div class="question">
+					<div class="problem">
+						<div>
+							<p>下面是各個<var>type_name[0]</var>的<var>type_name[1]</var>統計。</p>
+							<table class="Limited">
+								<tr style="border-bottom:solid 2px #D0D0D0;font-size:15px">
+									<th><var>type_name[0]</var></th><th><var>type_name[1]</var>(<code>cm</code>)</th>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><var>type_name[2]</var></td><td><var>rainfall[0]</var></td>
+								</tr>
+								<tr>
+									<td><var>type_name[3]</var></td><td><var>rainfall[1]</var></td>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><var>type_name[4]</var></td><td><var>rainfall[2]</var></td>
+								</tr>
+								<tr>
+									<td><var>type_name[5]</var></td><td><var>rainfall[3]</var></td>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><var>type_name[6]</var></td><td><var>rainfall[4]</var></td>
+								</tr>
+							</table>
+							<p >有多少個<var>type_name[0]</var>的<var>type_name[1]</var>是 <code><var>rain_num</var></code> <code>cm</code> 。</p>
+						</div>
+					</div>
+				</div>
+				
+				<div class="solution" data-forms="integer"><var>num</var></div>
+				
+				<div class="hints">
+					<div>
+						<p>通過下圖來統計：</p>
+						<div class="graphie" id="line1">
+							init({
+								range: [ [-1, 11], [-1.8, 4] ],
+								scale: 40
+								});
+							line([0,0],[10,0],{stroke:"black"});
+							line([0,0.5],[0,-0.5],{stroke:"black"});
+							line([10,0.5],[10,-0.5],{stroke:"black"});
+							line([5,0.5],[5,-0.5],{stroke:"black"});
+							line([2.5,0.5],[2.5,-0.5],{stroke:"black"});
+							line([7.5,0.5],[7.5,-0.5],{stroke:"black"});
+							label( [0,-0.8],  "\\small{"+3+"}", "center", { color: "black" });
+							label( [2.5,-0.8],  "\\small{"+4+"}", "center", { color: "black" });
+							label( [5,-0.8],  "\\small{"+5+"}", "center", { color: "black" });
+							label( [7.5,-0.8],  "\\small{"+6+"}", "center", { color: "black" });
+							label( [10,-0.8],  "\\small{"+7+"}", "center", { color: "black" });
+							for(var i=0;i&lt;city_num[0];i++)
+							{
+								var j=i/2;
+								circle([0,0.8+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(var i=0;i&lt;city_num[1];i++)
+							{
+								var j=i/2;
+								circle([2.5,0.8+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(var i=0;i&lt;city_num[2];i++)
+							{
+								var j=i/2;
+								circle([5,0.8+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(var i=0;i&lt;city_num[3];i++)
+							{
+								var j=i/2;
+								circle([7.5,0.8+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(var i=0;i&lt;city_num[4];i++)
+							{
+								var j=i/2;
+								circle([10,0.8+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+						</div>
+					</div>
+					<p>統計圖上<var>type_name[1]</var>為 <code><var>rain_num</var></code> <code>cm</code> 的一共有 <code class="hint_pink"><var>num</var></code> 個點。</p>
+					<p>所以有 <code class="hint_pink"><var>num</var></code> 個<var>type_name[0]</var>的<var>type_name[1]</var>是 <code><var>rain_num</var></code> <code>cm</code> 。</p>			
+				</div>
+			</div>
+			<div id="case3">
+                <div class="vars">
+					<var id="rainfall">
+						(function(){
+							var count=new Array(5);
+							for(var i=0;i&lt;5;i++){
+								count[i]=randRange(45,49);
+							}
+							return count;
+						})()
+					</var>
+					<var id="type_name">randFromArray([["獅子","尾巴長度","愛麗思","伊莎","莎拉","恩卓","米格",1],["斑馬","條紋","斯皮德","馬傑斯","莎拉","拙馬","雷雅斯",2]])</var>
+					<var id="rain_num">randFromArray([rainfall[0], rainfall[1],rainfall[2],rainfall[3],rainfall[4]])</var>
+					<var id="num">
+						(function(){
+							var num=0;
+							for(var i=0;i&lt;5;i++){
+								if(rainfall[i]==rain_num){
+									num=num+1;
+								}
+							}
+							return num;
+						})()
+					</var>
+					<var id="city_num">
+						(function(){
+							var count=new Array(5);
+							for(var i=0;i&lt;5;i++){
+								count[i]=0;
+							}
+							for(var i=0;i&lt;5;i++){
+								if(rainfall[i]==45){
+									count[0]++;
+								}
+								if(rainfall[i]==46){
+									count[1]++;
+								}
+								if(rainfall[i]==47){
+									count[2]++;
+								}
+								if(rainfall[i]==48){
+									count[3]++;
+								}
+								if(rainfall[i]==49){
+									count[4]++;
+								}
+							}
+							return count;
+						})()
+					</var>
+				</div>
+				<div class="question">
+					<div class="problem">
+						<div>
+							<p data-if="type_name[7]==1">動物園管理員測量所有獅子的尾巴的長度。統計結果如下：</p>
+							<p data-if="type_name[7]==2">動物園管理員計數每隻幼年斑馬的條紋數量。統計結果如下：</p>
+							<table class="Limited">
+								<tr style="border-bottom:solid 2px #D0D0D0;font-size:15px">
+									<th><var>type_name[0]</var></th><th><var>type_name[1]</var><span data-if="type_name[7]==1">(<code>cm</code>)</span></th>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><var>type_name[2]</var></td><td><var>rainfall[0]</var></td>
+								</tr>
+								<tr>
+									<td><var>type_name[3]</var></td><td><var>rainfall[1]</var></td>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><var>type_name[4]</var></td><td><var>rainfall[2]</var></td>
+								</tr>
+								<tr>
+									<td><var>type_name[5]</var></td><td><var>rainfall[3]</var></td>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><var>type_name[6]</var></td><td><var>rainfall[4]</var></td>
+								</tr>
+							</table>
+							<p>有多少隻<var>type_name[0]</var>的<var>type_name[1]</var>是 <code><var>rain_num</var></code> <code><span data-if="type_name[7]==1">cm</span></code> 。</p>
+						</div>
+					</div>
+				</div>
+				<div class="solution" data-forms="integer"><var>num</var></div>
+				<div class="hints">
+					<div>
+						<p>通過下圖來統計：</p>
+						<div class="graphie" id="line2">
+							init({
+								range: [ [-1, 11], [-1.8, 4] ],
+								scale: 40
+								});
+							line([0,0],[10,0],{stroke:"black"});
+							line([0,0.5],[0,-0.5],{stroke:"black"});
+							line([10,0.5],[10,-0.5],{stroke:"black"});
+							line([5,0.5],[5,-0.5],{stroke:"black"});
+							line([2.5,0.5],[2.5,-0.5],{stroke:"black"});
+							line([7.5,0.5],[7.5,-0.5],{stroke:"black"});
+							label( [0,-0.8],  "\\small{"+45+"}", "center", { color: "black" });
+							label( [2.5,-0.8],  "\\small{"+46+"}", "center", { color: "black" });
+							label( [5,-0.8],  "\\small{"+47+"}", "center", { color: "black" });
+							label( [7.5,-0.8],  "\\small{"+48+"}", "center", { color: "black" });
+							label( [10,-0.8],  "\\small{"+49+"}", "center", { color: "black" });
+							for(var i=0;i&lt;city_num[0];i++)
+							{
+								var j=i/2;
+								circle([0,0.8+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(var i=0;i&lt;city_num[1];i++)
+							{
+								var j=i/2;
+								circle([2.5,0.8+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(var i=0;i&lt;city_num[2];i++)
+							{
+								var j=i/2;
+								circle([5,0.8+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(var i=0;i&lt;city_num[3];i++)
+							{
+								var j=i/2;
+								circle([7.5,0.8+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(var i=0;i&lt;city_num[4];i++)
+							{
+								var j=i/2;
+								circle([10,0.8+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+						</div>
+					</div>
+					<p>統計圖上<var>type_name[1]</var>為 <code><var>rain_num</var></code> <span data-if="type_name[7]==1"><code>cm</code></span> 的一共有 <code class="hint_pink"><var>num</var></code> 個點。</p>
+					<p>所以有 <code class="hint_pink"><var>num</var></code> 隻<var>type_name[0]</var>的<var>type_name[1]</var>是 <code><var>rain_num</var></code> <span data-if="type_name[7]==1"><code>cm</code></span> 。</p>			
+				</div>
+			</div>
+			
+			<div id="case4">
+                <div class="vars">
+					<var id="name">randFromArray([["毛毛蟲",1],["色帶",2],["麥片盒",3],["跳繩",4],["鉛筆",5]])</var>
+					<var id="height">
+						(function(){
+							if(name[1]==1||name[1]==5)
+							{
+								return randRange(5,10);
+							}
+							if(name[1]==2)
+							{
+								return randRange(90,100);
+							}
+							if(name[1]==3)
+							{
+								return randRange(20,25);
+							}
+							if(name[1]==4)
+							{
+								return randRange(100,250);
+							}
+						 })()
+					</var>
+					<var id="type">randRange(1,4)</var>
+					<var id="heights">
+						 (function(){
+							if(type==1)
+							{
+								return [height-2,height-1,height,height+1,height+2];
+							}
+							if(type==2)
+							{
+								return [height-1,height,height+1,height+2,height+3];
+							}
+							if(type==3)
+							{
+								return [height-3,height-2,height-1,height,height+1];
+							}
+							if(type==4)
+							{
+								return [height-4,height-3,height-2,height-1,height];
+							}
+						 })()</var>
+					<var id="count">randRange(1,6,5)</var>
+					<var id="s">
+						 (function(){
+							if(height==heights[4])
+							{
+								a=8;
+								a2=count[0];
+								if(count[0] &lt;count[1])
+								{
+									a2=count[1];
+								}
+								if(count[1] &lt;count[2])
+								{
+									a2=count[2];
+								}
+								if(a2&lt; count[3])
+								{a2=count[3];}
+								a1=a2/2+0.8
+								return [a,a1];
+							}
+							if(height==heights[3])
+							{
+								a=5.5;
+								a2=count[0];
+								if(count[0] &lt;count[1])
+								{
+									a2=count[1];
+								}
+								if(count[1] &lt;count[2])
+								{
+									a2=count[2];
+								}
+								a1=a2/2+0.8
+								return [a,a1];
+							}
+							if(height==heights[2])
+							{
+								a=3;
+								a2=count[0];
+								if(count[0] &lt;count[1])
+								{
+									a2=count[1];
+								}
+								if(count[1] &lt;count[2])
+								{
+									a2=count[2];
+								}
+								a1=a2/2+0.8
+								return [a,a1];
+							}
+							if(height==heights[1])
+							{
+								a=1;
+								a2=count[0];
+								
+								a1=a2/2+0.8
+								return [a,a1];
+							}
+						 })()</var>
+					<var id="ans">
+						 (function(){
+							if(height==heights[4])
+							{
+								a=count[1]+count[2]+count[3]+count[0];
+								return a;
+							}
+							if(height==heights[3])
+							{
+								b=count[2]+count[1]+count[0];
+								return b;
+							}
+							if(height==heights[2])
+							{
+								c=count[0]+count[1];
+								return c;
+							}
+							if(height==heights[1])
+							{
+								d=count[0];
+								return d;
+							}
+						 })()</var>
+				</div>
+				<div class="question">
+					<div class="problem">
+						<p><var>name[0]</var>的长度如下圖所示。</p>
+						<p>請問有多少<span data-if="name[1]==2||name[1]==4||name[1]==3">個</span><span data-if="name[1]==1">隻</span><span data-if="name[1]==5">支</span><var>name[0]</var>長度小於 <code><var>height</var></code> 釐米？</p>
+						<div class="graphie" id="line">
+							init({
+								range: [ [-1, 11], [-1.8, 4] ],
+								scale: 40
+								});
+							line([0,0],[10,0],{stroke:"black"});
+							line([0,0.5],[0,-0.5],{stroke:"black"});
+							line([2.5,0.5],[2.5,-0.5],{stroke:"black"});
+							line([5,0.5],[5,-0.5],{stroke:"black"});
+							line([7.5,0.5],[7.5,-0.5],{stroke:"black"});
+							line([10,0.5],[10,-0.5],{stroke:"black"});
+							label( [0,-0.7],  "\\small{"+heights[0]+"}", "center", { color: "black" });
+							label( [2.5,-0.7],  "\\small{"+heights[1]+"}", "center", { color: "black" });
+							label( [5,-0.7],  "\\small{"+heights[2]+"}", "center", { color: "black" });
+							label( [7.5,-0.7],  "\\small{"+heights[3]+"}", "center", { color: "black" });
+							label( [10,-0.7],  "\\small{"+heights[4]+"}", "center", { color: "black" });
+							label( [5,-1.3],  "\\small{長度(cm)}", "center", { color: "black" });
+							var i=0;var i1=0;var i2=0;var i3=0;var i4=0;
+							for(i=0;i&lt;count[0];i++)
+							{
+								j=i/2;
+								circle([0,0.6+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i1=0;i1&lt;count[1];i1++)
+							{
+								j1=i1/2;
+								circle([2.5,0.6+j1],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i2=0;i2&lt;count[2];i2++)
+							{
+								j2=i2/2;
+								circle([5,0.6+j2],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i3=0;i3&lt;count[3];i3++)
+							{
+								j3=i3/2;
+								circle([7.5,0.6+j3],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i4=0;i4&lt;count[4];i4++)
+							{
+								j4=i4/2;
+								circle([10,0.6+j4],0.1,{stroke:" blue",fill:"blue"});
+							}
+						</div>
+					</div>
+				</div>
+				<div class="solution" data-forms="integer"><var>ans</var></div>
+				<div class="hints">
+					<div>
+						<p>框框內代表<var>name[0]</var>的長度小於 <code class="hint_red"><var>height</var></code> 釐米的數量，一共有 <code class="hint_pink"><var>ans</var></code> 個藍點。</p>
+						<div class="graphie" id="line1">
+							init({
+								range: [ [-1, 11], [-1.8, 4] ],
+								scale: 40
+								});
+							line([0,0],[10,0],{stroke:"black"});
+							line([0,0.5],[0,-0.5],{stroke:"black"});
+							line([2.5,0.5],[2.5,-0.5],{stroke:"black"});
+							line([5,0.5],[5,-0.5],{stroke:"black"});
+							line([7.5,0.5],[7.5,-0.5],{stroke:"black"});
+							line([10,0.5],[10,-0.5],{stroke:"black"});
+							label( [0,-0.7],  "\\small{"+heights[0]+"}", "center", { color: "black" });
+							label( [2.5,-0.7],  "\\small{"+heights[1]+"}", "center", { color: "black" });
+							label( [5,-0.7],  "\\small{"+heights[2]+"}", "center", { color: "black" });
+							label( [7.5,-0.7],  "\\small{"+heights[3]+"}", "center", { color: "black" });
+							label( [10,-0.7],  "\\small{"+heights[4]+"}", "center", { color: "black" });
+							label( [5,-1.3],  "\\small{長度(cm)}", "center", { color: "black" });
+							var i=0;var i1=0;var i2=0;var i3=0;var i4=0;
+							for(i=0;i&lt;count[0];i++)
+							{
+								j=i/2;
+								circle([0,0.6+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i1=0;i1&lt;count[1];i1++)
+							{
+								j1=i1/2;
+								circle([2.5,0.6+j1],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i2=0;i2&lt;count[2];i2++)
+							{
+								j2=i2/2;
+								circle([5,0.6+j2],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i3=0;i3&lt;count[3];i3++)
+							{
+								j3=i3/2;
+								circle([7.5,0.6+j3],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i4=0;i4&lt;count[4];i4++)
+							{
+								j4=i4/2;
+								circle([10,0.6+j4],0.1,{stroke:" blue",fill:"blue"});
+							}
+							path([[-0.5,-1],[-0.5,s[1]],[s[0],s[1]],[s[0],-1],[-0.5,-1]],{stroke:"red"});
+						</div>
+					</div>
+					<p>所以一共有 <code class="hint_pink"><var>ans</var></code> <span data-if="name[1]==2||name[1]==4||name[1]==3">個</span><span data-if="name[1]==1">隻</span><span data-if="name[1]==5">支</span><var>name[0]</var>的長度小於 <code class="hint_red"><var>height</var></code> 釐米。</p>			
+				</div>
+			</div>
+			
+			<div id="case5">
+                <div class="vars">
+					<var id="name">randFromArray([["花",1],["玩偶",2]])</var>
+					<var id="name1">randFromArray(["小明","小紅","小莎","小強","小超"])</var>
+					<var id="height">randRange(20,30)</var>
+					<var id="type">randRange(1,3)</var>
+					<var id="heights">
+						 (function(){
+							if(type==1)
+							{
+								return [height-2,height-1,height,height+1,height+2];
+							}
+							if(type==2)
+							{
+								return [height-1,height,height+1,height+2,height+3];
+							}
+							if(type==3)
+							{
+								return [height,height+1,height+2,height+3,height+4];
+							}
+						 })()</var>
+					<var id="count">randRange(1,6,5)</var>
+					<var id="s">
+						 (function(){
+							if(height==heights[0])
+							{
+								a=2;
+								a2=count[1];
+								if(count[1] &lt;count[2])
+								{
+									a2=count[2];
+								}
+								if(a2&lt; count[3])
+								{a2=count[3];}
+								if(a2&lt; count[4])
+								{a2=count[4];}
+								a1=a2/2+0.8
+								return [a,a1];
+							}
+							if(height==heights[1])
+							{
+								b=4.5;
+								b2=count[2];
+								if(count[2] &lt; count[3])
+								{
+									b2=count[3];
+								}
+								if(b2&lt; count[4])
+								{b2=count[4];}
+								b1=b2/2+0.8
+								return [b,b1];
+							}
+							if(height==heights[2])
+							{
+								c=7;
+								c2=count[3];
+								if(count[3] &lt; count[4])
+								{
+									c2=count[4];
+								}
+								c1=c2/2+0.8
+								return [c,c1];
+							}
+						 })()</var>
+					<var id="ans">
+						 (function(){
+							if(height==heights[0])
+							{
+								a=count[1]+count[2]+count[3]+count[4];
+								return a;
+							}
+							if(height==heights[1])
+							{
+								b=count[2]+count[3]+count[4];
+								return b;
+							}
+							if(height==heights[2])
+							{
+								c=count[3]+count[4];
+								return c;
+							}
+						 })()</var>
+				</div>
+				<div class="question">
+					<div class="problem">
+						<p data-if="name[1]==1"><var>name1</var>在測量她花園裡花的高度。她繪製出每個高度中花的數量,高度如下所示。</p>
+						<p data-if="name[1]==2"><var>name1</var>的玩偶高度如下所示。</p>
+						<p>請問有多少<span data-if="name[1]==1">朵</span><span data-if="name[1]==2">個</span><var>name[0]</var>的高度比 <code><var>height</var></code> 釐米高？</p>
+						<div class="graphie" id="line">
+							init({
+								range: [ [-1, 11], [-1.8, 4] ],
+								scale: 40
+								});
+							line([0,0],[10,0],{stroke:"black"});
+							line([0,0.5],[0,-0.5],{stroke:"black"});
+							line([2.5,0.5],[2.5,-0.5],{stroke:"black"});
+							line([5,0.5],[5,-0.5],{stroke:"black"});
+							line([7.5,0.5],[7.5,-0.5],{stroke:"black"});
+							line([10,0.5],[10,-0.5],{stroke:"black"});
+							label( [0,-0.7],  "\\small{"+heights[0]+"}", "center", { color: "black" });
+							label( [2.5,-0.7],  "\\small{"+heights[1]+"}", "center", { color: "black" });
+							label( [5,-0.7],  "\\small{"+heights[2]+"}", "center", { color: "black" });
+							label( [7.5,-0.7],  "\\small{"+heights[3]+"}", "center", { color: "black" });
+							label( [10,-0.7],  "\\small{"+heights[4]+"}", "center", { color: "black" });
+							label( [5,-1.3],  "\\small{高度(cm)}", "center", { color: "black" });
+							var i=0;var i1=0;var i2=0;var i3=0;var i4=0;
+							for(i=0;i&lt;count[0];i++)
+							{
+								j=i/2;
+								circle([0,0.6+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i1=0;i1&lt;count[1];i1++)
+							{
+								j1=i1/2;
+								circle([2.5,0.6+j1],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i2=0;i2&lt;count[2];i2++)
+							{
+								j2=i2/2;
+								circle([5,0.6+j2],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i3=0;i3&lt;count[3];i3++)
+							{
+								j3=i3/2;
+								circle([7.5,0.6+j3],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i4=0;i4&lt;count[4];i4++)
+							{
+								j4=i4/2;
+								circle([10,0.6+j4],0.1,{stroke:" blue",fill:"blue"});
+							}
+						</div>
+					</div>
+				</div>
+				<div class="solution" data-forms="integer"><var>ans</var></div>
+				<div class="hints">
+					<div>
+						<p>框框內代表<var>name[0]</var>的高度高於 <code class="hint_red"><var>height</var></code> 釐米的數量，一共有 <code class="hint_pink"><var>ans</var></code> 個藍點。</p>
+						<div class="graphie" id="line1">
+							init({
+								range: [ [-1, 11], [-1.8, 4] ],
+								scale: 40
+								});
+							line([0,0],[10,0],{stroke:"black"});
+							line([0,0.5],[0,-0.5],{stroke:"black"});
+							line([2.5,0.5],[2.5,-0.5],{stroke:"black"});
+							line([5,0.5],[5,-0.5],{stroke:"black"});
+							line([7.5,0.5],[7.5,-0.5],{stroke:"black"});
+							line([10,0.5],[10,-0.5],{stroke:"black"});
+							label( [0,-0.7],  "\\small{"+heights[0]+"}", "center", { color: "black" });
+							label( [2.5,-0.7],  "\\small{"+heights[1]+"}", "center", { color: "black" });
+							label( [5,-0.7],  "\\small{"+heights[2]+"}", "center", { color: "black" });
+							label( [7.5,-0.7],  "\\small{"+heights[3]+"}", "center", { color: "black" });
+							label( [10,-0.7],  "\\small{"+heights[4]+"}", "center", { color: "black" });
+							label( [5,-1.3],  "\\small{高度(cm)}", "center", { color: "black" });
+							var i=0;var i1=0;var i2=0;var i3=0;var i4=0;
+							for(i=0;i&lt;count[0];i++)
+							{
+								j=i/2;
+								circle([0,0.6+j],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i1=0;i1&lt;count[1];i1++)
+							{
+								j1=i1/2;
+								circle([2.5,0.6+j1],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i2=0;i2&lt;count[2];i2++)
+							{
+								j2=i2/2;
+								circle([5,0.6+j2],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i3=0;i3&lt;count[3];i3++)
+							{
+								j3=i3/2;
+								circle([7.5,0.6+j3],0.1,{stroke:" blue",fill:"blue"});
+							}
+							for(i4=0;i4&lt;count[4];i4++)
+							{
+								j4=i4/2;
+								circle([10,0.6+j4],0.1,{stroke:" blue",fill:"blue"});
+							}
+							path([[s[0],-1],[s[0],s[1]],[10.5,s[1]],[10.5,-1],[s[0],-1]],{stroke:"red"});
+						</div>
+					</div>
+					<p>所以一共有 <code class="hint_pink"><var>ans</var></code> <span data-if="name[1]==1">朵</span><span data-if="name[1]==2">個</span><var>name[0]</var>的高度高於 <code class="hint_red"><var>height</var></code> 釐米。</p>			
+				</div>
+			</div>
+		</div>
+    </div>
+</body>
+
+</html>
