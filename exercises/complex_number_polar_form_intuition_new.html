@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format">
+<head>
+    <meta charset="UTF-8">
+    <title>在極坐標上表示複數</title>
+    <script src="../khan-exercise.js"></script>
+    <style>
+        .info-box .mini-button {
+            margin: 0px 10px 0px 0px;
+            padding: 0px 5px;
+            width: 25px;
+            height: 18px;
+        }
+
+        #number-label {
+            clear: both;
+            margin: 0px 0px;
+            padding: 14px 0px 0px 0px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars" data-ensure="!(ANGLE === 0 &amp;&amp; RADIUS === 1)">
+                    <var id="DENOMINATOR">12</var>
+                    <var id="ANGLE">randRange( 2, DENOMINATOR - 1 )</var> 
+                    <var id="RADIUS">randRange( 3, 9 )</var>
+                    <var id="REAL">cos( ANGLE * PI * 2 / DENOMINATOR ) * RADIUS</var>
+                    <var id="IMAG">sin( ANGLE * PI * 2 / DENOMINATOR ) * RADIUS</var>
+					<var id="REP_A">roundTo( 2, REAL )</var>
+					<var id="REP_B">roundTo( 2, IMAG )</var>
+                    <var id="REP">complexNumber( roundTo( 2, REAL ), roundTo( 2, IMAG ) )</var>
+                </div>
+                <p class="question">
+					<span class="hint_blue">藍色點</span>的複數值為 <code><var>REP</var></code> ，調整<span class="hint_orange">橙色點</span>
+					的角度和半徑，使其表示複數的值與<span class="hint_blue">藍色點</span>的值相等。
+                </p>
+                <p>
+					怎樣用<span class="hint_orange">橙色點</span>來表示複數呢？
+                </p>
+
+                <div class="graphie" id="grid">
+                    graphInit({
+                        range: [[-10, 10], [-10, 10]],
+                        scale: 20,
+                        tickStep: 1,						
+                        axisArrows: "&lt;-&gt;",
+                    });
+
+                    drawComplexChart( 10, DENOMINATOR );
+
+                    circle( [REAL, IMAG], 1 / 4, {
+                        fill: KhanUtil.BLUE,
+                        stroke: "none"
+                    });
+
+                    graph.currComplexPolar = new ComplexPolarForm( DENOMINATOR, 10 );
+
+                    redrawComplexPolarForm();
+                </div>
+
+                <div class="solution" data-type="custom">
+					<p class="example">點擊半徑和角度后的 <code>+</code> 、 <code>-</code> 按鈕調整橙色點的位置</p>
+                    <div class="instruction">
+                        <div>
+                            <div style="float: left;">半徑： <span id="current-radius"><code>1</code></span></div>
+                            <div style="float: right;">
+                                <input class="simple-button mini-button" onclick="updateComplexPolarForm(0, -1)" type="button" value="-">
+                                <input class="simple-button mini-button" onclick="updateComplexPolarForm(0, 1)" type="button" value="+">
+                            </div>
+                        </div>
+                        <div style="clear: both;">
+                            <div style="float: left;">角度： <span id="current-angle"><code>0</code></span></div>
+                            <div style="float: right;">
+                                <input class="simple-button mini-button" onclick="updateComplexPolarForm(-1, 0)" type="button" value="-">
+                                <input class="simple-button mini-button" onclick="updateComplexPolarForm(1, 0)" type="button" value="+">
+                            </div>
+                        </div>
+                        <div id="number-label">1</div>
+                    </div>
+                    <div class="guess">[
+                        graph.currComplexPolar.getAngleNumerator(),
+                        graph.currComplexPolar.getRadius()
+                    ]</div>
+                    <div class="validator-function">
+                        var angle = guess[0];
+                        var radius = guess[1];
+
+                        if (angle === 0 &amp;&amp; radius === 1) {
+                            return "";
+                        }
+
+                        return angle === ANGLE &amp;&amp; radius === RADIUS;
+                    </div>
+                    <div class="show-guess">
+                        redrawComplexPolarForm(guess[0], guess[1]);
+						alert(guess[0]);
+                    </div>
+                    <div class="show-guess-solutionarea">
+                        redrawComplexPolarForm(guess[0], guess[1]);
+                    </div>
+                </div>
+				<div class="hints">
+					<div>
+						<p>請先將半徑增加到 <code class="hint_pink"><var>RADIUS</var></code> ，到達綠色直線的箭頭處，</p>
+						<div class="graphie" data-update="grid">
+							 line([1,0], [RADIUS, 0],{ stroke: KhanUtil.GREEN, strokeWidth: 4.0 ,arrows: "->"});
+							label( [RADIUS,-1], "\\small{("+RADIUS+",0)}", "center", { color: "green" });
+						</div>
+					</div>
+					<div>
+						<p>然後我們將角度調整為 <span data-if="ANGLE*2!=DENOMINATOR"><code class="hint_pink"><var>decimalFraction(ANGLE*2/DENOMINATOR,true,true,false,false)</var></code></span><code class="hint_pink">\pi</code> ，到達紅色直線的箭頭處，這樣<span class="hint_orange">橙色點</span>表示的複數的值與<span class="hint_blue">藍色點</span>的值相等。</p>
+						<div class="graphie" data-update="grid">
+							 line([RADIUS, 0],[REP_A,REP_B],{ stroke: KhanUtil.RED, strokeWidth: 4.0 ,arrows: "->"});
+							 if(REP_B&lt;-7){ label( [REP_A+0.2,REP_B+1], "\\small{("+REP_A+",}"+"\\small{"+REP_B+")}", "center", { color: "red" });}
+							 if(REP_B&gt;=-7)label( [REP_A+.2,REP_B-1], "\\small{("+REP_A+", }"+"\\small{"+REP_B+")}", "center", { color: "red" });
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
