@@ -1091,7 +1091,7 @@
             if (attr) {
                 for (var key in attr) {
                     if (attr[has](key)) {
-                        el[setAttribute](key, Str(attr[key]));
+						el[setAttribute](key, Str(attr[key]).trim());
                     }
                 }
             } else {
@@ -2943,7 +2943,7 @@
             } else {
                 if (this.transformations) {
                     this.transformations[2] = E;
-                    this.node[setAttribute]("transform", this.transformations[join](S));
+                    this.node[setAttribute]("transform", this.transformations[join](S.trim()));
                     a.fx = 0;
                     a.fy = 0;
                 } else {
