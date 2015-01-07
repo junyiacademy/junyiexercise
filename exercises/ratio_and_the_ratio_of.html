@@ -120,8 +120,8 @@
             </div>
 			<p class="question"><var>names_1</var>家房子的面積是 <var>J</var> 坪，<var>names_2</var>家房子的面積是 <var>K</var> 平方公尺，請寫出他們兩家房子面積的比和比值。<code>(</code> 以一平方公尺 <code>=0.3</code> 坪計算</code>)</code></p>
 			<div class="solution" data-type="multiple">
-				<p><span class="sol" data-fallback="1"><var>CalSpF1(J * 10,K * 0.3 * 10)</var></span><code>\enspace ：\enspace</code><span class="sol" data-fallback="1" width="100"><var>CalSpF2(J * 10,K * 0.3 * 10)</var></span>
-				<br />比值<code>=\enspace</code><span class="sol" data-fallback="1"><var>CalSpF1(J * 10,K * 0.3 * 10)/CalSpF2(J * 10,K * 0.3 * 10)</var></span>
+				<p><span class="sol" data-fallback="1"><var>CalSpF1(accMul(J,10),accMul(accMul(K,0.3),10))</var></span><code>\enspace ：\enspace</code><span class="sol" data-fallback="1" width="100"><var>CalSpF2(accMul(J,10),accMul(accMul(K,0.3),10))</var></span>
+				<br />比值<code>=\enspace</code><span class="sol" data-fallback="1"><var>CalSpF1(accMul(J,10),accMul(accMul(K,0.3),10))/CalSpF2(accMul(J,10),accMul(accMul(K,0.3),10))</var></span>
 				</p>
 				<p class="example">比要寫成 最简 整数比，例： 8:11</p><br />
 				<p class="example">整數、分數或小數，例：3或1/3或0.6</p>
@@ -131,10 +131,10 @@
 	    <p>可以先將兩家人房子的面積單位都換成坪。</p>
 		<p><code><var>K</var></code> 平方公尺 = <code><var> K </var>\times 0.3 = <var>accMul(K,0.3)</var></code> 坪。</p>
 		<p><code><var>J</var></code> 坪 <code>:<var>accMul(K,0.3)</var></code> 坪 <code>=<var>J</var>:<var>accMul(K,0.3)</var>=<var>J*10</var>:<var>accMul(accMul(K,0.3),10)</var></code></p>
-		<div data-if="getGCD(CalSpF1(J*10,K*0.3*10),CalSpF2(J*10,K*0.3*10))==1">
-		    <p>化成最簡單整數比為 <code><var>J*10</var>:<var>accMul(accMul(K,0.3),10)</var>=<var>CalSpF1(J*10,K*0.3*10)</var>:<var>CalSpF2(J*10,K*0.3*10)</var></code></p>
+		<div data-if="CalSpF2(accMul(J,10),accMul(accMul(K,0.3),10))!=1">
+		    <p>化成最簡單整數比為 <code><var>J*10</var>:<var>accMul(accMul(K,0.3),10)</var>=<var>CalSpF1(accMul(J,10),accMul(accMul(K,0.3),10))</var>:<var><var>CalSpF2(accMul(J,10),accMul(accMul(K,0.3),10))</var></var></code></p>
 		</div>
-		<div data-if="getGCD(CalSpF1(J*10,K*0.3*10),CalSpF2(J*10,K*0.3*10))!=1">
+		<div data-if="CalSpF2(accMul(J,10),accMul(accMul(K,0.3),10))==1">
 		    <p>上式已化成最簡單整數比。</p>
 		</div>
 		<p>同時，比值為 <code class="hint_pink" data-if="CalSpF2(accMul(J,10),accMul(accMul(K,0.3),10))!=1">\dfrac{<var>CalSpF1(accMul(J,10),accMul(accMul(K,0.3),10))</var>}{<var>CalSpF2(accMul(J,10),accMul(accMul(K,0.3),10))</var>}</code><code class="hint_pink" data-if="CalSpF2(accMul(J,10),accMul(accMul(K,0.3),10))==1"> <var>CalSpF1(accMul(J,10),accMul(accMul(K,0.3),10))</var></code>。</p>
