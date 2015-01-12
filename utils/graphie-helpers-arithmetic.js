@@ -681,9 +681,9 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
             });
         } else {
             graph.label([digitsDividend.length + 0.5, 1.2],
-                "\\text{將小數點帶到}", "right");
+                "\\color{red}{\\text{要記得！小數點的位置}}", "right");
             graph.label([digitsDividend.length + 0.5, 0.8],
-                "\\text{答案 (商數).}", "right");
+                "\\color{red}{\\text{在個位與十分位之間}}", "right");
         }
 
         this.addDecimal();
