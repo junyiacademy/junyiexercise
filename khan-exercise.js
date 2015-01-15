@@ -2058,7 +2058,7 @@ var Khan = (function() {
             if (pass !== true) {
                 checkAnswerButton
                     .effect("shake", {times: 3, distance: 5}, 80)
-                    .val("打錯了，再試看看喔！");
+                    .val("答錯了，再試看看喔！");
 
                 // Is this a message to be shown?
                 if (typeof pass === "string") {
@@ -2085,6 +2085,8 @@ var Khan = (function() {
                 // Problem has been completed but pending data request being
                 // sent to server.
                 $(Khan).trigger("problemDone");
+                $("#solutionarea").unbind("keypress");
+                $("#solutionarea").unbind("keyup");
             }
 
             // Save the problem results to the server

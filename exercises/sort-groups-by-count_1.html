@@ -1,0 +1,783 @@
+﻿<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>按照數目或類別分類</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+	table.nLimit {margin-left:15px;}
+	table.nLimit td {width:60px;height:60px;text-align:center;padding: 1px; vertical-align:middle;}}
+	table.nLimit th {text-align:center}
+	table.hinttd td {width:50px;text-align:center}
+	table.hinttd th {text-align:center}
+	.limg img{width:50px,height:50px}
+	</style>
+	<script type="text/javascript">
+	function loadImges(elem,url,count){
+
+		for(var j=1;j<=count;j++){
+
+			document.getElementById(elem+j).src=url;
+
+		}
+	
+	}
+	function loadImg(elem, url, count, width, height) {
+
+        var loimg = document.getElementById(elem);
+
+        var inner = "";
+
+        for (var i = 1; i <= count; i++) {
+            inner += "<img id="+"image"+ elem + i + " width=" + width +" height="+height+ ">";
+        }
+        loimg.innerHTML += inner;
+        for (var j = 1; j <= count; j++) {
+            document.getElementById("image" + elem + j).src = url;
+        }
+    }
+</script>
+</head>
+
+<body>
+    <div class="exercise">
+        <div class="problems">
+			<div id="case1">
+				<div class="vars">
+					<var id="count">randRangeUnique(1,5,3)</var>
+					<var id="compare_num">
+						(function(){
+							if(count[0]&gt;count[1] && count[0]&gt;count[2]){
+								return [1,"pick_1","小胖蟲"];
+							}else if(count[1]&gt;count[0] && count[1]&gt;count[2]){
+								return [2,"pick_2","毛毛蟲"];
+							}else if(count[2]&gt;count[0] && count[2]&gt;count[1]){
+								return [3,"pick_3","蝙蝠"];
+							}
+							return -1;
+						})()
+					</var>
+					<var id="pic_num">1</var>
+					<var id="pic_name">
+						(function(){
+							loadImg("img1_1",Khan.urlBase+"images/SFatinsect.png",1,"100%","100%");
+							loadImg("img1_2",Khan.urlBase+"images/SFatinsect.png",1,"100%","100%");
+							loadImg("img1_3",Khan.urlBase+"images/SFatinsect.png",1,"100%","100%");
+							loadImg("img1_4",Khan.urlBase+"images/SFatinsect.png",1,"100%","100%");
+							loadImg("img1_5",Khan.urlBase+"images/SFatinsect.png",1,"100%","100%");
+							
+							loadImg("img2_1",Khan.urlBase+"images/SCaterpillar.png",1,"100%","100%");
+							loadImg("img2_2",Khan.urlBase+"images/SCaterpillar.png",1,"100%","100%");
+							loadImg("img2_3",Khan.urlBase+"images/SCaterpillar.png",1,"100%","100%");
+							loadImg("img2_4",Khan.urlBase+"images/SCaterpillar.png",1,"100%","100%");
+							loadImg("img2_5",Khan.urlBase+"images/SCaterpillar.png",1,"100%","100%");
+							
+							loadImg("img3_1",Khan.urlBase+"images/SAerial.png",1,"100%","100%");
+							loadImg("img3_2",Khan.urlBase+"images/SAerial.png",1,"100%","100%");
+							loadImg("img3_3",Khan.urlBase+"images/SAerial.png",1,"100%","100%");
+							loadImg("img3_4",Khan.urlBase+"images/SAerial.png",1,"100%","100%");
+							loadImg("img3_5",Khan.urlBase+"images/SAerial.png",1,"100%","100%");
+						})()
+					</var>
+				</div>
+				<div class="question" width="100%">
+                    <p class="problem">
+						<div>
+							<form style="font-size:15px">
+								下圖中最多的是哪個？
+								<br />
+								<span onclick="$('#pick_1').attr('checked','checked')">&nbsp <input type="radio" id="pick_1" name="name" value="xiaopangchong" /> 小胖蟲</span>
+								<br />
+								<span onclick="$('#pick_2').attr('checked','checked')">&nbsp <input type="radio" id="pick_2" name="name" value="maomaocohong" /> 毛毛蟲</span>
+								<br />
+								<span onclick="$('#pick_3').attr('checked','checked')">&nbsp <input type="radio" id="pick_3" name="name" value="bianfu" /> 蝙蝠</span>
+							</form>
+						</div>
+						<br />
+						<div>
+							<table class="nLimit">
+								<tr style="border-bottom:solid 2px #D0D0D0;font-size:15px">
+									<th>小胖蟲</th><th>毛毛蟲</th><th>蝙蝠</th>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><div id="img1_1" data-if="count[0]&gt;=1"></div></td><td><div id="img2_1" data-if="count[1]&gt;=1"></div></td><td><div id="img3_1" data-if="count[2]&gt;=1"></div></td>
+								</tr>
+								<tr>
+									<td><div id="img1_2" data-if="count[0]&gt;=2"></div></td><td><div id="img2_2" data-if="count[1]&gt;=2"></div></td><td><div id="img3_2" data-if="count[2]&gt;=2"></div></td>
+								</tr>
+								<tr style="background:#F0F0F0" data-if="count[0]&gt;=3 || count[1]&gt;=3 || count[2]&gt;=3">
+									<td><div id="img1_3" data-if="count[0]&gt;=3"></div></td><td><div id="img2_3" data-if="count[1]&gt;=3"></div></td><td><div id="img3_3" data-if="count[2]&gt;=3"></div></td>
+								</tr>
+								<tr>
+									<td><div id="img1_4" data-if="count[0]&gt;=4"></div></td><td><div id="img2_4" data-if="count[1]&gt;=4"></div></td><td><div id="img3_4" data-if="count[2]&gt;=4"></div></td>
+								</tr>
+								<tr style="background:#F0F0F0" data-if="count[0]&gt;=5 || count[1]&gt;=5 || count[2]&gt;=5">
+									<td><div id="img1_5" data-if="count[0]&gt;=5"></div></td><td><div id="img2_5" data-if="count[1]&gt;=5"></div></td><td><div id="img3_5" data-if="count[2]&gt;=5"></div></td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+				<div class="solution" data-type="multiple">
+					<div class="sol" data-type="custom">
+						<div class="guess">[compare_num[1]]</div>
+                        <div class="validator-function">
+							if($("#pick_1").attr("checked")!='checked' && $("#pick_2").attr("checked")!='checked' && $("#pick_3").attr("checked")!='checked'){
+								return "";
+							}
+							if(document.getElementById(guess[0]).checked==false){
+								return false;
+							}
+							return true;
+						</div>
+                    </div>
+					<div class="instruction">
+					<div>請選擇正確的答案</div>
+					</div>
+				</div>
+				<div class="hints">
+					<table class="hinttd">
+						<tr style="border-bottom:solid 2px #D0D0D0;font-size:15px">
+							<th>小胖蟲</th><th>毛毛蟲</th><th>蝙蝠</th>
+						</tr>
+						<tr style="background:#F0F0F0">
+							<td><var>count[0]</var></td><td><var>count[1]</var></td><td><var>count[2]</var></td>
+						</tr>
+					</table>
+					<p><span style="color:red;"><var>compare_num[2]</var></span>最多。</p>
+				</div>
+			</div>
+			<div id="case2">
+				<div class="vars">
+					<var id="compare_num">
+						(function(){
+							var count=new Array(3);
+							while(1){
+								count[0]=randRange(1,5);
+								count[1]=randRange(1,5);
+								count[2]=randRange(1,5);
+								if(count[0]&gt;count[1] && count[0]&gt;count[2]){
+									return [count,"pick_1","字母"];
+								}else if(count[1]&gt;count[0] && count[1]&gt;count[2]){
+									return [count,"pick_2","數字"];
+								}else if(count[2]&gt;count[0] && count[2]&gt;count[1]){
+									return [count,"pick_3","星星"];
+								}
+							}
+							
+						})()
+					</var>
+					<var id="pic_num">1</var>
+					<var id="pic_name">
+						(function(){							
+							loadImg("img3_1",Khan.urlBase+"images/SStar.png",1,"100%","100%");
+							loadImg("img3_2",Khan.urlBase+"images/SStar.png",1,"100%","100%");
+							loadImg("img3_3",Khan.urlBase+"images/SStar.png",1,"100%","100%");
+							loadImg("img3_4",Khan.urlBase+"images/SStar.png",1,"100%","100%");
+							loadImg("img3_5",Khan.urlBase+"images/SStar.png",1,"100%","100%");
+						})()
+					</var>
+				</div>
+				<div class="question" width="100%">
+                    <p class="problem">
+						<div>
+							<form style="font-size:15px">
+								下圖中最多的是哪個？
+								<br />
+								<span onclick="$('#pick_1').attr('checked','checked')">&nbsp <input type="radio" id="pick_1" name="name" value="xiaopangchong" /> 字母</span>
+								<br />
+								<span onclick="$('#pick_2').attr('checked','checked')">&nbsp <input type="radio" id="pick_2" name="name" value="maomaocohong" /> 數字</span>
+								<br />
+								<span onclick="$('#pick_3').attr('checked','checked')">&nbsp <input type="radio" id="pick_3" name="name" value="bianfu" /> 星星</span>
+							</form>
+						</div>
+						<br />
+						<div>
+							<table class="nLimit">
+								<tr style="border-bottom:solid 2px #D0D0D0;font-size:15px">
+									<th>字母</th><th>數字</th><th>星星</th>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><span data-if="compare_num[0][0]&gt;=1">A</span></td><td><span data-if="compare_num[0][1]&gt;=1">1</span></td><td><div id="img3_1" data-if="compare_num[0][2]&gt;=1"></div></td>
+								</tr>
+								<tr>
+									<td><span data-if="compare_num[0][0]&gt;=2">B</span></td><td><span data-if="compare_num[0][1]&gt;=2">2</span></td><td><div id="img3_2" data-if="compare_num[0][2]&gt;=2"></div></td>
+								</tr>
+								<tr style="background:#F0F0F0" data-if="compare_num[0][0]&gt;=3 || compare_num[0][1]&gt;=3 || compare_num[0][2]&gt;=3">
+									<td><span data-if="compare_num[0][0]&gt;=3">C</span></td><td><span data-if="compare_num[0][1]&gt;=3">3</span></td><td><div id="img3_3" data-if="compare_num[0][2]&gt;=3"></div></td>
+								</tr>
+								<tr>
+									<td><span data-if="compare_num[0][0]&gt;=4">D</span></td><td><span data-if="compare_num[0][1]&gt;=4">4</span></td><td><div id="img3_4" data-if="compare_num[0][2]&gt;=4"></div></td>
+								</tr>
+								<tr style="background:#F0F0F0" data-if="compare_num[0][0]&gt;=5 || compare_num[0][1]&gt;=5 || compare_num[0][2]&gt;=5">
+									<td><span data-if="compare_num[0][0]&gt;=5">E</span></td><td><span data-if="compare_num[0][1]&gt;=5">5</span></td><td><div id="img3_5" data-if="compare_num[0][2]&gt;=5"></div></td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+				<div class="solution" data-type="multiple">
+					<div class="sol" data-type="custom">
+						<div class="guess">[compare_num[1]]</div>
+                        <div class="validator-function">
+							if($("#pick_1").attr("checked")!='checked' && $("#pick_2").attr("checked")!='checked' && $("#pick_3").attr("checked")!='checked'){
+								return "";
+							}
+							if(document.getElementById(guess[0]).checked==false){
+								return false;
+							}
+							return true;
+						</div>
+                    </div>
+					<div class="instruction">
+					<div>請選擇正確的答案</div>
+					</div>
+				</div>
+				<div class="hints">
+					<table class="hinttd">
+						<tr style="border-bottom:solid 2px #D0D0D0;font-size:15px">
+							<th>字母</th><th>數字</th><th>星星</th>
+						</tr>
+						<tr style="background:#F0F0F0">
+							<td><var>compare_num[0][0]</var></td><td><var>compare_num[0][1]</var></td><td><var>compare_num[0][2]</var></td>
+						</tr>
+					</table>
+					<p><span style="color:red;"><var>compare_num[2]</var></span>最多。</p>
+				</div>
+			</div>
+			<div id="case3">
+				<div class="vars">
+					<var id="count">randRangeUnique(1,7,5)</var>
+					<var id="pic_num">1</var>
+					<var id="pic_name">
+						(function(){
+							for(var i=0;i&lt;5;i++)
+							{
+								var j=i+1;
+								var img="img"+j;
+								if(count[i]==1){
+									loadImg(img,Khan.urlBase+"images/kacorns.png",1,"100%","100%");
+								}else if(count[i]==2){
+									loadImg(img,Khan.urlBase+"images/kelephants.png",1,"100%","100%");
+								}else if(count[i]==3){
+									loadImg(img,Khan.urlBase+"images/kapples.png",1,"100%","100%");
+								}else if(count[i]==4){
+									loadImg(img,Khan.urlBase+"images/kfoxes.png",1,"100%","100%");
+								}else if(count[i]==5){
+									loadImg(img,Khan.urlBase+"images/kbananas.png",1,"100%","100%");
+								}else if(count[i]==6){
+									loadImg(img,Khan.urlBase+"images/khorses.png",1,"100%","100%");
+								}
+							}
+						})()
+					</var>
+					<var id="pic_check">
+						(function(){
+							var check=new Array(5);
+							for(var i=0;i&lt;5;i++){
+								var j=i+1;
+								if(count[i]%2==0){
+									check[i]="pick_"+j+"_1";
+								}else{
+									check[i]="pick_"+j+"_2";
+								}
+							}
+							return check;
+						})()
+					</var>
+				</div>
+				<div class="question" width="100%">
+                    <p class="problem">
+						<div>
+							<p>判斷它們有沒有耳朵。</p>
+							<table class="nLimit">
+								<tr style="border-bottom:solid 2px #D0D0D0;font-size:15px">
+									<th> &nbsp </th><th>有</th><th>沒有</th>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><div id="img1"></div></td><td><input type="radio" id="pick_1_1" name="one" value="one0"></td><td><input type="radio" id="pick_1_2" name="one" value="one2"></td>
+								</tr>
+								<tr>
+									<td><div id="img2"></div></td><td><input type="radio" id="pick_2_1" name="two" value="two0"></td><td><input type="radio" id="pick_2_2" name="two" value="two2"></td>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><div id="img3"></div></td><td><input type="radio" id="pick_3_1" name="three" value="three0"></td><td><input type="radio" id="pick_3_2" name="three" value="three2"></td>
+								</tr>
+								<tr>
+									<td><div id="img4"></div></td><td><input type="radio" id="pick_4_1" name="four" value="four0"></td><td><input type="radio" id="pick_4_2" name="four" value="four2"></td>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><div id="img5"></div></td><td><input type="radio" id="pick_5_1" name="five" value="five0"></td><td><input type="radio" id="pick_5_2" name="five" value="five2"></td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+				<div class="solution" data-type="multiple">
+					<div class="sol" data-type="custom">
+						<div class="guess">[pic_check[0],pic_check[1],pic_check[2],pic_check[3],pic_check[4]]</div>
+                        <div class="validator-function">
+							var aa=0;
+							var bb=0;
+							for(var i=1;i&lt;6;i++)
+							{
+								if($("#pick_"+i+"_1").attr("checked")!='checked')
+								{aa++;}
+							}
+							for(var i=1;i&lt;6;i++)
+							{
+								if($("#pick_"+i+"_2").attr("checked")!='checked')
+								{bb++;}
+							}
+							if(aa+bb==10){return "";}
+							if((document.getElementById(guess[0]).checked!=true) || (document.getElementById(guess[1]).checked!=true) || (document.getElementById(guess[2]).checked!=true) || (document.getElementById(guess[3]).checked!=true) || (document.getElementById(guess[4]).checked!=true) ){
+								return false;
+							}
+							else{
+								return true;
+							}
+						</div>
+                    </div>
+					<div class="instruction">
+					<div>請選擇正確的答案</div>
+					</div>
+				</div>
+				<div class="hints">
+					<table>
+						<tr style="border-top:solid 2px #D0D0D0;background:#F0F0F0">
+							<td style="text-align:center; vertical-align:middle;font-size:15px">有</td>
+							<td><div data-if="count[0]%2==0" style="float:left" ><img class="name1" src="" width="50px" height="50px" width="50px" height="50px"></div><div data-if="count[1]%2==0" style="float:left" ><img class="name2" src="" width="50px" height="50px"></div><div data-if="count[2]%2==0" style="float:left" ><img class="name3" src="" width="50px" height="50px">
+							</div><div data-if="count[3]%2==0" style="float:left" ><img class="name4" src="" width="50px" height="50px"></div><div data-if="count[4]%2==0" style="float:left" ><img class="name5" src="" width="50px" height="50px"></div></td>
+						</tr>
+						<tr>
+							<td style="text-align:center; vertical-align:middle;font-size:15px">沒有</td>
+							<td><div data-if="count[0]%2!=0" style="float:left"><img class="name1" src="" width="50px" height="50px"></div><div data-if="count[1]%2!=0" style="float:left"><img class="name2" src="" width="50px" height="50px"></div><div data-if="count[2]%2!=0" style="float:left"><img class="name3" src="" width="50px" height="50px">
+							</div><div data-if="count[3]%2!=0" style="float:left"><img class="name4" src="" width="50px" height="50px"></div><div data-if="count[4]%2!=0" style="float:left"><img class="name5" src="" width="50px" height="50px"></div></td>
+						</tr>
+					</table>
+				</div>
+				<div><var>(function(){
+						$("#hint").click(function() {
+							for(var i=0;i&lt;5;i++){
+								var j=i+1;
+								var name=".name"+j;
+								if(count[i]==1){
+									$(name).attr('src',Khan.urlBase+"images/kacorns.png");
+								}else if(count[i]==2){
+									$(name).attr('src',Khan.urlBase+"images/kelephants.png");
+								}else if(count[i]==3){
+									$(name).attr('src',Khan.urlBase+"images/kapples.png");
+								}else if(count[i]==4){
+									$(name).attr('src',Khan.urlBase+"images/kfoxes.png");
+								}else if(count[i]==5){
+									$(name).attr('src',Khan.urlBase+"images/kbananas.png");
+								}else if(count[i]==6){
+									$(name).attr('src',Khan.urlBase+"images/khorses.png");
+								}
+							}
+							});
+						})()
+					</var>
+				</div>
+			</div>
+			<div id="case4">
+				<div class="vars">
+					<var id="compare_num">
+						(function(){
+							var count=new Array(3);
+							while(1){
+								count[0]=randRange(1,5);
+								count[1]=randRange(1,5);
+								count[2]=randRange(1,5);
+								if(count[0]&lt;count[1] && count[0]&lt;count[2]){
+									return [count,"pick_1","毛毛蟲"];
+								}else if(count[1]&lt;count[0] && count[1]&lt;count[2]){
+									return [count,"pick_2","瓢蟲"];
+								}else if(count[2]&lt;count[0] && count[2]&lt;count[1]){
+									return [count,"pick_3","花"];
+								}
+							}
+							
+						})()
+					</var>
+					<var id="pic_num">1</var>
+					<var id="pic_name">
+						(function(){			
+							loadImg("img1_1",Khan.urlBase+"images/SCaterpillar.png",1,"100%","100%");
+							loadImg("img1_2",Khan.urlBase+"images/SCaterpillar.png",1,"100%","100%");
+							loadImg("img1_3",Khan.urlBase+"images/SCaterpillar.png",1,"100%","100%");
+							loadImg("img1_4",Khan.urlBase+"images/SCaterpillar.png",1,"100%","100%");
+							loadImg("img1_5",Khan.urlBase+"images/SCaterpillar.png",1,"100%","100%");
+							
+							loadImg("img2_1",Khan.urlBase+"images/kladybugs.png",1,"100%","100%");
+							loadImg("img2_2",Khan.urlBase+"images/kladybugs.png",1,"100%","100%");
+							loadImg("img2_3",Khan.urlBase+"images/kladybugs.png",1,"100%","100%");
+							loadImg("img2_4",Khan.urlBase+"images/kladybugs.png",1,"100%","100%");
+							loadImg("img2_5",Khan.urlBase+"images/kladybugs.png",1,"100%","100%");
+							
+							loadImg("img3_1",Khan.urlBase+"images/kflowers.png",1,"100%","100%");
+							loadImg("img3_2",Khan.urlBase+"images/kflowers.png",1,"100%","100%");
+							loadImg("img3_3",Khan.urlBase+"images/kflowers.png",1,"100%","100%");
+							loadImg("img3_4",Khan.urlBase+"images/kflowers.png",1,"100%","100%");
+							loadImg("img3_5",Khan.urlBase+"images/kflowers.png",1,"100%","100%");
+						})()
+					</var>
+				</div>
+				<div class="question" width="100%">
+                    <p class="problem">
+						<div>
+							<form style="font-size:15px">
+								下圖中最少的是哪個？
+								<br />
+								<span onclick="$('#pick_1').attr('checked','checked')">&nbsp <input type="radio" id="pick_1" name="name" value="xiaopangchong" /> 毛毛蟲</span>
+								<br />
+								<span onclick="$('#pick_2').attr('checked','checked')">&nbsp <input type="radio" id="pick_2" name="name" value="maomaocohong" /> 瓢蟲</span>
+								<br />
+								<span onclick="$('#pick_3').attr('checked','checked')">&nbsp <input type="radio" id="pick_3" name="name" value="bianfu" /> 花</span>
+							</form>
+						</div>
+						<br />
+						<div>
+							<table class="nLimit">
+								<tr style="border-bottom:solid 2px #D0D0D0;font-size:15px">
+									<th>毛毛蟲</th><th>瓢蟲</th><th>花</th>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><div id="img1_1" data-if="compare_num[0][0]&gt;=1"></div></td><td><div id="img2_1" data-if="compare_num[0][1]&gt;=1"></div></td><td><div id="img3_1" data-if="compare_num[0][2]&gt;=1"></div></td>
+								</tr>
+								<tr>
+									<td><div id="img1_2" data-if="compare_num[0][0]&gt;=2"></div></td><td><div id="img2_2" data-if="compare_num[0][1]&gt;=2"></div></td><td><div id="img3_2" data-if="compare_num[0][2]&gt;=2"></div></td>
+								</tr>
+								<tr style="background:#F0F0F0" data-if="compare_num[0][0]&gt;=3 || compare_num[0][1]&gt;=3 || compare_num[0][2]&gt;=3">
+									<td><div id="img1_3" data-if="compare_num[0][0]&gt;=3"></div></td><td><div id="img2_3" data-if="compare_num[0][1]&gt;=3"></div></td><td><div id="img3_3" data-if="compare_num[0][2]&gt;=3"></div></td>
+								</tr>
+								<tr>
+									<td><div id="img1_4" data-if="compare_num[0][0]&gt;=4"></div></td><td><div id="img2_4" data-if="compare_num[0][1]&gt;=4"></div></td><td><div id="img3_4" data-if="compare_num[0][2]&gt;=4"></div></td>
+								</tr>
+								<tr style="background:#F0F0F0" data-if="compare_num[0][0]&gt;=5 || compare_num[0][1]&gt;=5 || compare_num[0][2]&gt;=5">
+									<td><div id="img1_5" data-if="compare_num[0][0]&gt;=5"></div></td><td><div id="img2_5" data-if="compare_num[0][1]&gt;=5"></div></td><td><div id="img3_5" data-if="compare_num[0][2]&gt;=5"></div></td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+				<div class="solution" data-type="multiple">
+					<div class="sol" data-type="custom">
+						<div class="guess">[compare_num[1]]</div>
+                        <div class="validator-function">
+						if($("#pick_1").attr("checked")!='checked' && $("#pick_2").attr("checked")!='checked' && $("#pick_3").attr("checked")!='checked'){
+								return "";
+							}
+							if(document.getElementById(guess[0]).checked==false){
+								return false;
+							}
+							return true;
+						</div>
+                    </div>
+					<div class="instruction">
+					<div>請選擇正確的答案</div>
+					</div>
+				</div>
+				<div class="hints">
+					<table class="hinttd">
+						<tr style="border-bottom:solid 2px #D0D0D0;font-size:15px">
+							<th>毛毛蟲</th><th>瓢蟲</th><th>花</th>
+						</tr>
+						<tr style="background:#F0F0F0">
+							<td><var>compare_num[0][0]</var></td><td><var>compare_num[0][1]</var></td><td><var>compare_num[0][2]</var></td>
+						</tr>
+					</table>
+					<p><span style="color:red;"><var>compare_num[2]</var></span>最少。</p>
+				</div>
+			</div>
+			<div id="case5">
+				<div class="vars">
+					<var id="count">randRangeUnique(1,6,5)</var>
+					<var id="pic_num">1</var>
+					<var id="pic_name">
+						(function(){
+							for(var i=0;i&lt;5;i++)
+							{
+								var j=i+1;
+								var img="img"+j;
+								if(count[i]==1){
+									loadImg(img,Khan.urlBase+"images/SBasketball.png",1,"100%","100%");
+								}else if(count[i]==2){
+									loadImg(img,Khan.urlBase+"images/SMat.png",1,"100%","100%");
+								}else if(count[i]==3){
+									loadImg(img,Khan.urlBase+"images/SErath.png",1,"100%","100%");
+								}else if(count[i]==4){
+									loadImg(img,Khan.urlBase+"images/SBiscuits.png",1,"100%","100%");
+								}else if(count[i]==5){
+									loadImg(img,Khan.urlBase+"images/SCD.png",1,"100%","100%");
+								}
+							}
+						})()
+					</var>
+					<var id="pic_check">
+						(function(){
+							var check=new Array(5);
+							for(var i=0;i&lt;5;i++){
+								var j=i+1;
+								if(count[i]%2==0){
+									check[i]="pick_"+j+"_1";
+								}else{
+									check[i]="pick_"+j+"_2";
+								}
+							}
+							return check;
+						})()
+					</var>
+				</div>
+				<div class="question" width="100%">
+                    <p class="problem">
+						<div>
+							<p>判斷它們是正方形還是圓形。</p>
+							<table class="nLimit">
+								<tr style="border-bottom:solid 2px #D0D0D0;font-size:15px">
+									<th> &nbsp </th><th>正方形</th><th>圓形</th>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><div id="img1"></div></td><td><input type="radio" id="pick_1_1" name="one" value="one0"></td><td><input type="radio" id="pick_1_2" name="one" value="one2"></td>
+								</tr>
+								<tr>
+									<td><div id="img2"></div></td><td><input type="radio" id="pick_2_1" name="two" value="two0"></td><td><input type="radio" id="pick_2_2" name="two" value="two2"></td>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><div id="img3"></div></td><td><input type="radio" id="pick_3_1" name="three" value="three0"></td><td><input type="radio" id="pick_3_2" name="three" value="three2"></td>
+								</tr>
+								<tr>
+									<td><div id="img4"></div></td><td><input type="radio" id="pick_4_1" name="four" value="four0"></td><td><input type="radio" id="pick_4_2" name="four" value="four2"></td>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><div id="img5"></div></td><td><input type="radio" id="pick_5_1" name="five" value="five0"></td><td><input type="radio" id="pick_5_2" name="five" value="five2"></td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+				<div class="solution" data-type="multiple">
+					<div class="sol" data-type="custom">
+						<div class="guess">[pic_check[0],pic_check[1],pic_check[2],pic_check[3],pic_check[4]]</div>
+                        <div class="validator-function">
+							var aa=0;
+							var bb=0;
+							for(var i=1;i&lt;6;i++)
+							{
+								if($("#pick_"+i+"_1").attr("checked")!='checked')
+								{aa++;}
+							}
+							for(var i=1;i&lt;6;i++)
+							{
+								if($("#pick_"+i+"_2").attr("checked")!='checked')
+								{bb++;}
+							}
+							if(aa+bb==10){return "";}
+							if((document.getElementById(guess[0]).checked!=true) || (document.getElementById(guess[1]).checked!=true) || (document.getElementById(guess[2]).checked!=true) || (document.getElementById(guess[3]).checked!=true) || (document.getElementById(guess[4]).checked!=true) ){
+								return false;
+							}
+							else{
+								return true;
+							}
+						</div>
+                    </div>
+					<div class="instruction">
+					<div>請選擇正確的答案</div>
+					</div>
+				</div>
+				<div class="hints">
+					<table>
+						<tr style="border-top:solid 2px #D0D0D0;background:#F0F0F0">
+							<td style="text-align:center; vertical-align:middle;font-size:15px">正方形</td>
+							<td><div data-if="count[0]%2==0" style="float:left" ><img class="name1" src="" width="50px" height="50px" width="50px" height="50px"></div><div data-if="count[1]%2==0" style="float:left" ><img class="name2" src="" width="50px" height="50px"></div><div data-if="count[2]%2==0" style="float:left" ><img class="name3" src="" width="50px" height="50px">
+							</div><div data-if="count[3]%2==0" style="float:left" ><img class="name4" src="" width="50px" height="50px"></div><div data-if="count[4]%2==0" style="float:left" ><img class="name5" src="" width="50px" height="50px"></div></td>
+						</tr>
+						<tr>
+							<td style="text-align:center; vertical-align:middle;font-size:15px">圓形</td>
+							<td><div data-if="count[0]%2!=0" style="float:left"><img class="name1" src="" width="50px" height="50px"></div><div data-if="count[1]%2!=0" style="float:left"><img class="name2" src="" width="50px" height="50px"></div><div data-if="count[2]%2!=0" style="float:left"><img class="name3" src="" width="50px" height="50px">
+							</div><div data-if="count[3]%2!=0" style="float:left"><img class="name4" src="" width="50px" height="50px"></div><div data-if="count[4]%2!=0" style="float:left"><img class="name5" src="" width="50px" height="50px"></div></td>
+						</tr>
+					</table>
+				</div>
+				<div><var>(function(){
+						$("#hint").click(function() {
+							for(var i=0;i&lt;5;i++){
+								var j=i+1;
+								var name=".name"+j;
+								if(count[i]==1){
+									$(name).attr('src',Khan.urlBase+"images/SBasketball.png");
+								}else if(count[i]==2){
+									$(name).attr('src',Khan.urlBase+"images/SMat.png");
+								}else if(count[i]==3){
+									$(name).attr('src',Khan.urlBase+"images/SErath.png");
+								}else if(count[i]==4){
+									$(name).attr('src',Khan.urlBase+"images/SBiscuits.png");
+								}else if(count[i]==5){
+									$(name).attr('src',Khan.urlBase+"images/SCD.png");
+								}
+							}
+							});
+						})()
+					</var>
+				</div>
+			</div>
+			<div id="case6">
+				<div class="vars">
+					<var id="count">
+						(function(){
+							var count=new Array(4);
+							count=randRangeUnique(1,4,3);
+							count[3]=randRange(1,3);
+							return count;
+						})()
+					</var>
+					<var id="pic_num">1</var>
+					<var id="pic_name">
+						(function(){
+							if(count[0]==1){
+								loadImg("img1",Khan.urlBase+"images/SBiscuit_3.png",1,"100%","100%");
+							}else if(count[0]==2){
+								loadImg("img1",Khan.urlBase+"images/SBiscuit_5.png",1,"100%","100%");
+							}else if(count[0]==3){
+								loadImg("img1",Khan.urlBase+"images/SBiscuit_8.png",1,"100%","100%");
+							}
+							if(count[1]==1){
+								loadImg("img2",Khan.urlBase+"images/SBiscuit_3.png",1,"100%","100%");
+							}else if(count[1]==2){
+								loadImg("img2",Khan.urlBase+"images/SBiscuit_5.png",1,"100%","100%");
+							}else if(count[1]==3){
+								loadImg("img2",Khan.urlBase+"images/SBiscuit_8.png",1,"100%","100%");
+							}
+							if(count[2]==1){
+								loadImg("img3",Khan.urlBase+"images/SBiscuit_3.png",1,"100%","100%");
+							}else if(count[2]==2){
+								loadImg("img3",Khan.urlBase+"images/SBiscuit_5.png",1,"100%","100%");
+							}else if(count[2]==3){
+								loadImg("img3",Khan.urlBase+"images/SBiscuit_8.png",1,"100%","100%");
+							}
+							if(count[3]==1){
+								loadImg("img4",Khan.urlBase+"images/SBiscuit_3.png",1,"100%","100%");
+							}else if(count[3]==2){
+								loadImg("img4",Khan.urlBase+"images/SBiscuit_5.png",1,"100%","100%");
+							}else if(count[3]==3){
+								loadImg("img4",Khan.urlBase+"images/SBiscuit_8.png",1,"100%","100%");
+							}
+						})()
+					</var>
+					<var id="pic_check">
+						(function(){
+							var check=new Array(4);
+							for(var i=0;i&lt;4;i++){
+								var j=i+1;
+								if(count[i]==1){
+									check[i]="pick_"+j+"_1";
+								}else if(count[i]==2){
+									check[i]="pick_"+j+"_2";
+								}else if(count[i]==3){
+									check[i]="pick_"+j+"_3";
+								}
+							}
+							return check;
+						})()
+					</var>
+				</div>
+				<div class="question" width="100%">
+                    <p class="problem">
+						<div>
+							<p>選擇餅乾上點的個數。</p>
+							<table class="nLimit">
+								<tr style="border-bottom:solid 2px #D0D0D0;font-size:15px">
+									<th> &nbsp </th><th><code>3</code>點</th><th><code>5</code>點</th><th><code>8</code>點</th>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><div id="img1"></div></td><td><input type="radio" id="pick_1_1" name="one" value="one_3"></td><td><input type="radio" id="pick_1_2" name="one" value="one_5"></td><td><input type="radio" id="pick_1_3" name="one" value="one_8"></td>
+								</tr>
+								<tr>
+									<td><div id="img2"></div></td><td><input type="radio" id="pick_2_1" name="two" value="two_3"></td><td><input type="radio" id="pick_2_2" name="two" value="two_5"></td><td><input type="radio" id="pick_2_3" name="two" value="two_8"></td>
+								</tr>
+								<tr style="background:#F0F0F0">
+									<td><div id="img3"></div></td><td><input type="radio" id="pick_3_1" name="three" value="three_3"></td><td><input type="radio" id="pick_3_2" name="three" value="three_5"></td><td><input type="radio" id="pick_3_3" name="three" value="three_8"></td>
+								</tr>
+								<tr>
+									<td><div id="img4"></div></td><td><input type="radio" id="pick_4_1" name="four" value="four_3"></td><td><input type="radio" id="pick_4_2" name="four" value="four_5"></td><td><input type="radio" id="pick_4_3" name="four" value="four_8"></td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+				<div class="solution" data-type="multiple">
+					<div class="sol" data-type="custom">
+						<div class="guess">[pic_check[0],pic_check[1],pic_check[2],pic_check[3]]</div>
+                        <div class="validator-function">
+							var aa=0;
+							for(var i=1;i&lt;5;i++)
+							{
+								if($("#pick_"+i+"_1").attr("checked")!='checked')
+								{aa++;}
+							}
+							for(var i=1;i&lt;5;i++)
+							{
+								if($("#pick_"+i+"_2").attr("checked")!='checked')
+								{aa++;}
+							}
+							for(var i=1;i&lt;5;i++)
+							{
+								if($("#pick_"+i+"_3").attr("checked")!='checked')
+								{aa++;}
+							}
+							if(aa==12){return "";}
+							if((document.getElementById(guess[0]).checked!=true) || (document.getElementById(guess[1]).checked!=true) || (document.getElementById(guess[2]).checked!=true) || (document.getElementById(guess[3]).checked!=true)){
+								return false;
+							}
+							else{
+								return true;
+							}
+						</div>
+                    </div>
+					<div class="instruction">
+					<div>請選擇正確的答案</div>
+					</div>
+				</div>
+				<div class="hints">
+					<table>
+						<tr style="border-top:solid 2px #D0D0D0;background:#F0F0F0">
+							<td style="text-align:center; vertical-align:middle;font-size:15px">3點</td>
+							<td><div data-if="count[0]==1" style="float:left" ><img class="name1" src="" width="50px" height="50px" width="50px" height="50px"></div><div data-if="count[1]==1" style="float:left" ><img class="name2" src="" width="50px" height="50px"></div>
+							<div data-if="count[2]==1" style="float:left" ><img class="name3" src="" width="50px" height="50px"></div><div data-if="count[3]==1" style="float:left" ><img class="name4" src="" width="50px" height="50px"></div></td>
+						</tr>
+						<tr>
+							<td style="text-align:center; vertical-align:middle;font-size:15px">5點</td>
+							<td><div data-if="count[0]==2" style="float:left" ><img class="name1" src="" width="50px" height="50px" width="50px" height="50px"></div><div data-if="count[1]==2" style="float:left" ><img class="name2" src="" width="50px" height="50px"></div>
+							<div data-if="count[2]==2" style="float:left" ><img class="name3" src="" width="50px" height="50px"></div><div data-if="count[3]==2" style="float:left" ><img class="name4" src="" width="50px" height="50px"></div></td>
+						</tr>
+						<tr style="background:#F0F0F0">
+							<td style="text-align:center; vertical-align:middle;font-size:15px">8點</td>
+							<td><div data-if="count[0]==3" style="float:left" ><img class="name1" src="" width="50px" height="50px" width="50px" height="50px"></div><div data-if="count[1]==3" style="float:left" ><img class="name2" src="" width="50px" height="50px"></div>
+							<div data-if="count[2]==3" style="float:left" ><img class="name3" src="" width="50px" height="50px"></div><div data-if="count[3]==3" style="float:left" ><img class="name4" src="" width="50px" height="50px"></div></td>
+						</tr>
+					</table>
+				</div>
+				<div><var>(function(){
+						$("#hint").click(function() {
+							for(var i=0;i&lt;4;i++){
+								var j=i+1;
+								var name=".name"+j;
+								if(count[i]==1){
+									$(name).attr('src',Khan.urlBase+"images/SBiscuit_3.png");
+								}else if(count[i]==2){
+									$(name).attr('src',Khan.urlBase+"images/SBiscuit_5.png");
+								}else if(count[i]==3){
+									$(name).attr('src',Khan.urlBase+"images/SBiscuit_8.png");
+								}
+							}
+							});
+						})()
+					</var>
+				</div>
+			</div>
+		</div>
+    </div>
+</body>
+</html>
+
+

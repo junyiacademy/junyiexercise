@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>連續加法</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+        .bordered {
+			border: 2px solid black;
+		}
+		.hint_blue { color: #6495ED; }
+		.hint_orange { color: #FFA500; }
+		.hint_pink { color: #FF00AF; }
+		.hint_red { color: red; }
+		.hint_green { color: #28AE7B; }
+		.hint_gray { color: gray; }
+		.hint_purple{ color: purple; }
+		
+		table.nLimit {font-size:15px}
+		table.nLimit td {width:80px;height:20px;text-align:center;padding: 1px; vertical-align:middle;}}
+		table.nLimit th {text-align:center}
+		
+		table.Limit{margin:0px ;}
+		table.Limit td { border: 0px solid #AAA; }
+		table.Limit td { padding:0px 5px 0px 0px}
+		table.tdlimit td {width:40px ! important}
+	</style>
+	<script type="text/javascript">
+		function loadImg(elem, url, count, width, height) {
+
+			var loimg = document.getElementById(elem);
+
+			var inner = "";
+
+			for (var i = 1; i <= count; i++) {
+				inner += "<img id="+"image"+ elem + i + " width=" + width +" height="+height+ ">";
+			}
+			loimg.innerHTML += inner;
+			for (var j = 1; j <= count; j++) {
+				document.getElementById("image" + elem + j).src = url;
+			}
+		}
+		function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+		<div class="problems">
+			<div id="case1">
+				<div class="vars">
+					<var id="turns">randRangeUnique(1,6,5)</var>
+					<var id="num">randRange(1,2)</var>
+					<var id="total">(num*6)</var>
+					<var id="sum">
+						(function(){
+							var s = 0;
+							for(var k = 0;k&lt;5;k++){
+								if(turns[k]&lt;3){
+									s+=1;
+									$('#pic_'+(k+1)).val('true');
+								}else{
+									$('#pic_'+(k+1)).val('false');
+								}
+							}
+							return s;
+						})()
+					</var>
+				</div>
+				<div class="question">
+					<p>史塔克正在維修他的馬克 <code>1</code> 號和馬克 <code>2</code> 號鋼鐵人裝甲。每一台裝甲它需要 <code><var>total/2</var></code> 個零件（ <code><var>num</var></code> 顆三角形螺絲， <code><var>num</var></code> 個圓形鋼珠， <code><var>num</var></code> 個正方形彈簧）。</p>
+					<p>請問下列哪些選項可以代表他所需要的總零件數量？</p>
+					<p>選擇所有適合的選項（多選題）：</p>
+					<p><table  style="font-size:15px">
+						<tr>
+							<td><input type="checkbox" id="pic_1" name="checkbox" /></td>
+							<td style="width:450px"><div onclick="if($('#pic_1').attr('checked')){$('#pic_1').removeAttr('checked')}else{$('#pic_1').attr('checked','checked')}">
+								<span data-if="turns[0]==1"><code><var>num*3</var>+<var>num*3</var></code></span><span data-if="turns[0]==2"><code><var>num*2</var>+<var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[0]==3"><code><var>num*2</var>+<var>num*3</var></code></span>
+								<span data-if="turns[0]==4"><code><var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[0]==5"><code><var>num*3</var>+<var>num*3</var>+<var>num*3</var></code></span>
+							</div></td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" id="pic_2" name="checkbox" /></td>
+							<td style="width:450px"><div onclick="if($('#pic_2').attr('checked')){$('#pic_2').removeAttr('checked')}else{$('#pic_2').attr('checked','checked')}">
+								<span data-if="turns[1]==1"><code><var>num*3</var>+<var>num*3</var></code></span><span data-if="turns[1]==2"><code><var>num*2</var>+<var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[1]==3"><code><var>num*2</var>+<var>num*3</var></code></span>
+								<span data-if="turns[1]==4"><code><var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[1]==5"><code><var>num*3</var>+<var>num*3</var>+<var>num*3</var></code></span>
+							</div></td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" id="pic_3" name="checkbox" /></td>
+							<td style="width:450px"><div onclick="if($('#pic_3').attr('checked')){$('#pic_3').removeAttr('checked')}else{$('#pic_3').attr('checked','checked')}">
+								<span data-if="turns[2]==1"><code><var>num*3</var>+<var>num*3</var></code></span><span data-if="turns[2]==2"><code><var>num*2</var>+<var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[2]==3"><code><var>num*2</var>+<var>num*3</var></code></span>
+								<span data-if="turns[2]==4"><code><var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[2]==5"><code><var>num*3</var>+<var>num*3</var>+<var>num*3</var></code></span>
+							</div></td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" id="pic_4" name="checkbox" /></td>
+							<td style="width:450px"><div onclick="if($('#pic_4').attr('checked')){$('#pic_4').removeAttr('checked')}else{$('#pic_4').attr('checked','checked')}">
+								<span data-if="turns[3]==1"><code><var>num*3</var>+<var>num*3</var></code></span><span data-if="turns[3]==2"><code><var>num*2</var>+<var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[3]==3"><code><var>num*2</var>+<var>num*3</var></code></span>
+								<span data-if="turns[3]==4"><code><var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[3]==5"><code><var>num*3</var>+<var>num*3</var>+<var>num*3</var></code></span>
+							</div></td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" id="pic_5" name="checkbox" /></td>
+							<td style="width:450px"><div onclick="if($('#pic_5').attr('checked')){$('#pic_5').removeAttr('checked')}else{$('#pic_5').attr('checked','checked')}">
+								<span data-if="turns[4]==1"><code><var>num*3</var>+<var>num*3</var></code></span><span data-if="turns[4]==2"><code><var>num*2</var>+<var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[4]==3"><code><var>num*2</var>+<var>num*3</var></code></span>
+								<span data-if="turns[4]==4"><code><var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[4]==5"><code><var>num*3</var>+<var>num*3</var>+<var>num*3</var></code></span>
+							</div></td>
+						</tr>
+					</table></p>
+					<p><table class="nLimit">
+						<tr style="border-bottom:solid 2px #D0D0D0;">
+							<th>&nbsp;</th><th>三角形螺絲</th><th>圓形鋼珠</th><th>正方形彈簧</th>
+						</tr>
+						<tr style="background:#F0F0F0">
+							<td>馬克 <code>1</code> 號</td><td><var>num</var></td><td><var>num</var></td><td><var>num</var></td>
+						</tr>
+						<tr>
+							<td>馬克 <code>2</code> 號</td><td><var>num</var></td><td><var>num</var></td><td><var>num</var></td>
+						</tr>
+					</table></p>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>選擇所有正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">
+							(function(){
+								var chk_value =[];    
+								$('input[name="checkbox"]:checked').each(function(){    
+									chk_value.push($(this).val());    
+								});
+								return chk_value;
+							})()
+						</div>
+						<div class="validator-function">
+							if(guess.length==0){
+								return "";
+							}
+							if(guess.length!=sum){
+								return false;
+							}
+							var trueAns = 0;
+							for(var i = 0;i&lt;guess.length;i++){
+								if(guess[i]=='true'){
+									trueAns++;
+								}
+							}
+							if(trueAns==sum){
+								return true;
+							}					
+						</div>
+					</div>
+				</div>
+				<div class="hints">
+					<div>
+						<p>我們可以將用在馬克 <code>1</code> 號的 <code><var>num*3</var></code> 個零件和用在馬克 <code>2</code> 號的 <code><var>num*3</var></code> 個零件全部加在一起，式子可以寫成 <code><var>num*3</var>+<var>num*3</var></code> ；所以需要總共 <code><var>total</var></code> 個零件；</p>
+						<div class="graphie" id="area1">
+							init({
+								range: [ [-0.5, 8], [-0.2, 3.6] ],
+								scale: 40
+								});
+							if(num==1){
+								path([[-0.2,3.4],[4.7,3.4],[4.7,2],[-0.2,2],[-0.2,3.4]],{stroke:"black",fill:"#ECF1FA"});
+								path([[0,2.2],[1.2,2.2],[0.6,3.2],[0,2.2]],{stroke:"black",fill:"#6495ED"});
+								circle([2.3,2.7],0.5,{stroke:"black",fill:"#6495ED"});
+								path([[3.5,2.2],[4.5,2.2],[4.5,3.2],[3.5,3.2],[3.5,2.2]],{stroke:"black",fill:"#6495ED"});
+
+								path([[-0.2,1.6],[4.7,1.6],[4.7,0.2],[-0.2,0.2],[-0.2,1.6]],{stroke:"black",fill:"#ECF1FA"});
+								path([[0,0.4],[1.2,0.4],[0.6,1.4],[0,0.4]],{stroke:"black",fill:"#6495ED"});
+								circle([2.3,0.9],0.5,{stroke:"black",fill:"#6495ED"});
+								path([[3.5,0.4],[4.5,0.4],[4.5,1.4],[3.5,1.4],[3.5,0.4]],{stroke:"black",fill:"#6495ED"});
+							}
+							if(num==2){
+								path([[-0.2,3.4],[7.3,3.4],[7.3,2],[-0.2,2],[-0.2,3.4]],{stroke:"black",fill:"#ECF1FA"});
+								path([[0,2.2],[1.2,2.2],[0.6,3.2],[0,2.2]],{stroke:"black",fill:"#6495ED"});
+								path([[1.3,2.2],[2.5,2.2],[1.9,3.2],[1.3,2.2]],{stroke:"black",fill:"#6495ED"});
+								circle([3.2,2.7],0.5,{stroke:"black",fill:"#6495ED"});
+								circle([4.3,2.7],0.5,{stroke:"black",fill:"#6495ED"});
+								path([[5,2.2],[6,2.2],[6,3.2],[5,3.2],[5,2.2]],{stroke:"black",fill:"#6495ED"});
+								path([[6.1,2.2],[7.1,2.2],[7.1,3.2],[6.1,3.2],[6.1,2.2]],{stroke:"black",fill:"#6495ED"});
+
+								path([[-0.2,1.6],[7.3,1.6],[7.3,0.2],[-0.2,0.2],[-0.2,1.6]],{stroke:"black",fill:"#ECF1FA"});
+								path([[0,0.4],[1.2,0.4],[0.6,1.4],[0,0.4]],{stroke:"black",fill:"#6495ED"});
+								path([[1.3,0.4],[2.5,0.4],[1.9,1.4],[1.3,0.4]],{stroke:"black",fill:"#6495ED"});
+								circle([3.2,0.9],0.5,{stroke:"black",fill:"#6495ED"});
+								circle([4.3,0.9],0.5,{stroke:"black",fill:"#6495ED"});
+								path([[5,0.4],[6,0.4],[6,1.4],[5,1.4],[5,0.4]],{stroke:"black",fill:"#6495ED"});
+								path([[6.1,0.4],[7.1,0.4],[7.1,1.4],[6.1,1.4],[6.1,0.4]],{stroke:"black",fill:"#6495ED"});
+							}
+						</div>
+					</div>
+					<div>
+						<p>或者是我們可以把零件分成螺絲，鋼珠和彈簧，兩台鋼鐵人裝甲總共需要 <code><var>num*2</var></code> 個螺絲， <code><var>num*2</var></code> 個鋼珠和 <code><var>num*2</var></code> 個彈簧，這樣我們的式子可以寫成 <code><var>num*2</var>+<var>num*2</var>+<var>num*2</var>=<var>total</var></code> ；</p>
+						<div class="graphie" id="area2">
+							init({
+								range: [ [-0.5, 8], [-0.2, 3.6] ],
+								scale: 40
+								});
+							if(num==1){
+								path([[-0.2,3.4],[1.4,3.4],[1.4,0.2],[-0.2,0.2],[-0.2,3.4]],{stroke:"black",fill:"#ECF1FA"});
+								path([[0,2.2],[1.2,2.2],[0.6,3.2],[0,2.2]],{stroke:"black",fill:"#6495ED"});
+								path([[0,0.4],[1.2,0.4],[0.6,1.4],[0,0.4]],{stroke:"black",fill:"#6495ED"});
+								
+								path([[1.6,3.4],[3,3.4],[3,0.2],[1.6,0.2],[1.6,3.4]],{stroke:"black",fill:"#ECF1FA"});
+								circle([2.3,2.7],0.5,{stroke:"black",fill:"#6495ED"});
+								circle([2.3,0.9],0.5,{stroke:"black",fill:"#6495ED"});
+								
+								path([[3.3,3.4],[4.7,3.4],[4.7,0.2],[3.3,0.2],[3.3,3.4]],{stroke:"black",fill:"#ECF1FA"});
+								path([[3.5,2.2],[4.5,2.2],[4.5,3.2],[3.5,3.2],[3.5,2.2]],{stroke:"black",fill:"#6495ED"});
+								path([[3.5,0.4],[4.5,0.4],[4.5,1.4],[3.5,1.4],[3.5,0.4]],{stroke:"black",fill:"#6495ED"});
+							}
+							if(num==2){
+								path([[-0.2,3.4],[2.6,3.4],[2.6,0.2],[-0.2,0.2],[-0.2,3.4]],{stroke:"black",fill:"#ECF1FA"});
+								path([[0,2.2],[1.2,2.2],[0.6,3.2],[0,2.2]],{stroke:"black",fill:"#6495ED"});
+								path([[1.3,2.2],[2.5,2.2],[1.9,3.2],[1.3,2.2]],{stroke:"black",fill:"#6495ED"});
+								path([[0,0.4],[1.2,0.4],[0.6,1.4],[0,0.4]],{stroke:"black",fill:"#6495ED"});
+								path([[1.3,0.4],[2.5,0.4],[1.9,1.4],[1.3,0.4]],{stroke:"black",fill:"#6495ED"});
+								
+								path([[2.8,3.4],[5.1,3.4],[5.1,0.2],[2.8,0.2],[2.8,3.4]],{stroke:"black",fill:"#ECF1FA"});
+								circle([3.4,2.7],0.5,{stroke:"black",fill:"#6495ED"});
+								circle([4.5,2.7],0.5,{stroke:"black",fill:"#6495ED"});
+								circle([3.4,0.9],0.5,{stroke:"black",fill:"#6495ED"});
+								circle([4.5,0.9],0.5,{stroke:"black",fill:"#6495ED"});
+								
+								path([[5.3,3.4],[7.6,3.4],[7.6,0.2],[5.3,0.2],[5.3,3.4]],{stroke:"black",fill:"#ECF1FA"});
+								path([[5.4,2.2],[6.4,2.2],[6.4,3.2],[5.4,3.2],[5.4,2.2]],{stroke:"black",fill:"#6495ED"});
+								path([[6.5,2.2],[7.5,2.2],[7.5,3.2],[6.5,3.2],[6.5,2.2]],{stroke:"black",fill:"#6495ED"});
+								path([[5.4,0.4],[6.4,0.4],[6.4,1.4],[5.4,1.4],[5.4,0.4]],{stroke:"black",fill:"#6495ED"});
+								path([[6.5,0.4],[7.5,0.4],[7.5,1.4],[6.5,1.4],[6.5,0.4]],{stroke:"black",fill:"#6495ED"});
+
+							}
+						</div>
+					</div>
+					<p>以下選項可以代表史塔克所需要的全部零件數： <br /><code class="hint_pink"><var>num*3</var>+<var>num*3</var></code> 或者是 <code class="hint_pink"><var>num*2</var>+<var>num*2</var>+<var>num*2</var></code> 。</p>
+				</div>
+			</div>
+			<div id="case2">
+                <div class="vars">
+					<var id="name">randFromArray([["kflowers.png","花","朵"],["kelephants.png","大象","隻"],["kapples.png","蘋果","個"]])</var>
+					<var id="count">randRangeUnique(2,5,3)</var>
+					 <var id="data">
+                        (function(){
+							loadImg("grid1",Khan.urlBase+"images/"+name[0],count[0],"100%","100%");
+							loadImg("grid2",Khan.urlBase+"images/"+name[0],count[0],"100%","100%");
+							loadImg("grid3",Khan.urlBase+"images/"+name[0],count[0],"100%","100%");
+							loadImg("grid4",Khan.urlBase+"images/"+name[0],count[0],"100%","100%");
+							loadImg("grid5",Khan.urlBase+"images/"+name[0],count[0],"100%","100%");
+                            return [count[0],count[1]];
+                        })()
+                    </var>
+					<var id="data1">(function(){
+							var shape=[];
+							var shape1=[];
+							var shape2=[];
+							var shape3=[];	
+							for(var i=0;i&lt;count[1];i++)
+							{
+								shape[i]=count[0];								
+								shape2[i]=count[0];
+							}
+							shape2[count[1]]=count[0];
+							for(var i=0;i&lt;count[0];i++)
+							{
+								shape1[i]=count[1];								
+								shape3[i]=count[1];
+							}
+							shape3[count[0]]=count[1];
+							var shape4=[count[2],count[2]]
+							return shuffle([shape,shape1,shape2,shape3,shape4]);
+                        })()</var>					
+				 </div>
+
+                <div class="question">
+					<div class="problem">
+						<p>下列哪些式子可以說明這些<var>name[1]</var>的總數量？（多選題）</p>
+						<div style="right:30px;width:200px;">
+							<table class="Limit">
+								<tr>
+									<td><div id="grid1" style="width:40px;"></div></td>
+									<td><div id="grid2" style="width:40px;"></div></td>
+									<td data-if="count[1]&gt;2"><div id="grid3" style="width:40px;"></div></td>
+									<td data-if="count[1]&gt;3"><div id="grid4" style="width:40px;"></div></td>
+									<td data-if="count[1]&gt;4"><div id="grid5" style="width:40px;"></div></td>
+								</tr>
+							</table>
+						</div>
+						<div>
+						<table style="font-size:15px">
+							<tr>
+								<td>
+									<input type="checkbox" name="checkbox1" id="pic_1">
+								</td>
+								<td><div style="width:450px;" onclick="if($('#pic_1').attr('checked')){$('#pic_1').removeAttr('checked')}else{$('#pic_1').attr('checked','checked')}"><code><span><var>data1[0][0]</var> + <var>data1[0][1]</var></span> <span data-if="data1[0].length&gt;2">+<var>data1[0][2]</var></span> <span data-if="data1[0].length&gt;3">+<var>data1[0][3]</var></span> <span data-if="data1[0].length&gt;4">+<var>data1[0][4]</var></span></code>
+								</div></td>
+							</tr>
+							<tr>
+								<td>
+									<input type="checkbox" name="checkbox2" id="pic_2">
+								</td>
+								<td><div style="width:450px;" onclick="if($('#pic_2').attr('checked')){$('#pic_2').removeAttr('checked')}else{$('#pic_2').attr('checked','checked')}"><code><span><var>data1[1][0]</var> + <var>data1[1][1]</var></span> <span data-if="data1[1].length&gt;2">+<var>data1[1][2]</var></span> <span data-if="data1[1].length&gt;3">+<var>data1[1][3]</var></span> <span data-if="data1[1].length&gt;4">+<var>data1[1][4]</var></span></code>
+								</div></td>
+							</tr>
+							<tr>
+								<td>
+									<input type="checkbox" name="checkbox3" id="pic_3">
+								</td>
+								<td><div style="width:450px;" onclick="if($('#pic_3').attr('checked')){$('#pic_3').removeAttr('checked')}else{$('#pic_3').attr('checked','checked')}"><code><span><var>data1[2][0]</var> + <var>data1[2][1]</var></span> <span data-if="data1[2].length&gt;2">+<var>data1[2][2]</var></span> <span data-if="data1[2].length&gt;3">+<var>data1[2][3]</var></span> <span data-if="data1[2].length&gt;4">+<var>data1[2][4]</var></span></code>
+								</div></td>
+							</tr>
+							<tr>
+								<td>
+									<input type="checkbox" name="checkbox4" id="pic_4">
+								</td>
+								<td><div style="width:450px;" onclick="if($('#pic_4').attr('checked')){$('#pic_4').removeAttr('checked')}else{$('#pic_4').attr('checked','checked')}"><code><span><var>data1[3][0]</var> + <var>data1[3][1]</var></span> <span data-if="data1[3].length&gt;2">+<var>data1[3][2]</var></span> <span data-if="data1[3].length&gt;3">+<var>data1[3][3]</var></span> <span data-if="data1[3].length&gt;4">+<var>data1[3][4]</var></span></code>
+								</div></td>
+							</tr>
+							<tr>
+								<td>
+									<input type="checkbox" name="checkbox5" id="pic_5">
+								</td>
+								<td><div style="width:450px;" onclick="if($('#pic_5').attr('checked')){$('#pic_5').removeAttr('checked')}else{$('#pic_5').attr('checked','checked')}"><code><span><var>data1[4][0]</var> + <var>data1[4][1]</var></span> <span data-if="data1[4].length&gt;2">+<var>data1[4][2]</var></span> <span data-if="data1[4].length&gt;3">+<var>data1[4][3]</var></span> <span data-if="data1[4].length&gt;4">+<var>data1[4][4]</var></span></code>
+								</div></td>
+							</tr>
+						</table>
+						</div>
+					</div>
+
+                </div>
+
+                <div class="solution" data-type="multiple">
+					<p>選擇所有正確的答案</p>
+                    <div class="sol" data-type="custom">
+						<div class="guess">1</div>
+						<div class="validator-function">
+							var aa=0;
+							for(var i=1;i&lt;6;i++)
+							{
+								if($("#pic_"+i).attr("checked")!='checked')
+								{aa++;}
+							}
+							if(aa==5){return "";}
+							var ans=0;
+							var ans1=0;
+							for(var i=1;i&lt;6;i++)
+							{
+								document.getElementById("pic_"+i).value=data1[i-1][0]*data1[i-1].length;								
+							}
+							for(var i=1;i&lt;6;i++)
+							{
+								if(document.getElementById("pic_"+i).value==(count[0]*count[1])&&document.getElementById("pic_"+i).checked==true)
+								{
+										ans++;
+								}
+								if(document.getElementById("pic_"+i).value!=(count[0]*count[1])&&document.getElementById("pic_"+i).checked==false)
+								{
+										ans1++;
+								}
+							}
+							
+							var bol1=false;
+							if(ans+ans1==5)
+							{
+								bol1=true;
+							}
+							return bol1;						
+						</div>
+                    </div>
+                </div>
+
+				<div class="hints">
+					<div>
+						<p>我們可以將上圖中的<var>name[1]</var>想像成一列有 <code><var>data[0]</var></code> <var>name[2]</var>，總共有 <code><var>data[1]</var></code> 列，這樣我們就可以把式子寫成 <code><var>data[0]</var>+<var>data[0]</var><span data-if="data[1]&gt;2">+<var>data[0]</var></span><span data-if="data[1]&gt;3">+<var>data[0]</var></span><span data-if="data[1]&gt;4">+<var>data[0]</var></span></code> ， 這樣可以知道總共有 <code><var>data[0]*data[1]</var></code> <var>name[2]</var><var>name[1]</var>；</p>
+						<div>
+							<div>
+								<table style="border: 1px solid black;" class="tdlimit">
+									<tr>
+										<td style="border-right: 1px solid black;"><img class="names" src=""></td><td style="border-right: 1px solid black;"><img class="names" src=""></td><td style="border-right: 1px solid black;" data-if="data[1]&gt;2"><img class="names" src=""></td><td style="border-right: 1px solid black;" data-if="data[1]&gt;3"><img class="names" src=""></td><td style="border-right: 1px solid black;" data-if="data[1]&gt;4"><img class="names" src=""></td>
+									</tr>
+									<tr>
+										<td style="border-right: 1px solid black;"><img class="names" src=""></td><td style="border-right: 1px solid black;"><img class="names" src=""></td><td style="border-right: 1px solid black;" data-if="data[1]&gt;2"><img class="names" src=""></td><td style="border-right: 1px solid black;" data-if="data[1]&gt;3"><img class="names" src=""></td><td style="border-right: 1px solid black;" data-if="data[1]&gt;4"><img class="names" src=""></td>
+									</tr>
+									<tr data-if="data[0]&gt;2">
+										<td style="border-right: 1px solid black;"><img class="names" src=""></td><td style="border-right: 1px solid black;"><img class="names" src=""></td><td style="border-right: 1px solid black;" data-if="data[1]&gt;2"><img class="names" src=""></td><td style="border-right: 1px solid black;" data-if="data[1]&gt;3"><img class="names" src=""></td><td style="border-right: 1px solid black;" data-if="data[1]&gt;4"><img class="names" src=""></td>
+									</tr>
+									<tr data-if="data[0]&gt;3">
+										<td style="border-right: 1px solid black;"><img class="names" src=""></td><td style="border-right: 1px solid black;"><img class="names" src=""></td><td style="border-right: 1px solid black;" data-if="data[1]&gt;2"><img class="names" src=""></td><td style="border-right: 1px solid black;" data-if="data[1]&gt;3"><img class="names" src=""></td><td style="border-right: 1px solid black;" data-if="data[1]&gt;4"><img class="names" src=""></td>
+									</tr>
+									<tr data-if="data[0]&gt;4">
+										<td style="border-right: 1px solid black;"><img class="names" src=""></td><td style="border-right: 1px solid black;"><img class="names" src=""></td><td style="border-right: 1px solid black;" data-if="data[1]&gt;2"><img class="names" src=""></td><td style="border-right: 1px solid black;" data-if="data[1]&gt;3"><img class="names" src=""></td><td style="border-right: 1px solid black;" data-if="data[1]&gt;4"><img class="names" src=""></td>
+									</tr>
+								</table>
+							</div>
+							<div>
+								<var>(function(){
+								$("#hint").click(function() {
+									$('.names').attr('src',Khan.urlBase+"images/"+name[0]);
+									});
+								})()</var>
+							</div>
+						</div>
+					</div>
+					<div>
+						<p>或者是我們可以想像成一排有 <code><var>data[1]</var></code> <var>name[2]</var>，總共有 <code><var>data[0]</var></code> 排，這樣式子可以變成 <code><var>data[1]</var>+<var>data[1]</var><span data-if="data[0]&gt;2">+<var>data[1]</var></span><span data-if="data[0]&gt;3">+<var>data[1]</var></span><span data-if="data[0]&gt;4">+<var>data[1]</var></span>=<var>data[0]*data[1]</var></code> ；</p>
+						<div>
+							<div>
+								<table class="tdlimit">
+									<tr style="border: 1px solid black;">
+										<td><img class="name2" src=""></td><td><img class="name2" src=""></td><td data-if="data[1]&gt;2"><img class="name2" src=""></td><td data-if="data[1]&gt;3"><img class="name2" src=""></td><td data-if="data[1]&gt;4"><img class="name2" src=""></td>
+									</tr>
+									<tr style="border: 1px solid black;">
+										<td><img class="name2" src=""></td><td><img class="name2" src=""></td><td data-if="data[1]&gt;2"><img class="name2" src=""></td><td data-if="data[1]&gt;3"><img class="name2" src=""></td><td data-if="data[1]&gt;4"><img class="name2" src=""></td>
+									</tr>
+									<tr style="border: 1px solid black;" data-if="data[0]&gt;2">
+										<td><img class="name2" src=""></td><td><img class="name2" src=""></td><td data-if="data[1]&gt;2"><img class="name2" src=""></td><td data-if="data[1]&gt;3"><img class="name2" src=""></td><td data-if="data[1]&gt;4"><img class="name2" src=""></td>
+									</tr>
+									<tr style="border: 1px solid black;" data-if="data[0]&gt;3">
+										<td><img class="name2" src=""></td><td><img class="name2" src=""></td><td data-if="data[1]&gt;2"><img class="name2" src=""></td><td data-if="data[1]&gt;3"><img class="name2" src=""></td><td data-if="data[1]&gt;4"><img class="name2" src=""></td>
+									</tr>
+									<tr style="border: 1px solid black;" data-if="data[0]&gt;4">
+										<td><img class="name2" src=""></td><td><img class="name2" src=""></td><td data-if="data[1]&gt;2"><img class="name2" src=""></td><td data-if="data[1]&gt;3"><img class="name2" src=""></td><td data-if="data[1]&gt;4"><img class="name2" src=""></td>
+									</tr>
+								</table>
+							</div>
+							<div>
+								<var>(function(){
+								$("#hint").click(function() {
+									$('.name2').attr('src',Khan.urlBase+"images/"+name[0]);
+									});
+								})()</var>
+							</div>
+						</div>
+					</div>
+					<p>下列這些式子可以說明<var>name[1]</var>的數量：<code class="hint_pink"><var>data[0]</var>+<var>data[0]</var><span data-if="data[1]&gt;2">+<var>data[0]</var></span><span data-if="data[1]&gt;3">+<var>data[0]</var></span><span data-if="data[1]&gt;4">+<var>data[0]</var></span></code> 或者是 <code class="hint_pink"><var>data[1]</var>+<var>data[1]</var><span data-if="data[0]&gt;2">+<var>data[1]</var></span><span data-if="data[0]&gt;3">+<var>data[1]</var></span><span data-if="data[0]&gt;4">+<var>data[1]</var></span></code> 。</p>
+				</div>
+            </div>
+			<div id="case3">
+				<div class="vars">
+					<var id="type">randRange(1,3)</var>
+					<var id="num">(function(){
+						if(type == 1){
+							return 1;
+						}
+						else{
+							return Math.floor(Math.random()*10)%3+1;
+						}
+					})()
+					</var>
+					<var id="total_1">num*15</var>
+					<var id="total_2">num*10</var>
+					<var id="total_3">num*8</var>
+					<var id="turns">randRangeUnique(1,6,5)</var>
+					<var id="sum">
+						(function(){
+							var s = 0;
+							for(var k = 0;k&lt;turns.length;k++){
+								if(turns[k]&lt;3){
+									s+=1;
+									$('#pic_'+(k+1)).val('true');
+								}else{
+									$('#pic_'+(k+1)).val('false');
+								}
+							}
+							return s;
+						})()
+					</var>
+				</div>
+				<div class="question">
+					<p><span data-if="type==1">羅賓每個禮拜有五天時間要去上學，每一天她都會要求自己寫 <code><var>num*3</var></code> 篇日記（ <code><var>num</var></code> 篇寫家人， <code><var>num</var></code> 篇寫學校發生的事，還有 <code><var>num</var></code> 篇寫自己的每天目標）。</span>
+					<span data-if="type==2">喬巴從禮拜一到禮拜五都要去上學，他每週的數學進度是每天都要練習 <code><var>num*2</var></code> 道習題（ <code><var>num</var></code> 題分數題和 <code><var>num</var></code> 題應用題）。上個禮拜他完成了自己定的目標進度。</span>
+					<span data-if="type==3">忍者小櫻兩個禮拜後就要參加中忍考試，她每個禮拜花 <code><var>num*4</var></code> 個小時練習忍術： <code><var>num</var></code> 小時花在練習手裡劍， <code><var>num</var></code> 小時花在影分身術， <code><var>num</var></code> 小時花在練習結手印，還有 <code><var>num</var></code> 小時花在體術上。</span></p>
+					<p><span data-if="type==1">請問下列哪些式子可以說明羅賓上個禮拜所寫的日記篇數？</span><span data-if="type==2">請問下列哪些選項能夠代表喬巴上個禮拜練習的總共習題數量？</span><span data-if="type==3">請問下列哪些選項能夠代表小櫻在這兩個禮拜內的總練習時間？</span>（多選題）</p>
+					<p><table  style="font-size:15px">
+						<tr>
+							<td><input type="checkbox" id="pic_1" name="checkbox" /></td>
+							<td style="width:450px"><div onclick="if($('#pic_1').attr('checked')){$('#pic_1').removeAttr('checked')}else{$('#pic_1').attr('checked','checked')}">
+								<span data-if="type==1"><span data-if="turns[0]==1"><code><var>num*5</var>+<var>num*5</var>+<var>num*5</var></code></span><span data-if="turns[0]==2"><code><var>num*3</var>+<var>num*3</var>+<var>num*3</var>+<var>num*3</var>+<var>num*3</var></code></span><span data-if="turns[0]==3"><code><var>num*3</var>+<var>num*5</var></code></span>
+								<span data-if="turns[0]==4"><code><var>num*3</var>+<var>num*3</var>+<var>num*3</var></code></span><span data-if="turns[0]==5"><code><var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var></code></span></span>
+								<span data-if="type==2"><span data-if="turns[0]==1"><code><var>num*5</var>+<var>num*5</var></code></span><span data-if="turns[0]==2"><code><var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[0]==3"><code><var>num*2</var>+<var>num*5</var></code></span>
+								<span data-if="turns[0]==4"><code><var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[0]==5"><code><var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var></code></span></span>
+								<span data-if="type==3"><span data-if="turns[0]==1"><code><var>num*4</var>+<var>num*4</var></code></span><span data-if="turns[0]==2"><code><var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[0]==3"><code><var>num*2</var>+<var>num*4</var></code></span>
+								<span data-if="turns[0]==4"><code><var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[0]==5"><code><var>num*4</var>+<var>num*4</var>+<var>num*4</var>+<var>num*4</var></code></span></span>
+							</div></td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" id="pic_2" name="checkbox" /></td>
+							<td style="width:450px"><div onclick="if($('#pic_2').attr('checked')){$('#pic_2').removeAttr('checked')}else{$('#pic_2').attr('checked','checked')}">
+								<span data-if="type==1"><span data-if="turns[1]==1"><code><var>num*5</var>+<var>num*5</var>+<var>num*5</var></code></span><span data-if="turns[1]==2"><code><var>num*3</var>+<var>num*3</var>+<var>num*3</var>+<var>num*3</var>+<var>num*3</var></code></span><span data-if="turns[1]==3"><code><var>num*3</var>+<var>num*5</var></code></span>
+								<span data-if="turns[1]==4"><code><var>num*3</var>+<var>num*3</var>+<var>num*3</var></code></span><span data-if="turns[1]==5"><code><var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var></code></span></span>
+								<span data-if="type==2"><span data-if="turns[1]==1"><code><var>num*5</var>+<var>num*5</var></code></span><span data-if="turns[1]==2"><code><var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[1]==3"><code><var>num*2</var>+<var>num*5</var></code></span>
+								<span data-if="turns[1]==4"><code><var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[1]==5"><code><var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var></code></span></span>
+								<span data-if="type==3"><span data-if="turns[1]==1"><code><var>num*4</var>+<var>num*4</var></code></span><span data-if="turns[1]==2"><code><var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[1]==3"><code><var>num*2</var>+<var>num*4</var></code></span>
+								<span data-if="turns[1]==4"><code><var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[1]==5"><code><var>num*4</var>+<var>num*4</var>+<var>num*4</var>+<var>num*4</var></code></span></span>
+							</div></td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" id="pic_3" name="checkbox" /></td>
+							<td style="width:450px"><div onclick="if($('#pic_3').attr('checked')){$('#pic_3').removeAttr('checked')}else{$('#pic_3').attr('checked','checked')}">
+								<span data-if="type==1"><span data-if="turns[2]==1"><code><var>num*5</var>+<var>num*5</var>+<var>num*5</var></code></span><span data-if="turns[2]==2"><code><var>num*3</var>+<var>num*3</var>+<var>num*3</var>+<var>num*3</var>+<var>num*3</var></code></span><span data-if="turns[2]==3"><code><var>num*3</var>+<var>num*5</var></code></span>
+								<span data-if="turns[2]==4"><code><var>num*3</var>+<var>num*3</var>+<var>num*3</var></code></span><span data-if="turns[2]==5"><code><var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var></code></span></span>
+								<span data-if="type==2"><span data-if="turns[2]==1"><code><var>num*5</var>+<var>num*5</var></code></span><span data-if="turns[2]==2"><code><var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[2]==3"><code><var>num*2</var>+<var>num*5</var></code></span>
+								<span data-if="turns[2]==4"><code><var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[2]==5"><code><var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var></code></span></span>
+								<span data-if="type==3"><span data-if="turns[2]==1"><code><var>num*4</var>+<var>num*4</var></code></span><span data-if="turns[2]==2"><code><var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[2]==3"><code><var>num*2</var>+<var>num*4</var></code></span>
+								<span data-if="turns[2]==4"><code><var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[2]==5"><code><var>num*4</var>+<var>num*4</var>+<var>num*4</var>+<var>num*4</var></code></span></span>
+							</div></td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" id="pic_4" name="checkbox" /></td>
+							<td style="width:450px"><div onclick="if($('#pic_4').attr('checked')){$('#pic_4').removeAttr('checked')}else{$('#pic_4').attr('checked','checked')}">
+								<span data-if="type==1"><span data-if="turns[3]==1"><code><var>num*5</var>+<var>num*5</var>+<var>num*5</var></code></span><span data-if="turns[3]==2"><code><var>num*3</var>+<var>num*3</var>+<var>num*3</var>+<var>num*3</var>+<var>num*3</var></code></span><span data-if="turns[3]==3"><code><var>num*3</var>+<var>num*5</var></code></span>
+								<span data-if="turns[3]==4"><code><var>num*3</var>+<var>num*3</var>+<var>num*3</var></code></span><span data-if="turns[3]==5"><code><var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var></code></span></span>
+								<span data-if="type==2"><span data-if="turns[3]==1"><code><var>num*5</var>+<var>num*5</var></code></span><span data-if="turns[3]==2"><code><var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[3]==3"><code><var>num*2</var>+<var>num*5</var></code></span>
+								<span data-if="turns[3]==4"><code><var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[3]==5"><code><var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var></code></span></span>
+								<span data-if="type==3"><span data-if="turns[3]==1"><code><var>num*4</var>+<var>num*4</var></code></span><span data-if="turns[3]==2"><code><var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[3]==3"><code><var>num*2</var>+<var>num*4</var></code></span>
+								<span data-if="turns[3]==4"><code><var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[3]==5"><code><var>num*4</var>+<var>num*4</var>+<var>num*4</var>+<var>num*4</var></code></span></span>
+							</div></td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" id="pic_5" name="checkbox" /></td>
+							<td style="width:450px"><div onclick="if($('#pic_5').attr('checked')){$('#pic_5').removeAttr('checked')}else{$('#pic_5').attr('checked','checked')}">
+								<span data-if="type==1"><span data-if="turns[4]==1"><code><var>num*5</var>+<var>num*5</var>+<var>num*5</var></code></span><span data-if="turns[4]==2"><code><var>num*3</var>+<var>num*3</var>+<var>num*3</var>+<var>num*3</var>+<var>num*3</var></code></span><span data-if="turns[4]==3"><code><var>num*3</var>+<var>num*5</var></code></span>
+								<span data-if="turns[4]==4"><code><var>num*3</var>+<var>num*3</var>+<var>num*3</var></code></span><span data-if="turns[4]==5"><code><var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var></code></span></span>
+								<span data-if="type==2"><span data-if="turns[4]==1"><code><var>num*5</var>+<var>num*5</var></code></span><span data-if="turns[4]==2"><code><var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[4]==3"><code><var>num*2</var>+<var>num*5</var></code></span>
+								<span data-if="turns[4]==4"><code><var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[4]==5"><code><var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var>+<var>num*5</var></code></span></span>
+								<span data-if="type==3"><span data-if="turns[4]==1"><code><var>num*4</var>+<var>num*4</var></code></span><span data-if="turns[4]==2"><code><var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[4]==3"><code><var>num*2</var>+<var>num*4</var></code></span>
+								<span data-if="turns[4]==4"><code><var>num*2</var>+<var>num*2</var></code></span><span data-if="turns[4]==5"><code><var>num*4</var>+<var>num*4</var>+<var>num*4</var>+<var>num*4</var></code></span></span>
+							</div></td>
+						</tr>
+					</table></P>
+					<p><table class="nLimit">
+						<tr style="border-bottom:solid 2px #D0D0D0;">
+							<th>&nbsp;</th><th><span data-if="type!=3">週一</span><span data-if="type==3">練劍</span></th><th><span data-if="type!=3">週二</span><span data-if="type==3">分身術</span></th><th><span data-if="type!=3">週三</span><span data-if="type==3">結手印</span></th><th><span data-if="type!=3">週四</span><span data-if="type==3">體術</span></th><th data-if="type!=3">週五</th>
+						</tr>
+						<tr style="background:#F0F0F0">
+							<td><span data-if="type==1">家人</span><span data-if="type==2">分數題</span><span data-if="type==3">第 <code>1</code> 個禮拜</span></td><td><var>num</var></td><td><var>num</var></td><td><var>num</var></td><td><var>num</var></td><td data-if="type!=3"><var>num</var></td>
+						</tr>
+						<tr>
+							<td><span data-if="type==1">學校</span><span data-if="type==2">應用題</span><span data-if="type==3">第 <code>2</code> 個禮拜</span></td><td><var>num</var></td><td><var>num</var></td><td><var>num</var></td><td><var>num</var></td><td data-if="type!=3"><var>num</var></td>
+						</tr>
+						<tr style="background:#F0F0F0" data-if="type==1">
+							<td>個人</td><td><var>num</var></td><td><var>num</var></td><td><var>num</var></td><td><var>num</var></td><td><var>num</var></td>
+						</tr>
+					</table></p>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>選擇所有正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">
+							(function(){
+								var chk_value =[];    
+								$('input[name="checkbox"]:checked').each(function(){    
+									chk_value.push($(this).val());    
+								});
+								return chk_value;
+							})()
+						</div>
+						<div class="validator-function">
+							if(guess.length==0){
+								return "";
+							}
+							if(guess.length!=sum){
+								return false;
+							}
+							var trueAns = 0;
+							for(var i = 0;i&lt;guess.length;i++){
+								if(guess[i]=='true'){
+									trueAns++;
+								}
+							}
+							if(trueAns==sum){
+								return true;
+							}					
+						</div>
+					</div>
+				</div>
+				<div class="hints">
+					<div>
+						<p><span data-if="type==1">我們可以把上週每天寫的日記加起來，寫成：</span><span data-if="type==2">我們可以把上週每天做的練習題加起來，寫成：</span><span data-if="type==3">我們可以把練習每項忍術的時間加起来，寫成：</span></p>
+						<p><span data-if="type==1"><font class="hint_red"><code><var>num*3</var></code></font><code>+</code><font class="hint_blue"><code><var>num*3</var></code></font><code>+</code><font class="hint_green"><code><var>num*3</var></code></font><code>+</code><font class="hint_orange"><code><var>num*3</var></code></font><code>+</code><font class="hint_purple"><code><var>num*3</var></code></font></span>
+						<span data-if="type==2"><font class="hint_red"><code><var>num*2</var></code></font><code>+</code><font class="hint_blue"><code><var>num*2</var></code></font><code>+</code><font class="hint_green"><code><var>num*2</var></code></font><code>+</code><font class="hint_orange"><code><var>num*2</var></code></font><code>+</code><font class="hint_purple"><code><var>num*2</var></code></font></span>
+						<span data-if="type==3"><font class="hint_red"><code><var>num*2</var></code></font><code>+</code><font class="hint_blue"><code><var>num*2</var></code></font><code>+</code><font class="hint_green"><code><var>num*2</var></code></font><code>+</code><font class="hint_orange"><code><var>num*2</var></code></font></span></p>
+						<p><table class="nLimit">
+							<tr style="border-bottom:solid 2px #D0D0D0;">
+								<th>&nbsp;</th><th><span data-if="type!=3">週一</span><span data-if="type==3">練劍</span></th><th><span data-if="type!=3">週二</span><span data-if="type==3">分身術</span></th><th><span data-if="type!=3">週三</span><span data-if="type==3">結手印</span></th><th><span data-if="type!=3">週四</span><span data-if="type==3">體術</span></th><th data-if="type!=3">週五</th><th>總共</th>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td><span data-if="type==1">家人</span><span data-if="type==2">分數題</span><span data-if="type==3">第 <code>1</code> 個禮拜</span></td><td><font class="hint_red"><var>num</var></font></td><td><font class="hint_blue"><var>num</var></font></td><td><font class="hint_green"><var>num</var></font></td><td><font class="hint_orange"><var>num</var></font></td><td data-if="type!=3"><font class="hint_purple"><var>num</var></font></td><td></td>
+							</tr>
+							<tr>
+								<td><span data-if="type==1">學校</span><span data-if="type==2">應用題</span><span data-if="type==3">第 <code>2</code> 個禮拜</span></td><td><font class="hint_red"><var>num</var></font></td><td><font class="hint_blue"><var>num</var></font></td><td><font class="hint_green"><var>num</var></font></td><td><font class="hint_orange"><var>num</var></font></td><td data-if="type!=3"><font class="hint_purple"><var>num</var></font></td><td></td>
+							</tr>
+							<tr style="background:#F0F0F0" data-if="type==1">
+								<td>個人</td><td><font class="hint_red"><var>num</var></font></td><td><font class="hint_blue"><var>num</var></font></td><td><font class="hint_green"><var>num</var></font></td><td><font class="hint_orange"><var>num</var></font></td><td><font class="hint_purple"><var>num</var></font></td><td></td>
+							</tr>
+							<tr data-if="type==1">
+								<td>總共</td><td><font class="hint_red"><code><var>num*3</var></code></font></td><td><font class="hint_blue"><code><var>num*3</var></code></font></td><td><font class="hint_green"><code><var>num*3</var></code></font></td><td><font class="hint_orange"><code><var>num*3</var></code></font></td><td><font class="hint_purple"><code><var>num*3</var></code></font></td><td><code><var>total_1</var></code></td>
+							</tr>
+							<tr style="background:#F0F0F0" data-if="type!=1">
+								<td>總共</td><td><font class="hint_red"><code><var>num*2</var></code></font></td><td><font class="hint_blue"><code><var>num*2</var></code></font></td><td><font class="hint_green"><code><var>num*2</var></code></font></td><td><font class="hint_orange"><code><var>num*2</var></code></font></td><td data-if="type==2"><font class="hint_purple"><code><var>num*2</var></code></font></td><td><span data-if="type==2"><code><var>total_2</var></code></span><span data-if="type==3"><code><var>total_3</var></code></span></td>
+							</tr>
+						</table></p>
+					</div>
+					<div>
+						<p><span data-if="type==1">或者我們也可以把上週同類日記加起来，寫成：</span><span data-if="type==2">或者我們也可以把上週不同練習題的時間加起来，寫成：</span><span data-if="type==3">或者我們也可以把每周練習忍術的時間加起来，寫成：</span></p>
+						<p><span data-if="type==1"><font class="hint_red"><code><var>num*5</var></code></font><code>+</code><font class="hint_blue"><code><var>num*5</var></code></font><code>+</code><font class="hint_green"><code><var>num*5</var></code></font></span>
+						<span data-if="type==2"><font class="hint_red"><code><var>num*5</var></code></font><code>+</code><font class="hint_blue"><code><var>num*5</var></code></font></span>
+						<span data-if="type==3"><font class="hint_red"><code><var>num*4</var></code></font><code>+</code><font class="hint_blue"><code><var>num*4</var></code></font></span></p>
+						<p><table class="nLimit">
+							<tr style="border-bottom:solid 2px #D0D0D0;">
+								<th>&nbsp;</th><th><span data-if="type!=3">週一</span><span data-if="type==3">練劍</span></th><th><span data-if="type!=3">週二</span><span data-if="type==3">分身術</span></th><th><span data-if="type!=3">週三</span><span data-if="type==3">結手印</span></th><th><span data-if="type!=3">週四</span><span data-if="type==3">體術</span></th><th data-if="type!=3">週五</th><th>總共</th>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td><span data-if="type==1">家人</span><span data-if="type==2">分數題</span><span data-if="type==3">第 <code>1</code> 個禮拜</span></td><td><font class="hint_red"><var>num</var></font></td><td><font class="hint_red"><var>num</var></font></td><td><font class="hint_red"><var>num</var></font></td><td><font class="hint_red"><var>num</var></font></td><td data-if="type!=3"><font class="hint_red"><var>num</var></font></td><td><font class="hint_red"><span data-if="type!=3"><code><var>num*5</var></code></span><span data-if="type==3"><code><var>num*4</var></code></span></font></td>
+							</tr>
+							<tr>
+								<td><span data-if="type==1">學校</span><span data-if="type==2">應用題</span><span data-if="type==3">第 <code>2</code> 個禮拜</span></td><td><font class="hint_blue"><var>num</var></font></td><td><font class="hint_blue"><var>num</var></font></td><td><font class="hint_blue"><var>num</var></font></td><td><font class="hint_blue"><var>num</var></font></td><td data-if="type!=3"><font class="hint_blue"><var>num</var></font></td><td><font class="hint_blue"><span data-if="type!=3"><code><var>num*5</var></code></span><span data-if="type==3"><code><var>num*4</var></code></span></font></td>
+							</tr>
+							<tr style="background:#F0F0F0" data-if="type==1">
+								<td>個人</td><td><font class="hint_green"><var>num</var></font></td><td><font class="hint_green"><var>num</var></font></td><td><font class="hint_green"><var>num</var></font></td><td><font class="hint_green"><var>num</var></font></td><td><font class="hint_green"><var>num</var></font></td><td><font class="hint_green"><code><var>num*5</var></code></font></td>
+							</tr>
+							<tr data-if="type==1">
+								<td>總共</td><td></td><td></td><td></td><td></td><td></td><td><code><var>total_1</var></code></td>
+							</tr>
+							<tr style="background:#F0F0F0" data-if="type!=1">
+								<td>總共</td><td></td><td></td><td></td><td></td><td data-if="type==2"></td><td><span data-if="type==2"><code><var>total_2</var></code></span><span data-if="type==3"><code><var>total_3</var></code></span></td>
+							</tr>
+						</table></p>
+					</div>
+					<p><span data-if="type==1">以下選項可以代表羅賓在上個禮拜所寫的總日記篇數： <br /><code class="hint_pink"><var>num*3</var>+<var>num*3</var>+<var>num*3</var>+<var>num*3</var>+<var>num*3</var></code> 和 <code class="hint_pink"><var>num*5</var>+<var>num*5</var>+<var>num*5</var></code> 。</span>
+					<span data-if="type==2">以下選項可以代表喬巴上個禮拜所做的總題數： <br /><code class="hint_pink"><var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var></code> 和 <code class="hint_pink"><var>num*5</var>+<var>num*5</var></code> 。</span>
+					<span data-if="type==3">以下選項可以代表小櫻兩個禮拜間的總練習時間： <br /><code class="hint_pink"><var>num*2</var>+<var>num*2</var>+<var>num*2</var>+<var>num*2</var></code> 和 <code class="hint_pink"><var>num*4</var>+<var>num*4</var></code>。</span></p>
+				</div>
+			</div>
+		</div>
+    </div>
+</body>
+</html>

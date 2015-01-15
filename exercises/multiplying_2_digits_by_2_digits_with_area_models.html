@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>二位數乘以二位數應用</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="multiplying">
+		<div class="vars">
+			<var id="L1">randRange(5,8)*10</var>
+			<var id="L2">randRange(5,8)</var>
+			<var id="L">L1+L2</var>
+			<var id="K1">randRange(2,4)*10</var>
+			<var id="K2">randRange(5,8)</var>
+			<var id="K">K1+K2</var>
+			<var id="A">floor(L/10)*floor(K/10)*100</var>
+			<var id="B">(L%10)*floor(K/10)*10</var>
+			<var id="C">floor(L/10)*10*(K%10)</var>
+			<var id="D">(L%10)*(K%10)</var>
+			<var id="S">A+B+C+D</var>
+		</div>
+		<p class="question">
+			有 <code>1</code> 個矩形，長為 <code><var>L</var></code> ，寬為 <code><var>K</var></code> ，那麼這個矩形的面積是多少？
+		</p>
+		<div class="graphie" id="area">
+			init({ range: [[-1, 11], [-1, (K/L).toFixed(2)*10+1]], scale: 30 });
+			path([[0, 0], [10, 0], [10, (K/L).toFixed(2)*10], [0, (K/L).toFixed(2)*10], true],
+				{ stroke: BLUE, fill: "#eee" });
+			line([floor(L/10)/L*100, 0],[floor(L/10)/L*100,(K/L).toFixed(2)*10], 
+				{ stroke: BLUE, fill: "#eee" });
+			line([0, (1-floor(K/10)*10/K)*(K/L).toFixed(2)*10],[10, (1-floor(K/10)*10/K)*(K/L).toFixed(2)*10], 
+				{ stroke: BLUE, fill: "#eee" });				
+			label([floor(L/10)/L*50, (1-floor(K/10)*10/K)*(K/L).toFixed(2)*5], "\\small{s3}", "center");
+			label([floor(L/10)/L*50, 0], floor(L/10)*10, "below");			
+			label([floor(L/10)/L*50+5, (1-floor(K/10)*10/K)*(K/L).toFixed(2)*5], "\\small{s4}", "center");
+			label([floor(L/10)/L*50+5, 0], L%10, "below");			
+			label([5+floor(L/10)/L*50, (1-floor(K/10)*10/K)*(K/L).toFixed(2)*5+(K/L).toFixed(2)*5], "\\small{s2}", "center");
+			label([0, (K/L).toFixed(2)*5+(1-floor(K/10)*10/K)*(K/L).toFixed(2)*5], floor(K/10)*10, "left");			
+			label([floor(L/10)/L*50, (1-floor(K/10)*10/K)*(K/L).toFixed(2)*5+(K/L).toFixed(2)*5], "\\small{s1}", "center");
+			label([0, (1-floor(K/10)*10/K)*(K/L).toFixed(2)*5], K%10, "left");
+		</div>
+		<div class="solution" data-forms="integer"><var>S</var></div>
+		<div class="hints">
+			<p>如上圖，矩形可以分為 <code>S1</code>, <code>S2</code>, <code>S3</code>, <code>S4</code> 四個部分，其面積為四個部分面積的和。</p>
+			<div>
+				<p><code>S1 = <var>floor(L/10)*10</var>\times<var>floor(K/10)*10</var> = <var>A</var></code></p>
+				<p><code>S2 = <var>L%10</var>\times<var>floor(K/10)*10</var> = <var>B</var></code></p>
+				<p><code>S3 = <var>floor(L/10)*10</var>\times<var>K%10</var> = <var>C</var></code></p>
+				<p><code>S4 = <var>L%10</var>\times<var>K%10</var> = <var>D</var></code></p>
+			</div>
+			<P>矩形面積 <code>S = <var>A</var>+<var>B</var>+<var>C</var>+<var>D</var> = <var>S</var></code></P>
+			<P>即 <code>S = <var>L</var>\times<var>K</var> = </code> <code class="hint_pink"><var>S</var></code></P>
+		</div>	
+	</div>
+</div>
+</div>
+</body>
+</html>
