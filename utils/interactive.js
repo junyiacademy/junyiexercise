@@ -1723,6 +1723,18 @@ $.extend(KhanUtil, {
 });
 
 
+function DrawInteractiveBoundry(graph) {
+    // Draw the light-gray boundary of the graphie.
+    var xrange = graph.range[0];
+    var yrange = graph.range[1];
+    graph.path([[xrange[0], yrange[0]],
+                [xrange[0], yrange[1]],
+                [xrange[1], yrange[1]],
+                [xrange[1], yrange[0]],
+                [xrange[0], yrange[0]]], {stroke: "#BBBBBB"});
+}
+
+
 function Protractor(center) {
     var graph = KhanUtil.currentGraph;
     this.set = graph.raphael.set();
@@ -1735,7 +1747,7 @@ function Protractor(center) {
     var r = 8.05;
     var imgPos = graph.scalePoint([this.cx - r, this.cy + r - 0.225]);
     this.set.push(graph.mouselayer.image(Khan.urlBase + "images/protractor.png", imgPos[0], imgPos[1], 322, 161));
-
+    DrawInteractiveBoundry(graph);
 
     // Customized polar coordinate thingie to make it easier to draw the double-headed arrow thing.
     // angle is what you'd expect -- use that big protractor on your screen :)
@@ -1902,6 +1914,7 @@ function Protractor(center) {
 
     this.set.attr({ opacity: 0.5 });
     this.makeTranslatable();
+    this.rotateTo(0);
     return this;
 }
 function Triangleruler(center) {
@@ -1917,6 +1930,7 @@ function Triangleruler(center) {
     var imgPos = graph.scalePoint([this.cx - r, this.cy + r - 0.225]);
     this.set.push(graph.mouselayer.image(Khan.urlBase + "images/triangleruler.png", imgPos[0], imgPos[1], 322, 161));
 
+    DrawInteractiveBoundry(graph)
 
     // Customized polar coordinate thingie to make it easier to draw the double-headed arrow thing.
     // angle is what you'd expect -- use that big protractor on your screen :)
@@ -2083,5 +2097,6 @@ function Triangleruler(center) {
 
     this.set.attr({ opacity: 0.5 });
     this.makeTranslatable();
+    this.rotateTo(0);
     return this;
 }
