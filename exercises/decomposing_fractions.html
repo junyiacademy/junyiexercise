@@ -60,10 +60,24 @@
     <div class="exercise">
     <div class="problems">
         <div id="case1">
-            <div class="vars">			               
-				<var id="number2">randRange(2,15)</var>
+            <div class="vars" data-ensure="getGCD(number2,number1)==1">			               
+				<var id="number2">randRangeExclude(2,19,[3,5,15,18])</var>
 				<var id="count">randRange(2,3)</var>
-				<var id="num1">randRangeUnique(4,15,count)</var>				
+				<var id="num1">
+						(function(){
+							while(1){
+								var num=randRangeUnique(4,19,count);
+								if(count==2){
+								if((getGCD(number2,num[0])==1)&&getGCD(number2,num[1])==1){
+									return num;
+								}}
+								if(count==3){
+								if(getGCD(number2,num[0])==1&&getGCD(number2,num[1])==1&&getGCD(number2,num[2])==1){
+									return num;
+								}}
+							}
+						})()
+					</var>				
 				<var id="number1">(function(){
 						if(count==2)
 							return num1[0]+num1[1];
@@ -73,8 +87,11 @@
 						}
 						})()</var>
 				<var id="num2">(function(){
-					var a=randRange(1,3);
-					return [number1-a,number1+a];
+					var a=randFromArray([1,3]);
+					if(number1%2==0){
+					return [number1-a,number1+a];}
+					if(number1%2!=0){
+					return [number1+2,number1-2];}
 						})()</var>
 				<var id="change2">(function(){
 						var shape=[];
@@ -126,7 +143,7 @@
 							<td>
 								<input type="checkbox" name="checkbox" id="pic_5">
 							</td>
-							<td><div style="width:450px;" onclick="if($('#pic_5').attr('checked')){$('#pic_3').removeAttr('checked')}else{$('#pic_5').attr('checked','checked')}"><code>\dfrac{<var>change2[4]</var>}{<var>number2</var>} </code>
+							<td><div style="width:450px;" onclick="if($('#pic_5').attr('checked')){$('#pic_5').removeAttr('checked')}else{$('#pic_5').attr('checked','checked')}"><code>\dfrac{<var>change2[4]</var>}{<var>number2</var>} </code>
 							</div></td>
 						</tr>
 					</table>
@@ -180,15 +197,15 @@
 					
             <div class="hints">
 				<div>
-					<p>在選項中我們希望能夠找到分數相加在一起可以等於 <code>\dfrac{<var>number1</var>}{<var>number2</var>} </code> 的數，</p>
-					<p>當兩個分數擁有相同的分母 <code><var>number2</var></code> 時，分母部分在相加之後的和還是 <code><var>number2</var></code>  ，</p>
-					<p>要記住的是，分子部分在相加之後必須是兩個數的總和，即使分子相同。</p>
+					<p>在選項中，我們希望能夠找到，分數相加在一起，可以等於 <code>\dfrac{<var>number1</var>}{<var>number2</var>} </code> 的數，</p>
+					<p>當兩個分數，擁有相同的分母 <code><var>number2</var></code> 時，分母部分在相加之後的和還是 <code><var>number2</var></code> ，</p>
+					<p>要記住的是，分子部分在相加之後，必須是兩個數的總和，即使分子相同。</p>
 				</div>
-				<p>因為所有的分數都擁有相同的分母 <code><var>number2</var></code> ，所以我們只要在選項中勾選分子相加可以得到 <code><var>number1</var></code> 的數。</p>
+				<p>因為所有的分數，都擁有相同的分母 <code><var>number2</var></code> ，所以我們只要在選項中，勾選分子相加，可以得到 <code><var>number1</var></code> 的數。</p>
 				<div>
-					<p>在題目的選項中分子相加可以得到 <code><var>number1</var></code> 的是 <code><var>num1[0]</var></code> <span data-if="count==2">與</span><span data-if="count==3">、</span> <code><var>num1[1]</var></code> <span data-if="count==3">與</span> <code data-if="count==3"><var>num1[2]</var></code></p>
+					<p>在題目的選項中，分子相加可以得到 <code><var>number1</var></code> 的是 <code><var>num1[0]</var></code> <span data-if="count==2">與</span><span data-if="count==3">、</span> <code><var>num1[1]</var></code> <span data-if="count==3">與</span> <code data-if="count==3"><var>num1[2]</var></code></p>
 					<p><code><var>num1[0]</var> + <var>num1[1]</var></code> <span data-if="count==3"><code>+ <var>num1[2]</var></code></span> <code>= <var>number1</var> </code></p>
-					<p>而且，我們想要找到的分數擁有共同分母 <code><var>number2</var></code></p>
+					<p>而且，我們想要找到的分數，擁有共同分母 <code><var>number2</var></code></p>
 					<p><code>\dfrac{<var>num1[0]</var>}{<var>number2</var>}  + \dfrac{<var>num1[1]</var>}{<var>number2</var>}</code> <span data-if="count==3"><code>+ \dfrac{<var>num1[2]</var>}{<var>number2</var>}</code></span> <code>= \dfrac{<var>number1</var>}{<var>number2</var>} </code> </p>
 				</div>
 				<div>
@@ -199,7 +216,7 @@
         </div>
 		
 		<div id="case2">
-            <div class="vars">				
+            <div class="vars" data-ensure="getGCD(number2,number1)==1">				
 				<var id="num">randRangeUnique(5,10,2)</var>
 				<var id="number1">num[0]+num[1]</var>
 				<var id="number2">(function(){
@@ -230,19 +247,19 @@
 					})()</var>
 				<var id="data1">(function(){
 					var sp1=randRange(3,5);
-					var xx=randRange(1,4);
+					var xx=randRange(1,3);
 					var shape=[0,0,0,0,0,0];
 					if(number2&gt;number1){													
 							shape[1]=[a,number1-a];
 							shape[2]=[a,number1-a+1];
-							shape[3]=[num[0]-randRange(1,4),num[1]-randRange(1,4),randRange(1,4)];								
+							shape[3]=[num[0]-randRange(1,3),num[1]-randRange(1,3),randRange(1,3)];								
 							shape[4]=[num[0],num[1]-xx,xx];
 							shape[5]=[num[0]-xx,xx,num[1]];
 							return shuffle([shape[sp],shape[sp1]]);}
 					if(number2&lt;number1){
 							shape[1]=[a,number1-a];
 							shape[2]=[a,number2+a];
-							shape[3]=[num[0]-randRange(1,4),num[1]-randRange(1,4),randRange(1,4)];								
+							shape[3]=[num[0]-randRange(1,3),num[1]-randRange(1,3),randRange(1,3)];								
 							shape[4]=[num[0],num[1]-xx,xx];
 							shape[5]=[num[0]-xx,xx,num[1]];
 							return shuffle([shape[sp],shape[sp1]]);}
@@ -262,7 +279,7 @@
             </div>
 			<div class="question">
 				<div class="problem">
-					<p>下列哪些分數大於，等於或者是小於 <code>\dfrac{<var>number1</var>}{<var>number2</var>} </code>？</p>
+					<p>下列哪些分數大於，等於或者是小於 <code>\dfrac{<var>number1</var>}{<var>number2</var>} </code> ？</p>
 					<table style="text-align:center;vertical-align:middle;">
 					<tr style="bottom;border-bottom:solid 1px black"><td></td><td width="100px"><code>&gt; \frac{<var>number1</var>}{<var>number2</var>} </code></td><td width="100px"><code>= \frac{<var>number1</var>}{<var>number2</var>} </code></td><td width="100px"><code>&lt;\frac{<var>number1</var>}{<var>number2</var>} </code></td></tr>
 					<tr style="background:#F0F0F0;"><td style="text-align:left;"><code>\frac{<var>data1[0][0]</var>}{<var>number2</var>} +\frac{<var>data1[0][1]</var>}{<var>number2</var>}</code><span data-if="data1[0].length==3"><code>+ \frac{<var>data1[0][2]</var>}{<var>number2</var>} </code></span></td>
@@ -303,19 +320,19 @@
             </div>
             <div class="hints">
 				<div>
-					<p>我們可以將每一個分數想成一份披薩被分成了相等的 <code><var>number2</var></code> 片，每一片代表著 <code>\dfrac{1}{<var>number2</var>}</code> 個披薩，</p>
+					<p>我們可以將每一個分數，想成一份披薩，被分成了相等的 <code><var>number2</var></code> 片，每一片代表著 <code>\dfrac{1}{<var>number2</var>}</code> 個披薩，</p>
 					<p>假如 <code>\dfrac{<var>a</var>}{<var>number2</var>}</code> 代表 <code><var>a</var></code> 片時，
-					那麼 <code>\dfrac{<var>b</var>}{<var>number2</var>}</code>就意味著 <code><var>b</var></code> 片，
-					這樣我們就可以知道將這兩個分數相加之後有多少片披薩：<code><var>a</var> + <var>b</var> = <var>a+b</var></code></p>
+					那麼 <code>\dfrac{<var>b</var>}{<var>number2</var>}</code> 就意味著 <code><var>b</var></code> 片，
+					這樣我們就可以知道，將這兩個分數相加之後，有多少片披薩：<code><var>a</var> + <var>b</var> = <var>a+b</var></code></p>
 					<p>分數形式會是： <code>\dfrac{<var>a</var>}{<var>number2</var>} +  \dfrac{<var>b</var>}{<var>number2</var>} = \dfrac{<var>a+b</var>}{<var>number2</var>}</code></p>
 					<div class="graphie" data-if="a1==1">
                             init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
                             piechart1([a, b,number2-a-b], ["#e00", "#4169E1","#999"], 3);
                     </div>				
 				</div>
-				<p>以上原因也解釋了為何當我們將兩個擁有共同分母的分數相加時，我們可以將分母保留</p>
+				<p>以上原因，也解釋了為何當我們，將兩個擁有共同分母的分數相加時，我們可以將分母保留</p>
 				<div data-if="a1==2">
-					<p>那麼要是我們遇到 <code>\dfrac{<var>number1</var>}{<var>number2</var>}</code> 這種分子大於分母的情況時該怎麼辦呢？這邊我們可以再想像成擁有 <code>2</code> 個披薩，一個用分數表示成 <code>\dfrac{<var>number2</var>}{<var>number2</var>}</code> 片披薩也就是完整的一個披薩的意思，另一個只有 <code>\dfrac{<var>number1-number2</var>}{<var>number2</var>}</code> 片．這也是為什麼我們可以將 <code>\dfrac{<var>number1</var>}{<var>number2</var>}</code> 寫成 <code>1</code> 又<code>\dfrac{<var>number1-number2</var>}{<var>number2</var>}</code></p>
+					<p>那麼要是我們遇到 <code>\dfrac{<var>number1</var>}{<var>number2</var>}</code> 這種分子大於分母的情況時，該怎麼辦呢？這邊我們可以再想像成擁有 <code>2</code> 個披薩，一個用分數表示成 <code>\dfrac{<var>number2</var>}{<var>number2</var>}</code> 片披薩，也就是完整的一個披薩的意思，另一個只有 <code>\dfrac{<var>number1-number2</var>}{<var>number2</var>}</code> 片。這也是為什麼我們可以將 <code>\dfrac{<var>number1</var>}{<var>number2</var>}</code> 寫成 <code>1</code> 又<code>\dfrac{<var>number1-number2</var>}{<var>number2</var>}</code></p>
 					<table><tr><td>
 					<div class="graphie"id="grap1">
 								init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
@@ -328,12 +345,12 @@
 					 </tr>
 					 </table>
 				</div>
-				<div><p>我們借由將所有的分子相加得到它的總和</p>
+				<div><p>我們藉由將所有的分子，相加得到它的總和</p>
 					<p><code>\dfrac{<var>data1[0][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[0][1]</var>}{<var>number2</var>}</code><span data-if="data1[0].length==3"><code>+ \dfrac{<var>data1[0][2]</var>}{<var>number2</var>} </code></span><span data-if="data1[0].length==2"><code>= \dfrac{<var>data1[0][0]</var>+<var>data1[0][1]</var>}{<var>number2</var>}</code></span><span data-if="data1[0].length==3"><code>= \dfrac{<var>data1[0][0]</var>+<var>data1[0][1]</var>+<var>data1[0][2]</var>}{<var>number2</var>}</code></span><code>= \dfrac{<var>ans[0]</var>}{<var>number2</var>}</code></p>
 					<p><code>\dfrac{<var>data1[1][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[1][1]</var>}{<var>number2</var>}</code><span data-if="data1[1].length==3"><code>+ \dfrac{<var>data1[1][2]</var>}{<var>number2</var>} </code></span><span data-if="data1[1].length==2"><code>= \dfrac{<var>data1[1][0]</var>+<var>data1[1][1]</var>}{<var>number2</var>}</code></span><span data-if="data1[1].length==3"><code>= \dfrac{<var>data1[1][0]</var>+<var>data1[1][1]</var>+<var>data1[1][2]</var>}{<var>number2</var>}</code></span><code>= \dfrac{<var>ans[1]</var>}{<var>number2</var>}</code></p>
 				</div>
 				<div>
-					<p>所以正確的選項是:</p>
+					<p>所以正確的選項是：</p>
 					<p><code>\dfrac{<var>data1[0][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[0][1]</var>}{<var>number2</var>}</code><span data-if="data1[0].length==3"><code>+ \dfrac{<var>data1[0][2]</var>}{<var>number2</var>} </code></span> <span class="hint_pink" data-if="ans[0]==number1"><code>=</code></span><span class="hint_pink" data-if="ans[0]&gt;number1"><code>&gt;</code></span><span class="hint_pink" data-if="ans[0]&lt;number1"><code>&lt;</code></span> <code class="hint_pink">\dfrac{<var>number1</var>}{<var>number2</var>}</code></p>
 					<p><code>\dfrac{<var>data1[1][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[1][1]</var>}{<var>number2</var>}</code><span data-if="data1[1].length==3"><code>+ \dfrac{<var>data1[1][2]</var>}{<var>number2</var>} </code></span> <span class="hint_pink" data-if="ans[1]==number1"><code>=</code></span><span class="hint_pink" data-if="ans[1]&gt;number1"><code>&gt;</code></span><span class="hint_pink" data-if="ans[1]&lt;number1"><code>&lt;</code></span> <code class="hint_pink">\dfrac{<var>number1</var>}{<var>number2</var>}</code></p>
 				</div>
@@ -341,7 +358,7 @@
         </div>	
 		
 		<div id="case3">
-            <div class="vars">				
+            <div class="vars" data-ensure="getGCD(number2,number1)==1">				
 				<var id="num">randRangeUnique(5,10,2)</var>
 				<var id="number1">num[0]+num[1]</var>
 				<var id="number2">(function(){
@@ -405,7 +422,7 @@
             </div>
 			<div class="question">
 				<div class="problem">
-					<p>下列哪些分數大於，等於或者是小於 <code>\dfrac{<var>number1</var>}{<var>number2</var>} </code>？</p>
+					<p>下列哪些分數大於，等於或者是小於 <code>\dfrac{<var>number1</var>}{<var>number2</var>} </code> ？</p>
 					<table style="text-align:center;vertical-align:middle;">
 					<tr style="bottom;border-bottom:solid 1px black"><td></td><td width="100px"><code>&gt; \frac{<var>number1</var>}{<var>number2</var>} </code></td><td width="100px"><code>= \frac{<var>number1</var>}{<var>number2</var>} </code></td><td width="100px"><code>&lt;\frac{<var>number1</var>}{<var>number2</var>} </code></td></tr>
 					<tr style="background:#F0F0F0;"><td style="text-align:left;"><code>\frac{<var>data1[0][0]</var>}{<var>number2</var>} +\frac{<var>data1[0][1]</var>}{<var>number2</var>} + \frac{<var>data1[0][2]</var>}{<var>number2</var>} </code><span data-if="data1[0].length==4"><code>+ \frac{<var>data1[0][3]</var>}{<var>number2</var>} </code></span></td>
@@ -446,19 +463,19 @@
             </div>
             <div class="hints">
 				<div>
-					<p>我們可以將每一個分數想成一份披薩被分成了相等的 <code><var>number2</var></code> 片，每一片代表著 <code>\dfrac{1}{<var>number2</var>}</code> 個披薩，</p>
+					<p>我們可以將每一個分數，想成一份披薩，被分成了相等的 <code><var>number2</var></code> 片，每一片代表著 <code>\dfrac{1}{<var>number2</var>}</code> 個披薩，</p>
 					<p>假如 <code>\dfrac{<var>a[0]</var>}{<var>number2</var>}</code> 代表 <code><var>a[0]</var></code> 片時，
 					那麼 <code>\dfrac{<var>b</var>}{<var>number2</var>}</code> 代表 <code><var>b</var></code> 片，<code>\dfrac{<var>a[1]</var>}{<var>number2</var>}</code>就意味著 <code><var>a[1]</var></code> 片，
-					這樣我們就可以知道將這三個分數相加之後有多少片披薩：<code><var>a[0]</var> + <var>b</var> + <var>a[1]</var> = <var>a[0]+b+a[1]</var></code></p>
+					這樣我們就可以知道，將這三個分數相加之後，有多少片披薩：<code><var>a[0]</var> + <var>b</var> + <var>a[1]</var> = <var>a[0]+b+a[1]</var></code></p>
 					<p>分數形式會是： <code>\dfrac{<var>a[0]</var>}{<var>number2</var>} +  \dfrac{<var>b</var>}{<var>number2</var>} + \dfrac{<var>a[1]</var>}{<var>number2</var>} = \dfrac{<var>a[0]+b+a[1]</var>}{<var>number2</var>}</code></p>
 					<div class="graphie" data-if="a1==1">
                             init({ range: [ [-4, 4], [-4, 4] ], scale: 25 });
                             piechart2([a[0], b,a[1],number2-a[0]-b-a[1]], ["#e00", "#4169E1","#115cee","#999"], 4);
                     </div>				
 				</div>
-				<p>以上原因也解釋了為何當我們將兩個擁有共同分母的分數相加時，我們可以將分母保留</p>
+				<p>以上原因，也解釋了為何當我們，將三個擁有共同分母的分數相加時，我們可以將分母保留</p>
 				<div data-if="a1==2">
-					<p>那麼要是我們遇到 <code>\dfrac{<var>number1</var>}{<var>number2</var>}</code> 這種分子大於分母的情況時該怎麼辦呢？這邊我們可以再想像成擁有 <code>2</code> 個披薩，一個用分數表示成 <code>\dfrac{<var>number2</var>}{<var>number2</var>}</code> 片披薩也就是完整的一個披薩的意思，另一個只有 <code>\dfrac{<var>number1-number2</var>}{<var>number2</var>}</code> 片．這也是為什麼我們可以將 <code>\dfrac{<var>number1</var>}{<var>number2</var>}</code> 寫成 <code>1</code> 又<code>\dfrac{<var>number1-number2</var>}{<var>number2</var>}</code></p>
+					<p>那麼要是我們遇到 <code>\dfrac{<var>number1</var>}{<var>number2</var>}</code> ，這種分子大於分母的情況時，該怎麼辦呢？這邊我們可以，再想像成擁有 <code>2</code> 個披薩，一個用分數表示成 <code>\dfrac{<var>number2</var>}{<var>number2</var>}</code> 片披薩，也就是完整的一個披薩的意思，另一個只有 <code>\dfrac{<var>number1-number2</var>}{<var>number2</var>}</code> 片。這也是為什麼，我們可以將 <code>\dfrac{<var>number1</var>}{<var>number2</var>}</code> 寫成 <code>1</code> 又<code>\dfrac{<var>number1-number2</var>}{<var>number2</var>}</code></p>
 					<table><tr><td>
 					<div class="graphie"id="grap1">
 								init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
@@ -471,12 +488,12 @@
 					 </tr>
 					 </table>
 				</div>
-				<div><p>我們借由將所有的分子相加得到它的總和</p>
+				<div><p>我們藉由將所有的分子相加得到它的總和</p>
 					<p><code>\dfrac{<var>data1[0][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[0][1]</var>}{<var>number2</var>} + \dfrac{<var>data1[0][2]</var>}{<var>number2</var>}</code><span data-if="data1[0].length==4"><code>+ \dfrac{<var>data1[0][3]</var>}{<var>number2</var>} </code></span><span data-if="data1[0].length==3"><code>= \dfrac{<var>data1[0][0]</var>+<var>data1[0][1]</var>+<var>data1[0][2]</var>}{<var>number2</var>}</code></span><span data-if="data1[0].length==4"><code>= \dfrac{<var>data1[0][0]</var>+<var>data1[0][1]</var>+<var>data1[0][2]</var>+<var>data1[0][3]</var>}{<var>number2</var>}</code></span><code>= \dfrac{<var>ans[0]</var>}{<var>number2</var>}</code></p>
 					<p><code>\dfrac{<var>data1[1][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[1][1]</var>}{<var>number2</var>} + \dfrac{<var>data1[1][2]</var>}{<var>number2</var>} </code><span data-if="data1[1].length==4"><code>+ \dfrac{<var>data1[1][3]</var>}{<var>number2</var>} </code></span><span data-if="data1[1].length==3"><code>= \dfrac{<var>data1[1][0]</var>+<var>data1[1][1]</var>+<var>data1[1][2]</var>}{<var>number2</var>} </code></span><span data-if="data1[1].length==4"><code>= \dfrac{<var>data1[1][0]</var>+<var>data1[1][1]</var>+<var>data1[1][2]</var>+<var>data1[1][3]</var>}{<var>number2</var>} </code></span><code>= \dfrac{<var>ans[1]</var>}{<var>number2</var>}</code></p>
 				</div>
 				<div>
-					<p>所以正確的選項是:</p>
+					<p>所以正確的選項是：</p>
 					<p><code>\dfrac{<var>data1[0][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[0][1]</var>}{<var>number2</var>} + \dfrac{<var>data1[0][2]</var>}{<var>number2</var>}</code><span data-if="data1[0].length==4"><code>+ \dfrac{<var>data1[0][3]</var>}{<var>number2</var>} </code></span><span class="hint_pink" data-if="ans[0]==number1"><code>=</code></span><span class="hint_pink" data-if="ans[0]&gt;number1"><code>&gt;</code></span><span class="hint_pink" data-if="ans[0]&lt;number1"><code>&lt;</code></span> <code class="hint_pink">\dfrac{<var>number1</var>}{<var>number2</var>}</code></p>
 					<p><code>\dfrac{<var>data1[1][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[1][1]</var>}{<var>number2</var>} + \dfrac{<var>data1[1][2]</var>}{<var>number2</var>} </code><span data-if="data1[1].length==4"><code>+ \dfrac{<var>data1[1][3]</var>}{<var>number2</var>} </code></span><span class="hint_pink" data-if="ans[1]==number1"><code>=</code></span><span class="hint_pink" data-if="ans[1]&gt;number1"><code>&gt;</code></span><span class="hint_pink" data-if="ans[1]&lt;number1"><code>&lt;</code></span> <code class="hint_pink">\dfrac{<var>number1</var>}{<var>number2</var>}</code></p>
 				</div>
