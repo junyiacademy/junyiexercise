@@ -598,7 +598,7 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
 
             graph.label([digitsDividend.length + 0.5, -2 * index],
                  "\\color{#6495ED}{" + total + "}"
-                + "\\text{ 是 }"
+                + "\\text{是}"
                  + divisor
                + "\\text{的幾倍?}", "right");
 
@@ -625,17 +625,11 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
             graph.label([index - product.length, -2 * index - 1] , "-\\vphantom{0}");
             graph.path([[index - product.length - 0.25, -2 * index - 1.5], [index + 0.5, -2 * index - 1.5]]);
 
-            graph.label([digitsDividend.length + 0.5, -2 * index - 1],
+           graph.label([digitsDividend.length + 0.5, -2 * index - 1],
                 "\\color{#6495ED}{" + value + "}"
                 + "\\div"
-                + divisor + "="
-                + "\\color{#28AE7B}{" + quotient + "}"
-                + "\\text{ 或 }"
-                + divisor
-                + "\\times"
-                + "\\color{#28AE7B}{" + quotient + "}"
-                + " = "
-                + "\\color{#FFA500}{" + (divisor * quotient) + "}", "right");
+                + divisor + " 的商是 "
+                + "\\color{#28AE7B}{" + quotient + "}", "right");
             index++;
             fShowFirstHalf = true;
         }
@@ -650,7 +644,7 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
         this.addDecimal();
         this.show();
         graph.label([digitsDividend.length, 1],
-                "\\text{Write in a decimal and a zero and continue dividing.}", "right");
+                "\\color{red}{\\small{\\text{將小數點寫上去並補上零之後繼續除}}}", "right");
     };
 
     this.getNumHints = function() {

@@ -332,14 +332,8 @@ $.extend(Khan.answerTypes, {
                         }
                     };
 
-                    var commas = function(text) {
-                        text = text.replace(/([\.,])/g, function(_, c) { return (c === "." ? "," : "."); });
-                        return normal(text);
-                    };
-
                     return [
-                        { value: normal(text), exact: true },
-                        { value: commas(text), exact: true }
+                        { value: normal(text), exact: true }
                     ];
                 },
                 example: (function() {

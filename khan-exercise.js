@@ -287,6 +287,11 @@ var Khan = (function() {
             link.rel = "stylesheet";
             link.href = urlBase + "css/khan-exercise.css";
             document.getElementsByTagName("head")[0].appendChild(link);
+
+            link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = urlBase + "css/grids.css";
+            document.getElementsByTagName("head")[0].appendChild(link);
         })();
     }
 
@@ -2080,6 +2085,8 @@ var Khan = (function() {
                 // Problem has been completed but pending data request being
                 // sent to server.
                 $(Khan).trigger("problemDone");
+                $("#solutionarea").unbind("keypress");
+                $("#solutionarea").unbind("keyup");
             }
 
             // Save the problem results to the server
@@ -2124,8 +2131,9 @@ var Khan = (function() {
                     $("#next-question-button")
                         .removeAttr("disabled")
                         .removeClass("buttonDisabled")
-                        .show()
-                        .focus();
+                        .show(10,function(){
+                            $(this).focus();
+                        });
                     $("#positive-reinforcement").show();
                 }
             } else {

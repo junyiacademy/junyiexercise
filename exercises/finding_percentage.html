@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>百分比例</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+       </style>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+				<var id="type">randFromArray([[1,"除以"],[2,"乘以"]])</var>
+				<var id="a">(function(){
+				if(type[0]==1)
+				{
+					var b=randFromArray([2,4,5]);	
+					return b;
+				}
+				if(type[0]==2)
+				{
+					var b=randRange(1,9);	
+					return b;
+				}				
+			})()</var>
+                <var id="number">(function(){
+				if(type[0]==1)
+				{	
+					return 100/a;
+				}
+				if(type[0]==2)
+				{
+					return 100*a;
+				}				
+			})()</var>
+				<var id="per">(function(){
+				if(type[0]==1)
+				{
+					if(a==2||a==4){
+						var c=randRange(1,9);	
+						var b=randFromArray([0,2,4,6,8]);	
+						return c*10+b;
+					}
+					if(a==5){
+						var c=randRange(1,9);	
+						var b=randFromArray([0,5]);	
+						return c*10+b;
+					}
+				}
+				if(type[0]==2)
+				{
+					return randRange(10,99);
+				}				
+			})()</var>
+				
+				<var id="ans">number*per/100</var>
+            </div>
+			<div class="problem">
+				<p><code><var>number</var></code> 的 <code><var>per</var>\%</code> 是多少？</p>
+			</div>
+				
+			 <div class="solution" data-forms="integer,decimal"><var>ans</var></div>
+					
+            <div class="hints">
+			<p>任何數的 <code><var>per</var>\%</code> 指將這個數分成 <code>100</code> 份然後拿走裏面的 <code><var>per</var></code> 份，</p>
+			<div>
+				<p>我們可以用比例來找出 <code><var>number</var></code> 的 <code><var>per</var>\%</code> 是多少？</p>
+				<p><code>\dfrac{\small{\color{#6495ED}{百分比}}}{100} = \dfrac{\small{\color{#FF00AF}{部份}}}{\small{\color{#28AE7B}{全部}}}</code>
+			</div>
+			<p>題中的已知條件是什麼？題目要求我們找什麼？</p>
+			<p>我們知道百分比是 <code><var>per</var></code> ， 請在心中仔細想一下 <code><var>number</var></code> 是指全部還是只是其中的一小部份？</p>
+			<div>
+				<p><code><var>number</var></code> 在這邊指全部, 所以題目要求我們找的是它的一小部份<code>（<var>per</var>\%）：</code></p>
+				<p><code>\dfrac{\color{#6495ED}{<var>per</var>}}{100}</code> <code>= </code><code>\dfrac{\small{\color{#FF00AF}{部份}}}{\color{#28AE7B}{<var>number</var>}}</code></p>
+			</div>
+			<div>
+				<p>假如我們將等號左邊分母與分子全部<var>type[1]</var> <code><var>a</var></code> ， 左右兩邊的式子就會完全相等：</p>
+				<p data-if="type[0]==1"><code>\dfrac{\color{#6495ED}{<var>per</var> \div <var>a</var>}}{100 \div  <var>a</var>} </code> <code>= </code><code> \dfrac{\small{\color{#FF00AF}{部份}}}{\color{#28AE7B}{<var>number</var>}}</code></p>	
+				<p data-if="type[0]==2"><code>\dfrac{\color{#6495ED}{<var>per</var> \times <var>a</var>}}{100 \times <var>a</var>} </code> <code>= </code><code> \dfrac{\small{\color{#FF00AF}{部份}}}{\color{#28AE7B}{<var>number</var>}}</code></p>
+			</div>
+			<div>
+				<p>接下來將上式計算：</p>
+				<p><code>\dfrac{\color{#6495ED}{<var>ans</var>}}{<var>number</var>} </code> <code>= </code><code> \dfrac{\small{\color{#FF00AF}{部份}}}{\color{#28AE7B}{<var>number</var>}}</code></p>
+				<p>得：部份 <code>= \color{#FF00AF}{<var>ans</var>}</code></p>
+			</div>
+			<p>所以我們知道 <code><var>number</var></code> 的 <code><var>per</var>\%</code>就是 <code class="hint_pink"><var>ans</var></code> 。</p>
+
+			</div>
+        </div>
+
+		
+
+	</div>
+	</div>
+</body>
+</html>
