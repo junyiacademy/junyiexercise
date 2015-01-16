@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>圖形的命名</title>
+    <script src="../khan-exercise.js"></script>
+	<script type="text/javascript">
+	 function loadImg(elem, url, count, width) {
+
+        var loimg = document.getElementById(elem);
+
+        var inner = "";
+
+        for (var i = 1; i <= count; i++) {
+
+            inner += "<img id=\"image" + elem + i + "\" width=" + width + "\" src="+url+">";
+
+        }
+
+        loimg.innerHTML += inner;
+
+    }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+		<div class="problems">		
+			<div id="case1">
+				<div class="vars">
+					<var id="shape_types">randFromArray([["正方形",1],["三角形",2],["長方形",3],["圓形",4]])</var>
+					<var id="name1">randFromArray(["ncookies1.png","nsqure.png","nz10.png","nphoto.jpg"])</var>
+					<var id="name2">randFromArray(["ruler.png","ntria2.png","ntria3.png","ntria5.png"])</var>
+					<var id="name3">randFromArray(["nplace.png","nrec.jpeg","nrec2.png","nbook.png","nmail.jpg"])</var>
+					<var id="name4">randFromArray(["ndisc1.png","ndisc2.png","nwatch1.png","50.png","nvideo.png","ncoin.png"])</var>
+					<var id="J">randRange(1,3)</var>
+					<var id="rightdata">
+                        (function(){
+							var shape=[]; 
+							switch(shape_types[1])
+								{
+								case 1:								
+									if(J==1){return shape=[name1,name2,name3];}
+									if(J==2){return shape=[name2,name1,name4];}
+									if(J==3){return shape=[name3,name4,name1];}
+									break;
+								case 2:
+									if(J==1){return shape=[name2,name1,name3];}
+									if(J==2){return shape=[name3,name2,name4];}
+									if(J==3){return shape=[name1,name4,name2];}
+									break;
+								case 3:
+									if(J==1){return shape=[name3,name4,name2];}
+									if(J==2){return shape=[name2,name3,name4];}
+									if(J==3){return shape=[name2,name4,name3];}
+									break;
+								case 4:
+									if(J==1){return shape=[name4,name1,name3];}
+									if(J==2){return shape=[name3,name4,name2];}
+									if(J==3){return shape=[name1,name2,name4];}
+									break;
+								}
+                        })()
+                    </var>
+					<var id="ans">
+						(function(){							
+							switch(J)
+							{
+							case 1:								
+								return rightdata[0];
+								break;
+							case 2:
+								return rightdata[1];
+								break;
+							case 3:
+								return rightdata[2];
+								break;
+							}
+                        })()
+					</var>
+					 <var id="data">
+                        (function(){							
+                           loadImg("grid1",Khan.urlBase+"images/"+rightdata[0],1,"50%");
+						   loadImg("grid2",Khan.urlBase+"images/"+rightdata[1],1,"50%");
+						   loadImg("grid3",Khan.urlBase+"images/"+rightdata[2],1,"50%");
+                        })()
+                    </var>
+				</div>
+				<div class="question">
+					<div class="problem">
+						<p>下列選項哪一個是<var>shape_types[0]</var>？</p>
+						<table>
+							<tr>
+								<td style="vertical-align:middle">
+									<input type="radio" name="c_1" id="pic_1" value="1">
+								</td>
+								<td onclick="$('#pic_1').attr('checked','checked')">					
+									<div id="grid1"></div>	
+								</td>
+							</tr>
+							<tr>
+								<td style="vertical-align:middle">
+									<input type="radio" name="c_1" id="pic_2"  value="2">
+								</td>
+								<td onclick="$('#pic_2').attr('checked','checked')">
+									<div id="grid2"></div>	
+								</td>
+							</tr>
+							<tr>
+								<td style="vertical-align:middle">
+									<input type="radio" name="c_1" id="pic_3"  value="3">
+								</td>
+								<td onclick="$('#pic_3').attr('checked','checked')">
+									<div id="grid3"></div>	
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="solution" data-type="multiple">
+					<p>請選擇正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">1</div>
+						<div class="validator-function">
+						   var bol1=false;
+							if($("#pic_1").attr("checked")!='checked' && $("#pic_2").attr("checked")!='checked'&& $("#pic_3").attr("checked")!='checked'){
+								return "";
+							}
+							if((document.getElementById("pic_1").checked&&document.getElementById("pic_1").value==J)||(document.getElementById("pic_2").checked&&document.getElementById("pic_2").value==J)||(document.getElementById("pic_3").checked&&document.getElementById("pic_3").value==J))
+							{
+								bol1=true;
+							}
+							return bol1;
+						</div>
+					</div>
+				</div>
+				<div class="hints">
+					<div>
+						<p>這個圖形才是<span class="hint_pink"><var>shape_types[0]</var></span>：</p>
+						<div>
+							<img class="names" src="">
+						</div>
+						<div>
+							<var>(function(){
+							$("#hint").click(function() {
+								$('.names').attr('src',Khan.urlBase+"images/"+ans);
+								});
+							})()</var>
+						</div>
+					</div>
+				</div>
+			</div>		
+		</div>
+	</div>
+</body>
+</html>
