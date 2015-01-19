@@ -2,7 +2,7 @@
 <html data-require="math graphie graphie-helpers">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>借由分數將披薩, 水果派與蛋糕等分</title>
+    <title>借由分數將披薩，水果派與蛋糕等分</title>
     <script src="../khan-exercise.js"></script>
 </head>
 <body>
@@ -10,9 +10,10 @@
         <div class="problems">
             <div id="case1">
 				<div class="vars" data-ensure="getGCD(total,result)==1 && getGCD(total,Sasuke)==1 && getGCD(total,Naruto)==1">
-					<var id="type">randFromArray([[1,"片","披薩"],[2,"片","蘋果派"],[3,"片","披薩"],[4,"塊","蛋糕"],[5,"片","蘋果派"]])</var>
-					<var id="Naruto">randRange(1,4)</var>
-					<var id="Sasuke">randRange(1,4)</var>
+					<var id="type">randFromArray([[1,"片","披薩"]])</var>
+					<var id="number">randRangeUnique(1,5,2)</var>
+					<var id="Naruto">number[0]</var>
+					<var id="Sasuke">number[1]</var>
 					<var id="result">randRange(1,4)</var>
 					<var id="num">
 						(function(){
@@ -30,39 +31,187 @@
 					<var id="total">Naruto+Sasuke+result</var>
 				</div>
 				<div class="question">
-					<p><span data-if="type[0]==1">在宴會上，明人吃了 <code><var>Naruto</var></code> 片披薩，佐助吃了 <code><var>Sasuke</var></code> 片。如果我們知道明人吃了整份披薩的 <code>\dfrac{<var>Naruto</var>}{<var>total</var>}</code> 片，在明人和佐助各吃了 <code><var>Naruto</var></code> 片和 <code><var>Sasuke</var></code> 片之後，還剩下幾片披薩？請用分數來代表。</span>
-					<span data-if="type[0]==2">媽媽買了一份蘋果派，大雄吃了 <code><var>Naruto</var></code> 片，哆拉<code>A</code>夢也吃了 <code><var>Sasuke</var></code> 片。假如我們知道這個蘋果派在吃之前被分成大小相等的 <code><var>total</var></code> 片，請問該如何用分數來表示被吃掉的那些蘋果派？</span>
-					<span data-if="type[0]==3"> 在宴會上，小美和小羅各吃了 <code><var>Naruto</var></code> 片和 <code><var>Sasuke</var></code> 片披薩。如果我們知道還剩下 <code><var>result</var></code> 片而且所有的披薩大小都是一樣，請問該如何用分數的形式來表示被吃掉的披薩？</span>
-					<span data-if="type[0]==4">在一個生日宴會上，明人吃了 <code><var>Naruto</var></code> 塊蛋糕，佐助只吃了 <code><var>Sasuke</var></code> 塊。如果一個蛋糕被平分成 <code><var>total</var></code> 塊，在明人和佐助各吃了一部分後，還剩下多少塊蛋糕？請用分數來代表。</span>
-					<span data-if="type[0]==5">在一場吃蘋果派的比賽中，小文吃了 <code><var>Naruto</var></code> 片派，老柯吃了 <code><var>Sasuke</var></code> 片。假如我們知道這個蘋果派在吃之前被分成大小相等的 <code><var>total</var></code> 片，請問該如何用分數來表示被吃掉的那些蘋果派？</span>
+					<p>在宴會上，明人吃了 <code><var>Naruto</var></code> 片披薩，佐助吃了 <code><var>Sasuke</var></code> 片。如果我們知道明人吃了整份披薩的 <code>\dfrac{<var>Naruto</var>}{<var>total</var>}</code> 片，在明人和佐助各吃了 <code><var>Naruto</var></code> 片和 <code><var>Sasuke</var></code> 片之後，還剩下幾片披薩？請用分數來表示。
 					</p>
 				</div>
-				<div class="solution">
-					<span class="sol" data-type="rational"><var>num/total</var></span>
+				<div class="solution" data-forms="proper"><var>num/total</var>
 				</div>
 
 				<div class="hints">
-					<p><span data-if="type[0]==1">分數形式的剩餘披薩數 <code>= \dfrac{\small{剩下的披薩數量}}{\small{披薩被分成的總數量}}</code></span>
-					<span data-if="type[0]==2">分數形式的被吃掉的蘋果派數 <code>= \dfrac{\small{被吃掉的蘋果派數量}}{\small{總蘋果派的數量}}</code></span>
-					<span data-if="type[0]==3">分數形式的被吃掉的披薩數量 <code>= \dfrac{\small{被吃掉的披薩數量}}{\small{披薩被分成的總數量}}</code></span>
-					<span data-if="type[0]==4">分數形式的被吃掉的蛋糕數量 <code>= \dfrac{\small{剩下的蛋糕數量}}{\small{蛋糕被分成的總數量}}</code></span>
-					<span data-if="type[0]==5">分數形式的被吃掉的蘋果派數 <code>= \dfrac{\small{被吃掉的蘋果派數量}}{\small{派被分成的總數量}}</code></span>
-					</p>
-					<div data-if="type[0]!=3">
-						<p><span data-if="type[0]==1">如果 <code><var>Naruto</var></code> <var>type[1]</var><var>type[2]</var>可以寫成 <code>\dfrac{<var>Naruto</var>}{<var>total</var>}</code> ， 分母為 <code><var>total</var></code> 這也意味著總<var>type[2]</var><var>type[1]</var>數是 <code><var>total</var></code> <var>type[1]</var> ；</span></p>
+					<p>分數形式的剩餘披薩數 <code>= \dfrac{\small{剩下的披薩數量}}{\small{披薩被分成的總數量}}</code></p>
+					<div>
+						<p>如果 <code><var>Naruto</var></code> <var>type[1]</var><var>type[2]</var>可以寫成 <code>\dfrac{<var>Naruto</var>}{<var>total</var>}</code> ， 分母為 <code><var>total</var></code> 這也意味著總<var>type[2]</var><var>type[1]</var>數是 <code><var>total</var></code> <var>type[1]</var> ；</p>
 						<p>總共被吃掉的<span><var>type[2]</var></span>： <code><var>Naruto</var> + <var>Sasuke</var> = <var>Naruto+Sasuke</var></code> ；</p>
 					</div>
-					<div data-if="type[0]==3">
-						<p>因為只剩下 <code><var>result</var></code> 片披薩而且我們知道被吃掉了 <code><var>Naruto+Sasuke</var></code> 片，那麼原先總共一定是有 <code><var>total</var></code> 片。</p>
+					
+					<div>
+						<p>兩個人總共吃了 <code><var>total</var></code> <var>type[1]</var>中的 <code><var>Naruto+Sasuke</var></code> <var>type[1]</var><var>type[2]</var><span data-if="type[0]==1 || type[0]==4">，還剩下 <code><var>result</var></code> <var>type[1]</var></span> ；</p>
+						<div class="graphie">
+							init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
+							piechart([Naruto+Sasuke, result], ["#6495ED", "#999"], 2);
+						</div>
 					</div>
-					<div data-if="type[0]==3">
-						<p>兩個人將全部的 <code><var>total</var></code> 片中吃掉了 <code><var>Naruto+Sasuke</var></code> 片。</p>
+					<p>所以以分數形式來表示的話，就是 <code class="hint_pink">\dfrac{<var>num</var>}{<var>total</var>}</code> <var>type[1]</var>。</p>
+				</div>
+			</div>
+			<div id="case2">
+				<div class="vars" data-ensure="getGCD(total,result)==1 && getGCD(total,Sasuke)==1 && getGCD(total,Naruto)==1">
+					<var id="type">randFromArray([[2,"片","蘋果派"]])</var>
+					<var id="number">randRangeUnique(1,5,2)</var>
+					<var id="Naruto">number[0]</var>
+					<var id="Sasuke">number[1]</var>
+					<var id="result">randRange(1,4)</var>
+					<var id="num">
+						(function(){
+							var num=0;
+							switch(type[0]){
+								case 1:num=result;break;
+								case 2:num=Naruto+Sasuke;break;
+								case 3:num=Naruto+Sasuke;break;
+								case 4:num=result;break;
+								case 5:num=Naruto+Sasuke;break;
+							}
+							return num;
+						})()
+					</var>
+					<var id="total">Naruto+Sasuke+result</var>
+				</div>
+				<div class="question">
+					<p>媽媽買了一份蘋果派，大雄吃了 <code><var>Naruto</var></code> 片，哆拉<code>A</code>夢吃了 <code><var>Sasuke</var></code> 片。假如我們知道這個蘋果派在吃之前被分成大小相等的 <code><var>total</var></code> 片，請問該如何用分數來表示被吃掉的那些蘋果派？</p>
+				</div>
+				<div class="solution" data-forms="proper"><var>num/total</var>
+				</div>
+
+				<div class="hints">
+					<p>分數形式的被吃掉的蘋果派數 <code>= \dfrac{\small{被吃掉的蘋果派數量}}{\small{總蘋果派的數量}}</code></p>
+					<p>總共被吃掉的<span><var>type[2]</var></span>： <code><var>Naruto</var> + <var>Sasuke</var> = <var>Naruto+Sasuke</var></code> ；</p>					
+					<div>
+						<p>兩個人總共吃了 <code><var>total</var></code> <var>type[1]</var>中的 <code><var>Naruto+Sasuke</var></code> <var>type[1]</var><var>type[2]</var><span data-if="type[0]==1 || type[0]==4">，還剩下 <code><var>result</var></code> <var>type[1]</var></span> ；</p>
+						<div class="graphie">
+							init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
+							piechart([Naruto+Sasuke, result], ["#6495ED", "#999"], 2);
+						</div>
+					</div>
+					<p>所以以分數形式來表示的話，就是 <code class="hint_pink">\dfrac{<var>num</var>}{<var>total</var>}</code> <var>type[1]</var>。</p>
+				</div>
+			</div>
+			<div id="case3">
+				<div class="vars" data-ensure="getGCD(total,result)==1 && getGCD(total,Sasuke)==1 && getGCD(total,Naruto)==1">
+					<var id="type">randFromArray([[3,"片","披薩"]])</var>
+					<var id="number">randRangeUnique(1,5,2)</var>
+					<var id="Naruto">number[0]</var>
+					<var id="Sasuke">number[1]</var>
+					<var id="result">randRange(1,4)</var>
+					<var id="num">
+						(function(){
+							var num=0;
+							switch(type[0]){
+								case 1:num=result;break;
+								case 2:num=Naruto+Sasuke;break;
+								case 3:num=Naruto+Sasuke;break;
+								case 4:num=result;break;
+								case 5:num=Naruto+Sasuke;break;
+							}
+							return num;
+						})()
+					</var>
+					<var id="total">Naruto+Sasuke+result</var>
+				</div>
+				<div class="question">
+					<p>在宴會上，小美和小羅各吃了 <code><var>Naruto</var></code> 片和 <code><var>Sasuke</var></code> 片披薩。如果我們知道還剩下 <code><var>result</var></code> 片而且所有的披薩大小都是一樣，請問該如何用分數的形式來表示被吃掉的披薩？</p>
+				</div>
+				<div class="solution" data-forms="proper"><var>num/total</var>
+				</div>
+
+				<div class="hints">
+					<p>分數形式的被吃掉的披薩數量 <code>= \dfrac{\small{被吃掉的披薩數量}}{\small{披薩被分成的總數量}}</code></p>
+						<p>因為只剩下 <code><var>result</var></code> 片披薩而且我們知道被吃掉了 <code><var>Naruto+Sasuke</var></code> 片，那麼原先總共一定是有 <code><var>total</var></code> 片。</p>
+					<div>
+						<p>兩個人總共吃了 <code><var>total</var></code> 片中的 <code><var>Naruto+Sasuke</var></code> 片。</p>
 						<div class="graphie" id="type_3">
 							init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
 							piechart([Naruto+Sasuke, result], ["#6495ED", "#999"], 2);
 						</div>
 					</div>
-					<div data-if="type[0]!=3">
+					<p>所以以分數形式來表示的話，就是 <code class="hint_pink">\dfrac{<var>num</var>}{<var>total</var>}</code> <var>type[1]</var>。</p>
+				</div>
+			</div>
+			<div id="case4">
+				<div class="vars" data-ensure="getGCD(total,result)==1 && getGCD(total,Sasuke)==1 && getGCD(total,Naruto)==1">
+					<var id="type">randFromArray([[4,"塊","蛋糕"]])</var>
+					<var id="number">randRangeUnique(1,5,2)</var>
+					<var id="Naruto">number[0]</var>
+					<var id="Sasuke">number[1]</var>
+					<var id="result">randRange(1,4)</var>
+					<var id="num">
+						(function(){
+							var num=0;
+							switch(type[0]){
+								case 1:num=result;break;
+								case 2:num=Naruto+Sasuke;break;
+								case 3:num=Naruto+Sasuke;break;
+								case 4:num=result;break;
+								case 5:num=Naruto+Sasuke;break;
+							}
+							return num;
+						})()
+					</var>
+					<var id="total">Naruto+Sasuke+result</var>
+				</div>
+				<div class="question">
+					<p>在一個生日宴會上，明人吃了 <code><var>Naruto</var></code> 塊蛋糕，佐助吃了 <code><var>Sasuke</var></code> 塊。如果一個蛋糕被平分成 <code><var>total</var></code> 塊，在明人和佐助各吃了一部分後，還剩下多少塊蛋糕？請用分數來表示。
+					</p>
+				</div>
+				<div class="solution" data-forms="proper"><var>num/total</var>
+				</div>
+
+				<div class="hints">
+					<p>分數形式的被吃掉的蛋糕數量 <code>= \dfrac{\small{剩下的蛋糕數量}}{\small{蛋糕被分成的總數量}}</code></p>
+					<p>總共被吃掉的<span><var>type[2]</var></span>： <code><var>Naruto</var> + <var>Sasuke</var> = <var>Naruto+Sasuke</var></code> ；</p>					
+					<div>
+						<p>兩個人總共吃了 <code><var>total</var></code> <var>type[1]</var>中的 <code><var>Naruto+Sasuke</var></code> <var>type[1]</var><var>type[2]</var><span data-if="type[0]==1 || type[0]==4">，還剩下 <code><var>result</var></code> <var>type[1]</var></span> ；</p>
+						<div class="graphie">
+							init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
+							piechart([Naruto+Sasuke, result], ["#6495ED", "#999"], 2);
+						</div>
+					</div>
+					<p>所以以分數形式來表示的話，就是 <code class="hint_pink">\dfrac{<var>num</var>}{<var>total</var>}</code> <var>type[1]</var>。</p>
+				</div>
+			</div>
+			<div id="case5">
+				<div class="vars" data-ensure="getGCD(total,result)==1 && getGCD(total,Sasuke)==1 && getGCD(total,Naruto)==1">
+					<var id="type">randFromArray([[5,"片","蘋果派"]])</var>
+					<var id="number">randRangeUnique(1,5,2)</var>
+					<var id="Naruto">number[0]</var>
+					<var id="Sasuke">number[1]</var>
+					<var id="result">randRange(1,4)</var>
+					<var id="num">
+						(function(){
+							var num=0;
+							switch(type[0]){
+								case 1:num=result;break;
+								case 2:num=Naruto+Sasuke;break;
+								case 3:num=Naruto+Sasuke;break;
+								case 4:num=result;break;
+								case 5:num=Naruto+Sasuke;break;
+							}
+							return num;
+						})()
+					</var>
+					<var id="total">Naruto+Sasuke+result</var>
+				</div>
+				<div class="question">
+					<p>在一場吃蘋果派的比賽中，小文吃了 <code><var>Naruto</var></code> 片派，老柯吃了 <code><var>Sasuke</var></code> 片。假如我們知道這個蘋果派在吃之前被分成大小相等的 <code><var>total</var></code> 片，請問該如何用分數來表示被吃掉的那些蘋果派？
+					</p>
+				</div>
+				<div class="solution" data-forms="proper"><var>num/total</var>
+				</div>
+
+				<div class="hints">
+					<p>分數形式的被吃掉的蘋果派數 <code>= \dfrac{\small{被吃掉的蘋果派數量}}{\small{派被分成的總數量}}</code></p>
+					<p>總共被吃掉的<span><var>type[2]</var></span>： <code><var>Naruto</var> + <var>Sasuke</var> = <var>Naruto+Sasuke</var></code> ；</p>
+					
+					<div>
 						<p>兩個人總共吃了 <code><var>total</var></code> <var>type[1]</var>中的 <code><var>Naruto+Sasuke</var></code> <var>type[1]</var><var>type[2]</var><span data-if="type[0]==1 || type[0]==4">，還剩下 <code><var>result</var></code> <var>type[1]</var></span> ；</p>
 						<div class="graphie">
 							init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
