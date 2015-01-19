@@ -167,7 +167,7 @@ var Khan = (function() {
     bins = 200,
 
     // Number of past problems to consider when avoiding duplicates
-    dupWindowSize = 5,
+    dupWindowSize = 7,
 
     // The seed information
     randomSeed,
@@ -205,7 +205,7 @@ var Khan = (function() {
     problemBagIndex = 0,
 
     // How many problems are we doing? (For the fair shuffle bag.)
-    problemCount = 10,
+    problemCount = 8,
 
     // For saving problems to the server
     hintsUsed,
@@ -833,7 +833,7 @@ var Khan = (function() {
                 elem = $(elem);
                 elem.data("id", elem.attr("id") || "" + i);
 
-                for (var j = 0; j < 10; j++) {
+                for (var j = 0; j < 8; j++) {
                     bag.push(problems.eq(i));
                 }
             });
@@ -970,7 +970,7 @@ var Khan = (function() {
             }).children(".problems").children();
 
             // ...and create a new problem bag with problems of our new exercise type.
-            problemBag = makeProblemBag(problems, 10, userExercise.exerciseModel.isQuizExercise);
+            problemBag = makeProblemBag(problems, 8, userExercise.exerciseModel.isQuizExercise);
 
             // Update related videos
             Khan.relatedVideos.setVideos(userExercise.exerciseModel);
@@ -2984,7 +2984,7 @@ var Khan = (function() {
             // calls KhanUtil.random() and changes the seed)
             if (Khan.query.problem == null) {
                 weighExercises(problems);
-                problemBag = makeProblemBag(problems, 10);
+                problemBag = makeProblemBag(problems, 8);
             }
 
             // Generate the initial problem when dependencies are done being loaded
