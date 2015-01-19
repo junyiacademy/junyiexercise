@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html data-require="math math-format word-problems spin">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>負數概念的文字題</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+	<div class="exercise">
+		<div class="problems">
+			<div id="stocks_sells">
+				<div class="vars">
+					<var id="INCOME">randRange(251, 500)</var>
+					<var id="NEWINCOME">randRange(100, 250)</var>
+					<var id="FLAG">randFromArray([1, -1])</var>
+				</div>
+				<div class="problem">
+					<p data-if="FLAG == 1">上個月，老田透過賣出股票賺了錢，投資收益為 <code><var>INCOME</var></code>元。<br />這個月，老田的投資收益為 <code>-<var>NEWINCOME</var></code> 元。</p>
+					<p data-if="FLAG == -1">上個月，老田透過賣出股票造成了虧損，投資收益為 <code>-<var>INCOME</var></code>元。<br />這個月，老田的投資收益為 <code><var>NEWINCOME</var></code> 元。</p>
+					<p>這代表著什麼意思？</p>
+				</div>
+				<div class="solution">
+					<span data-if="FLAG == 1">老田通過賣出股票<span class="hint_red">虧</span>了 <code><var>NEWINCOME</var></code>元</span>
+					<span data-if="FLAG == -1">老田通過賣出股票<span class="hint_red">賺</span>了 <code><var>NEWINCOME</var></code>元</span>
+				</div>
+					<ul class="choices">
+						<li><span data-if="FLAG == 1">老田透過賣出股票<span class="hint_red">賺</span>了 <code><var>NEWINCOME</var></code>元</span></li>
+						<li><span data-if="FLAG == -1">老田透過賣出股票<span class="hint_red">虧</span>了 <code><var>NEWINCOME</var></code>元</span></li>
+					</ul>
+				<div class="hints">
+					<p data-if="FLAG == 1">正數表示透過更高的價格賣出股票，所以當老田的投資收益為 <code><var>INCOME</var></code> 元的時候，他透過賣出股票賺了錢。</p>
+					<p data-if="FLAG == 1">如果正數表示以更高的價格賣出股票，那麼負數則表示透過較低的價格賣出股票，即賣出股票造成了虧損。</p>
+					<p data-if="FLAG == 1">所以，老田透過賣股票虧了 <code class="hint_pink"><var>NEWINCOME</var></code> 元。</p>
+					<p data-if="FLAG == -1">負數表示以更低的價格賣出股票，所以當老田的投資收益為 <code>-<var>INCOME</var></code> 元的時候，他透過賣出股票虧損了錢。</p>
+					<p data-if="FLAG == -1">如果負數表示以更低的價格賣出股票，那麼正數則表示透過較高的價格賣出股票，即賣出股票賺錢。</p>
+					<p data-if="FLAG == -1">所以，老田透過賣股票賺了 <code class="hint_pink"><var>NEWINCOME</var></code> 元。</p>
+				</div>
+			</div>
+			<div id="family_time">
+				<div class="vars">
+					<var id="NEGATIVE_TIME">randRange(1, 20)</var>
+					<var id="POSITIVE_TIME">randRange(1, 5)</var>
+					<var id="ZERO_TIME">0</var>
+				</div>
+				<div class="problem">
+					<p>小布正在整理家庭中的重要活動，他用負數來表示自己出生之前的時間點，用正數來表示自己出生之後的時間點。</p>
+					<p>例如，小布的媽媽在 <code>-<var>NEGATIVE_TIME</var></code> 年的時候得到了一枚特殊的硬幣，妹妹在 <code><var>POSITIVE_TIME</var></code> 年的時候出生...等。</p>
+					<p>那麼 <code><var>ZERO_TIME</var></code> 年代表著什麼意思？</p>
+				</div>
+				<div class="solution">小布出生了</div>
+					<ul class="choices">
+						<li>小布的妹妹出生了</li>
+						<li>小布從高中學業畢業</li>
+						<li>小布的媽媽得到了一枚特殊的硬幣</li>
+					</ul>
+				<div class="hints">
+					<p> <code><var>ZERO_TIME</var></code> 在數線上把正數和負數分開。</p>
+					<p>在這個問題中，用正數來表示小布出生後的時間，用負數來表示小布出生前的時間。</p>
+					<p>如果 <code><var>ZERO_TIME</var></code> 年把小布出生前和出生後的時間分開，那麼 <code><var>ZERO_TIME</var></code> 年一定代表著小布的出生。</p>
+					<p>所以， <code><var>ZERO_TIME</var></code> 年代表<span class="hint_pink">小布出生了</span>。</p>
+				</div>		
+			</div>
+			<div id="Geographers_points">
+				<div class="vars">
+					<var id="POSITIVE_POINT">randRange(1, 1000)</var>
+					<var id="NEGATIVE_POINT">randRange(1, 1000)</var>
+					<var id="ANSWER_POINT">randRange(1, 1000)</var>
+					<var id="FLAG">randFromArray(["低於", "高於"])</var>
+					<var id="STR">(function(){
+						if( FLAG == "低於"){
+							return "負數";
+						}else
+						 return "正數";
+					})()</var>
+					<var id="PARAMETER">(function(){
+						if( FLAG =="低於"){
+							return "深度";
+						}else
+						return "海拔高度";
+					})()</var>
+					<var id="ANS">(function(){
+						if( FLAG == "低於"){
+							return -1*ANSWER_POINT;
+						}else
+						 return ANSWER_POINT;
+					})()</var>
+				</div>
+				<div class="problem">
+					<p>地理學上用負數來表示低於海平面的點，用正數來表示高於海平面的點。</p>
+					<p>例如，地理學用 <code><var>POSITIVE_POINT</var></code> 公尺來表示高於海平面的海拔高度，用 <code>-<var>NEGATIVE_POINT</var></code> 公尺來表示低於海平面的深度。</p>
+					<p>那麼，地理學上如何來表示<var>FLAG</var>海平面 <code><var>ANSWER_POINT</var></code> 公尺的<var>PARAMETER</var>呢？</p>
+				</div>
+				<div class="solution" data-type="multiple">
+					<span class="sol" data-forms="integer"><var>ANS</var></span> 公尺
+				</div>
+				<div class="hints">
+					<p>我們想要表示<var>FLAG</var>海平面 <code><var>ANSWER_POINT</var></code> 公尺的<var>PARAMETER</var>，而地理學上<var>STR</var>表示<var>FLAG</var>海平面的點。</p>
+					<p>所以，正確答案是 <code class="hint_pink"><var>ANS</var></code> 公尺。</p>
+				</div>
+			</div>
+			<div id="canasta">
+				<div class="vars">
+					<var id="POINT">randRange(1, 20)</var>
+					<var id="FLAG">randFromArray(["失去", "獲得"])</var>
+					<var id="STR">(function(){
+						if( FLAG == "失去"){
+							return "負數";
+						}else
+						 return "正數";
+					})()</var>
+					<var id="ANS">(function(){
+						if( FLAG == "失去"){
+							return -1*POINT;
+						}else
+						 return POINT;
+					})()</var>
+				</div>
+				<div class="problem">
+					<p>橋牌是一種紙牌遊戲，負數表示失去的分數，正數表示獲得的分數。那麼<var>FLAG</var> <code><var>POINT</var></code> 分應該怎麼表示？</p>
+				</div>
+				<div class="solution" data-forms="integer"><var>ANS</var></div>
+				<div class="hints">
+					<p>我們要表示<var>FLAG</var> <code><var>POINT</var></code> 分，而<var>STR</var>表示<var>FLAG</var>的分數。</p>
+					<p>所以答案是 <code class="hint_pink"><var>ANS</var></code> 。</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
