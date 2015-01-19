@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+
+<html data-require="math math-format graphie graphie-helpers interactive">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>看圖解答</title>
+
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		table.nLimit{margin:0px ;}
+		table.nLimit td { border: 0px solid #AAA; }
+		table.nLimit td { padding:0px 20px 0px 0px}
+		.inputbox{
+				width:30px;
+				height:10px
+				border:0px;
+				text-align:center;
+				font-size:8px;
+			}
+	</style>
+	<script type="text/javascript">
+	function loadImg(elem, url, count, width, height) {
+
+        var loimg = document.getElementById(elem);
+
+        var inner = "";
+
+        for (var i = 1; i <= count; i++) {
+            inner += "<img id="+"image"+ elem + i + " width=" + width +" height="+height+ ">";
+        }
+        loimg.innerHTML += inner;
+        for (var j = 1; j <= count; j++) {
+            document.getElementById("image" + elem + j).src = url;
+        }
+    }
+</script>
+</head>
+<body>
+
+    <div class="exercise">
+
+        <div class="problems">
+            <div id="case1">
+                <div class="vars">
+					<var id="name">randFromArray(["小莉","小華","小紅"])</var>
+					 <var id="data">
+                        (function(){
+                            var counts=randRangeUnique(1,6,3);
+							loadImg("grid",Khan.urlBase+"images/kbananas.png",1,"80%","50%");
+                            loadImg("img1",Khan.urlBase+"images/kbananas.png",counts[0],"80%","50%");
+							loadImg("img11",Khan.urlBase+"images/kbananas.png",counts[1],"80%","50%");
+							loadImg("img12",Khan.urlBase+"images/kbananas.png",counts[2],"80%","50%");
+                            return [counts[0],counts[1],counts[2]];
+                        })()
+                    </var>
+					<var id="sum">data[0]+data[1]+data[2]</var>					
+				 </div>
+
+                <div class="question">
+					<div class="problem">
+						<p><var>name</var>看不慣地上亂丟垃圾，只要被她看到，一定把它清理乾淨.。她把這個星期檢到的香蕉皮做了一個下面的圖表。</p>
+						<p><var>name</var>這週一共檢了多少香蕉皮？</p>
+						<table><tr><td style="text-align:center;vertical-align:middle;"><div id="grid"></div></td><td style="text-align:center;vertical-align:middle;"><code>=</code>一個香蕉皮</td></tr></table>
+						<div style="right:30px;width:390px">
+							<table class="nLimit">
+								<tr >
+									<td style="text-align:center;line-height:70px;">香<br/>蕉<br/>皮<br/></td>
+									<td style="vertical-align:bottom;border-left:solid 1px black;border-bottom:solid 1px black"><div id="img1" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img11" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img12" style="width:50px;"></div></td>
+								</tr>
+								<tr>
+									<td></td><td style="text-align:center;"><p>教室</p></td><td style="text-align:center;"><p>家</p></td><td style="text-align:center;"><p>公園</p></td>
+								</tr>								
+								<tr>
+									<td></td><td colspan="4"style="text-align:center;">地點</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+                </div>
+				
+				<div class="solution" data-forms="integer"><var>sum</var></div>          
+
+				<div class="hints">
+					<div style="right:30px;width:390px">
+						<table>
+							<tr style="border-bottom:solid 1px black;">
+								<td>地點</td><td>香蕉皮</td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td>教室</td><td style="text-align:center;"><code class="hint_blue"><var>data[0]</var></code></td>
+							</tr>								
+							<tr>
+								<td>家</td><td style="text-align:center;"><code class="hint_red"><var>data[1]</var></code></td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td>公園</td><td style="text-align:center;"><code class="hint_green"><var>data[2]</var></code></td>
+							</tr>
+						</table>
+					</div>
+					<p>因為 <code class="hint_blue"><var>data[0]</var></code> <code>+</code> <code class="hint_red"><var>data[1]</var></code> <code>+</code> <code class="hint_green"><var>data[2]</var></code> <code>=</code> <code class="hint_pink"><var>sum</var></code></p>
+					<p>所以<var>name</var>這週一共檢了 <code class="hint_pink"><var>sum</var></code> 個香蕉皮。</p>
+				</div>
+            </div>
+			
+			<div id="case2">
+                <div class="vars">
+					<var id="name">randFromArray([["小明","小紅"],["小強","小莉"],["小紅","小強"],["小莉","小明"]])</var>	
+					 <var id="data">
+                        (function(){
+							 var counts=randRangeUnique(1,6,4);
+							loadImg("grid",Khan.urlBase+"images/fox.png",1,"80%","50%");
+                            loadImg("img1",Khan.urlBase+"images/fox.png",counts[0],"100%","100%");
+							loadImg("img11",Khan.urlBase+"images/fox.png",counts[1],"100%","100%");
+							loadImg("img12",Khan.urlBase+"images/fox.png",counts[2],"100%","100%");
+							loadImg("img13",Khan.urlBase+"images/fox.png",counts[3],"100%","100%");
+                            return [counts[0],counts[1],counts[2],counts[3]];
+                        })()
+                    </var>
+					<var id="data1">
+                        (function(){
+							 if(name[0]=="小明")
+								return data[0];
+							if(name[0]=="小紅")
+								return data[1];
+							if(name[0]=="小強")
+								return data[2];
+							if(name[0]=="小莉")
+								return data[3];
+                        })()
+                    </var>
+					<var id="data2">
+                        (function(){
+							 if(name[1]=="小明")
+								return data[0];
+							if(name[1]=="小紅")
+								return data[1];
+							if(name[1]=="小強")
+								return data[2];
+							if(name[1]=="小莉")
+								return data[3];
+                        })()
+                    </var>
+					<var id="sum">data1+data2</var>					
+				 </div>
+
+                <div class="question">
+					<div class="problem">
+						<p>一群朋友輪流唱”小蜜蜂“，下圖顯示了每人唱的次數。</p>
+						<p><var>name[0]</var>和<var>name[1]</var>一共唱了幾次？</p>						
+						<table><tr><td style="text-align:center;vertical-align:middle;"><div id="grid"></div></td><td style="text-align:center;vertical-align:middle;"><code>=</code>一次小蜜蜂</td></tr></table>
+						<div style="right:30px;width:390px">
+							<table class="nLimit">
+								<tr >
+									<td style="text-align:center;line-height:50px;">小<br/>蜜<br/>蜂<br/></td>
+									<td style="vertical-align:bottom;border-left:solid 1px black;border-bottom:solid 1px black"><div id="img1" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img11" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img12" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img13" style="width:50px;"></div></td>
+								</tr>
+								<tr>
+									<td></td><td><p>小明</p></td><td><p>小紅</p></td><td><p>小強</p></td><td><p>小莉</p></td>
+								</tr>								
+								<tr>
+									<td></td><td colspan="4"style="text-align:center;">朋友</td><td></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+                </div>
+
+                <div class="solution" data-forms="integer"><var>sum</var></div>   
+
+				<div class="hints">
+					<div style="right:30px;width:390px">
+						<table>
+							<tr style="border-bottom:solid 1px black;">
+								<td>朋友</td><td>次數</td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td><var>name[0]</var></td><td style="text-align:center;"><code class="hint_blue"><var>data1</var></code></td>
+							</tr>
+							<tr>
+								<td><var>name[1]</var></td><td style="text-align:center;"><code class="hint_green"><var>data2</var></code></td>
+							</tr>
+						</table>
+					</div>
+					<p>因為 <code class="hint_blue"><var>data1</var></code> <code>+</code> <code class="hint_green"><var>data2</var></code>  <code>=</code> <code class="hint_pink"><var>sum</var></code></p>
+					<p>所以 <var>name[0]</var> 和 <var>name[1]</var>一共唱了 <code class="hint_pink"><var>sum</var></code> 次歌。</p>
+				</div>
+            </div>
+			
+			<div id="case3">
+                <div class="vars">
+					<var id="name">randFromArray([["巧克力","燕麥"],["葡萄乾","甜"],["燕麥","葡萄乾"],["巧克力","甜"],["葡萄乾","巧克力"],["燕麥","甜"]])</var>										
+					 <var id="data">
+                        (function(){
+							 var counts=randRangeUnique(1,6,4);
+							loadImg("grid",Khan.urlBase+"images/cookies.png",1,"80%","50%");
+                            loadImg("img1",Khan.urlBase+"images/cookies.png",counts[0],"80%","50%");
+							loadImg("img11",Khan.urlBase+"images/cookies.png",counts[1],"80%","50%");
+							loadImg("img12",Khan.urlBase+"images/cookies.png",counts[2],"80%","50%");
+							loadImg("img13",Khan.urlBase+"images/cookies.png",counts[3],"80%","50%");
+                            return [counts[0],counts[1],counts[2],counts[3]];
+                        })()
+                    </var>
+					<var id="data1">
+                        (function(){
+							 if(name[0]=="巧克力")
+								return data[0];
+							if(name[0]=="燕麥")
+								return data[1];
+							if(name[0]=="葡萄乾")
+								return data[2];
+							if(name[0]=="甜")
+								return data[3];
+                        })()
+                    </var>
+					<var id="data2">
+                        (function(){
+							 if(name[1]=="巧克力")
+								return data[0];
+							if(name[1]=="燕麥")
+								return data[1];
+							if(name[1]=="葡萄乾")
+								return data[2];
+							if(name[1]=="甜")
+								return data[3];
+                        })()
+                    </var>
+					<var id="sum">data1+data2</var>				
+				 </div>
+
+                <div class="question">
+					<div class="problem">
+						<p>小精靈想知道聖誕老人愛吃怎樣的餅乾，他們跟蹤聖誕老公公到四家房子。下圖是他們做的表格。</p>
+						<p>聖誕老人一共吃了多少<var>name[0]</var>餅乾和<var>name[1]</var>餅乾？</p>
+						<div><table><tr><td style="text-align:center;vertical-align:middle;"><div id="grid"></div></td><td style="text-align:center;vertical-align:middle;"><code>=</code>一個餅乾</td></tr></table></div>
+						<div style="right:30px;width:390px">
+							<table class="nLimit">
+								<tr >
+									<td style="text-align:center;line-height:100px;">餅<br/>乾<br/></td>
+									<td style="vertical-align:bottom;border-left:solid 1px black;border-bottom:solid 1px black"><div id="img1" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img11" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img12" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img13" style="width:50px;"></div></td>
+								</tr>
+								<tr>
+									<td></td><td style="text-align:center;"><p>巧克力</p></td><td style="text-align:center;"><p>燕麥</p></td><td style="text-align:center;"><p>葡萄乾</p></td><td style="text-align:center;"><p>甜</p></td>
+								</tr>								
+								<tr>
+									<td></td><td colspan="4"style="text-align:center;">餅乾種類</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+                </div>
+
+                <div class="solution" data-forms="integer"><var>sum</var></div>
+
+				<div class="hints">
+					<div style="right:30px;width:390px">
+						<table>
+							<tr style="border-bottom:solid 1px black;">
+								<td>餅乾種類</td><td>餅乾數</td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td><var>name[0]</var></td><td style="text-align:center;"><code class="hint_blue"><var>data1</var></code></td>
+							</tr>
+							<tr>
+								<td><var>name[1]</var></td><td style="text-align:center;"><code class="hint_red"><var>data2</var></code></td>
+							</tr>
+						</table>
+					</div>
+					<p>因為 <code class="hint_blue"><var>data1</var></code> <code>+</code> <code class="hint_red"><var>data2</var></code>  <code>=</code> <code class="hint_pink"><var>sum</var></code></p>
+					<p>所以聖誕老人一共吃了 <code class="hint_pink"><var>sum</var></code> 個<var>name[0]</var>餅乾和<var>name[1]</var>餅乾。</p>
+				</div>
+            </div>
+			
+			<div id="case4">
+                <div class="vars">
+					<var id="name">randFromArray([["斗六市","延平鄉","羅東鎮","三峽區"],["延平鄉","羅東鎮","三峽區","斗六市"],["羅東鎮","三峽區","斗六市","延平鄉"],["三峽區","斗六市","延平鄉","羅東鎮"]])</var>										
+					<var id="name1">randFromArray(["錢","王","趙","陳"])</var>										
+					 <var id="data">
+                        (function(){
+							 var counts=randRangeUnique(1,4,2);
+							 var counts1=randRangeUnique(5,8,2);
+							loadImg("grid",Khan.urlBase+"images/bank_measuring.png",1,"80%","50%");
+                            loadImg("img1",Khan.urlBase+"images/bank_measuring.png",counts[0],"80%","50%");
+							loadImg("img11",Khan.urlBase+"images/bank_measuring.png",counts1[1],"80%","50%");
+							loadImg("img12",Khan.urlBase+"images/bank_measuring.png",counts1[0],"80%","50%");
+							loadImg("img13",Khan.urlBase+"images/bank_measuring.png",counts[1],"80%","50%");
+                            return [counts[0],counts[1],counts1[0],counts1[1]];
+                        })()
+                    </var>
+					
+					<var id="sum">data[2]-data[0]</var>	
+				 </div>
+
+                <div class="question">
+					<div class="problem">
+						<p><var>name1</var>先生想知道他喜愛的地區有多少家銀行。</p>
+						<p><var>name[2]</var>比<var>name[0]</var>多了幾家銀行？</p>
+						<div><table><tr><td style="text-align:center;vertical-align:middle;"><div id="grid" style="width:70px;height:70px;"></div></td><td style="text-align:center;vertical-align:middle;"><code>=</code>一家銀行</td></tr></table></div>
+						<div style="right:30px;width:390px">
+							<table class="nLimit">
+								<tr >
+									<td style="text-align:center;line-height:100px;">銀<br/>行<br/></td>
+									<td style="vertical-align:bottom;border-left:solid 1px black;border-bottom:solid 1px black"><div id="img1" style="width:70px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img11" style="width:70px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img12" style="width:70px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img13" style="width:70px;"></div></td>
+								</tr>
+								<tr>
+									<td></td><td style="text-align:center;"><p><var>name[0]</var></p></td><td style="text-align:center;"><p><var>name[1]</var></p></td><td style="text-align:center;"><p><var>name[2]</var></p></td><td style="text-align:center;"><p><var>name[3]</var></p></td>
+								</tr>								
+								<tr>
+									<td></td><td colspan="4"style="text-align:center;">城市</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+                </div>
+
+                <div class="solution" data-forms="integer"><var>sum</var></div>
+
+				<div class="hints">
+					<div style="right:30px;width:390px">
+						<table>
+							<tr style="border-bottom:solid 1px black;">
+								<td>城市</td><td>銀行數</td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td><var>name[0]</var></td><td style="text-align:center;"><code class="hint_blue"><var>data[0]</var></code></td>
+							</tr>
+							<tr>
+								<td><var>name[2]</var></td><td style="text-align:center;"><code class="hint_red"><var>data[2]</var></code></td>
+							</tr>
+						</table>
+					</div>
+					<p>因為 <code class="hint_red"><var>data[2]</var></code> <code>-</code> <code class="hint_blue"><var>data[0]</var></code>  <code>=</code> <code class="hint_pink"><var>sum</var></code></p>
+					<p>所以 <var>name[0]</var>比<var>name[2]</var>多了 <code class="hint_pink"><var>sum</var></code> 家銀行。</p>
+				</div>
+            </div>
+			
+			<div id="case5">
+                <div class="vars">
+					<var id="name">randFromArray([["寶寶","斯斯"],["奇奇","西西"],["斯斯","奇奇"],["西西","寶寶"],["奇奇","寶寶"],["西西","斯斯"]])</var>									
+					 <var id="data">
+                        (function(){
+							 var counts=randRangeUnique(1,7,4);
+							loadImg("grid",Khan.urlBase+"images/monkey.png",1,"80%","50%");
+                            loadImg("img1",Khan.urlBase+"images/monkey.png",counts[0],"80%","50%");
+							loadImg("img11",Khan.urlBase+"images/monkey.png",counts[1],"80%","50%");
+							loadImg("img12",Khan.urlBase+"images/monkey.png",counts[2],"80%","50%");
+							loadImg("img13",Khan.urlBase+"images/monkey.png",counts[3],"80%","50%");
+                            return [counts[0],counts[1],counts[2],counts[3]];
+                        })()
+                    </var>
+					<var id="data1">
+                        (function(){
+							 if(name[0]=="寶寶")
+								return data[0];
+							if(name[0]=="奇奇")
+								return data[1];
+							if(name[0]=="西西")
+								return data[2];
+							if(name[0]=="斯斯")
+								return data[3];
+                        })()
+                    </var>
+					<var id="data2">
+                        (function(){
+							 if(name[1]=="寶寶")
+								return data[0];
+							if(name[1]=="奇奇")
+								return data[1];
+							if(name[1]=="西西")
+								return data[2];
+							if(name[1]=="斯斯")
+								return data[3];
+                        })()
+                    </var>
+					<var id="sum">data1+data2</var>
+				 </div>
+
+                <div class="question">
+					<div class="problem">
+						<p>六福村樂園有 <code>4</code> 隻猴子，每隻都會做表演。下圖是每隻會做的表演數目。</p>
+						<p>請問<var>name[0]</var>和<var>name[1]</var>一共會做多少種表演？</p>											
+						<div><table><tr><td style="text-align:center;vertical-align:middle;"><div id="grid"></div></td><td style="text-align:center;vertical-align:middle;"><code>=</code>一種表演</td></tr></table></div>
+						<div style="right:30px;width:390px">
+							<table class="nLimit">
+								<tr >
+									<td style="text-align:center;line-height:100px;">表<br/>演<br/></td>
+									<td style="vertical-align:bottom;border-left:solid 1px black;border-bottom:solid 1px black"><div id="img1" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img11" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img12" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img13" style="width:50px;"></div></td>
+								</tr>
+								<tr>
+									<td></td><td style="text-align:center;"><p>寶寶</p></td><td style="text-align:center;"><p>奇奇</p></td><td style="text-align:center;"><p>西西</p></td><td style="text-align:center;"><p>斯斯</p></td>
+								</tr>								
+								<tr>
+									<td></td><td colspan="4"style="text-align:center;">猴子名</td><td></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+                </div>
+
+                <div class="solution" data-forms="integer"><var>sum</var></div>
+
+				<div class="hints">
+					<div style="right:30px;width:390px">
+						<table>
+							<tr style="border-bottom:solid 1px black;">
+								<td>猴子名</td><td>表演</td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td><var>name[0]</var></td><td style="text-align:center;"><code class="hint_blue"><var>data1</var></code></td>
+							</tr>
+							<tr>
+								<td><var>name[1]</var></td><td style="text-align:center;"><code class="hint_red"><var>data2</var></code></td>
+							</tr>
+						</table>
+					</div>
+					<p>因為 <code class="hint_blue"><var>data1</var></code> <code>+</code> <code class="hint_red"><var>data2</var></code>  <code>=</code> <code class="hint_pink"><var>sum</var></code></p>
+					<p>所以<var>name[0]</var>和<var>name[1]</var>一共會做 <code class="hint_pink"><var>sum</var></code> 種表演。</p>
+				</div>
+            </div>
+			<div id="case6">
+                <div class="vars">
+					<var id="name">randFromArray([["房子"],["倉庫"],["牧場"],["畜欄"]])</var>									
+					 <var id="data">
+                        (function(){
+							 var counts=randRangeUnique(1,7,4);
+							loadImg("grid",Khan.urlBase+"images/mouse_com.png",1,"80%","50%");
+                            loadImg("img1",Khan.urlBase+"images/mouse_com.png",counts[0],"80%","50%");
+							loadImg("img11",Khan.urlBase+"images/mouse_com.png",counts[1],"80%","50%");
+							loadImg("img12",Khan.urlBase+"images/mouse_com.png",counts[2],"80%","50%");
+							loadImg("img13",Khan.urlBase+"images/mouse_com.png",counts[3],"80%","50%");
+                            return [counts[0],counts[1],counts[2],counts[3]];
+                        })()
+                    </var>
+					<var id="s">data[1]+data[3]+data[2]+data[0]</var>
+					<var id="sum">
+                        (function(){
+							 if(name[0]=="房子")
+								return data[0];
+							if(name[0]=="倉庫")
+								return data[1];
+							if(name[0]=="牧場")
+								return data[2];
+							if(name[0]=="畜欄")
+								return data[3];
+                        })()
+                    </var>
+				 </div>
+
+                <div class="question">
+					<div class="problem">
+						<p>格林農場有 <code><var>s</var></code> 隻老鼠，有多少隻在<var>name[0]</var>裡？</p>
+						<div><table><tr><td style="text-align:center;vertical-align:middle;"><div id="grid"></div></td><td style="text-align:center;vertical-align:middle;"><code>=</code>一隻老鼠</td></tr></table></div>
+						<div style="right:30px;width:390px">
+							<table class="nLimit">
+								<tr >
+									<td style="text-align:center;line-height:100px;">老<br/>鼠<br/></td>
+									<td style="vertical-align:bottom;border-left:solid 1px black;border-bottom:solid 1px black"><div id="img1" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img11" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img12" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img13" style="width:50px;"></div></td>
+								</tr>
+								<tr>
+									<td></td><td style="text-align:center;"><p>房子</p></td><td style="text-align:center;"><p>倉庫</p></td><td style="text-align:center;"><p>牧場</p></td><td style="text-align:center;"><p>畜欄</p></td>
+								</tr>								
+								<tr>
+									<td></td><td colspan="4"style="text-align:center;">地點</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+                </div>
+
+                <div class="solution" data-forms="integer"><var>sum</var></div>
+
+				<div class="hints">
+					<div style="right:30px;width:390px">
+						<table>
+							<tr style="border-bottom:solid 1px black;">
+								<td>地點</td><td>老鼠</td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td>房子</td><td style="text-align:center;"><code class="hint_blue"><var>data[0]</var></code></td>
+							</tr>
+							<tr>
+								<td>倉庫</td><td style="text-align:center;"><code class="hint_red"><var>data[1]</var></code></td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td>牧場</td><td style="text-align:center;"><code class="hint_green"><var>data[2]</var></code></td>
+							</tr>
+							<tr>
+								<td>畜欄</td><td style="text-align:center;"><code><var>data[3]</var></code></td>
+							</tr>
+						</table>
+					</div>
+					<p>所以<var>name[0]</var>裡有 <code class="hint_pink"><var>sum</var></code> 隻老鼠。</p>
+				</div>
+            </div>
+			
+			<div id="case7">
+                <div class="vars">
+					<var id="name">randFromArray([["艾莉絲","白雪","娜娜","蘿拉"],["白雪","娜娜","蘿拉","艾莉絲"],["娜娜","蘿拉","艾莉絲","白雪"],["蘿拉","艾莉絲","白雪","娜娜"]])</var>									
+					 <var id="data">
+                        (function(){
+							 var counts=randRangeUnique(1,7,4);
+							loadImg("grid",Khan.urlBase+"images/wand.png",1,"80%","50%");
+                            loadImg("img1",Khan.urlBase+"images/wand.png",counts[0],"80%","50%");
+							loadImg("img11",Khan.urlBase+"images/wand.png",counts[1],"80%","50%");
+							loadImg("img12",Khan.urlBase+"images/wand.png",counts[2],"80%","50%");
+							loadImg("img13",Khan.urlBase+"images/wand.png",counts[3],"80%","50%");
+                            return [counts[0],counts[1],counts[2],counts[3]];
+                        })()
+                    </var>
+					<var id="s">data[1]+data[3]+data[2]+data[0]</var>
+					<var id="sum">data[0]+data[2]</var>	
+					
+				 </div>
+
+                <div class="question">
+					<div class="problem">
+						<p>仙境是仙女住的地方，每位仙女都有至少一支魔法棒。下圖是每位仙女的魔法棒數。</p>
+						<p><var>name[0]</var>和<var>name[2]</var>共有多少支魔法棒呢？</p>
+						<div><table><tr><td style="text-align:center;vertical-align:middle;"><div id="grid"></div></td><td style="text-align:center;vertical-align:middle;"><code>=</code>一支魔法棒</td></tr></table></div>
+						<div style="right:30px;width:390px">
+							<table class="nLimit">
+								<tr >
+									<td style="text-align:center;line-height:100px;">魔<br/>法<br/>棒<br/></td>
+									<td style="vertical-align:bottom;border-left:solid 1px black;border-bottom:solid 1px black"><div id="img1" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img11" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img12" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img13" style="width:50px;"></div></td>
+								</tr>
+								<tr>
+									<td></td><td style="text-align:center;"><p><var>name[0]</var></p></td><td style="text-align:center;"><p><var>name[1]</var></p></td><td style="text-align:center;"><p><var>name[2]</var></p></td><td style="text-align:center;"><p><var>name[3]</var></p></td>
+								</tr>								
+								<tr>
+									<td></td><td colspan="4"style="text-align:center;">仙女名</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+                </div>
+
+                 <div class="solution" data-forms="integer"><var>sum</var></div>
+
+				<div class="hints">
+					<div style="right:30px;width:390px">
+						<table>
+							<tr style="border-bottom:solid 1px black;">
+								<td>仙女名</td><td>魔法棒</td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td><var>name[0]</var></td><td style="text-align:center;"><code class="hint_blue"><var>data[0]</var></code></td>
+							</tr>
+							<tr>
+								<td><var>name[1]</var></td><td style="text-align:center;"><code class="hint_red"><var>data[1]</var></code></td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td><var>name[2]</var></td><td style="text-align:center;"><code class="hint_green"><var>data[2]</var></code></td>
+							</tr>
+							<tr>
+								<td><var>name[3]</var></td><td style="text-align:center;"><code><var>data[3]</var></code></td>
+							</tr>
+						</table>
+					</div>
+					<p>因為 <code class="hint_blue"><var>data[0]</var></code> + <code class="hint_green"><var>data[2]</var></code> = <code class="hint_pink"><var>sum</var></code></p>
+					<p>所以 <var>name[0]</var>和<var>name[2]</var>共有 <code class="hint_pink"><var>sum</var></code> 支魔法棒。</p>
+				</div>
+            </div>
+			
+			<div id="case8">
+                <div class="vars">
+					<var id="name">randFromArray([["溜滑梯"],["翹翹板"],["鞦韆"],["游泳池"]])</var>									
+					 <var id="data">
+                        (function(){
+							 var counts=randRangeUnique(1,7,4);
+							loadImg("grid",Khan.urlBase+"images/ladybug_com.png",1,"80%","50%");
+                            loadImg("img1",Khan.urlBase+"images/ladybug_com.png",counts[0],"80%","50%");
+							loadImg("img11",Khan.urlBase+"images/ladybug_com.png",counts[1],"80%","50%");
+							loadImg("img12",Khan.urlBase+"images/ladybug_com.png",counts[2],"80%","50%");
+							loadImg("img13",Khan.urlBase+"images/ladybug_com.png",counts[3],"80%","50%");
+                            return [counts[0],counts[1],counts[2],counts[3]];
+                        })()
+                    </var>
+					<var id="s">data[1]+data[3]+data[2]+data[0]</var>
+					<var id="sum">
+                        (function(){
+							 if(name[0]=="溜滑梯")
+								return data[0];
+							if(name[0]=="翹翹板")
+								return data[1];
+							if(name[0]=="鞦韆")
+								return data[2];
+							if(name[0]=="游泳池")
+								return data[3];
+                        })()
+                    </var>
+				 </div>
+
+                <div class="question">
+					<div class="problem">
+						<p>公園裡有 <code><var>s</var></code> 隻瓢蟲，<var>name[0]</var>上有多少隻？</p>
+						<div><table><tr><td style="text-align:center;vertical-align:middle;"><div id="grid"></div></td><td style="text-align:center;vertical-align:middle;"><code>=</code>一隻瓢蟲</td></tr></table></div>
+						<div style="right:30px;width:390px">
+							<table class="nLimit">
+								<tr >
+									<td style="text-align:center;line-height:100px;">瓢<br/>蟲<br/></td>
+									<td style="vertical-align:bottom;border-left:solid 1px black;border-bottom:solid 1px black"><div id="img1" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img11" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img12" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img13" style="width:50px;"></div></td>
+								</tr>
+								<tr>
+									<td></td><td style="text-align:center;"><p>溜滑梯</p></td><td style="align:center;valign:center;"><p>翹翹板</p></td><td style="align:center;valign:center;"><p>鞦韆</p></td><td style="align:center;valign:center;"><p>游泳池</p></td>
+								</tr>								
+								<tr>
+									<td></td><td colspan="4"style="text-align:center;">公園內</td><td></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+                </div>
+
+                 <div class="solution" data-forms="integer"><var>sum</var></div>
+
+				<div class="hints">
+					<div style="right:30px;width:390px">
+						<table>
+							<tr style="border-bottom:solid 1px black;">
+								<td>公園內</td><td>瓢蟲</td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td>溜滑梯</td><td style="text-align:center;"><code class="hint_blue"><var>data[0]</var></code></td>
+							</tr>
+							<tr>
+								<td>翹翹板</td><td style="text-align:center;"><code class="hint_red"><var>data[1]</var></code></td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td>鞦韆</td><td style="text-align:center;"><code class="hint_green"><var>data[2]</var></code></td>
+							</tr>
+							<tr>
+								<td>游泳池</td><td style="text-align:center;"><code><var>data[3]</var></code></td>
+							</tr>
+						</table>
+					</div>
+					<p>所以<var>name[0]</var>裡有 <code class="hint_pink"><var>sum</var></code> 隻瓢蟲。</p>
+				</div>
+            </div>
+			
+			<div id="case9">
+                <div class="vars">
+					<var id="name">randFromArray([["小虎","小象","灰熊","犀牛"],["小象","灰熊","犀牛","小虎"],["灰熊","犀牛","小虎","小象"],["犀牛","小虎","小象","灰熊"]])</var>									
+					 <var id="data">
+                        (function(){
+							 var counts=randRangeUnique(1,7,4);
+							loadImg("grid",Khan.urlBase+"images/baseball.png",1,"80%","50%");
+                            loadImg("img1",Khan.urlBase+"images/baseball.png",counts[0],"80%","50%");
+							loadImg("img11",Khan.urlBase+"images/baseball.png",counts[1],"80%","50%");
+							loadImg("img12",Khan.urlBase+"images/baseball.png",counts[2],"80%","50%");
+							loadImg("img13",Khan.urlBase+"images/baseball.png",counts[3],"80%","50%");
+                            return [counts[0],counts[1],counts[2],counts[3]];
+                        })()
+                    </var>
+					<var id="s">data[1]+data[3]+data[2]+data[0]</var>
+					<var id="sum">data[2]+data[0]</var>	
+				 </div>
+
+                <div class="question">
+					<div class="problem">
+						<p>今天是全壘打比賽，下圖是每一隊打出的全壘打數。</p>
+						<p><var>name[0]</var>隊和<var>name[2]</var>隊一共打了多少支全壘打？</p>
+						<div><table><tr><td style="text-align:center;vertical-align:middle;"><div id="grid"></div></td><td style="text-align:center;vertical-align:middle;"><code>=</code>一支全壘打</td></tr></table></div>
+						<div style="right:30px;width:390px">
+							<table class="nLimit">
+								<tr >
+									<td style="text-align:center;line-height:100px;">全<br/>壘<br/>打<br/></td>
+									<td style="vertical-align:bottom;border-left:solid 1px black;border-bottom:solid 1px black"><div id="img1" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img11" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img12" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img13" style="width:50px;"></div></td>
+								</tr>
+								<tr>
+									<td></td><td style="align:center;valign:center;"><p><var>name[0]</var></p></td><td style="align:center;valign:center;"><p><var>name[1]</var></p></td><td style="align:center;valign:center;"><p><var>name[2]</var></p></td><td style="align:center;valign:center;"><p><var>name[3]</var></p></td>
+								</tr>								
+								<tr>
+									<td></td><td colspan="4"style="text-align:center;">隊名</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+                </div>
+
+                <div class="solution" data-forms="integer"><var>sum</var></div>
+
+				<div class="hints">
+					<div style="right:30px;width:390px">
+						<table>
+							<tr style="border-bottom:solid 1px black;">
+								<td>隊名</td><td>全壘打</td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td><var>name[0]</var></td><td style="text-align:center;"><code class="hint_blue"><var>data[0]</var></code></td>
+							</tr>
+							<tr>
+								<td><var>name[1]</var></td><td style="text-align:center;"><code class="hint_red"><var>data[1]</var></code></td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td><var>name[2]</var></td><td style="text-align:center;"><code class="hint_green"><var>data[2]</var></code></td>
+							</tr>
+							<tr>
+								<td><var>name[3]</var></td><td style="text-align:center;"><code><var>data[3]</var></code></td>
+							</tr>
+						</table>
+					</div>
+					<p>因為 <code class="hint_blue"><var>data[0]</var></code> + <code class="hint_green"><var>data[2]</var></code> = <code class="hint_pink"><var>sum</var></code></p>
+					<p>所以<var>name[0]</var>隊和<var>name[2]</var>隊一共打了 <code class="hint_pink"><var>sum</var></code> 支全壘打。</p>
+				</div>
+            </div>
+
+			<div id="case10">
+                <div class="vars">	
+					 <var id="data">
+                        (function(){
+                            var counts=randRangeUnique(1,7,4);
+							loadImg("grid",Khan.urlBase+"images/water.png",1,"80%","50%");
+                            loadImg("img1",Khan.urlBase+"images/water.png",counts[0],"80%","50%");
+							loadImg("img11",Khan.urlBase+"images/water.png",counts[1],"80%","50%");
+							loadImg("img12",Khan.urlBase+"images/water.png",counts[2],"80%","50%");
+							loadImg("img13",Khan.urlBase+"images/water.png",counts[3],"80%","50%");
+                            return [counts[0],counts[1],counts[2],counts[3]];
+                        })()
+                    </var>
+					<var id="sum">data[0]+data[1]+data[2]+data[3]</var>	
+				 </div>
+
+                <div class="question">
+					<div class="problem">
+						<p>一本叫‘活力小孩’的雜誌做了一項小孩喜歡的戶外活動的調查，每位只能填一個活動。下圖顯示了調查的結果。</p>
+						<p>請問一共有多少位小孩參加調查？</p>
+						<div><table><tr><td style="text-align:center;vertical-align:middle;"><div id="grid"></div></td><td style="text-align:center;vertical-align:middle;"><code>=</code>一位小孩</td></tr></table></div>
+						<div style="right:30px;width:390px">
+							<table class="nLimit">
+								<tr >
+									<td style="text-align:center;line-height:100px;">小<br/>孩<br/></td>
+									<td style="vertical-align:bottom;border-left:solid 1px black;border-bottom:solid 1px black"><div id="img1" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img11" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img12" style="width:50px;"></div></td>
+									<td style="vertical-align:bottom;border-bottom:solid 1px black"><div id="img13" style="width:50px;"></div></td>
+								</tr>
+								<tr>
+									<td></td><td><p>溜冰</p></td><td><p>游泳</p></td><td><p>登山</p></td><td><p>滑板</p></td>
+								</tr>								
+								<tr>
+									<td ></td><td colspan="4"style="text-align:center;">喜愛的戶外運動</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+                </div>
+
+                 <div class="solution" data-forms="integer"><var>sum</var></div>
+
+				<div class="hints">
+					<div style="right:30px;width:390px">
+						<table>
+							<tr style="border-bottom:solid 1px black;">
+								<td>運動</td><td>小孩</td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td>溜冰</td><td style="text-align:center;"><code class="hint_blue"><var>data[0]</var></code></td>
+							</tr>								
+							<tr>
+								<td>游泳</td><td style="text-align:center;"><code class="hint_red"><var>data[1]</var></code></td>
+							</tr>
+							<tr style="background:#F0F0F0">
+								<td>登山</td><td style="text-align:center;"><code class="hint_green"><var>data[2]</var></code></td>
+							</tr>
+							<tr>
+								<td>滑板</td><td style="text-align:center;"><code><var>data[3]</var></code></td>
+							</tr>
+						</table>
+					</div>
+					<p>因為 <code class="hint_blue"><var>data[0]</var></code> <code>+</code> <code class="hint_red"><var>data[1]</var></code> <code>+</code> <code class="hint_green"><var>data[2]</var></code> <code>+</code> <code><var>data[3]</var></code> <code>=</code> <code class="hint_pink"><var>sum</var></code></p>
+					<p>所以一共有 <code class="hint_pink"><var>sum</var></code> 位小孩參加了調查。</p>
+				</div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
