@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>長度的比較</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+        </style>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars" data-ensure="K != J">
+				<var id="J">randRange(1,10)</var>
+				<var id="K">randRange(1,10)</var>
+				<var id="set_keypress">
+						(function(){
+							$('#a4').bind('keypress',function(event){
+									if(event.keyCode == "13"){
+										$('#check-answer-button').click();
+									}
+								})
+						})()
+				</var>
+			</div>
+			<div class="question">
+				<p>綠線 <code>1</code> 長 <input type="text" id="a1" style="width:30px;text-align:center"> 公分<code>(cm)</code> ，</p>
+				<p>綠線 <code>2</code> 長 <input type="text" id="a2" style="width:30px;text-align:center"> 公分<code>(cm)</code> ，</p>
+				<p>綠線 <code>1</code> 比 綠線 <code>2</code> <select id="a3"><option value ="1"></option><option value ="2">長</option><option value="3">短</option></select> <input type="text" id="a4" style="width:30px;text-align:center"> 公分<code>(cm)</code> 。</p>
+				<p>綠線 <code>1</code></p>
+				<div class="graphie" id="line_1">
+					init({
+                        range: [ [-0.75, 11], [-2.5, 0.2] ],
+                        scale: 40
+                    });
+					path( [[0,-0.5],[J,-0.5],[J,-0.3],[0,-0.3],[0,-0.5]], { "stroke-width": 1,fill:"green",stroke:"green" } );
+					path( [[0,-2.2],[10,-2.2],[10,-0.7],[0,-0.7],[0,-2.2]], { "stroke-width": 1 } );
+					for(var i = 1;i&lt;100;i++){
+						if((i%5)==0 &amp;&amp; !isInt(i/10)){
+							line([i/10,-2.2],[i/10,-1.45],{stroke:"gray","stroke-width": 0.5});
+						}else if(isInt(i/10)){
+							line([i/10,-2.2],[i/10,-0.7],{stroke:"gray","stroke-width": 0.5});
+							label([i/10,-0.95],"\\scriptsize{"+i/10+"}","left",{left:"#28AE7B"});
+						}else{
+							line([i/10,-2.2],[i/10,-1.7],{stroke:"gray","stroke-width": 0.5});
+						}
+					}
+					label([10,-0.95],"\\scriptsize{"+10+"}","left",{left:"#28AE7B"});
+				</div>
+				<p>綠線 <code>2</code></p>
+				<div class="graphie" id="line_2">
+					init({
+                        range: [ [-0.75, 11], [-2.5, 0.2] ],
+                        scale: 40
+                    });
+					path( [[0,-0.5],[K,-0.5],[K,-0.3],[0,-0.3],[0,-0.5]], { "stroke-width": 1,fill:"green",stroke:"green" } );
+					path( [[0,-2.2],[10,-2.2],[10,-0.7],[0,-0.7],[0,-2.2]], { "stroke-width": 1 } );
+					for(var i = 1;i&lt;100;i++){
+						if((i%5)==0 &amp;&amp; !isInt(i/10)){
+							line([i/10,-2.2],[i/10,-1.45],{stroke:"gray","stroke-width": 0.5});
+						}else if(isInt(i/10)){
+							line([i/10,-2.2],[i/10,-0.7],{stroke:"gray","stroke-width": 0.5});
+							label([i/10,-0.95],"\\scriptsize{"+i/10+"}","left",{left:"#28AE7B"});
+						}else{
+							line([i/10,-2.2],[i/10,-1.7],{stroke:"gray","stroke-width": 0.5});
+						}
+					}
+					label([10,-0.95],"\\scriptsize{"+10+"}","left",{left:"#28AE7B"});
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>填空並選擇正確的答案。</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">[$('#a1').val(),$('#a2').val(),$('#a3').val(),$('#a4').val()]</div>
+				    <div class="validator-function">
+						if(guess[0].replace(/[ ]/g,"")=="" || guess[1].replace(/[ ]/g,"")=="" || guess[2].replace(/[ ]/g,"")==1 || guess[3].replace(/[ ]/g,"")==""){
+							return "";
+						}
+						if(guess[0].replace(/[ ]/g,"")==J &amp;&amp; guess[1].replace(/[ ]/g,"")==K && guess[2].replace(/[ ]/g,"")==(K&gt;J?3:2) && guess[3].replace(/[ ]/g,"")==abs(K-J)){
+							return true;
+						}
+					</div>
+				</div>
+			</div>
+			<div class="hints">
+				<p>綠線 <code>1</code> 長 <code class="hint_green"><var>J</var></code> 公分 。</p>
+				<p>綠線 <code>2</code> 長 <code class="hint_red"><var>K</var></code> 公分 。</p>
+				<div>
+					<p data-if="J &gt; K"><code class="hint_green"><var>J</var></code> <code>-</code> <code class="hint_red"><var>K</var></code> <code>=\color{#FF00AF}{<var>J-K</var>}</code></p>
+					<p data-if="K &gt; J"><code class="hint_red"><var>K</var></code> <code>-</code> <code class="hint_green"><var>J</var></code> <code>=\color{#FF00AF}{<var>K-J</var>}</code></p>
+					<p>兩條線段的長度相差 <code>\color{#FF00AF}{<var>abs(K-J)</var>}\enspace</code>公分。</p>
+				</div>
+				<div>
+					<p>所以，綠線 <code>1</code> 長 <code class="hint_pink"><var>J</var></code> 公分，綠線 <code>2</code> 長 <code class="hint_pink"><var>K</var></code> 公分，綠線 <code>1</code> 比 綠線 <code>2</code> <span class="hint_pink"><var>K &gt; J?"短":"長"</var></span> <code class="hint_pink"><var>abs(K-J)</var></code><code>\enspace</code> 公分。</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>
