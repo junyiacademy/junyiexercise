@@ -69,7 +69,7 @@
 			</div>
 			<div class="question">
 				<div class="problem">
-					<p>請從 <code><var>rightdata[0]</var></code> 開始算，以每 <code>100</code> 個為一單位時一直往<var>type[0]</var>算的數有哪些？</p>
+					<p>將空格填滿，請從 <code><var>rightdata[0]</var></code> 開始算，以每 <code>100</code> 個為一單位時一直往<var>type[0]</var>算的數有哪些？</p>
 					<p><code><var>rightdata[0]</var></code> ， <input type="text" id="t_1" style="text-align:center;width:30px"><code data-if="t_1.style.display=='none'"><var>rightdata[1]</var></code> ，<input type="text" id="t_2" style="text-align:center;width:30px"><code data-if="t_2.style.display=='none'"><var>rightdata[2]</var></code> ，<input type="text" id="t_3" style="text-align:center;width:30px"><code data-if="t_3.style.display=='none'"><var>rightdata[3]</var></code> ，<input type="text" id="t_4" style="text-align:center;width:30px"><code data-if="t_4.style.display=='none'"><var>rightdata[4]</var></code> ，<input type="text" id="t_5" style="text-align:center;width:30px"><code data-if="t_5.style.display=='none'"><var>rightdata[5]</var></code></p>								
 				</div>
 			</div>
@@ -119,16 +119,16 @@
 								{
 								case 1:
 									var A=randRange(1,499);
-									return shape=[A,A+100,A+200,A+300,A+400,A+500];
+									return shape=[A+100,A+200,A+300,A+400];
 									break;
 								case 2:	
 										var A=randRange(501,999);
-										return shape=[A,A-100,A-200,A-300,A-400,A-500];
+										return shape=[A-100,A-200,A-300,A-400];
 										break;								
 								}
 						})()
 				</var>
-				<var id="a">randRange(2,3)</var>
+				<var id="a">randRange(1,2)</var>
 				<var id="wrongdata">
 						(function(){						
 							var aa=randRange(1,9,a);
@@ -138,12 +138,16 @@
 								{
 									shape[i]=rightdata[i]+aa[i];
 								}
+								shape[a]=rightdata[0]-100;
+								shape[a+1]=rightdata[0]+400;
 							}
 							if(type[1]==2){
 								for(var i=0;i&lt;a;i++)
 								{
 									shape[i]=rightdata[i]-aa[i];
 								}
+								shape[a]=rightdata[0]+100;
+								shape[a+1]=rightdata[0]-400;
 							}
 							return shape;
 						})()
@@ -151,13 +155,13 @@
 				<var id="data">
 					(function(){
 							var shape=[];
-							for(var i=0;i&lt;6;i++)
+							for(var i=0;i&lt;4;i++)
 							{
 								shape[i]=rightdata[i];
 							}
-							for(var i=6;i&lt;a+6;i++)
+							for(var i=4;i&lt;a+6;i++)
 							{
-								shape[i]=wrongdata[i-6];
+								shape[i]=wrongdata[i-4];
 							}
 							var aa=a+6;
 							return shuffle(shape,aa);
@@ -169,7 +173,7 @@
 							var	aa=0						
 							for(var i=0;i&lt;5;i++)
 							{
-								for(var j=0;j&lt;6;j++)
+								for(var j=0;j&lt;4;j++)
 								{
 									if(data[i]==rightdata[j])
 									{shape[aa]=data[i];aa++;}
@@ -181,7 +185,7 @@
 			</div>
 			<div class="question">
 				<div class="problem">
-					<p>從 <code><var>rightdata[0]</var></code> 數到 <code><var>rightdata[5]</var></code> ，以每 <code>100</code> 個為一單位時往<var>type[0]</var>數出來的數有哪些？（多選）</p>
+					<p>在 <code><var>wrongdata[a]</var></code> 到 <code><var>wrongdata[a+1]</var></code> 之間，以每 <code>100</code> 個為一單位時往<var>type[0]</var>數出來的數有哪些？（多選）</p>
 					<table style="font-size:15px;">
 						<tr>
 							<td>
@@ -239,7 +243,7 @@
 						{
 							document.getElementById("pic_"+i).value=data[i-1];
 						}
-						for(var i=0;i&lt;6;i++)
+						for(var i=0;i&lt;4;i++)
 						{
 							for(var k=1;k&lt;6;k++)
 							{
@@ -247,7 +251,7 @@
 								{ans++;}
 							}
 						}
-						for(var i=0;i&lt;a;i++)
+						for(var i=0;i&lt;a+2;i++)
 						{
 							for(var k=1;k&lt;6;k++)
 							{
@@ -266,9 +270,9 @@
 				</div>
             </div>
 			<div class="hints">
-				<p> 因為我們以每 <code>100</code> 個為一單位，從 <code><var>rightdata[0]</var></code> 開始往<var>type[0]</var>算:</p>
-				<p><code><var>rightdata[0]</var></code> ，<code><var>rightdata[1]</var></code> ，<code><var>rightdata[2]</var></code> ，<code><var>rightdata[3]</var></code> ，<code><var>rightdata[4]</var></code> ，<code><var>rightdata[5]</var></code> 。</p>
-				<p>這樣我們可以從選項中找出: <code class="hint_pink"><var>ansdata[1][0]</var></code> ，<code data-if="ansdata[0]&gt;1" class="hint_pink"><var>ansdata[1][1]</var></code> <span data-if="ansdata[0]&gt;2">，</span> <code data-if="ansdata[0]&gt;2" class="hint_pink"><var>ansdata[1][2]</var></code> <span data-if="ansdata[0]&gt;3">，</span> <code data-if="ansdata[0]&gt;3" class="hint_pink"><var>ansdata[1][3]</var></code> <span data-if="ansdata[0]&gt;4">，</span> <code data-if="ansdata[0]&gt;4" class="hint_pink"><var>ansdata[1][4]</var></code> 。</p>
+				<p>因為我們以每 <code>100</code> 個為一單位，從 <code><var>wrongdata[a]</var></code> 開始往<var>type[0]</var>算：</p>
+				<p><code><var>rightdata[0]</var></code> ，<code><var>rightdata[1]</var></code> ，<code><var>rightdata[2]</var></code> ，<code><var>rightdata[3]</var></code> 。</p>
+				<p>這樣我們可以從選項中找出： <code class="hint_pink"><var>ansdata[1][0]</var></code> <span data-if="ansdata[0]&gt;1">，</span> <code data-if="ansdata[0]&gt;1" class="hint_pink"><var>ansdata[1][1]</var></code> <span data-if="ansdata[0]&gt;2">，</span> <code data-if="ansdata[0]&gt;2" class="hint_pink"><var>ansdata[1][2]</var></code> <span data-if="ansdata[0]&gt;3">，</span> <code data-if="ansdata[0]&gt;3" class="hint_pink"><var>ansdata[1][3]</var></code> 。</p>
 			</div>
 		</div>
 		
