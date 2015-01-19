@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>以5為一單位時，數的快速算法</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+    </style>
+	<script type="text/javascript">
+		 function chg(num){
+		    var ansNums = 4;
+			var arr = KhanUtil.randRangeUnique(1,6,ansNums);
+			for(var i = 0;i<=ansNums-1;i++){
+			    document.getElementById("t_"+arr[i]).style.display="none";
+			}
+			return [num-ansNums,arr];
+		}
+		function chg2(num,quesMin,quesMax){
+		    var ansNums = KhanUtil.randRange(num-quesMax,num-quesMin);
+			var arr = KhanUtil.randRangeUnique(1,num,ansNums);
+			for(var i = 0;i<=ansNums-1;i++){
+			    document.getElementById("t_"+arr[i]).style.display="none";
+			}
+			return [num-ansNums,arr];
+		}
+
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">				
+				<var id="change">chg(5)</var>
+				<var id="type">randFromArray([["上",1],["下",2]])</var>
+				<var id="A">(function(){
+							var shape; 
+							switch(type[1])
+								{
+								case 1:	
+									return shape=randRange(1,975);
+									break;
+								case 2:
+										return shape=randRange(26,975);
+										break;								
+								}
+						})()</var>
+				<var id="rightdata">
+						(function(){
+							var shape=[]; 
+							switch(type[1])
+								{
+								case 1:	
+									return shape=[A+5,A+10,A+15,A+20,A+25];
+									break;
+								case 2:
+										return shape=[A-5,A-10,A-15,A-20,A-25];
+										break;								
+								}
+						})()
+				</var>
+				<var id="set_keypress">
+						(function(){
+							for(var i=1;i&lt;6;i++){
+								$('#t_'+i).bind('keypress',function(event){
+									if(event.keyCode == "13"){
+										$('#check-answer-button').click();
+									}
+								});
+							}
+						})()
+				</var>
+			</div>
+			<div class="question">
+				<div class="problem">
+					<p>將空格填滿，請從 <code><var>A</var></code> 開始算，以每 <code>5</code> 個為一單位時一直往<var>type[0]</var>算的數有哪些？</p>
+					<p><code><var>A</var></code> ，<input type="text" id="t_1" style="text-align:center;width:30px"><code data-if="t_1.style.display=='none'"><var>rightdata[0]</var></code> ，<input type="text" id="t_2" style="text-align:center;width:30px"><code data-if="t_2.style.display=='none'"><var>rightdata[1]</var></code> ，<input type="text" id="t_3" style="text-align:center;width:30px"><code data-if="t_3.style.display=='none'"><var>rightdata[2]</var></code> ，<input type="text" id="t_4" style="text-align:center;width:30px"><code data-if="t_4.style.display=='none'"><var>rightdata[3]</var></code> ，<input type="text" id="t_5" style="text-align:center;width:30px"><code data-if="t_5.style.display=='none'"><var>rightdata[4]</var></code></p>								
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>請填入正確的答案</p>
+			    <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value,document.getElementById("t_2").value,document.getElementById("t_3").value,document.getElementById("t_4").value,document.getElementById("t_5").value]</div>
+				    <div class="validator-function">
+					    var rightNums = 0;
+					    var ng1 = guess[0];
+						var ng2 = guess[1];
+						var ng3 = guess[2];
+						var ng4 = guess[3];
+						var ng5 = guess[4];
+						if(document.getElementById("t_1").style.display==""){
+						    ng1.replace(/[ ]/g,"")==rightdata[0]?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_2").style.display==""){
+						    ng2.replace(/[ ]/g,"")==rightdata[1]?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_3").style.display==""){
+						    ng3.replace(/[ ]/g,"")==rightdata[2]?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_4").style.display==""){
+						    ng4.replace(/[ ]/g,"")==rightdata[3]?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_5").style.display==""){
+						    ng5.replace(/[ ]/g,"")==rightdata[4]?rightNums+=1:rightNums+=0;
+						}
+						return rightNums==change[0]?true:false;
+					</div>
+				</div>
+				<p class="example">整數，例 <code>：6</code></p>
+            </div>
+			<div class="hints">
+				<p>答案為：<code><var>A</var></code> ，<code data-if="t_1.style.display==''" class="hint_pink"><var>rightdata[0]</var></code><code data-if="t_1.style.display=='none'"><var>rightdata[0]</var></code> ，<code data-if="t_2.style.display==''" class="hint_pink"><var>rightdata[1]</var></code><code data-if="t_2.style.display=='none'"><var>rightdata[1]</var></code> ，<code data-if="t_3.style.display==''" class="hint_pink"><var>rightdata[2]</var></code><code data-if="t_3.style.display=='none'"><var>rightdata[2]</var></code> ，<code data-if="t_4.style.display==''" class="hint_pink"><var>rightdata[3]</var></code><code data-if="t_4.style.display=='none'"><var>rightdata[3]</var></code> ，<code data-if="t_5.style.display==''" class="hint_pink"><var>rightdata[4]</var></code><code data-if="t_5.style.display=='none'"><var>rightdata[4]</var></code> 。</p>
+			</div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="type">randFromArray([["上",1],["下",2]])</var>
+				<var id="A">(function(){
+							var shape; 
+							switch(type[1])
+								{
+								case 1:	
+									return shape=randRange(1,975);
+									break;
+								case 2:
+										return shape=randRange(26,975);
+										break;								
+								}
+						})()</var>
+				<var id="rightdata">
+						(function(){
+							var shape=[]; 
+							switch(type[1])
+								{
+								case 1:	
+									return shape=[A+5,A+10,A+15,A+20,A+25];
+									break;
+								case 2:
+										return shape=[A-5,A-10,A-15,A-20,A-25];
+										break;
+								}
+						})()
+				</var>
+				<var id="a">randRange(3,5)</var>
+				<var id="wrongdata">
+						(function(){
+							var aa=randRange(1,4,a);
+							var shape=[];
+							if(type[1]==1){
+								for(var i=0;i&lt;a;i++)
+								{
+									shape[i]=rightdata[i]+aa[i];
+								}
+							}
+							if(type[1]==2){
+								for(var i=0;i&lt;a;i++)
+								{
+									shape[i]=rightdata[i]-aa[i];
+								}
+							}
+							return shape;
+						})()
+				</var>
+				<var id="data">
+					(function(){
+							var shape=[];
+							for(var i=0;i&lt;5;i++)
+							{
+								shape[i]=rightdata[i];
+							}
+							for(var i=5;i&lt;a+5;i++)
+							{
+								shape[i]=wrongdata[i-5];
+							}
+							var aa=a+5;
+							return shuffle(shape,aa);
+						})()
+				</var>
+				<var id="ansdata">
+					(function(){
+							var shape=[];
+							var	aa=0						
+							for(var i=0;i&lt;8;i++)
+							{
+								for(var j=0;j&lt;5;j++)
+								{
+									if(data[i]==rightdata[j])
+									{shape[aa]=data[i];aa++;}
+								}
+							}
+							return [aa,sortNumbers(shape)];
+						})()
+				</var>
+			</div>
+			<div class="question">
+				<div class="problem">
+					<p>從 <code><var>A</var></code> 開始算，以每 <code>5</code> 個為一單位時往<var>type[0]</var>數出來的數有哪些？（多選）</p>
+					<table style="font-size:15px;">
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox1" id="pic_1">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_1').attr('checked')){$('#pic_1').removeAttr('checked')}else{$('#pic_1').attr('checked','checked')}"><code><var>data[0]</var></code>
+							</div></td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox2" id="pic_2">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_2').attr('checked')){$('#pic_2').removeAttr('checked')}else{$('#pic_2').attr('checked','checked')}"><code><var>data[1]</var></code>
+							</div></td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox3" id="pic_3">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_3').attr('checked')){$('#pic_3').removeAttr('checked')}else{$('#pic_3').attr('checked','checked')}"><code><var>data[2]</var></code>
+							</div></td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox4" id="pic_4">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_4').attr('checked')){$('#pic_4').removeAttr('checked')}else{$('#pic_4').attr('checked','checked')}"><code><var>data[3]</var></code>
+							</div></td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox5" id="pic_5">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_5').attr('checked')){$('#pic_5').removeAttr('checked')}else{$('#pic_5').attr('checked','checked')}"><code><var>data[4]</var></code>
+							</div></td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox6" id="pic_6">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_6').attr('checked')){$('#pic_6').removeAttr('checked')}else{$('#pic_6').attr('checked','checked')}"><code><var>data[5]</var></code>
+							</div></td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox7" id="pic_7">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_7').attr('checked')){$('#pic_7').removeAttr('checked')}else{$('#pic_7').attr('checked','checked')}"><code><var>data[6]</var></code>
+							</div></td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox8" id="pic_8">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_8').attr('checked')){$('#pic_8').removeAttr('checked')}else{$('#pic_8').attr('checked','checked')}"><code><var>data[7]</var></code>
+							</div></td>
+						</tr>
+						
+					</table>
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>請選擇所有正確的答案</p>
+			    <div class="sol" data-type="custom">
+				    <div class="guess">1</div>
+				    <div class="validator-function">					  
+						var aa=0;
+						for(var i=1;i&lt;9;i++)
+						{
+							if($("#pic_"+i).attr("checked")!='checked')
+							{aa++;}
+						}
+						if(aa==8){return "";}
+						var ans=0;
+						var ans1=0;
+						for(var i=1;i&lt;9;i++)
+						{
+							document.getElementById("pic_"+i).value=data[i-1];
+						}
+						for(var i=0;i&lt;5;i++)
+						{
+							for(var k=1;k&lt;9;k++)
+							{
+								if(document.getElementById("pic_"+k).value==rightdata[i]&&document.getElementById("pic_"+k).checked==true)
+								{ans++;}
+							}
+						}
+						for(var i=0;i&lt;a;i++)
+						{
+							for(var k=1;k&lt;9;k++)
+							{
+								if(document.getElementById("pic_"+k).value==wrongdata[i]&&document.getElementById("pic_"+k).checked==false)
+								{ans1++;}
+							}
+						}
+						var bol1=false;
+						if(ans+ans1==8)
+						{
+							bol1=true;
+						}
+						return bol1;
+						
+					</div>
+				</div>
+            </div>
+			<div class="hints">
+				<p>正確的數字為：<code class="hint_pink"><var>ansdata[1][0]</var></code> ，<code data-if="ansdata[0]&gt;1" class="hint_pink"><var>ansdata[1][1]</var></code> <span data-if="ansdata[0]&gt;2">，</span> <code data-if="ansdata[0]&gt;2" class="hint_pink"><var>ansdata[1][2]</var></code> <span data-if="ansdata[0]&gt;3">，</span> <code data-if="ansdata[0]&gt;3" class="hint_pink"><var>ansdata[1][3]</var></code> <span data-if="ansdata[0]&gt;4">，</span> <code data-if="ansdata[0]&gt;4" class="hint_pink"><var>ansdata[1][4]</var></code> 。</p>
+			</div>
+		</div>
+		
+	</div>
+	</div>
+</body>
+</html>
