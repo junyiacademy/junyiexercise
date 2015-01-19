@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>拼拼看</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="filling-rectangles">
+		<div class="vars" data-ensure="J !== K">
+			<var id="J,K">[randRange(2,5),randRange(2,5)]</var>
+			<var id="R">J*K</var>
+			<var id="set_keypress">
+			(function(){
+				$('#ans').bind('keypress',function(event){
+					if(event.keyCode == "13"){
+						$('#check-answer-button').click();
+					}
+				});
+			})()
+			</var>
+		</div>
+		<div class="question">
+			<p>假如在沒有任何一個正方形重疊的情況下，我們需要多少個正方形才能將以下的這個長方形給填滿？（答案包括圖中已顯示的正方形喔！）</p>
+			<p><input type="text" style="text-align:center;width:60px" id="ans"> 個正方形</p>
+			<div class="graphie" id="filling">
+				init({
+					range: [ [-1, 7], [6-K-1, 7] ],scale: 40
+				});
+				path([[0,6],[J,6],[J,5],[1,5],[1,6-K],[0,6-K],[0,6]],{fill:"#28AE7B"});
+				line([J,6-K],[1,6-K]);
+				line([J,6-K],[J,5]);
+				for(var i = 1;i&lt;J;i++){
+					line([i,6],[i,5]);
+				}
+				for(var j = 5;j&gt;6-K;j--){
+					line([0,j],[1,j]);
+				}
+			</div>
+		</div>
+		
+		<div class="solution" data-type="multiple">
+			<p>填入正確的答案</p>
+			<div class="sol" data-type="custom">
+				<div class="guess">$('#ans').val()</div>
+				<div class="validator-function">
+					if(guess.replace(/[ ]/g,"")==""){
+						return "";
+					}
+					if(guess.replace(/[ ]/g,"")==R){
+						return true;
+					}
+				</div>
+			</div>
+		</div>
+				
+		<div class="hints">
+			<div>
+				<p>下圖顯示 <code class="hint_blue"><var>J</var></code> 個正方形將長方形的頂部給完全填滿了，即 <code class="hint_blue"><var>J</var></code> 個正方形形成一排。</p>
+				<div class="graphie" id="hints_filling_1">
+					init({
+						range: [ [-1, 7], [6-K-1, 7] ],scale: 40
+					});
+					path([[0,6],[J,6],[J,6-K],[0,6-K],[0,6]]);
+					path([[0,6],[J,6],[J,5],[0,5],[0,6]],{fill:"#28AE7B"});
+					for(var ii = 1;ii&lt;J;ii++){
+						line([ii,6],[ii,5]);
+					}
+				</div>
+			</div>
+			<div>
+				<p><code class="hint_orange"><var>K</var></code> 個正方形形成一列。</p>
+				<div class="graphie" id="hints_filling_2">
+					init({
+						range: [ [-1, 7], [6-K-1, 7] ],scale: 40
+					});
+					path([[0,6],[J,6],[J,6-K],[0,6-K],[0,6]]);
+					path([[0,6],[1,6],[1,6-K],[0,6-K],[0,6]],{fill:"#28AE7B"});
+					for(var jj = 5;jj&gt;6-K;jj--){
+						line([0,jj],[1,jj]);
+					}
+				</div>
+			</div>
+			<p>這裡總共顯示了 <code><var>J</var></code> 列，每列可以擺 <code><var>K</var></code> 個正方形，或者是 <code><var>K</var></code> 排，每排可以擺 <code><var>J</var></code> 個正方形。</p>
+			<div>
+				<p>因此，總共用 <code><var>J</var>\times<var>K</var>=\enspace</code><code class="hint_red"><var>R</var></code> 個正方形可以將這個長方形擺滿。</p>
+				<div class="graphie" id="hints_filling_3">
+					init({
+						range: [ [-1, 7], [6-K-1, 7] ],scale: 40
+					});
+					path([[0,6],[J,6],[J,6-K],[0,6-K],[0,6]],{fill:"#28AE7B"});
+					for(var jj = 5;jj&gt;6-K;jj--){
+						line([0,jj],[J,jj]);
+					}
+					for(var ii = 1;ii&lt;J;ii++){
+						line([ii,6],[ii,6-K]);
+					}
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>
