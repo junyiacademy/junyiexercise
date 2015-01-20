@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>最大公因數與最小公倍數的應用題</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		table.Limited td {text-align:center; vertical-align:middle;font-size:15px}
+		table.Limited th {text-align:center}
+	</style>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="name">randFromArray([["小華","小明"],["小紅","小王"],["小倩","小林"],["哥哥","弟弟"]])</var>
+				<var id="J">randFromArray([[25,35,[5],[5,7],1],[21,35,[3,7],[5,7],2],[25,45,[5],[3,5,9,15],3]])</var>
+				<var id="ggcd">getGCD(J[0],J[1])</var>
+				<var id="names">randFromArray([["支","棒棒糖"],["塊","巧克力"],["個","糖果"]])</var>
+			</div>
+			<h3>題目來源：博幼基金會</h3>
+            <div class="question"><p><var>name[0]</var>有 <code><var>J[0]</var></code> 元，<var>name[1]</var>有 <code><var>J[1]</var></code> 元，他們買相同價錢的<var>names[1]</var>，剛好把錢花完，請問他們買的<var>names[1]</var>一<var>names[0]</var>最貴可能是多少元？</p>
+			</div>
+           
+			<div class="solution" data-forms="integer"><var>ggcd</var>
+			</div>
+
+            <div class="hints">
+				<p>每<var>names[0]</var><var>names[1]</var>的價錢 <code>\times</code> 數量 <code>=</code> 買<var>names[1]</var>的錢。</p>
+				<p>所以每<var>names[0]</var><var>names[1]</var>的價錢會是 <code><var>J[0]</var></code> 和 <code><var>J[1]</var></code> 的因數。</p>
+				<p><span data-if="J[4]==1"> <code><var>J[0]</var></code> 的因數有 <code>1</code> 、 <code><var>J[2][0]</var></code> 、 <code><var>J[0]</var></code> 。</span>
+				<span data-if="J[4]==2"> <code><var>J[0]</var></code> 的因數有 <code>1</code> 、 <code><var>J[2][0]</var></code> 、 <code><var>J[2][1]</var></code> 、 <code><var>J[0]</var></code> 。</span>
+				<span data-if="J[4]==3"> <code><var>J[0]</var></code> 的因數有 <code>1</code> 、 <code><var>J[2][0]</var></code> 、 <code><var>J[0]</var></code> 。</span></p>
+				<p><span data-if="J[4]==1"> <code><var>J[1]</var></code> 的因數有 <code>1</code> 、 <code><var>J[3][0]</var></code> 、<code><var>J[3][1]</var></code> 、 <code><var>J[1]</var></code> 。</span>
+				<span data-if="J[4]==2"> <code><var>J[1]</var></code> 的因數有 <code>1</code> 、 <code><var>J[3][0]</var></code> 、<code><var>J[3][1]</var></code> 、 <code><var>J[1]</var></code> 。</span>
+				<span data-if="J[4]==3"> <code><var>J[1]</var></code> 的因數有 <code>1</code> 、 <code><var>J[3][0]</var></code> 、<code><var>J[3][1]</var></code>  、 <code><var>J[3][2]</var></code> 、 <code><var>J[3][3]</var></code>、 <code><var>J[1]</var></code> 。</span></p>
+				<p><code><var>J[0]</var></code> 和 <code><var>J[1]</var></code> 的公因數：<code>1</code> 、 <code><var>ggcd</var></code> 。</p>
+				<p><var>names[1]</var>的價錢可能是 <code>1</code> 元或是 <code><var>ggcd</var></code> 元，<var>names[1]</var>最貴可能是 <code class="hint_pink"><var>ggcd</var></code> 元。</p>
+			</div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="name">randFromArray(["小華","小明","小紅","小王","小倩","小林"])</var>
+				<var id="J">randRange(6,9)</var>
+			</div>
+			<h3>題目來源：博幼基金會</h3>
+            <div class="question"><p><var>name</var>把一籃雞蛋平分成 <code><var>J</var></code> 袋，假設籃子最多只能裝 <code>90</code> 個，且每袋最少都超過 <code>5</code> 個，請問這籃雞蛋最少可能有幾個？</p>
+			</div>
+            <div class="solution"  data-forms="integer"><var>J*6</var>
+			</div>
+
+            <div class="hints">
+				<p>雞蛋的數量不超過 <code>90</code> 個（數量比 <code>91</code> 少）。</p>
+				<p>雞蛋可平分成 <code><var>J</var></code> 袋，雞蛋數量為 <code><var>J</var></code> 的倍數。</p>
+				<p>每袋都超過 <code>5</code> 個，所以雞蛋數量超過 <code><var>J</var>\times 5 = <var>J*5</var></code> 。</p>
+				<p><code><var>J*5</var></code> 到 <code>91</code> 之間 <code><var>J</var></code> 的倍數最小的就是 <code><var>J*6</var></code> 。</p>
+				<p>這籃雞蛋的數量最少可能有 <code class="hint_pink"><var>J*6</var></code> 個。</p>
+			</div>
+		</div>
+		
+		<div id="case3">
+			<div class="vars">
+				<var id="J">randRange(7,12)</var>
+			</div>
+			<h3>題目來源：博幼基金會</h3>
+            <div class="question"><p>學校運動會大會操的表演人數大約 <code>100～135</code> 人間，每 <code><var>J</var></code> 人排一排剛好分完，請問人數最少可能有多少人？</p>
+			</div>
+            <div class="solution"  data-forms="integer"><var>parseInt(100/J)*J+J</var>
+			</div>
+
+            <div class="hints">
+				<p>每 <code><var>J</var></code> 人一排可以分完代表表演人數剛好是 <code><var>J</var></code> 的倍數。</p>
+				<p><span data-if="J!=10">我們用 <code>100 \div <var>J</var> = <var>parseInt(100/J)</var> ... <var>100-parseInt(100/J)*J</var></code> 。</span>
+				<span data-if="J==10">我們用 <code>100 \div<var>J</var> = <var>parseInt(100/J)</var></code> 。</span></p>
+				<p>可以知道 <code><var>J</var></code> 的 <code><var>parseInt(100/J)</var></code> 倍是 <code><var>parseInt(100/J)*J</var></code> 。</p>
+				<div><p><code><var>J</var></code> 的 <code><var>parseInt(100/J)+1</var></code> 倍剛好是 <code>100</code> 到 <code>135</code> 之間第一個 <code><var>J</var></code> 的倍數：</p>
+				<p><code><var>J</var> \times <var>parseInt(100/J)+1</var> = <var>parseInt(100/J)*J+J</var></code> 。</p></div>
+				<p>所以表演人數最少有 <code class="hint_pink"><var>parseInt(100/J)*J+J</var></code> 人。</p>
+			</div>
+		</div>
+		
+		<div id="case4">
+			<div class="vars">
+				<var id="J">randRange(15,25)</var>
+			</div>
+			<h3>題目來源：博幼基金會</h3>
+            <div class="question"><p>媽媽今天做了大約 <code>500～600</code> 個餅乾，假設每 <code><var>J</var></code> 個裝一袋都可以裝完，請問媽媽最多可能做多少餅乾？</p>
+			</div>
+			<div class="solution" data-forms="integer"><var>parseInt(600/J)*J==600?parseInt(600/J)*J-J:parseInt(600/J)*J</var></div>
+
+            <div class="hints">
+				<p> <code>500～600</code> 個之間的餅乾，每 <code><var>J</var></code> 個裝一袋可以裝完代表餅乾數量是 <code><var>J</var></code> 的倍數。</p>
+				<p><span data-if="parseInt(600/J)*J!=600">我們用 <code>600 \div <var>J</var> = <var>parseInt(600/J)</var> ... <var>600-parseInt(600/J)*J</var></code> 。</span>
+				<span data-if="parseInt(600/J)*J==600">我們用 <code>600 \div <var>J</var> = <var>parseInt(600/J)</var></code> 。</span></p>
+				<p><span data-if="parseInt(600/J)*J!=600">代表 <code><var>J</var></code> 的倍數在 <code>600</code> 以內有 <code><var>parseInt(600/J)</var></code> 個。</span>
+				<span data-if="parseInt(600/J)*J==600">代表 <code><var>J</var></code> 的倍數在 <code>600</code> 以內有 <code><var>parseInt(600/J)-1</var></code> 個。</span></p>
+				<div><p><span data-if="parseInt(600/J)*J!=600">最大的是第 <code><var>parseInt(600/J)</var></code> 個，</span>
+				<span data-if="parseInt(600/J)*J==600">最大的是第 <code><var>parseInt(600/J)-1</var></code> 個，</span></p>
+				<p><span data-if="parseInt(600/J)*J!=600"><code><var>J</var> \times <var>parseInt(600/J)</var> = <var>parseInt(600/J)*J</var></code> 。</span>
+				<span data-if="parseInt(600/J)*J==600"><code><var>J</var> \times <var>parseInt(600/J)-1</var> = <var>parseInt(600/J)*J-J</var></code> 。</span></p></div>
+				<p><span data-if="parseInt(600/J)*J!=600"> <code><var>J</var></code> 的倍數在 <code>500</code> 到 <code>600</code> 間最大的是 <code><var>parseInt(600/J)*J</var></code> 。</span>
+				<span data-if="parseInt(600/J)*J==600"> <code><var>J</var></code> 的倍數在 <code>500</code> 到 <code>600</code> 間最大的是 <code><var>parseInt(600/J)*J-J</var></code> 。</span></p>
+				<p><span data-if="parseInt(600/J)*J!=600">媽媽最多做 <code class="hint_pink"><var>parseInt(600/J)*J</var></code> 個餅乾。</span>
+				<span data-if="parseInt(600/J)*J==600">媽媽最多做 <code class="hint_pink"><var>parseInt(600/J)*J-J</var></code> 個餅乾。</span></p>
+			</div>
+		</div>
+		
+		<div id="case5">
+			<div class="vars">
+				<var id="J">randFromArray([[54,36],[28,49],[35,50],[24,36],[30,50]])</var>
+				<var id="J_1">
+				(function(){
+					var num=new Array();
+					var j=0;
+					for(var i=0;i&lt;J[0];i++){
+						if(J[0]%(i+1)==0){
+							num[j]=i+1;
+							j++;
+						}
+					}
+					return [num,j];
+				})()</var>
+				<var id="J_2">
+				(function(){
+					var num=new Array();
+					var j=0;
+					for(var i=0;i&lt;J[1];i++){
+						if(J[1]%(i+1)==0){
+							num[j]=i+1;
+							j++;
+						}
+					}
+					return [num,j];
+				})()</var>
+				<var id="J_3">
+				(function(){
+					var num=new Array();
+					var k=0;
+					for(var i=0;i&lt;J_1[1];i++){
+						for(var j=0;j&lt;J_2[1];j++){
+							if(J_1[0][i]==J_2[0][j]){
+								num[k]=J_1[0][i];
+								k++;
+							}
+						}
+					}
+					return [num,k];
+				})()</var>
+			</div>
+			<h3>題目來源：博幼基金會</h3>
+            <div class="question"><p><code><var>J[0]</var></code> 顆糖果和 <code><var>J[1]</var></code> 瓶牛奶要平分給同學，如果每位同學分到的糖果和牛奶數量必須一樣，不考慮全部分給同一個人的情況下，班上學生數可能有幾種？</p>
+			</div>
+            <div class="solution"  data-forms="integer"><var>J_3[1]-1</var>
+			</div>
+
+            <div class="hints">
+				<p>糖果和牛奶要分給相同的人數，且都要分完，所以人數必須是 <code><var>J[0]</var></code> 和 <code><var>J[1]</var></code> 的公因數。</p>
+				<div><p><code><var>J[0]</var></code> 的因數有 <code>1</code> <span data-if="J_1[1]&gt;1">、 <code><var>J_1[0][1]</var></code></span> <span data-if="J_1[1]&gt;2">、 <code><var>J_1[0][2]</var></code></span> 
+				<span data-if="J_1[1]&gt;3">、 <code><var>J_1[0][3]</var></code></span> <span data-if="J_1[1]&gt;4">、 <code><var>J_1[0][4]</var></code></span> <span data-if="J_1[1]&gt;5">、 <code><var>J_1[0][5]</var></code></span> 
+				<span data-if="J_1[1]&gt;6">、 <code><var>J_1[0][6]</var></code></span>	<span data-if="J_1[1]&gt;7">、 <code><var>J_1[0][7]</var></code></span> <span data-if="J_1[1]&gt;8">、 <code><var>J_1[0][8]</var></code></span> 
+				<span data-if="J_1[1]&gt;9">、 <code><var>J_1[0][9]</var></code></span> <span data-if="J_1[1]&gt;10">、 <code><var>J_1[0][10]</var></code></span> ，</p>
+				<p><code><var>J[1]</var></code> 的因數有 <code>1</code> <span data-if="J_1[1]&gt;1">、 <code><var>J_2[0][1]</var></code></span> <span data-if="J_2[1]&gt;2">、 <code><var>J_2[0][2]</var></code></span> 
+				<span data-if="J_2[1]&gt;3">、 <code><var>J_2[0][3]</var></code></span> <span data-if="J_2[1]&gt;4">、 <code><var>J_2[0][4]</var></code></span> <span data-if="J_2[1]&gt;5">、 <code><var>J_2[0][5]</var></code></span> 
+				<span data-if="J_2[1]&gt;6">、 <code><var>J_2[0][6]</var></code></span>	<span data-if="J_2[1]&gt;7">、 <code><var>J_2[0][7]</var></code></span> <span data-if="J_2[1]&gt;8">、 <code><var>J_2[0][8]</var></code></span> 
+				<span data-if="J_2[1]&gt;9">、 <code><var>J_2[0][9]</var></code></span> <span data-if="J_2[1]&gt;10">、 <code><var>J_2[0][10]</var></code></span> ，</p></div>
+				<p><code><var>J[0]</var></code> 和 <code><var>J[1]</var></code> 的公因數有： <code>1</code> <span data-if="J_3[1]&gt;1">、 <code><var>J_3[0][1]</var></code></span> <span data-if="J_3[1]&gt;2">、 <code><var>J_3[0][2]</var></code></span> 
+				<span data-if="J_3[1]&gt;3">、 <code><var>J_3[0][3]</var></code></span> <span data-if="J_3[1]&gt;4">、 <code><var>J_3[0][4]</var></code></span> <span data-if="J_3[1]&gt;5">、 <code><var>J_3[0][5]</var></code></span> 
+				<span data-if="J_3[1]&gt;6">、 <code><var>J_3[0][6]</var></code></span> <span data-if="J_3[1]&gt;7">、 <code><var>J_3[0][7]</var></code></span> <span data-if="J_3[1]&gt;8">、 <code><var>J_3[0][8]</var></code></span> 。</p>
+				<div>
+					<p>不可以全部分給 <code>1</code> 個同學，所以總共有 <code><var>J_3[1]</var> - 1 = </code> <code class="hint_pink"><var>J_3[1]-1</var></code> 種。</p>
+					<table class="Limited">
+					<tr style="background:#F0F0F0">
+						<td>人數（位）</td><td>糖果（顆）</td><td>牛奶（瓶）</td>
+					</tr>
+					<tr>
+						<td><code><var>J_3[0][0]</var></code></td><td><code><var>J[0]</var></code></td><td><code><var>J[1]</var></code></td>
+					</tr>
+					<tr data-if="J_3[1]&gt;1" style="background:#F0F0F0" >
+						<td><code><var>J_3[0][1]</var></code></td><td><code><var>J[0]/J_3[0][1]</var></code></td><td><code><var>J[1]/J_3[0][1]</var></code></td>
+					</tr>
+					<tr data-if="J_3[1]&gt;2">
+						<td><code><var>J_3[0][2]</var></code></td><td><code><var>J[0]/J_3[0][2]</var></code></td><td><code><var>J[1]/J_3[0][2]</var></code></td>
+					</tr>
+					<tr data-if="J_3[1]&gt;3" style="background:#F0F0F0">
+						<td><code><var>J_3[0][3]</var></code></td><td><code><var>J[0]/J_3[0][3]</var></code></td><td><code><var>J[1]/J_3[0][3]</var></code></td>
+					</tr>
+					<tr data-if="J_3[1]&gt;4">
+						<td><code><var>J_3[0][4]</var></code></td><td><code><var>J[0]/J_3[0][4]</var></code></td><td><code><var>J[1]/J_3[0][4]</var></code></td>
+					</tr>
+					<tr data-if="J_3[1]&gt;5" style="background:#F0F0F0">
+						<td><code><var>J_3[0][5]</var></code></td><td><code><var>J[0]/J_3[0][5]</var></code></td><td><code><var>J[1]/J_3[0][5]</var></code></td>
+					</tr>
+					<tr data-if="J_3[1]&gt;6">
+						<td><code><var>J_3[0][6]</var></code></td><td><code><var>J[0]/J_3[0][6]</var></code></td><td><code><var>J[1]/J_3[0][6]</var></code></td>
+					</tr>
+					<tr data-if="J_3[1]&gt;7" style="background:#F0F0F0">
+						<td><code><var>J_3[0][7]</var></code></td><td><code><var>J[0]/J_3[0][7]</var></code></td><td><code><var>J[1]/J_3[0][7]</var></code></td>
+					</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		<div id="case6">
+			<div class="vars">
+				<var id="J">randFromArray([12,15,20,30,35])</var>
+				<var id="J_1">
+				(function(){
+					var num=new Array();
+					var j=0;
+					for(var i=parseInt(200/J)+1;i&lt;parseInt(299/J)+1;i++){
+						num[j]=i*J;
+						j++;
+					}
+					return [num,j];
+				})()</var>
+			</div>
+			<h3>題目來源：博幼基金會</h3>
+            <div class="question"><p>一箱橘子有二百多個，每 <code><var>J</var></code> 個裝一籃，剛好裝完，這箱橘子最多可能有幾個？</p>
+			</div>
+            <div class="solution"  data-forms="integer"><var>J_1[0][J_1[1]-1]</var>
+			</div>
+
+            <div class="hints">
+				<p>橘子有兩百多個，每 <code><var>J</var></code> 個一籃可以分完，</p>
+				<p>代表橘子的數量剛好是 <code><var>J</var></code> 的倍數，</p>
+				<p><code>200</code> 到 <code>300</code> 之間 <code><var>J</var></code> 的倍數有：<span data-if="J_1[1]&gt;0"><code><var>J_1[0][0]</var></code></span> <span data-if="J_1[1]&gt;1">、 <code><var>J_1[0][1]</var></code></span> 
+				<span data-if="J_1[1]&gt;2">、 <code><var>J_1[0][2]</var></code></span> <span data-if="J_1[1]&gt;3">、 <code><var>J_1[0][3]</var></code></span> <span data-if="J_1[1]&gt;4">、 <code><var>J_1[0][4]</var></code></span> 
+				<span data-if="J_1[1]&gt;5">、 <code><var>J_1[0][5]</var></code></span> <span data-if="J_1[1]&gt;6">、 <code><var>J_1[0][6]</var></code></span> <span data-if="J_1[1]&gt;7">、 <code><var>J_1[0][7]</var></code></span> 
+				<span data-if="J_1[1]&gt;8">、 <code><var>J_1[0][8]</var></code></span>。</p>
+				<p>一箱橘子最多可能有 <code class="hint_pink"><var>J_1[0][J_1[1]-1]</var></code> 個。</p>
+			</div>
+		</div>
+		
+		<div id="case7">
+			<div class="vars">
+				<var id="J">randFromArray([[14,21],[15,20],[32,24],[10,25],[12,30]])</var>
+				<var id="J_1">
+				(function(){
+					var num=new Array();
+					var j=0;
+					for(var i=0;i&lt;J[0];i++){
+						if(J[0]%(i+1)==0){
+							num[j]=i+1;
+							j++;
+						}
+					}
+					return [num,j];
+				})()</var>
+				<var id="J_2">
+				(function(){
+					var num=new Array();
+					var j=0;
+					for(var i=0;i&lt;J[1];i++){
+						if(J[1]%(i+1)==0){
+							num[j]=i+1;
+							j++;
+						}
+					}
+					return [num,j];
+				})()</var>
+				<var id="J_3">
+				(function(){
+					var num=new Array();
+					var k=0;
+					for(var i=0;i&lt;J_1[1];i++){
+						for(var j=0;j&lt;J_2[1];j++){
+							if(J_1[0][i]==J_2[0][j]){
+								num[k]=J_1[0][i];
+								k++;
+							}
+						}
+					}
+					return [num,k];
+				})()</var>
+				<var id="set_keypress">
+						(function(){
+							for(var i=1;i&lt;4;i++){
+								$('#textbox'+i).bind('keypress',function(event){
+									if(event.keyCode == "13"){
+										$('#check-answer-button').click();
+									}
+								});
+							}
+						})()
+				</var>
+			</div>
+			<h3>題目來源：博幼基金會</h3>
+            <div class="question"><p>把 <code><var>J[0]</var></code> 顆糖果和 <code><var>J[1]</var></code> 塊餅乾平分裝在袋子裡，每一袋子裡的糖果一樣多，餅乾一樣多，最多可以裝幾袋？每袋有幾顆糖果和幾塊餅乾？</p>
+			<p>分成 <input type="text" id="textbox1" style="width:4em;height:1em;text-align:center;border:2px;color:red;border:1px solid #E0E0E0;" /> 袋，每袋裝 <input type="text" id="textbox2" style="width:4em;height:1em;text-align:center;border:2px;color:red;border:1px solid #E0E0E0;" /> 顆糖果和 <input type="text" id="textbox3" style="width:4em;height:1em;text-align:center;border:2px;color:red;border:1px solid #E0E0E0;" /> 塊餅乾</p>
+			</div>
+			<div class="solution" data-type="multiple">
+					<p>在方框中填入正確的數量</p>
+					<div class="sol" data-type="custom">
+                        <div class="guess">["textbox1","textbox2","textbox3"]
+                        </div>
+                        <div class="validator-function">
+							if(document.getElementById(guess[0]).value=="" || document.getElementById(guess[1]).value==""|| document.getElementById(guess[2]).value==""){return "";}
+                            if((document.getElementById(guess[0]).value!=J_3[0][J_3[1]-1])||(document.getElementById(guess[1]).value!=(J[0]/J_3[0][J_3[1]-1]))||(document.getElementById(guess[2]).value!=(J[1]/J_3[0][J_3[1]-1])))
+                                return false;
+                            return true;
+                        </div>
+                    </div>
+					<p class="example">整數，例：<code>6</code></p>
+				</div>
+
+            <div class="hints">
+				<p><code><var>J[0]</var></code> 顆糖果可平分裝成 <code>1</code> <span data-if="J_1[1]&gt;1">、 <code><var>J_1[0][1]</var></code></span> <span data-if="J_1[1]&gt;2">、 <code><var>J_1[0][2]</var></code></span> 
+				<span data-if="J_1[1]&gt;3">、 <code><var>J_1[0][3]</var></code></span> <span data-if="J_1[1]&gt;4">、 <code><var>J_1[0][4]</var></code></span> <span data-if="J_1[1]&gt;5">、 <code><var>J_1[0][5]</var></code></span> 
+				<span data-if="J_1[1]&gt;6">、 <code><var>J_1[0][6]</var></code></span>	<span data-if="J_1[1]&gt;7">、 <code><var>J_1[0][7]</var></code></span> <span data-if="J_1[1]&gt;8">、 <code><var>J_1[0][8]</var></code></span> 
+				<span data-if="J_1[1]&gt;9">、 <code><var>J_1[0][9]</var></code></span> <span data-if="J_1[1]&gt;10">、 <code><var>J_1[0][10]</var></code></span> 袋。</p>
+				<p><code><var>J[1]</var></code> 塊餅乾可平分裝成 <code>1</code> <span data-if="J_1[1]&gt;1">、 <code><var>J_2[0][1]</var></code></span> <span data-if="J_2[1]&gt;2">、 <code><var>J_2[0][2]</var></code></span> 
+				<span data-if="J_2[1]&gt;3">、 <code><var>J_2[0][3]</var></code></span> <span data-if="J_2[1]&gt;4">、 <code><var>J_2[0][4]</var></code></span> <span data-if="J_2[1]&gt;5">、 <code><var>J_2[0][5]</var></code></span> 
+				<span data-if="J_2[1]&gt;6">、 <code><var>J_2[0][6]</var></code></span>	<span data-if="J_2[1]&gt;7">、 <code><var>J_2[0][7]</var></code></span> <span data-if="J_2[1]&gt;8">、 <code><var>J_2[0][8]</var></code></span> 
+				<span data-if="J_2[1]&gt;9">、 <code><var>J_2[0][9]</var></code></span> <span data-if="J_2[1]&gt;10">、 <code><var>J_2[0][10]</var></code></span> 袋。</p>
+				<p>可以裝成 <code>1</code> <span data-if="J_3[1]&gt;1">、 <code><var>J_3[0][1]</var></code></span> <span data-if="J_3[1]&gt;2">、 <code><var>J_3[0][2]</var></code></span> 
+				<span data-if="J_3[1]&gt;3">、 <code><var>J_3[0][3]</var></code></span> <span data-if="J_3[1]&gt;4">、 <code><var>J_3[0][4]</var></code></span> <span data-if="J_3[1]&gt;5">、 <code><var>J_3[0][5]</var></code></span> 
+				<span data-if="J_3[1]&gt;6">、 <code><var>J_3[0][6]</var></code></span> <span data-if="J_3[1]&gt;7">、 <code><var>J_3[0][7]</var></code></span> <span data-if="J_3[1]&gt;8">、 <code><var>J_3[0][8]</var></code></span>袋，
+				最多可以裝 <code class="hint_pink"><var>J_3[0][J_3[1]-1]</var></code> 袋，每袋裝 <code class="hint_pink"><var>J[0]/J_3[0][J_3[1]-1]</var></code> 顆糖果和 <code class="hint_pink"><var>J[1]/J_3[0][J_3[1]-1]</var></code> 塊餅乾</p>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>
