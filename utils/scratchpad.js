@@ -252,8 +252,10 @@ function Scratchpad(elem) {
     });
     container.bind("touchmove", function(e) {
         var offset = $(container).offset();
-        mousemove(e.originalEvent.touches[0].pageX - offset.left, e.originalEvent.touches[0].pageY - offset.top);
-        e.preventDefault();
+        if (e.originalEvent.touches.length === 1){
+            mousemove(e.originalEvent.touches[0].pageX - offset.left, e.originalEvent.touches[0].pageY - offset.top);
+            e.preventDefault();
+        }
     });
     container.bind("touchend", function(e) {
         mouseup();
