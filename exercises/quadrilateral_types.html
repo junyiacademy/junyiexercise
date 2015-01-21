@@ -9,10 +9,23 @@
     <div class="exercise">
         <div class="problems">
             <div id="trapezoid">
-                <div class="vars">
+                <div class="vars" data-ensure="ensure">
                     <var id="TYPE">"trapezoid"</var>
                     <var id="ANGLES">randomQuadAngles[ TYPE ]()</var>
-                    <var id="ANGLE_LABELS">$.map( ANGLES,function( x ){ return x  + "^{\\circ}"; } )</var>
+                    <var id="ANGLE_LABELS">$.map( ANGLES,function( x ){ return "\\small{"+x  + "}^{\\circ}"; } )</var>
+					<var id="q">new Quadrilateral( [ 2, -7 ],  ANGLES, randRange(0,1)+0.5,3 )</var>
+					<var id="LEN_UN">$.map( q.sides, lineLength )</var>
+					<var id="ensure">(function(){
+						for(var i = 0;i &lt; 4;i++){
+							if(LEN_UN[i] &lt; 1.8 || ANGLES[i] &gt;150 || LEN_UN[i] &gt; 10 ){
+								return false;
+							}	
+						}
+						return true;
+					})()</var>
+																		
+					<var id="LEN_STR">$.map( LEN_UN, function( x ){ return "\\small{"+x.toFixed( 1 )  + "}"; } )</var>
+					
                 </div>
                 <div class="problem">
                     <p>請問下面的圖中是哪種四邊形呢？請讓你的答案越準確越好。</p>
@@ -22,11 +35,10 @@
                         init({
                             range: [ [-2, 11 ], [ -8, -1 ] ]
                         })
-                        var q = new Quadrilateral( [ 2, -7 ],  ANGLES, randRange( 0, 1 ) + 0.5, 3 );
-                        q.boxOut( [ [ [ -1, -10 ], [ -1, 10 ] ] ], [ 0.7, 0 ] );
-                        q.boxOut( [ [ [ 11, -10 ], [ 11, 10 ] ] ], [ -0.7, 0 ] );
+						q.boxOut( [ [ [ 11, -10 ], [ 11, 10 ] ] ], [ -0.7, 0 ] );
+                        q.boxOut( [ [ [ 0, -10 ], [ 0, 10 ] ] ], [ 0.7, 0 ] );
                         q.draw();
-                        q.labels = { "angles" : ANGLE_LABELS, "sides" : $.map( $.map( q.sides, lineLength ), function( x ){ return x.toFixed( 1 ); } ) };
+                        q.labels = { "angles" : ANGLE_LABELS, "sides" : LEN_STR };
                         q.drawLabels();
                     </div>
                 </div>
@@ -98,7 +110,7 @@
                         q.boxOut( [ [ [ 11, -10 ], [ 11, 10 ] ] ], [ -0.7, 0 ] );
                         q.boxOut( [ [ [ 0, -10 ], [ 0, 10 ] ] ], [ 0.7, 0 ] );
                         q.draw();
-                        q.labels = { "angles" : ANGLE_LABELS, "sides" : $.map( $.map( q.sides, lineLength ), function( x ){ return x.toFixed( 1 ); } ) };
+                        q.labels = { "angles" : ANGLE_LABELS, "sides" : $.map( $.map( q.sides, lineLength ), function( x ){ return "\\small{"+x.toFixed( 1 )  + "}";  } ) };
                         q.drawLabels();
                     </div>
                 </div>
