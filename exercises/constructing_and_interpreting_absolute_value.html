@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers word-problems math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>絕對值的文字應用題</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		 #answer_area .sol input[type=text] {
+					width: 50px;
+				}
+	</style>
+    <script type="text/javascript">
+		function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+        <div id="case1">
+			<div class="vars">					
+				<var id="type">randRange( 1, 4)</var>
+				<var id="num">(function(){
+					if(type==1){
+						var c=randRange( 1, 9)
+						var a=accMul(c,1000);
+						var b=randRange( 101, 200);
+					return [a,-b];}
+					if(type==2){
+						var a=randRange( 1, 9);
+					return a;}
+					if(type==3){
+						var a=randRange( 1001, 1999);
+						var c=randRange( -15, -5)
+						var b=accDiv(c,2);
+					return [a,b];}
+					if(type==4){
+						var c=randRange( 101, 199);
+						var c1=randRange( -100, -10);
+						var a=accDiv(c,100);
+						var b=accDiv(c1,100);
+					return [a,b];}
+					})()</var>	
+				<var id="name">
+					(function(){						
+							var name1=randFromArray(["小東","小明","小睿","小強","小剛"]);
+							var name2=randFromArray(["小紅","小華","小可","小野","小梅"]);
+						return [name1,name2];
+					})()</var>
+				<var id="SOLUTION">(function(){
+					if(type==1||type==3||type==4){
+					return -num[1];}
+					if(type==2){
+					return -num;}
+					})()</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p data-if="type==1">銀行用正數代表存款，負數代表取款。你家的銀行賬戶有 <code><var>num[0]</var></code> 元，但是當<var>name[0]</var>付電費賬單時，你家的銀行賬戶發生了 <code><var>num[1]</var></code> 元的變化。請問需要存入多少元才能使賬戶餘額恢復到原來的金額？</p>
+					<p data-if="type==2"><var>name[0]</var>和<var>name[1]</var>對於室內的溫度沒有達成一致的意見，在<var>name[1]</var>不注意時，<var>name[0]</var>使溫度發生了 <code><var>num</var></code> 度的變化。<var>name[1]</var>需要調整多少度才能使溫度恢復到原來的溫度？</p>
+					<p data-if="type==3">在賽車遊戲中，<var>name[0]</var>已經行駛了 <code><var>num[0]</var></code> 公里，突然他被一個巨大的香蕉皮滑倒，使他躺在了路的中間，並且造成了他的位置發生了 <code><var>num[1]</var></code> 公里的變化。<var>name[0]</var>需要行駛多少公里才能到達被香蕉皮滑倒的地方？</p>
+					<p data-if="type==4">飛行員用正數代表增加高度，負數代表降低高度。你駕駛的飛機巡航高度 <code><var>num[0]</var></code> 萬公尺，但是發生了一些動蕩，使得飛機的巡航高度發生了 <code><var>num[1]</var></code> 公尺的變化。請問需要調整多少公尺才能恢復到原來的巡航高度？</p>
+					
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p data-if="type==1||type==2"><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span><span data-if="type==1">元</span><span data-if="type==2">度</span></p>
+				<p data-if="type==3||type==4"><span style="padding-right: 5px" class="sol" data-forms="integer,decimal"><var>SOLUTION</var></span><span data-if="type==4">公尺</span><span data-if="type==3">公里</span></p>
+            </div>
+			
+			<div class="hints">
+				<p data-if="type==1">如果我們認為原來的平衡是 <code>0</code> ，因為交了電費所以目前的平衡在 <code><var>num[1]</var></code> 處，</p>
+				<p data-if="type==3">如果我們認為滑倒前的位置是 <code>0</code> ，那麼因為香蕉皮滑倒，現在的位置在 <code><var>num[1]</var></code> 處，</p>
+				<p data-if="type==4">如果我們認為巡航高度是 <code>0</code> ，那麼因為動蕩，現在的位置在 <code><var>num[1]</var></code> ，</p>
+				<p data-if="type==1||type==3||type==4">那麼從 <code><var>num[1]</var></code> 到 <code>0</code> ，我們需要添加多少呢？</p>
+				<p data-if="type==1||type==3||type==4">我們需要添加的是 <code><var>num[1]</var></code> 的相反數，</p>
+				<p data-if="type==1||type==3||type==4"> <code><var>num[1]</var></code> 的相反數是 <code><var>SOLUTION</var></code> 。</p>
+				<p data-if="type==1">所以必須再存入 <code class="hint_pink"><var>SOLUTION</var></code> 元才能使賬戶餘額恢復到原來的金額。</p>
+				<p data-if="type==2">我們可以認為室內原來的溫度位於 <code>0</code> 處，那麼新的溫度將在 <code><var>num</var></code> 處，</p>
+				<p data-if="type==2">那麼從 <code><var>num</var></code> 到 <code>0</code> ，我們需要減少多少呢？</p>
+				<p data-if="type==2">我們需要減少的是 <code><var>num</var></code> 的相反數，</p>
+				<p data-if="type==2"><code><var>num</var></code> 的相反數是 <code><var>SOLUTION</var></code> 。</p>
+				<p data-if="type==2">所以<var>name[1]</var>需要調整 <code class="hint_pink"><var>SOLUTION</var></code> 度才能使溫度恢復到原來的溫度。</p>				
+				<p data-if="type==3">所以<var>name[1]</var>需要行駛 <code class="hint_pink"><var>SOLUTION</var></code> 公里才能到達被香蕉皮滑倒的地方。</p>
+				<p data-if="type==4">所以需要調整 <code class="hint_pink"><var>SOLUTION</var></code> 公尺才能恢復到原來的巡航高度。</p>
+			</div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars">					
+				<var id="type">randRange( 1, 3)</var>
+				<var id="name">
+					(function(){
+						if(type==1){
+							var name1=randFromArray(["小東","小明","小睿","小強","小剛"]);
+							var name2=randFromArray(["海豚","鯨魚",]);
+							var name3=randFromArray(["海鷗","老鷹",]);
+						return [name1,name2,name3];
+						}
+						if(type==2){
+							var name1=randFromArray(["胡蘿蔔","蘿蔔"]);
+						return name1;
+						}
+						if(type==3){
+							var name1=randFromArray(["小東","小明","小睿","小強","小剛"]);
+						return name1;
+						}
+					})()</var>
+				<var id="num">(function(){
+					if(type==1){
+						var c=randRange( 10, 50);
+						var a=accDiv(c,10);
+						var b=randRange( 11, 69);
+					return [a,b];}
+					if(type==2){
+						var a1=randRange( 101, 299);
+						var b1=randRange( 101, 299);
+						var a=accDiv(a1,10);
+						var b=accDiv(b1,10);
+					return [a,b];}
+					if(type==3){
+						var c=randRangeUnique(10,50,2);
+						var a=accDiv(c[0],10);
+						var b=accDiv(c[1],10);
+					return [a,b];}
+					})()</var>	
+				
+				<var id="SOLUTION">(function(){
+					if(type==1){
+						var b=accDiv(num[1],10)
+						var a=accAdd(num[0],b);
+					return a;}
+					if(type==2){
+						var b=num[1]
+						var a=accAdd(num[0],b);
+					return a;}
+					if(type==3){
+						var b=num[1]
+						var a=accAdd(num[0],b);
+					return a;}
+					})()</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p data-if="type==1"><var>name[0]</var>看到<var>name[1]</var>低於海平面 <code><var>num[0]</var></code> 公尺，<var>name[2]</var>在海拔 <code><var>decimalFraction(num[1]/10,true,true,false,false)</var></code> 公尺處。請問<var>name[1]</var>與<var>name[2]</var>相距多少公尺？</p>
+					<p data-if="type==2"><var>name</var>的綠葉頂部高 <code><var>num[0]</var></code> 釐米，其橙色根部延伸到地下 <code><var>num[1]</var></code> 釐米處。請問<var>name</var>綠葉頂部與橙色根部的頂端相距多少釐米？</p>
+					<p data-if="type==3"><var>name</var>出生在低於海平面 <code><var>num[0]</var></code> 百公尺的潛艇上，而現在住在 <code><var>num[1]</var></code> 百公尺的山上。請問<var>name</var>出生的地方與現在居住的地方相距幾百公尺？</p>					
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+               <span style="padding-right: 5px" class="sol" data-forms="integer,decimal"><var>SOLUTION</var></span><span data-if="type==1">公尺</span><span data-if="type==2">釐米</span><span data-if="type==3">百公尺</span>
+            </div>
+			
+			<div class="hints">
+				<div data-if="type==1">
+					<p><var>name[1]</var>是海平面以下 <code><var>num[0]</var></code> 公尺，所以<var>name[1]</var>是在 <code><var>-num[0]</var></code> 公尺處，</p>
+					<p><var>name[2]</var>在海拔 <code><var>decimalFraction(num[1]/10,true,true,false,false)</var></code> 公尺，所以<var>name[2]</var>是在 <code><var>num[1]/10</var></code> 公尺處，</p>
+				</div>
+				<div data-if="type==2">
+					<p><var>name</var>的綠葉頂部高於地面 <code><var>num[0]</var></code> 釐米，所以綠葉頂部是 <code><var>num[0]</var></code> 釐米，</p>
+					<p>其橙色根部在地下 <code><var>num[1]</var></code> 釐米，所以橙色根部的頂端是在 <code><var>-num[1]</var></code> 釐米，</p>
+				</div>
+				<div data-if="type==3">
+					<p><var>name</var>出生在低於海平面 <code><var>num[0]</var></code> 百公尺的潛艇上，所以<var>name</var>是在 <code><var>-num[0]</var></code> 百公尺，</p>
+					<p>而現在住在 <code><var>num[1]</var></code> 百公尺的山上，所以<var>name</var>是在 <code><var>num[1]</var></code> 百公尺，</p>
+				</div>
+				<div data-if="type==1">
+					<p><var>name[1]</var>與<var>name[2]</var>之間的距離是：<code>\lvert <var>-num[0]</var> - <var>num[1]/10</var> \rvert = <var>SOLUTION</var></code> 公尺，</p>
+					<p>我們也可以用<code>\lvert <var>num[1]/10</var> - （<var>-num[0]</var>）  \rvert = <var>SOLUTION</var></code> 公尺，</p>
+				</div>
+				<div data-if="type==2">
+					<p><var>name</var>的綠葉頂部與橙色根部的頂端之間的距離是：<code>\lvert <var>num[0]</var> - （<var>-num[1]</var>）  \rvert = <var>SOLUTION</var></code> 釐米</p>
+					<p>我們也可以用 <code>\lvert <var>-num[1]</var> - <var>num[0]</var> \rvert = <var>SOLUTION</var></code> 釐米，</p>
+				</div>
+				<div data-if="type==3">
+					<p><var>name</var>出生的地方與現在居住的地方之間的距離是：<code>\lvert <var>-num[0]</var> - <var>num[1]</var> \rvert = <var>SOLUTION</var></code> 百公尺，</p>
+					<p>我們也可以用<code>\lvert <var>num[1]</var> - （<var>-num[0]</var>）  \rvert = <var>SOLUTION</var></code> 百公尺，</p>
+				</div>
+				<p data-if="type==1">所以<var>name[1]</var>與<var>name[2]</var>相距 <code class="hint_pink"><var>SOLUTION</var></code> 公尺。</p>
+				<p data-if="type==2">所以<var>name</var>的綠葉頂部與橙色根部的頂端相距 <code class="hint_pink"><var>SOLUTION</var></code> 釐米。</p>
+				<p data-if="type==3">所以<var>name</var>出生的地方與現在居住的地方相距 <code class="hint_pink"><var>SOLUTION</var></code> 百公尺。</p>
+			
+			</div>
+		</div>
+		
+		<div id="case3">
+			<div class="vars">	
+				<var id="num">randFromArray(["a","b","c","d","e"])</var>
+				<var id="num1">randFromArray(["u","v","w","x","y"])</var>
+				<var id="type">randRange( 1,3)</var>
+				<var id="B">randRangeUnique( 1,4,3)</var>
+				<var id="sum">
+						(function(){
+							var s = 0;
+							for(var k = 0;k&lt;3;k++){
+								if(B[k]==3){
+									s+=1;
+									$('#c_'+(k+1)).val('true');
+								}else{
+									$('#c_'+(k+1)).val('false');
+								}
+							}
+							return s;
+						})()
+				</var>
+				
+            </div>
+			<div class="question">
+				<div class="problem">
+					<p data-if="type==1">來自太陽的光傳播 <code><var>num</var></code> 公里後到達地球大氣層的上邊緣，而來自太陽的光到地球表面需要傳播 <code><var>num1</var></code> 公里，請問地球大氣層的上邊緣與地球表面相距多少公里？</p>
+					<p data-if="type==2">你準備烤一些麵包，你有 <code><var>num</var></code> 杯麵粉，而食譜上要求有 <code><var>num1</var></code> 杯，請問與食譜相比你還相差幾杯麵粉？</p>
+					<p data-if="type==3">假設你的汽車在上午時有 <code><var>num</var></code> 升油，在這一天中，你的油可能洩漏了，或者你又添加了一些，在晚上的時候你的汽車有 <code><var>num1</var></code> 升油，請問上午的油位與新油位相比相差幾升？</p>
+					<p onclick="$('#c_1').attr('checked','checked')"><input type="radio" name="count_1" id="c_1">
+						<span data-if="B[0]==1 && type==1"><code><var>num</var> + <var>num1</var></code> 公里</span>
+						<span data-if="B[0]==2&&type==1"><code><var>num</var> - <var>num1</var></code> 公里</span>
+						<span data-if="B[0]==3&&type==1"><code>\lvert <var>num</var> - <var>num1</var> \rvert</code> 公里</span>
+						<span data-if="B[0]==1 && type==2"><code>\lvert <var>num</var> + <var>num1</var> \rvert</code> 杯</span>
+						<span data-if="B[0]==2&&type==2"><code>\lvert <var>num</var> \rvert</code> 杯</span>
+						<span data-if="B[0]==3&&type==2"><code>\lvert <var>num1</var> - <var>num</var> \rvert</code> 杯</span>
+						<span data-if="B[0]==1 && type==3"><code>\lvert <var>num</var> \rvert</code> 升</span>
+						<span data-if="B[0]==2&&type==3"><code>\lvert <var>num</var> + <var>num1</var> \rvert</code> 升</span>
+						<span data-if="B[0]==3&&type==3"><code>\lvert <var>num</var> - <var>num1</var> \rvert</code> 升</span>
+					</p>					
+					<p onclick="$('#c_2').attr('checked','checked')"><input type="radio" name="count_1" id="c_2">
+						<span data-if="B[1]==1 && type==1"><code><var>num</var> + <var>num1</var></code> 公里</span>
+						<span data-if="B[1]==2&&type==1"><code><var>num</var> - <var>num1</var></code> 公里</span>
+						<span data-if="B[1]==3&&type==1"><code>\lvert <var>num</var> - <var>num1</var> \rvert</code> 公里</span>
+						<span data-if="B[1]==1 && type==2"><code>\lvert <var>num</var> + <var>num1</var> \rvert</code> 杯</span>
+						<span data-if="B[1]==2&&type==2"><code>\lvert <var>num</var> \rvert</code> 杯</span>
+						<span data-if="B[1]==3&&type==2"><code>\lvert <var>num1</var> - <var>num</var> \rvert</code> 杯</span>
+						<span data-if="B[1]==1 && type==3"><code>\lvert <var>num</var> \rvert</code> 升</span>
+						<span data-if="B[1]==2&&type==3"><code>\lvert <var>num</var> + <var>num1</var> \rvert</code> 升</span>
+						<span data-if="B[1]==3&&type==3"><code>\lvert <var>num</var> - <var>num1</var> \rvert</code> 升</span>
+					</p>
+					<p onclick="$('#c_3').attr('checked','checked')"><input type="radio" name="count_1" id="c_3">
+						<span data-if="B[2]==1 && type==1"><code><var>num</var> + <var>num1</var></code> 公里</span>
+						<span data-if="B[2]==2&&type==1"><code><var>num</var> - <var>num1</var></code> 公里</span>
+						<span data-if="B[2]==3&&type==1"><code>\lvert <var>num</var> - <var>num1</var> \rvert</code> 公里</span>
+						<span data-if="B[2]==1 && type==2"><code>\lvert <var>num</var> + <var>num1</var> \rvert</code> 杯</span>
+						<span data-if="B[2]==2&&type==2"><code>\lvert <var>num</var> \rvert</code> 杯</span>
+						<span data-if="B[2]==3&&type==2"><code>\lvert <var>num1</var> - <var>num</var> \rvert</code> 杯</span>
+						<span data-if="B[2]==1 && type==3"><code>\lvert <var>num</var> \rvert</code> 升</span>
+						<span data-if="B[2]==2&&type==3"><code>\lvert <var>num</var> + <var>num1</var> \rvert</code> 升</span>
+						<span data-if="B[2]==3&&type==3"><code>\lvert <var>num</var> - <var>num1</var> \rvert</code> 升</span>
+					</p>
+					<p onclick="$('#c_4').attr('checked','checked')"><input type="radio" name="count_1" id="c_4">
+						<span>提供的信息無法作答</span>
+					</p>
+				</div>			
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>請選擇正確的答案</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">
+						(function(){
+							var chk_value =[];    
+							$('input[name="count_1"]:checked').each(function(){    
+								chk_value.push($(this).val());    
+							});
+							return chk_value;
+						})()
+					</div>
+					<div class="validator-function">
+						if(guess.length==0){
+							return "";
+						}
+						if(guess.length!=sum){
+							return false;
+						}
+						var trueAns = 0;
+						for(var i = 0;i&lt;guess.length;i++){
+							if(guess[i]=='true'){
+								trueAns++;
+							}
+						}
+						if(trueAns==sum){
+							return true;
+						}					
+					</div>
+				</div>
+			</div>
+			<div class="hints">	
+				<p data-if="type==1">地球大氣層的上邊緣和地球表面的距離等於地球大氣層的上邊緣和地球表面位置之間差的絕對值，</p>
+				<p data-if="type==1">從太陽到地球大氣層的上邊緣有 <code><var>num</var></code> 公里，而太陽到地球表面有 <code><var>num1</var></code> 公里，</p>
+				<p data-if="type==1">地球大氣層的上邊緣與地球表面的距離是<code>\lvert <var>num</var> - <var>num1</var> \rvert</code> 或者 <code>\lvert <var>num1</var> - <var>num</var> \rvert</code> </p>
+				
+				<p data-if="type==2">要了解你的麵粉與食譜要求的麵粉相差幾杯，我們需要找到 <code><var>num</var></code> 和 <code><var>num1</var></code> 之間的差距，</p>
+				<p data-if="type==3">我們需要找到 <code><var>num</var></code> 和 <code><var>num1</var></code> 之間的差距，</p>
+				<p data-if="type==2||type==3"><code><var>num</var></code> 和 <code><var>num1</var></code> 之間的差距就是他們差的絕對值，</p>
+				<p data-if="type==2||type==3">差的絕對值是<code>\lvert <var>num</var> - <var>num1</var> \rvert</code> 或者 <code>\lvert <var>num1</var> - <var>num</var> \rvert</code> </p>
+				<p data-if="type==1||type==3">所以正確選項是：<code class="hint_pink">\lvert <var>num</var> - <var>num1</var> \rvert</code> <span data-if="type==1" class="hint_pink">公里</span><span data-if="type==3" class="hint_pink">升</span>。</p>
+				<p data-if="type==2">所以正確選項是：<code class="hint_pink">\lvert <var>num1</var> - <var>num</var> \rvert</code> <span class="hint_pink">杯</span>。</p>
+			</div>		
+		</div>
+		
+		<div id="case4">
+			<div class="vars">					
+				<var id="type">randRange( 1, 3)</var>
+				<var id="num">(function(){
+					if(type==1){
+						var a=randRange( 5, 15);
+					return a;}	
+					if(type==2){
+						var a=randRange( 20, 40);
+						var c=randFromArray([1,3,7,9,11,13,17,19]);
+						var b=accAdd(a,c);
+					return [a,b];}
+					if(type==3){
+						var a=randRange( 3, 5);
+						var a2=randRange( 3, 6);
+						var a1=accMul(a,a2);
+						var c=randFromArray([19,21,23,25,27,29]);
+						var c1=randFromArray([11,13,17,19]);
+						var b=accAdd(a,c);
+						var b1=accAdd(a1,c1);
+					return [a,b,a1,b1,a2];}					
+					})()</var>
+					<var id="X_Y">(function(){				
+					if(type==3){
+					var a=accMul(num[1],num[4]);
+					var b=accAdd(a,num[3]);
+					return b;}
+					else 
+					return 1;
+					})()</var>
+				<var id="name">
+					(function(){						
+							var name1=randFromArray(["小東","小明","小睿","小強","小剛"]);
+						return name1;
+					})()</var>
+				<var id="SOLUTION">(function(){
+					if(type==1){
+					var a=accDiv(1,num);
+					return -a;}
+					if(type==2){
+					var a=accDiv(num[0],num[1]);
+					return -a;}
+					if(type==3){
+					var a=accMul(num[1],num[4]);
+					var b=accAdd(a,num[3]);
+					var c=accDiv(b,num[2])
+					return c;}
+					})()</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p data-if="type==1"><var>name</var>準備在自己製作的書架中放置一塊隔板，預估放置的位置比實際需要高出了 <code>\dfrac{1}{<var>num</var>}</code>公分，請問需要變化多少公分才能達到實際需要的高度？</p>
+					<p data-if="type==2">飛行員用正數代表增加高度，負數代表降低高度。<var>name</var>騎著龍在地面上方 <code><var>decimalFraction(num[0]/num[1],true,true,false,false)</var></code> 公尺處，請問<var>name</var>需要調整多少公尺才能到達地面？</p>
+					<p data-if="type==3"><var>name</var>決定讓兩隻小狗在沙灘上進行跑步比賽，小獵犬跑了 <code><var>decimalFraction(num[1]/num[0],true,true,false,false)</var></code> 公里到達終點，而小柴犬因為受到螃蟹的吸引向相反的方向跑了 <code><var>decimalFraction(num[3]/num[2],true,true,false,false)</var></code> 公里。請問兩隻小狗相距多少公里？</p>
+				</div>
+			</div>		
+			<div class="solution" data-type="rational">
+                <p><span style="padding-right: 5px" class="sol"><var>SOLUTION</var></span></p>
+		    </div>
+			
+			<div class="hints">
+				<p data-if="type==1">我們可以認為實際需要的高度位於 <code>0</code> 處，那麼預估的位置是在 <code>\dfrac{1}{<var>num</var>}</code> 處，</p>
+				<p data-if="type==1">那麼從 <code>\dfrac{1}{<var>num</var>}</code> 到 <code>0</code> ，我們需要減少多少呢？</p>
+				<p data-if="type==1">我們需要減少的是 <code>\dfrac{1}{<var>num</var>}</code> 的相反數，</p>
+				<p data-if="type==1"> <code>\dfrac{1}{<var>num</var>}</code> 的相反數是 <code>- \dfrac{1}{<var>num</var>}</code> 。</p>
+				<p data-if="type==1">所以<var>name</var>需要調整 <code class="hint_pink">- \dfrac{1}{<var>num</var>}</code> 公分才能達到實際需要的高度。</p>
+				<p data-if="type==2">我們可以認為地面的高度為 <code>0</code>，</p>
+				<p data-if="type==2"><code><var>decimalFraction(num[0]/num[1],true,true,false,false)</var></code> 是大於 <code>0</code> 的，所以我們應該將高度從 <code><var>decimalFraction(num[0]/num[1],true,true,false,false)</var></code> 降低到 <code>0</code> ，</p>
+				<p data-if="type==2">那麼從 <code><var>decimalFraction(num[0]/num[1],true,true,false,false)</var></code> 到 <code>0</code> ，我們需要減少多少呢？</p>
+				<p data-if="type==2">我們需要減少的是 <code><var>decimalFraction(num[0]/num[1],true,true,false,false)</var></code> 的相反數，</p>
+				<p data-if="type==2"><code><var>decimalFraction(num[0]/num[1],true,true,false,false)</var></code> 的相反數是 <code>-<var>decimalFraction(num[0]/num[1],true,true,false,false)</var></code> ，</p>
+				<p data-if="type==2">所以<var>name</var>需要調整 <code class="hint_pink">-<var>decimalFraction(num[0]/num[1],true,true,false,false)</var></code> 公尺才能到達地面。</p>
+				<div data-if="type==3">
+					<p>小獵犬在正確的方向上跑了 <code><var>decimalFraction(num[1]/num[0],true,true,false,false)</var></code> 公里，所以是 <code><var>decimalFraction(num[1]/num[0],true,true,false,false)</var></code> 公里，</p>
+					<p>小柴犬向相反的方向上跑了 <code><var>decimalFraction(num[3]/num[2],true,true,false,false)</var></code> 公里，所以是 <code>-<var>decimalFraction(num[3]/num[2],true,true,false,false)</var></code> 公里，</p>
+				</div>
+				<div data-if="type==3">
+					<p>所以兩隻狗之間的距離是：<code>\lvert <var>decimalFraction(num[1]/num[0],true,true,false,false)</var> - （- <var>decimalFraction(num[3]/num[2],true,true,false,false)</var>） \rvert = <var>decimalFraction(X_Y/num[2],true,true,false,false)</var> = <var>mixedFractionFromImproper(X_Y,num[2],true,true,false,false)</var></code> 公里，</p>
+					<p>我們也可以用<code>\lvert - <var>decimalFraction(num[3]/num[2],true,true,false,false)</var> - <var>decimalFraction(num[1]/num[0],true,true,false,false)</var> \rvert = <var>decimalFraction(X_Y/num[2],true,true,false,false)</var> = <var>mixedFractionFromImproper(X_Y,num[2],true,true,false,false)</var></code> 公里，</p>
+				</div>
+				<p data-if="type==3">所以兩隻小狗相距 <code class="hint_pink"><var>mixedFractionFromImproper(X_Y,num[2],true,true,false,false)</var></code> 公里。</p>
+				
+			</div>
+		</div>
+		
+		<div id="case5">
+			<div class="vars">
+				<var id="num">randFromArray(["a","b","c","d","e"])</var>
+				<var id="num1">randFromArray(["u","v","w","x","y"])</var>
+				<var id="name">
+					(function(){
+							var name1=randFromArray(["小東","小明","小睿","小強","小剛"]);
+							var name2=randFromArray(["小紅","小華","小可","小野","小梅"]);
+						return [name1,name2];
+					})()</var>
+				
+				<var id="B">randRangeUnique( 1,5,4)</var>
+				<var id="sum">
+						(function(){
+							var s = 0;
+							for(var k = 0;k&lt;4;k++){
+								if(B[k]==3){
+									s+=1;
+									$('#c_'+(k+1)).val('true');
+								}else{
+									$('#c_'+(k+1)).val('false');
+								}
+							}
+							return s;
+						})()
+				</var>
+				
+            </div>
+			<div class="question">
+				<div class="problem">
+					<div>
+						<p><var>name[0]</var>和<var>name[1]</var>參加選舉，<var>name[0]</var>獲得 <code><var>num</var></code> 張選票，而<var>name[1]</var>獲得 <code><var>num1</var></code> 張選票，他們中有一個人獲勝了，請問獲勝的人比失敗的人多了多少張選票？</p>
+					</div>
+					<p onclick="$('#c_1').attr('checked','checked')"><input type="radio" name="count_1" id="c_1">
+						<span data-if="B[0]==1"><code><var>num</var> + <var>num1</var></code> 張選票</span>
+						<span data-if="B[0]==2"><code><var>num</var> - <var>num1</var></code> 張選票</span>
+						<span data-if="B[0]==3"><code>\lvert <var>num</var> - <var>num1</var> \rvert</code> 張選票</span>
+						<span data-if="B[0]==4"><code>\lvert <var>num</var> + <var>num1</var> \rvert</code> 張選票</span>
+					</p>					
+					<p onclick="$('#c_2').attr('checked','checked')"><input type="radio" name="count_1" id="c_2">
+						<span data-if="B[1]==1"><code><var>num</var> + <var>num1</var></code> 張選票</span>
+						<span data-if="B[1]==2"><code><var>num</var> - <var>num1</var></code> 張選票</span>
+						<span data-if="B[1]==3"><code>\lvert <var>num</var> - <var>num1</var> \rvert</code> 張選票</span>
+						<span data-if="B[1]==4"><code>\lvert <var>num</var> + <var>num1</var> \rvert</code> 張選票</span>
+					</p>
+					<p onclick="$('#c_3').attr('checked','checked')"><input type="radio" name="count_1" id="c_3">
+						<span data-if="B[2]==1"><code><var>num</var> + <var>num1</var></code> 張選票</span>
+						<span data-if="B[2]==2"><code><var>num</var> - <var>num1</var></code> 張選票</span>
+						<span data-if="B[2]==3"><code>\lvert <var>num</var> - <var>num1</var> \rvert</code> 張選票</span>
+						<span data-if="B[2]==4"><code>\lvert <var>num</var> + <var>num1</var> \rvert</code> 張選票</span>
+					</p>
+					<p onclick="$('#c_4').attr('checked','checked')"><input type="radio" name="count_1" id="c_4">
+						<span data-if="B[3]==1"><code><var>num</var> + <var>num1</var></code> 張選票</span>
+						<span data-if="B[3]==2"><code><var>num</var> - <var>num1</var></code> 張選票</span>
+						<span data-if="B[3]==3"><code>\lvert <var>num</var> - <var>num1</var> \rvert</code> 張選票</span>
+						<span data-if="B[3]==4"><code>\lvert <var>num</var> + <var>num1</var> \rvert</code> 張選票</span>
+					</p>
+				</div>			
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>請選擇正確的答案</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">
+						(function(){
+							var chk_value =[];    
+							$('input[name="count_1"]:checked').each(function(){    
+								chk_value.push($(this).val());    
+							});
+							return chk_value;
+						})()
+					</div>
+					<div class="validator-function">
+						if(guess.length==0){
+							return "";
+						}
+						if(guess.length!=sum){
+							return false;
+						}
+						var trueAns = 0;
+						for(var i = 0;i&lt;guess.length;i++){
+							if(guess[i]=='true'){
+								trueAns++;
+							}
+						}
+						if(trueAns==sum){
+							return true;
+						}					
+					</div>
+				</div>
+			</div>
+			<div class="hints">	
+				<div>
+					<p>我們需要知道<var>name[0]</var>得到 <code><var>num</var></code> 張選票和<var>name[1]</var>得到 <code><var>num1</var></code> 張選票之間的差，然而我們不知道這兩個數哪一個比較大，所以我們畫出的兩條數線代表兩種情況。</p>
+					<div class="graphie" id="number-line">
+					   init({
+								range: [ [ -11, 1], [-1, 1] ]
+							});					
+							 style({arrows: "&gt;"});
+							line( [ 0, 0 ], [ -10.6, 0 ] );
+							style({arrows: "-&gt;"});
+							line( [ -1, 0 ], [ 0.6, 0 ] );
+							style({arrows: ""});
+							for ( var x = -10; x &lt;= 0; x++ ) {
+								line( [ x, -0.2 ], [ x, 0.2 ] );
+							}
+							label( [ -10, -0.53 ],  0, "center", { color: "black" });
+							label( [ -7, -0.53 ],  num, "center", { color: "blue" });
+							label( [ -3, -0.53 ],  num1, "center", { color: "green" });
+							line([-7,0],[-3,0],{stroke:"red"});
+							style({ stroke: "blue", fill: "blue" });
+							graph.blueDot1 = circle( [ -7,0 ], 0.10 );
+							style({ stroke: "green", fill: "green" });
+							graph.blueDot2 = circle( [ -3,0 ], 0.10 );
+							
+					</div>
+					<p></p>
+					<div class="graphie" id="number-line1">
+					   init({
+								range: [ [ -11, 1], [-1, 1] ]
+							});					
+							 style({arrows: "&gt;"});
+							line( [ 0, 0 ], [ -10.6, 0 ] );
+							style({arrows: "-&gt;"});
+							line( [ -1, 0 ], [ 0.6, 0 ] );
+							style({arrows: ""});
+							for ( var x = -10; x &lt;= 0; x++ ) {
+								line( [ x, -0.2 ], [ x, 0.2 ] );
+							}
+							label( [ -10, -0.53 ],  0, "center", { color: "black" });
+							label( [ -3, -0.53 ],  num, "center", { color: "blue" });
+							label( [ -7, -0.53 ],  num1, "center", { color: "green" });
+							line([-7,0],[-3,0],{stroke:"red"});
+							style({ stroke: "blue", fill: "blue" });
+							graph.blueDot1 = circle( [ -3,0 ], 0.10 );
+							style({ stroke: "green", fill: "green" });
+							graph.blueDot2 = circle( [ -7,0 ], 0.10 );
+							
+					</div>
+				</div>
+				<p><var>name[0]</var>得到的選票和<var>name[1]</var>得到的選票之間的差是：<code>\lvert <var>num</var> - <var>num1</var> \rvert</code> 或者 <code>\lvert <var>num1</var> - <var>num</var> \rvert</code> </p>
+				<p>所以正確選項是：<code class="hint_pink">\lvert <var>num</var> - <var>num1</var> \rvert</code> <span class="hint_pink">張選票</span>。</p>
+			</div>		
+		</div>
+		
+	</div>
+	</div>
+</body>
+</html>
