@@ -1032,6 +1032,11 @@ var Khan = (function() {
         // few problems, but not if we've been fruitlessly skipping for a while.
         // The latter situation could happen if a problem has very few unique
         // problems (eg. exterior angles problem type of angles_of_a_polygon).
+        if (userExercise.exerciseModel.isQuizExercise){
+            dupWindowSize = 9;
+        }else{
+            dupWindowSize = 5;
+        }
         if (_.contains(pastHashes, varsHash) && consecutiveSkips < dupWindowSize) {
             consecutiveSkips++;
             return true;
