@@ -1018,7 +1018,7 @@ var Khan = (function() {
         var cached = LocalStore.get(cacheKey);
         var lastProblemNum = (cached && cached["lastProblemNum"]) || 0;
 
-        if (lastProblemNum === problemNum) {
+        if (lastProblemNum === problemNum && !userExercise.exerciseModel.isQuizExercise) {
             // Getting here means the user refreshed the page or returned to
             // this exercise after being away. So, we don't need to and
             // shouldn't skip this problem.
