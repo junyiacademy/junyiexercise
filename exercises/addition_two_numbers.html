@@ -12,41 +12,6 @@
             width: 30px;
         }
         </style>
-	<script type="text/javascript">
-	    function accDiv(arg1,arg2){
-            var t1=0,t2=0,r1,r2;
-            try{t1=arg1.toString().split(".")[1].length}catch(e){}
-            try{t2=arg2.toString().split(".")[1].length}catch(e){}
-            with(Math){
-                r1=Number(arg1.toString().replace(".",""))
-                r2=Number(arg2.toString().replace(".",""))
-                return (r1/r2)*pow(10,t2-t1);
-            }
-        }
-		function accMul(arg1,arg2){
-            var m=0,s1=arg1.toString(),s2=arg2.toString();
-            try{m+=s1.split(".")[1].length}catch(e){}
-            try{m+=s2.split(".")[1].length}catch(e){}
-            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
-        }
-        function accAdd(arg1,arg2){
-            var r1,r2,m;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2))
-            return (arg1*m+arg2*m)/m
-        }
-        function Subtr(arg1,arg2){
-            var r1,r2,m,n;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2));
-            //last modify by deeka
-            //动态控制精度长度
-            n=(r1>=r2)?r1:r2;
-            return ((arg1*m-arg2*m)/m).toFixed(n);
-        }
-	</script>
 </head>
 <body>
 <div class="exercise">
@@ -86,9 +51,13 @@
 					if(((guess[3].replace(/[ ]/g,"")==K&&guess[4].replace(/[ ]/g,""))||(guess[3].replace(/[ ]/g,"")==L&&guess[4].replace(/[ ]/g,"")==K))&&guess[5].replace(/[ ]/g,"")==R){
 						aBoolean_2 = true;
 					}
-				    return aBoolean_1&&aBoolean_2&&document.getElementById("c_1").checked;
+					if(document.getElementById("c_1").checked||document.getElementById("c_2").checked){
+						return document.getElementById("c_1").checked&&aBoolean_1&&aBoolean_2;
+					}
+					else return "";
 				</div>
 			</div>
+			<p class="example">整數，例：<code>6</code></p>
 			<p class="problem">選擇並在題目下方空格內填入答案</p>
 		</div>
 
@@ -114,10 +83,10 @@
 			<var id="R">J/(K*L)</var>
 			<var id="names">randFromArray([["個","娃娃","盒"],["臺","電視","盒"],["支","手機","盒"],["個","玩具","盒"],["個","遙控器","盒"],["臺","平板電腦","盒"]])</var>
         </div>
-		<p class="question">工廠每天生產 <code><var>J</var></code> <var>names[0]+names[1]</var>，每 <code><var>L</var></code> <var>names[0]+names[1]</var>裝成 <code>1</code> <var>names[2]</var>， <code><var>K</var></code> 包裝成 <code>1</code> 箱，全部裝完，共可裝成幾箱？</p>
+		<p class="question">工廠每天生產 <code><var>J</var></code> <var>names[0]+names[1]</var>，每<code><var>L</var></code> <var>names[0]+names[1]</var>裝成 <code>1</code> <var>names[2]</var>，<code><var>K</var></code> <var>names[2]</var>裝成 <code>1</code> 箱，全部裝完，共可裝成幾箱？</p>
 		<div class="problem">
 			<div>
-				<p>方法一：我們可以先算 <code><var>J</var></code> <var>names[0]+names[1]</var>可以裝成幾包後，再算可以裝成幾箱，</p>
+				<p>方法一：我們可以先算 <code><var>J</var></code> <var>names[0]+names[1]</var>可以裝成幾<var>names[2]</var>後，再算可以裝成幾箱，</p>
 				<p><code><var>J</var>\enspace\div\enspace</code><input type="text" id="a_1" style="width:30px"><code>\enspace\div\enspace</code><input type="text" id="a_2" style="width:30px"><code>\enspace=\enspace</code><input type="text" id="a_3" style="width:30px"></p>
 			</div>
 			<div>
@@ -140,15 +109,19 @@
 					if(((guess[3].replace(/[ ]/g,"")==K&&guess[4].replace(/[ ]/g,""))||(guess[3].replace(/[ ]/g,"")==L&&guess[4].replace(/[ ]/g,"")==K))&&guess[5].replace(/[ ]/g,"")==R){
 						aBoolean_2 = true;
 					}
-				    return aBoolean_1&&aBoolean_2&&document.getElementById("c_1").checked;
+				    if(document.getElementById("c_1").checked||document.getElementById("c_2").checked){
+						return document.getElementById("c_1").checked&&aBoolean_1&&aBoolean_2;
+					}
+					else return "";
 				</div>
 			</div>
+			<p class="example">整數，例：<code>6</code></p>
 			<p class="problem">選擇並在題目下方空格內填入答案</p>
 		</div>
 
 		<div class="hints">
 			<div>
-				<p>方法一：我們可以先算 <code><var>J</var></code> <var>names[0]+names[1]</var>可以裝成幾包後，再算可以裝成幾箱，</p>
+				<p>方法一：我們可以先算 <code><var>J</var></code> <var>names[0]+names[1]</var>可以裝成幾<var>names[2]</var>後，再算可以裝成幾箱，</p>
 				<p><code><var>J</var>\div</code><code class="hint_pink">\enspace<var>L</var></code><code>\enspace\div</code><code class="hint_pink">\enspace<var>K</var></code><code>\enspace=<var>J/L</var>\div<var>K</var>=</code><code class="hint_pink">\enspace<var>R</var></code></p>
 			</div>
 			<div>
@@ -194,9 +167,13 @@
 					if(((guess[3].replace(/[ ]/g,"")==K&&guess[4].replace(/[ ]/g,""))||(guess[3].replace(/[ ]/g,"")==L&&guess[4].replace(/[ ]/g,"")==K))&&guess[5].replace(/[ ]/g,"")==R){
 						aBoolean_2 = true;
 					}
-				    return aBoolean_1&&aBoolean_2&&document.getElementById("c_1").checked;
+				    if(document.getElementById("c_1").checked||document.getElementById("c_2").checked){
+						return document.getElementById("c_1").checked&&aBoolean_1&&aBoolean_2;
+					}
+					else return "";
 				</div>
 			</div>
+			<p class="example">整數，例：<code>6</code></p>
 			<p class="problem">選擇並在題目下方空格內填入答案</p>
 		</div>
 
