@@ -248,7 +248,6 @@ function Scratchpad(elem) {
     container.bind("touchstart", function(e) {
         var offset = $(container).offset();
         mousedown(e.originalEvent.touches[0].pageX - offset.left, e.originalEvent.touches[0].pageY - offset.top, e.originalEvent);
-        e.preventDefault();
     });
     container.bind("touchmove", function(e) {
         var offset = $(container).offset();
