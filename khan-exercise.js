@@ -2230,7 +2230,20 @@ var Khan = (function() {
             e.preventDefault();
             
             $('#issueReportForm').modal('show');
-        
+            $("#issueImgScreenshot").children().remove();
+
+            html2canvas($("#outer-wrapper"), {
+                onrendered: function(canvas) {
+                    theCanvas = canvas;
+                    var issueImgUrl = canvas.toDataURL("image/png");
+
+                    issueImgObj = document.createElement('img');
+                    issueImgObj.src = issueImgUrl;
+                    issueImgObj.id = "issueImg";
+
+                    document.getElementById("issueImgScreenshot").appendChild(issueImgObj);
+                 }
+            });
         });
 
        
