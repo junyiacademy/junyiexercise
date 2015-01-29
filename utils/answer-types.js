@@ -464,7 +464,7 @@ $.extend(Khan.answerTypes, {
             }
         };
         if (options.simplify === "required") {
-            ret.examples = ["a simplified radical, like <code>\\sqrt{2}</code> or <code>3\\sqrt{5}</code>"];
+            ret.examples = ["最簡根式，例： <code>\\sqrt{2}</code> 或 <code>3\\sqrt{5}</code>"];
         } else {
             ret.examples = ["a radical, like <code>\\sqrt{8}</code> or <code>2\\sqrt{2}</code>"];
         }
