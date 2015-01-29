@@ -104,7 +104,7 @@
 				<p>也就是說，每 <code>100</code> 公克的<var>names[1]</var>中就含有 <code><var>K</var></code> 公克的<var>names[0]</var>。</p>
 			</div>
 			<div>
-				<p>因為 <code>\dfrac{<var>K</var>}{100}</code >等於 <code><var>K</var>\%</code> ，所以我們用 <code><var>K</var>\%</code> 來表示<var>names[0]</var>的重量所佔的比率。</p>
+				<p>因為 <code>\dfrac{<var>K</var>}{100}</code>等於 <code><var>K</var>\%</code> ，所以我們用 <code><var>K</var>\%</code> 來表示<var>names[0]</var>的重量所佔的比率。</p>
 			</div>
 			<div>
 				<p>因此，本題中<var>names[0]</var>重量比率為 <code class="hint_pink"><var>K</var>\%</code> 。</p>
@@ -148,9 +148,11 @@
 				<var id="K">accMul(randRange(39,50),2.2)</var> 
 				<var id="names_1">randFromArray(["美華","美麗"])</var>
 				<var id="names_2">randFromArray(["婕妮","湯姆","傑克"])</var>
-				<var id="R">accDiv(Math.round(accMul((J/accDiv(K,2.2)),1000)),1000)</var>
 				<var id="R_1">KhanUtil.toFraction(J*2.2/K)[0]</var>
 				<var id="R_2">KhanUtil.toFraction(J*2.2/K)[1]</var>
+				<var id="GCD">getGCD(R_1,R_2)</var>
+				<var id="R1">accDiv(Math.round(accMul((J/accDiv(K,2.2)),10000)),10000)</var>
+				<var id="R">accDiv(Math.round(accMul((J/accDiv(K,2.2)),100)),100)</var>
             </div>
 			<p class="question">若<var>names_1</var>的體重是 <code><var>J</var></code> 公斤，<var>names_2</var>的體重是 <code><var>K</var></code> 磅，寫出他們體重的比和比值。 <code>(</code> 一公斤 <code>=2.2</code> 磅 <code>)</code></p>
 			<div class="solution" data-type="multiple">
@@ -163,21 +165,19 @@
                         return "";
                     }
 					var ng_1 = guess.replace(/[ ]/g,"");
+					if(ng_1==R)
+					{
+						return true;
+					}
 					if(ng_1.indexOf("/")&gt;=0){
 					    var arr=ng_1.split("/");
-						var solVal = 0;
-						solVal=arr[0]/arr[1];
-						return solVal-R_1/R_2&lt;0.0001;
-					}
-					if(ng_1.indexOf("/")&lt;0){
-					    return ng_1-R_1/R_2&lt;0.001;
+						if(R_1/GCD==arr[0]&&R_2/GCD==arr[1])
+						{return true;}
 					}
                     </div>
 				</div>
 				<p class="example">比要寫成 最簡 整數比，例： 8:11</p>
-				<p class="example">整數、分數或小數，例：3或1/3或0.6</p>
-				
-				
+				<p class="example">整數、分數或小數，例：3或1/3或0.6</p>				
 			</div>
 		<div class="hints">
 	    <p>方法一&nbsp;：如果都換算成&nbsp;&nbsp;[&nbsp;公斤&nbsp;]&nbsp;，</p>
@@ -188,7 +188,7 @@
 		</div>
 		<p>方法二&nbsp;：如果都換算成[&nbsp;磅&nbsp;]，</p>
 		<p>則<var>names_1</var>的體重是 <code><var>J</var>\times 2.2 =<var>accMul(J,2.2)</var>(</code> 磅 <code>)</code> ，</p>
-		<p>因此<var>names_1</var>的體重和<var>names_2</var>的比是 <code><var>accMul(J,2.2)</var>：<var>K</var></code><code data-if="R_2!=K">=<var>R_1</var>:<var>R_2</var></code>，</p>
+		<p>因此<var>names_1</var>的體重和<var>names_2</var>的比是 <code><var>accMul(J,2.2)</var>：<var>K</var></code><code data-if="R_2!=K">=<var>R_1</var>:<var>R_2</var></code> ，</p>
 		<p>比值是 <code data-if="R!=1">\dfrac{<var>R_1</var>}{<var>R_2</var>}</code><code data-if="R==1">1</code> 。
 		</p>
 		<p>因此，本題的答案分別是： 比為 <code class="hint_pink"><var>R_1</var>:<var>R_2</var></code> ，比值為 <code class="hint_pink" data-if="R!=1">\dfrac{<var>R_1</var>}{<var>R_2</var>}</code><code class="hint_pink" data-if="R==1">1</code> 。</p>
@@ -264,11 +264,34 @@
             <div class="vars">
 			    <var id="J">randRange(2,5)</var>
 				<var id="K">randRange(6,9)</var>
+				<var id="JJ">accMul(J,J)</var>
+				<var id="KK">accMul(K,K)</var>
+				<var id="GCD">getGCD(JJ,KK)</var>
+				<var id="R1">accDiv(Math.round(accMul(accDiv(JJ,KK),10000)),10000)</var>
+				<var id="R">accDiv(Math.round(accMul(accDiv(JJ,KK),100)),100)</var>
             </div>
-			<p class="question">爸爸走 <code><var>J</var></code> 步的距離等於妹妹走 <code><var>K</var></code> 步的距離，爸爸走 <code><var>J</var></code> 的時間等於妹妹走 <code><var>K</var></code> 步的時間，求妹妹和爸爸走路速度的比值。</p>
-			<div class="solution">
-				<p><span class="sol" data-type="rational"><var>accDiv(accMul(J,J),accMul(K,K))</var></span>
-				</p>
+			<p class="question">爸爸走 <code><var>J</var></code> 步的距離等於妹妹走 <code><var>K</var></code> 步的距離，爸爸走 <code><var>J</var></code> 步的時間等於妹妹走 <code><var>K</var></code> 步的時間，求妹妹和爸爸走路速度的比值。</p>
+			<div class="solution" data-type="multiple">
+				<p data-forms="mixed"> <input type="text" id="test" style="width:70px"></p>
+				<div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("test").value</div>
+				    <div class="validator-function">
+                    if ( guess === "" ) {
+                        return "";
+                    }
+					var ng_1 = guess.replace(/[ ]/g,"");
+					if(ng_1==R)
+					{
+						return true;
+					}
+					if(ng_1.indexOf("/")&gt;=0){
+					    var arr=ng_1.split("/");
+						if(JJ/GCD==arr[0]&&KK/GCD==arr[1])
+						{return true;}						
+					}
+                    </div>
+				</div>
+				<p class="example">整數、分數或小數，例：<code>3</code> 或<code>1/3</code> 或 <code>0.6</code></p>				
 			</div>
 			<div class="hints">
 				<div>
