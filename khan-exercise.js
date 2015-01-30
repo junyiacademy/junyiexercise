@@ -2219,29 +2219,20 @@ var Khan = (function() {
 
         });
 
-        // On an exercise page, replace the "Report a Problem" link with a button
-        // to be more clear that it won't replace the current page.		
-        $("<a>回報問題</a>")
-            .attr("id", "report").addClass("simple-button green")
-            .replaceAll($(".footer-links #report"));
-
         $("#issue-report-button").click(function(e) {
 
             e.preventDefault();
             
             $('#issueReportForm').modal('show');
-            $("#issueImgScreenshot").children().remove();
-
             html2canvas($("#outer-wrapper"), {
                 onrendered: function(canvas) {
                     theCanvas = canvas;
                     var issueImgUrl = canvas.toDataURL("image/png");
 
-                    issueImgObj = document.createElement('img');
-                    issueImgObj.src = issueImgUrl;
-                    issueImgObj.id = "issueImg";
-
-                    document.getElementById("issueImgScreenshot").appendChild(issueImgObj);
+                    $('#issueImgLarge').attr('href',issueImgUrl);
+                    $('#issueImgLarge').addClass('cloud-zoom');
+                    $('#issueImg').attr('src',issueImgUrl);
+                    $('#issueImgLarge').CloudZoom();
                  }
             });
         });
