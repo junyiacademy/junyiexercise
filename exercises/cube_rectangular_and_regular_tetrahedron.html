@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>正方體、長方體與正四面體</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		 #answer_area .sol input[type=text] {
+					width: 50px;
+				}
+	</style>
+	<script type="text/javascript">
+		function coordsMoving(coordArray,x,y){
+			for(var i = 0;i < coordArray.length;i++){
+				coordArray[i][0] = Math.round( x + coordArray[i][0] );
+				coordArray[i][1] = Math.round( y + coordArray[i][1] );
+			}
+			return coordArray;
+		}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+        <div id="case1">
+			<div class="vars">
+				<!--T-SS-->
+				<var id="T">randRange(1,3)</var>
+				<!--Q-SA-->
+				<var id="Q">randRange(1,2)</var>
+				<var id="SS">["個頂點","條邊","個面"][T-1]</var>
+				<var id="SA">["正方體","長方體"][Q-1]</var>
+				<var id="coordinates">
+				(function(){
+					L = randRange(1,4);
+					return Q == 1 ? [[[-10, -1], [-10, 1], [-8, 1], [-8, -1],[-10,-1]],coordsMoving([[-10, -1], [-10, 1], [-8, 1], [-8, -1],[-10,-1]],0.5,0.5)] : [[[-10, -1], [-10, 1], [round(-8+L), 1], [round(-8+L), -1],[-10,-1]],coordsMoving([[-10, -1], [-10, 1], [round(-8+L), 1], [round(-8+L), -1],[-10,-1]],0.5,0.5)];
+				})()</var>
+				<var id="ANS">[8,12,6][T-1]</var>
+				<var id="COLOR">
+				(function(){
+					col = [KhanUtil.PURPLE,KhanUtil.RED,KhanUtil.GREEN,KhanUtil.BLUE,KhanUtil.ORANGE,KhanUtil.GRAY];
+					arr = randRangeUnique(1,6,2);
+					return [col[arr[0]-1],col[arr[1]-1]];
+				})()</var>
+            </div>
+		
+			<div class="question">
+				<p class="question">題目來源：永齡基金會</p>
+				<div class="problem">
+					<p>請問<var>SA</var>有幾<var>SS</var>？</p>
+					<div class="graphie" id="solid">
+						init({
+							range: [ [-11, 1], [-2, 2.5] ],scale: 40
+						});
+						path(coordinates[0], { stroke: COLOR[0],"stroke-width" : 1 });
+						path(coordinates[1], { stroke: COLOR[0],"stroke-width" : 1 });
+						path([coordinates[0][0],coordinates[0][1],coordinates[1][1],coordinates[1][0],coordinates[0][0]], { stroke: COLOR[0],"stroke-width" : 1 });
+						path([coordinates[0][3],coordinates[0][2],coordinates[1][2],coordinates[1][3],coordinates[0][3]], { stroke: COLOR[0],"stroke-width" : 1 });
+					</div>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>ANS</var></span> <code><var>SS</var></code></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<div class="graphie" id="solid-hints">
+					init({
+						range: [ [-11, 1], [-2, 2.5] ],scale: 40
+					});
+					path(coordinates[0], { stroke: COLOR[0],"stroke-width" : 1 });
+					path(coordinates[1], { stroke: COLOR[0],"stroke-width" : 1 });
+					path([coordinates[0][0],coordinates[0][1],coordinates[1][1],coordinates[1][0],coordinates[0][0]], { stroke: COLOR[0],"stroke-width" : 1 });
+					path([coordinates[0][3],coordinates[0][2],coordinates[1][2],coordinates[1][3],coordinates[0][3]], { stroke: COLOR[0],"stroke-width" : 1 });
+					
+					if( T == 1 ){
+						<!--點的計數-->
+						var count_point = 0;
+						setTimeout(function() {
+							p = setInterval(function() {
+								if( count_point &lt; 4){
+									circle( coordinates[0][count_point], 0.2, {stroke : COLOR[1], fill : COLOR[1], opacity: 0.5} );
+								}else{
+									circle( coordinates[1][count_point-4], 0.2, {stroke : COLOR[1], fill : COLOR[1], opacity: 0.5} );
+								}
+								count_point++;
+								if(count_point==ANS ){clearInterval(p);}
+							}, 500);
+						}, 0);
+					}
+					
+					if( T == 2 ){
+						<!--邊的計數-->
+						var count_side = 0;
+						setTimeout(function() {
+							s = setInterval(function() {
+								if( count_side &lt; 4){
+									line(coordinates[0][count_side],coordinates[0][(count_side+1)%4],{stroke : COLOR[1], "stroke-width" : 2});
+								}else if( count_side &lt; 8){
+									line(coordinates[1][count_side%4],coordinates[1][(count_side+1)%4],{stroke : COLOR[1], "stroke-width" : 2});
+								}else{
+									line(coordinates[0][count_side%4],coordinates[1][(count_side)%4],{stroke : COLOR[1], "stroke-width" : 2});
+								}
+								count_side++;
+								if(count_side==ANS ){clearInterval(s);}
+							}, 500);
+						}, 0);
+					}
+					
+					if( T == 3 ){
+						<!--面的計數-->
+						var count_plane = 0;
+						setTimeout(function() {
+							t = setInterval(function() {
+								if( count_plane &lt; 2 ){
+									path(coordinates[count_plane],{stroke : COLOR[1], fill : COLOR[1], opacity : 0.5});
+								}else if( count_plane &lt; 4 ){
+									path([coordinates[0][3-count_plane],coordinates[1][3-count_plane],coordinates[1][count_plane],coordinates[0][count_plane],coordinates[0][3-count_plane]],{stroke : COLOR[1], fill : COLOR[1], opacity : 0.5});
+								}else{
+									path([coordinates[0][(8-count_plane)%4],coordinates[0][count_plane%3],coordinates[1][count_plane%3],coordinates[1][(8-count_plane)%4],coordinates[0][(8-count_plane)%4]],{stroke : COLOR[1], fill : COLOR[1], opacity : 0.5});
+								}
+								count_plane++;
+								if(count_plane==ANS ){clearInterval(t);}
+							}, 500);
+						}, 0);
+					}
+				</div>
+				<p><var>SA</var>有 <code class="hint_pink"><var>ANS</var></code> <var>SS</var>。</p>
+			</div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars">
+				<!--T-SS-->
+				<var id="T">randRange(1,3)</var>
+				<!--Q-SA-->
+				<var id="SS">["個頂點","條邊","個面"][T-1]</var>
+				<var id="SA">"正四面體"</var>
+				<var id="coordinates">[[-10, 0], [-7.8, 1.8], [-6, 0], [-8.2, -2.2],[-10,0]]</var>
+				<var id="ANS">[4,6,4][T-1]</var>
+				<var id="COLOR">
+				(function(){
+					col = [KhanUtil.PURPLE,KhanUtil.RED,KhanUtil.GREEN,KhanUtil.BLUE,KhanUtil.ORANGE,KhanUtil.GRAY];
+					arr = randRangeUnique(1,6,2);
+					return [col[arr[0]-1],col[arr[1]-1]];
+				})()</var>
+            </div>
+		
+			<div class="question">
+				<p class="question">題目來源：永齡基金會</p>
+				<div class="problem">
+					<p>請問<var>SA</var>有幾<var>SS</var>？</p>
+					<div class="graphie" id="solid">
+						init({
+							range: [ [-11, 1], [-2.5, 2.5] ],scale: 40
+						});
+						path(coordinates, { stroke: COLOR[0],"stroke-width" : 1 });
+						line(coordinates[0],coordinates[2],{ stroke : COLOR[0], "stroke-width" : 1});
+						line(coordinates[1],coordinates[3],{ stroke : COLOR[0], "stroke-width" : 1});
+					</div>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>ANS</var></span> <code><var>SS</var></code></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<div class="graphie" id="solid-hints">
+					init({
+						range: [ [-11, 1], [-2.5, 2.5] ],scale: 40
+					});
+					path(coordinates, { stroke: COLOR[0],"stroke-width" : 1 });
+					line(coordinates[0],coordinates[2],{ stroke : COLOR[0], "stroke-width" : 1});
+					line(coordinates[1],coordinates[3],{ stroke : COLOR[0], "stroke-width" : 1});
+					
+					if( T == 1 ){
+						<!--點的計數-->
+						var count_point = 0;
+						setTimeout(function() {
+							p = setInterval(function() {
+								if( count_point &lt; ANS){
+									circle( coordinates[count_point], 0.2, {stroke : COLOR[1], fill : COLOR[1], opacity: 0.5} );
+								}
+								count_point++;
+								if(count_point==ANS ){clearInterval(p);}
+							}, 500);
+						}, 0);
+					}
+					
+					if( T == 2 ){
+						<!--邊的計數-->
+						var count_side = 0;
+						setTimeout(function() {
+							s = setInterval(function() {
+								if( count_side &lt; 4){
+									line(coordinates[count_side],coordinates[(count_side+1)%ANS],{stroke : COLOR[1], "stroke-width" : 2});
+								}else if( count_side == 5 ){
+									line(coordinates[0],coordinates[2],{stroke : COLOR[1], "stroke-width" : 2});
+								}else{
+									line(coordinates[1],coordinates[3],{stroke : COLOR[1], "stroke-width" : 2});
+								}
+								count_side++;
+								if(count_side==ANS ){clearInterval(s);}
+							}, 500);
+						}, 0);
+					}
+					
+					if( T == 3 ){
+						<!--面的計數-->
+						var count_plane = 0;
+						setTimeout(function() {
+							t = setInterval(function() {
+								if( count_plane &lt; ANS ){
+									path([coordinates[count_plane],coordinates[(count_plane+1)%4],coordinates[(count_plane+2)%4],coordinates[count_plane]],{stroke : COLOR[1], fill : COLOR[1], opacity : 0.5});
+								}
+								count_plane++;
+								if(count_plane==ANS ){clearInterval(t);}
+							}, 500);
+						}, 0);
+					}
+				</div>
+				<p><var>SA</var>有 <code class="hint_pink"><var>ANS</var></code> <var>SS</var>。</p>
+			</div>
+		</div>
+		
+	</div>
+	</div>
+</body>
+</html>
