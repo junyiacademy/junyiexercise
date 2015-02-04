@@ -1370,7 +1370,7 @@ var Khan = (function() {
 
         if (typeof userExercise !== "undefined" && userExercise.readOnly) {
             if (!userExercise.current) {
-                warn("This exercise may have changed since it was completed", true);
+                warn("這個練習題的內容可能已經被修改過。", true);
             }
 
             var timelineEvents, timeline;
