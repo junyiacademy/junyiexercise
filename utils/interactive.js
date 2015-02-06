@@ -537,12 +537,12 @@ $.extend(KhanUtil, {
             lineStarts: [],
             lineEnds: [],
             normalStyle: {
-                fill: "white",
-                stroke: "gray"
+                fill: KhanUtil.BLUE,
+                stroke: KhanUtil.BLUE
             },
             highlightStyle: {
-                fill: "white",
-                stroke: "gray"
+                fill: KhanUtil.BLUE,
+                stroke: KhanUtil.BLUE
             }
         }, options);
 
@@ -558,7 +558,7 @@ $.extend(KhanUtil, {
 
         if (movablePoint.visible) {
             graph.style(movablePoint.normalStyle, function() {
-                movablePoint.visibleShape = graph.ellipse(movablePoint.coord, [8 / graph.scale[0], 8 / graph.scale[1]]);
+                movablePoint.visibleShape = graph.ellipse(movablePoint.coord, [12 / graph.scale[0], 12 / graph.scale[1]]);
             });
         }
         movablePoint.normalStyle.scale = 1;
@@ -1979,7 +1979,6 @@ function Triangleruler(center) {
 		
         onMove: function(x, y) {
             var angle = Math.atan2(pro.centerPoint.coord[1] - y, pro.centerPoint.coord[0] - x) * 180 / Math.PI;
-			
             pro.rotate(-angle - 5, true);
         }
     });
