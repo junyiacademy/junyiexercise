@@ -1018,7 +1018,7 @@ var Khan = (function() {
         var cached = LocalStore.get(cacheKey);
         var lastProblemNum = (cached && cached["lastProblemNum"]) || 0;
 
-        if (lastProblemNum === problemNum) {
+        if (lastProblemNum === problemNum && !userExercise.exerciseModel.isQuizExercise) {
             // Getting here means the user refreshed the page or returned to
             // this exercise after being away. So, we don't need to and
             // shouldn't skip this problem.
@@ -1032,6 +1032,11 @@ var Khan = (function() {
         // few problems, but not if we've been fruitlessly skipping for a while.
         // The latter situation could happen if a problem has very few unique
         // problems (eg. exterior angles problem type of angles_of_a_polygon).
+        if (userExercise.exerciseModel.isQuizExercise){
+            dupWindowSize = 9;
+        }else{
+            dupWindowSize = 5;
+        }
         if (_.contains(pastHashes, varsHash) && consecutiveSkips < dupWindowSize) {
             consecutiveSkips++;
             return true;
