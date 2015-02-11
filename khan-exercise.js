@@ -2136,7 +2136,7 @@ var Khan = (function() {
                     $("#next-question-button")
                         .removeAttr("disabled")
                         .removeClass("buttonDisabled")
-                        .show(10,function(){
+                        .show(function(){
                             $(this).focus();
                         });
                     $("#positive-reinforcement").show();
