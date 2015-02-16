@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>最大公因數與最小公倍數應用題（短除法）</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+		table.nLimit{margin:5px ;border:1px }
+		table.nLimit td { width:300px;border: 1px solid #AAA;font-size:15px;padding: 5px;}
+        </style>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">						
+				<var id="name">randFromArray([["鉛筆"],["原子筆"]])</var>
+				<var id="name1">randFromArray([["筆記本"],["小冊子"],["行事曆"]])</var>
+				<var id="arr">randFromArray([[72,48],[84,42],[21,35],[80,45],[84,36]])</var>
+				<var id="J">arr[0]</var>
+				<var id="K">arr[1]</var>
+				<var id="gcd">getGCD(J,K)</var>
+				<var id="ans">J/gcd</var>
+				<var id="ans1">K/gcd</var>
+				<var id="Factorization">getPrimeFactorization(gcd)</var>
+				<var id="test">
+				(function(){
+					var str = "";
+					for(var i=0;i &lt; Factorization.length-1;i++){
+						str +=Factorization[i]+" \\times";
+					}
+					return str+" "+Factorization[Factorization.length-1];
+				})()</var>
+				<var id="len">test.length</var>
+				
+			</div>
+			<p class="question">要將 <code><var>J</var></code> 支<var>name</var>與 <code><var>K</var></code> 本<var>name1</var>全部裝袋，每袋裝的<var>name</var>一樣多，每袋裝的<var>name1</var>也一樣多，最多可以分裝成幾袋？每袋有幾支<var>name</var>和幾本<var>name1</var>？</p>
+			
+			<div class="solution" data-type="multiple">
+				<p><span class="sol" data-forms="integer"><var>gcd</var></span> 袋</p>
+				<p>每袋中有 <span class="sol" data-forms="integer"><var>ans</var></span> 支和 <span class="sol" data-forms="integer"><var>ans1</var></span> 本</p>
+				<p class="example">整數，例 <code>：6</code></p>
+			</div>
+			<div class="hints">
+				
+				<div>
+					<p>因為<var>name</var>和<var>name1</var>要全部分完，所以袋的數量要整除 <code><var>J</var></code> 和 <code><var>K</var></code> ，</p>
+				</div>
+				<div>
+					<p>要同時整除 <code><var>J</var></code> 和 <code><var>K</var></code> ，代表我們要找出 <code><var>J</var></code> 和 <code><var>K</var></code> 的最大公因數，讓我們來使用短除法吧。</p>
+				</div>
+				<div class="graphie" id="lcm">
+					var length = Factorization.length;
+					init({
+                        range: [ [-5, 5], [-length, 2] ],
+                        scale: 40
+                    });
+					var item = 1;
+					for(var i=0;i &lt; length;i++){
+						line([-2.5+0.3*i,1.5-i],[-2.5+0.3*i,0.5-i]);
+						line([-2.5+0.3*i,0.5-i],[1.5,0.5-i]);
+						label([-2.5+0.3*i,1-i],Factorization[i],"left");
+						label([-1,1-i],J/item,"center");
+						label([0.5,1-i],K/item,"center");
+						item = item*Factorization[length-1-i];
+					}
+					label([-1,1-length],"\\color{red}{"+J/gcd+"}","center");
+					label([0.5,1-length],"\\color{#28AE7B}{"+K/gcd+"}","center");
+				</div>
+				<div>
+					<p>最大公因數等於 <code class="hint_red" data-if="len&gt;2"><var>test</var>=<var>gcd</var></code><code class="hint_red" data-if="len==2"><var>gcd</var></code> ，代表最多可分成 <code class="hint_pink"><var>gcd</var></code> 袋。</p>
+					<p><code><var>J</var> \div <var>gcd</var> = <var>ans</var></code> 代表每袋中有 <code class="hint_pink"><var>ans</var></code> 支<var>name</var>。</p>
+					<p><code><var>K</var> \div <var>gcd</var> = <var>ans1</var></code> 代表每袋中有 <code class="hint_pink"><var>ans1</var></code> 本<var>name1</var>。</p>
+					
+				</div>
+			</div>
+		</div>	
+		<div id="case2">
+			<div class="vars">
+				<var id="arr">randFromArray([[84,70],[84,42],[35,21],[80,45],[80,36],[84,72]])</var>
+				<var id="J">arr[0]</var>
+				<var id="K">arr[1]</var>
+				<var id="gcd">getGCD(J,K)</var>
+				<var id="ans">J/gcd</var>
+				<var id="ans1">K/gcd</var>
+				<var id="Factorization">getPrimeFactorization(gcd)</var>
+				<var id="L">(J/gcd)*(K/gcd)</var>
+				<var id="test">
+				(function(){
+					var str = "";
+					for(var i=0;i &lt; Factorization.length-1;i++){
+						str +=Factorization[i]+" \\times";
+					}
+					return str+" "+Factorization[Factorization.length-1];
+				})()</var>
+				<var id="len">test.length</var>
+				
+			</div>
+			<p class="question">有一塊長 <code><var>J</var></code> 公尺，寬 <code><var>K</var></code> 公尺的長方形土地，地主想將這塊土地全部分割成大小一樣的正方形（邊長的公尺數都是整數），正方形的邊長最大是多少公尺？可以分成幾塊正方形土地？</p>
+			<div class="solution" data-type="multiple">
+				<p><span class="sol" data-forms="integer"><var>gcd</var></span> 公尺</p>
+				<p> <span class="sol" data-forms="integer"><var>L</var></span> 塊</p>
+				<p class="example">整數，例 <code>：6</code></p>
+			</div>
+			<div class="hints">
+			
+				<p>正方形邊長是 <code><var>J</var></code> 和 <code><var>K</var></code> 的公因數，而且是最大公因數，我們可以用短除法找出 <code><var>J</var></code> 和 <code><var>K</var></code> 的最大公因數。</p>
+				
+				<div class="graphie" id="lcm">
+					var length = Factorization.length;
+					init({
+                        range: [ [-5, 5], [-length, 2] ],
+                        scale: 40
+                    });
+					var item = 1;
+					for(var i=0;i &lt; length;i++){
+						line([-2.5+0.3*i,1.5-i],[-2.5+0.3*i,0.5-i]);
+						line([-2.5+0.3*i,0.5-i],[1.5,0.5-i]);
+						label([-2.5+0.3*i,1-i],Factorization[i],"left");
+						label([-1,1-i],J/item,"center");
+						label([0.5,1-i],K/item,"center");
+						item = item*Factorization[length-1-i];
+					}
+					label([-1,1-length],"\\color{red}{"+J/gcd+"}","center");
+					label([0.5,1-length],"\\color{#28AE7B}{"+K/gcd+"}","center");
+				</div>
+				<p>最大公因數等於 <code class="hint_red" data-if="len&gt;2"><var>test</var>=<var>gcd</var></code><code class="hint_red" data-if="len==2"><var>gcd</var></code> ，代表正方形邊長為 <code class="hint_pink"><var>gcd</var></code> 公尺。</p>
+				<p><code><var>J</var> \div <var>gcd</var>= <var>J/gcd</var></code> ，代表長方形的長被分成 <code><var>J/gcd</var></code> 段。</p>
+				<p><code><var>K</var> \div <var>gcd</var>= <var>K/gcd</var></code> ，代表長方形的寬被分成 <code><var>K/gcd</var></code> 段。</p>
+				<div>
+					<p>長被分成 <code><var>J/gcd</var></code> 段，寬被分成 <code><var>K/gcd</var></code> 段。代表長方形被分成 <code><var>ans</var> \times <var>ans1</var></code> = <code class="hint_pink"><var>L</var></code> 個正方形。</p>	
+					<div class="graphie">
+							init({ range: [ [0, ans*0.8+2], [-ans1*0.8-2, 0] ], scale: [20, 20] });
+							
+								for(var j=0;j&lt;ans1;j++)
+								{
+								for(var i=0;i&lt;ans;i++){
+									path([[0.8*i+0.8, -0.8*j-0.8], [0.8*(i+1)+0.8,-0.8*j-0.8], 
+									[0.8*(i+1)+0.8, -0.8*(j+1)-0.8], [0.8*i+0.8, -0.8*(j+1)-0.8],[0.8*i+0.8, -0.8*j-0.8]]);
+							}
+							} 
+					</div>
+				</div>
+				<p>所以正方形的邊長最大是 <code class="hint_pink"><var>gcd</var></code> 公尺，可以分成 <code class="hint_pink"><var>L</var></code> 塊正方形土地。</p>
+			</div>
+		</div>
+		<div id="case3">
+			<div class="vars">
+				<var id="arr">randFromArray([[65,48,5,3],[84,42,4,2],[35,21,5,1],[80,45,5,5],[80,36,2,4],[84,73,3,1]])</var>
+				<var id="J">arr[0]</var>
+				<var id="K">arr[1]</var>
+				<var id="M">arr[2]</var>
+				<var id="N">arr[3]</var>
+				<var id="JM">arr[0]-arr[2]</var>
+				<var id="KN">arr[1]-arr[3]</var>
+				<var id="gcd">getGCD(JM,KN)</var>
+				<var id="Factorization">getPrimeFactorization(gcd)</var>
+				<var id="test">
+				(function(){
+					var str = "";
+					for(var i=0;i &lt; Factorization.length-1;i++){
+						str +=Factorization[i]+" \\times";
+					}
+					return str+" "+Factorization[Factorization.length-1];
+				})()</var>
+				<var id="x">Factorization.length</var>
+			</div>
+			<p class="question">老闆將 <code><var>J</var></code> 顆蘋果和 <code><var>K</var></code> 顆橘子，平分裝到盒子裡，每盒蘋果要一樣多，橘子也要一樣多。最後蘋果剩下 <code><var>M</var></code> 顆，橘子剩下 <code><var>N</var></code> 顆。最多可以平分成幾盒？</p>
+			<div class="solution" data-type="multiple">
+				<p><span class="sol" data-forms="integer"><var>gcd</var></span> 盒</p>
+				<p class="example">整數，例 <code>：6</code></p>
+			</div>
+			<div class="hints">	
+				<p>蘋果最後剩下 <code><var>M</var></code> 顆，橘子剩下 <code><var>N</var></code> 顆，所以只要蘋果數量減去 <code><var>M</var></code> 顆 ( <code><var>J</var>-<var>M</var></code>) ，橘子數量減去 <code><var>N</var></code> 顆 ( <code><var>K</var>-<var>N</var></code>) 就能分完。</p>
+				<p>要算最多可以平分成幾盒，就是要找出 <code><var>JM</var></code> 和 <code><var>KN</var></code> 的最大公因數，我們可以用短除法來找最大公因數。</p>
+				<div class="graphie" id="lcm">
+					var length = Factorization.length;
+					init({
+                        range: [ [-5, 5], [-length, 2] ],
+                        scale: 40
+                    });
+					var item = 1;
+					for(var i=0;i &lt; length;i++){
+						line([-2.5+0.3*i,1.5-i],[-2.5+0.3*i,0.5-i]);
+						line([-2.5+0.3*i,0.5-i],[1.5,0.5-i]);
+						label([-2.5+0.3*i,1-i],Factorization[i],"left");
+						label([-1,1-i],JM/item,"center");
+						label([0.5,1-i],KN/item,"center");
+						item = item*Factorization[length-1-i];
+					}
+					label([-1,1-length],"\\color{red}{"+JM/gcd+"}","center");
+					label([0.5,1-length],"\\color{#28AE7B}{"+KN/gcd+"}","center");
+				</div>					
+				<p><code><var>JM</var></code> 與 <code><var>KN</var></code> 的最大公因數是 <span data-if="x&gt;1"><code><var>test</var> = </code><code><var>gcd</var></code></span><span data-if="x==1"><code><var>gcd</var></code></span> 。</p>
+				<p>可以平分成 <code class="hint_pink"><var>gcd</var></code> 盒。</p>			
+			</div>
+		</div>
+		<div id="case4">
+			<div class="vars">
+				<var id="arr">randFromArray([[10,12],[9,12],[8,12],[10,15]])</var>
+				<var id="J">arr[0]</var>
+				<var id="K">arr[1]</var>
+				<var id="num">randFromArray([[2,3]])</var>
+				<var id="numJ1">num[0]*J</var>
+				<var id="numJ2">num[1]*J</var>
+				<var id="numK1">num[0]*K</var>
+				<var id="numK2">num[1]*K</var>
+				<var id="name">randFromArray([["小明"],["小華"]])</var>
+				<var id="name1">randFromArray([["小文"],["小新"]])</var>
+				<var id="gcd">getGCD(J,K)</var>
+				<var id="ans">J/gcd</var>
+				<var id="ans1">K/gcd</var>
+				<var id="Factorization">getPrimeFactorization(gcd)</var>
+				<var id="L">ans*ans1*gcd</var>
+				<var id="test">
+				(function(){
+					var str = "";
+					for(var i=0;i &lt; Factorization.length-1;i++){
+						str +=Factorization[i]+" \\times";
+					}
+					return str+" "+Factorization[Factorization.length-1];
+				})()</var>
+				
+			</div>
+			<p class="question"><var>name</var>家每 <code><var>J</var></code> 天到賣場採購一次，<var>name1</var>家每 <code><var>K</var></code> 天到賣場採購一次。如果兩家今天都到賣場採購，最快幾天後，兩家人會在賣場遇到？</p>
+			<div class="solution" data-type="multiple">
+				<p><span class="sol" data-forms="integer"><var>L</var></span> 天後</p>
+				<p class="example">整數，例 <code>：6</code></p>
+			</div>
+			<div class="hints">
+				<p><var>name</var>家每 <code><var>J</var></code> 天、 <code><var>numJ1</var></code> 天、 <code><var>numJ2</var></code> 天<code> ... </code>會到賣場。</p>
+				<p><var>name1</var>家每 <code><var>K</var></code> 天、 <code><var>numK1</var></code> 天、 <code><var>numK2</var></code> 天<code> ... </code>會到賣場。</p>
+				<p>要計算兩家人最快幾天後會在賣場遇到，就是要找出 <code><var>J</var></code> 和 <code><var>K</var></code> 的最小公倍數，我們可以用短除法找到 <code><var>J</var></code> 和 <code><var>K</var></code> 的最小公倍數。</p>
+				<div class="graphie" id="lcm">
+					var length = Factorization.length;
+					init({
+                        range: [ [-5, 5], [-length, 2] ],
+                        scale: 40
+                    });
+					var item = 1;
+					for(var i=0;i &lt; length;i++){
+						line([-2.5+0.3*i,1.5-i],[-2.5+0.3*i,0.5-i]);
+						line([-2.5+0.3*i,0.5-i],[1.5,0.5-i]);
+						label([-2.5+0.3*i,1-i],Factorization[i],"left");
+						label([-1,1-i],J/item,"center");
+						label([0.5,1-i],K/item,"center");
+						item = item*Factorization[length-1-i];
+					}
+					label([-1,1-length],"\\color{red}{"+J/gcd+"}","center");
+					label([0.5,1-length],"\\color{#28AE7B}{"+K/gcd+"}","center");
+				</div>
+				<p><code><var>J</var></code> 和 <code><var>K</var></code> 的最小公倍數為 <code><var>test</var> \times <var>ans</var> \times <var>ans1</var> = <var>gcd*ans*ans1</var></code></p>
+				<p>最快 <code class="hint_pink"><var>L</var></code> 天後兩家人會在賣場遇到。</p>			
+			</div>
+		</div>
+		<div id="case5">
+			<div class="vars">
+				<var id="arr">randFromArray([[5,3],[2,3],[2,5],[3,7]])</var>
+				<var id="J">arr[0]</var>
+				<var id="K">arr[1]</var>
+				<var id="name">randFromArray([["小明"],["小華"]])</var>
+				<var id="name1">randFromArray([["小文"],["小新"]])</var>
+				<var id="L">J*K</var>
+
+			</div>
+			<p class="question"><var>name</var>跑操場一圈要 <code><var>J</var></code> 分鐘，<var>name1</var>跑操場一圈要 <code><var>K</var></code> 分鐘。兩人同時在起跑點開始起跑，下次兩人在起跑點遇到是幾分鐘之後？</p>
+			<div class="solution" data-type="multiple">
+				<p><span class="sol" data-forms="integer"><var>L</var></span> 分鐘後</p>
+				<p class="example">整數，例 <code>：6</code></p>
+			</div>
+			<div class="hints">
+				<p>兩人在起跑點相遇時，時間會是 <code><var>J</var></code> 分鐘和 <code><var>K</var></code> 分鐘的倍數。</p>
+				<p>下次兩人在起跑點相遇的時間會是 <code><var>J</var></code> 分鐘和 <code><var>K</var></code> 分鐘的最小公倍數。我們可以用短除法找出 <code><var>J</var></code> 和 <code><var>K</var></code> 的最小公倍數。</p>
+				<p>我們發現 <code><var>J</var></code> 和 <code><var>K</var></code> 彼此互質。（最大公因數為 <code>1</code>）</p>
+				<p><code><var>J</var></code> 和 <code><var>K</var></code> 的最小公倍數是 <code><var>J</var> \times <var>K</var> = <var>L</var></code></p>
+				<p>下次兩人在起跑點相遇是 <code class="hint_pink"><var>L</var></code> 分鐘後。</p>			
+			</div>
+		</div>
+		<div id="case6">
+			<div class="vars">
+				<var id="arr">randFromArray([[16,12],[14,12],[18,15],[16,14],[20,12],[20,14],[20,15],[20,16],[20,18]])</var>
+				<var id="J">arr[0]</var>
+				<var id="K">arr[1]</var>				
+				<var id="gcd">getGCD(J,K)</var>
+				<var id="ans">J/gcd</var>
+				<var id="ans1">K/gcd</var>
+				<var id="Factorization">getPrimeFactorization(gcd)</var>
+				<var id="L">ans*ans1*gcd</var>
+				<var id="test">
+				(function(){
+					var str = "";
+					for(var i=0;i &lt; Factorization.length-1;i++){
+						str +=Factorization[i]+" \\times";
+					}
+					return str+" "+Factorization[Factorization.length-1];
+				})()</var>
+				
+			</div>
+			
+			<p class="question">用長 <code><var>J</var></code> 公分，寬 <code><var>K</var></code> 公分的長方形拼成正方形，拼出最小正方形的邊長是幾公分？</p>
+			<div class="solution" data-type="multiple">
+				<p><span class="sol" data-forms="integer"><var>L</var></span> 公分</p>
+				<p class="example">整數，例 <code>：6</code></p>
+			</div>
+			<div class="hints">
+			
+				<p>用長 <code><var>J</var></code> 公分和寬 <code><var>K</var></code> 公分拼出來的正方形邊長是 <code><var>J</var></code> 和 <code><var>K</var></code> 的公倍數。</p>
+				<p>拼出最小的正方形邊長就會是 <code><var>J</var></code> 和 <code><var>K</var></code> 的最小公倍數。我們可以用短除法找出 <code><var>J</var></code> 和 <code><var>K</var></code> 的最小公倍數。</p>
+				<div class="graphie" id="lcm">
+					var length = Factorization.length;
+					init({
+                        range: [ [-5, 5], [-length, 2] ],
+                        scale: 40
+                    });
+					var item = 1;
+					for(var i=0;i &lt; length;i++){
+						line([-2.5+0.3*i,1.5-i],[-2.5+0.3*i,0.5-i]);
+						line([-2.5+0.3*i,0.5-i],[1.5,0.5-i]);
+						label([-2.5+0.3*i,1-i],Factorization[i],"left");
+						label([-1,1-i],J/item,"center");
+						label([0.5,1-i],K/item,"center");
+						item = item*Factorization[length-1-i];
+					}
+					label([-1,1-length],"\\color{red}{"+J/gcd+"}","center");
+					label([0.5,1-length],"\\color{#28AE7B}{"+K/gcd+"}","center");
+				</div>													  	    
+				<p><code><var>J</var></code> 和 <code><var>K</var></code> 的最小公倍數是 <code><var>test</var> \times <var>ans</var> \times <var>ans1</var> = <var>L</var></code>。</p>
+				<p>最小的正方形邊長是 <code class="hint_pink"><var>L</var></code> 公分。</p>
+							
+			</div>
+		</div>
+		<div id="case7">
+			<div class="vars">
+				<var id="arr">randFromArray([[16,18,4],[14,16,3],[12,18,4],[14,18,3],[12,16,5],[20,18,6]])</var>
+				<var id="J">arr[0]</var>
+				<var id="K">arr[1]</var>	
+				<var id="M">arr[2]</var>
+				<var id="gcd">getGCD(J,K)</var>
+				<var id="ans">J/gcd</var>
+				<var id="ans1">K/gcd</var>
+				<var id="Factorization">getPrimeFactorization(gcd)</var>
+				<var id="L">ans*ans1*gcd</var>
+				<var id="total">L+M</var>
+				<var id="test">
+				(function(){
+					var str = "";
+					for(var i=0;i &lt; Factorization.length-1;i++){
+						str +=Factorization[i]+" \\times";
+					}
+					return str+" "+Factorization[Factorization.length-1];
+				})()</var>				
+			</div>
+			<p class="question">老師將參加校外教學的學生，每 <code><var>J</var></code> 位分成一組，或每 <code><var>K</var></code> 位分成一組都會多出 <code><var>M</var></code> 位來，學生至少有幾人？</p>
+			<div class="solution" data-type="multiple">
+				<p><span class="sol" data-forms="integer"><var>total</var></span> 人</p>
+				<p class="example">整數，例 <code>：6</code></p>
+			</div>
+			<div class="hints">
+			
+				<p>學生人數一定大於 <code><var>J</var></code> 和 <code><var>K</var></code> ，我們可以先找出 <code><var>J</var></code> 和 <code><var>K</var></code> 的公倍數，再來考慮多出來的 <code><var>M</var></code> 位學生。</p>
+				<p>題目問學生至少有幾位，代表我們必須先找出 <code><var>J</var></code> 和 <code><var>K</var></code> 的最小公倍數。我們可以用短除法找出 <code><var>J</var></code> 和 <code><var>K</var></code> 的最小公倍數。</p>
+				<div class="graphie" id="lcm">
+					var length = Factorization.length;
+					init({
+                        range: [ [-5, 5], [-length, 2] ],
+                        scale: 40
+                    });
+					var item = 1;
+					for(var i=0;i &lt; length;i++){
+						line([-2.5+0.3*i,1.5-i],[-2.5+0.3*i,0.5-i]);
+						line([-2.5+0.3*i,0.5-i],[1.5,0.5-i]);
+						label([-2.5+0.3*i,1-i],Factorization[i],"left");
+						label([-1,1-i],J/item,"center");
+						label([0.5,1-i],K/item,"center");
+						item = item*Factorization[length-1-i];
+					}
+					label([-1,1-length],"\\color{red}{"+J/gcd+"}","center");
+					label([0.5,1-length],"\\color{#28AE7B}{"+K/gcd+"}","center");
+				</div>													  	    
+				<p><code><var>J</var></code> 和 <code><var>K</var></code> 的最小公倍數是 <code><var>test</var> \times <var>ans</var> \times <var>ans1</var> =<var>L</var></code></p>
+				<p>因為會多出 <code><var>M</var></code> 位學生，所以學生人數至少有 <code><var>L</var> + <var>M</var> = </code> <code class="hint_pink"><var>total</var></code> 人。</p>
+							
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

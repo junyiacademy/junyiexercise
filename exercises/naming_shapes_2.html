@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>圖形的命名2</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+		<div class="vars">
+			<var id="shape_types">randFromArray([["正方形",1],["三角形",2],["長方形",3],["圓形",4]])</var>
+			<var id="colours">randFromArray([ORANGE,"#28AE7B","red","#6495ED"])</var>
+			<var id="coordinates">
+			(function(){
+				var coords = [];
+				var center = 0;
+				switch(shape_types[1])
+					{
+					case 1:
+					  var s = randRange(10,20)/10;
+					  coords = [[-s,-s],[-s,s],[s,s],[s,-s],[-s,-s]];
+					  break;
+					case 2:					  
+						var a_x=randRange(-20,-8);
+						var b_x=randRangeNonZero(-7,8);
+						var c_x=randRange(9,20);
+						var a_y=randRange(-20,-8);
+						var b_y=randRangeNonZero(-7,8);
+						var c_y=randRange(9,20);
+						var ponit_start_x=[a_x,b_x,c_x];
+						var ponit_start_y=[a_y,b_y,c_y];
+				   
+					var start = [ponit_start_x[1]/10,ponit_start_y[0]/10];
+					coords = [start,[ponit_start_x[2]/10,ponit_start_y[1]/10],[ponit_start_x[0]/10,ponit_start_y[2]/10],start];
+					  break;
+					case 3:
+					  var ss = randRangeUnique(10,20,2);
+					  var s1 = ss[0]/10;
+					  var s2 = ss[1]/10;
+					  coords = [[-s1,-s2],[-s1,s2],[s1,s2],[s1,-s2],[-s1,-s2]];
+					  break;
+					case 4:
+					  coords = [0,0];
+					  break;
+					}
+				return coords;
+			})()</var>
+			<var id="ans">
+			(function(){
+				var arr = ["正方形","三角形","長方形","圓形"];
+				arr.splice(shape_types[1]-1,1);
+				var index = randRangeUnique(1,4,2);
+				return [arr[index[0]-1],arr[index[1]-1]].concat(shape_types[0]).sort(function(x,y){return Math.random()&gt;0.5?1:-1});
+			})()</var>
+			<var id="set_vars">
+			(function(){
+				for(var i = 0;i&lt;3;i++){
+					$('#choice_'+(i+1)).val(ans[i]===shape_types[0]?1:0);
+				}
+			})()</var>
+		</div>
+		<div class="question">
+			<p class="question">下圖是什麼形狀？</p>
+			<div class="graphie" id="shapes">
+				init({
+					range: [ [-2.1, 2.1], [-2.1, 2.1] ],scale: 40
+				});
+				if(shape_types[1]==4){
+					circle(coordinates, 0.04,{stroke:"black",fill:"black"});
+					circle(coordinates, randRange(10,20)/10,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+				}else{
+					path(coordinates,{ stroke: colours, fill: colours, "fill-opacity": 0.1 });
+				}
+			</div>
+		</div>
+		<div class="problem">
+			<p onclick="$('#choice_1').attr('checked','checked')"><input type="radio" name="radios" id="choice_1"><var>ans[0]</var></p>
+			<p onclick="$('#choice_2').attr('checked','checked')"><input type="radio" name="radios" id="choice_2"><var>ans[1]</var></p>
+			<p onclick="$('#choice_3').attr('checked','checked')"><input type="radio" name="radios" id="choice_3"><var>ans[2]</var></p>
+		</div>
+		
+		<div class="solution" data-type="multiple">
+			<p>選擇正確的答案</p>
+			<div class="sol" data-type="custom">
+				<div class="guess">$('input:radio:checked').val()</div>
+				<div class="validator-function">
+					if(guess == 'undefined'){
+						return "";
+					}
+					if(guess == 1){
+						return true;
+					}
+				</div>
+			</div>
+		</div>
+				
+		<div class="hints">
+			<p data-if="shape_types[1]==4">這個形狀是由一個圓周圍成的，且圓周上每一點到圓心的距離都是相同的，</p>
+			<p data-if="shape_types[1]==2">這個形狀是由<span class="hint_green" style="font-weight:bold">三</span>個邊與<span class="hint_green" style="font-weight:bold">三</span>個角組成的圖形，</p>
+			<p data-if="shape_types[1]==1">這個形狀是由<span class="hint_green" style="font-weight:bold">四</span>條相同長度的邊圍成的，且相鄰的邊互相垂直，</p>
+			<p data-if="shape_types[1]==3">這個形狀是由<span class="hint_green" style="font-weight:bold">四</span>條邊圍成的，但是它不像正方形一樣<span class="hint_green" style="font-weight:bold">四</span>條邊都是相同的長度，不過它像一張紙一樣有四個方形的角落，</p>
+			<p>因此這個圖形是<span class="hint_pink"><var>shape_types[0]</var></span>。</p>
+		</div>
+		</div>
+		
+		<div id="case2">
+		<div class="vars">
+			<var id="shape_types">randFromArray([["正方形",1],["三角形",2],["長方形",3],["圓形",4]])</var>
+			<var id="colours">[randFromArray([ORANGE,"#28AE7B","red","#6495ED","#FF00AF"]),randFromArray([ORANGE,"#28AE7B","red","#6495ED","#FF00AF"]),randFromArray([ORANGE,"#28AE7B","red","#6495ED","#FF00AF"])]</var>
+			<var id="coords_init">
+			(function(){
+				var coords = new Array();
+				var center = 0;
+			    var s = randRange(10,20)/10;
+			    coords[0] = [[-s,-s],[-s,s],[s,s],[s,-s],[-s,-s]];				
+				var a_x=randRange(-20,-8);
+				var b_x=randRangeNonZero(-7,8);
+				var c_x=randRange(9,20);
+				var a_y=randRange(-20,-8);
+				var b_y=randRangeNonZero(-7,8);
+				var c_y=randRange(9,20);
+				var ponit_start_x=[a_x,b_x,c_x];
+				var ponit_start_y=[a_y,b_y,c_y];			   
+				var start = [ponit_start_x[1]/10,ponit_start_y[0]/10];
+				coords[1] = [start,[ponit_start_x[2]/10,ponit_start_y[1]/10],[ponit_start_x[0]/10,ponit_start_y[2]/10],start];
+			    var ss = randRangeUnique(10,20,2);
+				var s1 = ss[0]/10;
+				var s2 = ss[1]/10;
+			    coords[2] = [[-s1,-s2],[-s1,s2],[s1,s2],[s1,-s2],[-s1,-s2]];
+			    coords[3] = [[0,0]];
+				return coords;
+			})()</var>
+			<var id="right_coord">[coords_init[shape_types[1]-1]]</var>
+			<var id="coordinates">
+			(function(){
+				coords_init.splice(shape_types[1]-1,1);
+				var index = randRangeUnique(1,4,2);
+				return [coords_init[index[0]-1],coords_init[index[1]-1]].concat(right_coord).sort(function(x,y){return Math.random()&gt;0.5?1:-1});
+			})()</var>
+			<var id="set_vars">
+			(function(){
+				for(var i = 0;i&lt;3;i++){
+					$('#choice_'+(i+1)).val(coordinates[i][0][0]==coordinates[i][0][1]?coordinates[i].length:coordinates[i].length-1);
+				}
+			})()</var>
+			<var id="ans_color">
+			(function(){
+				for(var i = 0;i&lt;3;i++){
+					if(coordinates[i]==right_coord[0]){
+						return colours[i];
+					}
+				}
+			})()
+			</var>
+		</div>
+		<div class="question">
+			<p class="question">下列選項哪一個是<var>shape_types[0]</var>？</p>
+			<table>
+				<tr onclick="$('#choice_1').attr('checked','checked')"><td style="vertical-align:middle"><input type="radio" name="radios" id="choice_1"></td><td>
+				<div class="graphie" id="shapes_1">
+					init({
+						range: [ [-2.1, 2.1], [-2.1, 2.1] ],scale: 40
+					});
+					if(coordinates[0][0][0]==0){
+						circle(coordinates[0][0], 0.04,{stroke:"black",fill:"black"});
+						circle(coordinates[0][0], randRange(10,20)/10,{stroke:colours[0],fill:colours[0],"fill-opacity": 0.1});
+					}else{
+						path(coordinates[0],{ stroke: colours[0], fill: colours[0], "fill-opacity": 0.1 });
+					}
+				</div></td></tr>
+				<tr onclick="$('#choice_2').attr('checked','checked')"><td style="vertical-align:middle"><input type="radio" name="radios" id="choice_2"></td><td>
+				<div class="graphie" id="shapes_2">
+					init({
+						range: [ [-2.1, 2.1], [-2.1, 2.1] ],scale: 40
+					});
+					if(coordinates[1][0][0]==0){
+						circle(coordinates[1][0], 0.04,{stroke:"black",fill:"black"});
+						circle(coordinates[1][0], randRange(10,20)/10,{stroke:colours[1],fill:colours[1],"fill-opacity": 0.1});
+					}else{
+						path(coordinates[1],{ stroke: colours[1], fill: colours[1], "fill-opacity": 0.1 });
+					}
+				</div></td></tr>
+				<tr onclick="$('#choice_3').attr('checked','checked')"><td style="vertical-align:middle"><input type="radio" name="radios" id="choice_3"></td><td>
+				<div class="graphie" id="shapes_3">
+					init({
+						range: [ [-2.1, 2.1], [-2.1, 2.1] ],scale: 40
+					});
+					if(coordinates[2][0][0]==0){
+						circle(coordinates[2][0], 0.04,{stroke:"black",fill:"black"});
+						circle(coordinates[2][0], randRange(10,20)/10,{stroke:colours[2],fill:colours[2],"fill-opacity": 0.1});
+					}else{
+						path(coordinates[2],{ stroke: colours[2], fill: colours[2], "fill-opacity": 0.1 });
+					}
+				</div></td></tr>
+			</table>
+		</div>
+		
+		<div class="solution" data-type="multiple">
+			<p>選擇正確的答案</p>
+			<div class="sol" data-type="custom">
+				<div class="guess">$('input:radio:checked').val()</div>
+				<div class="validator-function">
+					if(guess == 'undefined'){
+						return "";
+					}
+					if(shape_types[1]==1 &amp;&amp; guess==5){
+						return true;
+					}
+					if(shape_types[1]==2 &amp;&amp; guess==3){
+						return true;
+					}
+					if(shape_types[1]==3 &amp;&amp; guess==4){
+						return true;
+					}
+					if(shape_types[1]==4 &amp;&amp; guess==1){
+						return true;
+					}
+					return false;
+				</div>
+			</div>
+		</div>
+				
+		<div class="hints">
+			<p data-if="shape_types[1]==4"><span class="hint_green" style="font-weight:bold"><var>shape_types[0]</var></span>是由一個圓周圍成的，且圓周上每一點到圓心的距離都是相同的，</p>
+			<p data-if="shape_types[1]==2"><span class="hint_green" style="font-weight:bold"><var>shape_types[0]</var></span>是由<span class="hint_green" style="font-weight:bold">三</span>個邊與<span class="hint_green" style="font-weight:bold">三</span>個角組成的圖形，</p>
+			<p data-if="shape_types[1]==1"><span class="hint_green" style="font-weight:bold"><var>shape_types[0]</var></span>是由<span class="hint_green" style="font-weight:bold">四</span>條相同長度的邊圍成的，且相鄰的邊互相垂直，</p>
+			<p data-if="shape_types[1]==3"><span class="hint_green" style="font-weight:bold"><var>shape_types[0]</var></span>是由<span class="hint_green" style="font-weight:bold">四</span>條邊圍成的，但是它不像正方形一樣<span class="hint_green">四</span>條邊都是相同的長度，不過它像一張紙一樣有四個方形的角落，</p>
+			<div>
+				<p>因此這個圖形是<span class="hint_pink"><var>shape_types[0]</var></span>:</p>
+				<div class="graphie" id="ans_shapes">
+					init({
+						range: [ [-2.1, 2.1], [-2.1, 2.1] ],scale: 40
+					});
+					if(right_coord[0][0][0]==0){
+						circle(right_coord[0][0], 0.04,{stroke:"black",fill:"black"});
+						circle(right_coord[0][0], randRange(10,20)/10,{stroke:ans_color,fill:ans_color,"fill-opacity": 0.1});
+					}else{
+						path(right_coord[0],{ stroke: ans_color, fill: ans_color, "fill-opacity": 0.1 });
+					}
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>長度文字題</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+		.d_td { text-align:center;font-size:12px}
+		.d_td_f { text-align:center;background-color: #EDEDED;border-bottom:#CCCCCC solid 3px}
+		.d_td_1 { text-align:center;font-size:12px;background-color: #EDEDED; }
+    </style>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars" data-ensure="J!=K">
+				<var id="names">randFromArray(["魔術師"])</var>
+				<var id="J,K">[randRange(10,100),randRange(10,100)]</var>
+				<var id="things">randFromArray([["根","繩子","條","魔術圍巾"]])</var>
+				<var id="set_keypress">
+				(function(){
+					$('#a1').bind('keypress',function(event){
+						if(event.keyCode == "13"){
+							$('#check-answer-button').click();
+						}
+					});
+				})()
+				</var>
+				<var id="R">J+K</var>
+			</div>
+			<div class="question">
+				<p>一個<var>names</var>有一<var>things[0]</var>長 <code><var>J</var>\enspace cm</code> 的<var>things[1]</var>和一<var>things[2]</var>長 <code><var>K</var>\enspace cm</code> 的<var>things[3]</var> 。</p>
+				<p class="question"><var>names</var>的<var>things[1]</var>和<var>things[3]</var>合起來共多長？</p>
+				<p><input type="text" style="width:50px;text-align:center" id="a1"> <code>cm</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>將答案填入空格中</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">$('#a1').val()</div>
+				    <div class="validator-function">
+						if(guess.replace(/[ ]/g,"")==""){
+							return "";
+						}
+						if(guess.replace(/[ ]/g,"")==R){
+							return true;
+						}
+					</div>
+				</div>
+			</div>
+			<div class="hints">
+				<p>為了獲知<var>things[1]</var>和<var>things[3]</var>合起來共多長，我們可以把它們的長度<span class="hint_red">加起來</span>。</p>
+				<p><code>\color{#6495ED}{<var>J</var>}cm+\color{#FF00AF}{<var>K</var>}cm=\color{#28AE7B}{?}</code></p>
+				<p>最後算得<var>things[1]</var>和<var>things[3]</var>合起來共長 <code class="hint_red"><var>R</var></code> <code>cm</code> 。</p>
+			</div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="JKLM">randRangeUnique(10,30,4)</var>
+				<var id="rel">randRangeUnique(1,4,2)</var>
+				<var id="names">["哈利","榮恩","妙麗","馬份"]</var>
+				<var id="set_keypress">
+				(function(){
+					$('#a1').bind('keypress',function(event){
+						if(event.keyCode == "13"){
+							$('#check-answer-button').click();
+						}
+					});
+				})()
+				</var>
+				<var id="R">abs(JKLM[rel[0]]-JKLM[rel[1]])</var>
+			</div>
+			<div class="question">
+				<p><var>names[0]</var>和他的巫師朋友們測量他們魔杖的長度。</p>
+				<p class="question"><var>names[rel[0]]</var>的魔杖比<var>names[rel[1]]</var>的<span class="hint_red"><var>JKLM[rel[0]]&gt;JKLM[rel[1]]?"長":"短"</var></span>多少？</p>
+				<p><input type="text" style="width:50px;text-align:center" id="a1"> <code>cm</code></p>
+				<table>
+					<tr><td class="d_td_f">魔杖</td><td class="d_td_f">長度</td></tr>
+					<tr><td class="d_td"><var>names[0]</var></td><td class="d_td"><var>JKLM[0]</var>cm</td></tr>
+					<tr><td class="d_td_1"><var>names[1]</var></td><td class="d_td_1"><var>JKLM[1]</var>cm</td></tr>
+					<tr><td class="d_td"><var>names[2]</var></td><td class="d_td"><var>JKLM[2]</var>cm</td></tr>
+					<tr><td class="d_td_1"><var>names[3]</var></td><td class="d_td_1"><var>JKLM[3]</var>cm</td></tr>
+				</table>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>將答案填入空格中</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">$('#a1').val()</div>
+				    <div class="validator-function">
+						if(guess.replace(/[ ]/g,"")==""){
+							return "";
+						}
+						if(guess.replace(/[ ]/g,"")==R){
+							return true;
+						}
+					</div>
+				</div>
+			</div>
+			<div class="hints">
+				<p>已知<var>names[rel[0]]</var>的魔杖長 <code>\color{#6495ED}{<var>JKLM[rel[0]]</var>}cm</code> ，<var>names[rel[1]]</var>的魔杖長 <code>\color{#FF00AF}{<var>JKLM[rel[1]]</var>}cm</code> 。</p>
+				<p data-if="JKLM[rel[1]] &gt; JKLM[rel[0]]"><code>\color{#FF00AF}{<var>JKLM[rel[1]]</var>}-\color{#6495ED}{<var>JKLM[rel[0]]</var>}=\color{#28AE7B}{?}</code></p>
+				<p data-if="JKLM[rel[0]] &gt; JKLM[rel[1]]"><code>\color{#6495ED}{<var>JKLM[rel[0]]</var>}-\color{#FF00AF}{<var>JKLM[rel[1]]</var>}=\color{#28AE7B}{?}</code></p>
+				<p><var>names[rel[0]]</var>的魔杖比<var>names[rel[1]]</var>的<span class="hint_red"><var>JKLM[rel[0]]&gt;JKLM[rel[1]]?"長":"短"</var></span> <code class="hint_green"><var>R</var></code> <code>cm</code> 。</p>
+			</div>
+		</div>
+		
+		<div id="case3">
+			<div class="vars" data-ensure="J!=K">
+				<var id="names">randFromArray(["小豪","小智","小磊","小澤"])</var>
+				<var id="J,K">[randRange(10,100),randRange(10,100)]</var>
+				<var id="things">randFromArray([["條","玩具蛇","條","寵物蛇"]])</var>
+				<var id="set_keypress">
+				(function(){
+					$('#a1').bind('keypress',function(event){
+						if(event.keyCode == "13"){
+							$('#check-answer-button').click();
+						}
+					});
+				})()
+				</var>
+				<var id="R">abs(J-K)</var>
+			</div>
+			<div class="question">
+				<p><var>names</var>有一<var>things[0]</var>長 <code><var>J</var>\enspace cm</code> 的<var>things[1]</var>和一<var>things[2]</var>長 <code><var>K</var>\enspace cm</code> 的<var>things[3]</var> 。</p>
+				<p class="question"><var>names</var>的<var>things[1]</var>比<var>things[3]</var><span><var>J &gt; K?"長":"短"</var></span>多少？</p>
+				<p><input type="text" style="width:50px;text-align:center" id="a1"> <code>cm</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>將答案填入空格中</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">$('#a1').val()</div>
+				    <div class="validator-function">
+						if(guess.replace(/[ ]/g,"")==""){
+							return "";
+						}
+						if(guess.replace(/[ ]/g,"")==R){
+							return true;
+						}
+					</div>
+				</div>
+			</div>
+			<div class="hints">
+				<p>已知<var>names</var>的<var>things[1]</var>長 <code>\color{#6495ED}{<var>J</var>}cm</code> ，<var>things[3]</var>長 <code>\color{#FF00AF}{<var>K</var>}cm</code> 。</p>
+				<p data-if="K &gt; J"><code>\color{#FF00AF}{<var>K</var>}-\color{#6495ED}{<var>J</var>}=\color{#28AE7B}{?}</code></p>
+				<p data-if="J &gt; K"><code>\color{#6495ED}{<var>J</var>}-\color{#FF00AF}{<var>K</var>}=\color{#28AE7B}{?}</code></p>
+				<p><var>names</var>的<var>things[1]</var>比<var>things[3]</var><span><var>J &gt; K?"長":"短"</var></span> <code class="hint_green"><var>R</var></code> <code>cm</code> 。</p>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>小數位值比較</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+	</style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars">
+                    <var id="data">randFromArray([
+					[123456,98765,5,1,"右邊","1/10",10,1],
+					[185734,36581,8,3,"右邊","1/1000",10000,10],
+					[185734,36581,3,3,"左邊","1000",10,10000],
+					[65482,9615747,4,1,"右邊","1/10",100,10],
+					[26.841,178.365,6,2,"右邊","1/100",1,0.01],
+					[338.159,52.478,5,3,"左邊","1000",0.01,10]
+					])</var>
+                </div>
+                <div class="question">
+                    <p class="problem">
+                        <p>在每一個數中找到數字 <code><var>data[2]</var></code> ：</p>
+                    </p>
+					<table width="80px" style="text-align:right;font-size:15px">
+                        <tr>
+                            <td><code><var>data[0]</var></code></td>
+                        </tr>
+						<tr>
+                            <td><code><var>data[1]</var></code></td>
+                        </tr>
+                    </table>
+					<p><code><var>data[1]</var></code> 中的數字 <code><var>data[2]</var></code> 相當於在 <code><var>data[0]</var></code> 中的數字 <code><var>data[2]</var></code> 的
+					<select id="select_1"><option ></option><option >左邊</option><option>右邊</option></select>
+					第 <input type="text" style="text-align:center;width:20px;" id="aa" /> 位。</p>
+					<p>數字 <code><var>data[2]</var></code> 在 <code><var>data[1]</var></code> 中表示的值是數字 <code><var>data[2]</var></code> 在 <code><var>data[0]</var></code> 中表示的值的
+					<select id="select_2"><option ></option><option >1000</option><option >100</option><option >10</option><option >1/10</option><option >1/100</option><option >1/1000</option></select><span data-if="data[7]&gt;data[6]">倍</span>。</p>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <div class="sol" data-type="custom">
+                        <div class="guess">1</div>
+                        <div class="validator-function">
+						if(document.getElementById("select_1").value=="" || document.getElementById("select_2").value=="" || document.getElementById("aa").value==""){
+							return "";
+						}	
+						if(document.getElementById("select_1").value==data[4] && document.getElementById("select_2").value==data[5] && document.getElementById("aa").value==data[3]){
+							return true;
+						}	
+                        </div>
+                    </div>
+					<p>選擇和填入正確的答案</p>
+                </div>
+				<div class="hints">
+					<p>數字 <code><var>data[2]</var></code> 在 <code><var>data[1]</var></code> 中表示的值是 <code class="hint_blue"><var>data[2]*data[7]</var></code> 。</p>
+					<p>數字 <code><var>data[2]</var></code> 在 <code><var>data[0]</var></code> 中表示的值是 <code class="hint_green"><var>data[2]*data[6]</var></code> 。</p>
+					<p><span data-if="data[6]&lt;data[7]">我們將數字往左邊移一位所表示值是原來的 <code>10</code> 倍</span><span data-if="data[6]&gt;data[7]">我們將數字往右邊移一位所表示值是原來的 <code>\dfrac{1}{10}</code> </span>。</p>
+					<p>如果我們將 <code><var>data[0]</var></code> 中數字 <code><var>data[2]</var></code> 向<var>data[4]</var>移 <code><var>data[3]</var></code> 位，就可以將數字 <code><var>data[2]</var></code> 移到 <code><var>data[1]</var></code> 中數字 <code><var>data[2]</var></code> 所在的位置，
+					所以 <code><var>data[1]</var></code> 中數字 <code><var>data[2]</var></code> 表示的值是 <code><var>data[0]</var></code> 中數字 <code><var>data[2]</var></code> 所表示值的 <span data-if="data[7]&gt;data[6]"><code><span data-if="data[3]==1"><var>data[7]/data[6]</var></span><span data-if="data[3]==2">10 \times 10=<var>data[7]/data[6]</var></span><span data-if="data[3]==3">10 \times 10 \times 10=<var>data[7]/data[6]</var></span></code> 倍
+					</span><span data-if="data[7]&lt;data[6]"><code><span data-if="data[3]==1"><var>mixedFractionFromImproper(data[7]*100,data[6]*100,true,true,false,false)</var></span><span data-if="data[3]==2">\dfrac{1}{10} \times \dfrac{1}{10}=<var>mixedFractionFromImproper(data[7]*100,data[6]*100,true,true,false,false)</var></span><span data-if="data[3]==3">\dfrac{1}{10} \times \dfrac{1}{10} \times \dfrac{1}{10}=<var>mixedFractionFromImproper(data[7]*100,data[6]*100,true,true,false,false)</var></span></code> </span>。</p>
+					<p><code class="hint_blue"><var>data[2]*data[7]</var></code> 是 <code class="hint_green"><var>data[2]*data[6]</var></code> 的 <span data-if="data[7]&gt;data[6]"><code><var>data[7]/data[6]</var></code> 倍</span><span data-if="data[7]&lt;data[6]"><code><var>mixedFractionFromImproper(data[7]*100,data[6]*100,true,true,false,false)</var></code> </span>。</p>
+					<div><p><code><var>data[1]</var></code> 中的數字 <code><var>data[2]</var></code> 相當於在 <code><var>data[0]</var></code> 中的數字 <code><var>data[2]</var></code> 的<span class="hint_pink"><var>data[4]</var></span>第 <code class="hint_pink"><var>data[3]</var></code> 位。</p>
+					<p>數字 <code><var>data[2]</var></code> 在 <code><var>data[1]</var></code> 中表示的值是數字 <code><var>data[2]</var></code> 在 <code><var>data[0]</var></code> 中表示的值的 <span data-if="data[7]&gt;data[6]" class="hint_pink"><code><var>data[7]/data[6]</var></code> 倍</span><span data-if="data[7]&lt;data[6]" class="hint_pink"><code><var>mixedFractionFromImproper(data[7]*100,data[6]*100,true,true,false,false)</var></code> </span>。</p>
+					</div>
+				</div>
+            </div>
+			
+		</div>
+    </div>
+</body>
+</html>
+
+

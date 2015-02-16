@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers word-problems math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>以複名數解決量的文字應用題</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		 #answer_area .sol input[type=text] {
+					width: 50px;
+				}
+	</style>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+        <div id="case1">
+			<div class="vars">					
+				<var id="J">randRange(8,15)</var>
+				<var id="M">randRange(2,5)</var>
+				<var id="N">randRange(3,9)*100</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>一包 <code><var>J</var></code> 公斤的米，吃掉 <code><var>M</var></code> 公斤 <code><var>N</var></code> 公克後，還剩下幾公斤幾公克？</p>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>J-M-1</var></span>公斤<code>\quad</code><span style="padding-right: 5px" class="sol" data-forms="integer"><var>1000-N</var></span>公克</p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<p><code><var>J</var></code> 公斤的米，我們吃掉 <code><var>M</var></code> 公斤 <code><var>N</var></code> 公克後，要算剩下幾公斤幾公克，可以用 <code><var>J</var></code> 公斤減去 <code><var>M</var></code> 公斤 <code><var>N</var></code> 公克。</p>
+				<p>我們知道 <code>1</code> 公斤 <code>=1000</code> 公克。</p>
+				<div>
+					<p><code class="hint_blue">\hphantom{=\enspace}<var>J</var></code> <span class="hint_blue">公斤</span> <code>-<var>M</var></code> 公斤 <code><var>N</var></code> 公克 </p>
+					<p><code>=\color{#6495ED}{<var>J-1</var>}</code> <span class="hint_blue">公斤</span> <code class="hint_blue">1000</code> <span class="hint_blue">公克</span> <code>-<var>M</var></code> 公斤 <code><var>N</var></code> 公克 </p>
+				</div>
+				<div>
+					<p>我們也可以用直式來計算</p>
+					<div class="graphie" id="equation">
+						init({
+							range: [ [ -11, 1], [-3, 1.5] ]
+						});	
+						label([-6,1],"\\small{公斤}","center",{color:"gray"});
+						label([-4,1],"\\small{公克}","center",{color:"gray"});
+						label([-6,-0.2],J,"center");
+						label([-6,-0.8],M,"center");
+						label([-4,-0.8],N,"center");
+						label([-7,-0.8],"-","center");
+						line([-7.5,-1.4],[-3,-1.4]);
+					</div>
+				</div>
+				<div class="graphie" data-update="equation">
+					label([-6,0.4],"\\small{"+(J-1)+"}","center",{color:"red"});
+					label([-4,0.4],"\\small{"+1000+"}","center",{color:"red"});
+					line([-6.5,-0.4],[-5.5,0],{stroke:"red"});
+				</div>
+				<div class="graphie" data-update="equation">
+					label([-6,-2],J-M-1,"center",{color:"#FF00AF"});
+					label([-4,-2],1000-N,"center",{color:"#FF00AF"});
+				</div>
+				<p>剩下 <code class="hint_pink"><var>J-M-1</var></code> 公斤 <code class="hint_pink"><var>1000-N</var></code> 公克。</p>
+			</div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars">					
+				<var id="M">randRange(3,6)</var>
+				<var id="N">randRange(6,9)*100</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>一個水桶可裝 <code><var>M</var></code> 公升 <code><var>N</var></code> 毫升的水，兩個水桶可以裝多少公升多少毫升的水？</p>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>M*2+1</var></span>公升<code>\quad</code><span style="padding-right: 5px" class="sol" data-forms="integer"><var>N*2-1000</var></span>毫升</p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<p><code>1</code> 個水桶可裝 <code><var>M</var></code> 公升 <code><var>N</var></code> 毫升，<code>2</code> 個水桶可裝 <code><var>M</var></code> 公升 <code><var>N</var></code> 毫升 <code>+<var>M</var></code> 公升 <code><var>N</var></code> 毫升。</p>
+				<div>
+					<p><code>\hphantom{=\enspace}<var>M</var></code> 公升 <code><var>N</var></code> 毫升 <code>+\enspace<var>M</var></code> 公升 <code><var>N</var></code> 毫升 </p>
+					<p><code>=<var>2*M</var></code> 公升 <code><var>2*N</var></code> 毫升。</p>
+				</div>
+				<p>我們知道 <code>1</code> 公升 <code>=1000</code> 毫升。</p>
+				<p><code class="hint_blue"><var>2*M</var></code> 公升 <code class="hint_blue"><var>2*N</var></code> 毫升<code>=\color{#FF00AF}{<var>2*M+1</var>}</code> 公升 <code class="hint_pink"><var>2*N-1000</var></code> 毫升。</p>
+				<div>
+					<p>我們也可以用直式來計算</p>
+					<div class="graphie" id="equation2">
+						init({
+							range: [ [ -11, 1], [-3, 1.5] ]
+						});	
+						label([-6,1],"\\small{公升}","center",{color:"gray"});
+						label([-4,1],"\\small{毫升}","center",{color:"gray"});
+						label([-6,0.4],M,"center");
+						label([-4,0.4],N,"center");
+						label([-6,-0.2],M,"center");
+						label([-4,-0.2],N,"center");
+						label([-7,-0.2],"+","center");
+						line([-7.5,-0.8],[-3,-0.8]);
+					</div>
+				</div>
+				<div class="graphie" data-update="equation2">
+					label([-6,-1.4],2*M,"center");
+					label([-4,-1.4],2*N,"center");
+				</div>
+				<div class="graphie" data-update="equation2">
+					line([-6.5,-1.6],[-5.5,-1.2],{stroke:"red"});
+					line([-4.5,-1.6],[-3.5,-1.2],{stroke:"red"});
+					label([-6,-2],2*M+1,"center",{color:"#FF00AF"});
+					label([-4,-2],2*N-1000,"center",{color:"#FF00AF"});
+				</div>
+			</div>
+		</div>
+		
+		<div id="case3">
+			<div class="vars">
+				<var id="J">randRange(2,4)</var>
+				<var id="K">randRange(6,9)*100</var>
+				<var id="M">J+1</var>
+				<var id="N">randRange(1,5)*100</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>小華家到學校的距離為 <code><var>J</var></code> 公里 <code><var>K</var></code> 公尺。小明家到學校的距離為 <code><var>M</var></code> 公里 <code><var>N</var></code> 公尺。請問小明家到學校的距離比小華家到學校的距離遠多少公尺？</p>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>1000+N-K</var></span>公尺</p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<p>我們要算小明家到學校的距離比小華家到學校的距離遠多少公尺，我們就用 <code><var>M</var></code> 公里 <code><var>N</var></code> 公尺 <code>-<var>J</var></code> 公里 <code><var>K</var></code> 公尺。</p>
+				<p>我們知道 <code>1</code> 公里 <code>=1000</code> 公尺。</p>
+				<div>
+					<p><code>\hphantom{=\enspace}<var>M</var></code> 公里 <code><var>N</var></code> 公尺 <code>-\enspace<var>J</var></code> 公里 <code><var>K</var></code> 公尺 </p>
+					<p><code>=(<var>J</var>-<var>J</var>)</code> 公里  <code>(<var>1000+N</var>-<var>K</var>)</code> 公尺 </p>
+					<p><code>=\color{#FF00AF}{<var>1000+N-K</var>}</code> 公尺</p>
+				</div>
+				<div>
+					<p>我們也可以用直式來計算</p>
+					<div class="graphie" id="equation3">
+						init({
+							range: [ [ -11, 1], [-3, 1.5] ]
+						});	
+						label([-6,1],"\\small{公里}","center",{color:"gray"});
+						label([-4,1],"\\small{公尺}","center",{color:"gray"});
+						label([-6,-0.2],M,"center");
+						label([-4,-0.2],N,"center");
+						label([-6,-0.8],J,"center");
+						label([-4,-0.8],K,"center");
+						label([-7,-0.8],"-","center");
+						line([-7.5,-1.4],[-3,-1.4]);
+					</div>
+				</div>
+				<div class="graphie" data-update="equation3">
+					label([-6,0.4],"\\small{"+J+"}","center",{color:"red"});
+					label([-4,0.4],"\\small{"+(1000+N)+"}","center",{color:"red"});
+					line([-6.5,-0.4],[-5.5,0],{stroke:"red"});
+					line([-4.5,-0.4],[-3.5,0],{stroke:"red"});
+				</div>
+				<div class="graphie" data-update="equation3">
+					label([-4,-2],1000+N-K,"center",{color:"#FF00AF"});
+				</div>
+			</div>
+		</div>
+		
+		<div id="case4">
+			<div class="vars">
+				<var id="J">randRange(2,4)</var>
+				<var id="K">randRange(5,9)*100</var>
+				<var id="M">randRange(2,4)*2-1</var>
+				<var id="L">floor((J*1000+K)*M/1000)</var>
+				<var id="ML">(J*1000+K)*M-1000*L</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>一桶牛奶 <code><var>J</var></code> 公升 <code><var>K</var></code> 毫升，<code><var>M</var></code> 桶牛奶共有幾公升幾毫升？</p>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>L</var></span>公升<code>\quad</code><span style="padding-right: 5px" class="sol" data-forms="integer"><var>ML</var></span>毫升</p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<p>一桶牛奶 <code><var>J</var></code> 公升 <code><var>K</var></code> 毫升，現在要算 <code><var>M</var></code> 桶。就是有 <code><var>M</var></code> 個 <code><var>J</var></code> 公升 <code><var>K</var></code> 毫升，我們可以用 <code><var>J</var></code> 公升 <code><var>K</var></code> 毫升 <code>\times<var>M</var></code> 來計算。</p>
+				<div>
+					<p>我們用直式來算算看</p>
+					<div class="graphie" id="equation4">
+						init({
+							range: [ [ -11, 1], [-3, 1.5] ]
+						});	
+						label([-6,1],"\\small{公升}","center",{color:"gray"});
+						label([-4,1],"\\small{毫升}","center",{color:"gray"});
+						label([-6,0.4],J,"center");
+						label([-4,0.4],K,"center");
+						label([-4,-0.2],M,"center");
+						label([-7,-0.2],"\\times","center");
+						line([-7.5,-0.8],[-3,-0.8]);
+					</div>
+				</div>
+				<div class="graphie" data-update="equation4">
+					label([-6,-1.4],J*M,"center");
+					label([-4,-1.4],K*M,"center");
+				</div>
+				<div class="graphie" data-update="equation4">
+					line([-6.5,-1.6],[-5.5,-1.2],{stroke:"red"});
+					line([-4.5,-1.6],[-3.5,-1.2],{stroke:"red"});
+					label([-6,-2],L,"center",{color:"#FF00AF"});
+					label([-4,-2],ML,"center",{color:"#FF00AF"});
+				</div>
+				<p>我們知道 <code>1</code> 公升 <code>=1000</code> 毫升。</p>
+				<div>
+					<p><code>\hphantom{=\enspace}<var>J</var></code> 公升 <code><var>K</var></code> 毫升 <code>\times\enspace<var>M</var></code></p>
+					<p><code>=<var>J*M</var></code> 公升 <code><var>K*M</var></code> 毫升</p>
+					<p><code>=\color{#FF00AF}{<var>L</var>}</code> 公升 <code class="hint_pink"><var>ML</var></code> 毫升。</p>
+				</div>
+			</div>
+		</div>
+		
+		<div id="case5">
+			<div class="vars">					
+				<var id="J">randRange(50,99)</var>
+				<var id="M">randRange(20,40)</var>
+				<var id="N">randRange(10,19)*50</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>小明參加自行車公路賽，全程 <code><var>J</var></code> 公里。他已經騎完了 <code><var>M</var></code> 公里 <code><var>N</var></code> 公尺，請問他離終點還有多遠？</p>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>J-M-1</var></span>公里<code>\quad</code><span style="padding-right: 5px" class="sol" data-forms="integer"><var>1000-N</var></span>公尺</p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<p>全程 <code><var>J</var></code> 公里，已經騎完 <code><var>M</var></code> 公里 <code><var>N</var></code> 公尺。要計算剩下的路程，我們可以用 <code><var>J</var></code> 公里 <code>-<var>M</var></code> 公里 <code><var>N</var></code> 公尺。</p>
+				<p>我們知道 <code>1</code> 公里 <code>=1000</code> 公尺。</p>
+				<div>
+					<p><code class="hint_blue">\hphantom{=\enspace}<var>J</var></code> <span class="hint_blue">公里</span> <code>-<var>M</var></code> 公里 <code><var>N</var></code> 公尺 </p>
+					<p><code>=\color{#6495ED}{<var>J-1</var>}</code> <span class="hint_blue">公里</span> <code class="hint_blue">1000</code> <span class="hint_blue">公尺</span> <code>-<var>M</var></code> 公里 <code><var>N</var></code> 公尺。</p>
+				</div>
+				<div>
+					<p>我們也可以用直式來計算</p>
+					<div class="graphie" id="equation">
+						init({
+							range: [ [ -11, 1], [-3, 1.5] ]
+						});	
+						label([-6,1],"\\small{公里}","center",{color:"gray"});
+						label([-4,1],"\\small{公尺}","center",{color:"gray"});
+						label([-6,-0.2],J,"center");
+						label([-6,-0.8],M,"center");
+						label([-4,-0.8],N,"center");
+						label([-7,-0.8],"-","center");
+						line([-7.5,-1.4],[-3,-1.4]);
+					</div>
+				</div>
+				<div class="graphie" data-update="equation">
+					label([-6,0.4],"\\small{"+(J-1)+"}","center",{color:"red"});
+					label([-4,0.4],"\\small{"+1000+"}","center",{color:"red"});
+					line([-6.5,-0.4],[-5.5,0],{stroke:"red"});
+				</div>
+				<div class="graphie" data-update="equation">
+					label([-6,-2],J-M-1,"center",{color:"#FF00AF"});
+					label([-4,-2],1000-N,"center",{color:"#FF00AF"});
+				</div>
+				<p>離終點還有 <code class="hint_pink"><var>J-M-1</var></code> 公里 <code class="hint_pink"><var>1000-N</var></code> 公尺。</p>
+			</div>
+		</div>
+		
+		<div id="case6">
+			<div class="vars">
+				<var id="J">1</var>
+				<var id="K">randRange(20,199)*5</var>
+				<var id="M">randRange(4,8)</var>
+				<var id="L">floor((J*1000+K)*M/1000)</var>
+				<var id="ML">(J*1000+K)*M-1000*L</var>
+				<var id="names">randFromArray(["西瓜","榴蓮","木瓜","香瓜"])</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>一顆<var>names</var>重 <code><var>J</var></code> 公斤 <code><var>K</var></code> 公克，<code><var>M</var></code> 顆<var>names</var>重多少公斤多少公克？</p>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>L</var></span>公斤<code>\quad</code><span style="padding-right: 5px" class="sol" data-forms="integer"><var>ML</var></span>公克</p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<p>一顆<var>names</var>重 <code>1</code> 公斤 <code><var>K</var></code> 公克，<code><var>M</var></code> 顆<var>names</var>代表有 <code><var>M</var></code> 個 <code>1</code> 公斤 <code><var>K</var></code> 公克。我們可以用乘法來計算。</p>
+				<p><code><var>J</var></code> 公斤 <code><var>K</var></code> 公克 <code>\times<var>M</var>=？</code></p>
+				<div>
+					<p>我們用直式來算算看</p>
+					<div class="graphie" id="equation4">
+						init({
+							range: [ [ -11, 1], [-3, 1.5] ]
+						});	
+						label([-6,1],"\\small{公斤}","center",{color:"gray"});
+						label([-4,1],"\\small{公克}","center",{color:"gray"});
+						label([-6,0.4],J,"center");
+						label([-4,0.4],K,"center");
+						label([-4,-0.2],M,"center");
+						label([-7,-0.2],"\\times","center");
+						line([-7.5,-0.8],[-3,-0.8]);
+					</div>
+				</div>
+				<div class="graphie" data-update="equation4">
+					label([-6,-1.4],J*M,"center");
+					label([-4,-1.4],K*M,"center");
+				</div>
+				<div class="graphie" data-update="equation4">
+					line([-6.5,-1.6],[-5.5,-1.2],{stroke:"red"});
+					line([-4.5,-1.6],[-3.5,-1.2],{stroke:"red"});
+					label([-6,-2],L,"center",{color:"#FF00AF"});
+					label([-4,-2],ML,"center",{color:"#FF00AF"});
+				</div>
+				<p>我們知道 <code>1</code> 公斤 <code>=1000</code> 公克。</p>
+				<p><code><var>M</var></code> 顆<var>names</var>共重 <code><var>M</var></code> 公斤 <code><var>M*K</var></code> 公克 <code>=</code> <code class="hint_pink"><var>L</var></code> 公斤 <code class="hint_pink"><var>ML</var></code> 公克。</p>
+			</div>
+		</div>
+		
+	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>有進位的乘法</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="SMALL_FACTOR">randRange( 2,9 )</var>
+            <var id="BIG_FACTOR">randRange( 100, 9999 )</var>
+			<var id="d">randRange( 1, 2 )</var>
+			
+			<var id="SMALL_FACTOR_DIGITS">padDigitsToNum( digits( SMALL_FACTOR ),  0.1 )</var>
+            <var id="BIG_FACTOR_DIGITS">padDigitsToNum( digits( BIG_FACTOR ), 0.1 )</var>
+        </div>
+
+        <div class="problems">
+            <div>
+				 <p data-if="d==1"><code><var>SMALL_FACTOR</var> \times <var>BIG_FACTOR</var> = ？</code></p>
+				 <p data-if="d==2"><code><var>BIG_FACTOR</var> \times <var>SMALL_FACTOR</var> = ？</code></p>                
+                <div class="solution" data-forms="integer"><var>SMALL_FACTOR * BIG_FACTOR</var></div>
+            </div>
+        </div>
+        <div class="hints">
+			<div class="graphie" id="numbers">
+                   graph.multiplier = new Multiplier( BIG_FACTOR, SMALL_FACTOR, BIG_FACTOR_DIGITS, SMALL_FACTOR_DIGITS);
+                   graph.multiplier.show();                                     
+            </div>
+            <div class="graphie" data-update="numbers" data-each="Array( new Multiplier( BIG_FACTOR, SMALL_FACTOR, BIG_FACTOR_DIGITS, SMALL_FACTOR_DIGITS ).getNumHints()) as dummy">
+                graph.multiplier.showHint();		
+            </div>
+        </div>
+	
+
+    </div>
+</body>
+</html>

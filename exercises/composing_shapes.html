@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>組合圖形</title>
+    <script src="../khan-exercise.js"></script>
+	<script language="javascript">
+		function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+		
+		function turn(arr, angle) {
+			for ( var i = 0 ; i < arr.length ; i++ ) {
+				var x = Math.cos(angle/180*Math.PI)*arr[i][0]-Math.sin(angle/180*Math.PI)*arr[i][1];
+				var y = Math.cos(angle/180*Math.PI)*arr[i][1]+Math.sin(angle/180*Math.PI)*arr[i][0];
+				arr[i][0] = x;
+				arr[i][1] = y;
+			}
+			return arr;
+		}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="composing-shapes">
+		<div class="vars" data-ensure="sum &gt;= 2 && sum &lt;= 4">
+			<var id="composing">randRange(0,4)</var>
+			<var id="J,K">[["正方形","三角形"],["大三角形","小三角形"],["長方形","正方形"],["正方形","長方形"],["長方形","三角形"]][composing]</var>
+			<var id="rands_arr">[randRange(0,1),randRange(0,1),randRange(0,1),randRange(0,1),randRange(0,1)]</var>
+			<var id="turn_types">[randRange(0,1),randRange(0,1),randRange(0,1),randRange(0,1),randRange(0,1)]</var>
+			<var id="graphie_types">randRangeUnique(1,5,4)</var>
+			<var id="set_graphies">
+			(function(){
+				var arr = new Array();
+				var index = 0;
+				for(var i = 0;i&lt;rands_arr.length;i++){
+					if(rands_arr[i] == 1){
+						arr[i] = 5;
+					}else{
+						arr[i] = graphie_types[index];
+						index++;
+					}
+				}
+				return arr;
+			})()</var>
+			<var id="sum">
+			(function(){
+				var s = 0;
+				for(var k = 0;k&lt;rands_arr.length;k++){
+					s+=rands_arr[k];
+					if(rands_arr[k]==1){
+						$('#c'+(k+1)).val('true');
+					}else{
+						$('#c'+(k+1)).val('false');
+					}
+				}
+				return s;
+			})()</var>
+			<var id="cols_arr">randRangeUnique(1,6,2)</var>
+			<var id="colours1,colours2">[[ORANGE,"#28AE7B","red","#6495ED","gray"][cols_arr[0]-1],[ORANGE,"#28AE7B","red","#6495ED","gray"][cols_arr[1]-1]]</var>
+			<var id="rand_ang">randRange(0,90)</var>
+			<var id="rand_ang2">randRange(30,150)</var>
+			<var id="points">
+			(function(){
+				switch(composing){
+					case 1: return [polar(1,rand_ang),polar(1,rand_ang+180),polar(1,rand_ang+rand_ang2)];
+					case 4: return [polar(1,rand_ang),polar(1,rand_ang+180),polar(1,rand_ang+rand_ang2)];
+					default: return [polar(1,rand_ang),polar(1,rand_ang+90),polar(1,rand_ang+180),polar(1,rand_ang+270)]; 
+				}
+			})()</var>
+			<var id="seq">randRange(1,4)</var>
+			<var id="height_length">
+			(function(){
+				switch(composing){
+					case 0: return [sqrt(2),sqrt(2)];
+					case 2: return [sqrt(2),sqrt(2)];
+					case 3: return [sqrt(2)/2,sqrt(2)];
+					default: var h = 2*Math.sin(rand_ang2/2/180*Math.PI);return sortNumbers([h,sqrt(4-h*h)]);
+				}
+			})()</var>
+			<var id="turn_angs">[randRange(0,90),randRange(0,90),randRange(0,90),randRange(0,90),randRange(0,90)]</var>
+		</div>
+		<div class="question">
+			<p class="question">以下哪些<span><var>J</var></span>是由題目所提供的兩個不同顏色的<span><var>K</var></span>組合而成？</p>
+			<table>
+			<tr>
+			<td>
+			<div class="graphie" id="composing_que_1">
+				init({
+					range: [ [-1, 1], [-1, 1] ],scale: 40
+				});
+				switch(composing){
+					case 0: path([points[seq-1],points[seq%4],points[(seq+1)%4]],{fill:colours1,stroke:colours1});break;
+					case 3: path([points[0],[(points[0][0]+points[1][0])/2,(points[0][1]+points[1][1])/2],[(points[2][0]+points[3][0])/2,(points[2][1]+points[3][1])/2],points[3]],{fill:colours1,stroke:colours1});break;
+					default: path(points,{fill:colours1,stroke:colours1});break;
+				}
+			</div>
+			</td><td>
+			<div class="graphie" id="composing_que_2">
+				init({
+					range: [ [-1, 1], [-1, 1] ],scale: 40
+				});
+				var ang = randRange(0,360);
+				switch(composing){
+					case 0: path(turn([points[seq-1],points[seq%4],points[(seq+1)%4]],ang),{fill:colours2,stroke:colours2});break;
+					case 3: path(turn([points[0],[(points[0][0]+points[1][0])/2,(points[0][1]+points[1][1])/2],[(points[2][0]+points[3][0])/2,(points[2][1]+points[3][1])/2],points[3]],ang),{fill:colours2,stroke:colours2});break;
+					default: path(turn(points,ang),{fill:colours2,stroke:colours2});break;
+				}
+			</div>
+			</td></tr></table>
+			<p>選擇所有正確的答案</p>
+			<table>
+				<tr>
+				<td style="vertical-align:middle">
+					<input type="checkbox" name="checkbox" id="c1">
+				</td>
+				<td onclick="if($('#c1').attr('checked')){$('#c1').removeAttr('checked')}else{$('#c1').attr('checked','checked')}">
+				<div class="graphie" id="ans_1">
+					init({
+						range: [ [-2, 2], [-2, 2] ],scale: 40
+					});
+					switch(composing){
+						case 0:
+							switch(set_graphies[0]){
+								case 5:
+									if(turn_types[0]==1){
+										path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+								case 1:
+									if(turn_types[0]==1){
+										path(turn([[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+								case 2:
+									if(turn_types[0]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2],[0,sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[0,-sqrt(2)/2],[0,sqrt(2)/2],[sqrt(2),sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2],[0,sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[0,-sqrt(2)/2],[0,sqrt(2)/2],[sqrt(2),sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+								default:
+									if(turn_types[0]==1){
+										path(turn([[-sqrt(2),0],[0,0],[0,-sqrt(2)]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[0,sqrt(2)],[0,0],[sqrt(2),0]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),0],[0,0],[0,-sqrt(2)]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[0,sqrt(2)],[0,0],[sqrt(2),0]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+							}
+							break;
+						case 1:
+							switch(set_graphies[0]){
+								case 5:
+									if(turn_types[0]==1){
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[0]==1){
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 2:
+									if(turn_types[0]==1){
+										path(turn([[-height_length[1],0],[0,0],[0,height_length[0]]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],0],[0,0],[0,-height_length[0]]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],0],[0,0],[0,height_length[0]]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],0],[0,0],[0,-height_length[0]]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[0]==1){
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+						case 2:
+							switch(set_graphies[0]){
+								case 5:
+									if(turn_types[0]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[0]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]+90),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]+45),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]+90),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]+45),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[0]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/4],[-sqrt(2),sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),sqrt(2)/4],[sqrt(2),-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/4],[-sqrt(2),sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),sqrt(2)/4],[sqrt(2),-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+						case 3:
+							switch(set_graphies[0]){
+								case 2:
+									if(turn_types[0]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[0]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 5:
+									if(turn_types[0]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[0]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+						case 4:
+							switch(set_graphies[0]){
+								case 2:
+									if(turn_types[0]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[0]==1){
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 5:
+									if(turn_types[0]==1){
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[0]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+					}
+				</div>
+				</td>
+				</tr>
+				<tr>
+				<td style="vertical-align:middle">
+					<input type="checkbox" name="checkbox" id="c2">
+				</td>
+				<td onclick="if($('#c2').attr('checked')){$('#c2').removeAttr('checked')}else{$('#c2').attr('checked','checked')}">
+				<div class="graphie" id="ans_2">
+					init({
+						range: [ [-2, 2], [-2, 2] ],scale: 40
+					});
+					switch(composing){
+						case 0:
+							switch(set_graphies[1]){
+								case 5:
+									if(turn_types[1]==1){
+										path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+								case 1:
+									if(turn_types[1]==1){
+										path(turn([[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+								case 2:
+									if(turn_types[1]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2],[0,sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[0,-sqrt(2)/2],[0,sqrt(2)/2],[sqrt(2),sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2],[0,sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[0,-sqrt(2)/2],[0,sqrt(2)/2],[sqrt(2),sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+								default:
+									if(turn_types[1]==1){
+										path(turn([[-sqrt(2),0],[0,0],[0,-sqrt(2)]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[0,sqrt(2)],[0,0],[sqrt(2),0]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),0],[0,0],[0,-sqrt(2)]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[0,sqrt(2)],[0,0],[sqrt(2),0]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+							}
+							break;
+						case 1:
+							switch(set_graphies[1]){
+								case 5:
+									if(turn_types[1]==1){
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[1]==1){
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 2:
+									if(turn_types[1]==1){
+										path(turn([[-height_length[1],0],[0,0],[0,height_length[0]]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],0],[0,0],[0,-height_length[0]]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],0],[0,0],[0,height_length[0]]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],0],[0,0],[0,-height_length[0]]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[1]==1){
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+						case 2:
+							switch(set_graphies[1]){
+								case 5:
+									if(turn_types[1]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[1]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]+90),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]+45),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]+90),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]+45),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[1]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/4],[-sqrt(2),sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),sqrt(2)/4],[sqrt(2),-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/4],[-sqrt(2),sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),sqrt(2)/4],[sqrt(2),-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+						case 3:
+							switch(set_graphies[1]){
+								case 2:
+									if(turn_types[1]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[1]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 5:
+									if(turn_types[1]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[1]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+						case 4:
+							switch(set_graphies[1]){
+								case 2:
+									if(turn_types[1]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[1]==1){
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 5:
+									if(turn_types[1]==1){
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[1]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+					}
+				</div>
+				</td>
+				</tr>
+				<tr>
+				<td style="vertical-align:middle">
+					<input type="checkbox" name="checkbox" id="c3">
+				</td>
+				<td onclick="if($('#c3').attr('checked')){$('#c3').removeAttr('checked')}else{$('#c3').attr('checked','checked')}">
+				<div class="graphie" id="ans_3">
+					init({
+						range: [ [-2, 2], [-2, 2] ],scale: 40
+					});
+					switch(composing){
+						case 0:
+							switch(set_graphies[2]){
+								case 5:
+									if(turn_types[2]==1){
+										path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+								case 1:
+									if(turn_types[2]==1){
+										path(turn([[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+								case 2:
+									if(turn_types[2]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2],[0,sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[0,-sqrt(2)/2],[0,sqrt(2)/2],[sqrt(2),sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2],[0,sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[0,-sqrt(2)/2],[0,sqrt(2)/2],[sqrt(2),sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+								default:
+									if(turn_types[2]==1){
+										path(turn([[-sqrt(2),0],[0,0],[0,-sqrt(2)]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[0,sqrt(2)],[0,0],[sqrt(2),0]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),0],[0,0],[0,-sqrt(2)]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[0,sqrt(2)],[0,0],[sqrt(2),0]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+							}
+							break;
+						case 1:
+							switch(set_graphies[2]){
+								case 5:
+									if(turn_types[2]==1){
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[2]==1){
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 2:
+									if(turn_types[2]==1){
+										path(turn([[-height_length[1],0],[0,0],[0,height_length[0]]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],0],[0,0],[0,-height_length[0]]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],0],[0,0],[0,height_length[0]]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],0],[0,0],[0,-height_length[0]]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[2]==1){
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+						case 2:
+							switch(set_graphies[2]){
+								case 5:
+									if(turn_types[2]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[2]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]+90),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]+45),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]+90),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]+45),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[2]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/4],[-sqrt(2),sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),sqrt(2)/4],[sqrt(2),-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/4],[-sqrt(2),sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),sqrt(2)/4],[sqrt(2),-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+						case 3:
+							switch(set_graphies[2]){
+								case 2:
+									if(turn_types[2]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[2]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 5:
+									if(turn_types[2]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[2]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+						case 4:
+							switch(set_graphies[2]){
+								case 2:
+									if(turn_types[2]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[2]==1){
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 5:
+									if(turn_types[2]==1){
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[2]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+					}
+				</div>
+				</td>
+				</tr>
+				<tr>
+				<td style="vertical-align:middle">
+					<input type="checkbox" name="checkbox" id="c4">
+				</td>
+				<td onclick="if($('#c4').attr('checked')){$('#c4').removeAttr('checked')}else{$('#c4').attr('checked','checked')}">
+				<div class="graphie" id="ans_4">
+					init({
+						range: [ [-2, 2], [-2, 2] ],scale: 40
+					});
+					switch(composing){
+						case 0:
+							switch(set_graphies[3]){
+								case 5:
+									if(turn_types[3]==1){
+										path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+								case 1:
+									if(turn_types[3]==1){
+										path(turn([[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+								case 2:
+									if(turn_types[3]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2],[0,sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[0,-sqrt(2)/2],[0,sqrt(2)/2],[sqrt(2),sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2],[0,sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[0,-sqrt(2)/2],[0,sqrt(2)/2],[sqrt(2),sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+								default:
+									if(turn_types[3]==1){
+										path(turn([[-sqrt(2),0],[0,0],[0,-sqrt(2)]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[0,sqrt(2)],[0,0],[sqrt(2),0]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),0],[0,0],[0,-sqrt(2)]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[0,sqrt(2)],[0,0],[sqrt(2),0]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+							}
+							break;
+						case 1:
+							switch(set_graphies[3]){
+								case 5:
+									if(turn_types[3]==1){
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[3]==1){
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 2:
+									if(turn_types[3]==1){
+										path(turn([[-height_length[1],0],[0,0],[0,height_length[0]]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],0],[0,0],[0,-height_length[0]]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],0],[0,0],[0,height_length[0]]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],0],[0,0],[0,-height_length[0]]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[3]==1){
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+						case 2:
+							switch(set_graphies[3]){
+								case 5:
+									if(turn_types[3]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[3]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]+90),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]+45),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]+90),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]+45),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[3]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/4],[-sqrt(2),sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),sqrt(2)/4],[sqrt(2),-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/4],[-sqrt(2),sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),sqrt(2)/4],[sqrt(2),-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+						case 3:
+							switch(set_graphies[3]){
+								case 2:
+									if(turn_types[3]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[3]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 5:
+									if(turn_types[3]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[3]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+						case 4:
+							switch(set_graphies[3]){
+								case 2:
+									if(turn_types[3]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[3]==1){
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 5:
+									if(turn_types[3]==1){
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[3]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+					}
+				</div>
+				</td>
+				</tr>
+				<tr>
+				<td style="vertical-align:middle">
+					<input type="checkbox" name="checkbox" id="c5">
+				</td>
+				<td onclick="if($('#c5').attr('checked')){$('#c5').removeAttr('checked')}else{$('#c5').attr('checked','checked')}">
+				<div class="graphie" id="ans_5">
+					init({
+						range: [ [-2, 2], [-2, 2] ],scale: 40
+					});
+					switch(composing){
+						case 0:
+							switch(set_graphies[4]){
+								case 5:
+									if(turn_types[4]==1){
+										path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+								case 1:
+									if(turn_types[4]==1){
+										path(turn([[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+								case 2:
+									if(turn_types[4]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2],[0,sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[0,-sqrt(2)/2],[0,sqrt(2)/2],[sqrt(2),sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2],[0,sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[0,-sqrt(2)/2],[0,sqrt(2)/2],[sqrt(2),sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+								default:
+									if(turn_types[4]==1){
+										path(turn([[-sqrt(2),0],[0,0],[0,-sqrt(2)]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[0,sqrt(2)],[0,0],[sqrt(2),0]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),0],[0,0],[0,-sqrt(2)]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[0,sqrt(2)],[0,0],[sqrt(2),0]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+									break;
+							}
+							break;
+						case 1:
+							switch(set_graphies[4]){
+								case 5:
+									if(turn_types[4]==1){
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[4]==1){
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 2:
+									if(turn_types[4]==1){
+										path(turn([[-height_length[1],0],[0,0],[0,height_length[0]]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],0],[0,0],[0,-height_length[0]]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],0],[0,0],[0,height_length[0]]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],0],[0,0],[0,-height_length[0]]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[4]==1){
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+						case 2:
+							switch(set_graphies[4]){
+								case 5:
+									if(turn_types[4]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[4]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]+90),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]+45),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]+90),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]+45),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[4]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/4],[-sqrt(2),sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),sqrt(2)/4],[sqrt(2),-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2),-sqrt(2)/4],[-sqrt(2),sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2),sqrt(2)/4],[sqrt(2),-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+						case 3:
+							switch(set_graphies[4]){
+								case 2:
+									if(turn_types[4]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[4]==1){
+										path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 5:
+									if(turn_types[4]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[4]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+						case 4:
+							switch(set_graphies[4]){
+								case 2:
+									if(turn_types[4]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/4],[-sqrt(2)/2,sqrt(2)*3/4],[0,sqrt(2)*3/4],[0,-sqrt(2)/4]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[sqrt(2)/2,sqrt(2)/4],[sqrt(2)/2,-sqrt(2)*3/4],[0,-sqrt(2)*3/4],[0,sqrt(2)/4]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 1:
+									if(turn_types[4]==1){
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								case 5:
+									if(turn_types[4]==1){
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+								default:
+									if(turn_types[4]==1){
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										break;
+									}else{
+										path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+										path(turn([[0,0],[sqrt(2),0],[sqrt(2),-sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+										break;
+									}
+								break;
+							}
+							break;
+					}
+				</div>
+				</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="solution" data-type="multiple">
+			<p>選擇所有正確的答案</p>
+			<div class="sol" data-type="custom">
+				<div class="guess">
+					(function(){
+						var chk_value =[];    
+						$('input[name="checkbox"]:checked').each(function(){    
+							chk_value.push($(this).val());    
+						});
+						return chk_value;
+					})()
+				</div>
+				<div class="validator-function">
+					if(guess.length==0){
+						return "";
+					}
+					if(guess.length!=sum){
+						return false;
+					}
+					var trueAns = 0;
+					for(var i = 0;i&lt;guess.length;i++){
+						if(guess[i]=='true'){
+							trueAns++;
+						}
+					}
+					if(trueAns==sum){
+						return true;
+					}
+				</div>
+			</div>
+		</div>
+				
+		<div class="hints">
+			<div>
+				<p>以下這些<span><var>J</var></span>是由題目所提供的兩個不同顏色的<span><var>K</var></span>組合而成 :</p>
+				<table>
+				<tr data-if="set_graphies[0]==5"><td><div class="graphie" id="hints_graphie_1">
+					init({
+						range: [ [-2, 2], [-2, 2] ],scale: 40
+					});
+					switch(composing){
+						case 0:
+							if(turn_types[0]==1){
+								path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[0]),{fill:colours1,stroke:colours1});
+								path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[0]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[0]),{fill:colours2,stroke:colours2});
+								path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[0]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 1:
+							if(turn_types[0]==1){
+								path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+								path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+								path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 2:
+							if(turn_types[0]==1){
+								path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+								path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+								path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 3:
+							if(turn_types[0]==1){
+								path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+								path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+								path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 4:
+							if(turn_types[0]==1){
+								path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+								path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[0]),{fill:colours2,stroke:colours2});
+								path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[0]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+					}
+				</div></td></tr>
+				<tr data-if="set_graphies[1]==5"><td><div class="graphie" id="hints_graphie_2">
+					init({
+						range: [ [-2, 2], [-2, 2] ],scale: 40
+					});
+					switch(composing){
+						case 0:
+							if(turn_types[0]==1){
+								path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[1]),{fill:colours1,stroke:colours1});
+								path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[1]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[1]),{fill:colours2,stroke:colours2});
+								path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[1]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 1:
+							if(turn_types[0]==1){
+								path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+								path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+								path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 2:
+							if(turn_types[0]==1){
+								path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+								path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+								path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 3:
+							if(turn_types[0]==1){
+								path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+								path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+								path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 4:
+							if(turn_types[0]==1){
+								path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+								path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[1]),{fill:colours2,stroke:colours2});
+								path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[1]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+					}
+				</div></td></tr>
+				<tr data-if="set_graphies[2]==5"><td><div class="graphie" id="hints_graphie_3">
+					init({
+						range: [ [-2, 2], [-2, 2] ],scale: 40
+					});
+					switch(composing){
+						case 0:
+							if(turn_types[0]==1){
+								path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[2]),{fill:colours1,stroke:colours1});
+								path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[2]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[2]),{fill:colours2,stroke:colours2});
+								path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[2]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 1:
+							if(turn_types[0]==1){
+								path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+								path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+								path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 2:
+							if(turn_types[0]==1){
+								path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+								path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+								path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 3:
+							if(turn_types[0]==1){
+								path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+								path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+								path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 4:
+							if(turn_types[0]==1){
+								path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+								path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[2]),{fill:colours2,stroke:colours2});
+								path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[2]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+					}
+				</div></td></tr>
+				<tr data-if="set_graphies[3]==5"><td><div class="graphie" id="hints_graphie_4">
+					init({
+						range: [ [-2, 2], [-2, 2] ],scale: 40
+					});
+					switch(composing){
+						case 0:
+							if(turn_types[0]==1){
+								path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[3]),{fill:colours1,stroke:colours1});
+								path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[3]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[3]),{fill:colours2,stroke:colours2});
+								path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[3]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 1:
+							if(turn_types[0]==1){
+								path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+								path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+								path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 2:
+							if(turn_types[0]==1){
+								path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+								path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+								path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 3:
+							if(turn_types[0]==1){
+								path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+								path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+								path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 4:
+							if(turn_types[0]==1){
+								path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+								path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[3]),{fill:colours2,stroke:colours2});
+								path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[3]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+					}
+				</div></td></tr>
+				<tr data-if="set_graphies[4]==5"><td><div class="graphie" id="hints_graphie_5">
+					init({
+						range: [ [-2, 2], [-2, 2] ],scale: 40
+					});
+					switch(composing){
+						case 0:
+							if(turn_types[0]==1){
+								path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[4]),{fill:colours1,stroke:colours1});
+								path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[4]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([polar(1,0),polar(1,90),polar(1,180)],turn_angs[4]),{fill:colours2,stroke:colours2});
+								path(turn([polar(1,180),polar(1,270),polar(1,0)],turn_angs[4]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 1:
+							if(turn_types[0]==1){
+								path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+								path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+								path(turn([[height_length[1],-height_length[0]/2],[0,-height_length[0]/2],[0,height_length[0]/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 2:
+							if(turn_types[0]==1){
+								path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+								path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-sqrt(2),-sqrt(2)/2],[-sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+								path(turn([[sqrt(2),-sqrt(2)/2],[sqrt(2),sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 3:
+							if(turn_types[0]==1){
+								path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+								path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-sqrt(2)/2,-sqrt(2)/2],[-sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+								path(turn([[sqrt(2)/2,-sqrt(2)/2],[sqrt(2)/2,sqrt(2)/2],[0,sqrt(2)/2],[0,-sqrt(2)/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+						case 4:
+							if(turn_types[0]==1){
+								path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+								path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+								break;
+							}else{
+								path(turn([[-height_length[1]/2,-height_length[0]/2],[height_length[1]/2,-height_length[0]/2],[height_length[1]/2,height_length[0]/2]],turn_angs[4]),{fill:colours2,stroke:colours2});
+								path(turn([[-height_length[1]/2,height_length[0]/2],[height_length[1]/2,height_length[0]/2],[-height_length[1]/2,-height_length[0]/2]],turn_angs[4]),{fill:colours1,stroke:colours1});
+								break;
+							}
+						break;
+					}
+				</div></td></tr>
+			</div>
+		</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

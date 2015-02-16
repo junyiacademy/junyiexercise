@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers word-problems math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>秤秤看、比比看</title>
+    <script src="../khan-exercise.js"></script>	
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+			<div class="vars">				
+				<var id="Gapple">randRange(4,10)</var>
+				<var id="Rapple">(function(){
+					if(Gapple==4){return Gapple+1;}
+					if(Gapple==10){return Gapple-1;}
+					if(Gapple!=10&&Gapple!=4){return Gapple-randFromArray([-1,1]);}
+					})()</var>
+				<var id="arr">randRange(1,10)*200</var>
+				<var id="right">(function(){
+					if(Gapple&lt;Rapple){return ["青蘋果","紅蘋果"];}
+					if(Rapple&lt;Gapple){return ["紅蘋果","青蘋果"];}
+					})()</var>				
+            </div>		
+		
+			<div class="question">
+				<div class="problem">
+					<p>兩邊的秤上面裝滿了玩具蘋果，左邊的秤上面，每一顆青蘋果的重量都是一樣的，右邊的秤上面，每一顆紅蘋果的重量也都是一樣的，請問一顆紅蘋果比較重，還是一顆青蘋果比較重？</p>
+					<div class="graphie" id="ques">
+						init({ range: [[-5.5, 6], [-3, 5]], scale: 45});
+						ellipse([-2.5,3.4],[2.5,1],{fill:"#CAFFFF"});
+						ellipse([3.2,3.4],[2.5,1],{fill:"#CAFFFF"});
+						var point=[[-1,3],[-1.7,3],[-2.4,3],[-3.1,3],[-3.8,3],[-2.6,3.9],[-1.9,3.9],[-3.3,3.9],[-1.2,3.9],[-4,3.9]];
+						var point_1=[[1.8,3],[2.5,3],[3.2,3],[3.9,3],[4.6,3],[3.1,3.9],[3.8,3.9],[2.4,3.9],[4.5,3.9],[1.7,3.9]];
+						for(var i=0;i&lt;Gapple;i++)
+						{
+							circle(point[i],0.3,{stroke:" #90EE90",fill:"#90EE90"});
+							arc([point[i][0]+0.3,point[i][1]+0.3],0.3,140,200,{stroke:" green"});
+					
+							arc([point[i][0]+0.15,point[i][1]+0.1],0.15,90,180,{stroke:" green"});
+							arc([point[i][0]-0.15,point[i][1]+0.1],0.15,0,90,{stroke:" green"});
+						}
+						for(var i=0;i&lt;Rapple;i++)
+						{
+							circle(point_1[i],0.3,{stroke:" #FF8888",fill:"#FF8888"});
+							arc([point_1[i][0]+0.3,point_1[i][1]+0.3],0.3,140,200,{stroke:" green"});
+					
+							arc([point_1[i][0]+0.15,point_1[i][1]+0.1],0.15,90,180,{stroke:" green"});
+							arc([point_1[i][0]-0.15,point_1[i][1]+0.1],0.15,0,90,{stroke:" green"});
+						}
+						
+						line([-4,2],[-4,2.6]);
+						line([-1.4,2],[-1.4,2.55]);
+						line([1.9,2],[1.9,2.55]);
+						line([4.5,2],[4.5,2.55]);
+						
+						path([[5.2,2],[1.2,2],[1.2,-2],[5.2,-2],[5.2,2]]);
+						path([[-0.7,2],[-4.7,2],[-4.7,-2],[-0.7,-2],[-0.7,2]]);
+											
+						for(var j=0;j&lt;2;j++){
+							var r=-2.7;
+							if(j==1){r=3.2;}
+							circle([r,0],0.3,{stroke:" green",fill:"green"});
+							circle([r,0],2,{stroke:" black"});
+						 for (var i = 0; i &lt; 31; i++) {
+						
+							var x = 2 *Math.sin(2 * Math.PI * i / 30);
+							var y = 2*Math.cos(2 * Math.PI * i / 30);						
+							var outerPoint = [x+r, y];
+							var innerPoint = [0.8*x+r, 0.8* y];
+							line(outerPoint, innerPoint);
+							if(i!=30&&i!=10&&i!=20&&i%2==0){
+							label([0.7 * 2 * Math.sin(2 * Math.PI * i / 30)+r, 0.7 * 2 * Math.cos(2 * Math.PI * i / 30)], "\\tiny{"+100*i+"}");}
+							if(i==10||i==20){
+							label([0.7 * 2 * Math.sin(2 * Math.PI * i / 30)+r, 0.7 * 2 * Math.cos(2 * Math.PI * i / 30)], "\\tiny{"+i/10+"kg}");}
+							if(arr==100*i){line([0.6 * 2 * Math.sin(2 * Math.PI * i / 30)+r, 0.6 * 2 * Math.cos(2 * Math.PI * i / 30)], [r, 0],{stroke:"green",fill:"green",strokeWidth: 5});}						
+						}}					
+					</div>
+				</div>
+			</div>		
+			<div class="solution"><var>right[0]</var></div>
+				<ul class="choices" data-category="true">
+					<li>青蘋果</li>
+					<li>紅蘋果</li>
+					<li>一樣重</li>
+				</ul>
+			
+			<div class="hints">
+				<p>觀察一下，左邊的秤與右邊的秤指針指的位置是不是一樣呢？</p>
+				<p>左邊的指針與右邊的指針指的位置都一樣，代表兩邊的重量是一樣的。</p>
+				<p>左邊的秤上面有 <code><var>Gapple</var></code> 個青蘋果，右邊的秤上面有 <code><var>Rapple</var></code> 個紅蘋果。但是兩邊的秤的重量卻是一樣的。</p>
+				<p>兩邊秤的重量相同，但是蘋果數量不同，代表一個<span class="hint_pink"><var>right[0]</var></span>的重量比一個<var>right[1]</var>的重量還要重。</p>
+			</div>
+		</div>
+	
+        <div id="case2">
+			<div class="vars">				
+				<var id="j,k">randFromArray([[3,4],[5,6],[9,8],[7,6],[6,7],[8,7],[7,8],[5,4],[7,9]])</var>
+				<var id="name_1">randFromArray(["咖啡杯","馬克杯","杯子"])</var>
+				<var id="name_2">randFromArray(["盤子","鍋子","湯碗"])</var>
+				<var id="right">(function(){
+					if(j&lt;k){return [name_1,name_2];}
+					if(k&lt;j){return [name_2,name_1];}
+					})()</var>				
+            </div>		
+		
+			<div class="question">
+				<div class="problem">
+					<p><code><var>j</var></code> 個相同<var>name_1</var>的重量等於 <code><var>k</var></code> 個相同<var>name_2</var>的重量，請問 <code>1</code> 個<var>name_1</var>的重量和 <code>1</code> 個<var>name_2</var>的重量哪一個比較重？</p>
+				</div>
+			</div>		
+			<div class="solution"><var>right[0]</var></div>
+				<ul class="choices" data-category="true">
+					<li><var>name_1</var></li>
+					<li><var>name_2</var></li>
+					<li>不能比較</li>
+				</ul>
+			
+			<div class="hints">
+				<p><code><var>j</var></code> 個相同<var>name_1</var>的重量與 <code><var>k</var></code> 個相同<var>name_2</var>的重量相等。要怎麼比較 <code>1</code> 個<var>name_1</var>與 <code>1</code> 個<var>name_2</var>的重量呢？</p>
+				<p><var>right[0]</var>的數量比<var>right[1]</var>的數量少，但是重量卻是一樣的。</p>
+				<p>代表了 <code>1</code> 個<span class="hint_pink"><var>right[0]</var></span>的重量比一個<var>right[1]</var>的重量來得重。</p>
+			</div>
+		</div>
+
+		<div id="case3">
+			<div class="vars">
+				<var id="J,K">randFromArray([[3,900],[3,600],[4,800],[5,1000],[6,900],[4,600],[3,1200],[5,1500],[5,2000]])</var>
+				<var id="M,N">randFromArray([[3,900],[3,600],[4,800],[5,1000],[6,900],[4,600],[3,1200],[5,1500],[5,2000]])</var>
+				<var id="J_K">K/J</var>
+				<var id="M_N">N/M</var>
+				<var id="arr">[K,N]</var>
+				<var id="name_1">randFromArray([["青蘋果","紅蘋果","蘋果",1],["綠球","紅球","球",2]])</var>
+				<var id="right">(function(){
+					if(J_K==M_N){return ["一樣重"];}
+					if(J_K&gt;M_N){return [name_1[0],name_1[1]];}
+					if(M_N&gt;J_K){return [name_1[1],name_1[0]];}
+					})()</var>				
+            </div>		
+		
+			<div class="question">
+				<div class="problem">
+					<p>兩邊的秤上面裝滿了玩具<var>name_1[2]</var>，左邊的秤上面，每一顆<var>name_1[0]</var>的重量都是一樣的，右邊的秤上面，每一顆<var>name_1[1]</var>的重量也都是一樣的，請問一顆<var>name_1[0]</var>比較重，還是一顆<var>name_1[1]</var>比較重？</p>
+					<div class="graphie" id="ques">
+						init({ range: [[-5.5, 6], [-3, 5]], scale: 45});
+						ellipse([-2.5,3.4],[2.5,1],{fill:"#CAFFFF"});
+						ellipse([3.2,3.4],[2.5,1],{fill:"#CAFFFF"});
+						var point=[[-2.4,3],[-1.7,3],[-3.1,3],[-1,3],[-3.8,3],[-2.6,3.9]];
+						var point_1=[[3.2,3],[2.5,3],[3.9,3],[1.8,3],[4.6,3],[3.1,3.9]];					
+						for(var i=0;i&lt;J;i++)
+						{
+							circle(point[i],0.3,{stroke:" #90EE90",fill:"#90EE90"});
+							if(name_1[3]==1){
+								arc([point[i][0]+0.3,point[i][1]+0.3],0.3,140,200,{stroke:" green"});
+								arc([point[i][0]+0.15,point[i][1]+0.1],0.15,90,180,{stroke:" green"});
+								arc([point[i][0]-0.15,point[i][1]+0.1],0.15,0,90,{stroke:" green"});
+							}
+							if(name_1[3]==2){
+							arc([point[i][0]+0.3,point[i][1]],0.2,110,250,{stroke:" white"});
+							arc([point[i][0]-0.3,point[i][1]],0.2,-70,70,{stroke:" white"});}
+						}
+						for(var i=0;i&lt;M;i++)
+						{
+							circle(point_1[i],0.3,{stroke:" #FF8888",fill:"#FF8888"});
+							if(name_1[3]==1){
+								arc([point_1[i][0]+0.3,point_1[i][1]+0.3],0.3,140,200,{stroke:" green"});
+								arc([point_1[i][0]+0.15,point_1[i][1]+0.1],0.15,90,180,{stroke:" green"});
+								arc([point_1[i][0]-0.15,point_1[i][1]+0.1],0.15,0,90,{stroke:" green"});
+							}
+							if(name_1[3]==2){
+							arc([point_1[i][0]+0.3,point_1[i][1]],0.2,110,250,{stroke:" white"});
+							arc([point_1[i][0]-0.3,point_1[i][1]],0.2,-70,70,{stroke:" white"});}
+						}
+						
+						line([-4,2],[-4,2.6]);
+						line([-1.4,2],[-1.4,2.55]);
+						line([1.9,2],[1.9,2.55]);
+						line([4.5,2],[4.5,2.55]);
+						
+						path([[5.2,2],[1.2,2],[1.2,-2],[5.2,-2],[5.2,2]]);
+						path([[-0.7,2],[-4.7,2],[-4.7,-2],[-0.7,-2],[-0.7,2]]);
+											
+						for(var j=0;j&lt;2;j++){
+							var r=-2.7;
+							if(j==1){r=3.2;}
+							circle([r,0],0.3,{stroke:" green",fill:"green"});
+							circle([r,0],2,{stroke:" black"});
+						 for (var i = 0; i &lt; 31; i++) {
+						
+							var x = 2 *Math.sin(2 * Math.PI * i / 30);
+							var y = 2*Math.cos(2 * Math.PI * i / 30);						
+							var outerPoint = [x+r, y];
+							var innerPoint = [0.8*x+r, 0.8* y];
+							line(outerPoint, innerPoint);
+							if(i!=30&&i!=10&&i!=20&&i%2==0){
+							label([0.7 * 2 * Math.sin(2 * Math.PI * i / 30)+r, 0.7 * 2 * Math.cos(2 * Math.PI * i / 30)], "\\tiny{"+100*i+"}");}
+							if(i==10||i==20){
+							label([0.7 * 2 * Math.sin(2 * Math.PI * i / 30)+r, 0.7 * 2 * Math.cos(2 * Math.PI * i / 30)], "\\tiny{"+i/10+"kg}");}
+							if(arr[j]==100*i){line([0.6 * 2 * Math.sin(2 * Math.PI * i / 30)+r, 0.6 * 2 * Math.cos(2 * Math.PI * i / 30)], [r, 0],{stroke:"green",fill:"green",strokeWidth: 5});}						
+						}}					
+					</div>
+				</div>
+			</div>		
+			<div class="solution"><var>right[0]</var></div>
+				<ul class="choices" data-category="true">
+					<li><var>name_1[0]</var></li>
+					<li><var>name_1[1]</var></li>
+					<li>一樣重</li>
+				</ul>
+			
+			<div class="hints">
+				<p>左邊的秤總共有 <code><var>J</var></code> 顆<var>name_1[0]</var>，共重 <code><var>K</var></code> 克。代表一顆<var>name_1[0]</var>重 <code><var>K</var> \div <var>J</var> = <var>J_K</var></code> 克。</p>
+				<p>右邊的秤總共有 <code><var>M</var></code> 顆<var>name_1[1]</var>，共重 <code><var>N</var></code> 克。代表一顆<var>name_1[1]</var>重 <code><var>N</var> \div <var>M</var> = <var>M_N</var></code> 克。</p>
+				<p data-if="J_K!=M_N">所以 <code>1</code> 顆<span class="hint_pink"><var>right[0]</var></span>比 <code>1</code> 顆<var>right[1]</var>來得重。</p>
+				<p data-if="J_K==M_N">所以<var>name_1[0]</var>和<var>name_1[1]</var><span class="hint_pink">一樣重</span>。</p>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>將分數分解</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+       .radio_style {background:blue;}
+    </style>
+	<script type="text/javascript">	    
+			function piechart1(divisions, colors, radius) {
+				var graph = KhanUtil.currentGraph;
+				var set = graph.raphael.set();
+				var sum = 0;
+				$.each(divisions, function(i, slice) {
+					sum += slice;
+				});
+
+				var partial = 0;
+				$.each(divisions, function(i, slice) {
+					set.push(graph.arc([0, 0], radius, partial * 360 / sum, (partial + slice) * 360 / sum, true, {
+						stroke: colors[3] || "none",
+						fill: colors[i]
+					}));
+					partial += slice;
+				});
+
+				for (var i = 0; i < sum; i++) {
+					set.push(graph.line([0, 0], graph.polar(radius, i * 360 / sum), { stroke: colors[3] || "#fff" }));
+				}
+
+				return set;
+			}
+			function piechart2(divisions, colors, radius) {
+				var graph = KhanUtil.currentGraph;
+				var set = graph.raphael.set();
+				var sum = 0;
+				$.each(divisions, function(i, slice) {
+					sum += slice;
+				});
+
+				var partial = 0;
+				$.each(divisions, function(i, slice) {
+					set.push(graph.arc([0, 0], radius, partial * 360 / sum, (partial + slice) * 360 / sum, true, {
+						stroke: colors[4] || "none",
+						fill: colors[i]
+					}));
+					partial += slice;
+				});
+
+				for (var i = 0; i < sum; i++) {
+					set.push(graph.line([0, 0], graph.polar(radius, i * 360 / sum), { stroke: colors[4] || "#fff" }));
+				}
+
+				return set;
+			}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars" data-ensure="getGCD(number2,number1)==1">			               
+				<var id="number2">randRangeExclude(2,19,[3,5,15,18])</var>
+				<var id="count">randRange(2,3)</var>
+				<var id="num1">
+						(function(){
+							while(1){
+								var num=randRangeUnique(4,19,count);
+								if(count==2){
+								if((getGCD(number2,num[0])==1)&&getGCD(number2,num[1])==1){
+									return num;
+								}}
+								if(count==3){
+								if(getGCD(number2,num[0])==1&&getGCD(number2,num[1])==1&&getGCD(number2,num[2])==1){
+									return num;
+								}}
+							}
+						})()
+					</var>				
+				<var id="number1">(function(){
+						if(count==2)
+							return num1[0]+num1[1];
+						if(count==3)
+						{
+							return num1[0]+num1[1]+num1[2];
+						}
+						})()</var>
+				<var id="num2">(function(){
+					var a=randFromArray([1,3]);
+					if(number1%2==0){
+					return [number1-a,number1+a];}
+					if(number1%2!=0){
+					return [number1+2,number1-2];}
+						})()</var>
+				<var id="change2">(function(){
+						var shape=[];
+						
+						if(count==2)
+						{
+							shape=[num1[0],num1[1],num2[0],num2[1]];
+						}
+						if(count==3)
+						{
+							shape=[num1[0],num1[1],num1[2],num2[0],num2[1]];
+						}
+						return shuffle(shape);
+						})()</var>
+            </div>
+			<div class="question">
+				<div class="problem">
+					<p>下列哪些分數加在一起可以得到 <code>\dfrac{<var>number1</var>}{<var>number2</var>} </code> ？</p>
+					<table style="font-size:15px;">
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox" id="pic_1">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_1').attr('checked')){$('#pic_1').removeAttr('checked')}else{$('#pic_1').attr('checked','checked')}"><code>\dfrac{<var>change2[0]</var>}{<var>number2</var>} </code>
+							</div></td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox" id="pic_2">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_2').attr('checked')){$('#pic_2').removeAttr('checked')}else{$('#pic_2').attr('checked','checked')}"><code>\dfrac{<var>change2[1]</var>}{<var>number2</var>} </code>
+							</div></td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox" id="pic_3">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_3').attr('checked')){$('#pic_3').removeAttr('checked')}else{$('#pic_3').attr('checked','checked')}"><code>\dfrac{<var>change2[2]</var>}{<var>number2</var>} </code>
+							</div></td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox" id="pic_4">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_4').attr('checked')){$('#pic_4').removeAttr('checked')}else{$('#pic_4').attr('checked','checked')}"><code>\dfrac{<var>change2[3]</var>}{<var>number2</var>} </code>
+							</div></td>
+						</tr>
+						<tr data-if="count==3">
+							<td>
+								<input type="checkbox" name="checkbox" id="pic_5">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_5').attr('checked')){$('#pic_5').removeAttr('checked')}else{$('#pic_5').attr('checked','checked')}"><code>\dfrac{<var>change2[4]</var>}{<var>number2</var>} </code>
+							</div></td>
+						</tr>
+					</table>
+					
+				</div>
+			</div>
+				
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">1</div>
+				    <div class="validator-function">
+						var aa=0;
+						for(var i=1;i&lt;count+3;i++)
+						{
+							if($("#pic_"+i).attr("checked")!='checked')
+							{aa++;}
+						}
+						if(aa==count+2){return "";}
+						var ans=0;
+						var an=0;
+						for(var i=1;i&lt;count+3;i++)
+						{
+							document.getElementById("pic_"+i).value=change2[i-1];
+						}
+						for(var i=0;i&lt;count;i++)
+						{
+							for(var k=1;k&lt;count+3;k++)
+							{
+								if(document.getElementById("pic_"+k).value==num1[i]&&document.getElementById("pic_"+k).checked==true)
+								{ans++;}
+							}
+						}
+						for(var i=0;i&lt;2;i++)
+						{
+							for(var k=1;k&lt;count+3;k++)
+							{
+								if(document.getElementById("pic_"+k).value==num2[i]&&document.getElementById("pic_"+k).checked==false)
+								{an++;}
+							}
+						}
+						var bol1=false;
+						if(ans+an==count+2)
+						{
+							bol1=true;
+						}
+						return bol1;
+					</div>
+				</div>
+				<p>請選擇哪些選項相加會等於題目中數字</p>
+            </div>
+					
+            <div class="hints">
+				<div>
+					<p>在選項中，我們希望能夠找到，分數相加在一起，可以等於 <code>\dfrac{<var>number1</var>}{<var>number2</var>} </code> 的數，</p>
+					<p>當兩個分數，擁有相同的分母 <code><var>number2</var></code> 時，分母部分在相加之後的和還是 <code><var>number2</var></code> ，</p>
+					<p>要記住的是，分子部分在相加之後，必須是兩個數的總和，即使分子相同。</p>
+				</div>
+				<p>因為所有的分數，都擁有相同的分母 <code><var>number2</var></code> ，所以我們只要在選項中，勾選分子相加，可以得到 <code><var>number1</var></code> 的數。</p>
+				<div>
+					<p>在題目的選項中，分子相加可以得到 <code><var>number1</var></code> 的是 <code><var>num1[0]</var></code> <span data-if="count==2">與</span><span data-if="count==3">、</span> <code><var>num1[1]</var></code> <span data-if="count==3">與</span> <code data-if="count==3"><var>num1[2]</var></code></p>
+					<p><code><var>num1[0]</var> + <var>num1[1]</var></code> <span data-if="count==3"><code>+ <var>num1[2]</var></code></span> <code>= <var>number1</var> </code></p>
+					<p>而且，我們想要找到的分數，擁有共同分母 <code><var>number2</var></code></p>
+					<p><code>\dfrac{<var>num1[0]</var>}{<var>number2</var>}  + \dfrac{<var>num1[1]</var>}{<var>number2</var>}</code> <span data-if="count==3"><code>+ \dfrac{<var>num1[2]</var>}{<var>number2</var>}</code></span> <code>= \dfrac{<var>number1</var>}{<var>number2</var>} </code> </p>
+				</div>
+				<div>
+					<p>以下是正確選項：</p>
+					<p><code class="hint_pink">\dfrac{<var>num1[0]</var>}{<var>number2</var>}</code>  <span data-if="count==2">與</span><span data-if="count==3">、</span> <code class="hint_pink">\dfrac{<var>num1[1]</var>}{<var>number2</var>}</code> <span data-if="count==3">與 <code class="hint_pink">\dfrac{<var>num1[2]</var>}{<var>number2</var>}</code></span></p>
+				</div>
+			</div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars" data-ensure="getGCD(number2,number1)==1">				
+				<var id="num">randRangeUnique(5,10,2)</var>
+				<var id="number1">num[0]+num[1]</var>
+				<var id="number2">(function(){
+					var s=randRange(1,2);
+					if(s==1){
+						return randRange(number1+1,2*number1-5);
+					}
+					if(s==2){	
+						var dd=Math.floor(number1/2)+1;
+						return randRange(dd,number1-1);
+					}
+					})()</var>
+				<var id="a">randRange(2,4)</var>				
+				<var id="a1">(function(){
+					if(number2&gt;number1){
+						return 1;
+					}
+					if(number2&lt;number1){
+						return 2;
+						}
+					})()</var>
+				<var id="sp">randRange(1,2)</var>
+				<var id="b">(function(){
+					if(sp==1&&a1==1){return number1-a;}
+					if(sp==2&&a1==1){return number1-a+1;}
+					if(sp==1&&a1==2){return number1-a;}
+					if(sp==2&&a1==2){return number2+a;}
+					})()</var>
+				<var id="data1">(function(){
+					var sp1=randRange(3,5);
+					var xx=randRange(1,3);
+					var shape=[0,0,0,0,0,0];
+					if(number2&gt;number1){													
+							shape[1]=[a,number1-a];
+							shape[2]=[a,number1-a+1];
+							shape[3]=[num[0]-randRange(1,3),num[1]-randRange(1,3),randRange(1,3)];								
+							shape[4]=[num[0],num[1]-xx,xx];
+							shape[5]=[num[0]-xx,xx,num[1]];
+							return shuffle([shape[sp],shape[sp1]]);}
+					if(number2&lt;number1){
+							shape[1]=[a,number1-a];
+							shape[2]=[a,number2+a];
+							shape[3]=[num[0]-randRange(1,3),num[1]-randRange(1,3),randRange(1,3)];								
+							shape[4]=[num[0],num[1]-xx,xx];
+							shape[5]=[num[0]-xx,xx,num[1]];
+							return shuffle([shape[sp],shape[sp1]]);}
+                        })()</var>
+				<var id="ans">(function(){
+							var b=[0,0];
+							for(var i=0;i&lt;2;i++)
+							{							
+								for(var k=0;k&lt;data1[i].length;k++)
+								{
+									b[i]=b[i]+data1[i][k];
+								}
+							}
+							return b;
+                        })()</var>
+						
+            </div>
+			<div class="question">
+				<div class="problem">
+					<p>下列哪些分數大於，等於或者是小於 <code>\dfrac{<var>number1</var>}{<var>number2</var>} </code> ？</p>
+					<table style="text-align:center;vertical-align:middle;">
+					<tr style="bottom;border-bottom:solid 1px black"><td></td><td width="100px"><code>&gt; \frac{<var>number1</var>}{<var>number2</var>} </code></td><td width="100px"><code>= \frac{<var>number1</var>}{<var>number2</var>} </code></td><td width="100px"><code>&lt;\frac{<var>number1</var>}{<var>number2</var>} </code></td></tr>
+					<tr style="background:#F0F0F0;"><td style="text-align:left;"><code>\frac{<var>data1[0][0]</var>}{<var>number2</var>} +\frac{<var>data1[0][1]</var>}{<var>number2</var>}</code><span data-if="data1[0].length==3"><code>+ \frac{<var>data1[0][2]</var>}{<var>number2</var>} </code></span></td>
+						<td style="vertical-align:middle;"><input type="radio" name="count_numbers_1" id="c_1" ></td>
+						<td style="vertical-align:middle;"><input type="radio" name="count_numbers_1" id="c_2"></td>					
+						<td style="vertical-align:middle;"><input type="radio" name="count_numbers_1" id="c_3"></td></tr>
+					<tr><td style="text-align:left;"><code>\frac{<var>data1[1][0]</var>}{<var>number2</var>} +\frac{<var>data1[1][1]</var>}{<var>number2</var>}</code><span data-if="data1[1].length==3"><code>+ \frac{<var>data1[1][2]</var>}{<var>number2</var>} </code></span></td>
+						<td style="vertical-align:middle;"><input type="radio" name="count_numbers_2" id="c_4"></td>
+						<td style="vertical-align:middle;"><input type="radio" name="count_numbers_2" id="c_5"></td>					
+						<td style="vertical-align:middle;"><input type="radio" name="count_numbers_2" id="c_6"></td></tr>
+					
+					</table>
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">1</div>
+				    <div class="validator-function">
+							var aa=0;
+							for(var i=1;i&lt;7;i++)
+							{
+								if($("#c_"+i).attr("checked")!='checked')
+								{aa++;}
+							}
+							if(aa==6){return "";}
+							
+							var bol1=false;
+							var bol2=false;
+							if(document.getElementById("c_2").checked&&ans[0]==number1||document.getElementById("c_1").checked&&ans[0]&gt;number1||document.getElementById("c_3").checked&&ans[0]&lt;number1)
+							{bol1=true;}
+							if(document.getElementById("c_5").checked&&ans[1]==number1||document.getElementById("c_4").checked&&ans[1]&gt;number1||document.getElementById("c_6").checked&&ans[1]&lt;number1)
+							{bol2=true;}
+							
+							return bol1&&bol2;
+					</div>
+				</div>
+				<p>請選擇正確的答案</p>
+            </div>
+            <div class="hints">
+				<div>
+					<p>我們可以將每一個分數，想成一份披薩，被分成了相等的 <code><var>number2</var></code> 片，每一片代表著 <code>\dfrac{1}{<var>number2</var>}</code> 個披薩，</p>
+					<p>假如 <code>\dfrac{<var>a</var>}{<var>number2</var>}</code> 代表 <code><var>a</var></code> 片時，
+					那麼 <code>\dfrac{<var>b</var>}{<var>number2</var>}</code> 就意味著 <code><var>b</var></code> 片，
+					這樣我們就可以知道，將這兩個分數相加之後，有多少片披薩：<code><var>a</var> + <var>b</var> = <var>a+b</var></code></p>
+					<p>分數形式會是： <code>\dfrac{<var>a</var>}{<var>number2</var>} +  \dfrac{<var>b</var>}{<var>number2</var>} = \dfrac{<var>a+b</var>}{<var>number2</var>}</code></p>
+					<div class="graphie" data-if="a1==1">
+                            init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
+                            piechart1([a, b,number2-a-b], ["#e00", "#4169E1","#999"], 3);
+                    </div>				
+				</div>
+				<p>以上原因，也解釋了為何當我們，將兩個擁有共同分母的分數相加時，我們可以將分母保留</p>
+				<div data-if="a1==2">
+					<p>那麼要是我們遇到 <code>\dfrac{<var>number1</var>}{<var>number2</var>}</code> 這種分子大於分母的情況時，該怎麼辦呢？這邊我們可以再想像成擁有 <code>2</code> 個披薩，一個用分數表示成 <code>\dfrac{<var>number2</var>}{<var>number2</var>}</code> 片披薩，也就是完整的一個披薩的意思，另一個只有 <code>\dfrac{<var>number1-number2</var>}{<var>number2</var>}</code> 片。這也是為什麼我們可以將 <code>\dfrac{<var>number1</var>}{<var>number2</var>}</code> 寫成 <code>1</code> 又<code>\dfrac{<var>number1-number2</var>}{<var>number2</var>}</code></p>
+					<table><tr><td>
+					<div class="graphie"id="grap1">
+								init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
+								piechart([1, number2-1], ["#4169E1", "#4169E1"], 2);
+					 </div></td><td>
+					 <div class="graphie" id="grap2">
+								init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
+								piechart([ number1-number2,2*number2-number1], ["#e00","#999"], 2);
+					 </div></td>
+					 </tr>
+					 </table>
+				</div>
+				<div><p>我們藉由將所有的分子，相加得到它的總和</p>
+					<p><code>\dfrac{<var>data1[0][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[0][1]</var>}{<var>number2</var>}</code><span data-if="data1[0].length==3"><code>+ \dfrac{<var>data1[0][2]</var>}{<var>number2</var>} </code></span><span data-if="data1[0].length==2"><code>= \dfrac{<var>data1[0][0]</var>+<var>data1[0][1]</var>}{<var>number2</var>}</code></span><span data-if="data1[0].length==3"><code>= \dfrac{<var>data1[0][0]</var>+<var>data1[0][1]</var>+<var>data1[0][2]</var>}{<var>number2</var>}</code></span><code>= \dfrac{<var>ans[0]</var>}{<var>number2</var>}</code></p>
+					<p><code>\dfrac{<var>data1[1][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[1][1]</var>}{<var>number2</var>}</code><span data-if="data1[1].length==3"><code>+ \dfrac{<var>data1[1][2]</var>}{<var>number2</var>} </code></span><span data-if="data1[1].length==2"><code>= \dfrac{<var>data1[1][0]</var>+<var>data1[1][1]</var>}{<var>number2</var>}</code></span><span data-if="data1[1].length==3"><code>= \dfrac{<var>data1[1][0]</var>+<var>data1[1][1]</var>+<var>data1[1][2]</var>}{<var>number2</var>}</code></span><code>= \dfrac{<var>ans[1]</var>}{<var>number2</var>}</code></p>
+				</div>
+				<div>
+					<p>所以正確的選項是：</p>
+					<p><code>\dfrac{<var>data1[0][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[0][1]</var>}{<var>number2</var>}</code><span data-if="data1[0].length==3"><code>+ \dfrac{<var>data1[0][2]</var>}{<var>number2</var>} </code></span> <span class="hint_pink" data-if="ans[0]==number1"><code>=</code></span><span class="hint_pink" data-if="ans[0]&gt;number1"><code>&gt;</code></span><span class="hint_pink" data-if="ans[0]&lt;number1"><code>&lt;</code></span> <code class="hint_pink">\dfrac{<var>number1</var>}{<var>number2</var>}</code></p>
+					<p><code>\dfrac{<var>data1[1][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[1][1]</var>}{<var>number2</var>}</code><span data-if="data1[1].length==3"><code>+ \dfrac{<var>data1[1][2]</var>}{<var>number2</var>} </code></span> <span class="hint_pink" data-if="ans[1]==number1"><code>=</code></span><span class="hint_pink" data-if="ans[1]&gt;number1"><code>&gt;</code></span><span class="hint_pink" data-if="ans[1]&lt;number1"><code>&lt;</code></span> <code class="hint_pink">\dfrac{<var>number1</var>}{<var>number2</var>}</code></p>
+				</div>
+			</div>
+        </div>	
+		
+		<div id="case3">
+            <div class="vars" data-ensure="getGCD(number2,number1)==1">				
+				<var id="num">randRangeUnique(5,10,2)</var>
+				<var id="number1">num[0]+num[1]</var>
+				<var id="number2">(function(){
+					var s=randRange(1,2);
+					if(s==1){
+						return randRange(number1+1,2*number1-5);
+					}
+					if(s==2){	
+						var dd=Math.floor(number1/2)+1;
+						return randRange(dd,number1-1);
+					}
+					})()</var>
+				<var id="a">randRangeUnique(2,5,2)</var>				
+				<var id="a1">(function(){
+					if(number2&gt;number1){
+						return 1;
+					}
+					if(number2&lt;number1){
+						return 2;
+						}
+					})()</var>
+				<var id="sp">randRange(1,2)</var>
+				<var id="b">(function(){
+					if(sp==1&&a1==1){return number1-a[0]-a[1];}
+					if(sp==2&&a1==1){return number1-a[0];}
+					if(sp==1&&a1==2){return number1-a[0]-a[1];}
+					if(sp==2&&a1==2){return number2+a[0];}
+					})()</var>
+				<var id="data1">(function(){
+					var sp1=randRange(3,5);
+					var xx=randRange(1,4);
+					var yy=randRange(1,4);
+					var shape=[0,0,0,0,0,0];
+					if(number2&gt;number1){													
+							shape[1]=[a[0],number1-a[0]-a[1],a[1]];
+							shape[2]=[a[0],number1-a[0],a[1]];								
+							shape[3]=[num[0]-yy,num[1]-xx,xx,yy];
+							shape[4]=[num[0]-xx,xx,num[1]-yy,yy];
+							shape[5]=[num[0],xx,num[1]-yy,yy];
+							return shuffle([shape[sp],shape[sp1]]);}
+					if(number2&lt;number1){
+							shape[1]=[a[0],number1-a[0]-a[1],a[1]];
+							shape[2]=[a[0],number2+a[0],a[1]];
+							shape[3]=[num[0]-yy,num[1]-xx,xx,yy];
+							shape[4]=[num[0]-xx,xx,num[1]-yy,yy];
+							shape[5]=[num[0],xx,num[1]-yy,yy];
+							return shuffle([shape[sp],shape[sp1]]);}
+                        })()</var>
+				<var id="ans">(function(){
+							var b=[0,0];
+							for(var i=0;i&lt;2;i++)
+							{							
+								for(var k=0;k&lt;data1[i].length;k++)
+								{
+									b[i]=b[i]+data1[i][k];
+								}
+							}
+							return b;
+                        })()</var>
+						
+            </div>
+			<div class="question">
+				<div class="problem">
+					<p>下列哪些分數大於，等於或者是小於 <code>\dfrac{<var>number1</var>}{<var>number2</var>} </code> ？</p>
+					<table style="text-align:center;vertical-align:middle;">
+					<tr style="bottom;border-bottom:solid 1px black"><td></td><td width="100px"><code>&gt; \frac{<var>number1</var>}{<var>number2</var>} </code></td><td width="100px"><code>= \frac{<var>number1</var>}{<var>number2</var>} </code></td><td width="100px"><code>&lt;\frac{<var>number1</var>}{<var>number2</var>} </code></td></tr>
+					<tr style="background:#F0F0F0;"><td style="text-align:left;"><code>\frac{<var>data1[0][0]</var>}{<var>number2</var>} +\frac{<var>data1[0][1]</var>}{<var>number2</var>} + \frac{<var>data1[0][2]</var>}{<var>number2</var>} </code><span data-if="data1[0].length==4"><code>+ \frac{<var>data1[0][3]</var>}{<var>number2</var>} </code></span></td>
+						<td style="vertical-align:middle;"><input type="radio" name="count_numbers_1" id="c_1" ></td>
+						<td style="vertical-align:middle;"><input type="radio" name="count_numbers_1" id="c_2"></td>					
+						<td style="vertical-align:middle;"><input type="radio" name="count_numbers_1" id="c_3"></td></tr>
+					<tr><td style="text-align:left;"><code>\frac{<var>data1[1][0]</var>}{<var>number2</var>} +\frac{<var>data1[1][1]</var>}{<var>number2</var>} + \frac{<var>data1[1][2]</var>}{<var>number2</var>} </code><span data-if="data1[1].length==4"><code>+ \frac{<var>data1[1][3]</var>}{<var>number2</var>} </code></span></td>
+						<td style="vertical-align:middle;"><input type="radio" name="count_numbers_2" id="c_4"></td>
+						<td style="vertical-align:middle;"><input type="radio" name="count_numbers_2" id="c_5"></td>					
+						<td style="vertical-align:middle;"><input type="radio" name="count_numbers_2" id="c_6"></td></tr>
+					
+					</table>
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">1</div>
+				    <div class="validator-function">
+							var aa=0;
+							for(var i=1;i&lt;7;i++)
+							{
+								if($("#c_"+i).attr("checked")!='checked')
+								{aa++;}
+							}
+							if(aa==6){return "";}
+							
+							var bol1=false;
+							var bol2=false;
+							if(document.getElementById("c_2").checked&&ans[0]==number1||document.getElementById("c_1").checked&&ans[0]&gt;number1||document.getElementById("c_3").checked&&ans[0]&lt;number1)
+							{bol1=true;}
+							if(document.getElementById("c_5").checked&&ans[1]==number1||document.getElementById("c_4").checked&&ans[1]&gt;number1||document.getElementById("c_6").checked&&ans[1]&lt;number1)
+							{bol2=true;}
+							
+							return bol1&&bol2;
+					</div>
+				</div>
+				<p>請選擇正確的答案</p>
+            </div>
+            <div class="hints">
+				<div>
+					<p>我們可以將每一個分數，想成一份披薩，被分成了相等的 <code><var>number2</var></code> 片，每一片代表著 <code>\dfrac{1}{<var>number2</var>}</code> 個披薩，</p>
+					<p>假如 <code>\dfrac{<var>a[0]</var>}{<var>number2</var>}</code> 代表 <code><var>a[0]</var></code> 片時，
+					那麼 <code>\dfrac{<var>b</var>}{<var>number2</var>}</code> 代表 <code><var>b</var></code> 片，<code>\dfrac{<var>a[1]</var>}{<var>number2</var>}</code>就意味著 <code><var>a[1]</var></code> 片，
+					這樣我們就可以知道，將這三個分數相加之後，有多少片披薩：<code><var>a[0]</var> + <var>b</var> + <var>a[1]</var> = <var>a[0]+b+a[1]</var></code></p>
+					<p>分數形式會是： <code>\dfrac{<var>a[0]</var>}{<var>number2</var>} +  \dfrac{<var>b</var>}{<var>number2</var>} + \dfrac{<var>a[1]</var>}{<var>number2</var>} = \dfrac{<var>a[0]+b+a[1]</var>}{<var>number2</var>}</code></p>
+					<div class="graphie" data-if="a1==1">
+                            init({ range: [ [-4, 4], [-4, 4] ], scale: 25 });
+                            piechart2([a[0], b,a[1],number2-a[0]-b-a[1]], ["#e00", "#4169E1","#115cee","#999"], 4);
+                    </div>				
+				</div>
+				<p>以上原因，也解釋了為何當我們，將三個擁有共同分母的分數相加時，我們可以將分母保留</p>
+				<div data-if="a1==2">
+					<p>那麼要是我們遇到 <code>\dfrac{<var>number1</var>}{<var>number2</var>}</code> ，這種分子大於分母的情況時，該怎麼辦呢？這邊我們可以，再想像成擁有 <code>2</code> 個披薩，一個用分數表示成 <code>\dfrac{<var>number2</var>}{<var>number2</var>}</code> 片披薩，也就是完整的一個披薩的意思，另一個只有 <code>\dfrac{<var>number1-number2</var>}{<var>number2</var>}</code> 片。這也是為什麼，我們可以將 <code>\dfrac{<var>number1</var>}{<var>number2</var>}</code> 寫成 <code>1</code> 又<code>\dfrac{<var>number1-number2</var>}{<var>number2</var>}</code></p>
+					<table><tr><td>
+					<div class="graphie"id="grap1">
+								init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
+								piechart([1, number2-1], ["#4169E1", "#4169E1"], 2);
+					 </div></td><td>
+					 <div class="graphie" id="grap2">
+								init({ range: [ [-3, 3], [-3, 3] ], scale: 25 });
+								piechart([ number1-number2,2*number2-number1], ["#e00","#999"], 2);
+					 </div></td>
+					 </tr>
+					 </table>
+				</div>
+				<div><p>我們藉由將所有的分子相加得到它的總和</p>
+					<p><code>\dfrac{<var>data1[0][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[0][1]</var>}{<var>number2</var>} + \dfrac{<var>data1[0][2]</var>}{<var>number2</var>}</code><span data-if="data1[0].length==4"><code>+ \dfrac{<var>data1[0][3]</var>}{<var>number2</var>} </code></span><span data-if="data1[0].length==3"><code>= \dfrac{<var>data1[0][0]</var>+<var>data1[0][1]</var>+<var>data1[0][2]</var>}{<var>number2</var>}</code></span><span data-if="data1[0].length==4"><code>= \dfrac{<var>data1[0][0]</var>+<var>data1[0][1]</var>+<var>data1[0][2]</var>+<var>data1[0][3]</var>}{<var>number2</var>}</code></span><code>= \dfrac{<var>ans[0]</var>}{<var>number2</var>}</code></p>
+					<p><code>\dfrac{<var>data1[1][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[1][1]</var>}{<var>number2</var>} + \dfrac{<var>data1[1][2]</var>}{<var>number2</var>} </code><span data-if="data1[1].length==4"><code>+ \dfrac{<var>data1[1][3]</var>}{<var>number2</var>} </code></span><span data-if="data1[1].length==3"><code>= \dfrac{<var>data1[1][0]</var>+<var>data1[1][1]</var>+<var>data1[1][2]</var>}{<var>number2</var>} </code></span><span data-if="data1[1].length==4"><code>= \dfrac{<var>data1[1][0]</var>+<var>data1[1][1]</var>+<var>data1[1][2]</var>+<var>data1[1][3]</var>}{<var>number2</var>} </code></span><code>= \dfrac{<var>ans[1]</var>}{<var>number2</var>}</code></p>
+				</div>
+				<div>
+					<p>所以正確的選項是：</p>
+					<p><code>\dfrac{<var>data1[0][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[0][1]</var>}{<var>number2</var>} + \dfrac{<var>data1[0][2]</var>}{<var>number2</var>}</code><span data-if="data1[0].length==4"><code>+ \dfrac{<var>data1[0][3]</var>}{<var>number2</var>} </code></span><span class="hint_pink" data-if="ans[0]==number1"><code>=</code></span><span class="hint_pink" data-if="ans[0]&gt;number1"><code>&gt;</code></span><span class="hint_pink" data-if="ans[0]&lt;number1"><code>&lt;</code></span> <code class="hint_pink">\dfrac{<var>number1</var>}{<var>number2</var>}</code></p>
+					<p><code>\dfrac{<var>data1[1][0]</var>}{<var>number2</var>} +\dfrac{<var>data1[1][1]</var>}{<var>number2</var>} + \dfrac{<var>data1[1][2]</var>}{<var>number2</var>} </code><span data-if="data1[1].length==4"><code>+ \dfrac{<var>data1[1][3]</var>}{<var>number2</var>} </code></span><span class="hint_pink" data-if="ans[1]==number1"><code>=</code></span><span class="hint_pink" data-if="ans[1]&gt;number1"><code>&gt;</code></span><span class="hint_pink" data-if="ans[1]&lt;number1"><code>&lt;</code></span> <code class="hint_pink">\dfrac{<var>number1</var>}{<var>number2</var>}</code></p>
+				</div>
+			</div>
+        </div>
+
+	</div>
+	</div>
+</body>
+</html>

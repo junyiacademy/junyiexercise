@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>圓形與長方形的等分</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+		<div class="vars">
+			<var id="parts">randRange(2,6)</var>
+			<var id="parts_ang">360/parts</var>
+			<var id="full">2*parts</var>
+			<var id="arr">
+			(function(){
+				var a = randRangeUnique(1,4,3);
+				var ans = ["\\dfrac{"+1+"}{"+parts+"}","\\dfrac{"+parts+"}{"+parts+"}","\\dfrac{"+parts+"}{"+full+"}"];
+				var res = new Array();
+				for(var i = 0;i&lt;3;i++){
+					res[a[i]-1] = ans[i];
+					i==1?$('#c_'+a[i]).val('0'):$('#c_'+a[i]).val('1');
+				}
+				return res;
+			})()</var>
+		</div>
+		<div class="question">
+			<p>下列哪個分數可以用來形容這張圖形？</p>
+			<div class="graphie" id="filling">
+				init({
+					range: [ [-2.5, 2.5], [-2.5, 2.5] ],scale: 40
+				});
+				circle([0, 0], 2,{stroke:"red",fill:"red","fill-opacity": 0.1});
+				for(var i = 0;i&lt;parts;i++){
+					line([0,0],polar(2,parts_ang*i),{stroke:"red"});
+				}
+			</div>
+			<p onclick="$('#c_1').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_1"><code><var>arr[0]</var></code></p>
+			<p onclick="$('#c_2').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_2"><code><var>arr[1]</var></code></p>
+			<p onclick="$('#c_3').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_3"><code><var>arr[2]</var></code></p>
+		</div>
+		
+		<div class="solution" data-type="multiple">
+			<p>選擇正確的答案</p>
+			<div class="sol" data-type="custom">
+				<div class="guess">$('input:radio:checked').val()</div>
+				<div class="validator-function">
+					if(guess == 'undefined'){
+						return "";
+					}
+					if(guess == 0){
+						return true;
+					}
+				</div>
+			</div>
+		</div>
+				
+		<div class="hints">
+			<p>這個圓形被切割成 <code><var>parts</var></code> 個相等的部分，而且形成 <code><var>parts</var></code> 個相同的形狀；</p>
+			<p>可以用來形容這個圖形的分數為 <code class="hint_red">\dfrac{<var>parts</var>}{<var>parts</var>}</code> 。</p>
+		</div>
+		</div>
+		
+		<div id="case2">
+		<div class="vars" data-ensure="sum!=0 && wro_s[0]!=wro_s[1]">
+			<var id="parts">randRange(2,6)</var>
+			<var id="parts_ang">360/parts</var>
+			<var id="full">2*parts</var>
+			<var id="rands_arr">
+			(function(){
+				var arrn = new Array();
+				for(var j = 0;j&lt;parts;j++){
+					arrn[j]=randRange(0,1);
+				}
+				return arrn;
+			})()</var>
+			<var id="sum">
+			(function(){
+				var s = 0;
+				for(var k = 0;k&lt;rands_arr.length;k++){
+					s+=rands_arr[k];
+				}
+				return s;
+			})()</var>
+			<var id="wro_s">
+			(function(){
+				var arrr = new Array();
+				var m = 0;
+				for(var l = 1;l&lt;=parts*2;l++){
+					if(sum!=l){
+						arrr[m] = l;
+						m++;
+					}else{
+						continue;
+					}
+				}
+				var x = randRange(0,2*parts-2);
+				return [arrr[x],arrr[2*parts-2-x]];
+			})()</var>
+			<var id="arr">
+			(function(){
+				var a = randRangeUnique(1,4,3);
+				
+				var right_ans = [[sum,parts]];
+				var wrong_ans = new Array();
+				if(parts==2){
+					wrong_ans = [[2,0],sum==1?[3,2]:[1,2]];
+				}else{
+					wrong_ans = [[wro_s[0],parts],[wro_s[1],parts]];
+				}
+				
+				var ans = right_ans.concat(wrong_ans);
+				var res = new Array();
+				for(var i = 0;i&lt;3;i++){
+					res[a[i]-1] = ans[i];
+					if(ans[i][1]==0){
+						$('#c_'+a[i]).val('1');
+					}else{
+						abs(ans[i][0]/ans[i][1]-sum/parts)&lt;0.001?$('#c_'+a[i]).val('0'):$('#c_'+a[i]).val('1');
+					}
+				}
+				return res;
+			})()</var>
+			<var id="gra_type">randRange(1,2)</var>
+			<var id="gra_range">gra_type==1?[ [-2.5, 2.5], [-2.5, 2.5] ]:[ [-1, 8], [-2.5, 2.5] ]</var>
+		</div>
+		<div class="question">
+			<p>圖形的多少部分有被塗上顏色？</p>
+			<div class="graphie" id="filling">
+				init({
+					range: gra_range,scale: 40
+				});
+				var col = ORANGE;
+				if(gra_type==1){
+					for(var i = 1;i&lt;=parts;i++){
+						col = rands_arr[i-1]==0?"#F8F8F8":ORANGE;
+						arc([0, 0], 2, parts_ang*(i-1), parts_ang*i, true, { stroke: ORANGE, fill: col, "fill-opacity": 0.1 });
+					}
+				}else{
+					for(var i = 0;i&lt;parts;i++){
+						col = rands_arr[i]==0?"#F8F8F8":ORANGE;
+						path([[0+i,-2],[0+i,2],[1+i,2],[1+i,-2],[0+i,-2]],{ stroke: ORANGE, fill: col, "fill-opacity": 0.1 });
+					}
+				}
+			</div>
+			<p onclick="$('#c_1').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_1"><code><var>arr[0][1]==0?arr[0][0]:fraction(arr[0][0],arr[0][1],true,false,false,false)</var></code></p>
+			<p onclick="$('#c_2').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_2"><code><var>arr[1][1]==0?arr[1][0]:fraction(arr[1][0],arr[1][1],true,false,false,false)</var></code></p>
+			<p onclick="$('#c_3').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_3"><code><var>arr[2][1]==0?arr[2][0]:fraction(arr[2][0],arr[2][1],true,false,false,false)</var></code></p>
+		</div>
+		
+		<div class="solution" data-type="multiple">
+			<p>選擇正確的答案</p>
+			<div class="sol" data-type="custom">
+				<div class="guess">$('input:radio:checked').val()</div>
+				<div class="validator-function">
+					if(guess == 'undefined'){
+						return "";
+					}
+					if(guess == 0){
+						return true;
+					}
+				</div>
+			</div>
+		</div>
+				
+		<div class="hints">
+			<p>這個圖形被切割成 <code><var>parts</var></code> 個相等的部分，其中有 <code class="hint_green"><var>sum</var></code> 部分被塗上顏色；</p>
+			<p>塗上顏色部分可以形容為 <code class="hint_red">\dfrac{<var>sum</var>}{<var>parts</var>}</code> 。</p>
+		</div>
+		</div>
+		
+		<div id="case3">
+		<div class="vars" data-ensure="sum &gt;0 && sum &lt;5 && sum_s &gt;2 && sum_s &lt;5">
+			<var id="types">randFromArray([["長方形",1],["正方形",2]])</var>
+			<var id="parts">4</var>
+			<var id="ud_randge">types[1]==2?[-1.6, 1.6]:[-2.6, 2.6]</var>
+			<var id="colours">randFromArray([ORANGE,"#28AE7B","red","#6495ED"])</var>
+			<var id="rands_arr">
+			(function(){
+				var arrn = new Array();
+				for(var j = 0;j&lt;5;j++){
+					arrn[j]=randRange(0,1);
+				}
+				return arrn;
+			})()</var>
+			<var id="rands_arr_right">
+			(function(){
+				var arrn = new Array();
+				for(var j = 0;j&lt;5;j++){
+					if(rands_arr[j]==1){
+						arrn[j]=randRange(0,1);
+					}else{
+						arrn[j]=0;
+					}
+				}
+				return arrn;
+			})()</var>
+			<var id="sum">
+			(function(){
+				var s = 0;
+				for(var k = 0;k&lt;rands_arr_right.length;k++){
+					s+=rands_arr_right[k];
+					if(rands_arr_right[k]==1){
+						$('#c'+(k+1)).val('true');
+					}else{
+						$('#c'+(k+1)).val('false');
+					}
+				}
+				return s;
+			})()</var>
+			<var id="sum_s">
+			(function(){
+				var s = 0;
+				for(var k = 0;k&lt;rands_arr.length;k++){
+					s+=rands_arr[k];
+				}
+				return s;
+			})()</var>
+			<var id="set_right_lines">randRangeUnique(1,5,4)</var>
+			<var id="set_lines">
+			(function(){
+				var lineset = new Array();
+				var nums = 0;
+				for(var i = 0;i&lt;rands_arr.length;i++){
+					if(rands_arr[i]==1){
+						lineset[i] = set_right_lines[nums];
+						nums++;
+					}else{ lineset[i] = 5;}
+				}
+				return lineset;
+			})()</var>
+		</div>
+		<div class="question">
+			<p>下列哪個（些）<var>types[0]</var>被切割成四等份？（單選或多選）</p>
+			<p>勾選所有正確的答案</p>
+			<table>
+				<tr>
+				<td style="vertical-align:middle">
+					<input type="checkbox" name="checkbox" id="c1">
+				</td>
+				<td onclick="if($('#c1').attr('checked')){$('#c1').removeAttr('checked')}else{$('#c1').attr('checked','checked')}">
+				<div class="graphie" id="filling1">
+					init({
+						range: [ [-1.6, 1.6], ud_randge ],scale: 40
+					});
+					path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					style({stroke: colours});
+					if(set_lines[0]==1){
+						if(rands_arr_right[0]==1){
+							line([-1.5,0],[1.5,0]);
+							line([0,ud_randge[0]+0.1],[0,ud_randge[1]-0.1]);
+						}else{
+							var c = randRange(5,10)/10*pow(-1,randRange(1,2));
+							var d = randRange(5,10)/10*pow(-1,randRange(1,2));
+							line([-1.5,c],[1.5,c]);
+							line([d,ud_randge[0]+0.1],[d,ud_randge[1]-0.1]);
+						}
+					}
+					if(set_lines[0]==2){
+						if(rands_arr_right[0]==1){
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5+0.75*(i+1),ud_randge[0]+0.1],[-1.5+0.75*(i+1),ud_randge[1]-0.1]);
+							}
+						}else{
+							var l_nums = randFromArray([1,2,4]);
+							var l_mul = 3/(l_nums+1);
+							for(var i = 0;i&lt;l_nums;i++){
+								line([-1.5+l_mul*(i+1),ud_randge[0]+0.1],[-1.5+l_mul*(i+1),ud_randge[1]-0.1]);
+							}
+						}
+					}
+					if(set_lines[0]==3){
+						if(rands_arr_right[0]==1){
+							var l_mul = (ud_randge[1]-ud_randge[0])/4;
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5,ud_randge[0]+0.1+l_mul*(i+1)],[1.5,ud_randge[0]+0.1+l_mul*(i+1)]);
+							}
+						}else{
+							var l_nums = randFromArray([1,2,4]);
+							var l_mul = (ud_randge[1]-ud_randge[0])/(l_nums+1);
+							for(var i = 0;i&lt;l_nums;i++){
+								line([-1.5,ud_randge[0]+0.1+l_mul*(i+1)],[1.5,ud_randge[0]+0.1+l_mul*(i+1)]);
+							}
+						}
+					}
+					if(set_lines[0]==4){
+						if(rands_arr_right[0]==1){
+							line([-1.5,ud_randge[0]+0.1],[1.5,ud_randge[1]-0.1]);
+							line([1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1]);
+						}else{
+							var s_move = randRange(5,10)/10;
+							line([-1.5+s_move,ud_randge[0]+0.1],[1.5-s_move,ud_randge[1]-0.1]);
+							line([1.5,ud_randge[0]+0.1+s_move*1.2],[-1.5,ud_randge[1]-0.1-s_move*1.2]);
+						}
+					}
+					if(set_lines[0]==5){
+						line([-1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1]);
+						line([-1.5,0],[0,ud_randge[0]+0.1]);
+						line([0,ud_randge[1]-0.1],[1.5,0]);
+					}
+				</div>
+				</td>
+				<td style="vertical-align:middle">
+					<input type="checkbox" name="checkbox" id="c2">
+				</td>
+				<td onclick="if($('#c2').attr('checked')){$('#c2').removeAttr('checked')}else{$('#c2').attr('checked','checked')}">
+				<div class="graphie" id="filling2">
+					init({
+						range: [ [-1.6, 1.6], ud_randge ],scale: 40
+					});
+					path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					style({stroke: colours});
+					if(set_lines[1]==1){
+						if(rands_arr_right[1]==1){
+							line([-1.5,0],[1.5,0]);
+							line([0,ud_randge[0]+0.1],[0,ud_randge[1]-0.1]);
+						}else{
+							var c = randRange(5,10)/10*pow(-1,randRange(1,2));
+							var d = randRange(5,10)/10*pow(-1,randRange(1,2));
+							line([-1.5,c],[1.5,c]);
+							line([d,ud_randge[0]+0.1],[d,ud_randge[1]-0.1]);
+						}
+					}
+					if(set_lines[1]==2){
+						if(rands_arr_right[1]==1){
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5+0.75*(i+1),ud_randge[0]+0.1],[-1.5+0.75*(i+1),ud_randge[1]-0.1]);
+							}
+						}else{
+							var l_nums = randFromArray([1,2,4]);
+							var l_mul = 3/(l_nums+1);
+							for(var i = 0;i&lt;l_nums;i++){
+								line([-1.5+l_mul*(i+1),ud_randge[0]+0.1],[-1.5+l_mul*(i+1),ud_randge[1]-0.1]);
+							}
+						}
+					}
+					if(set_lines[1]==3){
+						if(rands_arr_right[1]==1){
+							var l_mul = (ud_randge[1]-ud_randge[0])/4;
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5,ud_randge[0]+0.1+l_mul*(i+1)],[1.5,ud_randge[0]+0.1+l_mul*(i+1)]);
+							}
+						}else{
+							var l_nums = randFromArray([1,2,4]);
+							var l_mul = (ud_randge[1]-ud_randge[0])/(l_nums+1);
+							for(var i = 0;i&lt;l_nums;i++){
+								line([-1.5,ud_randge[0]+0.1+l_mul*(i+1)],[1.5,ud_randge[0]+0.1+l_mul*(i+1)]);
+							}
+						}
+					}
+					if(set_lines[1]==4){
+						if(rands_arr_right[1]==1){
+							line([-1.5,ud_randge[0]+0.1],[1.5,ud_randge[1]-0.1]);
+							line([1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1]);
+						}else{
+							var s_move = randRange(5,10)/10;
+							line([-1.5+s_move,ud_randge[0]+0.1],[1.5-s_move,ud_randge[1]-0.1]);
+							line([1.5,ud_randge[0]+0.1+s_move*1.2],[-1.5,ud_randge[1]-0.1-s_move*1.2]);
+						}
+					}
+					if(set_lines[1]==5){
+						line([-1.5,ud_randge[0]+0.1],[1.5,ud_randge[1]-0.1]);
+						line([-1.5,0],[0,ud_randge[1]-0.1]);
+						line([0,ud_randge[0]+0.1],[1.5,0]);
+					}
+				</div>
+				</td>
+				<td style="vertical-align:middle">
+					<input type="checkbox" name="checkbox" id="c3">
+				</td>
+				<td onclick="if($('#c3').attr('checked')){$('#c3').removeAttr('checked')}else{$('#c3').attr('checked','checked')}">
+				<div class="graphie" id="filling3">
+					init({
+						range: [ [-1.6, 1.6], ud_randge ],scale: 40
+					});
+					path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					style({stroke: colours});
+					if(set_lines[2]==1){
+						if(rands_arr_right[2]==1){
+							line([-1.5,0],[1.5,0]);
+							line([0,ud_randge[0]+0.1],[0,ud_randge[1]-0.1]);
+						}else{
+							var c = randRange(5,10)/10*pow(-1,randRange(1,2));
+							var d = randRange(5,10)/10*pow(-1,randRange(1,2));
+							line([-1.5,c],[1.5,c]);
+							line([d,ud_randge[0]+0.1],[d,ud_randge[1]-0.1]);
+						}
+					}
+					if(set_lines[2]==2){
+						if(rands_arr_right[2]==1){
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5+0.75*(i+1),ud_randge[0]+0.1],[-1.5+0.75*(i+1),ud_randge[1]-0.1]);
+							}
+						}else{
+							var l_nums = randFromArray([1,2,4]);
+							var l_mul = 3/(l_nums+1);
+							for(var i = 0;i&lt;l_nums;i++){
+								line([-1.5+l_mul*(i+1),ud_randge[0]+0.1],[-1.5+l_mul*(i+1),ud_randge[1]-0.1]);
+							}
+						}
+					}
+					if(set_lines[2]==3){
+						if(rands_arr_right[2]==1){
+							var l_mul = (ud_randge[1]-ud_randge[0])/4;
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5,ud_randge[0]+0.1+l_mul*(i+1)],[1.5,ud_randge[0]+0.1+l_mul*(i+1)]);
+							}
+						}else{
+							var l_nums = randFromArray([1,2,4]);
+							var l_mul = (ud_randge[1]-ud_randge[0])/(l_nums+1);
+							for(var i = 0;i&lt;l_nums;i++){
+								line([-1.5,ud_randge[0]+0.1+l_mul*(i+1)],[1.5,ud_randge[0]+0.1+l_mul*(i+1)]);
+							}
+						}
+					}
+					if(set_lines[2]==4){
+						if(rands_arr_right[2]==1){
+							line([-1.5,ud_randge[0]+0.1],[1.5,ud_randge[1]-0.1]);
+							line([1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1]);
+						}else{
+							var s_move = randRange(5,10)/10;
+							line([-1.5+s_move,ud_randge[0]+0.1],[1.5-s_move,ud_randge[1]-0.1]);
+							line([1.5,ud_randge[0]+0.1+s_move*1.2],[-1.5,ud_randge[1]-0.1-s_move*1.2]);
+						}
+					}
+					if(set_lines[2]==5){
+						line([-1.5+randRange(5,10)/10,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1]);
+						line([-1.5,0],[0,ud_randge[0]+0.1]);
+						line([0,ud_randge[1]-0.1],[1.5,0]);
+					}
+				</div>
+				</td>
+				</tr>
+				<tr>
+				<td style="vertical-align:middle">
+					<input type="checkbox" name="checkbox" id="c4">
+				</td>
+				<td onclick="if($('#c4').attr('checked')){$('#c4').removeAttr('checked')}else{$('#c4').attr('checked','checked')}">
+				<div class="graphie" id="filling4">
+					init({
+						range: [ [-1.6, 1.6], ud_randge ],scale: 40
+					});
+					path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					style({stroke: colours});
+					if(set_lines[3]==1){
+						if(rands_arr_right[3]==1){
+							line([-1.5,0],[1.5,0]);
+							line([0,ud_randge[0]+0.1],[0,ud_randge[1]-0.1]);
+						}else{
+							var c = randRange(5,10)/10*pow(-1,randRange(1,2));
+							var d = randRange(5,10)/10*pow(-1,randRange(1,2));
+							line([-1.5,c],[1.5,c]);
+							line([d,ud_randge[0]+0.1],[d,ud_randge[1]-0.1]);
+						}
+					}
+					if(set_lines[3]==2){
+						if(rands_arr_right[3]==1){
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5+0.75*(i+1),ud_randge[0]+0.1],[-1.5+0.75*(i+1),ud_randge[1]-0.1]);
+							}
+						}else{
+							var l_nums = randFromArray([1,2,4]);
+							var l_mul = 3/(l_nums+1);
+							for(var i = 0;i&lt;l_nums;i++){
+								line([-1.5+l_mul*(i+1),ud_randge[0]+0.1],[-1.5+l_mul*(i+1),ud_randge[1]-0.1]);
+							}
+						}
+					}
+					if(set_lines[3]==3){
+						if(rands_arr_right[3]==1){
+							var l_mul = (ud_randge[1]-ud_randge[0])/4;
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5,ud_randge[0]+0.1+l_mul*(i+1)],[1.5,ud_randge[0]+0.1+l_mul*(i+1)]);
+							}
+						}else{
+							var l_nums = randFromArray([1,2,4]);
+							var l_mul = (ud_randge[1]-ud_randge[0])/(l_nums+1);
+							for(var i = 0;i&lt;l_nums;i++){
+								line([-1.5,ud_randge[0]+0.1+l_mul*(i+1)],[1.5,ud_randge[0]+0.1+l_mul*(i+1)]);
+							}
+						}
+					}
+					if(set_lines[3]==4){
+						if(rands_arr_right[3]==1){
+							line([-1.5,ud_randge[0]+0.1],[1.5,ud_randge[1]-0.1]);
+							line([1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1]);
+						}else{
+							var s_move = randRange(5,10)/10;
+							line([-1.5+s_move,ud_randge[0]+0.1],[1.5-s_move,ud_randge[1]-0.1]);
+							line([1.5,ud_randge[0]+0.1+s_move*1.2],[-1.5,ud_randge[1]-0.1-s_move*1.2]);
+						}
+					}
+					if(set_lines[3]==5){
+						line([-1.5,ud_randge[1]-0.1],[1.5-randRange(5,10)/10,ud_randge[0]+0.1]);
+						line([-1.5,0],[0,ud_randge[0]+0.1]);
+						line([0,ud_randge[1]-0.1],[1.5,0]);
+					}
+				</div>
+				</td>
+				<td style="vertical-align:middle">
+					<input type="checkbox" name="checkbox" id="c5">
+				</td>
+				<td onclick="if($('#c5').attr('checked')){$('#c5').removeAttr('checked')}else{$('#c5').attr('checked','checked')}">
+				<div class="graphie" id="filling5">
+					init({
+						range: [ [-1.6, 1.6], ud_randge ],scale: 40
+					});
+					path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					style({stroke: colours});
+					if(set_lines[4]==1){
+						if(rands_arr_right[4]==1){
+							line([-1.5,0],[1.5,0]);
+							line([0,ud_randge[0]+0.1],[0,ud_randge[1]-0.1]);
+						}else{
+							var c = randRange(5,10)/10*pow(-1,randRange(1,2));
+							var d = randRange(5,10)/10*pow(-1,randRange(1,2));
+							line([-1.5,c],[1.5,c]);
+							line([d,ud_randge[0]+0.1],[d,ud_randge[1]-0.1]);
+						}
+					}
+					if(set_lines[4]==2){
+						if(rands_arr_right[4]==1){
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5+0.75*(i+1),ud_randge[0]+0.1],[-1.5+0.75*(i+1),ud_randge[1]-0.1]);
+							}
+						}else{
+							var l_nums = randFromArray([1,2,4]);
+							var l_mul = 3/(l_nums+1);
+							for(var i = 0;i&lt;l_nums;i++){
+								line([-1.5+l_mul*(i+1),ud_randge[0]+0.1],[-1.5+l_mul*(i+1),ud_randge[1]-0.1]);
+							}
+						}
+					}
+					if(set_lines[4]==3){
+						if(rands_arr_right[4]==1){
+							var l_mul = (ud_randge[1]-ud_randge[0])/4;
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5,ud_randge[0]+0.1+l_mul*(i+1)],[1.5,ud_randge[0]+0.1+l_mul*(i+1)]);
+							}
+						}else{
+							var l_nums = randFromArray([1,2,4]);
+							var l_mul = (ud_randge[1]-ud_randge[0])/(l_nums+1);
+							for(var i = 0;i&lt;l_nums;i++){
+								line([-1.5,ud_randge[0]+0.1+l_mul*(i+1)],[1.5,ud_randge[0]+0.1+l_mul*(i+1)]);
+							}
+						}
+					}
+					if(set_lines[4]==4){
+						if(rands_arr_right[4]==1){
+							line([-1.5,ud_randge[0]+0.1],[1.5,ud_randge[1]-0.1]);
+							line([1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1]);
+						}else{
+							var s_move = randRange(5,10)/10;
+							line([-1.5+s_move,ud_randge[0]+0.1],[1.5-s_move,ud_randge[1]-0.1]);
+							line([1.5,ud_randge[0]+0.1+s_move*1.2],[-1.5,ud_randge[1]-0.1-s_move*1.2]);
+						}
+					}
+					if(set_lines[4]==5){
+						line([-1.5+randRange(5,10)/10,ud_randge[0]+0.1],[1.5-randRange(5,10)/10,ud_randge[1]-0.1]);
+						line([-1.5,0],[0,ud_randge[1]-0.1]);
+						line([0,ud_randge[0]+0.1],[1.5,0]);
+					}
+				</div>
+				</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="solution" data-type="multiple">
+			<p>勾選所有正確的答案</p>
+			<div class="sol" data-type="custom">
+				<div class="guess">
+					(function(){
+						var chk_value =[];    
+						$('input[name="checkbox"]:checked').each(function(){    
+							chk_value.push($(this).val());    
+						});
+						return chk_value;
+					})()
+				</div>
+				<div class="validator-function">
+					if(guess.length==0){
+						return "";
+					}
+					if(guess.length!=sum){
+						return false;
+					}
+					var trueAns = 0;
+					for(var i = 0;i&lt;guess.length;i++){
+						if(guess[i]=='true'){
+							trueAns++;
+						}
+					}
+					if(trueAns==sum){
+						return true;
+					}
+				</div>
+			</div>
+		</div>
+				
+		<div class="hints">
+			<p>將一個圖形切成四等份的意思是指將它切成<span style="font-weight:bold">完全相等</span>的四份。</p>
+			<div>
+				<p>以下顯示的圖形都被切成了四等份 :</p>
+				<table><tr>
+					<td data-if="rands_arr_right[0]==1">
+					<div class="graphie" id="ans_gra_1">
+						init({
+							range: [ [-1.6, 1.6], ud_randge ],scale: 40
+						});
+						path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						style({stroke: colours});
+						if(set_lines[0]==1){
+							line([-1.5,0],[1.5,0]);
+							line([0,ud_randge[0]+0.1],[0,ud_randge[1]-0.1]);
+						}
+						if(set_lines[0]==2){
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5+0.75*(i+1),ud_randge[0]+0.1],[-1.5+0.75*(i+1),ud_randge[1]-0.1]);
+							}
+						}
+						if(set_lines[0]==3){
+							var l_mul = (ud_randge[1]-ud_randge[0])/4;
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5,ud_randge[0]+0.1+l_mul*(i+1)],[1.5,ud_randge[0]+0.1+l_mul*(i+1)]);
+							}
+						}
+						if(set_lines[0]==4){
+							line([-1.5,ud_randge[0]+0.1],[1.5,ud_randge[1]-0.1]);
+							line([1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1]);
+						}
+					</div>
+					</td>
+					<td data-if="rands_arr_right[1]==1">
+					<div class="graphie" id="ans_gra_2">
+						init({
+							range: [ [-1.6, 1.6], ud_randge ],scale: 40
+						});
+						path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						style({stroke: colours});
+						if(set_lines[1]==1){
+							line([-1.5,0],[1.5,0]);
+							line([0,ud_randge[0]+0.1],[0,ud_randge[1]-0.1]);
+						}
+						if(set_lines[1]==2){
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5+0.75*(i+1),ud_randge[0]+0.1],[-1.5+0.75*(i+1),ud_randge[1]-0.1]);
+							}
+						}
+						if(set_lines[1]==3){
+							var l_mul = (ud_randge[1]-ud_randge[0])/4;
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5,ud_randge[0]+0.1+l_mul*(i+1)],[1.5,ud_randge[0]+0.1+l_mul*(i+1)]);
+							}
+						}
+						if(set_lines[1]==4){
+							line([-1.5,ud_randge[0]+0.1],[1.5,ud_randge[1]-0.1]);
+							line([1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1]);
+						}
+					</div></td>
+					<td data-if="rands_arr_right[2]==1">
+					<div class="graphie" id="ans_gra_3">
+						init({
+							range: [ [-1.6, 1.6], ud_randge ],scale: 40
+						});
+						path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						style({stroke: colours});
+						if(set_lines[2]==1){
+							line([-1.5,0],[1.5,0]);
+							line([0,ud_randge[0]+0.1],[0,ud_randge[1]-0.1]);
+						}
+						if(set_lines[2]==2){
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5+0.75*(i+1),ud_randge[0]+0.1],[-1.5+0.75*(i+1),ud_randge[1]-0.1]);
+							}
+						}
+						if(set_lines[2]==3){
+							var l_mul = (ud_randge[1]-ud_randge[0])/4;
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5,ud_randge[0]+0.1+l_mul*(i+1)],[1.5,ud_randge[0]+0.1+l_mul*(i+1)]);
+							}
+						}
+						if(set_lines[2]==4){
+							line([-1.5,ud_randge[0]+0.1],[1.5,ud_randge[1]-0.1]);
+							line([1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1]);
+						}
+					</div></td>
+					<td data-if="rands_arr_right[3]==1">
+					<div class="graphie" id="ans_gra_4">
+						init({
+							range: [ [-1.6, 1.6], ud_randge ],scale: 40
+						});
+						path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						style({stroke: colours});
+						if(set_lines[3]==1){
+							line([-1.5,0],[1.5,0]);
+							line([0,ud_randge[0]+0.1],[0,ud_randge[1]-0.1]);
+						}
+						if(set_lines[3]==2){
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5+0.75*(i+1),ud_randge[0]+0.1],[-1.5+0.75*(i+1),ud_randge[1]-0.1]);
+							}
+						}
+						if(set_lines[3]==3){
+							var l_mul = (ud_randge[1]-ud_randge[0])/4;
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5,ud_randge[0]+0.1+l_mul*(i+1)],[1.5,ud_randge[0]+0.1+l_mul*(i+1)]);
+							}
+						}
+						if(set_lines[3]==4){
+							line([-1.5,ud_randge[0]+0.1],[1.5,ud_randge[1]-0.1]);
+							line([1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1]);
+						}
+					</div></td>
+					<td data-if="rands_arr_right[4]==1">
+					<div class="graphie" id="ans_gra_5">
+						init({
+							range: [ [-1.6, 1.6], ud_randge ],scale: 40
+						});
+						path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						style({stroke: colours});
+						if(set_lines[4]==1){
+							line([-1.5,0],[1.5,0]);
+							line([0,ud_randge[0]+0.1],[0,ud_randge[1]-0.1]);
+						}
+						if(set_lines[4]==2){
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5+0.75*(i+1),ud_randge[0]+0.1],[-1.5+0.75*(i+1),ud_randge[1]-0.1]);
+							}
+						}
+						if(set_lines[4]==3){
+							var l_mul = (ud_randge[1]-ud_randge[0])/4;
+							for(var i = 0;i&lt;3;i++){
+								line([-1.5,ud_randge[0]+0.1+l_mul*(i+1)],[1.5,ud_randge[0]+0.1+l_mul*(i+1)]);
+							}
+						}
+						if(set_lines[4]==4){
+							line([-1.5,ud_randge[0]+0.1],[1.5,ud_randge[1]-0.1]);
+							line([1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1]);
+						}
+					</div></td>
+				</tr></table>
+			</div>
+		</div>
+		</div>
+		
+		<div id="case4-5">
+		<div class="vars" data-ensure="sum &gt;0 && sum &lt;5 && sum_s &gt;2 && sum_s &lt;5">
+			<var id="parts">randRange(2,3)</var>
+			<var id="ud_randge">[-1.6,1.6]</var>
+			<var id="colours">randFromArray([ORANGE,"#28AE7B","red","#6495ED"])</var>
+			<var id="rands_arr">
+			(function(){
+				var arrn = new Array();
+				for(var j = 0;j&lt;5;j++){
+					arrn[j]=randRange(0,1);
+				}
+				return arrn;
+			})()</var>
+			<var id="rands_arr_right">
+			(function(){
+				var arrn = new Array();
+				for(var j = 0;j&lt;5;j++){
+					if(rands_arr[j]==1){
+						arrn[j]=randRange(0,1);
+					}else{
+						arrn[j]=0;
+					}
+				}
+				return arrn;
+			})()</var>
+			<var id="sum">
+			(function(){
+				var s = 0;
+				for(var k = 0;k&lt;rands_arr_right.length;k++){
+					s+=rands_arr_right[k];
+					if(rands_arr_right[k]==1){
+						$('#c'+(k+1)).val('true');
+					}else{
+						$('#c'+(k+1)).val('false');
+					}
+				}
+				return s;
+			})()</var>
+			<var id="sum_s">
+			(function(){
+				var s = 0;
+				for(var k = 0;k&lt;rands_arr.length;k++){
+					s+=rands_arr[k];
+				}
+				return s;
+			})()</var>
+			<var id="set_right_lines">randRangeUnique(1,5,4)</var>
+			<var id="set_lines">
+			(function(){
+				var lineset = new Array();
+				var nums = 0;
+				for(var i = 0;i&lt;rands_arr.length;i++){
+					if(rands_arr[i]==1){
+						lineset[i] = set_right_lines[nums];
+						nums++;
+					}else{ lineset[i] = 5;}
+				}
+				return lineset;
+			})()</var>
+			<var id="angs">[randRange(0,180),randRange(0,120),randRange(0,180),randRange(0,120),randRange(0,180),randRange(0,120),randRange(0,180),randRange(0,120),randRange(0,180),randRange(0,120)]</var>
+		</div>
+		<div class="question">
+			<p>下列哪個（些）圖形被切割成<var>parts==2?"兩":"三"</var>等份？（單選或多選）</p>
+			<p>勾選所有正確的答案</p>
+			<table>
+				<tr>
+				<td style="vertical-align:middle">
+					<input type="checkbox" name="checkbox" id="c1">
+				</td>
+				<td onclick="if($('#c1').attr('checked')){$('#c1').removeAttr('checked')}else{$('#c1').attr('checked','checked')}">
+				<div class="graphie" id="filling1">
+					init({
+						range: [ [-1.6, 1.6], ud_randge ],scale: 40
+					});
+					circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					style({stroke: colours});
+					if(set_lines[0]==1){
+						if(rands_arr_right[0]==1){
+							if(parts==2){
+								line(polar(1.5,angs[0]),polar(1.5,angs[0]+180));
+							}else{
+								line([0,0],polar(1.5,angs[1]));
+								line([0,0],polar(1.5,angs[1]+120));
+								line([0,0],polar(1.5,angs[1]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,90);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randFromArray([randRange(60,120),randRange(200,260)])));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}
+						}
+					}
+					if(set_lines[0]==2){
+						if(rands_arr_right[0]==1){
+							if(parts==2){
+								line(polar(1.5,angs[0]),polar(1.5,angs[0]+180));
+							}else{
+								line([0,0],polar(1.5,angs[1]));
+								line([0,0],polar(1.5,angs[1]+120));
+								line([0,0],polar(1.5,angs[1]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,90);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randFromArray([randRange(60,120),randRange(200,260)])));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}
+						}
+					}
+					if(set_lines[0]==3){
+						if(rands_arr_right[0]==1){
+							if(parts==2){
+								line(polar(1.5,angs[0]),polar(1.5,angs[0]+180));
+							}else{
+								line([0,0],polar(1.5,angs[1]));
+								line([0,0],polar(1.5,angs[1]+120));
+								line([0,0],polar(1.5,angs[1]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+90));
+								line([0,0],polar(1.5,ang+180));
+								line([0,0],polar(1.5,ang+270));
+							}
+						}
+					}
+					if(set_lines[0]==4){
+						if(rands_arr_right[0]==1){
+							if(parts==2){
+								line(polar(1.5,angs[0]),polar(1.5,angs[0]+180));
+							}else{
+								line([0,0],polar(1.5,angs[1]));
+								line([0,0],polar(1.5,angs[1]+120));
+								line([0,0],polar(1.5,angs[1]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+90));
+								line([0,0],polar(1.5,ang+180));
+								line([0,0],polar(1.5,ang+270));
+							}
+						}
+					}
+					if(set_lines[0]==5){
+					}
+				</div>
+				</td>
+				<td style="vertical-align:middle">
+					<input type="checkbox" name="checkbox" id="c2">
+				</td>
+				<td onclick="if($('#c2').attr('checked')){$('#c2').removeAttr('checked')}else{$('#c2').attr('checked','checked')}">
+				<div class="graphie" id="filling2">
+					init({
+						range: [ [-1.6, 1.6], ud_randge ],scale: 40
+					});
+					circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					style({stroke: colours});
+					if(set_lines[1]==1){
+						if(rands_arr_right[1]==1){
+							if(parts==2){
+								line(polar(1.5,angs[2]),polar(1.5,angs[2]+180));
+							}else{
+								line([0,0],polar(1.5,angs[3]));
+								line([0,0],polar(1.5,angs[3]+120));
+								line([0,0],polar(1.5,angs[3]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,90);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randFromArray([randRange(60,120),randRange(200,260)])));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}
+						}
+					}
+					if(set_lines[1]==2){
+						if(rands_arr_right[1]==1){
+							if(parts==2){
+								line(polar(1.5,angs[2]),polar(1.5,angs[2]+180));
+							}else{
+								line([0,0],polar(1.5,angs[3]));
+								line([0,0],polar(1.5,angs[3]+120));
+								line([0,0],polar(1.5,angs[3]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,90);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randFromArray([randRange(60,120),randRange(200,260)])));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}
+						}
+					}
+					if(set_lines[1]==3){
+						if(rands_arr_right[1]==1){
+							if(parts==2){
+								line(polar(1.5,angs[2]),polar(1.5,angs[2]+180));
+							}else{
+								line([0,0],polar(1.5,angs[3]));
+								line([0,0],polar(1.5,angs[3]+120));
+								line([0,0],polar(1.5,angs[3]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+90));
+								line([0,0],polar(1.5,ang+180));
+								line([0,0],polar(1.5,ang+270));
+							}
+						}
+					}
+					if(set_lines[1]==4){
+						if(rands_arr_right[1]==1){
+							if(parts==2){
+								line(polar(1.5,angs[2]),polar(1.5,angs[2]+180));
+							}else{
+								line([0,0],polar(1.5,angs[3]));
+								line([0,0],polar(1.5,angs[3]+120));
+								line([0,0],polar(1.5,angs[3]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+90));
+								line([0,0],polar(1.5,ang+180));
+								line([0,0],polar(1.5,ang+270));
+							}
+						}
+					}
+					if(set_lines[1]==5){
+					}
+				</div>
+				</td>
+				<td style="vertical-align:middle">
+					<input type="checkbox" name="checkbox" id="c3">
+				</td>
+				<td onclick="if($('#c3').attr('checked')){$('#c3').removeAttr('checked')}else{$('#c3').attr('checked','checked')}">
+				<div class="graphie" id="filling3">
+					init({
+						range: [ [-1.6, 1.6], ud_randge ],scale: 40
+					});
+					circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					style({stroke: colours});
+					if(set_lines[2]==1){
+						if(rands_arr_right[2]==1){
+							if(parts==2){
+								line(polar(1.5,angs[4]),polar(1.5,angs[4]+180));
+							}else{
+								line([0,0],polar(1.5,angs[5]));
+								line([0,0],polar(1.5,angs[5]+120));
+								line([0,0],polar(1.5,angs[5]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,90);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randFromArray([randRange(60,120),randRange(200,260)])));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}
+						}
+					}
+					if(set_lines[2]==2){
+						if(rands_arr_right[2]==1){
+							if(parts==2){
+								line(polar(1.5,angs[4]),polar(1.5,angs[4]+180));
+							}else{
+								line([0,0],polar(1.5,angs[5]));
+								line([0,0],polar(1.5,angs[5]+120));
+								line([0,0],polar(1.5,angs[5]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,90);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randFromArray([randRange(60,120),randRange(200,260)])));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}
+						}
+					}
+					if(set_lines[2]==3){
+						if(rands_arr_right[2]==1){
+							if(parts==2){
+								line(polar(1.5,angs[4]),polar(1.5,angs[4]+180));
+							}else{
+								line([0,0],polar(1.5,angs[5]));
+								line([0,0],polar(1.5,angs[5]+120));
+								line([0,0],polar(1.5,angs[5]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+90));
+								line([0,0],polar(1.5,ang+180));
+								line([0,0],polar(1.5,ang+270));
+							}
+						}
+					}
+					if(set_lines[2]==4){
+						if(rands_arr_right[2]==1){
+							if(parts==2){
+								line(polar(1.5,angs[4]),polar(1.5,angs[4]+180));
+							}else{
+								line([0,0],polar(1.5,angs[5]));
+								line([0,0],polar(1.5,angs[5]+120));
+								line([0,0],polar(1.5,angs[5]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+90));
+								line([0,0],polar(1.5,ang+180));
+								line([0,0],polar(1.5,ang+270));
+							}
+						}
+					}
+					if(set_lines[2]==5){
+					}
+				</div>
+				</td>
+				</tr>
+				<tr>
+				<td style="vertical-align:middle">
+					<input type="checkbox" name="checkbox" id="c4">
+				</td>
+				<td onclick="if($('#c4').attr('checked')){$('#c4').removeAttr('checked')}else{$('#c4').attr('checked','checked')}">
+				<div class="graphie" id="filling4">
+					init({
+						range: [ [-1.6, 1.6], ud_randge ],scale: 40
+					});
+					circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					style({stroke: colours});
+					if(set_lines[3]==1){
+						if(rands_arr_right[3]==1){
+							if(parts==2){
+								line(polar(1.5,angs[6]),polar(1.5,angs[6]+180));
+							}else{
+								line([0,0],polar(1.5,angs[7]));
+								line([0,0],polar(1.5,angs[7]+120));
+								line([0,0],polar(1.5,angs[7]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,90);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randFromArray([randRange(60,120),randRange(200,260)])));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}
+						}
+					}
+					if(set_lines[3]==2){
+						if(rands_arr_right[3]==1){
+							if(parts==2){
+								line(polar(1.5,angs[6]),polar(1.5,angs[6]+180));
+							}else{
+								line([0,0],polar(1.5,angs[7]));
+								line([0,0],polar(1.5,angs[7]+120));
+								line([0,0],polar(1.5,angs[7]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,90);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randFromArray([randRange(60,120),randRange(200,260)])));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}
+						}
+					}
+					if(set_lines[3]==3){
+						if(rands_arr_right[3]==1){
+							if(parts==2){
+								line(polar(1.5,angs[6]),polar(1.5,angs[6]+180));
+							}else{
+								line([0,0],polar(1.5,angs[7]));
+								line([0,0],polar(1.5,angs[7]+120));
+								line([0,0],polar(1.5,angs[7]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+90));
+								line([0,0],polar(1.5,ang+180));
+								line([0,0],polar(1.5,ang+270));
+							}
+						}
+					}
+					if(set_lines[3]==4){
+						if(rands_arr_right[3]==1){
+							if(parts==2){
+								line(polar(1.5,angs[6]),polar(1.5,angs[6]+180));
+							}else{
+								line([0,0],polar(1.5,angs[7]));
+								line([0,0],polar(1.5,angs[7]+120));
+								line([0,0],polar(1.5,angs[7]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+90));
+								line([0,0],polar(1.5,ang+180));
+								line([0,0],polar(1.5,ang+270));
+							}
+						}
+					}
+					if(set_lines[3]==5){
+					}
+				</div>
+				</td>
+				<td style="vertical-align:middle">
+					<input type="checkbox" name="checkbox" id="c5">
+				</td>
+				<td onclick="if($('#c5').attr('checked')){$('#c5').removeAttr('checked')}else{$('#c5').attr('checked','checked')}">
+				<div class="graphie" id="filling5">
+					init({
+						range: [ [-1.6, 1.6], ud_randge ],scale: 40
+					});
+					circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					style({stroke: colours});
+					if(set_lines[4]==1){
+						if(rands_arr_right[4]==1){
+							if(parts==2){
+								line(polar(1.5,angs[8]),polar(1.5,angs[8]+180));
+							}else{
+								line([0,0],polar(1.5,angs[9]));
+								line([0,0],polar(1.5,angs[9]+120));
+								line([0,0],polar(1.5,angs[9]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,90);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randFromArray([randRange(60,120),randRange(200,260)])));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}
+						}
+					}
+					if(set_lines[4]==2){
+						if(rands_arr_right[4]==1){
+							if(parts==2){
+								line(polar(1.5,angs[8]),polar(1.5,angs[8]+180));
+							}else{
+								line([0,0],polar(1.5,angs[9]));
+								line([0,0],polar(1.5,angs[9]+120));
+								line([0,0],polar(1.5,angs[9]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,90);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randFromArray([randRange(60,120),randRange(200,260)])));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}
+						}
+					}
+					if(set_lines[4]==3){
+						if(rands_arr_right[4]==1){
+							if(parts==2){
+								line(polar(1.5,angs[8]),polar(1.5,angs[8]+180));
+							}else{
+								line([0,0],polar(1.5,angs[9]));
+								line([0,0],polar(1.5,angs[9]+120));
+								line([0,0],polar(1.5,angs[9]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+90));
+								line([0,0],polar(1.5,ang+180));
+								line([0,0],polar(1.5,ang+270));
+							}
+						}
+					}
+					if(set_lines[4]==4){
+						if(rands_arr_right[4]==1){
+							if(parts==2){
+								line(polar(1.5,angs[8]),polar(1.5,angs[8]+180));
+							}else{
+								line([0,0],polar(1.5,angs[9]));
+								line([0,0],polar(1.5,angs[9]+120));
+								line([0,0],polar(1.5,angs[9]+240));
+							}
+						}else{
+							if(parts==2){
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+randRange(30,90)));
+								line([0,0],polar(1.5,ang+randRange(210,240)));
+							}else{
+								var ang = randRange(0,60);
+								line([0,0],polar(1.5,ang));
+								line([0,0],polar(1.5,ang+90));
+								line([0,0],polar(1.5,ang+180));
+								line([0,0],polar(1.5,ang+270));
+							}
+						}
+					}
+					if(set_lines[4]==5){
+					}
+				</div>
+				</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="solution" data-type="multiple">
+			<p>勾選所有正確的答案</p>
+			<div class="sol" data-type="custom">
+				<div class="guess">
+					(function(){
+						var chk_value =[];    
+						$('input[name="checkbox"]:checked').each(function(){    
+							chk_value.push($(this).val());    
+						});
+						return chk_value;
+					})()
+				</div>
+				<div class="validator-function">
+					if(guess.length==0){
+						return "";
+					}
+					if(guess.length!=sum){
+						return false;
+					}
+					var trueAns = 0;
+					for(var i = 0;i&lt;guess.length;i++){
+						if(guess[i]=='true'){
+							trueAns++;
+						}
+					}
+					if(trueAns==sum){
+						return true;
+					}
+				</div>
+			</div>
+		</div>
+				
+		<div class="hints">
+			<p data-if="parts==2">將一個圖形切成兩等份的意思是指將它切成<span style="font-weight:bold">完全相等</span>的兩份。</p>
+			<p data-if="parts==3">將一個圖形分成三等份的意思是指將它分成<span style="font-weight:bold">完全相等</span>的三份。</p>
+			<div>
+				<p data-if="parts==2">以下顯示的圖形都被切成了兩等份 :</p>
+				<p data-if="parts==3">以下顯示的圖形都被切成了三等份 :</p>
+				<table><tr>
+					<td data-if="rands_arr_right[0]==1">
+					<div class="graphie" id="ans_gra_1">
+						init({
+							range: [ [-1.6, 1.6], ud_randge ],scale: 40
+						});
+						circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						style({stroke: colours});
+						if(parts==2){
+							line(polar(1.5,angs[0]),polar(1.5,angs[0]+180));
+						}else{
+							line([0,0],polar(1.5,angs[1]));
+							line([0,0],polar(1.5,angs[1]+120));
+							line([0,0],polar(1.5,angs[1]+240));
+						}
+					</div>
+					</td>
+					<td data-if="rands_arr_right[1]==1">
+					<div class="graphie" id="ans_gra_2">
+						init({
+							range: [ [-1.6, 1.6], ud_randge ],scale: 40
+						});
+						circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						style({stroke: colours});
+						if(parts==2){
+							line(polar(1.5,angs[2]),polar(1.5,angs[2]+180));
+						}else{
+							line([0,0],polar(1.5,angs[3]));
+							line([0,0],polar(1.5,angs[3]+120));
+							line([0,0],polar(1.5,angs[3]+240));
+						}
+					</div></td>
+					<td data-if="rands_arr_right[2]==1">
+					<div class="graphie" id="ans_gra_3">
+						init({
+							range: [ [-1.6, 1.6], ud_randge ],scale: 40
+						});
+						circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						style({stroke: colours});
+						if(parts==2){
+							line(polar(1.5,angs[4]),polar(1.5,angs[4]+180));
+						}else{
+							line([0,0],polar(1.5,angs[5]));
+							line([0,0],polar(1.5,angs[5]+120));
+							line([0,0],polar(1.5,angs[5]+240));
+						}
+					</div></td>
+					<td data-if="rands_arr_right[3]==1">
+					<div class="graphie" id="ans_gra_4">
+						init({
+							range: [ [-1.6, 1.6], ud_randge ],scale: 40
+						});
+						circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						style({stroke: colours});
+						if(parts==2){
+							line(polar(1.5,angs[6]),polar(1.5,angs[6]+180));
+						}else{
+							line([0,0],polar(1.5,angs[7]));
+							line([0,0],polar(1.5,angs[7]+120));
+							line([0,0],polar(1.5,angs[7]+240));
+						}
+					</div></td>
+					<td data-if="rands_arr_right[4]==1">
+					<div class="graphie" id="ans_gra_5">
+						init({
+							range: [ [-1.6, 1.6], ud_randge ],scale: 40
+						});
+						circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						style({stroke: colours});
+						if(parts==2){
+							line(polar(1.5,angs[8]),polar(1.5,angs[8]+180));
+						}else{
+							line([0,0],polar(1.5,angs[9]));
+							line([0,0],polar(1.5,angs[9]+120));
+							line([0,0],polar(1.5,angs[9]+240));
+						}
+					</div></td>
+				</tr></table>
+			</div>
+		</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers graphie-geometry math-format interactive triangle-congruence">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>絕對值概念的文字題</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 30px;
+        }
+		.input_style{width:24px;height:20px;text-align:center;font-size: 75%}
+		.margin_style{margin: 5px 1px 5px 1px}
+    </style>
+	<script type="text/javascript">	    
+			function chg4(num1,num2){
+				var randNum = KhanUtil.randRange(1,2);
+				if(randNum == 1){
+					document.getElementById("c_1").value=num1;
+					document.getElementById("c_2").value=num2;
+					return [num1,num2];
+				}
+				if(randNum == 2){
+					document.getElementById("c_1").value=num2;
+					document.getElementById("c_2").value=num1;
+					return [num2,num1];
+				}			
+			}
+		</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">		
+		<div id="case1">
+            <div class="vars" data-ensure="number1!=-number2">
+				<var id="name">randFromArray([["小紅","小強",1],["小華","小明",1],["小強","小華",1],["小明","小紅",1],["鐵","銅",2],["鎢","鉛",2],["室內","室外",3],["小紅","小強",4],["小華","小明",4],["小強","小華",4],["小明","小紅",4]])</var>
+				<var id="number1">(function(){			
+						if(name[2]==1)
+								return (randRange(20,30));
+						if(name[2]==2)
+							return (randRange(1,15));
+						if(name[2]==3)
+							return (randRange(10,20));
+						if(name[2]==4)
+							return (randRange(100,900));							
+						})()</var>
+				<var id="number2">(function(){			
+						if(name[2]==1)
+								return (randRange(-80,-30)/2);
+						if(name[2]==2)
+							return (randRange(-30,-10)/2);
+						if(name[2]==3)
+							return (randRange(-20,-5)/2);
+						if(name[2]==4)
+							return (randRange(-800,-100));								
+						})()</var>			
+				<var id="change2">chg4(name[0],name[1])</var>
+				<var id="name3">(function(){
+					var a=-number2;
+					if(number1&gt;a)
+						{return [name[0],name[1]];}
+					if(a&gt;number1)
+						{return [name[1],name[0]];}
+					})()</var>
+            </div>
+			<div class="question">
+				<div class="problem">
+					<p data-if="name[2]==1"><var>name[0]</var>站在海平面 <code><var>number1</var></code> 公尺的船上。<br/>他的朋友<var>name[1]</var>在海平面 <code><var>number2</var></code> 公尺的海裡潛水。</p>	
+					<p data-if="name[2]==1">哪一個人所在的高度較高？</p>
+					<p data-if="name[2]==2">假設有兩種金屬：<var>name[0]</var>和<var>name[1]</var>。<br/><var>name[0]</var>的溫度是 <code><var>number1</var></code> 度 ，<var>name[1]</var>的溫度是  <code><var>number2</var></code> 度 。</p>	
+					<p data-if="name[2]==2">哪一種金屬的溫度較高？</p>
+					<p data-if="name[2]==3"><var>name[0]</var>的溫度是 <code><var>number1</var></code> 度 ，<var>name[1]</var>的溫度是  <code><var>number2</var></code> 度 。</p>	
+					<p data-if="name[2]==3">哪一個地方的溫度比較暖和？</p>
+					<p data-if="name[2]==4"><var>name[0]</var>的銀行帳戶餘額為 <code><var>number1</var></code> 元，<br/>他的朋友<var>name[1]</var>的銀行帳戶餘額為 <code><var>number2</var></code> 元。</p>
+					<p data-if="name[2]==4">哪一個人的帳戶餘額比較多？</p>
+					<p onclick="$('#c_1').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_1"><var>change2[0]</var></p>
+					<p onclick="$('#c_2').attr('checked','checked')"><input type="radio" name="count_numbers_1" id="c_2"><var>change2[1]</var></p>
+					<p data-if="name[2]==1">哪一個人離海平面較遠？</p>
+					<p data-if="name[2]==2">哪一種金屬溫度的絕對值較大？</p>
+					<p data-if="name[2]==3">哪一個地方溫度的絕對值較大？</p>
+					<p data-if="name[2]==4">哪一個人的帳戶餘額的絕對值較大？</p>
+					<p onclick="$('#c_3').attr('checked','checked')"><input type="radio" name="count_numbers_2" id="c_3"><var>change2[0]</var></p>
+					<p onclick="$('#c_4').attr('checked','checked')"><input type="radio" name="count_numbers_2" id="c_4"><var>change2[1]</var></p>
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">1</div>
+				    <div class="validator-function">
+						if($("#c_1").attr("checked")!='checked' && $("#c_2").attr("checked")!='checked' && $("#c_3").attr("checked")!='checked' && $("#c_4").attr("checked")!='checked' ){
+							return "";
+						}
+						for(var i=1;i&lt;3;i++)
+						{
+							document.getElementById("c_"+i).value=change2[i-1];
+						}
+						for(var i=3;i&lt;5;i++)
+						{
+							document.getElementById("c_"+i).value=change2[i-3];
+						}
+						var bol1=false;
+						var bol2=false;
+						if((document.getElementById("c_1").checked&&document.getElementById("c_1").value==name[0])||(document.getElementById("c_2").checked&&document.getElementById("c_2").value==name[0]))
+						{
+							bol1=true;
+						}
+						if((document.getElementById("c_3").checked&&document.getElementById("c_3").value==name3[0])||(document.getElementById("c_4").checked&&document.getElementById("c_4").value==name3[0]))
+						{
+							bol2=true;
+						}
+						return bol1&&bol2;
+					</div>
+				</div>
+				<p>請選擇正確的答案</p>
+            </div>
+            <div class="hints">
+				<p data-if="name[2]==1"><var>name[0]</var>是在海拔 <code><var>number1</var></code> 公尺處，而<var>name[1]</var>是在海拔 <code><var>number2</var></code> 公尺處。因此<var>name[0]</var>的高度大於<var>name[1]</var>的高度，因為 <code><var>number1</var></code> 大於 <code><var>number2</var></code> 。</p>
+				<p data-if="name[2]==1">為了找到哪一個人離海平面較遠，我們需要高度的絕對值。<var>name[0]</var>離海平面的的距離為：<code>\lvert <var>number1</var> \rvert = <var>number1</var></code> 公尺，<var>name[1]</var>離海平面的的距離為：<code>\lvert <var>number2</var> \rvert = <var>-number2</var></code> 公尺，所以<var>name3[0]</var>離海平面的距離較遠。</p>
+				
+				<p data-if="name[2]==2"><var>name[0]</var>的溫度是正數，<var>name[1]</var>的溫度是負數，因此<var>name[0]</var>的溫度高於<var>name[1]</var>的溫度。</p>
+				<p data-if="name[2]==2"><var>name[0]</var>的溫度的絕對值為：<code>\lvert <var>number1</var> \rvert</code> 度 <code>= <var>number1</var></code> 度，<var>name[1]</var>的溫度的絕對值為：<code>\lvert <var>number2</var> \rvert</code> 度 <code>= <var>-number2</var></code> 度，所以<var>name3[0]</var>的溫度的絕對值較大。</p>
+				
+				<p data-if="name[2]==3"><var>name[0]</var>的溫度是 <code><var>number1</var></code> 度，<var>name[1]</var>的溫度是 <code><var>number2</var></code> 度，因為 <code><var>number1</var> &gt;  <var>number2</var> </code> ，所以<var>name[0]</var>比<var>name[1]</var>暖和。</p>
+				<p data-if="name[2]==3"><var>name[0]</var>的溫度的絕對值為：<code>\lvert <var>number1</var> \rvert</code> 度 <code>= <var>number1</var></code> 度，<var>name[1]</var>的溫度的絕對值為：<code>\lvert <var>number2</var> \rvert</code> 度 <code>= <var>-number2</var></code> 度，所以<var>name3[0]</var>的溫度的絕對值較大。</p>
+				
+				<p data-if="name[2]==4"><var>name[0]</var>的帳戶餘額是正數，<var>name[1]</var>的帳戶餘額是負數，所以<var>name[0]</var>的帳戶餘額比<var>name[1]</var>的帳戶餘額多。</p>
+				<p data-if="name[2]==4"><var>name[0]</var>的賬戶餘額的絕對值為：<code>\lvert <var>number1</var> \rvert</code> 元 <code> = <var>number1</var></code> 元，<var>name[1]</var>的賬戶餘額的絕對值為：<code>\lvert <var>number2</var> \rvert</code> 元 <code> = <var>-number2</var></code> 元，所以<var>name3[0]</var>的賬戶餘額的絕對值較大。</p>
+				<div data-if="name[2]==1">
+					<p>所以正確的選項是：</p>
+					<p><code>\cdot</code> <span class="hint_pink"><var>name[0]</var></span>所在的高度較高，</p>
+					<p><code>\cdot</code> <span class="hint_pink"><var>name3[0]</var></span>離海平面的距離較遠。</p>
+				</div>
+				<div data-if="name[2]==2">
+					<p>所以正確的選項是：</p>
+					<p><code>\cdot</code> <span class="hint_pink"><var>name[0]</var></span>的溫度較高，</p>
+					<p><code>\cdot</code> <span class="hint_pink"><var>name3[0]</var></span>的溫度的絕對值較大。</p>
+				</div>
+				<div data-if="name[2]==3">
+					<p>所以正確的選項是：</p>
+					<p><code>\cdot</code> <span class="hint_pink"><var>name[0]</var></span>比較暖和，</p>
+					<p><code>\cdot</code> <span class="hint_pink"><var>name3[0]</var></span>的溫度的絕對值較大。</p>
+				</div>
+				<div data-if="name[2]==4">
+					<p>所以正確的選項是：</p>
+					<p><code>\cdot</code> <span class="hint_pink"><var>name[0]</var></span>的帳戶餘額較多，</p>
+					<p><code>\cdot</code> <span class="hint_pink"><var>name3[0]</var></span>的帳戶餘額的絕對值較大。</p>
+				</div>
+			</div>
+        </div>	
+		<div id="case2">
+            <div class="vars">
+				<var id="name">randFromArray([["小紅","小強",1],["小華","小明",1],["小強","小華",1],["小明","小紅",1],["A","B",2]])</var>
+				<var id="w1">randRange( -5, -2)</var>
+				<var id="W">(function(){
+					a=randRange( -5, -3);
+					shape=[w1,w1+a];
+					return shuffle(shape);
+				})()</var>
+				<var id="D1">randRange( 2, 10 )</var>
+                <var id="N1">D1-1</var>
+				<var id="D2">randRange( 2, 10 )</var>
+                <var id="N2">D2-1</var>
+				<var id="name2">(function(){
+					shape=[name[1],name[0]];
+					return shuffle(shape);
+					})()</var>
+				<var id="name3">(function(){
+					if(W[0]&gt;W[1])
+						{return [name[0],name[1]];}
+					if(W[1]&gt;W[0])
+						{return [name[1],name[0]];}
+					})()</var>
+					<var id="sum">
+						(function(){
+							var s = 0;
+							if(name3[0]==name2[0])
+							{
+								$('#pic_3').val('true');
+								s++;
+							}
+							else
+							{$('#pic_3').val('false');}
+							if(name3[1]==name[0])
+							{
+								$('#pic_1').val('true');
+								s++;
+							}
+							else{$('#pic_1').val('false');}
+							if(name3[1]==name[1])
+							{
+								$('#pic_2').val('true');
+								s++;
+							}
+							else{$('#pic_2').val('false');}
+							return s;
+						})()
+					</var>
+					<var id="data">(function(){
+					if(W[1]&gt;W[0])
+						{return [W[0],N1,D1,W[1],N2,D2];}
+					if(W[0]&gt;W[1])
+						{return [W[1],N2,D2,W[0],N1,D1];}
+					})()</var>
+            </div>
+			<div class="question">
+				<div class="problem">
+					<p data-if="name[2]==1"><var>name[0]</var>上個月的體重有 <code><var>W[0]</var><var> fraction( N1, D1 )</var></code> 的改變，<var>name[1]</var>上個月的體重有 <code><var>W[1]</var><var> fraction( N2, D2 )</var></code> 的改變</p>
+					<p data-if="name[2]==2">你寫了一個程式可以使機器人移動。</p>
+					<p data-if="name[2]==2">機器人<code>A</code> 移動了 <code><var>W[0]</var></code> 步，<br/>機器人<code>B</code> 移動了 <code><var>W[1]</var></code> 步。</p>
+					<p data-if="name[2]==2">正數代表機器人向前移動的步數，負數代表機器人向後移動的步數。</p>
+					<p>下列哪個選項是正確的？</p>
+					<table style="font-size:15px;">
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox" id="pic_1">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_1').attr('checked')){$('#pic_1').removeAttr('checked')}else{$('#pic_1').attr('checked','checked')}"><div data-if="name[2]==1">上個月<var>name[0]</var>比<var>name[1]</var>減少的體重多</div><div data-if="name[2]==2">機器人 <code>A</code> 比機器人 <code>B</code> 移動的遠</div>
+							</div></td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox" id="pic_2">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_2').attr('checked')){$('#pic_2').removeAttr('checked')}else{$('#pic_2').attr('checked','checked')}"><div data-if="name[2]==1">上個月<var>name[1]</var>比<var>name[0]</var>減少的體重多</div><div data-if="name[2]==2">機器人 <code>B</code> 比機器人 <code>A</code> 移動的遠</div>
+							</div></td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox" id="pic_3">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_3').attr('checked')){$('#pic_3').removeAttr('checked')}else{$('#pic_3').attr('checked','checked')}"><div data-if="name[2]==1">如果<var>name[0]</var>和<var>name[1]</var>在月初時兩人體重相等，則月底時<var>name2[0]</var>的體重將比<var>name2[1]</var>重</div>
+							<div data-if="name[2]==2">兩個機器人都<span data-if="sum==1">向前</span><span data-if="sum==2">向後</span>移動</div>
+							</div></td>
+						</tr>
+					</table>
+					<div class="graphie" id="line">
+						init({
+						range: [ [-13, 4], [-2, 2.5] ],
+						scale: 30
+						});				
+						 
+						line( [ -11, 0 ], [ 2, 0 ] );
+						line( [ 0, 0.5 ], [ 0, -0.5 ] );
+						label( [ 0, 1 ],  "0", "center", { color: "black" });
+						style({ stroke: "green", fill: "green" });
+						graph.blackDot1 = circle( [ W[0],0 ], 0.10 );
+						if(name[2]==1){
+						label( [  W[0], 1.2 ],   "\\small{"+W[0]+"\\dfrac{"+N1+"}{"+D1+"}"+"}", "center", { color: "green" });
+						label( [  W[1], 1.2 ],   "\\small{"+W[1]+"\\dfrac{"+N2+"}{"+D2+"}"+"}", "center", { color: "blue" });
+						}
+						if(name[2]==2){
+						label( [  W[0], 1.2 ],   "\\small{"+W[0]+"}", "center", { color: "green" });
+						label( [  W[1], 1.2 ],   "\\small{"+W[1]+"}", "center", { color: "blue" });
+						}
+						style({ stroke: "blue", fill: "blue" });
+						graph.blackDot2 = circle( [ W[1],0 ], 0.10 );
+						label( [  W[0], -1.2 ],   "\\small{"+name[0]+"}", "center", { color: "green" });
+						label( [  W[1],-1.2 ],   "\\small{"+name[1]+"}", "center", { color: "blue" });
+						
+					</div>
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">(function(){
+								var chk_value =[];    
+								$('input[name="checkbox"]:checked').each(function(){    
+									chk_value.push($(this).val());    
+								});
+								return chk_value;
+							})()</div>
+				    <div class="validator-function">
+						if(guess.length==0){
+								return "";
+							}
+							if(guess.length!=sum){
+								return false;
+							}
+							var trueAns = 0;
+							for(var i = 0;i&lt;guess.length;i++){
+								if(guess[i]=='true'){
+									trueAns++;
+								}
+							}
+							if(trueAns==sum){
+								return true;
+							}				
+					</div>
+				</div>
+				<p>請選擇所有正確的答案</p>
+            </div>
+            <div class="hints">
+				<div>
+					<p data-if="name[2]==1">上個月<var>name3[1]</var>比<var>name3[0]</var>減少的體重多，因為：<code>\lvert <var>data[0]</var><var> fraction( data[1], data[2] )</var> \rvert &gt; \lvert <var>data[3]</var><var> fraction( data[4], data[5] )</var> \rvert </code> 。</p>				
+					<p data-if="name[2]==2">機器人 <code><var>name3[1]</var></code> 比機器人 <code><var>name3[0]</var></code> 移動的多，因為：<code>\lvert <var>data[0]</var> \rvert &gt; \lvert <var>data[3]</var> \rvert </code> 。</p>
+					<div class="graphie" id="line1">
+						init({
+						range: [ [-13, 4], [-3, 3] ],
+						scale: 30
+						});				
+						 
+						line( [ -11, 0 ], [ 2, 0 ] );
+						line( [ 0, 0.5 ], [ 0, -0.5 ] );
+						label( [ 0, 1 ],  "0", "center", { color: "black" });
+						style({ stroke: "green", fill: "green" });
+						graph.blackDot1 = circle( [ W[0],0 ], 0.10 );
+						line([W[0],0],[W[0]+0.1,0.2]);
+						line([W[0]+0.1,0.2],[W[0]/2,0.2]);
+						line([W[0]/2,0.2],[W[0]/2+0.15,0.4]);
+						line([W[0]/2+0.15,0.4],[W[0]/2+0.2,0.2]);
+						line([W[0]/2+0.2,0.2],[-0.1,0.2]);
+						line([0,0],[-0.1,0.2]);
+						if(name[2]==1){
+							label( [  W[0]/2, 1 ],   "\\small{"+W[0]+"\\dfrac{"+N1+"}{"+D1+"}"+"}", "center", { color: "green" });
+							label( [  W[1]/2, -1 ],   "\\small{"+W[1]+"\\dfrac{"+N2+"}{"+D2+"}"+"}", "center", { color: "blue" });
+							}
+							if(name[2]==2){
+							label( [  W[0]/2, 1 ],   "\\small{"+W[0]+"}", "center", { color: "green" });
+							label( [  W[1]/2, -1 ],   "\\small{"+W[1]+"}", "center", { color: "blue" });
+							}
+						style({ stroke: "blue", fill: "blue" });
+						graph.blackDot2 = circle( [ W[1],0 ], 0.10 );
+						label( [  W[0]/2-1.6, 1 ],   "\\small{"+name[0]+"}", "center", { color: "green" });
+						label( [  W[1]/2-1.6,-1 ],   "\\small{"+name[1]+"}", "center", { color: "blue" });
+						line([W[1],0],[W[1]+0.1,-0.2]);
+						line([W[1]+0.1,-0.2],[W[1]/2,-0.2]);
+						line([W[1]/2,-0.2],[W[1]/2+0.15,-0.4]);
+						line([W[1]/2+0.15,-0.4],[W[1]/2+0.2,-0.2]);
+						line([W[1]/2+0.2,-0.2],[-0.1,-0.2]);
+						line([0,0],[-0.1,-0.2]);
+					</div>
+				</div>
+				<p data-if="name[2]==1">如果<var>name[0]</var>和<var>name3[1]</var>在月初時兩人體重相等，則在月底時<var>name3[1]</var>比<var>name3[0]</var>減少的體重多。</p>
+				<p data-if="name[2]==2">因為兩個數都是負數，所以兩個機器人都後退了。</p>
+				<div data-if="name[2]==1">
+					<p>所以正確的選項是：</p>
+					<p><code>\cdot</code> 上個月<var>name3[1]</var>比<var>name3[0]</var>減少的體重多</p>
+					<p data-if="sum==2"><code>\cdot</code> 如果<var>name[0]</var>和<var>name[1]</var>在月初時兩人體重相等，則在月底時<var>name3[0]</var>的體重將超過<var>name3[1]</var></p>
+				</div>
+				<div data-if="name[2]==2">
+					<p>所以正確的選項是：</p>
+					<p><code>\cdot</code> 機器人 <code><var>name3[1]</var></code> 比機器人 <code><var>name3[0]</var></code> 移動的遠</p>
+					<p data-if="sum==2"><code>\cdot</code> 兩個機器人都後退了</p>
+				</div>
+			</div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+				<var id="name">randFromArray([["海葵","禿鷹",1],["小丑魚","老鷹",1],["海豚","海鷗",1],["A","B",2]])</var>
+				<var id="w">randRangeUnique(121,300,2)</var>
+				<var id="w1">(function(){
+					if(name[2]==1)
+					{return 1;}
+					if(name[2]==2)
+					{ return randFromArray([1,-1]);}
+				})()</var>
+				<var id="W1">w1*-w[0]/10</var>
+				<var id="W2">w1*w[1]/10</var>
+				<var id="data">(function(){
+					
+					if(name[2]==1)
+					{
+						var a =randRange(0,1);
+						if(-W1&gt;W2)
+						{
+							return [0,0,3,name[0],name[1],W1,W2]
+						}
+						if(-W1&lt;W2)
+						{
+							return [a,2,0,name[1],name[0],W2,W1]
+						}
+					}
+					if(name[2]==2)
+					{
+						var a =randRange(3,4);
+						if(w1==1){
+						if(-W1&gt;W2)
+						{
+							return [0,2,a,name[0],name[1],W1,W2]
+						}
+						if(-W1&lt;W2)
+						{
+							return [0,2,a,name[1],name[0],W2,W1]
+						}}
+						if(w1==-1){
+						if(W1&gt;-W2)
+						{
+							return [1,0,a,name[0],name[1],W1,W2]
+						}
+						if(W1&lt;-W2)
+						{
+							return [1,0,a,name[1],name[0],W2,W1]
+						}}
+					}
+				})()</var>
+				<var id="sum">
+						(function(){
+							var s = 0;
+							if(data[0]==1)
+							{
+								$('#pic_1').val('true');
+								s++;
+							}
+							else
+							{$('#pic_1').val('false');}
+							if(data[2]==3)
+							{
+								$('#pic_3').val('true');
+								s++;
+							}
+							else
+							{$('#pic_3').val('false');}
+							
+							if(data[1]==2)
+							{
+								$('#pic_2').val('true');
+								s++;
+							}
+							else{$('#pic_2').val('false');}
+							return s;
+						})()
+					</var>
+            </div>
+			<div class="question">
+				<div class="problem">
+					<p data-if="name[2]==1"><var>name[0]</var>生活在 <code><var>W1</var></code> 米處，<var>name[1]</var>飛翔在 <code><var>W2</var></code> 米的高空。</p>
+					<p data-if="name[2]==2">小紅有兩片披薩，兩片溫度分別為：</p>
+					<p data-if="name[2]==2"><code>\cdot</code> <code> A</code> ：<code><var>W1</var></code> 度，<br/><code>\cdot</code> <code>B</code> ：<code><var>W2</var></code> 度。</p>
+					<p>下列哪個選項是正確的？</p>
+					<table style="font-size:15px;">
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox" id="pic_1">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_1').attr('checked')){$('#pic_1').removeAttr('checked')}else{$('#pic_1').attr('checked','checked')}"><div data-if="name[2]==1"><span data-if="data[0]==0"><var>name[0]</var>的高度大於<var>name[1]</var>的高度</span><span data-if="data[0]==1"><var>name[1]</var>的高度大於<var>name[0]</var>的高度</span></div><div data-if="name[2]==2"><code>A</code> 片比 <code>B</code> 片溫度高</div>
+							</div></td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox" id="pic_2">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_2').attr('checked')){$('#pic_2').removeAttr('checked')}else{$('#pic_2').attr('checked','checked')}"><div data-if="name[2]==1"><var>name[1]</var>比<var>name[0]</var>離海平面更遠</div><div data-if="name[2]==2"><code>B</code> 片比 <code>A</code> 片溫度高</div>
+							</div></td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="checkbox" id="pic_3">
+							</td>
+							<td><div style="width:450px;" onclick="if($('#pic_3').attr('checked')){$('#pic_3').removeAttr('checked')}else{$('#pic_3').attr('checked','checked')}"><div data-if="name[2]==1"><var>name[0]</var>比<var>name[1]</var>離海平面更遠</div><div data-if="name[2]==2"><span data-if="data[2]==3"><code><var>data[3]</var></code> 片比 <code><var>data[4]</var></code> 片離 <code>0</code> 度遠</span><span data-if="data[2]==4"><code><var>data[4]</var></code> 片比 <code><var>data[3]</var></code> 片離 <code>0</code> 度遠</span></div>
+							</div></td>
+						</tr>
+					</table>
+					<div class="graphie" id="line">
+						init({
+						range: [ [-13, 13], [-2, 2.5] ],
+						scale: 20
+						});				
+						 
+						line( [ -12, 0 ], [ 12, 0 ] );
+						line( [ 0, 0.5 ], [ 0, -0.5 ] );
+						label( [ 0, 1 ],  "0", "center", { color: "black" });
+						style({ stroke: "green", fill: "green" });
+						graph.blackDot1 = circle( [ W1/3,0 ], 0.20 );
+						label( [  W1/3, 1.2 ],   "\\small{"+W1+"}", "center", { color: "green" });
+						style({ stroke: "blue", fill: "blue" });
+						graph.blackDot2 = circle( [ W2/3,0 ], 0.20 );
+						label( [  W2/3, 1.2 ],   "\\small{"+W2+"}", "center", { color: "blue" });
+						
+						label( [  W1/3, -1.2 ],  "\\small{"+name[0]+"}", "center", { color: "green" });
+						label( [  W2/3, -1.2 ],   "\\small{"+name[1]+"}", "center", { color: "blue" });
+					</div>
+					<p data-if="name[2]==1">注意：地理學家使用負數代表低於海平面的深度，正數代表海拔高度。</p>
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">
+							(function(){
+								var chk_value =[];    
+								$('input[name="checkbox"]:checked').each(function(){    
+									chk_value.push($(this).val());    
+								});
+								return chk_value;
+							})()
+						</div>
+						<div class="validator-function">
+							if(guess.length==0){
+								return "";
+							}
+							if(guess.length!=sum){
+								return false;
+							}
+							var trueAns = 0;
+							for(var i = 0;i&lt;guess.length;i++){
+								if(guess[i]=='true'){
+									trueAns++;
+								}
+							}
+							if(trueAns==sum){
+								return true;
+							}					
+						</div>
+				</div>
+				<p>請選擇所有正確的答案</p>
+            </div>
+            <div class="hints">
+				<p data-if="name[2]==1"><var>name[1]</var>的高度大於<var>name[0]</var>的高度，因為 <code><var>W2</var> &gt; <var>W1</var></code> 。</p>
+				<p data-if="name[2]==2"><span data-if="w1==-1"><code>A</code> 片比 <code>B</code> 片溫度高，因為 <code><var>W1</var> &gt; <var>W2</var></code> </span><span data-if="w1==1"><code>B</code> 片比 <code>A</code> 片溫度高，因為 <code><var>W2</var> &gt; <var>W1</var></code> </span> 。</p>
+				<div>
+					<p data-if="name[2]==1"><var>data[3]</var>比<var>data[4]</var>離海平面更遠，因為：<code>\lvert <var>data[5]</var> \rvert &gt; \lvert <var>data[6]</var> \rvert </code> 。</p>
+				
+					<p data-if="name[2]==2"><code><var>data[3]</var></code> 片比 <code><var>data[4]</var></code> 片離 <code>0</code> 度遠，因為：<code>\lvert <var>data[5]</var> \rvert &gt; \lvert <var>data[6]</var> \rvert </code> 。</p>
+				
+					<div class="graphie" id="line1">
+						init({
+							range: [ [-13, 12], [-2, 2.5] ],
+							scale: 20
+							});				
+							 
+							line( [ -12, 0 ], [ 11.5, 0 ] );
+							line( [ 0, 0.8 ], [ 0, -0.5 ] );
+							label( [ 0, 1.5 ],  "0", "center", { color: "black" });
+							style({ stroke: "green", fill: "green" });
+							graph.blackDot1 = circle( [ W1/3,0 ], 0.20 );
+							label( [  W1/6, 1.2 ],   "\\small{"+W1+"}", "center", { color: "green" });
+							style({ stroke: "blue", fill: "blue" });
+							graph.blackDot2 = circle( [ W2/3,0 ], 0.20 );
+							label( [  W2/6, 1.2 ],   "\\small{"+W2+"}", "center", { color: "blue" });
+							if(w1==1){
+							style({ stroke: "green", fill: "green" });
+							line([W1/3,0],[W1/3+0.2,0.5]);
+							line([W1/3+0.2,0.5],[W1/6,0.5]);
+							line([W1/6,0.5],[W1/6+0.3,0.6]);
+							line([W1/6+0.3,0.6],[W1/6+0.4,0.5]);
+							line([W1/6+0.4,0.5],[-0.2,0.5]);
+							line([0,0],[-0.2,0.5]);
+							style({ stroke: "blue", fill: "blue" });
+							line([W2/3,0],[W2/3-0.2,0.5]);
+							line([W2/3-0.2,0.5],[W2/6,0.5]);
+							line([W2/6,0.5],[W2/6-0.3,0.6]);
+							line([W2/6-0.3,0.6],[W2/6-0.4,0.5]);
+							line([W2/6-0.4,0.5],[0.2,0.5]);
+							line([0,0],[0.2,0.5]);	}
+							if(w1==-1){
+							style({ stroke: "green", fill: "green" });
+							line([W2/3,0],[W2/3+0.2,0.5]);
+							line([W2/3+0.2,0.5],[W2/6,0.5]);
+							line([W2/6,0.5],[W2/6+0.3,0.6]);
+							line([W2/6+0.3,0.6],[W2/6+0.4,0.5]);
+							line([W2/6+0.4,0.5],[-0.2,0.5]);
+							line([0,0],[-0.2,0.5]);
+							style({ stroke: "blue", fill: "blue" });
+							line([W1/3,0],[W1/3-0.2,0.5]);
+							line([W1/3-0.2,0.5],[W1/6,0.5]);
+							line([W1/6,0.5],[W1/6-0.3,0.6]);
+							line([W1/6-0.3,0.6],[W1/6-0.4,0.5]);
+							line([W1/6-0.4,0.5],[0.2,0.5]);
+							line([0,0],[0.2,0.5]);	}
+						label( [  W1/3, -1.2 ],  "\\small{"+name[0]+"}", "center", { color: "green" });
+						label( [  W2/3, -1.2 ],   "\\small{"+name[1]+"}", "center", { color: "blue" });							
+					</div>
+				</div>
+				<div data-if="name[2]==1">				
+					<p>所以正確的選項是：</p>
+					<p data-if="data[0]==1"><code>\cdot</code> <var>name[1]</var>的高度大於<var>name[0]</var>的高度</p>
+					<p><code>\cdot</code> <var>data[3]</var>比<var>data[4]</var>離海平面更遠</p>
+				</div>
+				<div data-if="name[2]==2">				
+					<p>所以正確的選項是：</p>
+					<p><code>\cdot</code> <span data-if="w1==-1"><code>A</code> 片比 <code>B</code> 片溫度高。</span><span data-if="w1==1"><code>B</code> 片比 <code>A</code> 片溫度高</span></p>
+					<p data-if="data[2]==3"><code>\cdot</code> <code><var>data[3]</var></code> 片比 <code><var>data[4]</var></code> 片離 <code>0</code> 度遠</p>
+				</div>
+			</div>
+        </div>
+	</div>
+	</div>
+</body>
+</html>
