@@ -2136,8 +2136,11 @@ var Khan = (function() {
                     $("#next-question-button")
                         .removeAttr("disabled")
                         .removeClass("buttonDisabled")
-                        .show(function(){
-                            $(this).focus();
+                        .show("fast", function(){
+                            if(!/iPad/i.test(navigator.userAgent))
+                            {
+                                $(this).focus();
+                            }
                         });
                     $("#positive-reinforcement").show();
                 }
