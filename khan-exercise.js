@@ -2136,12 +2136,11 @@ var Khan = (function() {
                     $("#next-question-button")
                         .removeAttr("disabled")
                         .removeClass("buttonDisabled")
-                        .show("fast", function(){
-                            if(!/iPad/i.test(navigator.userAgent)) // check if is ipad device
-                            {
-                                $(this).focus();
-                            }
-                        });
+                        .show()
+                    if(!/iPad/i.test(navigator.userAgent)) // check if is ipad device
+                    {
+                        $("#next-question-button").focus();
+                    }
                     $("#positive-reinforcement").show();
                 }
             } else {
