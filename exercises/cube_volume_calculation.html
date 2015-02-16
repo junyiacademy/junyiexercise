@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>正方體體積的計算</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .short input[type=text] {
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="J">randRange(2,10)</var>
+				<var id="P">
+						(function(){
+							var shape="";
+							for( var i=0;i&lt;3;i++)
+							{
+							if(i!=2){shape=shape+J+"\\times";}
+							if(i==2){shape=shape+J;}
+							}
+							return shape;
+						})()</var>
+
+			</div>
+			<p class="question">
+			邊長 <code><var>J</var></code> 公分的正方體，體積是多少立方公分？
+			</p>		
+            <div class="solution" data-type="multiple">
+                <p><span class="sol short" data-forms="integer"><var>pow(J,3)</var></span> 立方公分</p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>				
+			<div class="hints">
+				<p>我們知道正方體的體積 <code>=</code> 邊長 <code>\times</code> 邊長 <code>\times</code> 邊長。</p>					
+				<p>所以體積 <code>=</code> <code><var>P</var> = </code> <code class="hint_pink"><var>pow(J,3)</var></code> 立方公分。</p>
+			</div>
+        </div>
+		<div id="case2">
+			<div class="vars">
+				<var id="J">randRange(2,10)</var>
+				<var id="P">
+						(function(){
+							var shape="";
+							for( var i=0;i&lt;3;i++)
+							{
+							if(i!=2){shape=shape+J+"\\times";}
+							if(i==2){shape=shape+J;}
+							}
+							return shape;
+						})()</var>
+					
+				<var id="L">J</var>
+				<var id="W">J*0.6</var>
+				<var id="H">J</var>
+				<var id="B">randRange(1, 2)</var>
+			</div>
+                
+			<div class="question">
+				<div class="problem">
+					<p>請計算下圖正方體的體積（單位：公分）</p>
+					<div class="graphie" id="original">
+                    
+						init({ range: [[-B, L+W + 1], [-B*2, H+W + 1]], scale: 22 });
+						path([ [0, H], [L, H], [L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414], true]);
+						
+						path([[0,-0.3],[0.2,-0.5],[L/2-0.2,-0.5],[L/2,-0.8],[L/2+0.2,-0.5],[L-0.2,-0.5],[L,-0.3]], {stroke: "black"});
+						label([L/2,-0.9], "\\small{"+J+"}", "below",{color:"black"});
+						path([[0,0],[0,H],[L,H],[L,0],[0,0]],{fill:"#4989C5"});
+						path([[L,0],[L,H],[L+W/1.414,W/1.414+H],[L+W/1.414,W/1.414],[L,0]],{fill:"#4989C5"});
+						path([[0,H],[L,H],[L+W/1.414,W/1.414+H],[W/1.414,W/1.414+H],[0,H]],{fill:"#4989C5"});
+						
+						path([ [0,0],[0, H], true]);
+						path([ [0,0],[L,0], true]);
+						path([ [0, 0],[W/1.414,W/1.414], true]);
+						path([ [L,0],[L+W/1.414,W/1.414], true]);
+						path([ [W/1.414,W/1.414],[L+W/1.414,W/1.414], true]);
+						path([ [W/1.414,W/1.414],[W/1.414,W/1.414+H], true] );             
+						path([ [L+W/1.414,W/1.414],[L+W/1.414,W/1.414+H], true]);                   
+						path([ [L,0],[L, H], true]);
+
+					</div>
+				</div>
+			</div>	
+					
+            <div class="solution" data-type="multiple">
+                <p><span class="sol short" data-forms="integer"><var>pow(J,3)</var></span> 立方公分</p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>				
+                <div class="hints">
+					<p>我們知道正方體的體積 <code>=</code> 邊長 <code>\times</code> 邊長 <code>\times</code> 邊長。</p>
+					<p>這個正方體的邊長 <code>= <var>J</var></code> 公分。</p>
+					<p>所以體積 <code>=</code> <code><var>P</var> = </code> <code class="hint_pink"><var>pow(J,3)</var></code> 立方公分。</p>
+                </div>
+        </div>
+		
+    </div>
+    </div>
+</body>
+</html>
