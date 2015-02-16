@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>分數與百分率互換（不可整除）</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="init_j,init_k">randFromArray([[73,110],[1,15],[40,81],[17,24],[1,6],[1,3],[1,7],[1,9],[8,15],[4,15],[2,15],[5,13],[5,6],[2,3],[7,9],[5,9],[1,11],[2,11],[3,11],[4,11],[5,11],[7,11],[8,11],[8,11]])</var>
+				<var id="B">init_j/init_k</var>
+				<var id="C">Math.round(B*100)/100</var>
+				<var id="TRAIL">( B + "" ).substring( 0,5 )</var>		
+			</div>
+            <p class="question"><code>\dfrac{<var>init_j</var>}{<var>init_k</var>} = </code><code>(\qquad) \%</code> （百分率請用四捨五入取到個位）</p>
+			<div class="solution" data-type="multiple">
+				<p><span class="sol"><var>floor(C*100)</var></span> <code>\%</code></p>
+				<p class="example">整數，例：<code>6</code></p>
+			</div>				
+			<div class="hints">
+				<p><code>\dfrac{<var>init_j</var>}{<var>init_k</var>}</code> 換算成百分率，可以先想，是否可以乘以一個數，讓分母變成 <code><var>100</var></code> 。</p>
+				<p>我們發現並不容易直接找到一個數乘以 <code><var>init_k</var></code> 後就讓分母成為 <code><var>100</var></code> 。</p>
+				<p>所以我們可以用除法來做計算。 <code>\dfrac{<var>init_j</var>}{<var>init_k</var>} = <var>init_j</var> \div <var>init_k</var></code> 。</p>
+				<div>
+					<p>我們可以用直式來計算。</p>
+					<div class="graphie" id="numbers">
+					graph.divider = new Divider( init_k, init_j*1000, 0, 3 );
+					graph.divider.show();
+					</div>
+				</div>
+				<div class="graphie" data-update="numbers">
+					graph.divider.shiftDecimals();
+				</div>
+				<div class="graphie" data-update="numbers" data-each="Array( new Divider( init_k, init_j*1000, 0, 3 ).getNumHints() )">
+					graph.divider.showHint();
+				</div>
+				<p><code>\dfrac{<var>init_j</var>}{<var>init_k</var>} = <var>init_j</var> \div <var>init_k</var> = <var>TRAIL</var>...</code> 。</p>
+				<p><code><var>TRAIL</var>... </code>四捨五入後得到  <code><var>C</var></code> ，換算成百分率就等於 <code class="hint_pink"><var>floor(C*100)</var></code> <code>\%</code> 。</p>
+			</div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
