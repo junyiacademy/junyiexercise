@@ -2137,7 +2137,7 @@ var Khan = (function() {
                         .removeAttr("disabled")
                         .removeClass("buttonDisabled")
                         .show("fast", function(){
-                            if(!/iPad/i.test(navigator.userAgent))
+                            if(!/iPad/i.test(navigator.userAgent)) // check if is ipad device
                             {
                                 $(this).focus();
                             }
