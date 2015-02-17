@@ -391,7 +391,9 @@ $.extend(Khan.answerTypes, {
 
         var input;
 
-        input = $("<input type='number'/>");
+        if (typeof userExercise !== "undefined" && userExercise.tablet) {
+            input = $("<input type='number'/>");
+        }
 
         return Khan.answerTypes.text(solutionarea, solution, fallback, verifier, input);
     },
