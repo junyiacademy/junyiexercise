@@ -1279,7 +1279,7 @@ var Khan = (function() {
             setTimeout(function() {
                 if (!firstInput.is(":disabled")) {
                     firstInput.focus();
-                    if (firstInput.is("input:text")) {
+                    if (firstInput.is("input:text") || firstInput.is("input:number")) {
                         firstInput.select();
                     }
                 }
@@ -2078,7 +2078,7 @@ var Khan = (function() {
                         if (!focusInput.is(":disabled")) {
                             // focus should always work; hopefully select will work for text fields
                             focusInput.focus();
-                            if (focusInput.is("input:text")) {
+                            if (focusInput.is("input:text") || focusInput.is("input:number")) {
                                 focusInput.select();
                             }
                         }

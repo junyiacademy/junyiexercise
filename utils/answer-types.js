@@ -389,13 +389,14 @@ $.extend(Khan.answerTypes, {
             }
         });
 
+        var input;
         if (navigator.userAgent.match(/(ipad|ipod|iphone|android)/i)) { // hack: display num keyboard for mobile device
-            var input = $("<input type='text'/>");
-            input.on('touchstart', function() {
-              $(this)[0].type = "number"
+            input = $("<input type='text'/>");
+            input.on('touchstart focus', function() {
+              $(this)[0].type = "number";
             });
             input.on('keydown blur', function() {
-              $(this)[0].type = "text"
+              $(this)[0].type = "text";
             });
         }
 
