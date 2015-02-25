@@ -389,10 +389,14 @@ $.extend(Khan.answerTypes, {
             }
         });
 
-        var input;
-
-        if (typeof userExercise !== "undefined" && userExercise.tablet) {
-            input = $("<input type='number'/>");
+        if (navigator.userAgent.match(/(ipad|ipod|iphone|android)/i)) { // hack: display num keyboard for mobile device
+            var input = $("<input type='text'/>");
+            input.on('touchstart', function() {
+              $(this)[0].type = "number"
+            });
+            input.on('keydown blur', function() {
+              $(this)[0].type = "text"
+            });
         }
 
         return Khan.answerTypes.text(solutionarea, solution, fallback, verifier, input);
