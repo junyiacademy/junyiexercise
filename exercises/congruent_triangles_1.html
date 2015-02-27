@@ -7,12 +7,13 @@
 </head>
 <body>
     <div class="exercise">
-        <div class="vars">
+        <div class="vars" data-ensure="SIZE_INIT != 10">
             <var id="MAIN">randomTriangleAngles.triangle()</var>
             <var id="MAIN_SIZE">5 + Math.random() * 2</var>
             <var id ="IS_B">randRange( 0, 1 ) === 1 ? true : false</var>
             <var id="B">IS_B ? MAIN : randomTriangleAngles.triangle()</var>
-            <var id="B_SIZE">IS_B ? MAIN_SIZE : 2 + Math.random() * 2</var>
+			<var id="SIZE_INIT">randRange(7,12)</var>
+			<var id="B_SIZE">IS_B ? MAIN_SIZE : MAIN_SIZE*SIZE_INIT/10</var>
             <var id="ANSWER">IS_B ? "是" : "否"</var>
 
             <var id="A_ANGLES">[ 0, 1, 2 ]</var>
@@ -44,30 +45,32 @@
             請問這兩個三角形是否全等？
         </div>
         <div class="question">
-            <div class="graphie">
-
+            <div class="graphie" id="TRIANGLE_A">
+			
                 TR_A.rotate( randRange( 0, 360 ) );
-                TR_B.rotate( randRange( 0, 360 ) );
 
                 var aBounding = TR_A.boundingRange(1);
-                var bBounding = TR_B.boundingRange(1);
-
-                var minX = Math.min(aBounding[0][0], bBounding[0][0]);
-                var maxX = Math.max(aBounding[0][1], bBounding[0][1]);
-
-                var minY = Math.min(aBounding[1][0], bBounding[1][0]);
-                var maxY = Math.max(aBounding[1][1], bBounding[1][1]);
 
                 init({
-                    range: [ [minX, maxX ], [ minY, maxY ] ]
+                    range: [ [aBounding[0][0], aBounding[0][1] ], [ aBounding[1][0], aBounding[1][1] ] ]
                 })
-
+				
                 TR_A.draw();
                 TR_A.drawLabels();
-
-                TR_B.draw();
-                TR_B.drawLabels();
             </div>
+			<div class="graphie" id="TRIANGLE_B">
+			
+				TR_B.rotate( randRange( 0, 360 ) );
+				
+				var bBounding = TR_B.boundingRange(1);
+				
+				init({
+                    range: [ [bBounding[0][0], bBounding[0][1] ], [ bBounding[1][0], bBounding[1][1] ] ]
+                })
+				
+				TR_B.draw();
+                TR_B.drawLabels();
+			</div>
         </div>
         <div class="solution"><var>ANSWER</var></div>
         <ul class="choices" data-category="true">
@@ -84,8 +87,8 @@
                 </div>
                 <div class="hints" data-apply="appendContents">
                     <p>在這個題目中，我們知道三角形的邊長，所以我們可以很容易的做比較。</p>
-                    <p data-if="IS_B">三角形 B 的三邊跟三角形 A 的三邊一樣長，所以兩個三角形全等。</p>
-                    <p data-else>三角形 B 的三邊跟三角形 A 的三邊不一樣長，所以兩個三角形不全等。</p>
+                    <p data-if="IS_B">三角形 B 的三邊跟三角形 A 的三邊一樣長，所以兩個三角形<span class="hint_pink">全等</span>。</p>
+                    <p data-else>三角形 B 的三邊跟三角形 A 的三邊不一樣長，所以兩個三角形<span class="hint_pink">不全等</span>。</p>
                 </div>
             </div>
 
@@ -95,9 +98,9 @@
                     <var id="A_SIDES">[ 0, 1 ]</var>
                 </div>
                 <div class="hints" data-apply="appendContents">
-                    <p>在這個題目中，我們知道兩邊長以及夾角的大小，所以們可以用SAS來做驗證。</p>
-                    <p data-if="IS_B">三角形 B 的兩邊長和夾角大小跟三角形 A 一樣，所以兩個三角形全等。</p>
-                    <p data-else>由於三角形 A 的兩邊長和夾角大小跟三角形 B 不一樣，所以兩個三角形並不全等。</p>
+                    <p>在這個題目中，我們知道兩邊長以及夾角的大小，所以我們可以用SAS來做驗證。</p>
+                    <p data-if="IS_B">三角形 B 的兩邊長和夾角大小跟三角形 A 一樣，所以兩個三角形<span class="hint_pink">全等</span>。</p>
+                    <p data-else>由於三角形 A 的兩邊長和夾角大小跟三角形 B 不一樣，所以兩個三角形<span class="hint_pink">並不全等</span>。</p>
                 </div>
             </div>
 
@@ -108,8 +111,8 @@
                 </div>
                 <div class="hints" data-apply="appendContents">
                     <p>在這個題目中，我們知道兩個角的大小以及夾邊的長度，所以我們可以用ASA來做驗證。</p>
-                    <p data-if="IS_B">三角形 B 的兩個角和夾邊跟三角形 A 的一樣，所以兩個三角形全等。</p>
-                    <p data-else>由於三角形 A 的兩個角和夾邊的大小跟三角形 B 的不一樣，所以兩個三角形並不全等。</p>
+                    <p data-if="IS_B">三角形 B 的兩個角和夾邊跟三角形 A 的一樣，所以兩個三角形<span class="hint_pink">全等</span>。</p>
+                    <p data-else>由於三角形 A 的兩個角和夾邊的大小跟三角形 B 的不一樣，所以兩個三角形<span class="hint_pink">並不全等</span>。</p>
                 </div>
             </div>
 
@@ -120,8 +123,8 @@
                 </div>
                 <div class="hints" data-apply="appendContents">
 					<p>在這個題目中，我們知道兩個角的大小以及另外一個邊的長度，所以我們可以用AAS來做驗證。</p>
-					<p data-if="IS_B">三角形 B 的兩個角和另外一個邊跟三角形 A 的一樣，所以兩個三角形全等。</p>
-					<p data-else>由於三角形 A 的兩個角和另一個邊的大小跟三角形 B 的不一樣，所以兩個三角形並不全等。</p>
+					<p data-if="IS_B">三角形 B 的兩個角和另外一個邊跟三角形 A 的一樣，所以兩個三角形<span class="hint_pink">全等</span>。</p>
+					<p data-else>由於三角形 A 的兩個角和另一個邊的大小跟三角形 B 的不一樣，所以兩個三角形<span class="hint_pink">並不全等</span>。</p>
                 </div>
             </div>
 
@@ -133,8 +136,8 @@
                 </div>
                 <div class="hints" data-apply="appendContents">
                     <p>在這個題目中，我們知道所有三個角的大小。</p>
-                    <p data-if="IS_B">但是，就算兩個三角形的三個角互相對等，我們還是沒有辦法直接判定這兩個三角形是否全等。我們可以判定這兩個三角形相似，但我們不能保證它們全等，因為它們有可能的三個角對等但邊長卻不一樣長。</p>
-                    <p data-else>由於三個角的角度並不對等，所以三角形 A 和三角形 B 並不全等。</p>
+                    <p data-if="IS_B">但是，就算兩個三角形的三個角互相對等，我們還是沒有辦法直接判定這兩個三角形是否全等。我們可以判定這兩個三角形相似，<span class="hint_pink">但我們不能保證它們全等</span>，因為它們有可能三個角對等但邊長卻不一樣長。</p>
+                    <p data-else>由於三個角的角度並不對等，所以三角形 A 和三角形 B <span class="hint_pink">並不全等</span>。</p>
                 </div>
             </div>
         </div>
