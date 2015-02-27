@@ -9,42 +9,6 @@
             width: 50px;
         }
         </style>
-<script type="text/javascript">
-	    function accDiv(arg1,arg2){
-            var t1=0,t2=0,r1,r2;
-            try{t1=arg1.toString().split(".")[1].length}catch(e){}
-            try{t2=arg2.toString().split(".")[1].length}catch(e){}
-            with(Math){
-                r1=Number(arg1.toString().replace(".",""))
-                r2=Number(arg2.toString().replace(".",""))
-                return (r1/r2)*pow(10,t2-t1);
-            }
-        }
-		function accMul(arg1,arg2){
-            var m=0,s1=arg1.toString(),s2=arg2.toString();
-            try{m+=s1.split(".")[1].length}catch(e){}
-            try{m+=s2.split(".")[1].length}catch(e){}
-            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
-        }
-        function accAdd(arg1,arg2){
-            var r1,r2,m;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2))
-            return (arg1*m+arg2*m)/m
-        }
-        function Subtr(arg1,arg2){
-            var r1,r2,m,n;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2));
-            //last modify by deeka
-            //动态控制精度长度
-            n=(r1>=r2)?r1:r2;
-            return ((arg1*m-arg2*m)/m).toFixed(n);
-        }
-	</script>
-
 
 </head>
 <body>
@@ -53,23 +17,36 @@
         <div id="case1">
             <div class="vars">
 				<var id="J">randRange(5,100)</var>
+				<var id="R">randRangeUnique(1,4,3)</var>
+				<var id="J_ALL">[J-1,J,J+1]</var>
+				<var id="J_ARR">[J_ALL[R[0]-1],J_ALL[R[1]-1],J_ALL[R[2]-1]]</var>
+				<var id="SET_RADIO_VALUE">
+				(function(){
+					$('#a_1').val(J_ARR[0]);
+					$('#a_2').val(J_ARR[1]);
+					$('#a_3').val(J_ARR[2]);
+				})()</var>
             </div>
             <p class="question"><code><var>J-4</var></code> 、<code><var>J-3</var></code> 、<code><var>J-2</var></code> 、<code><var>J-1</var></code> 、<code>\underline{\enspace\enspace}</code></p>
 			<div class="problem">
 				<p>下一個數字是多少？</p>
 				<div>
-					<p><input type="radio" name="choice_1" id="a_1"><code><var>J-1</var></code><br /></p>
-				    <p><input type="radio" name="choice_1" id="a_2"><code><var>J</var></code><br /></p>
-					<p><input type="radio" name="choice_1" id="a_3"><code><var>J+1</var></code></p>
+					<p onclick="$('#a_1').attr('checked','checked')"><input type="radio" name="choice_1" id="a_1"><code><var>J_ARR[0]</var></code><br /></p>
+				    <p onclick="$('#a_2').attr('checked','checked')"><input type="radio" name="choice_1" id="a_2"><code><var>J_ARR[1]</var></code><br /></p>
+					<p onclick="$('#a_3').attr('checked','checked')"><input type="radio" name="choice_1" id="a_3"><code><var>J_ARR[2]</var></code></p>
 				</div>
 			</div>
 			<div class="solution" data-type="multiple">
+				<p>請選擇正確的答案</p>
 				<div class="sol" data-type="custom">
-				    <div class="guess">document.getElementById("a_1").value</div>
+				    <div class="guess">$('input:radio[name="choice_1"]:checked').val()</div>
 				    <div class="validator-function">
-					    if(document.getElementById("a_2").checked){
-						    return true;
-						}
+						if($('input:radio[name="choice_1"]:checked')){
+							if(guess == J){
+								return true;
+							}
+							return false;
+						}else return "";
 					</div>
 				</div>			
             </div>
@@ -79,33 +56,53 @@
         </div>
 		
 		<div id="case2">
-            <div class="vars" data-ensure="aJ!=J+4">
-				<var id="J">randRange(4,100)</var>
+            <div class="vars" data-ensure="aJ!=J+4 && aJ!=J+5">
 				<var id="aJ">randRange(1,100)</var>
+				<var id="J">randRange(4,100)</var>
+				<var id="R">randRangeUnique(1,4,3)</var>
+				<var id="J_ALL">[J-3,J,J+1]</var>
+				<var id="J_ARR">[J_ALL[R[0]-1],J_ALL[R[1]-1],J_ALL[R[2]-1]]</var>
+				
+				<var id="R_MORE">randRangeUnique(1,4,3)</var>
+				<var id="J_MORE_ALL">[J+5,aJ,J+4]</var>
+				<var id="J_MORE_ARR">[J_MORE_ALL[R_MORE[0]-1],J_MORE_ALL[R_MORE[1]-1],J_MORE_ALL[R_MORE[2]-1]]</var>
+				<var id="SET_RADIO_VALUE">
+				(function(){
+					$('#a_1').val(J_ARR[0]);
+					$('#a_2').val(J_ARR[1]);
+					$('#a_3').val(J_ARR[2]);
+					$('#a_4').val(J_MORE_ARR[0]);
+					$('#a_5').val(J_MORE_ARR[1]);
+					$('#a_6').val(J_MORE_ARR[2]);
+				})()</var>
             </div>
             <p class="question"><code><var>J-2</var></code> 、<code><var>J-1</var></code> 、<code>\underline{\enspace\enspace}</code></p>
 			<div class="problem">
 				<p>下一個數字是多少？</p>
 				<div>
-					<p><input type="radio" name="choice_1" id="a_1"><code><var>J-3</var></code><br /></p>
-				    <p><input type="radio" name="choice_1" id="a_2"><code><var>J+1</var></code><br /></p>
-					<p><input type="radio" name="choice_1" id="a_3"><code><var>J</var></code></p>
+					<p onclick="$('#a_1').attr('checked','checked')"><input type="radio" name="choice_1" id="a_1"><code><var>J_ARR[0]</var></code><br /></p>
+				    <p onclick="$('#a_2').attr('checked','checked')"><input type="radio" name="choice_1" id="a_2"><code><var>J_ARR[1]</var></code><br /></p>
+					<p onclick="$('#a_3').attr('checked','checked')"><input type="radio" name="choice_1" id="a_3"><code><var>J_ARR[2]</var></code></p>
 				</div>
 				<p>讓我們繼續數下去</p>
 				<p><code><var>J+1</var></code> 、<code><var>J+2</var></code> 、<code><var>J+3</var></code> 、<code>\underline{\enspace\enspace}</code></p>
 				<div>
-					<p><input type="radio" name="choice_2" id="a_4"><code><var>J+5</var></code><br /></p>
-				    <p><input type="radio" name="choice_2" id="a_5"><code><var>aJ</var></code><br /></p>
-					<p><input type="radio" name="choice_2" id="a_6"><code><var>J+4</var></code></p>
+					<p onclick="$('#a_4').attr('checked','checked')"><input type="radio" name="choice_2" id="a_4"><code><var>J_MORE_ARR[0]</var></code><br /></p>
+				    <p onclick="$('#a_5').attr('checked','checked')"><input type="radio" name="choice_2" id="a_5"><code><var>J_MORE_ARR[1]</var></code><br /></p>
+					<p onclick="$('#a_6').attr('checked','checked')"><input type="radio" name="choice_2" id="a_6"><code><var>J_MORE_ARR[2]</var></code></p>
 				</div>
 			</div>
 			<div class="solution" data-type="multiple">
+				<p>請選擇正確的答案</p>
 				<div class="sol" data-type="custom">
-				    <div class="guess">document.getElementById("a_3").value</div>
+				    <div class="guess">[$('input:radio[name="choice_1"]:checked').val(),$('input:radio[name="choice_2"]:checked').val()]</div>
 				    <div class="validator-function">
-					    if(document.getElementById("a_3").checked&&document.getElementById("a_6").checked){
-						    return true;
-						}
+					    if(guess[0] != null && guess[1] != null ){
+							if(guess[0] == J && guess[1] == J+4){
+								return true;
+							}
+							return false;
+						}else return "";
 					</div>
 				</div>			
             </div>
