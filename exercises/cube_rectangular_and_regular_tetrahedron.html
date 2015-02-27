@@ -52,10 +52,14 @@
 						init({
 							range: [ [-11, 1], [-2, 2.5] ],scale: 40
 						});
-						path(coordinates[0], { stroke: COLOR[0],"stroke-width" : 1 });
-						path(coordinates[1], { stroke: COLOR[0],"stroke-width" : 1 });
-						path([coordinates[0][0],coordinates[0][1],coordinates[1][1],coordinates[1][0],coordinates[0][0]], { stroke: COLOR[0],"stroke-width" : 1 });
-						path([coordinates[0][3],coordinates[0][2],coordinates[1][2],coordinates[1][3],coordinates[0][3]], { stroke: COLOR[0],"stroke-width" : 1 });
+						path(coordinates[0], { stroke: COLOR[0] });
+						line(coordinates[1][0],coordinates[1][1], { stroke: COLOR[0],"stroke-dasharray": "-"});
+						line(coordinates[1][1],coordinates[1][2], { stroke: COLOR[0] });
+						line(coordinates[1][2],coordinates[1][3], { stroke: COLOR[0] });
+						line(coordinates[1][3],coordinates[1][0], { stroke: COLOR[0],"stroke-dasharray": "-"});
+						line(coordinates[0][0],coordinates[1][0], { stroke: COLOR[0],"stroke-dasharray": "-"});
+						line(coordinates[0][1],coordinates[1][1], { stroke: COLOR[0] });
+						path([coordinates[0][3],coordinates[0][2],coordinates[1][2],coordinates[1][3],coordinates[0][3]], { stroke: COLOR[0] });
 					</div>
 				</div>
 			</div>		
@@ -69,10 +73,14 @@
 					init({
 						range: [ [-11, 1], [-2, 2.5] ],scale: 40
 					});
-					path(coordinates[0], { stroke: COLOR[0],"stroke-width" : 1 });
-					path(coordinates[1], { stroke: COLOR[0],"stroke-width" : 1 });
-					path([coordinates[0][0],coordinates[0][1],coordinates[1][1],coordinates[1][0],coordinates[0][0]], { stroke: COLOR[0],"stroke-width" : 1 });
-					path([coordinates[0][3],coordinates[0][2],coordinates[1][2],coordinates[1][3],coordinates[0][3]], { stroke: COLOR[0],"stroke-width" : 1 });
+					path(coordinates[0], { stroke: COLOR[0] });
+					line(coordinates[1][0],coordinates[1][1], { stroke: COLOR[0],"stroke-dasharray": "-"});
+					line(coordinates[1][1],coordinates[1][2], { stroke: COLOR[0] });
+					line(coordinates[1][2],coordinates[1][3], { stroke: COLOR[0] });
+					line(coordinates[1][3],coordinates[1][0], { stroke: COLOR[0],"stroke-dasharray": "-"});
+					line(coordinates[0][0],coordinates[1][0], { stroke: COLOR[0],"stroke-dasharray": "-"});
+					line(coordinates[0][1],coordinates[1][1], { stroke: COLOR[0] });
+					path([coordinates[0][3],coordinates[0][2],coordinates[1][2],coordinates[1][3],coordinates[0][3]], { stroke: COLOR[0] });
 					
 					if( T == 1 ){
 						<!--點的計數-->
@@ -98,8 +106,14 @@
 								if( count_side &lt; 4){
 									line(coordinates[0][count_side],coordinates[0][(count_side+1)%4],{stroke : COLOR[1], "stroke-width" : 2});
 								}else if( count_side &lt; 8){
-									line(coordinates[1][count_side%4],coordinates[1][(count_side+1)%4],{stroke : COLOR[1], "stroke-width" : 2});
-								}else{
+									if( count_side == 4 || count_side == 7 ){
+										line(coordinates[1][count_side%4],coordinates[1][(count_side+1)%4],{stroke : COLOR[1], "stroke-width" : 2 ,"stroke-dasharray": "-"});
+									}else{
+										line(coordinates[1][count_side%4],coordinates[1][(count_side+1)%4],{stroke : COLOR[1], "stroke-width" : 2});
+									}
+								}else if( count_side == 8 ){
+									line(coordinates[0][count_side%4],coordinates[1][(count_side)%4],{stroke : COLOR[1], "stroke-width" : 2,"stroke-dasharray": "-"});
+								}else {
 									line(coordinates[0][count_side%4],coordinates[1][(count_side)%4],{stroke : COLOR[1], "stroke-width" : 2});
 								}
 								count_side++;
@@ -155,9 +169,9 @@
 						init({
 							range: [ [-11, 1], [-2.5, 2.5] ],scale: 40
 						});
-						path(coordinates, { stroke: COLOR[0],"stroke-width" : 1 });
-						line(coordinates[0],coordinates[2],{ stroke : COLOR[0], "stroke-width" : 1});
-						line(coordinates[1],coordinates[3],{ stroke : COLOR[0], "stroke-width" : 1});
+						path(coordinates, { stroke: COLOR[0]});
+						line(coordinates[0],coordinates[2],{ stroke : COLOR[0],"stroke-dasharray": "-" });
+						line(coordinates[1],coordinates[3],{ stroke : COLOR[0]});
 					</div>
 				</div>
 			</div>		
@@ -171,9 +185,9 @@
 					init({
 						range: [ [-11, 1], [-2.5, 2.5] ],scale: 40
 					});
-					path(coordinates, { stroke: COLOR[0],"stroke-width" : 1 });
-					line(coordinates[0],coordinates[2],{ stroke : COLOR[0], "stroke-width" : 1});
-					line(coordinates[1],coordinates[3],{ stroke : COLOR[0], "stroke-width" : 1});
+					path(coordinates, { stroke: COLOR[0]});
+					line(coordinates[0],coordinates[2],{ stroke : COLOR[0],"stroke-dasharray": "-" });
+					line(coordinates[1],coordinates[3],{ stroke : COLOR[0]});
 					
 					if( T == 1 ){
 						<!--點的計數-->
