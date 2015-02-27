@@ -356,7 +356,7 @@ $.extend(KhanUtil, {
                 add_zero = true;
             }
             //增加這段IV開始
-            else if(Boolean(DigitNum[8]) === false)
+            else if(Boolean(DigitNum[8]) === false && n >= 100000000)
             {
                 str +="億"
                 add_zero = true;
@@ -367,7 +367,7 @@ $.extend(KhanUtil, {
                 str += cardinalUnits[DigitNum[7]] + "千"
                 add_zero = true;
             }
-            else if (add_zero===true && zero_tail <= 1){
+            else if (add_zero===true && zero_tail <= 1 && n >= 10000000){
                 str += "零"
                 add_zero = false;
             }
@@ -377,7 +377,7 @@ $.extend(KhanUtil, {
                 str += cardinalUnits[DigitNum[6]] + "百"
                 add_zero = true;
             }
-            else if (add_zero===true && zero_tail <= 1){
+            else if (add_zero===true && zero_tail <= 1 && n >= 1000000){
                 //增加這段IV開始
                 DigitNum[6] = true;
                 //增加這段IV結束
@@ -400,7 +400,7 @@ $.extend(KhanUtil, {
                 }
             }
 
-            else if (add_zero===true && zero_tail <= 1){
+            else if (add_zero===true && zero_tail <= 1 && n >= 100000){
                 str += "零"
                 add_zero = false;
             }
@@ -411,7 +411,7 @@ $.extend(KhanUtil, {
                 add_zero = true;
             }
             //增加這段IV開始
-            else if(Boolean(DigitNum[4]) === false)
+            else if(Boolean(DigitNum[4]) === false && n >= 10000 && n <= 99999999)
             {
                 str +="萬"
                 add_zero = true;
