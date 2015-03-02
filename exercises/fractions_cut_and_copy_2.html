@@ -12,12 +12,13 @@
                 <var id="D_PARENT">randRangeWeighted( 3, 8, 1, 1 / 6 )</var>
                 <var id="N_PARENT" data-ensure="getGCD( D_PARENT, N_PARENT ) === 1">D_PARENT === 1 ? randRange( 1, 2 ) : randRange( D_PARENT + 1,  2 * D_PARENT - 1 )</var>
                 <var id="PARENT">N_PARENT / D_PARENT</var>
-                <var id="D_OFFSPRING_1">randRange( 3, 8 )</var>
-                <var id="D_OFFSPRING_2" data-ensure="D_OFFSPRING_1 !== D_OFFSPRING_2">randRange( 3, 8 )</var>
-                <var id="N_OFFSPRING_1" data-ensure="getGCD( D_OFFSPRING_1, N_OFFSPRING_1 ) === 1 && PARENT > N_OFFSPRING_1 / D_OFFSPRING_1">randRangeExclude( 2, 2 * D_OFFSPRING_1 - 1, [ D_OFFSPRING_1 ] )</var>
-                <var id="N_OFFSPRING_2" data-ensure="getGCD( D_OFFSPRING_2, N_OFFSPRING_2 ) === 1 && PARENT > N_OFFSPRING_2 / D_OFFSPRING_2">randRangeExclude( 2, 2 * D_OFFSPRING_2 - 1, [ D_OFFSPRING_2 ] )</var>
-                <var id="SLICES">N_PARENT * getLCM(D_OFFSPRING_1, D_OFFSPRING_2) / D_PARENT</var>
-            </div>
+				<var id="D_OFFSPRING">randRangeUnique(3,8,2)</var>
+                <var id="D_OFFSPRING_1">D_OFFSPRING[0]</var>
+                <var id="D_OFFSPRING_2">D_OFFSPRING[1]</var>
+				<var id="SLICES">N_PARENT * getLCM(D_OFFSPRING_1, D_OFFSPRING_2) / D_PARENT</var>
+			</div>
+            <var id="N_OFFSPRING_1" data-ensure="getGCD( D_OFFSPRING_1, N_OFFSPRING_1 ) === 1 && PARENT > N_OFFSPRING_1 / D_OFFSPRING_1">randRangeExclude( 2, 2 * D_OFFSPRING_1 - 1, [ D_OFFSPRING_1 ] )</var>
+            <var id="N_OFFSPRING_2" data-ensure="getGCD( D_OFFSPRING_2, N_OFFSPRING_2 ) === 1 && PARENT > N_OFFSPRING_2 / D_OFFSPRING_2">randRangeExclude( 2, 2 * D_OFFSPRING_2 - 1, [ D_OFFSPRING_2 ] )</var>
             <var id="CODE_PARENT">D_PARENT === 1 ? N_PARENT : mixedOrImproper( N_PARENT, D_PARENT )</var>
             <var id="CODE_OFFSPRING_1">mixedOrImproper( N_OFFSPRING_1, D_OFFSPRING_1 )</var>
             <var id="CODE_OFFSPRING_2">mixedOrImproper( N_OFFSPRING_2, D_OFFSPRING_2 )</var>
@@ -30,91 +31,88 @@
 
         <div class="problems">
             <div>
-                <p class="question">一開始磚塊的長度為<code><var>CODE_PARENT</var></code>公尺。用右邊的工具將原本的磚塊變成最後目標長度<code><var>CODE_OFFSPRING_1</var></code>公尺和<code><var>CODE_OFFSPRING_2</var></code>公尺的磚塊。可以在畫面上看到你現在磚塊的長度。</p>
+                <p class="question">一開始磚塊的長度為 <code><var>CODE_PARENT</var></code> 公尺。用右邊的工具將原本的磚塊變成最後目標長度為 <code><var>CODE_OFFSPRING_1</var></code> 公尺和 <code><var>CODE_OFFSPRING_2</var></code> 公尺的磚塊。可以在畫面上看到你現在磚塊的長度。</p>
 
                 <p>起始磚塊:</p>
 
                 <div class="graphie" id="parent_block">
                     initSliceClone([ "current_block_1", "current_block_2" ]);
-                    init({ range: [ [ 0, 1 ], [ 0, 1 ] ],scale: [ 600, 25 ] });
+                    init({ range: [ [ 0, 1 ], [ 0, 1 ] ],scale: [ 500, 25 ] });
                     rectchart( [ 1, 0 ], [ "#e00", "#999" ] );
                 </div>
 
-                <p>現在磚塊1:</p>
+                <p>現在磚塊 <code>1</code> ：</p>
 
                 <div class="graphie" id="current_block_1">
-                    init({ range: [ [ 0, 1 ], [ 0, 1 ] ],scale: [ 600, 25 ] });
+                    init({ range: [ [ 0, 1 ], [ 0, 1 ] ],scale: [ 500, 25 ] });
                     rectchart( [ 1, 0 ], [ "#e00", "#999" ] );
                 </div>
 
-                <p>目標磚塊1:</p>
+                <p>目標磚塊 <code>1</code> ：</p>
 
                 <div class="graphie" id="goal_block_2">
-                    init({ range: [ [ 0, 1 ], [ 0, 1 ] ],scale: [ 600 * ANSWER_1, 25 ] });
+                    init({ range: [ [ 0, 1 ], [ 0, 1 ] ],scale: [ 500 * ANSWER_1, 25 ] });
                     rectchart( [ 1, 0 ], [ BLUE, "#999" ] );
                 </div>
 
-                <p>現在磚塊2:</p>
+                <p>現在磚塊 <code>2</code> ：</p>
 
                 <div class="graphie" id="current_block_2">
-                    init({ range: [ [ 0, 1 ], [ 0, 1 ] ],scale: [ 600, 25 ] });
+                    init({ range: [ [ 0, 1 ], [ 0, 1 ] ],scale: [ 500, 25 ] });
                     rectchart( [ 1, 0 ], [ "#e00", "#999" ] );
                 </div>
 
-                <p>目標磚塊2:</p>
+                <p>目標磚塊 <code>2</code> ：</p>
 
                 <div class="graphie" id="goal_block_2">
-                    init({ range: [ [ 0, 1 ], [ 0, 1 ] ],scale: [ 600 * ANSWER_2, 25 ] });
+                    init({ range: [ [ 0, 1 ], [ 0, 1 ] ],scale: [ 500 * ANSWER_2, 25 ] });
                     rectchart( [ 1, 0 ], [ ORANGE, "#999" ] );
                 </div>
 
                 <div class="solution" data-type="multiple">
                     <div style="margin-bottom: 10px;">
-                        <span style="display:inline-block; text-align: right; width: 120px;">將起始磚塊切成</span>
-                        <input type="button" value="-" class="simple-button" onclick="KhanUtil.changePieces( false )">
-                        <span id="pieces" style="display: inline-block; width: 54px; text-align: center;">1 份</span>
+                        <span style="display:inline-block; text-align: left; width: 80px;">剪切起始磚塊</span>
+						<input type="button" value="-" class="simple-button" onclick="KhanUtil.changePieces( false )">
+                        <span id="pieces" style="display: inline-block; width: 30px; text-align: center;">1 份</span>
                         <input type="button" value="+" class="simple-button" onclick="KhanUtil.changePieces( true )">
                     </div>
 
                     <div style="margin-bottom: 10px;">
-                        <span style="display:inline-block; text-align: right; width: 120px;">複製現在磚塊1</span>
+                        <span style="display:inline-block; text-align: left; width: 80px;">複製現在磚塊1</span>
                         <input type="button" value="-" class="simple-button" onclick="KhanUtil.changeTimes( false, 'current_block_1' )" disabled="disabled">
-                        <span id="current_block_1_times" style="display: inline-block; width: 54px; text-align: center;">1 次</span>
-                        <input type="button" value="+" class="simple-button" onclick="KhanUtil.changeTimes( true, 'current_block_1' )">
+                        <span id="current_block_1_times" style="display: inline-block; width: 30px; text-align: center;">1 次</span>
+                        <input type="button" value="+" class="simple-button" onclick="if(parseInt($('#current_block_1_times').text().substr(0,2))&gt;=parseInt($('#pieces').text().substr(0,2))){return;};KhanUtil.changeTimes( true, 'current_block_1' )">
                     </div>
 
                     <div style="margin-bottom: 10px;">
-                        <span style="display:inline-block; text-align: right; width: 120px;">複製現在磚塊2</span>
+                        <span style="display:inline-block; text-align: left; width: 80px;">複製現在磚塊2</span>
                         <input type="button" value="-" class="simple-button" onclick="KhanUtil.changeTimes( false, 'current_block_2' )" disabled="disabled">
-                        <span id="current_block_2_times" style="display: inline-block; width: 54px; text-align: center;">1 次</span>
-                        <input type="button" value="+" class="simple-button" onclick="KhanUtil.changeTimes( true, 'current_block_2' )">
+                        <span id="current_block_2_times" style="display: inline-block; width: 30px; text-align: center;">1 次</span>
+                        <input type="button" value="+" class="simple-button" onclick="if(parseInt($('#current_block_2_times').text().substr(0,2))&gt;=parseInt($('#pieces').text().substr(0,2))){return;};KhanUtil.changeTimes( true, 'current_block_2' )">
                     </div>
 
                     <span class="sol" id="current_block_1_answer" style="display: none;"><var>roundTo( 3, ANSWER_1 )</var></span>
                     <span class="sol" id="current_block_2_answer" style="display: none;"><var>roundTo( 3, ANSWER_2 )</var></span>
-                </div>
+					<p class="example">利用下列工具完成解答</p>
+				</div>
 
                 <div class="hints">
-                    <p data-if="CODE_OFFSPRING_1 !== fraction( N_OFFSPRING_1, D_OFFSPRING_1)">目標磚塊1 的長度<code><var>CODE_OFFSPRING_1</var></code>個單位
-                    可以重新寫為<code><var>fraction( N_OFFSPRING_1, D_OFFSPRING_1 )</var></code>。</p>
-                    <p data-if="CODE_OFFSPRING_2 !== fraction( N_OFFSPRING_2, D_OFFSPRING_2)">目標磚塊1 的長度<code><var>CODE_OFFSPRING_2</var></code>個單位
-                    可以重新寫為<code><var>fraction( N_OFFSPRING_2, D_OFFSPRING_2 )</var></code>.</p>
-                    <p>磚塊切成<code>x</code>等分，也就是把它除以<code>x</code>的意思。</p>
-                    <p>把起始磚等分切成小塊，讓它複製後可以組合成目標磚塊1和目標磚塊2的長度。</p>A //不知道這個A有什麼意義
-                    <p>目標磚塊1和目標磚塊2的分母分別是<code><var>D_OFFSPRING_1</var></code>和<code><var>D_OFFSPRING_2</var></code>，他們的最小公倍數是
-                    <code><var>LCM</var></code>。所以你可以用<code>\dfrac{1}{<var>LCM</var>}</code>公尺的磚塊同時組成目標磚塊1和目標磚塊2。
-					</p>
-                    <p>將起始磚等分切成<code>n</code>小塊，方程式如下:</p>
-                    <p><code><var>CODE_PARENT</var> ÷ n = \dfrac{1}{<var>LCM</var>}</code></p>
+                    <p data-if="CODE_OFFSPRING_1 !== fraction( N_OFFSPRING_1, D_OFFSPRING_1)">目標磚塊 <code>1</code> 的長度 <code><var>CODE_OFFSPRING_1</var></code> 個單位可以重新寫為 <code><var>fraction( N_OFFSPRING_1, D_OFFSPRING_1 )</var></code> 。</p>
+                    <p data-if="CODE_OFFSPRING_2 !== fraction( N_OFFSPRING_2, D_OFFSPRING_2)">目標磚塊 <code>2</code> 的長度 <code><var>CODE_OFFSPRING_2</var></code> 個單位可以重新寫為 <code><var>fraction( N_OFFSPRING_2, D_OFFSPRING_2 )</var></code> 。</p>
+                    <p>磚塊切成 <code>x</code> 等分，也就是把它除以 <code>x</code> 的意思。</p>
+                    <p>把起始磚等分切成小塊，讓它複製後可以組合成目標磚塊 <code>1</code> 和目標磚塊 <code>2</code> 的長度。</p>
+                    <p>目標磚塊 <code>1</code> 和目標磚塊 <code>2</code> 的分母分別是 <code><var>D_OFFSPRING_1</var></code> 和 <code><var>D_OFFSPRING_2</var></code> ，他們的最小公倍數是 <code><var>LCM</var></code> 。所以你可以用 <code>\dfrac{1}{<var>LCM</var>}</code> 公尺的磚塊同時組成目標磚塊 <code>1</code> 和目標磚塊 <code>2</code> 。</p>
+                    <p>將起始磚等分切成 <code>n</code> 小塊，方程式如下:</p>
+                    <p><code><var>CODE_PARENT</var> \div n = \dfrac{1}{<var>LCM</var>}</code></p>
                     <p><code><var>CODE_PARENT</var> = \dfrac{1}{<var>LCM</var>}n</code></p>
                     <p><code><var>CODE_PARENT</var> \cdot <var>LCM</var> = n</code></p>
                     <p><code>n = <var>SLICES</var></code></p>
-                    <p>我們得到<code>\dfrac{1}{<var>LCM</var>}</code>公尺的磚塊(現在磚塊)。現在我們要將目標磚塊除以現在磚塊，得到需要幾塊現在磚塊才能拼成目標磚塊，過程如下。</p>
-                    <p><code>\color{<var>BLUE</var>}{c1 = \dfrac{<var>N_OFFSPRING_1</var>}{<var>D_OFFSPRING_1</var>} ÷ \dfrac{1}{<var>LCM</var>} =
+                    <p>我們得到 <code>\dfrac{1}{<var>LCM</var>}</code> 公尺的磚塊(現在磚塊)。現在我們要將目標磚塊除以現在磚塊，得到需要幾塊現在磚塊才能拼成目標磚塊，過程如下：</p>
+                    <p><code>\color{<var>BLUE</var>}{c1 = \dfrac{<var>N_OFFSPRING_1</var>}{<var>D_OFFSPRING_1</var>} \div \dfrac{1}{<var>LCM</var>} =
                         \dfrac{<var>N_OFFSPRING_1</var>}{<var>D_OFFSPRING_1</var>} \cdot <var>LCM</var> = <var>N_OFFSPRING_1 * LCM / D_OFFSPRING_1</var>}</code></p>
-                    <p><code>\color{<var>ORANGE</var>}{c2 = \dfrac{<var>N_OFFSPRING_2</var>}{<var>D_OFFSPRING_2</var>} ÷ \dfrac{1}{<var>LCM</var>} =
+                    <p><code>\color{<var>ORANGE</var>}{c2 = \dfrac{<var>N_OFFSPRING_2</var>}{<var>D_OFFSPRING_2</var>} \div \dfrac{1}{<var>LCM</var>} =
                         \dfrac{<var>N_OFFSPRING_2</var>}{<var>D_OFFSPRING_2</var>} \cdot <var>LCM</var> = <var>N_OFFSPRING_2 * LCM / D_OFFSPRING_2</var>}</code></p>
-                    <p><strong>所以結果就是把起始磚塊等分切成<code><var>SLICES</var></code>等分，把現在磚塊複製<code><var>N_OFFSPRING_1 * LCM / D_OFFSPRING_1</var></code>倍變成目標磚塊1，同理，把現在磚塊複製<code><var>N_OFFSPRING_2 * LCM / D_OFFSPRING_2</var></code>倍變成目標磚塊2。</strong></p>
+                    <p><strong>所以結果就是把起始磚塊等分切成 <code class="hint_pink"><var>SLICES</var></code> 等分，把現在磚塊 <code>1</code> 複製 <code class="hint_pink"><var>N_OFFSPRING_1 * LCM / D_OFFSPRING_1</var></code> 倍變成目標磚塊 <code>1</code> ，同理，把現在磚塊 <code>2</code> 複製 <code class="hint_pink"><var>N_OFFSPRING_2 * LCM / D_OFFSPRING_2</var></code> 倍變成目標磚塊 <code>2</code> 。</strong></p>
                 </div>
             </div>
         </div>
