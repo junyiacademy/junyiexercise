@@ -390,14 +390,11 @@ $.extend(Khan.answerTypes, {
         });
 
         var input;
-        if (navigator.userAgent.match(/(ipad|ipod|iphone|android)/i)) { // hack: display num keyboard for mobile device
-            input = $("<input type='text'/>");
-            input.on('touchstart focus', function() {
-              $(this)[0].type = "number";
-            });
-            input.on('keydown blur', function() {
-              $(this)[0].type = "text";
-            });
+        if (navigator.userAgent.match(/(ipad|ipod|iphone|android)/i)) { 
+            // To display num keyboard for mobile device:
+            // 1. set numeric "pattern" attr for <input> 
+            // 2. set "novalidate" attr for <form> (id=answerform)
+            input = $('<input type="text" pattern="[0-9]*"/>');
         }
 
         return Khan.answerTypes.text(solutionarea, solution, fallback, verifier, input);
