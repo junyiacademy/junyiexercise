@@ -390,9 +390,11 @@ $.extend(Khan.answerTypes, {
         });
 
         var input;
-
-        if (typeof userExercise !== "undefined" && userExercise.tablet) {
-            input = $("<input type='number'/>");
+        if (navigator.userAgent.match(/(ipad)/i)) { 
+            // To display num keyboard for ipad device:
+            // 1. set numeric "pattern" attr for <input> 
+            // 2. set "novalidate" attr for <form> (id=answerform)
+            input = $('<input type="text" pattern="[0-9]*"/>');
         }
 
         return Khan.answerTypes.text(solutionarea, solution, fallback, verifier, input);
