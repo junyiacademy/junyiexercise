@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>被減數或減數未知的計算題</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+        <div class="vars">
+            <var id="J">randRange(10,30)</var>
+			<var id="K">randRange(60,99)</var>
+		</div>
+                <p class="question">
+				求出下列算式中的 <code>A</code>：</br>
+				<code><var>K</var> - A = <var>J</var></code> 
+				</p>		
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>K-J</var></span></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+
+                <div class="hints">
+					<p><code><var>K</var> - A  = <var>J</var></code> 我們可以想成 <code><var>K</var></code> <code> - </code>（<code>\qquad</code>）<code> = <var>J</var></code> 。</p>
+					<div>
+						<p>下面的圖示可以幫助我們思考如何算出 <code>A</code></p>
+						<div class="graphie" id="original">
+							init({ range: [[0, K/5+1], [0, 6]], scale: 22 });
+			
+							path([[0,3.1],[0.2,3.9],[(K-J)/10-0.2,3.9],[(K-J)/10,4.2],[(K-J)/10+0.2,3.9],[(K-J)/5-0.2,3.9],[(K-J)/5,3.1]], {stroke: "#6C9CC9"});
+							label([(K-J)/10,5.5], "\\small{A}", "below",{color:"#6C9CC9"});
+							
+							path([[(K-J)/5,3.1],[(K-J)/5+0.2,3.9],[J/10+(K-J)/5-0.2,3.9],[J/10+(K-J)/5,4.2],[J/10+(K-J)/5+0.2,3.9],[K/5-0.2,3.9],[K/5,3.1]], {stroke: "#6C9CC9"});
+							label([J/10+(K-J)/5,5.5], "\\small{"+J+"}", "below",{color:"#6C9CC9"});
+							
+							path([[0,2.7],[0.2,1.8],[K/10-0.2,1.8],[K/10,1.5],[K/10+0.2,1.8],[K/5-0.2,1.8],[K/5,2.7]], {stroke: "#6C9CC9"});
+							label([K/10,1.9], "\\small{"+K+"}", "below",{color:"#6C9CC9"});
+								
+							style({ stroke: "#6C9CC9", strokeWidth: 2 });
+							line([0, 3], [K/5, 3]);
+							
+							style({ stroke: "#F06C61", strokeWidth: 2.7 });
+							line([(K-J)/5, 3], [(K-J)/5, 2.2]);
+						
+						</div>
+					</div>
+					<p><code><var>K</var></code> 減去 <code>A</code> 之後剩下 <code><var>J</var></code> ，代表全部是 <code><var>K</var></code> ，我們可以將 <code><var>K</var></code> 分成 <code>A</code> 和 <code><var>J</var></code> 。</p>
+					<p>我們可以用 <code><var>K</var> - <var>J</var></code> 算出 <code>A</code> 的值。</p>
+					<p><code><var>K</var> - <var>J</var> = </code> <code class="hint_pink"><var>round(K-J)</var></code>  。</p>
+                </div>
+        </div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="J">randRange(10,50)</var>
+				<var id="K">randRange(10,49)</var>
+			</div>
+                <p class="question">
+				求出下列算式中的 <code>A</code>：</br>
+				<code>A - <var>J</var> = <var>K</var></code> 
+				</p>		
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>K+J</var></span></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+
+                <div class="hints">
+					<p><code>A - <var>J</var>  = <var>K</var></code> 我們可以想成 （<code>\qquad</code>）<code> - </code><code><var>J</var></code> <code> = <var>K</var></code> 。</p>
+					
+					<div>
+						<p>下面的圖示可以幫助我們思考如何算出 <code>A</code></p>
+						<div class="graphie" id="original">
+							init({ range: [[0, (J+K)/7.5+0.5], [0, 6]], scale: 24 });
+			
+							path([[0,3.1],[0.2,3.9],[J/15-0.2,3.9],[J/15,4.2],[J/15+0.2,3.9],[J/7.5-0.2,3.9],[J/7.5,3.1]], {stroke: "#6C9CC9"});
+							label([J/15,5.5], "\\small{"+J+"}", "below",{color:"#6C9CC9"});
+							
+							path([[J/7.5,3.1],[J/7.5+0.2,3.9],[K/15+J/7.5-0.2,3.9],[K/15+J/7.5,4.2],[K/15+J/7.5+0.2,3.9],[(J+K)/7.5-0.2,3.9],[(J+K)/7.5,3.1]], {stroke: "#6C9CC9"});
+							label([K/15+J/7.5,5.5], "\\small{"+K+"}", "below",{color:"#6C9CC9"});
+							
+							path([[0,2.7],[0.2,1.8],[(J+K)/15-0.2,1.8],[(J+K)/15,1.5],[(J+K)/15+0.2,1.8],[(J+K)/7.5-0.2,1.8],[(J+K)/7.5,2.7]], {stroke: "#6C9CC9"});
+							label([(J+K)/15,1.9], "\\small{A}", "below",{color:"#6C9CC9"});
+								
+							style({ stroke: "#6C9CC9", strokeWidth: 2 });
+							line([0, 3], [(J+K)/7.5, 3]);
+							
+							style({ stroke: "#F06C61", strokeWidth: 2.7 });
+							line([J/7.5, 3], [J/7.5, 2.2]);
+						
+						</div>
+					</div>
+					
+					<p><code>A</code> 減去 <code><var>J</var></code> 之後剩下 <code><var>K</var></code> ，代表全部是 <code>A</code> ，我們可以將 <code>A</code> 分成 <code><var>J</var></code> 和 <code><var>K</var></code> 。</p>
+					<p>我們可以用 <code><var>J</var> + <var>K</var></code> 算出 <code>A</code> 的值。</p>
+					<p><code><var>J</var> + <var>K</var> = </code> <code class="hint_pink"><var>round(K+J)</var></code>  。</p>
+                </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
