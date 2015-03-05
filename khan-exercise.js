@@ -1277,7 +1277,7 @@ var Khan = (function() {
             // Use .select() and on a delay to make IE happy
             var firstInput = solutionarea.find(":input").first();
             setTimeout(function() {
-                if (!firstInput.is(":disabled")) {
+                if (!firstInput.is(":disabled" ) && !/iPad/i.test(navigator.userAgent)) {
                     firstInput.focus();
                     if (firstInput.is("input:text")) {
                         firstInput.select();
@@ -2075,7 +2075,7 @@ var Khan = (function() {
                     setTimeout(function() {
                         var focusInput = $(lastFocusedSolutionInput);
 
-                        if (!focusInput.is(":disabled")) {
+                        if (!focusInput.is(":disabled") && !/iPad/i.test(navigator.userAgent)) {
                             // focus should always work; hopefully select will work for text fields
                             focusInput.focus();
                             if (focusInput.is("input:text")) {
@@ -2191,9 +2191,9 @@ var Khan = (function() {
                 $(this).val($(this).data("buttonText") || "下一個提示 (" + stepsLeft + ")");
 
                 var problem = $(hint).parent();
-								
-				// Append first so MathJax can sense the surrounding CSS context properly
-				$(hint).appendTo("#hintsarea").runModules(problem);
+                                
+                // Append first so MathJax can sense the surrounding CSS context properly
+                $(hint).appendTo("#hintsarea").runModules(problem);
 
                 // Grow the scratchpad to cover the new hint
                 Khan.scratchpad.resize();
@@ -2202,8 +2202,8 @@ var Khan = (function() {
                 if (hints.length === 0) {
                     $(hint).addClass("final_answer");
 
-					$(Khan).trigger("allHintsUsed");
-					
+                    $(Khan).trigger("allHintsUsed");
+                    
                     $(this).attr("disabled", true);
                 }
             }
