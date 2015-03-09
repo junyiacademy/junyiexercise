@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>被乘數或乘數未知的計算題</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+        <div class="vars">
+            <var id="J">randRange(2,20)</var>
+			<var id="K">randRange(5,15)</var>
+			<var id="JK">round(J*K)</var>
+		</div>
+                <p class="question">
+				求出下列算式中的 <code>A</code>：</br>
+				<span><code>A</code> <code>\times <var>J</var> = <var>JK</var></code></span>
+				
+				</p>		
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>K</var></span></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+
+                <div class="hints">
+					<p><code>A</code> <code> \times <var>J</var> = <var>JK</var></code> 我們可以想成 （<code>\qquad</code>）<code> \times <var>J</var> = <var>JK</var></code></p>
+					<p>想一想，多少的 <code><var>J</var></code> 倍等於 <code><var>JK</var></code> 呢？</p>
+					<div class="graphie" id="original">
+						init({ range: [[0, 49], [-12, 8]], scale: 10 });
+						label([2.15,8], "\\small{A}", "below");
+						style({ stroke: "#6495ED", strokeWidth: 2.7 });
+							for(var i=0;i&lt;J;i++){
+								line([1+i,5-i*0.6],[3.3+i,5-i*0.6]);
+							}
+							var count_side = 0;
+							setTimeout(function() {
+							s = setInterval(function() {
+								if(count_side &lt;J)
+									{
+										style({ stroke: "#28AE7B", strokeWidth: 2.7 });										
+										line([1+count_side,5-count_side*0.6],[3.3+count_side,5-count_side*0.6]);
+									
+										line([0.5+2.3*count_side,-9],[0.5+2.3*(count_side+1),-9]);
+									}																
+								count_side++;
+								if(count_side==J ){clearInterval(s);}
+							}, 1000);
+						}, 0);
+						label([2.5+1.15*J,-11], "\\small{A的"+J+"倍="+K*J+"}");
+					</div>
+					
+					<p><code>A</code> 的 <code><var>J</var></code> 倍等於 <code><var>JK</var></code> ，我們可以將 <code><var>JK</var></code> 除以 <code><var>J</var></code> 就能算出 <code>A</code> 。</p>
+					<p><code><var>JK</var> \div <var>J</var> = \color{#FF00AF}{<var>K</var>}</code> 。也就是說 <code class="hint_pink"><var>K</var></code> 的 <code><var>J</var></code> 倍是 <code><var>JK</var></code> 。</p>
+                </div>
+        </div>
+		
+		<div id="case2">
+			<div class="vars">
+            <var id="J">randRange(2,20)</var>
+			<var id="K">randRange(5,15)</var>
+			<var id="JK">J*K</var>
+		</div>
+                <p class="question">
+				求出下列算式中的 <code>A</code>：</br>
+				<span><code><var>J</var> \times </code> <code>A</code> <code> = <var>J*K</var></code></span>
+				</p>		
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>K</var></span></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+
+                <div class="hints">
+					<p><code><var>J</var> \times </code> <code>A</code> <code> = <var>JK</var></code> 我們可以想成 <code><var>J</var> \times </code>（<code>\qquad</code>） <code>= <var>JK</var></code></p>
+					<p>想一想， <code><var>J</var></code> 的幾倍等於 <code><var>JK</var></code> 呢？</p>
+					<div class="graphie" id="original">
+						init({ range: [[0, 45], [-12, 8]], scale: 10 });
+						label([2.15,8], "\\small{"+J+"}", "below");
+						style({ stroke: "#6495ED", strokeWidth: 2.7 });
+							for(var i=0;i&lt;K;i++){
+								line([1+i,5-i*0.6],[3.3+i,5-i*0.6]);
+							}
+							path([[3.4+K,6],[3.8+K,4.8],[3.8+K,5.2-K*0.3],[4.2+K,5-K*0.3],[3.8+K,4.8-K*0.3],[3.8+K,4.8-K*0.6],[3.4+K,4-K*0.6]], {stroke: "#6C9CC9"});
+							label([8+K,6-K*0.3], "\\small{有A個"+J+"}", "below",{color:"#6C9CC9"});
+							var count_side = 0;
+							setTimeout(function() {
+							s = setInterval(function() {
+								if(count_side &lt;K)
+									{
+										style({ stroke: "#28AE7B", strokeWidth: 2.7 });										
+										line([1+count_side,5-count_side*0.6],[3.3+count_side,5-count_side*0.6]);
+									
+										line([0.5+2.3*count_side,-9],[0.5+2.3*(count_side+1),-9]);
+									}																
+								count_side++;
+								if(count_side==K ){clearInterval(s);}
+							}, 1000);
+						}, 0);
+						label([2.5+1.15*K,-11], "\\small{"+J+"的A倍="+K*J+"}");
+					</div>
+					<p><code><var>J</var></code> 的 <code>A</code> 倍等於 <code><var>JK</var></code> ，我們可以將 <code><var>JK</var></code> 除以 <code><var>J</var></code> 就能算出 <code>A</code> 。</p>
+					<p><code><var>JK</var> \div <var>J</var> = \color{#FF00AF}{<var>K</var>}</code> 。也就是說 <code><var>J</var></code> 的 <code class="hint_pink"><var>K</var></code> 倍是 <code><var>JK</var></code> 。</p>
+                </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
