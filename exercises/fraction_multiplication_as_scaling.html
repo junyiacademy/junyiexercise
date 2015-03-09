@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>分數乘法文字題</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		table.nLimit td {width:70px;height:45px;text-align:center;padding: 1px; vertical-align:middle;font-size:15px}}
+		table.nLimit th {text-align:center}
+		table.Limit td {height:45px;text-align:center;padding: 1px; vertical-align:middle;font-size:15px}}
+		table.Limit th {text-align:center}
+	</style>
+	<script type="text/javascript">
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars">
+			<var id="type">randRange(1,3)</var>
+			<var id="book">randFromArray([[8,3],[7,3],[7,4],[8,5],[9,5]])</var>
+			<var id="ggcd">randRange(2,5)</var>
+			<var id="den">
+			(function(){
+				var num=new Array(2);
+				switch(type){
+					case 1:num[0]=book[0]*ggcd;num[1]=book[1]*ggcd;break;
+					case 2:num[0]=book[0]*(ggcd+1);num[1]=book[1]*ggcd;break;
+					case 3:num[0]=book[0]*(ggcd-1);num[1]=book[1]*ggcd;break;
+				}
+				return num;
+				})()</var>
+        </div>
+		<div class="question">
+			<p>完成下面的式子：</p>
+			<p><code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}\times 1</code>
+			<select id="select_1"><option ></option><option ><code>=</code></option><option ><code>&gt;</code></option><option ><code>&lt;</code></option>
+			</select><code>\dfrac{<var>den[0]</var>}{<var>den[1]</var>}</code></p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">1</div>
+				<div class="validator-function">
+					if(document.getElementById("select_1").value==""){return "";}
+					if(document.getElementById("select_1").value=="=" && type==1){
+						return true;
+					}
+					if(document.getElementById("select_1").value=="&lt;" && type==2){
+						return true;
+					}	
+					if(document.getElementById("select_1").value=="&gt;" && type==3){
+						return true;
+					}	
+				</div>
+			</div>
+			<p>請選擇正確的答案</p>
+		</div>
+		<div class="hints">
+			<div><p>我們可以發現， <span data-if="type==1"><code><var>den[0]</var></code> 和 <code><var>den[1]</var></code> 都能被 <code><var>ggcd</var></code> 整除，</span>
+			<span data-if="type==2"><code><var>den[0]</var></code> 能被 <code><var>book[0]</var></code> 整除， <code><var>den[1]</var></code> 能被 <code><var>book[1]</var></code> 整除，</span>
+			<span data-if="type==3"><code><var>den[0]</var></code> 能被 <code><var>book[0]</var></code> 整除， <code><var>den[1]</var></code> 能被 <code><var>book[1]</var></code> 整除，</span></p>
+			<p><code>\dfrac{<var>den[0]</var>}{<var>den[1]</var>}</code> 我們可以寫成 
+			<span data-if="type==1"><code>\dfrac{<var>book[0]</var>\times<var>ggcd</var>}{<var>book[1]</var>\times<var>ggcd</var>}</code></span>
+			<span data-if="type==2"><code>\dfrac{<var>book[0]</var>\times<var>ggcd+1</var>}{<var>book[1]</var>\times<var>ggcd</var>}</code></span>
+			<span data-if="type==3"><code>\dfrac{<var>book[0]</var>\times<var>ggcd-1</var>}{<var>book[1]</var>\times<var>ggcd</var>}</code></span></p>
+			</div>
+			<div><p>我們可以把這個分數拆分成兩個分數相乘：</p>
+			<p><code>\dfrac{<var>book[0]</var>\times<span data-if="type==1"><var>ggcd</var></span><span data-if="type==2"><var>ggcd+1</var></span><span data-if="type==3"><var>ggcd-1</var></span>}{<var>book[1]</var>\times<var>ggcd</var>}=
+			\dfrac{<var>book[0]</var>}{<var>book[1]</var>}\times\dfrac{<span data-if="type==1"><var>ggcd</var></span><span data-if="type==2"><var>ggcd+1</var></span><span data-if="type==3"><var>ggcd-1</var></span>}{<var>ggcd</var>}</code></p>
+			<p><span data-if="type==1"><code>\dfrac{<var>ggcd</var>}{<var>ggcd</var>}</code> 用整數怎麼表示？</span>
+			<span data-if="type==2"><code>\dfrac{<var>ggcd+1</var>}{<var>ggcd</var>}</code> 是大於、等於還是小於 <code>1</code> ？</span>
+			<span data-if="type==3"><code>\dfrac{<var>ggcd-1</var>}{<var>ggcd</var>}</code> 是大於、等於還是小於 <code>1</code> ？</span></p>
+			</div>
+			<p><span data-if="type==1"><code>\dfrac{<var>ggcd</var>}{<var>ggcd</var>}=1</code> ，因此 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}\times\dfrac{<var>ggcd</var>}{<var>ggcd</var>}=\dfrac{<var>book[0]</var>}{<var>book[1]</var>}\times 1</code> 。</span>
+			<span data-if="type==2">我們知道 <code>\dfrac{<var>ggcd</var>}{<var>ggcd</var>}=1</code> ，可以得出 <code>\dfrac{<var>ggcd+1</var>}{<var>ggcd</var>}&gt;1</code> ，因此 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}\times\dfrac{<var>ggcd+1</var>}{<var>ggcd</var>}&gt;\dfrac{<var>book[0]</var>}{<var>book[1]</var>}\times 1</code> 。</span>
+			<span data-if="type==3">我們知道 <code>\dfrac{<var>ggcd</var>}{<var>ggcd</var>}=1</code> ，可以得出 <code>\dfrac{<var>ggcd-1</var>}{<var>ggcd</var>}&lt;1</code> ，因此 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}\times\dfrac{<var>ggcd-1</var>}{<var>ggcd</var>}&lt;\dfrac{<var>book[0]</var>}{<var>book[1]</var>}\times 1</code> 。</span>
+			</p>
+			<p>所以， <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}\times 1</code><code class="hint_pink"><span data-if="type==1">=</span><span data-if="type==2">&lt;</span><span data-if="type==3">&gt;</span></code><code>\dfrac{<var>den[0]</var>}{<var>den[1]</var>}</code> 。</p>
+		</div>
+	</div>
+	
+	<div id="case2">
+		<div class="vars">	
+			<var id="type">randRange(1,3)</var>
+			<var id="num">randRange(5,7)</var>
+			<var id="number1">randRange(3,7)</var>
+			<var id="number2">(function(){
+				var num;
+				switch(type){
+					case 1:num=number1;break;
+					case 2:num=number1-1;break;
+					case 3:num=number1+1;break;
+				}
+				return num;
+				})()</var>	
+			<var id="B">randRangeUnique( 1,4,3)</var>
+			<var id="sum">
+				(function(){
+					var s = 0;
+					for(var k = 0;k&lt;3;k++){
+						if(type==B[k]){
+							s+=1;
+							$('#c_'+(k+1)).val('true');
+						}else{
+							$('#c_'+(k+1)).val('false');
+						}
+					}
+					return s;
+				})()
+			</var>
+		</div>
+		<div class="question">
+			<div class="problem">
+				<p>完成下面的式子：</p>
+				<p><code><var>num</var> \times \dfrac{<var>number1</var>}{<var>number2</var>} </code>  
+				<select id="select_1"><option ></option><option ><code>=</code></option><option ><code>&gt;</code></option><option ><code>&lt;</code></option></select> 
+				<code><var>num</var> </code></p>
+			<p>下面的選項哪一個是正確的？</p>
+			<p onclick="$('#c_1').attr('checked','checked')"><input type="radio" name="count_1" id="c_1">
+				<span data-if="B[0]==1">因為我們用 <code><var>num</var></code> 乘以一個等於 <code>1</code> 的分數</span>
+				<span data-if="B[0]==2">因為我們用 <code><var>num</var></code> 乘以一個大於 <code>1</code> 的分數</span>
+				<span data-if="B[0]==3">因為我們用 <code><var>num</var></code> 乘以一個小於 <code>1</code> 的分數</span>
+			</p>
+			<p onclick="$('#c_2').attr('checked','checked')"><input type="radio" name="count_1" id="c_2">
+				<span data-if="B[1]==1">因為我們用 <code><var>num</var></code> 乘以一個等於 <code>1</code> 的分數</span>
+				<span data-if="B[1]==2">因為我們用 <code><var>num</var></code> 乘以一個大於 <code>1</code> 的分數</span>
+				<span data-if="B[1]==3">因為我們用 <code><var>num</var></code> 乘以一個小於 <code>1</code> 的分數</span>
+			</p>
+			<p onclick="$('#c_3').attr('checked','checked')"><input type="radio" name="count_1" id="c_3">
+				<span data-if="B[2]==1">因為我們用 <code><var>num</var></code> 乘以一個等於 <code>1</code> 的分數</span>
+				<span data-if="B[2]==2">因為我們用 <code><var>num</var></code> 乘以一個大於 <code>1</code> 的分數</span>
+				<span data-if="B[2]==3">因為我們用 <code><var>num</var></code> 乘以一個小於 <code>1</code> 的分數</span>
+			</p>
+			</div>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">(function(){
+						var chk_value =[];    
+						$('input[name="count_1"]:checked').each(function(){    
+							chk_value.push($(this).val());    
+						});
+						return chk_value;
+					})()</div>
+				<div class="validator-function">
+					if($("#c_1").attr("checked")!='checked' && $("#c_2").attr("checked")!='checked' && $("#c_3").attr("checked")!='checked'
+					&& document.getElementById("select_1").value==""){return "";}
+					if(guess.length==0){
+						return "";
+					}
+					if(guess.length!=sum){
+						return false;
+					}
+					var trueAns = 0;
+					for(var i = 0;i&lt;guess.length;i++){
+						if(guess[i]=='true'){
+							trueAns++;
+						}
+					}
+					if(trueAns==sum&&type==1&&document.getElementById("select_1").value=="="){
+					return true;
+					}
+					if(trueAns==sum&&type==2&&document.getElementById("select_1").value=="&gt;"){
+					return true;
+					}
+					if(trueAns==sum&&type==3&&document.getElementById("select_1").value=="&lt;"){
+					return true;
+					}
+				</div>
+			</div>
+			<p>請選擇正確的答案</p>
+		</div>
+		<div class="hints">
+			<p>我們比較一下 <code><var>num</var>\times 1</code> 和 <code><var>num</var></code> ， <code><var>num</var>\times 1</code> 是大於、等於還是小於 <code><var>num</var></code> 呢？我們知道這是相等的，因為任何數乘以 <code>1</code> 都等於本身。</p>
+			<p><code><var>num</var> &times \dfrac{<var>number1</var>}{<var>number2</var>}</code> 是大於、等於還是小於 <code><var>num</var></code> 呢？</p>
+			<div><p><code><var>num</var> &times \dfrac{<var>number1</var>}{<var>number2</var>}</code> 相當於 <code>\dfrac{<var>number1</var>}{<var>number2</var>}</code> 倍的 <code><var>num</var>\times 1</code> ，可以看下面的例圖：</p>
+			<div class="graphie" id="similar_2">
+				init({
+					range: [ [-0.1,10.1], [-1.1,2.1] ],
+					scale: 40
+					});
+				if(type!=3){
+					path([[0,1.1],[0.2,1.2],[4.9,1.2],[5,1.4],[5.1,1.2],[9.9,1.2],[10,1.1]], {stroke: "#6495ED"});
+					path([[0,0],[10,0],[10,1],[0,1],[0,0]], {stroke: "#6495ED",fill: "#fff"});
+					label([5,1.2], "\\small{"+num+"}\\times\\frac{"+number1+"}{"+number2+"}", "above",{color:"black"});
+					var j=10/number1;
+					for(var i=0;i&lt;number1;i++){
+						line([j*i,0],[j*i,1], {stroke: "#6495ED"});
+						label([j*i+j/2,0], "\\small{"+num+"}\\times"+"\\frac{1}{"+number2+"}", "above",{color:"black"});
+					}
+					path([[0,-0.1],[0.2,-0.2],[j*number2/2-0.1,-0.2],[j*number2/2,-0.4],[j*number2/2+0.1,-0.2],[j*number2-0.2,-0.2],[j*number2,-0.1]], {stroke: "#6495ED"});
+					label([j*number2/2,-0.2], "\\small{"+num+"}\\times\\small{1}", "below",{color:"black"});
+				}else{
+					path([[0,0],[10,0],[10,1],[0,1],[0,0]], {stroke: "#6495ED",fill: "#fff"});
+					var j=10/number2;
+					for(var i=0;i&lt;number2;i++){
+						line([j*i,0],[j*i,1], {stroke: "#6495ED"});
+						label([j*i+j/2,0], "\\small{"+num+"}\\times"+"\\frac{1}{"+number2+"}", "above",{color:"black"});
+					}
+					path([[0,1.1],[0.2,1.2],[j*number1/2-0.1,1.2],[j*number1/2,1.4],[j*number1/2+0.1,1.2],[j*number1-0.2,1.2],[j*number1,1.1]], {stroke: "#6495ED"});
+					label([j*number1/2,1.2], "\\small{"+num+"}\\times\\frac{"+number1+"}{"+number2+"}", "above",{color:"black"});
+					path([[0,-0.1],[0.2,-0.2],[j*number2/2-0.1,-0.2],[j*number2/2,-0.4],[j*number2/2+0.1,-0.2],[j*number2-0.2,-0.2],[j*number2,-0.1]], {stroke: "#6495ED"});
+					label([j*number2/2,-0.2], "\\small{"+num+"}\\times\\small{1}", "below",{color:"black"});
+				}
+			</div></div>
+			<p><code>\dfrac{<var>number1</var>}{<var>number2</var>}</code> <span data-if="type==1">等於</span><span data-if="type==2">大於</span><span data-if="type==3">小於</span> <code>1</code> ，那麼 <code><var>num</var> &times \dfrac{<var>number1</var>}{<var>number2</var>}</code> 
+			<span data-if="type==1">等於</span><span data-if="type==2">大於</span><span data-if="type==3">小於</span> <code><var>num</var>\times 1</code> 。</p>
+			<p>因此， <code><var>num</var> \times \dfrac{<var>number1</var>}{<var>number2</var>}</code> 是<span data-if="type==1">等於</span><span data-if="type==2">大於</span><span data-if="type==3">小於</span> <code><var>num</var></code> 。</p>
+			<p>所以，<code><var>num</var> \times \dfrac{<var>number1</var>}{<var>number2</var>}</code> <code class="hint_pink"><span data-if="type==1">=</span><span data-if="type==2">&gt;</span><span data-if="type==3">&lt;</span></code> <code><var>num</var></code> ，我們用 <code><var>num</var></code> 乘以一個<span class="hint_pink"><span data-if="type==1">等於</span><span data-if="type==2">大於</span><span data-if="type==3">小於</span></span> <code>1</code> 的分數。</p>
+		</div>
+	</div>
+	
+	<div id="case3">
+        <div class="vars">
+			<var id="num">randRange(2,5)*100</var>
+			<var id="type">randRange(1,3)</var>
+			<var id="book1">randFromArray([[5,3],[7,3],[7,4],[7,5],[4,3],[5,4],[6,5],[7,6]])</var>
+			<var id="book2">randFromArray([[2,3],[3,4],[4,5],[5,6],[1,3],[1,4],[2,5]])</var>
+			<var id="book3">randFromArray([[3,3],[4,4],[5,5],[6,6]])</var>
+			<var id="number">(function(){
+				switch(type){
+					case 1:return [book1[0],book1[1]];break;
+					case 2:return [book2[0],book2[1]];break;
+					case 3:return [book3[0],book3[1]];break;
+				}
+				})()</var>
+        </div>
+		<div class="question">
+			<p>判斷下面的式子是大於、等於還是小於 <code><var>num</var></code> ：</p>
+			<table class="nLimit">
+				<tr style="border-bottom:solid 2px #D0D0D0;font-size:15px">
+					<th>  </th><th><code>&gt;<var>num</var></code></th><th><code>&lt;<var>num</var></code></th><th><code>=<var>num</var></code></th>
+				</tr>
+				<tr style="background:#F0F0F0">
+					<td><code>\dfrac{<var>number[0]</var>}{<var>number[1]</var>}\times<var>num</var></code></td>
+					<td><input type="radio" id="pick_1_1" name="one"></td><td><input type="radio" id="pick_1_2" name="one"></td><td><input type="radio" id="pick_1_3" name="one"></td>
+				</tr>
+				
+			</table>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">1</div>
+				    <div class="validator-function">
+							var aa=0;
+							for(var i=1;i&lt;4;i++)
+							{
+								if($("#pick_1_"+i).attr("checked")!='checked')
+								{aa++;}
+							}
+							if(aa==3){return "";}
+							
+							var bol1=false;
+							if(document.getElementById("pick_1_1").checked&&type==1||document.getElementById("pick_1_2").checked&&type==2||document.getElementById("pick_1_3").checked&&type==3)
+							{bol1=true;}
+							
+							return bol1;
+					</div>
+			</div>
+			<p>請選擇正確的答案</p>
+		</div>
+		<div class="hints">
+			<p>假設我們比較 <code>1 \times<var>num</var></code> 和 <code><var>num</var></code> ， <code>1 \times<var>num</var></code> 是大於、等於還是小於 <code><var>num</var></code> 呢？我們知道這是相等的，因為任何數乘以 <code>1</code> 都等於本身。</p>
+			<p>那 <code>\dfrac{<var>number[0]</var>}{<var>number[1]</var>}\times<var>num</var></code> 是大於、等於還是小於 <code>1 \times<var>num</var></code> 呢？</p>
+			<div>
+				<p>我們可以畫圖來進行比較：</p>
+				<div class="graphie" id="similar_1">
+					init({
+						range: [ [-0.2,12.1], [-1.1,2.1] ],
+						scale: 40
+						});
+					
+					var j=5/number[1];
+					var p=number[0];
+					if(number[0]&lt;number[1]){p=number[1];}
+					path([[0,0],[j*p,0],[j*p,1],[0,1],[0,0]], {stroke: "#6495ED",fill: "#fff"});
+					for(var i=0;i&lt;p;i++){
+					
+						line([j*i,0],[j*i,1], {stroke: "#6495ED"});
+						
+						label([j*i+j/2,0], "\\frac{1}{"+number[1]+"}", "above",{color:"black"});
+					}
+					path([[0,1.1],[0.2,1.2],[j*number[0]/2-0.1,1.2],[j*number[0]/2,1.4],[j*number[0]/2+0.1,1.2],[j*number[0]-0.2,1.2],[j*number[0],1.1]], {stroke: "#6495ED"});
+					label([j*number[0]/2,1.2], "\\frac{"+number[0]+"}{"+number[1]+"}\\times\\small{"+num+"}", "above",{color:"black"});
+
+					path([[0,-0.1],[0.2,-0.2],[j*number[1]/2-0.1,-0.2],[j*number[1]/2,-0.4],[j*number[1]/2+0.1,-0.2],[j*number[1]-0.2,-0.2],[j*number[1],-0.1]], {stroke: "#6495ED"});
+					label([j*number[1]/2,-0.2], "\\small{1}\\times\\small{"+num+"}", "below",{color:"black"});
+				</div>			
+			</div>
+			<p>我們可以看出， <code><var>num</var></code> 乘以一個<span data-if="type==1">大於</span><span data-if="type==2">小於</span><span data-if="type==3">等於</span> <code>1</code> 的數，式子的值<span data-if="type==1">大於</span><span data-if="type==2">小於</span><span data-if="type==3">等於</span> <code>1 \times<var>num</var></code> ，</p>
+			<p>所以 <code>\dfrac{<var>number[0]</var>}{<var>number[1]</var>}\times<var>num</var>\enspace</code> <span data-if="type==1"><code class="hint_pink">&gt; <var>num</var></code></span><span data-if="type==2"><code class="hint_pink">&lt; <var>num</var></code></span><span data-if="type==3"><code class="hint_pink">= <var>num</var></code></span> </p>
+		</div>
+	</div>
+	
+	<div id="case4">
+        <div class="vars">
+			<var id="name">randFromArray([["佐助","鳴人","小櫻"],["明明","東東","藍藍"],["小王","小明","小林"]])</var>
+			<var id="type">randRangeUnique(1,4,3)</var>
+			<var id="book">randFromArray([[4,3],[5,3],[5,4],[6,5],[7,5]])</var>
+			<var id="cook">randFromArray([[7,8],[6,7],[5,7],[5,6],[5,8]])</var>
+		</div>
+		<div class="question">
+			<p><var>name[0]</var>、<var>name[1]</var>和<var>name[2]</var>存零花錢，<var>name[0]</var>的存款是<var>name[2]</var>的 <code>\dfrac{<var>cook[0]</var>}{<var>cook[1]</var>}</code> ，<var>name[2]</var>的存款是<var>name[1]</var>的 <code><var>mixedFractionFromImproper(book[0],book[1],true,true,false,false)</var></code> 。請問誰的存款最多？</p>
+			</div>
+		<div class="solution" data-type="multiple">
+            <span class="sol" data-type="list" data-choices="['', name[type[0]-1], name[type[1]-1], name[type[2]-1]]"><var>name[2]</var></span>
+			<p class="example">在下拉列表中選擇正確的答案</p>
+		</div>
+		<div class="hints">
+			<div><p>我們可以用這個長方形表示<var>name[1]</var>的存款：</p>
+			<div class="graphie" id="similar">
+				init({
+					range: [ [-0.1,7.1], [-0.1,1.1] ],
+					scale: 40
+					});
+				path([[0,0],[7,0],[7,1],[0,1],[0,0]], {stroke: "#6495ED",fill: "#fff"});
+				label([3.5,0], "\\small{"+name[1]+"的存款}", "above",{color:"black"});
+			</div></div>
+			<div><p><var>name[2]</var>的存款是<var>name[1]</var>的 <code><var>mixedFractionFromImproper(book[0],book[1],true,true,false,false)</var></code> ，我們只要求出這個長方形的 <code><var>mixedFractionFromImproper(book[0],book[1],true,true,false,false)</var></code> ，我們把帶分數化成假分數：</p>
+			<p><code><var>mixedFractionFromImproper(book[0],book[1],true,true,false,false)</var>=1+\dfrac{<var>book[0]-book[1]</var>}{<var>book[1]</var>}=\dfrac{<var>book[1]</var>}{<var>book[1]</var>}+\dfrac{<var>book[0]-book[1]</var>}{<var>book[1]</var>}=\dfrac{<var>book[1]</var>+<var>book[0]-book[1]</var>}{<var>book[1]</var>}=\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code></p>
+			</div>
+			<p><var>name[2]</var>的存款是<var>name[1]</var>的 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 。</p>
+			<div><p>我們將<var>name[1]</var>的存款平均分成 <code><var>book[1]</var></code> 份，每一個小長方形表示<var>name[1]</var>存款的 <code>\dfrac{1}{<var>book[1]</var>}</code> ：</p>
+			<div class="graphie" id="similar_2">
+				init({
+					range: [ [-0.1,9.1], [-0.1,2.1] ],
+					scale: 40
+					});
+				path([[0,1.1],[0.2,1.2],[3.4,1.2],[3.5,1.4],[3.6,1.2],[6.9,1.2],[7,1.1]], {stroke: "#6495ED"});
+				path([[0,0],[7,0],[7,1],[0,1],[0,0]], {stroke: "#6495ED",fill: "#fff"});
+				label([3.5,1.2], "\\small{"+name[1]+"的存款}", "above",{color:"black"});
+				var j=7/book[1];
+				for(var i=0;i&lt;book[1];i++){
+					line([j*i,0],[j*i,1], {stroke: "#6495ED"});
+				}
+			</div></div>
+			<div><p>我們可以用 <code><var>book[0]</var></code> 個小長方形來表示<var>name[2]</var>的存款：</p>
+			<div class="graphie" id="similar_3">
+				init({
+					range: [ [-0.1,12.1], [-3.1,2.1] ],
+					scale: 40
+					});
+				var j=7/book[1];
+				path([[0,1.1],[0.2,1.2],[3.4,1.2],[3.5,1.4],[3.6,1.2],[6.9,1.2],[7,1.1]], {stroke: "#6495ED"});
+				path([[0,0],[j*book[0],0],[j*book[0],1],[0,1],[0,0]], {stroke: "#6495ED",fill: "#fff"});
+				label([3.5,1.2], "\\small{"+name[1]+"的存款}", "above",{color:"black"});
+				for(var i=0;i&lt;book[0];i++){
+					line([j*i,0],[j*i,1], {stroke: "#6495ED"});
+				}
+				path([[0,-0.1],[0.2,-0.2],[j*book[0]/2-0.1,-0.2],[j*book[0]/2,-0.4],[j*book[0]/2+0.1,-0.2],[j*book[0]-0.1,-0.2],[j*book[0],-0.1]], {stroke: "#6495ED"});
+				label([j*book[0]/2,-0.2], "\\small{"+name[1]+"存款的}"+"\\frac{"+book[0]+"}{"+book[1]+"}", "below",{color:"black"});
+				path([[0,-3],[j*book[0],-3],[j*book[0],-2],[0,-2],[0,-3]], {stroke: "#6495ED",fill: "#fff"});
+				label([j*book[0]/2,-1.8], "\\small{"+name[2]+"的存款}", "above",{color:"black"});
+				for(var i=0;i&lt;book[0];i++){
+					line([j*i,-3],[j*i,-2], {stroke: "#6495ED"});
+				}
+				path([[0,-1.9],[0.2,-1.8],[j*book[0]/2-0.1,-1.8],[j*book[0]/2,-1.6],[j*book[0]/2+0.1,-1.8],[j*book[0]-0.1,-1.8],[j*book[0],-1.9]], {stroke: "#6495ED"});
+			</div></div>
+			<div><p>我們現在需要求出<var>name[0]</var>的存款，我們可以把<var>name[2]</var>的存款平均分成 <code><var>cook[1]</var></code> 份，與 <code><var>cook[0]</var></code> 個小長方形相等的部分就是<var>name[0]</var>的存款：</p>
+			<div class="graphie" id="similar_4">
+				init({
+					range: [ [-0.1,12.1], [-3.1,2.1] ],
+					scale: 40
+					});
+				var k=7*book[0]/book[1];
+				var j=k/cook[1];
+				path([[0,1.1],[0.2,1.2],[k/2-0.1,1.2],[k/2,1.4],[k/2+0.1,1.2],[k-0.1,1.2],[k,1.1]], {stroke: "#6495ED"});
+				path([[0,0],[k,0],[k,1],[0,1],[0,0]], {stroke: "#6495ED",fill: "#fff"});
+				label([k/2,1.2], "\\small{"+name[2]+"的存款}", "above",{color:"black"});
+				for(var i=0;i&lt;cook[1];i++){
+					line([j*i,0],[j*i,1], {stroke: "#6495ED"});
+				}
+				path([[0,-0.1],[0.2,-0.2],[j*cook[0]/2-0.1,-0.2],[j*cook[0]/2,-0.4],[j*cook[0]/2+0.1,-0.2],[j*cook[0]-0.1,-0.2],[j*cook[0],-0.1]], {stroke: "#6495ED"});
+				label([j*cook[0]/2,-0.2], "\\small{"+name[2]+"存款的}"+"\\frac{"+cook[0]+"}{"+cook[1]+"}", "below",{color:"black"});
+				path([[0,-3],[j*cook[0],-3],[j*cook[0],-2],[0,-2],[0,-3]], {stroke: "#6495ED",fill: "#fff"});
+				label([j*cook[0]/2,-1.8], "\\small{"+name[0]+"的存款}", "above",{color:"black"});
+				for(var i=0;i&lt;cook[0];i++){
+					line([j*i,-3],[j*i,-2], {stroke: "#6495ED"});
+				}
+				path([[0,-1.9],[0.2,-1.8],[j*cook[0]/2-0.1,-1.8],[j*cook[0]/2,-1.6],[j*cook[0]/2+0.1,-1.8],[j*cook[0]-0.1,-1.8],[j*cook[0],-1.9]], {stroke: "#6495ED"});
+			</div></div>
+			<div><p>我們把他們的錢放在一起比較一下</p>
+			<div class="graphie" id="similar_5">
+				init({
+					range: [ [-0.1,12.1], [-4.1,2.1] ],
+					scale: 40
+					});
+				path([[0,1.1],[0.2,1.2],[3.4,1.2],[3.5,1.4],[3.6,1.2],[6.9,1.2],[7,1.1]], {stroke: "#6495ED"});
+				path([[0,0],[7,0],[7,1],[0,1],[0,0]], {stroke: "#6495ED",fill: "#fff"});
+				label([3.5,1.2], "\\small{"+name[1]+"的存款}", "above",{color:"black"});
+				var j=7/book[1];
+				for(var i=0;i&lt;book[1];i++){
+					line([j*i,0],[j*i,1], {stroke: "#6495ED"});
+				}
+				j=7/book[1];
+				path([[0,-2],[j*book[0],-2],[j*book[0],-1],[0,-1],[0,-2]], {stroke: "#6495ED",fill: "#fff"});
+				label([j*book[0]/2,-0.8], "\\small{"+name[2]+"的存款}", "above",{color:"black"});
+				for(var i=0;i&lt;book[0];i++){
+					line([j*i,-2],[j*i,-1], {stroke: "#6495ED"});
+				}
+				path([[0,-0.9],[0.2,-0.8],[j*book[0]/2-0.1,-0.8],[j*book[0]/2,-0.6],[j*book[0]/2+0.1,-0.8],[j*book[0]-0.1,-0.8],[j*book[0],-0.9]], {stroke: "#6495ED"});
+				var k=7*book[0]/book[1];
+				j=k/cook[1];
+				path([[0,-4],[j*cook[0],-4],[j*cook[0],-3],[0,-3],[0,-4]], {stroke: "#6495ED",fill: "#fff"});
+				label([j*cook[0]/2,-2.8], "\\small{"+name[0]+"的存款}", "above",{color:"black"});
+				for(var i=0;i&lt;cook[0];i++){
+					line([j*i,-4],[j*i,-3], {stroke: "#6495ED"});
+				}
+				path([[0,-2.9],[0.2,-2.8],[j*cook[0]/2-0.1,-2.8],[j*cook[0]/2,-2.6],[j*cook[0]/2+0.1,-2.8],[j*cook[0]-0.1,-2.8],[j*cook[0],-2.9]], {stroke: "#6495ED"});
+			
+			</div></div>
+			<p>誰的存款最多呢？</p>
+			<p>很明顯可以看出<span class="hint_pink"><var>name[2]</var></span>的存款最多。</p>
+		</div>
+	</div>
+
+	<div id="case5">
+        <div class="vars">
+			<var id="num">randRange(3,5)</var>
+			<var id="B">randRangeUnique(1,5,4)</var>
+			<var id="type">randRange(1,3)</var>
+			<var id="book">
+				(function(){
+					if(type==1){
+						return randFromArray([[5,3],[7,4],[7,5],[8,5]]);
+					}
+					if(type==2){
+						return randFromArray([[3,3],[4,4],[5,5],[6,6]]);
+					}
+					if(type==3){
+						return randFromArray([[5,6],[4,5],[6,7]]);
+					}
+				})()
+			</var>
+			<var id="cook">randFromArray([[7,8],[6,7],[5,7],[5,6],[5,8]])</var>
+			
+			<var id="sum">
+				(function(){
+					var s = 0;
+					for(var k = 0;k&lt;4;k++){
+						if(B[k]==1){
+							s+=1;
+							$('#c_'+(k+1)).val('true');
+						}else{
+							$('#c_'+(k+1)).val('false');
+						}
+					}
+					return s;
+				})()
+			</var>
+        </div>
+		<div class="question">
+			<p><code><var>num</var>\times\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> <span data-if="type==1">大於</span><span data-if="type==2">等於</span><span data-if="type==3">小於</span> <code><var>num</var></code> ？</p>
+			<p onclick="$('#c_1').attr('checked','checked')"><input type="radio" name="count_1" id="c_1">
+				<span data-if="B[0]==1">正確，因為 <code><var>num</var></code> 乘以 <code>1</code> 等於 <code><var>num</var></code> ，所以 <code><var>num</var></code> 乘以一個<span data-if="type==1">大於</span><span data-if="type==2">等於</span><span data-if="type==3">小於</span> <code>1</code> 的分數，值就<span data-if="type==1">大於</span><span data-if="type==2">等於</span><span data-if="type==3">小於</span> <code><var>num</var></code> 。</span>
+				<span data-if="B[0]==2">正確，因為 <code><var>num</var></code> 乘以 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 相當於 <code><var>num</var></code> 的 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 加上 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 。</span>
+				<span data-if="B[0]==3">錯誤，因為 <code><var>num</var></code> 乘以一個分數得到的值<span data-if="type==1">小於</span><span data-if="type==2">小於</span><span data-if="type==3">大於</span> <code><var>num</var></code> 。</span>
+				<span data-if="B[0]==4">錯誤，因為 <code><var>num</var></code> 乘以 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 相當於  <code><var>num</var></code> 的 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 減去 <code><var>num</var></code> 。</span>
+			</p>
+			<p onclick="$('#c_2').attr('checked','checked')"><input type="radio" name="count_1" id="c_2">
+				<span data-if="B[1]==1">正確，因為 <code><var>num</var></code> 乘以 <code>1</code> 等於 <code><var>num</var></code> ，所以 <code><var>num</var></code> 乘以一個<span data-if="type==1">大於</span><span data-if="type==2">等於</span><span data-if="type==3">小於</span> <code>1</code> 的分數，值就<span data-if="type==1">大於</span><span data-if="type==2">等於</span><span data-if="type==3">小於</span> <code><var>num</var></code> 。</span>
+				<span data-if="B[1]==2">正確，因為 <code><var>num</var></code> 乘以 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 相當於 <code><var>num</var></code> 的 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 加上 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 。</span>
+				<span data-if="B[1]==3">錯誤，因為 <code><var>num</var></code> 乘以一個分數得到的值<span data-if="type==1">小於</span><span data-if="type==2">小於</span><span data-if="type==3">大於</span> <code><var>num</var></code> 。</span>
+				<span data-if="B[1]==4">錯誤，因為 <code><var>num</var></code> 乘以 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 相當於  <code><var>num</var></code> 的 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 減去 <code><var>num</var></code> 。</span>
+			</p>
+			<p onclick="$('#c_3').attr('checked','checked')"><input type="radio" name="count_1" id="c_3">
+				<span data-if="B[2]==1">正確，因為 <code><var>num</var></code> 乘以 <code>1</code> 等於 <code><var>num</var></code> ，所以 <code><var>num</var></code> 乘以一個<span data-if="type==1">大於</span><span data-if="type==2">等於</span><span data-if="type==3">小於</span> <code>1</code> 的分數，值就<span data-if="type==1">大於</span><span data-if="type==2">等於</span><span data-if="type==3">小於</span> <code><var>num</var></code> 。</span>
+				<span data-if="B[2]==2">正確，因為 <code><var>num</var></code> 乘以 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 相當於 <code><var>num</var></code> 的 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 加上 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 。</span>
+				<span data-if="B[2]==3">錯誤，因為 <code><var>num</var></code> 乘以一個分數得到的值<span data-if="type==1">小於</span><span data-if="type==2">小於</span><span data-if="type==3">大於</span> <code><var>num</var></code> 。</span>
+				<span data-if="B[2]==4">錯誤，因為 <code><var>num</var></code> 乘以 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 相當於  <code><var>num</var></code> 的 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 減去 <code><var>num</var></code> 。</span>
+			</p>
+			<p onclick="$('#c_4').attr('checked','checked')"><input type="radio" name="count_1" id="c_4">
+				<span data-if="B[3]==1">正確，因為 <code><var>num</var></code> 乘以 <code>1</code> 等於 <code><var>num</var></code> ，所以 <code><var>num</var></code> 乘以一個<span data-if="type==1">大於</span><span data-if="type==2">等於</span><span data-if="type==3">小於</span> <code>1</code> 的分數，值就<span data-if="type==1">大於</span><span data-if="type==2">等於</span><span data-if="type==3">小於</span> <code><var>num</var></code> 。</span>
+				<span data-if="B[3]==2">正確，因為 <code><var>num</var></code> 乘以 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 相當於 <code><var>num</var></code> 的 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 加上 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 。</span>
+				<span data-if="B[3]==3">錯誤，因為 <code><var>num</var></code> 乘以一個分數得到的值<span data-if="type==1">小於</span><span data-if="type==2">小於</span><span data-if="type==3">大於</span> <code><var>num</var></code> 。</span>
+				<span data-if="B[3]==4">錯誤，因為 <code><var>num</var></code> 乘以 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 相當於  <code><var>num</var></code> 的 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 減去 <code><var>num</var></code> 。</span>
+			</p>
+		</div>
+		<div class="solution" data-type="multiple">
+			<p>請選擇正確的答案</p>
+			<div class="sol" data-type="custom">
+				<div class="guess">
+					(function(){
+						var chk_value =[];    
+						$('input[name="count_1"]:checked').each(function(){    
+							chk_value.push($(this).val());    
+						});
+						return chk_value;
+					})()
+				</div>
+				<div class="validator-function">
+					if(guess.length==0){
+						return "";
+					}
+					if(guess.length!=sum){
+						return false;
+					}
+					var trueAns = 0;
+					for(var i = 0;i&lt;guess.length;i++){
+						if(guess[i]=='true'){
+							trueAns++;
+						}
+					}
+					if(trueAns==sum){
+						return true;
+					}					
+				</div>
+			</div>
+		</div>
+		<div class="hints">
+			<p>我們可以將 <code><var>num</var></code> 與 <code><var>num</var>\times 1</code> 比較， <code><var>num</var>\times 1</code> 是大於、等於還是小於 <code><var>num</var></code> ？我們知道這是相等的。</p>
+			<p><code><var>num</var>\times\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 是大於、等於還是小於 <code><var>num</var>\times 1</code> ？</p>
+			<div><p><code><var>num</var>\times\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 就相當於 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 倍的 <code><var>num</var>\times 1</code> ，我們可以看下圖：</p>
+			<div class="graphie" id="similar_3">
+				init({
+					range: [ [-0.1,12.1], [-1.1,2.1] ],
+					scale: 40
+					});
+				if(type==3){
+					var j=6/book[1];
+					path([[0,1.1],[0.2,1.2],[j*book[1]/2-0.1,1.2],[j*book[1]/2,1.4],[j*book[1]/2+0.1,1.2],[j*book[1]-0.1,1.2],[j*book[1],1.1]], {stroke: "#6495ED"});
+					path([[0,0],[j*book[1],0],[j*book[1],1],[0,1],[0,0]], {stroke: "#6495ED",fill: "#fff"});
+					label([3,1.2], "\\small{"+num+"}\\times"+"\\small{1}", "above",{color:"black"});
+					
+					for(var i=0;i&lt;book[1];i++){
+						line([j*i,0],[j*i,1], {stroke: "#6495ED"});
+					}
+					
+					path([[0,-0.1],[0.2,-0.2],[j*book[0]/2-0.1,-0.2],[j*book[0]/2,-0.4],[j*book[0]/2+0.1,-0.2],[j*book[0]-0.1,-0.2],[j*book[0],-0.1]], {stroke: "#6495ED"});
+					label([j*book[0]/2,-0.2], "\\small{"+num+"}\\times"+"\\frac{"+book[0]+"}{"+book[1]+"}", "below",{color:"black"});
+				}else{
+					var j=6/book[1];
+					path([[0,1.1],[0.2,1.2],[j*book[1]/2-0.1,1.2],[j*book[1]/2,1.4],[j*book[1]/2+0.1,1.2],[j*book[1]-0.1,1.2],[j*book[1],1.1]], {stroke: "#6495ED"});
+					path([[0,0],[j*book[0],0],[j*book[0],1],[0,1],[0,0]], {stroke: "#6495ED",fill: "#fff"});
+					label([3,1.2], "\\small{"+num+"}\\times"+"\\small{1}", "above",{color:"black"});
+					
+					for(var i=0;i&lt;book[0];i++){
+						line([j*i,0],[j*i,1], {stroke: "#6495ED"});
+					}
+					
+					path([[0,-0.1],[0.2,-0.2],[j*book[0]/2-0.1,-0.2],[j*book[0]/2,-0.4],[j*book[0]/2+0.1,-0.2],[j*book[0]-0.1,-0.2],[j*book[0],-0.1]], {stroke: "#6495ED"});
+					label([j*book[0]/2,-0.2], "\\small{"+num+"}\\times"+"\\frac{"+book[0]+"}{"+book[1]+"}", "below",{color:"black"});
+				}
+			</div></div>
+			<p>我們可以看出 <code><var>num</var>\times\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> <span data-if="type==1">大於</span><span data-if="type==2">等於</span><span data-if="type==3">小於</span> <code><var>num</var>\times 1</code> 是正確的，那正確的解釋是什麼呢？</p>
+			<p><span data-if="type==1">我們再看圖， <code><var>num</var>\times\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 相當於把 <code><var>num</var></code> 平均分成 <code><var>book[1]</var></code> 個小長方形，再加上 <code><var>book[0]-book[1]</var></code> 個一樣的小長方形，所以</span>
+			<span data-if="type==2">我們再看圖， <code><var>num</var>\times\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 相當於把 <code><var>num</var></code> 平均分成 <code><var>book[1]</var></code> 個小長方形，取全部的 <code><var>book[0]</var></code> 個，所以</span>
+			<span data-if="type==3">我們再看圖， <code><var>num</var>\times\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 相當於把 <code><var>num</var></code> 平均分成 <code><var>book[1]</var></code> 個小長方形，取其中的 <code><var>book[0]</var></code> 個，所以</span>
+			 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 是<span data-if="type==1">大於</span><span data-if="type==2">等於</span><span data-if="type==3">小於</span> <code>1</code> 的分數。</p>
+			<p>所以正確的解釋是“<span class="hint_pink">正確，因為 <code><var>num</var></code> 乘以 <code>1</code> 等於 <code><var>num</var></code> ，所以 <code><var>num</var></code> 乘以一個<span data-if="type==1">大於</span><span data-if="type==2">等於</span><span data-if="type==3">小於</span> <code>1</code> 的分數，值就<span data-if="type==1">大於</span><span data-if="type==2">等於</span><span data-if="type==3">小於</span> <code><var>num</var></code> 。</span>”</p>
+			
+		</div>
+	</div>
+</div>
+</div>
+</body>
+</html>
