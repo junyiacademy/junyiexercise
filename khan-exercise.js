@@ -738,7 +738,7 @@ var Khan = (function() {
     Khan.loadScripts(scripts, function() {
 
         if (testMode) {
-            Khan.require(["../jquery-ui", "../jquery.qtip"]);
+            Khan.require(["../jquery-ui", "../jquery.qtip", "../jquery.ui.touch-punch"]);
         }
 
         // Base modules required for every problem

@@ -22,28 +22,6 @@
 			if(isIE()){element.attachEvent("on" + e,fn);}
 			else{element.addEventListener(e,fn,false);}
 		}
-		function drag(e){
-		 var e = e || window.event;
-		 var element = e.srcElement || e.target;
-		 if(e.preventDefault)e.preventDefault();
-		 else e.returnvalue=false;
-		 isDrag = true;
-		 var relLeft = e.clientX - parseInt(element.style.left);
-		 var relTop = e.clientY - parseInt(element.style.top);
-		 element.onmouseup = function(){ isDrag = false; }
-		 document.onmousemove = function(e_move){
-		   var e_move = e_move || window.event;
-		   if(isDrag){
-			 element.style.left=e_move.clientX - relLeft+2 + "px";
-			 element.style.top=e_move.clientY - relTop+2 + "px";
-			 return false;
-		   }
-		 }
-		}
-		function loadele(){
-			var element = document.getElementById("imgs2");
-			addListener(element,"mousedown",drag);
-		}
 	</script>
 </head>
 <body>
@@ -659,8 +637,8 @@
 				(function(){
 					$('#imgs1').attr("src",Khan.urlBase+"images/"+pics[0]);
 					$('#imgs2').attr("src",Khan.urlBase+"images/rules_mearsing.png");
+					$('#imgs2').draggable();
 				})()</var>
-				<var id="loddele">loadele()</var>
 				<var id="set_keypress">
 				(function(){
 					$('#a1').bind('keypress',function(event){
