@@ -292,6 +292,11 @@ var Khan = (function() {
             link.rel = "stylesheet";
             link.href = urlBase + "css/grids.css";
             document.getElementsByTagName("head")[0].appendChild(link);
+
+            link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = urlBase + "css/jquery-ui-1.9.2.custom.css";
+            document.getElementsByTagName("head")[0].appendChild(link);
         })();
     }
 
