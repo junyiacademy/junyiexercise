@@ -292,11 +292,6 @@ var Khan = (function() {
             link.rel = "stylesheet";
             link.href = urlBase + "css/grids.css";
             document.getElementsByTagName("head")[0].appendChild(link);
-
-            link = document.createElement("link");
-            link.rel = "stylesheet";
-            link.href = urlBase + "css/jquery-ui-1.9.2.custom.css";
-            document.getElementsByTagName("head")[0].appendChild(link);
         })();
     }
 
@@ -747,7 +742,7 @@ var Khan = (function() {
         }
 
         // Base modules required for every problem
-        Khan.require(["answer-types", "tmpl", "underscore", "jquery.adhesion", "hints", "jquery.ui.touch-punch"]);
+        Khan.require(["answer-types", "tmpl", "underscore", "jquery.adhesion", "hints"]);
 
         Khan.require(document.documentElement.getAttribute("data-require"));
 
@@ -2042,6 +2037,7 @@ var Khan = (function() {
 
         function handleSubmit() {
             var pass = validator();
+            ga('send', 'event', 'exercise', 'submit', 'Exercise-Answer-Submit');
 
             // Stop if the user didn't enter a response
             // If multiple-answer, join all responses and check if that's empty
