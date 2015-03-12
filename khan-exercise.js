@@ -743,11 +743,11 @@ var Khan = (function() {
     Khan.loadScripts(scripts, function() {
 
         if (testMode) {
-            Khan.require(["../jquery-ui", "../jquery.qtip", "../jquery.ui.touch-punch"]);
+            Khan.require(["../jquery-ui", "../jquery.qtip"]);
         }
 
         // Base modules required for every problem
-        Khan.require(["answer-types", "tmpl", "underscore", "jquery.adhesion", "hints"]);
+        Khan.require(["answer-types", "tmpl", "underscore", "jquery.adhesion", "hints", "jquery.ui.touch-punch"]);
 
         Khan.require(document.documentElement.getAttribute("data-require"));
 
