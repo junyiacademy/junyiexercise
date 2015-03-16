@@ -2038,8 +2038,11 @@ var Khan = (function() {
         function handleSubmit() {
             var pass = validator();
 
-            if (!testMode) {
+            try {
                 ga('send', 'event', 'exercise', 'submit', 'Exercise-Answer-Submit');
+            }
+            catch (err) {
+                console.log('cannot send ga message, ga not defined at local server. ' + err);
             }
 
             // Stop if the user didn't enter a response
