@@ -1,4 +1,4 @@
-﻿// Helper for fractions_cut_and_copy_1 and fractions_cut_and_copy_2
+// Helper for fractions_cut_and_copy_1 and fractions_cut_and_copy_2
 $.extend(KhanUtil, {
     initSliceClone: function(goalBlocks) {
         KhanUtil.pieces = 1;
@@ -17,7 +17,7 @@ $.extend(KhanUtil, {
 
         KhanUtil.pieces += (increase) ? 1 : -1;
 
-        $("#pieces").text(KhanUtil.plural(KhanUtil.pieces, "份"));
+        $("#pieces").text(KhanUtil.plural(KhanUtil.pieces, "piece"));
 
         KhanUtil.currentGraph = $("#problemarea").find("#parent_block").data("graphie");
         rectchart([1, KhanUtil.pieces - 1], ["#e00", "#999"]);
@@ -33,7 +33,7 @@ $.extend(KhanUtil, {
 
         KhanUtil.times[id] += (increase) ? 1 : -1;
 
-        $("#" + id + "_times").text(KhanUtil.plural(KhanUtil.times[id], "次"));
+        $("#" + id + "_times").text(KhanUtil.plural(KhanUtil.times[id], "time"));
 
         KhanUtil.updateGraphAndAnswer();
     },
@@ -45,7 +45,7 @@ $.extend(KhanUtil, {
             times = KhanUtil.times[id];
             KhanUtil.currentGraph = $("#problemarea").find("#" + id).data("graphie");
             KhanUtil.currentGraph.raphael.clear();
-            KhanUtil.currentGraph.init({ range: [[0, 1], [0, 1]], scale: [600 / pieces * times, 25] });
+            KhanUtil.currentGraph.init({ range: [[0, 1], [0, 1]], scale: [500 / pieces * times, 25] });
             rectchart([times, 0], ["#e00", "#999"]);
             $("#" + id + "_answer input").val(KhanUtil.roundTo(3, times / pieces));
         }

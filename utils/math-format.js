@@ -233,222 +233,80 @@ $.extend(KhanUtil, {
     },
 
     // Ported from https://github.com/clojure/clojure/blob/master/src/clj/clojure/pprint/cl_format.clj#L285
-    cardinal: function(n) 
-    {
-        var cardinalScales = ["", "千", "百萬", "十億", "兆", "quadrillion", "quintillion", "sextillion", "septillion", "octillion", "nonillion", "decillion", "undecillion", "duodecillion", "tredecillion", "quattuordecillion", "quindecillion", "sexdecillion", "septendecillion", "octodecillion", "novemdecillion", "vigintillion"];
-        var cardinalUnits = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九"];
+    cardinal: function(n) {
+        var cardinalScales = ["", "thousand", "million", "billion", "trillion", "quadrillion", "quintillion", "sextillion", "septillion", "octillion", "nonillion", "decillion", "undecillion", "duodecillion", "tredecillion", "quattuordecillion", "quindecillion", "sexdecillion", "septendecillion", "octodecillion", "novemdecillion", "vigintillion"];
+        var cardinalUnits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+        var cardinalTens = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
         // For formatting numbers less than 1000
-        //var smallNumberWords = function(n) {
-        var neg = false;
-        if (n < 0) 
-        {
-            neg = true;
-            n = Math.abs(n);
-        }
-        var str = "";
-        if (n === 0){str += "零"}
-        else if (n < 20){str += cardinalUnits[n];}
-        else
-        {
-            var DigitNum=new Array();
-            for (i=15; i>=0; i=i-1)
-            {
-            DigitNum[i] = Math.floor(n / Math.pow(10,i)) % 10;
-            }
-            var add_zero = false;
-            var zero_tail = 0;
-            var i=0;
-            for (i=0; i<12; i=i+1)
-            {
-            if(DigitNum[i]===0){zero_tail += 1}
-            else{break;}
+        var smallNumberWords = function(n) {
+            var hundredDigit = Math.floor(n / 100);
+            var rest = n % 100;
+            var str = "";
+
+            if (hundredDigit) {
+                str += cardinalUnits[hundredDigit] + " hundred";
             }
 
-            if (DigitNum[15])
-            {
-                str += cardinalUnits[DigitNum[15]] + "千"
-                add_zero = true;
-            }
-            if (DigitNum[14])
-            {
-                //增加這段IV開始
-                DigitNum[14] = true;
-                //增加這段IV結束
-                str += cardinalUnits[DigitNum[14]] + "百"
-                add_zero = true;
-            }
-            else if (add_zero===true && zero_tail <= 1){
-                str += "零"
-                add_zero = false;
+            if (hundredDigit && rest) {
+                str += " ";
             }
 
-            if (DigitNum[13])
-            {
-                if(Boolean(DigitNum[14]) === true)
-                {
-                    str += cardinalUnits[DigitNum[13]] + "十"
-                    add_zero = true;
-                }
+            if (rest) {
+                if (rest < 20) {
+                    str += cardinalUnits[rest];
+                } else {
+                    var tenDigit = Math.floor(rest / 10);
+                    var unitDigit = rest % 10;
 
-                else
-                {
-                    str +="十"
-                    add_zero = true;
-                }
-            }
-            else if (add_zero===true && zero_tail <= 1){
-                str += "零"
-                add_zero = false;
-            }
+                    if (tenDigit) {
+                        str += cardinalTens[tenDigit];
+                    }
 
-            if (DigitNum[12])
-            {
-                str += cardinalUnits[DigitNum[12]] + "兆"
-                add_zero = true;
-            }
-            if (DigitNum[11])
-            {
-                str += cardinalUnits[DigitNum[11]] + "千"
-                add_zero = true;
-            }
-            else if (add_zero===true && zero_tail <= 1){
-                str += "零"
-                add_zero = false;
-            }
+                    if (tenDigit && unitDigit) {
+                        str += "-";
+                    }
 
-            if (DigitNum[10])
-            {
-                str += cardinalUnits[DigitNum[10]] + "百"
-                add_zero = true;
-            }
-            else if (add_zero===true && zero_tail <= 1){
-                //增加這段IV開始
-                DigitNum[10] = true;
-                //增加這段IV結束
-                str += "零"
-                add_zero = false;
-            }
-
-            if (DigitNum[9])
-            {
-
-                if(Boolean(DigitNum[10]) === true)
-                {
-                    str += cardinalUnits[DigitNum[9]] + "十"
-                    add_zero = true;
-                }
-
-                else
-                {
-                    str +="十"
-                    add_zero = true;
-                }
-
-            }
-            else if (add_zero===true && zero_tail <= 1){
-                str += "零"
-                add_zero = false;
-            }
-
-            if (DigitNum[8])
-            {
-                str += cardinalUnits[DigitNum[8]] + "億"
-                add_zero = true;
-            }
-            //增加這段IV開始
-            else if(Boolean(DigitNum[8]) === false)
-            {
-                str +="億"
-                add_zero = true;
-            }
-            //增加這段IV結束
-            if (DigitNum[7])
-            {
-                str += cardinalUnits[DigitNum[7]] + "千"
-                add_zero = true;
-            }
-            else if (add_zero===true && zero_tail <= 1){
-                str += "零"
-                add_zero = false;
-            }
-
-            if (DigitNum[6])
-            {
-                str += cardinalUnits[DigitNum[6]] + "百"
-                add_zero = true;
-            }
-            else if (add_zero===true && zero_tail <= 1){
-                //增加這段IV開始
-                DigitNum[6] = true;
-                //增加這段IV結束
-                str += "零"
-                add_zero = false;
-            }
-
-            if (DigitNum[5])
-            {
-
-                if(Boolean(DigitNum[6]) === true)
-                {
-                    str += cardinalUnits[DigitNum[5]] + "十"
-                    add_zero = true;
-                }
-                else
-                {
-                    str +="十"
-                    add_zero = true;
+                    if (unitDigit) {
+                        str += cardinalUnits[unitDigit];
+                    }
                 }
             }
 
-            else if (add_zero===true && zero_tail <= 1){
-                str += "零"
-                add_zero = false;
-            }
-
-            if (DigitNum[4])
-            {
-                str += cardinalUnits[DigitNum[4]] + "萬"
-                add_zero = true;
-            }
-            //增加這段IV開始
-            else if(Boolean(DigitNum[4]) === false)
-            {
-                str +="萬"
-                add_zero = true;
-            }
-            //增加這段IV結束
-            if (DigitNum[3])
-            {
-                str += cardinalUnits[DigitNum[3]] + "千"
-                add_zero = true;
-            }
-            else if (add_zero===true && zero_tail == 0)
-            {
-                str += "零"
-                add_zero = false;
-            }
-            if (DigitNum[2]) {
-                str += cardinalUnits[DigitNum[2]] + "百";
-                add_zero = true
-            }
-            else if (add_zero===true && zero_tail <= 1){
-                str += "零"
-                add_zero = false;
-            }
-            if (DigitNum[1])
-            {
-                str += cardinalUnits[DigitNum[1]] + "十"
-            } 
-            else if (add_zero===true && zero_tail == 0)
-            {
-                str += "零"
-                add_zero = false;
-            }
-            str += cardinalUnits[DigitNum[0]]
+            return str;
         };
-    var words = [];
-    words.unshift(str);
-    return words.join("");
+
+        if (n === 0) {
+            return "zero";
+        } else {
+            var neg = false;
+            if (n < 0) {
+                neg = true;
+                n = Math.abs(n);
+            }
+
+            var words = [];
+            var scale = 0;
+            while (n > 0) {
+                var end = n % 1000;
+
+                if (end > 0) {
+                    if (scale > 0) {
+                        words.unshift(cardinalScales[scale]);
+                    }
+
+                    words.unshift(smallNumberWords(end));
+                }
+
+                n = Math.floor(n / 1000);
+                scale += 1;
+            }
+
+            if (neg) {
+                words.unshift("negative");
+            }
+
+            return words.join(" ");
+        }
     },
 
     Cardinal: function(n) {
@@ -627,7 +485,7 @@ $.extend(KhanUtil, {
         if (real === 0 && imaginary === 0) {
             return "0";
         } else if (real === 0) {
-            return imaginary + "i";
+            return (imaginary === 1 ? "" : imaginary === -1 ? "-" : imaginary) + "i";
         } else if (imaginary === 0) {
             return real;
         } else {

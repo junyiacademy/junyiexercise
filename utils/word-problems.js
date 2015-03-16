@@ -1,4 +1,4 @@
-﻿// Example usage:
+// Example usage:
 // <var>person(1)</var> traveled 5 mi by <var>vehicle(1)</var>. Let
 // <var>his(1)</var> average speed be <var>personVar(1)</var>.
 // Let <var>person(2)</var>'s speed be <var>personVar(2)</var>.
@@ -9,7 +9,7 @@
 $.extend(KhanUtil, {
     toSentence: function(array, conjunction) {
         if (conjunction == null) {
-            conjunction = "和";
+            conjunction = "and";
         }
 
         if (array.length === 0) {
@@ -51,16 +51,16 @@ $.extend(KhanUtil, {
     //        - return "word"
     plural: (function() {
         var oneOffs = {
-            "quiz測驗": "quizzes測驗", //（sjf：可以翻成“小考”）
-            "shelf架子": "shelves架子", //（sjf：“書架”）
-            "loaf麵包": "loaves麵包",
-            "potato馬鈴薯": "potatoes馬鈴薯",
-            "person人": "people人",
-            "is是": "are是",
-            "was是": "were是",
-            "foot腳": "feet腳", //（可以有兩個意思：腳、英尺。不知道實際上用哪一個？）
-            "square foot平方公尺": "square feet平方公尺",
-            "tomato番茄": "tomatoes番茄"
+            "quiz": "quizzes",
+            "shelf": "shelves",
+            "loaf": "loaves",
+            "potato": "potatoes",
+            "person": "people",
+            "is": "are",
+            "was": "were",
+            "foot": "feet",
+            "square foot": "square feet",
+            "tomato": "tomatoes"
         };
 
         var pluralizeWord = function(word) {
@@ -101,17 +101,17 @@ $.extend(KhanUtil, {
             else {
                 // "-y" => "-ies"
                 if (/[^aeiou]y$/i.test(word)) {
-                    word = word.replace(/y$/i, ""); //"ies"
+                    word = word.replace(/y$/i, "ies");
                 }
 
                 // add "es"; things like "fish" => "fishes"
                 else if (/[sxz]$/i.test(word) || /[bcfhjlmnqsvwxyz]h$/.test(word)) {
-                    word += ""; //"es"
+                    word += "es";
                 }
 
                 // all the rest, just add "s"
                 else {
-                    word += ""; //"s"
+                    word += "s";
                 }
 
                 if (isUpperCase) {
@@ -127,7 +127,7 @@ $.extend(KhanUtil, {
 
                 // if no extra args, just add "s" (if plural)
                 if (arguments.length === 1) {
-                    return usePlural ? "" : ""; //"s" : ""
+                    return usePlural ? "s" : "";
                 }
 
                 if (usePlural) {
@@ -135,17 +135,31 @@ $.extend(KhanUtil, {
                 }
 
                 return value + " " + arg1;
-            } else if (typeof value === "string" || typeof value === "object") {
+            } else if (typeof value === "string") {
                 var plural = pluralizeWord(value);
-                if ((typeof arg1 === "string" || typeof arg1 === "object") && arguments.length === 3) {
+                if (typeof arg1 === "string" && arguments.length === 3) {
                     plural = arg1;
                     arg1 = arg2;
                 }
                 var usePlural = (arguments.length < 2 || (typeof arg1 === "number" && arg1 !== 1));
-                return usePlural ? plural.toString() : value.toString();
+                return usePlural ? plural : value;
             }
         };
-    })()
+    })(),
+
+    // Pluralize with a code tag around the number
+    // - pluralTex(NUMBER, singular):
+    //        - if necessary, magically pluralize <singular>
+    //        - return "<code>NUMBER</code> word"
+    // - pluralTex(NUMBER, singular, plural):
+    //        - return "<code>NUMBER</code> word"
+    pluralTex: function(value, arg1, arg2) {
+        if (typeof arg2 === "string") {
+            return "<code>" + value + "</code> " + KhanUtil.plural(arg1, arg2, value);
+        } else {
+            return "<code>" + value + "</code> " + KhanUtil.plural(arg1, value);
+        }
+    }
 });
 
 $.fn["word-problemsLoad"] = function() {
@@ -181,41 +195,27 @@ $.fn["word-problemsLoad"] = function() {
             return array[array.length - i - 1];
         };
     };
-    
-    var Noun = function(noun, properties) {
-    	// extend noun with some properties
-    	// new Noun("", {measureWord: new IncrementalShuffler(["", ""])})
-    	var nounObject = new String(noun);
-    	if (typeof properties === "object") {
-    		// extend properties, but restricted to known properties, e.g.: measureWord
-    		if (properties["measureWord"]) {
-    			nounObject["measureWord"] = properties["measureWord"];
-    		}
-    	}
-    	return nounObject;
-    };
 
     var names = [
-        ["玉婷", "f"],
-        ["小明", "m"], 
-        ["志明", "m"], 
-        ["俊杰", "m"], 
-        ["天佑", "m"], 
-        ["秀英", "f"], 
-        ["怡君", "f"], 
-        ["哲浩", "m"], 
-        ["佳玲", "f"], 
-        ["才良", "m"],  
-        ["冠宇", "m"],  
-        ["文山", "m"],   
-        ["淑芬", "f"],  
-        ["成文", "m"],  
-		["力學", "m"],   
-        ["惠如", "f"],  
-        ["心怡", "f"], 
-        ["佩珍", "f"],  
-        ["小惠", "f"],  
-        ["正雄", "m"]  
+        ["Ashley", "f"],
+        ["Brandon", "m"],
+        ["Ben", "m"],
+        ["Christopher", "m"],
+        ["Daniel", "m"],
+        ["Emily", "f"],
+        ["Gabriela", "f"],
+        ["Ishaan", "m"],
+        ["Jessica", "f"],
+        ["Kevin", "m"],
+        ["Luis", "m"],
+        ["Michael", "m"],
+        ["Nadia", "f"],
+        ["Omar", "m"],
+        ["Stephanie", "f"],
+        ["Tiffany", "f"],
+        ["Umaima", "f"],
+        ["Vanessa", "f"],
+        ["William", "m"]
     ];
 
     // We only want one name per letter of the alphabet, so group people with
@@ -228,26 +228,27 @@ $.fn["word-problemsLoad"] = function() {
     people = new IncrementalShuffler(people);
 
     var vehicles = new IncrementalShuffler([
-        new Noun("腳踏車", {measureWord: new IncrementalShuffler(["台", "輛"])}),
-        new Noun("汽車", {measureWord: new IncrementalShuffler(["台", "輛"])}),
-        new Noun("馬", {measureWord: "隻"}),
-        new Noun("機車", {measureWord: new IncrementalShuffler(["台", "輛"])}),
-        new Noun("火車", {measureWord: new IncrementalShuffler(["台", "輛", "班"])})
+        "bike",
+        "car",
+        "horse",
+        "motorcycle",
+        "scooter",
+        "train"
     ]);
 
     var courses = new IncrementalShuffler([
-        new Noun("代數", {measureWord: new IncrementalShuffler(["堂", "節"])}),
-        new Noun("化學", {measureWord: new IncrementalShuffler(["堂", "節"])}),
-        new Noun("幾何學", {measureWord: new IncrementalShuffler(["堂", "節"])}),
-        new Noun("歷史", {measureWord: new IncrementalShuffler(["堂", "節"])}),
-        new Noun("物理", {measureWord: new IncrementalShuffler(["堂", "節"])}),
-        new Noun("英文", {measureWord: new IncrementalShuffler(["堂", "節"])})
+        "algebra",
+        "chemistry",
+        "geometry",
+        "history",
+        "physics",
+        "Spanish"
     ]);
 
     var exams = new IncrementalShuffler([
-        new Noun("考試", {measureWord: "次"}), //（期末考）
-        new Noun("考試", {measureWord: "次"}), //（月考）
-        new Noun("測驗", {measureWord: "次"}) //（小考）
+        "exam",
+        "test",
+        "quiz"
     ]);
 
     var binops = new IncrementalShuffler([
@@ -269,293 +270,187 @@ $.fn["word-problemsLoad"] = function() {
     ]);
 
     var collections = new IncrementalShuffler([
-        ["椅子", "排", "make做"], //（Make很多意思，不曉得在英文裡怎麼用？）
-        ["彈珠", "袋", "fill裝滿"],
-        ["軟糖", "堆", "make做"],
-        ["書", "書架", "fill裝滿"],
-        ["資料夾", "疊", "fill裝滿"],
-        ["餅乾", "盒", "fill裝滿"]
+        ["chair", "row", "make"],
+        ["party favor", "bag", "fill"],
+        ["jelly bean", "pile", "make"],
+        ["book", "shelf", "fill"],
+        ["can of food", "box", "fill"]
     ]);
 
     var stores = new IncrementalShuffler([
         {
-            name: "文具",
-            items: new IncrementalShuffler([
-                                            new Noun("原子筆", {measureWord: "枝"}),
-                                            new Noun("立可白", {measureWord: "罐"}),
-                                            new Noun("鉛筆", {measureWord: "枝"}),
-                                            new Noun("筆記本", {measureWord: "本"}),
-											new Noun("夾子", {measureWord: "個"}),
-											new Noun("蠟筆", {measureWord: "枝"}),
-											new Noun("橡皮擦", {measureWord: new IncrementalShuffler(["個", "塊"])}),
-											new Noun("資料夾", {measureWord: "個"}),
-											new Noun("膠水", {measureWord: new IncrementalShuffler(["瓶", "罐"])}),
-											new Noun("簽字筆", {measureWord: "枝"}),
-											new Noun("印章", {measureWord: "個"})									
-                                            ])
+            name: "office supply",
+            items: new IncrementalShuffler(["pen", "pencil", "notebook"])
         },
         {
-            name: "五金器材",
-            items: new IncrementalShuffler([
-                                            new Noun("鐵鎚", {measureWord: new IncrementalShuffler(["把", "支", "只"])}),
-                                            new Noun("水桶", {measureWord: new IncrementalShuffler(["個", "只"])}),
-                                            new Noun("釘子", {measureWord: new IncrementalShuffler(["枝", "支"])}),
-                                            new Noun("鋸子", {measureWord: new IncrementalShuffler(["把", "支"])})
-                                            ])
+            name: "hardware",
+            items: new IncrementalShuffler(["hammer", "nail", "saw"])
         },
         {
-            name: "食品",
-            items: new IncrementalShuffler([
-                                            new Noun("香蕉", {measureWord: new IncrementalShuffler(["根", "個"])}),
-                                            new Noun("三明治", {measureWord: new IncrementalShuffler(["塊", "個"])}),
-                                            new Noun("冰棒", {measureWord: new IncrementalShuffler(["根", "枝"])}),
-                                            new Noun("蕃薯", {measureWord: new IncrementalShuffler(["顆", "個"])}),
-                                            new Noun("麵包", {measureWord: new IncrementalShuffler(["塊", "個"])}),
-                                            new Noun("牛奶", {measureWord: new IncrementalShuffler(["瓶", "罐"])}),
-                                            new Noun("馬鈴薯", {measureWord: new IncrementalShuffler(["顆", "個"])})
-                                            ]) //（一條麵包，一加侖牛奶？）
+            name: "grocery",
+            items: new IncrementalShuffler(["banana", "loaf of bread", "gallon of milk", "potato"])
         },
         {
-            name: "禮品",
-            items: new IncrementalShuffler([
-                                            new Noun("玩具", {measureWord: new IncrementalShuffler(["盒", "個"])}),
-                                            new Noun("遊戲", {measureWord: new IncrementalShuffler(["盒", "個"])}),
-                                            new Noun("紀念品", {measureWord: "個"})
-                                            ])
+            name: "gift",
+            items: new IncrementalShuffler(["toy", "game", "souvenir"])
         },
         {
-            name: "玩具",
-            items: new IncrementalShuffler([
-                                            new Noun("泰迪熊", {measureWord: new IncrementalShuffler(["隻", "個"])}),
-                                            new Noun("電動玩具", {measureWord: "個"}),
-                                            new Noun("魔術方塊", {measureWord: "個"}),
-                                            new Noun("賽車", {measureWord: new IncrementalShuffler(["台", "個", "輛"])}),
-                                            new Noun("洋娃娃", {measureWord: "個"})
-                                            ])
+            name: "toy",
+            items: new IncrementalShuffler(["stuffed animal", "video game", "race car", "doll"])
         }
     ]);
 
     var pizzas = new IncrementalShuffler([
-        new Noun("比薩", {measureWord: new IncrementalShuffler(["塊", "片", "個"])}),
-        new Noun("派", {measureWord: new IncrementalShuffler(["塊", "片", "個"])}),
-        new Noun("蛋糕", {measureWord: new IncrementalShuffler(["塊", "片", "個"])})
+        "pizza",
+        "pie",
+        "cake"
     ]);
 
     var timesofday = new IncrementalShuffler([
-        "上午",
-        "中午",
-        "傍晚",
-        "晚上"
+        "in the morning",
+        "around noon",
+        "in the evening",
+        "at night"
     ]);
 
     var exercises = new IncrementalShuffler([
-        new Noun("伏地挺身", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
-        new Noun("仰臥起坐", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
-        new Noun("開合跳", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
-        new Noun("原地彈跳", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
-        new Noun("交互蹲跳", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
-        new Noun("跳跳繩", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
-        new Noun("呼拉圈轉", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
-        new Noun("踢毽子", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
-        new Noun("投籃", {measureWord: new IncrementalShuffler(["個", "次", "下"])})
+        "push-up",
+        "sit-up",
+        "squat",
+        "jumping jack"
     ]);
 
     var fruits = new IncrementalShuffler([
-        new Noun("蘋果", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
-        new Noun("梨子", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
-        new Noun("椰子", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
-        new Noun("茄子", {measureWord: new IncrementalShuffler(["個", "條"])}),
-        new Noun("奇異果", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
-        new Noun("檸檬", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
-        new Noun("芒果", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
-        new Noun("桃子", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
-        new Noun("橘子", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
-        new Noun("芭樂", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
-        new Noun("西瓜", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])})
+        "apple",
+        "banana",
+        "coconut",
+        "eggplant",
+        "kiwi",
+        "lemon",
+        "mango",
+        "nectarine",
+        "orange",
+        "pomegranate",
+        "watermelon"
     ]);
 
     var deskItems = new IncrementalShuffler([
-        new Noun("夾子", {measureWord: "個"}),
-        new Noun("蠟筆", {measureWord: "枝"}),
-        new Noun("橡皮擦", {measureWord: new IncrementalShuffler(["個", "塊"])}),
-        new Noun("資料夾", {measureWord: "個"}),
-        new Noun("膠水", {measureWord: new IncrementalShuffler(["瓶", "罐"])}),
-        new Noun("簽字筆", {measureWord: "枝"}),
-        new Noun("筆記本", {measureWord: "本"}),
-        new Noun("鉛筆", {measureWord: "枝"}),
-        new Noun("印章", {measureWord: "個"})
+        "binder",
+        "crayon",
+        "eraser",
+        "folder",
+        "glue stick",
+        "marker",
+        "notebook",
+        "pencil",
+        "rubber stamp"
     ]);
 
     var colors = new IncrementalShuffler([
-        "紅色",
-        "橘色",
-        "黃色",
-        "綠色",
-        "藍色",
-        "紫色",
-        "白色",
-        "黑色",
-        "褐色",
-        "銀色",
-        "金色",
-        "粉紅色"
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "purple",
+        "white",
+        "black",
+        "brown",
+        "silver",
+        "gold",
+        "pink"
     ]);
-    
-	var movies = new IncrementalShuffler([
-	       "綠野仙蹤",
-		   "玩具總動員",
-		   "米老鼠",
-		   "黑天鵝",
-		   "小美人魚",
-		   "灰姑娘",
-		   "獅子王",
-		   "花木蘭",
-		   "小熊維尼",
-    ]);
-	
-	var familys = new IncrementalShuffler([
-	       "爸爸",
-		   "媽媽",
-		   "爺爺",
-		   "奶奶",
-		   "外公",
-		   "外婆",
-		   "哥哥",
-		   "姊姊",
-		   "弟弟",
-		   "妹妹",
-		   "阿姨",
-		   "姑姑",
-    ]);
-	
-	var countrys = new IncrementalShuffler([
-	       "宜蘭縣",
-		   "花蓮縣",
-		   "台東縣",
-		   "雲林縣",
-		   "嘉義縣",
-		   "屏東縣",
-		   "苗栗縣",
-		   "彰化縣"
-    ]);
-	
+
     var schools = new IncrementalShuffler([
-        "龍埔國小",
-        "長安國小",
-        "米倉國小",
-        "育英國小",
-        "康橋國小",
-        "中山國中",
-        "潛龍國小",
-        "仁和國小",
-        "南崁國小",
-        "羅娜國小",
-        "東埔國小",
-        "嘉北國小",
-        "大成國中",
-        "仁德國小",
-        "五甲國中",
-        "加昌國小",
-        "龍肚國小",
-        "港東國小",
-        "礁溪國中",
-        "湖山國小",
-        "吳江國小",
-        "瑞穗國中",
-        "桃源國小",
-        "均一中小學",
-        "武陵國小"
+        "Loyola",
+        "Gardner Bullis",
+        "Almond",
+        "Covington",
+        "Springer",
+        "Santa Rita",
+        "Oak"
     ]);
 
     var furnitureStore = new IncrementalShuffler([
-        new Noun("椅子", {measureWord: "張"}),
-        new Noun("茶几", {measureWord: "張"}),
-        new Noun("床",   {measureWord: "張"}),
-        new Noun("沙發", {measureWord: "張"}),
-        new Noun("躺椅", {measureWord: "張"}),
-        new Noun("書桌", {measureWord: "個"}),
-        new Noun("書架", {measureWord: "個"})
+        "chair",
+        "table",
+        "bed frame",
+        "sofa",
+        "couch",
+        "desk",
+        "book shelf"
     ]);
 
     var electronicStore = new IncrementalShuffler([
-        new Noun("電視", {measureWord: "台"}), 
-        new Noun("電腦", {measureWord: "台"}),
-        new Noun("筆電", {measureWord: "台"}),
-        new Noun("數位相機", {measureWord: "台"})
+        "television",
+        "computer",
+        "laptop",
+        "camera"
     ]);
 
     var clothes = new IncrementalShuffler([
-        new Noun("帽子", {measureWord: "頂"}),
-        new Noun("褲子", {measureWord: new IncrementalShuffler(["件", "條"])}),
-        new Noun("皮帶", {measureWord: "條"}),
-        new Noun("項鍊", {measureWord: "條"}),
-        new Noun("皮包", {measureWord: "個"}),
-        new Noun("鞋子", {measureWord: "雙"}),
-        new Noun("襯衫", {measureWord: "件"}),
-        new Noun("裙子", {measureWord: new IncrementalShuffler(["件", "條"])}),
-        new Noun("手錶", {measureWord: new IncrementalShuffler(["只", "個"])}),
-        new Noun("襪子", {measureWord: "雙"}),
-        new Noun("毛衣", {measureWord: "件"}),
-        new Noun("領帶", {measureWord: "條"}),
-        new Noun("洋裝", {measureWord: new IncrementalShuffler(["件", "套"])})
+        "hat",
+        "pair of pants",
+        "belt",
+        "necklace",
+        "purse",
+        "pair of shoes",
+        "blouse",
+        "skirt",
+        "watch",
+        "pair of socks",
+        "sweatshirt",
+        "sweater",
+        "tie",
+        "scarf",
+        "dress"
     ]);
 
     var sides = new IncrementalShuffler([
-        "左",
-        "右"
+        "left",
+        "right"
     ]);
 
     var shirtStyles = new IncrementalShuffler([
-        "長袖",
-        "短袖"
+        "long-sleeved",
+        "short-sleeved"
     ]);
 
     // animal, avg-lifespan, stddev-lifespan
     // (data is from cursory google searches and wild guessing)
     var animals = new IncrementalShuffler([
-        ["鱷魚", 68, 20],
-        ["食蟻獸", 15, 10],
-        ["熊", 40, 20],
-        ["大象", 60, 10],
-        ["大猩猩", 20, 5],
-        ["獅子", 12, 5],
-        ["蜥蜴", 3, 1],
-        ["羚羊", 13, 5],
-        ["豪豬", 20, 5], //（山豬）
-        ["海豹", 15, 10],
-        ["猴子", 16, 5],
-        ["蛇", 25, 10],
-        ["老虎", 22, 5],
-        ["烏龜", 100, 20],
-        ["斑馬", 25, 10]
+        ["alligator", 68, 20],
+        ["anteater", 15, 10],
+        ["bear", 40, 20],
+        ["elephant", 60, 10],
+        ["gorilla", 20, 5],
+        ["lion", 12, 5],
+        ["lizard", 3, 1],
+        ["meerkat", 13, 5],
+        ["porcupine", 20, 5],
+        ["seal", 15, 10],
+        ["sloth", 16, 5],
+        ["snake", 25, 10],
+        ["tiger", 22, 5],
+        ["turtle", 100, 20],
+        ["zebra", 25, 10]
     ]);
 
     var farmers = new IncrementalShuffler([
-        {farmer: "農夫", crops: new IncrementalShuffler([
-                                                       new Noun("番茄", {measureWord: new IncrementalShuffler(["棵", "顆", "粒", "個", "株"])}),
-                                                       new Noun("馬鈴薯", {measureWord: new IncrementalShuffler(["棵", "顆", "粒", "個", "株"])}),
-                                                       new Noun("胡蘿蔔", {measureWord: new IncrementalShuffler(["棵", "顆", "粒", "個", "株"])}),
-                                                       new Noun("豆子", {measureWord: new IncrementalShuffler(["棵", "顆", "粒", "個", "株"])}),
-                                                       new Noun("稻子", {measureWord: new IncrementalShuffler(["棵", "顆", "粒", "個", "株"])})
-                                                       ]), field: "農地"},
-        {farmer: "園丁", crops: new IncrementalShuffler([
-                                                       new Noun("玫瑰花", {measureWord: new IncrementalShuffler(["朵", "枝", "株"])}),
-                                                       new Noun("鬱金香", {measureWord: new IncrementalShuffler(["朵", "枝", "株"])}),
-                                                       new Noun("菊花", {measureWord: new IncrementalShuffler(["朵", "枝", "株"])}),
-                                                       new Noun("向日葵", {measureWord: new IncrementalShuffler(["朵", "枝", "株"])}),
-                                                       new Noun("百合花", {measureWord: new IncrementalShuffler(["朵", "枝", "株"])})
-                                                       ]), field: "花園"}
+        {farmer: "farmer", crops: new IncrementalShuffler(["tomato", "potato", "carrot", "bean", "corn stalk"]), field: "field"},
+        {farmer: "gardener", crops: new IncrementalShuffler(["rose", "tulip", "daisy", "iris", "lily"]), field: "garden"}
     ]);
 
     var distances = new IncrementalShuffler([
-        "公尺",
-        "公里"
+        "mile",
+        "kilometer"
     ]);
 
     var distanceActivities = new IncrementalShuffler([
-        {present: "騎", past: "騎", noun: new Noun("腳踏車", {measureWord: new IncrementalShuffler(["台", "輛"])}), done: "騎", continuous: "騎"}, //（這幾個都很難翻。騎過、正在騎？怪怪的）
-        {present: "划", past: "划", noun: new Noun("船", {measureWord: "艘"}), done: "划", continuous: "划"},
-        {present: "遛", past: "遛", noun: new Noun("狗", {measureWord: "隻"}), done: "遛", continuous: "遛"}
+        {present: "ride", past: "rode", noun: "bike", done: "biked", continuous: "biking"},
+        {present: "row", past: "rowed", noun: "boat", done: "rowed", continuous: "rowing"},
+        {present: "drive", past: "drove", noun: "car", done: "driven", continuous: "driving"},
+        {present: "walk", past: "walked", noun: "dog", done: "walked", continuous: "walking"}
     ]);
 
     var indefiniteArticle = function(word) {
@@ -576,23 +471,23 @@ $.fn["word-problemsLoad"] = function() {
         },
 
         he: function(i) {
-            return people.get(i - 1).get(0)[1] === "m" ? "他" : "她";
+            return people.get(i - 1).get(0)[1] === "m" ? "he" : "she";
         },
 
         He: function(i) {
-            return people.get(i - 1).get(0)[1] === "m" ? "他" : "她";
+            return people.get(i - 1).get(0)[1] === "m" ? "He" : "She";
         },
 
         him: function(i) {
-            return people.get(i - 1).get(0)[1] === "m" ? "他" : "她";
+            return people.get(i - 1).get(0)[1] === "m" ? "him" : "her";
         },
 
         his: function(i) {
-            return people.get(i - 1).get(0)[1] === "m" ? "他的" : "她的"; //（him、her似乎還是翻成他、她）
+            return people.get(i - 1).get(0)[1] === "m" ? "his" : "her";
         },
 
         His: function(i) {
-            return people.get(i - 1).get(0)[1] === "m" ? "他的" : "她的";
+            return people.get(i - 1).get(0)[1] === "m" ? "His" : "Her";
         },
 
         An: function(word) {
@@ -670,18 +565,6 @@ $.fn["word-problemsLoad"] = function() {
         color: function(i) {
             return colors.get(i - 1);
         },
-		
-	    movie: function(i) {
-		    return movies.get(i-1);
-	    },
-		
-		family: function(i) {
-		    return familys.get(i-1);
-	    },
-		
-		country: function(i) {
-		    return countrys.get(i-1);
-	    },
 
         fruit: function(i) {
             return fruits.get(i);
@@ -753,34 +636,6 @@ $.fn["word-problemsLoad"] = function() {
 
         animalStddevLifespan: function(i) {
             return animals.get(i - 1)[2];
-        },
-        
-        // measure word helper.(for Chinese)  There are two signatures
-        // - measureWord(NOUN): return measure word of NOUN if available
-        // - measureWord(NUMBER, NOUN): return "NUMBER measureWord NOUN", use default measure word if not available
-        measureWord: function measureWord(value, arg1) {
-        	// get measure word of noun if available
-        	var getMeasureWord = function(noun) {
-        		// return empty string if noun is just null or undefined
-        		if (!noun) {
-        			return "";
-        		}
-        		
-            	if (typeof noun.measureWord === "string") {
-                	return noun.measureWord;
-            	} else if (typeof noun.measureWord === "object" && noun.measureWord.get){
-            		return noun.measureWord.get(0);
-            	}
-            	
-            	// return empty string if no match
-        		return "";
-        	};
-        	
-        	if (typeof value === "number") {
-        		return arg1 ? value + " " + getMeasureWord(arg1) + arg1 : value.toString();
-        	} else {
-        		return getMeasureWord(value);
-        	}
         }
     });
 };

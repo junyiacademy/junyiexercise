@@ -27,10 +27,10 @@ function numberLine(start, end, step, x, y, denominator) {
                     lab = base + "\\frac{" + Math.abs(Math.round(frac * denominator)) + "}{" + denominator + "}";
                 }
             }
-            graph.label([x + i, y - 0.2], lab, "below", { labelDistance: 3 });
+            graph.label([x + i, y - 0.2], "\\small{" + lab + "}", "below", { labelDistance: 3 });
         }
         else {
-            graph.label([x + i, y - 0.2], (start + i).toFixed(decPlaces), "below", { labelDistance: 3 });
+            graph.label([x + i, y - 0.2], "\\small{" + (start + i).toFixed(decPlaces) + "}", "below", { labelDistance: 3 });
         }
     }
     return set;
@@ -76,7 +76,7 @@ function rectchart(divisions, colors, y) {
     $.each(divisions, function(i, slice) {
         var x = partial / sum, w = slice / sum;
         set.push(graph.path([[x, y], [x + w, y], [x + w, y + 1], [x, y + 1]], {
-            stroke: "#fff",
+            stroke: KhanUtil.BACKGROUND,
             fill: colors[i]
         }));
         partial += slice;
@@ -84,49 +84,10 @@ function rectchart(divisions, colors, y) {
 
     for (var i = 0; i <= sum; i++) {
         var x = i / sum;
-        set.push(graph.line([x, y + 0], [x, y + 1], { stroke: "#fff" }));
+        set.push(graph.line([x, y + 0], [x, y + 1], { stroke: KhanUtil.BACKGROUND }));
     }
 
     return set;
-}
-
-// for line graph intuition
-function updateEquation() {
-    var graph = KhanUtil.currentGraph;
-    graph.plot.remove();
-    graph.style({
-        clipRect: [[-10, -10], [20, 20]]
-    }, function() {
-        var ell = function(x) {
-            return x * graph.MN / graph.MD + graph.BN / graph.BD;
-        };
-        graph.plot = graph.line([-10, ell(-10)], [10, ell(10)]);
-    });
-
-    graph.labelHolder.remove();
-
-    $("#equationAnswer").html("<code>y =" + KhanUtil.fractionReduce(graph.MN, graph.MD) + "x +" + KhanUtil.fractionReduce(graph.BN, graph.BD) + "</code>").tmpl();
-    $("#slope-sol input").val((graph.MN / graph.MD) + "");
-    $("#intercept-sol input").val((graph.BN / graph.BD) + "");
-}
-
-// for line graph intuition
-function changeSlope(dir) {
-    var graph = KhanUtil.currentGraph;
-    var prevDenominator = graph.MD;
-    graph.MD = KhanUtil.getLCM(prevDenominator, graph.INCR);
-    graph.MN = (graph.MD / prevDenominator * graph.MN) + (dir * graph.MD / graph.INCR);
-    updateEquation();
-}
-
-// for line graph intuition
-function changeIntercept(dir) {
-    var graph = KhanUtil.currentGraph;
-    var prevDenominator = graph.BD;
-    graph.BD = KhanUtil.getLCM(prevDenominator, graph.INCR);
-    graph.BN = (graph.BD / prevDenominator * graph.BN)
-        + (dir * graph.BD / graph.INCR);
-    updateEquation();
 }
 
 function Parabola(lc, x, y) {

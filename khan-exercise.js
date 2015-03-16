@@ -1,4 +1,4 @@
-﻿/* khan-exercise.js
+/* khan-exercise.js
 
     The main entry point here is actually the loadScripts method which is defined
     as Khan.loadScripts and then evaluated around line 500.
@@ -13,11 +13,11 @@
     exercise template via injectSite which runs prepareSite first then
     makeProblemBag and makeProblem when it finishes loading dependencies.
 
-    pepareSite and makeProblem are both fairly heavyweight functions.
+    prepareSite and makeProblem are both fairly heavyweight functions.
 
     If you are trying to register some behavior when the page loads, you
     probably want it to go in prepareSite. (which also registers server-initiated
-    behavior via api.js) as well. By the time prepareSite is called, jquery and
+    behavior via api.js) as well. By the time prepareSite is called, jQuery and
     any core plugins are already available.
 
     If you are trying to do something each time a problem loads, you probably
@@ -25,7 +25,6 @@
 
     At the end of evaluation, the inner Khan object is returned/exposed as well
     as the inner Util object.
-
 
 
     Catalog of events fired on the Khan object by khan-exercises:
@@ -57,6 +56,9 @@
     * updateUserExercise -- when an updated userExercise has been received
       and is being used by khan-exercises, either via the result of an API
       call or initialization
+
+    * showGuess -- when a guess is populated in the answer area in problem
+      history mode
 */
 
 var Khan = (function() {
@@ -75,8 +77,11 @@ var Khan = (function() {
         });
     }
 
-    // Prime numbers used for jumping through exercises
-    var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43,
+    // Numbers which are coprime to the number of bins, used for jumping through
+    // exercises.  To quickly test a number in python use code like:
+    // import fractions
+    // fractions.gcd( 197, 200)
+    var primes = [197, 3, 193, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43,
     47, 53, 59, 61, 67, 71, 73, 79, 83],
 
     /*
@@ -163,7 +168,9 @@ var Khan = (function() {
     exerciseName = deslugify(exerciseId),
 
     // Bin users into a certain number of realms so that
-    // there is some level of reproducability in their questions
+    // there is some level of reproducability in their questions.
+    // If you change this, make sure all entries in the array "primes"
+    // set above are coprime to the new value.
     bins = 200,
 
     // Number of past problems to consider when avoiding duplicates
@@ -243,10 +250,12 @@ var Khan = (function() {
     urlBase = typeof urlBaseOverride !== "undefined" ? urlBaseOverride :
         testMode ? "../" : "/khan-exercises/",
 
-    // In local mode, we use khan-exercises local copy of the /images
+    // In test mode, we use khan-exercises local copy of the /images
     // directory.  But in production (on www.khanacademy.org), we use
     // the canonical location of images, which is under '/'.
-    imageBase = testMode ? urlBase + "images/" : "/images/",
+    imageBase = ((typeof urlBaseOverride !== "undefined" || testMode)
+                 ? (urlBase + "images/") : ("/images/"));
+
 
     lastFocusedSolutionInput = null,
 
@@ -255,13 +264,8 @@ var Khan = (function() {
         "http://github.com/Khan/khan-exercises/issues/new\">GitHub</a>. " +
         "Please reference exercise: " + exerciseId + ".",
     issueSuccess = function(url, title, suggestion) {
-        //return ["Thank you for your feedback! Your issue has been created and can be ",
-        //    "found at the following link:",
-        //    "<p><a id=\"issue-link\" href=\"", url, "\">", title, "</a>",
-        //    "<p>", suggestion, "</p>"].join("");
         return "感謝你的回報問題。";
     },
-    //issueIntro = "Remember to check the hints and double check your math. All provided information will be public. Thanks for your help!",
     issueIntro = "發生了什麼事?",
 
     // True once we've sent a request to load all modules
@@ -299,7 +303,15 @@ var Khan = (function() {
 
     // The main Khan Module
     var Khan = {
+
+        // Modules currently in use
         modules: {},
+
+        // Map from exercise filename to a string of required modules
+        // (data-require). These module names are used in runModules(), where
+        // $.fn["module-name"], $.fn["module-nameLoad"], and
+        // $.fn["module-nameCleanup"] are called.
+        exerciseModulesMap: {},
 
         // So modules can use file paths properly
         urlBase: urlBase,
@@ -308,7 +320,7 @@ var Khan = (function() {
 
         moduleDependencies: {
             "math": [{
-                src: urlBase + "utils/MathJax/1.1a/MathJax.js?config=KAthJax-62e7a7b628ba168df6b9cd3de8feac38"
+                src: urlBase + "utils/MathJax/1.1a/MathJax.js?config=KAthJax-8a6b08f6f5c97d7c3c310cc909a7a140"
             }, "raphael"],
 
             // Load Raphael locally because IE8 has a problem with the 1.5.2 minified release
@@ -329,7 +341,10 @@ var Khan = (function() {
             "math-model": ["ast"],
             "simplify": ["math-model", "ast", "expr-helpers", "expr-normal-form", "steps-helpers"],
             "congruency": ["angles", "interactive"],
-            "graphie-3d": ["graphie", "matrix"]
+            "graphie-3d": ["graphie", "matrix"],
+            "graphie-geometry": ["graphie", "matrix"],
+            "matrix-input": ["jquery.cursor-position"],
+            "chemistry": ["jquery-ui"]
         },
 
         warnTimeout: function() {
@@ -348,6 +363,26 @@ var Khan = (function() {
             }
 
             warn("You should " + enableFontDownload + " to improve the appearance of math expressions.", true);
+        },
+
+        resetModules: function(modules) {
+            Khan.modules = {};
+
+            if (testMode) {
+                Khan.require(["jquery-ui", "../jquery.qtip"]);
+            }
+
+            // Base modules required for every problem
+            Khan.require(["answer-types", "tmpl", "underscore", "jquery.adhesion", "hints", "calculator"]);
+
+            if (modules) {
+                Khan.require(modules);
+            }
+
+            if (testMode && !modules) {
+                modules = document.documentElement.getAttribute("data-require");
+                Khan.require(modules);
+            }
         },
 
         require: function(mods) {
@@ -543,6 +578,10 @@ var Khan = (function() {
 
                 show: function() {
 
+                    if (actions.isVisible()) {
+                        return;
+                    }
+
                     var makeVisible = function() {
                         $("#workarea, #hintsarea").css("padding-left", 60);
                         $("#scratchpad").show();
@@ -552,7 +591,8 @@ var Khan = (function() {
                         // because it was removed from the DOM, recreate a new
                         // scratchpad.
                         if (!pad || !$("#scratchpad div").children().length) {
-                            pad = new Scratchpad($("#scratchpad div")[0]);
+                            pad = new DrawingScratchpad(
+                                $("#scratchpad div")[0]);
                         }
                     };
 
@@ -739,23 +779,30 @@ var Khan = (function() {
     // Actually load the scripts. This is getting evaluated when the file is loaded.
     Khan.loadScripts(scripts, function() {
 
-        if (testMode) {
-            Khan.require(["../jquery-ui", "../jquery.qtip"]);
-        }
+        Khan.resetModules();
 
-        // Base modules required for every problem
-        Khan.require(["answer-types", "tmpl", "underscore", "jquery.adhesion", "hints", "calculator"]);
-
-        Khan.require(document.documentElement.getAttribute("data-require"));
+        // If there are any requests left in the queue when the window unloads
+        // then we will have permanently lost their answers and will need to
+        // clear the session cache, to make sure we don't override what is
+        // passed down from the servers
+        $(window).unload(function() {
+            if(requestQueue["attempt_hint_queue"] &&
+                    requestQueue["attempt_hint_queue"].queue().length) {
+                $(Khan).trigger("attemptError");
+            }
+        });
 
         // Initialize to an empty jQuery set
         exercises = jQuery();
 
         $(function() {
+            // Ensure that all local exercises that don't have a data-name
+            // already get tagged with the current, original data-name.
+            $("div.exercise").not("[data-name]").data("name", exerciseId);
+
             var remoteExercises = $("div.exercise[data-name]");
 
             if (remoteExercises.length) {
-
                 remoteExercises.each(loadExercise);
 
             // Only run loadModules if exercises are in the page
@@ -940,6 +987,7 @@ var Khan = (function() {
 
             // Trigger load completion event for this exercise
             $(Khan).trigger("exerciseLoaded:" + exerciseId);
+            $(Khan).trigger("contentLoaded");
 
             delete loadingExercises[exerciseId];
 
@@ -1075,7 +1123,7 @@ var Khan = (function() {
 
         // In either of these testing situations,
         } else if ((testMode && Khan.query.test != null) || user == null) {
-            problemSeed = randomSeed % bins;
+            problemSeed = Math.abs(randomSeed % bins);
         }
 
         // Set randomSeed to what problemSeed is (save problemSeed for recall later)
@@ -1100,11 +1148,7 @@ var Khan = (function() {
         // we made earlier to ensure that every problem gets shown the
         // appropriate number of times
         } else if (problemBag.length > 0) {
-            if (typeof skipCount !== "undefined") {
-                problem = problemBag[(problemBagIndex + skipCount) % problemBag.length];
-            } else {
-                problem = problemBag[problemBagIndex];
-            }
+            problem = problemBag[problemBagIndex];
             id = problem.data("id");
 
         // No valid problem was found, bail out
@@ -1218,6 +1262,13 @@ var Khan = (function() {
         }
 
         debugLog("added inline styles");
+
+        // Get the filename of the currently shown exercise so we can look up
+        // what modules are required
+        var currentExercise = exercise.data("name") + ".html";
+
+        // Reset modules to only those required by the current exercise
+        Khan.resetModules(Khan.exerciseModulesMap[currentExercise]);
 
         // Run the main method of any modules
         problem.runModules(problem, "Load");
@@ -1427,6 +1478,36 @@ var Khan = (function() {
             timeline = $("<div id='timeline'>").appendTo(timelinecontainer);
             timelineEvents = $("<div id='timeline-events'>").appendTo(timeline);
 
+            // Grab both scrubbers packaged up in one jQuery object. This is
+            // wrapped in a function just because the variables held inside are
+            // not used elsewhere
+            var scrubber = (function() {
+                var scrubberCss = {
+                            display: "block",
+                            width: "0",
+                            height: "0",
+                            "border-left": "6px solid transparent",
+                            "border-right": "6px solid transparent",
+                            position: "absolute",
+                        },
+
+                    scrubber1 = $("<div>")
+                        .css($.extend({}, scrubberCss, {
+                            "border-top": "6px solid #888",
+                            top: "0"
+                        }))
+                        .appendTo(timeline),
+
+                    scrubber2 = $("<div>")
+                        .css($.extend({}, scrubberCss, {
+                            "border-bottom": "6px solid #888",
+                            bottom: "0"
+                        }))
+                        .appendTo(timeline);
+
+                return scrubber1.add(scrubber2);
+            })();
+
             timelinecontainer
                 .append("<div>\n" +
                         "<div id='next-problem' class='simple-button'>下一個問題</div>\n" +
@@ -1459,7 +1540,7 @@ var Khan = (function() {
                     thissolutionarea.attr("title", "使用提示");
                     thissolutionarea
                         .data("hint", hintNumber)
-                        .prepend("Hint #" + (hintNumber + 1));
+                        .prepend("提示 #" + (hintNumber + 1));
                     hintNumber += 1;
                 } else { // This panel is a solution (or the first panel)
                     thissolutionarea.data("hint", false);
@@ -1491,12 +1572,12 @@ var Khan = (function() {
 
                                 thissolutionarea.attr("title", "Correct Answer");
                                 thissolutionarea.append(
-                                    $("<p class='solution'>Answer correct</p>")
+                                    $("<p class='solution'>正確答案</p>")
                                 );
                             } else {
                                 thissolutionarea.attr("title", "Incorrect Answer");
                                 thissolutionarea.append(
-                                    $("<p class='solution'>Answer incorrect</p>")
+                                    $("<p class='solution'>錯誤答案</p>")
                                 );
                             }
                         } else {
@@ -1536,7 +1617,7 @@ var Khan = (function() {
             }
 
             var states = timelineEvents.children(".user-activity"),
-                currentSlide = states.length - 1,
+                currentSlide = Math.min(states.length - 1, 1),
                 numSlides = states.length,
                 firstHintIndex = timeline.find(".hint-activity:first")
                     .index(".user-activity"),
@@ -1554,35 +1635,18 @@ var Khan = (function() {
             // So highlighting doesn't fade to white
             $("#solutionarea").css("background-color", $("#answercontent").css("background-color"));
 
-            $.fn.scrubber = function() {
-                // create triangular scrubbers above and below current selection
+            // scroll to the slide held in state
+            var scrub = function(state, fadeTime) {
                 var timeline = $("#timeline"),
-                    scrubber1 = $("#scrubber1"),
-                    scrubber2 = $("#scrubber2"),
-                    scrubberCss = {
-                        display: "block",
-                        width: "0",
-                        height: "0",
-                        "border-left": "6px solid transparent",
-                        "border-right": "6px solid transparent",
-                        position: "absolute",
-                        left: (timeline.scrollLeft() + this.position().left + this.outerWidth() / 2 + 2) + "px"
-                    };
+                    slide = state.slide;
 
-                scrubber1 = scrubber1.length ? scrubber1 : $("<div id='scrubber1'>").appendTo(timeline);
-                scrubber2 = scrubber2.length ? scrubber2 : $("<div id='scrubber2'>").appendTo(timeline);
+                timeline.animate({
+                    scrollLeft: state.scroll
+                }, fadeTime);
 
-                scrubber1.css($.extend({}, scrubberCss, {
-                    "border-bottom": "6px solid #888",
-                    bottom: "0"
-                }));
-
-                scrubber2.css($.extend({}, scrubberCss, {
-                    "border-top": "6px solid #888",
-                    top: "0"
-                }));
-
-                return this;
+                scrubber.animate({
+                    left: (timeline.scrollLeft() + slide.position().left + slide.outerWidth() / 2 + 2) + "px"
+                }, fadeTime);
             };
 
             // Set the width of the timeline (starts as 10000px) after MathJax loads
@@ -1592,7 +1656,12 @@ var Khan = (function() {
                     maxHeight = Math.max(maxHeight, $(this).outerHeight(true));
                 });
 
-                if (maxHeight > timelinecontainer.height()) {
+                // This thing looks ridiculous above about 100px
+                if (maxHeight > 100) {
+                    timelineEvents.children('.correct-activity, .incorrect-activity').each(function() {
+                        $(this).text('Answer');
+                    });
+                } else if (maxHeight > timelinecontainer.height()) {
                     timelinecontainer.height(maxHeight);
                     timeline.height(maxHeight);
                 }
@@ -1609,7 +1678,7 @@ var Khan = (function() {
                     itemMiddle = itemOffset + thisSlide.width() / 2,
                     offset = timelineMiddle - itemMiddle,
                     currentScroll = timeline.scrollLeft(),
-                    timelineMax = states.eq(-1).position().left + states.eq(-1).width(),
+                    timelineMax = states.eq(-1).position().left + states.eq(-1).width() + 5,
                     scroll = Math.min(currentScroll - offset, currentScroll + timelineMax - timeline.width() + 25);
 
                 if (hintNum >= 0) {
@@ -1633,11 +1702,13 @@ var Khan = (function() {
                         statelist[i] = thisState;
 
                         if (i + 1 < states.length) {
+                            // Create the next state
                             MathJax.Hub.Queue(function() {
                                 create(i + 1);
                             });
                         } else {
-                            activate(i);
+                            // Scroll to the starting state
+                            activate(currentSlide);
                         }
                     };
 
@@ -1661,11 +1732,7 @@ var Khan = (function() {
                 if (statelist[slideNum]) {
                     thisState = statelist[slideNum];
 
-                    timeline.animate({
-                        scrollLeft: thisState.scroll
-                    }, fadeTime, function() {
-                        thisState.slide.scrubber();
-                    });
+                    scrub(thisState, fadeTime);
 
                     $("#workarea").remove();
                     $("#hintsarea").remove();
@@ -1679,6 +1746,8 @@ var Khan = (function() {
                     } else {
                         answerData.showGuess();
                     }
+                    // fire the "show guess" event
+                    $(Khan).trigger("showGuess");
 
                     // TODO: still highlight even if hint modifies problem (and highlight following hints)
                     if (slideNum > 0 && (thisState.hintNum > statelist[slideNum - 1].hintNum)) {
@@ -1703,16 +1772,15 @@ var Khan = (function() {
 
             MathJax.Hub.Queue(function() {create(0);});
 
-            // Allow users to use arrow keys to move up and down the timeline
+            // Allow users to use arrow keys to move left and right in the
+            // timeline
             $(document).keydown(function(event) {
-                if (event.keyCode !== 37 && event.keyCode !== 39) {
-                    return;
-                }
-
                 if (event.keyCode === 37) { // left
                     currentSlide -= 1;
-                } else { // right
+                } else if (event.keyCode === 39) { // right
                     currentSlide += 1;
+                } else {
+                    return;
                 }
 
                 currentSlide = Math.min(currentSlide, numSlides - 1);
@@ -1786,7 +1854,7 @@ var Khan = (function() {
                     $("#hint").click();
                 }
             });
-            var debugWrap = $("#debug").empty();
+            var debugWrap = $("#debug").css({"margin-right": "15px"}).empty();
             var debugURL = window.location.protocol + "//" + window.location.host + window.location.pathname +
                 "?debug&problem=" + problemID;
 
@@ -1822,7 +1890,6 @@ var Khan = (function() {
                 var probID = $(prob).attr("id") || n;
                 links.append($("<div>")
                     .css({
-                        "width": "200px",
                         "padding-left": "20px",
                         "outline":
                             (problemID === probID || problemID === '' + n) ?
@@ -1838,7 +1905,8 @@ var Khan = (function() {
             });
 
 
-            if (exercise.data("name") != null) {
+            // If this is a child exercise, show which one it came from
+            if (exercise.data("name") !== exerciseId) {
                 links.append("<br>");
                 links.append("Original exercise: " + exercise.data("name"));
             }
@@ -1898,7 +1966,7 @@ var Khan = (function() {
         $(Khan).trigger("newProblem");
 
         // If the textbox is empty disable "Check Answer" button
-        // Note: We don't do this for number line etc.
+        // Note: We don't do this for multiple choice, number line, etc.
         if (answerType === "text" || answerType === "number") {
             var checkAnswerButton = $("#check-answer-button");
             checkAnswerButton.attr("disabled", "disabled").attr(
@@ -1907,12 +1975,12 @@ var Khan = (function() {
             // in a number and hit enter quickly do not have to wait for the
             // button to be enabled by the key up
             $("#solutionarea")
-                .keypress(function(e) {
+                .on("keypress.emptyAnswer", function(e) {
                     if (e.keyCode !== 13) {
                         checkAnswerButton.removeAttr("disabled").removeAttr("title");
                     }
                 })
-                .keyup(function() {
+                .on("keyup.emptyAnswer", function() {
                     var guess = getAnswer();
                     if (checkIfAnswerEmpty(guess)) {
                         checkAnswerButton.attr("disabled", "disabled");
@@ -1941,6 +2009,10 @@ var Khan = (function() {
         // Wipe out any previous problem
         $("#workarea, #hintsarea").runModules(problem, "Cleanup").empty();
         $("#hint").attr("disabled", false);
+
+        // Take off the event handlers for disabling check answer; we'll rebind
+        // if we actually want them
+        $("#solutionarea").off(".emptyAnswer");
 
         Khan.scratchpad.clear();
     }
@@ -2124,33 +2196,31 @@ var Khan = (function() {
                 // Problem has been completed but pending data request being
                 // sent to server.
                 $(Khan).trigger("problemDone");
-                $("#solutionarea").unbind("keypress");
-                $("#solutionarea").unbind("keyup");
             }
 
             // Save the problem results to the server
             var curTime = new Date().getTime();
             var data = buildAttemptData(pass, ++attempts, JSON.stringify(guess), curTime);
             debugLog("attempt " + JSON.stringify(data));
+
             request("problems/" + problemNum + "/attempt", data, function() {
 
                 // TODO: Save locally if offline
                 $(Khan).trigger("attemptSaved");
 
             }, function(xhr) {
+                // Alert any listeners of the error before reload
+                $(Khan).trigger("attemptError");
 
-                if (xhr.readyState == 0) {
-                    // Ignore errors caused by a broken pipe during page unload
-                    // (browser navigating away during ajax request).
+                if (xhr && xhr.readyState == 0) {
+                    // This path gets called when there is a broken pipe during
+                    // page unload- browser navigating away during ajax request
                     // See http://stackoverflow.com/questions/1370322/jquery-ajax-fires-error-callback-on-window-unload
                     return;
                 }
 
                 // Error during submit. Disable the page and ask users to
                 // reload in an attempt to get updated data.
-
-                // Alert any listeners of the error before reload
-                $(Khan).trigger("attemptError", userExercise);
 
                 // Hide the page so users don't continue
                 $("#problem-and-answer").css("visibility", "hidden");
@@ -2311,9 +2381,9 @@ var Khan = (function() {
                 $(this).val($(this).data("buttonText") || "下一個提示 (" + stepsLeft + ")");
 
                 var problem = $(hint).parent();
-								
-				// Append first so MathJax can sense the surrounding CSS context properly
-				$(hint).appendTo("#hintsarea").runModules(problem);
+
+                // Append first so MathJax can sense the surrounding CSS context properly
+                $(hint).appendTo("#hintsarea").runModules(problem);
 
                 // Grow the scratchpad to cover the new hint
                 Khan.scratchpad.resize();
@@ -2322,8 +2392,8 @@ var Khan = (function() {
                 if (hints.length === 0) {
                     $(hint).addClass("final_answer");
 
-					$(Khan).trigger("allHintsUsed");
-					
+                    $(Khan).trigger("allHintsUsed");
+
                     $(this).attr("disabled", true);
                 }
             }
@@ -2363,8 +2433,6 @@ var Khan = (function() {
                  }
             });
         });
-
-       
 
         $("#warning-bar-close a").click(function(e) {
             e.preventDefault();
@@ -2690,14 +2758,17 @@ var Khan = (function() {
 
             // Handle error edge case
             error: function(xhr) {
+                // Execute passed error function first in case it wants
+                // different behavior depending upon the length of the request
+                // queue
+                if ($.isFunction(fnError)) {
+                    fnError(xhr);
+                }
+
                 // Clear the queue so we don't spit out a bunch of
                 // queued up requests after the error
                 if (queue && requestQueue[queue]) {
                     requestQueue[queue].clearQueue();
-                }
-
-                if ($.isFunction(fnError)) {
-                    fnError(xhr);
                 }
             }
         };
@@ -2828,7 +2899,12 @@ var Khan = (function() {
                 requires = requires[2];
             }
 
-            Khan.require(requires);
+            // Store the module requirements in exerciseModulesMap
+            Khan.exerciseModulesMap[fileName] = requires;
+
+            // Calling resetModules here is necessary for populating
+            // Khan.modules immediately so that required scripts can be fetched
+            Khan.resetModules(requires);
 
             // Extract contents from various tags and save them up for parsing when
             // actually showing this particular exercise.
@@ -2944,6 +3020,7 @@ var Khan = (function() {
                 problemBag = makeProblemBag(problems, 10);
             }
 
+            $("#positive-reinforcement").hide();
             // Generate the initial problem when dependencies are done being loaded
             var answerType = makeProblem();
         }
