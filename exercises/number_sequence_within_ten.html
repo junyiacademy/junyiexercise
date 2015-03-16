@@ -1,281 +1,1 @@
-﻿<!DOCTYPE html>
-<html data-require="math word-problems graphie jquery.mobile.vmouse interactive expressions">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>10以內的數序</title>
-    <script src="../khan-exercise.js"></script>
-    <style type="text/css">		#answer_area .sol input[type=text] {            width: 30px;        }		
-        .box {
-            border:1px solid black;
-            width:2em;
-            height:2em;
-            text-align:center;
-            vertical-align:middle;
-            background-color:white;
-        }
-        .selector {
-            float:left; 
-            width:35px;
-            height:35px;
-            /*border:1px solid black;*/
-            position:relative;
-            z-index:1;
-            margin-top:3px;
-            margin:1px 1px 1px 1px;
-        }
-        .firstColumn {
-            width:4.5em;
-            vertical-align:middle;
-            text-align:center;
-            border:1px solid black;
-        }
-        .secondColumn {
-            vertical-align:middle;
-            text-align:center;
-            border:1px solid black;
-        }
-        .selected {
-        }
-        .line_1 {}
-        .line_2 {}
-        .line_3 {}
-        .line_4 {}
-        .line_5 {}
-        .line_6 {}
-    </style>
-</head>
-<script>
-    function loadImg(elem, url, count, width, height) {
-        var loimg = document.getElementById(elem);
-        var inner = "";
-        for (var i = 1; i <= count; i++) {
-            inner += "<img id="+"image"+ elem + i + " width=" + width +" height="+height+ ">";
-        }
-        loimg.innerHTML += inner;
-        for (var j = 1; j <= count; j++) {
-            document.getElementById("image" + elem + j).src = url;
-        }
-    }
-    function isClose(coordA, coordB) {
-        if (Math.abs(coordA[0] - coordB[0]) < 0.3 && Math.abs(coordA[1] - coordB[1]) < 0.3)
-            return true;
-        else
-            return false;
-    }
-    function exclude(array, exc) {
-        var values=[];
-        for(var i in array){
-            if (array[i] != exc)
-                values.push(array[i]);
-        }
-        return values;
-    }
-    function getIndex(array, value) {
-        for (var i in array)
-            if (array[i] == value)
-                return i;
-    }
-</script>
-<body>
-    <div class="exercise">
-        <div class="problems">
-            <div id="case1">
-                <div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>										<var id="ans_input">randRange(1,7)</var>										<var id="firstNums_1">randRange(1,4)</var>					
-                    <var id="data">
-                        (function(){							for(var j = 1;j &lt; 8; j++){								if(j != ans_input){									$('#grid1'+j).val(firstNums_1+j);								}else{									$('#grid1'+j).removeAttr("readonly");									$('#grid1'+j).css("color","red");																	}							}
-                            return firstNums_1+ans_input;
-                        })()
-                    </var>					<var id="set_keypress">						(function(){							for(var i=1;i&lt;8;i++){								$('#grid1'+i).bind('keypress',function(event){									if(event.keyCode == "13"){										$('#check-answer-button').click();									}								});							}						})()				</var>
-                </div>
-                <div class="question">
-                    <p>算算看，在方框裡填入正確的數。</p>
-                    <div>                        <input type="text" id="grid11" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid12" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid13" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid14" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid15" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid16" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid17" readonly="true" class="box" /><br /><br />
-                    </div>
-                </div>
-                <div class="solution" data-type="multiple">
-                    <div class="sol" data-type="custom">
-                        <div class="guess">data</div>
-                        <div class="validator-function">
-							if($('#grid1'+ans_input).val()==""){								return "";							}else return $('#grid1'+ans_input).val()==guess;
-                        </div>
-                    </div>
-					<p class="example">請在方框裡填入正確的數</p>
-                </div>
-                <div class="hints">
-					<p>應填入 <code class="hint_pink"><var>data</var></code> 。</p>
-                </div>
-            </div>
-            <div id="case2">                <div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>										<var id="ans_input">randRange(1,6)</var>										<var id="firstNums_1">0</var>					                    <var id="data">                        (function(){							for(var j = 1;j &lt; 7; j++){								if(j != ans_input){									$('#grid1'+j).val(firstNums_1+j);								}else{									$('#grid1'+j).removeAttr("readonly");									$('#grid1'+j).css("color","red");								}							}                            return firstNums_1+ans_input;                        })()                    </var>					<var id="set_keypress">						(function(){							for(var i=1;i&lt;8;i++){								$('#grid1'+i).bind('keypress',function(event){									if(event.keyCode == "13"){										$('#check-answer-button').click();									}								});							}						})()				</var>                </div>                <div class="question">                    <p>算算看，在方框裡填入正確的數。</p>                    <div>                        <input type="text" id="grid11" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid12" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid13" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid14" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid15" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid16" readonly="true" class="box" /><span></span><br /><br />                    </div>                </div>                <div class="solution" data-type="multiple">                    <div class="sol" data-type="custom">                        <div class="guess">data</div>                        <div class="validator-function">							if($('#grid1'+ans_input).val()==""){								return "";							}else return $('#grid1'+ans_input).val()==guess;                        </div>                    </div>					<p class="example">請在方框裡填入正確的數</p>                </div>                <div class="hints">					<p>應填入 <code class="hint_pink"><var>data</var></code> 。</p>                </div>            </div>
-            			
-            <div id="case3">
-                <div class="vars">									<var id="t">randRange(1,2)</var>										<var id="test">(function(){Khan.scratchpad.disable();})()</var>					
-                    <var id="data">
-                        (function(){
-                            var info=[["鋼筆","小刀","電話","筆記本","垃圾桶","計算機","滑鼠","公事包"],
-                                        ["pen_2.png","knife.png","telephone.png","notebook.png","trash.png","calculator.png","mouse.png","bag.png"],
-                                        [["ㄍㄤ","ㄅㄧ"],["ㄒㄧㄠ","ㄉㄠ"],["ㄉㄧㄢ","ㄏㄨㄚ","ㄐㄧ"],["ㄅㄧ","ㄐㄧ","ㄅㄣ"],["ㄌㄚ","ㄐㄧ","ㄒㄧㄤ"],["ㄐㄧ","ㄙㄨㄢ","ㄐㄧ"],["ㄕㄨ","ㄅㄧㄠ"],["ㄍㄨㄥ","ㄨㄣ","ㄅㄠ"]],
-                                        [["","ˇ"],["ˇ",""],["ˋ","ˋ",""],["ˇ","ˋ","ˇ"],["","",""],["ˋ","ˋ",""],["ˇ",""],["","ˊ",""]]];
-                            var pic=shuffle([0,1,2,3,4,5,6,7]);
-                            var p=randRangeUnique(0,8,4);
-                            var select=new Array(new Array(4),new Array(4),new Array(4),new Array(4));
-                            for(j=0;j&lt;4;j++)
-                            {  
-                                for(i=0;i&lt;4;i++)
-                                    {
-                                        select[j][i]=info[j][pic[p[i]]];
-                                    }
-                            }
-                            for(i=0;i&lt;8;i++)
-                            {
-                                var j=pic[i];
-                                loadImg("imgs"+(i+1),Khan.urlBase+"images/"+info[1][j],1,"11.4%");
-                            }
-                            for(i=0;i&lt;2;i++)
-                                loadImg("img"+(i+1),Khan.urlBase+"images/"+select[1][i],1,"10%");
-                            return [select,p];
-                        })()
-                    </var>
-                    <var id="name1">data[0][0][0]</var>
-                    <var id="name2">data[0][0][1]</var>
-                    <var id="name3">data[0][0][2]</var>
-                    <var id="name4">data[0][0][3]</var>
-                    <var id="zhuyin">data[0][2]</var>
-                    <var id="shengdiao">data[0][3]</var>
-                    <var id="ans">[8-data[1][0],data[1][1]+1]</var>
-                </div>
-                <div class="question">
-                    <p>看圖回答問題，在方框裡填入正確的數序。</p>
-                    <div id="imgs1" style="display:inline;"></div>
-                    <div id="imgs2" style="display:inline;"></div>
-                    <div id="imgs3" style="display:inline;"></div>
-                    <div id="imgs4" style="display:inline;"></div>
-                    <div id="imgs5" style="display:inline;"></div>
-                    <div id="imgs6" style="display:inline;"></div>
-                    <div id="imgs7" style="display:inline;"></div>
-                    <div id="imgs8" style="display:inline;"></div>
-                    <br />
-                    <p data-if="t==1">&nbsp;從右邊開始數，<var>name1</var><span id="img1"></span>是第幾個？</p>
-                    <p data-if="t==2">&nbsp;從左邊開始數，<var>name2</var><span id="img2"></span>是第幾個？</p>
-                   
-                </div>
-                <div class="solution" data-type="multiple">					第 <span class="sol" data-forms="integer"><var>ans[t-1]</var></span> 個
-					<p class="example">整數，例：<code>6</code></p>
-                </div>
-                <div class="hints">
-					<div data-if="t==1">
-						<p>從右邊開始數，<var>name1</var>是第 <code class="hint_pink"><var>ans[0]</var></code> 個。</p>
-					</div>
-					<div data-if="t==2">						<p>從左邊開始數，<var>name2</var>是第 <code class="hint_pink"><var>ans[1]</var></code> 個。</p>					</div>
-                </div>
-            </div>
-            <div id="case4">
-                <div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>
-                    <var id="data">randRangeUnique(1,11,3)</var>
-                </div>
-                <div class="question">
-                    <div class="problem">
-                        <p>請依指定的數量與數序塗上顏色。</p>
-                        <div style="position:absolute;width:105%">
-                            <table>
-                                <tr>
-                                    <th rowspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                                    <td class="firstColumn">
-                                        <var>data[0]</var>個
-                                    </td>
-                                    <td class="secondColumn">										<div data-each="10 times" class="selector line_1">										</div>									</td>
-                                </tr>
-                                <tr>
-                                    <td class="firstColumn">
-                                        第<var>data[0]</var>個
-                                    </td>
-                                    <td class="secondColumn"><div data-each="10 times" class="selector line_2"></div></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="graphie" id="graph1">
-                            init({
-                                range:[[0,13],[-4,0.6]]
-                            });
-                            var offset_y=4.15;
-                            var factor_y=0.922;
-                            graph.circles_1=[];
-                            graph.circles_2=[];
-                            for(i=0;i&lt;10;i++)
-                            {
-                                graph.circles_1.push(circle([i*factor_y+offset_y,0],0.43,{stroke: '#999'}));
-                                graph.circles_2.push(circle([i*factor_y+offset_y,-1.2],0.43,{stroke: '#999'}));
-                            }
-                            graph.selectorToCircle=function(selectorId){
-                                if($(selectorId).hasClass("line_1"))
-                                    return graph.circles_1[$(selectorId).index()];
-                                else if($(selectorId).hasClass("line_2"))
-                                    return graph.circles_2[$(selectorId).index()];
-                            }
-                            $("#problemarea .selector").bind("vmousedown", function( event ) {
-                                event.preventDefault();
-                                
-                                $(this).toggleClass("selected");
-                                if($(this).hasClass("selected"))
-                                {
-                                    graph.selectorToCircle(this).attr({ fill:'#00ff00'});
-                                }
-                                else{
-                                    graph.selectorToCircle(this).attr({ fill:'#f8f8f8'});
-                            }
-                            });
-                            $("#problemarea .selector").bind("vmouseover", function( event ) {
-                                event.preventDefault();
-                                    graph.selectorToCircle(this).attr({stroke: 'red' });
-                            });
-                            $("#problemarea .selector").bind("vmouseout", function( event ) {
-                                event.preventDefault();
-                                    graph.selectorToCircle(this).attr({stroke: '#999' });
-                            });
-
-                        </div>
-                    </div>
-                </div>
-                <div class="solution" data-type="multiple">
-                    <div class="sol" data-type="custom">
-                        <div class="guess">[
-                            $("div.line_1.selected").length,
-                            $("div.line_2.selected").length,
-                            $("div.line_2.selected").index()+1,
-                            ]
-                        </div>
-                        <div class="validator-function">														if(guess[0]=="" && guess[1]=="" && guess[2]=="")							return "";                            if(guess[0]!=data[0]||guess[2]!=data[0]||guess[1]!=1)                                return false;                            else                                return true;
-                        </div>
-                    </div>
-					<p class="example">請依指定的數量與數序塗上顏色</p>
-                </div>
-                <div class="hints">
-                    <div class="graphie" data-update="graph1">
-                        var s = $("div.selector.line_1");
-                        $("div.selector.line_1").each(function(){
-                            if($(this).index()&lt;data[0])
-                                $(this).addClass("selected");
-							else
-								$(this).removeClass("selected");
-                        })
-                        $("div.selector.line_2").each(function(){
-                            if($(this).index()==data[0]-1)
-                                $(this).addClass("selected");
-							else
-								$(this).removeClass("selected");
-                        })
-                        for(i=0;i&lt;data[0];i++)
-                        {
-                            graph.circles_1[i].attr({ fill:'#00ff00'});
-                        }
-                        for(i=data[0];i&lt;10;i++)
-                            graph.circles_1[i].attr({ fill:'#f8f8f8'});
-						for(i=0;i&lt;10;i++)
-                            graph.circles_2[i].attr({ fill:'#f8f8f8'});
-                        graph.circles_2[data[0]-1].attr({ fill:'#00ff00'});
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+﻿<!DOCTYPE html><html data-require="math word-problems graphie jquery.mobile.vmouse interactive expressions"><head>    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">    <title>10以內的數序</title>    <script src="../khan-exercise.js"></script>    <style type="text/css">		#answer_area .sol input[type=text] {            width: 30px;        }		        .box {            border:1px solid black;            width:2em;            height:2em;            text-align:center;            vertical-align:middle;            background-color:white;        }        .selector {            float:left;             width:35px;            height:35px;            /*border:1px solid black;*/            position:relative;            z-index:1;            margin-top:3px;            margin:1px 1px 1px 1px;        }        .firstColumn {            width:4.5em;            vertical-align:middle;            text-align:center;            border:1px solid black;        }        .secondColumn {            vertical-align:middle;            text-align:center;            border:1px solid black;        }        .selected {        }        .line_1 {}        .line_2 {}        .line_3 {}        .line_4 {}        .line_5 {}        .line_6 {}    </style></head><script>    function loadImg(elem, url, count, width, height) {        var loimg = document.getElementById(elem);        var inner = "";        for (var i = 1; i <= count; i++) {            inner += "<img id="+"image"+ elem + i + " width=" + width +" height="+height+ ">";        }        loimg.innerHTML += inner;        for (var j = 1; j <= count; j++) {            document.getElementById("image" + elem + j).src = url;        }    }    function isClose(coordA, coordB) {        if (Math.abs(coordA[0] - coordB[0]) < 0.3 && Math.abs(coordA[1] - coordB[1]) < 0.3)            return true;        else            return false;    }    function exclude(array, exc) {        var values=[];        for(var i in array){            if (array[i] != exc)                values.push(array[i]);        }        return values;    }    function getIndex(array, value) {        for (var i in array)            if (array[i] == value)                return i;    }</script><body>    <div class="exercise">        <div class="problems">            <div id="case1">                <div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>										<var id="ans_input">randRange(1,7)</var>										<var id="firstNums_1">randRange(1,4)</var>					                    <var id="data">                        (function(){							for(var j = 1;j &lt; 8; j++){								if(j != ans_input){									$('#grid1'+j).val(firstNums_1+j);								}else{									$('#grid1'+j).removeAttr("readonly");									$('#grid1'+j).css("color","red");																	}							}                            return firstNums_1+ans_input;                        })()                    </var>					<var id="set_keypress">						(function(){							for(var i=1;i&lt;8;i++){								$('#grid1'+i).bind('keypress',function(event){									if(event.keyCode == "13"){										$('#check-answer-button').click();									}								});							}						})()				</var>                </div>                <div class="question">                    <p>算算看，在空格裡填入正確的數。</p>                    <div>                        <input type="text" id="grid11" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid12" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid13" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid14" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid15" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid16" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid17" readonly="true" class="box" /><br /><br />                    </div>                </div>                <div class="solution" data-type="multiple">                    <div class="sol" data-type="custom">                        <div class="guess">data</div>                        <div class="validator-function">							if($('#grid1'+ans_input).val()==""){								return "";							}else return $('#grid1'+ans_input).val()==guess;                        </div>                    </div>					<p class="example">請在空格裡填入正確的數</p>                </div>                <div class="hints">					<p>應填入 <code class="hint_pink"><var>data</var></code> 。</p>                </div>            </div>            <div id="case2">                <div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>										<var id="ans_input">randRange(1,6)</var>										<var id="firstNums_1">0</var>					                    <var id="data">                        (function(){							for(var j = 1;j &lt; 7; j++){								if(j != ans_input){									$('#grid1'+j).val(firstNums_1+j);								}else{									$('#grid1'+j).removeAttr("readonly");									$('#grid1'+j).css("color","red");								}							}                            return firstNums_1+ans_input;                        })()                    </var>					<var id="set_keypress">						(function(){							for(var i=1;i&lt;8;i++){								$('#grid1'+i).bind('keypress',function(event){									if(event.keyCode == "13"){										$('#check-answer-button').click();									}								});							}						})()				</var>                </div>                <div class="question">                    <p>算算看，在空格裡填入正確的數。</p>                    <div>                        <input type="text" id="grid11" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid12" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid13" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid14" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid15" readonly="true" class="box" /><span><code>\rightarrow</code></span>						<input type="text" id="grid16" readonly="true" class="box" /><span></span><br /><br />                    </div>                </div>                <div class="solution" data-type="multiple">                    <div class="sol" data-type="custom">                        <div class="guess">data</div>                        <div class="validator-function">							if($('#grid1'+ans_input).val()==""){								return "";							}else return $('#grid1'+ans_input).val()==guess;                        </div>                    </div>					<p class="example">請在空格裡填入正確的數</p>                </div>                <div class="hints">					<p>應填入 <code class="hint_pink"><var>data</var></code> 。</p>                </div>            </div>            			            <div id="case3">                <div class="vars">									<var id="t">randRange(1,2)</var>										<var id="test">(function(){Khan.scratchpad.disable();})()</var>					                    <var id="data">                        (function(){                            var info=[["鋼筆","小刀","電話","筆記本","垃圾桶","計算機","滑鼠","公事包"],                                        ["pen_2.png","knife.png","telephone.png","notebook.png","trash.png","calculator.png","mouse.png","bag.png"],                                        [["ㄍㄤ","ㄅㄧ"],["ㄒㄧㄠ","ㄉㄠ"],["ㄉㄧㄢ","ㄏㄨㄚ","ㄐㄧ"],["ㄅㄧ","ㄐㄧ","ㄅㄣ"],["ㄌㄚ","ㄐㄧ","ㄒㄧㄤ"],["ㄐㄧ","ㄙㄨㄢ","ㄐㄧ"],["ㄕㄨ","ㄅㄧㄠ"],["ㄍㄨㄥ","ㄨㄣ","ㄅㄠ"]],                                        [["","ˇ"],["ˇ",""],["ˋ","ˋ",""],["ˇ","ˋ","ˇ"],["","",""],["ˋ","ˋ",""],["ˇ",""],["","ˊ",""]]];                            var pic=shuffle([0,1,2,3,4,5,6,7]);                            var p=randRangeUnique(0,8,4);                            var select=new Array(new Array(4),new Array(4),new Array(4),new Array(4));                            for(j=0;j&lt;4;j++)                            {                                  for(i=0;i&lt;4;i++)                                    {                                        select[j][i]=info[j][pic[p[i]]];                                    }                            }                            for(i=0;i&lt;8;i++)                            {                                var j=pic[i];                                loadImg("imgs"+(i+1),Khan.urlBase+"images/"+info[1][j],1,"11.4%");                            }                            for(i=0;i&lt;2;i++)                                loadImg("img"+(i+1),Khan.urlBase+"images/"+select[1][i],1,"10%");                            return [select,p];                        })()                    </var>                    <var id="name1">data[0][0][0]</var>                    <var id="name2">data[0][0][1]</var>                    <var id="name3">data[0][0][2]</var>                    <var id="name4">data[0][0][3]</var>                    <var id="zhuyin">data[0][2]</var>                    <var id="shengdiao">data[0][3]</var>                    <var id="ans">[8-data[1][0],data[1][1]+1]</var>                </div>                <div class="question">                    <p>看圖回答問題，在空格裡填入正確的數序。</p>                    <div id="imgs1" style="display:inline;"></div>                    <div id="imgs2" style="display:inline;"></div>                    <div id="imgs3" style="display:inline;"></div>                    <div id="imgs4" style="display:inline;"></div>                    <div id="imgs5" style="display:inline;"></div>                    <div id="imgs6" style="display:inline;"></div>                    <div id="imgs7" style="display:inline;"></div>                    <div id="imgs8" style="display:inline;"></div>                    <br />                    <p data-if="t==1">&nbsp;從右邊開始數，<var>name1</var><span id="img1"></span>是第幾個？</p>                    <p data-if="t==2">&nbsp;從左邊開始數，<var>name2</var><span id="img2"></span>是第幾個？</p>                                   </div>                <div class="solution" data-type="multiple">					第 <span class="sol" data-forms="integer"><var>ans[t-1]</var></span> 個					<p class="example">整數，例：<code>6</code></p>                </div>                <div class="hints">					<div data-if="t==1">						<p>從右邊開始數，<var>name1</var>是第 <code class="hint_pink"><var>ans[0]</var></code> 個。</p>					</div>					<div data-if="t==2">						<p>從左邊開始數，<var>name2</var>是第 <code class="hint_pink"><var>ans[1]</var></code> 個。</p>					</div>                </div>            </div>            <div id="case4">                <div class="vars">					<var id="test">(function(){Khan.scratchpad.disable();})()</var>                    <var id="data">randRangeUnique(1,11,3)</var>                </div>                <div class="question">                    <div class="problem">                        <p>請依指定的數量與數序塗上顏色。</p>                        <div style="position:absolute;width:105%">                            <table>                                <tr>                                    <th rowspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>                                    <td class="firstColumn">                                        <var>data[0]</var>個                                    </td>                                    <td class="secondColumn">										<div data-each="10 times" class="selector line_1">										</div>									</td>                                </tr>                                <tr>                                    <td class="firstColumn">                                        第<var>data[0]</var>個                                    </td>                                    <td class="secondColumn"><div data-each="10 times" class="selector line_2"></div></td>                                </tr>                            </table>                        </div>                        <div class="graphie" id="graph1">                            init({                                range:[[0,13],[-4,0.6]]                            });                            var offset_y=4.15;                            var factor_y=0.922;                            graph.circles_1=[];                            graph.circles_2=[];                            for(i=0;i&lt;10;i++)                            {                                graph.circles_1.push(circle([i*factor_y+offset_y,0],0.43,{stroke: '#999'}));                                graph.circles_2.push(circle([i*factor_y+offset_y,-1.2],0.43,{stroke: '#999'}));                            }                            graph.selectorToCircle=function(selectorId){                                if($(selectorId).hasClass("line_1"))                                    return graph.circles_1[$(selectorId).index()];                                else if($(selectorId).hasClass("line_2"))                                    return graph.circles_2[$(selectorId).index()];                            }                            $("#problemarea .selector").bind("vmousedown", function( event ) {                                event.preventDefault();                                                                $(this).toggleClass("selected");                                if($(this).hasClass("selected"))                                {                                    graph.selectorToCircle(this).attr({ fill:'#00ff00'});                                }                                else{                                    graph.selectorToCircle(this).attr({ fill:'#f8f8f8'});                            }                            });                            $("#problemarea .selector").bind("vmouseover", function( event ) {                                event.preventDefault();                                    graph.selectorToCircle(this).attr({stroke: 'red' });                            });                            $("#problemarea .selector").bind("vmouseout", function( event ) {                                event.preventDefault();                                    graph.selectorToCircle(this).attr({stroke: '#999' });                            });                        </div>                    </div>                </div>                <div class="solution" data-type="multiple">                    <div class="sol" data-type="custom">                        <div class="guess">[                            $("div.line_1.selected").length,                            $("div.line_2.selected").length,                            $("div.line_2.selected").index()+1,                            ]                        </div>                        <div class="validator-function">														if(guess[0]=="" && guess[1]=="" && guess[2]=="")							return "";                            if(guess[0]!=data[0]||guess[2]!=data[0]||guess[1]!=1)                                return false;                            else                                return true;                        </div>                    </div>					<p class="example">請依指定的數量與數序塗上顏色</p>                </div>                <div class="hints">                    <div class="graphie" data-update="graph1">                        var s = $("div.selector.line_1");                        $("div.selector.line_1").each(function(){                            if($(this).index()&lt;data[0])                                $(this).addClass("selected");							else								$(this).removeClass("selected");                        })                        $("div.selector.line_2").each(function(){                            if($(this).index()==data[0]-1)                                $(this).addClass("selected");							else								$(this).removeClass("selected");                        })                        for(i=0;i&lt;data[0];i++)                        {                            graph.circles_1[i].attr({ fill:'#00ff00'});                        }                        for(i=data[0];i&lt;10;i++)                            graph.circles_1[i].attr({ fill:'#f8f8f8'});						for(i=0;i&lt;10;i++)                            graph.circles_2[i].attr({ fill:'#f8f8f8'});                        graph.circles_2[data[0]-1].attr({ fill:'#00ff00'});                    </div>                </div>            </div>        </div>    </div></body></html>
