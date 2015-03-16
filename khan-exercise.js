@@ -2037,7 +2037,10 @@ var Khan = (function() {
 
         function handleSubmit() {
             var pass = validator();
-            ga('send', 'event', 'exercise', 'submit', 'Exercise-Answer-Submit');
+
+            if (!testMode) {
+                ga('send', 'event', 'exercise', 'submit', 'Exercise-Answer-Submit');
+            }
 
             // Stop if the user didn't enter a response
             // If multiple-answer, join all responses and check if that's empty
