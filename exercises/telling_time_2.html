@@ -21,7 +21,7 @@
                     <var id="TIME">HOUR + ":" + NICE_MINUTE</var>
                 </div>
 
-                <p class="question">把鐘面的時刻調成 <var>TIME</var> 。</p>
+                <p class="question">把鐘面的時刻調成 <code><var>TIME</var></code> 。</p>
 
                 <div class="problem">
 
@@ -210,17 +210,16 @@
                         minuteAngle = roundToNearest(minuteSnapDegrees, minuteAngle);
                         hourAngle = roundToNearest(hourSnapDegrees, hourAngle);
 
-                        // if hands have not been moved, return `""`
                         if (minuteAngle === minuteStartAngle &amp;&amp; hourAngle === hourStartAngle) {
                             return "";
                         }
                         if ((minuteAngle !== correctMinuteAngle) || (hourAngle !== correctHourAngle)) {
                             if ((minuteAngle === correctHourAngle) &amp;&amp; (hourAngle === correctMinuteAngle)) {
-                                return "Remember the hour hand is the short hand and the minute hand is the long hand";
+                                return "時針是比較短的藍色棒子，而分針則是比較長的橘色棒子！";
                             }
                             else if ((minuteAngle === correctMinuteAngle) &amp;&amp; (hourAngle !== correctHourAngle)
                                     &amp;&amp; (hourAngle === roundToNearest(hourSnapDegrees, timeToDegrees(5 * HOUR)))) {
-                                return "當分針不是在12時，請注意時針在該小時裡的位置喔！";
+                                return "移動分針時，也要想一想時針的位置是不是也要跟著調整喔！";
                             }
                             return false;
                         }
@@ -251,17 +250,17 @@
 
                     <div>
                         <p>
-                            每一個大刻度代表 5 分鐘，因為 60 分鐘 / 12 大刻度 = 1 大刻度 5 分鐘。
+                            每一個大刻度代表 <code>5</code> 分鐘，因為 <code>60</code> 分鐘 / <code>12</code> 大刻度 <code>= 1</code> 大刻度 <code>5</code> 分鐘。
                         </p>
                         <p>
                             因為這個時間是小時之後 <code><var>MINUTE</var></code> 分鐘，
                             <span data-if="MINUTE_IS_ZERO">
-                                所以分針應該要指向 <code class="hint_orange">12</code> 
+                                所以分針應該要指向 <code class="hint_pink">12</code> 
                                 ，也就是在鐘面上的第一個大刻度，
                                 代表這個小時之後 <code>0</code> 分鐘
                             </span><span data-else>
-                                而每一個大刻度中有 5 分鐘，所以分針應該要指向
-                                <code class="hint_orange"><var>fraction(MINUTE, 5)</var> = <var>MINUTE/5</var></code> 
+                                而每一個大刻度中有 <code>5</code> 分鐘，所以分針應該要指向
+                                <code class="hint_orange"><var>fraction(MINUTE, 5)</var> = </code> <code class="hint_pink"><var>MINUTE/5</var></code> 
                             </span>。
                         </p>
                     </div>
@@ -271,7 +270,7 @@
                     </p>
 
                     <div>
-                        <p>鐘面上 12 個大刻度對應到一天中的 12 個小時（假設是用 12 時制）。</p>
+                        <p>鐘面上 <code>12</code> 個大刻度對應到一天中的 <code>12</code> 個小時（假設是用 <code>12</code> 時制）。</p>
                         <p>
                             如果這個時間是小時之後 <code>0</code> 分鐘，則時針會指向這個小時對應的大刻度。
                             不過一旦時間超過這個小時之後，時針會隨著時間慢慢走到下一個小時的大刻度。
@@ -281,7 +280,7 @@
                     <div>
                         <p data-if="MINUTE_IS_ZERO">
                             因為這個時間是小時之後 <code>0</code> 分鐘，所以時針應該指向
-                            <code class="hint_blue"><var>HOUR</var></code>。
+                            <code class="hint_pink"><var>HOUR</var></code>。
                         </p>
                         <div data-else data-unwrap>
                             <p>
@@ -290,12 +289,12 @@
                                 <var>fraction(MINUTE, 60, false, true)</var></code> 格大刻度。
                             </p>
                             <p>
-                                因此要把時針指向 <code class="hint_blue"><var>HOUR</var></code> 之後的
-                                <span data-if="MINUTE === 20">第二個小刻度之前
-                                </span><span data-else-if="MINUTE === 40">第三個小刻度之後
-                                </span><span data-else-if="MINUTE === 15">第一個小刻度之後
-                                </span><span data-else-if="MINUTE === 30">第二個小刻度跟第三個小刻度之間
-                                </span><span data-else>第四個小刻度之前</span>。
+                                因此要把時針指向 <code class="hint_pink"><var>HOUR</var></code> <span class="hint_pink">之後的</span>
+                                <span data-if="MINUTE === 20" class="hint_pink"> 第二個小刻度之前
+                                </span><span  data-else-if="MINUTE === 40" class="hint_pink">第三個小刻度之後
+                                </span><span data-else-if="MINUTE === 15" class="hint_pink">第一個小刻度之後
+                                </span><span data-else-if="MINUTE === 30" class="hint_pink">第二個小刻度跟第三個小刻度之間
+                                </span><span data-else  class="hint_pink">第四個小刻度之前</span>。
                             </p>
                         </div>
                     </div>
@@ -360,8 +359,6 @@
                                 },
                             });
 
-                            // for some reason this doesn't work, so for now, create another center point
-                            // centerPoint.toFront();
                             addMovablePoint({
                                 coord: [0, 0],
                                 constraints: {
