@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>液體與固體的體積計算-基礎</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		 #answer_area .sol input[type=text] {
+					width: 50px;
+				}
+	</style>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+        <div id="case1">
+			<div class="vars">
+				<var id="J">randRange( 5, 15 ) * 10</var>
+				<var id="K,L,M">randFromArray( [[5,5,2],[6,5,2],[5,5,4],[5,4,2],[5,4,3],[7,5,2],[8,5,1],[8,5,2],[8,5,4]] )</var>
+				<var id="ANS">round( K*L*M )</var>
+				<var id="CM_SCALE">0.2</var>
+				<var id="GRADUATIONS">[0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300]</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>量杯裡有 <code><var>J</var></code> 毫升的水，若放入一塊長 <code><var>K</var></code> 公分、寬 <code><var>L</var></code> 公分、高 <code><var>M</var></code> 公分的長方體積木，量杯中的水會上升多少毫升？</p>
+					<div class="graphie" id="basic_volume_1">
+						init({
+							range: [ [-3, 9], [-3, 5] ],scale: 35
+						});
+						
+						ellipse([0,-2.5],[1.5,0.1] , { "stroke-width" : 0.5 });
+						path([[-1.5,-2.5],[-1.5,-2.3],[1.5,-2.3],[1.5,-2.5]] , { stroke : "#F8F8F8" , fill : "#F8F8F8"});
+						ellipse([0,-2.3],[1.5,0.1] , { "stroke-width" : 0.5 });
+						line([-1.5,-2.3],[-1.5,-2.5],{"stroke-width" : 0.5});
+						line([1.5,-2.3],[1.5,-2.5],{"stroke-width" : 0.5});
+						
+						ellipse([0,4.2],[1.2,0.1] , { "stroke-width" : 0.5 });
+						ellipse([0,-2.2],[1.2,0.1] , { "stroke-width" : 0.5 , fill : KhanUtil.BLUE , opacity : 0.75});
+						
+						path([[1.2,-2.2],[1.2,J/50-2.2],[-1.2,J/50-2.2],[-1.2,-2.2]],{ fill : KhanUtil.BLUE , stroke : KhanUtil.BLUE , opacity : 0.75 , "stroke-width" : 0.5});
+						
+						$.each(GRADUATIONS,function(GRAD_INDEX,GRAD_VAR){
+							if ( GRAD_VAR%50 === 0 ){
+								line([0.5,GRAD_VAR/50-2.2],[1.2,GRAD_VAR/50-2.2],{ "stroke-width" : 1 });
+								label([1.2,GRAD_VAR/50-2.2] , "\\tiny{"+GRAD_VAR+"\\enspace 毫升}" , "right");
+							} else {
+								line([0.85,GRAD_VAR/50-2.2],[1.2,GRAD_VAR/50-2.2],{ "stroke-width" : 0.5 });
+							}
+						});
+						
+						line([1.2,-2.2],[1.2,4.2], { "stroke-width" : 0.5 });
+						line([-1.2,-2.2],[-1.2,4.2], { "stroke-width" : 0.5 });
+					</div>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>ANS</var></span> <code>毫升</code></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<div>
+					<p>我們將長方體積木放入量杯中，量杯的水面會上升。</p>
+					<div class="graphie" data-update="basic_volume_1">
+						ellipse([6.5,-2.5],[1.5,0.1] , { "stroke-width" : 0.5 });
+						path([[5,-2.5],[5,-2.3],[8,-2.3],[1.5+6.5,-2.5]] , { stroke : "#F8F8F8" , fill : "#F8F8F8"});
+						ellipse([0+6.5,-2.3],[1.5,0.1] , { "stroke-width" : 0.5 });
+						line([-1.5+6.5,-2.3],[-1.5+6.5,-2.5],{"stroke-width" : 0.5});
+						line([1.5+6.5,-2.3],[1.5+6.5,-2.5],{"stroke-width" : 0.5});
+						
+						ellipse([0+6.5,4.2],[1.2,0.1] , { "stroke-width" : 0.5 });
+						ellipse([0+6.5,-2.2],[1.2,0.1] , { "stroke-width" : 0.5 , fill : KhanUtil.BLUE , opacity : 0.75});
+						
+						path([[1.2+6.5,-2.2],[1.2+6.5,(ANS+J)/50-2.2],[-1.2+6.5,(ANS+J)/50-2.2],[-1.2+6.5,-2.2]],{ fill : KhanUtil.BLUE , stroke : KhanUtil.BLUE , opacity : 0.75 , "stroke-width" : 0.5});
+						
+						line([1.2+6.5,-2.2],[1.2+6.5,4.2], { "stroke-width" : 0.5 });
+						line([-1.2+6.5,-2.2],[-1.2+6.5,4.2], { "stroke-width" : 0.5 });
+						
+						label([4,1],"\\Longrightarrow","center");
+						
+						path([[K*CM_SCALE/2+6.2,-2],[-K*CM_SCALE/2+6.2,-2],[-K*CM_SCALE/2+6.2,M*CM_SCALE-2],[K*CM_SCALE/2+6.2,M*CM_SCALE-2],[K*CM_SCALE/2+6.2,-2]] , { "stroke-width" : 0.2 , fill : KhanUtil.PINK ,opacity : 0.3 });
+						path([[L*CM_SCALE*cos(60*PI/180)+K*CM_SCALE/2+6.2,L*CM_SCALE*sin(60*PI/180)+M*CM_SCALE-2],[L*CM_SCALE*cos(60*PI/180)-K*CM_SCALE/2+6.2,L*CM_SCALE*sin(60*PI/180)+M*CM_SCALE-2],[-K*CM_SCALE/2+6.2,M*CM_SCALE-2],[K*CM_SCALE/2+6.2,M*CM_SCALE-2],[L*CM_SCALE*cos(60*PI/180)+K*CM_SCALE/2+6.2,L*CM_SCALE*sin(60*PI/180)+M*CM_SCALE-2]] , { "stroke-width" : 0.2 , fill : KhanUtil.PINK ,opacity : 0.3 });
+						path([[L*CM_SCALE*cos(60*PI/180)+K*CM_SCALE/2+6.2,L*CM_SCALE*sin(60*PI/180)+M*CM_SCALE-2],[K*CM_SCALE/2+6.2,M*CM_SCALE-2],[K*CM_SCALE/2+6.2,-2],[L*CM_SCALE*cos(60*PI/180)+K*CM_SCALE/2+6.2,L*CM_SCALE*sin(60*PI/180)-2],[L*CM_SCALE*cos(60*PI/180)+K*CM_SCALE/2+6.2,L*CM_SCALE*sin(60*PI/180)+M*CM_SCALE-2]] , { "stroke-width" : 0.2 , fill : KhanUtil.PINK ,opacity : 0.4 });
+					</div>
+				</div>
+				<p>要計算水會上升多少毫升，其實就是要計算這個長方體積木的體積是多少毫升，因為長方體體積佔據了量杯中的空間。</p>
+				<p>長方體的體積 <code>=</code> 長 <code>\times</code> 寬 <code>\times</code> 高。</p>
+				<p>長方體的體積 <code>= <var>K</var> \times <var>L</var> \times <var>M</var> = <var>ANS</var></code> 立方公分。</p>
+				<div>
+					<p>所以當長方體積木放入水中後，水會上升 <code><var>ANS</var></code> 毫升。</p>
+					<p>因為 <code>1</code> 立方公分 <code>= 1</code> 毫升。</p>
+				</div>
+				<div>
+					<p>所以刻度的部分會從 <code><var>J</var></code> 毫升變成 <code><var>J+ANS</var></code> 毫升。如下圖所示：</p>
+					<div class="graphie" id="basic_volume_2">
+						init({
+							range: [ [-3, 9], [-3, 5] ],scale: 35
+						});
+						
+						ellipse([0,-2.5],[1.5,0.1] , { "stroke-width" : 0.5 });
+						path([[-1.5,-2.5],[-1.5,-2.3],[1.5,-2.3],[1.5,-2.5]] , { stroke : "#F8F8F8" , fill : "#F8F8F8"});
+						ellipse([0,-2.3],[1.5,0.1] , { "stroke-width" : 0.5 });
+						line([-1.5,-2.3],[-1.5,-2.5],{"stroke-width" : 0.5});
+						line([1.5,-2.3],[1.5,-2.5],{"stroke-width" : 0.5});
+						
+						ellipse([0,4.2],[1.2,0.1] , { "stroke-width" : 0.5 });
+						ellipse([0,-2.2],[1.2,0.1] , { "stroke-width" : 0.5 , fill : KhanUtil.BLUE , opacity : 0.75});
+						
+						path([[1.2,-2.2],[1.2,(ANS+J)/50-2.2],[-1.2,(ANS+J)/50-2.2],[-1.2,-2.2]],{ fill : KhanUtil.BLUE , stroke : KhanUtil.BLUE , opacity : 0.75 , "stroke-width" : 0.5});
+						
+						$.each(GRADUATIONS,function(GRAD_INDEX,GRAD_VAR){
+							if ( GRAD_VAR%50 === 0 ){
+								line([0.5,GRAD_VAR/50-2.2],[1.2,GRAD_VAR/50-2.2],{ "stroke-width" : 1 });
+								label([1.2,GRAD_VAR/50-2.2] , "\\tiny{"+GRAD_VAR+"\\enspace 毫升}" , "right");
+							} else {
+								line([0.85,GRAD_VAR/50-2.2],[1.2,GRAD_VAR/50-2.2],{ "stroke-width" : 0.5 });
+							}
+						});
+						
+						line([1.2,-2.2],[1.2,4.2], { "stroke-width" : 0.5 });
+						line([-1.2,-2.2],[-1.2,4.2], { "stroke-width" : 0.5 });
+						
+						path([[K*CM_SCALE/2-0.3,-2],[-K*CM_SCALE/2-0.3,-2],[-K*CM_SCALE/2-0.3,M*CM_SCALE-2],[K*CM_SCALE/2-0.3,M*CM_SCALE-2],[K*CM_SCALE/2-0.3,-2]] , { "stroke-width" : 0.2 , fill : KhanUtil.PINK ,opacity : 0.3 });
+						path([[L*CM_SCALE*cos(60*PI/180)+K*CM_SCALE/2-0.3,L*CM_SCALE*sin(60*PI/180)+M*CM_SCALE-2],[L*CM_SCALE*cos(60*PI/180)-K*CM_SCALE/2-0.3,L*CM_SCALE*sin(60*PI/180)+M*CM_SCALE-2],[-K*CM_SCALE/2-0.3,M*CM_SCALE-2],[K*CM_SCALE/2-0.3,M*CM_SCALE-2],[L*CM_SCALE*cos(60*PI/180)+K*CM_SCALE/2-0.3,L*CM_SCALE*sin(60*PI/180)+M*CM_SCALE-2]] , { "stroke-width" : 0.2 , fill : KhanUtil.PINK ,opacity : 0.3 });
+						path([[L*CM_SCALE*cos(60*PI/180)+K*CM_SCALE/2-0.3,L*CM_SCALE*sin(60*PI/180)+M*CM_SCALE-2],[K*CM_SCALE/2-0.3,M*CM_SCALE-2],[K*CM_SCALE/2-0.3,-2],[L*CM_SCALE*cos(60*PI/180)+K*CM_SCALE/2-0.3,L*CM_SCALE*sin(60*PI/180)-2],[L*CM_SCALE*cos(60*PI/180)+K*CM_SCALE/2-0.3,L*CM_SCALE*sin(60*PI/180)+M*CM_SCALE-2]] , { "stroke-width" : 0.2 , fill : KhanUtil.PINK ,opacity : 0.4 });
+					</div>
+				</div>
+				<p>所以量杯中的水會上升 <code class="hint_pink"><var>ANS</var></code> 毫升。</p>
+			</div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="J">randRange( 5, 15 ) * 10</var>
+				<var id="S">randRange( 20, 30 ) * 10</var>
+				<var id="K,L,M">randFromArray( [[5,5,2],[6,5,2],[5,5,4],[5,4,2],[5,4,3],[7,5,2],[8,5,1],[8,5,2],[8,5,4]] )</var>
+				<var id="ANS">S-J</var>
+				<var id="CM_SCALE">0.2</var>
+				<var id="GRADUATIONS">[0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300]</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>量杯裡有 <code><var>J</var></code> 毫升的水，丟入一塊石頭後，水面上升到 <code><var>S</var></code> 毫升，請問此石頭的體積有多大？</p>
+					<div class="graphie" id="basic_volume_2">
+						init({
+							range: [ [-3, 11], [-3, 5] ],scale: 35
+						});
+						
+						ellipse([0,-2.5],[1.5,0.1] , { "stroke-width" : 0.5 });
+						path([[-1.5,-2.5],[-1.5,-2.3],[1.5,-2.3],[1.5,-2.5]] , { stroke : "#F8F8F8" , fill : "#F8F8F8"});
+						ellipse([0,-2.3],[1.5,0.1] , { "stroke-width" : 0.5 });
+						line([-1.5,-2.3],[-1.5,-2.5],{"stroke-width" : 0.5});
+						line([1.5,-2.3],[1.5,-2.5],{"stroke-width" : 0.5});
+						
+						ellipse([0,4.2],[1.2,0.1] , { "stroke-width" : 0.5 });
+						ellipse([0,-2.2],[1.2,0.1] , { "stroke-width" : 0.5 , fill : KhanUtil.BLUE , opacity : 0.75});
+						
+						path([[1.2,-2.2],[1.2,J/50-2.2],[-1.2,J/50-2.2],[-1.2,-2.2]],{ fill : KhanUtil.BLUE , stroke : KhanUtil.BLUE , opacity : 0.75 , "stroke-width" : 0.5});
+						
+						$.each(GRADUATIONS,function(GRAD_INDEX,GRAD_VAR){
+							if ( GRAD_VAR%50 === 0 ){
+								line([0.5,GRAD_VAR/50-2.2],[1.2,GRAD_VAR/50-2.2],{ "stroke-width" : 1 });
+								label([1.2,GRAD_VAR/50-2.2] , "\\tiny{"+GRAD_VAR+"\\enspace 毫升}" , "right");
+							} else {
+								line([0.85,GRAD_VAR/50-2.2],[1.2,GRAD_VAR/50-2.2],{ "stroke-width" : 0.5 });
+							}
+						});
+						
+						line([1.2,-2.2],[1.2,4.2], { "stroke-width" : 0.5 });
+						line([-1.2,-2.2],[-1.2,4.2], { "stroke-width" : 0.5 });
+					</div>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>ANS</var></span> <code>立方公分</code></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<div>
+					<p>我們將石頭丟入量杯中，量杯的水面會上升。</p>
+					<div class="graphie" data-update="basic_volume_2">
+						ellipse([6.5,-2.5],[1.5,0.1] , { "stroke-width" : 0.5 });
+						path([[5,-2.5],[5,-2.3],[8,-2.3],[8,-2.5]] , { stroke : "#F8F8F8" , fill : "#F8F8F8"});
+						ellipse([6.5,-2.3],[1.5,0.1] , { "stroke-width" : 0.5 });
+						line([5,-2.3],[5,-2.5],{"stroke-width" : 0.5});
+						line([8,-2.3],[8,-2.5],{"stroke-width" : 0.5});
+						
+						ellipse([6.5,4.2],[1.2,0.1] , { "stroke-width" : 0.5 });
+						ellipse([6.5,-2.2],[1.2,0.1] , { "stroke-width" : 0.5 , fill : KhanUtil.BLUE , opacity : 0.75});
+						
+						path([[7.7,-2.2],[7.7,(ANS+J)/50-2.2],[5.3,(ANS+J)/50-2.2],[5.3,-2.2]],{ fill : KhanUtil.BLUE , stroke : KhanUtil.BLUE , opacity : 0.75 , "stroke-width" : 0.5});
+						
+						$.each(GRADUATIONS,function(GRAD_INDEX,GRAD_VAR){
+							if ( GRAD_VAR%50 === 0 ){
+								line([7,GRAD_VAR/50-2.2],[7.7,GRAD_VAR/50-2.2],{ "stroke-width" : 1 });
+								label([7.7,GRAD_VAR/50-2.2] , "\\tiny{"+GRAD_VAR+"\\enspace 毫升}" , "right");
+							} else {
+								line([7.35,GRAD_VAR/50-2.2],[7.7,GRAD_VAR/50-2.2],{ "stroke-width" : 0.5 });
+							}
+						});
+						
+						line([1.2+6.5,-2.2],[1.2+6.5,4.2], { "stroke-width" : 0.5 });
+						line([-1.2+6.5,-2.2],[-1.2+6.5,4.2], { "stroke-width" : 0.5 });
+						
+						label([4,1],"\\Longrightarrow","center");
+						
+						ellipse([6.5,ANS/100-2.2],[1.15,ANS/100] , { "stroke-width" : 0.5 , fill : KhanUtil.GRAY});
+					</div>
+				</div>
+				<p>要計算石頭的體積，我們可以透過觀察量杯內的水上升的情形。</p>
+				<p>量杯中的水從 <code><var>J</var></code> 毫升上升到 <code><var>S</var></code> 毫升。</p>
+				<p>石頭放入量杯後，水面上升了 <code><var>S</var> - <var>J</var> = <var>ANS</var></code> 毫升。</p>
+				<p> <code>1</code> 毫升 <code>= 1</code> 立方公分。</p>				
+				<p>所以石頭的體積為 <code class="hint_pink"><var>ANS</var></code> 立方公分。</p>
+			</div>
+		</div>
+		
+		<div id="case3">
+			<div class="vars" data-ensure="isInt(ANS)">
+				<var id="J">randRange( 10, 15 ) * 10</var>
+				<var id="S">randRange( 20, 25 ) * 10</var>
+				<var id="B">randFromArray( [2,5,10] )</var>
+				<var id="ANS">(S-J)/(B*B)</var>
+				<var id="K,L,M">randFromArray( [[B,B,ANS]] )</var>	
+				<var id="CM_SCALE">0.1</var>
+				<var id="GRADUATIONS">[0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300]</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>量杯裡有 <code><var>J</var></code> 毫升的水，把一個長、寬都是 <code><var>B</var></code> 公分的長方體積木放入量杯中，水面上升到 <code><var>S</var></code> 毫升，請問這個長方體積木的高是幾公分？</p>
+					<div class="graphie" id="basic_volume_3">
+						init({
+							range: [ [-3, 11], [-3, 5] ],scale: 35
+						});
+						
+						ellipse([0,-2.5],[1.5,0.1] , { "stroke-width" : 0.5 });
+						path([[-1.5,-2.5],[-1.5,-2.3],[1.5,-2.3],[1.5,-2.5]] , { stroke : "#F8F8F8" , fill : "#F8F8F8"});
+						ellipse([0,-2.3],[1.5,0.1] , { "stroke-width" : 0.5 });
+						line([-1.5,-2.3],[-1.5,-2.5],{"stroke-width" : 0.5});
+						line([1.5,-2.3],[1.5,-2.5],{"stroke-width" : 0.5});
+						
+						ellipse([0,4.2],[1.2,0.1] , { "stroke-width" : 0.5 });
+						ellipse([0,-2.2],[1.2,0.1] , { "stroke-width" : 0.5 , fill : KhanUtil.BLUE , opacity : 0.75});
+						
+						path([[1.2,-2.2],[1.2,J/50-2.2],[-1.2,J/50-2.2],[-1.2,-2.2]],{ fill : KhanUtil.BLUE , stroke : KhanUtil.BLUE , opacity : 0.75 , "stroke-width" : 0.5});
+						
+						$.each(GRADUATIONS,function(GRAD_INDEX,GRAD_VAR){
+							if ( GRAD_VAR%50 === 0 ){
+								line([0.5,GRAD_VAR/50-2.2],[1.2,GRAD_VAR/50-2.2],{ "stroke-width" : 1 });
+								label([1.2,GRAD_VAR/50-2.2] , "\\tiny{"+GRAD_VAR+"\\enspace 毫升}" , "right");
+							} else {
+								line([0.85,GRAD_VAR/50-2.2],[1.2,GRAD_VAR/50-2.2],{ "stroke-width" : 0.5 });
+							}
+						});
+						
+						line([1.2,-2.2],[1.2,4.2], { "stroke-width" : 0.5 });
+						line([-1.2,-2.2],[-1.2,4.2], { "stroke-width" : 0.5 });
+					</div>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>ANS</var></span> <code>公分</code></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<div>
+					<p>我們將長方體積木放入量杯中，量杯的水面會上升。</p>
+					<div class="graphie" data-update="basic_volume_3">
+						ellipse([6.5,-2.5],[1.5,0.1] , { "stroke-width" : 0.5 });
+						path([[5,-2.5],[5,-2.3],[8,-2.3],[1.5+6.5,-2.5]] , { stroke : "#F8F8F8" , fill : "#F8F8F8"});
+						ellipse([0+6.5,-2.3],[1.5,0.1] , { "stroke-width" : 0.5 });
+						line([-1.5+6.5,-2.3],[-1.5+6.5,-2.5],{"stroke-width" : 0.5});
+						line([1.5+6.5,-2.3],[1.5+6.5,-2.5],{"stroke-width" : 0.5});
+						
+						ellipse([0+6.5,4.2],[1.2,0.1] , { "stroke-width" : 0.5 });
+						ellipse([0+6.5,-2.2],[1.2,0.1] , { "stroke-width" : 0.5 , fill : KhanUtil.BLUE , opacity : 0.75});
+						
+						path([[1.2+6.5,-2.2],[1.2+6.5,(S)/50-2.2],[-1.2+6.5,(S)/50-2.2],[-1.2+6.5,-2.2]],{ fill : KhanUtil.BLUE , stroke : KhanUtil.BLUE , opacity : 0.75 , "stroke-width" : 0.5});
+						
+						$.each(GRADUATIONS,function(GRAD_INDEX,GRAD_VAR){
+							if ( GRAD_VAR%50 === 0 ){
+								line([7,GRAD_VAR/50-2.2],[7.7,GRAD_VAR/50-2.2],{ "stroke-width" : 1 });
+								label([7.7,GRAD_VAR/50-2.2] , "\\tiny{"+GRAD_VAR+"\\enspace 毫升}" , "right");
+							} else {
+								line([7.35,GRAD_VAR/50-2.2],[7.7,GRAD_VAR/50-2.2],{ "stroke-width" : 0.5 });
+							}
+						});
+						
+						line([1.2+6.5,-2.2],[1.2+6.5,4.2], { "stroke-width" : 0.5 });
+						line([-1.2+6.5,-2.2],[-1.2+6.5,4.2], { "stroke-width" : 0.5 });
+						
+						label([4,1],"\\Longrightarrow","center");
+						
+						path([[K*CM_SCALE/2+6.2,-2],[-K*CM_SCALE/2+6.2,-2],[-K*CM_SCALE/2+6.2,M*CM_SCALE-2],[K*CM_SCALE/2+6.2,M*CM_SCALE-2],[K*CM_SCALE/2+6.2,-2]] , { "stroke-width" : 0.2 , fill : KhanUtil.PINK ,opacity : 0.3 });
+						path([[L*CM_SCALE*cos(60*PI/180)+K*CM_SCALE/2+6.2,L*CM_SCALE*sin(60*PI/180)+M*CM_SCALE-2],[L*CM_SCALE*cos(60*PI/180)-K*CM_SCALE/2+6.2,L*CM_SCALE*sin(60*PI/180)+M*CM_SCALE-2],[-K*CM_SCALE/2+6.2,M*CM_SCALE-2],[K*CM_SCALE/2+6.2,M*CM_SCALE-2],[L*CM_SCALE*cos(60*PI/180)+K*CM_SCALE/2+6.2,L*CM_SCALE*sin(60*PI/180)+M*CM_SCALE-2]] , { "stroke-width" : 0.2 , fill : KhanUtil.PINK ,opacity : 0.3 });
+						path([[L*CM_SCALE*cos(60*PI/180)+K*CM_SCALE/2+6.2,L*CM_SCALE*sin(60*PI/180)+M*CM_SCALE-2],[K*CM_SCALE/2+6.2,M*CM_SCALE-2],[K*CM_SCALE/2+6.2,-2],[L*CM_SCALE*cos(60*PI/180)+K*CM_SCALE/2+6.2,L*CM_SCALE*sin(60*PI/180)-2],[L*CM_SCALE*cos(60*PI/180)+K*CM_SCALE/2+6.2,L*CM_SCALE*sin(60*PI/180)+M*CM_SCALE-2]] , { "stroke-width" : 0.2 , fill : KhanUtil.PINK ,opacity : 0.4 });
+					</div>
+				</div>
+				<p>透過觀察量杯水量增加的情形可以發現水面從 <code><var>J</var></code> 上升到 <code><var>S</var></code> 。我們可以知道長方體積木的體積<code>= <var>S</var> - <var>J</var> = <var>S-J</var></code> 立方公分。</p>
+				<p>長方體的體積 <code>=</code> 長 <code>\times</code> 寬 <code>\times</code> 高<code>= <var>B</var> \times <var>B</var> \times</code> 高<code> = <var>S-J</var></code> 。</p>
+								
+				<p>長方體的高 <code>=<var>S-J</var>\div<var>B</var>\div<var>B</var>=</code> <code class="hint_pink"><var>ANS</var></code> 公分。</p>
+			</div>
+		</div>
+		
+	</div>
+	</div>
+</body>
+</html>
