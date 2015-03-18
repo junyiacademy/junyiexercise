@@ -5,6 +5,13 @@ var inexactMessages = {
     missingPercentSign: "你的答案其實很接近了，但缺一個<code>\\%</code> 的符號唷。"
 };
 
+// Remove cleanupMath and texCleanup when tex.js is moved in from KA.
+// Function to restore a node to a non-math-processed state
+var texCleanup = function(jquery_element) {
+    jquery_element.find('.MathJax').each(function(){this.remove();});
+    return jquery_element;
+};
+
 Khan.answerTypes = Khan.answerTypes || {};
 
 $.extend(Khan.answerTypes, {
@@ -826,11 +833,10 @@ $.extend(Khan.answerTypes, {
 
         var dupes = {};
         var shownChoices = [];
-        var solutionTextSquish = solution.text().replace(/\s+/g, "");
+        var solutionTextSquish = texCleanup(solution.clone(true)).text().replace(/\s+/g, "");
         for (var i = 0; i < possibleChoices.length && shownChoices.length < numChoices; i++) {
             var choice = $(possibleChoices[i]);
-            choice.runModules();
-            var choiceTextSquish = choice.text().replace(/\s+/g, "");
+            var choiceTextSquish = texCleanup(choice.clone(true)).text().replace(/\s+/g, "");
 
             if (isCategory && solutionTextSquish === choiceTextSquish) {
                 choice.data("correct", true);
