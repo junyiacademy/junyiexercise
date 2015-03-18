@@ -7,34 +7,9 @@ var inexactMessages = {
 
 // Remove cleanupMath and texCleanup when tex.js is moved in from KA.
 // Function to restore a node to a non-math-processed state
-var cleanupMath = function(elem) {
-    var $elem = $(elem);
-
-    // Only mess with it if it's been processed before
-    if ($elem.attr("data-math-formula")) {
-        // Remove MathJax remnants
-        if (typeof MathJax !== "undefined") {
-            var jax = MathJax.Hub.getJaxFor($elem.find("script")[0]);
-            if (jax) {
-                var e = jax.SourceElement();
-                if (e.previousSibling && e.previousSibling.className) {
-                    jax.Remove();
-                }
-            }
-        }
-
-        $elem.text($elem.attr("data-math-formula"));
-        $elem.attr("data-math-formula", null);
-        $elem.attr("data-math-type", null);
-    }
-
-    return elem;
-}
-
-$.fn.texCleanup = function() {
-    return this.filter("code").add(this.find("code")).each(function() {
-        cleanupMath(this);
-    });
+var texCleanup = function(jquery_element) {
+    jquery_element.find('.MathJax').each(function(){this.remove();});
+    return jquery_element;
 };
 
 Khan.answerTypes = Khan.answerTypes || {};
@@ -858,10 +833,10 @@ $.extend(Khan.answerTypes, {
 
         var dupes = {};
         var shownChoices = [];
-        var solutionTextSquish = solution.clone(true).texCleanup().text().replace(/\s+/g, "");
+        var solutionTextSquish = texCleanup(solution.clone(true)).text().replace(/\s+/g, "");
         for (var i = 0; i < possibleChoices.length && shownChoices.length < numChoices; i++) {
             var choice = $(possibleChoices[i]);
-            var choiceTextSquish = choice.clone(true).texCleanup().text().replace(/\s+/g, "");
+            var choiceTextSquish = texCleanup(choice.clone(true)).text().replace(/\s+/g, "");
 
             if (isCategory && solutionTextSquish === choiceTextSquish) {
                 choice.data("correct", true);
