@@ -54,12 +54,14 @@ $(Khan).bind("newProblem", function() {
                 at: "top center"
             },
             show: {
+                event: 'click mouseenter',
                 delay: 200,
                 effect: {
                     length: 0
                 }
             },
             hide: {
+                event: 'click mouseleave',
                 delay: 0
             }
         });
