@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html data-require="math math-format word-problems">
+<head>
+	<meta http-equiv="Content-type" content="text/html ; charset=UTF-8">
+	<title>公畝、公頃、平方公里單位的文字應用題</title>
+	<script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		#answer_area .short input[type=text] {
+			width: 30px;
+		}
+	</style>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+	</script>
+</head>
+<body>
+	<div class="exercise">
+		<div class="problems">
+			<div id="case1">
+				<div class="vars">
+					<var id="J,K">randFromArray([[9,4],[9,5],[8,5],[6,4],[7,5]])</var>
+					<var id="ans">round(100*J/K)</var>
+				</div>
+				<p class="question">
+					<var>person(1)</var>有一塊 <code><var>J</var></code> 公頃的土地，平分給 <code><var>K</var></code> 位子女後，請問每人可以得到幾公畝？
+				</p>
+				<div class="solution" data-type="multiple">
+					<span style="padding-right: 5px" class="sol" data-forms="integer"><var>ans</var></span>公畝
+				</div>
+				<div class="hints">
+					<p>我們知道 <code>1</code> 公頃 <code>= 100</code> 公畝。</p>
+					<p><code><var>J</var></code> 公頃 <code>= <var>J</var> \times 100 = <var>J*100</var></code> 公畝。</p>
+					<p><code><var>J*100</var> \div <var>K</var></code> <code>=</code> <code class="hint_pink"><var>ans</var></code> 公畝。</p>
+				</div>
+			</div>
+		
+			<div id="case2">
+				<div class="vars">
+					<var id="name">randFromArray(["小白菜","高麗菜","花椰菜","菠菜"])</var>
+					<var id="J">randRange(20,90)</var>
+					<var id="K">accDiv(randRange(1,9),10)</var>
+					<var id="JK">accAdd(J,K)</var>
+					<var id="ans">accDiv(JK*10,1000)</var>
+				</div>
+				<p class="question">
+					<var>name</var>每 <code>10</code> 公畝的產量約為 <code><var>JK</var></code> 公斤，<code>1</code> 公頃的土地可以產<var>name</var>幾公噸？
+				</p>
+				<div class="solution" data-type="multiple">
+					<span style="padding-right: 5px" class="sol" data-forms="decimal"><var>ans</var></span>公噸
+				</div>
+				<div class="hints">
+					<p>我們知道 <code>1</code> 公頃 <code>= 100</code> 公畝。</p>
+					<p><code>100 \div 10 = 10</code>，代表 <code>1</code> 公頃的土地產量會是 <code>10</code> 公畝的 <code>10</code> 倍。</p>
+					<p> <code><var>JK</var> \times 10 = <var>JK*10</var></code> 公斤。</p>
+					<P>題目問我們的單位是公噸。</P>
+					<P>我們知道 <code>1</code> 公斤 <code>= 0.001</code> 公噸。</P>
+					<p>所以 <code><var>JK*10</var></code> 公斤 <code>=</code> <code class="hint_pink"><var>ans</var></code> 公噸。</p>
+				</div>
+			</div>
+		
+			<div id="case3">
+				<div class="vars">
+					<var id="name">randFromArray([["臺北大安森林公園",2592.93,0.259293],["東海大學",13331,1.3331 ],["日月潭",79300,7.93],["中正紀念堂",2500,0.25],["臺北車站",4631,0.4631],
+					["臺中國家歌劇院",576.85,0.057685],["臺南孔廟",90.07,0.009007],["宜蘭冬山河親水公園",1600,0.16],["花蓮海洋公園",5100,0.51],["桃園慈湖",1900,0.19],["臺東初鹿牧場",7000,0.7]])</var>
+					<var id="ans">name[2]</var>
+				</div>
+				<p class="question">
+					<var>name[0]</var>的面積大約是 <code><var>name[1]</var></code> 公畝，請問是多少平方公里？
+				</p>
+				<div class="solution" data-type="multiple">
+					<span style="padding-right: 5px" class="sol" data-forms="decimal"><var>ans</var></span>平方公里
+				</div>
+				<div class="hints">
+					<p>我們知道 <code>10000</code> 公畝 <code>= 1</code> 平方公里。</p>
+					<p><code><var>name[1]</var></code> 公畝 <code>\div 10000 =</code> <code class="hint_pink"><var>ans</var></code> 平方公里。</p>
+				</div>
+			</div>
+		
+			<div id="case4">
+				<div class="vars">
+					<var id="J">randRange(1,9)*100</var>
+					<var id="K">randRange(1,9)*100</var>
+					<var id="ans">round(K*J/100)</var>
+				</div>
+				<p class="question">
+					底長 <code><var>J</var></code> 公尺、高 <code><var>K</var></code> 公尺的平行四邊形面積是多少公畝？
+				</p>
+				<div class="solution" data-type="multiple">
+					<span style="padding-right: 5px" class="sol" data-forms="integer"><var>ans</var></span> 公畝
+				</div>
+				<div class="hints">
+					<p>我們知道平行四邊形的面積 <code>=</code> 底 <code>\times</code> 高。</p>
+					<p>平行四邊形面積 <code>= <var>J</var> \times <var>K</var> = <var>round(J*K)</var></code> 平方公尺。</p>
+					<p>我們知道 <code>1</code> 公畝 <code>= 100</code> 平方公尺。</p>
+					<p><code><var>round(J*K)</var></code> 平方公尺 <code>=</code> <code><var>round(K*J)</var> \div 100 =</code> <code class="hint_pink"><var>ans</var></code> 公畝。</p>
+				</div>
+			</div>
+			
+			<div id="case5">
+				<div class="vars">
+					<var id="J">randRange(1,9)*100</var>
+					<var id="K">randRange(1,9)*100</var>
+					<var id="ans">round(K*J/200)</var>
+				</div>
+				<p class="question">
+					底長 <code><var>J</var></code> 公尺、高 <code><var>K</var></code> 公尺的三角形面積是多少公畝？
+				</p>
+				<div class="solution" data-type="multiple">
+					<span style="padding-right: 5px" class="sol" data-forms="integer"><var>ans</var></span> 公畝
+				</div>
+				<div class="hints">
+					<p>我們知道三角形的面積 <code>=</code> 底 <code>\times</code> 高 <code>\div 2</code> 。</p>
+					<p>三角形面積 <code>= <var>J</var> \times <var>K</var> \div 2 = <var>round(J*K/2)</var></code> 平方公尺。</p>
+					<p>我們知道 <code>1</code> 公畝 <code>= 100</code> 平方公尺。</p>
+					<p><code><var>round(J*K/2)</var></code> 平方公尺 <code>=</code> <code><var>round(K*J/2)</var> \div 100 =</code> <code class="hint_pink"><var>ans</var></code> 公畝。</p>
+				</div>
+			</div>
+			
+			
+
+		</div>
+	</div>
+</body>
