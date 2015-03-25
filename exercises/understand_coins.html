@@ -1,429 +1,1 @@
-<!DOCTYPE html>
-<html data-require="math math-format graphie graphie-helpers word-problems jquery.mobile.vmouse interactive expressions">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>認識1元、5元、10元和50元</title>
-    <script src="../khan-exercise.js"></script>
-	<style type="text/css">
-        #answer_area .sol input[type=text] {
-            width: 25px;
-        }
-        </style>
-	<script type="text/javascript">
-		function del_five(){
-			var five_num = parseInt(document.getElementById("five_num").value);
-			var elem = "five_"+five_num;
-			if(five_num!=0){
-				document.getElementById("five_num").value = five_num-1;
-				document.getElementById(elem).style.display = "none";
-			} else return ;
-		}
-		function add_five(){
-			var five_num = parseInt(document.getElementById("five_num").value);
-			if(five_num!=10){
-				document.getElementById("five_num").value = five_num+1;
-				document.getElementById("five_"+(five_num+1)).style.display = "block";
-			} else return ;
-		}
-		function del_ten(){
-			var ten_num = parseInt(document.getElementById("ten_num").value);
-			var elem = "ten_"+ten_num;
-			if(ten_num!=0){
-				document.getElementById("ten_num").value = ten_num-1;
-				document.getElementById(elem).style.display = "none";
-			} else return ;
-		}
-		function add_ten(){
-			var ten_num = parseInt(document.getElementById("ten_num").value);			
-			if(ten_num!=10){
-				document.getElementById("ten_num").value = ten_num+1;				
-				document.getElementById("ten_"+(ten_num+1)).style.display = "block";
-			} else return ;
-		}
-		function del_one(){
-			var one_num = parseInt(document.getElementById("one_num").value);
-			var elem = "one_"+one_num;
-			if(one_num!=0){
-				document.getElementById("one_num").value = one_num-1;
-				document.getElementById(elem).style.display = "none";
-			} else return ;
-		}
-		function add_one(){
-			var one_num = parseInt(document.getElementById("one_num").value);
-			if(one_num!=10){
-				document.getElementById("one_num").value = one_num+1;
-				document.getElementById("one_"+(one_num+1)).style.display = "block";
-			} else return ;
-		}
-				function loadImg(elem,url,count){			for(var j=1;j<=count;j++){				document.getElementById(elem+j).src=url;			}				}
-	</script>
-
-
-</head>
-<body>
-    <div class="exercise">
-    <div class="problems">
-        <div id="case1">
-            <div class="vars">
-				<var id="ten">randRange(1,9)</var>				
-				<var id="one">randRange(1,10)</var>								<var id="five">(function(){					if(ten==9){return 0;}					if(ten==8){var a=randRange(0,2);return a;}					if(ten==7){var a=randRange(0,4);return a;}					if(ten==6){var a=randRange(0,6);return a;}					if(ten&lt;6){var a=randRange(0,7);return a;}				})()</var>					
-				<var id="R">10*ten+5*five+1*one</var>								<var id="loImg">				(function(){										for(var i=0;i&lt;ten;i++)					{$('#img_11').append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;five;i++)					{$('#img_12').append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;one;i++)					{$('#img_13').append("&lt;img width=\'"+35+"\' src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}				})()</var>
-			</div>
-			<p class="question">數數看，合起來共有多少元？</p>
-			<div class="problem">				<div id="img_11"></div>				<div id="img_12"></div>				<div id="img_13"></div>						
-			</div>
-			<div class="solution" data-type="multiple">
-				<p>合起來共有 <span class="sol" data-forms="integer"><var>R</var></span> 元</p>				
-				<p class="example">整數，例：<code>6</code></p>
-            </div>
-            <div class="hints">
-					<p><code>10</code> 元總共有 <code><var>ten</var></code> 個，所以有 <code><var>10*ten</var></code> 元，</p>
-					<p data-if="five != 0"><code>5</code> 元總共有 <code><var>five</var></code> 個，所以有 <code><var>5*five</var></code> 元，</p>
-					<p><code>1</code> 元總共有 <code><var>one</var></code> 個，所以有 <code><var>1*one</var></code> 元，</p>
-					<p>總共有 <code class="hint_pink"><var>R</var></code> 元。</p>					
-			</div>
-		</div>
-		
-		<div id="case2">
-			<div class="vars">				
-				<var id="A">randRange(1,9)</var>
-				<var id="B">randRange(1,9)</var>
-				<var id="C">A*10+B</var>								<var id="loImg">				(function(){					loadImg("ten_",Khan.urlBase+"images/money_10.png",10);					loadImg("five_",Khan.urlBase+"images/5.png",10);					loadImg("one_",Khan.urlBase+"images/money_1.png",10);				})()</var>
-			</div>
-			<div class="question"><p class="question">把題目指定的錢算出來。</p></div>
-			<div class="problem">
-				<table>
-					<tr>
-						<th>拾</th><th>圓：</th><td><input type="button" value="-" id="del_ten" onclick="del_ten();"></td><td><input type="text" id="ten_num" style="text-align:center;width:20px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_ten" onclick="add_ten();"></td><td width="60px"></td>
-						<th>伍</th><th>圓：</th><td><input type="button" value="-" id="del_five" onclick="del_five();"></td><td><input type="text" id="five_num" style="text-align:center;width:20px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_five" onclick="add_five();"></td><td width="60px"></td>
-						<th>壹</th><th>圓：</th><td><input type="button" value="-" id="del_one" onclick="del_one();"></td><td><input type="text" id="one_num" style="text-align:center;width:20px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_one" onclick="add_one();"></td><td width="60px"></td>
-					</tr>
-				</table>
-				<div  style="border:1px solid black;">
-					<div style="border:1px;height:100px;width:500px;">
-						<div style="float:left"><img style="display:none;" id="ten_1"></div>
-						<div style="float:left"><img style="display:none;" id="ten_2"></div>
-						<div style="float:left"><img style="display:none;" id="ten_3"></div>
-						<div style="float:left"><img style="display:none;" id="ten_4"></div>
-						<div style="float:left"><img style="display:none;" id="ten_5"></div>
-						<div style="float:left"><img style="display:none;" id="ten_6"></div>
-						<div style="float:left"><img style="display:none;" id="ten_7"></div>
-						<div style="float:left"><img style="display:none;" id="ten_8"></div>
-						<div style="float:left"><img style="display:none;" id="ten_9"></div>												<div style="float:left"><img style="display:none;" id="ten_10"></div>
-					</div>	
-					<div style="border:1px;height:100px;width:500px;">
-						<div style="float:left"><img style="display:none;" id="five_1"></div>
-						<div style="float:left"><img style="display:none;" id="five_2"></div>
-						<div style="float:left"><img style="display:none;" id="five_3"></div>
-						<div style="float:left"><img style="display:none;" id="five_4"></div>
-						<div style="float:left"><img style="display:none;" id="five_5"></div>
-						<div style="float:left"><img style="display:none;" id="five_6"></div>
-						<div style="float:left"><img style="display:none;" id="five_7"></div>
-						<div style="float:left"><img style="display:none;" id="five_8"></div>
-						<div style="float:left"><img style="display:none;" id="five_9"></div>												<div style="float:left"><img style="display:none;" id="five_10"></div>
-					</div>
-					<div style="border:1px;height:130px;width:500px;">
-						<div style="float:left"><img style="display:none;" id="one_1"></div>
-						<div style="float:left"><img style="display:none;" id="one_2"></div>
-						<div style="float:left"><img style="display:none;" id="one_3"></div>
-						<div style="float:left"><img style="display:none;" id="one_4"></div>
-						<div style="float:left"><img style="display:none;" id="one_5"></div>
-						<div style="float:left"><img style="display:none;" id="one_6"></div>
-						<div style="float:left"><img style="display:none;" id="one_7"></div>
-						<div style="float:left"><img style="display:none;" id="one_8"></div>
-						<div style="float:left"><img style="display:none;" id="one_9"></div>
-						<div style="float:left"><img style="display:none;" id="one_10"></div>
-					</div>
-					<div style="border:1px solid black;width:60px;text-align:center;"> <var>C</var></div>
-				</div>
-			</div>
-			<div class="solution" data-type="multiple">
-				<div class="sol" data-type="custom">
-                    <div class="guess">[document.getElementById("ten_num").value,document.getElementById("five_num").value,document.getElementById("one_num").value]</div>
-                    <div class="validator-function">
-						if(guess[0]==0&&guess[1]==0&&guess[2]==0){
-							return "";
-						}
-						var bol1=false;
-						if(parseInt(guess[0].replace(/[ ]/g,"")*10)+parseInt(guess[1].replace(/[ ]/g,"")*5)+parseInt(guess[2].replace(/[ ]/g,""))==C)
-						{
-							bol1=true;
-						}
-						return bol1;
-                    </div>
-				</div>
-				<p class="example">在框框上方選擇 <code>+</code> 、 <code>-</code> 按鈕</p>
-            </div>
-			 <div class="hints">
-				<p><code><var>C</var></code> 元可以由 <code  class="hint_pink"><var>A</var></code> 個 <code>10</code> 元、<span data-if="B&gt;=5"><code class="hint_pink"><var>Math.floor(B/5)</var></code> 個 <code>5</code> 元<span data-if="B%5!=0">、</span></span><span data-if="B%5!=0"><code class="hint_pink"><var>B%5</var></code> 個 <code>1</code> 元</span>組成，</p>				
-				<div>
-					<p>你也可以使用湊得這些金額的其它方式，</p>
-					<p>比如 <code class="hint_green">8</code> 元可以由 <code>1</code> 個 <code>5</code> 元與 <code>3</code> 個 <code>1</code> 元組成</p>
-					<p>或 <code>8</code> 個 <code>1</code> 元組成。</p>
-				</div>
-            </div>
-		</div>
-		
-		<div id="case3">
-            <div class="vars">				<div data-ensure="R !== R1">					<var id="A">randRangeUnique(1,9,2)</var>					
-					<var id="ten">A[0]</var>
-					<var id="five">randRange(0,1)</var>
-					<var id="one">(function(){						if(ten &lt;9){var a=randRange(1,10);return a;}						if(ten==9){var a=randRange(1,4);return a;}					})()</var>
-					<var id="R">10*ten+5*five+1*one</var>
-					<var id="ten1">A[1]</var>
-					<var id="five1">randRange(0,1)</var>
-					<var id="one1">(function(){						if(ten1 &lt;9){var a=randRange(1,10);return a;}						if(ten1==9){var a=randRange(1,4);return a;}					})()</var>
-					<var id="R1">10*ten1+5*five1+1*one1</var>					<var id="ANS">						(function()						{							var bb=randRange(0,1);							var nums=[0,0,0,0];							if(bb==0){								nums[0] = [R];								nums[1] = [R1];								nums[2] = [-4];								nums[3] = [1];							}							if(bb==1){								nums[0] = [R1];								nums[1] = [R];								nums[2] = [1];								nums[3] = [-4];							}							return nums;						})()</var>					</div>				<var id="loImg">				(function(){					for(var i=0;i&lt;ten;i++)					{$('#img_10').append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;five;i++)					{$('#img_10').append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;one;i++)					{$('#img_10').append("&lt;img  width=\'"+35+"\'src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}										for(var i=0;i&lt;ten1;i++)					{$('#img_11').append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;five1;i++)					{$('#img_11').append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;one1;i++)					{$('#img_11').append("&lt;img width=\'"+35+"\' src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}							})()</var>					
-			</div>
-			<div class="question">
-				<p class="question">把一樣多的錢，畫線連連看。</p>
-				<div style="float:left;width:300px;">
-					<div style="width:350;height:195px;border:1px solid black;"><div id="img_10"></div>
-					</div>
-					<div style="width:350;height:195px;border:1px solid black;"><div id="img_11"></div>
-					</div >
-				</div>
-				<div style="position:absolute; width:50px;left:495px;">					<div id="option_1" style="height:70px;border:1px solid black;margin-top:40px;margin-bottom:20px;text-align:center;line-height:70px;overflow:hidden;"><var>ANS[0]</var></div>
-					<div id="option_2" style="height:70px;border:1px solid black;margin-top:130px;margin-bottom:20px;text-align:center;line-height:70px;overflow:hidden;"><var>ANS[1]</var></div>					
-				</div>				<div class="graphie" id="grid">
-                        init({
-                                range:[[0,13],[-4,6]],
-                            });
-                        addMouseLayer();						graph.pointA = addMovableCircle([7.5,4],[7.5,4]);						graph.pointB = addMovableCircle([7.5,-1],[7.5,-1]);						graph.pointA.normalStyle.scale = 1;						graph.pointA.highlightStyle.scale = 1.25;						graph.pointB.normalStyle.scale = 1;						graph.pointB.highlightStyle.scale = 1.25;
-                       						                        
-                        graph.point_a = addMovablePoint({
-                            coord: [ 7.45 ,4 ],
-                            visible:false,
-                            normalStyle: {
-                                stroke: KhanUtil.BLUE,
-                                fill: KhanUtil.BLUE
-                            }
-                        });
-                        graph.point_b = addMovablePoint({
-                            coord: [ 7.45, -1 ],
-							 visible:false,
-                            normalStyle: {
-                                stroke: KhanUtil.BLUE,
-                                fill: KhanUtil.BLUE
-                            }
-                        });
-                        
-                        graph.line1 = addMovableLineSegment({
-                            pointA: graph.pointA,
-                            pointZ: graph.point_a,
-                            fixed: true,
-                            extendLine: false,
-                            normalStyle: {
-                                "stroke": KhanUtil.GREEN,
-                                "stroke-width": 2
-                            }
-                        });
-                        graph.line2 = addMovableLineSegment({
-                            pointA: graph.pointB,
-                            pointZ: graph.point_b,
-                            fixed: true,
-                            extendLine: false,
-                            normalStyle: {
-                                "stroke": KhanUtil.GREEN,
-                                "stroke-width": 2
-                            }
-                        });
-                        
-						graph.circleA = circle([7.5,4],0.3,{stroke: '#999'});
-                        graph.circleB = circle([7.5,-1],0.3,{stroke: '#999'});
-                        graph.circleD = circle([11.5,4],0.3,{stroke: '#999'});
-                        graph.circleE = circle([11.5,-1],0.3,{stroke: '#999'});
-                    </div>
-			</div>
-			<div class="solution" data-type="custom">
-				<div class="guess">[graph.pointA.coord,graph.pointB.coord]
-                </div>
-				<div class="validator-function">
-					if(guess[0][0]==7.5&&guess[1][0]==7.5&&guess[0][1]==4&&guess[1][1]==-1){
-						return "";
-					}
-					var bol1=false;
-					var bol2=false;
-					if(guess[0][0]-11.5 &lt;1.25 &&guess[0][0]-11.5 &gt;-0.5 && guess[0][1]+ANS[2] &lt;0.7 &&guess[0][1]+ANS[2] &gt;-0.6)
-					{bol1=true;}
-					if(guess[1][0]-11.5 &lt;1.25 &&guess[1][0]-11.5 &gt;-0.5 && guess[1][1]+ANS[3] &lt;0.7 &&guess[1][1]+ANS[3] &gt;-0.6)
-					{bol2=true;}
-					return bol1&&bol2;					
-				</div>
-				<p class="example">移動圖上的點連接答案</p>
-			</div>
-			<div class="hints">				
-				<div class="graphie" data-update="grid">
-					graph.pointA.moveTo(11.5,-ANS[2],"graph.line1");
-				</div>
-				<div class="graphie" data-update="grid">
-					graph.pointB.moveTo(11.5,-ANS[3],"graph.line2");
-				</div>
-			</div>
-		</div>
-		
-		<div id="case4">
-            <div class="vars">
-				<var id="fifty">1</var>
-				<var id="ten">randRange(1,4)</var>
-				<var id="five">randRange(0,1)</var>
-				<var id="one">(function(){					if(ten &lt;4){var a=randRange(1,10);return a;}					if(ten==4){var a=randRange(1,5);return a;}				})()</var>
-				<var id="R">50+10*ten+5*five+1*one</var>								<var id="loImg">				(function(){					for(var i=0;i&lt;fifty;i++)					{$('#img_10').append("&lt;img width=\'"+55+"\' src=\'"+Khan.urlBase+"images/50.png"+"\'&gt;");}					for(var i=0;i&lt;ten;i++)					{$('#img_10').append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;five;i++)					{$('#img_10').append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;one;i++)					{$('#img_10').append("&lt;img width=\'"+35+"\' src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}									})()</var>
-			</div>
-			<p class="question">數數看，合起來共有多少元？</p>
-			<div class="problem">				<div id="img_10"></div>
-			</div>
-			<div class="solution" data-type="multiple">
-				<p>合起來共有 <span class="sol" data-forms="integer"><var>R</var></span> 元</p>
-				<p class="example">整數，例：<code>6</code></p>
-            </div>
-            <div class="hints">
-					<p><code>50</code> 元總共有 <code><var>fifty</var></code> 個，所以有 <code><var>50*fifty</var></code> 元，</p> 
-					<p><code>10</code> 元總共有 <code><var>ten</var></code> 個，所以有 <code><var>10*ten</var></code> 元，</p>
-					<p data-if="five === 1"><code>5</code> 元總共有 <code><var>five</var></code> 個，所以有 <code><var>5*five</var></code> 元，</p>
-					<p><code>1</code> 元總共有 <code><var>one</var></code> 個，所以有 <code><var>1*one</var></code> 元，</p>
-					<p>總共有 <code class="hint_pink"><var>R</var></code> 元。</p>
-			</div>
-		</div>
-	
-		<div id="case5">
-            <div class="vars">			<div data-ensure="R!=R1">
-				<var id="fifty">1</var>
-				<var id="ten">randRange(5,8)</var>
-				<var id="five">randRange(0,1)</var>
-				<var id="one">randRange(1,10)</var>
-				<var id="R">10*ten+5*five+1*one</var>
-				<var id="A">parseInt((R-50)/10)</var>
-				<var id="B">
-					(function(){
-					if((R-50)%10&gt;4)
-						return 1;
-					if((R-50)%10&lt;5)
-						return 0;
-					})()</var>
-				<var id="C">
-					(function(){
-						if((R-50)%10 &lt; 5)
-							return (R-50)%10;
-						if((R-50)%10 &gt;4 && (R-50)%10 &lt;10)
-							return ((R-50)%10-5);
-							if((R-50)%10==0&&(R-50)/10!==0)
-							return 5;
-							if((R-50)/10==0)
-							return 0;
-					})()</var>
-				<var id="ten1">randRange(5,8)</var>
-				<var id="five1">randRange(0,1)</var>
-				<var id="one1">randRange(1,10)</var>
-				<var id="R1">10*ten1+5*five1+1*one1</var>
-				<var id="A1">parseInt((R1-50)/10)</var>
-				<var id="B1">
-					(function(){
-					if((R1-50)%10&gt;4)
-						return 1;
-					if((R1-50)%10&lt;5)
-						return 0;
-					})()</var>
-				<var id="C1">
-					(function(){
-						if((R1-50)%10 &lt; 5)
-							return (R1-50)%10;
-						if((R1-50)%10 &gt;4 && (R1-50)%10 &lt;10)
-							return ((R1-50)%10-5);
-							if((R1-50)%10==0&&(R1-50)/10!==0)
-							return 5;
-							if((R1-50)/10==0)
-							return 0;
-					})()</var>										<var id="ANS">					(function()					{											var bb = randRange(0,1);						var nums = [0,0,0,0];						if(bb==0){							nums[0] = 12;							nums[1] = 13;							nums[2] = 5;							nums[3] = -2.5;						}else{							nums[0] = 13;							nums[1] = 12;							nums[2] = -2.5;							nums[3] = 5;						} 						return nums;					})()</var>					</div>							<var id="loImg">				(function(){										for(var i=0;i&lt;ten;i++)					{$('#img_10').append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;five;i++)					{$('#img_10').append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;one;i++)					{$('#img_10').append("&lt;img  width=\'"+35+"\'src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}										for(var i=0;i&lt;ten1;i++)					{$('#img_11').append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;five1;i++)					{$('#img_11').append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;one1;i++)					{$('#img_11').append("&lt;img width=\'"+35+"\' src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}										$('#img_'+ANS[0]).append("&lt;img width=\'"+55+"\' src=\'"+Khan.urlBase+"images/50.png"+"\'&gt;");					for(var i=0;i&lt;A1;i++)					{$('#img_'+ANS[0]).append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;B1;i++)					{$('#img_'+ANS[0]).append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;C1;i++)					{$('#img_'+ANS[0]).append("&lt;img width=\'"+35+"\' src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}										$('#img_'+ANS[1]).append("&lt;img width=\'"+55+"\' src=\'"+Khan.urlBase+"images/50.png"+"\'&gt;");					for(var i=0;i&lt;A;i++)					{$('#img_'+ANS[1]).append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;B;i++)					{$('#img_'+ANS[1]).append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;C;i++)					{$('#img_'+ANS[1]).append("&lt;img width=\'"+35+"\' src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}														})()</var>
-			</div>
-			<div class="question">
-                <P class="question">把一樣多的錢，畫線連起來。</p>
-				<div style="float:left;width:200px;">
-					<div style="width:200;height:300px;border:1px solid black;"><div id="img_10"></div>
-					</div>					
-					<div style="width:200;height:300px;border:1px solid black;"><div id="img_11"></div>
-					</div >
-				</div>
-				<div style="position:absolute;left:345px;width:200px">
-					<div style="width:200;height:300px;border:1px solid black;"><div id="img_12"></div>
-					</div >					
-					<div style="width:200;height:300px;border:1px solid black;"><div id="img_13"></div>
-					</div >
-				</div>
-				<div class="graphie" id="grid">
-                        init({
-                                range:[[0,13],[-10,6]]
-                            });
-                        addMouseLayer();												graph.pointA = addMovableCircle([ 5 ,2.5 ],[ 5 ,2.5 ]);						graph.pointB = addMovableCircle([ 5, -5 ],[ 5, -5 ]);						graph.pointA.normalStyle.scale = 1;						graph.pointA.highlightStyle.scale = 1.25;						graph.pointB.normalStyle.scale = 1;						graph.pointB.highlightStyle.scale = 1.25;                                                           
-                        graph.point_a = addMovablePoint({
-                            coord: [ 5.01,2.5 ],
-                            visible:false,
-                            normalStyle: {
-                                stroke: KhanUtil.BLUE,
-                                fill: KhanUtil.BLUE
-                            }
-                        });
-                        graph.point_b = addMovablePoint({
-                            coord: [ 5.01, -5 ],
-							 visible:false,
-                            normalStyle: {
-                                stroke: KhanUtil.BLUE,
-                                fill: KhanUtil.BLUE
-                            }
-                        });
-                        graph.line1 = addMovableLineSegment({
-                            pointA: graph.pointA,
-                            pointZ: graph.point_a,
-                            fixed: true,
-                            extendLine: false,
-                            normalStyle: {
-                                "stroke": KhanUtil.GREEN,
-                                "stroke-width": 2
-                            }
-                        });
-                        graph.line2 = addMovableLineSegment({
-                            pointA: graph.pointB,
-                            pointZ: graph.point_b,
-                            fixed: true,
-                            extendLine: false,
-                            normalStyle: {
-                                "stroke": KhanUtil.GREEN,
-                                "stroke-width": 2
-                            }
-                        });
-						graph.circleA = circle([5,2.5],0.3,{stroke: '#999'});
-                        graph.circleB = circle([5,-5],0.3,{stroke: '#999'});                      
-                        graph.circleC = circle([7.8,2.5],0.3,{stroke: '#999'});
-                        graph.circleD = circle([7.8,-5],0.3,{stroke: '#999'});
-                    </div>
-			</div>
-			<div class="solution" data-type="custom">
-				<div class="guess">[graph.pointA.coord,graph.pointB.coord]									
-                </div>
-				<div class="validator-function">
-					if(guess[0][0]==5&&guess[0][1]==2.5&&guess[1][0]==5&&guess[1][1]==-5){
-						return "";
-					}
-					var bol1=false;
-					var bol2=false;
-					if(guess[0][0]-7.8 &lt;4.6 &&guess[0][0]-7.8 &gt;-2 && guess[0][1]+ANS[2] &lt;1.5 &&guess[0][1]+ANS[2] &gt;-1.5)
-					{bol1=true;}
-					if(guess[1][0]-7.8 &lt;4.6 &&guess[1][0]-7.8 &gt;-2 && guess[1][1]+ANS[3] &lt;1.5&&guess[1][1]+ANS[3] &gt;-1.5)
-					{bol2=true;}
-					return bol1&&bol2;					
-				</div>
-				<p class="example">移動圖上的點連接答案</p>
-			</div>
-			<div class="hints">
-				<div class="graphie" data-update="grid">
-					graph.pointA.moveTo(7.8,-ANS[2],"graph.line1");
-				</div>
-				<div class="graphie" data-update="grid">
-					graph.pointB.moveTo(7.8,-ANS[3],"graph.line2");
-				</div>
-			</div>
-		</div>
-	</div>
-	</div>
-</body>
-</html>
+<!DOCTYPE html><html data-require="math math-format graphie graphie-helpers word-problems jquery.mobile.vmouse interactive expressions"><head>    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">    <title>認識1元、5元、10元和50元</title>    <script src="../khan-exercise.js"></script>	<style type="text/css">        #answer_area .sol input[type=text] {            width: 25px;        }        </style>	<script type="text/javascript">		function del_five(){			var five_num = parseInt(document.getElementById("five_num").value);			var elem = "five_"+five_num;			if(five_num!=0){				document.getElementById("five_num").value = five_num-1;				document.getElementById(elem).style.display = "none";			} else return ;		}		function add_five(){			var five_num = parseInt(document.getElementById("five_num").value);			if(five_num!=10){				document.getElementById("five_num").value = five_num+1;				document.getElementById("five_"+(five_num+1)).style.display = "block";			} else return ;		}		function del_ten(){			var ten_num = parseInt(document.getElementById("ten_num").value);			var elem = "ten_"+ten_num;			if(ten_num!=0){				document.getElementById("ten_num").value = ten_num-1;				document.getElementById(elem).style.display = "none";			} else return ;		}		function add_ten(){			var ten_num = parseInt(document.getElementById("ten_num").value);						if(ten_num!=10){				document.getElementById("ten_num").value = ten_num+1;								document.getElementById("ten_"+(ten_num+1)).style.display = "block";			} else return ;		}		function del_one(){			var one_num = parseInt(document.getElementById("one_num").value);			var elem = "one_"+one_num;			if(one_num!=0){				document.getElementById("one_num").value = one_num-1;				document.getElementById(elem).style.display = "none";			} else return ;		}		function add_one(){			var one_num = parseInt(document.getElementById("one_num").value);			if(one_num!=10){				document.getElementById("one_num").value = one_num+1;				document.getElementById("one_"+(one_num+1)).style.display = "block";			} else return ;		}				function loadImg(elem,url,count){			for(var j=1;j<=count;j++){				document.getElementById(elem+j).src=url;			}				}	</script></head><body>    <div class="exercise">    <div class="problems">        <div id="case1">            <div class="vars">				<var id="ten">randRange(1,9)</var>								<var id="one">randRange(1,10)</var>								<var id="five">(function(){					if(ten==9){return 0;}					if(ten==8){var a=randRange(0,2);return a;}					if(ten==7){var a=randRange(0,4);return a;}					if(ten==6){var a=randRange(0,6);return a;}					if(ten&lt;6){var a=randRange(0,7);return a;}				})()</var>									<var id="R">10*ten+5*five+1*one</var>								<var id="loImg">				(function(){										for(var i=0;i&lt;ten;i++)					{$('#img_11').append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;five;i++)					{$('#img_12').append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;one;i++)					{$('#img_13').append("&lt;img width=\'"+35+"\' src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}				})()</var>			</div>			<p class="question">數數看，合起來共有多少元？</p>			<div class="problem">				<div id="img_11"></div>				<div id="img_12"></div>				<div id="img_13"></div>									</div>			<div class="solution" data-type="multiple">				<p>合起來共有 <span class="sol" data-forms="integer"><var>R</var></span> 元</p>								<p class="example">整數，例：<code>6</code></p>            </div>            <div class="hints">					<p><code>10</code> 元總共有 <code><var>ten</var></code> 個，所以有 <code><var>10*ten</var></code> 元，</p>					<p data-if="five != 0"><code>5</code> 元總共有 <code><var>five</var></code> 個，所以有 <code><var>5*five</var></code> 元，</p>					<p><code>1</code> 元總共有 <code><var>one</var></code> 個，所以有 <code><var>1*one</var></code> 元，</p>					<p>總共有 <code class="hint_pink"><var>R</var></code> 元。</p>								</div>		</div>				<div id="case2">			<div class="vars">								<var id="A">randRange(1,9)</var>				<var id="B">randRange(1,9)</var>				<var id="C">A*10+B</var>								<var id="loImg">				(function(){					loadImg("ten_",Khan.urlBase+"images/money_10.png",10);					loadImg("five_",Khan.urlBase+"images/5.png",10);					loadImg("one_",Khan.urlBase+"images/money_1.png",10);				})()</var>			</div>			<div class="question"><p class="question">把題目指定的錢算出來。</p></div>			<div class="problem">				<table>					<tr>						<th>拾</th><th>圓：</th><td><input type="button" value="-" id="del_ten" onclick="del_ten();"></td><td><input type="text" id="ten_num" style="text-align:center;width:20px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_ten" onclick="add_ten();"></td><td width="60px"></td>						<th>伍</th><th>圓：</th><td><input type="button" value="-" id="del_five" onclick="del_five();"></td><td><input type="text" id="five_num" style="text-align:center;width:20px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_five" onclick="add_five();"></td><td width="60px"></td>						<th>壹</th><th>圓：</th><td><input type="button" value="-" id="del_one" onclick="del_one();"></td><td><input type="text" id="one_num" style="text-align:center;width:20px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_one" onclick="add_one();"></td><td width="60px"></td>					</tr>				</table>				<div  style="border:1px solid black;">					<div style="border:1px;height:100px;width:500px;">						<div style="float:left"><img style="display:none;" id="ten_1"></div>						<div style="float:left"><img style="display:none;" id="ten_2"></div>						<div style="float:left"><img style="display:none;" id="ten_3"></div>						<div style="float:left"><img style="display:none;" id="ten_4"></div>						<div style="float:left"><img style="display:none;" id="ten_5"></div>						<div style="float:left"><img style="display:none;" id="ten_6"></div>						<div style="float:left"><img style="display:none;" id="ten_7"></div>						<div style="float:left"><img style="display:none;" id="ten_8"></div>						<div style="float:left"><img style="display:none;" id="ten_9"></div>												<div style="float:left"><img style="display:none;" id="ten_10"></div>					</div>						<div style="border:1px;height:100px;width:500px;">						<div style="float:left"><img style="display:none;" id="five_1"></div>						<div style="float:left"><img style="display:none;" id="five_2"></div>						<div style="float:left"><img style="display:none;" id="five_3"></div>						<div style="float:left"><img style="display:none;" id="five_4"></div>						<div style="float:left"><img style="display:none;" id="five_5"></div>						<div style="float:left"><img style="display:none;" id="five_6"></div>						<div style="float:left"><img style="display:none;" id="five_7"></div>						<div style="float:left"><img style="display:none;" id="five_8"></div>						<div style="float:left"><img style="display:none;" id="five_9"></div>												<div style="float:left"><img style="display:none;" id="five_10"></div>					</div>					<div style="border:1px;height:130px;width:500px;">						<div style="float:left"><img style="display:none;" id="one_1"></div>						<div style="float:left"><img style="display:none;" id="one_2"></div>						<div style="float:left"><img style="display:none;" id="one_3"></div>						<div style="float:left"><img style="display:none;" id="one_4"></div>						<div style="float:left"><img style="display:none;" id="one_5"></div>						<div style="float:left"><img style="display:none;" id="one_6"></div>						<div style="float:left"><img style="display:none;" id="one_7"></div>						<div style="float:left"><img style="display:none;" id="one_8"></div>						<div style="float:left"><img style="display:none;" id="one_9"></div>						<div style="float:left"><img style="display:none;" id="one_10"></div>					</div>					<div style="border:1px solid black;width:60px;text-align:center;"> <var>C</var></div>				</div>			</div>			<div class="solution" data-type="multiple">				<div class="sol" data-type="custom">                    <div class="guess">[document.getElementById("ten_num").value,document.getElementById("five_num").value,document.getElementById("one_num").value]</div>                    <div class="validator-function">						if(guess[0]==0&&guess[1]==0&&guess[2]==0){							return "";						}						var bol1=false;						if(parseInt(guess[0].replace(/[ ]/g,"")*10)+parseInt(guess[1].replace(/[ ]/g,"")*5)+parseInt(guess[2].replace(/[ ]/g,""))==C)						{							bol1=true;						}						return bol1;                    </div>				</div>				<p class="example">在框框上方選擇 <code>+</code> 、 <code>-</code> 按鈕</p>            </div>			 <div class="hints">				<p><code><var>C</var></code> 元可以由 <code  class="hint_pink"><var>A</var></code> 個 <code>10</code> 元、<span data-if="B&gt;=5"><code class="hint_pink"><var>Math.floor(B/5)</var></code> 個 <code>5</code> 元<span data-if="B%5!=0">、</span></span><span data-if="B%5!=0"><code class="hint_pink"><var>B%5</var></code> 個 <code>1</code> 元</span>組成，</p>								<div>					<p>你也可以使用湊得這些金額的其它方式，</p>					<p>比如 <code class="hint_green">8</code> 元可以由 <code>1</code> 個 <code>5</code> 元與 <code>3</code> 個 <code>1</code> 元組成</p>					<p>或 <code>8</code> 個 <code>1</code> 元組成。</p>				</div>            </div>		</div>				<div id="case3">            <div class="vars">				<div data-ensure="R !== R1">					<var id="A">randRangeUnique(1,9,2)</var>										<var id="ten">A[0]</var>					<var id="five">randRange(0,1)</var>					<var id="one">(function(){						if(ten &lt;9){var a=randRange(1,10);return a;}						if(ten==9){var a=randRange(1,4);return a;}					})()</var>					<var id="R">10*ten+5*five+1*one</var>					<var id="ten1">A[1]</var>					<var id="five1">randRange(0,1)</var>					<var id="one1">(function(){						if(ten1 &lt;9){var a=randRange(1,10);return a;}						if(ten1==9){var a=randRange(1,4);return a;}					})()</var>					<var id="R1">10*ten1+5*five1+1*one1</var>					<var id="ANS">						(function()						{							var bb=randRange(0,1);							var nums=[0,0,0,0];							if(bb==0){								nums[0] = R;								nums[1] = R1;								nums[2] = -4;								nums[3] = 1;							}							if(bb==1){								nums[0] = R1;								nums[1] = R;								nums[2] = 1;								nums[3] = -4;							}							return nums;						})()</var>					</div>				<var id="loImg">				(function(){					for(var i=0;i&lt;ten;i++)					{$('#img_10').append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;five;i++)					{$('#img_10').append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;one;i++)					{$('#img_10').append("&lt;img  width=\'"+35+"\'src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}										for(var i=0;i&lt;ten1;i++)					{$('#img_11').append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;five1;i++)					{$('#img_11').append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;one1;i++)					{$('#img_11').append("&lt;img width=\'"+35+"\' src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}							})()</var>								</div>			<div class="question">				<p class="question">把一樣多的錢，畫線連連看。</p>				<div style="float:left;width:300px;">					<div style="width:350;height:195px;border:1px solid black;"><div id="img_10"></div>					</div>					<div style="width:350;height:195px;border:1px solid black;"><div id="img_11"></div>					</div >				</div>				<div style="position:absolute; width:50px;left:495px;">					<div id="option_1" style="height:70px;border:1px solid black;margin-top:40px;margin-bottom:20px;text-align:center;line-height:70px;overflow:hidden;"><var>ANS[0]</var></div>					<div id="option_2" style="height:70px;border:1px solid black;margin-top:130px;margin-bottom:20px;text-align:center;line-height:70px;overflow:hidden;"><var>ANS[1]</var></div>									</div>				<div class="graphie" id="grid">                        init({                                range:[[0,13],[-4,6]],                            });                        addMouseLayer();						graph.pointA = addMovableCircle([7.5,4],[7.5,4]);						graph.pointB = addMovableCircle([7.5,-1],[7.5,-1]);						graph.pointA.normalStyle.scale = 1;						graph.pointA.highlightStyle.scale = 1.25;						graph.pointB.normalStyle.scale = 1;						graph.pointB.highlightStyle.scale = 1.25;                       						                                                graph.point_a = addMovablePoint({                            coord: [ 7.45 ,4 ],                            visible:false,                            normalStyle: {                                stroke: KhanUtil.BLUE,                                fill: KhanUtil.BLUE                            }                        });                        graph.point_b = addMovablePoint({                            coord: [ 7.45, -1 ],							 visible:false,                            normalStyle: {                                stroke: KhanUtil.BLUE,                                fill: KhanUtil.BLUE                            }                        });                                                graph.line1 = addMovableLineSegment({                            pointA: graph.pointA,                            pointZ: graph.point_a,                            fixed: true,                            extendLine: false,                            normalStyle: {                                "stroke": KhanUtil.GREEN,                                "stroke-width": 2                            }                        });                        graph.line2 = addMovableLineSegment({                            pointA: graph.pointB,                            pointZ: graph.point_b,                            fixed: true,                            extendLine: false,                            normalStyle: {                                "stroke": KhanUtil.GREEN,                                "stroke-width": 2                            }                        });                        						graph.circleA = circle([7.5,4],0.3,{stroke: '#999'});                        graph.circleB = circle([7.5,-1],0.3,{stroke: '#999'});                        graph.circleD = circle([11.5,4],0.3,{stroke: '#999'});                        graph.circleE = circle([11.5,-1],0.3,{stroke: '#999'});                    </div>			</div>			<div class="solution" data-type="custom">				<div class="guess">[graph.pointA.coord,graph.pointB.coord]                </div>				<div class="validator-function">					if(guess[0][0]==7.5&&guess[1][0]==7.5&&guess[0][1]==4&&guess[1][1]==-1){						return "";					}					var bol1=false;					var bol2=false;					if(guess[0][0]-11.5 &lt;1.25 &&guess[0][0]-11.5 &gt;-0.5 && guess[0][1]+ANS[2] &lt;0.7 &&guess[0][1]+ANS[2] &gt;-0.6)					{bol1=true;}					if(guess[1][0]-11.5 &lt;1.25 &&guess[1][0]-11.5 &gt;-0.5 && guess[1][1]+ANS[3] &lt;0.7 &&guess[1][1]+ANS[3] &gt;-0.6)					{bol2=true;}					return bol1&&bol2;									</div>				<p class="example">移動圖上的點連接答案</p>			</div>			<div class="hints">								<div class="graphie" data-update="grid">					graph.pointA.moveTo(11.5,-ANS[2],"graph.line1");				</div>				<div class="graphie" data-update="grid">					graph.pointB.moveTo(11.5,-ANS[3],"graph.line2");				</div>			</div>		</div>				<div id="case4">            <div class="vars">				<var id="fifty">1</var>				<var id="ten">randRange(1,4)</var>				<var id="five">randRange(0,1)</var>				<var id="one">(function(){					if(ten &lt;4){var a=randRange(1,10);return a;}					if(ten==4){var a=randRange(1,5);return a;}				})()</var>				<var id="R">50+10*ten+5*five+1*one</var>								<var id="loImg">				(function(){					for(var i=0;i&lt;fifty;i++)					{$('#img_10').append("&lt;img width=\'"+55+"\' src=\'"+Khan.urlBase+"images/50.png"+"\'&gt;");}					for(var i=0;i&lt;ten;i++)					{$('#img_10').append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;five;i++)					{$('#img_10').append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;one;i++)					{$('#img_10').append("&lt;img width=\'"+35+"\' src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}									})()</var>			</div>			<p class="question">數數看，合起來共有多少元？</p>			<div class="problem">				<div id="img_10"></div>			</div>			<div class="solution" data-type="multiple">				<p>合起來共有 <span class="sol" data-forms="integer"><var>R</var></span> 元</p>				<p class="example">整數，例：<code>6</code></p>            </div>            <div class="hints">					<p><code>50</code> 元總共有 <code><var>fifty</var></code> 個，所以有 <code><var>50*fifty</var></code> 元，</p> 					<p><code>10</code> 元總共有 <code><var>ten</var></code> 個，所以有 <code><var>10*ten</var></code> 元，</p>					<p data-if="five === 1"><code>5</code> 元總共有 <code><var>five</var></code> 個，所以有 <code><var>5*five</var></code> 元，</p>					<p><code>1</code> 元總共有 <code><var>one</var></code> 個，所以有 <code><var>1*one</var></code> 元，</p>					<p>總共有 <code class="hint_pink"><var>R</var></code> 元。</p>			</div>		</div>			<div id="case5">            <div class="vars">			<div data-ensure="R!=R1">				<var id="fifty">1</var>				<var id="ten">randRange(5,8)</var>				<var id="five">randRange(0,1)</var>				<var id="one">randRange(1,10)</var>				<var id="R">10*ten+5*five+1*one</var>				<var id="A">parseInt((R-50)/10)</var>				<var id="B">					(function(){					if((R-50)%10&gt;4)						return 1;					if((R-50)%10&lt;5)						return 0;					})()</var>				<var id="C">					(function(){						if((R-50)%10 &lt; 5)							return (R-50)%10;						if((R-50)%10 &gt;4 && (R-50)%10 &lt;10)							return ((R-50)%10-5);							if((R-50)%10==0&&(R-50)/10!==0)							return 5;							if((R-50)/10==0)							return 0;					})()</var>				<var id="ten1">randRange(5,8)</var>				<var id="five1">randRange(0,1)</var>				<var id="one1">randRange(1,10)</var>				<var id="R1">10*ten1+5*five1+1*one1</var>				<var id="A1">parseInt((R1-50)/10)</var>				<var id="B1">					(function(){					if((R1-50)%10&gt;4)						return 1;					if((R1-50)%10&lt;5)						return 0;					})()</var>				<var id="C1">					(function(){						if((R1-50)%10 &lt; 5)							return (R1-50)%10;						if((R1-50)%10 &gt;4 && (R1-50)%10 &lt;10)							return ((R1-50)%10-5);							if((R1-50)%10==0&&(R1-50)/10!==0)							return 5;							if((R1-50)/10==0)							return 0;					})()</var>										<var id="ANS">					(function()					{											var bb = randRange(0,1);						var nums = [0,0,0,0];						if(bb==0){							nums[0] = 12;							nums[1] = 13;							nums[2] = 5;							nums[3] = -2.5;						}else{							nums[0] = 13;							nums[1] = 12;							nums[2] = -2.5;							nums[3] = 5;						} 						return nums;					})()</var>					</div>							<var id="loImg">				(function(){										for(var i=0;i&lt;ten;i++)					{$('#img_10').append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;five;i++)					{$('#img_10').append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;one;i++)					{$('#img_10').append("&lt;img  width=\'"+35+"\'src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}										for(var i=0;i&lt;ten1;i++)					{$('#img_11').append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;five1;i++)					{$('#img_11').append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;one1;i++)					{$('#img_11').append("&lt;img width=\'"+35+"\' src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}										$('#img_'+ANS[0]).append("&lt;img width=\'"+55+"\' src=\'"+Khan.urlBase+"images/50.png"+"\'&gt;");					for(var i=0;i&lt;A1;i++)					{$('#img_'+ANS[0]).append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;B1;i++)					{$('#img_'+ANS[0]).append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;C1;i++)					{$('#img_'+ANS[0]).append("&lt;img width=\'"+35+"\' src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}										$('#img_'+ANS[1]).append("&lt;img width=\'"+55+"\' src=\'"+Khan.urlBase+"images/50.png"+"\'&gt;");					for(var i=0;i&lt;A;i++)					{$('#img_'+ANS[1]).append("&lt;img width=\'"+50+"\' src=\'"+Khan.urlBase+"images/money_10.png"+"\'&gt;");}					for(var i=0;i&lt;B;i++)					{$('#img_'+ANS[1]).append("&lt;img width=\'"+40+"\' src=\'"+Khan.urlBase+"images/5.png"+"\'&gt;");}					for(var i=0;i&lt;C;i++)					{$('#img_'+ANS[1]).append("&lt;img width=\'"+35+"\' src=\'"+Khan.urlBase+"images/money_1.png"+"\'&gt;");}														})()</var>			</div>			<div class="question">                <P class="question">把一樣多的錢，畫線連起來。</p>				<div style="float:left;width:200px;">					<div style="width:200;height:300px;border:1px solid black;"><div id="img_10"></div>					</div>										<div style="width:200;height:300px;border:1px solid black;"><div id="img_11"></div>					</div >				</div>				<div style="position:absolute;left:345px;width:200px">					<div style="width:200;height:300px;border:1px solid black;"><div id="img_12"></div>					</div >										<div style="width:200;height:300px;border:1px solid black;"><div id="img_13"></div>					</div >				</div>				<div class="graphie" id="grid">                        init({                                range:[[0,13],[-10,6]]                            });                        addMouseLayer();												graph.pointA = addMovableCircle([ 5 ,2.5 ],[ 5 ,2.5 ]);						graph.pointB = addMovableCircle([ 5, -5 ],[ 5, -5 ]);						graph.pointA.normalStyle.scale = 1;						graph.pointA.highlightStyle.scale = 1.25;						graph.pointB.normalStyle.scale = 1;						graph.pointB.highlightStyle.scale = 1.25;                                                                                   graph.point_a = addMovablePoint({                            coord: [ 5.01,2.5 ],                            visible:false,                            normalStyle: {                                stroke: KhanUtil.BLUE,                                fill: KhanUtil.BLUE                            }                        });                        graph.point_b = addMovablePoint({                            coord: [ 5.01, -5 ],							 visible:false,                            normalStyle: {                                stroke: KhanUtil.BLUE,                                fill: KhanUtil.BLUE                            }                        });                        graph.line1 = addMovableLineSegment({                            pointA: graph.pointA,                            pointZ: graph.point_a,                            fixed: true,                            extendLine: false,                            normalStyle: {                                "stroke": KhanUtil.GREEN,                                "stroke-width": 2                            }                        });                        graph.line2 = addMovableLineSegment({                            pointA: graph.pointB,                            pointZ: graph.point_b,                            fixed: true,                            extendLine: false,                            normalStyle: {                                "stroke": KhanUtil.GREEN,                                "stroke-width": 2                            }                        });						graph.circleA = circle([5,2.5],0.3,{stroke: '#999'});                        graph.circleB = circle([5,-5],0.3,{stroke: '#999'});                                              graph.circleC = circle([7.8,2.5],0.3,{stroke: '#999'});                        graph.circleD = circle([7.8,-5],0.3,{stroke: '#999'});                    </div>			</div>			<div class="solution" data-type="custom">				<div class="guess">[graph.pointA.coord,graph.pointB.coord]									                </div>				<div class="validator-function">					if(guess[0][0]==5&&guess[0][1]==2.5&&guess[1][0]==5&&guess[1][1]==-5){						return "";					}					var bol1=false;					var bol2=false;					if(guess[0][0]-7.8 &lt;4.6 &&guess[0][0]-7.8 &gt;-2 && guess[0][1]+ANS[2] &lt;1.5 &&guess[0][1]+ANS[2] &gt;-1.5)					{bol1=true;}					if(guess[1][0]-7.8 &lt;4.6 &&guess[1][0]-7.8 &gt;-2 && guess[1][1]+ANS[3] &lt;1.5&&guess[1][1]+ANS[3] &gt;-1.5)					{bol2=true;}					return bol1&&bol2;									</div>				<p class="example">移動圖上的點連接答案</p>			</div>			<div class="hints">				<div class="graphie" data-update="grid">					graph.pointA.moveTo(7.8,-ANS[2],"graph.line1");				</div>				<div class="graphie" data-update="grid">					graph.pointB.moveTo(7.8,-ANS[3],"graph.line2");				</div>			</div>		</div>	</div>	</div></body></html>
