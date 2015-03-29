@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>圓的相關名詞：弧、弦、弓形、扇形</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+	    <div id="case1">
+            <div class="vars">
+			    <var id="ANGLE">randRange(50, 80)</var>
+                <var id="R">randRange(7, 10)</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+            </div>
+			
+			<p class="question">請選一個最符合下圖圖形紅色區域的描述。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 2, R + 2], [-R -4, R + 2]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R,{ stroke: "black" });						
+                        arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + ANGLE, true, { stroke: RED, fill: RED, "fill-opacity": 0.7 ,"stroke-opacity": 0.7});	
+						circle([0, 0], 0.2, { stroke: "black" ,fill:"black"});
+						graph.aAngle = (ROTATE_ARC  + ANGLE)+90 ;
+						label([0, 0], "O", labelDirection(graph.aAngle));
+				</div>
+			</div>
+			<p class="solution">扇形</p>
+                <ul class="choices" data-show="5" data-none="true">
+					<li>弓形</li>
+					<li>弧</li>
+					<li>圓</li>
+				</ul>
+            <div class="hints">
+				<div>
+					<p>觀看圖形可注意到此圖形包含兩條半徑，與一圓弧。</p>
+					 <div class="graphie" data-update="fan_shaped">
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						var poiB = [R*Math.cos((ROTATE_ARC + ANGLE)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE)*Math.PI/180)];
+						var poiC = [R*Math.cos((ROTATE_ARC + ANGLE/2)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE/2)*Math.PI/180)];
+						
+						 
+                   		line([(poiA[0]+poiB[0])/2, -R-1], [ 0.6*poiA[0],0.6*poiA[1] ],{arrows: "&gt;"});
+                   		line([(poiA[0]+poiB[0])/2, -R-1], [0.6*(poiB[0]),0.6*poiB[1]],{arrows: "&gt;"});
+                   		label( [(poiA[0]+poiB[0])/2, -R-1],  "半徑", "below", { color: "purple" });
+						graph.aCL=label( [0.8*(poiC[0]),0.8*poiC[1]],  "圓弧", "center", { color: "#6495ED" });
+						
+						arc( [0, 0], R, ROTATE_ARC, ROTATE_ARC + ANGLE ,{stroke:"#6495ED"});
+						line(poiA,[0,0],{stroke: "purple"});
+						line([0,0],poiB,{stroke: "purple"});
+					 </div>				
+				</div>
+				<p>「扇形」的定義是有兩個半徑，與所夾的圓弧所構成的圖形。</p>
+				<p>因此，這題的答案為「<span class="hint_pink">扇形</span>」</p>
+			</div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+			    <var id="ANGLE">randRange(10, 160)</var>
+                <var id="R">randRange(7, 10)</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+            </div>
+			<p class="question">請選一個最符合下圖圖形紅色區域的描述。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 2, R + 2], [-R - 2, R + 2]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R,{ stroke: "black" });
+						circle([0, 0], 0.2, { stroke: "black" ,fill:"black"});
+                        arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + ANGLE, { stroke: RED});	
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						var poiB = [R*Math.cos((ROTATE_ARC + ANGLE)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE)*Math.PI/180)];
+						line(poiA,[0,0],{strokeDasharray: "-",stroke: "black"});
+						line([0,0],poiB,{strokeDasharray: "-",stroke: "black"});
+						graph.aAngle = (ROTATE_ARC  + ANGLE)+90 ;
+						label([0, 0], "O", labelDirection(graph.aAngle));
+				</div>
+			</div>
+			<p class="solution">劣弧</p>
+                <ul class="choices" data-show="5" data-none="true">
+                <li>弓形</li>
+                <li>扇形</li>
+                <li>優弧</li>
+            </ul>
+            <div class="hints">
+				<div>
+					<p>在圓上兩點間的一段稱「圓弧」。</p>
+					 <div class="graphie" data-update="fan_shaped">
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						var poiB = [R*Math.cos((ROTATE_ARC + ANGLE)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE)*Math.PI/180)];
+						circle([poiA[0],poiA[1]],0.2, { stroke: "RED" ,fill:"RED"});
+						circle([poiB[0],poiB[1]],0.2, { stroke: "RED" ,fill:"RED"});
+						label( [1.15*(poiA[0]),1.15*poiA[1]],  "A", "center", { color: "RED" });
+						label( [1.15*(poiB[0]),1.15*poiB[1]],  "B", "center", { color: "RED" });
+						
+					</div>				
+				</div>
+				<p>圓弧的大小超過半圓稱「優弧」、小於半圓稱「劣弧」。</p>
+				<p>故此題的答案為「<span class="hint_pink">劣弧</span>」。</p>
+			</div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+			    <var id="ANGLE">randRange(210, 330)</var>
+                <var id="R">randRange(7, 10)</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+            </div>
+			<p class="question">請選一個最符合下圖圖形紅色區域的描述。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 2, R + 2], [-R - 2, R + 2]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R,{ stroke: "black" });
+						circle([0, 0], 0.2, { stroke: "black" ,fill:"black"});
+                        arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + ANGLE, { stroke: RED});	
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						var poiB = [R*Math.cos((ROTATE_ARC + ANGLE)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE)*Math.PI/180)];
+						line(poiA,[0,0],{strokeDasharray: "-",stroke: "black"});
+						line([0,0],poiB,{strokeDasharray: "-",stroke: "black"});
+						graph.aAngle = (ROTATE_ARC * 2 + ANGLE)/2  ;
+						label([0, 0], "O", labelDirection(graph.aAngle));
+				</div>
+			</div>
+			<p class="solution">優弧</p>
+                <ul class="choices" data-show="5" data-none="true">
+                <li>弓形</li>
+                <li>扇形</li>
+                <li>劣弧</li>
+            </ul>
+            <div class="hints">
+				<div>
+					<p>在圓上兩點間的一段曲線稱「圓弧」，亦可簡稱為「弧」。</p>
+					 <div class="graphie" data-update="fan_shaped">
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						var poiB = [R*Math.cos((ROTATE_ARC + ANGLE)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE)*Math.PI/180)];
+						var poiC = [R*Math.cos((ROTATE_ARC + ANGLE/2)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE/2)*Math.PI/180)];
+						circle([poiA[0],poiA[1]],0.2, { stroke: "RED" ,fill:"RED"});
+						circle([poiB[0],poiB[1]],0.2, { stroke: "RED" ,fill:"RED"});
+						circle([poiC[0],poiC[1]],0.2, { stroke: "RED" ,fill:"RED"});
+						label( [1.15*(poiA[0]),1.15*poiA[1]],  "A", "center", { color: "RED" });
+						label( [1.15*(poiB[0]),1.15*poiB[1]],  "B", "center", { color: "RED" });
+						label( [1.15*(poiC[0]),1.15*poiC[1]],  "C", "center", { color: "RED" });
+						
+					 </div>				
+				</div>
+				<p>圓弧的大小超過半圓稱「優弧」、小於半圓稱「劣弧」。</p>
+				<p>故此題的答案為「<span class="hint_pink">優弧</span>」。</p>
+			</div>
+        </div>
+		
+		<div id="case4">
+            <div class="vars">
+			    <var id="ANGLE">randRange(40, 160)</var>
+                <var id="R">randRange(7, 10)</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+            </div>
+			<p class="question">請選一個最符合下圖圖形紅色區域的描述。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 2, R + 2], [-R - 2, R + 2]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R,{ stroke: "black" });
+						circle([0, 0], 0.2, { stroke: "black" ,fill:"black"});                       	
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						var poiB = [R*Math.cos((ROTATE_ARC + ANGLE)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE)*Math.PI/180)];
+						line(poiA,[0,0],{strokeDasharray: "-",stroke: "black"});
+						line([0,0],poiB,{strokeDasharray: "-",stroke: "black"});
+						line(poiA,poiB, { stroke: RED})
+						graph.aAngle = (ROTATE_ARC  + ANGLE)+90 ;					
+						label([0, 0], "O", labelDirection(graph.aAngle));						
+						arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + ANGLE, { stroke: RED});
+						arc( [0, 0], R-0.1, ROTATE_ARC, ROTATE_ARC + ANGLE ,{stroke: RED,fill:"red"});
+						label( [1.15*(poiA[0]),1.15*poiA[1]],  "A", "center", { color: "RED" });
+						label( [1.15*(poiB[0]),1.15*poiB[1]],  "B", "center", { color: "RED" });
+				</div>
+			</div>
+			<p class="solution">弓形</p>
+                <ul class="choices" data-show="5" data-none="true">
+                <li>優弧</li>
+                <li>扇形</li>
+                <li>劣弧</li>
+            </ul>
+            <div class="hints">
+				<p>圓上兩點的連線稱為「弦」，在圓上兩點間的一段曲線稱「圓弧」。</p>
+				<p>圓上一弦與所截圓弧圍成的區域，稱為「<span class="hint_pink">弓形</span>」。</p>
+			</div>
+        </div>
+		
+		<div id="case5">
+            <div class="vars">
+			    <var id="ANGLE">randRange(40, 160)</var>
+                <var id="R">randRange(7, 10)</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+            </div>
+			<p class="question">請選一個最符合下圖圖形紅色區域的描述。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 2, R + 2], [-R - 2, R + 2]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R,{ stroke: "black" });
+						circle([0, 0], 0.2, { stroke: "black" ,fill:"black"});                       	
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						var poiB = [R*Math.cos((ROTATE_ARC + ANGLE)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE)*Math.PI/180)];						
+						line(poiA,poiB, { stroke: RED})
+						graph.aAngle = (ROTATE_ARC  + ANGLE)+90 ;					
+						label([0, 0], "O", labelDirection(graph.aAngle));
+						label( [1.15*(poiA[0]),1.15*poiA[1]],  "A", "center", { color: "RED" });
+						label( [1.15*(poiB[0]),1.15*poiB[1]],  "B", "center", { color: "RED" });
+				</div>
+			</div>
+			<p class="solution">弦</p>
+                <ul class="choices" data-show="5" data-none="true">
+                <li>弧</li>
+                <li>扇形</li>
+                <li>直徑</li>
+            </ul>
+            <div class="hints">
+				<p>圓上相異兩點的連線稱為「<span class="hint_pink">弦</span>」。</p>
+				<p>最長的弦為通過圓心，稱為「直徑」。</p>
+			</div>
+        </div>
+		
+		<div id="case6">
+            <div class="vars">
+                <var id="R">randRange(7, 10)</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+            </div>
+			<p class="question">請選一個最符合下圖圖形紅色區域的描述。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 2, R + 2], [-R - 2, R + 2]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R,{ stroke: "black" });
+						circle([0, 0], 0.2, { stroke: "black" ,fill:"black"});                        	
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						label( [1.15*(poiA[0]),1.15*poiA[1]],  "A", "center", { color: "black" });
+						line(poiA,[0,0], { stroke: RED})
+						graph.aAngle = (ROTATE_ARC +60)  ;					
+						label([0 , 0], "O", labelDirection(graph.aAngle));						
+				</div>
+			</div>
+			<p class="solution">半徑</p>
+                <ul class="choices" data-show="5" data-none="true">
+                <li>弧</li>
+                <li>扇形</li>
+                <li>弦</li>
+            </ul>
+            <div class="hints">
+				<p>圓心與圓上一點的連線稱「<span class="hint_pink">半徑</span>」。</p>
+			</div>
+        </div>
+		
+		<div id="case7">
+            <div class="vars" data-ensure="cn[1]==1">
+			    <var id="ANGLE">randRange(40, 120)</var>
+                <var id="R">randRange(7, 10)</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+				<var id="poiA">[R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)]</var>
+				<var id="poiB">[R*Math.cos((ROTATE_ARC + ANGLE)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE)*Math.PI/180)]</var>
+				<var id="l">(poiA[0]-poiB[0])*(poiA[0]-poiB[0])+(poiA[1]-poiB[1])*(poiA[1]-poiB[1])/4</var>
+				<var id="x">randRangeExclude(2-R, R-2,[0])</var>
+				<var id="y">randRangeExclude(2-R, R-2,[0])</var>
+				<var id="cn">(function(){
+					var aa=Math.sqrt((x*x)+(y*y));
+					var bb=Math.sqrt(R*R-l);
+					if( aa&lt;(bb-1)){return [aa,1];}
+					return [aa,0];
+				})()</var>
+            </div>
+			<p class="question">請選一個最符合下圖圖形紅色區域的描述。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 2, R + 2], [-R - 2, R + 2]],
+                            scale: [15, 15]
+                        });
+						circle([0, 0], R,{ stroke: "black" });
+						arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + ANGLE, { stroke: RED});
+						arc( [0, 0], R-0.1, ROTATE_ARC, ROTATE_ARC + ANGLE ,{stroke: RED,fill:"red"});
+						path([[x, y],poiA,poiB,[x,y]],{stroke: RED,fill:"red"});
+											
+						circle([0, 0], 0.2, { stroke: "black" ,fill:"black"});
+						graph.aAngle = (ROTATE_ARC  + ANGLE)+90 ;					
+						label([0, 0], "O", labelDirection(graph.aAngle));						
+						label( [1.15*(poiA[0]),1.15*poiA[1]],  "A", "center", { color: "black" });
+						label( [1.15*(poiB[0]),1.15*poiB[1]],  "B", "center", { color: "black" });						
+						line(poiA,[0,0],{strokeDasharray: "-",stroke: "black"});
+						line([0,0],poiB,{strokeDasharray: "-",stroke: "black"});
+				</div>
+			</div>
+			
+			<div class="solution">以上皆非</div>
+				<ul class="choices" data-category="true">
+					<li>扇形</li>					
+					<li>弓形</li>
+					<li>優弧</li>
+					<li>劣弧</li>
+					<li>以上皆非</li>
+				</ul>
+            <div class="hints">
+				<p>這圖很容易誤以為是「扇形」，要注意「扇形」的定義是「兩個半徑，與所夾的圓弧所構成的圖形」。而半徑的一端點要落在圓心上，此圖並不符合「扇形」的定義。</p>
+				<P>「優弧」、「劣弧」為位在圓上兩點的一段曲線，此題也不滿足。</P>
+				<P>「弓形」為圓上一弦與所截圓弧圍成的區域，此題也不滿足。</P>
+				<p>因此，此題的答案為「<span class="hint_pink">以上皆非</span>」。</p>
+			</div>
+        </div>
+		
+		<div id="case8">
+             <div class="vars">
+			    <var id="ANGLE">randRange(40, 110)</var>
+                <var id="R">randRange(7, 10)</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+            </div>
+			<p class="question">請選一個最符合下圖圖形紅色區域的描述。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 2, R + 2], [-R - 2, R + 2]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R,{ stroke: "black" });                        	
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						var poiB = [R*Math.cos((ROTATE_ARC + ANGLE)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE)*Math.PI/180)];
+						var poiC = [R*Math.cos((ROTATE_ARC + ANGLE*3)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE*3)*Math.PI/180)];
+						line(poiA,poiB, { stroke: RED})											
+						arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + ANGLE, { stroke: RED});
+						arc( [0, 0], R-0.1, ROTATE_ARC, ROTATE_ARC + ANGLE ,{stroke: RED,fill:"red"});
+						path([poiA,poiB,poiC,poiA], { stroke: "RED" ,fill:"RED"})						
+						circle([poiA[0],poiA[1]],0.2, { stroke: "RED" ,fill:"RED"});
+						circle([poiB[0],poiB[1]],0.2, { stroke: "RED" ,fill:"RED"});
+						label( [1.15*(poiA[0]),1.15*poiA[1]],  "A", "center", { color: "black" });
+						label( [1.15*(poiB[0]),1.15*poiB[1]],  "B", "center", { color: "black" });
+				</div>
+			</div>
+			<div class="solution">以上皆非</div>
+				<ul class="choices" data-category="true">					
+					<li>扇形</li>					
+					<li>弓形</li>
+					<li>優弧</li>
+					<li>劣弧</li>
+					<li>以上皆非</li>
+				</ul>
+            <div class="hints">
+				<p>這圖很容易誤以為是「扇形」，要注意「扇形」的定義是「兩個半徑，與所夾的圓弧所構成的圖形」。而半徑的一端點要落在圓心上，此圖形並不符合「扇形」的定義。</P>
+				<P>「優弧」、「劣弧」為位在圓上兩點的一段曲線，此題也不滿足。</P>
+				<P>「弓形」為圓上一弦與所截圓弧圍成的區域。此題也是不滿足。</P>
+				<p>因此，此題的答案為「<span class="hint_pink">以上皆非</span>」。</p>
+			</div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>
