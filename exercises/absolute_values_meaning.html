@@ -27,18 +27,18 @@
 					<var id="TEXT_FIRST">
 					    (function() {
 				            var fs = "";
-							    fs=TEXT.length>10?TEXT.slice(0,10).join(",")+",":TEXT.slice(0,TEXT.length).join(",");
+							    fs=TEXT.length&gt;10?TEXT.slice(0,10).join(",")+",":TEXT.slice(0,TEXT.length).join(",");
 								return fs;
 						})()
 					</var>
 					<var id="TEXT_SECOND">
 					    (function() {
 				            var ss = "";
-							if(TEXT.length>20){
+							if(TEXT.length&gt;20){
 							    ss=TEXT.slice(10,20).join(",")+",";
 								return ss;
 							}
-							if(TEXT.length>10&&TEXT.length&lt;=20){
+							if(TEXT.length&gt;10&&TEXT.length&lt;=20){
 							    ss=TEXT.slice(10,TEXT.length).join(",");
 								return ss;
 							}
@@ -47,11 +47,11 @@
 					<var id="TEXT_THIRD">
 					    (function() {
 				            var ts = "";
-							if(TEXT.length>30){
+							if(TEXT.length&gt;30){
 							    ts=TEXT.slice(20,30).join(",")+",";
 								return ts;
 							}
-							if(TEXT.length>20&&TEXT.length&lt;30){
+							if(TEXT.length&gt;20&&TEXT.length&lt;30){
 							    ts=TEXT.slice(20,TEXT.length).join(",");
 								return ts;
 							}
@@ -60,7 +60,7 @@
 					<var id="TEXT_FOURTH">
 					     (function() {
 						     var fos = "";
-							 if(TEXT.length>30){
+							 if(TEXT.length&gt;30){
 							 fos = TEXT.slice(30,TEXT.length).join(",");
 							 return fos;
 							 }
@@ -80,9 +80,9 @@
 			<p>絕對值小於 <code><var>J</var></code> 的整數，應該是如下整數： </p>
 				<div>
 				<p><code class="hint_blue"><var>TEXT_FIRST</var></code></p>
-				<p data-if="TEXT.length>10"><code class="hint_blue"><var>TEXT_SECOND</var></code></p>
-				<p data-if="TEXT.length>20"><code class="hint_blue"><var>TEXT_THIRD</var></code></p>
-				<p data-if="TEXT.length>30"><code class="hint_blue"><var>TEXT_FOURTH</var></code></p>
+				<p data-if="TEXT.length&gt;10"><code class="hint_blue"><var>TEXT_SECOND</var></code></p>
+				<p data-if="TEXT.length&gt;20"><code class="hint_blue"><var>TEXT_THIRD</var></code></p>
+				<p data-if="TEXT.length&gt;30"><code class="hint_blue"><var>TEXT_FOURTH</var></code></p>
 				</div>
 			</div>
 			<div>
@@ -99,11 +99,21 @@
 					<var id="NUMERATOR">randRange(1,5)</var>
 					<var id="GCD">getGCD(DENOMINATOR,NUMERATOR)</var>
 					<var id="CHOICE_TYPE">randRange(1,2)</var>
-					<var id="RESULT">INT_NUM*2+1</var>
+					<var id="num">(function() {
+						if(isInt(DECIMAL)&&CHOICE_TYPE==1)
+						{
+							return INT_NUM-1;
+						}
+						else{
+						return INT_NUM;
+						}
+					
+					 })()</var>
+					<var id="RESULT">num*2+1</var>
 					<var id="ARRAY">
 					    (function() {
 						    var s = "";
-						    for(var i = -INT_NUM ; i &lt;= INT_NUM ; i++){
+						    for(var i = -num ; i &lt;= num; i++){
 							    s+=i+",";
 							}
 							var arr = s.substr(0,s.length-1).split(",");
@@ -116,23 +126,23 @@
 							if(INT_NUM&lt;=8){
 							    arrFirst=ARRAY.slice(0,ARRAY.length);
 							}
-							if(INT_NUM>8&&ARRAY.length &lt;=14){
+							if(INT_NUM &gt;8&&ARRAY.length &lt;=10){
 							    arrFirst=ARRAY.slice(0,ARRAY.length).join(",");
 							}
-							if(INT_NUM>8&&ARRAY.length >14){
-							    arrFirst=ARRAY.slice(0,14).join(",")+","
+							if(INT_NUM &gt;8&&ARRAY.length  &gt;10){
+							    arrFirst=ARRAY.slice(0,10).join(",")+","
 							}
 							return arrFirst;
 					    })()
 					</var>
 					<var id="arrSecond">
 					     (function() {
-						     var arrSecond = "";	 
-							 if(ARRAY.length &gt;14&&ARRAY.length &lt;=35){
-							    arrSecond = ARRAY.slice(14,ARRAY.length).join(",");
+						     var arrSecond = "";
+							 if(ARRAY.length &gt;10&&ARRAY.length &lt;=27){
+							    arrSecond = ARRAY.slice(10,ARRAY.length).join(",");
 							 }
-							 if(ARRAY.length &gt;35){
-							    arrSecond = ARRAY.slice(14,35).join(",")+","
+							 if(ARRAY.length &gt;27){
+							    arrSecond = ARRAY.slice(10,27).join(",")+","
 							 }
 							 return arrSecond;
 						 })()
@@ -140,36 +150,36 @@
 					<var id="arrThird">
 					     (function() {
 						     var arrThird = "";
-							 if(ARRAY.length &gt;=36){
-							     arrThird = ARRAY.slice(35,ARRAY.length).join(",");
+							 if(ARRAY.length &gt;=28){
+							     arrThird = ARRAY.slice(27,ARRAY.length).join(",");
 							 }
 							 return arrThird;
 						 })()
 					</var>
                 </div>
-				<p class="question">滿足 <code>\lvert</code> A <code>\rvert</code> &lt; <code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2"><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的整數A共有幾個？ </p>
+				<p class="question">滿足 <code>\lvert  A  \rvert &lt;</code> <code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2"><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的整數 <code>A</code> 共有幾個？ </p>
                 <div class="solution" data-type="multiple">
 				<span class="sol" data-forms="integer"><var>RESULT</var></span>
 				</div>
 
             <div class="hints">
-		    <p><code>\lvert A \rvert &lt;  </code><code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2"><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的意思是指 A 點所代表的整數到原點的距離小於 <code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2"><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 。</p>
-			<p data-if="ARRAY.length>=36">絕對值小於 <code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2" ><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的整數，應該是如下整數：<br><br>
+		    <p><code>\lvert A \rvert &lt;  </code><code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2"><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的意思是指 <code>A</code> 點所代表的整數到原點的距離小於 <code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2"><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 。</p>
+			<p data-if="ARRAY.length&gt;=28">絕對值小於 <code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2" ><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的整數，應該是如下整數：<br><br>
 			<code class="hint_blue"><var>arrFirst</var></code><br><br>
 			<code class="hint_blue"><var>arrSecond</var></code><br><br>
 			<code class="hint_blue"><var>arrThird</var></code>
 			</p>
-			<p data-if="ARRAY.length>14&&ARRAY.length&lt;=35&&INT_NUM>8">絕對值小於 <code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2" ><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的整數，應該是如下整數：<br><br>
+			<p data-if="ARRAY.length&gt;10&&ARRAY.length&lt;=27&&INT_NUM&gt;8">絕對值小於 <code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2" ><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的整數，應該是如下整數：<br><br>
 			<code class="hint_blue"><var>arrFirst</var></code><br><br>
 			<code class="hint_blue"><var>arrSecond</var></code>
 			</p>
-			<p data-if="ARRAY.length>14&&ARRAY.length&lt;=35&&INT_NUM&lt;=8">絕對值小於 <code data-if="CHOICE_TYPE==1" ><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2"><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的整數，應該是如下整數：<br><br>
+			<p data-if="ARRAY.length&gt;10&&ARRAY.length&lt;=27&&INT_NUM&lt;=8">絕對值小於 <code data-if="CHOICE_TYPE==1" ><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2"><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的整數，應該是如下整數：<br><br>
 			<code class="hint_blue"><var>arrFirst</var></code>
 			</p>
-			<p data-if="ARRAY.length&lt;=14">絕對值小於 <code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2"><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的整數，應該是如下整數：<br><br>
+			<p data-if="ARRAY.length&lt;=10">絕對值小於 <code data-if="CHOICE_TYPE==1"><var>DECIMAL</var></code><code data-if="CHOICE_TYPE===2"><var>INT_NUM</var>\frac{<var>NUMERATOR</var>}{<var>DENOMINATOR</var>}</code> 的整數，應該是如下整數：<br><br>
 			<code class="hint_blue"><var>arrFirst</var></code>
 			</p>
-			<p>所以整數A的個數為 <code><var>INT_NUM</var>+1+<var>INT_NUM</var>=</code> <code class="hint_pink"><var>RESULT</var></code> 個。</p>
+			<p>所以整數 <code>A</code> 的個數為 <code><var>num</var>+1+<var>num</var>=</code> <code class="hint_pink"><var>RESULT</var></code> 個。</p>
 			</div>
         </div>
 
@@ -188,7 +198,7 @@
 			<p data-if="RESULT ===3">因為 <code>\lvert -2 \rvert ,\lvert -1 \rvert ,\lvert 0 \rvert ,\lvert 1 \rvert ,\lvert 2 \rvert</code> 的值都小於 <code>3</code> ，</p>
 			<p data-if="RESULT ===4">我們可以知道這 <code>7</code> 個整數是指：<br></br><code class="hint_blue">-3,-2,-1,0,1,2,3</code></p>
 			<p data-if="RESULT ===4">因為 <code>\lvert -3 \rvert ,\lvert -2 \rvert ,\lvert -1 \rvert , \lvert 0 \rvert , \lvert 1 \rvert , \lvert 2 \rvert , \lvert 3 \rvert</code> 的值都小於 <code>4</code> ，</p>
-			<p data-if="RESULT ===5">我們可以知道這 <code>9</code> 個整數是：<br></br><code class="hint_blue">-4,-3,-2,-1,0,1,2,3,4</code></p>
+			<p data-if="RESULT ===5">我們可以知道這 <code>9</code> 個整數是指：<br></br><code class="hint_blue">-4,-3,-2,-1,0,1,2,3,4</code></p>
 			<p data-if="RESULT ===5">因為 <code>\lvert -4 \rvert ,\lvert -3 \rvert ,\lvert -2 \rvert ,\lvert -1 \rvert , \lvert 0 \rvert , \lvert 1 \rvert , \lvert 2 \rvert , \lvert 3 \rvert , \lvert 4 \rvert</code> 的值都小於 <code>5</code> ，</p>
 			<p data-if="RESULT ===6">我們可以知道這 <code>11</code> 個整數是指：<br></br><code class="hint_blue">-5,-4,-3,-2,-1,0,1,2,3,4,5</code></p>
 			<p data-if="RESULT ===6">因為 <code>\lvert -5 \rvert ,\lvert -4 \rvert ,\lvert -3 \rvert ,\lvert -2 \rvert ,\lvert -1 \rvert , \lvert 0 \rvert , \lvert 1 \rvert , \lvert 2 \rvert , \lvert 3 \rvert , \lvert 4 \rvert , \lvert 5 \rvert</code> 的值都小於 <code>6</code> ，</p>
