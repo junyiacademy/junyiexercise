@@ -76,11 +76,6 @@ $.extend(KhanUtil, {
         var mouseY = event.pageY - $(graphie.raphael.
             canvas.parentNode).offset().top;
 
-        // can't go beyond 10 pixels from the edge
-        mouseX = Math.max(10, Math.min(graphie.xpixels - 10,
-            mouseX));
-        mouseY = Math.max(10, Math.min(graphie.ypixels - 10,
-            mouseY));
         return [mouseX, mouseY];
     },
 
@@ -521,8 +516,10 @@ $.extend(KhanUtil, {
                 var scaledPoint = graph.scalePoint(coord);
                 this.visibleShape.attr({ cx: scaledPoint[0] });
                 this.visibleShape.attr({ cy: scaledPoint[1] });
-                this.mouseTarget.attr({ cx: scaledPoint[0] });
-                this.mouseTarget.attr({ cy: scaledPoint[1] });
+                if (this.mouseTarget != null) {
+                    this.mouseTarget.attr({ cx: scaledPoint[0] });
+                    this.mouseTarget.attr({ cy: scaledPoint[1] });
+                }
             }
             this.coord = coord.slice();
         };
@@ -530,7 +527,9 @@ $.extend(KhanUtil, {
         // Change z-order to back
         movablePoint.toBack = function() {
             if (this.visible) {
-                this.mouseTarget.toBack();
+                if (this.mouseTarget != null) {
+                    this.mouseTarget.toBack();
+                }
                 this.visibleShape.toBack();
             }
         };
@@ -538,11 +537,12 @@ $.extend(KhanUtil, {
         // Change z-order to front
         movablePoint.toFront = function() {
             if (this.visible) {
-                this.mouseTarget.toFront();
+                if (this.mouseTarget != null) {
+                    this.mouseTarget.toFront();
+                }
                 this.visibleShape.toFront();
             }
         };
-
 
         return movablePoint;
     },
@@ -1195,8 +1195,11 @@ $.extend(KhanUtil, {
                 }
             },
             fixed: {
-                edges: [false, false, false, false]
-                // possible TODO: add fixed.points support
+                // if true, users cannot move the edge independently
+                edges: [false, false, false, false],
+
+                // if true, users cannot move the point independently
+                points: [false, false, false, false]
             },
             constraints: {
                 constrainX: false, // limit movement to y axis
@@ -1208,8 +1211,8 @@ $.extend(KhanUtil, {
                 ymin: null,
                 ymax: null
             },
-            snapX: 1,
-            snapY: 1,
+            snapX: 0,
+            snapY: 0,
 
             // this function will be called whenever .translate(), .snap(), or
             // .moveTo() are called
@@ -1333,7 +1336,7 @@ $.extend(KhanUtil, {
         }
 
         function coordInBounds(limit, newVal, checkIsGreater) {
-            return checkIsGreater ? newVal < limit : newval > limit;
+            return checkIsGreater ? newVal < limit : newVal > limit;
         }
 
         function moveIsInBounds(index, newX, newY) {
@@ -1360,6 +1363,10 @@ $.extend(KhanUtil, {
                 hoverStyle: rect.hoverStyle.points,
                 snapX: rect.snapX,
                 snapY: rect.snapY,
+                visible: !rect.fixed.points[i],
+                constraints: {
+                    fixed: rect.fixed.points[i]
+                },
                 onMove: function(x, y) {
                     if (!moveIsInBounds(i, x, y)) {
                         return false;
@@ -1475,9 +1482,15 @@ $.extend(KhanUtil, {
             _.each(rect.points, function(point, i) {
                 var x0 = point.coord[0];
                 var y0 = point.coord[1];
+                var x1 = x0;
+                var y1 = y0;
 
-                var x1 = KhanUtil.roundToNearest(rect.snapX, x0);
-                var y1 = KhanUtil.roundToNearest(rect.snapY, y0);
+                if (rect.snapX) {
+                    x1 = KhanUtil.roundToNearest(rect.snapX, x0);
+                }
+                if (rect.snapY) {
+                    y1 = KhanUtil.roundToNearest(rect.snapY, y0);
+                }
 
                 if (!dx || !dy) {
                     dx = x1 - x0;
@@ -1497,21 +1510,49 @@ $.extend(KhanUtil, {
             rect.onMove(dx, dy);
         };
 
-        // TODO: add support
+        // TODO(stephanie): confirm this works
         rect.toFront = function() {
             _.each(rect.elems, function(elem) {
                 elem.toFront();
             });
         };
 
-        var setHoverStyle = function() {
+        rect.hide = function(speed) {
+            if (rect.hidden) {
+                return;
+            }
+
+            speed = speed || 100;
+
+            rect.fillArea.animate({
+                "fill-opacity": 0
+            }, speed);
+            $(rect.mouseTarget[0]).css("display", "none");
+
+            rect.hidden = true;
+        };
+
+        rect.show = function(speed) {
+            if (!rect.hidden) {
+                return;
+            }
+
+            speed = speed || 100;
+
+            rect.fillArea.animate(rect.normalStyle.area, speed);
+            $(rect.mouseTarget[0]).css("display", "block");
+
+            rect.hidden = false;
+        };
+
+        rect.enableHoverStyle = function() {
             rect.highlight = true;
             if (!KhanUtil.dragging) {
                 rect.fillArea.animate(rect.hoverStyle.area, 100);
             }
         };
 
-        var setNormalStyle = function() {
+        rect.enableNormalStyle = function() {
             rect.highlight = false;
             if (!rect.dragging) {
                 rect.fillArea.animate(rect.normalStyle.area, 100);
@@ -1519,51 +1560,61 @@ $.extend(KhanUtil, {
         };
 
         // tie actual translation events to the translate function
-        $(rect.mouseTarget[0]).css("cursor", "move");
-        $(rect.mouseTarget[0]).on(
-            "vmouseover vmouseout vmousedown", function(event) {
-                if (event.type === "vmouseover") {
-                    setHoverStyle();
+        var bindTranslation = function() {
+            $(rect.mouseTarget[0]).css("cursor", "move");
+            $(rect.mouseTarget[0]).on(
+                "vmouseover vmouseout vmousedown", function(event) {
+                    if (event.type === "vmouseover") {
+                        rect.enableHoverStyle();
 
-                } else if (event.type === "vmouseout") {
-                    setNormalStyle();
+                    } else if (event.type === "vmouseout") {
+                        rect.enableNormalStyle();
 
-                } else if (event.type === "vmousedown" &&
-                        (event.which === 1 || event.which === 0)) {
-                    event.preventDefault();
-                    rect.toFront();
-                    rect.prevCoord = KhanUtil.getMouseCoord(event);
-
-                    setHoverStyle();
-
-                    $(document).on("vmousemove vmouseup", function(event) {
+                    } else if (event.type === "vmousedown" &&
+                            (event.which === 1 || event.which === 0)) {
                         event.preventDefault();
-                        rect.dragging = true;
-                        KhanUtil.dragging = true;
+                        rect.toFront();
+                        rect.prevCoord = KhanUtil.getMouseCoord(event);
 
-                        if (event.type === "vmousemove") {
-                            var currCoord = KhanUtil.getMouseCoord(event);
+                        rect.enableHoverStyle();
 
-                            if (rect.prevCoord && rect.prevCoord.length === 2) {
-                                var diff = KhanUtil.coordDiff(rect.prevCoord, currCoord);
-                                rect.translate(diff[0], diff[1]);
+                        $(document).on("vmousemove vmouseup", function(event) {
+                            event.preventDefault();
+                            rect.dragging = true;
+                            KhanUtil.dragging = true;
+
+                            if (event.type === "vmousemove") {
+                                var currCoord = KhanUtil.getMouseCoord(event);
+
+                                if (rect.prevCoord && rect.prevCoord.length === 2) {
+                                    var diff = KhanUtil.coordDiff(rect.prevCoord, currCoord);
+                                    rect.translate(diff[0], diff[1]);
+                                }
+
+                                rect.prevCoord = currCoord;
+
+                            } else if (event.type === "vmouseup") {
+                                $(document).off("vmousemove vmouseup");
+                                rect.dragging = false;
+                                KhanUtil.dragging = false;
+
+                                var currCoord = KhanUtil.getMouseCoord(event);
+                                if (currCoord[0] < rect.getX() ||
+                                    currCoord[0] > rect.getX2() ||
+                                    currCoord[1] < rect.getY() ||
+                                    currCoord[1] > rect.getY2()) {
+                                        rect.enableNormalStyle();
+                                }
+
+                                // snap to grid
+                                rect.snap();
                             }
+                        });
+                    }
+            });
+        };
 
-                            rect.prevCoord = currCoord;
-
-                        } else if (event.type === "vmouseup") {
-                            $(document).off("vmousemove vmouseup");
-                            rect.dragging = false;
-                            KhanUtil.dragging = false;
-
-                            setNormalStyle();
-
-                            // snap to grid
-                            rect.snap();
-                        }
-                    });
-                }
-        });
+        bindTranslation();
 
         return rect;
     },

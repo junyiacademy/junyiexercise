@@ -1,4 +1,4 @@
-﻿(function() {
+(function() {
 
 /*
  * Answer types
@@ -39,11 +39,6 @@
  *
  */
 
-var inexactMessages = {
-    unsimplified: "你的答案其實很接近了！要記得簡化或約分唷！",
-    missingPercentSign: "你的答案其實很接近了，但缺一個<code>\\%</code> 的符號唷。"
-};
-
 Khan.answerTypes = $.extend(Khan.answerTypes, {
     /*
      * text answer type
@@ -54,12 +49,18 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
     text: {
         setup: function(solutionarea, solution) {
             // Add a text box
-            var input = $('<input type="text">');
+            var input;
+            if (window.Modernizr && Modernizr.touch) {
+                // special flag for iOS devices
+                input = $('<input type="text" autocapitalize="off">');
+            } else {
+                input = $('<input type="text">');
+            }
             $(solutionarea).append(input);
 
             // The fallback variable is used in place of the answer, if no
             // answer is provided (i.e. the field is left blank)
-            var fallback = $(solution).data("fallback") + "";
+            var fallback = $(solution).data("fallback");
 
             return {
                 validator: Khan.answerTypes.text.createValidator(solution),
@@ -67,7 +68,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     // return the value in the text box, or the fallback
                     return input.val().length > 0 ?
                         input.val() :
-                        (fallback ? fallback : "");
+                        (fallback != null ? fallback + "" : "");
                 },
                 solution: $.trim($(solution).text()),
                 examples: [],
@@ -77,11 +78,32 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             };
         },
         createValidator: function(solution) {
+            var options = $.extend({
+                correctCase: "required"
+            }, $(solution).data());
+
             var correct = $.trim($(solution).text());
 
             return function(guess) {
                 guess = $.trim(guess);
-                return correct === guess;
+                if (guess.toLowerCase() === correct.toLowerCase()) {
+                    if (correct === guess || options.correctCase === "optional") {
+                        return true;
+                    } else {
+                        if (guess === guess.toLowerCase()) {
+                            return "Your answer is almost correct, but must be " +
+                                   "in capital letters.";
+                        } else if (guess === guess.toUpperCase()) {
+                            return "Your answer is almost correct, but must not " +
+                                   "be in capital letters.";
+                        } else {
+                            return "Your answer is almost correct, but must be " +
+                                   "in the correct case.";
+                        }
+                    }
+                } else {
+                    return false;
+                }
             };
         }
     },
@@ -106,60 +128,80 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
      * - decimal:  1.7
      */
     number: {
+        defaultForms: "literal, integer, proper, improper, mixed, decimal",
         setup: function(solutionarea, solution) {
-            var input;
-            // If we are on a tablet, display a number keypad
-            if (typeof userExercise !== "undefined" && userExercise.tablet) {
-                input = $("<input type='number'>");
-            } else {
-                input = $("<input type='text'>");
-            }
-            $(solutionarea).append(input);
-
             // retrieve the options from the solution data
             var options = $.extend({
                 simplify: "required",
                 ratio: false,
                 maxError: Math.pow(2, -42),
-                forms: "literal, integer, proper, improper, mixed, decimal"
+                forms: Khan.answerTypes.number.defaultForms,
             }, $(solution).data());
             var acceptableForms = options.forms.split(/\s*,\s*/);
 
+            if (window.Modernizr && Modernizr.touch) {
+                // Use special HTML5 input element for touch devices, so we can
+                // take advantage of special numeric keyboards...
+                var inputMarkup = '<input type="number" step="any">';
+                var numberForms = ["integer", "decimal"];
+                // ...except if the answer can be represented as a fraction,
+                // pi, log, percent, dollar, or anything else that isn't a
+                // "floating point number".
+                $.each(acceptableForms, function (i,form) {
+                    if (numberForms.indexOf(form) < 0) {
+                        inputMarkup = '<input type="text"' +
+                                      ' autocapitalize="off">';
+                    }
+                });
+                var input = $(inputMarkup);
+            } else {
+                // people don't always set their locale right, so use a text
+                // box to allow for alternative radix points
+                var input = $('<input type="text">');
+            }
+            $(solutionarea).append(input);
+
             // retrieve the example texts from the different forms
             var exampleForms = {
-                integer: "整數，例：<code>6</code>",
+                integer: "an integer, like <code>6</code>",
 
                 proper: (function() {
                         if (options.simplify === "optional") {
-                            return "<em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code>";
+                            return "a <em>proper</em> fraction, like " +
+                                   "<code>1/2</code> or <code>6/10</code>";
                         } else {
-                            return "真分數的<em>最簡</em>分數，例：<code>3/5</code>";
+                            return "a <em>simplified proper</em> fraction, " +
+                                   "like <code>3/5</code>";
                         }
                     })(),
 
                 improper: (function() {
                         if (options.simplify === "optional") {
-                            return "<em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code>";
+                            return "an <em>improper</em> fraction, like " +
+                                   "<code>10/7</code> or <code>14/8</code>";
                         } else {
-                            return "假分數的<em>最簡</em>分數，例：<code>7/4</code>";
+                            return "a <em>simplified improper</em> " +
+                                   "fraction, like <code>7/4</code>";
                         }
                     })(),
 
-                pi: "pi 的倍數，例如 <code>12\\ \\text{pi}</code> 或 <code>2/3\\ \\text{pi}</code>",
+                pi: "a multiple of pi, like <code>12\\ \\text{pi}</code> or " +
+                    "<code>2/3\\ \\text{pi}</code>",
 
                 log: "an expression, like <code>\\log(100)</code>",
 
-                percent: "百分比，例：<code>12.34\\%</code>",
+                percent: "a percent, like <code>12.34\\%</code>",
 
-                dollar: "金額表示：例：<code>$2.75</code>",
+                dollar: "a money amount, like <code>$2.75</code>",
 
-                mixed: "帶分數，例：<code>1\\ 3/4</code>",
+                mixed: "a mixed number, like <code>1\\ 3/4</code>",
 
                 decimal: (function() {
                         if (options.inexact === undefined) {
-                            return "小數，例：<code>0.75</code>";
+                            return "an <em>exact</em> decimal, like " +
+                                   "<code>0.75</code>";
                         } else {
-                            return "小數，例：<code>0.75</code>";
+                            return "a decimal, like <code>0.75</code>";
                         }
                     })()
             };
@@ -172,14 +214,14 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 }
             });
 
-            var fallback = $(solution).data("fallback") + "";
+            var fallback = $(solution).data("fallback");
 
             return {
                 validator: Khan.answerTypes.number.createValidator(solution),
                 answer: function() {
                     return input.val().length > 0 ?
                         input.val() :
-                        (fallback ? fallback : "");
+                        (fallback != null ? fallback + "" : "");
                 },
                 solution: $.trim($(solution).text()),
                 examples: examples,
@@ -194,9 +236,18 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 simplify: "required",
                 ratio: false,
                 maxError: Math.pow(2, -42),
-                forms: "literal, integer, proper, improper, mixed, decimal"
+                forms: Khan.answerTypes.number.defaultForms
             }, $(solution).data());
             var acceptableForms = options.forms.split(/\s*,\s*/);
+
+            // If percent is an acceptable form, make sure it's the last one
+            // in the list so we don't prematurely complain about not having
+            // a percent sign when the user entered the correct answer in a
+            // different form (such as a decimal or fraction)
+            if (_.contains(acceptableForms, "percent")) {
+                acceptableForms = _.without(acceptableForms, "percent");
+                acceptableForms.push("percent");
+            }
 
             // Take text looking like a fraction, and turn it into a number
             var fractionTransformer = function(text) {
@@ -255,7 +306,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
 
                 // integer, which is encompassed by decimal
                 integer: function(text) {
-                    return forms.decimal(text);
+                    return forms.decimal(text, 1);
                 },
 
                 // A proper fraction
@@ -299,6 +350,20 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     } else if (match = text.match(/^([+-]?\d+\s*(?:\/\s*[+-]?\d+)?)\s*\*?\s*(pi?|\u03c0|t(?:au)?|\u03c4)$/i)) {
                         possibilities = fractionTransformer(match[1]);
 
+                    // 4 5 / 6 pi
+                    } else if (match = text.match(/^([+-]?)(\d+)\s*([+-]?\d+)\s*\/\s*([+-]?\d+)\s*\*?\s*(pi?|\u03c0|t(?:au)?|\u03c4)$/i)) {
+                        var sign = parseFloat(match[1] + "1"),
+                            integ = parseFloat(match[2]),
+                            num = parseFloat(match[3]),
+                            denom = parseFloat(match[4]);
+                        var simplified = num < denom &&
+                            KhanUtil.getGCD(num, denom) === 1;
+
+                        possibilities = [{
+                            value: sign * (integ + num / denom),
+                            exact: simplified
+                        }];
+
                     // 5 pi / 6
                     } else if (match = text.match(/^([+-]?\d+)\s*\*?\s*(pi?|\u03c0|t(?:au)?|\u03c4)\s*(?:\/\s*([+-]?\d+))?$/i)) {
                         possibilities = fractionTransformer(match[1] +
@@ -318,10 +383,18 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                                 /^(\S+)\s*\*?\s*(pi?|\u03c0|t(?:au)?|\u03c4)$/i
                                         )) {
                         possibilities = forms.decimal(match[1]);
+                    } else {
+                        possibilities = _.reduce(Khan.answerTypes.number.defaultForms.split(/\s*,\s*/), function(memo, form) {
+                            return memo.concat(forms[form](text));
+                        }, []);
+                        $.each(possibilities, function(ix, possibility) {
+                            possibility.piApprox = true;
+                        });
+                        return possibilities;
                     }
 
                     var multiplier = Math.PI;
-                    if (match && match[2].match(/t(?:au)?|\u03c4/)) {
+                    if (text.match(/t(?:au)?|\u03c4/)) {
                         multiplier = Math.PI * 2;
                     }
 
@@ -361,6 +434,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     var transformed = forms.decimal(text);
                     $.each(transformed, function(ix, t) {
                         t.exact = hasPercentSign;
+                        t.value = t.value / 100;
                     });
                     return transformed;
                 },
@@ -401,8 +475,17 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     return [];
                 },
 
-                // Decimal numbers
-                decimal: function(text) {
+                // Decimal numbers -- compare entered text rounded to
+                // 'precision' Reciprical of the precision against the correct
+                // answer. We round to 1/1e10 by default, which is healthily
+                // less than machine epsilon but should be more than any real
+                // decimal answer would use. (The 'integer' answer type uses
+                // precision == 1.)
+                decimal: function(text, precision) {
+                    if (precision == null) {
+                        precision = 1e10;
+                    }
+
                     var normal = function(text) {
                         var match = text
 
@@ -421,16 +504,23 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                             var x = parseFloat(match[1].replace(/[, ]/g, ""));
 
                             if (options.inexact === undefined) {
-                                var factor = Math.pow(10, 10);
-                                x = Math.round(x * factor) / factor;
+                                x = Math.round(x * precision) / precision;
                             }
 
                             return x;
                         }
                     };
 
+                    var commas = function(text) {
+                        text = text.replace(/([\.,])/g, function(_, c) {
+                            return (c === "." ? "," : ".");
+                        });
+                        return normal(text);
+                    };
+
                     return [
-                        { value: normal(text), exact: true }
+                        { value: normal(text), exact: true },
+                        { value: commas(text), exact: true }
                     ];
                 }
             };
@@ -452,6 +542,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     for (var j = 0, l = transformed.length; j < l; j++) {
                         var val = transformed[j].value;
                         var exact = transformed[j].exact;
+                        var piApprox = transformed[j].piApprox;
 
                         // If a string was returned, and it exactly matches,
                         // return true
@@ -459,7 +550,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                                 correct.toLowerCase() === val.toLowerCase()) {
                             ret = true;
                             return false; // break;
-                        } if (typeof val === "number" &&
+                        } else if (typeof val === "number" &&
                                 Math.abs(correctFloat - val) <
                                 options.maxError) {
                             // If the exact correct number was returned,
@@ -468,12 +559,22 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                                 ret = true;
                             } else if (form === "percent") {
                                 // Otherwise, an error was returned
-                                ret = inexactMessages.missingPercentSign;
+                                ret = "Your answer is almost correct, but " +
+                                      "it is missing a <code>\\%</code> at " +
+                                      "the end.";
                             } else {
-                                ret = inexactMessages.unsimplified;
+                                ret = "Your answer is almost correct, but " +
+                                      "it needs to be simplified.";
                             }
 
                             return false; // break;
+                        } else if (typeof val === "number" && piApprox &&
+                                Math.abs(correctFloat / val - 1) < 0.001) {
+                            ret = "Your answer is close, but you may have " +
+                                  "approximated pi. Enter your answer as a " +
+                                  "multiple of pi, like <code>12\\ " +
+                                  "\\text{pi}</code> or <code>2/3\\ " +
+                                  "\\text{pi}</code>";
                         }
                     }
                 });
@@ -499,7 +600,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
 
     rational: {
         setup: function(solutionarea, solution) {
-            solution.data("forms", "decimal, proper, improper, mixed");
+            solution.data("forms", "integer, proper, improper, mixed");
             return Khan.answerTypes.number.setup(solutionarea, solution);
         },
         createValidator: function(solution) {
@@ -531,13 +632,25 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
     // Perform a regex match on the entered string
     regex: {
         setup: function(solutionarea, solution) {
-            var input = $('<input type="text">');
+            var input;
+            if (window.Modernizr && Modernizr.touch) {
+                // special flag for iOS devices
+                input = $('<input type="text" autocapitalize="off">');
+            } else {
+                input = $('<input type="text">');
+            }
             $(solutionarea).append(input);
+
+            // The fallback variable is used in place of the answer, if no
+            // answer is provided (i.e. the field is left blank)
+            var fallback = $(solution).data("fallback");
 
             return {
                 validator: Khan.answerTypes.regex.createValidator(solution),
                 answer: function() {
-                    return input.val().length > 0 ? input.val() : "";
+                   return input.val().length > 0 ?
+                       input.val() :
+                       (fallback != null ? fallback + "" : "");
                 },
                 solution: $.trim($(solution).text()),
                 examples: [],
@@ -549,9 +662,17 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
         createValidator: function(solution) {
             var correct = $.trim($(solution).text());
 
+            var flags = "";
+
+            if ($(solution).data("case-insensitive") != null) {
+                flags += "i";
+            }
+
+            var regex = new RegExp(correct, flags);
+
             return function(guess) {
                 guess = $.trim(guess);
-                return guess.match(correct) != null;
+                return guess.match(regex) != null;
             };
         }
     },
@@ -564,8 +685,14 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             }, $(solution).data());
 
             // Add two input boxes
-            var inte = $("<input type='text'>"),
-                rad = $("<input type='text'>");
+            var inte, rad;
+            if (window.Modernizr && Modernizr.touch) {
+                inte = $('<input type="number" step="any">');
+                rad = $('<input type="number" step="any">');
+            } else {
+                inte = $('<input type="text">');
+                rad = $('<input type="text">');
+            }
             // Make them look pretty
             solutionarea.addClass("radical")
                 .append($("<span>").append(inte))
@@ -587,8 +714,10 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 },
                 solution: ans,
                 examples: (options.simplify === "required") ?
-                    ["最簡根式，例： <code>\\sqrt{2}</code> 或 <code>3\\sqrt{5}</code>"] :
-                    ["根式，例： <code>\\sqrt{8}</code> 或 <code>2\\sqrt{2}</code>"],
+                    ["a simplified radical, like <code>\\sqrt{2}</code> or " +
+                     "<code>3\\sqrt{5}</code>"] :
+                    ["a radical, like <code>\\sqrt{8}</code> or " +
+                     "<code>2\\sqrt{2}</code>"],
                 showGuess: function(guess) {
                     inte.val(guess ? guess[0] : "");
                     rad.val(guess ? guess[1] : "");
@@ -622,7 +751,8 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     if (simplified || options.simplify === "optional") {
                         return true;
                     } else {
-                        return inexactMessages.unsimplified;
+                        return "Your answer is almost correct, but it needs " +
+                               "to be simplified.";
                     }
                 } else {
                     return false;
@@ -653,14 +783,16 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             var answerDataArray = [];
 
             // Iterate over each of the .sol elements
-            $(solutionarea).find(".sol").each(function() {
+            $(solutionarea).find(".sol").each(function(idx) {
                 var type = $(this).data("type");
                 type = type != null ? type : "number";
 
-                // store the previous answer, then empty it in preperation for
-                // treating it as a solutionarea
-                var sol = $(this).clone(),
-                    solarea = $(this).empty();
+                // find the corresponding answer
+                var sol = $(solution).find(".sol").eq(idx);
+
+                // empty the .sol element in preperation for treating it as a
+                // solutionarea
+                var solarea = $(this).empty();
 
                 // perform setup on each of the areas
                 var answerData = Khan.answerTypes[type].setup(solarea, sol);
@@ -693,9 +825,15 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 })(),
                 // Find all the example classes from the solution, and store
                 // those
-                examples: solution.find(".example").map(function(i, el) {
-                    return $(el).html();
-                }),
+                examples: (function() {
+                    var ex = solution.find(".example").map(function(i, el) {
+                        return $(el).html();
+                    });
+                    if (ex.length === 0 && answerDataArray.length === 1) {
+                        ex = answerDataArray[0].examples;
+                    }
+                    return ex;
+                })(),
                 showGuess: function(guess) {
                     // Iterate through each of the answerDatas, and show the
                     // cooresponding guess for each
@@ -704,6 +842,20 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                             answerData.showGuess(guess[i]);
                         } else {
                             answerData.showGuess();
+                        }
+                    });
+                },
+                showCustomGuess: function(guess) {
+                    // Iterate through each of the answerDatas, and show the
+                    // cooresponding custom guess for each if it exists
+                    $.each(answerDataArray, function(i, answerData) {
+                        if (!$.isFunction(answerData.showCustomGuess)) {
+                            return;
+                        }
+                        if (guess !== undefined) {
+                            answerData.showCustomGuess(guess[i]);
+                        } else {
+                            answerData.showCustomGuess();
                         }
                     });
                 }
@@ -883,11 +1035,12 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                         var pass = validator(g);
 
                         // If this validator completely accepts this answer
-                        if (pass === true) {
+                        // or returns a check answer message
+                         if (pass !== false) {
                             // remove the working validator
                             unusedValidators.splice(i, 1);
                             // store correct
-                            correct = true;
+                            correct = pass;
                             // break
                             return false;
                         }
@@ -906,6 +1059,11 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     if (!correct && $.trim([g].join("")) !== "") {
                         valid = false;
                         return false;
+                    }
+
+                    // If we have a check answer message
+                    if (typeof correct === "string") {
+                        valid = correct;
                     }
 
                     // If we've run out of validators, stop
@@ -928,7 +1086,6 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     // incorrect, some of the answers are missing
                     valid = false;
                 }
-
                 return valid;
             };
         }
@@ -1053,7 +1210,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             // If showNone, replace the last solution with "None of the above",
             // which reveals the correct answer when it is picked and is right
             if (showNone) {
-                var none = $("<span>以上皆非</span>");
+                var none = $("<span>None of the above.</span>");
 
                 if (noneIsCorrect) {
                     none.data("correct", true);
@@ -1105,7 +1262,6 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                                        .attr("checked", false);
                     } else {
                         // Select the correct radio button
-                        var list = $("#solutionarea").find("ul");
                         list.children().filter(function() {
                             return $.trim(extractRawCode($(this).find("span")))
                                 === $.trim(guess);
@@ -1126,7 +1282,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             return function(guess) {
                 if (guess == null) {
                     return "";
-                } else if (guess === "以上皆非" &&
+                } else if (guess === "None of the above." &&
                         $("#solutionarea").find("ul").data("real-answer") !=
                         null) {
                     // Hacky stuff to make the correct solution appear when
@@ -1210,11 +1366,11 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
      * variable. It should return one of the usual return types depending on
      * whether the answer is correct or not.
      *
-     * The .show-guess and .show-guess-answerarea elements are evaluated as
+     * The .show-guess and .show-guess-solutionarea elements are evaluated as
      * javascript whenever the guess needs to be re-displayed (mostly in the
      * timeline). The .show-guess function should be used to change elements
-     * outside of the answerarea, and the .show-guess-answerarea one should be
-     * used to modify elements within the answerarea
+     * outside of the solutionarea, and the .show-guess-solutionarea one should
+     * be used to modify elements within the solutionarea
      *
      * The text of the .example elements are used in the acceptable formats
      * popup
@@ -1229,7 +1385,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             // Retrieve some code
             var guessCode = solution.find(".guess").text();
             var showCustomGuessCode = solution.find(".show-guess").text();
-            var showGuessCode = solution.find(".show-guess-answerarea").text();
+            var showGuessCode = solution.find(".show-guess-solutionarea").text();
 
             return {
                 validator: Khan.answerTypes.custom.createValidator(solution),
@@ -1289,10 +1445,16 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
     primeFactorization: {
         // Same as the text function, the differences lie in the validator
         setup: function(solutionarea, solution) {
-            var input = $('<input type="text">');
+            var input;
+            if (window.Modernizr && Modernizr.touch) {
+                // special flag for iOS devices
+                input = $('<input type="text" autocapitalize="off">');
+            } else {
+                input = $('<input type="text">');
+            }
             $(solutionarea).append(input);
 
-            var fallback = $(solution).data("fallback") + "";
+            var fallback = $(solution).data("fallback");
 
             return {
                 validator: Khan.answerTypes
@@ -1300,7 +1462,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 answer: function() {
                     return input.val().length > 0 ?
                         input.val() :
-                        (fallback ? fallback : "");
+                        (fallback != null ? fallback + "" : "");
                 },
                 solution: $.trim($(solution).text()),
                 examples: [

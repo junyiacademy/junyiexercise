@@ -1,24 +1,23 @@
 /* khan-exercise.js
 
-    The main entry point here is actually the loadScripts method which is defined
-    as Khan.loadScripts and then evaluated around line 500.
+    The main entry point here is essentially the onjQueryLoaded method around
+    line 750. It loads in many of the pre-reqs and then calls, one way or
+    another, setUserExercise and loadModule for each required module in utils/.
 
-    When this loadScripts is called, it loads in many of the pre-reqs and then
-    calls, one way or another, setUserExercise concurrently with loadModules.
+    setProblemNum updates some instance vars that get looked at by other
+    functions.
 
-    setProblemNum updates some instance vars that get looked at by other functions.
-
-    loadModules takes care of loading an individual exercise's prereqs (i.e.
-    word problems, etc). It _also_ loads in the khan academy site skin and
+    loadModule will load an individual exercise util module (e.g.,
+    word-problems.js, etc). It _also_ loads in the Khan Academy site skin and
     exercise template via injectSite which runs prepareSite first then
     makeProblemBag and makeProblem when it finishes loading dependencies.
 
     prepareSite and makeProblem are both fairly heavyweight functions.
 
     If you are trying to register some behavior when the page loads, you
-    probably want it to go in prepareSite. (which also registers server-initiated
-    behavior via api.js) as well. By the time prepareSite is called, jQuery and
-    any core plugins are already available.
+    probably want it to go in prepareSite. (which also registers
+    server-initiated behavior via api.js) as well. By the time prepareSite is
+    called, jQuery and any core plugins are already available.
 
     If you are trying to do something each time a problem loads, you probably
     want to look at makeProblem.
@@ -49,9 +48,6 @@
     * apiRequestStarted / apiRequestEnded -- when an API request is sent
       outbound or completed, respectively. Listeners can keep track of whether
       or not khan-exercises is still waiting on API responses.
-
-    * exerciseLoaded:[exercise-id] -- when an exercise and all of its
-      dependencies are loaded and ready to render
 
     * updateUserExercise -- when an updated userExercise has been received
       and is being used by khan-exercises, either via the result of an API
@@ -155,14 +151,17 @@ var Khan = (function() {
 
     userExercise = undefined,
 
-    // Check to see if we're in test mode
-    testMode = typeof Exercises === "undefined",
+    // Check to see if we're in local mode
+    localMode = typeof Exercises === "undefined",
+
+    // Set in prepareSite when Exercises.init() has already been called
+    assessmentMode,
 
     // The main server we're connecting to for saving data
     server = typeof apiServer !== "undefined" ? apiServer :
-        testMode ? "http://localhost:8080" : "",
+        localMode ? "http://localhost:8080" : "",
 
-    // The ID, filename, and name of the exercise -- these will only be set here in testMode
+    // The ID, filename, and name of the exercise -- these will only be set here in localMode
     exerciseId = ((/([^\/.]+)(?:\.html)?$/.exec(window.location.pathname) || [])[1]) || "",
     exerciseFile = exerciseId + ".html",
     exerciseName = deslugify(exerciseId),
@@ -240,49 +239,53 @@ var Khan = (function() {
         "issues": 0
     },
 
-    // Dict of exercise ids that are loading.
-    // Values are number of remote exercises that are currently
-    // pending in the middle of a load.
-    loadingExercises = {},
-    loadingExercisesIndex = {},
-    loadingExercisesContent = {},
+    // Dictionary of loading and loaded exercises; keys are exercise IDs,
+    // values are promises that are resolved when the exercise is loaded
+    exerciseFilePromises = {},
+
+    // A promise for each loaded or loading module, keyed by module filename
+    // (module.src) -- will be resolved when the module is loaded (on the live
+    // site, immediately)
+    modulePromises = {},
 
     urlBase = typeof urlBaseOverride !== "undefined" ? urlBaseOverride :
-        testMode ? "../" : "/khan-exercises/",
+        localMode ? "../" : "/khan-exercises/",
 
-    // In test mode, we use khan-exercises local copy of the /images
+    // In local mode, we use khan-exercises local copy of the /images
     // directory.  But in production (on www.khanacademy.org), we use
     // the canonical location of images, which is under '/'.
-    imageBase = ((typeof urlBaseOverride !== "undefined" || testMode)
+    imageBase = ((typeof urlBaseOverride !== "undefined" || localMode)
                  ? (urlBase + "images/") : ("/images/"));
 
 
     lastFocusedSolutionInput = null,
+
+    // "Check answer" or in assessmentMode "Submit answer" - set in prepareSite
+    originalCheckAnswerText = "",
 
     issueError = "Communication with GitHub isn't working. Please file " +
         "the issue manually at <a href=\"" +
         "http://github.com/Khan/khan-exercises/issues/new\">GitHub</a>. " +
         "Please reference exercise: " + exerciseId + ".",
     issueSuccess = function(url, title, suggestion) {
-        return "感謝你的回報問題。";
+        return ["Thank you for your feedback! Your issue has been created and can be ",
+            "found at the following link:",
+            "<p><a id=\"issue-link\" href=\"", url, "\">", title, "</a>",
+            "<p>", suggestion, "</p>"].join("");
     },
-    issueIntro = "發生了什麼事?",
+    issueIntro = "Remember to check the hints and double check your math. All provided information will be public. Thanks for your help!",
 
-    // True once we've sent a request to load all modules
-    modulesLoaded = false,
-
-    // jQuery.Deferred object that registers
-    // callbacks to be run when all modules are done
-    // loading.
-    modulesDeferred = null,
-
-    gae_bingo = window.gae_bingo || { bingo: function() {} },
+    gae_bingo = window.gae_bingo || {
+        ab_test: function() {},
+        bingo: function() {},
+        tests: {}
+    },
 
     // The ul#examples (keep in a global because we need to modify it even when it's out of the DOM)
     examples = null;
 
     // Add in the site stylesheets
-    if (testMode) {
+    if (localMode) {
         (function() {
             var link = document.createElement("link");
             link.rel = "stylesheet";
@@ -293,30 +296,28 @@ var Khan = (function() {
             link.rel = "stylesheet";
             link.href = urlBase + "css/khan-exercise.css";
             document.getElementsByTagName("head")[0].appendChild(link);
-
-            link = document.createElement("link");
-            link.rel = "stylesheet";
-            link.href = urlBase + "css/grids.css";
-            document.getElementsByTagName("head")[0].appendChild(link);
         })();
     }
 
     // The main Khan Module
     var Khan = {
 
-        // Modules currently in use
+        // Set of modules currently in use -- keys are module names, value is
+        // always true
         modules: {},
 
-        // Map from exercise filename to a string of required modules
-        // (data-require). These module names are used in runModules(), where
-        // $.fn["module-name"], $.fn["module-nameLoad"], and
-        // $.fn["module-nameCleanup"] are called.
+        // Map from exercise ID to a list of required modules (data-require),
+        // These module names are used in resetModules() and indirectly by
+        // runModules(), where $.fn["module-name"], $.fn["module-nameLoad"],
+        // and $.fn["module-nameCleanup"] are called.
         exerciseModulesMap: {},
 
         // So modules can use file paths properly
         urlBase: urlBase,
 
         imageBase: imageBase,
+
+        startLoadingExercise: startLoadingExercise,
 
         moduleDependencies: {
             "math": [{
@@ -343,6 +344,7 @@ var Khan = (function() {
             "congruency": ["angles", "interactive"],
             "graphie-3d": ["graphie", "matrix"],
             "graphie-geometry": ["graphie", "matrix"],
+            "matrix": ["expressions"],
             "matrix-input": ["jquery.cursor-position"],
             "chemistry": ["jquery-ui"]
         },
@@ -365,61 +367,45 @@ var Khan = (function() {
             warn("You should " + enableFontDownload + " to improve the appearance of math expressions.", true);
         },
 
-        resetModules: function(modules) {
-            Khan.modules = {};
-
-            if (testMode) {
-                Khan.require(["jquery-ui", "../jquery.qtip"]);
+        // TODO(alpert): This doesn't need to be in the Khan object.
+        getBaseModules: function() {
+            var mods = [];
+            if (localMode) {
+                mods.push("jquery-ui", "../jquery.qtip");
             }
 
             // Base modules required for every problem
-            Khan.require(["answer-types", "tmpl", "underscore", "jquery.adhesion", "hints", "calculator"]);
+            mods.push(
+                    "answer-types", "tmpl", "jquery.adhesion",
+                    "hints", "calculator"
+                );
 
-            if (modules) {
-                Khan.require(modules);
-            }
-
-            if (testMode && !modules) {
-                modules = document.documentElement.getAttribute("data-require");
-                Khan.require(modules);
-            }
+            return mods;
         },
 
-        require: function(mods) {
-            if (mods == null) {
-                return;
-            } else if (typeof mods === "string") {
-                mods = mods.split(" ");
-            } else if (!$.isArray(mods)) {
-                mods = [mods];
-            }
+        resetModules: function(exerciseId) {
+            var modules = Khan.getBaseModules().concat(
+                    Khan.exerciseModulesMap[exerciseId]);
+            var moduleSet = {};
 
-            $.each(mods, function(i, mod) {
-                var src, deps;
-
-                if (typeof mod === "string") {
-                    var cachebust = "";
-                    if (testMode && Khan.query.nocache != null) {
-                        cachebust = "?" + Math.random();
-                    }
-                    src = urlBase + "utils/" + mod + ".js" + cachebust;
-                    deps = Khan.moduleDependencies[mod];
-                    mod = {
-                        src: src,
-                        name: mod
-                    };
-                } else {
-                    src = mod.src;
-                    deps = mod.dependencies;
-                    delete mod.dependencies;
-                }
-
-                if (!Khan.modules[src]) {
-                    Khan.modules[src] = mod;
-                    Khan.require(deps);
-                }
-
+            $.each(modules, function(i, mod) {
+                useModule(mod);
             });
+
+            Khan.modules = moduleSet;
+
+            function useModule(modNameOrObject) {
+                if (typeof modNameOrObject === "string") {
+                    moduleSet[modNameOrObject] = true;
+                    var deps = Khan.moduleDependencies[modNameOrObject] || [];
+
+                    $.each(deps, function(i, mod) {
+                        useModule(mod);
+                    });
+                } else if (modNameOrObject.name) {
+                    moduleSet[modNameOrObject.name] = true;
+                }
+            }
         },
 
         // Populate this with modules
@@ -444,81 +430,59 @@ var Khan = (function() {
         },
 
         // Load in a collection of scripts, execute callback upon completion
-        loadScripts: function(urls, callback) {
-            var loaded = 0,
-                loading = urls.length,
-                head = document.getElementsByTagName("head")[0];
+        loadScript: function(url, callback) {
+            var head = document.getElementsByTagName("head")[0];
+            var isMathJax = url.indexOf("/MathJax/") !== -1;
 
-            callback || (callback = function() {});
-
-            for (var i = 0; i < loading; i++) { (function(mod) {
-
-                var isMathJax = mod.src.indexOf("/MathJax/") !== -1,
-                    onScriptLoad = function() {
-                        // Bump up count of scripts loaded
-                        loaded++;
-
-                        // Run callback in case we're finished loading all
-                        // modules
-                        runCallback();
-                    };
-
-                if (!testMode && mod.src.indexOf("/khan-exercises/") === 0 && !isMathJax) {
-                    // Don't bother loading khan-exercises content in production
-                    // mode, this content is already packaged up and available
-                    // (*unless* it's MathJax, which is silly still needs to be loaded)
-                    loaded++;
-                    return;
-                }
-
-                // Adapted from jQuery getScript (ajax/script.js)
-                var script = document.createElement("script");
-                script.async = "async";
-
-                for (var prop in mod) {
-                    script[prop] = mod[prop];
-                }
-
-                script.onerror = function() {
-                    // No error in IE, but this is mostly for debugging during development so it's probably okay
-                    // http://stackoverflow.com/questions/2027849/how-to-trigger-script-onerror-in-internet-explorer
-                    Khan.error("Error loading script " + script.src);
-                };
-
-                script.onload = script.onreadystatechange = function() {
-                    if (!script.readyState || (/loaded|complete/).test(script.readyState)) {
-                        // Handle memory leak in IE
-                        script.onload = script.onreadystatechange = null;
-
-                        // Remove the script
-                        if (script.parentNode) {
-                            script.parentNode.removeChild(script);
-                        }
-
-                        // Dereference the script
-                        script = undefined;
-
-                        if (isMathJax) {
-                            // If we're loading MathJax, don't bump up the
-                            // count of loaded scripts until MathJax is done
-                            // loading all of its dependencies.
-                            MathJax.Hub.Queue(onScriptLoad);
-                        } else {
-                            onScriptLoad();
-                        }
-                    }
-                };
-
-                head.appendChild(script);
-            })(urls[i]); }
-
-            runCallback();
-
-            function runCallback() {
-                if (callback && loading === loaded) {
-                    callback();
-                }
+            if (!localMode && url.indexOf("/khan-exercises/") === 0 &&
+                    !isMathJax) {
+                // Don't bother loading khan-exercises content in non-local
+                // mode; this content is already packaged up and available
+                // (*unless* it's MathJax, which is silly and still needs
+                // to be loaded)
+                callback();
+                return;
             }
+
+            // Adapted from jQuery getScript (ajax/script.js) -- can't use
+            // jQuery here because we load jQuery using this routine
+            var script = document.createElement("script");
+            script.async = "async";
+            script.src = url;
+
+            script.onerror = function() {
+                // No error in IE, but this is mostly for debugging during
+                // development so it's probably okay
+                // http://stackoverflow.com/questions/2027849/how-to-trigger-script-onerror-in-internet-explorer
+                Khan.error("Error loading script " + script.src);
+            };
+
+            script.onload = script.onreadystatechange = function() {
+                if (!script.readyState ||
+                        (/loaded|complete/).test(script.readyState)) {
+                    // Handle memory leak in IE
+                    script.onload = script.onreadystatechange = null;
+
+                    // Remove the script
+                    if (script.parentNode) {
+                        script.parentNode.removeChild(script);
+                    }
+
+                    // Dereference the script
+                    script = undefined;
+
+                    if (isMathJax) {
+                        // If we're loading MathJax, don't bump up the
+                        // count of loaded scripts until MathJax is done
+                        // loading all of its dependencies.
+                        MathJax.Hub.Queue(callback);
+                    } else {
+                        callback();
+                    }
+                }
+            };
+
+            head.appendChild(script);
         },
 
         // Query String Parser
@@ -583,9 +547,8 @@ var Khan = (function() {
                     }
 
                     var makeVisible = function() {
-                        $("#workarea, #hintsarea").css("padding-left", 60);
                         $("#scratchpad").show();
-                        $("#scratchpad-show").text("隱藏計算紙");
+                        $("#scratchpad-show").text("Hide scratchpad");
 
                         // If pad has never been created or if it's empty
                         // because it was removed from the DOM, recreate a new
@@ -596,11 +559,7 @@ var Khan = (function() {
                         }
                     };
 
-                    if (!pad) {
-                        Khan.loadScripts([{src: urlBase + "utils/scratchpad.js"}], makeVisible);
-                    } else {
-                        makeVisible();
-                    }
+                    loadModule("scratchpad").then(makeVisible);
                 },
 
                 hide: function() {
@@ -608,9 +567,8 @@ var Khan = (function() {
                         return;
                     }
 
-                    $("#workarea, #hintsarea").css("padding-left", 0);
                     $("#scratchpad").hide();
-                    $("#scratchpad-show").text("顯示計算紙");
+                    $("#scratchpad-show").text("Show scratchpad");
                 },
 
                 toggle: function() {
@@ -619,9 +577,8 @@ var Khan = (function() {
 
                 clear: function() {
                     if (pad) {
-                        pad = null;
+                        pad.clear();
                     }
-                    $("#scratchpad div").children().remove();
                 },
 
                 resize: function() {
@@ -690,8 +647,7 @@ var Khan = (function() {
                 _.each(this.getVideos(), function(video, i) {
                     var thumbnailDiv = $(template({
                         href: this.makeHref(video),
-                        video: video,
-                        isCN: window.config.site == "cn"
+                        video: video
                     })).find("a.related-video").data("video", video).end();
 
                     var inlineLink = this.anchorElement(video)
@@ -720,26 +676,15 @@ var Khan = (function() {
                 var options = {duration: 150, queue: false};
                 $(".related-video-box")
                     .delegate(".thumbnail", "mouseenter mouseleave", function(e) {
-                        var el = $(e.currentTarget);
-                        if (e.type == "mouseenter") {
-                            el.find(".thumbnail_label").animate(
-                                    {marginTop: marginTop},
-                                    options)
-                                .end()
-                                .find(".thumbnail_teaser").animate(
-                                    {height: captionHeight},
-                                    options)
-                                .end();
-                        } else {
-                            el.find(".thumbnail_label").animate(
-                                    {marginTop: marginTop + captionHeight},
-                                    options)
-                                .end()
-                                .find(".thumbnail_teaser").animate(
-                                    {height: 0},
-                                    options)
-                                .end();
-                        }
+                        var isMouseEnter = e.type === "mouseenter";
+                        
+                        $(e.currentTarget).find(".thumbnail_label").animate(
+                                {marginTop: marginTop + (isMouseEnter ? 0 : captionHeight)},
+                                options)
+                            .end()
+                            .find(".thumbnail_teaser").animate(
+                                {height: (isMouseEnter ? captionHeight : 0)},
+                                options);
                     });
             },
 
@@ -752,7 +697,7 @@ var Khan = (function() {
         },
 
         showSolutionButtonText: function() {
-            return hintsUsed ? "下一個步驟 (還有" + hints.length + " 個步驟)" : "解題說明";
+            return hintsUsed ? "Show next step (" + hints.length + " left)" : "Show Solution";
         }
 
     };
@@ -771,16 +716,21 @@ var Khan = (function() {
     }
 
     // Seed the random number generator with the user's hash
-    randomSeed = testMode && parseFloat(Khan.query.seed) || userCRC32 || (new Date().getTime() & 0xffffffff);
+    randomSeed = localMode && parseFloat(Khan.query.seed) || userCRC32 ||
+            (new Date().getTime() & 0xffffffff);
 
-    // Load in jQuery
-    var scripts = (typeof jQuery !== "undefined") ? [] : [{src: urlBase +"jquery.js"}];
-
-    // Actually load the scripts. This is getting evaluated when the file is loaded.
-    Khan.loadScripts(scripts, function() {
-
-        Khan.resetModules();
-
+    // Load in jQuery and underscore
+    if (localMode) {
+        Khan.loadScript("../jquery.js", function() {
+            Khan.loadScript("../jquery-migrate-1.1.1.js", function() {
+                Khan.loadScript("../utils/underscore.js", onjQueryLoaded);
+            });
+        });
+    } else {
+        onjQueryLoaded();
+    }
+        
+    function onjQueryLoaded() {
         // If there are any requests left in the queue when the window unloads
         // then we will have permanently lost their answers and will need to
         // clear the session cache, to make sure we don't override what is
@@ -793,22 +743,41 @@ var Khan = (function() {
         });
 
         // Initialize to an empty jQuery set
-        exercises = jQuery();
+        exercises = $();
 
         $(function() {
+            var promises = [];
+
+            // Load all base modules, and if this is local mode, any specified
+            // in the data-require on <html>
+            var mods = Khan.getBaseModules();
+            if (localMode) {
+                var modString = document.documentElement.getAttribute(
+                        "data-require") || "";
+                var exMods = modString.length ? modString.split(" ") : [];
+
+                Khan.exerciseModulesMap[exerciseId] = exMods;
+                mods.push.apply(mods, exMods);
+            }
+
+            $.each(mods, function(i, mod) {
+                promises.push(loadModule(mod));
+            });
+
             // Ensure that all local exercises that don't have a data-name
             // already get tagged with the current, original data-name.
             $("div.exercise").not("[data-name]").data("name", exerciseId);
 
             var remoteExercises = $("div.exercise[data-name]");
 
-            if (remoteExercises.length) {
-                remoteExercises.each(loadExercise);
+            remoteExercises.each(function() {
+                promises.push(loadExercise(this));
+            });
 
-            // Only run loadModules if exercises are in the page
-            } else if ($("div.exercise").length) {
-                loadModules();
-            }
+            // All remote exercises (if any) have now been loaded
+            $.when.apply($, promises).then(function() {
+                loadTestModeSite();
+            });
         });
 
         $.fn.extend({
@@ -822,21 +791,20 @@ var Khan = (function() {
                 type = type || "";
 
                 var info = {
-                    testMode: testMode
+                    localMode: localMode
                 };
 
                 return this.each(function(i, elem) {
                     elem = $(elem);
 
                     // Run the main method of any modules
-                    $.each(Khan.modules, function(src, mod) {
-                        var name = mod.name;
-                        if ($.fn[name + type]) {
-                            debugLog("running " + name + type);
-                            elem[name + type](problem, info);
-                            debugLog("ran " + name + type);
+                    $.each(Khan.modules, function(mod) {
+                        if ($.fn[mod + type]) {
+                            debugLog("running " + mod + type);
+                            elem[mod + type](problem, info);
+                            debugLog("ran " + mod + type);
                         } else {
-                            debugLog("(" + name + type + " not a fn; src " + mod.src + ")");
+                            debugLog("(" + mod + type + " not a fn; src " + mod.src + ")");
                         }
                     });
                 });
@@ -847,7 +815,7 @@ var Khan = (function() {
         $.expr[":"].attached = function(elem) {
             return $.contains(elem.ownerDocument.documentElement, elem);
         };
-    });
+    }
 
     // Add up how much total weight is in each exercise so we can adjust for
     // it later
@@ -873,10 +841,10 @@ var Khan = (function() {
     // ensures that the proportions come out as fairly as possible with ints
     // (still usually a little bit random).
     // There has got to be a better way to do this.
-    function makeProblemBag(problems, n, force_random) {
+    function makeProblemBag(problems, n) {
         var bag = [], totalWeight = 0;
 
-        if (testMode && Khan.query.test != null) {
+        if (localMode && Khan.query.test != null) {
             // Just do each problem 10 times
             $.each(problems, function(i, elem) {
                 elem = $(elem);
@@ -918,11 +886,7 @@ var Khan = (function() {
             while (n) {
                 bag.push((function() {
                     // Figure out which item we're going to pick
-                    if (force_random !== undefined && force_random == true) {
-                        var index = totalWeight * Math.random();
-                    } else {
-                        var index = totalWeight * KhanUtil.random();
-                    }
+                    var index = totalWeight * KhanUtil.random();
 
                     for (var i = 0; i < problems.length; i++) {
                         if (index < weights[i] || i === problems.length - 1) {
@@ -948,51 +912,33 @@ var Khan = (function() {
         $("#check-answer-button")
             .removeAttr("disabled")
             .removeClass("buttonDisabled")
-            .val("驗證答案");
+            .val(originalCheckAnswerText);
     }
 
     function disableCheckAnswer() {
         $("#check-answer-button")
             .attr("disabled", "disabled")
             .addClass("buttonDisabled")
-            .val("請稍後...");
+            .val("Please wait...");
     }
 
-    function isExerciseLoaded(exerciseId) {
-        return _.any(exercises, function(exercise) {
-            return $.data(exercise, "rootName") === exerciseId;
-        });
-    }
-
-    function startLoadingExercise(exerciseId, exerciseName, exerciseFile, exerciseIsQuiz) {
-
-        if (typeof loadingExercises[exerciseId] !== "undefined") {
-            // Already started loading this exercise.
-            return;
+    // TODO(alpert): Merge with loadExercise
+    function startLoadingExercise(exerciseId, exerciseName, exerciseFile) {
+        var promise = exerciseFilePromises[exerciseId];
+        if (promise != null) {
+            // Already started (or finished) loading this exercise
+            return promise;
         }
 
-        if (isExerciseLoaded(exerciseId)) {
-            return;
-        }
-
+        // TODO(alpert): Creating an HTML element here makes no sense to me
         var exerciseElem = $("<div>")
             .data("name", exerciseId)
             .data("displayName", exerciseName)
             .data("fileName", exerciseFile)
-            .data("rootName", exerciseId)
-            .data("isQuiz", exerciseIsQuiz);
+            .data("rootName", exerciseId);
 
         // Queue up an exercise load
-        loadExercise.call(exerciseElem, function() {
-
-            // Trigger load completion event for this exercise
-            $(Khan).trigger("exerciseLoaded:" + exerciseId);
-            $(Khan).trigger("contentLoaded");
-
-            delete loadingExercises[exerciseId];
-
-        });
-
+        return loadExercise(exerciseElem);
     }
 
     function loadAndRenderExercise(nextUserExercise) {
@@ -1005,7 +951,6 @@ var Khan = (function() {
         exerciseId = userExercise.exerciseModel.name;
         exerciseName = userExercise.exerciseModel.displayName;
         exerciseFile = userExercise.exerciseModel.fileName;
-        isQuiz = userExercise.exerciseModel.isQuizExercise;
 
         // TODO(eater): remove this once all of the exercises in the datastore have filename properties
         if (exerciseFile == null || exerciseFile == "") {
@@ -1013,14 +958,16 @@ var Khan = (function() {
         }
 
         function finishRender() {
-
             // Get all problems of this exercise type...
+            // TODO(alpert): What happens if multiple summatives in topic mode
+            // have the same subexercises? (Or if the subexercises appear in
+            // the topic individually.)
             var problems = exercises.filter(function() {
                 return $.data(this, "rootName") === exerciseId;
             }).children(".problems").children();
 
             // ...and create a new problem bag with problems of our new exercise type.
-            problemBag = makeProblemBag(problems, 10, userExercise.exerciseModel.isQuizExercise);
+            problemBag = makeProblemBag(problems, 10);
 
             // Update related videos
             Khan.relatedVideos.setVideos(userExercise.exerciseModel);
@@ -1034,22 +981,14 @@ var Khan = (function() {
             }
 
             // Generate a new problem
-            makeProblem(0, typeOverride, seedOverride);
+            makeProblem(typeOverride, seedOverride);
 
         }
 
-        if (isExerciseLoaded(exerciseId)) {
-            finishRender();
-        } else {
-            startLoadingExercise(exerciseId, exerciseName, exerciseFile, isQuiz);
-
-            $(Khan)
-                .unbind("exerciseLoaded:" + exerciseId)
-                .bind("exerciseLoaded:" + exerciseId, function() {
-                    finishRender();
-                });
-        }
-
+        startLoadingExercise(exerciseId, exerciseName, exerciseFile).then(
+            function() {
+                finishRender();
+            });
     }
 
     /**
@@ -1068,7 +1007,7 @@ var Khan = (function() {
         var cached = LocalStore.get(cacheKey);
         var lastProblemNum = (cached && cached["lastProblemNum"]) || 0;
 
-        if (lastProblemNum === problemNum && !userExercise.exerciseModel.isQuizExercise) {
+        if (lastProblemNum === problemNum) {
             // Getting here means the user refreshed the page or returned to
             // this exercise after being away. So, we don't need to and
             // shouldn't skip this problem.
@@ -1082,11 +1021,6 @@ var Khan = (function() {
         // few problems, but not if we've been fruitlessly skipping for a while.
         // The latter situation could happen if a problem has very few unique
         // problems (eg. exterior angles problem type of angles_of_a_polygon).
-        if (userExercise.exerciseModel.isQuizExercise){
-            dupWindowSize = 9;
-        }else{
-            dupWindowSize = 5;
-        }
         if (_.contains(pastHashes, varsHash) && consecutiveSkips < dupWindowSize) {
             consecutiveSkips++;
             return true;
@@ -1111,7 +1045,7 @@ var Khan = (function() {
                  (guess instanceof Array && $.trim(guess.join("").replace(/,/g, "")) === "");
     }
 
-    function makeProblem(skipCount, id, seed) {
+    function makeProblem(id, seed) {
         debugLog("start of makeProblem");
 
         // Enable scratchpad (unless the exercise explicitly disables it later)
@@ -1122,7 +1056,7 @@ var Khan = (function() {
             problemSeed = seed;
 
         // In either of these testing situations,
-        } else if ((testMode && Khan.query.test != null) || user == null) {
+        } else if ((localMode && Khan.query.test != null) || user == null) {
             problemSeed = Math.abs(randomSeed % bins);
         }
 
@@ -1130,7 +1064,7 @@ var Khan = (function() {
         randomSeed = problemSeed;
 
         // Check to see if we want to test a specific problem
-        if (testMode) {
+        if (localMode) {
             id = typeof id !== "undefined" ? id : Khan.query.problem;
         }
 
@@ -1183,6 +1117,11 @@ var Khan = (function() {
             parentType = original.data("type");
         }
 
+        // prepend any motivational text for the growth mindset A/B test
+        var growthHeader = (!localMode && !assessmentMode &&
+                Exercises.currentCard.attributes.growthHeader);
+        $("#workarea").prepend(growthHeader);
+
         // Add any global exercise defined elements
         problem.prepend(exercise.children(":not(.problems)").clone().data("inherited", true));
 
@@ -1210,9 +1149,6 @@ var Khan = (function() {
         });
 
         debugLog("ran tmplApply to [id]");
-
-        // Fix labels' position on the img
-        fixLabel();
 
         // Remove and store hints to delay running modules on it
         hints = problem.children(".hints").remove();
@@ -1263,12 +1199,10 @@ var Khan = (function() {
 
         debugLog("added inline styles");
 
-        // Get the filename of the currently shown exercise so we can look up
-        // what modules are required
-        var currentExercise = exercise.data("name") + ".html";
-
-        // Reset modules to only those required by the current exercise
-        Khan.resetModules(Khan.exerciseModulesMap[currentExercise]);
+        // Get the filename of the currently shown exercise, then reset modules
+        // to only those required by the current exercise
+        var exerciseId = exercise.data("name");
+        Khan.resetModules(exerciseId);
 
         // Run the main method of any modules
         problem.runModules(problem, "Load");
@@ -1276,18 +1210,13 @@ var Khan = (function() {
         problem.runModules(problem);
         debugLog("done with runModules");
 
-        if (!(testMode || userExercise.readOnly) && typeof seed === "undefined" && shouldSkipProblem()) {
+        if (typeof seed === "undefined" && shouldSkipProblem()) {
             // If this is a duplicate problem we should skip, just generate
             // another problem of the same problem type but w/ a different seed.
             debugLog("duplicate problem!");
             clearExistingProblem();
-            if(userExercise.exerciseModel.isQuizExercise) {
-                return makeProblem(skipCount + 1);
-            } else {
-                nextSeed(1);
-                return makeProblem();
-            }
-            
+            nextSeed(1);
+            return makeProblem();
         }
 
         // Store the solution to the problem
@@ -1360,7 +1289,7 @@ var Khan = (function() {
             // Making the problem failed, let's try again
             debugLog("validator was falsey");
             problem.remove();
-            makeProblem(skipCount, id, randomSeed);
+            makeProblem(id, randomSeed);
             return;
         }
 
@@ -1396,12 +1325,12 @@ var Khan = (function() {
         }
 
         // Hook out for exercise test runner
-        if (testMode && parent !== window && typeof parent.jQuery !== "undefined") {
+        if (localMode && parent !== window && typeof parent.jQuery !== "undefined") {
             parent.jQuery(parent.document).trigger("problemLoaded", [makeProblem, answerData.solution]);
         }
 
         // Save problem info in dump data for testers
-        if (testMode && Khan.query.test != null) {
+        if (localMode && Khan.query.test != null) {
             var testerInfo = $("#tester-info");
 
             // Deep clone the elements to avoid some straaaange bugs
@@ -1441,15 +1370,15 @@ var Khan = (function() {
 
         if (typeof userExercise !== "undefined" && userExercise.readOnly) {
             if (!userExercise.current) {
-                warn("這個練習題的內容可能已經被修改過。", true);
+                warn("This exercise may have changed since it was completed", true);
             }
 
             var timelineEvents, timeline;
 
             var timelinecontainer = $("<div id='timelinecontainer'>")
                 .append("<div>\n" +
-                        "<div id='previous-problem' class='simple-button'>上一個問題</div>\n" +
-                        "<div id='previous-step' class='simple-button'><span>上一步</span></div>\n" +
+                        "<div id='previous-problem' class='simple-button'>Previous Problem</div>\n" +
+                        "<div id='previous-step' class='simple-button'><span>Previous Step</span></div>\n" +
                         "</div>")
                 .insertBefore("#problem-and-answer");
 
@@ -1510,11 +1439,11 @@ var Khan = (function() {
 
             timelinecontainer
                 .append("<div>\n" +
-                        "<div id='next-problem' class='simple-button'>下一個問題</div>\n" +
-                        "<div id='next-step' class='simple-button'><span>下一步</span></div>\n" +
+                        "<div id='next-problem' class='simple-button'>Next Problem</div>\n" +
+                        "<div id='next-step' class='simple-button'><span>Next Step</span></div>\n" +
                         "</div>");
 
-            $("<div class='user-activity correct-activity'>開始</div>")
+            $("<div class='user-activity correct-activity'>Started</div>")
                 .data("hint", false)
                 .appendTo(timelineEvents);
 
@@ -1530,17 +1459,17 @@ var Khan = (function() {
                     thissolutionarea;
 
                 timelineEvents
-                    .append("<div class='timeline-time'>" + value[2] + "秒</div>");
+                    .append("<div class='timeline-time'>" + value[2] + "s</div>");
 
                 thissolutionarea = $("<div>")
                     .addClass("user-activity " + value[0])
                     .appendTo(timelineEvents);
 
                 if (value[0] === "hint-activity") {
-                    thissolutionarea.attr("title", "使用提示");
+                    thissolutionarea.attr("title", "Hint used");
                     thissolutionarea
                         .data("hint", hintNumber)
-                        .prepend("提示 #" + (hintNumber + 1));
+                        .prepend("Hint #" + (hintNumber + 1));
                     hintNumber += 1;
                 } else { // This panel is a solution (or the first panel)
                     thissolutionarea.data("hint", false);
@@ -1549,35 +1478,34 @@ var Khan = (function() {
                     } else {
                         // radio and custom are the only answer types that
                         // can't display its own guesses in the activity bar
+                        var validator = Khan.answerTypes[answerType].setup(null, solution).validator;
+
                         if (answerType === "radio") {
                             thissolutionarea.append(
                                 // Add the guess to the activity bar
                                 $("<p class='solution'>" + guess + "</p>").tmpl()
                             );
-
-                            if (index === userExercise.userActivity.length - 1) {
+                            if (validator(guess)) {
                                 thissolutionarea
                                     .removeClass("incorrect-activity")
                                     .addClass("correct-activity");
-
-                                thissolutionarea.attr("title", "正確答案");
+                                thissolutionarea.attr("title", "Correct Answer");
                             } else {
-                                thissolutionarea.attr("title", "錯誤答案");
+                                thissolutionarea.attr("title", "Incorrect Answer");
                             }
                         } else if (answerType === "custom") {
-                            if (index === userExercise.userActivity.length - 1) {
+                            if (validator(guess)) {
                                 thissolutionarea
                                     .removeClass("incorrect-activity")
                                     .addClass("correct-activity");
-
                                 thissolutionarea.attr("title", "Correct Answer");
                                 thissolutionarea.append(
-                                    $("<p class='solution'>正確答案</p>")
+                                    $("<p class='solution'>Answer correct</p>")
                                 );
                             } else {
                                 thissolutionarea.attr("title", "Incorrect Answer");
                                 thissolutionarea.append(
-                                    $("<p class='solution'>錯誤答案</p>")
+                                    $("<p class='solution'>Answer incorrect</p>")
                                 );
                             }
                         } else {
@@ -1592,12 +1520,12 @@ var Khan = (function() {
                                     .removeClass("incorrect-activity")
                                     .addClass("correct-activity");
 
-                                thissolutionarea.attr("title", "正確答案");
+                                thissolutionarea.attr("title", "Correct Answer");
                             } else {
                                 thissolutionarea
                                     .removeClass("correct-activity")
                                     .addClass("incorrect-activity");
-                                thissolutionarea.attr("title", "錯誤答案");
+                                thissolutionarea.attr("title", "Incorrect Answer");
                             }
                         }
 
@@ -1848,7 +1776,7 @@ var Khan = (function() {
         }
 
         // Show the debug info
-        if (testMode && Khan.query.debug != null) {
+        if (localMode && Khan.query.debug != null) {
             $(document).keypress(function(e) {
                 if (e.charCode === 104) {
                     $("#hint").click();
@@ -1957,11 +1885,35 @@ var Khan = (function() {
             $("body").addClass("debug");
         }
 
+        // Version of the site used by Khan/exercise-browser for the iframe
+        // preview
+        if (localMode && Khan.query.browse != null) {
+            $("html").addClass("exercise-browser");
+
+            var browseWrap = $("#browse").empty();
+
+            var links = $("<div>").addClass("problem-types");
+
+            links.append($("<b>").text("Problem types:"));
+
+            exercises.children(".problems").children().each(function(n, prob) {
+                var probID = $(prob).attr("id") || n;
+                links.append($("<a>").addClass("problem-type-link")
+                        .text(n + ": " + probID)
+                        .attr("href", window.location.protocol + "//" +
+                            window.location.host + window.location.pathname +
+                            "?browse&problem=" + probID)
+                    );
+            });
+
+            browseWrap.append(links);
+        }
+
         hintsUsed = 0;
         attempts = 0;
         lastAction = (new Date).getTime();
 
-        $("#hint").val("我需要提示");
+        $("#hint").val("I'd like a hint");
 
         $(Khan).trigger("newProblem");
 
@@ -1980,11 +1932,13 @@ var Khan = (function() {
                         checkAnswerButton.removeAttr("disabled").removeAttr("title");
                     }
                 })
-                .on("keyup.emptyAnswer", function() {
+                .on("keyup.emptyAnswer", function(e) {
                     var guess = getAnswer();
                     if (checkIfAnswerEmpty(guess)) {
                         checkAnswerButton.attr("disabled", "disabled");
-                    } else {
+                    } else if (e.keyCode !== 13) {
+                        // Enable check answer button again as long as it is
+                        // not the enter key
                         checkAnswerButton.removeAttr("disabled");
                     }
                 });
@@ -2020,7 +1974,7 @@ var Khan = (function() {
     function renderNextProblem(nextUserExercise) {
         clearExistingProblem();
 
-        if (testMode && Khan.query.test != null && dataDump.problems.length + dataDump.issues >= problemCount) {
+        if (localMode && Khan.query.test != null && dataDump.problems.length + dataDump.issues >= problemCount) {
             // Show the dump data
             $("#problemarea").append(
                 "<p>Thanks! You're all done testing this exercise.</p>" +
@@ -2041,7 +1995,7 @@ var Khan = (function() {
 
         } else {
 
-            if (testMode) {
+            if (localMode) {
                 // Just generate a new problem from existing exercise
                 makeProblem();
             } else {
@@ -2064,11 +2018,14 @@ var Khan = (function() {
         $("#answerform").attr("action", window.location.href);
 
         // Watch for a solution submission
+        originalCheckAnswerText = $("#check-answer-button").val()
         $("#check-answer-button").click(handleSubmit);
         $("#answerform").submit(handleSubmit);
 
         // Grab example answer format container
         examples = $("#examples");
+
+        assessmentMode = !localMode && Exercises.assessmentMode;
 
         // Build the data to pass to the server
         function buildAttemptData(pass, attemptNum, attemptContent, curTime) {
@@ -2108,35 +2065,34 @@ var Khan = (function() {
                 problem_type: problemID,
 
                 // Whether we're currently in review mode
-                review_mode: (!testMode && Exercises.reviewMode) ? 1 : 0,
+                review_mode: (!localMode && Exercises.reviewMode) ? 1 : 0,
 
                 // Whether we are currently working on a topic, as opposed to an exercise
-                topic_mode: (!testMode && !Exercises.reviewMode && !Exercises.practiceMode) ? 1 : 0,
+                topic_mode: (!localMode && !Exercises.reviewMode && !Exercises.practiceMode) ? 1 : 0,
 
                 // Request camelCasing in returned response
                 casing: "camel",
 
                 // The current card data
-                card: !testMode && JSON.stringify(Exercises.currentCard),
+                card: !localMode && JSON.stringify(Exercises.currentCard),
 
                 // Unique ID of the cached stack
-                stack_uid: !testMode && Exercises.completeStack.getUid(),
+                stack_uid: !localMode && Exercises.completeStack.getUid(),
 
                 // The current topic, if any
-                topic_id: !testMode && Exercises.topic && Exercises.topic.id,
+                topic_id: !localMode && Exercises.topic && Exercises.topic.id,
 
                 // How many cards the user has already done
-                cards_done: !testMode && Exercises.completeStack.length,
+                cards_done: !localMode && Exercises.completeStack.length,
 
                 // How many cards the user has left to do
-                cards_left: !testMode && (Exercises.incompleteStack.length - 1),
+                cards_left: !localMode && (Exercises.incompleteStack.length - 1),
 
-                //Get Custom Stack Id if it exists
-                custom_stack_id: !testMode && Exercises.completeStack.getCustomStackID()
+                // Custom stack ID if it exists
+                custom_stack_id: !localMode && Exercises.completeStack.getCustomStackID(),
 
-                // if it is a quiz_exercise, quiz_pid is set as the problem_type.
-                ,quiz_pid: problemID
-
+                // The user assessment key if in assessmentMode
+                user_assessment_key: !localMode && Exercises.userAssessmentKey
             };
         }
 
@@ -2158,43 +2114,48 @@ var Khan = (function() {
             if ($("#answercontent input").not("#hint,#next-question-button").is(":disabled")) {
                 return false;
             }
+            
+            if(!assessmentMode) {
+                $("#answercontent input").not("#check-answer-button, #hint")
+                    .attr("disabled", "disabled");
+                $("#check-answer-results p").hide();
 
-            $("#answercontent input").not("#check-answer-button, #hint")
-                .attr("disabled", "disabled");
-            $("#check-answer-results p").hide();
+                var checkAnswerButton = $("#check-answer-button");
 
-            var checkAnswerButton = $("#check-answer-button");
+                // If incorrect, warn the user and help them in any way we can
+                if (pass !== true) {
+                    checkAnswerButton
+                        .parent()  // .check-answer-wrapper makes shake behave
+                        .effect("shake", {times: 3, distance: 5}, 480)
+                        .val("Try Again");
 
-            // If incorrect, warn the user and help them in any way we can
-            if (pass !== true) {
-                checkAnswerButton
-                    .effect("shake", {times: 3, distance: 5}, 80)
-                    .val("答錯了，再試看看喔！");
+                    // Is this a message to be shown?
+                    if (typeof pass === "string") {
+                        $("#check-answer-results .check-answer-message")
+                            .html(pass).tmpl().show();
+                    }
 
-                // Is this a message to be shown?
-                if (typeof pass === "string") {
-                    $("#check-answer-results .check-answer-message").html(pass).tmpl().show();
-                }
+                    // Refocus text field so user can type a new answer
+                    if (lastFocusedSolutionInput != null) {
+                        setTimeout(function() {
+                            var focusInput = $(lastFocusedSolutionInput);
 
-                // Refocus text field so user can type a new answer
-                if (lastFocusedSolutionInput != null) {
-                    setTimeout(function() {
-                        var focusInput = $(lastFocusedSolutionInput);
-
-                        if (!focusInput.is(":disabled")) {
-                            // focus should always work; hopefully select will work for text fields
-                            focusInput.focus();
-                            if (focusInput.is("input:text")) {
-                                focusInput.select();
+                            if (!focusInput.is(":disabled")) {
+                                // focus should always work; hopefully select 
+                                // will work for text fields
+                                focusInput.focus();
+                                if (focusInput.is("input:text")) {
+                                    focusInput.select();
+                                }
                             }
-                        }
-                    }, 1);
+                        }, 1);
+                    }
                 }
             }
 
             if (pass === true) {
-                // Problem has been completed but pending data request being
-                // sent to server.
+                // Problem has been completed but pending data request
+                // being sent to server.
                 $(Khan).trigger("problemDone");
             }
 
@@ -2227,24 +2188,25 @@ var Khan = (function() {
 
                 // Warn user about problem, encourage to reload page
                 warn(
-                    "這一個畫面過期了。請<a href='" + window.location.href +
-                    "'>重新整理</a>網頁。不用擔心，沒有損失進度。"
+                    "This page is out of date. You need to <a href='" + window.location.href +
+                    "'>refresh</a>, but don't worry, you haven't lost progress. " +
+                    "If you think this is a mistake, " +
+                    "<a href='http://www.khanacademy.org/reportissue?type=Defect&issue_labels='>tell us</a>."
                 );
 
             }, "attempt_hint_queue");
 
-            if (pass === true) {
+            if(assessmentMode) {
+                disableCheckAnswer();
+            } else if (pass === true) {
                 // Correct answer, so show the next question button.
                 $("#check-answer-button").hide();
-                if (!testMode || Khan.query.test == null) {
+                if (!localMode || Khan.query.test == null) {
                     $("#next-question-button")
                         .removeAttr("disabled")
                         .removeClass("buttonDisabled")
                         .show()
-                    if(!/iPad/i.test(navigator.userAgent)) // check if is ipad device
-                    {
-                        $("#next-question-button").focus();
-                    }
+                        .focus();
                     $("#positive-reinforcement").show();
                 }
             } else {
@@ -2377,8 +2339,8 @@ var Khan = (function() {
 
                 hintsUsed += 1;
 
-                var stepsLeft = "還有 " + hints.length + " 個提示";
-                $(this).val($(this).data("buttonText") || "下一個提示 (" + stepsLeft + ")");
+                var stepsLeft = hints.length + " step" + (hints.length === 1 ? "" : "s") + " left";
+                $(this).val($(this).data("buttonText") || "I'd like another hint (" + stepsLeft + ")");
 
                 var problem = $(hint).parent();
 
@@ -2398,9 +2360,7 @@ var Khan = (function() {
                 }
             }
 
-            // userExercise.readOnly is actually no use here because when it's true, user cannot click the hint button.
-            // Anyway, I still keep it here and add a protection or it.
-            var fProdReadOnly = !testMode && typeof userExercise !== "undefined" && userExercise.readOnly;
+            var fProdReadOnly = !localMode && userExercise.readOnly;
             var fAnsweredCorrectly = $("#next-question-button").is(":visible");
             if (!fProdReadOnly && !fAnsweredCorrectly) {
                 // Resets the streak and logs history for exercise viewer
@@ -2416,21 +2376,188 @@ var Khan = (function() {
 
         });
 
-        $("#issue-report-button").click(function(e) {
+        // On an exercise page, replace the "Report a Problem" link with a button
+        // to be more clear that it won't replace the current page.
+        $("<a>Report a Problem</a>")
+            .attr("id", "report").addClass("simple-button green")
+            .replaceAll($(".footer-links #report"));
+
+        $("#report").click(function(e) {
 
             e.preventDefault();
-            
-            $('#issueReportForm').modal('show');
-            html2canvas($("#outer-wrapper"), {
-                onrendered: function(canvas) {
-                    theCanvas = canvas;
-                    var issueImgUrl = canvas.toDataURL("image/png");
 
-                    $('#issueImgLarge').attr('href',issueImgUrl);
-                    $('#issueImgLarge').addClass('cloud-zoom');
-                    $('#issueImg').attr('src',issueImgUrl);
-                    $('#issueImgLarge').CloudZoom();
-                 }
+            var report = $("#issue").css("display") !== "none",
+                form = $("#issue form").css("display") !== "none";
+
+            if (report && form) {
+                $("#issue").hide();
+            } else if (!report || !form) {
+                $("#issue-status").removeClass("error").html(issueIntro);
+                $("#issue, #issue form").show();
+                $("html, body").animate({
+                    scrollTop: $("#issue").offset().top
+                }, 500, function() {
+                    $("#issue-title").focus();
+                });
+            }
+        });
+
+
+        // Hide issue form.
+        $("#issue-cancel").click(function(e) {
+
+            e.preventDefault();
+
+            $("#issue").hide(500);
+            $("#issue-title, #issue-body").val("");
+
+        });
+
+        // Submit an issue.
+        $("#issue form input:submit").click(function(e) {
+
+            e.preventDefault();
+
+            // don't do anything if the user clicked a second time quickly
+            if ($("#issue form").css("display") === "none") return;
+
+            var pretitle = exerciseName,
+                type = $("input[name=issue-type]:checked").prop("id"),
+                title = $("#issue-title").val(),
+                path = exerciseFile + "?seed=" +
+                    problemSeed + "&problem=" + problemID,
+                pathlink = "[" + path + (exercise.data("name") !== exerciseId ? " (" + exercise.data("name") + ")" : "") + "](http://sandcastle.khanacademy.org/media/castles/Khan:master/exercises/" + path + "&debug)",
+                historyLink = "[Answer timeline](" + "http://sandcastle.khanacademy.org/media/castles/Khan:master/exercises/" + path + "&debug&activity=" + encodeURIComponent(JSON.stringify(userActivityLog)).replace(/\)/g, "\\)") + ")",
+                agent = navigator.userAgent,
+                mathjaxInfo = "MathJax is " + (typeof MathJax === "undefined" ? "NOT loaded" :
+                    ("loaded, " + (MathJax.isReady ? "" : "NOT ") + "ready, queue length: " + MathJax.Hub.queue.queue.length)),
+                userHash = "User hash: " + crc32(user),
+                sessionStorageInfo = (typeof sessionStorage === "undefined" || typeof sessionStorage.getItem === "undefined" ? "sessionStorage NOT enabled" : null),
+                warningInfo = $("#warning-bar-content").text(),
+                parts = [$("#issue-body").val() || null, pathlink, historyLink, "    " + JSON.stringify(guessLog), agent, sessionStorageInfo, mathjaxInfo, userHash, warningInfo],
+                body = $.grep(parts, function(e) { return e != null; }).join("\n\n");
+
+            var mathjaxLoadFailures = $.map(MathJax.Ajax.loading, function(info, script) {
+                if (info.status === -1) {
+                    return [script + ": error"];
+                } else {
+                    return [];
+                }
+            }).join("\n");
+            if (mathjaxLoadFailures.length > 0) {
+                body += "\n\n" + mathjaxLoadFailures;
+            }
+
+            // flagging of browsers/os for issue labels. very primitive, but
+            // hopefully sufficient.
+            var agent_contains = function(sub) {
+                    return agent.indexOf(sub) !== -1;
+                },
+                flags = {
+                    ie8: agent_contains("MSIE 8.0"),
+                    ie9: agent_contains("Trident/5.0"),
+                    chrome: agent_contains("Chrome/"),
+                    safari: !agent_contains("Chrome/") && agent_contains("Safari/"),
+                    firefox: agent_contains("Firefox/"),
+                    win7: agent_contains("Windows NT 6.1"),
+                    vista: agent_contains("Windows NT 6.0"),
+                    xp: agent_contains("Windows NT 5.1"),
+                    leopard: agent_contains("OS X 10_5") || agent_contains("OS X 10.5"),
+                    snowleo: agent_contains("OS X 10_6") || agent_contains("OS X 10.6"),
+                    lion: agent_contains("OS X 10_7") || agent_contains("OS X 10.7"),
+                    scratchpad: (/scratch\s*pad/i).test(body),
+                    ipad: agent_contains("iPad")
+                },
+                labels = [];
+            $.each(flags, function(k, v) {
+                if (v) labels.push(k);
+            });
+
+            if (!type) {
+                $("#issue-status").addClass("error")
+                    .html("Please specify the issue type.").show();
+                return;
+            } else {
+                labels.push(type.slice("issue-".length));
+
+                var hintOrVideoMsg = "Please click the hint button above to see our solution, or watch a video for additional help.";
+                var refreshOrBrowserMsg = "Please try a hard refresh (press Ctrl + Shift + R)" +
+                        " or use Khan Academy from a different browser (such as Chrome or Firefox).";
+                var suggestion = {
+                    "issue-wrong-or-unclear": hintOrVideoMsg,
+                    "issue-hard": hintOrVideoMsg,
+                    "issue-not-showing": refreshOrBrowserMsg,
+                    "issue-other": ""
+                }[type];
+            }
+
+            if (title === "") {
+                $("#issue-status").addClass("error")
+                    .html("Please provide a valid title for the issue.").show();
+                return;
+            }
+
+            var formElements = $("#issue input").add("#issue textarea");
+
+            // disable the form elements while waiting for a server response
+            formElements.attr("disabled", true);
+
+            $("#issue-cancel").hide();
+            $("#issue-throbber").show();
+
+            var dataObj = {
+                title: pretitle + " - " + title,
+                body: body,
+                labels: labels
+            };
+
+            // we try to post ot github without a cross-domain request, but if we're
+            // just running the exercises locally, then we can't help it and need
+            // to fall back to jsonp.
+            $.ajax({
+
+                url: (localMode ? "http://www.khanacademy.org/" : "/") + "githubpost",
+                type: localMode ? "GET" : "POST",
+                data: localMode ? {json: JSON.stringify(dataObj)} :
+                    JSON.stringify(dataObj),
+                contentType: localMode ? "application/x-www-form-urlencoded" : "application/json",
+                dataType: localMode ? "jsonp" : "json",
+                success: function(json) {
+
+                    var data = json.data || json;
+
+                    // hide the form
+                    $("#issue form").hide();
+
+                    // show status message
+                    $("#issue-status").removeClass("error")
+                        .html(issueSuccess(data.html_url, data.title, suggestion))
+                        .show();
+
+                    // reset the form elements
+                    formElements.attr("disabled", false)
+                        .not("input:submit").val("");
+
+                    // replace throbber with the cancel button
+                    $("#issue-cancel").show();
+                    $("#issue-throbber").hide();
+
+                },
+                // note this won't actually work in local jsonp-mode
+                error: function(json) {
+
+                    // show status message
+                    $("#issue-status").addClass("error")
+                        .html(issueError).show();
+
+                    // enable the inputs
+                    formElements.attr("disabled", false);
+
+                    // replace throbber with the cancel button
+                    $("#issue-cancel").show();
+                    $("#issue-throbber").hide();
+
+                }
             });
         });
 
@@ -2457,7 +2584,7 @@ var Khan = (function() {
         });
 
         // Prepare for the tester info if requested
-        if (testMode && Khan.query.test != null) {
+        if (localMode && Khan.query.test != null) {
             $("#answer_area").prepend(
                 '<div id="tester-info" class="info-box">' +
                     '<span class="info-box-header">Testing Mode</span>' +
@@ -2581,43 +2708,29 @@ var Khan = (function() {
         }
 
         // Prepare for the debug info if requested
-        if (testMode && Khan.query.debug != null) {
+        if (localMode && Khan.query.debug != null) {
             $('<div id="debug"></div>').appendTo("#answer_area");
         }
 
-        // Register API ajax callbacks for updating UI
-        if (typeof APIActionResults !== "undefined") {
-            // Display Messages like "You're Proficient" or "You Seem To Be Struggling"
-            // TODO: this functionality is currently hidden from power-mode. Restore it.
-            // https://trello.com/card/restore-you-re-ready-to-move-on-and-struggling-in-action-messages/4f3f43cd45533a1b3a065a1d/34
-            APIActionResults.register("exercise_state",
-                function(userState) {
-                    var jel = $("#exercise-message-container");
-                    if (userState.template !== null) {
-                        jel.empty().append(userState.template);
-                        setTimeout(function() {jel.slideDown();}, 50);
-                    }
-                    else {
-                        jel.slideUp();
-                    }
-                }
-            );
+        // Likewise, if we're in browse mode, setup for that
+        if (localMode && Khan.query.browse != null) {
+            $('<div id="browse"></div>').appendTo("#answer_area");
         }
 
         $(Khan)
             .bind("updateUserExercise", function(ev, data) {
                 // Any time we update userExercise, check if we're setting/switching usernames
-                if (data) {
-                    user = data.user || user;
+                if (data && data.userExercise) {
+                    user = data.userExercise.user || user;
                     userCRC32 = user != null ? crc32(user) : null;
                     randomSeed = userCRC32 || randomSeed;
                 }
             });
 
-        // Register testMode-specific event handlers
-        if (testMode) {
+        // Register localMode-specific event handlers
+        if (localMode) {
 
-            // testMode automatically advances to the next problem --
+            // localMode automatically advances to the next problem --
             // integrated mode just listens and waits for renderNextProblem
             $(Khan).bind("gotoNextProblem", function() {
                 renderNextProblem();
@@ -2632,13 +2745,10 @@ var Khan = (function() {
         }
     }
 
-    if (!testMode) {
-        // testMode automatically prepares itself in loadModules,
-        // where it loads jQuery and the rest of its dependencies
-        // dynamically.
-        //
-        // Integrated mode already has jQuery, so we listen
-        // and wait for the signal to prepare.
+    if (!localMode) {
+        // In local mode, everything is set up in loadTestModeSite after
+        // loading jQuery. The real mode already has jQuery, so we just listen
+        // for the signal to prepare.
         $(Exercises)
             .bind("problemTemplateRendered", prepareSite)
             .bind("readyForNextProblem", function(ev, data) {
@@ -2648,7 +2758,7 @@ var Khan = (function() {
                 warn(data.text, data.showClose);
             })
             .bind("upcomingExercise", function(ev, data) {
-                startLoadingExercise(data.exerciseId, data.exerciseName, data.exerciseFile, data.isQuiz);
+                startLoadingExercise(data.exerciseId, data.exerciseName, data.exerciseFile);
             });
     }
 
@@ -2697,7 +2807,7 @@ var Khan = (function() {
             exerciseId = data.exercise;
         }
 
-        $(Khan).trigger("updateUserExercise", userExercise);
+        $(Khan).trigger("updateUserExercise", {userExercise: userExercise});
 
         if (user != null) {
             // How far to jump through the problems
@@ -2716,7 +2826,7 @@ var Khan = (function() {
     }
 
     function request(method, data, fn, fnError, queue) {
-        if (testMode) {
+        if (localMode) {
             // Pretend we have success
             if ($.isFunction(fn)) {
                 fn();
@@ -2732,9 +2842,13 @@ var Khan = (function() {
             xhrFields["withCredentials"] = true;
         }
 
+        // TODO(david): Try harder to decouple Exercises outta this file
+        var apiBaseUrl = (assessmentMode ?
+            "api/v1/user/assessment/exercises" : "api/v1/user/exercises");
+
         var request = {
             // Do a request to the server API
-            url: server + "/api/v1/user/exercises/" + exerciseId + "/" + method,
+            url: server + "/" + apiBaseUrl + "/" + exerciseId + "/" + method,
             type: "POST",
             data: data,
             dataType: "json",
@@ -2745,7 +2859,10 @@ var Khan = (function() {
 
                 // Tell any listeners that khan-exercises has new
                 // userExercise data
-                $(Khan).trigger("updateUserExercise", data);
+                $(Khan).trigger("updateUserExercise", {
+                    userExercise: data,
+                    source: "serverResponse"
+                });
 
                 if ($.isFunction(fn)) {
                     fn(data);
@@ -2811,41 +2928,43 @@ var Khan = (function() {
         $(Khan).trigger("apiRequestStarted");
     }
 
-    function loadExercise(callback) {
-        var self = $(this).detach();
-        var id = self.data("name");
-        var weight = self.data("weight");
-        var rootName = self.data("rootName");
-        var fileName = self.data("fileName");
-        var isQuiz = self.data("isQuiz");
-        // TODO(eater): remove this once all of the exercises in the datastore have filename properties
+    /**
+     * Load an exercise and return a promise that is resolved when an exercise
+     * is loaded
+     *
+     * @param exerciseElem HTML element with jQuery data properties name,
+     * weight, rootName, and fileName
+     */
+    function loadExercise(exerciseElem) {
+        exerciseElem = $(exerciseElem).detach();
+        var id = exerciseElem.data("name");
+
+        var promise = exerciseFilePromises[id];
+        if (promise != null) {
+            // Already started (or finished) loading this exercise
+            return promise;
+        } else {
+            promise = exerciseFilePromises[id] = $.Deferred();
+        }
+
+        var weight = exerciseElem.data("weight");
+        var rootName = exerciseElem.data("rootName");
+        var fileName = exerciseElem.data("fileName");
+        // TODO(eater): remove this once all of the exercises in the datastore
+        // have filename properties
         if (fileName == null || fileName == "") {
             fileName = id + ".html";
         }
 
-        if (!loadingExercises[rootName]) {
-            loadingExercises[rootName] = 0;
-        }
-
-        loadingExercises[rootName]++;
+        // Promises for remote exercises contained within this one
+        var subpromises = [];
 
         // Packing occurs on the server but at the same "exercises/" URL
-
-        // isQuiz is set to true if loading a quiz exercise.
-        if (isQuiz && typeof userExercise !== "undefined" && userExercise.readOnly){
-            //history mode: load a single problem.
-            var pid = userExercise.quizPid;
-            var openfile =  "/khan-exercises/exercises/" + id + "/" + pid;           
-        }else{
-            var openfile = urlBase + "exercises/" + fileName;
-        }
-
-        $.get(openfile, function(data, status, xhr) {
-            var match, newContents;
-
+        $.get(urlBase + "exercises/" + fileName, function(data, status, xhr) {
             if (!(/success|notmodified/).test(status)) {
                 // Maybe loading from a file:// URL?
-                Khan.error("Error loading exercise from file " + fileName + xhr.status + " " + xhr.statusText);
+                Khan.error("Error loading exercise from file " + fileName +
+                        xhr.status + " " + xhr.statusText);
                 return;
             }
 
@@ -2855,60 +2974,53 @@ var Khan = (function() {
             // See https://github.com/Khan/khan-exercises/issues/10957
             data = data.replace(/<script(\s)+src=([^<])*<\/script>/, "");
 
-            newContents = $(data);
+            var newContents = $(data).filter(".exercise");
 
             // Name of the top-most ancestor exercise
             newContents.data("rootName", rootName);
 
-            // Check whether id exists in loadingExercisesIndex; if not, push it in.
-            if (!(rootName in loadingExercisesIndex)) {
-                loadingExercisesIndex[rootName] = [];
-            }
-            if ($.inArray(id, loadingExercisesIndex[rootName]) == -1) {
-                loadingExercisesIndex[rootName].push(id);
-            }
-
-            // Maybe the exercise we just loaded loads some others
-            var moreExercises = [];
-            newContents.filter("[data-name]").each(function() {
-                var tmp_id = $(this).detach().data("name");
-                moreExercises.push(tmp_id);
-                loadExercise.call(this, callback);
-            });
-
-            // If we do have more exercises to load, insert them into loadingExercisesIndex
-            // according to the position of their parent.
-            if (moreExercises.length > 0) {
-                var current_id_index = loadingExercisesIndex[rootName].indexOf(id);
-                var first_part = loadingExercisesIndex[rootName].slice(0, current_id_index + 1);
-                var second_part = loadingExercisesIndex[rootName].slice(current_id_index + 1, loadingExercisesIndex[rootName].length);
-                loadingExercisesIndex[rootName] = first_part.concat(moreExercises, second_part);
-            }
-
-            // Throw out divs that just load other exercises
+            // First, remove ones that refer to other files...
+            var remoteExercises = newContents.filter("[data-name]");
             newContents = newContents.not("[data-name]");
 
-            // Save the id, fileName and weights
-            // TODO(david): Make sure weights work for recursively-loaded exercises.
-            newContents.data("name", id).data("fileName", fileName).data("weight", weight);
+            // ...then save the exercise ID, fileName and weights for later
+            // TODO(david): Make sure weights work for recursively-loaded
+            // exercises.
+            newContents.data({
+                name: id,
+                fileName: fileName,
+                weight: weight
+            });
+
+            // Add the new exercise elements to the exercises DOM set
+            exercises = exercises.add(newContents);
+
+            // Maybe the exercise we just loaded loads some others
+            remoteExercises.each(function() {
+                subpromises.push(loadExercise(this));
+            });
 
             // Extract data-require
-            var requires = data.match(/<html(?:[^>]+)data-require=(['"])((?:(?!\1).)*)\1/);
-
-            if (requires != null) {
-                requires = requires[2];
+            var match = data.match(
+                    /<html(?:[^>]+)data-require=(['"])((?:(?!\1).)*)\1/);
+            var requires;
+            if (match != null) {
+                requires = match[2].length ? match[2].split(" ") : [];
+            } else {
+                requires = [];
             }
 
+            $.each(requires, function(i, mod) {
+                subpromises.push(loadModule(mod));
+            });
+
             // Store the module requirements in exerciseModulesMap
-            Khan.exerciseModulesMap[fileName] = requires;
+            Khan.exerciseModulesMap[id] = requires;
 
-            // Calling resetModules here is necessary for populating
-            // Khan.modules immediately so that required scripts can be fetched
-            Khan.resetModules(requires);
-
-            // Extract contents from various tags and save them up for parsing when
-            // actually showing this particular exercise.
+            // Extract contents from various tags and save them up for parsing
+            // when actually showing this particular exercise.
             var tagsToExtract = {
+                // TODO(alpert): Do we use title?
                 title: /<title>([^<]*(?:(?!<\/title>)<[^<]*)*)<\/title>/gi,
 
                 // Scripts with no src
@@ -2926,162 +3038,105 @@ var Khan = (function() {
                 newContents.data(tag, result);
             });
 
-            // Put newContents into a dict. We should add all newContents into exercises until
-            // we have no more new exercises to load, so we can keep their order.
-            if (!(rootName in loadingExercisesContent)) {
-                loadingExercisesContent[rootName] = {};
-            }
-            loadingExercisesContent[rootName][id] = newContents;
-            loadingExercises[rootName]--;
-
-            // We have no more new exercises to load! Put loaded ones into exercises.
-            if (Object.keys(loadingExercisesContent[rootName]).length === loadingExercisesIndex[rootName].length) {
-                for (var i = 0; i < loadingExercisesIndex[rootName].length; i++) {
-                    var content_to_add = loadingExercisesContent[rootName][loadingExercisesIndex[rootName][i]];
-
-                    // Add the new exercise elements to the exercises DOM set
-                    exercises = exercises.add(content_to_add);
-                }
-
-                // All related exercises should be loaded.
-                if (loadingExercises[rootName] === 0) {
-                    if (!modulesLoaded) {
-                        modulesDeferred = $.Deferred();
-                        loadModules();
-                    }
-
-                    if (callback) {
-                        modulesDeferred.done(callback);
-                    }
-
-                }
-            }
-
-        });
-
-    }
-
-    function loadModules() {
-
-        modulesLoaded = true;
-
-        // Load module dependencies
-        Khan.loadScripts($.map(Khan.modules, function(mod, name) {
-            return mod;
-        }), function() {
-
-            $(function() {
-                // Inject the site markup, if it doesn't exist
-                if ($("#answer_area").length === 0) {
-                    $.ajax({
-                        url: urlBase + "exercises/khan-site.html",
-                        dataType: "html",
-                        success: function(html) {
-
-                            $.ajax({
-                                url: urlBase + "exercises/khan-exercise.html",
-                                dataType: "text",
-                                success: function(htmlExercise) {
-
-                                    injectTestModeSite(html, htmlExercise);
-
-                                }
-                            });
-
-                        }
-                    });
-                } else {
-                    if (modulesDeferred) {
-                        modulesDeferred.resolve();
-                    }
-                }
+            // Wait for any subexercises to load, then resolve the promise
+            $.when.apply($, subpromises).then(function() {
+                // Success; all subexercises loaded
+                promise.resolve();
+            }, function() {
+                // Failure; some subexercises failed to load
+                // TODO(alpert): Find a useful error message
+                promise.reject();
             });
         });
 
-        function injectTestModeSite(html, htmlExercise) {
-            $("body").prepend(html);
-            $("#container .exercises-header h2").append(document.title);
-            $("#container .exercises-body .current-card-contents").html(
-                htmlExercise);
+        return promise;
+    }
 
-            if (Khan.query.layout === "lite") {
-                $("html").addClass("lite");
-            }
+    function loadModule(modNameOrObject) {
+        var src, deps = [];
 
-            prepareSite();
-
-            var problems = exercises.children(".problems").children();
-
-            // Don't make the problem bag when a specific problem is specified
-            // because it messes up problem permalinks (because makeProblemBag
-            // calls KhanUtil.random() and changes the seed)
-            if (Khan.query.problem == null) {
-                weighExercises(problems);
-                problemBag = makeProblemBag(problems, 10);
-            }
-
-            $("#positive-reinforcement").hide();
-            // Generate the initial problem when dependencies are done being loaded
-            var answerType = makeProblem();
+        if (typeof modNameOrObject === "string") {
+            src = urlBase + "utils/" + modNameOrObject + ".js";
+            deps = Khan.moduleDependencies[modNameOrObject] || [];
+        } else {
+            src = modNameOrObject.src;
         }
 
+        // Return the promise if it exists already
+        var selfPromise = modulePromises[src];
+        if (selfPromise) {
+            return selfPromise;
+        } else {
+            selfPromise = $.Deferred();
+        }
+
+        var promises = [];
+
+        // Load module dependencies
+        promises.push(selfPromise);
+        Khan.loadScript(src, function() {
+            selfPromise.resolve();
+        });
+
+        $.each(deps, function(i, dep) {
+            promises.push(loadModule(dep));
+        });
+
+        // Return a multi-promise thing
+        var allLoaded = $.when.apply($, promises);
+        modulePromises[src] = allLoaded;
+        return allLoaded;
+    }
+
+    function loadTestModeSite() {
+        // TODO(alpert): Is the DOM really not yet ready?
+        $(function() {
+            // Inject the site markup
+            if (localMode) {
+                $.get(urlBase + "exercises/khan-site.html", function(site) {
+                    $.get(urlBase + "exercises/khan-exercise.html",
+                        function(ex) {
+                            injectTestModeSite(site, ex);
+                        });
+                });
+            }
+        });
+    }
+
+    function injectTestModeSite(html, htmlExercise) {
+        $("body").prepend(html);
+        $("#container .exercises-header h2").append(document.title);
+        $("#container .exercises-body .current-card-contents").html(
+                htmlExercise);
+
+        // HACK: Make smiley face work on sandcastle
+        $("img[src='/images/face-smiley.png']").attr(
+                "src", "../images/face-smiley.png");
+
+        if (Khan.query.layout === "lite") {
+            $("html").addClass("lite");
+        }
+
+        prepareSite();
+
+        var problems = exercises.children(".problems").children();
+
+        // Don't make the problem bag when a specific problem is specified
+        // because it messes up problem permalinks (because makeProblemBag
+        // calls KhanUtil.random() and changes the seed)
+        if (Khan.query.problem == null) {
+            weighExercises(problems);
+            problemBag = makeProblemBag(problems, 10);
+        }
+
+        $("#positive-reinforcement").hide();
+        // Generate the initial problem when dependencies are done being loaded
+        var answerType = makeProblem();
     }
 
     return Khan;
 
 })();
-
-function fixLabel(){
-    $(".imageLabel").each(function(){
-        var align = $(this).attr("alignType");
-        var labelSpan = $("span:first",this); 
-        var fixWidth;
-        var fixHeight;
-        if(align == "center"){
-           fixWidth = labelSpan.width() / 2;
-           fixHeight = labelSpan.height() / 2;
-        }
-        else if(align == "above"){ 
-           fixWidth = labelSpan.width() / 2; 
-           fixHeight = labelSpan.height();
-        } 
-        else if(align == "above right"){
-           fixWidth = 0;
-           fixHeight = labelSpan.height();
-        } 
-        else if(align == "right"){
-           fixWidth = 0;
-           fixHeight = labelSpan.height() / 2;
-        } 
-        else if(align == "below right"){
-           fixWidth = 0;
-           fixHeight = 0;
-        }
-        else if(align == "below"){
-           fixWidth = labelSpan.width() / 2;
-           fixHeight = 0;
-        } 
-        else if(align == "below left"){
-           fixWidth = labelSpan.width();
-           fixHeight = 0;
-        } 
-        else if(align == "left"){
-           fixWidth = labelSpan.width();
-           fixHeight = labelSpan.height() / 2;
-        } 
-        else if(align == "above left"){
-           fixWidth = labelSpan.width();
-           fixHeight = labelSpan.height();
-        } 
-        else{}
-
-        var oriLeft = parseInt($(this).css("left"));
-        var oriTop = parseInt($(this).css("top"));
-        $(this).css('left', oriLeft - fixWidth ); 
-        $(this).css('top', oriTop - fixHeight);
-        
-    });
-}
 
 // Make this publicly accessible
 var KhanUtil = Khan.Util;

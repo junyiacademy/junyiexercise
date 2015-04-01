@@ -1,5 +1,7 @@
 (function() {
 
+var localMode;
+
 // Keep the template variables private, to prevent external access
 var VARS = {};
 
@@ -15,7 +17,12 @@ $.tmpl = {
                 // False means all templating will be run again, so new values will be chosen
                 var result = !!(ensure && $.tmpl.getVAR(ensure));
                 if (!result) {
-                    ++$.tmpl.DATA_ENSURE_LOOPS;
+                    if ($.tmpl.DATA_ENSURE_LOOPS++ > 10000 && localMode) {
+                        // Shucks, probably not possible. Just give up in order
+                        // to not hang the dev's browser.
+                        alert("unsatisfiable data-ensure?");
+                        return true;
+                    }
                 }
                 return result;
             };
@@ -320,9 +327,10 @@ $.fn.tmplLoad = function(problem, info) {
     VARS = {};
     $.tmpl.DATA_ENSURE_LOOPS = 0;
 
-    // Check to see if we're in test mode
-    if (info.testMode) {
-        // Expose the variables if we're in test mode
+    localMode = info.localMode;
+
+    // Expose the variables if we're in local mode
+    if (localMode) {
         $.tmpl.VARS = VARS;
     }
 };
@@ -348,7 +356,16 @@ $.fn.tmplCleanup = function() {
             } else {
                 KhanUtil.debugLog("no source element");
             }
-            jax.Remove();
+
+            if (e.previousSibling && e.previousSibling.className) {
+                jax.Remove();
+            } else {
+                // MathJax chokes if e.previousSibling is a text node, which it
+                // is if tmplCleanup is called before MathJax's typesetting
+                // finishes
+                KhanUtil.debugLog("previousSibling isn't an element");
+            }
+
             KhanUtil.debugLog("removed!");
         }
     });
@@ -443,7 +460,7 @@ $.fn.tmpl = function() {
                 }
 
                 // Do the same for graphie code
-                $(clone).find(".graphie").andSelf().filter(".graphie").each(function() {
+                $(clone).find(".graphie").addBack().filter(".graphie").each(function() {
                     var code = $(this).text();
                     $(this).text(declarations + code);
                 });
