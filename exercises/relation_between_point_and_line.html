@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers graphie-geometry">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>點與直線關係</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">	    
+		<div id="case1a">
+            <div class="vars">
+            	 <var id="COLORS">["blue","green", "red", "purple", "#FFA500", "brown",  "teal", "olive" ,"gray","black"]</var>
+            	<var id="J">randRange(3,5)</var>
+			    <var id="ANGLE">randRange(280, 350)</var>
+                <var id="R">randRange(7, 10)</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+                <var id="poi">shuffle([[R*Math.cos((ROTATE_ARC+ ANGLE)*Math.PI/180),R*Math.sin((ROTATE_ARC+ ANGLE)*Math.PI/180)],[R*Math.cos((ROTATE_ARC + ANGLE+55)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE+55)*Math.PI/180)], [R*Math.cos((ROTATE_ARC + ANGLE+110)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE+110)*Math.PI/180)],[R*Math.cos((ROTATE_ARC + ANGLE+160)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE+160)*Math.PI/180)],[R*Math.cos((ROTATE_ARC + ANGLE+220)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE+220)*Math.PI/180)]])</var>
+                <var id="W">["A","B","C","D","E"]</var>
+                <var id="C_J">
+						(function(){
+							var shape="";
+							for( var i=0,c=0;i&lt;J;i++)
+							{
+								for(var j=i+1;j&lt;J;j++)
+								{
+									shape=shape+"\\color{" + COLORS[c]+"}{\\overleftrightarrow{"+(W[i]+W[j])+"}}"+"、";
+									c++;
+								}
+							}
+							s1 = "";
+							s2 = "";
+							if( J === 5 ){
+								s1 = shape.substr(0,round(shape.length*0.6)+1);
+								s2 = shape.substr(round(shape.length*0.6)+1,shape.length);
+							}
+							return J == 5 ? [s1,s2] : [shape];
+						})()</var>
+                <var id="ans">round(J*(J-1)/2)</var>
+            </div>
+			<p class="question">平面上不共線的 <code><var>J</var></code> 個點，共可畫出幾條相異「直線」？</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 3, R + 3], [-R - 3, R + 3]],
+                            scale: [15, 15]
+                        });
+
+						for(var i=0;i&lt;J;i++)
+						{
+							circle([poi[i][0],poi[i][1]],0.2, { stroke: "#6495ED" ,fill:"#6495ED"});
+							label([1.15*poi[i][0],1.15*poi[i][1]], W[i], "center");
+						}
+						
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+
+                    <p><span class="sol" data-forms="integer"><var>ans</var></span> 條直線</p>
+
+                    <p class="example">整數，例：<code>6</code></p>
+
+                </div>
+            <div class="hints">
+				<div>
+					<p>相異兩點可以決定一個直線，如圖共可以畫出：<br/> <code><var>C_J[0]</var></code><br/ data-if="J==5"><code><var>C_J[1]</var></code> 共 <code><var>ans</var></code> 條直線。</p>
+					 <div class="graphie" data-update="fan_shaped">
+					 	
+					 	for(var i=0,c=0;i&lt;J;i++)
+				 		{
+
+							for(var j=i+1;j&lt;J;j++)
+							{
+								
+								var y_1=poi[i][1];
+								var x_1=poi[i][0];
+								var y_2=poi[j][1];
+								var x_2=poi[j][0];
+								if(x_1==x_2&&y_1!=y_2)
+								{
+									line([x_1,max(y_1,y_2)+0.8],[x_1,min(y_1,y_2)-0.8],{stroke:COLORS[c]});
+									
+								}
+								if(x_1!=x_2&&y_1==y_2)
+								{
+									line([max(x_1,x_2)+0.8,y_1],[min(x_1,x_2)-0.8,y_1],{stroke:COLORS[c]});
+								}
+								if(x_1!=x_2&&y_1!=y_2)
+								{
+									var kx=(y_2-y_1)/(x_2-x_1);
+									var bx=(x_2*y_1-x_1*y_2)/(x_2-x_1);
+									var x_max=max(x_1,x_2)+0.5;
+									var x_min=min(x_1,x_2)-0.5;
+									var y_max=x_max*kx+bx;
+									var y_min=x_min*kx+bx;
+									line([x_min,y_min],[x_max,y_max],{stroke:COLORS[c]});
+								}c++;
+							}
+						}
+					 </div>				
+				</div>
+				<div>
+					<p>當點數很多時，除了逐一畫圖外，也可以透過如下方式來思考：</p>
+					<p>從 <code>A</code> 點連共可以連出 <code><var>(J-1)</var></code> 條直線： <code>\overleftrightarrow{AB}、\overleftrightarrow{AC}</code><code data-if="J&gt;3">、\overleftrightarrow{AD}</code><code data-if="J&gt;4">、\overleftrightarrow{AE}</code> 。</p>
+					<p>從 <code>B、C</code> <code data-if="J&gt;3">、D</code> <code data-if="J&gt;4">、E</code> <code>\quad<var>J-1</var></code> 點亦可以分別連出 <code><var>(J-1)</var></code> 條直線。</p>
+					<p>因此共有<code><var>J</var>\times <var>(J-1)</var> = <var>J*(J-1)</var></code> 條直線。</p>
+				</div>
+				<div>
+					<p>但 <code>\overleftrightarrow{AB}</code> 與直線 <code>\overleftrightarrow{BA}</code> 代表相同直線，即每條直線被數了兩次，</p>
+					<p>因此只有 <code>\dfrac{<var>J*(J-1)</var>}{2}=<var>ans</var></code> 條相異直線，答案為 <code class="hint_pink"><var>ans</var></code> 。</p>
+				</div>
+			</div>
+        </div>
+
+        <div id="case1b">
+            <div class="vars">
+            	 <var id="COLORS">["blue","green", "red", "purple", "#FFA500", "brown",  "teal", "olive" ,"gray","black"]</var>
+            	<var id="J">randRange(3,5)</var>
+			    <var id="ANGLE">randRange(280, 350)</var>
+                <var id="R">randRange(7, 10)</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+                <var id="poi">shuffle([[R*Math.cos((ROTATE_ARC+ ANGLE)*Math.PI/180),R*Math.sin((ROTATE_ARC+ ANGLE)*Math.PI/180)],[R*Math.cos((ROTATE_ARC + ANGLE/2)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE/2)*Math.PI/180)], [R*Math.cos((ROTATE_ARC + ANGLE/3)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE/3)*Math.PI/180)],[R*Math.cos((ROTATE_ARC + ANGLE/4)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE/4)*Math.PI/180)],[R*Math.cos((ROTATE_ARC + ANGLE/5)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE/5)*Math.PI/180)]])</var>
+                <var id="W">["A","B","C","D","E"]</var>
+                <var id="C_J">
+						(function(){
+							var shape="";
+							for( var i=0,c=0;i&lt;J;i++)
+							{
+								for(var j=i+1;j&lt;J;j++)
+								{
+									shape=shape+"\\color{" + COLORS[c]+"}{\\overline{"+(W[i]+W[j])+"}}"+"、";
+									c++;
+								}
+							}
+							s1 = "";
+							s2 = "";
+							if( J === 5 ){
+								s1 = shape.substr(0,round(shape.length*0.6)+1);
+								s2 = shape.substr(round(shape.length*0.6)+1,shape.length);
+							}
+							return J == 5 ? [s1,s2] : [shape];
+						})()</var>
+                <var id="ans">round(J*(J-1)/2)</var>
+            </div>
+			<p class="question">平面上不共線的 <code><var>J</var></code> 個點，共可畫出幾條相異「線段」？</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 3, R + 3], [-R - 3, R + 3]],
+                            scale: [15, 15]
+                        });
+
+						for(var i=0;i&lt;J;i++)
+						{
+							circle([poi[i][0],poi[i][1]],0.2, { stroke: "#6495ED" ,fill:"#6495ED"});
+							label([1.15*poi[i][0],1.15*poi[i][1]], W[i], "center");
+						}
+						
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+
+                    <p><span class="sol" data-forms="integer"><var>ans</var></span> 條線段</p>
+
+                    <p class="example">整數，例：<code>6</code></p>
+
+                </div>
+            <div class="hints">
+				<div>
+					<p>相異兩點可以決定一個線段，如圖共可以畫出：<br/> <code><var>C_J[0]</var></code><br/ data-if="J==5"><code><var>C_J[1]</var></code> 共 <code><var>ans</var></code> 條線段。</p>
+					 <div class="graphie" data-update="fan_shaped">
+
+					 	for(var i=0,c=0;i&lt;J;i++)
+				 		{
+
+							for(var j=i+1;j&lt;J;j++)
+							{
+								line([poi[i][0],poi[i][1]],[poi[j][0],poi[j][1]],{stroke:COLORS[c]});
+								c++;
+							}
+						}
+						
+					 </div>				
+				</div>
+				<div>
+					<p>當點數很多時，除了逐一畫圖外，也可以透過如下方式來思考：</p>
+					<p>從 <code>A</code> 點連共可以連出 <code><var>(J-1)</var></code> 條線段： <code>\overline{AB}、\overline{AC}</code><code data-if="J&gt;3">、\overline{AD}</code><code data-if="J&gt;4">、\overline{AE}</code> 。</p>
+					<p>從 <code>B、C</code> <code data-if="J&gt;3">、D</code> <code data-if="J&gt;4">、E</code> <code>\quad<var>J-1</var></code> 點亦可以分別連出 <code><var>(J-1)</var></code> 條線段。</p>
+					<p>因此共有<code><var>J</var>\times <var>(J-1)</var> = <var>J*(J-1)</var></code> 條線段。</p>
+				</div>
+				<div>
+					<p>但 <code>\overline{AB}</code> 與線段 <code>\overline{BA}</code> 代表相同線段，即每條線段被數了兩次，</p>
+					<p>因此只有 <code>\dfrac{<var>J*(J-1)</var>}{2}=<var>ans</var></code> 條相異線段，答案為 <code class="hint_pink"><var>ans</var></code> 。</p>
+				</div>
+			</div>
+        </div>
+
+        <div id="case2a">
+            <div class="vars">
+            	<var id="COLORS">shuffle(["blue","green", "red", "purple", "#FFA500", "brown"])</var>
+            	<var id="J">randRange(3,5)</var>
+			    <var id="ANGLE">randRange(280, 350)</var>
+                <var id="R">randRange(7, 10)</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+                <var id="poi">shuffle([[R*Math.cos((ROTATE_ARC+ ANGLE)*Math.PI/180),R*Math.sin((ROTATE_ARC+ ANGLE)*Math.PI/180)],[R*Math.cos((ROTATE_ARC + ANGLE+110)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE+110)*Math.PI/180)],[R*Math.cos((ROTATE_ARC + ANGLE+220)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE+220)*Math.PI/180)]])</var>
+                <var id="W">["A","B","C","D","E"]</var>
+                <var id="C_J">
+						(function(){
+							var shape="";
+							for( var i=0;i&lt;J;i++)
+							{
+								for(var j=i+1;j&lt;J;j++)
+								{
+									shape=shape+"\\overleftrightarrow{"+(W[i]+W[j])+"}"+"、";
+								}
+							}
+							return shape;
+						})()</var>
+                <var id="ans">1</var>
+            </div>
+			<p class="question">平面上共線的 <code><var>J</var></code> 個點，共可畫出幾條相異「直線」？</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 3, R + 3], [-R - 3, R + 3]],
+                            scale: [15, 15]
+                        });
+                        var y_1=poi[0][1];
+						var x_1=poi[0][0];
+						var y_2=poi[1][1];
+						var x_2=poi[1][0];
+						var p=[[x_1,y_1],[x_2,y_2],[(x_1 + x_2)/2,(y_1 + y_2)/2],[(x_1 + (x_1 + x_2)/2)/2,(y_1 + (y_1 + y_2)/2)/2],[(x_2 + (x_1 + x_2)/2)/2,(y_2 + (y_1 + y_2)/2)/2]];
+						if(x_1==x_2&&y_1!=y_2)
+						{ 
+							line([x_1,max(y_1,y_2)+0.8],[x_1,min(y_1,y_2)-0.8],{stroke:COLORS[0]});
+						}
+						if(x_1!=x_2&&y_1==y_2)
+						{
+							line([max(x_1,x_2)+0.8,y_1],[min(x_1,x_2)-0.8,y_1],{stroke:COLORS[0]});
+						}
+						if(x_1!=x_2&&y_1!=y_2)
+						{
+							var kx=(y_2-y_1)/(x_2-x_1);
+							var bx=(x_2*y_1-x_1*y_2)/(x_2-x_1);
+							var x_max=max(x_1,x_2)+0.8;
+							var x_min=min(x_1,x_2)-0.8;
+							var y_max=x_max*kx+bx;
+							var y_min=x_min*kx+bx;
+							line([x_min,y_min],[x_max,y_max],{stroke:COLORS[0]});
+						}
+						 for(var i=0;i&lt;J;i++)
+						{
+							circle(p[i],0.2, { stroke: COLORS[i+1] ,fill:COLORS[i+1]});
+							if((x_2-x_1)==0){label([p[i][0]+0.8,p[i][1]], W[i], "above",{color:COLORS[i+1]});}
+							if((y_2-y_1)/(x_2-x_1)==0&&(x_2-x_1)!=0){label([p[i][0],p[i][1]+1], W[i], "center",{color:COLORS[i+1]});}
+							if((y_2-y_1)/(x_2-x_1)&gt;0&&(x_2-x_1)!=0){label([p[i][0]+0.8,p[i][1]-0.8], W[i], "center",{color:COLORS[i+1]});}
+							if((y_2-y_1)/(x_2-x_1)&lt;0&&(x_2-x_1)!=0){label([p[i][0]-0.8,p[i][1]-0.8], W[i], "center",{color:COLORS[i+1]});}
+							
+						}
+						
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+
+                    <p><span class="sol" data-forms="integer"><var>ans</var></span> 條直線</p>
+
+                    <p class="example">整數，例：<code>6</code></p>
+
+                </div>
+            <div class="hints">
+				<p>雖然相異兩點皆可連成一直線，但因為直線可以無限延伸，因此同一直線上兩點所連成的直線皆視為相同。</p>
+				<div>
+					<p>當 <code>A、B、C</code> <code data-if="J&gt;3">、D</code> <code data-if="J&gt;4">、E</code> 共線時， <code>\overleftrightarrow{AC}</code> 和 <code>\overleftrightarrow{AB}</code> 表示相同直線。</p>
+					<p>但要注意題目若是寫「線段」則表示不相同。</p>
+				</div>
+				<p>因此，這共線的 <code><var>J</var></code> 個點只連出 <code class="hint_pink">1</code> 條直線。</p>
+			</div>
+        </div>
+
+        <div id="case2b">
+            <div class="vars">
+            	 <var id="COLORS">shuffle(["blue","green", "red", "purple", "#FFA500", "brown"])</var>
+            	<var id="J">randRange(3,5)</var>
+			    <var id="ANGLE">randRange(280, 350)</var>
+                <var id="R">randRange(7, 10)</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+                <var id="poi">shuffle([[R*Math.cos((ROTATE_ARC+ ANGLE)*Math.PI/180),R*Math.sin((ROTATE_ARC+ ANGLE)*Math.PI/180)],[R*Math.cos((ROTATE_ARC + ANGLE+110)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE+110)*Math.PI/180)],[R*Math.cos((ROTATE_ARC + ANGLE+220)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE+220)*Math.PI/180)]])</var>
+                <var id="W">["A","B","C","D","E"]</var>
+                <var id="C_J">
+						(function(){
+							var shape="";
+							for( var i=0;i&lt;J;i++)
+							{
+								for(var j=i+1;j&lt;J;j++)
+								{
+									shape=shape+"\\overleftrightarrow{"+(W[i]+W[j])+"}"+"、";
+								}
+							}
+							return shape;
+						})()</var>
+                <var id="ans">round(J*(J-1)/2)</var>
+            </div>
+			<p class="question">平面上共線的 <code><var>J</var></code> 個點，共可畫出幾條相異「線段」？</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 3, R + 3], [-R - 3, R + 3]],
+                            scale: [15, 15]
+                        });
+                        var y_1=poi[0][1];
+						var x_1=poi[0][0];
+						var y_2=poi[1][1];
+						var x_2=poi[1][0];
+						var p=[[x_1,y_1],[x_2,y_2],[(x_1 + x_2)/2,(y_1 + y_2)/2],[(x_1 + (x_1 + x_2)/2)/2,(y_1 + (y_1 + y_2)/2)/2],[(x_2 + (x_1 + x_2)/2)/2,(y_2 + (y_1 + y_2)/2)/2]];
+						if(x_1==x_2&&y_1!=y_2)
+						{ 
+							line([x_1,max(y_1,y_2)+0.8],[x_1,min(y_1,y_2)-0.8],{stroke:COLORS[0]});
+						}
+						if(x_1!=x_2&&y_1==y_2)
+						{
+							line([max(x_1,x_2)+0.8,y_1],[min(x_1,x_2)-0.8,y_1],{stroke:COLORS[0]});
+						}
+						if(x_1!=x_2&&y_1!=y_2)
+						{
+							var kx=(y_2-y_1)/(x_2-x_1);
+							var bx=(x_2*y_1-x_1*y_2)/(x_2-x_1);
+							var x_max=max(x_1,x_2)+0.8;
+							var x_min=min(x_1,x_2)-0.8;
+							var y_max=x_max*kx+bx;
+							var y_min=x_min*kx+bx;
+							line([x_min,y_min],[x_max,y_max],{stroke:COLORS[0]});
+						}
+						 for(var i=0;i&lt;J;i++)
+						{
+							circle(p[i],0.2, { stroke: COLORS[i+1] ,fill:COLORS[i+1]});
+							if((x_2-x_1)==0){label([p[i][0]+0.8,p[i][1]], W[i], "above",{color:COLORS[i+1]});}
+							if((y_2-y_1)/(x_2-x_1)==0&&(x_2-x_1)!=0){label([p[i][0],p[i][1]+1], W[i], "center",{color:COLORS[i+1]});}
+							if((y_2-y_1)/(x_2-x_1)&gt;0&&(x_2-x_1)!=0){label([p[i][0]+0.8,p[i][1]-0.8], W[i], "center",{color:COLORS[i+1]});}
+							if((y_2-y_1)/(x_2-x_1)&lt;0&&(x_2-x_1)!=0){label([p[i][0]-0.8,p[i][1]-0.8], W[i], "center",{color:COLORS[i+1]});}
+							
+						}
+						
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+
+                    <p><span class="sol" data-forms="integer"><var>ans</var></span> 條線段</p>
+
+                    <p class="example">整數，例：<code>6</code></p>
+
+                </div>
+            <div class="hints">
+				<p>相異兩點可決定一個線段。</p>
+				<div>
+					<p>從 <code>A</code> 點連共可以連出 <code><var>(J-1)</var></code> 條線段： <code>\overline{AB}、\overline{AC}</code><code data-if="J&gt;3">、\overline{AD}</code><code data-if="J&gt;4">、\overline{AE}</code> 。</p>
+					<p>從 <code>B、C</code> <code data-if="J&gt;3">、D</code> <code data-if="J&gt;4">、E</code> <code>\quad<var>J-1</var></code> 點可以分別連出 <code><var>(J-1)</var></code> 條線段。</p>
+					<p>因此共有<code><var>J</var>\times <var>(J-1)</var> = <var>J*(J-1)</var></code> 條線段。</p>
+				</div>
+				<div>
+					<p>但 <code>\overline{AB}</code> 與線段 <code>\overline{BA}</code> 代表相同線段，即每條線段被數了兩次，</p>
+					<p>因此只有 <code>\dfrac{<var>J*(J-1)</var>}{2}=<var>ans</var></code> 條相異線段，答案為 <code class="hint_pink"><var>ans</var></code> 。</p>
+				</div>
+			</div>
+        </div>
+			
+		<div id="case3">
+            <div class="vars">
+			    <var id="J">randFromArray([[1,"正確"],[2,"錯誤"],[3,"錯誤"],[4,"錯誤"],[5,"正確"],[6,"正確"]])</var>
+            </div>
+			
+			<div class="question">
+					<p class="question">請判斷以下敘述是否正確：</p>
+					<p data-if="J[0]==1">相異兩點必能決定一直線。</p>
+					<P data-if="J[0]==2">直線的長度可以用尺測量。</P>
+					<p data-if="J[0]==3">兩直線能比較長短。</p>
+					<p data-if="J[0]==4">相異三點可以連出三條相異線。</p>
+					<p data-if="J[0]==5">給相異兩點 <code>A、B</code> ，則 <code>\overline{AB}</code> ，<code>\overline{BA}</code> 代表的是相同的線段。</p>
+					<p data-if="J[0]==6">若 <code>A、B、C</code> 三點共線，則 <code>\overleftrightarrow{AB}</code>, <code>\overleftrightarrow{AC}</code> 代表的是相同的直線。</p>
+			</div>
+			<p class="solution"><var>J[1]</var></p>
+                <ul class="choices" data-category="true">					
+					<li>正確</li>
+					<li>錯誤</li>
+				</ul>
+            <div class="hints">
+				<p data-if="J[0]==1"><span class="hint_pink">正確</span>，相異兩點可決定一直線。</p>
+				<P data-if="J[0]==2"><span class="hint_pink">錯誤</span>，直線可以無限延伸，無法量測長度，線段才可以量測長度。</P>
+				<p data-if="J[0]==3"><span class="hint_pink">錯誤</span>，直線可以無限延伸，無法量測長度，因此無法比較大小。</p>
+				<p data-if="J[0]==4"><span class="hint_pink">錯誤</span>，不共線三點，才能決定 <code>3</code> 條直線。</p>
+				<p data-if="J[0]==5"><span class="hint_pink">正確</span>，在描述線段時需要兩端點。但此兩點的順序並無影響，皆代表相同線段。</p>
+				<p data-if="J[0]==6"><span class="hint_pink">正確</span>，因為直線可以無限延伸，在描述直線時，選直線上任兩點，表示的都是相同直線。</p>
+			</div>
+        </div>
+	
+		
+	</div>
+	</div>
+</body>
+</html>
