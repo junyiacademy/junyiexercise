@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>角平分線的意義</title>
+    <script src="../khan-exercise.js"></script>
+	<script language="javascript">
+		function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+	    <div id="case1">
+            <div class="vars" data-ensure="isInt(ans)">
+				<var id="angle">randRange(60,180)</var>
+			    <var id="ans">angle/2</var>
+				<var id="START_ANGLE">randRange(0,360)</var>
+				<var id="END_ANGLE">START_ANGLE+angle</var>
+				<var id="RAND_GAP">randRange(20,angle-20)</var>
+				<var id="MIDDLE_ANGLE">START_ANGLE+RAND_GAP</var>
+				<var id="C_POLAR">polar(6,START_ANGLE)</var>
+				<var id="A_POLAR">polar(6,END_ANGLE)</var>
+				<var id="D_POLAR">polar(6,MIDDLE_ANGLE)</var>
+				<var id="F_POLAR">polar(5,START_ANGLE+RAND_GAP/2)</var>
+				<var id="E_POLAR">polar(5,(END_ANGLE+MIDDLE_ANGLE)/2)</var>
+				<var id="RANGE_LEFT">round(min(C_POLAR[0],A_POLAR[0],D_POLAR[0],F_POLAR[0],E_POLAR[0],0))</var>
+				<var id="RANGE_RIGHT">round(max(C_POLAR[0],A_POLAR[0],D_POLAR[0],F_POLAR[0],E_POLAR[0],0))</var>
+				<var id="RANGE_UP">round(max(C_POLAR[1],A_POLAR[1],D_POLAR[1],F_POLAR[1],E_POLAR[1],0))</var>
+				<var id="RANGE_BELOW">round(min(C_POLAR[1],A_POLAR[1],D_POLAR[1],F_POLAR[1],E_POLAR[1],0))</var>
+            </div>
+			
+			<div class="question">
+				<p>如圖，<code>\angle ABC</code> 為 <code><var>angle</var>^\circ</code> ，<code>\overline{BE}</code> 為 <code>\angle ABD</code> 的角平分線，<code>\overline{BF}</code> 為 <code>\angle DBC</code> 的角平分線，請求出 <code>\angle EBF</code> 的角度為何？</p>
+			</div>
+			<div class="problem">
+			    <div class="graphie" id="volumes">
+				    init({
+                            range: [[RANGE_LEFT-1, RANGE_RIGHT+1], [RANGE_BELOW-1, RANGE_UP+1]],
+                            scale: 30
+                        });
+					
+					graph.BC = line([0,0],C_POLAR);
+					graph.BA = line([0,0],A_POLAR);
+					graph.BD = line([0,0],D_POLAR);
+					graph.BF = line([0,0],F_POLAR,{stroke : KhanUtil.GREEN});
+					graph.BE = line([0,0],E_POLAR,{stroke : KhanUtil.RED});
+					
+					graph.C = label(polar(5.5,START_ANGLE-5),"C");
+					graph.A = label(polar(5.5,END_ANGLE+5),"A");
+					graph.D = label(polar(5.5,MIDDLE_ANGLE-5),"D");
+					graph.B = label(polar(0.5,MIDDLE_ANGLE+180),"B");
+					graph.F = label(polar(4.5,START_ANGLE+RAND_GAP/2-5),"F",{color : KhanUtil.GREEN});
+					graph.E = label(polar(4.5,(END_ANGLE+MIDDLE_ANGLE)/2+5),"E",{color : KhanUtil.RED});
+					
+					graph.CPOINT = circle(polar(5.5,START_ANGLE),0.1,{fill : "black"});
+					graph.APOINT = circle(polar(5.5,END_ANGLE),0.1,{fill : "black"});
+					graph.DPOINT = circle(polar(5.5,MIDDLE_ANGLE),0.1,{fill : "black"});
+					graph.FPOINT = circle(polar(4.5,START_ANGLE+RAND_GAP/2),0.1,{fill : KhanUtil.GREEN, stroke : KhanUtil.GREEN});
+					graph.EPOINT = circle(polar(4.5,(END_ANGLE+MIDDLE_ANGLE)/2),0.1,{fill : KhanUtil.RED, stroke : KhanUtil.RED});
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+					<span style="padding-right: 5px" class="sol" data-forms="integer"><var>ans</var></span> <code>^\circ</code>
+			</div>
+			
+            <div class="hints">
+				<div>
+					<p>因為 <code>\overline{BE}</code> 是 <code>\angle ABD</code> 的角平分線，所以我們知道：</p>
+					<p><code>\angle EBD = \angle EBA = \dfrac{1}{2} \angle ABD</code>。</p>
+				</div>
+				<div>
+					<p>同理，<code>\overline{BF}</code> 也是 <code>\angle DBC</code> 的角平分線，所以我們知道：</p>
+					<p><code>\angle FBD = \angle FBC = \dfrac{1}{2} \angle CBD</code>。</p>
+				</div>
+				<p>而我們知道我們要算的 <code>\angle EBF</code> 可以拆為 <code>\angle EBD + \angle FBD</code></p>
+				<p><code>=\dfrac{1}{2} \angle ABD+\dfrac{1}{2} \angle CBD</code></p>
+				<p><code>=\dfrac{1}{2} (\angle ABD + \angle CBD)</code></p>
+				<p><code>=\dfrac{1}{2} \angle ABC</code></p>
+				<p><code>=\dfrac{1}{2} \times <var>angle</var>^\circ</code></p>
+				<p><code>=\color{#FF00AF}{<var>ans</var>^\circ}</code></p>
+			</div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars" data-ensure="isInt(ans) && ans &gt; 10">
+				<var id="angle">randRange(60,180)</var>
+				<var id="given">randFromArray(['ABE','EBD'])</var>
+				<var id="goal">randFromArray(['FBD','CBF'])</var>
+				<var id="given_angle">randRange(15,75)</var>
+			    <var id="ans">(angle-2*given_angle)/2</var>
+				<var id="START_ANGLE">randRange(0,360)</var>
+				<var id="END_ANGLE">START_ANGLE+angle</var>
+				<var id="RAND_GAP">angle-given_angle*2</var>
+				<var id="MIDDLE_ANGLE">START_ANGLE+RAND_GAP</var>
+				<var id="C_POLAR">polar(6,START_ANGLE)</var>
+				<var id="A_POLAR">polar(6,END_ANGLE)</var>
+				<var id="D_POLAR">polar(6,MIDDLE_ANGLE)</var>
+				<var id="F_POLAR">polar(5,START_ANGLE+RAND_GAP/2)</var>
+				<var id="E_POLAR">polar(5,(END_ANGLE+MIDDLE_ANGLE)/2)</var>
+				<var id="RANGE_LEFT">round(min(C_POLAR[0],A_POLAR[0],D_POLAR[0],F_POLAR[0],E_POLAR[0],0))</var>
+				<var id="RANGE_RIGHT">round(max(C_POLAR[0],A_POLAR[0],D_POLAR[0],F_POLAR[0],E_POLAR[0],0))</var>
+				<var id="RANGE_UP">round(max(C_POLAR[1],A_POLAR[1],D_POLAR[1],F_POLAR[1],E_POLAR[1],0))</var>
+				<var id="RANGE_BELOW">round(min(C_POLAR[1],A_POLAR[1],D_POLAR[1],F_POLAR[1],E_POLAR[1],0))</var>
+            </div>
+			
+			<div class="question">
+				<p>如圖，<code>\angle ABC</code> 為 <code><var>angle</var>^\circ</code> ，且 <code>\angle <var>given</var></code> 為 <code><var>given_angle</var>^\circ</code> ，已知 <code>\overline{BE}</code> 為 <code>\angle ABD</code> 的角平分線，<code>\overline{BF}</code> 為 <code>\angle DBC</code> 的角平分線，請求出 <code>\angle <var>goal</var></code> 的角度為何。</p>
+			</div>
+			<div class="problem">
+			    <div class="graphie" id="volumes">
+				    init({
+                            range: [[RANGE_LEFT-1, RANGE_RIGHT+1], [RANGE_BELOW-1, RANGE_UP+1]],
+                            scale: 30
+                        });
+					
+					graph.BC = line([0,0],C_POLAR);
+					graph.BA = line([0,0],A_POLAR);
+					graph.BD = line([0,0],D_POLAR);
+					graph.BF = line([0,0],F_POLAR,{stroke : KhanUtil.GREEN});
+					graph.BE = line([0,0],E_POLAR,{stroke : KhanUtil.RED});
+					
+					graph.C = label(polar(5.5,START_ANGLE-5),"C");
+					graph.A = label(polar(5.5,END_ANGLE+5),"A");
+					graph.D = label(polar(5.5,MIDDLE_ANGLE-5),"D");
+					graph.B = label(polar(0.5,MIDDLE_ANGLE+180),"B");
+					graph.F = label(polar(4.5,START_ANGLE+RAND_GAP/2-5),"F",{color : KhanUtil.GREEN});
+					graph.E = label(polar(4.5,(END_ANGLE+MIDDLE_ANGLE)/2+5),"E",{color : KhanUtil.RED});
+					
+					graph.CPOINT = circle(polar(5.5,START_ANGLE),0.1,{fill : "black"});
+					graph.APOINT = circle(polar(5.5,END_ANGLE),0.1,{fill : "black"});
+					graph.DPOINT = circle(polar(5.5,MIDDLE_ANGLE),0.1,{fill : "black"});
+					graph.FPOINT = circle(polar(4.5,START_ANGLE+RAND_GAP/2),0.1,{fill : KhanUtil.GREEN, stroke : KhanUtil.GREEN});
+					graph.EPOINT = circle(polar(4.5,(END_ANGLE+MIDDLE_ANGLE)/2),0.1,{fill : KhanUtil.RED, stroke : KhanUtil.RED});
+					if ( given == "ABE" ) {
+						arc( [0, 0], 1, (END_ANGLE+MIDDLE_ANGLE)/2, END_ANGLE , { stroke: KhanUtil.BLUE } );
+						label( polar( 2, (END_ANGLE+MIDDLE_ANGLE)/4+END_ANGLE/2 ), given_angle+"\^\\circ" );
+					}else {
+						arc( [0, 0], 1, MIDDLE_ANGLE, (END_ANGLE+MIDDLE_ANGLE)/2, { stroke: KhanUtil.BLUE } );
+						label( polar( 2, MIDDLE_ANGLE/2+(END_ANGLE+MIDDLE_ANGLE)/4) , given_angle+"\^\\circ" );
+					}
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+					<span style="padding-right: 5px" class="sol" data-forms="integer"><var>ans</var></span> <code>^\circ</code>
+			</div>
+			
+            <div class="hints">
+				<div>
+					<p>因為 <code>\overline{BE}</code> 是 <code>\angle ABD</code> 的角平分線，所以我們知道：</p>
+					<p><code>\angle EBD = \angle ABE = \dfrac{1}{2} \angle ABD = <var>given_angle</var>^\circ</code>。</p>
+				</div>
+				<p>因此 <code>\angle ABD = (2\times<var>given_angle</var>^\circ)=<var>round(2*given_angle)</var>^\circ</code>。</p>
+				<div>
+					<p>因此 <code>\angle CBD = \angle ABC - \angle ABD</code></p>
+					<p><code>=<var>angle</var>^\circ - <var>round(2*given_angle)</var>^\circ</code></p>
+					<p><code>=<var>round(angle-2*given_angle)</var>^\circ</code></p>
+				</div>
+				<div>
+					<p>而因為 <code>\overline{BF}</code> 也是 <code>\angle DBC</code> 的角平分線，所以我們知道：</p>
+					<p><code>\angle FBD = \angle CBF = \dfrac{1}{2} \angle CBD</code></p>
+				</div>
+				<p><code>= \color{#FF00AF}{<var>ans</var>^\circ}</code></p>
+			</div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars" data-ensure="isInt(ans)">
+				<var id="angle">randRange(30,90)</var>
+				<var id="goal">randFromArray(['BEG','DEG'])</var>
+				<var id="ans">angle/2</var>
+				<var id="START_ANGLE">randRange(0,360)</var>
+				<var id="END_ANGLE">START_ANGLE+angle</var>
+				<var id="MIDDLE_ANGLE">END_ANGLE/2+START_ANGLE/2</var>
+				<var id="A_POLAR">polar(5,START_ANGLE)</var>
+				<var id="C_POLAR">polar(5,END_ANGLE)</var>
+				<var id="M_POLAR">polar(4,MIDDLE_ANGLE)</var>
+            </div>
+			
+			<div class="question">
+				<p>如圖，線段 <code>\overline{AB}</code> 與 <code>\overline{CD}</code> 交於一點 <code>E</code> ，而 <code>\overline{FG}</code> 為 <code>\angle AEC</code> 的角平分線，已知 <code>\angle AEC</code> 為 <code><var>angle</var>^\circ</code> ，請求出 <code>\angle <var>goal</var></code> 的角度為何。</p>
+			</div>
+			<div class="problem">
+			    <div class="graphie" id="volumes">
+				    init({
+                            range: [[-6, 6], [-6, 6]],
+                            scale: 30
+                        });
+					graph.AB = line([-A_POLAR[0],-A_POLAR[1]],A_POLAR);
+					graph.CD = line([-C_POLAR[0],-C_POLAR[1]],C_POLAR);
+					graph.FG = line([-M_POLAR[0],-M_POLAR[1]],M_POLAR,{stroke : KhanUtil.RED});
+					
+					graph.E = label(polar(0.5,MIDDLE_ANGLE+90),"E");
+					graph.A = label(polar(5,START_ANGLE-5),"A",{color : KhanUtil.BLUE});
+					graph.B = label(polar(5,START_ANGLE+185),"B",{color : KhanUtil.BLUE});
+					graph.C = label(polar(5,END_ANGLE-5),"C",{color : KhanUtil.BLUE});
+					graph.D = label(polar(5,END_ANGLE+185),"D",{color : KhanUtil.BLUE});
+					graph.F = label(polar(4,MIDDLE_ANGLE-5),"F",{color : KhanUtil.BLUE});
+					graph.G = label(polar(4,MIDDLE_ANGLE+185),"G",{color : KhanUtil.BLUE});
+					
+					graph.label_e = circle([0,0],0.1,{fill : "black"});
+					graph.label_a = circle(A_POLAR,0.1,{fill : KhanUtil.BLUE, stroke : KhanUtil.BLUE});
+					graph.label_b = circle([-A_POLAR[0],-A_POLAR[1]],0.1,{fill : KhanUtil.BLUE, stroke : KhanUtil.BLUE});
+					graph.label_c = circle(C_POLAR,0.1,{fill : KhanUtil.BLUE, stroke : KhanUtil.BLUE});
+					graph.label_d = circle([-C_POLAR[0],-C_POLAR[1]],0.1,{fill : KhanUtil.BLUE, stroke : KhanUtil.BLUE});
+					graph.label_f = circle(M_POLAR,0.1,{fill : KhanUtil.BLUE, stroke : KhanUtil.BLUE});
+					graph.label_g = circle([-M_POLAR[0],-M_POLAR[1]],0.1,{fill : KhanUtil.BLUE, stroke : KhanUtil.BLUE});
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+					<span style="padding-right: 5px" class="sol" data-forms="integer"><var>ans</var></span> <code>^\circ</code>
+			</div>
+			
+            <div class="hints">
+				<div>
+					<p>首先因為 <code>\angle AEC</code> 與 <code>\angle BED</code> 為對頂角，所以我們知道：</p>
+					<p><code>\angle AEC = \angle BED</code></p>
+				</div>
+				<div>
+					<p>而因為 <code>\overline{FG}</code> 是 <code>\angle BED</code> 的角平分線，所以我們知道：</p>
+					<p><code>\angle BEG = \angle DEG</code></p>
+				</div>
+				<p><code>= \dfrac{1}{2} \angle BED</code></p>
+				<p><code>= \color{#FF00AF}{<var>ans</var>^\circ} </code></p>
+			</div>
+        </div>
+	</div>
+	</div>
+</body>
+</html>
