@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html data-require="math graphie word-problems interactive subhints">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>表面積的計算-進階</title>
+    <script src="../khan-exercise.js"></script>
+
+</head>
+<body>
+
+<div class="exercise">
+	<div class="problems">
+		 <div id="case1">
+            <div class="vars">
+                <var id="L">randRange(18, 22)</var>
+                <var id="L2">randRange(3, 6)*2</var>
+                <var id="WFAKE">randRange(3, 5)*2</var>
+                <var id="WFAKE2">randRange(5, 7)*2</var>
+                <var id="W">WFAKE*0.75</var>
+                <var id="W2">WFAKE2*0.75</var>    
+                <var id="H">randRange(3, 6)</var>
+                <var id="H2">randRange(3, 6)</var>
+                <var id="S">L2+3</var>
+                <var id="S2">2*L2+3</var>
+			    <var id="UNIT">"公分"</var>
+			    <var id="Aans">round(L2*WFAKE2+L2*WFAKE+(L-L2)*WFAKE2)</var>
+			    <var id="Rans">round(H*WFAKE2+H2*WFAKE2 +H*WFAKE)</var>
+			    <var id="Fans">round(L2*H+L2*H2+(L-L2)*H)</var>
+			    <var id="ans">round(Aans*2+Rans*2+Fans*2)</var>
+            </div>
+
+            <p class="question">
+                請計算下圖的表面積：
+            </p>
+            <div class="problem">
+                 <div class="graphie" id="original">
+                    init({ range: [[-7, L+W+L2+  1], [-2, H+W +W2+ H2+1]], scale: 10 });
+
+                    path([ [0, 0], [L2, 0], true]);
+                    path([ [0, H], [L2, H], true]);
+                    path([ [L2, H], [L2+W/1.414, H+W/1.414], true]);
+                    path([ [L2+W/1.414, H+W/1.414],[W/1.414, H+W/1.414], true]);
+                    path([ [0, H], [W/1.414, H+W/1.414], true]);
+                    path([ [0,0],[0, H], true]);
+                    
+                    path([ [W/1.414, H+W/1.414], [W/1.414, H+W/1.414+H2], true]);
+                    path([ [W/1.414, H+W/1.414+H2],[W/1.414+W2/1.414, H+W/1.414+H2+W2/1.414], true]);
+                    path([ [W/1.414, H+W/1.414+H2],[W/1.414+L2, H+W/1.414+H2], true]);
+                    path([ [W/1.414+L2, H+W/1.414+H2],[W/1.414+L2+W2/1.414, H+W/1.414+H2+W2/1.414], true]);					
+                    path([ [W/1.414+W2/1.414, H+W/1.414+H2+W2/1.414],[W/1.414+W2/1.414+L2, H+W/1.414+H2+W2/1.414], true]);
+					
+                    path([ [W/1.414+L2, H+W/1.414],[W/1.414+L2, H+W/1.414+H2], true]);
+                    path([ [W/1.414+L2, H+W/1.414],[W/1.414+L2+W2/1.414, H+W/1.414+W2/1.414], true]);
+                    path([ [W/1.414+L2+W2/1.414, H+W/1.414+W2/1.414],[W/1.414+L2+W2/1.414, H+W/1.414+W2/1.414+H2], true]);
+
+
+                    path([ [L2+W/1.414,W/1.414],[L2+W/1.414,W/1.414+H], true]);
+                    path([ [L2,0],[L2, H], true]);
+                    path([ [L2,0],[L2+W/1.414,W/1.414], true]);
+
+                    path([ [L2+W/1.414, H+W/1.414],[L+W/1.414, H+W/1.414], true]);
+                    path([ [L2+W/1.414, W/1.414],[L+W/1.414, W/1.414], true]);
+                    path([ [L+W/1.414, W/1.414],[L+W/1.414, H+W/1.414], true]);
+                    path([ [L+W/1.414, W/1.414],[L+W/1.414+W2/1.414, W/1.414+W2/1.414], true]);
+                    path([ [L+W/1.414, W/1.414+H],[L+W/1.414+W2/1.414, W/1.414+W2/1.414+H], true]);
+                    path([ [L+W/1.414+W2/1.414, W/1.414+W2/1.414],[L+W/1.414+W2/1.414, W/1.414+W2/1.414+H], true]);
+                    path([ [L2+W/1.414+W2/1.414, H+W/1.414+W2/1.414],[L+W/1.414+W2/1.414, H+W/1.414+W2/1.414], true]);
+
+					line([0, H], [W/1.414, H+W/1.414],{stroke:" #6495ED"});
+					line([0,0],[0, H],{stroke:" red"});
+					line([W/1.414, H+W/1.414], [W/1.414, H+W/1.414+H2],{stroke:" #FF0000"});
+					line([W/1.414, H+W/1.414+H2],[W/1.414+W2/1.414, H+W/1.414+H2+W2/1.414],{stroke:" #FFA500"});
+					line([W/1.414+W2/1.414, H+W/1.414+H2+W2/1.414],[W/1.414+W2/1.414+L2, H+W/1.414+H2+W2/1.414],{stroke:" #0000FF"});
+					line([L2+W/1.414+W2/1.414, H+W/1.414+W2/1.414],[L+W/1.414+W2/1.414, H+W/1.414+W2/1.414],{stroke:" #FFA500"});
+                    
+                    label([0,H*0.5], "\\color{red}{"+H + "\\text{ " + UNIT + "}"+"}", "left");
+                    label([W/1.414/2,H+W/1.414/2], "\\color{#6495ED}{"+WFAKE + "\\text{ " + UNIT + "}"+"}", "left");
+                    label([W/1.414,H+W/1.414+H2/2], "\\color{#FF0000}{"+H2 + "\\text{ " + UNIT + "}"+"}", "left");
+                    label([W/1.414+W2/1.414/2,H+W/1.414+H2+W2/1.414/2], "\\color{#FFA500}{"+WFAKE2 + "\\text{ " + UNIT + "}"+"}", "left");
+                    label([W/1.414+W2/1.414+L2/2,H+W/1.414+H2+W2/1.414], "\\color{#0000FF}{"+L2 + "\\text{ " + UNIT + "}"+"}", "above");
+                    label([W/1.414+W2/1.414+(L+L2)/2,H+W/1.414+W2/1.414], "\\color{#FFA500}{"+(L-L2) + "\\text{ " + UNIT + "}"+"}", "above");                   
+
+
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p><span class="sol"><var>ans</var></span> 平方公分</p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <p>我們要計算這個形體的表面積時，要記得將每一塊面積編號，不然可能會重複算到喔！</p>
+                <div>
+                
+                    <p>面朝上的三塊面積分別為：<br/><code><var>L2</var> \times <var>WFAKE2</var> + <var>L2</var> \times <var>WFAKE</var> + <var>L-L2</var> \times <var>WFAKE2</var></code>
+					<br/><code>= <var>round(L2*WFAKE2)</var> + <var>round(L2*WFAKE)</var> + <var>round((L-L2)*WFAKE2)</var></code> <br/><code>= <var>Aans</var></code> 平方公分。</p>
+                    <div class="graphie" data-update="original">
+						P1=path([[0, H], [L2, H],[L2+W/1.414, H+W/1.414],[W/1.414, H+W/1.414],[0, H]],{fill: "#FFA500",opacity:0.3});
+						P2=path([[W/1.414+L2+W2/1.414, H+W/1.414+H2+W2/1.414],[W/1.414+L2, H+W/1.414+H2],[W/1.414, H+W/1.414+H2],[W/1.414+W2/1.414, H+W/1.414+H2+W2/1.414],[W/1.414+L2+W2/1.414, H+W/1.414+H2+W2/1.414]],{fill: "#FFA500",opacity:0.3});
+						P3=path([[L+W/1.414+W2/1.414, W/1.414+W2/1.414+H],[L+W/1.414, H+W/1.414],[W/1.414+L2, H+W/1.414],[W/1.414+L2+W2/1.414, H+W/1.414+W2/1.414],[L+W/1.414+W2/1.414, W/1.414+W2/1.414+H]],{fill: "#FFA500",opacity:0.3});
+					</div>                  
+                </div>
+				<div>
+					<p>面朝下一樣有三塊，面積與面朝上相同為 <code><var>Aans</var></code> 平方公分。</p>
+					<div class="graphie" data-update="original">
+						P1.hide();
+						P2.hide();
+						P3.hide();
+						P4=path([[0, 0], [L2, 0],[L2+W/1.414, 0+W/1.414],[W/1.414, 0+W/1.414],[0, 0]],{strokeDasharray: "-",fill: "#28AE7B",opacity:0.3});
+						P5=path([[W/1.414+L2+W2/1.414, 0+W/1.414+0+W2/1.414],[W/1.414+L2, 0+W/1.414+0],[W/1.414, 0+W/1.414+0],[W/1.414+W2/1.414, 0+W/1.414+0+W2/1.414],[W/1.414+L2+W2/1.414, 0+W/1.414+0+W2/1.414]],{strokeDasharray: "-",fill: "#28AE7B",opacity:0.3});
+						P6=path([[L+W/1.414+W2/1.414, W/1.414+W2/1.414+0],[L+W/1.414, 0+W/1.414],[W/1.414+L2, 0+W/1.414],[W/1.414+L2+W2/1.414, 0+W/1.414+W2/1.414],[L+W/1.414+W2/1.414, W/1.414+W2/1.414+0]],{strokeDasharray: "-",fill: "#28AE7B",opacity:0.3});
+											
+					</div>
+				</div>
+                <div>
+                    <p>面朝右邊的三塊面積分別為：<br/><code><var>H</var> \times <var>WFAKE2</var> + <var>H2</var> \times <var>WFAKE2</var> + <var>H</var> \times <var>WFAKE</var></code>
+					<br/><code>= <var>round(H*WFAKE2)</var> + <var>round(H2*WFAKE2)</var> + <var>round(H*WFAKE)</var></code> <br/><code>= <var>Rans</var></code> 平方公分。</p>
+					<div class="graphie" data-update="original">
+						P4.hide();
+						P5.hide();
+						P6.hide();
+						P7=path([[L+W/1.414, W/1.414+H],[L+W/1.414+W2/1.414, W/1.414+W2/1.414+H],[L+W/1.414+W2/1.414, W/1.414+W2/1.414],[L+W/1.414, W/1.414],[L+W/1.414, W/1.414+H]],{fill: "#6495ED",opacity:0.5});
+						P8=path([[L2+W/1.414,W/1.414],[L2+W/1.414,W/1.414+H],[L2,H],[L2,0],[L2+W/1.414,W/1.414]],{fill: "#6495ED",opacity:0.5});
+						P9=path([[W/1.414+L2, H+W/1.414+H2],[W/1.414+L2+W2/1.414, H+W/1.414+H2+W2/1.414],[W/1.414+L2+W2/1.414, H+W/1.414+W2/1.414],[W/1.414+L2, H+W/1.414],[W/1.414+L2, H+W/1.414+H2]],{fill: "#6495ED",opacity:0.5});
+					
+					</div>                              
+                </div>
+				<div>
+					<P>面朝左邊一樣有三塊，面積與面朝右邊相同為 <code><var>Rans</var></code> 平方公分。</P>
+					<div class="graphie" data-update="original">
+						P7.hide();
+						P8.hide();
+						P9.hide();
+						P10=path([[W/1.414, W/1.414+H],[W/1.414+W2/1.414, W/1.414+W2/1.414+H],[W/1.414+W2/1.414, W/1.414+W2/1.414],[W/1.414, W/1.414],[W/1.414, W/1.414+H]],{strokeDasharray: "-",fill: "red",opacity:0.5});
+						P11=path([[W/1.414,W/1.414],[W/1.414,W/1.414+H],[0,H],[0,0],[0+W/1.414,W/1.414]],{strokeDasharray: "-",fill: "red",opacity:0.5});
+						P12=path([[W/1.414, H+W/1.414+H2],[W/1.414+W2/1.414, H+W/1.414+H2+W2/1.414],[W/1.414+W2/1.414, H+W/1.414+W2/1.414],[W/1.414, H+W/1.414],[W/1.414, H+W/1.414+H2]],{strokeDasharray: "-",fill: "red",opacity:0.5});
+					
+					</div>                              
+                </div>
+				<div>
+					<P>面朝前的三塊面積分別為：<br/><code><var>L2</var> \times <var>H</var> + <var>L2</var> \times <var>H2</var> + <var>L-L2</var> \times <var>H</var></code>
+					<br/><code>= <var>round(L2*H)</var> + <var>round(L2*H2)</var> + <var>round((L-L2)*H)</var></code> <br/><code>= <var>Fans</var></code> 平方公分。</p>
+                    <div class="graphie" data-update="original">
+						P10.hide();
+						P11.hide();
+						P12.hide();
+						P13=path([[0, 0], [L2, 0],[L2,H],[0,H],[0,0]],{fill: "purple",opacity:0.5});
+						P14=path([[L2+W/1.414, H+W/1.414],[W/1.414, H+W/1.414],[W/1.414, H+W/1.414+H2],[L2+W/1.414, H+W/1.414+H2],[L2+W/1.414, H+W/1.414]],{fill: "purple",opacity:0.5});
+						P15=path([[L+W/1.414, H+W/1.414],[W/1.414+L2, H+W/1.414],[W/1.414+L2, W/1.414],[L+W/1.414, W/1.414],[L+W/1.414, H+W/1.414]],{fill: "purple",opacity:0.5});
+					
+					</div>                              
+                </div>
+				<div>
+					<P>面朝後一樣有三塊，面積與面朝前相同為 <code><var>Fans</var></code> 平方公分。</P>
+					<div class="graphie" data-update="original">
+						P13.hide();
+						P14.hide();
+						P15.hide();
+						P16=path([[W/1.414+W2/1.414, H+W/1.414+H2+W2/1.414],[W/1.414+W2/1.414+L2, H+W/1.414+H2+W2/1.414],[W/1.414+W2/1.414+L2, H+W/1.414+W2/1.414],[W/1.414+W2/1.414, H+W/1.414+W2/1.414],[W/1.414+W2/1.414, H+W/1.414+H2+W2/1.414]],{strokeDasharray: "-",fill: "gray",opacity:0.5});
+						P17=path([[W/1.414+W2/1.414+L2, H+W/1.414+W2/1.414],[W/1.414+W2/1.414, H+W/1.414+W2/1.414],[W/1.414+W2/1.414, W/1.414+W2/1.414],[W/1.414+W2/1.414+L2, W/1.414+W2/1.414],[W/1.414+W2/1.414+L2, H+W/1.414+W2/1.414]],{strokeDasharray: "-",fill: "gray",opacity:0.5});
+						P18=path([[L+W/1.414+W2/1.414, W/1.414+W2/1.414+H],[W/1.414+L2+W2/1.414, H+W/1.414+W2/1.414],[W/1.414+L2+W2/1.414, W/1.414+W2/1.414],[L+W/1.414+W2/1.414, W/1.414+W2/1.414],[L+W/1.414+W2/1.414, W/1.414+W2/1.414+H]],{strokeDasharray: "-",fill: "gray",opacity:0.5});
+					
+					</div>                              
+                </div>
+				<P>所以這個形體的表面積<br/><code>= <var>Aans</var> \times 2 + <var>Rans</var> \times 2 +<var>Fans</var> \times 2</code><br/>
+					<code>= <var>Aans*2</var> + <var>Rans*2</var> +<var>Fans*2</var></code><br/>
+					<code> = </code> <code class="hint_pink"><var>ans</var></code> 平方公分。</P>
+           
+            </div>
+
+        </div>
+			
+		<div id="case2">
+			<div class="vars">
+                <var id="L">randRange(5, 7)*2</var>
+                <var id="LTWO">randRange(5, 10)</var>
+                <var id="WFAKE">randRange(3, 6)*2</var>
+                <var id="W">WFAKE*0.75</var>
+                <var id="H">randRange(5, 7)*2</var>
+                <var id="HTWO">randRange(2, 4)*2</var>
+                <var id="S">WFAKE*0.7</var>
+				<var id="UNIT">"公分"</var>
+				<var id="Aans">round(L*WFAKE+LTWO*WFAKE)</var>
+			   <var id="Rans">round(HTWO*WFAKE+(H-HTWO)*WFAKE)</var>
+			    <var id="Fans">round(L*H + HTWO*LTWO)</var>
+				<var id="ans">round(Aans*2+Rans*2+Fans*2)</var>
+            </div>
+
+            <p class="question">
+                請計算下圖的表面積：
+            </p>
+            <div class="problem">
+                 <div class="graphie" id="original">
+                    init({ range: [[-7, L+W+LTWO*2 + 1], [-2, H+W + 1]], scale: 10 });
+
+
+                    path([ [0, H], [L, H], [L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414], true]);
+                    path([ [0,0],[0, H], true]);
+                    path([ [0,0],[L,0], true]);
+                    path([ [L+W/1.414,W/1.414+HTWO],[L+W/1.414,W/1.414+H], true]);
+                    path([ [L,HTWO],[L, H], true]);
+
+
+                    path([ [L,0],[L+LTWO, 0], true]);
+                    path([ [L,HTWO],[L+LTWO, HTWO], true]);
+                    path([ [L+W/1.414,W/1.414+HTWO],[L+W/1.414+LTWO,W/1.414+HTWO], true]);
+                    path([ [L+LTWO, HTWO], [L+LTWO+W/1.414, HTWO+W/1.414], true]);
+                    path([ [L+LTWO, 0], [L+LTWO+W/1.414, W/1.414], true]);
+                    path([ [L+LTWO,0],[L+LTWO, HTWO], true]);
+                    path([ [L+LTWO+W/1.414,W/1.414],[L+LTWO+W/1.414, HTWO+W/1.414], true]);
+
+                    path([ [L, HTWO], [L+W/1.414, HTWO+W/1.414], true]);
+					
+					line([L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414],{stroke:" #6495ED"});
+					line([W/1.414, H+W/1.414],[0, H],{stroke:" red"});
+					line([L+W/1.414,W/1.414+HTWO],[L+W/1.414+LTWO,W/1.414+HTWO],{stroke:" #FF0000"});
+					line([L+LTWO+W/1.414,W/1.414],[L+LTWO+W/1.414, HTWO+W/1.414],{stroke:" #FFA500"});
+					line([0,0],[0, H],{stroke:" #0000FF"});
+					
+                    label([L*0.5+W/1.414,W/1.414+H], "\\color{#6495ED}{"+L + "\\text{ " + UNIT + "}"+"}", "above");
+                    label([(W/1.414)*0.4, H+(W/1.414)*0.5],"\\color{red}{"+ WFAKE + "\\text{ " + UNIT + "}"+"}", "left");
+                    label([0,H*0.5], "\\color{#0000FF}{"+H + "\\text{ " + UNIT + "}"+"}", "left");
+                    label([L+LTWO+W/1.414, HTWO*0.5+W/1.414], "\\color{#FFA500}{"+HTWO + "\\text{ " + UNIT + "}"+"}", "right");
+                    label([L+LTWO*0.5+1+W/1.414, HTWO+W/1.414], "\\color{#FF0000}{"+LTWO + "\\text{ " + UNIT + "}"+"}", "above");
+
+
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p><span class="sol"><var>ans</var></span> 平方公分</p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <p>我們要計算這個形體的表面積時，要記得將每一塊面積編號，不然可能會重複算到喔！</p>
+                <div>
+                
+                    <p>面朝上的 <code>2</code> 塊面積分別為：<br/><code><var>L</var> \times <var>WFAKE</var> + <var>LTWO</var> \times <var>WFAKE</var></code>
+					<br/><code>= <var>round(L*WFAKE)</var> + <var>round(LTWO*WFAKE)</var></code> <br/><code>= <var>Aans</var></code> 平方公分。</p>
+                    <div class="graphie" data-update="original">
+						P1=path([[0, H], [L, H], [L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414],[0, H]],{fill: "#FFA500",opacity:0.3});
+						P2=path([[L, HTWO], [L+W/1.414, HTWO+W/1.414], [L+W/1.414+LTWO, HTWO+W/1.414],[L+LTWO, HTWO],[L, HTWO]],{fill: "#FFA500",opacity:0.3});
+					</div>                  
+                </div>
+
+                <div>              
+                    <p>面朝下一樣有 <code>2</code> 塊，面積與面朝上相同為 <code><var>Aans</var></code> 平方公分。</p>
+					<div class="graphie" data-update="original">
+						P1.hide();
+						P2.hide();
+						P3=path([[0, 0], [L, 0], [L+W/1.414, W/1.414], [W/1.414, W/1.414],[0, 0]],{strokeDasharray: "-",fill: "#28AE7B",opacity:0.3});
+						P4=path([[L, 0], [L+W/1.414, W/1.414], [L+W/1.414+LTWO, W/1.414],[L+LTWO, 0],[L, 0]],{strokeDasharray: "-",fill: "#28AE7B",opacity:0.3});
+					</div>                   
+                </div>
+				
+				<div>              
+                    <p>面朝右邊的 <code>2</code> 塊面積分別為：<br/><code><var>WFAKE</var> \times （<var>H</var> - <var>HTWO</var>） + <var>HTWO</var> \times <var>WFAKE</var></code>
+					<br/><code>= <var>round((H-HTWO)*WFAKE)</var> + <var>round(HTWO*WFAKE)</var></code> <br/><code>= <var>Rans</var></code> 平方公分。</p>
+					<div class="graphie" data-update="original">
+						P3.hide();
+						P4.hide();
+						P5=path([[L, HTWO], [L+W/1.414, HTWO+W/1.414], [L+W/1.414, H+W/1.414],[L, H],[L, HTWO]],{fill: "#6495ED",opacity:0.3});
+						P6=path([[L+W/1.414+LTWO, W/1.414],[L+LTWO, 0],[L+LTWO, HTWO],[L+W/1.414+LTWO, W/1.414+HTWO],[L+W/1.414+LTWO, W/1.414] ],{fill: "#6495ED",opacity:0.3});
+					</div>                   
+                </div>
+				<div>
+					<p>面朝左邊一樣有 <code>2</code> 塊，面積與面朝右邊相同為 <code><var>Rans</var></code> 平方公分。</p>
+					<div class="graphie" data-update="original">
+						P5.hide();
+						P6.hide();
+						P7=path([[0, HTWO], [W/1.414, HTWO+W/1.414], [W/1.414, H+W/1.414],[0, H],[0, HTWO]],{strokeDasharray: "-",fill: "red",opacity:0.3});
+						P8=path([[W/1.414, W/1.414],[0, 0],[0, HTWO],[W/1.414, W/1.414+HTWO],[W/1.414, W/1.414] ],{strokeDasharray: "-",fill: "red",opacity:0.3});
+					
+					</div> 
+				</div>
+				
+				<div>              
+                    <p>面朝前的 <code>2</code> 塊面積分別為：<br/><code><var>L</var> \times <var>H</var> + <var>HTWO</var> \times <var>LTWO</var></code>
+					<br/><code>= <var>round(L*H)</var> + <var>round(HTWO*LTWO)</var></code> <br/><code>= <var>Fans</var></code> 平方公分。</p>
+					<div class="graphie" data-update="original">
+						P7.hide();
+						P8.hide();
+						P9=path([[0, 0],[0, H],[L, H],[L,0],[0,0]],{fill: "purple",opacity:0.3});
+						P10=path([[L, HTWO],[L,0],[L+LTWO, 0],[L+LTWO, HTWO],[L, HTWO] ],{fill: "purple",opacity:0.3});
+					
+					</div>                   
+                </div>
+				<div>
+					<p>面朝後一樣有 <code>2</code> 塊，面積與面朝前相同為 <code><var>Fans</var></code> 平方公分。</p>
+					<div class="graphie" data-update="original">
+						P10.hide();
+						P9.hide();
+						path([[L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414],[W/1.414, W/1.414],[L+W/1.414, W/1.414],[L+W/1.414, H+W/1.414]],{strokeDasharray: "-",fill: "gray",opacity:0.3});
+						path([[L+W/1.414, HTWO+W/1.414], [L+W/1.414+LTWO, HTWO+W/1.414], [L+W/1.414+LTWO, W/1.414],[L+W/1.414, W/1.414],[L+W/1.414, HTWO+W/1.414]],{strokeDasharray: "-",fill: "gray",opacity:0.3});
+					</div> 
+				</div>
+				
+                <P>所以這個形體的表面積<br/><code>= <var>Aans</var> \times 2 + <var>Rans</var> \times 2 +<var>Fans</var> \times 2</code><br/>
+					<code>= <var>Aans*2</var> + <var>Rans*2</var> +<var>Fans*2</var></code><br/>
+					<code> = </code> <code class="hint_pink"><var>ans</var></code> 平方公分。</P>
+            </div>
+        </div>
+
+
+		<div id="case3">
+            <div class="vars">
+                <var id="L">randFromArray([12,15,17])</var>
+				<var id="LTWO">randFromArray([4,5,6,8])</var>
+				 <var id="WFAKE">randRange(2, 3)*4</var>
+                <var id="LONE">(L-LTWO)/2</var>
+                <var id="W">WFAKE*0.75</var>
+                <var id="WMIN">WFAKE/(randRange(1, 2)*2)</var>
+                <var id="WM">WMIN*0.75</var>
+                <var id="H">randFromArray([10,12,14])</var>
+                <var id="S">WFAKE*0.4</var>
+				<var id="UNIT">"公分"</var>
+				<var id="Aans">round(L*WFAKE-LTWO*WMIN)</var>
+			   <var id="Rans">round(H*WFAKE)</var>
+			    <var id="Fans">round(L*H)</var>
+				<var id="Cans">round(H*WMIN*2)</var>
+				<var id="ans">round(Aans*2+Rans*2+Fans*2+Cans)</var>
+            </div>
+
+            <p class="question">
+                請計算下圖的表面積：
+            </p>
+            <div class="problem">
+                 <div class="graphie" id="original">
+                    init({ range: [[-7, L+W+  1], [-2, H+W + 1]], scale: 15 });
+
+
+                    path([ [0, H], [LONE, H], true]);
+                    path([ [L-LONE, H], [L, H], true]);
+                    path([ [0,0],[LONE,0], true]);
+                    path([ [L-LONE,0],[L,0], true]);
+
+                    path([ [L, H], [L+W/1.414, H+W/1.414], true]);
+                    path([ [L+W/1.414, H+W/1.414],[W/1.414, H+W/1.414], true]);
+                    path([ [0, H], [W/1.414, H+W/1.414], true]);
+                    path([ [0,0],[0, H], true]);
+                    
+                    path([ [L+W/1.414,W/1.414],[L+W/1.414,W/1.414+H], true]);
+                    path([ [L,0],[L, H], true]);
+                    path([ [L,0],[L+W/1.414,W/1.414], true]);
+
+
+                    path([ [LONE,H],[LONE+WM/1.414, H+WM/1.414], true]);
+                    path([ [L-LONE,H],[L-LONE+WM/1.414, H+WM/1.414], true]);
+                    path([ [LONE+WM/1.414, H+WM/1.414],[L-LONE+WM/1.414, H+WM/1.414], true]);
+                    path([ [LONE,0],[LONE, H], true]);
+                    path([ [L-LONE,0],[L-LONE, H], true]);
+                    path([ [LONE,0],[LONE+WM/1.414, WM/1.414], true]);
+                    path([ [LONE+WM/1.414, WM/1.414],[LONE+WM/1.414, H+WM/1.414], true]);
+                    path([ [LONE+WM/1.414, WM/1.414],[L-LONE, WM/1.414], true]);
+					
+					line([L+W/1.414, H+W/1.414],[W/1.414, H+W/1.414],{stroke:" red"});
+					line([0, H], [W/1.414, H+W/1.414],{stroke:" #6495ED"});
+					line([0,0],[0, H],{stroke:" #FF0000"});
+					line([L-LONE,H],[L-LONE+WM/1.414, H+WM/1.414],{stroke:" #0000FF"});
+					line([LONE+WM/1.414, H+WM/1.414],[L-LONE+WM/1.414, H+WM/1.414],{stroke:" #FFA500"});
+					
+                    label([L*0.5+W/1.414,W/1.414+H], "\\color{red}{"+L + "\\text{ " + UNIT + "}"+"}", "above");
+                    label([(W/1.414)*0.4, H+(W/1.414)*0.5], "\\color{#6495ED}{"+WFAKE + "\\text{ " + UNIT + "}"+"}", "left");
+                    label([0,H*0.5], "\\color{#FF0000}{"+H + "\\text{ " + UNIT + "}"+"}", "left");
+                    label([L-LONE*0.8+1,H+(WM/1.414)*0.5], "\\color{#0000FF}{"+WMIN + "\\text{ " + UNIT + "}"+"}","right");
+                    label([LONE+WM/1.414+LTWO/2, H+WM/1.414], "\\color{#FFA500}{"+LTWO + "\\text{ " + UNIT + "}"+"}","above");
+                   
+				   
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p><span class="sol"><var>ans</var></span> 平方公分</p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <p>我們要計算這個形體的表面積時，要記得將每一塊面積編號，不然可能會重複算到喔！</p>
+                <div>
+                    <p>面朝上的面積為：<br/><code><var>L</var> \times <var>WFAKE</var> - <var>LTWO</var> \times <var>WMIN</var></code>
+					<br/><code>= <var>round(L*WFAKE)</var> - <var>round(LTWO*WMIN)</var></code> <br/><code>= <var>Aans</var></code> 平方公分。</p>
+                    <div class="graphie" data-update="original">
+						 p1=path([[0, H],[LONE, H],[LONE+WM/1.414, H+WM/1.414],[L-LONE+WM/1.414, H+WM/1.414],[L-LONE, H],[L, H],[L+W/1.414, H+W/1.414],[W/1.414, H+W/1.414],[0, H]],{fill: "#FFA500",opacity:0.3});
+				   
+					</div>
+                </div>
+				
+				<div>
+                    <p>面朝下的面積與面朝上相同為 <code><var>Aans</var></code> 平方公分。</p>
+                    <div class="graphie" data-update="original">
+						p1.hide();
+						 p2=path([[0, 0],[LONE, 0],[LONE+WM/1.414, WM/1.414],[L-LONE+WM/1.414, WM/1.414],[L-LONE, 0],[L, 0],[L+W/1.414, W/1.414],[W/1.414, W/1.414],[0, 0]],{strokeDasharray: "-",fill: "#28AE7B",opacity:0.3});
+					
+					</div>
+                </div>
+				<div>
+                    <p>最右邊的面積為：<br/><code><var>WFAKE</var> \times <var>H</var>=<var>Rans</var></code> 平方公分。</p>
+                    <div class="graphie" data-update="original">
+						p2.hide();
+						p3=path([[L,H],[L,0],[L+W/1.414,W/1.414],[L+W/1.414,W/1.414+H],[L,H]],{strokeDasharray: "-",fill: "#6495ED",opacity:0.3});
+					
+					</div>
+                </div>
+				<div>
+                    <p>最左邊的面積與最右邊相同為 <code><var>Rans</var></code> 平方公分。</p>
+                    <div class="graphie" data-update="original">
+						p3.hide();
+						p4=path([[0,H],[0,0],[W/1.414,W/1.414],[W/1.414,W/1.414+H],[0,H]],{strokeDasharray: "-",fill: "red",opacity:0.3});
+						 
+					</div>
+                </div>
+				<div>
+                    <p>面朝後的面積為：<br/> <code><var>L</var> \times <var>H</var> = <var>Fans</var></code> 平方公分。</p>
+                    <div class="graphie" data-update="original">
+						p4.hide();
+						p5=path([[W/1.414,W/1.414],[W/1.414,W/1.414+H],[L+W/1.414,W/1.414+H],[L+W/1.414,W/1.414],[W/1.414,W/1.414]],{strokeDasharray: "-",fill: "purple",opacity:0.3});
+					
+					</div>
+                </div>
+				<div>
+					<P>觀察一下面朝前的圖形面積，我們如果把凹進去的那塊面積往前推，其實整塊面積就和面朝後一樣是 <code><var>Fans</var></code> 平方公分。</P>
+					<div class="graphie" data-update="original">
+						p5.hide();
+						AA=path([[0,0],[0,H],[LONE,H],[LONE,0],[0,0]],{fill: "gray",opacity:0.6});
+						BB=path([[L-LONE,0],[L-LONE,H],[L,H],[L,0],[L-LONE,0]],{fill: "gray",opacity:0.6});
+						CC=path([[LONE+WM/1.414, WM/1.414],[L-LONE+WM/1.414, WM/1.414],[L-LONE+WM/1.414, WM/1.414+H],[LONE+WM/1.414, WM/1.414+H],[LONE+WM/1.414, WM/1.414]],{strokeDasharray: "-",fill: "gray",opacity:0.3});
+						DD=path([[LONE,H],[LONE,0],[L-LONE,0],[L-LONE,H],[LONE,H]],{fill: "gray",opacity:0.3});
+					</div>
+                </div>
+				<p>想一想，我們有沒有漏掉什麼哪邊沒算呢？</p>
+				<div>
+					<p>對了！就是凹進去的左、右兩側長方形還沒算。這兩塊的面積為<br/>
+						<code><var>H</var> \times <var>WMIN</var>\times 2</code><br/><code>= <var>round(H*WMIN)</var> \times 2</code><br/><code> = <var>Cans</var></code>  平方公分。</p>
+					<div class="graphie" data-update="original">
+						AA.hide();
+						BB.hide();
+						CC.hide();DD.hide();
+						p7=path([[LONE, 0],[LONE, H],[LONE+WM/1.414,H+WM/1.414],[LONE+WM/1.414,WM/1.414],[LONE, 0]],{fill: "green",opacity:0.3});
+						p8=path([[L-LONE, 0],[L-LONE, H],[L-LONE+WM/1.414,H+WM/1.414],[L-LONE+WM/1.414,WM/1.414],[L-LONE, 0]],{strokeDasharray: "-",fill: "green",opacity:0.3});
+						line([LONE+WM/1.414, WM/1.414],[L-LONE+WM/1.414, WM/1.414],{strokeDasharray: "-"});
+						
+					</div>	
+				</div>
+				<p>所以這個形體的表面積<br/>
+					<code>= <var>Aans</var> \times 2 + <var>Rans</var> \times 2 + <var>Fans</var> \times 2 + <var>round(H*WMIN)</var> \times 2 </code><br/>
+                    <code>= <var>round(Aans*2)</var> + <var>round(Rans*2)</var> +<var>round(Fans*2)</var> + <var>Cans</var></code><br/>
+					<code>=</code> <code class="hint_pink"><var>ans</var></code> 平方公分。</p>
+			</div>
+
+        
+		</div>
+
+	</div>
+</div>
+</body>
+</html>

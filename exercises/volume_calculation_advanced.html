@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html data-require="math graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>容積的計算-進階</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="H">randRange(3,10)</var>
+				<var id="L">randRange(2,5)*5</var>
+				<var id="WFAKE">randRange(1,2)*5</var>
+                <var id="W">WFAKE*0.75</var>
+				 <var id="B">randRange(1, 2)</var>
+				<var id="ANS">round(L*H*WFAKE)</var>
+			</div>
+                <p class="question">
+				將一整個水壺的水，倒入一個長方體容器內，水面的高是 <code><var>H</var></code> 公分。如果長方體容器內長是 <code><var>L</var></code> 公分、寬是 <code><var>WFAKE</var></code> 公分。水壺的容積是多少立方公分？容量是多少毫升？
+				</p>		
+			<div class="solution" data-type="multiple">
+
+				<p><span class="sol" data-forms="integer"><var>ANS</var></span> 立方公分</p>
+				<p><span class="sol" data-forms="integer"><var>ANS</var></span> 毫升</p>
+				
+				<p class="example">整數，例：<code>6</code></p>
+
+            </div>
+
+			<div class="hints">
+				<div>
+					<p>題目意思是這樣的：（下圖單位：公分）</p>
+					
+					<div class="graphie" id="original">
+						init({ range: [[-1.5, 2*(L+W/1.414)+7.5], [-5, H+W+4]], scale: 7 });
+
+						path([ [0, H+3], [L, H+3], [L+W/1.414, H+3+W/1.414], [W/1.414, H+3+W/1.414], true]);
+						path([ [L,0],[L+W/1.414,W/1.414], true],{stroke: "purple"});
+						path([ [L,0],[L, H+3], true]);
+						path([ [L+W/1.414,W/1.414],[L+W/1.414,W/1.414+H+3], true]);
+						path([ [0,0],[0, H+3], true]);
+						path([ [0,0],[L,0], true],{stroke: RED});
+												
+						label([L*0.5, 0], L,"below", {color: KhanUtil.RED});
+						label([L+W/1.414, (W/1.414)*0.7], WFAKE, "below", {color: "purple"});
+
+						
+						path([ [W/1.414,W/1.414],[W/1.414,W/1.414+H+3], true],{strokeWidth: 1,strokeDasharray: "-"});
+						path([ [W/1.414,W/1.414],[L+W/1.414,W/1.414], true],{strokeWidth: 1,strokeDasharray: "-"});
+						path([ [0, 0],[W/1.414,W/1.414], true],{strokeWidth: 1,strokeDasharray: "-"});
+					</div>
+					
+				</div>
+				<div class="graphie" data-update="original">
+					label([L+W/1.414,H], "\\Rightarrow", "right");
+					path([ [L+W/1.414+5, H+3], [2*L+W/1.414+5, H+3], [2*(L+W/1.414)+5, H+3+W/1.414], [2*W/1.414+L+5, H+3+W/1.414], true]);
+					path([ [2*L+W/1.414+5,0],[2*(L+W/1.414)+5,W/1.414], true],{stroke: "purple"});
+					path([ [2*L+W/1.414+5,0],[2*L+W/1.414+5, H+3], true]);
+					path([ [2*(L+W/1.414)+5,W/1.414],[2*(L+W/1.414)+5,W/1.414+H+3], true]);
+					path([ [L+W/1.414+5,0],[L+W/1.414+5, H+3], true]);
+					path([ [L+W/1.414+5,0],[2*L+W/1.414+5,0], true],{stroke: RED});
+					path([ [2*W/1.414+L+5,W/1.414],[2*W/1.414+L+5,W/1.414+H+3], true],{strokeWidth: 1,strokeDasharray: "-"});
+					path([ [2*W/1.414+L+5,W/1.414],[2*L+W/1.414+5+W/1.414,W/1.414], true],{strokeWidth: 1,strokeDasharray: "-"});
+					path([ [L+W/1.414+5, 0],[2*W/1.414+L+5,W/1.414], true],{strokeWidth: 1,strokeDasharray: "-"});
+					
+					label([(2*(L+W/1.414)+5)*0.7, 0], L,"below", {color: KhanUtil.RED});
+					label([2*(L+W/1.414)+5, (W/1.414)*0.7], WFAKE, "below", {color: "purple"});
+					
+				</div>
+				<div class="graphie" data-update="original">
+					label([2*(L+W/1.414)+4,(W/1.414+H)*0.7], H, "right", {color: "#FFA500"});
+					path([[L+W/1.414+5,0],[L+W/1.414+5,H],[L+W/1.414+L+5,H],[L+W/1.414+L+5,0],[W/1.414+L+5,0]],{fill: "#28AE7B",opacity:0.5});
+					path([[2*(L+W/1.414)+5,W/1.414],[2*(L+W/1.414)+5,W/1.414+H],[2*L+W/1.414+5,H],[2*L+W/1.414+5,0],[2*(L+W/1.414)+5,W/1.414]],{fill: "#28AE7B",opacity:0.5});
+					path([[2*(L+W/1.414)+5,W/1.414+H],[2*L+W/1.414+5,H],[L+W/1.414+5,H],[2*W/1.414+L+5,W/1.414+H],[2*(L+W/1.414)+5,W/1.414+H]],{stroke: "#28AE7B",fill: "#28AE7B","fill-opacity":0.5});
+					line([2*(L+W/1.414)+5,W/1.414],[2*(L+W/1.414)+5,W/1.414+H],{stroke: "#FFA500"});
+				</div>
+				<p>我們可以算出水的體積是 <code><var>H</var> \times <var>L</var> \times <var>WFAKE</var> = <var>ANS</var></code> 立方公分。</p>	
+				<p>因為我們將水壺的水倒入長方體容器內，所以算出水的體積就等於水壺的容積。</p>
+				<P>水壺的容積 <code>=</code> <code class="hint_pink"><var>ANS</var></code> 立方公分。</P>
+				<p><code>1</code> 立方公分 <code>= 1</code> 毫升。</p>
+				<p><code class="hint_pink"><var>ANS</var></code> 立方公分 <code>=</code> <code class="hint_pink"><var>ANS</var></code> 毫升。</p>
+			</div>
+        </div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="J,K,V">randFromArray([[10,5,300],[12,5,480],[12,5,360],[10,4,360],[10,4,480],[15,4,520],[10,5,300],[15,8,600],[20,4,640],[25,4,900],[25,4,800],[25,4,700],[25,4,600],[25,4,1000],[25,4,1100],[25,4,1200],[25,4,1300],[25,4,1400]])</var>
+				<var id="H">randFromArray([24,25,30,35,40])</var>
+				<var id="L">J</var>
+				<var id="WFAKE">K</var>
+				<var id="W">WFAKE*0.75</var>
+				<var id="B">randRange(1, 2)</var>
+				<var id="ANS">round(V/(J*K))</var>
+			</div>
+                <p class="question">
+				有一個長方體容器內部長、寬、高分別是 <code><var>J</var></code> 公分、<code><var>K</var></code> 公分、<code><var>H</var></code> 公分。將 <code><var>V</var></code> 毫升的水倒入後，水面的高有多少公分？
+				</p>		
+			<div class="solution" data-type="multiple">
+
+				<p><span class="sol" data-forms="integer"><var>ANS</var></span> 公分</p>
+				
+				<p class="example">整數，例：<code>6</code></p>
+
+            </div>
+
+			<div class="hints">
+				<div>
+					<p>題目意思是這樣的：（下圖單位：公分）</p>
+					
+					<div class="graphie" id="original">
+						init({ range: [[-3, 2*(L+W/1.414)+12], [-5, H+W+4]], scale: 7 });
+
+						path([ [0, H], [L, H], [L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414], true]);
+						path([ [L,0],[L+W/1.414,W/1.414], true],{stroke: "purple"});
+						path([ [L,0],[L, H], true]);
+						path([ [L+W/1.414,W/1.414],[L+W/1.414,W/1.414+H], true]);
+						path([ [0,0],[0, H], true]);
+						path([ [0,0],[L,0], true],{stroke: RED});
+						line([L+W/1.414,W/1.414],[L+W/1.414,W/1.414+H],{stroke: "#6495ED"});
+						
+						label([L+W/1.414,(W/1.414+H)*0.7], H, "right", {color: "#6495ED"});
+						label([L*0.5, 0], L,"below", {color: KhanUtil.RED});
+						label([L+W/1.414, (W/1.414)*0.7], WFAKE, "below", {color: "purple"});
+						
+						path([ [W/1.414,W/1.414],[W/1.414,W/1.414+H], true],{strokeWidth: 1,strokeDasharray: "-"});
+						path([ [W/1.414,W/1.414],[L+W/1.414,W/1.414], true],{strokeWidth: 1,strokeDasharray: "-"});
+						path([ [0, 0],[W/1.414,W/1.414], true],{strokeWidth: 1,strokeDasharray: "-"});
+					</div>
+				</div>
+				<div class="graphie" data-update="original">
+					path([ [L+W/1.414+7, H], [2*L+W/1.414+7, H], [2*(L+W/1.414)+7, H+W/1.414], [2*W/1.414+L+7, H+W/1.414], true]);
+					path([ [2*L+W/1.414+7,0],[2*(L+W/1.414)+7,W/1.414], true],{stroke: "purple"});
+					path([ [2*L+W/1.414+7,0],[2*L+W/1.414+7, H], true]);
+					path([ [2*(L+W/1.414)+7,W/1.414],[2*(L+W/1.414)+7,W/1.414+H], true]);
+					path([ [L+W/1.414+7,0],[L+W/1.414+7, H], true]);
+					path([ [L+W/1.414+7,0],[2*L+W/1.414+7,0], true],{stroke: RED});
+					path([ [2*W/1.414+L+7,W/1.414],[2*W/1.414+L+7,W/1.414+H], true],{strokeWidth: 1,strokeDasharray: "-"});
+					path([ [2*W/1.414+L+7,W/1.414],[2*L+W/1.414+7+W/1.414,W/1.414], true],{strokeWidth: 1,strokeDasharray: "-"});
+					path([ [L+W/1.414+7, 0],[2*W/1.414+L+7,W/1.414], true],{strokeWidth: 1,strokeDasharray: "-"});
+					
+					label([(2*(L+W/1.414)+7)*0.7, 0], L,"below", {color: KhanUtil.RED});
+					label([2*(L+W/1.414)+7, (W/1.414)*0.7], WFAKE, "below", {color: "purple"});
+					label([L+W/1.414,H*0.5], "\\Rightarrow", "right");
+				</div>
+				<div class="graphie" data-update="original">
+					path([[L+W/1.414+7,0],[L+W/1.414+7,ANS],[L+W/1.414+L+7,ANS],[L+W/1.414+L+7,0],[W/1.414+L+7,0]],{fill: "#28AE7B",opacity:0.5});
+					path([[2*(L+W/1.414)+7,W/1.414],[2*(L+W/1.414)+7,W/1.414+ANS],[2*L+W/1.414+7,ANS],[2*L+W/1.414+7,0],[2*(L+W/1.414)+7,W/1.414]],{fill: "#28AE7B",opacity:0.5});
+					path([[2*(L+W/1.414)+7,W/1.414+ANS],[2*L+W/1.414+7,ANS],[L+W/1.414+7,ANS],[2*W/1.414+L+7,W/1.414+ANS],[2*(L+W/1.414)+7,W/1.414+ANS]],{stroke: "#28AE7B",fill: "#28AE7B","fill-opacity":0.5});
+					
+					line([2*(L+W/1.414)+7,W/1.414],[2*(L+W/1.414)+7,W/1.414+ANS],{stroke: "#FFA500"});
+					label([2*(L+W/1.414)+6,(W/1.414+ANS)*0.7], "\\small{？}", "right", {color: "#FFA500"});
+				</div>
+				<div>
+					<p>我們知道水的容量是 <code><var>V</var></code> 毫升。也就是說水的體積是 <code><var>V</var></code> 立方公分。</p>
+					<p>因為 <code>1</code> 毫升 <code>= 1</code> 立方公分。</p>
+				</div>				
+				<p>我們將水倒入長方體容器內，這個長方體容器的內部長、寬分別為： <br /><code><var>J</var></code> 公分、<code><var>K</var></code> 公分。</p>
+				<P>如上圖所示，我們可以利用長 <code>\times</code> 寬 <code>\times</code> 高算出水的體積。</P>
+				<p>現在已知水的體積是 <code><var>V</var></code> 立方公分，長、寬分別為 <code><var>J</var></code> 公分、<code><var>K</var></code> 公分。要計算水的高度。我們可以這樣列式： <code><var>J</var> \times <var>K</var> \times </code> 高 <code>= <var>V</var></code> 。</p>
+				<p>水面的高<code>= <var>V</var> \div <var>J</var> \div <var>K</var> = <var>ANS</var></code>，所以水面的高是 <code class="hint_pink"><var>ANS</var></code> 公分。</p>
+			</div>
+        </div>
+		
+    </div>
+    </div>
+</body>
+</html>
