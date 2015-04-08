@@ -2813,6 +2813,7 @@ var Khan = (function() {
         var weight = exerciseElem.data("weight");
         var rootName = exerciseElem.data("rootName");
         var fileName = exerciseElem.data("fileName");
+        var isQuiz = exerciseElem.data("isQuiz");
         // TODO(eater): remove this once all of the exercises in the datastore
         // have filename properties
         if (fileName == null || fileName == "") {
