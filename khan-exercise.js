@@ -1293,7 +1293,7 @@ var Khan = (function() {
                 firstInput = $(".calculator input");
             }
             setTimeout(function() {
-                if (!firstInput.is(":disabled")) {
+                if (!firstInput.is(":disabled" ) && !/iPad/i.test(navigator.userAgent)) {
                     firstInput.focus();
                     if (firstInput.is("input:text")) {
                         firstInput.select();
@@ -2124,6 +2124,13 @@ var Khan = (function() {
             var guess = getAnswer();
             var pass = validator(guess);
 
+            try {
+                ga('send', 'event', 'exercise', 'submit', 'Exercise-Answer-Submit');
+            }
+            catch (err) {
+                console.log('cannot send ga message, ga not defined at local server. ' + err);
+            }
+
             // Stop if the user didn't enter a response
             // If multiple-answer, join all responses and check if that's empty
             // Remove commas left by joining nested arrays in case multiple-answer is nested
@@ -2163,7 +2170,7 @@ var Khan = (function() {
                         setTimeout(function() {
                             var focusInput = $(lastFocusedSolutionInput);
 
-                            if (!focusInput.is(":disabled")) {
+                            if (!focusInput.is(":disabled") && !/iPad/i.test(navigator.userAgent)) {
                                 // focus should always work; hopefully select 
                                 // will work for text fields
                                 focusInput.focus();

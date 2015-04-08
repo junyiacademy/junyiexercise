@@ -225,13 +225,11 @@
 
 					<tr>
 
-						<td>拾圓：</td><td><input type="button" value="-" id="del_ten" onclick="del_ten();"></td><td><input type="text" id="ten_num" style="text-align:center;width:20px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_ten" onclick="add_ten();"></td><td width="60px"></td>
-					</tr>
-					<tr>
-						<td>伍圓：</td><td><input type="button" value="-" id="del_five" onclick="del_five();"></td><td><input type="text" id="five_num" style="text-align:center;width:20px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_five" onclick="add_five();"></td><td width="60px"></td>
-					</tr>
-					<tr>
-						<td>壹圓：</td><td><input type="button" value="-" id="del_one" onclick="del_one();"></td><td><input type="text" id="one_num" style="text-align:center;width:20px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_one" onclick="add_one();"></td><td width="60px"></td>
+						<th>拾</th><th>圓：</th><td><input type="button" value="-" id="del_ten" onclick="del_ten();"></td><td><input type="text" id="ten_num" style="text-align:center;width:20px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_ten" onclick="add_ten();"></td><td width="60px"></td>
+
+						<th>伍</th><th>圓：</th><td><input type="button" value="-" id="del_five" onclick="del_five();"></td><td><input type="text" id="five_num" style="text-align:center;width:20px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_five" onclick="add_five();"></td><td width="60px"></td>
+
+						<th>壹</th><th>圓：</th><td><input type="button" value="-" id="del_one" onclick="del_one();"></td><td><input type="text" id="one_num" style="text-align:center;width:20px" disabled="disabled" value="0"></td><td><input type="button" value="+" id="add_one" onclick="add_one();"></td><td width="60px"></td>
 
 					</tr>
 
@@ -375,39 +373,50 @@
 		<div id="case3">
 
             <div class="vars">
-				<var id="A">randRangeUnique(1,9,2)</var>
-				
-				<var id="ten">A[0]</var>
+				<div data-ensure="R !== R1">
+					<var id="A">randRangeUnique(1,9,2)</var>
+					
+					<var id="ten">A[0]</var>
 
-				<var id="five">randRange(0,1)</var>
+					<var id="five">randRange(0,1)</var>
 
-				<var id="one">(function(){
-					if(ten &lt;9){var a=randRange(1,10);return a;}
-					if(ten==9){var a=randRange(1,4);return a;}
-				})()</var>
-
-				<var id="R">10*ten+5*five+1*one</var>
-
-				<var id="ten1">A[1]</var>
-
-				<var id="five1">randRange(0,1)</var>
-
-				<var id="one1">(function(){
-					if(ten1 &lt;9){var a=randRange(1,10);return a;}
-					if(ten1==9){var a=randRange(1,4);return a;}
-				})()</var>
-
-				<var id="R1">10*ten1+5*five1+1*one1</var>
-				<var id="ANS">
-					(function()
-					{
-						var bb=randRange(0,1)
-						var nums=[0,0,0,0];
-						if(bb==0){nums=[R,R1,-4,1];}
-						if(bb==1){nums=[R1,R,1,-4];}
-						return nums;
+					<var id="one">(function(){
+						if(ten &lt;9){var a=randRange(1,10);return a;}
+						if(ten==9){var a=randRange(1,4);return a;}
 					})()</var>
 
+					<var id="R">10*ten+5*five+1*one</var>
+
+					<var id="ten1">A[1]</var>
+
+					<var id="five1">randRange(0,1)</var>
+
+					<var id="one1">(function(){
+						if(ten1 &lt;9){var a=randRange(1,10);return a;}
+						if(ten1==9){var a=randRange(1,4);return a;}
+					})()</var>
+
+					<var id="R1">10*ten1+5*five1+1*one1</var>
+					<var id="ANS">
+						(function()
+						{
+							var bb=randRange(0,1);
+							var nums=[0,0,0,0];
+							if(bb==0){
+								nums[0] = R;
+								nums[1] = R1;
+								nums[2] = -4;
+								nums[3] = 1;
+							}
+							if(bb==1){
+								nums[0] = R1;
+								nums[1] = R;
+								nums[2] = 1;
+								nums[3] = -4;
+							}
+							return nums;
+						})()</var>
+					</div>
 				<var id="loImg">
 				(function(){
 					for(var i=0;i&lt;ten;i++)
@@ -674,7 +683,7 @@
 		<div id="case5">
 
             <div class="vars">
-
+			<div data-ensure="R!=R1">
 				<var id="fifty">1</var>
 
 				<var id="ten">randRange(5,8)</var>
@@ -773,13 +782,22 @@
 					(function()
 					{
 					
-						var bb=randRange(0,1)
-						var nums=[0,0,0,0];
-						if(bb==0){nums=[12,13,5,-2.5];}
-						if(bb==1){nums=[13,12,-2.5,5];} 
+						var bb = randRange(0,1);
+						var nums = [0,0,0,0];
+						if(bb==0){
+							nums[0] = 12;
+							nums[1] = 13;
+							nums[2] = 5;
+							nums[3] = -2.5;
+						}else{
+							nums[0] = 13;
+							nums[1] = 12;
+							nums[2] = -2.5;
+							nums[3] = 5;
+						} 
 						return nums;
 					})()</var>
- 					
+					</div>
 			
 				<var id="loImg">
 				(function(){

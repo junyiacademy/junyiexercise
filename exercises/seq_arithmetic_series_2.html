@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers word-problems spin">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>等差級數的計算2</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .short input[type=text] {
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1：給總和公式，求第n項。">
+                <div class="vars">
+                    <var id="a2">randRange(1,3)</var>
+                    <var id="a1" data-ensure= "a1 != 0">randRange(-3,3)</var>
+                    <var id="a0" data-ensure= "a0 != 0">randRange(-5,5)</var>
+                    <var id="n">randRange(5,9)</var>
+                    <var id="Sn1">a2*n*n+a1*n+a0</var>
+                    <var id="Sn2">a2*(n-1)*(n-1)+a1*(n-1)+a0</var>
+                    <var id="Ans">a2*(2*n-1)+a1</var>
+                </div>
+  
+                <div class="question">
+                    <p>已知一個數列的級數和為 <code>S_n=<var>a2</var>n^2+<var>a1</var>n+<var>a0</var></code>，請求出這個數列第 <code><var>n</var></code> 項 <code>a_{<var>n</var>}</code> 的值。</p>
+                </div>
+
+                <div class="solution" data-type="multiple">
+                    第 <var>n</var> 項為 <span class="sol" data-forms="integer"><var>Ans</var></span>
+                </div>
+
+                <div class="hints">
+                    <div>
+                        <p>級數和 <code>S_n=a_1+a_2+\cdots+a_n</code>，即從第一項加到第 <code>n</code> 項。</p>
+                    </div>
+
+                    <div>
+                        <p>所以</p>
+                        <p>當 <code>n={<var>n</var>}</code> 時，<code class="hint_green">S_{<var>n</var>}=a_1+a_2+\cdots+a_{<var>n-1</var>}+a_{<var>n</var>}</code></p>
+                        <p>當 <code>n={<var>n-1</var>}</code> 時，<code class="hint_blue">S_{<var>n-1</var>}=a_1+a_2+\cdots+a_{<var>n-1</var>}</code></p></code></p>
+                    </div>
+
+                    <div>
+                        <p>我們觀察上面兩個式子，就會發現，<code class="hint_green">S_{<var>n</var>}</code> 比 <code class="hint_blue">S_{<var>n-1</var>}</code> 多一個 <code>a_{<var>n</var>}</code>。所以 <code>a_{<var>n</var>}=</code><code class="hint_green">S_{<var>n</var>}</code><code>-</code><code class="hint_blue">S_{<var>n-1</var>}</code>。就可以利用這個式子來算出 <code>a_{<var>n</var>}</code></p>
+                    </div>
+                    <div>
+                        <p>我們要先計算 <code class="hint_green">S_{<var>n</var>}</code> 以及 <code class="hint_blue">S_{<var>n-1</var>}</code>。</p>
+                        <p><code class="hint_green">S_{<var>n</var>}=<var>a2</var>\times<var>n</var>^2+<var>a1</var>\times<var>n</var>+<var>a0</var>=<var>Sn1</var></code></p>
+                        <p><code class="hint_blue">S_{<var>n-1</var>}=<var>a2</var>\times<var>n-1</var>^2+<var>a1</var>\times<var>n-1</var>+<var>a0</var>=<var>Sn2</var></code></p>
+                    </div>
+
+                    <div>
+                        <p>因此我們可以得到 <code>a_{<var>n</var>}=</code><code class="hint_green">S_{<var>n</var>}</code><code>-</code><code class="hint_blue">S_{<var>n-1</var>}</code></p>
+                        <p><code>=</code><code class="hint_green"><var>Sn1</var></code><code>-</code><code class="hint_blue"><var>Sn2</var></code><code>=</code><code class="hint_pink"><var>Ans</var></code>。</p>
+                    </div>
+                </div>
+            </div>
+            <div id="case2：給總和公式，求部分和。">
+                <div class="vars" data-ensure= "n1-n2 > 3">
+                    <var id="a2">randRange(1,2)</var>
+                    <var id="a1" data-ensure= "a1 != 0">randRange(-3,3)</var>
+                    <var id="a0" data-ensure= "a0 != 0">randRange(-5,5)</var>
+                    <var id="n1">randRange(8,15)</var>
+                    <var id="n2">randRange(5,10)</var>
+                    <var id="Sn1">a2*n1*n1+a1*n1+a0</var>
+                    <var id="Sn2">a2*(n2-1)*(n2-1)+a1*(n2-1)+a0</var>
+                    <var id="Ans">Sn1-Sn2</var>
+                </div>
+  
+                <div class="question">
+                    <p>已知一個數列的級數和為 <code>S_n=<var>a2</var>n^2+<var>a1</var>n+<var>a0</var></code>，請求出這個數列第 <code><var>n2</var></code> 項到第 <code><var>n1</var></code> 項的和 ( 即 <code>a_{<var>n2</var>}+a_{<var>n2+1</var>}+\cdots+a_{<var>n1</var>}</code> )。</p>
+                </div>
+
+                <div class="solution" data-type="multiple">
+                    和為 <span class="sol" data-forms="integer"><var>Ans</var></span>
+                </div>
+
+                <div class="hints">
+                    <div>
+                        <p>級數和 <code>S_n=a_1+a_2+\cdots+a_n</code>，即從第一項加到第 <code>n</code> 項。</p>
+                    </div>
+
+                    <div>
+                        <p>我們可以利用這個關係來計算題目要求的總和：</p>
+                        <p>當 <code>n={<var>n1</var>}</code> 時，</p>
+                        <p><code class="hint_green">S_{<var>n1</var>}=a_1+a_2+\cdots+a_{<var>n2-1</var>}+a_{<var>n2</var>}+\cdots+a_{<var>n1-1</var>}+a_{<var>n1</var>}</code></p>
+                        <p>當 <code>n={<var>n2-1</var>}</code> 時，</p>
+                        <p><code class="hint_blue">S_{<var>n2-1</var>}=a_1+a_2+\cdots+a_{<var>n2-1</var>}</code></p></code></p>
+                    </div>
+
+                    <div>
+                        <p>我們觀察上面兩個式子，就會發現，<code class="hint_green">S_{<var>n1</var>}</code> 比 <code class="hint_blue">S_{<var>n2-1</var>}</code> 多了 <code>a_{<var>n2</var>}+a_{<var>n2+1</var>}+\cdots+a_{<var>n1</var>}</code>。</p>
+                        <p>所以 <code>a_{<var>n2</var>}+a_{<var>n2+1</var>}+\cdots+a_{<var>n1</var>}=</code><code class="hint_green">S_{<var>n1</var>}</code><code>-</code><code class="hint_blue">S_{<var>n2-1</var>}</code>。就可以算出題目要求的 <code>a_{<var>n2</var>}+a_{<var>n2+1</var>}+\cdots+a_{<var>n1</var>}</code></p>
+                    </div>
+                    <div>
+                        <p>我們要先計算 <code class="hint_green">S_{<var>n1</var>}</code> 以及 <code class="hint_blue">S_{<var>n2-1</var>}</code>。</p>
+                        <p><code class="hint_green">S_{<var>n1</var>}=<var>a2</var>\times<var>n1</var>^2+<var>a1</var>\times<var>n1</var>+<var>a0</var>=<var>Sn1</var></code></p>
+                        <p><code class="hint_blue">S_{<var>(n2-1)</var>}=<var>a2</var>\times<var>n2-1</var>^2+<var>a1</var>\times<var>n2-1</var>+<var>a0</var>=<var>Sn2</var></code></p>
+                    </div>
+
+                    <div>
+                        <p>因此我們可以得到 <code>a_{<var>n2</var>}+a_{<var>n2+1</var>}+\cdots+a_{<var>n1</var>}=</code><code class="hint_green">S_{<var>n1</var>}</code><code>-</code><code class="hint_blue">S_{<var>n2-1</var>}</code></p>
+                        <p><code>=</code><code class="hint_green"><var>Sn1</var></code><code>-</code><code class="hint_blue"><var>Sn2</var></code><code>=</code><code class="hint_pink"><var>Ans</var></code>。</p>
+                    </div>
+                </div>
+            </div>
+            <div id="case3：給總和，首項、末項，求項數。">
+                <div class="vars" data-ensure=" (a_1+a_n)*n %2 == 0">
+                    <var id="a_1">randRange(1,3)</var>
+                    <var id="d">randRange(2,5)</var>
+                    <var id="n">randRange(6,10)</var>
+                    <var id="a_n">a_1+(n-1)*d</var>
+                    <var id="s">(a_1+a_n)*n/2</var>
+                    <var id="Ans">n</var>
+                </div>
+  
+                <div class="question">
+                    <p>已知一個等差數列的總和為 <code><var>s</var></code>，且首項為 <code><var>a_1</var></code>，末項為 <code><var>a_n</var></code>，請求出這個數列有幾項。</p>
+                </div>
+
+                <div class="solution" data-type="multiple">
+                    有 <span class="sol" data-forms="integer"><var>Ans</var></span> 項
+                </div>
+
+                <div class="hints">
+                    <div>
+                        <p>遇到等差數列的總和，我們主要都是利用等差數列的梯形公式 <code class="hint_blue">總和=\frac{(首項+末項)\times 項數}{2}</code>。</p>
+                    </div>
+
+                    <div>
+                        <p>題目告訴我們首項為 <code><var>a_1</var></code>，末項為 <code><var>a_n</var></code>，總和為 <code><var>s</var></code>。</p>
+                    </div>
+
+                    <div>
+                        <p>代入梯形公式可以得到：<code><var>s</var>=\frac{(<var>a_1</var>+<var>a_n</var>)\times 項數}{2}</code>。</p>
+                    </div>
+
+                    <div>
+                        <p>我們可以進一步化簡得到 <code>2\times<var>s</var>=<var>a_1+a_n</var>\times 項數</code></p>
+                        <p><code>\Rightarrow 項數 = \frac{<var>2*s</var>}{<var>a_1+a_n</var>}=</code> <code class="hint_pink"><var>Ans</var></code>。</p>
+                    </div>
+                </div>
+            </div>
+            <div id="case4：給總和，首項、公差，求項數。">
+                <div class="vars" data-ensure=" (a_1+a_n) %2 == 0">
+                    <var id="a_1">randRange(1,3)</var>
+                    <var id="d" data-ensure= "d %2 ==0">randRange(2,6)</var>
+                    <var id="n">randRange(6,10)</var>
+                    <var id="a_n">a_1+(n-1)*d</var>
+                    <var id="s">(a_1+a_n)*n/2</var>
+                    <var id="Ans">n</var>
+                </div>
+  
+                <div class="question">
+                    <p>已知一個等差數列的總和為 <code><var>s</var></code>，且首項為 <code><var>a_1</var></code>，公差為 <code><var>d</var></code>，請求出這個數列有幾項。</p>
+                </div>
+
+                <div class="solution" data-type="multiple">
+                    有 <span class="sol" data-forms="integer"><var>Ans</var></span> 項
+                </div>
+
+                <div class="hints">
+                    <div>
+                        <p>這種給總和、首項、公差，求項數的問題，要留意是個運算較複雜的問題，解題過程需要解一元二次方程式！</p>
+                        <p>首先，遇到等差數列的總和，我們主要都是利用等差數列的梯形公式 <code class="hint_blue">總和=\frac{(首項+末項)\times 項數}{2}</code>，通常我們會用符號簡記為 <code>a_n=\frac{(a_1+a_n)\times n}{2}</code>。</p>
+                    </div>
+
+                    <div>
+                        <p>題目告訴我們首項為 <code><var>a_1</var></code>，公差為 <code><var>d</var></code>，總和為 <code><var>s</var></code>。代回梯形公式發現我們缺少末項才能算出項數，這時候就要利用公差這個資訊來求出末項。</p>
+                        <p>因為我們知道 <code>a_n=a_1+(n-1)d</code>，也就是 <code>末項=首項+(項數-1)\times 公差</code>。</p>
+                    </div>
+
+                    <div>
+                        <p>把梯形公式中的末項 <code>a_n</code>用 <code>a_n=a_1+(n-1)d</code> 換掉，我們得到另外一個等差數列的總和公式：</p>
+                        <p><code class="hint_green">a_n=\frac{n}{2}[2a_1+(n-1)\times d]</code>。</p>
+                    </div>
+
+                    <div>
+                        <p>代入題目給我們的公差、首項、總和就可以得到：</p>
+                        <p><code><var>s</var> = \frac{n}{2}[2\times<var>a_1</var>+(n-1)\times <var>d</var>]</code></p>
+                        <p>這是一個一元二次方程式，我們整理一下會得到：</p>
+                        <p><code><var>d/2</var>n^2+<var>a_1-d/2</var>n-<var>s</var>=0</p></code>
+                    </div>
+
+                    <div>
+                        <p>最後利用十字交乘法，來做因式分解得到答案</p>
+                        <p><code>(n-<var>n</var>)(<var>d/2</var>n+<var>(s)/(n)</var>)=0</code></p>
+                        <p>有兩個答案，但因為項數是正的，負的不合，得到項數有 <code class="hint_pink"><var>Ans</var></code> 項。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!--edit by ron 2014/5/14-->

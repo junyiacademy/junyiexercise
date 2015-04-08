@@ -2,7 +2,7 @@
 <html data-require="math math-format expressions graphie interactive word-problems stat">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Creating bar charts 1</title>
+    <title>創建條型圖1</title>
     <script src="../khan-exercise.js"></script>
     <style>
         span.rotate  {
@@ -22,19 +22,20 @@
     <div class="problems">
         <div>
             <div class="vars">
-                <var id="SUBJECT">randFromArray([ "animal", "color", "fruit", "course" ])</var>
+				<var id="N">randRange(0,3)</var>
+				<var id="SUBJECT">[[ "animal"], ["color"], ["fruit"], ["course" ]][N]</var>
+				<var id="CSUBJECT">[[ "動物"],[ "顏色"], ["水果"], ["課程" ]][N]</var>
                 <var id="CATEGORIES">$.map( _.range(5), function( n ) { return ( KhanUtil[ SUBJECT ] )( n + 1 ); } )</var>
                 <var id="DATA">$.map( _.range(5), function() { return randRange( 0, 10 ); } )</var>
                 <var id="TOTAL">sum( DATA )</var>
-                <var id="RESPONDENT">randFromArray([ "student", "teacher", "person" ])</var>
+                <var id="RESPONDENT">randFromArray([ "老師", "學生", "人" ])</var>
+				<var id="T">shuffle( $.map( DATA, function( num, i ) {return "&lt;code&gt;" + num + "&lt;/code&gt; " + "個" + plural( RESPONDENT, num ) + "說是" + CATEGORIES[ i ]; }) ) </var>
             </div>
 
-            <code><var>TOTAL</var></code> <var>plural( RESPONDENT, TOTAL )</var> were asked about their favorite <var>SUBJECT</var>.
-            <var>toSentence( shuffle( $.map( DATA, function( num, i ) {
-                return "&lt;code&gt;" + num + "&lt;/code&gt; " + plural( RESPONDENT, num ) + " said " + CATEGORIES[ i ];
-            }) ) )</var>.
+            <p>我們問了 <code><var>TOTAL</var></code> 個<var>plural( RESPONDENT, TOTAL )</var>，他們最喜歡的<var>CSUBJECT</var>是什麼？其中
+            <var>T[0]</var>，<var>T[1]</var>，<var>T[2]</var>，<var>T[3]</var>，<var>T[4]</var>。</p>
 
-            <p class="question">Create a bar chart showing everyone's favorite <var>plural( SUBJECT )</var>:</p>
+            <p class="question">請你把最喜歡的<var>CSUBJECT</var>的結果用條型圖表顯示出來：</p>
 
             <div class="problem">
 
@@ -58,11 +59,9 @@
                         graph.leftPoints[ index ] = addMovablePoint({ coord: [ index * 3 + 1, 0.5 ], visible: false });
                         graph.rightPoints[ index ] = addMovablePoint({ coord: [ index * 3 + 3, 0.5 ], visible: false });
                         graph.lines[ index ] = addMovableLineSegment({ pointA: graph.leftPoints[ index ], pointZ: graph.rightPoints[ index ], snapY: 0.5, constraints: { constrainX: true } });
-//                        graph.lines[ index ] = {};
                         style({ stroke: "none", fill: "#9ab8ed", opacity: 1.0 }, function() {
                             graph.lines[ index ].bar = path([ [ index * 3 + 1, 0 ], [ index * 3 + 1, 0.5 ], [ index * 3 + 3, 0.5 ], [ index * 3 + 3, 0 ], [ index * 3 + 1, 0 ] ]);
                         });
-//                        graph.lines[ index ].toFront();
 
                         label( [ index * 3 + 2, 0 ], CATEGORIES[ index ].valueOf(), "below", false ).css( "text-transform", "capitalize" );
 
@@ -84,15 +83,15 @@
                         line( [ 0, 0 ], [ 0, 10 ] );
                     });
 
-                    label( [ 8, -0.8 ], "&lt;b&gt;" + SUBJECT + "&lt;/b&gt;", "below", false ).css( "text-transform", "capitalize" );
-                    $( label( [ -1.5, 5 ], "&lt;b&gt;Number of " + plural( RESPONDENT ) + "&lt;/b&gt;", "center", false ) ).addClass( "rotate" );
-                    label( [ 8, 10.5 ], "&lt;b&gt;Favorite " + SUBJECT + "s&lt;/b&gt;", "above", false );
+                    label( [ 8, -0.8 ], "&lt;b&gt;" + CSUBJECT + "&lt;/b&gt;", "below", false ).css( "text-transform", "capitalize" );
+                    $( label( [ -1.5, 5 ], "&lt;b&gt;人數&lt;/b&gt;", "center", false ) ).addClass( "rotate" );
+                    label( [ 8, 10.5 ], "&lt;b&gt;最喜歡的" + CSUBJECT + "&lt;/b&gt;", "above", false );
                 </div>
 
             </div>
             <div class="solution" data-type="custom">
                 <div class="instruction">
-                    Create a bar chart by dragging the top of each bar up and down.
+                    將每個長條的上端上下拉動，來產生你需要的條形圖。
                 </div>
                 <div class="guess">$.map( new Array( 5 ), function( val, n ) { return graph.lines[ n ].coordA[1]; })</div>
                 <div class="validator-function">
@@ -117,15 +116,13 @@
     <div class="hints">
         <div data-each="DATA as INDEX, NUM">
             <p>
-                <code><var>NUM</var></code> <var>plural( RESPONDENT, NUM )</var> said <var>plural( randFromArray([ "his", "her" ]), "their", NUM )</var>
-                favorite <var>SUBJECT</var> was <var>CATEGORIES[ INDEX ]</var>.
-                <span data-if="NUM > 0">
-                    So the top of the bar for "<span style="text-transform: capitalize"><var>CATEGORIES[ INDEX ]</var></span>" should line up with the number
-                    <code><var>NUM</var></code> on the left side of the chart.
+                因為最喜歡<var>CATEGORIES[ INDEX ]</var>的有 <code><var>NUM</var></code> 個<var>plural( RESPONDENT, NUM )</var>，
+                <span data-if="NUM &gt; 0">
+                    所以你把<span style="text-transform: capitalize"><var>CATEGORIES[ INDEX ]</var></span>的長條上端拉到和左邊數字
+                    <code class="hint_pink"><var>NUM</var></code> 平行的地方。
                 </span>
                 <span data-else>
-                    So there should be no bar above "<span style="text-transform: capitalize"><var>CATEGORIES[ INDEX ]</var></span>". Drag the top of the bar all
-                    the way to the bottom to get rid of the bar.
+                    所以你把<span style="text-transform: capitalize"><var>CATEGORIES[ INDEX ]</var></span>的長條上端向下拉到條形圖的<span class="hint_pink">底部</span>。
                 </span>
             </p>
             <div data-if="NUM > 0" class="graphie" data-update="barchart">

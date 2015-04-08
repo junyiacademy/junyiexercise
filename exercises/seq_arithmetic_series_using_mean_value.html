@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers word-problems spin">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>等差級數：利用中項乘項數</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .short input[type=text] {
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1：給中項，求總和。">
+                <div class="vars">
+                    <var id="t">randRange(2,8)</var>
+                    <var id="n">2*t-1</var>
+                    <var id="a">randRange(6,14)</var>
+                    <var id="Ans">n*a</var>
+                </div>
+  
+                <div class="question">
+                    <p>已知一個等差數列有 <code><var>n</var></code> 項，而且中間項為 <code><var>a</var></code>，請求出這個等差數列的總和。</p>
+                </div>
+
+                <div class="solution" data-type="multiple">
+                    總和為 <span class="sol" data-forms="integer"><var>Ans</var></span>
+                </div>
+
+                <div class="hints">
+                    <div>
+                        <p>我們用五項的等差數列來觀察一下，<b class="hint_green">中間項</b>為 <code class="hint_green">a_3</code>，要算總和即 <code>a_1+a_2+a_3+a_4+a_5</code></p>
+                        <p><code>=(a_3-2d)+(a_3-d)+a_3</code></p>
+                        <p><code>+(a_3+d)+(a_3+2d)=</code> <code class="hint_blue">5</code> <code>\times</code> <code class="hint_green">a_3</code>。</p>
+                    </div>
+
+                    <div>
+                        <p>我們發現公差在加起來的過程中消掉了，所以如果我們要計算總和可以利用 <b class="hint_blue">項數</b> <code>\times</code> <b class="hint_green">中間項</b> 來計算總和，要特別注意的是這個公式只能用在項數是奇數的等差數列總和。 </p>
+                    </div>
+
+                    <div>
+                        <p>題目告訴我們<b class="hint_blue">項數</b>為 <code class="hint_blue"><var>n</var></code>，<b class="hint_green">中間項</b>為 <code class="hint_green"><var>a</var></code>，將其代入公式。</p>
+                    </div>
+
+                    <div>
+                        <p>可以得到總和為：<code class="hint_blue"><var>n</var></code> <code>\times</code> <code class="hint_green"><var>a</var></code> <code>=</code> <code class="hint_pink"><var>Ans</var></code>。</p>
+                    </div>
+                </div>
+            </div>
+            <div id="case2：給兩項，透過轉換成中項，求總和。">
+                <div class="vars" data-ensure="(a_n1+a_n2) % 2 == 0">
+                    <var id="t">randRange(3,8)</var>
+                    <var id="n">2*t-1</var>
+                    <var id="n1">randRange(1,t-1)</var>
+                    <var id="n2">2*t-n1</var>
+                    <var id="a_n1">randRange(1,10)</var>
+                    <var id="a_n2">randRange(20,40)</var>
+                    <var id="a">(a_n1+a_n2)/2</var>
+                    <var id="Ans">n*a</var>
+                </div>
+  
+                <div class="question">
+                    <p>已知一個等差數列的第 <code><var>n1</var></code> 項為 <code><var>a_n1</var></code> <code>(a_{<var>n1</var>}=<var>a_n1</var>)</code>，第 <code><var>n2</var></code> 項為 <code><var>a_n2</var></code> (<code>a_{<var>n2</var>}=<var>a_n2</var></code>)，請求出這個等差數列前 <code><var>n</var></code> 項的總和 <code>(S_{<var>n</var>})</code>。</p>
+                </div>
+
+                <div class="solution" data-type="multiple">
+                    <code>S_{<var>n</var>}=</code> <span class="sol" data-forms="integer"><var>Ans</var></span>
+                </div>
+
+                <div class="hints">
+                    <div>
+                        <p>這題可以利用 <code>a_{<var>n1</var>}=<var>a_n1</var></code> 及 <code>a_{<var>n2</var>}=<var>a_n2</var></code> 來解出首項及公差，再利用首項與公差來解出 <code>S_{<var>n</var>}</code>。不過這邊我們來練習利用等差數列的中間項的觀念解題！</p>
+                    </div>
+                    
+                    <div>
+                        <p>我們用五項的等差數列來觀察一下，<b class="hint_green">中間項</b>為 <code class="hint_green">a_3</code>，我們發現：</p> 
+                        <p><code>a_1+a_5=(a_3-2d)+(a_3+2d)=2</code><code class="hint_green">a_3</code></p>
+                        <p><code>a_2+a_4=(a_3-d)+(a_3+d)=2</code><code class="hint_green">a_3</code></p>
+                        <p>所以 <code>a_1+a_5=a_2+a_4=2</code><code class="hint_green">a_3</code></p>
+                        <p>也就是說離<b class="hint_green">中間項</b> (以這個例子來說是 <code class="hint_green">a_3</code>) 相同<b class="hint_blue">項數</b>的兩個數字加起來應該相同，都等於<b class="hint_green">中間項</b>的兩倍！</p>
+                    </div>
+
+                    <div>
+                        <p>這題題目告訴我們 <code>a_{<var>n1</var>}</code> 及 <code>a_{<var>n2</var>}</code>，利用剛剛的觀念我們知道：<code>a_{<var>n1</var>}+a_{<var>n2</var>}=2\times</code> <code class="hint_green">a_{<var>t</var>}</code></p>
+                        <p>所以 <code class="hint_green">a_{<var>t</var>}</code><code>=\frac{a_{<var>n1</var>}+a_{<var>n2</var>}}{2}=\frac{<var>a_n1</var>+<var>a_n2</var>}{2}=<var>a</var></code>。</p>
+                    </div>
+
+                    <div>
+                        <p>同時我們也知道如果要算總和 <code>S_{<var>n</var>}</code>，可以利用 <b class="hint_blue">項數</b><code>\times</code><b class="hint_green">中間項</b> 來計算，要特別注意的是這個公式只能用在項數是奇數的等差數列。 </p>
+                        <p>所以 <code>S_{<var>n</var>}=a_1+\cdots+a_{<var>n</var>}=</code> <code class="hint_blue"><var>n</var></code> <code>\times</code> <code class="hint_green">a_{<var>t</var>}</code></p>
+                    </div>
+
+                    <div>
+                        <p>可以得到總和為：<code class="hint_blue"><var>n</var></code> <code>\times</code> <code class="hint_green"><var>a</var></code> <code>=</code> <code class="hint_pink"><var>Ans</var></code>。</p>
+                    </div>
+                </div>
+            </div>
+            <div id="case3：給頭尾，透過轉換成中項，求總和，奇數項。">
+                <div class="vars" data-ensure="(a_n1+a_n2) % 4 == 0">
+                    <var id="t">randRange(4,8)</var>
+                    <var id="n">2*t-1</var>
+                    <var id="a_n1">randRange(1,10)</var>
+                    <var id="a_n2">randRange(30,80)</var>
+                    <var id="a">(a_n1+a_n2)/4</var>
+                    <var id="Ans">n*a</var>
+                </div>
+  
+                <div class="question">
+                    <p>已知一個等差數列有 <code><var>n</var></code> 項，前兩項和為 <code><var>a_n1</var></code> <code>(a_{1}+a_{2}=<var>a_n1</var>)</code>，末兩項和為 <code><var>a_n2</var></code> <code>(a_{<var>n-1</var>}+a_{<var>n</var>}=<var>a_n2</var>)</code>，請求出這個等差數列前 <code><var>n</var></code> 項的總和 <code>(S_{<var>n</var>})</code>。</p>
+                </div>
+
+                <div class="solution" data-type="multiple">
+                    <code>S_{<var>n</var>}=</code> <span class="sol" data-forms="integer"><var>Ans</var></span>
+                </div>
+
+                <div class="hints">
+                    <div>
+                        <p>這題可以利用題目給的前兩項與末兩項來解出首項及公差，再利用首項與公差來解出 <code>S_{<var>n</var>}</code>。不過這邊我們來練習利用等差數列的中間項求總和的觀念解題！</p>
+                    </div>
+                    
+                    <div>
+                        <p>我們用五項的等差數列來觀察一下，<b class="hint_green">中間項</b>為 <code class="hint_green">a_3</code>，我們發現：</p> 
+                        <p><code>a_1+a_5=(a_3-2d)+(a_3+2d)=2</code><code class="hint_green">a_3</code></p>
+                        <p><code>a_2+a_4=(a_3-d)+(a_3+d)=2</code><code class="hint_green">a_3</code></p>
+                        <p>所以 <code>a_1+a_5=a_2+a_4=2</code><code class="hint_green">a_3</code></p>
+                        <p>也就是說離<b class="hint_green">中間項</b> (以這個例子來說是 <code class="hint_green">a_3</code>) 相同<b class="hint_blue">項數</b>的兩個數字加起來應該相同，都等於<b class="hint_green">中間項</b>的兩倍！</p>
+                    </div>
+
+                    <div>
+                        <p>這題題目告訴我們有 <code><var>n</var></code> 項，所以中間項為第 <code><var>t</var></code> 項 (<code class="hint_green">a_{<var>t</var>}</code>)。</p>
+                        <p>另外 <code>a_{1}+a_{2}=<var>a_n1</var></code> 及 <code>a_{<var>n-1</var>}+a_{<var>n</var>}=<var>a_n2</var></code>，利用剛剛的觀念我們知道：</p>
+                        <p><code class="hint_orange">a_{<var>1</var>}+a_{<var>n</var>}</code> <code>=2\times</code> <code class="hint_green">a_{<var>t</var>}</code></p>
+                        <p><code class="hint_purple">a_{<var>2</var>}+a_{<var>n-1</var>}</code> <code>=2\times</code> <code class="hint_green">a_{<var>t</var>}</code></p>
+                        <p>所以 <code class="hint_orange">a_{<var>1</var>}</code> <code>+</code> <code class="hint_purple">a_{<var>2</var>}</code> <code>+</code> <code class="hint_purple">a_{<var>n-1</var>}</code> <code>+</code> <code class="hint_orange">a_{<var>n</var>}</code> <code>=4\times</code> <code class="hint_green">a_{<var>t</var>}</code></p>
+                        <p><code>\Rightarrow <var>a_n1</var>+<var>a_n2</var>=4\times</code> <code class="hint_green">a_{<var>t</var>}</code></p>
+                        <p>得到<b class="hint_green">中間項</b> <code class="hint_green">a_{<var>t</var>}</code> <code>=<var>a</var></code></p>
+                    </div>
+
+                    <div>
+                        <p>同時我們也知道如果要算總和 <code>S_{<var>n</var>}</code>，可以利用 <b class="hint_blue">項數</b><code>\times</code><b class="hint_green">中間項</b> 來計算，要特別注意的是這個公式只能用在項數是奇數的等差數列。 </p>
+                        <p>所以 <code>S_{<var>n</var>}=a_1+\cdots+a_{<var>n</var>}=</code> <code class="hint_blue"><var>n</var></code> <code>\times</code> <code class="hint_green">a_{<var>t</var>}</code></p>
+                    </div>
+
+                    <div>
+                        <p>可以得到總和為：<code class="hint_blue"><var>n</var></code> <code>\times</code> <code class="hint_green"><var>a</var></code> <code>=</code> <code class="hint_pink"><var>Ans</var></code>。</p>
+                    </div>
+                </div>
+            </div>
+            <div id="case4：給頭尾，透過轉換成中項，求總和，偶數項。">
+                <div class="vars" data-ensure="(a_n1+a_n2) % 2 == 0">
+                    <var id="t">randRange(4,8)</var>
+                    <var id="n">2*t</var>
+                    <var id="a_n1">randRange(1,10)</var>
+                    <var id="a_n2">randRange(30,80)</var>
+                    <var id="a">(a_n1+a_n2)/2</var>
+                    <var id="Ans">t*a</var>
+                </div>
+  
+                <div class="question">
+                    <p>已知一個等差數列有 <code><var>n</var></code> 項，前兩項和為 <code><var>a_n1</var></code> <code>(a_{1}+a_{2}=<var>a_n1</var>)</code>，末兩項和為 <code><var>a_n2</var></code> <code>(a_{<var>n-1</var>}+a_{<var>n</var>}=<var>a_n2</var>)</code>，請求出這個等差數列前 <code><var>n</var></code> 項的總和 <code>(S_{<var>n</var>})</code>。</p>
+                </div>
+
+                <div class="solution" data-type="multiple">
+                    <code>S_{<var>n</var>}=</code> <span class="sol" data-forms="integer"><var>Ans</var></span>
+                </div>
+
+                <div class="hints">
+                    <div>
+                        <p>一般這種題目都可以利用等差數列的中間項來解題，不過這題要特別小心，因為中間項求總和公式是用在項數為奇數的等差數列，但此題中的項數為偶數，不能用了！所以我們這邊是利用類似的想法來解題。</p>
+                    </div>
+                    
+                    <div>
+                        <p>我們用 <code>6</code> 項的等差數列來觀察一下：</p>
+                        <p> <code>a_1+a_6=a_1+(a_1+5\times d)=2a_1+5d</code></p>
+                        <p><code>a_2+a_5=(a_1+d)+(a_1+4\times d)=2a_1+5d</code></p>
+                        <p>同樣的 <code>a_3+a_4=2a_1+5d</code>，我們發現同一個等差數列中，只要下標加起來一樣，那兩項相加就會一樣！</p>
+                        <p> 在這個例子中就是因為 <code>1+6=2+5=3+4</code></p>
+                        <p> 所以 <code>a_1+a_6=a_2+a_5=a_3+a_4</code>。</p>
+                    </div>
+
+                    <div>
+                        <p>利用剛剛的觀念我們知道：</p>
+                        <p><code class="hint_orange">a_{<var>1</var>}+a_{<var>n</var>}</code> <code>=</code> <code class="hint_purple">a_{<var>2</var>}+a_{<var>n-1</var>}</code></p>
+                        <p>題目告訴我們：<code>a_{1}+a_{2}=<var>a_n1</var></code> 及 <code>a_{<var>n-1</var>}+a_{<var>n</var>}=<var>a_n2</var></code></p>
+                        <p>所以，<code class="hint_orange">a_{<var>1</var>}</code> <code>+</code> <code class="hint_purple">a_{<var>2</var>}</code> <code>+</code> <code class="hint_purple">a_{<var>n-1</var>}</code> <code>+</code> <code class="hint_orange">a_{<var>n</var>}</code> <code>=<var>a_n1+a_n2</var></code></p>
+                        <p>為兩組兩項相加，所以一組兩項相加為 <code>\frac{<var>a_n1+a_n2</var>}{2}=<var>a</var></code>。</p>
+                    </div>
+
+                    <div>
+                        <p>這題題目告訴我們有 <code><var>n</var></code> 項，所以</p>
+                        <p><code>S_{<var>n</var>}=</code> <code class="hint_orange">a_{<var>1</var>}</code> <code>+</code> <code class="hint_purple">a_{<var>2</var>}</code> <code>+\cdots+</code> <code class="hint_purple">a_{<var>n-1</var>}</code> <code>+</code> <code class="hint_orange">a_{<var>n</var>}</code></p>
+                        <p>有 <code><var>t</var></code> 組兩項相加。</p>
+                        <p>可以得到總和為：<code><var>t</var>\times<var>a</var>=</code> <code class="hint_pink"><var>Ans</var></code>。</p>
+                    </div>
+                </div>
+            </div>
+            <div id="case5：給總和，求中項。">
+                <div class="vars">
+                    <var id="t">randRange(2,8)</var>
+                    <var id="n">2*t-1</var>
+                    <var id="a">randRange(6,14)</var>
+                    <var id="s">n*a</var>
+                    <var id="Ans">a</var>
+                </div>
+  
+                <div class="question">
+                    <p>已知一個等差數列有 <code><var>n</var></code> 項，而且這 <code><var>n</var></code> 項總和為 <code><var>s</var></code>，即 <code>S_{<var>n</var>}=<var>s</var></code>，請求出這個等差數列的第 <code><var>t</var></code> 項。</p>
+                </div>
+
+                <div class="solution" data-type="multiple">
+                    第 <code><var>t</var></code> 項為 <span class="sol" data-forms="integer"><var>Ans</var></span>
+                </div>
+
+                <div class="hints">
+                    <div>
+                        <p>我們首先觀察一下，這個等差數列有 <code><var>n</var></code> 項，題目要求的第 <code><var>t</var></code> 項其實是這個等差數列的<b class="hint_green">中間項</b></p>
+                    </div>
+
+                    <div>
+                        <p>而等差數列的中間項與總和有這樣的關係式：</p>
+                        <p><b>總和</b> <code>=</code> <b class="hint_blue">項數</b> <code>\times</code> <b class="hint_green">中間項</b></p>
+                        <p>要特別注意的是這個公式只能用在項數是奇數的等差數列總和。 </p>
+                    </div>
+
+                    <div>
+                        <p>題目告訴我們<b class="hint_blue">項數</b>為 <code><var>n</var></code> 及 <code>S_{<var>n</var>}=<var>s</var></code>，將其代入公式，得到 <code><var>s</var></code> <code>=</code> <code class="hint_blue"><var>n</var></code> <code>\times</code> <code class="hint_green">a_{<var>t</var>}</code>。</p>
+                    </div>
+
+                    <div>
+                        <p>可以得到第 <code><var>t</var></code> 項 <code class="hint_green">a_{<var>t</var>}</code> 為：<code>\frac{<var>s</var>}{<var>n</var>}=</code> <code class="hint_pink"><var>Ans</var></code>。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!--edit by ron 2014/5/14-->

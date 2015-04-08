@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers word-problems slice-clone">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>利用圖形判斷分數的增與減</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <!-- An integer will be a starting or ending quantity 1/3 of the time -->
+           <var id="D_PARENT">randRangeWeighted( 2, 6, 1, 1 / 6 )</var>
+            <var id="D_OFFSPRING">D_PARENT === 1 ? randRange( 2, 6 ) : ( rand( 5 ) > 0 ? D_PARENT : 1 )</var>
+            <div data-ensure="getGCD( N_PARENT * ( D_PARENT === 1 ? D_OFFSPRING : 1 ), N_OFFSPRING * ( D_OFFSPRING === 1 ? D_PARENT : 1 ) ) === 1 && N_PARENT / D_PARENT > N_OFFSPRING / D_OFFSPRING">
+                <var id="N_PARENT">D_PARENT === 1 ? randRange( 1, 4 ) : randRangeExclude( 2,  9, [ D_PARENT ] )</var>
+                <var id="N_OFFSPRING">D_OFFSPRING === 1 ? randRange( 1, 4 ) : randRangeExclude( 2, 9, [ D_OFFSPRING ] )</var>
+				
+			</div>
+			 <var id="CODE_PARENT">D_PARENT === 1 ? N_PARENT : decimalFraction(N_PARENT/D_PARENT,true,true,false,false)</var>
+            <var id="CODE_OFFSPRING">decimalFraction(N_OFFSPRING/D_OFFSPRING,true,true,false,false)</var>
+            <var id="PARENT">N_PARENT / D_PARENT</var>
+            <var id="OFFSPRING">N_OFFSPRING / D_OFFSPRING</var>
+            <var id="ANSWER">OFFSPRING / PARENT</var>
+            <var id="D">D_PARENT === 1 ? D_OFFSPRING : D_PARENT</var>
+            <var id="N_PARENT_EXPANDED">N_PARENT * ( D_PARENT === 1 ? D : 1 )</var>
+            <var id="N_OFFSPRING_EXPANDED">N_OFFSPRING * ( D_OFFSPRING === 1 ? D : 1 )</var>
+        </div>
+
+        <div class="problems">
+            <div>
+                <p class="question">圖 <code>A</code> 是一條 <code><var>CODE_PARENT</var></code> 單位長的帶子。請利用右邊的工具來將圖 <code>A</code> 的長度剪成 <code><var>CODE_OFFSPRING</var></code> 單位長的帶子，如圖 <code>C</code> 所示。你可以經由圖 <code>B</code> 來觀察你對圖 <code>A</code> 做的改變。</p>
+
+                <p>圖 <code>A</code> (起始磚塊)：</p>
+
+                <div class="graphie" id="parent_block">
+                    initSliceClone([ "current_block" ]);
+                    init({ range: [ [ 0, 1 ], [ 0, 1 ] ],scale: [ 500, 25 ] });
+                    rectchart( [ 1, 0 ], [ "#e00", "#999" ] );
+                </div>
+
+                <p>圖 <code>B</code> (目前磚塊)：</p>
+
+                <div class="graphie" id="current_block">
+                    init({ range: [ [ 0, 1 ], [ 0, 1 ] ],scale: [ 500, 25 ] });
+                    rectchart( [ 1, 0 ], [ "#e00", "#999" ] );
+                </div>
+
+                <p>圖 <code>C</code> (目標磚塊)：</p>
+
+                <div class="graphie" id="goal_block">
+                    init({ range: [ [ 0, 1 ], [ 0, 1 ] ],scale: [ 500 * ANSWER, 25 ] });
+                    rectchart( [ 1, 0 ], [ BLUE, "#999" ] );
+                </div>
+
+                <div class="solution" data-type="multiple">
+                    <div style="margin-bottom: 10px;">
+                        <span style="display:inline-block; width: 42px;">剪成</span>
+                        <input type="button" value="-" class="simple-button" onclick="KhanUtil.changePieces( false )">
+                        <span id="pieces" style="display: inline-block; width: 54px; text-align: center;">1 份</span>
+                        <input type="button" value="+" class="simple-button" onclick="KhanUtil.changePieces( true )">
+                    </div>
+
+                    <div style="margin-bottom: 10px;">
+                        <span style="display:inline-block; width: 42px;">複製</span>
+                        <input type="button" value="-" class="simple-button" onclick="KhanUtil.changeTimes( false, 'current_block' )" disabled="disabled">
+                        <span id="current_block_times" style="display: inline-block; width: 54px; text-align: center;">1 次</span>
+                        <input type="button" value="+" class="simple-button" onclick="if(parseInt($('#current_block_times').text().substr(0,2))&gt;=parseInt($('#pieces').text().substr(0,2))){return;};KhanUtil.changeTimes( true, 'current_block' )">
+                    </div>
+
+                    <span class="sol" id="current_block_answer" style="display: none;"><var>roundTo( 3, ANSWER )</var></span>
+					
+					<p class="example">利用下列工具完成解答</p>
+                </div>
+
+                <div class="hints">
+					<p data-if="CODE_PARENT !== fraction( N_PARENT,D )">我們可以將圖 <code>A</code> 的長度 <code><var>CODE_PARENT</var></code> 改寫成 <code data-if="D_PARENT!==1"><var>fraction(D_PARENT,D_PARENT)</var>+<var>fraction(N_PARENT-D_PARENT,D_PARENT)</var>=\dfrac{<var>N_PARENT</var>}{<var>D_PARENT</var>}</code><code data-if="D_PARENT===1"><var>fraction(D_OFFSPRING*N_PARENT,D_OFFSPRING)</var></code> 。</p>
+					<p data-if="CODE_OFFSPRING !== fraction( N_OFFSPRING, D)">我們要的最終圖形是 <code><var>CODE_OFFSPRING</var></code> 單位長的方塊（如圖<code>C</code>），所以我們可以將 <code><var>CODE_OFFSPRING</var></code> 單位長寫成真分數的形式 <code><var>fraction( N_OFFSPRING_EXPANDED, D )</var></code> 。</p>
+                    <p><span data-if="CODE_OFFSPRING === fraction( N_OFFSPRING, D)">我們可以</span>將 <code><var>D_PARENT==1?fraction(D_OFFSPRING*N_PARENT,D_OFFSPRING):fraction( N_PARENT, D_PARENT )</var></code> 寫成 <code><var>N_PARENT_EXPANDED</var>\times<var>fraction( 1, D )</var></code> 。</p>
+					<p>因此，假如我們將圖 <code>A</code> 切成 <code><var>N_PARENT_EXPANDED</var></code> 個相等的方塊，每一個方塊就會擁有相等的 <code><var>fraction( 1, D )</var></code> 個單位。</p>
+					<div>
+						<p>假如我們將一個 <code><var>fraction( 1, D )</var></code> 個單位長的小方塊增加 <code><var>N_OFFSPRING_EXPANDED</var></code> 倍，我們就可以得到 </p>
+						<p><code><var>N_OFFSPRING_EXPANDED</var>\times<var>fraction( 1, D )</var>=<var>CODE_OFFSPRING</var></code> 單位長的方塊。</p>
+					</div>
+					<p>因此結論是：把圖 <code>A</code> 切成 <code class="hint_pink"><var>N_PARENT_EXPANDED</var></code> 段，然後再將其中一段複製 <code  class="hint_pink"><var>N_OFFSPRING_EXPANDED</var></code> 次。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

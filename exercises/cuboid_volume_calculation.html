@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>長方體體積的計算</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+			<div class="vars" data-ensure="J != K || K != L">
+				<var id="J">randRange(2,10)</var>
+				<var id="K">randRange(2,10)</var>
+				<var id="L">randRange(2,10)</var>
+			</div>
+			<p class="question">
+			長 <code><var>J</var></code> 公分、寬 <code><var>K</var></code> 公分、高 <code><var>L</var></code> 公分，體積是多少立方公分？			
+			</p>		
+            <div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>J*K*L</var></span> 立方公分</p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>				
+			<div class="hints">
+				<p>我們知道長方體的體積 <code> = </code> 長 <code>\times</code> 寬 <code>\times</code> 高。</p>					
+				<p>所以體積 <code>=</code> <code><var>J</var> \times <var>K</var> \times <var>L</var> = </code> <code class="hint_pink"><var>J*K*L</var></code> 立方公分。</p>
+			</div>
+        </div>
+		<div id="case2">
+			<div class="vars" data-ensure="J != K || K != L">
+				<var id="J">randRange(2,10)</var>
+				<var id="K">randRange(2,10)</var>
+				<var id="L">randRange(2,10)</var>
+				<var id="W">K*0.75</var>
+				<var id="B">randRange(1, 2)</var>   
+			</div>		
+			<div class="question">
+				<div class="problem">
+					<p>請計算下圖長方體的體積（下圖單位：公分）</p>
+					 <div class="graphie" id="original">
+						init({ range: [[-B-1, L+W+1], [-B*2, J+W + 1]], scale: 20 });
+
+						path([[0,0],[0,J],[L,J],[L,0],[0,0]],{fill:"#FFA500",opacity: 0.5});
+						path([[L,0],[L,J],[L+W/1.414,W/1.414+J],[L+W/1.414,W/1.414],[L,0]],{fill:"#FFA500",opacity: 0.5});
+						path([[0,J],[L,J],[L+W/1.414,W/1.414+J],[W/1.414,W/1.414+J],[0,J]],{fill:"#FFA500",opacity: 0.5});
+
+						label([(L+W/1.414)*0.65,W/1.414+J] ,"\\color{#28AE7B}{"+L +"}", "above");	
+						line([L+W/1.414, J+W/1.414], [W/1.414, J+W/1.414],{stroke:" #28AE7B"});
+						
+						label([(W/1.414)/2, J+(W/1.414)*0.6],"\\color{red}{"+K+"}" , "left");			
+						line([0, J], [W/1.414, J+W/1.414],{stroke:" red"}); 
+						
+						label([0,J*0.5] ,"\\color{#6495ED}{"+J +"}", "left");
+						line([0,0],[0,J],{stroke:" #6495ED"});
+					</div>
+				</div>
+			</div>		
+            <div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>J*K*L</var></span> 立方公分</p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>				
+			<div class="hints">
+				<p>我們知道長方體的體積 <code> = </code> 長 <code>\times</code> 寬 <code>\times</code> 高。</p>					
+				<p>所以體積 <code>=</code> <code><var>J</var> \times <var>K</var> \times <var>L</var> = </code> <code class="hint_pink"><var>J*K*L</var></code> 立方公分。</p>
+			</div>
+        </div>
+		<div id="case3">
+			<div class="vars">
+				<var id="J,K">randFromArray([[112,4],[80,4],[150,5],[45,3],[12,2],[175,5],[96,4],[100,5]])</var>
+			</div>
+			<p class="question">
+			有一個長方體體積是 <code><var>J</var></code> 立方公分，已知它的長和寬都是 <code><var>K</var></code> 公分， 請問它的高是多少公分？
+			</p>		
+            <div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>J/pow(K,2)</var></span> 公分</p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>				
+			<div class="hints">
+				<p>我們知道長方體的體積 <code> = </code> 長 <code>\times</code> 寬 <code>\times </code>高 。</p>
+				<p>體積 <code><var>J</var> = <var>K</var> \times <var>K</var> \times</code><code>高</code> 。</p>
+				<p>高 <code> = <var>J</var> \div <var>pow(K,2)</var> = </code> <code class="hint_pink"><var>J/pow(K,2)</var></code> 公分。</p>
+			</div>
+		</div>
+		<div id="case4">
+			<div class="vars">
+				<var id="M,J,K,L">randFromArray([[60,3,4,5],[80,4,5,4],[150,6,5,5],[45,3,5,3],[175,5,7,5],[96,4,3,8],[100,5,5,4],[210,3,7,10],[24,2,3,4]])</var>
+				<var id="W">K*0.75</var>			
+				<var id="B">randRange(1, 2)</var>
+			</div>			
+			<div class="question">
+				<div class="problem">
+					<p>下圖長方體體積是 <code><var>M</var></code> 立方公分，它的寬是多少公分？（下圖單位：公分）</p>
+					 <div class="graphie" id="original">
+					
+					init({ range: [[-B-1, L+W+1], [-B*2, J+W + 1]], scale: 20 });
+
+					path([[0,0],[0,J],[L,J],[L,0],[0,0]],{fill:"#FFA500",opacity: 0.5});
+					path([[L,0],[L,J],[L+W/1.414,W/1.414+J],[L+W/1.414,W/1.414],[L,0]],{fill:"#FFA500",opacity: 0.5});
+					path([[0,J],[L,J],[L+W/1.414,W/1.414+J],[W/1.414,W/1.414+J],[0,J]],{fill:"#FFA500",opacity: 0.5});
+
+					label([(L+W/1.414)*0.65,W/1.414+J] ,"\\color{#28AE7B}{"+L +"}", "above");	
+					line([L+W/1.414, J+W/1.414], [W/1.414, J+W/1.414],{stroke:" #28AE7B"});
+					
+					label([(W/1.414)/2, J+(W/1.414)*0.6],"\\color{red}{"+"?}" , "left");			
+					line([0, J], [W/1.414, J+W/1.414],{stroke:" red"}); 
+					
+					label([0,J*0.5] ,"\\color{#6495ED}{"+J +"}", "left");
+					line([0,0],[0,J],{stroke:" #6495ED"});
+                </div>
+				</div>
+			</div>	
+			<div class="solution" data-type="multiple">
+				<p><span class="sol" data-forms="integer"><var>M/(J*L)</var></span> 公分</p>
+				<p class="example">整數，例：<code>6</code></p>
+			</div>				
+			<div class="hints">
+				<p>我們知道長方體的體積 <code> = </code> 長 <code>\times</code> 寬 <code>\times </code>高 。</p>
+				<p>體積 <code><var>M</var> = </code> <code><var>L</var> \times 寬  \times <var>J</var></code> 。</p>
+				<p>寬 <code> = <var>M</var> \div <var>J*L</var> = </code> <code class="hint_pink"><var>round(M/(J*L))</var></code> 公分。</p>
+			</div>
+		</div>
+    </div>
+    </div>
+</body>
+</html>
