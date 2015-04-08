@@ -2037,13 +2037,7 @@ var Khan = (function() {
 
         function handleSubmit() {
             var pass = validator();
-
-            try {
-                ga('send', 'event', 'exercise', 'submit', 'Exercise-Answer-Submit');
-            }
-            catch (err) {
-                console.log('cannot send ga message, ga not defined at local server. ' + err);
-            }
+            Analytics.send_ga_event('exercise', 'submit', 'Exercise-Answer-Submit');
 
             // Stop if the user didn't enter a response
             // If multiple-answer, join all responses and check if that's empty
