@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>垂直平分線的概念</title>
+    <script src="../khan-exercise.js"></script>
+	<script language="javascript">
+		function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+		
+		function hasFocus(pa, pb, pc, pd) {
+			if (Math.abs(pa[0] - pb[0]) < 0.001 || Math.abs(pc[0] - pd[0]) < 0.001) {
+				return false;
+			}
+			
+			var klab = (pa[1] - pb[1]) / (pa[0] - pb[0]);
+			
+			var klcd = (pc[1] - pd[1]) / (pc[0] - pd[0]);
+			
+			if (Math.abs(klab - klcd) < 0.001) {
+				return false;
+			}
+			
+			return true;
+		}
+		function getFocus(pa, pb, pc, pd) {
+			if(hasFocus(pa, pb, pc, pd)){
+				var klab = (pa[1] - pb[1]) / (pa[0] - pb[0]);
+				var llab = pa[1] - pa[0]*klab;
+				var klcd = (pc[1] - pd[1]) / (pc[0] - pd[0]);
+				var llcd = pc[1] - pc[0] * klcd;
+				return [(llcd - llab) / (klab - klcd), klab * (llcd - llab) / (klab - klcd) + llab];
+			}
+		}
+		
+		function getLensByPoints(pa, pb) {
+			return Math.sqrt((pa[1] - pb[1]) * (pa[1] - pb[1]) + (pa[0] - pb[0]) * (pa[0] - pb[0]));
+		}
+		
+		function getFocusArc(pa, pb, pc, pd) {
+			var O = getFocus(pa, pb, pc, pd);
+			var OA = [pa[0] - O[0],pa[1] - O[1]];
+			var OC = [pc[0] - O[0],pc[1] - O[1]];
+			var LEN_OA = getLensByPoints(pa, O);
+			var LEN_OC = getLensByPoints(pc, O);
+			
+			return Math.acos((OA[0] * OC[0] + OA[1] * OC[1]) / (LEN_OA * LEN_OC)) * 180 / Math.PI;
+		}
+		
+		function turnAng(focus, p, ang) {
+			var new_p_a = (p[0] - focus[0]) * Math.cos(ang / 180 * Math.PI) - (p[1] - focus[1]) * Math.sin(ang / 180 * Math.PI) + focus[0];
+			var new_p_b = (p[1] - focus[1]) * Math.cos(ang / 180 * Math.PI) + (p[0] - focus[0]) * Math.sin(ang / 180 * Math.PI) + focus[1];
+			return [new_p_a, new_p_b];
+		}
+		
+		function ruler(center) {
+			var graph = KhanUtil.currentGraph;
+			this.set = graph.raphael.set();
+			
+			this.cx = center[0];
+			this.cy = center[1];
+			var lineColor = "#789";
+			var pro = this;
+
+			var r = 3.05;
+			var imgPos = graph.scalePoint([this.cx - r, this.cy + r]);
+			this.set.push(graph.mouselayer.image(Khan.urlBase + "images/rules_mearsing.png", imgPos[0], imgPos[1], 322, 50));
+
+
+			// Customized polar coordinate thingie to make it easier to draw the double-headed arrow thing. 旋轉箭頭
+			// angle is what you'd expect -- use that big protractor on your screen :)
+			// pixels from edge is relative to the edge of the protractor; it's not the full radius
+			var arrowHelper = function(angle, pixelsFromEdge) {
+				var scaledRadius = graph.scaleVector(r);
+				var scaledCenter = graph.scalePoint(center);
+				var x = Math.sin((angle + 90) * Math.PI / 180) * (scaledRadius[0] + pixelsFromEdge) + scaledCenter[0];
+				var y = Math.cos((angle + 90) * Math.PI / 180) * (scaledRadius[1] + pixelsFromEdge) + scaledCenter[1];
+				return x + "," + y;
+			};
+
+			// Draw the double-headed arrow thing that shows users where to click and drag to rotate 旋轉箭頭
+			var arrow = graph.raphael.path(
+				" M" + arrowHelper(180, 6) +
+				" L" + arrowHelper(180, 2) +
+				" L" + arrowHelper(183, 10) +
+				" L" + arrowHelper(180, 18) +
+				" L" + arrowHelper(180, 14) +
+				" A" + (graph.scaleVector(r)[0] + 10) + "," + (graph.scaleVector(r)[1] + 10) + ",0,0,1," + arrowHelper(170, 14) +
+				" L" + arrowHelper(170, 18) +
+				" L" + arrowHelper(167, 10) +
+				" L" + arrowHelper(170, 2) +
+				" L" + arrowHelper(170, 6) +
+				" A" + (graph.scaleVector(r)[0] + 10) + "," + (graph.scaleVector(r)[1] + 10) + ",0,0,0," + arrowHelper(180, 6) +
+				" Z"
+			).attr({
+				"stroke": null,
+				"fill": KhanUtil.ORANGE
+			});
+
+			// add it to the set so it translates with everything else 旋轉箭頭
+			this.set.push(arrow);
+
+			this.centerPoint = KhanUtil.addMovablePoint({
+				coord: center,
+				visible: false
+			});
+
+			// Use a movablePoint for rotation 
+			this.rotateHandle = KhanUtil.addMovablePoint({
+				coord: [
+					Math.sin(275 * Math.PI / 180) * (r + 0.5) + this.cx,
+					Math.cos(275 * Math.PI / 180) * (r + 0.5) + this.cy
+				],
+				
+				onMove: function(x, y) {
+					var angle = Math.atan2(pro.centerPoint.coord[1] - y, pro.centerPoint.coord[0] - x) * 180 / Math.PI;
+					pro.rotate(-angle - 5, true);
+				}
+			});
+
+			// Add a constraint so the point moves in a circle
+			this.rotateHandle.constraints.fixedDistance.dist = r + 0.5;
+			this.rotateHandle.constraints.fixedDistance.point = this.centerPoint;
+
+			// Remove the default dot added by the movablePoint since we have our double-arrow thing
+			this.rotateHandle.visibleShape.remove();
+			// Make the mouse target bigger to encompass the whole area around the double-arrow thing
+			this.rotateHandle.mouseTarget.attr({ scale: 2.0 });
+
+			// Make the arrow-thing grow and shrink with mouseover/out
+			$(this.rotateHandle.mouseTarget[0]).bind("vmouseover", function(event) {
+				arrow.animate({ scale: 1.5 }, 50);
+			});
+			$(this.rotateHandle.mouseTarget[0]).bind("vmouseout", function(event) {
+				arrow.animate({ scale: 1.0 }, 50);
+			});
+
+
+			var setNodes = $.map(this.set, function(el) { return el.node; });
+			this.makeTranslatable = function makeTranslatable() {
+				$(setNodes).css("cursor", "move");
+				$(setNodes).bind("vmousedown", function(event) {
+					event.preventDefault();
+					
+					var startx = event.pageX - $(graph.raphael.canvas.parentNode).offset().left;
+					var starty = event.pageY - $(graph.raphael.canvas.parentNode).offset().top;
+					
+					$(document).bind("vmousemove", function(event) {
+						// mouse{X|Y} are in pixels relative to the SVG
+						
+						var mouseX = event.pageX - $(graph.raphael.canvas.parentNode).offset().left;
+						var mouseY = event.pageY - $(graph.raphael.canvas.parentNode).offset().top;
+						// can't go beyond 50 pixels from the edge
+						mouseX = Math.max(50, Math.min(graph.xpixels - 50, mouseX));
+						mouseY = Math.max(30, Math.min(graph.ypixels - 30, mouseY));
+					
+						var dx = mouseX - startx;
+						var dy = mouseY - starty;
+						
+						$.each(pro.set.items, function() {
+							this.translate(dx, dy);
+						});
+										
+						pro.centerPoint.setCoord([pro.centerPoint.coord[0] + dx / graph.scale[0], pro.centerPoint.coord[1] - dy / graph.scale[1]]);
+						pro.rotateHandle.setCoord([pro.rotateHandle.coord[0] + dx / graph.scale[0], pro.rotateHandle.coord[1] - dy / graph.scale[1]]);
+						
+						startx = mouseX;
+						starty = mouseY;
+					});
+
+					$(document).one("vmouseup", function(event) {
+						$(document).unbind("vmousemove");
+					});
+				});
+			};
+
+//圖形旋轉
+			this.rotation = 0;
+
+			this.rotate = function(offset, absolute) {
+				var center = graph.scalePoint(this.centerPoint.coord);
+
+				if (absolute) {
+					this.rotation = 0;
+				}
+
+				this.set.rotate(this.rotation + offset, center[0], center[1]);
+				this.rotation = this.rotation + offset;
+
+				return this;
+			};
+
+		
+			
+			this.set.attr({ opacity: 0.8 });
+			this.makeTranslatable();
+			return this;
+		}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+            <div class="vars" data-ensure="ENSURE_ANGS && ENSURE_LENGTH &gt; 1">
+				<var id="ANG_A">randRange(0,180)</var>
+				<var id="A,B">[polar(7,ANG_A),polar(7,ANG_A+180)]</var>
+				<var id="PERP_P">randRange(30,150)</var>
+				<var id="PARALLEL_P">randRange(30,60)</var>
+				<var id="types">randRange(1,3)</var>
+				<var id="ANG_LS">(function(){
+					ANG_ARR = [];
+					ANG_ARR[0] = [ANG_A+PERP_P,ANG_A-PERP_P];
+					ANG_ARR[1] = [ANG_A+randRange(60,120),ANG_A-randRange(60,120)];
+					ANG_ARR[2] = [ANG_A+PARALLEL_P,ANG_A+180-PARALLEL_P];
+					ANG_ARR[3] = [ANG_A+randFromArray([randRange(30,80),randRange(100,140)]),ANG_A-randFromArray([randRange(30,80),randRange(100,140)])];
+					ANG_P = [];
+					ANG_P[0] = ANG_ARR[0];
+					if(types==3){
+						ANG_P[1] = ANG_ARR[1];
+						ANG_P[2] = ANG_ARR[2];
+					}else if(types==2){
+						ANG_P[1] = ANG_ARR[1];
+						ANG_P[2] = ANG_ARR[3];
+					}else {
+						ANG_P[1] = ANG_ARR[2];
+						ANG_P[2] = ANG_ARR[3];
+					}
+					return ANG_P;
+				})()</var>
+				<var id="ANG_POINTS">[[polar(5,ANG_LS[0][0]),polar(5,ANG_LS[0][1])],[polar(5,ANG_LS[1][0]),polar(5,ANG_LS[1][1])],[polar(5,ANG_LS[2][0]),polar(5,ANG_LS[2][1])]]</var>
+				<var id="ENSURE_ANGS">
+				(function(){
+					arcs = 0;
+					$.each(ANG_POINTS,function(i,elems){
+						if(hasFocus(A,B,elems[0],elems[1])){
+							arcs = getFocusArc(A,B,elems[0],elems[1]);
+							if (abs(arcs - 90) &gt; 0.001 &amp;&amp; ((arcs &lt;110 &amp;&amp; arcs &gt; 70) || arcs &gt; 160 || arcs &lt; 20)) {
+								return false;
+							}
+						}
+					});
+					return true;
+				})()</var>
+				<var id="ENSURE_LENGTH">
+				(function(){
+					LENGTH_ARR = [];
+					ARR_INDEX = 0;
+					for( var i = 0; i &lt; 3; i++ ){
+						if(hasFocus(A, B, ANG_POINTS[i][0], ANG_POINTS[i][1])){
+							LENGTH_ARR[ARR_INDEX] = getFocus(A,B,ANG_POINTS[i][0],ANG_POINTS[i][1]);
+							ARR_INDEX++;
+						}
+					}
+					MIN_LENGTH = ARR_INDEX === 3 ? min(getLensByPoints(LENGTH_ARR[0],LENGTH_ARR[1]),getLensByPoints(LENGTH_ARR[0],LENGTH_ARR[2]),getLensByPoints(LENGTH_ARR[1],LENGTH_ARR[2])) : getLensByPoints(LENGTH_ARR[0],LENGTH_ARR[1]);
+					return MIN_LENGTH;
+				})()
+				</var>
+				<var id="L_COLORS">["purple",KhanUtil.ORANGE,KhanUtil.GREEN].sort(function(){return 0.5 - Math.random();})</var>
+				<var id="ANS">randRange(1,3)</var>
+				<var id="ANS_COLORS">
+				(function(){
+					if (ANS === 1){
+						return randRange(1,2) == 1 ? L_COLORS : [L_COLORS[0],L_COLORS[2],L_COLORS[1]];
+					}else if( ANS === 2 ){
+						return randRange(1,2) == 1 ? [L_COLORS[1],L_COLORS[0],L_COLORS[2]] : [L_COLORS[2],L_COLORS[0],L_COLORS[1]];
+					}else {
+						return randRange(1,2) == 1 ? [L_COLORS[1],L_COLORS[2],L_COLORS[0]] : [L_COLORS[2],L_COLORS[1],L_COLORS[0]];
+					}
+				})()</var>
+				<var id="ANS_STR">ANS === 3 ? ['L'+3, 'L'+1, 'L'+2] : ( ANS === 2 ? ['L'+2, 'L'+1, 'L'+3] : ['L'+1, 'L'+2, 'L'+3] )</var>
+            </div>
+			
+			<div class="question">
+				<p>下列哪一條直線是 <code>\overline{AB}</code> 的垂直線？</p>
+			</div>
+			<div class="problem">
+				<div class="graphie" id="labels_lines">
+					init({
+                            range: [[5, 12], [-11, -7]],
+                            scale: 20
+                        });
+					label([10,-8],'L1',{color : ANS_COLORS[0]});
+					line([6,-8],[9,-8],{stroke : ANS_COLORS[0]});
+					label([10,-9],'L2',{color : ANS_COLORS[1]});
+					line([6,-9],[9,-9],{stroke : ANS_COLORS[1]});
+					label([10,-10],'L3',{color : ANS_COLORS[2]});
+					line([6,-10],[9,-10],{stroke : ANS_COLORS[2]});
+				</div>
+			    <div class="graphie" id="perpendicular">
+				    init({
+                            range: [[-10, 15], [-10, 10]],
+                            scale: 20
+                        });
+					addMouseLayer();
+					graph.protractor = new Protractor( [0, 0] );
+					line(A,B,{stroke : KhanUtil.RED});
+					label(polar(7.5,ANG_A),'A',{color : KhanUtil.BLUE});
+					label(polar(7.5,ANG_A+180),'B',{color : KhanUtil.BLUE});
+					circle( A, 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+					circle( B, 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+					$.each(ANG_POINTS,function(i,elems){
+						line(elems[0],elems[1],{ stroke : L_COLORS[i]});
+					});
+				</div>
+			</div>
+			<p class="solution"><var>ANS_STR[0]</var></p>
+                <ul class="choices" data-show="3">
+					<li><var>ANS_STR[1]</var></li>
+					<li><var>ANS_STR[2]</var></li>
+				</ul>
+			
+            <div class="hints">
+				<p>垂直的意思是，兩條線相交為直角，即 <code>90^\circ</code> 。 </p>
+				<div class="graphie" data-update="perpendicular">
+					focus = [];
+					focusArc = 0;
+					$.each(ANG_POINTS,function(i,elems){
+						if(hasFocus(A,B,elems[0],elems[1])){
+							focus = getFocus(A,B,elems[0],elems[1]);
+							focusArc = getFocusArc(A,B,elems[0],elems[1]);
+							if(abs(focusArc - 90) &gt; 0.001) {
+								arc( focus, 0.5, ANG_A, ANG_A + focusArc )
+							}else {
+								line(turnAng(focus,[focus[0]+0.5,focus[1]],ANG_A),turnAng(focus,[focus[0]+0.5,focus[1]+0.5],ANG_A), {stroke : KhanUtil.PINK});
+								line(turnAng(focus,[focus[0]+0.5,focus[1]+0.5],ANG_A),turnAng(focus,[focus[0],focus[1]+0.5],ANG_A), {stroke : KhanUtil.PINK});
+							}
+						}
+					});
+				</div>
+				<p>所以只有 <code><var>ANS_STR[0]</var></code> 和 <code>\overline{AB}</code> 相交為 <code>90^\circ</code> ，所以 <code class="hint_pink"><var>ANS_STR[0]</var></code> 是 <code>\overline{AB}</code> 的垂直線。</p>
+			</div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars" data-ensure="ENSURE_ANGS && ENSURE_LENGTH &gt; 1">
+				<var id="ANG_A">randRange(0,180)</var>
+				<var id="A,B">[polar(7,ANG_A),polar(7,ANG_A+180)]</var>
+				<var id="PERP_P">randRange(30,150)</var>
+				<var id="EQUALLY">randRange(30,150)</var>
+				<var id="ANG_LS">[[ANG_A+EQUALLY, ANG_A+EQUALLY+180],[ANG_A+randRange(60,120),ANG_A-randRange(60,120)],[ANG_A+PERP_P,ANG_A-PERP_P]]</var>
+				<var id="ANG_POINTS">[[polar(5,ANG_LS[0][0]),polar(5,ANG_LS[0][1])],[polar(5,ANG_LS[1][0]),polar(5,ANG_LS[1][1])],[polar(5,ANG_LS[2][0]),polar(5,ANG_LS[2][1])]]</var>
+				<var id="ENSURE_ANGS">
+				(function(){
+					arcs = 0;
+					$.each(ANG_POINTS,function(i,elems){
+						if(hasFocus(A,B,elems[0],elems[1])){
+							arcs = getFocusArc(A,B,elems[0],elems[1]);
+							if (abs(arcs - 90) &gt; 0.001 &amp;&amp; ((arcs &lt;110 &amp;&amp; arcs &gt; 70) || arcs &gt; 160 || arcs &lt; 20)) {
+								return false;
+							}
+						}
+					});
+					return true;
+				})()</var>
+				<var id="ENSURE_LENGTH">
+				(function(){
+					LENGTH_ARR = [];
+					ARR_INDEX = 0;
+					for( var i = 0; i &lt; 3; i++ ){
+						if(hasFocus(A, B, ANG_POINTS[i][0], ANG_POINTS[i][1])){
+							LENGTH_ARR[ARR_INDEX] = getFocus(A,B,ANG_POINTS[i][0],ANG_POINTS[i][1]);
+							ARR_INDEX++;
+						}
+					}
+					MIN_LENGTH = ARR_INDEX === 3 ? min(getLensByPoints(LENGTH_ARR[0],LENGTH_ARR[1]),getLensByPoints(LENGTH_ARR[0],LENGTH_ARR[2]),getLensByPoints(LENGTH_ARR[1],LENGTH_ARR[2])) : getLensByPoints(LENGTH_ARR[0],LENGTH_ARR[1]);
+					return MIN_LENGTH;
+				})()
+				</var>
+				<var id="L_COLORS">["purple",KhanUtil.ORANGE,KhanUtil.GREEN].sort(function(){return 0.5 - Math.random();})</var>
+				<var id="ANS">randRange(1,3)</var>
+				<var id="ANS_COLORS">
+				(function(){
+					if (ANS === 1){
+						return randRange(1,2) == 1 ? L_COLORS : [L_COLORS[0],L_COLORS[2],L_COLORS[1]];
+					}else if( ANS === 2 ){
+						return randRange(1,2) == 1 ? [L_COLORS[1],L_COLORS[0],L_COLORS[2]] : [L_COLORS[2],L_COLORS[0],L_COLORS[1]];
+					}else {
+						return randRange(1,2) == 1 ? [L_COLORS[1],L_COLORS[2],L_COLORS[0]] : [L_COLORS[2],L_COLORS[1],L_COLORS[0]];
+					}
+				})()</var>
+				<var id="ANS_STR">ANS === 3 ? ['L'+3, 'L'+1, 'L'+2] : ( ANS === 2 ? ['L'+2, 'L'+1, 'L'+3] : ['L'+1, 'L'+2, 'L'+3] )</var>
+            </div>
+			
+			<div class="question">
+				<p>下列哪一條直線平分 <code>\overline{AB}</code> ？</p>
+			</div>
+			<div class="problem">
+				<div class="graphie" id="labels_lines">
+					init({
+                            range: [[5, 12], [-11, -7]],
+                            scale: 20
+                        });
+					label([10,-8],'L1',{color : ANS_COLORS[0]});
+					line([6,-8],[9,-8],{stroke : ANS_COLORS[0]});
+					label([10,-9],'L2',{color : ANS_COLORS[1]});
+					line([6,-9],[9,-9],{stroke : ANS_COLORS[1]});
+					label([10,-10],'L3',{color : ANS_COLORS[2]});
+					line([6,-10],[9,-10],{stroke : ANS_COLORS[2]});
+				</div>
+			    <div class="graphie" id="perpendicular">
+				    init({
+                            range: [[-10, 15], [-10, 10]],
+                            scale: 20
+                        });
+					addMouseLayer();
+					graph.ruler = new ruler( [-3, -1] );
+					graph.line_AB = line(A,B,{stroke : KhanUtil.RED});
+					label(polar(7.5,ANG_A),'A',{color : KhanUtil.BLUE});
+					label(polar(7.5,ANG_A+180),'B',{color : KhanUtil.BLUE});
+					circle( A, 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+					circle( B, 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+					$.each(ANG_POINTS,function(i,elems){
+						line(elems[0],elems[1],{ stroke : L_COLORS[i]});
+					});
+				</div>
+			</div>
+			<p class="solution"><var>ANS_STR[0]</var></p>
+                <ul class="choices" data-show="3">
+					<li><var>ANS_STR[1]</var></li>
+					<li><var>ANS_STR[2]</var></li>
+				</ul>
+			
+            <div class="hints">
+				<p>平分 <code>\overline{AB}</code> 的意思是，兩條線的交點是 <code>\overline{AB}</code> 的中點 。 </p>
+				<div class="graphie" data-update="perpendicular">
+					circle( [0, 0], 0.1, { fill : "black"});
+					graph.line_AB.hide();
+					line(A, [0, 0], {stroke : "#000079"});
+					line(B, [0, 0], {stroke : "#006000"});
+					label(polar(0.75,ANG_A+90), 'M', {color : KhanUtil.GRAY});
+				</div>
+				<p>所以只有 <code><var>ANS_STR[0]</var></code> 和 <code>\overline{AB}</code> 的交點是 <code>\overline{AB}</code> 的中點，所以 <code class="hint_pink"><var>ANS_STR[0]</var></code> 平分 <code>\overline{AB}</code> 。</p>
+			</div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars" data-ensure="ENSURE_ANGS && ENSURE_LENGTH &gt; 1">
+				<var id="ANG_A">randRange(0,180)</var>
+				<var id="A,B">[polar(7,ANG_A),polar(7,ANG_A+180)]</var>
+				<var id="PERP_P">randRange(30,60)</var>
+				<var id="EQUALLY">randFromArray([randRange(30,60),randRange(120,150)])</var>
+				<var id="ANG_LS">[[ANG_A+90,ANG_A-90],[ANG_A+EQUALLY, ANG_A+EQUALLY+180],[ANG_A+randRange(60,120),ANG_A-randRange(60,120)],[ANG_A+PERP_P,ANG_A-PERP_P]]</var>
+				<var id="ANG_POINTS">[[polar(5,ANG_LS[0][0]),polar(5,ANG_LS[0][1])],[polar(5,ANG_LS[1][0]),polar(5,ANG_LS[1][1])],[polar(5,ANG_LS[2][0]),polar(5,ANG_LS[2][1])],[polar(5,ANG_LS[3][0]),polar(5,ANG_LS[3][1])]]</var>
+				<var id="ENSURE_ANGS">
+				(function(){
+					arcs = 0;
+					$.each(ANG_POINTS,function(i,elems){
+						if(hasFocus(A,B,elems[0],elems[1])){
+							arcs = getFocusArc(A,B,elems[0],elems[1]);
+							if (abs(arcs - 90) &gt; 0.001 &amp;&amp; ((arcs &lt;110 &amp;&amp; arcs &gt; 70) || arcs &gt; 160 || arcs &lt; 20)) {
+								return false;
+							}
+						}
+					});
+					return true;
+				})()</var>
+				<var id="ENSURE_LENGTH">
+				(function(){
+					LENGTH_ARR = [];
+					ARR_INDEX = 0;
+					for( var i = 1; i &lt; 4; i++ ){
+						if(hasFocus(A, B, ANG_POINTS[i][0], ANG_POINTS[i][1])){
+							LENGTH_ARR[ARR_INDEX] = getFocus(A,B,ANG_POINTS[i][0],ANG_POINTS[i][1]);
+							ARR_INDEX++;
+						}
+					}
+					MIN_LENGTH = ((LENGTH_ARR.length - 1 ) === 3 ? min(getLensByPoints(LENGTH_ARR[0],LENGTH_ARR[1]),getLensByPoints(LENGTH_ARR[0],LENGTH_ARR[2]),getLensByPoints(LENGTH_ARR[1],LENGTH_ARR[2])) : getLensByPoints(LENGTH_ARR[0],LENGTH_ARR[1]));
+					return MIN_LENGTH;
+				})()
+				</var>
+				<var id="L_COLORS">["purple",KhanUtil.ORANGE,KhanUtil.GREEN,"black"].sort(function(){return 0.5 - Math.random();})</var>
+				<var id="ANS">randRange(1,4)</var>
+				<var id="ANS_COLORS">
+				(function(){
+					if (ANS === 1){
+						return L_COLORS;
+					}else if( ANS === 2 ){
+						return [L_COLORS[1],L_COLORS[0],L_COLORS[2],L_COLORS[3]];
+					}else if( ANS === 3 ){
+						return [L_COLORS[2],L_COLORS[3],L_COLORS[0],L_COLORS[1]];
+					}else{
+						return [L_COLORS[3],L_COLORS[2],L_COLORS[1],L_COLORS[0]];
+					}
+				})()</var>
+				<var id="ANS_STR">ANS === 4 ? ['L'+4, 'L'+3, 'L'+2, 'L'+1] : (ANS === 3 ? ['L'+3, 'L'+4, 'L'+1, 'L'+2] : ( ANS === 2 ? ['L'+2, 'L'+1, 'L'+3, 'L'+4] : ['L'+1, 'L'+2, 'L'+3, 'L'+4] ))</var>
+            </div>
+			
+			<div class="question">
+				<p>下列哪一條直線是 <code>\overline{AB}</code> 的垂直平分線 ？</p>
+			</div>
+			<div class="problem">
+				<div class="graphie" id="labels_lines">
+					init({
+                            range: [[5, 12], [-12, -7]],
+                            scale: 20
+                        });
+					label([10,-8],'L1',{color : ANS_COLORS[0]});
+					line([6,-8],[9,-8],{stroke : ANS_COLORS[0]});
+					label([10,-9],'L2',{color : ANS_COLORS[1]});
+					line([6,-9],[9,-9],{stroke : ANS_COLORS[1]});
+					label([10,-10],'L3',{color : ANS_COLORS[2]});
+					line([6,-10],[9,-10],{stroke : ANS_COLORS[2]});
+					label([10,-11],'L4',{color : ANS_COLORS[3]});
+					line([6,-11],[9,-11],{stroke : ANS_COLORS[3]});
+				</div>
+			    <div class="graphie" id="perpendicular">
+				    init({
+                            range: [[-10, 15], [-10, 10]],
+                            scale: 20
+                        });
+					addMouseLayer();
+					graph.ruler = new ruler( [-3, 4] );
+					graph.protractor = new Protractor( [0, -8] );
+					graph.line_AB = line(A,B,{stroke : KhanUtil.RED});
+					label(polar(7.5,ANG_A),'A',{color : KhanUtil.BLUE});
+					label(polar(7.5,ANG_A+180),'B',{color : KhanUtil.BLUE});
+					circle( A, 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+					circle( B, 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+					$.each(ANG_POINTS,function(i,elems){
+						line(elems[0],elems[1],{ stroke : L_COLORS[i]});
+					});
+				</div>
+			</div>
+			<p class="solution"><var>ANS_STR[0]</var></p>
+                <ul class="choices" data-show="4">
+					<li><var>ANS_STR[1]</var></li>
+					<li><var>ANS_STR[2]</var></li>
+					<li><var>ANS_STR[3]</var></li>
+				</ul>
+			
+            <div class="hints">
+				<div>
+					<p>垂直的意思是，兩條線相交為直角，即 <code>90^\circ</code> 。</p>
+					<p>平分 <code>\overline{AB}</code> 的意思是，兩條線的交點是 <code>\overline{AB}</code> 的中點 。 </p>
+				</div>
+				<div class="graphie" data-update="perpendicular">
+					graph.line_AB.hide();
+					line(A, [0, 0], {stroke : "#000079"});
+					line(B, [0, 0], {stroke : "#006000"});
+					focus = [];
+					focusArc = 0;
+					$.each(ANG_POINTS,function(i,elems){
+						if(hasFocus(A,B,elems[0],elems[1])){
+							focus = getFocus(A,B,elems[0],elems[1]);
+							focusArc = getFocusArc(A,B,elems[0],elems[1]);
+							if(abs(focusArc - 90) &gt; 0.001) {
+								arc( focus, 0.5, ANG_A, ANG_A + focusArc ,{stroke : L_COLORS[i]})
+							}else {
+								line(turnAng(focus,[focus[0]+0.8,focus[1]],ANG_A),turnAng(focus,[focus[0]+0.8,focus[1]+0.8],ANG_A), {stroke : KhanUtil.PINK});
+								line(turnAng(focus,[focus[0]+0.8,focus[1]+0.8],ANG_A),turnAng(focus,[focus[0],focus[1]+0.8],ANG_A), {stroke : KhanUtil.PINK});
+							}
+						}
+					});
+					circle( [0, 0], 0.1, { fill : KhanUtil.GRAY, stroke : KhanUtil.GRAY});
+					label(polar(0.75,ANG_A+90), 'M', {color : KhanUtil.GRAY});
+				</div>
+				<p><code><var>ANS_STR[1]</var></code> 平分 <code>\overline{AB}</code>，但是沒有和 <code>\overline{AB}</code> 垂直。</p>
+				<p><code><var>ANS_STR[2]</var></code> 既沒有平分 <code>\overline{AB}</code>，也沒有和 <code>\overline{AB}</code> 垂直。</p>
+				<p><code><var>ANS_STR[3]</var></code> 垂直於 <code>\overline{AB}</code>，但沒有平分 <code>\overline{AB}</code>。</p>
+				<p>所以只有 <code><var>ANS_STR[0]</var></code> 垂直於 <code>\overline{AB}</code> 並且平分 <code>\overline{AB}</code>， 所以 <code class="hint_pink"><var>ANS_STR[0]</var></code> 是 <code>\overline{AB}</code> 的垂直平分線 。</p>
+			</div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>
