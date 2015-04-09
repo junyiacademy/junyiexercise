@@ -2006,7 +2006,7 @@ var Khan = (function() {
                 review_mode: (!testMode && Exercises.reviewMode) ? 1 : 0,
 
                 // Whether we are currently working on a topic, as opposed to an exercise
-                topic_mode: (!testMode && !Exercises.reviewMode && !Exercises.practiceMode) ? 1 : 0,
+                topic_mode: (!testMode && !Exercises.reviewMode && !Exercises.practiceMode && !Exercises.pretestMode) ? 1 : 0,
 
                 // Request camelCasing in returned response
                 casing: "camel",
