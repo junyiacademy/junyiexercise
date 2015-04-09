@@ -1318,6 +1318,7 @@ var Khan = (function() {
             });
 
             examples.children().tmpl();
+
         } else {
             $("#examples-show").hide();
         }

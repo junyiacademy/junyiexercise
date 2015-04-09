@@ -39,25 +39,33 @@ $(Khan).bind("newProblem", function() {
 
     var examples = $("#examples");
     if (examples.length && $.prototype.qtip != null) {
-        if($('#solutionarea input[type=text]').length == 1) {
-            $('#solutionarea input[type=text]').qtip({
+        if($('#solutionarea input[type=text]').length >= 1) {
+            answer_format = examples.clone().runModules();
+            $('#solutionarea input[type=text]').each(function() {
+                $( this ).qtip({
                 content: {
-                    text: examples.remove(),
+                    text: answer_format,
                     prerender: true
                 },
                 style: {
                     classes: "ui-tooltip-light leaf-tooltip"
                 },
                 position: {
-                    my: "bottom center",
-                    at: "top center"
+                    my: "bottom left",
+                    at: "top right"
                 },
                 show: 'focus',
-                hide: 'blur'
+                /*hide: 'blur'*/
+                });
             });
+
+            //examples.remove();
         }
         else {
+            $('#solutionarea').prepend('<div class="instruction">'+examples.text()+'</div>');
+
             // Tooltip-ify the example answer formats
+            /*
             $("#examples-show").qtip({
                 content: {
                     text: examples.remove(),
@@ -80,6 +88,7 @@ $(Khan).bind("newProblem", function() {
                     delay: 0
                 }
             });
+            */
         }
 
     }
