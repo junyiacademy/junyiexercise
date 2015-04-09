@@ -39,30 +39,48 @@ $(Khan).bind("newProblem", function() {
 
     var examples = $("#examples");
     if (examples.length && $.prototype.qtip != null) {
-
-        // Tooltip-ify the example answer formats
-        $("#examples-show").qtip({
-            content: {
-                text: examples.remove(),
-                prerender: true
-            },
-            style: {
-                classes: "ui-tooltip-light leaf-tooltip"
-            },
-            position: {
-                my: "bottom center",
-                at: "top center"
-            },
-            show: {
-                delay: 200,
-                effect: {
-                    length: 0
+        if($('#solutionarea input[type=text]').length == 1) {
+            $('#solutionarea input[type=text]').qtip({
+                content: {
+                    text: examples.remove(),
+                    prerender: true
+                },
+                style: {
+                    classes: "ui-tooltip-light leaf-tooltip"
+                },
+                position: {
+                    my: "bottom center",
+                    at: "top center"
+                },
+                show: 'focus',
+                hide: 'blur'
+            });
+        }
+        else {
+            // Tooltip-ify the example answer formats
+            $("#examples-show").qtip({
+                content: {
+                    text: examples.remove(),
+                    prerender: true
+                },
+                style: {
+                    classes: "ui-tooltip-light leaf-tooltip"
+                },
+                position: {
+                    my: "bottom center",
+                    at: "top center"
+                },
+                show: {
+                    delay: 200,
+                    effect: {
+                        length: 0
+                    }
+                },
+                hide: {
+                    delay: 0
                 }
-            },
-            hide: {
-                delay: 0
-            }
-        });
+            });
+        }
 
     }
 
