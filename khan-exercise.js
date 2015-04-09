@@ -723,9 +723,9 @@ var Khan = (function() {
 
     // Load in jQuery and underscore
     if (localMode) {
-        Khan.loadScript("../jquery.js", function() {
-            Khan.loadScript("../jquery-migrate-1.1.1.js", function() {
-                Khan.loadScript("../utils/underscore.js", onjQueryLoaded);
+        Khan.loadScript(urlBase+"jquery.js", function() {
+            Khan.loadScript(urlBase+"jquery-migrate-1.1.1.js", function() {
+                Khan.loadScript(urlBase+"utils/underscore.js", onjQueryLoaded);
             });
         });
     } else {
