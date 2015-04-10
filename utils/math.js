@@ -58,8 +58,10 @@ $.extend(KhanUtil, {
         return digits;
     },
 
-    placesLeftOfDecimal: ["one", "ten", "hundred", "thousand"],
-    placesRightOfDecimal: ["one", "tenth", "hundredth", "thousandth"],
+    placesLeftOfDecimal: [$._("one"), $._("ten"), $._("hundred"),
+        $._("thousand")],
+    placesRightOfDecimal: [$._("one"), $._("tenth"), $._("hundredth"),
+        $._("thousandth")],
 
     powerToPlace: function(power) {
         if (power < 0) {
@@ -82,7 +84,7 @@ $.extend(KhanUtil, {
         if (x <= 1) {
             return x;
         } else {
-            return x * KhanUtil.factorial(x-1);
+            return x * KhanUtil.factorial(x - 1);
         }
     },
 
@@ -290,7 +292,7 @@ $.extend(KhanUtil, {
             return KhanUtil.randRange(min, max);
         } else {
             var toReturn = [];
-            for (var i = min; i < max; i++) {
+            for (var i = min; i <= max; i++) {
                 toReturn.push(i);
             }
 
@@ -305,7 +307,7 @@ $.extend(KhanUtil, {
             return KhanUtil.randRangeNonZero(min, max);
         } else {
             var toReturn = [];
-            for (var i = min; i < max; i++) {
+            for (var i = min; i <= max; i++) {
                 if (i === 0) {
                     continue;
                 }

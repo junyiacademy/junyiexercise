@@ -19,7 +19,9 @@ $.fn["qhintsLoad"] = function() {
             if (type === "text" || type === "submit") {
                 userInput = $(parent.find("input:text")).val();
             } else if (type === "button") {
-                userInput = $(source).val();
+                userInput = source.val();
+            } else if (source.is("a")) {
+                userInput = source.text();
             }
         }
 
@@ -29,11 +31,11 @@ $.fn["qhintsLoad"] = function() {
         if (!source) {
             feedback.text(answer);
         } else if (userInput === answer) {
-            feedback.text("Correct! The answer is " + answer + ".")
-                    .addClass("correct");
+            feedback.text($._("Correct! The answer is %(answer)s.",
+                {answer: answer})).addClass("correct");
         } else {
-            feedback.text("Incorrect. The answer is " + answer + ".")
-                        .addClass("incorrect");
+            feedback.text($._("Incorrect. The answer is %(answer)s.",
+                {answer: answer})).addClass("incorrect");
         }
 
         parent.append(feedback);
@@ -44,7 +46,8 @@ $.fn["qhintsLoad"] = function() {
         checkAnswer(parent, $(e.currentTarget));
     };
 
-    var selectors = ".qhint input:submit, .qhint input:button";
+    var selectors =
+        ".qhint input:submit, .qhint input:button, .qhint a.qhint-button";
     $("body").on("click", selectors, handleCheck);
 
     // check hint when user presses enter

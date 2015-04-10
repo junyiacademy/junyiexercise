@@ -30,7 +30,10 @@ function numberLine(start, end, step, x, y, denominator) {
             graph.label([x + i, y - 0.2], "\\small{" + lab + "}", "below", { labelDistance: 3 });
         }
         else {
-            graph.label([x + i, y - 0.2], "\\small{" + (start + i).toFixed(decPlaces) + "}", "below", { labelDistance: 3 });
+            graph.label([x + i, y - 0.2],
+                        "\\small{" + KhanUtil.localeToFixed(start + i, decPlaces) + "}",
+                        "below",
+                        { labelDistance: 3 });
         }
     }
     return set;
@@ -186,8 +189,8 @@ function redrawParabola(fShowFocusDirectrix) {
 
     if (fShowFocusDirectrix) {
         $("#focus-x-label").html("<code>" + currParabola.getFocusX() + "</code>").tmpl();
-        $("#focus-y-label").html("<code>" + currParabola.getFocusY().toFixed(2) + "</code>").tmpl();
-        $("#directrix-label").html("<code>" + "y = " + currParabola.getDirectrixK().toFixed(2) + "</code>").tmpl();
+        $("#focus-y-label").html("<code>" + KhanUtil.localeToFixed(currParabola.getFocusY(), 2) + "</code>").tmpl();
+        $("#directrix-label").html("<code>" + "y = " + KhanUtil.localeToFixed(currParabola.getDirectrixK(), 2) + "</code>").tmpl();
     } else {
         var equation = "y - " + vertexY + "=" + leadingCoefficient + "(x - " + vertexX + ")^{2}";
         equation = KhanUtil.cleanMath(equation);

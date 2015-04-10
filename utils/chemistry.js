@@ -1,4 +1,6 @@
 $.fn["chemistryLoad"] = function() {
+    // TODO(jeresig): i18n: Currently the names of the atomic elements aren't
+    // being used in the UI, but if they are, they will need to be translated.
     var elements = {
         "Hydrogen": {
             "symbol" : "H",
@@ -2599,7 +2601,7 @@ $.fn["chemistryLoad"] = function() {
     };
 
     var periodicTable = $("<div>").appendTo("body");
-    periodicTable.attr("title", "Periodic table of the elements");
+    periodicTable.attr("title", $._("Periodic table of the elements"));
     periodicTable.dialog({
         autoOpen: false,
         show: "fade",
@@ -2638,7 +2640,7 @@ $.fn["chemistryLoad"] = function() {
             if (atomicNum !== 0) {
                 td.addClass("element");
                 var element = _.find(elements, function(element) { return element.atomic_number === atomicNum; });
-                var weight = isNaN(element.atomic_weight) ? element.atomic_weight : element.atomic_weight.toFixed(2);
+                var weight = isNaN(element.atomic_weight) ? element.atomic_weight : KhanUtil.localeToFixed(element.atomic_weight, 2);
                 $("<div>").appendTo(td).text(atomicNum).addClass("atomic-num");
                 $("<div>").appendTo(td).text(element.symbol).addClass("symbol");
                 $("<div>").appendTo(td).text(weight).addClass("weight");
