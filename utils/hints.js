@@ -58,7 +58,7 @@ $(Khan).bind("newProblem", function() {
                 });
             });
 
-            examples.remove();
+            
         }
         else {
             $('#solutionarea').prepend('<div class="instruction">'+examples.text()+'</div>');
