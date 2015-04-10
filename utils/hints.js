@@ -40,11 +40,10 @@ $(Khan).bind("newProblem", function() {
     var examples = $("#examples");
     if (examples.length && $.prototype.qtip != null) {
         if($('#solutionarea input[type=text]').length >= 1) {
-            answer_format = examples.clone().runModules();
             $('#solutionarea input[type=text]').each(function() {
                 $( this ).qtip({
                 content: {
-                    text: answer_format,
+                    text: examples.clone().runModules(),
                     prerender: true
                 },
                 style: {
@@ -55,11 +54,11 @@ $(Khan).bind("newProblem", function() {
                     at: "top right"
                 },
                 show: 'focus',
-                /*hide: 'blur'*/
+                hide: 'blur'
                 });
             });
 
-            //examples.remove();
+            examples.remove();
         }
         else {
             $('#solutionarea').prepend('<div class="instruction">'+examples.text()+'</div>');
