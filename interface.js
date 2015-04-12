@@ -13,8 +13,8 @@ _.defaults(Exercises, {
     khanExercisesUrlBase: "/khan-exercises/",
 
     getCurrentFramework: function(userExerciseOverride) {
-        return (userExerciseOverride || userExercise).exerciseModel.fileName ?
-            "khan-exercises" : "perseus";
+        return (userExerciseOverride || userExercise).exerciseModel.isQuizExercise ?
+            "perseus" : "khan-exercises";
     }
 });
 
@@ -603,7 +603,8 @@ function clearExistingProblem() {
     $("#positive-reinforcement").hide();
 
     // Wipe out any previous problem
-    PerseusBridge.cleanupProblem() || Khan.cleanupProblem();
+    if(Khan && Khan.cleanupProblem) Khan.cleanupProblem();
+    if(PerseusBridge && PerseusBridge.cleanupProblem) PerseusBridge.cleanupProblem();
     $("#workarea, #hintsarea, #solutionarea").empty();
 
     // Take off the event handlers for disabling check answer; we'll rebind

@@ -618,36 +618,33 @@ var Khan = (function() {
                 jel.empty();
 
                 var self = this;
-                PackageManager.require("video.css", "video.js").then(
-                    function() {
-                        var template = Templates.get("video.thumbnail");
-                        _.each(self.getVideos(), function(video, i) {
-                            var thumbnailDiv = $(template({
-                                href: self.makeHref(video),
-                                video: video,
-                                isCN: window.config.site == "cn"
-                            })).find("a.related-video")
-                                .data("video", video)
-                                .end();
+                var template = Templates.get("video.thumbnail");
+                _.each(self.getVideos(), function(video, i) {
+                    var thumbnailDiv = $(template({
+                        href: self.makeHref(video),
+                        video: video,
+                        isCN: window.config.site == "cn"
+                    })).find("a.related-video")
+                        .data("video", video)
+                        .end();
 
-                            var inlineLink = self.anchorElement(video)
-                                .addClass("related-video-inline");
+                    var inlineLink = self.anchorElement(video)
+                        .addClass("related-video-inline");
 
-                            var sideBarLi = $("<li>")
-                                .append(inlineLink)
-                                .append(thumbnailDiv);
+                    var sideBarLi = $("<li>")
+                        .append(inlineLink)
+                        .append(thumbnailDiv);
 
-                            if (i > 0) {
-                                thumbnailDiv.hide();
-                            } else {
-                                inlineLink.hide();
-                            }
-                            jel.append(sideBarLi);
-                        });
+                    if (i > 0) {
+                        thumbnailDiv.hide();
+                    } else {
+                        inlineLink.hide();
+                    }
+                    jel.append(sideBarLi);
+                });
 
-                        container.toggle(self.getVideos().length > 0);
-                        self._bindEvents();
-                    });
+                container.toggle(self.getVideos().length > 0);
+                self._bindEvents();
             },
 
             _eventsBound: false,
