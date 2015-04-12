@@ -124,9 +124,9 @@ function newProblem(e, data) {
 
     canAttempt = true,
     hintsAreFree = false,
-    attempts = data.userExercise ? data.userExercise.lastAttemptNumber : 0;
+    attempts = data.userExercise && data.userExercise.lastAttemptNumber ? data.userExercise.lastAttemptNumber : 0;
     numHints = data.numHints;
-    hintsUsed = data.userExercise ? data.userExercise.lastCountHints : 0;
+    hintsUsed = data.userExercise && data.userExercise.lastCountHints? data.userExercise.lastCountHints : 0;
     lastAttemptOrHint = new Date().getTime();
 
     var framework = Exercises.getCurrentFramework();
@@ -419,7 +419,7 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         stack_uid: Exercises.completeStack.getUid(),
 
         // The current topic, if any
-        topic_slug: Exercises.topic && Exercises.topic.get("slug"),
+        topic_id: Exercises.topic && Exercises.topic.id,
 
         // How many cards the user has already done
         cards_done: Exercises.completeStack.length,
