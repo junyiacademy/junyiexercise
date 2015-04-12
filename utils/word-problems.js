@@ -1,4 +1,4 @@
-// Example usage:
+﻿// Example usage:
 // <var>person(1)</var> traveled 5 mi by <var>vehicle(1)</var>. Let
 // <var>his(1)</var> average speed be <var>personVar(1)</var>.
 // Let <var>person(2)</var>'s speed be <var>personVar(2)</var>.
@@ -7,83 +7,38 @@
 // but not across them.
 
 $.extend(KhanUtil, {
-    // TODO(csilvers): I18N: rename serialCommafy and copy from webapp.
-    toSentence: function(items) {
-        var n = items.length;
+    toSentence: function(array, conjunction) {
+        if (conjunction == null) {
+            conjunction = "和";
+        }
 
-        // This seems to be a pretty l10n-aware, actually.  cf.
-        //    http://comments.gmane.org/gmane.comp.audio.musicbrainz.i18n/15
-        // The only possible problem is chinese, which it looks like
-        // prefers a special character to the comma, which we hard-code in
-        // items_with_commas.
-        if (n === 0) {
+        if (array.length === 0) {
             return "";
-        } else if (n === 1) {
-            return items[0];
-        } else if (n === 2) {
-            return $._("%(item1)s and %(item2)s",
-                       {item1: items[0], item2: items[1]});
+        } else if (array.length === 1) {
+            return array[0];
+        } else if (array.length === 2) {
+            return array[0] + " " + conjunction + " " + array[1];
         } else {
-            return $._("%(items_with_commas)s, and %(last_item)s",
-                       {items_with_commas: items.slice(0, n - 1).join(", "),
-                        last_item: items[n - 1]});
+            return array.slice(0, -1).join(", ") + ", " + conjunction + " " + array[array.length - 1];
         }
     },
 
-    toSentenceTex: function(array, highlight, highlightClass) {
+    toSentenceTex: function(array, conjunction, highlight, highlightClass) {
         var wrapped = $.map(array, function(elem) {
             if (($.isFunction(highlight) && highlight(elem)) || (highlight !== undefined && elem === highlight)) {
                 return "<code class='" + highlightClass + "'>" + elem + "</code>";
             }
             return "<code>" + elem + "</code>";
         });
-        return KhanUtil.toSentence(wrapped);
+        return KhanUtil.toSentence(wrapped, conjunction);
     },
 
     capitalize: function(str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
     },
 
-    AMBIGUOUS_PLURAL: function(word, num) {
-        if (typeof console !== "undefined" && console.error) {
-            console.error("Ambiguous plural variable usage: ", String(word));
-        }
-
-        KhanUtil.debugLog("ERROR: Ambiguous plural variable usage: " +
-            String(word));
-
-        // Check if the word is pluralizable
-        var plural_word = word && word.plural ?
-            word.plural(num) :
-            (num == null ? this.plural(word) : this.plural(word, num));
-
-        return "<span class='error'>" + plural_word + "</span>";
-    },
-
-    plural_form: function(word, num) {
-        // Check if the word is pluralizable
-        if (word && word.plural) {
-            return word.plural(num);
-        }
-
-        if (typeof console !== "undefined" && console.error) {
-            console.error("Word not in plural dictionary: ", String(word));
-        }
-
-        KhanUtil.debugLog("ERROR: Word not in plural dictionary: " +
-            String(word));
-
-        return "<span class='error'>" +
-            (num == null ? this.plural(word) : this.plural(word, num)) +
-            "</span>";
-    },
-
-    isSingular: function(num) {
-        return num == 1;
-    },
-
-    // DEPRECATED
-    // pluralization helper.  There are two signatures
+    // pluralization helper.  There are five signatures
+    // - plural(NUMBER): return "s" if NUMBER is not 1
     // - plural(NUMBER, singular):
     //        - if necessary, magically pluralize <singular>
     //        - return "NUMBER word"
@@ -96,24 +51,19 @@ $.extend(KhanUtil, {
     //        - return "word"
     plural: (function() {
         var oneOffs = {
-            "quiz": "quizzes",
-            "shelf": "shelves",
-            "loaf": "loaves",
-            "potato": "potatoes",
-            "person": "people",
-            "is": "are",
-            "was": "were",
-            "foot": "feet",
-            "square foot": "square feet",
-            "tomato": "tomatoes"
+            "quiz測驗": "quizzes測驗", //（sjf：可以翻成“小考”）
+            "shelf架子": "shelves架子", //（sjf：“書架”）
+            "loaf麵包": "loaves麵包",
+            "potato馬鈴薯": "potatoes馬鈴薯",
+            "person人": "people人",
+            "is是": "are是",
+            "was是": "were是",
+            "foot腳": "feet腳", //（可以有兩個意思：腳、英尺。不知道實際上用哪一個？）
+            "square foot平方公尺": "square feet平方公尺",
+            "tomato番茄": "tomatoes番茄"
         };
 
         var pluralizeWord = function(word) {
-
-            // Check if this is a new Plural object, and just use that plural
-            if (word && word.plural) {
-                return word.plural(2);
-            }
 
             // noone really needs extra spaces at the edges, do they?
             word = $.trim(word);
@@ -151,17 +101,17 @@ $.extend(KhanUtil, {
             else {
                 // "-y" => "-ies"
                 if (/[^aeiou]y$/i.test(word)) {
-                    word = word.replace(/y$/i, "ies");
+                    word = word.replace(/y$/i, ""); //"ies"
                 }
 
                 // add "es"; things like "fish" => "fishes"
                 else if (/[sxz]$/i.test(word) || /[bcfhjlmnqsvwxyz]h$/.test(word)) {
-                    word += "es";
+                    word += ""; //"es"
                 }
 
                 // all the rest, just add "s"
                 else {
-                    word += "s";
+                    word += ""; //"s"
                 }
 
                 if (isUpperCase) {
@@ -177,7 +127,7 @@ $.extend(KhanUtil, {
 
                 // if no extra args, just add "s" (if plural)
                 if (arguments.length === 1) {
-                    return usePlural ? "s" : "";
+                    return usePlural ? "" : ""; //"s" : ""
                 }
 
                 if (usePlural) {
@@ -186,52 +136,17 @@ $.extend(KhanUtil, {
 
                 return value + " " + arg1;
             } else if (typeof value === "string" || typeof value === "object") {
-                // We need to accept objects here as well for new Plural objects
                 var plural = pluralizeWord(value);
-                if (typeof arg1 === "string" && arguments.length === 3) {
+                if ((typeof arg1 === "string" || typeof arg1 === "object") && arguments.length === 3) {
                     plural = arg1;
                     arg1 = arg2;
                 }
                 var usePlural = (arguments.length < 2 || (typeof arg1 === "number" && arg1 !== 1));
-                return usePlural ? plural : value;
+                return usePlural ? plural.toString() : value.toString();
             }
         };
-    })(),
-
-    // Pluralize with a code tag around the number
-    // - pluralTex(NUMBER, singular):
-    //        - if necessary, magically pluralize <singular>
-    //        - return "<code>NUMBER</code> word"
-    // - pluralTex(NUMBER, singular, plural):
-    //        - return "<code>NUMBER</code> word"
-    pluralTex: function(value, arg1, arg2) {
-        if (typeof arg2 === "string") {
-            return "<code>" + value + "</code> " + KhanUtil.plural(arg1, arg2, value);
-        } else {
-            return "<code>" + value + "</code> " + KhanUtil.plural(arg1, value);
-        }
-    }
+    })()
 });
-
-var Plural = KhanUtil.Plural = function(plural_fn) {
-    this.plural_fn = plural_fn;
-};
-
-KhanUtil.Plural.prototype = {
-    plural: function(num) {
-        // There are some cases where plural is called with only a word
-        // (and no number). In this case we just want to return the plural
-        // form of that word, as best as we can. This might have some slight
-        // incongruities across platforms
-        num = num === undefined ? 2 : num;
-
-        return this.plural_fn(num);
-    },
-
-    toString: function() {
-        return this.plural_fn(1);
-    }
-};
 
 $.fn["word-problemsLoad"] = function() {
 
@@ -267,45 +182,40 @@ $.fn["word-problemsLoad"] = function() {
         };
     };
 
+    var Noun = function(noun, properties) {
+    	// extend noun with some properties
+    	// new Noun("", {measureWord: new IncrementalShuffler(["", ""])})
+    	var nounObject = new String(noun);
+    	if (typeof properties === "object") {
+    		// extend properties, but restricted to known properties, e.g.: measureWord
+    		if (properties["measureWord"]) {
+    			nounObject["measureWord"] = properties["measureWord"];
+    		}
+    	}
+    	return nounObject;
+    };
+
     var names = [
-        // I18N: Female name
-        [$._("Ashley"), "f"],
-        // I18N: Male name
-        [$._("Brandon"), "m"],
-        // I18N: Male name
-        [$._("Ben"), "m"],
-        // I18N: Male name
-        [$._("Christopher"), "m"],
-        // I18N: Male name
-        [$._("Daniel"), "m"],
-        // I18N: Female name
-        [$._("Emily"), "f"],
-        // I18N: Female name
-        [$._("Gabriela"), "f"],
-        // I18N: Male name
-        [$._("Ishaan"), "m"],
-        // I18N: Female name
-        [$._("Jessica"), "f"],
-        // I18N: Male name
-        [$._("Kevin"), "m"],
-        // I18N: Male name
-        [$._("Luis"), "m"],
-        // I18N: Male name
-        [$._("Michael"), "m"],
-        // I18N: Female name
-        [$._("Nadia"), "f"],
-        // I18N: Male name
-        [$._("Omar"), "m"],
-        // I18N: Female name
-        [$._("Stephanie"), "f"],
-        // I18N: Female name
-        [$._("Tiffany"), "f"],
-        // I18N: Female name
-        [$._("Umaima"), "f"],
-        // I18N: Female name
-        [$._("Vanessa"), "f"],
-        // I18N: Male name
-        [$._("William"), "m"]
+        ["玉婷", "f"],
+        ["小明", "m"], 
+        ["志明", "m"], 
+        ["俊杰", "m"], 
+        ["天佑", "m"], 
+        ["秀英", "f"], 
+        ["怡君", "f"], 
+        ["哲浩", "m"], 
+        ["佳玲", "f"], 
+        ["才良", "m"],  
+        ["冠宇", "m"],  
+        ["文山", "m"],   
+        ["淑芬", "f"],  
+        ["成文", "m"],  
+		["力學", "m"],   
+        ["惠如", "f"],  
+        ["心怡", "f"], 
+        ["佩珍", "f"],  
+        ["小惠", "f"],  
+        ["正雄", "m"]  
     ];
 
     // We only want one name per letter of the alphabet, so group people with
@@ -317,50 +227,27 @@ $.fn["word-problemsLoad"] = function() {
     });
     people = new IncrementalShuffler(people);
 
-    // NOTE(jeresig): I18N: These strings are expected to work prefixed with
-    // just the letter "A", as in "A gorilla"
     var vehicles = new IncrementalShuffler([
-        new Plural(function(num) {
-            return $.ngettext("bike", "bikes", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("car", "cars", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("horse", "horses", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("motorcycle", "motorcycles", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("scooter", "scooters", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("train", "trains", num);
-        })
+        new Noun("腳踏車", {measureWord: new IncrementalShuffler(["台", "輛"])}),
+        new Noun("汽車", {measureWord: new IncrementalShuffler(["台", "輛"])}),
+        new Noun("馬", {measureWord: "隻"}),
+        new Noun("機車", {measureWord: new IncrementalShuffler(["台", "輛"])}),
+        new Noun("火車", {measureWord: new IncrementalShuffler(["台", "輛", "班"])})
     ]);
 
-    // NOTE(jeresig): I18N: These strings are expected to work prefixed with
-    // just the letter "A", as in "A gorilla"
     var courses = new IncrementalShuffler([
-        $._("chemistry"),
-        $._("geometry"),
-        $._("history"),
-        $._("mathematics"),
-        $._("physics"),
-        $._("foreign language")
+        new Noun("代數", {measureWord: new IncrementalShuffler(["堂", "節"])}),
+        new Noun("化學", {measureWord: new IncrementalShuffler(["堂", "節"])}),
+        new Noun("幾何學", {measureWord: new IncrementalShuffler(["堂", "節"])}),
+        new Noun("歷史", {measureWord: new IncrementalShuffler(["堂", "節"])}),
+        new Noun("物理", {measureWord: new IncrementalShuffler(["堂", "節"])}),
+        new Noun("英文", {measureWord: new IncrementalShuffler(["堂", "節"])})
     ]);
 
     var exams = new IncrementalShuffler([
-        new Plural(function(num) {
-            return $.ngettext("exam", "exams", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("test", "tests", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("quiz", "quizzes", num);
-        })
+        new Noun("考試", {measureWord: "次"}), //（期末考）
+        new Noun("考試", {measureWord: "次"}), //（月考）
+        new Noun("測驗", {measureWord: "次"}) //（小考）
     ]);
 
     var binops = new IncrementalShuffler([
@@ -382,466 +269,295 @@ $.fn["word-problemsLoad"] = function() {
     ]);
 
     var collections = new IncrementalShuffler([
-        [new Plural(function(num) {
-            return $.ngettext("party favor", "party favors", num);
-        }), new Plural(function(num) {
-            return $.ngettext("bag", "bags", num);
-        })],
-        [new Plural(function(num) {
-            return $.ngettext("jelly bean", "jelly beans", num);
-        }), new Plural(function(num) {
-            return $.ngettext("bag", "bags", num);
-        })],
-        [new Plural(function(num) {
-            return $.ngettext("book", "books", num);
-        }), new Plural(function(num) {
-            return $.ngettext("shelf", "shelves", num);
-        })],
-        [new Plural(function(num) {
-            return $.ngettext("can of food", "cans of food", num);
-        }), new Plural(function(num) {
-            return $.ngettext("box", "boxes", num);
-        })]
+        ["椅子", "排", "make做"], //（Make很多意思，不曉得在英文裡怎麼用？）
+        ["彈珠", "袋", "fill裝滿"],
+        ["軟糖", "堆", "make做"],
+        ["書", "書架", "fill裝滿"],
+        ["資料夾", "疊", "fill裝滿"],
+        ["餅乾", "盒", "fill裝滿"]
     ]);
 
-    // NOTE(jeresig): I18N: These strings are expected to work prefixed with
-    // just the letter "A", as in "A gorilla"
     var stores = new IncrementalShuffler([
         {
-            name: new Plural(function(num) {
-                return $.ngettext("hardware", "hardwares", num);
-            }),
+            name: "文具",
             items: new IncrementalShuffler([
-                new Plural(function(num) {
-                    return $.ngettext("hammer", "hammers", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("nail", "nails", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("saw", "saws", num);
-                })
-            ])
+                                            new Noun("原子筆", {measureWord: "枝"}),
+                                            new Noun("立可白", {measureWord: "罐"}),
+                                            new Noun("鉛筆", {measureWord: "枝"}),
+                                            new Noun("筆記本", {measureWord: "本"}),
+											new Noun("夾子", {measureWord: "個"}),
+											new Noun("蠟筆", {measureWord: "枝"}),
+											new Noun("橡皮擦", {measureWord: new IncrementalShuffler(["個", "塊"])}),
+											new Noun("資料夾", {measureWord: "個"}),
+											new Noun("膠水", {measureWord: new IncrementalShuffler(["瓶", "罐"])}),
+											new Noun("簽字筆", {measureWord: "枝"}),
+											new Noun("印章", {measureWord: "個"})									
+                                            ])
         },
         {
-            name: new Plural(function(num) {
-                return $.ngettext("grocery", "groceries", num);
-            }),
+            name: "五金器材",
             items: new IncrementalShuffler([
-                new Plural(function(num) {
-                    return $.ngettext("banana", "bananas", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("loaf of bread", "loaves of bread", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("gallon of milk", "gallons of milk", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("potato", "potatoes", num);
-                })
-            ])
+                                            new Noun("鐵鎚", {measureWord: new IncrementalShuffler(["把", "支", "只"])}),
+                                            new Noun("水桶", {measureWord: new IncrementalShuffler(["個", "只"])}),
+                                            new Noun("釘子", {measureWord: new IncrementalShuffler(["枝", "支"])}),
+                                            new Noun("鋸子", {measureWord: new IncrementalShuffler(["把", "支"])})
+                                            ])
         },
         {
-            name: new Plural(function(num) {
-                return $.ngettext("gift", "gifts", num);
-            }),
+            name: "食品",
             items: new IncrementalShuffler([
-                new Plural(function(num) {
-                    return $.ngettext("toy", "toys", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("game", "games", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("souvenir", "souvenirs", num);
-                })
-            ])
+                                            new Noun("香蕉", {measureWord: new IncrementalShuffler(["根", "個"])}),
+                                            new Noun("三明治", {measureWord: new IncrementalShuffler(["塊", "個"])}),
+                                            new Noun("冰棒", {measureWord: new IncrementalShuffler(["根", "枝"])}),
+                                            new Noun("蕃薯", {measureWord: new IncrementalShuffler(["顆", "個"])}),
+                                            new Noun("麵包", {measureWord: new IncrementalShuffler(["塊", "個"])}),
+                                            new Noun("牛奶", {measureWord: new IncrementalShuffler(["瓶", "罐"])}),
+                                            new Noun("馬鈴薯", {measureWord: new IncrementalShuffler(["顆", "個"])})
+                                            ]) //（一條麵包，一加侖牛奶？）
         },
         {
-            name: new Plural(function(num) {
-                return $.ngettext("school supply", "school supplies", num);
-            }),
+            name: "禮品",
             items: new IncrementalShuffler([
-                new Plural(function(num) {
-                    return $.ngettext("pen", "pens", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("pencil", "pencils", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("notebook", "notebooks", num);
-                })
-            ])
+                                            new Noun("玩具", {measureWord: new IncrementalShuffler(["盒", "個"])}),
+                                            new Noun("遊戲", {measureWord: new IncrementalShuffler(["盒", "個"])}),
+                                            new Noun("紀念品", {measureWord: "個"})
+                                            ])
         },
         {
-            name: new Plural(function(num) {
-                return $.ngettext("toy", "toys", num);
-            }),
+            name: "玩具",
             items: new IncrementalShuffler([
-                new Plural(function(num) {
-                    return $.ngettext("stuffed animal", "stuffed animals", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("video game", "video games", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("race car", "race cars", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("doll", "dolls", num);
-                })
-            ])
+                                            new Noun("泰迪熊", {measureWord: new IncrementalShuffler(["隻", "個"])}),
+                                            new Noun("電動玩具", {measureWord: "個"}),
+                                            new Noun("魔術方塊", {measureWord: "個"}),
+                                            new Noun("賽車", {measureWord: new IncrementalShuffler(["台", "個", "輛"])}),
+                                            new Noun("洋娃娃", {measureWord: "個"})
+                                            ])
         }
     ]);
 
     var pizzas = new IncrementalShuffler([
-        new Plural(function(num) {
-            return $.ngettext("pizza", "pizzas", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("pie", "pies", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("cake", "cakes", num);
-        })
+        new Noun("比薩", {measureWord: new IncrementalShuffler(["塊", "片", "個"])}),
+        new Noun("派", {measureWord: new IncrementalShuffler(["塊", "片", "個"])}),
+        new Noun("蛋糕", {measureWord: new IncrementalShuffler(["塊", "片", "個"])})
     ]);
 
     var timesofday = new IncrementalShuffler([
-        $._("in the morning"),
-        $._("around noon"),
-        $._("in the evening"),
-        $._("at night")
+        "上午",
+        "中午",
+        "傍晚",
+        "晚上"
     ]);
 
     var exercises = new IncrementalShuffler([
-        new Plural(function(num) {
-            return $.ngettext("push-up", "push-ups", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("sit-up", "sit-ups", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("squat", "squats", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("jumping jack", "jumping jacks", num);
-        })
+        new Noun("伏地挺身", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
+        new Noun("仰臥起坐", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
+        new Noun("開合跳", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
+        new Noun("原地彈跳", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
+        new Noun("交互蹲跳", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
+        new Noun("跳跳繩", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
+        new Noun("呼拉圈轉", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
+        new Noun("踢毽子", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
+        new Noun("投籃", {measureWord: new IncrementalShuffler(["個", "次", "下"])})
     ]);
 
     var fruits = new IncrementalShuffler([
-        new Plural(function(num) {
-            return $.ngettext("apple", "apples", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("banana", "bananas", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("coconut", "coconuts", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("eggplant", "eggplants", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("kiwi", "kiwis", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("lemon", "lemons", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("mango", "mangos", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("nectarine", "nectarines", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("orange", "oranges", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("pomegranate", "pomegranates", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("watermelon", "watermelons", num);
-        })
+        new Noun("蘋果", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
+        new Noun("梨子", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
+        new Noun("椰子", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
+        new Noun("茄子", {measureWord: new IncrementalShuffler(["個", "條"])}),
+        new Noun("奇異果", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
+        new Noun("檸檬", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
+        new Noun("芒果", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
+        new Noun("桃子", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
+        new Noun("橘子", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
+        new Noun("芭樂", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
+        new Noun("西瓜", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])})
     ]);
 
     var deskItems = new IncrementalShuffler([
-        new Plural(function(num) {
-            return $.ngettext("binder", "binders", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("crayon", "crayons", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("eraser", "erasers", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("folder", "folders", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("glue stick", "glue sticks", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("marker", "markers", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("notebook", "notebooks", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("pencil", "pencils", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("rubber stamp", "rubber stamps", num);
-        })
+        new Noun("夾子", {measureWord: "個"}),
+        new Noun("蠟筆", {measureWord: "枝"}),
+        new Noun("橡皮擦", {measureWord: new IncrementalShuffler(["個", "塊"])}),
+        new Noun("資料夾", {measureWord: "個"}),
+        new Noun("膠水", {measureWord: new IncrementalShuffler(["瓶", "罐"])}),
+        new Noun("簽字筆", {measureWord: "枝"}),
+        new Noun("筆記本", {measureWord: "本"}),
+        new Noun("鉛筆", {measureWord: "枝"}),
+        new Noun("印章", {measureWord: "個"})
     ]);
 
-    // NOTE(jeresig): I18N: These strings are expected to work prefixed with
-    // just the letter "A", as in "A gorilla"
     var colors = new IncrementalShuffler([
-        $._("red"),
-        // NOTE(jeresig): I18N: Removed because it begins with a vowel and is
-        // used with an()
-        //"orange",
-        $._("yellow"),
-        $._("green"),
-        $._("blue"),
-        $._("purple"),
-        $._("white"),
-        $._("black"),
-        $._("brown"),
-        $._("silver"),
-        $._("gold"),
-        $._("pink")
+        "紅色",
+        "橘色",
+        "黃色",
+        "綠色",
+        "藍色",
+        "紫色",
+        "白色",
+        "黑色",
+        "褐色",
+        "銀色",
+        "金色",
+        "粉紅色"
+    ]);
+    
+	var movies = new IncrementalShuffler([
+	       "綠野仙蹤",
+		   "玩具總動員",
+		   "米老鼠",
+		   "黑天鵝",
+		   "小美人魚",
+		   "灰姑娘",
+		   "獅子王",
+		   "花木蘭",
+		   "小熊維尼",
+    ]);
+	
+	var familys = new IncrementalShuffler([
+	       "爸爸",
+		   "媽媽",
+		   "爺爺",
+		   "奶奶",
+		   "外公",
+		   "外婆",
+		   "哥哥",
+		   "姊姊",
+		   "弟弟",
+		   "妹妹",
+		   "阿姨",
+		   "姑姑",
+    ]);
+	
+	var countrys = new IncrementalShuffler([
+	       "宜蘭縣",
+		   "花蓮縣",
+		   "台東縣",
+		   "雲林縣",
+		   "嘉義縣",
+		   "屏東縣",
+		   "苗栗縣",
+		   "彰化縣"
     ]);
 
     var schools = new IncrementalShuffler([
-        // I18N: This is a generic school name
-        $._("Loyola"),
-        // I18N: This is a generic school name
-        $._("Gardner Bullis"),
-        // I18N: This is a generic school name
-        $._("Almond"),
-        // I18N: This is a generic school name
-        $._("Covington"),
-        // I18N: This is a generic school name
-        $._("Springer"),
-        // I18N: This is a generic school name
-        $._("Santa Rita"),
-        // I18N: This is a generic school name
-        $._("Oak")
+        "龍埔國小",
+        "長安國小",
+        "米倉國小",
+        "育英國小",
+        "康橋國小",
+        "中山國中",
+        "潛龍國小",
+        "仁和國小",
+        "南崁國小",
+        "羅娜國小",
+        "東埔國小",
+        "嘉北國小",
+        "大成國中",
+        "仁德國小",
+        "五甲國中",
+        "加昌國小",
+        "龍肚國小",
+        "港東國小",
+        "礁溪國中",
+        "湖山國小",
+        "吳江國小",
+        "瑞穗國中",
+        "桃源國小",
+        "均一中小學",
+        "武陵國小"
     ]);
 
     var furnitureStore = new IncrementalShuffler([
-        new Plural(function(num) {
-            return $.ngettext("chair", "chairs", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("table", "tables", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("bed frame", "bed frames", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("sofa", "sofas", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("couch", "couches", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("desk", "desks", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("book shelf", "book shelves", num);
-        })
+        new Noun("椅子", {measureWord: "張"}),
+        new Noun("茶几", {measureWord: "張"}),
+        new Noun("床",   {measureWord: "張"}),
+        new Noun("沙發", {measureWord: "張"}),
+        new Noun("躺椅", {measureWord: "張"}),
+        new Noun("書桌", {measureWord: "個"}),
+        new Noun("書架", {measureWord: "個"})
     ]);
 
     var electronicStore = new IncrementalShuffler([
-        new Plural(function(num) {
-            return $.ngettext("television", "televisions", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("computer", "computers", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("laptop", "laptops", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("camera", "cameras", num);
-        })
+        new Noun("電視", {measureWord: "台"}), 
+        new Noun("電腦", {measureWord: "台"}),
+        new Noun("筆電", {measureWord: "台"}),
+        new Noun("數位相機", {measureWord: "台"})
     ]);
 
     var clothes = new IncrementalShuffler([
-        new Plural(function(num) {
-            return $.ngettext("hat", "hats", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("pair of pants", "pairs of pants", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("belt", "belts", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("necklace", "necklaces", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("purse", "purses", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("pair of shoes", "pairs of shoes", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("blouse", "blouses", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("skirt", "skirts", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("watch", "watches", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("pair of socks", "pairs of socks", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("sweatshirt", "sweatshirts", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("sweater", "sweaters", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("tie", "ties", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("scarf", "scarves", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("dress", "dresses", num);
-        })
+        new Noun("帽子", {measureWord: "頂"}),
+        new Noun("褲子", {measureWord: new IncrementalShuffler(["件", "條"])}),
+        new Noun("皮帶", {measureWord: "條"}),
+        new Noun("項鍊", {measureWord: "條"}),
+        new Noun("皮包", {measureWord: "個"}),
+        new Noun("鞋子", {measureWord: "雙"}),
+        new Noun("襯衫", {measureWord: "件"}),
+        new Noun("裙子", {measureWord: new IncrementalShuffler(["件", "條"])}),
+        new Noun("手錶", {measureWord: new IncrementalShuffler(["只", "個"])}),
+        new Noun("襪子", {measureWord: "雙"}),
+        new Noun("毛衣", {measureWord: "件"}),
+        new Noun("領帶", {measureWord: "條"}),
+        new Noun("洋裝", {measureWord: new IncrementalShuffler(["件", "套"])})
     ]);
 
     var sides = new IncrementalShuffler([
-        "left",
-        "right"
+        "左",
+        "右"
     ]);
 
     var shirtStyles = new IncrementalShuffler([
-        "long-sleeved",
-        "short-sleeved"
+        "長袖",
+        "短袖"
     ]);
 
     // animal, avg-lifespan, stddev-lifespan
     // (data is from cursory google searches and wild guessing)
-    // NOTE(jeresig): I18N: These strings are expected to work prefixed with
-    // just the letter "A", as in "A gorilla"
     var animals = new IncrementalShuffler([
-        // NOTE(jeresig): I18N: Removed because it begins with a vowel and is
-        // used with an()
-        //["alligator", 68, 20],
-        //["anteater", 15, 10],
-        [new Plural(function(num) {
-            return $.ngettext("bear", "bears", num);
-        }), 40, 20],
-        //["elephant", 60, 10],
-        [new Plural(function(num) {
-            return $.ngettext("gorilla", "gorillas", num);
-        }), 20, 5],
-        [new Plural(function(num) {
-            return $.ngettext("lion", "lions", num);
-        }), 12, 5],
-        [new Plural(function(num) {
-            return $.ngettext("lizard", "lizards", num);
-        }), 3, 1],
-        [new Plural(function(num) {
-            return $.ngettext("meerkat", "meerkats", num);
-        }), 13, 5],
-        [new Plural(function(num) {
-            return $.ngettext("porcupine", "porcupines", num);
-        }), 20, 5],
-        [new Plural(function(num) {
-            return $.ngettext("seal", "seals", num);
-        }), 15, 10],
-        [new Plural(function(num) {
-            return $.ngettext("sloth", "sloths", num);
-        }), 16, 5],
-        [new Plural(function(num) {
-            return $.ngettext("snake", "snakes", num);
-        }), 25, 10],
-        [new Plural(function(num) {
-            return $.ngettext("tiger", "tigers", num);
-        }), 22, 5],
-        [new Plural(function(num) {
-            return $.ngettext("turtle", "turtles", num);
-        }), 100, 20],
-        [new Plural(function(num) {
-            return $.ngettext("zebra", "zebras", num);
-        }), 25, 10]
+        ["鱷魚", 68, 20],
+        ["食蟻獸", 15, 10],
+        ["熊", 40, 20],
+        ["大象", 60, 10],
+        ["大猩猩", 20, 5],
+        ["獅子", 12, 5],
+        ["蜥蜴", 3, 1],
+        ["羚羊", 13, 5],
+        ["豪豬", 20, 5], //（山豬）
+        ["海豹", 15, 10],
+        ["猴子", 16, 5],
+        ["蛇", 25, 10],
+        ["老虎", 22, 5],
+        ["烏龜", 100, 20],
+        ["斑馬", 25, 10]
     ]);
 
-    // TODO(emily): I18N: add both "row of CROP" as well as just "CROP" for
-    // pluralization. For example, in Polish, adding "row of" to "tomatoes"
-    // changes the pluralization of "tomatoes".
     var farmers = new IncrementalShuffler([
-        {
-            farmer: new Plural(function(num) {
-                return $.ngettext("farmer", "farmers", num);
-            }),
-            crops: new IncrementalShuffler([
-                new Plural(function(num) {
-                    return $.ngettext("tomato", "tomatoes", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("potato", "potatoes", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("carrot", "carrots", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("bean", "beans", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("corn stalk", "corn stalks", num);
-                })
-            ]),
-            field: new Plural(function(num) {
-                return $.ngettext("field", "fields", num);
-            })
-        },
-        {
-            farmer: new Plural(function(num) {
-                return $.ngettext("gardener", "gardeners", num);
-            }),
-            crops: new IncrementalShuffler([
-                new Plural(function(num) {
-                    return $.ngettext("rose", "roses", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("tulip", "tulips", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("daisy", "daisies", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("iris", "irises", num);
-                }),
-                new Plural(function(num) {
-                    return $.ngettext("lily", "lilies", num);
-                })
-            ]),
-            field: new Plural(function(num) {
-                return $.ngettext("garden", "gardens", num);
-            })
-        }
+        {farmer: "農夫", crops: new IncrementalShuffler([
+                                                       new Noun("番茄", {measureWord: new IncrementalShuffler(["棵", "顆", "粒", "個", "株"])}),
+                                                       new Noun("馬鈴薯", {measureWord: new IncrementalShuffler(["棵", "顆", "粒", "個", "株"])}),
+                                                       new Noun("胡蘿蔔", {measureWord: new IncrementalShuffler(["棵", "顆", "粒", "個", "株"])}),
+                                                       new Noun("豆子", {measureWord: new IncrementalShuffler(["棵", "顆", "粒", "個", "株"])}),
+                                                       new Noun("稻子", {measureWord: new IncrementalShuffler(["棵", "顆", "粒", "個", "株"])})
+                                                       ]), field: "農地"},
+        {farmer: "園丁", crops: new IncrementalShuffler([
+                                                       new Noun("玫瑰花", {measureWord: new IncrementalShuffler(["朵", "枝", "株"])}),
+                                                       new Noun("鬱金香", {measureWord: new IncrementalShuffler(["朵", "枝", "株"])}),
+                                                       new Noun("菊花", {measureWord: new IncrementalShuffler(["朵", "枝", "株"])}),
+                                                       new Noun("向日葵", {measureWord: new IncrementalShuffler(["朵", "枝", "株"])}),
+                                                       new Noun("百合花", {measureWord: new IncrementalShuffler(["朵", "枝", "株"])})
+                                                       ]), field: "花園"}
     ]);
 
     var distances = new IncrementalShuffler([
-        new Plural(function(num) {
-            return $.ngettext("mile", "miles", num);
-        }),
-        new Plural(function(num) {
-            return $.ngettext("kilometer", "kilometers", num);
-        })
+        "公尺",
+        "公里"
     ]);
 
-    // TODO(jeresig): I18N: Kill this.
+    var distanceActivities = new IncrementalShuffler([
+        {present: "騎", past: "騎", noun: new Noun("腳踏車", {measureWord: new IncrementalShuffler(["台", "輛"])}), done: "騎", continuous: "騎"}, //（這幾個都很難翻。騎過、正在騎？怪怪的）
+        {present: "划", past: "划", noun: new Noun("船", {measureWord: "艘"}), done: "划", continuous: "划"},
+        {present: "遛", past: "遛", noun: new Noun("狗", {measureWord: "隻"}), done: "遛", continuous: "遛"}
+    ]);
+
     var indefiniteArticle = function(word) {
         var vowels = ["a", "e", "i", "o", "u"];
         if (_(vowels).indexOf(word[0].toLowerCase()) > -1) {
@@ -859,21 +575,30 @@ $.fn["word-problemsLoad"] = function() {
             return people.get(i - 1).get(0)[0].charAt(0).toLowerCase();
         },
 
-        // TODO(jeresig): I18N: Kill this.
         he: function(i) {
-            return people.get(i - 1).get(0)[1] === "m" ? "he" : "she";
+            return people.get(i - 1).get(0)[1] === "m" ? "他" : "她";
         },
 
-        // TODO(jeresig): I18N: Kill this.
+        He: function(i) {
+            return people.get(i - 1).get(0)[1] === "m" ? "他" : "她";
+        },
+
         him: function(i) {
-            return people.get(i - 1).get(0)[1] === "m" ? "him" : "her";
+            return people.get(i - 1).get(0)[1] === "m" ? "他" : "她";
         },
 
-        isMale: function(i) {
-            return people.get(i - 1).get(0)[1] === "m";
+        his: function(i) {
+            return people.get(i - 1).get(0)[1] === "m" ? "他的" : "她的"; //（him、her似乎還是翻成他、她）
         },
 
-        // TODO(jeresig): I18N: Kill this.
+        His: function(i) {
+            return people.get(i - 1).get(0)[1] === "m" ? "他的" : "她的";
+        },
+
+        An: function(word) {
+            return indefiniteArticle(word);
+        },
+
         an: function(word) {
             return indefiniteArticle(word).toLowerCase();
         },
@@ -910,6 +635,10 @@ $.fn["word-problemsLoad"] = function() {
             return collections.get(i - 1)[1];
         },
 
+        groupVerb: function(i) {
+            return collections.get(i - 1)[2];
+        },
+
         store: function(i) {
             return stores.get(i).name;
         },
@@ -942,6 +671,18 @@ $.fn["word-problemsLoad"] = function() {
             return colors.get(i - 1);
         },
 
+	    movie: function(i) {
+		    return movies.get(i-1);
+	    },
+		
+		family: function(i) {
+		    return familys.get(i-1);
+	    },
+		
+		country: function(i) {
+		    return countrys.get(i-1);
+	    },
+
         fruit: function(i) {
             return fruits.get(i);
         },
@@ -952,6 +693,26 @@ $.fn["word-problemsLoad"] = function() {
 
         distance: function(i) {
             return distances.get(i - 1);
+        },
+
+        rode: function(i) {
+            return distanceActivities.get(i - 1).past;
+        },
+
+        ride: function(i) {
+            return distanceActivities.get(i - 1).present;
+        },
+
+        bike: function(i) {
+            return distanceActivities.get(i - 1).noun;
+        },
+
+        biked: function(i) {
+            return distanceActivities.get(i - 1).done;
+        },
+
+        biking: function(i) {
+            return distanceActivities.get(i - 1).continuous;
         },
 
         farmer: function(i) {
@@ -992,6 +753,34 @@ $.fn["word-problemsLoad"] = function() {
 
         animalStddevLifespan: function(i) {
             return animals.get(i - 1)[2];
+        },
+        
+        // measure word helper.(for Chinese)  There are two signatures
+        // - measureWord(NOUN): return measure word of NOUN if available
+        // - measureWord(NUMBER, NOUN): return "NUMBER measureWord NOUN", use default measure word if not available
+        measureWord: function measureWord(value, arg1) {
+        	// get measure word of noun if available
+        	var getMeasureWord = function(noun) {
+        		// return empty string if noun is just null or undefined
+        		if (!noun) {
+        			return "";
+        		}
+        		
+            	if (typeof noun.measureWord === "string") {
+                	return noun.measureWord;
+            	} else if (typeof noun.measureWord === "object" && noun.measureWord.get){
+            		return noun.measureWord.get(0);
+            	}
+            	
+            	// return empty string if no match
+        		return "";
+        	};
+        	
+        	if (typeof value === "number") {
+        		return arg1 ? value + " " + getMeasureWord(arg1) + arg1 : value.toString();
+        	} else {
+        		return getMeasureWord(value);
+        	}
         }
     });
 };
