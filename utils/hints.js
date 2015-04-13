@@ -53,8 +53,7 @@ $(Khan).bind("newProblem", function() {
                     my: "bottom left",
                     at: "top right"
                 },
-                show: 'focus',
-                hide: 'blur',
+                show: 'hover',
                 container: $("#solutionarea"),
                 });
             });
@@ -63,32 +62,6 @@ $(Khan).bind("newProblem", function() {
         }
         else {
             $('#solutionarea').prepend('<div class="instruction">'+examples.text()+'</div>');
-
-            // Tooltip-ify the example answer formats
-            /*
-            $("#examples-show").qtip({
-                content: {
-                    text: examples.remove(),
-                    prerender: true
-                },
-                style: {
-                    classes: "ui-tooltip-light leaf-tooltip"
-                },
-                position: {
-                    my: "bottom center",
-                    at: "top center"
-                },
-                show: {
-                    delay: 200,
-                    effect: {
-                        length: 0
-                    }
-                },
-                hide: {
-                    delay: 0
-                }
-            });
-            */
         }
 
     }
