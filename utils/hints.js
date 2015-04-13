@@ -54,7 +54,8 @@ $(Khan).bind("newProblem", function() {
                     at: "top right"
                 },
                 show: 'focus',
-                hide: 'blur'
+                hide: 'blur',
+                container: $("#solutionarea"),
                 });
             });
 
