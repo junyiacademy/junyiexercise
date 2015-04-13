@@ -2764,10 +2764,6 @@ var Khan = (function() {
             }
 
         });
-    
-        $('#solutionarea input[type=text]:not([readonly])').each(function() {
-            $(this).qtip('reposition');
-        });
 
     }
 

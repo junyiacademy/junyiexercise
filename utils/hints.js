@@ -53,8 +53,8 @@ $(Khan).bind("newProblem", function() {
                         my: "bottom left",
                         at: "top right"
                     },
-                    show: 'hover',
-                    hide: 'unfocus',
+                    show: 'focus',
+                    hide: 'blur',
                     container: $("#solutionarea"),
                 });
             });
