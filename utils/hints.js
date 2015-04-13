@@ -38,7 +38,7 @@ $(Khan).bind("newProblem", function() {
             .show();
 
     var examples = $("#examples");
-    if (examples.length && $.prototype.qtip != null) {
+    if (examples.length && examples.text().length > 0 && $.prototype.qtip != null) {
         if($('#solutionarea input[type=text]:not([readonly])').length >= 1) {
             $('#solutionarea input[type=text]:not([readonly])').each(function() {
                 $( this ).qtip({
