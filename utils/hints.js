@@ -42,28 +42,26 @@ $(Khan).bind("newProblem", function() {
         if($('#solutionarea input[type=text]:not([readonly])').length >= 1) {
             $('#solutionarea input[type=text]:not([readonly])').each(function() {
                 $( this ).qtip({
-                content: {
-                    text: examples.clone().runModules(),
-                    prerender: true
-                },
-                style: {
-                    classes: "ui-tooltip-light leaf-tooltip"
-                },
-                position: {
-                    my: "bottom left",
-                    at: "top right"
-                },
-                show: 'hover',
-                container: $("#solutionarea"),
+                    content: {
+                        text: examples.clone().runModules(),
+                        prerender: true
+                    },
+                    style: {
+                        classes: "ui-tooltip-light leaf-tooltip"
+                    },
+                    position: {
+                        my: "bottom left",
+                        at: "top right"
+                    },
+                    show: 'hover',
+                    hide: 'unfocus',
+                    container: $("#solutionarea"),
                 });
             });
-
             
         }
         else {
             $('#solutionarea').prepend('<div class="instruction">'+examples.text()+'</div>');
         }
-
     }
-
 });
