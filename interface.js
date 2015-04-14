@@ -13,8 +13,10 @@ _.defaults(Exercises, {
     khanExercisesUrlBase: "/khan-exercises/",
 
     getCurrentFramework: function(userExerciseOverride) {
-        return (userExerciseOverride || userExercise).exerciseModel.isQuizExercise ?
-            "perseus" : "khan-exercises";
+        // Currently we render perseus question by the same way with html exercises.
+        // return (userExerciseOverride || userExercise).exerciseModel.isQuizExercise ?
+        //     "perseus" : "khan-exercises";
+        return "khan-exercises";
     }
 });
 
