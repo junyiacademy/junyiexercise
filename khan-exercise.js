@@ -1412,7 +1412,7 @@ var Khan = (function() {
             parent.jQuery(parent.document).trigger("problemLoaded", [makeProblem, answerData.solution]);
         }
 
-        $("#hint").val($._("I'd like a hint"));
+        $("#hint").val("我需要提示");
 
         $(Exercises).trigger("newProblem", {
             numHints: hints.length,

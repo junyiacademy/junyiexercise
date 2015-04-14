@@ -115,7 +115,7 @@ function Adder(a, b, digitsA, digitsB) {
                 graph.ellipse([pos.max - Math.max(deciA, deciB) + 0.5, i - 0.2], [0.08, 0.04]);
             });
         }
-        this.showSideLabel("\\text{Make sure the decimals are lined up.}");
+        this.showSideLabel("\\text{請先確定小數點都有對齊。}");
     }
 }
 
@@ -257,7 +257,7 @@ function Subtractor(a, b, digitsA, digitsB, decimalPlaces) {
                 graph.ellipse([pos.max - Math.max(deciA, deciB) + 0.5, i - 0.2], [0.08, 0.04]);
             });
         }
-        this.showSideLabel("\\text{Make sure the decimals are lined up.}");
+        this.showSideLabel("\\text{請先確定小數點有對齊喔!}");
     };
 }
 
@@ -514,14 +514,12 @@ function Multiplier(a, b, digitsA, digitsB, deciA, deciB) {
         var x = -maxNumDigits;
         var y = -digitsB.length * digitsA.length;
         graph.label([x, y + 2],
-            $.ngettext("\\text{The top number has 1 digit to the right of the decimal.}", "\\text{The top number has %(num)s digits to the right of the decimal.}", deciA), "right");
+            "\\text{上面的數字，小數點右邊有 " + KhanUtil.plural(deciA, "位數") + "}", "right");
         graph.label([x, y + 1],
-            $.ngettext("\\text{The bottom number has 1 digit to the right of the decimal.}", "\\text{The bottom number has %(num)s digits to the right of the decimal.}", deciB), "right");
-        // TODO(jeresig): i18n: Should this be pluralized?
+            "\\text{下面的數字，小數點右邊有 " + KhanUtil.plural(deciB, "位數") + "}", "right");
         graph.label([x, y],
-                    $._("\\text{The product has %(numA)s + %(numB)s = %(numSum)s digits to the right of the decimal.}",
-                        {numA: deciA, numB: deciB, numSum: deciA + deciB}),
-                    "right");
+            "\\text{所以這兩個數字的乘積在小數點右邊有 " + deciA + " + " + deciB + " = " + (deciA + deciB)
+             + " 位數}", "right");
         graph.style({
             fill: "#000"
         }, function() {
@@ -599,9 +597,10 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
             highlights = highlights.concat(drawDigits(totalDigits, index - totalDigits.length + 1, -2 * index, KhanUtil.BLUE));
 
             graph.label([digitsDividend.length + 0.5, -2 * index],
-                $._("\\text{How many times does }%(divisor)s" +
-                    "\\text{ go into }\\color{#6495ED}{%(total)s}\\text{?}",
-                    {divisor: divisor, total: total}), "right");
+                 "\\color{#6495ED}{" + total + "}"
+                + "\\text{是}"
+                + divisor
+               + "\\text{的幾倍?}", "right");
 
             fShowFirstHalf = false;
         } else {
@@ -629,14 +628,8 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
             graph.label([digitsDividend.length + 0.5, -2 * index - 1],
                 "\\color{#6495ED}{" + value + "}"
                 + "\\div"
-                + divisor + "="
-                + "\\color{#28AE7B}{" + quotient + "}"
-                + "\\text{ " + $._("or") + " }"
-                + divisor
-                + "\\times"
-                + "\\color{#28AE7B}{" + quotient + "}"
-                + " = "
-                + "\\color{#FFA500}{" + (divisor * quotient) + "}", "right");
+                + divisor + " 的商是 "
+                + "\\color{#28AE7B}{" + quotient + "}", "right");
             index++;
             fShowFirstHalf = true;
         }
@@ -651,8 +644,7 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
         this.addDecimal();
         this.show();
         graph.label([digitsDividend.length, 1],
-            $._("\\text{Write in a decimal and a zero and continue dividing.}"), 
-            "right");
+                "\\color{red}{\\small{\\text{將小數點寫上去並補上零之後繼續除}}}", "right");
     };
 
     this.getNumHints = function() {
@@ -681,21 +673,17 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
 
         if (deciDivisor !== 0) {
             graph.label([digitsDividend.length + 1 + (deciDiff > 0 ? deciDiff : 0), 1],
-                        $.ngettext("\\text{Shift the decimal 1 to the right.}",
-                                   "\\text{Shift the decimal %(num)s to the right.}",
-                                   deciDivisor),
-                        "right");
+                "\\text{將小數點往右移" + deciDivisor + "位.}", "right");
             graph.style({
                 fill: "#000"
             }, function() {
                 graph.ellipse([-1, -0.2], [0.08, 0.04]);
             });
         } else {
-            // TODO(jeresig): i18n: This probably won't work in multiple langs
             graph.label([digitsDividend.length + 0.5, 1.2],
-                $._("\\text{Bring the decimal up into the}"), "right");
+                "\\color{red}{\\text{要記得！小數點的位置}}", "right");
             graph.label([digitsDividend.length + 0.5, 0.8],
-                $._("\\text{answer (the quotient).}"), "right");
+                "\\color{red}{\\text{在個位與十分位之間}}", "right");
         }
 
         this.addDecimal();
@@ -744,4 +732,269 @@ function squareFractions(nom, den, perLine, spacing, size) {
 
 
     return arr;
+}
+
+function PolyDivider(divisor, dividend, divRes) {
+    var graph = KhanUtil.currentGraph;
+    var digitsDivisor = divisor.toString();
+    var digitsDividend = dividend.toString();
+    var divisoritem = divisor.getNumberOfTerms();
+    var dividenditem = dividend.getNumberOfTerms();
+    var dividendlen = (digitsDividend.length+dividenditem*2)/4;
+    var divisorlen = digitsDivisor.length/4;
+    
+    var numHints =  divRes[1].getNumberOfTerms()*2+1;
+    var term = divisor.Term(0);
+    var highlights = [];
+    var index = 0;
+    var remainder = 0;
+    var fOnlyZeros = true;
+    var fShowFirstHalf = false;
+    var leadingZeros = [];
+    var value = 0;
+    var decimals = [];
+    var hasQuestionShown = 0;
+    var showAskStep = 0;
+    var remPoly = dividend;
+    var subPoly;
+    graph.init({
+            range: [[-1 - digitsDivisor.length, digitsDividend.length], [numHints * -2 - 1, 2]],
+            scale: [30, 45]
+        });
+        graph.style({
+            fill: "#000"
+        }, function() {
+        });
+        
+    this.show = function() {
+
+        var i = 0;
+        var maxDegree = dividend.findMaxDegree(digitsDividend.coefs);
+        var dividendStr = "";
+        var addFlag = 0;
+
+        subPoly = dividend;
+
+        for(i = maxDegree;i >= 0;i--)
+        {
+            if(dividend.coefs[i] !== 0)
+            {
+                if(i === 0)
+                    dividendStr = dividendStr + dividend.coefs[i];
+                else if(i === 1)
+                    dividendStr = dividendStr + dividend.coefs[i] + dividend.variable;
+                else
+                    dividendStr = dividendStr + dividend.coefs[i] + dividend.variable + "^{" + i + "}";
+            }
+            else
+            {
+                if(i === 0)
+                    dividendStr = dividendStr + "0";
+                else if(i === 1)
+                    dividendStr = dividendStr + "0" + dividend.variable;
+                else
+                    dividendStr = dividendStr + "0" + dividend.variable + "^{" + i + "}";
+                
+                addFlag = 1;
+                dividenditem++;
+            }
+
+            if(i !== 0)
+                dividendStr = dividendStr + "+";
+        }
+
+        digitsDividend = dividendStr;
+        dividendlen = (digitsDividend.length+dividenditem*2)/4;
+                   
+        graph.label([0,0],
+                digitsDividend, "right");
+
+        graph.label([-divisorlen,0],
+                digitsDivisor, "left");
+
+        graph.path([[-0.25, -0.5], [-0.25, 0.5], [ dividendlen, 0.5]]);
+
+        term2 = dividend.Term(0);
+
+        if(addFlag === 1)
+        {
+            graph.label([dividendlen+1 , 0.25],
+                 "\\text{首先將被除式的各項補充完整，}"
+               , "right");
+
+            graph.label([dividendlen+1 , -0.25],
+                 "\\text{想想}" 
+                + "\\color{#6495ED}{" + term + "}"
+                + "\\text{要乘以多少才會等於 }"
+                 +"\\color{#6495ED}{" + term2 + "}" + "?"
+               , "right");
+        }
+        else
+            graph.label([dividendlen+1 , 0],
+                 "\\color{#6495ED}{" + term + "}"
+                + "\\text{要乘以多少才會等於}"
+                 +"\\color{#6495ED}{" + term2 + "}"+ "?"
+               , "right");
+
+    };
+    
+    this.showHintTitle = function() {
+        graph.label([-2,1.5],
+                "\\text{我們可以用直式除法來計算多項式的除法。}", "right");        
+    };
+
+    this.showHint = function() {
+
+        if(index === numHints)
+                return; 
+
+        if(hasQuestionShown === 0)
+        {           
+            this.show();
+
+            showAskStep = 1;
+            hasQuestionShown = 1;
+        }
+        else
+        {
+            var coefs = [];
+            var i = 0;
+            var maxDegree = divRes[1].findMaxDegree(divRes[1].coefs) - index;
+
+            for(i = 0;i<maxDegree;i++)
+            {
+                coefs[i] = 0;
+            }
+            
+            coefs[maxDegree] = divRes[1].coefs[maxDegree];
+
+            var qotPoly =  new KhanUtil.Polynomial(0, divRes[1].findMaxDegree(divRes[1].coefs) - index, coefs, divRes[1].variable);
+            
+            var qot = divRes[1].Term(index);
+
+            var rem = subPoly.Term(0);          
+
+            if(showAskStep === 1)
+            {
+                remPoly = divisor.multiply(qotPoly);
+
+                if(index !== 0)
+                    graph.label([index*1.8,0.75],
+                        "+" + qot, "right");
+                else
+                    graph.label([index*1.8,0.75],
+                        qot, "right");
+
+                if(subPoly.coefs[remPoly.findMaxDegree(remPoly.coefs)] < 0)
+                    graph.label([index*1.5, -1-index*2],
+                        remPoly.toString(), "right");
+                else
+                    graph.label([index*2, -1-index*2],
+                        remPoly.toString(), "right");  
+
+                graph.label([-divisorlen,-1-index*2],
+                        "-", "left");
+
+                graph.path([[index, -0.25-1-index*2], [ dividendlen, -0.25-1-index*2]]);
+
+                graph.label([dividendlen+1 , -1-index*2],
+                             "\\color{#6495ED}{" + term + "}"
+                            + "\\text{要乘以}" + "\\color{#FF00AF}{" + qot + "}" + "\\text{才會等於}"
+                             +"\\color{#6495ED}{" + rem + "}"
+                           , "right");
+
+                showAskStep = 0;
+                index++;
+            }
+            else
+            {
+                subPoly = subPoly.subtract(remPoly);
+
+                maxDegree = subPoly.findMaxDegree(subPoly.coefs);
+                var subPolyStr = "";
+
+                for(i = maxDegree;i >= 0;i--)
+                {
+                    if(subPoly.coefs[i] !== 0)
+                    {
+                        if(i === 0)
+                            subPolyStr = subPolyStr + subPoly.coefs[i];
+                        else if(i === 1)
+                            subPolyStr = subPolyStr + subPoly.coefs[i] + subPoly.variable;
+                        else
+                            subPolyStr = subPolyStr + subPoly.coefs[i] + subPoly.variable + "^{" + i + "}";
+                    }
+                    else
+                    {
+                        if(i === 0)
+                            subPolyStr = subPolyStr + "0";
+                        else if(i === 1)
+                            subPolyStr = subPolyStr + "0" + subPoly.variable;
+                        else
+                            subPolyStr = subPolyStr + "0" + subPoly.variable + "^{" + i + "}";
+                    }
+
+                    if(i !== 0)
+                        subPolyStr = subPolyStr + "+";
+                }
+
+                if(subPoly.findMaxDegree(subPoly.coefs) < divisor.findMaxDegree(divisor.coefs) )
+                {                   
+                    if(subPoly.toString() !== "")
+                    {
+                        graph.label([dividendlen, -index*2],
+                        subPolyStr, "left");
+                    }
+                    else
+                    {
+                        graph.label([dividendlen, -index*2],
+                        "0", "left");
+                    }
+
+                    graph.label([dividendlen+1 , -index*2+0.25],
+                             "\\text{我們發現}" + "\\color{#6495ED}{" + subPoly.toString() + "}" + 
+                            "\\text{的次數低於}" + "\\color{#6495ED}{" + term + "}" + "\\text{，}"
+                           , "right");
+                    graph.label([dividendlen+1 , -index*2-0.25],
+                            "\\text{所以計算結束, 商式為}" + "\\color{#FF00AF}{" + divRes[1].toString() + "}" + 
+                            "\\text{，餘數為}" + "\\color{#FF00AF}{" + divRes[0].toString() + "}"
+                           , "right");
+                }
+                else
+                {
+                    if(subPoly.coefs[subPoly.findMaxDegree(subPoly.coefs)] < 0)
+                        graph.label([index*1.5, -index*2],
+                        subPolyStr, "right");
+                    else
+                        graph.label([index*2, -index*2],
+                        subPolyStr, "right");
+
+                    graph.label([dividendlen+1 , -index*2+0.25],
+                             "\\text{將}" + "\\color{#6495ED}{" + subPolyStr + "}"
+                            + "\\text{往下拉一層，}"
+                           , "right");
+                    graph.label([dividendlen+1 , -index*2-0.25],
+                             "\\text{想想}" + "\\color{#6495ED}{" + term + "}" + "\\text{要乘以多少才會等於}"
+                            +"\\color{#6495ED}{" + subPoly.Term(0) + "}" + "?"
+                           , "right");
+                }
+
+                showAskStep = 1;
+            }
+
+            
+        }
+    }
+    
+    this.getNumHints = function() {
+        return numHints;
+    };
+
+    this.removeHighlights = function() {
+        
+    };   
+
+    this.shiftDecimals = function() {
+       
+    };
 }

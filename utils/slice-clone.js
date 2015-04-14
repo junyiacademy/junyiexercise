@@ -17,7 +17,7 @@ $.extend(KhanUtil, {
 
         KhanUtil.pieces += (increase) ? 1 : -1;
 
-        $("#pieces").text(KhanUtil.plural(KhanUtil.pieces, "piece"));
+        $("#pieces").text(KhanUtil.plural(KhanUtil.pieces, "份"));
 
         KhanUtil.currentGraph = $("#problemarea").find("#parent_block").data("graphie");
         rectchart([1, KhanUtil.pieces - 1], ["#e00", "#999"]);
@@ -33,7 +33,7 @@ $.extend(KhanUtil, {
 
         KhanUtil.times[id] += (increase) ? 1 : -1;
 
-        $("#" + id + "_times").text(KhanUtil.plural(KhanUtil.times[id], "time"));
+        $("#" + id + "_times").text(KhanUtil.plural(KhanUtil.times[id], "次"));
 
         KhanUtil.updateGraphAndAnswer();
     },

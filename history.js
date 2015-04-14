@@ -26,8 +26,8 @@ function renderReadOnlyProblem(event, args) {
                     "not yet available for this exercise."), true]);
         } else if (framework === "khan-exercises") {
             if (!userExercise.current) {
-                $(Exercises).trigger("warning", [$._("This exercise may have " +
-                    "changed since it was completed"), true]);
+                $(Exercises).trigger("warning", [$._("這個練習題的內容" +
+                    "可能已經被修改過。"), true]);
             }
         }
 
@@ -36,9 +36,9 @@ function renderReadOnlyProblem(event, args) {
         var timelinecontainer = $("<div id='timelinecontainer'>")
             .append("<div>\n" +
                     "<div id='previous-problem' class='simple-button'>" +
-                    $._("Previous Problem") + "</div>\n" +
+                    "上一個問題" + "</div>\n" +
                     "<div id='previous-step' class='simple-button'><span>" +
-                    $._("Previous Step") + "</span></div>\n</div>")
+                    "上一步" + "</span></div>\n</div>")
             .insertBefore("#problem-and-answer");
 
         $.fn.disable = function() {
@@ -99,11 +99,11 @@ function renderReadOnlyProblem(event, args) {
         timelinecontainer
             .append("<div>\n" +
                     "<div id='next-problem' class='simple-button'>" +
-                    $._("Next Problem") + "</div>\n" +
+                    "下一個問題" + "</div>\n" +
                     "<div id='next-step' class='simple-button'><span>" +
-                    $._("Next Step") + "</span></div>\n</div>");
+                    "下一步" + "</span></div>\n</div>");
 
-        $("<div class='user-activity correct-activity'>" + $._("Started") + "</div>")
+        $("<div class='user-activity correct-activity'>" + "開始" + "</div>")
             .data("hint", false)
             .appendTo(timelineEvents);
 
@@ -121,17 +121,17 @@ function renderReadOnlyProblem(event, args) {
 
             timelineEvents
                 // I18N: This is a number of seconds, like '3s'
-                .append("<div class='timeline-time'>" + $._("%(time)ss", {time: value[2]}) + "</div>");
+                .append("<div class='timeline-time'>" + $._("%(time)s秒", {time: value[2]}) + "</div>");
 
             thissolutionarea = $("<div>")
                 .addClass("user-activity " + value[0])
                 .appendTo(timelineEvents);
 
             if (value[0] === "hint-activity") {
-                thissolutionarea.attr("title", $._("Hint used"));
+                thissolutionarea.attr("title", $._("使用提示"));
                 thissolutionarea
                     .data("hint", hintNumber)
-                    .prepend($._("Hint #%(num)s", {num: (hintNumber + 1)}));
+                    .prepend($._("提示 #%(num)s", {num: (hintNumber + 1)}));
                 hintNumber += 1;
             } else { // This panel is a solution (or the first panel)
                 thissolutionarea.data("hint", false);
@@ -143,9 +143,9 @@ function renderReadOnlyProblem(event, args) {
                         thissolutionarea
                             .removeClass("incorrect-activity")
                             .addClass("correct-activity");
-                        thissolutionarea.attr("title", $._("Answer Attempted"));
+                        thissolutionarea.attr("title", $._("嘗試的答案"));
                         thissolutionarea.append(
-                            $("<p class='solution'>" + $._("Answer attempted") + "</p>")
+                            $("<p class='solution'>" + $._("嘗試的答案") + "</p>")
                         );
                     } else if (framework === "khan-exercises") {
                         // radio and custom are the only answer types that
@@ -165,26 +165,26 @@ function renderReadOnlyProblem(event, args) {
                                 thissolutionarea
                                     .removeClass("incorrect-activity")
                                     .addClass("correct-activity");
-                                thissolutionarea.attr("title", $._("Correct Answer"));
+                                thissolutionarea.attr("title", $._("正確答案"));
                             } else {
-                                thissolutionarea.attr("title", $._("Incorrect Answer"));
+                                thissolutionarea.attr("title", $._("錯誤答案"));
                             }
                         } else if (answerType === "custom") {
                             if (validator(guess)) {
                                 thissolutionarea
                                     .removeClass("incorrect-activity")
                                     .addClass("correct-activity");
-                                thissolutionarea.attr("title", $._("Correct Answer"));
+                                thissolutionarea.attr("title", $._("正確答案"));
                                 thissolutionarea.append(
-                                    $("<p class='solution'>" + $._("Answer correct") + "</p>")
+                                    $("<p class='solution'>" + $._("答案正確") + "</p>")
                                 );
                             } else {
                                 thissolutionarea
                                     .removeClass("correct-activity")
                                     .addClass("incorrect-activity");
-                                thissolutionarea.attr("title", $._("Incorrect Answer"));
+                                thissolutionarea.attr("title", $._("錯誤答案"));
                                 thissolutionarea.append(
-                                    $("<p class='solution'>" + $._("Answer incorrect") + "</p>")
+                                    $("<p class='solution'>" + $._("答案錯誤") + "</p>")
                                 );
                             }
                         } else {
@@ -199,12 +199,12 @@ function renderReadOnlyProblem(event, args) {
                                     .removeClass("incorrect-activity")
                                     .addClass("correct-activity");
 
-                                thissolutionarea.attr("title", $._("Correct Answer"));
+                                thissolutionarea.attr("title", $._("正確答案"));
                             } else {
                                 thissolutionarea
                                     .removeClass("correct-activity")
                                     .addClass("incorrect-activity");
-                                thissolutionarea.attr("title", $._("Incorrect Answer"));
+                                thissolutionarea.attr("title", $._("錯誤答案"));
                             }
                         }
                     }

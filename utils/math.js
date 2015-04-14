@@ -58,10 +58,8 @@ $.extend(KhanUtil, {
         return digits;
     },
 
-    placesLeftOfDecimal: [$._("one"), $._("ten"), $._("hundred"),
-        $._("thousand")],
-    placesRightOfDecimal: [$._("one"), $._("tenth"), $._("hundredth"),
-        $._("thousandth")],
+    placesLeftOfDecimal: ["個位數", "十位數", "百位數", "千位數","萬位數", "十萬位數", "百萬位數", "千萬位數","億位數", "十億位數", "百億位數", "千億位數","兆位數", "十兆位數", "百兆位數", "千兆位數"],
+    placesRightOfDecimal: ["個位數", "十分位", "百分位", "千分位"],
 
     powerToPlace: function(power) {
         if (power < 0) {

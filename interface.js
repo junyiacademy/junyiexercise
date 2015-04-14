@@ -365,14 +365,12 @@ function updateHintButtonText() {
 
     if (hintsAreFree) {
         $hintButton.val(hintsUsed ?
-                $._("Show next step (%(hintsLeft)s left)", {hintsLeft: hintsLeft}) :
-                $._("Show solution"));
+                "下一個步驟 (還有 " + hintsLeft + " 個步驟" :
+                "解題說明");
     } else {
         $hintButton.val(hintsUsed ?
-                $.ngettext("I'd like another hint (1 hint left)",
-                           "I'd like another hint (%(num)s hints left)",
-                           hintsLeft) :
-                $._("I'd like a hint"));
+                "下一個提示 (還有 " + hintsLeft + " 個提示)" :
+                "我需要提示");
     }
 }
 
@@ -617,7 +615,7 @@ function clearExistingProblem() {
     $("#hint")
         .removeClass("green")
         .addClass("orange")
-        .val($._("I'd like a hint"))
+        .val("我需要提示")
         .data("buttonText", false)
         .appendTo("#get-hint-button-container");
     $(".hint-box")

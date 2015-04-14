@@ -10,15 +10,13 @@ $.extend(KhanUtil, {
             var andAHead = $.map(preceding, function(_arg, i) {
                 var seq = _arg[0];
                 var h = _arg[1];
-                // I18N: Represents "heads" on a coin
-                return [[$._("H") + seq, h + 1]];
+                return [["H" + seq, h + 1]];
             });
 
             var andATail = $.map(preceding, function(_arg, i) {
                 var seq = _arg[0];
                 var h = _arg[1];
-                // I18N: Represents "tails" on a coin
-                return [[$._("T") + seq, h]];
+                return [["T" + seq, h]];
             });
 
             return andAHead.concat(andATail);

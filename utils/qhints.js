@@ -31,11 +31,11 @@ $.fn["qhintsLoad"] = function() {
         if (!source) {
             feedback.text(answer);
         } else if (userInput === answer) {
-            feedback.text($._("Correct! The answer is %(answer)s.",
-                {answer: answer})).addClass("correct");
+            feedback.text("Correct! The answer is " + answer + ".")
+                    .addClass("correct");
         } else {
-            feedback.text($._("Incorrect. The answer is %(answer)s.",
-                {answer: answer})).addClass("incorrect");
+            feedback.text("Incorrect. The answer is " + answer + ".")
+                        .addClass("incorrect");
         }
 
         parent.append(feedback);
