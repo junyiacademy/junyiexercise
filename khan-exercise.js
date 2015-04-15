@@ -512,7 +512,7 @@ var Khan = (function() {
                     }
 
                     var makeVisible = function() {
-                        $("#workarea, #hintsarea").css("padding-left", 60);
+                        $("#workarea, #hintsarea").css("padding-top", 50);
                         $("#scratchpad").show();
                         $("#scratchpad-show").text("隱藏計算紙");
 
@@ -533,7 +533,7 @@ var Khan = (function() {
                         return;
                     }
 
-                    $("#workarea, #hintsarea").css("padding-left", 0);
+                    $("#workarea, #hintsarea").css("padding-top", 0);
                     $("#scratchpad").hide();
                     $("#scratchpad-show").text("顯示計算紙");
                 },
