@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html data-require="math graphie word-problems interactive subhints">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>三角形的內角和與外角和</title>
+    <script src="../khan-exercise.js"></script>
+    <script language="javascript">
+        function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+    </script>
+</head>
+<body>
+
+<div class="exercise">   
+    <div class="problems">
+        <div id="case1">
+            <div class="vars" data-ensure="(angleA+angleB) &gt; 200">
+                <var id="angleA">randRange(70, 90)</var>
+				<var id="angleB">randRange(100, 140)</var>
+                <var id="ANS">round(360-angleA-angleB)</var>
+                <var id="SINS">[Math.sin((180-ANS)/180*Math.PI),Math.sin((180-angleA)/180*Math.PI)]</var>
+                <var id="LA">6*SINS[0]/SINS[1]</var>
+                <var id="POINT_A">polar(LA,180-angleB)</var>
+                <var id="AF">polar(LA+1,180-angleB)</var>
+                <var id="K">POINT_A[1]/(POINT_A[0]-3-3)</var>
+                <var id="B">POINT_A[1]-K*(POINT_A[0]-3)</var>
+                <var id="LABEL_C">polar(1, 180+ANS/2)</var>
+                <var id="LABEL_A">polar(1, 178+ANS+angleA/2)</var>
+                <var id="LABEL_B">polar(1, 180-angleB/2)</var>
+            </div>
+
+            <p class="question">如下圖，<code>\triangle ABC</code> 中 <code>\angle A</code> 外角是 <code><var>angleA</var>^\circ</code> ， <code>\angle B</code> 外角是 <code><var>angleB</var>^\circ</code> ，求 <code>\angle 1</code> 度數為何？</p>
+            <div class="problem">
+                <div class="graphie">
+                    init({
+                        range: [[-5, 5], [-2, AF[1]+2]],
+                        scale: 40
+                    });
+                    line([-4,0],[3,0]);
+                    line([-3,0],[AF[0]-3,AF[1]]);
+                    line([4,4*K+B],[POINT_A[0]-3,POINT_A[1]]);
+                    arc( [3, 0], 0.5, 180, 178+ANS, { stroke: KhanUtil.GREEN } );
+                    arc( [POINT_A[0]-3,POINT_A[1]], 0.5, 178+ANS, 178+ANS+angleA, { stroke: KhanUtil.GREEN } );
+                    arc( [-3,0], 0.5, 180-angleB, 180, { stroke: KhanUtil.GREEN });
+                    label([LABEL_C[0]+3,LABEL_C[1]], 1);
+                    label([LABEL_A[0]+POINT_A[0]-3,LABEL_A[1]+POINT_A[1]], angleA+'^\\circ');
+                    label([LABEL_B[0]-3,LABEL_B[1]], angleB+'^\\circ');
+                    label([-3,0],'B','below');
+                    label([POINT_A[0]-3,POINT_A[1]],'A','left');
+                    label([3,0],'C','above right');
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>ANS</var></span> <code>^\circ</code>
+                <p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <p>三角形的外角和為 <code>360 ^\circ</code> 。</p>
+                <p>因此 <code>\angle A</code> 的外角 <code>+ \angle B</code> 的外角 <code>+ \angle C</code> 的外角 <code>= 360 ^\circ</code> 。</p>
+                <div>
+                    <p>代入題目給予的條件，得到 </p>
+                    <p><code><var>angleA</var> ^\circ+ <var>angleB</var> ^\circ+\angle C </code> 的外角 <code>=360^\circ</code> 。</p>
+                </div>
+                <p>所以答案為 <code>360^\circ-<var>angleA</var>^\circ-<var>angleB</var> ^\circ = \color{#FF00AF}{<var>ANS</var>^\circ} </code>。</p>
+            </div>
+        </div>
+
+		<div id="case2">
+            <div class="vars" data-ensure="(angleA_init+angleB_init) &lt; 160 && 4*K+B &lt; 0">
+                <var id="angleA">randRange(90, 110)</var>
+                <var id="angleB">randRange(120, 150)</var>
+                <var id="angleA_init">round(180-angleA)</var>
+                <var id="angleB_init">round(180-angleB)</var>
+                <var id="ANS">round(360-angleA-angleB)</var>
+                <var id="SINS">[Math.sin((180-ANS)/180*Math.PI),Math.sin((180-angleA)/180*Math.PI)]</var>
+                <var id="LA">6*SINS[0]/SINS[1]</var>
+                <var id="POINT_A">polar(LA,180-angleB)</var>
+                <var id="AF">polar(LA,180-angleB)</var>
+                <var id="K">POINT_A[1]/(POINT_A[0]-3-3)</var>
+                <var id="B">POINT_A[1]-K*(POINT_A[0]-3)</var>
+                <var id="LABEL_C">polar(1, 180+ANS/2)</var>
+                <var id="LABEL_A">polar(1, 180+angleB_init+angleA_init/2)</var>
+                <var id="LABEL_B">polar(1, angleB_init/2)</var>
+            </div>
+
+            <p class="question">如下圖，<code>\triangle ABC</code> 中 <code>\angle A = <var>angleA_init</var>^\circ</code> ，<code>\angle B = <var>angleB_init</var>^\circ</code> ，求 <code>\angle 1</code> 度數為何？</p>
+            <div class="problem">
+                <div class="graphie">
+                    init({
+                        range: [[-5, 5], [-2, AF[1]+2]],
+                        scale: 40
+                    });
+                    line([-3,0],[3,0]);
+                    line([-3,0],[AF[0]-3,AF[1]]);
+                    line([4,4*K+B],[POINT_A[0]-3,POINT_A[1]]);
+                    arc( [3, 0], 0.5, 180, 178+ANS, { stroke: KhanUtil.GREEN } );
+                    label([LABEL_C[0]+3,LABEL_C[1]], 1);
+                    label([-3,0],'B','below');
+                    label([POINT_A[0]-3,POINT_A[1]],'A','above');
+                    label([3,0],'C','above right');
+
+                    label([LABEL_A[0]+POINT_A[0]-3,LABEL_A[1]+POINT_A[1]], angleA_init+'^\\circ');
+                    label([LABEL_B[0]-3,LABEL_B[1]], angleB_init+'^\\circ');
+                    arc( [POINT_A[0]-3,POINT_A[1]], 0.5, 180+angleB_init, 176+angleB_init+angleA_init, { stroke: KhanUtil.GREEN } );
+                    arc( [-3,0], 0.5, 0, angleB_init, { stroke: KhanUtil.GREEN });
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>ANS</var></span> <code>^\circ</code>
+                <p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <p>三角形的內角和為 <code>180 ^\circ</code> ，因此 <code>\angle A + \angle B + \angle C = 180 ^\circ</code> 。</p>
+                <div>
+                    <p>代入題目給予的條件，得到</p>
+                    <p><code><var>angleA_init</var>^\circ+ <var>angleB_init</var>^\circ+\angle C=180^\circ</code> ，</p>
+                    <p>得到 <code>\angle C = <var> round(180 - angleA_init - angleB_init)</var>^\circ</code> 。</p>
+                </div>
+                <div>
+                    <p style="font-weight : normal">題目要求的 <code>\angle 1</code> 就是 <code>\angle C</code> 的外角，所以答案為</p>
+                    <p><code>180^\circ - <var>round(180 - angleA_init - angleB_init)</var> = \color{#FF00AF}{<var>ANS</var>^\circ}</code> 。</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="case3">
+            <div class="vars" data-ensure="AF[0] &gt; -2 && ANS &lt;150 && ANS &gt;100">
+                <var id="angleA">randRange(100, 150)</var>
+                <var id="angleB">randRange(20, 120)</var>
+                <var id="angleA_init">round(180-angleA)</var>
+                <var id="angleB_init">round(180-angleB)</var>
+                <var id="ANS">round(360-angleA-angleB)</var>
+                <var id="SINS">[Math.sin((180-ANS)/180*Math.PI),Math.sin((180-angleA)/180*Math.PI)]</var>
+                <var id="LA">6*SINS[0]/SINS[1]</var>
+                <var id="POINT_A">polar(LA,180-angleB)</var>
+                <var id="AF">polar(LA+1,180-angleB)</var>
+                <var id="K">POINT_A[1]/(POINT_A[0]-3-3)</var>
+                <var id="B">POINT_A[1]-K*(POINT_A[0]-3)</var>
+                <var id="LABEL_C">polar(1, ANS/2)</var>
+                <var id="LABEL_A">polar(1, 178+ANS+angleA/2)</var>
+                <var id="LABEL_B">polar(1, angleB_init/2)</var>
+                <var id="LABEL_B_OUT">polar(1, angleB_init/2+90)</var>
+            </div>
+
+            <p class="question">如下圖，<code>\triangle ABC</code> 中 <code>\angle A</code> 的外角為 <code><var>angleA</var>^\circ</code> ，<code>\angle B</code> 的外角為 <code><var>ANS</var>^\circ</code> ，求 <code>\angle 1</code> 度數為何？</p>
+            <div class="problem">
+                <div class="graphie" id="triangle_3">
+                    init({
+                        range: [[-5, 5], [-2, AF[1]+2]],
+                        scale: 40
+                    });
+                    line([-3,0],[4,0]);
+                    line([-3,0],[AF[0]-3,AF[1]]);
+                    line([3,0],[POINT_A[0]-3,POINT_A[1]]);
+                    arc( [3, 0], 0.5, 0, ANS, { stroke: KhanUtil.GREEN } );
+                    label([LABEL_C[0]+3,LABEL_C[1]], ANS+'^\\circ');
+                    label([-3,0],'C','below left');
+                    label([POINT_A[0]-3,POINT_A[1]],'A','above left');
+                    label([3,0],'B','below');
+
+                    label([LABEL_A[0]+POINT_A[0]-3,LABEL_A[1]+POINT_A[1]], angleA+'^\\circ');
+                    
+                    label([LABEL_B[0]-3,LABEL_B[1]], 1);
+                    arc( [POINT_A[0]-3,POINT_A[1]], 0.5, 178+ANS, 178+ANS+angleA, { stroke: KhanUtil.GREEN } );
+                    arc( [-3,0], 0.5, 0, angleB_init, { stroke: KhanUtil.GREEN });
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>angleB_init</var></span> <code>^\circ</code>
+                <p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <p>三角形的外角和為 <code>360 ^\circ</code> 。</p>
+                <p>因此 <code>\angle A</code> 的外角 <code>+ \angle B</code> 的外角 <code>+ \angle C</code> 的外角 <code>= 360 ^\circ</code> 。</p>
+                <div>
+                    <p>代入題目給予的條件，得到</p>
+                    <p><code><var>angleA</var>^\circ+ <var>ANS</var>^\circ+\angle C</code> 的外角 <code>=360^\circ</code> ，</p>
+                    <p>得到 <code>\angle C</code> 的外角 <code> = <var> round(360 - angleA - ANS)</var>^\circ</code> 。</p>
+                    <div class="graphie" data-update="triangle_3">
+                        line([-3,0],[-4,0]);
+                        arc([-3,0], 0.5, angleB_init, 180,{ stroke : KhanUtil.RED});
+                        label([LABEL_B_OUT[0]-3,LABEL_B_OUT[1]], angleB+'^\\circ', { color : KhanUtil.RED});
+                    </div>
+                </div>
+                <div>
+                    <p style="font-weight : normal">題目要求的 <code>\angle 1</code> 就是 <code>\angle C</code> 的內角，所以答案為</p>
+                    <p><code>180^\circ - <var>angleB</var>^\circ = \color{#FF00AF}{<var>angleB_init</var>^\circ}</code> 。</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
