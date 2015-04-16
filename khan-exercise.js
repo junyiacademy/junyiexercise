@@ -2037,6 +2037,9 @@ var Khan = (function() {
 
         function handleSubmit() {
             var pass = validator();
+            if (Exercises.pretestMode) {
+                $(Exercises).trigger("updateAnswerHistory", {name: exerciseId, pass: pass});
+            }
             Analytics.send_ga_event('exercise', 'submit', 'Exercise-Answer-Submit');
 
             // Stop if the user didn't enter a response
@@ -2223,6 +2226,10 @@ var Khan = (function() {
                     function() {},
                     "attempt_hint_queue"
                 );
+            }
+            // if user click hint, pass this question as false to updateAnswerHistory
+            if (Exercises.pretestMode) {
+                $(Exercises).trigger("updateAnswerHistory", {name: exerciseId, pass: false});
             }
 
         });
@@ -2462,6 +2469,9 @@ var Khan = (function() {
             })
             .bind("upcomingExercise", function(ev, data) {
                 startLoadingExercise(data.exerciseId, data.exerciseName, data.exerciseFile, data.isQuiz);
+            })
+            .bind("updateAnswerHistory", function(ev, data){
+                Exercises.BottomlessQueue.updateAnswerHistory(data);
             });
     }
 
