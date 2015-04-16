@@ -1283,7 +1283,7 @@ var Khan = (function() {
                         firstInput.select();
                     }
                 }
-            }, 1);
+            }, 300);
 
             lastFocusedSolutionInput = firstInput;
             solutionarea.find(":input").focus(function() {
@@ -1318,6 +1318,7 @@ var Khan = (function() {
             });
 
             examples.children().tmpl();
+
         } else {
             $("#examples-show").hide();
         }

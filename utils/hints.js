@@ -38,32 +38,30 @@ $(Khan).bind("newProblem", function() {
             .show();
 
     var examples = $("#examples");
-    if (examples.length && $.prototype.qtip != null) {
-
-        // Tooltip-ify the example answer formats
-        $("#examples-show").qtip({
-            content: {
-                text: examples.remove(),
-                prerender: true
-            },
-            style: {
-                classes: "ui-tooltip-light leaf-tooltip"
-            },
-            position: {
-                my: "bottom center",
-                at: "top center"
-            },
-            show: {
-                delay: 200,
-                effect: {
-                    length: 0
-                }
-            },
-            hide: {
-                delay: 0
-            }
-        });
-
+    if (examples.length && examples.text().length > 0 && $.prototype.qtip != null) {
+        if($('#solutionarea input[type=text]:not([readonly])').length >= 1) {
+            $('#solutionarea input[type=text]:not([readonly])').each(function() {
+                $( this ).qtip({
+                    content: {
+                        text: examples.clone().runModules(),
+                        prerender: true
+                    },
+                    style: {
+                        classes: "ui-tooltip-light leaf-tooltip"
+                    },
+                    position: {
+                        my: "bottom left",
+                        at: "top right"
+                    },
+                    show: 'focus',
+                    hide: 'blur',
+                    container: $("#solutionarea"),
+                });
+            });
+            
+        }
+        else {
+            $('#solutionarea').prepend('<div class="instruction">'+examples.text()+'</div>');
+        }
     }
-
 });
