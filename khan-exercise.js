@@ -1362,33 +1362,46 @@ var Khan = (function() {
             .prop("disabled", false);
 
         // Show acceptable formats
-        if (examples.length && examples.text().length > 0 && $.prototype.qtip != null) {
-            if($('#solutionarea input[type=text]:not([readonly])').length >= 1) {
-                $('#solutionarea input[type=text]:not([readonly])').each(function() {
-                    $( this ).qtip({
-                        content: {
-                            text: examples.clone().runModules(),
-                            prerender: true
-                        },
-                        style: {
-                            classes: "ui-tooltip-light leaf-tooltip"
-                        },
-                        position: {
-                            my: "bottom left",
-                            at: "top right"
-                        },
-                        show: 'focus',
-                        hide: 'blur',
-                        container: $("#solutionarea"),
+        if (examples !== null && answerData.examples && answerData.examples.length > 0) {
+            $("#examples-show").show();
+            examples.empty();
+
+            $.each(answerData.examples, function(i, example) {
+                examples.append("<li>" + example + "</li>");
+            });
+
+            examples.children().tmpl();
+
+            if (examples.length && examples.text().length > 0 && $.prototype.qtip != null) {
+                if($('#solutionarea input[type=text]:not([readonly])').length >= 1) {
+                    $('#solutionarea input[type=text]:not([readonly])').each(function() {
+                        $( this ).qtip({
+                            content: {
+                                text: examples.clone().runModules(),
+                                prerender: true
+                            },
+                            style: {
+                                classes: "ui-tooltip-light leaf-tooltip"
+                            },
+                            position: {
+                                my: "bottom left",
+                                at: "top right"
+                            },
+                            show: 'focus',
+                            hide: 'blur',
+                            container: $("#solutionarea"),
+                        });
                     });
-                });
-                
-            }
-            else {
-                $('#solutionarea').prepend('<div class="instruction">'+examples.text()+'</div>');
+                    
+                }
+                else {
+                    $('#solutionarea').prepend('<div class="instruction">'+examples.text()+'</div>');
+                }
             }
         }
-
+        else {
+            $("#examples-show").hide();
+        }
         // save a normal JS array of hints so we can shift() through them later
         hints = hints.tmpl().children().get();
 
