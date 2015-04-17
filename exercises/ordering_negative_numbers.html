@@ -7,7 +7,7 @@
 
     <style type="text/css">
         .number-list {
-            font-size: 1.7em;
+            font-size: 1.2em;
             text-align: center
         }
         .sort-key {
@@ -18,8 +18,8 @@
 </head>
 <body>
     <div class="exercise">
-        <div class="vars">
-            <var id="COLORS">KhanUtil.shuffle([ "blue", "green", "red", "purple", "orange", "brown", "gray", "teal", "olive" ])</var>
+        <div class="vars" data-ensure="NUMS_TEX!=NUMS_SORT_TEX_1">
+            <var id="COLORS">KhanUtil.shuffle([ "blue", "green", "red", "purple", "orange", "brown",  "teal", "olive" ])</var>
 
             <var id="NUMS">(function() {
                 var array = [];
@@ -51,11 +51,17 @@
             <var id="NUMS_SORT">$.extend( true, [], NUMS ).sort( function(a, b) {
                 return a[0] - b[0];
             } )</var>
+             <var id="NUMS_SORT_1">$.extend( true, [], NUMS ).sort( function(a, b) {
+                return b[0] - a[0];
+            } )</var>
+            <var id="NUMS_SORT_TEX_1">$.map( NUMS_SORT_1, function( el ) {
+                return el[0];
+            } ).join( "," )</var>
             <var id="NUMS_SORT_TEX">$.map( NUMS_SORT, function( el ) {
                 return el[0];
             } ).join( "," )</var>
             <var id="NUMS_SORT_TEX_COLOR">$.map( NUMS_SORT, function( el ) {
-                return "\\color{" + el[1] + "}{" + el[0] + "}";
+                return "\\color{#FF00FF}{" + el[0] + "}";
             } ).join( "," )</var>
             <var id="SORTER">createSorter()</var>
         </div>
@@ -79,6 +85,14 @@
                     </div>
                     <div class="guess">SORTER.getContent()</div>
                     <div class="validator-function">
+                        if(guess.join( "," ) === NUMS_TEX)
+                        {
+                            return "";
+                        }
+                        if(guess.join( "," ) === NUMS_SORT_TEX_1)
+                        {
+                            return "你的答案已經很接近了，但請再想想看，負號後面的數字越大，表示這個負數是越大還是越小呢？";
+                        }
                         return guess.join( "," ) === NUMS_SORT_TEX;
                     </div>
                     <div class="show-guess">
@@ -95,7 +109,7 @@
                     <div class="graphie" id="number-line">
                         init({
                             range: [ [-1, 101], [-1, 1] ],
-                            scale: [ 7, 40 ]
+                            scale: [ 4.8, 40 ]
                         });
 
                         style({
@@ -109,13 +123,13 @@
 
                         var position = "above";
                         $.each( NUMS_SORT, function( i, el ) {
-                            ellipse(  [ 100 + el[0], 0 ], [ 0.80, 0.14 ], { "stroke-width": 0, fill: el[1] } );
-                            label( [ 100 + el[0], 0 ], "\\color{" + el[1] + "}{" + el[0] + "}", position, { labelDistance: 5 } );
+                            ellipse(  [ 100 + el[0], 0 ], [ 0.60, 0.1 ], { "stroke-width": 0, fill: el[1] } );
+                            label( [ 100 + el[0], 0 ], "\\small\\color{" + el[1] + "}{" + el[0] + "}", position, { labelDistance: 5 } );
                             position = ( position === "above" ? "below" : "above" );
                         } );
                     </div>
                     <div>
-                        <p>現在只要看線上的數字，從左讀到右邊。</p>
+                        <p>現在只要看線上的數字，從左邊讀到右邊。</p>
                         <p>最左邊的數字就是最小的，最右邊就是最大的。</p>
                     </div>
                     <p class="number-list"><code><var>NUMS_SORT_TEX_COLOR</var></code></p>
