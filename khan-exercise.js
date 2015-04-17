@@ -1330,7 +1330,7 @@ var Khan = (function() {
                         firstInput.select();
                     }
                 }
-            }, 1);
+            }, 300);
 
             lastFocusedSolutionInput = firstInput;
             solutionarea.find(":input").focus(function() {
@@ -1362,39 +1362,33 @@ var Khan = (function() {
             .prop("disabled", false);
 
         // Show acceptable formats
-        if (examples !== null && answerData.examples && answerData.examples.length > 0) {
-            $("#examples-show").show();
-            examples.empty();
-
-            $.each(answerData.examples, function(i, example) {
-                examples.append("<li>" + example + "</li>");
-            });
-
-            examples.children().tmpl();
-
-            $("#examples-show").qtip({
-                content: {
-                    // TODO(alpert): I'd imagine MathJax is unhappy about this
-                    // removal
-                    text: examples.remove(),
-                    prerender: true
-                },
-                style: {classes: "ui-tooltip-light leaf-tooltip"},
-                position: {
-                    my: "bottom center",
-                    at: "top center"
-                },
-                show: {
-                    delay: 200,
-                    effect: {
-                        length: 0
-                    }
-                },
-                hide: {delay: 0}
-            });
-        } else {
-            $("#examples-show").hide();
+        if (examples.length && examples.text().length > 0 && $.prototype.qtip != null) {
+            if($('#solutionarea input[type=text]:not([readonly])').length >= 1) {
+                $('#solutionarea input[type=text]:not([readonly])').each(function() {
+                    $( this ).qtip({
+                        content: {
+                            text: examples.clone().runModules(),
+                            prerender: true
+                        },
+                        style: {
+                            classes: "ui-tooltip-light leaf-tooltip"
+                        },
+                        position: {
+                            my: "bottom left",
+                            at: "top right"
+                        },
+                        show: 'focus',
+                        hide: 'blur',
+                        container: $("#solutionarea"),
+                    });
+                });
+                
+            }
+            else {
+                $('#solutionarea').prepend('<div class="instruction">'+examples.text()+'</div>');
+            }
         }
+
         // save a normal JS array of hints so we can shift() through them later
         hints = hints.tmpl().children().get();
 
