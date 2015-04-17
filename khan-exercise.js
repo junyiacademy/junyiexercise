@@ -1379,7 +1379,7 @@ var Khan = (function() {
                     text: examples.remove(),
                     prerender: true
                 },
-                style: {classes: "qtip-light leaf-tooltip"},
+                style: {classes: "ui-tooltip-light leaf-tooltip"},
                 position: {
                     my: "bottom center",
                     at: "top center"
