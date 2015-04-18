@@ -283,7 +283,7 @@ function handleAttempt(data) {
     var requestUrl = "problems/" + problemNum + "/attempt";
     request(requestUrl, attemptData).fail(function(xhr) {
         // Alert any listeners of the error before reload
-        $(Exercises).trigger("attemptError");
+        $(Exercises).trigger("attemptError", {userExercise: userExercise});
 
         if (xhr && xhr.readyState === 0) {
             // This path gets called when there is a broken pipe during
@@ -299,14 +299,9 @@ function handleAttempt(data) {
         // problem and encourage reloading the page
         $("#problem-and-answer").css("visibility", "hidden");
         $(Exercises).trigger("warning",
-                $._("This page is out of date. You need to " +
-                    "<a href='%(refresh)s'>refresh</a>, but don't " +
-                    "worry, you haven't lost progress. If you think " +
-                    "this is a mistake, " +
-                    "<a href='http://www.khanacademy.org/reportissue?" +
-                    "type=Defect'>tell us</a>.",
-                    {refresh: _.escape(window.location.href)}
-                )
+                $._("這一個畫面過期了。請<a href='" + window.location.href +
+                    "'>重新整理</a>網頁。不用擔心，沒有損失進度。"
+                    )
         );
     });
 
@@ -445,7 +440,7 @@ var attemptHintQueue = jQuery({});
 // cache, to make sure we don't override what is passed down from the servers
 $(window).unload(function() {
     if (attemptHintQueue.queue().length) {
-        $(Exercises).trigger("attemptError");
+        $(Exercises).trigger("attemptError", {userExercise: userExercise});
     }
 });
 
