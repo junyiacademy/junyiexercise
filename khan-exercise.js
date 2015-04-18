@@ -1023,7 +1023,7 @@ var Khan = (function() {
 
         }
 
-        startLoadingExercise(exerciseId, exerciseName, exerciseFile).then(
+        startLoadingExercise(exerciseId, exerciseName, exerciseFile, isQuiz).then(
             function() {
                 finishRender();
             });
