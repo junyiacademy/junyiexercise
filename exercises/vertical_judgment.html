@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers graphie-geometry">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>垂直的判斷</title>
+    <script src="../khan-exercise.js"></script>
+    	<script type="text/javascript">
+    		function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+
+			function  randArray(data){
+			    var arrlen = data.length;
+			    var try1 = new Array();
+			    for(var i = 0;i < arrlen; i++){
+			        try1[i] = i;
+			    }
+			    var try2 = new Array();
+			    for(var i = 0;i < arrlen; i++){
+			        try2[i] = try1.splice(Math.floor(Math.random() * try1.length),1);
+			    }
+			    var try3 = new Array();
+			    for(var i = 0; i < arrlen; i++){
+			        try3[i] = data[try2[i]];
+			    }
+			    return try3;
+			}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">	    
+		<div id="case1">
+            <div class="vars">
+			    <var id="ANGLE">randRange(14,18)* 5</var>
+			    <var id="ANGLE_2">round(180-ANGLE)</var>
+                <var id="R">randRange(7, 10)</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+                <var id="poi">[[R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)],[R*Math.cos((ROTATE_ARC + ANGLE)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE)*Math.PI/180)], [R*Math.cos((ROTATE_ARC + ANGLE+ANGLE_2)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE+ANGLE_2)*Math.PI/180)],[R*Math.cos((ROTATE_ARC + ANGLE*2+ANGLE_2)*Math.PI/180),R*Math.sin((ROTATE_ARC + ANGLE*2+ANGLE_2)*Math.PI/180)]]</var>
+                <var id="W">randArray(["A","B", "E", "C", "D"])</var>
+                <var id="aa">polar(2,ROTATE_ARC+30)</var>
+                <var id="ans">(function(){
+							if(ANGLE==90) {return "是";}
+							if(ANGLE!=90) {return "不是";}
+						})()</var>
+            </div>
+			<p class="question">如圖，<code>\overline{<var>W[0]</var><var>W[2]</var>}</code> 與 <code>\overline{<var>W[1]</var><var>W[3]</var>}</code> 交於 <code><var>W[4]</var></code> 點，<code>\angle <var>W[0]</var><var>W[4]</var><var>W[1]</var></code> 為 <code><var>ANGLE</var></code> 度，請判斷 <code>\overline{<var>W[0]</var><var>W[2]</var>}</code> 是不是垂直 <code>\overline{<var>W[1]</var><var>W[3]</var>}</code>。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 3, R + 3], [-R - 3, R + 3]],
+                            scale: [15, 15]
+                        });
+
+						line(poi[0],poi[2]);
+						line(poi[1],poi[3]);
+						for(var i=0;i&lt;4;i++)
+						{
+							circle(poi[i],0.2,{ stroke: "blue" ,fill:"blue"});
+							label([1.15*poi[i][0],1.15*poi[i][1]], "\\small{"+W[i]+"}","center",{color:"blue"});
+						}
+						
+						graph.aAngle = (ROTATE_ARC  + ANGLE)-10 ;
+						label([aa[0], aa[1]],"\\small{"+W[4]+"}" , "center",{color:"blue"});
+
+						circle([0,0],0.2,{ stroke: "blue" ,fill:"blue"});
+						
+				</div>
+			</div>
+			<p class="solution"><var>ans</var></p>
+                <ul class="choices" data-category="true">					
+					<li>是</li>
+					<li>不是</li>
+				</ul>
+            <div class="hints">
+				<p>垂直的意思是，兩個直線相交為直角，即 <code>90^\circ</code> 。</p>
+				<div>
+					<p><code>\angle <var>W[0]</var><var>W[4]</var><var>W[1]</var></code> 為 <code><var>ANGLE</var></code> 度，所以 <span class="hint_pink"><var>ans</var></span> 垂直。</p>
+					<div data-if="ANGLE==90">
+					 	<div class="graphie" data-update="fan_shaped">
+							var p=[Math.cos((ROTATE_ARC)*Math.PI/180),Math.sin((ROTATE_ARC)*Math.PI/180)]
+							var p_1=[Math.cos((ROTATE_ARC + ANGLE)*Math.PI/180),Math.sin((ROTATE_ARC + ANGLE)*Math.PI/180)]
+							var p_2=[p[0]+p_1[0],p[1]+p_1[1]];
+							line([p[0],p[1]],[p_2[0],p_2[1]]);
+							line([p_1[0],p_1[1]],[p_2[0],p_2[1]]);
+						 </div>
+					 </div>				
+				</div>
+			</div>
+        </div>
+
+
+        <div id="case2">
+            <div class="vars">
+                <var id="W">randArray(["A","B", "E", "C", "D"])</var>
+                <var id="J">randRange(10,14)</var>
+                <var id="ans">
+						(function(){
+							var shape=[];
+							
+							for( var i=0;i&lt;4;i++)
+							{
+								shape[i]="&lt;code &gt; \\overline{"+(W[0]+W[i+1])+"}&lt;/code &gt; ";
+
+							}	
+							return [shape[3],shuffle(shape)];
+						})()</var>
+            </div>
+			<p class="question">如圖，有一三角形 <code><var>W[0]</var><var>W[1]</var><var>W[2]</var></code> ，<code>\angle  <var>W[1]</var><var>W[0]</var><var>W[2]</var> &gt; 90^\circ</code> ，<code>\overline{<var>W[0]</var><var>W[4]</var>}</code> 為 <code>\triangle <var>W[0]</var><var>W[1]</var><var>W[2]</var></code> 的高，<code><var>W[3]</var></code> 為 <code>\overline{<var>W[1]</var><var>W[4]</var>}</code> 中點，請判斷下列何者與 <code>\overline{<var>W[1]</var><var>W[2]</var>}</code> 垂直。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-1, 25], [-1.5, J-3]],
+                            scale: 20
+                        });
+
+						line([0.5,0],[10+J,0]);
+						line([0.5,0],[4+J,J-6]);
+						line([(4+J)/2,0],[4+J,J-6]);
+						line([4+J,0],[4+J,J-6]);
+						line([10+J,0],[4+J,J-6]);
+						circle([0.5,0],0.2,{ stroke: "blue" ,fill:"blue"});
+						label([0.5,0], W[1],"below",{color:"blue"});
+						circle([(4+J)/2,0],0.2,{ stroke: "blue" ,fill:"blue"});
+						label([(4+J)/2,0], W[3],"below",{color:"blue"});
+						circle([(4+J),0],0.2,{ stroke: "blue" ,fill:"blue"});
+						label([(4+J),0], W[4],"below",{color:"blue"});
+						circle([(10+J),0],0.2,{ stroke: "blue" ,fill:"blue"});
+						label([(10+J),0], W[2],"below",{color:"blue"});
+						circle([4+J,J-6],0.2,{ stroke: "blue" ,fill:"blue"});
+						label([4+J,J-6], W[0],"above",{color:"blue"});
+				</div>
+			</div>
+			
+			<p class="solution"><var>ans[0]</var></p>
+                <ul class="choices" data-category="true">					
+					<li><var>ans[1][0]</var></li>
+					<li><var>ans[1][1]</var></li>
+					<li><var>ans[1][2]</var></li>
+					<li><var>ans[1][3]</var></li>
+				</ul>
+            <div class="hints">
+				<p>三角形的高與底成直角。</p>
+				<p>垂直的意思是，兩個直線相交為直角。</p>
+				<p>所以 <span class="hint_pink"><var>ans[0]</var></span> 垂直  <code>\overline{<var>W[1]</var><var>W[2]</var>}</code> 。</p>
+			</div>
+        </div>
+
+         <div id="case3">
+            <div class="vars">
+                <var id="W">randArray(["A","B", "E", "C", "D","F"])</var>
+                <var id="J">randRange(10,14)</var>
+                <var id="K">randRange(0,4)</var>
+                <var id="ans">
+						(function(){
+							var shape=[];
+							
+							for( var i=0;i&lt;5;i++)
+							{
+								shape[i]="&lt;code &gt; \\overline{"+(W[0]+W[i+1])+"}&lt;/code &gt; ";
+
+							}	
+							return [shape[K],shuffle(shape)];
+						})()</var>
+            </div>
+			<p class="question">如圖，有一線段 <code>\overline{<var>W[1]</var><var>W[5]</var>}</code> ，上面有 <code><var>W[3]</var> 、<var>W[2]</var> 、<var>W[4]</var></code> 三點， <code><var>W[0]</var></code> 點在 <code><var>W[K+1]</var></code> 點正上方，請判斷下列何者與 <code>\overline{<var>W[1]</var><var>W[5]</var>}</code> 距離最短。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-1, 25], [-1.5, J-3]],
+                            scale: 20
+                        });
+
+                        var p=[[0.5,0],[(9.5+J)/2,0],[(8.5+J)/4,0],[(29.5+J*3)/4,0],[10+J,0]];
+
+						line([0.5,0],[10+J,0]);
+						for(var i=0;i&lt;5;i++)
+						{
+							circle(p[i],0.2,{ stroke: "blue" ,fill:"blue"});
+							label(p[i], W[i+1],"below",{color:"blue"});
+						}
+						circle([p[K][0],p[K][1]+5],0.2,{ stroke: "blue" ,fill:"blue"});
+						label([p[K][0],p[K][1]+5], W[0],"above",{color:"blue"});
+						line([p[K][0],p[K][1]+5],[p[K][0],p[K][1]],{strokeDasharray: "-"});
+				</div>
+			</div>
+			
+			<p class="solution"><var>ans[0]</var></p>
+                <ul class="choices" data-category="true">					
+					<li><var>ans[1][0]</var></li>
+					<li><var>ans[1][1]</var></li>
+					<li><var>ans[1][2]</var></li>
+					<li><var>ans[1][3]</var></li>
+					<li><var>ans[1][4]</var></li>
+				</ul>
+            <div class="hints">
+				<div>
+					<p>正上方代表 <code>\overline{<var>W[0]</var><var>W[K+1]</var>}</code> 與 <code>\overline{<var>W[1]</var><var>W[5]</var>}</code> 垂直，我們把其他點與 <code><var>W[0]</var></code> 點連起來，形成了四個直角三角形。</p>
+					<div class="graphie" data-update="fan_shaped">
+						var p=[[0.5,0],[(9.5+J)/2,0],[(8.5+J)/4,0],[(29.5+J*3)/4,0],[10+J,0]];
+						for(var i=0;i&lt;5;i++)
+						{
+							line([p[K][0],p[K][1]+5],p[i]);
+						}
+						if(K==0){line([1,0],[1,0.5]);line([0.5,0.5],[1,0.5]);}
+						if(K==2){line([p[2][0]+0.5,0],[p[2][0]+0.5,0.5]);line([p[2][0],0.5],[p[2][0]+0.5,0.5]);}
+						if(K==1){line([p[1][0]+0.5,0],[p[1][0]+0.5,0.5]);line([p[1][0],0.5],[p[1][0]+0.5,0.5]);}
+						if(K==3){line([p[3][0]+0.5,0],[p[3][0]+0.5,0.5]);line([p[3][0],0.5],[p[3][0]+0.5,0.5]);}
+						if(K==4){line([p[4][0]-0.5,0],[p[4][0]-0.5,0.5]);line([p[4][0],0.5],[p[4][0]-0.5,0.5]);}
+					</div>
+				</div>
+				<p>我們知道直角三角形中斜邊比兩股長，所以在每一個直角三角形中，斜邊都大於 <var>ans[0]</var> 。</p>
+				<p>所以 <span class="hint_pink"><var>ans[0]</var></span> 為 <code><var>W[0]</var></code>  到 <code>\overline{<var>W[1]</var><var>W[5]</var>}</code> 最短距離，從這邊我們知道垂直距離為點到直線最短距離。</p>
+			</div>
+        </div>
+        
+         <div id="case4">
+            <div class="vars">
+                <var id="W">randArray(["A","B", "C", "D"])</var>
+                <var id="L,L_2">randRangeUnique(2, 9,2)</var>
+                <var id="J">randRange(0, 3)</var>
+                <var id="ans">
+						(function(){
+							var shape=[];
+							var a=2;var b;var c;
+							if(J==0){a=2;b=1;c=3;}
+							if(J==1){a=3;b=0;c=2;}
+							if(J==2){a=0;b=1;c=3;}
+							if(J==3){a=1;b=0;c=2;}
+							shape[0]="&lt;code &gt; \\overline{"+(W[0]+W[1])+"}&lt;/code &gt; ";
+							shape[1]="&lt;code &gt; \\overline{"+(W[1]+W[2])+"}&lt;/code &gt; ";
+							shape[2]="&lt;code &gt; \\overline{"+(W[2]+W[3])+"}&lt;/code &gt; ";
+							shape[3]="&lt;code &gt; \\overline{"+(W[3]+W[0])+"}&lt;/code &gt; ";
+							return [shape[J],shape[a],shuffle([shape[a],shape[b],shape[c]])];
+						})()</var>
+            </div>
+			<p class="question">如圖，有一長方形 <code><var>W[0]</var><var>W[1]</var><var>W[2]</var><var>W[3]</var></code>，請判斷 <var>ans[0]</var> 與下列何者不是垂直 。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({ range: [[-2, L + 2], [-2, L_2 + 2]], scale: 30 });
+
+				    path([[0, 0], [0, L_2], [L, L_2], [L, 0], true],{stroke: BLUE, fill: "#eee"});
+
+				    circle([0,L_2],0.1,{ stroke: "blue" ,fill:"blue"});
+					label([0,L_2], W[0],"left",{color:"blue"});
+
+				    circle([0,0],0.1,{ stroke: "blue" ,fill:"blue"});
+					label([0,0], W[1],"left",{color:"blue"});
+
+					circle([L,0],0.1,{ stroke: "blue" ,fill:"blue"});
+					label([L,0], W[2],"right",{color:"blue"});
+
+					circle([L,L_2],0.1,{ stroke: "blue" ,fill:"blue"});
+					label([L,L_2], W[3],"right",{color:"blue"});
+				</div>
+			</div>
+			<p class="solution"><var>ans[1]</var></p>
+                <ul class="choices" data-category="true">					
+					<li><var>ans[2][0]</var></li>
+					<li><var>ans[2][1]</var></li>
+					<li><var>ans[2][2]</var></li>
+				</ul>
+			
+			<div class="hints">
+				<div>
+					<p>長方形四個角為直角，即 <code>90^\circ</code> ，代表相鄰的邊會互相垂直。</p>
+					<div class="graphie" data-update="fan_shaped">
+						line( [0.5, 0], [0.5, 0.5],{ stroke: "blue"});
+						line( [0.5, 0.5], [0, 0.5],{ stroke: "blue"});
+						line( [L-0.5, 0], [L-0.5, 0.5],{ stroke: "blue"});
+						line( [L, 0.5], [L-0.5, 0.5],{ stroke: "blue"});
+
+						line( [0.5, L_2], [0.5, L_2-0.5],{ stroke: "blue"});
+						line( [0.5, L_2-0.5], [0, L_2-0.5],{ stroke: "blue"});
+						line( [L-0.5, L_2], [L-0.5, L_2-0.5],{ stroke: "blue"});
+						line(  [L-0.5, L_2-0.5], [L,  L_2-0.5],{ stroke: "blue"});
+
+					</div>
+				</div>
+				<p>所以從這邊我們知道 <span class="hint_pink"><var>ans[1]</var></span> 與 <var>ans[0]</var>  不垂直。</p>
+			</div>
+			
+        </div>
+        
+		
+	</div>
+	</div>
+</body>
+</html>

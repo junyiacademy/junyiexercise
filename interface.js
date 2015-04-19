@@ -180,6 +180,14 @@ function handleAttempt(data) {
         canAttempt = false;
     }
 
+    // For pretest mode, update user's answer history.
+    if (Exercises.pretestMode) {
+        $(Exercises).trigger("updateAnswerHistory", {
+            name: Exercises.currentCard.get('exerciseName'),
+            pass: score.correct
+        });
+    }
+
     var curTime = new Date().getTime();
     var timeTaken = Math.round((curTime - lastAttemptOrHint) / 1000);
     var stringifiedGuess = JSON.stringify(score.guess);
@@ -332,6 +340,14 @@ function onHintShown(e, data) {
 
     hintsUsed++;
     updateHintButtonText();
+
+    // if user click hint, pass this question as false to updateAnswerHistory
+    if (Exercises.pretestMode) {
+        $(Exercises).trigger("updateAnswerHistory", {
+            name: Exercises.currentCard.get('exerciseName'),
+            pass: false
+        });
+    }
 
     $(Exercises).trigger("hintUsed", data);
     // If there aren't any more hints, disable the get hint button
