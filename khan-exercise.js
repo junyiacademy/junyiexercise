@@ -1330,7 +1330,7 @@ var Khan = (function() {
                         firstInput.select();
                     }
                 }
-            }, 300);
+            }, 1);
 
             lastFocusedSolutionInput = firstInput;
             solutionarea.find(":input").focus(function() {
