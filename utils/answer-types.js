@@ -462,6 +462,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     var transformed = forms.decimal(text);
                     $.each(transformed, function(ix, t) {
                         t.exact = hasPercentSign;
+                        t.value = t.value / 100;
                     });
                     return transformed;
                 },
