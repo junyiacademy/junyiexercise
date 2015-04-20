@@ -1363,6 +1363,7 @@ var Khan = (function() {
 
         // Show acceptable formats
         if (examples !== null && answerData.examples && answerData.examples.length > 0) {
+            $("#examples-show").show();
             examples.empty();
 
             $.each(answerData.examples, function(i, example) {
@@ -1398,7 +1399,9 @@ var Khan = (function() {
                 }
             }
         }
-        
+        else {
+            $("#examples-show").hide();
+        }
         // save a normal JS array of hints so we can shift() through them later
         hints = hints.tmpl().children().get();
 
