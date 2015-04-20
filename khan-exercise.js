@@ -1330,7 +1330,7 @@ var Khan = (function() {
                         firstInput.select();
                     }
                 }
-            }, 1);
+            }, 100);
 
             lastFocusedSolutionInput = firstInput;
             solutionarea.find(":input").focus(function() {
@@ -1390,8 +1390,27 @@ var Khan = (function() {
                             hide: 'blur',
                             container: $("#solutionarea"),
                         });
+                    });   
+                }
+                else if($('#problemarea input[type=text]:not([readonly])').length >= 1) {
+                    $('#problemarea input[type=text]:not([readonly])').each(function() {
+                        $( this ).qtip({
+                            content: {
+                                text: examples.clone().runModules(),
+                                prerender: true
+                            },
+                            style: {
+                                classes: "ui-tooltip-light leaf-tooltip"
+                            },
+                            position: {
+                                my: "bottom left",
+                                at: "top right"
+                            },
+                            show: 'focus',
+                            hide: 'blur',
+                            container: $("#solutionarea"),
+                        });
                     });
-                    
                 }
                 else {
                     $('#solutionarea').prepend('<div class="instruction">'+examples.text()+'</div>');
