@@ -9,7 +9,7 @@
         return str;
     };
 
-    $("a.show-subhint").live("click", function(event) {
+    $(document).on("click", "a.show-subhint", function(event) {
         var subhint = $("#" + $(this).data("subhint"));
         var visibleText = $(this).data("visible-text") || $(this).text();
         var hiddenText = $(this).data("hidden-text") || "隱藏解釋";
@@ -20,11 +20,19 @@
         } else {
             $(this).text(hiddenText);
         }
-        $("#" + $(this).data("subhint")).toggle(200);
+
+        var $el = $("#" + $(this).data("subhint"));
+        $el.toggle(200, function() {
+            // TODO(alpert): This flashes when the subhint is revealed.
+            // Flashing is better than the alternative, though:
+            // https://uploads.hipchat.com/6574/33523/6qxvb1j5sh88vjv/upload.png
+            MathJax.Hub.Queue(["Reprocess", MathJax.Hub, $el[0]]);
+        });
+
         return false;
     });
 
-    $("a.show-definition").live("hover", function(event) {
+    $(document).on("mouseenter mouseleave", "a.show-definition", function(event) {
         $("#" + $(this).data("definition")).toggle(200);
         return false;
     });

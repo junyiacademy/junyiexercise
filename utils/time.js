@@ -41,8 +41,8 @@ $.extend(KhanUtil, {
         };
 
         analogClock.drawHands = function() {
-            this.set.push(this.graph.line([0.4 * this.radius * Math.sin(2 * Math.PI * this.hour / 12 + (this.minute / 60) / 12 * 2 * Math.PI), 0.4 * this.radius * Math.cos(2 * Math.PI * this.hour / 12 + (this.minute / 60) / 12 * 2 * Math.PI)], [0, 0],{"stroke-width": 3 ,stroke : KhanUtil.GREEN}));
-            this.set.push(this.graph.line([0.6 * this.radius * Math.sin((this.minute / 60) * 2 * Math.PI), 0.6 * this.radius * Math.cos((this.minute / 60) * 2 * Math.PI)], [0, 0],{"stroke-width": 3 ,stroke : KhanUtil.ORANGE}));
+            this.set.push(this.graph.line([0.45 * this.radius * Math.sin(2 * Math.PI * this.hour / 12 + (this.minute / 60) / 12 * 2 * Math.PI), 0.45 * this.radius * Math.cos(2 * Math.PI * this.hour / 12 + (this.minute / 60) / 12 * 2 * Math.PI)], [0, 0]));
+            this.set.push(this.graph.line([0.6 * this.radius * Math.sin((this.minute / 60) * 2 * Math.PI), 0.6 * this.radius * Math.cos((this.minute / 60) * 2 * Math.PI)], [0, 0]));
         };
 
         analogClock.draw = function() {
@@ -136,7 +136,7 @@ $.extend(KhanUtil, {
             }
 			if (this.middleTicks) {
                 this.drawTicks({n: this.middleTicks, p: this.middleTickLength});
-            }
+    }
             // draw circles
             this.set.push(this.graph.circle([0, 0], this.radius));
             this.set.push(this.graph.circle([0, 0], this.radius / 40));

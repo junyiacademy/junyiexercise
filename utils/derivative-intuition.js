@@ -10,8 +10,8 @@ $.extend(KhanUtil, {
     initAutoscaledGraph: function(range, options) {
         var graph = KhanUtil.currentGraph;
         options = $.extend({
-            xpixels: 600,
-            ypixels: 600,
+            xpixels: 500,
+            ypixels: 500,
             xdivisions: 20,
             ydivisions: 20,
             labels: true,
@@ -274,7 +274,7 @@ $.extend(KhanUtil, {
             graph.style({
                 stroke: KhanUtil.DDX_COLOR,
                 strokeWidth: 1,
-                opacity: 0
+                opacity: duration === 0 ? 1 : 0
             }, function() {
                 ddxplot = graph.plot(function(x) {
                     return KhanUtil.ddx(x);
