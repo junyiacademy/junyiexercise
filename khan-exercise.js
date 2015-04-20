@@ -1318,7 +1318,6 @@ var Khan = (function() {
 
             examples.children().tmpl();
 
-
             if (examples.length && examples.text().length > 0 && $.prototype.qtip != null) {
                 if($('#solutionarea input[type=text]:not([readonly])').length >= 1) {
                     $('#solutionarea input[type=text]:not([readonly])').each(function() {
@@ -1365,7 +1364,7 @@ var Khan = (function() {
                 }
             }
         } 
-        
+
         // save a normal JS array of hints so we can shift() through them later
         hints = hints.tmpl().children().get();
 
