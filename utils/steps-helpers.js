@@ -159,8 +159,7 @@
        $.each(path, function(node) {
           strPath += node + ", ";
        });
-       // NOTE(jeresig): Why is this a JavaScript expression?
-       steps.add("putStepsInContext(" + KhanUtil.exprToCode(parentExpr) + ", [" + strPath + "])");
+       steps.add("putStepsInContect(" + KhanUtil.exprToCode(parentExpr) + ", [" + strPath + "])");
     };
 
     var putStepsInContext = function(parentExpr, path, steps) {

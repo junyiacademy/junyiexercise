@@ -27,13 +27,10 @@ function numberLine(start, end, step, x, y, denominator) {
                     lab = base + "\\frac{" + Math.abs(Math.round(frac * denominator)) + "}{" + denominator + "}";
                 }
             }
-            graph.label([x + i, y - 0.2], "\\small{" + lab + "}", "below", { labelDistance: 3 });
+            graph.label([x + i, y - 0.2], lab, "below", { labelDistance: 3 });
         }
         else {
-            graph.label([x + i, y - 0.2],
-                        "\\small{" + KhanUtil.localeToFixed(start + i, decPlaces) + "}",
-                        "below",
-                        { labelDistance: 3 });
+            graph.label([x + i, y - 0.2], (start + i).toFixed(decPlaces), "below", { labelDistance: 3 });
         }
     }
     return set;
@@ -79,7 +76,7 @@ function rectchart(divisions, colors, y) {
     $.each(divisions, function(i, slice) {
         var x = partial / sum, w = slice / sum;
         set.push(graph.path([[x, y], [x + w, y], [x + w, y + 1], [x, y + 1]], {
-            stroke: KhanUtil.BACKGROUND,
+            stroke: "#fff",
             fill: colors[i]
         }));
         partial += slice;
@@ -87,7 +84,7 @@ function rectchart(divisions, colors, y) {
 
     for (var i = 0; i <= sum; i++) {
         var x = i / sum;
-        set.push(graph.line([x, y + 0], [x, y + 1], { stroke: KhanUtil.BACKGROUND }));
+        set.push(graph.line([x, y + 0], [x, y + 1], { stroke: "#fff" }));
     }
 
     return set;
@@ -228,8 +225,8 @@ function redrawParabola(fShowFocusDirectrix) {
 
     if (fShowFocusDirectrix) {
         $("#focus-x-label").html("<code>" + currParabola.getFocusX() + "</code>").tmpl();
-        $("#focus-y-label").html("<code>" + KhanUtil.localeToFixed(currParabola.getFocusY(), 2) + "</code>").tmpl();
-        $("#directrix-label").html("<code>" + "y = " + KhanUtil.localeToFixed(currParabola.getDirectrixK(), 2) + "</code>").tmpl();
+        $("#focus-y-label").html("<code>" + currParabola.getFocusY().toFixed(2) + "</code>").tmpl();
+        $("#directrix-label").html("<code>" + "y = " + currParabola.getDirectrixK().toFixed(2) + "</code>").tmpl();
     } else {
         var equation = "y - " + vertexY + "=" + leadingCoefficient + "(x - " + vertexX + ")^{2}";
         equation = KhanUtil.cleanMath(equation);

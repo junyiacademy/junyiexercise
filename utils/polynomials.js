@@ -1,12 +1,12 @@
 $.extend(KhanUtil, {
     Polynomial: function(minDegree, maxDegree, coefs, variable, name) {
-        var term = function(coef, vari, degree) {
+	        var term = function(coef, vari, degree) {
 
             // sort of a weird error behavior
             if (typeof coef === "undefined" || coef === 0) {
                 return null;
             }
-
+			
             if (degree === 0) {
                 return coef;
             } else if (degree === 1) {
@@ -124,6 +124,17 @@ $.extend(KhanUtil, {
 
         };
 
+		this.Term = function(termIndex){
+			//returns the coef and degree for a particular term
+            var numberOfTerms = this.getNumberOfTerms();
+
+            //mod twice to always get positive
+            termIndex = ((termIndex % numberOfTerms) + numberOfTerms) % numberOfTerms;
+
+            //upshift by one due to "+" sign at the front of the expression
+            return KhanUtil.expr(this.expr()[termIndex + 1]);	
+		};
+
         this.text = function() {
             return KhanUtil.expr(this.expr(this.variable));
         };
@@ -148,75 +159,53 @@ $.extend(KhanUtil, {
             return hints;
         };
 
-        this.derivative = function() {
-            var ddxCoefs = [];
-
-            for (var i = this.maxDegree; i >= this.minDegree; i--) {
-                ddxCoefs[i - 1] = i * this.coefs[i];
-            }
-
-            // if the term's degree is zero, the derivative degree is not
-            // decremented
-            var ddxMinDegree = this.minDegree ? this.minDegree - 1 : 0;
-            var ddxMaxDegree = this.maxDegree ? this.maxDegree - 1 : 0;
-
-            return new KhanUtil.Polynomial(ddxMinDegree, ddxMaxDegree, ddxCoefs, this.variable);
-        },
-
-        /**
-         * Add this polynomial to a number or other polynomial.
-         *
-         * Assumes the second polynomial's variable is the same as the first
-         * polynomial's.
-         *
-         * Does not change the polynomials, returns the result.
-         */
-        this.add = function(addend) {
+        // Adds two polynomials
+        // It assumes the second polynomial's variable is the same as the first polynomial's
+        // Does not change the polynomials, returns the result
+        this.add = function(polynomial) {
             var coefs = [];
+            var minDegree = Math.min(this.minDegree, polynomial.minDegree);
+            var maxDegree = Math.max(this.maxDegree, polynomial.maxDegree);
 
-            if (typeof addend === "number") {
-                addend = new KhanUtil.Polynomial(0, 0, [addend], this.variable);
-            }
-
-            // Assume if it's not a number it's a polynomial
-            var minDegree = Math.min(this.minDegree, addend.minDegree);
-            var maxDegree = Math.max(this.maxDegree, addend.maxDegree);
             for (var i = minDegree; i <= maxDegree; i++) {
                 var value = 0;
 
                 value += i <= this.maxDegree ? this.coefs[i] : 0;
-                value += i <= addend.maxDegree ? addend.coefs[i] : 0;
+                value += i <= polynomial.maxDegree ? polynomial.coefs[i] : 0;
 
                 coefs[i] = value;
             }
-
+			// Fill in any missing values of coefs with 0s
+            for (var i = 0; i < coefs.length; i++) {
+				if (coefs[i] === undefined) {
+					coefs[i] = 0;
+				}
+            }
             return new KhanUtil.Polynomial(minDegree, maxDegree, coefs, this.variable);
         };
 
-        /**
-         * Subtracts a number or other polynomial from this polynomial.
-         *
-         * Assumes the second polynomial's variable is the same as the first
-         * polynomial's.
-         *
-         * Does not change the polynomials, returns the result.
-         */
-        this.subtract = function(addend) {
-            if (typeof addend === "number") {
-                return this.add(-addend);
-            } else {
-                return this.add(addend.multiply(-1));
-            }
-        };
+        // Subtracts polynomial from this
+        // It assumes the second polynomial's variable is the same as the first polynomial's
+        // Does not change the polynomials, returns the result
+        this.subtract = function(value) {
+			var coefs = [];
+            if (typeof value === "number") {
 
-        /**
-         * Multiplies this polynomial by a number or other polynomial.
-         *
-         * Assumes the second polynomial's variable is the same as the first
-         * polynomial's.
-         *
-         * Does not change the polynomials, returns the result.
-         */
+				for (var i = 0; i < this.coefs.length; i++) {
+                    coefs[i] = this.coefs[i];
+                }
+
+                coefs[0] = coefs[0] - value;
+
+                return new KhanUtil.Polynomial(this.minDegree, this.maxDegree, coefs, this.variable);
+
+            // Assume if it's not a number it's a polynomial
+            } else {
+				return this.add(value.multiply(-1));
+			}
+        }
+
+        // Multiply a polynomial by a number or other polynomial
         this.multiply = function(value) {
             var coefs = [];
             if (typeof value === "number") {
@@ -255,49 +244,79 @@ $.extend(KhanUtil, {
                     }
                 }
 
-                return new KhanUtil.Polynomial(Math.min(this.minDegree, value.minDegree), coefs.length - 1, coefs, this.variable);
+                return new KhanUtil.Polynomial(Math.min(this.minDegree, value.minDegree), coefs.length-1, coefs, this.variable);
             }
-        };
+        }
+		
+		// Divide a polynomial by a number or other polynomial
+		this.divideBase = function(dividor) 
+		{
+			var coefs = [];
+			var i = this.maxDegree;
+			var j = dividor.maxDegree;
+			
+			if(i >= j)
+				coefs[i-j] = this.coefs[i] / dividor.coefs[j];
 
-        // Scale or shift a polynomial
-        // Example: f(x) = Ax^2 + Bx + C ==>
-        //          f(mx + b) = A(mx + b)^2 + B(mx + b) + C
-        this.scale = function(m, b) {
-
-            // v = mx + b
-            var v = new KhanUtil.Polynomial(0, 1, [b, m]);
-
-            var n = this.getNumberOfTerms();
-
-            // nothing to scale of the polynomial is y = 0
-            if (n === 0) {
-                return this;
+            // Fill in any missing values of coefs with 0s
+            for (var k = 0; k < coefs.length; k++) {
+				if (coefs[k] === undefined) {
+					coefs[k] = 0;
+                }
             }
 
-            // expand each substituted term of the polynomial
-            var self = this;
-            var termPolys = _.map(_.range(0, n), function(i) {
-                var term = self.getCoefAndDegreeForTerm(i);
+			return new KhanUtil.Polynomial(0, coefs.length-1, coefs, this.variable);
+		}
 
-                // start with the coefficient in front of the term
-                var termPoly = new KhanUtil.Polynomial(0, 0, [term.coef]);
+		this.divide = function(dividor) 
+		{
+			var resEnd = []; 
+			var coefs2 = [];
+			var coefs4 = [];
 
-                // expand the substituted term
-                // ex: A(mx + b)^3 = A(mx + b)(mx + b)(mx + b)
-                _.times(term.degree, function(j) {
-                    termPoly = termPoly.multiply(v);
-                });
-                return termPoly;
-            });
+			var i = this.findMaxDegree(this.coefs);
+			var j = dividor.findMaxDegree(dividor.coefs);
+			var divRes = [];
 
-            // add all of the substituted terms
-            var scaledPoly = _.reduce(termPolys, function(memo, curr) {
-                return memo.add(curr);
-            });
+			coefs2[i] = this.coefs[i];
+            // Fill in any missing values of coefs with 0s
+            for (var k = 0; k < coefs2.length; k++) {
+				if (coefs2[k] === undefined) {
+					coefs2[k] = 0;
+                }
+            }
+			var divideMax = new KhanUtil.Polynomial(0, i, coefs2, this.variable);
 
-            return scaledPoly;
-        };
+			coefs4[j] = dividor.coefs[j];
+            // Fill in any missing values of coefs with 0s
+            for (var k = 0; k < coefs4.length; k++) {
+				if (coefs4[k] === undefined) {
+					coefs4[k] = 0;
+                }
+            }
+			var dividorMax = new KhanUtil.Polynomial(0, j, coefs4, this.variable);
 
+			var tmpDiviValue1 = divideMax.divideBase(dividorMax);
+
+			var tmpDiviValue2 = tmpDiviValue1.multiply(dividor);
+
+			var tmpDiviValue3 = this.subtract(tmpDiviValue2);
+
+			if(tmpDiviValue3.findMaxDegree(tmpDiviValue3.coefs) < dividor.findMaxDegree(dividor.coefs) ||
+				tmpDiviValue3.coefs[tmpDiviValue3.findMaxDegree(tmpDiviValue3.coefs)] === 0)
+			{
+				resEnd.push(tmpDiviValue3.coefs[tmpDiviValue3.minDegree]);
+				resEnd.push(tmpDiviValue1);
+				return resEnd;
+			}
+
+			resEnd = tmpDiviValue3.divide(dividor);
+
+			resEnd[1] = tmpDiviValue1.add(resEnd[1]);
+
+			return resEnd;
+		};
+		
         return this;
     },
 
@@ -366,7 +385,7 @@ $.extend(KhanUtil, {
 
             hints = hints.concat(composed.hint(val));
 
-            hints.push("<p>That means <code>" + this.name + "(" + val + ") = " +
+            hints.push("<p>這表示 <code>" + this.name + "(" + val + ") = " +
                 this.hintEvalOf(val, true) + "</code></p>");
 
             hints.push("<p><code>" + this.name + "(" + val + ") = " +
@@ -390,20 +409,5 @@ $.extend(KhanUtil, {
         }
 
         return allZero ? randCoefs(minDegree, maxDegree) : coefs;
-    },
-
-    findRootsNumerically: function(fn, range, step) {
-        step = step || 0.05;
-        var x = range[0];
-        var positive = fn(x) > 0;
-        var roots = [];
-        while (x < range[1]) {
-            x += step;
-            if ((fn(x) > 0) !== positive) {
-                roots.push(KhanUtil.roundToNearest(step, x - step));
-                positive = !positive;
-            }
-        }
-        return roots;
-    }
+    }	
 });

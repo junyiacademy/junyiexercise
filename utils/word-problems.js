@@ -181,7 +181,7 @@ $.fn["word-problemsLoad"] = function() {
             return array[array.length - i - 1];
         };
     };
-
+    
     var Noun = function(noun, properties) {
     	// extend noun with some properties
     	// new Noun("", {measureWord: new IncrementalShuffler(["", ""])})
@@ -438,7 +438,7 @@ $.fn["word-problemsLoad"] = function() {
 		   "苗栗縣",
 		   "彰化縣"
     ]);
-
+	
     var schools = new IncrementalShuffler([
         "龍埔國小",
         "長安國小",
@@ -670,7 +670,7 @@ $.fn["word-problemsLoad"] = function() {
         color: function(i) {
             return colors.get(i - 1);
         },
-
+		
 	    movie: function(i) {
 		    return movies.get(i-1);
 	    },

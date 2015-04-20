@@ -46,8 +46,10 @@ $.extend(KhanUtil, {
             number += digit * place;
             place /= 10;
         });
-
-        return number;
+		
+		return number;
+		
+        
     },
 
     padDigitsToNum: function(digits, num) {
@@ -82,7 +84,7 @@ $.extend(KhanUtil, {
         if (x <= 1) {
             return x;
         } else {
-            return x * KhanUtil.factorial(x - 1);
+            return x * KhanUtil.factorial(x-1);
         }
     },
 
@@ -290,7 +292,7 @@ $.extend(KhanUtil, {
             return KhanUtil.randRange(min, max);
         } else {
             var toReturn = [];
-            for (var i = min; i <= max; i++) {
+            for (var i = min; i < max; i++) {
                 toReturn.push(i);
             }
 
@@ -305,7 +307,7 @@ $.extend(KhanUtil, {
             return KhanUtil.randRangeNonZero(min, max);
         } else {
             var toReturn = [];
-            for (var i = min; i <= max; i++) {
+            for (var i = min; i < max; i++) {
                 if (i === 0) {
                     continue;
                 }
@@ -477,53 +479,21 @@ $.extend(KhanUtil, {
         }
         return 1;
     },
-
-    // Checks if a number or string representation thereof is an integer
-    isInt: function(num) {
-        return parseFloat(num) === parseInt(num, 10) && !isNaN(num);
-    },
-
-
-    /**
+/**
      * Add LaTeX color markup to a given value.
      */
     colorMarkup: function(val, color) {
         return "\\color{" + color + "}{" + val + "}";
     },
-
-    /**
-     * Like _.contains except using _.isEqual to verify if item is present.
-     * (Works for lists of non-primitive values.)
-     */
-    contains: function(list, item) {
-        return _.any(list, function(elem) {
-            if (_.isEqual(item, elem)) {
-                return true;
-            }
-            return false;
-        });
+    // Checks if a number or string representation thereof is an integer
+    isInt: function(num) {
+        return parseFloat(num) === parseInt(num, 10) && !isNaN(num);
     },
-
-    tagMarkup: function(val, tag, attr) {
-        attr = attr || "";
-        return "<" + tag + " " + attr + ">" + val + "</" + tag + ">";
-    },
-
-    /**
-     * Add hint color markup to a given value
-     */
-    hintColorMarkup: function(val, colorName) {
-        var hintCSS = "class='hint_" + colorName + "'";
-        return KhanUtil.tagMarkup(val, "span", hintCSS);
-    },
-
     BLUE: "#6495ED",
     ORANGE: "#FFA500",
     PINK: "#FF00AF",
     GREEN: "#28AE7B",
-    PURPLE: "#9D38BD",
-    RED: "#DF0030",
-    GRAY: "gray",
-    BLACK: "black",
-    BACKGROUND: "#FAFAFA"
+    PURPLE: "purple",
+    RED: "red",
+    GRAY: "gray"
 });

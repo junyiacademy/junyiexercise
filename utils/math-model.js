@@ -668,7 +668,7 @@
             var tk = hd();
             if (tk !== tc) {
                 if (typeof console !== "undefined") {
-                    console.log("Expecting " + tc + " found " + tk);  // @Nolint
+                    console.log("Expecting " + tc + " found " + tk);
                 }
             }
             next();

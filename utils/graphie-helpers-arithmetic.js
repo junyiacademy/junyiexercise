@@ -1,4 +1,4 @@
-function Adder(a, b, digitsA, digitsB) {
+﻿function Adder(a, b, digitsA, digitsB) {
     var graph = KhanUtil.currentGraph;
     digitsA = digitsA || KhanUtil.digits(a);
     digitsB = digitsB || KhanUtil.digits(b);
@@ -18,14 +18,14 @@ function Adder(a, b, digitsA, digitsB) {
     this.show = function() {
         graph.init({
             range: [[-1, 11], [pos.sum - 0.5, pos.carry + 0.5]],
-            scale: [20, 40]
+            scale: [30, 45]
         });
 
         drawDigits(digitsA.slice(0).reverse(), pos.max - digitsA.length + 1, pos.first);
         drawDigits(digitsB.slice(0).reverse(), pos.max - digitsB.length + 1, pos.second);
 
         graph.path([[-0.5, pos.second - 0.5], [pos.max + 0.5, pos.second - 0.5]]);
-        graph.label([0, 1] , "\\LARGE{+\\vphantom{0}}");
+        graph.label([0, 1] , "\\huge{+\\vphantom{0}}");
     };
 
     this.showHint = function() {
@@ -84,9 +84,9 @@ function Adder(a, b, digitsA, digitsB) {
     this.showFinalCarry = function() {
         highlights.push(graph.label([pos.max - index, pos.carry],
             "\\color{#6495ED}{" + carry + "}", "below"));
-        graph.label([pos.max - index, pos.sum], "\\LARGE{" + carry + "}");
+        graph.label([pos.max - index, pos.sum], "\\Huge{" + carry + "}");
         highlights.push(graph.label([pos.max - index, pos.sum],
-            "\\LARGE{\\color{#28AE7B}{" + carry + "}}"));
+            "\\Huge{\\color{#28AE7B}{" + carry + "}}"));
 
         this.showSideLabel("\\Large{"
             + "\\color{#6495ED}{" + carry + "}"
@@ -112,7 +112,7 @@ function Adder(a, b, digitsA, digitsB) {
     this.showDecimals = function(deciA, deciB) {
         for (var i = 0; i < 3; i++) {
             graph.style({ fill: "#000" }, function() {
-                graph.ellipse([pos.max - Math.max(deciA, deciB) + 0.5, i - 0.2], [0.08, 0.04]);
+                graph.ellipse([pos.max - Math.max(deciA, deciB) + 0.5, i - 0.2], [0.09, 0.06]);
             });
         }
         this.showSideLabel("\\text{請先確定小數點都有對齊。}");
@@ -146,13 +146,13 @@ function Subtractor(a, b, digitsA, digitsB, decimalPlaces) {
     this.show = function() {
         graph.init({
             range: [[-1, 11], [pos.diff - 0.5, pos.carry + 0.5]],
-            scale: [20, 40]
+            scale: [30, 45]
         });
         drawDigits(digitsA.slice(0).reverse(), pos.max - digitsA.length + 1, pos.first);
         drawDigits(digitsB.slice(0).reverse(), pos.max - digitsB.length + 1, pos.second);
 
         graph.path([[-0.5, pos.second - 0.5], [pos.max + 0.5, pos.second - 0.5]]);
-        graph.label([0, 1] , "\\LARGE{-\\vphantom{0}}");
+        graph.label([0, 1] , "\\huge{-\\vphantom{0}}");
 
         for (var i = 0; i < digitsA.length; i++) {
             highlights.unshift([]);
@@ -201,7 +201,7 @@ function Subtractor(a, b, digitsA, digitsB, decimalPlaces) {
             this.borrow(index);
         } else if (workingDigitsA[index] === digitsA[index]) {
             highlights[index].push(graph.label([pos.max - index, pos.first],
-                "\\LARGE{\\color{#6495ED}{" + workingDigitsA[index] + "}}"));
+                "\\Huge{\\color{#6495ED}{" + workingDigitsA[index] + "}}"));
         } else {
             highlights[index].push(graph.label([pos.max - index, pos.carry],
                 "\\color{#6495ED}{" + workingDigitsA[index] + "}", "below"));
@@ -209,16 +209,16 @@ function Subtractor(a, b, digitsA, digitsB, decimalPlaces) {
 
         if (withinB) {
             highlights[index].push(graph.label([pos.max - index, pos.second],
-                "\\LARGE{\\color{#6495ED}{" + workingDigitsB[index] + "}}"));
+                "\\Huge{\\color{#6495ED}{" + workingDigitsB[index] + "}}"));
             subStr = " - \\color{#6495ED}{" + subtrahend + "}";
         }
 
         var diff = workingDigitsA[index] - subtrahend;
         if (((a - b) / Math.pow(10, index)) > 1 || index < decimalPlaces) {
-            graph.label([pos.max - index, pos.diff], "\\LARGE{" + diff + "}");
+            graph.label([pos.max - index, pos.diff], "\\Huge{" + diff + "}");
         }
 
-        highlights[index].push(graph.label([pos.max - index, pos.diff], "\\LARGE{\\color{#28AE7B}{" + diff + "}}"));
+        highlights[index].push(graph.label([pos.max - index, pos.diff], "\\Huge{\\color{#28AE7B}{" + diff + "}}"));
         if (subStr == "") {
             subStr = "- \\color{#6495ED}{ 0 }";
         }
@@ -254,7 +254,7 @@ function Subtractor(a, b, digitsA, digitsB, decimalPlaces) {
     this.showDecimals = function(deciA, deciB) {
         for (var i = 0; i < 3; i++) {
             graph.style({ fill: "#000" }, function() {
-                graph.ellipse([pos.max - Math.max(deciA, deciB) + 0.5, i - 0.2], [0.08, 0.04]);
+                graph.ellipse([pos.max - Math.max(deciA, deciB) + 0.5, i - 0.2], [0.09, 0.06]);
             });
         }
         this.showSideLabel("\\text{請先確定小數點有對齊喔!}");
@@ -379,7 +379,7 @@ function drawDigits(digits, startX, startY, color) {
     var graph = KhanUtil.currentGraph;
     var set = [];
     $.each(digits, function(index, digit) {
-        var str = "\\LARGE{" + digit + "}";
+        var str = "\\Huge{" + digit + "}";
         set.push(graph.label([startX + index, startY], str, { color: color }));
     });
     return set;
@@ -419,14 +419,14 @@ function Multiplier(a, b, digitsA, digitsB, deciA, deciB) {
     this.show = function() {
         graph.init({
             range: [[-2 - maxNumDigits, 12], [-1 - digitsB.length * digitsA.length, 3]],
-            scale: [20, 40]
+            scale: [30, 45]
         });
 
         drawDigits(digitsA.slice(0).reverse(), 1 - digitsA.length, 2);
         drawDigits(digitsB.slice(0).reverse(), 1 - digitsB.length, 1);
 
         graph.path([[-1 - digitsProduct.length, 0.5], [1, 0.5]]);
-        graph.label([- (Math.max(digitsA.length, digitsB.length)), 1] , "\\LARGE{\\times\\vphantom{0}}");
+        graph.label([- (Math.max(digitsA.length, digitsB.length)), 1] , "\\huge{\\times\\vphantom{0}}");
     };
 
     this.removeHighlights = function() {
@@ -490,7 +490,7 @@ function Multiplier(a, b, digitsA, digitsB, deciA, deciB) {
                 digitsProduct.unshift(0);
             }
             graph.path([[-1 - digitsProduct.length, 0.5 - digitsB.length], [1, 0.5 - digitsB.length]]);
-            graph.label([-1 - digitsProduct.length, 1 - digitsB.length] , "\\LARGE{+\\vphantom{0}}");
+            graph.label([-1 - digitsProduct.length, 1 - digitsB.length] , "\\huge{+\\vphantom{0}}");
             drawDigits(digitsProduct, 1 - digitsProduct.length, -digitsB.length);
         }
     }
@@ -504,9 +504,9 @@ function Multiplier(a, b, digitsA, digitsB, deciA, deciB) {
             fill: "#000"
         }, function() {
             if (deciA > 0)
-                graph.ellipse([-deciA + 0.5, 1.8], [0.08, 0.04]);
+                graph.ellipse([-deciA + 0.5, 1.8], [0.09, 0.06]);
             if (deciB > 0)
-                graph.ellipse([-deciB + 0.5, 0.8], [0.08, 0.04]);
+                graph.ellipse([-deciB + 0.5, 0.8], [0.09, 0.06]);
         });
     };
 
@@ -523,7 +523,7 @@ function Multiplier(a, b, digitsA, digitsB, deciA, deciB) {
         graph.style({
             fill: "#000"
         }, function() {
-            graph.ellipse([-deciB - deciA + 0.5, -0.2 - digitsB.length], [0.08, 0.04]);
+            graph.ellipse([-deciB - deciA + 0.5, -0.2 - digitsB.length], [0.09, 0.06]);
         });
     };
 }
@@ -552,16 +552,16 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
         }
         graph.init({
             range: [[-1 - paddedDivisor.length, 17], [(digitsDividend.length + (deciDiff > 0 ? deciDiff : 0)) * -2 - 1, 2]],
-            scale: [20, 40]
+            scale: [30, 45]
         });
         graph.style({
             fill: "#000"
         }, function() {
             if (deciDivisor !== 0) {
-                decimals = decimals.concat(graph.ellipse([-1 - deciDivisor, -0.2], [0.08, 0.04]));
+                decimals = decimals.concat(graph.ellipse([-1 - deciDivisor, -0.2], [0.09, 0.06]));
             }
             if (deciDividend !== 0) {
-                decimals = decimals.concat(graph.ellipse([digitsDividend.length - deciDividend - 0.5, -0.2], [0.08, 0.04]));
+                decimals = decimals.concat(graph.ellipse([digitsDividend.length - deciDividend - 0.5, -0.2], [0.09, 0.06]));
             }
         });
 
@@ -599,7 +599,7 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
             graph.label([digitsDividend.length + 0.5, -2 * index],
                  "\\color{#6495ED}{" + total + "}"
                 + "\\text{是}"
-                + divisor
+                 + divisor
                + "\\text{的幾倍?}", "right");
 
             fShowFirstHalf = false;
@@ -625,7 +625,7 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
             graph.label([index - product.length, -2 * index - 1] , "-\\vphantom{0}");
             graph.path([[index - product.length - 0.25, -2 * index - 1.5], [index + 0.5, -2 * index - 1.5]]);
 
-            graph.label([digitsDividend.length + 0.5, -2 * index - 1],
+           graph.label([digitsDividend.length + 0.5, -2 * index - 1],
                 "\\color{#6495ED}{" + value + "}"
                 + "\\div"
                 + divisor + " 的商是 "
@@ -661,8 +661,8 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
         graph.style({
                 fill: "#000"
             }, function() {
-                graph.ellipse([digitsDividend.length + deciDiff - 0.5, -0.2], [0.08, 0.04]);
-                graph.ellipse([digitsDividend.length + deciDiff - 0.5, 0.8], [0.08, 0.04]);
+                graph.ellipse([digitsDividend.length + deciDiff - 0.5, -0.2], [0.09, 0.06]);
+                graph.ellipse([digitsDividend.length + deciDiff - 0.5, 0.8], [0.09, 0.06]);
             });
     }
 
@@ -677,7 +677,7 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
             graph.style({
                 fill: "#000"
             }, function() {
-                graph.ellipse([-1, -0.2], [0.08, 0.04]);
+                graph.ellipse([-1, -0.2], [0.09, 0.06]);
             });
         } else {
             graph.label([digitsDividend.length + 0.5, 1.2],
@@ -738,13 +738,13 @@ function PolyDivider(divisor, dividend, divRes) {
     var graph = KhanUtil.currentGraph;
     var digitsDivisor = divisor.toString();
     var digitsDividend = dividend.toString();
-    var divisoritem = divisor.getNumberOfTerms();
-    var dividenditem = dividend.getNumberOfTerms();
-    var dividendlen = (digitsDividend.length+dividenditem*2)/4;
-    var divisorlen = digitsDivisor.length/4;
-    
+	var divisoritem = divisor.getNumberOfTerms();
+	var dividenditem = dividend.getNumberOfTerms();
+	var dividendlen = (digitsDividend.length+dividenditem*2)/4;
+	var divisorlen = digitsDivisor.length/4;
+	
     var numHints =  divRes[1].getNumberOfTerms()*2+1;
-    var term = divisor.Term(0);
+	var term = divisor.Term(0);
     var highlights = [];
     var index = 0;
     var remainder = 0;
@@ -753,11 +753,11 @@ function PolyDivider(divisor, dividend, divRes) {
     var leadingZeros = [];
     var value = 0;
     var decimals = [];
-    var hasQuestionShown = 0;
-    var showAskStep = 0;
-    var remPoly = dividend;
-    var subPoly;
-    graph.init({
+	var hasQuestionShown = 0;
+	var showAskStep = 0;
+	var remPoly = dividend;
+	var subPoly;
+	graph.init({
             range: [[-1 - digitsDivisor.length, digitsDividend.length], [numHints * -2 - 1, 2]],
             scale: [30, 45]
         });
@@ -765,227 +765,227 @@ function PolyDivider(divisor, dividend, divRes) {
             fill: "#000"
         }, function() {
         });
-        
+		
     this.show = function() {
 
-        var i = 0;
-        var maxDegree = dividend.findMaxDegree(digitsDividend.coefs);
-        var dividendStr = "";
-        var addFlag = 0;
+		var i = 0;
+		var maxDegree = dividend.findMaxDegree(digitsDividend.coefs);
+		var dividendStr = "";
+		var addFlag = 0;
 
-        subPoly = dividend;
+		subPoly = dividend;
 
-        for(i = maxDegree;i >= 0;i--)
-        {
-            if(dividend.coefs[i] !== 0)
-            {
-                if(i === 0)
-                    dividendStr = dividendStr + dividend.coefs[i];
-                else if(i === 1)
-                    dividendStr = dividendStr + dividend.coefs[i] + dividend.variable;
-                else
-                    dividendStr = dividendStr + dividend.coefs[i] + dividend.variable + "^{" + i + "}";
-            }
-            else
-            {
-                if(i === 0)
-                    dividendStr = dividendStr + "0";
-                else if(i === 1)
-                    dividendStr = dividendStr + "0" + dividend.variable;
-                else
-                    dividendStr = dividendStr + "0" + dividend.variable + "^{" + i + "}";
-                
-                addFlag = 1;
-                dividenditem++;
-            }
+		for(i = maxDegree;i >= 0;i--)
+		{
+			if(dividend.coefs[i] !== 0)
+			{
+				if(i === 0)
+					dividendStr = dividendStr + dividend.coefs[i];
+				else if(i === 1)
+					dividendStr = dividendStr + dividend.coefs[i] + dividend.variable;
+				else
+					dividendStr = dividendStr + dividend.coefs[i] + dividend.variable + "^{" + i + "}";
+			}
+			else
+			{
+				if(i === 0)
+					dividendStr = dividendStr + "0";
+				else if(i === 1)
+					dividendStr = dividendStr + "0" + dividend.variable;
+				else
+					dividendStr = dividendStr + "0" + dividend.variable + "^{" + i + "}";
+				
+				addFlag = 1;
+				dividenditem++;
+			}
 
-            if(i !== 0)
-                dividendStr = dividendStr + "+";
-        }
+			if(i !== 0)
+				dividendStr = dividendStr + "+";
+		}
 
-        digitsDividend = dividendStr;
-        dividendlen = (digitsDividend.length+dividenditem*2)/4;
-                   
-        graph.label([0,0],
-                digitsDividend, "right");
+		digitsDividend = dividendStr;
+		dividendlen = (digitsDividend.length+dividenditem*2)/4;
+			       
+		graph.label([0,0],
+				digitsDividend, "right");
 
-        graph.label([-divisorlen,0],
-                digitsDivisor, "left");
+		graph.label([-divisorlen,0],
+				digitsDivisor, "left");
 
-        graph.path([[-0.25, -0.5], [-0.25, 0.5], [ dividendlen, 0.5]]);
+		graph.path([[-0.25, -0.5], [-0.25, 0.5], [ dividendlen, 0.5]]);
 
-        term2 = dividend.Term(0);
+		term2 = dividend.Term(0);
 
-        if(addFlag === 1)
-        {
-            graph.label([dividendlen+1 , 0.25],
-                 "\\text{首先將被除式的各項補充完整，}"
-               , "right");
+		if(addFlag === 1)
+		{
+			graph.label([dividendlen+1 , 0.25],
+				 "\\text{首先將被除式的各項補充完整，}"
+			   , "right");
 
-            graph.label([dividendlen+1 , -0.25],
-                 "\\text{想想}" 
-                + "\\color{#6495ED}{" + term + "}"
-                + "\\text{要乘以多少才會等於 }"
-                 +"\\color{#6495ED}{" + term2 + "}" + "?"
-               , "right");
-        }
-        else
-            graph.label([dividendlen+1 , 0],
-                 "\\color{#6495ED}{" + term + "}"
-                + "\\text{要乘以多少才會等於}"
-                 +"\\color{#6495ED}{" + term2 + "}"+ "?"
-               , "right");
+			graph.label([dividendlen+1 , -0.25],
+				 "\\text{想想}" 
+				+ "\\color{#6495ED}{" + term + "}"
+				+ "\\text{要乘以多少才會等於 }"
+				 +"\\color{#6495ED}{" + term2 + "}" + "?"
+			   , "right");
+		}
+		else
+			graph.label([dividendlen+1 , 0],
+				 "\\color{#6495ED}{" + term + "}"
+				+ "\\text{要乘以多少才會等於}"
+				 +"\\color{#6495ED}{" + term2 + "}"+ "?"
+			   , "right");
 
     };
-    
-    this.showHintTitle = function() {
-        graph.label([-2,1.5],
-                "\\text{我們可以用直式除法來計算多項式的除法。}", "right");        
-    };
+	
+	this.showHintTitle = function() {
+		graph.label([-2,1.5],
+				"\\text{我們可以用直式除法來計算多項式的除法。}", "right");		
+	};
 
     this.showHint = function() {
 
-        if(index === numHints)
-                return; 
+		if(index === numHints)
+				return;	
 
-        if(hasQuestionShown === 0)
-        {           
-            this.show();
+		if(hasQuestionShown === 0)
+		{			
+			this.show();
 
-            showAskStep = 1;
-            hasQuestionShown = 1;
-        }
-        else
-        {
-            var coefs = [];
-            var i = 0;
-            var maxDegree = divRes[1].findMaxDegree(divRes[1].coefs) - index;
+			showAskStep = 1;
+			hasQuestionShown = 1;
+		}
+		else
+		{
+			var coefs = [];
+			var i = 0;
+			var maxDegree = divRes[1].findMaxDegree(divRes[1].coefs) - index;
 
-            for(i = 0;i<maxDegree;i++)
-            {
-                coefs[i] = 0;
-            }
-            
-            coefs[maxDegree] = divRes[1].coefs[maxDegree];
+			for(i = 0;i<maxDegree;i++)
+			{
+				coefs[i] = 0;
+			}
+			
+			coefs[maxDegree] = divRes[1].coefs[maxDegree];
 
-            var qotPoly =  new KhanUtil.Polynomial(0, divRes[1].findMaxDegree(divRes[1].coefs) - index, coefs, divRes[1].variable);
-            
-            var qot = divRes[1].Term(index);
+			var qotPoly =  new KhanUtil.Polynomial(0, divRes[1].findMaxDegree(divRes[1].coefs) - index, coefs, divRes[1].variable);
+			
+			var qot = divRes[1].Term(index);
 
-            var rem = subPoly.Term(0);          
+			var rem = subPoly.Term(0);			
 
-            if(showAskStep === 1)
-            {
-                remPoly = divisor.multiply(qotPoly);
+			if(showAskStep === 1)
+			{
+				remPoly = divisor.multiply(qotPoly);
 
-                if(index !== 0)
-                    graph.label([index*1.8,0.75],
-                        "+" + qot, "right");
-                else
-                    graph.label([index*1.8,0.75],
-                        qot, "right");
+				if(index !== 0)
+					graph.label([index*1.8,0.75],
+						"+" + qot, "right");
+				else
+					graph.label([index*1.8,0.75],
+						qot, "right");
 
-                if(subPoly.coefs[remPoly.findMaxDegree(remPoly.coefs)] < 0)
-                    graph.label([index*1.5, -1-index*2],
-                        remPoly.toString(), "right");
-                else
-                    graph.label([index*2, -1-index*2],
-                        remPoly.toString(), "right");  
+				if(subPoly.coefs[remPoly.findMaxDegree(remPoly.coefs)] < 0)
+					graph.label([index*1.5, -1-index*2],
+						remPoly.toString(), "right");
+				else
+					graph.label([index*2, -1-index*2],
+						remPoly.toString(), "right");  
 
-                graph.label([-divisorlen,-1-index*2],
-                        "-", "left");
+				graph.label([-divisorlen,-1-index*2],
+						"-", "left");
 
-                graph.path([[index, -0.25-1-index*2], [ dividendlen, -0.25-1-index*2]]);
+				graph.path([[index, -0.25-1-index*2], [ dividendlen, -0.25-1-index*2]]);
 
-                graph.label([dividendlen+1 , -1-index*2],
-                             "\\color{#6495ED}{" + term + "}"
-                            + "\\text{要乘以}" + "\\color{#FF00AF}{" + qot + "}" + "\\text{才會等於}"
-                             +"\\color{#6495ED}{" + rem + "}"
-                           , "right");
+				graph.label([dividendlen+1 , -1-index*2],
+							 "\\color{#6495ED}{" + term + "}"
+							+ "\\text{要乘以}" + "\\color{#FF00AF}{" + qot + "}" + "\\text{才會等於}"
+							 +"\\color{#6495ED}{" + rem + "}"
+						   , "right");
 
-                showAskStep = 0;
-                index++;
-            }
-            else
-            {
-                subPoly = subPoly.subtract(remPoly);
+				showAskStep = 0;
+				index++;
+			}
+			else
+			{
+				subPoly = subPoly.subtract(remPoly);
 
-                maxDegree = subPoly.findMaxDegree(subPoly.coefs);
-                var subPolyStr = "";
+				maxDegree = subPoly.findMaxDegree(subPoly.coefs);
+				var subPolyStr = "";
 
-                for(i = maxDegree;i >= 0;i--)
-                {
-                    if(subPoly.coefs[i] !== 0)
-                    {
-                        if(i === 0)
-                            subPolyStr = subPolyStr + subPoly.coefs[i];
-                        else if(i === 1)
-                            subPolyStr = subPolyStr + subPoly.coefs[i] + subPoly.variable;
-                        else
-                            subPolyStr = subPolyStr + subPoly.coefs[i] + subPoly.variable + "^{" + i + "}";
-                    }
-                    else
-                    {
-                        if(i === 0)
-                            subPolyStr = subPolyStr + "0";
-                        else if(i === 1)
-                            subPolyStr = subPolyStr + "0" + subPoly.variable;
-                        else
-                            subPolyStr = subPolyStr + "0" + subPoly.variable + "^{" + i + "}";
-                    }
+				for(i = maxDegree;i >= 0;i--)
+				{
+					if(subPoly.coefs[i] !== 0)
+					{
+						if(i === 0)
+							subPolyStr = subPolyStr + subPoly.coefs[i];
+						else if(i === 1)
+							subPolyStr = subPolyStr + subPoly.coefs[i] + subPoly.variable;
+						else
+							subPolyStr = subPolyStr + subPoly.coefs[i] + subPoly.variable + "^{" + i + "}";
+					}
+					else
+					{
+						if(i === 0)
+							subPolyStr = subPolyStr + "0";
+						else if(i === 1)
+							subPolyStr = subPolyStr + "0" + subPoly.variable;
+						else
+							subPolyStr = subPolyStr + "0" + subPoly.variable + "^{" + i + "}";
+					}
 
-                    if(i !== 0)
-                        subPolyStr = subPolyStr + "+";
-                }
+					if(i !== 0)
+						subPolyStr = subPolyStr + "+";
+				}
 
-                if(subPoly.findMaxDegree(subPoly.coefs) < divisor.findMaxDegree(divisor.coefs) )
-                {                   
-                    if(subPoly.toString() !== "")
-                    {
-                        graph.label([dividendlen, -index*2],
-                        subPolyStr, "left");
-                    }
-                    else
-                    {
-                        graph.label([dividendlen, -index*2],
-                        "0", "left");
-                    }
+				if(subPoly.findMaxDegree(subPoly.coefs) < divisor.findMaxDegree(divisor.coefs) )
+				{					
+					if(subPoly.toString() !== "")
+					{
+						graph.label([dividendlen, -index*2],
+						subPolyStr, "left");
+					}
+					else
+					{
+						graph.label([dividendlen, -index*2],
+						"0", "left");
+					}
 
-                    graph.label([dividendlen+1 , -index*2+0.25],
-                             "\\text{我們發現}" + "\\color{#6495ED}{" + subPoly.toString() + "}" + 
-                            "\\text{的次數低於}" + "\\color{#6495ED}{" + term + "}" + "\\text{，}"
-                           , "right");
-                    graph.label([dividendlen+1 , -index*2-0.25],
-                            "\\text{所以計算結束, 商式為}" + "\\color{#FF00AF}{" + divRes[1].toString() + "}" + 
-                            "\\text{，餘數為}" + "\\color{#FF00AF}{" + divRes[0].toString() + "}"
-                           , "right");
-                }
-                else
-                {
-                    if(subPoly.coefs[subPoly.findMaxDegree(subPoly.coefs)] < 0)
-                        graph.label([index*1.5, -index*2],
-                        subPolyStr, "right");
-                    else
-                        graph.label([index*2, -index*2],
-                        subPolyStr, "right");
+					graph.label([dividendlen+1 , -index*2+0.25],
+							 "\\text{我們發現}" + "\\color{#6495ED}{" + subPoly.toString() + "}" + 
+							"\\text{的次數低於}" + "\\color{#6495ED}{" + term + "}" + "\\text{，}"
+						   , "right");
+					graph.label([dividendlen+1 , -index*2-0.25],
+							"\\text{所以計算結束, 商式為}" + "\\color{#FF00AF}{" + divRes[1].toString() + "}" + 
+							"\\text{，餘數為}" + "\\color{#FF00AF}{" + divRes[0].toString() + "}"
+						   , "right");
+				}
+				else
+				{
+					if(subPoly.coefs[subPoly.findMaxDegree(subPoly.coefs)] < 0)
+						graph.label([index*1.5, -index*2],
+						subPolyStr, "right");
+					else
+						graph.label([index*2, -index*2],
+						subPolyStr, "right");
 
-                    graph.label([dividendlen+1 , -index*2+0.25],
-                             "\\text{將}" + "\\color{#6495ED}{" + subPolyStr + "}"
-                            + "\\text{往下拉一層，}"
-                           , "right");
-                    graph.label([dividendlen+1 , -index*2-0.25],
-                             "\\text{想想}" + "\\color{#6495ED}{" + term + "}" + "\\text{要乘以多少才會等於}"
-                            +"\\color{#6495ED}{" + subPoly.Term(0) + "}" + "?"
-                           , "right");
-                }
+					graph.label([dividendlen+1 , -index*2+0.25],
+							 "\\text{將}" + "\\color{#6495ED}{" + subPolyStr + "}"
+							+ "\\text{往下拉一層，}"
+						   , "right");
+					graph.label([dividendlen+1 , -index*2-0.25],
+							 "\\text{想想}" + "\\color{#6495ED}{" + term + "}" + "\\text{要乘以多少才會等於}"
+							+"\\color{#6495ED}{" + subPoly.Term(0) + "}" + "?"
+						   , "right");
+				}
 
-                showAskStep = 1;
-            }
+				showAskStep = 1;
+			}
 
-            
-        }
+			
+		}
     }
-    
+	
     this.getNumHints = function() {
         return numHints;
     };

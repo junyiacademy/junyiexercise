@@ -1,4 +1,4 @@
-// Helper for fractions_cut_and_copy_1 and fractions_cut_and_copy_2
+﻿// Helper for fractions_cut_and_copy_1 and fractions_cut_and_copy_2
 $.extend(KhanUtil, {
     initSliceClone: function(goalBlocks) {
         KhanUtil.pieces = 1;
