@@ -210,7 +210,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
 
                 pi: "pi 的倍數，例如 <code>12\\ \\text{pi}</code> 或 <code>2/3\\ \\text{pi}</code>",
 
-                log: "LOG的數學式, 例如 <code>\\log(100)</code>",
+                log: "an expression, like <code>\\log(100)</code>",
 
                 percent: "百分比，例：<code>12.34\\%</code>",
 
@@ -1513,9 +1513,9 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 },
                 solution: $.trim(solutionText),
                 examples: [
-                    "質因數相乘的數學式, 例如 " +
-                        "<code>2 \\times 2 \\times 3</code>",
-                    "單獨一個質數, 例如 <code>5</code>"
+                    "a product of prime factors, like " +
+                        "<code>2 \\times 3</code>",
+                    "a single prime number, like <code>5</code>"
                 ],
                 showGuess: function(guess) {
                     input.val(guess === undefined ? "" : guess);
