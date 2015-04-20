@@ -417,7 +417,7 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         review_mode: Exercises.reviewMode ? 1 : 0,
 
         // Whether we are currently working on a topic, as opposed to an exercise
-        topic_mode: (!Exercises.reviewMode && !Exercises.practiceMode) ? 1 : 0,
+        topic_mode: (!Exercises.reviewMode && !Exercises.practiceMode && !Exercises.pretestMode) ? 1 : 0,
 
         // If working in the context of a LearningTask (on the new learning
         // dashboard), supply the task ID.
