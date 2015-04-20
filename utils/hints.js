@@ -36,32 +36,5 @@ $(Khan).bind("newProblem", function() {
         .css("top", "0")
         .find(".info-box-header")
             .show();
-
-    var examples = $("#examples");
-    if (examples.length && examples.text().length > 0 && $.prototype.qtip != null) {
-        if($('#solutionarea input[type=text]:not([readonly])').length >= 1) {
-            $('#solutionarea input[type=text]:not([readonly])').each(function() {
-                $( this ).qtip({
-                    content: {
-                        text: examples.clone().runModules(),
-                        prerender: true
-                    },
-                    style: {
-                        classes: "ui-tooltip-light leaf-tooltip"
-                    },
-                    position: {
-                        my: "bottom left",
-                        at: "top right"
-                    },
-                    show: 'focus',
-                    hide: 'blur',
-                    container: $("#solutionarea"),
-                });
-            });
             
-        }
-        else {
-            $('#solutionarea').prepend('<div class="instruction">'+examples.text()+'</div>');
-        }
-    }
 });
