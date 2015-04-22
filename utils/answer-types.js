@@ -164,9 +164,9 @@ $.extend(Khan.answerTypes, {
                 },
                 example: (function() {
                     if (options.simplify === "optional") {
-                        return "<em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code>";
+                        return "<em>真</em>分數，例：<code><var>fraction( 6, 10 )</var></code>請填入<code>6/10</code>";
                     } else {
-                        return "真分數的<em>最簡</em>分數，例：<code>3/5</code>";
+                        return "真分數的<em>最簡</em>分數，例：<code><var>fraction( 3, 5 )</var></code>請填入<code>3/5</code>";
                     }
                 })()
             },
@@ -183,9 +183,9 @@ $.extend(Khan.answerTypes, {
                 },
                 example: (function() {
                     if (options.simplify === "optional") {
-                        return "<em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code>";
+                        return "<em>假</em>分數，例：<code><var>fraction( 14, 8 )</var></code>請填入<code>14/8</code>";
                     } else {
-                        return "假分數的<em>最簡</em>分數，例：<code>7/4</code>";
+                        return "假分數的<em>最簡</em>分數，例：<code><var>fraction( 7, 4 )</var></code>請填入<code>7/4</code>";
                     }
                 })()
             },
@@ -309,7 +309,7 @@ $.extend(Khan.answerTypes, {
 
                     return [];
                 },
-                example: "帶分數，例：<code>1\\ 3/4</code>"
+                example: "帶分數，例：<code><var>1</var>\ <var>fraction( 3, 4, false, true )</var></code>請填入<code>1\\ 3/4</code>，整數和分數中間記得空一格喔！"
             },
 
             decimal: {

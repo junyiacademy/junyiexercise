@@ -1283,7 +1283,7 @@ var Khan = (function() {
                         firstInput.select();
                     }
                 }
-            }, 1);
+            }, 300);
 
             lastFocusedSolutionInput = firstInput;
             solutionarea.find(":input").focus(function() {
@@ -1310,7 +1310,6 @@ var Khan = (function() {
             .removeAttr("disabled");
 
         if (examples !== null && validator.examples && validator.examples.length > 0) {
-            $("#examples-show").show();
             examples.empty();
 
             $.each(validator.examples, function(i, example) {
@@ -1318,9 +1317,54 @@ var Khan = (function() {
             });
 
             examples.children().tmpl();
-        } else {
-            $("#examples-show").hide();
-        }
+
+            if (examples.length && examples.text().length > 0 && $.prototype.qtip != null) {
+                if($('#solutionarea input[type=text]:not([readonly])').length >= 1) {
+                    $('#solutionarea input[type=text]:not([readonly])').each(function() {
+                        $( this ).qtip({
+                            content: {
+                                text: examples.clone().runModules(),
+                                prerender: true
+                            },
+                            style: {
+                                classes: "ui-tooltip-light leaf-tooltip"
+                            },
+                            position: {
+                                my: "bottom left",
+                                at: "top right"
+                            },
+                            show: 'focus',
+                            hide: 'blur',
+                            container: $("#solutionarea"),
+                        });
+                    });
+                }
+                else if($('#problemarea input[type=text]:not([readonly])').length >= 1) { 
+                    $('#problemarea input[type=text]:not([readonly])').each(function() {
+                        $( this ).qtip({
+                            content: {
+                                text: examples.clone().runModules(),
+                                prerender: true
+                            },
+                            style: {
+                                classes: "ui-tooltip-light leaf-tooltip"
+                            },
+                            position: {
+                                my: "bottom left",
+                                at: "top right"
+                            },
+                            show: 'focus',
+                            hide: 'blur',
+                            container: $("#problemarea"),
+                        });
+                    });
+                }
+                else {
+                    $('#solutionarea').prepend('<div class="instruction">'+examples.text()+'</div>');
+                }
+            }
+        } 
+
         // save a normal JS array of hints so we can shift() through them later
         hints = hints.tmpl().children().get();
 
@@ -2006,7 +2050,7 @@ var Khan = (function() {
                 review_mode: (!testMode && Exercises.reviewMode) ? 1 : 0,
 
                 // Whether we are currently working on a topic, as opposed to an exercise
-                topic_mode: (!testMode && !Exercises.reviewMode && !Exercises.practiceMode) ? 1 : 0,
+                topic_mode: (!testMode && !Exercises.reviewMode && !Exercises.practiceMode && !Exercises.pretestMode) ? 1 : 0,
 
                 // Request camelCasing in returned response
                 casing: "camel",
@@ -2037,6 +2081,9 @@ var Khan = (function() {
 
         function handleSubmit() {
             var pass = validator();
+            if (Exercises.pretestMode) {
+                $(Exercises).trigger("updateAnswerHistory", {name: exerciseId, pass: pass});
+            }
             Analytics.send_ga_event('exercise', 'submit', 'Exercise-Answer-Submit');
 
             // Stop if the user didn't enter a response
@@ -2223,6 +2270,10 @@ var Khan = (function() {
                     function() {},
                     "attempt_hint_queue"
                 );
+            }
+            // if user click hint, pass this question as false to updateAnswerHistory
+            if (Exercises.pretestMode) {
+                $(Exercises).trigger("updateAnswerHistory", {name: exerciseId, pass: false});
             }
 
         });
@@ -2462,6 +2513,9 @@ var Khan = (function() {
             })
             .bind("upcomingExercise", function(ev, data) {
                 startLoadingExercise(data.exerciseId, data.exerciseName, data.exerciseFile, data.isQuiz);
+            })
+            .bind("updateAnswerHistory", function(ev, data){
+                Exercises.BottomlessQueue.updateAnswerHistory(data);
             });
     }
 

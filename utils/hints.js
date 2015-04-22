@@ -36,34 +36,5 @@ $(Khan).bind("newProblem", function() {
         .css("top", "0")
         .find(".info-box-header")
             .show();
-
-    var examples = $("#examples");
-    if (examples.length && $.prototype.qtip != null) {
-
-        // Tooltip-ify the example answer formats
-        $("#examples-show").qtip({
-            content: {
-                text: examples.remove(),
-                prerender: true
-            },
-            style: {
-                classes: "ui-tooltip-light leaf-tooltip"
-            },
-            position: {
-                my: "bottom center",
-                at: "top center"
-            },
-            show: {
-                delay: 200,
-                effect: {
-                    length: 0
-                }
-            },
-            hide: {
-                delay: 0
-            }
-        });
-
-    }
-
+            
 });
