@@ -2081,7 +2081,7 @@ var Khan = (function() {
 
         function handleSubmit() {
             var pass = validator();
-            if (Exercises.pretestMode) {
+            if (!testMode && Exercises.pretestMode) {
                 $(Exercises).trigger("updateAnswerHistory", {name: exerciseId, pass: pass});
             }
             Analytics.send_ga_event('exercise', 'submit', 'Exercise-Answer-Submit');
@@ -2272,7 +2272,7 @@ var Khan = (function() {
                 );
             }
             // if user click hint, pass this question as false to updateAnswerHistory
-            if (Exercises.pretestMode) {
+            if (!testMode && Exercises.pretestMode) {
                 $(Exercises).trigger("updateAnswerHistory", {name: exerciseId, pass: false});
             }
 
