@@ -228,9 +228,9 @@ function handleAttempt(data) {
         // Wrong answer. Enable all the input elements
 
         $("#check-answer-button")
+            .val($._("答錯了，再試試看喔！"))
             .parent()  // .check-answer-wrapper makes shake behave
-            .effect("shake", {times: 3, distance: 5}, 480)
-            .val($._("Try Again"));
+            .effect("shake", {times: 3, distance: 5}, 480);
 
         // Is this a message to be shown?
         if (score.message != null) {

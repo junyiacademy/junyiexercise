@@ -898,34 +898,27 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             });
 
             return function(guess) {
-                var valid = true;
+                var pass = true;
                 var missing_required_answer = false;
-                var invalid_reason = "";
 
                 // Iterate over each of the elements in the guess
                 $.each(guess, function(i, g) {
                     // Check whether that answer is right by validating it
                     // with the cooresponding validator
-                    var pass = validators[i].validator(g);
+                    pass = validators[i].validator(g);
 
                     // If the answer is required, and no answer was provided,
                     // break;
                     if (pass === "" && validators[i].required) {
                         missing_required_answer = true;
                         return false;
-                    } else if (typeof pass === "string") {
-                        invalid_reason = pass;
-                    } else {
-                        valid = valid && pass;
-                    }
+                    } 
                 });
 
                 if (missing_required_answer) {
                     return "";
-                } else if (invalid_reason.length > 0) {
-                    return invalid_reason;
                 } else {
-                    return valid;
+                    return pass;
                 }
             };
         }
