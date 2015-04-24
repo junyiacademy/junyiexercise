@@ -445,7 +445,7 @@ function outputFinishedProof() {
 
     }
 
-    var indices = KhanUtil.randRangeUnique(0, possibleValids.length - 2, 2);
+    var indices = KhanUtil.randRangeUnique(0, possibleValids.length - 1, 2);
 
     return [proofText, possibleValids[indices[0]], possibleValids[indices[1]]];
 }
