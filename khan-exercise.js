@@ -1424,6 +1424,11 @@ var Khan = (function() {
         // show all lastCountHints it says we have seen
         _(hintsUsed).times(showHint);
 
+        // Build debugMode in localMode.
+        if (localMode){
+            renderDebugInfo();
+        }
+        
         // If the textbox is empty disable "Check Answer" button
         // Note: We don't do this for multiple choice, number line, etc.
         if (answerType === "text" || answerType === "number") {
