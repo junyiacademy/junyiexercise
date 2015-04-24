@@ -1181,7 +1181,7 @@ $.extend(KhanUtil, {
             };
         };
 
-        $(".question").prepend("<button id=\"reflect\">Reflect shape</button>");
+        $(".question").prepend("<button id=\"reflect\">旋轉圖形</button>");
         $("button#reflect").bind("click", function(event) {
             this.blur();
             if (!triangle.animating) {
