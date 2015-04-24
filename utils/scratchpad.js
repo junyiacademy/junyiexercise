@@ -66,9 +66,11 @@ function DrawingScratchpad(elem) {
 
     function loadState(state) {
         shapes.remove();
-        for (var i = 0; i < state.length; i++) {
-            if (state[i].type == "path") {
-                shapes.push(pad.path(state[i].path).attr(line_default).attr("stroke", state[i].stroke));
+        if (state) {
+            for (var i = 0; i < state.length; i++) {
+                if (state[i].type == "path") {
+                    shapes.push(pad.path(state[i].path).attr(line_default).attr("stroke", state[i].stroke));
+                }
             }
         }
     }
@@ -252,8 +254,10 @@ function DrawingScratchpad(elem) {
     });
     container.bind("touchmove", function(e) {
         var offset = $(container).offset();
-        mousemove(e.originalEvent.touches[0].pageX - offset.left, e.originalEvent.touches[0].pageY - offset.top);
-        e.preventDefault();
+        if (e.originalEvent.touches.length === 1){
+            mousemove(e.originalEvent.touches[0].pageX - offset.left, e.originalEvent.touches[0].pageY - offset.top);
+            e.preventDefault();
+        }
     });
     container.bind("touchend", function(e) {
         mouseup();
