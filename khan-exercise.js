@@ -2084,8 +2084,9 @@ var Khan = (function() {
             if (!testMode && Exercises.pretestMode) {
                 $(Exercises).trigger("updateAnswerHistory", {name: exerciseId, pass: pass});
             }
-            Analytics.send_ga_event('exercise', 'submit', 'Exercise-Answer-Submit');
-
+            if (!testMode){
+                Analytics.send_ga_event('exercise', 'submit', 'Exercise-Answer-Submit');
+            }    
             // Stop if the user didn't enter a response
             // If multiple-answer, join all responses and check if that's empty
             // Remove commas left by joining nested arrays in case multiple-answer is nested
