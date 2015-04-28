@@ -1234,11 +1234,14 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                                 .parent());
                 }
 
-                shownChoices.push($("<span>").append(none));
+                shownChoices.push(none);
             }
-
+            var correctIndex = -1;
             $.each(shownChoices, function(i, choice) {
                 // Wrap each of the choices in elements and add a radio button
+                if (choice.data("correct")) {
+                correctIndex = i + "";
+            }
                 choice.contents()
                     .wrapAll('<li><label><span class="value"></span></label></li>')
                     .parent()
@@ -1251,7 +1254,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             });
 
             return {
-                validator: Khan.answerTypes.radio.createValidator(solution),
+                validator: Khan.answerTypes.radio.createValidator(solution, correctIndex, noneIsCorrect),
                 answer: function() {
                     // Find the chosen answer
                     var choice = list.find("input:checked");
@@ -1303,42 +1306,20 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 }
             };
         },
-        createValidator: function(solution) {
-            var extractRawCode = function(solution) {
-                return $(solution).clone()
-                    .find(".MathJax").remove().end()
-                    .find("code script").removeAttr("id").end()
-                    .html();
-            };
-            var correct = extractRawCode(solution);
-
+        createValidator: function(solution, correctIndex, noneIsCorrect) {
             return function(guess) {
                 if (guess == null) {
                     return "";
-                // TODO(emily): remove this backwards-compatible code in 7/13
-                } else if ((guess.isNone || guess === "以上皆非") &&
-                        $("#solutionarea").find("ul").data("real-answer") !=
-                        null) {
-                    // Hacky stuff to make the correct solution appear when
-                    // "none of the above" is the correct answer
-                    var list = $("#solutionarea").find("ul");
-                    var choice =
-                        list.children().filter(function() {
-                            return $(this).find("span.value > span")
-                                          .data("noneOfTheAbove");
-                        }).find("input");
+                }
+                var list = $("#solutionarea").find("ul");
+                var choice =list.find("input:checked");
+                if (noneIsCorrect && choice.val() === correctIndex) {
                     choice.next().fadeOut("fast", function() {
                         $(this).replaceWith(list.data("real-answer"))
                                .fadeIn("fast");
                     });
-                    return true;
-                } else if ($.trim((guess.value != null ? guess.value : guess)
-                                  .replace(/\r\n?|\n/g, "")) ===
-                           $.trim(correct.replace(/\r\n?|\n/g, ""))) {
-                    return true;
                 }
-
-                return false;
+                return guess.index === correctIndex;
             };
         }
     },
