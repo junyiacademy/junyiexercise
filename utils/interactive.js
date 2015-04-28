@@ -501,6 +501,21 @@ $.extend(KhanUtil.Graphie.prototype, {
                         mouseX = Math.max(10, Math.min(graph.xpixels - 10, mouseX));
                         mouseY = Math.max(10, Math.min(graph.ypixels - 10, mouseY));
 
+                        // snap to grid
+                        if (movablePoint.snapX) {
+                            mouseX = Math.round(mouseX / (graph.scale[0] * movablePoint.snapX)) * (graph.scale[0] * movablePoint.snapX);
+                        }
+                        if (movablePoint.snapY) {
+                            mouseY = Math.round(mouseY / (graph.scale[1] * movablePoint.snapY)) * (graph.scale[1] * movablePoint.snapY);
+                        }
+                        // snap mouse to grid
+                        if (movablePoint.snapX !== 0) {
+                            mouseX = Math.round(mouseX / (graph.scale[0] * movablePoint.snapX)) * (graph.scale[0] * movablePoint.snapX);
+                        }
+                        if (movablePoint.snapY !== 0) {
+                            mouseY = Math.round(mouseY / (graph.scale[1] * movablePoint.snapY)) * (graph.scale[1] * movablePoint.snapY);
+                        }
+
                         // coord{X|Y} are the scaled coordinate values
                         var coordX = mouseX / graph.scale[0] + graph.range[0][0];
                         var coordY = graph.range[1][1] - mouseY / graph.scale[1];
@@ -2207,13 +2222,24 @@ $.extend(KhanUtil.Graphie.prototype, {
         return circle;
     },
 
-    protractor: function(center) {
-        return new Protractor(this, center);
+    Protractor: function(center) {
+        return new Protractor(center);
     }
 });
 
+function DrawInteractiveBoundry(graph) {
+    // Draw the light-gray boundary of the graphie.
+    var xrange = graph.range[0];
+    var yrange = graph.range[1];
+    graph.path([[xrange[0], yrange[0]],
+                [xrange[0], yrange[1]],
+                [xrange[1], yrange[1]],
+                [xrange[1], yrange[0]],
+                [xrange[0], yrange[0]]], {stroke: "#BBBBBB"});
+}
 
-function Protractor(graph, center) {
+function Protractor(center) {
+    var graph = KhanUtil.currentGraph;
     this.set = graph.raphael.set();
 
     this.cx = center[0];
@@ -2224,7 +2250,7 @@ function Protractor(graph, center) {
     var r = 8.05;
     var imgPos = graph.scalePoint([this.cx - r, this.cy + r - 0.225]);
     this.set.push(graph.mouselayer.image(Khan.imageBase + "protractor.png", imgPos[0], imgPos[1], 322, 161));
-
+    DrawInteractiveBoundry(graph);
 
     // Customized polar coordinate thingie to make it easier to draw the double-headed arrow thing.
     // angle is what you'd expect -- use that big protractor on your screen :)
