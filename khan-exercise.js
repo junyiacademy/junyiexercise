@@ -1417,8 +1417,7 @@ var Khan = (function() {
                     $('#solutionarea').prepend('<div class="instruction">'+examples.text()+'</div>');
                 }
             }
-        } 
-
+        }
         // save a normal JS array of hints so we can shift() through them later
         hints = hints.tmpl().children().get();
 
