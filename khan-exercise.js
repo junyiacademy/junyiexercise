@@ -1330,7 +1330,7 @@ var Khan = (function() {
                         firstInput.select();
                     }
                 }
-            }, 1);
+            }, 100);
 
             lastFocusedSolutionInput = firstInput;
             solutionarea.find(":input").focus(function() {
@@ -1391,6 +1391,7 @@ var Khan = (function() {
                             hide: 'blur',
                             container: $("#solutionarea"),
                         });
+
                     });
                 }
                 else if($('#problemarea input[type=text]:not([readonly])').length >= 1) { 
@@ -1412,6 +1413,7 @@ var Khan = (function() {
                             container: $("#problemarea"),
                         });
                     });
+                    
                 }
                 else {
                     $('#solutionarea').prepend('<div class="instruction">'+examples.text()+'</div>');
