@@ -259,6 +259,7 @@ $.extend(KhanUtil, {
         },
 
         setMaxVals: function(cell) {
+            var el = $(cell.el);
             var val = cell.val();
 
             // cell is nonempty
@@ -326,7 +327,7 @@ $.fn["matrix-inputLoad"] = function() {
         return;
     }
 
-    $(Exercises).on("newProblem.matrix-input", function() {
+    $(Khan).on("newProblem.matrix-input", function() {
         KhanUtil.matrixInput.init();
     });
 
@@ -344,7 +345,7 @@ $.fn["matrix-inputCleanup"] = function() {
     }
 
     KhanUtil.matrixInput.cleanup();
-    $(Exercises).off("newProblem.matrix-input");
+    $(Khan).off("newProblem.matrix-input");
     $(Khan).off("showGuess.matrix-input");
 
     KhanUtil.matrixInput.eventsAttached = false;

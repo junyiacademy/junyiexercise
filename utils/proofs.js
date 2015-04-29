@@ -1,25 +1,4 @@
 
-
-
-
-
-
-// Herng: 不要翻 "alternate angles" or "alternate angles are equal"!!! 
-// Herng: 不要翻 "alternate angles" or "alternate angles are equal"!!! 
-// Herng: 不要翻 "alternate angles" or "alternate angles are equal"!!! 
-// Herng: 不要翻 "alternate angles" or "alternate angles are equal"!!! 
-// Herng: 不要翻 "alternate angles" or "alternate angles are equal"!!! 
-// Herng: 不要翻 "alternate angles" or "alternate angles are equal"!!! 
-// Herng: 不要翻 "alternate angles" or "alternate angles are equal"!!! 
-// Herng: 不要翻 "alternate angles" or "alternate angles are equal"!!! 
-// Herng: 不要翻 "alternate angles" or "alternate angles are equal"!!! 
-
-
-
-
-
-
-
 /*
 TODO:
 -prune givens
@@ -75,6 +54,9 @@ var numHints;
 // it is not at the minimum depth
 var givenProbability;
 
+// used to animate the last true statement proven
+var animationObjects;
+
 function initProof(segs, angs, triangles, supplementaryAngs, altIntAngs, depth, givProb, toProveType) {
     userProofDone = false;
 
@@ -97,6 +79,8 @@ function initProof(segs, angs, triangles, supplementaryAngs, altIntAngs, depth, 
     numHints = 3;
 
     givenProbability = givProb;
+
+    animationObjects = [];
 
     //populate knownEqualities based on reflexivity
     for (var i = 0; i < SEGMENTS.length; i++) {
@@ -127,7 +111,7 @@ function initProof(segs, angs, triangles, supplementaryAngs, altIntAngs, depth, 
         }
         if (equalityType === "triangle") {
             // pick some triangles to be congruent, this will be the statement to be proven
-            var indices = KhanUtil.randRangeUnique(0, TRIANGLES.length, 2);
+            var indices = KhanUtil.randRangeUnique(0, TRIANGLES.length - 1, 2);
             var triangle1 = TRIANGLES[indices[0]];
             var triangle2 = TRIANGLES[indices[1]];
 
@@ -140,7 +124,7 @@ function initProof(segs, angs, triangles, supplementaryAngs, altIntAngs, depth, 
         }
         else if (equalityType === "angle") {
             // pick some angles to be congruent, this will be the statement to be proven
-            var indices = KhanUtil.randRangeUnique(0, ANGLES.length, 2);
+            var indices = KhanUtil.randRangeUnique(0, ANGLES.length - 1, 2);
             var angle1 = ANGLES[indices[0]];
             var angle2 = ANGLES[indices[1]];
 
@@ -153,7 +137,7 @@ function initProof(segs, angs, triangles, supplementaryAngs, altIntAngs, depth, 
         }
         else {
             // pick some segments to be congruent, this will be the statement to be proven
-            var indices = KhanUtil.randRangeUnique(0, SEGMENTS.length, 2);
+            var indices = KhanUtil.randRangeUnique(0, SEGMENTS.length - 1, 2);
             var segment1 = SEGMENTS[indices[0]];
             var segment2 = SEGMENTS[indices[1]];
 
@@ -461,7 +445,7 @@ function outputFinishedProof() {
 
     }
 
-    var indices = KhanUtil.randRangeUnique(0, possibleValids.length - 1, 2);
+    var indices = KhanUtil.randRangeUnique(0, possibleValids.length - 2, 2);
 
     return [proofText, possibleValids[indices[0]], possibleValids[indices[1]]];
 }
@@ -1099,7 +1083,7 @@ Triang.prototype.equals = function(otherTriang) {
     var myPoints = [this.angs[0].mid, this.angs[1].mid, this.angs[2].mid];
     var otherPoints = [otherTriang.angs[0].mid, otherTriang.angs[1].mid, otherTriang.angs[2].mid];
 
-    return _.difference(myPoints, otherPoints).length === 0;
+    return _.difference(myPoints, otherPoints).length === 0 && _.difference(otherPoints, myPoints).length === 0;
 };
 
 // If two smaller angles share a midpoint and one of two endpoints, they can be
@@ -1772,6 +1756,7 @@ function checkTriangleCongruent(triangle1, triangle2, reason) {
             knownEqualities[[triangle1, triangle2]] = "SSS";
             knownEqualities[[triangle2, triangle1]] = "SSS";
             knownEqualitiesList.push([triangle1, triangle2]);
+            animationObjects = [[triangle1.segs[0], triangle2.segs[0]],[triangle1.segs[1], triangle2.segs[1]],[triangle1.segs[2], triangle2.segs[2]]];
             return true;
         }
     }
@@ -1786,6 +1771,8 @@ function checkTriangleCongruent(triangle1, triangle2, reason) {
                 knownEqualities[[triangle1, triangle2]] = "ASA";
                 knownEqualities[[triangle2, triangle1]] = "ASA";
                 knownEqualitiesList.push([triangle1, triangle2]);
+                animationObjects = [[triangle1.angs[i], triangle2.angs[i]],[triangle1.segs[(i + 1) % 3], triangle2.segs[(i + 1) % 3]],
+                                    [triangle1.angs[(i + 1) % 3], triangle2.angs[(i + 1) % 3]]];
                 return true;
             }
         }
@@ -1800,6 +1787,8 @@ function checkTriangleCongruent(triangle1, triangle2, reason) {
                 knownEqualities[[triangle1, triangle2]] = "SAS";
                 knownEqualities[[triangle2, triangle1]] = "SAS";
                 knownEqualitiesList.push([triangle1, triangle2]);
+                animationObjects = [[triangle1.segs[i], triangle2.segs[i]], [triangle1.angs[i], triangle2.angs[i]],
+                                    [triangle1.segs[(i + 1) % 3], triangle2.segs[(i + 1) % 3]]];
                 return true;
             }
         }
@@ -1816,6 +1805,8 @@ function checkTriangleCongruent(triangle1, triangle2, reason) {
                 knownEqualities[[triangle1, triangle2]] = "AAS";
                 knownEqualities[[triangle2, triangle1]] = "AAS";
                 knownEqualitiesList.push([triangle1, triangle2]);
+                animationObjects = [[triangle1.angs[i], triangle2.angs[i]], [triangle1.angs[(i + 1) % 3], triangle2.angs[(i + 1) % 3]],
+                                    [triangle1.segs[(i + 2) % 3], triangle2.segs[(i + 2) % 3]]];
                 return true;
             }
         }
@@ -1831,6 +1822,8 @@ function checkTriangleCongruent(triangle1, triangle2, reason) {
                 knownEqualities[[triangle1, triangle2]] = "AAS";
                 knownEqualities[[triangle2, triangle1]] = "AAS";
                 knownEqualitiesList.push([triangle1, triangle2]);
+                animationObjects = [[triangle1.angs[i], triangle2.angs[i]], [triangle1.angs[(i + 1) % 3], triangle2.angs[(i + 1) % 3]],
+                                    [triangle1.segs[i], triangle2.segs[i]]]
                 return true;
             }
         }
