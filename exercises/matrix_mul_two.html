@@ -1,266 +1,532 @@
-<!DOCTYPE html>
-<html data-require="math graphie kmatrix">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Matrix Multiplication 1</title>
-    <script src="../khan-exercise.js"></script>
-	<style type="text/css">
-        #answer_area .sol input[type=text] {
-            width: 30px;
-        }
-		#answer_area .block {
-        	display: inline-block;
-        	width: 36px;
-        	background-color:#DDDDDD;
-        	text-align: center;
-        }
-    </style>
-</head>
-
-<body>
-<div class="exercise">
-    <div class="problems">
-	<div id="case1" data-weight="1">
-	
-            <div class="vars">
-				<var id="m">randRange(2,3)</var>
-				<var id="n">randRange(2,3)</var>
-				<var id="k">randRange(2,3)</var>
-				<var id="A">makeMatrix(randRange(-9,9,m,n))</var>
-				<var id="B">makeMatrix(randRange(-9,9,n,k))</var>
-				<var id="C">matrixMult(A,B)</var>
-				<var id="CR">C.r</var>
-				<var id="sampleA">
-				(function(){
-					var sampleA = new Array(3);
-					for(i=0;i&lt;3;i++){
-						sampleA[i] = new Array(3);
-					}
-					sampleA[0][0] = "a11";
-					sampleA[0][1] = "a12";
-					sampleA[0][2] = "a13";
-					for(i=1;i&lt;3;i++){
-						sampleA[i][0] = ":";
-						sampleA[i][1] = ":";
-						sampleA[i][2] = ":";
-					}
-					return sampleA;
-				})()				
-				</var>
-				<var id="sampleAA">
-				(function(){
-					var sampleAA = new Array(3);
-					for(i=0;i&lt;3;i++){
-						sampleAA[i] = new Array(3);
-					}
-
-					for(i=0;i&lt;3;i++){
-						for(j=0;j&lt;3;j++)
-							sampleAA[i][j] = ":";
-					}
-					sampleAA[1][0] = "a21";
-					sampleAA[1][1] = "a22";
-					sampleAA[1][2] = "a23";
-					return sampleAA;
-				})()				
-				</var>
-				<var id="sampleB">
-				(function(){
-					var sampleB = new Array(3);
-					for(i=0;i&lt;3;i++){
-						sampleB[i] = new Array(3);
-					}
-					sampleB[0][0] = "b11";
-					sampleB[1][0] = "b21";
-					sampleB[2][0] = "b31";
-					for(i=1;i&lt;3;i++){
-						sampleB[0][i] = "...";
-						sampleB[1][i] = "...";
-						sampleB[2][i] = "...";
-					}
-					return sampleB;
-				})()				
-				</var>
-				<var id="sampleBB">
-				(function(){
-					var sampleBB = new Array(3);
-					for(i=0;i&lt;3;i++){
-						sampleBB[i] = new Array(3);
-					}
-
-					for(i=0;i&lt;3;i++){
-						for(j=0;j&lt;3;j++)
-							sampleBB[i][j] = "...";
-					}
-					sampleBB[0][1] = "b12";
-					sampleBB[1][1] = "b22";
-					sampleBB[2][1] = "b32";
-					return sampleBB;
-				})()				
-				</var>
-				<var id="sampleA_B">
-				(function(){
-					var sampleA_B = new Array(3);
-					for(i=0;i&lt;3;i++){
-						sampleA_B[i] = new Array(3);
-					}
-
-					for(i=0;i&lt;3;i++){
-						for(j=0;j&lt;3;j++)
-							sampleA_B[i][j] = "...";
-					}
-					sampleA_B[1][0] = ":";
-					sampleA_B[1][1] = ":";
-					sampleA_B[1][2] = ":";
-					sampleA_B[0][0] = "a11&middot;b11 + a12&middot;b21 + a13&middot;b31";
-					return sampleA_B;
-				})()		
-				</var>
-				<var id="sampleA_BB">
-				(function(){
-					var sampleA_BB = new Array(3);
-					for(i=0;i&lt;3;i++){
-						sampleA_BB[i] = new Array(3);
-					}
-
-					for(i=0;i&lt;3;i++){
-						for(j=0;j&lt;3;j++)
-							sampleA_BB[i][j] = "...";
-					}
-					sampleA_BB[1][0] = ":";
-					sampleA_BB[1][1] = ":";
-					sampleA_BB[1][2] = ":";
-					sampleA_BB[0][1] = "a11&middot;b12 + a12&middot;b22 + a13&middot;b32";
-					return sampleA_BB;
-				})()		
-				</var>
-				<var id="sampleAA_B">
-				(function(){
-					var sampleAA_B = new Array(3);
-					for(i=0;i&lt;3;i++){
-						sampleAA_B[i] = new Array(3);
-					}
-
-					for(i=0;i&lt;3;i++){
-						for(j=0;j&lt;3;j++)
-							sampleAA_B[i][j] = "...";
-					}
-					sampleAA_B[1][0] = "a21&middot;b11 + a22&middot;b21 + a23&middot;b31";
-					sampleAA_B[1][1] = ":";
-					sampleAA_B[1][2] = ":";
-					return sampleAA_B;
-				})()		
-				</var>
-				
-				<var id="colorA">[BLUE]</var>
-				<var id="colorB">[GREEN]</var>
-				<var id="row_color">[BLUE,BLUE,BLUE,BLUE]</var>
-				<var id="col_color">[GREEN,GREEN,GREEN,GREEN]</var>
-				<var id="A_B">makeMultHintMatrix(A,B,row_color,col_color)</var>
-				<var id="blank1_x">randRange(0,m-1)</var>
-				<var id="blank1_y">randRange(0,k-1)</var>
-				<var id="blank2_x">randRangeExclude(0,m-1,[blank1_x])</var>
-				<var id="blank2_y">randRangeExclude(0,k-1,[blank1_y])</var>
-            </div>
-			
-            <div class="question">
-				<p><code>{A} = <var>printSimpleMatrix(A)</var></code></p>
-				<p><code>{B} = <var>printSimpleMatrix(B)</var></code></p>
-				<p><code>{A} &middot; {B} = {?}</code></p>
-				<p>請將右側的矩陣中缺少的數據填入。</p>
-            </div>
-			
-<!--example: m*k matrix-->			
-            <div class="solution" data-type="multiple">
-				<p>
-				<span data-if="m >0 && k >0 ">
-				<span class="sol" data-if="(blank1_x==0 && blank1_y==0) || (blank2_x==0 && blank2_y==0)">
-				<var>C[0][0]</var></span>
-				<span class="block" data-else><var>C[0][0]</var></span>
-				</span>
-
-				<span data-if="m >0 && k >1">
-				<span class="sol" data-if="(blank1_x==0 && blank1_y==1) || (blank2_x==0 && blank2_y==1)">
-				<var>C[0][1]</var></span>
-				<span class="block" data-else><var>C[0][1]</var></span>
-				</span>
-				
-				<span data-if="m >0 && k >2">
-				<span class="sol" data-if="(blank1_x==0 && blank1_y==2) || (blank2_x==0 && blank2_y==2)">
-				<var>C[0][2]</var></span>
-				<span class="block" data-else><var>C[0][2]</var></span>
-				</span><br>
-						
-				<span data-if="m >1 && k >0">
-				<span class="sol" data-if="(blank1_x==1 && blank1_y==0) || (blank2_x==1 && blank2_y==0)">
-				<var>C[1][0]</var></span>
-				<span class="block" data-else><var>C[1][0]</var></span>
-				</span>
-				
-				<span data-if="m >1 && k >1">
-				<span class="sol" data-if="(blank1_x==1 && blank1_y==1) || (blank2_x==1 && blank2_y==1)">
-				<var>C[1][1]</var></span>
-				<span class="block" data-else><var>C[1][1]</var></span>
-				</span>
-				
-				<span data-if="m >1 && k >2">
-				<span class="sol" data-if="(blank1_x==1 && blank1_y==2) || (blank2_x==1 && blank2_y==2)">
-				<var>C[1][2]</var></span>
-				<span class="block" data-else><var>C[1][2]</var></span>
-				</span><br>
-				
-				<span data-if="m >2 && k >0">
-				<span class="sol" data-if="(blank1_x==2 && blank1_y==0) || (blank2_x==2 && blank2_y==0)">
-				<var>C[2][0]</var></span>
-				<span class="block" data-else><var>C[2][0]</var></span>
-				</span>
-				
-				<span data-if="m >2 && k >1">
-				<span class="sol" data-if="(blank1_x==2 && blank1_y==1) || (blank2_x==2 && blank2_y==1)">
-				<var>C[2][1]</var></span>
-				<span class="block" data-else><var>C[2][1]</var></span>
-				</span>
-				
-				<span data-if="m >2 && k >2">
-				<span class="sol" data-if="(blank1_x==2 && blank1_y==2) || (blank2_x==2 && blank2_y==2)">
-				<var>C[2][2]</var></span>
-				<span class="block" data-else><var>C[2][2]</var></span>
-				</span><br>
-				</p>
-			</div>		
-
-            <div class="hints">
-				<!----hint 1---->
-				<p>
-				<code><var>printSimpleMatrix(sampleA,colorA)</var><var>printSimpleMatrix(sampleB,colorB)</var></code><br><br>
-				= <code><var>printSimpleMatrix(sampleA_B)</var></code>
-				</p>
-				
-				<!----hint 2---->
-				<p>
-				<code><var>printSimpleMatrix(sampleA,colorA)</var><var>printSimpleMatrix(sampleBB,colorB)</var></code><br><br>
-				= <code><var>printSimpleMatrix(sampleA_BB)</var></code>
-				</p>
-				
-				<!----hint 3---->
-				<p>
-				<code><var>printSimpleMatrix(sampleAA,colorA)</var><var>printSimpleMatrix(sampleB,colorB)</var></code><br><br>
-				= <code><var>printSimpleMatrix(sampleAA_B)</var></code>
-				</p>
-				
-				<!----hint 4---->
-				<p>
-				<code><var>printSimpleMatrix(A,colorA)</var><var>printSimpleMatrix(B,colorB)</var></code><br><br>
-				= <code><var>printSimpleMatrix(A_B)</var></code>
-				</p>
-				
-				<!----hint 5---->
-				<p>
-				= <code><var>printSimpleMatrix(C)</var></code></p>
-				
-            </div>
-        </div>
-    </div>
-</div>
-</body>
-</html>
+<!DOCTYPE html>
+
+<html data-require="math graphie matrix">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>Matrix Multiplication 1</title>
+
+    <script src="../khan-exercise.js"></script>
+
+	<style type="text/css">
+
+        #answer_area .sol input[type=text] {
+
+            width: 30px;
+
+        }
+
+		#answer_area .block {
+
+        	display: inline-block;
+
+        	width: 36px;
+
+        	background-color:#DDDDDD;
+
+        	text-align: center;
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+<div class="exercise">
+
+    <div class="problems">
+
+	<div id="case1" data-weight="1">
+
+	
+
+            <div class="vars">
+
+				<var id="m">randRange(2,3)</var>
+
+				<var id="n">randRange(2,3)</var>
+
+				<var id="k">randRange(2,3)</var>
+
+				<var id="A">makeMatrix(randRange(-9,9,m,n))</var>
+
+				<var id="B">makeMatrix(randRange(-9,9,n,k))</var>
+
+				<var id="C">matrixMult(A,B)</var>
+
+				<var id="CR">C.r</var>
+
+				<var id="sampleA">
+
+				(function(){
+
+					var sampleA = new Array(3);
+
+					for(i=0;i&lt;3;i++){
+
+						sampleA[i] = new Array(3);
+
+					}
+
+					sampleA[0][0] = "a11";
+
+					sampleA[0][1] = "a12";
+
+					sampleA[0][2] = "a13";
+
+					for(i=1;i&lt;3;i++){
+
+						sampleA[i][0] = ":";
+
+						sampleA[i][1] = ":";
+
+						sampleA[i][2] = ":";
+
+					}
+
+					return sampleA;
+
+				})()				
+
+				</var>
+
+				<var id="sampleAA">
+
+				(function(){
+
+					var sampleAA = new Array(3);
+
+					for(i=0;i&lt;3;i++){
+
+						sampleAA[i] = new Array(3);
+
+					}
+
+
+
+					for(i=0;i&lt;3;i++){
+
+						for(j=0;j&lt;3;j++)
+
+							sampleAA[i][j] = ":";
+
+					}
+
+					sampleAA[1][0] = "a21";
+
+					sampleAA[1][1] = "a22";
+
+					sampleAA[1][2] = "a23";
+
+					return sampleAA;
+
+				})()				
+
+				</var>
+
+				<var id="sampleB">
+
+				(function(){
+
+					var sampleB = new Array(3);
+
+					for(i=0;i&lt;3;i++){
+
+						sampleB[i] = new Array(3);
+
+					}
+
+					sampleB[0][0] = "b11";
+
+					sampleB[1][0] = "b21";
+
+					sampleB[2][0] = "b31";
+
+					for(i=1;i&lt;3;i++){
+
+						sampleB[0][i] = "...";
+
+						sampleB[1][i] = "...";
+
+						sampleB[2][i] = "...";
+
+					}
+
+					return sampleB;
+
+				})()				
+
+				</var>
+
+				<var id="sampleBB">
+
+				(function(){
+
+					var sampleBB = new Array(3);
+
+					for(i=0;i&lt;3;i++){
+
+						sampleBB[i] = new Array(3);
+
+					}
+
+
+
+					for(i=0;i&lt;3;i++){
+
+						for(j=0;j&lt;3;j++)
+
+							sampleBB[i][j] = "...";
+
+					}
+
+					sampleBB[0][1] = "b12";
+
+					sampleBB[1][1] = "b22";
+
+					sampleBB[2][1] = "b32";
+
+					return sampleBB;
+
+				})()				
+
+				</var>
+
+				<var id="sampleA_B">
+
+				(function(){
+
+					var sampleA_B = new Array(3);
+
+					for(i=0;i&lt;3;i++){
+
+						sampleA_B[i] = new Array(3);
+
+					}
+
+
+
+					for(i=0;i&lt;3;i++){
+
+						for(j=0;j&lt;3;j++)
+
+							sampleA_B[i][j] = "...";
+
+					}
+
+					sampleA_B[1][0] = ":";
+
+					sampleA_B[1][1] = ":";
+
+					sampleA_B[1][2] = ":";
+
+					sampleA_B[0][0] = "a11&middot;b11 + a12&middot;b21 + a13&middot;b31";
+
+					return sampleA_B;
+
+				})()		
+
+				</var>
+
+				<var id="sampleA_BB">
+
+				(function(){
+
+					var sampleA_BB = new Array(3);
+
+					for(i=0;i&lt;3;i++){
+
+						sampleA_BB[i] = new Array(3);
+
+					}
+
+
+
+					for(i=0;i&lt;3;i++){
+
+						for(j=0;j&lt;3;j++)
+
+							sampleA_BB[i][j] = "...";
+
+					}
+
+					sampleA_BB[1][0] = ":";
+
+					sampleA_BB[1][1] = ":";
+
+					sampleA_BB[1][2] = ":";
+
+					sampleA_BB[0][1] = "a11&middot;b12 + a12&middot;b22 + a13&middot;b32";
+
+					return sampleA_BB;
+
+				})()		
+
+				</var>
+
+				<var id="sampleAA_B">
+
+				(function(){
+
+					var sampleAA_B = new Array(3);
+
+					for(i=0;i&lt;3;i++){
+
+						sampleAA_B[i] = new Array(3);
+
+					}
+
+
+
+					for(i=0;i&lt;3;i++){
+
+						for(j=0;j&lt;3;j++)
+
+							sampleAA_B[i][j] = "...";
+
+					}
+
+					sampleAA_B[1][0] = "a21&middot;b11 + a22&middot;b21 + a23&middot;b31";
+
+					sampleAA_B[1][1] = ":";
+
+					sampleAA_B[1][2] = ":";
+
+					return sampleAA_B;
+
+				})()		
+
+				</var>
+
+				
+
+				<var id="colorA">[BLUE]</var>
+
+				<var id="colorB">[GREEN]</var>
+
+				<var id="row_color">[BLUE,BLUE,BLUE,BLUE]</var>
+
+				<var id="col_color">[GREEN,GREEN,GREEN,GREEN]</var>
+
+				<var id="A_B">makeMultHintMatrix(A,B,row_color,col_color)</var>
+
+				<var id="blank1_x">randRange(0,m-1)</var>
+
+				<var id="blank1_y">randRange(0,k-1)</var>
+
+				<var id="blank2_x">randRangeExclude(0,m-1,[blank1_x])</var>
+
+				<var id="blank2_y">randRangeExclude(0,k-1,[blank1_y])</var>
+
+            </div>
+
+			
+
+            <div class="question">
+
+				<p><code>{A} = <var>printSimpleMatrix(A)</var></code></p>
+
+				<p><code>{B} = <var>printSimpleMatrix(B)</var></code></p>
+
+				<p><code>{A} &middot; {B} = {?}</code></p>
+
+				<p>請將右側的矩陣中缺少的數據填入。</p>
+
+            </div>
+
+			
+
+<!--example: m*k matrix-->			
+
+            <div class="solution" data-type="multiple">
+
+				<p>
+
+				<span data-if="m >0 && k >0 ">
+
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==0) || (blank2_x==0 && blank2_y==0)">
+
+				<var>C[0][0]</var></span>
+
+				<span class="block" data-else><var>C[0][0]</var></span>
+
+				</span>
+
+
+
+				<span data-if="m >0 && k >1">
+
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==1) || (blank2_x==0 && blank2_y==1)">
+
+				<var>C[0][1]</var></span>
+
+				<span class="block" data-else><var>C[0][1]</var></span>
+
+				</span>
+
+				
+
+				<span data-if="m >0 && k >2">
+
+				<span class="sol" data-if="(blank1_x==0 && blank1_y==2) || (blank2_x==0 && blank2_y==2)">
+
+				<var>C[0][2]</var></span>
+
+				<span class="block" data-else><var>C[0][2]</var></span>
+
+				</span><br>
+
+						
+
+				<span data-if="m >1 && k >0">
+
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==0) || (blank2_x==1 && blank2_y==0)">
+
+				<var>C[1][0]</var></span>
+
+				<span class="block" data-else><var>C[1][0]</var></span>
+
+				</span>
+
+				
+
+				<span data-if="m >1 && k >1">
+
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==1) || (blank2_x==1 && blank2_y==1)">
+
+				<var>C[1][1]</var></span>
+
+				<span class="block" data-else><var>C[1][1]</var></span>
+
+				</span>
+
+				
+
+				<span data-if="m >1 && k >2">
+
+				<span class="sol" data-if="(blank1_x==1 && blank1_y==2) || (blank2_x==1 && blank2_y==2)">
+
+				<var>C[1][2]</var></span>
+
+				<span class="block" data-else><var>C[1][2]</var></span>
+
+				</span><br>
+
+				
+
+				<span data-if="m >2 && k >0">
+
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==0) || (blank2_x==2 && blank2_y==0)">
+
+				<var>C[2][0]</var></span>
+
+				<span class="block" data-else><var>C[2][0]</var></span>
+
+				</span>
+
+				
+
+				<span data-if="m >2 && k >1">
+
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==1) || (blank2_x==2 && blank2_y==1)">
+
+				<var>C[2][1]</var></span>
+
+				<span class="block" data-else><var>C[2][1]</var></span>
+
+				</span>
+
+				
+
+				<span data-if="m >2 && k >2">
+
+				<span class="sol" data-if="(blank1_x==2 && blank1_y==2) || (blank2_x==2 && blank2_y==2)">
+
+				<var>C[2][2]</var></span>
+
+				<span class="block" data-else><var>C[2][2]</var></span>
+
+				</span><br>
+
+				</p>
+
+			</div>		
+
+
+
+            <div class="hints">
+
+				<!----hint 1---->
+
+				<p>
+
+				<code><var>printSimpleMatrix(sampleA,colorA)</var><var>printSimpleMatrix(sampleB,colorB)</var></code><br><br>
+
+				= <code><var>printSimpleMatrix(sampleA_B)</var></code>
+
+				</p>
+
+				
+
+				<!----hint 2---->
+
+				<p>
+
+				<code><var>printSimpleMatrix(sampleA,colorA)</var><var>printSimpleMatrix(sampleBB,colorB)</var></code><br><br>
+
+				= <code><var>printSimpleMatrix(sampleA_BB)</var></code>
+
+				</p>
+
+				
+
+				<!----hint 3---->
+
+				<p>
+
+				<code><var>printSimpleMatrix(sampleAA,colorA)</var><var>printSimpleMatrix(sampleB,colorB)</var></code><br><br>
+
+				= <code><var>printSimpleMatrix(sampleAA_B)</var></code>
+
+				</p>
+
+				
+
+				<!----hint 4---->
+
+				<p>
+
+				<code><var>printSimpleMatrix(A,colorA)</var><var>printSimpleMatrix(B,colorB)</var></code><br><br>
+
+				= <code><var>printSimpleMatrix(A_B)</var></code>
+
+				</p>
+
+				
+
+				<!----hint 5---->
+
+				<p>
+
+				= <code><var>printSimpleMatrix(C)</var></code></p>
+
+				
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
+

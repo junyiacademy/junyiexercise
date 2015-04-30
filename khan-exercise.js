@@ -1346,13 +1346,9 @@ var Khan = (function() {
         }
 
         // Remove the solution and choices elements from the display
-        if (!localMode) {
-            solution.remove();
-            choices.remove();
-        } else {
-            solution.hide();
-            choices.hide();
-        }
+        solution.remove();
+        choices.remove();
+        
 
         // Add the problem into the page
         Khan.scratchpad.resize();
@@ -1446,6 +1442,11 @@ var Khan = (function() {
         // show all lastCountHints it says we have seen
         _(hintsUsed).times(showHint);
 
+        // Build debugMode in localMode.
+        if (localMode){
+            renderDebugInfo();
+        }
+        
         // If the textbox is empty disable "Check Answer" button
         // Note: We don't do this for multiple choice, number line, etc.
         if (answerType === "text" || answerType === "number") {

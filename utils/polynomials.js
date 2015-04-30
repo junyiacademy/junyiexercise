@@ -124,6 +124,17 @@ $.extend(KhanUtil, {
 
         };
 
+		this.Term = function(termIndex){
+			//returns the coef and degree for a particular term
+            var numberOfTerms = this.getNumberOfTerms();
+
+            //mod twice to always get positive
+            termIndex = ((termIndex % numberOfTerms) + numberOfTerms) % numberOfTerms;
+
+            //upshift by one due to "+" sign at the front of the expression
+            return KhanUtil.expr(this.expr()[termIndex + 1]);	
+		};
+
         this.text = function() {
             return KhanUtil.expr(this.expr(this.variable));
         };
@@ -189,7 +200,12 @@ $.extend(KhanUtil, {
 
                 coefs[i] = value;
             }
-
+            // Fill in any missing values of coefs with 0s
+            for (var i = 0; i < coefs.length; i++) {
+                if (coefs[i] === undefined) {
+                	coefs[i] = 0;
+                }
+            }
             return new KhanUtil.Polynomial(minDegree, maxDegree, coefs, this.variable);
         };
 
@@ -297,6 +313,74 @@ $.extend(KhanUtil, {
 
             return scaledPoly;
         };
+        // Divide a polynomial by a number or other polynomial
+        this.divideBase = function(dividor) 
+        {
+            var coefs = [];
+            var i = this.maxDegree;
+            var j = dividor.maxDegree;
+            
+            if(i >= j)
+                coefs[i-j] = this.coefs[i] / dividor.coefs[j];
+
+            // Fill in any missing values of coefs with 0s
+            for (var k = 0; k < coefs.length; k++) {
+                if (coefs[k] === undefined) {
+                    coefs[k] = 0;
+                }
+            }
+
+            return new KhanUtil.Polynomial(0, coefs.length-1, coefs, this.variable);
+        }
+
+        this.divide = function(dividor) 
+        {
+            var resEnd = []; 
+            var coefs2 = [];
+            var coefs4 = [];
+
+            var i = this.findMaxDegree(this.coefs);
+            var j = dividor.findMaxDegree(dividor.coefs);
+            var divRes = [];
+
+            coefs2[i] = this.coefs[i];
+            // Fill in any missing values of coefs with 0s
+            for (var k = 0; k < coefs2.length; k++) {
+                if (coefs2[k] === undefined) {
+                    coefs2[k] = 0;
+                }
+            }
+            var divideMax = new KhanUtil.Polynomial(0, i, coefs2, this.variable);
+
+            coefs4[j] = dividor.coefs[j];
+            // Fill in any missing values of coefs with 0s
+            for (var k = 0; k < coefs4.length; k++) {
+                if (coefs4[k] === undefined) {
+                    coefs4[k] = 0;
+                }
+            }
+            var dividorMax = new KhanUtil.Polynomial(0, j, coefs4, this.variable);
+
+            var tmpDiviValue1 = divideMax.divideBase(dividorMax);
+
+            var tmpDiviValue2 = tmpDiviValue1.multiply(dividor);
+
+            var tmpDiviValue3 = this.subtract(tmpDiviValue2);
+
+            if(tmpDiviValue3.findMaxDegree(tmpDiviValue3.coefs) < dividor.findMaxDegree(dividor.coefs) ||
+                tmpDiviValue3.coefs[tmpDiviValue3.findMaxDegree(tmpDiviValue3.coefs)] === 0)
+            {
+                resEnd.push(tmpDiviValue3.coefs[tmpDiviValue3.minDegree]);
+                resEnd.push(tmpDiviValue1);
+                return resEnd;
+            }
+
+            resEnd = tmpDiviValue3.divide(dividor);
+
+            resEnd[1] = tmpDiviValue1.add(resEnd[1]);
+
+            return resEnd;
+        };
 
         return this;
     },
@@ -366,7 +450,7 @@ $.extend(KhanUtil, {
 
             hints = hints.concat(composed.hint(val));
 
-            hints.push("<p>That means <code>" + this.name + "(" + val + ") = " +
+            hints.push("<p>這表示 <code>" + this.name + "(" + val + ") = " +
                 this.hintEvalOf(val, true) + "</code></p>");
 
             hints.push("<p><code>" + this.name + "(" + val + ") = " +
