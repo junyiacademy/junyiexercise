@@ -419,6 +419,10 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         // Whether we are currently working on a topic, as opposed to an exercise
         topic_mode: (!Exercises.reviewMode && !Exercises.practiceMode && !Exercises.pretestMode) ? 1 : 0,
 
+        // should be pretest_mode: (!Exercises.testMode && Exercises.pretestMode) ? 1 : 0,
+        // but there's no testMode, so when it's in the preview page, it will go wrong.
+        pretest_mode: Exercises.pretestMode ? 1 : 0,
+
         // If working in the context of a LearningTask (on the new learning
         // dashboard), supply the task ID.
         task_id: Exercises.learningTask && Exercises.learningTask.get("id"),
