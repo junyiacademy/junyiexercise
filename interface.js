@@ -144,6 +144,9 @@ function newProblem(e, data) {
 }
 
 function handleCheckAnswer() {
+    if (!localMode){
+        Analytics.send_ga_event('exercise', 'submit', 'Exercise-Answer-Submit');
+    }
     return handleAttempt({skipped: false});
 }
 
