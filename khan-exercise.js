@@ -1859,7 +1859,7 @@ var Khan = (function() {
                                 focusInput.select();
                             }
                         }
-                    }, 1);
+                    }, 100);
                 }
             });
     }
