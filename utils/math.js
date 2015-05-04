@@ -290,7 +290,7 @@ $.extend(KhanUtil, {
             return KhanUtil.randRange(min, max);
         } else {
             var toReturn = [];
-            for (var i = min; i <= max; i++) {
+            for (var i = min; i < max; i++) {
                 toReturn.push(i);
             }
 
