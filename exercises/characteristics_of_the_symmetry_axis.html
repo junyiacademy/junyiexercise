@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html data-require="math angles graphie graphie-geometry graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>對稱軸的特性</title>
+    <script src="../khan-exercise.js"></script>
+    <script language="javascript">
+        function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+    </script>
+
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+                <var id="J">randFromArray([[1,"不正確"],[2,"正確"],[3,"正確"],[4,"正確"],[5,"不正確"],[6,"正確"],[7,"正確"],[8,"不正確"],[9,"正確"],[10,"正確"],[11,"不正確"],[12,"正確"]])</var>
+                <var id="ROTAT">randRange( 1, 100 )</var>
+                <var id="POLAR">(function(){
+                            var shape = [];
+                            for (var i = 0; i &lt; 9; i++) {
+                                shape[i]=polar(3,40*i+ROTAT);                              
+                            }
+                            shape[9]=shape[0];
+                            return shape;
+                    })()</var>
+            </div>
+            <p class="question">下圖是一個正九邊形，請判斷以下敘述是否正確：</p>    
+            <div class="problem">                  
+                <p data-if="J[0]==1"><code>\overline{CG}</code> 是對稱軸。</p>
+                <p data-if="J[0]==2"><code>\overline{AD}</code> 的中垂線是對稱軸。</p>
+
+                <p data-if="J[0]==3"><code>\overline{DE}</code> 的中垂線是對稱軸。</p>
+
+                <p data-if="J[0]==4"><code>\angle D</code> 的角平分線是對稱軸。</p>
+
+                <p data-if="J[0]==5"><code>\overline{AF}</code> 垂直平分 <code>\overline{BI}</code> 。</p>
+
+                <p data-if="J[0]==6"><code>\angle B</code> 的角平分線垂直平分 <code>\overline{EH}</code> 。</p>
+
+                <p data-if="J[0]==7"><code>\angle H</code> 的角平分線垂直平分 <code>\overline{CD}</code> 。</p>
+
+                <p data-if="J[0]==8"><code>\angle A</code> 的角平分線垂直平分 <code>\overline{DH}</code> 。</p>
+
+                <p data-if="J[0]==9">通過 <code>E</code> 點的對稱軸是 <code>\angle E</code> 的角平分線。</p>
+
+                <p data-if="J[0]==10"><code>\overline{GH}</code> 的中垂線平分 <code>\angle C</code> 。</p>
+
+                <p data-if="J[0]==11"><code>\overline{DF}</code> 的中垂線平分 <code>\angle I</code> 。</p>
+                               
+                <p data-if="J[0]==12"><code>\overline{AC}</code> 的中垂線垂直平分 <code>\overline{FG}</code> 。</p>
+
+                <div class="graphie" id="main">
+                    init({ range: [ [ -5, 5 ], [ -5, 5 ] ]});
+                    graph.polygon = new RegularPolygon( [ 0, 0 ] , 9 , 3, ROTAT );
+
+                    var capsword=["A","B","C","D","E","F","G","H","I"]
+                    
+                    for (var i = 0; i &lt; 9; i++) 
+                    {
+                        circle(POLAR[i],0.1,{stroke:"brown", fill: "brown" });
+                        label([1.15*POLAR[i][0],1.15*POLAR[i][1]], capsword[i],"center");
+                    }
+                    
+                </div>
+            </div>                            
+            <p class="solution"><var>J[1]</var></p>
+                <ul class="choices" data-category="true">                   
+                    <li>正確</li>
+                    <li>不正確</li>
+                </ul>
+            <div class="hints">
+                <div>
+                    <p>正九邊形是線對稱圖形，有 <code>9</code> 條對稱軸。對稱軸兩邊的圖形像是照鏡子一樣，翻過去可以完全重疊。線對稱圖形有以下特性：</p>
+                    <p>1. 兩個對稱點之連線段會被對稱軸垂直平分。</p>
+                    <p>2. 對稱軸與圖形的邊相交，則對稱軸是那條線段的垂直平分線。</p>
+                    <p>3. 對稱軸與圖形的頂點相交，則對稱軸是那個角的角平分線。</p>
+                </div>
+                <div>
+                    <div data-if="J[0]==1">    
+                        <p><code>\overline{CG}</code> 兩邊的面積不同，所以不是對稱軸。</p>
+                        <div class="graphie" data-update="main">
+                                graph.splitLINE = line(POLAR[2],POLAR[6],{ stroke: KhanUtil.PINK});
+                                graph.half = graph.polygon.splitPath( graph.splitLINE ).graphiePath;
+                                var temp = [];
+                                var i = 0;
+                                for( i = 0; i != graph.half.length; i++ ){
+                                    temp.push( reflectPoint( graph.splitLINE.graphiePath, graph.half[ i ] ) );
+                                }
+                                path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                               
+                            </div>
+                    </div>
+                    <div data-if="J[0]==2">
+                        <p><code>\overline{AD}</code> 的中垂線的兩邊的圖形翻過去可以完全對齊，所以是對稱軸。</p>
+                        <div class="graphie" data-update="main">
+                            var midpoint=[(POLAR[1][0]+POLAR[2][0])/2,(POLAR[1][1]+POLAR[2][1])/2];
+                            var arr_1=[midpoint,POLAR[2],POLAR[3],POLAR[4],POLAR[5],POLAR[6],midpoint];
+                            var arr_2=[midpoint,POLAR[1],POLAR[0],POLAR[8],POLAR[7],POLAR[6],midpoint];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+                            line(POLAR[0],POLAR[3],{stroke: KhanUtil.PINK});
+                            graph.split = graph.polygon.drawLineOfSymmetry( 3 , KhanUtil.PINK);
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                        </div>
+                    </div>
+
+                    <div data-if="J[0]==3">
+                        <p><code>\overline{DE}</code> 的中垂線的兩邊的圖形翻過去可以完全對齊，所以是對稱軸。</p>
+                        <div class="graphie" data-update="main">
+                            var midpoint=[(POLAR[3][0]+POLAR[4][0])/2,(POLAR[3][1]+POLAR[4][1])/2];
+                            var arr_1=[midpoint,POLAR[4],POLAR[5],POLAR[6],POLAR[7],POLAR[8],midpoint];
+                            var arr_2=[midpoint,POLAR[3],POLAR[2],POLAR[1],POLAR[0],POLAR[8],midpoint];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.split = graph.polygon.drawLineOfSymmetry( 7 , KhanUtil.PINK);
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                        </div>
+                    </div>
+
+                    <div data-if="J[0]==4">
+                        <p><code>\angle D</code> 的角平分線的兩邊的圖形翻過去可以完全對齊，所以是對稱軸。</p>
+                        <div class="graphie" data-update="main">
+                            
+                           var midpoint=[(POLAR[7][0]+POLAR[8][0])/2,(POLAR[7][1]+POLAR[8][1])/2];
+                            var arr_1=[midpoint,POLAR[3],POLAR[4],POLAR[5],POLAR[6],POLAR[7],midpoint];
+                            var arr_2=[midpoint,POLAR[3],POLAR[2],POLAR[1],POLAR[0],POLAR[8],midpoint];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.split = line(POLAR[3],midpoint,{ stroke: KhanUtil.PINK});
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                        </div>
+                    </div>
+                    <div data-if="J[0]==5">
+                        <p><code>\overline{AF}</code> 沒有通過<code>\overline{BI}</code> 的中點，所以 <code>\overline{AF}</code> 沒有垂直平分 <code>\overline{BI}</code>。</p>
+                        <div class="graphie" data-update="main">
+                            line(POLAR[0],POLAR[5],{stroke: KhanUtil.PINK});
+                            line(POLAR[1],POLAR[8],{stroke: "purple"});
+                           
+                        </div>
+                    </div>
+                    <div data-if="J[0]==6">
+                        <p><code>\angle B</code>  的角平分線是對稱軸，並且 <code>E</code>  和 <code>H</code>  是對稱點，所以 <code>\angle B</code>  的角平分線垂直平分 <code>E</code> 和 <code>H</code>  的連線。</p>
+                        <div class="graphie" data-update="main">
+                            var midpoint=[(POLAR[6][0]+POLAR[5][0])/2,(POLAR[6][1]+POLAR[5][1])/2];
+                            var arr_1=[midpoint,POLAR[6],POLAR[5],POLAR[4],POLAR[3],POLAR[2],POLAR[1],midpoint];
+                            var arr_2=[midpoint,POLAR[6],POLAR[7],POLAR[8],POLAR[0],POLAR[1],midpoint];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.split = line(POLAR[1],midpoint,{ stroke: KhanUtil.PINK});
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                            line(POLAR[4],POLAR[7],{ stroke: "purple"});
+                        </div>
+                    </div>
+                    <div data-if="J[0]==7">
+                        <p><code>\angle H</code> 的角平分線是對稱軸，並且與圖形的邊 <code>\overline{CD}</code> 相交，所以 <code>\angle H</code> 的角平分線垂直平分 <code>\overline{CD}</code>。</p>
+                        <div class="graphie" data-update="main">
+                            var midpoint=[(POLAR[2][0]+POLAR[3][0])/2,(POLAR[2][1]+POLAR[3][1])/2];
+                            var arr_1=[midpoint,POLAR[3],POLAR[4],POLAR[5],POLAR[6],POLAR[7],midpoint];
+                            var arr_2=[midpoint,POLAR[7],POLAR[8],POLAR[0],POLAR[1],POLAR[2],midpoint];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.split = line(POLAR[7],midpoint,{ stroke: KhanUtil.PINK});
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                        </div>               
+                    </div>
+                    <div data-if="J[0]==8">
+                        <p><code>\angle A</code> 的角平分線是對稱軸，但是 <code>D</code> 和 <code>H</code> 不是對稱點，所以 <code>\angle A</code> 的角平分線不會垂直平分 <code>D</code> 和 <code>H</code> 的連線。</p>
+                        <div class="graphie" data-update="main">
+                            var midpoint=[(POLAR[5][0]+POLAR[4][0])/2,(POLAR[4][1]+POLAR[5][1])/2];
+                            var arr_1=[midpoint,POLAR[5],POLAR[6],POLAR[7],POLAR[8],POLAR[0],midpoint];
+                            var arr_2=[midpoint,POLAR[0],POLAR[1],POLAR[2],POLAR[3],POLAR[4],midpoint];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.split = line(POLAR[0],midpoint,{ stroke: KhanUtil.PINK});
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                            line(POLAR[3],POLAR[7],{ stroke: "purple"});
+                        </div>     
+                    </div>
+                    <div data-if="J[0]==9">
+                        <p>因為對稱軸兩邊的圖形翻過來會互相對齊，所以與 <code>E</code> 點相連的邊會對齊，也就是夾角相等，所以通過<code>E</code> 點的對稱軸會平分 <code>\angle E</code>。</p>
+                        <div class="graphie" data-update="main">
+                            var midpoint=[(POLAR[0][0]+POLAR[8][0])/2,(POLAR[0][1]+POLAR[8][1])/2];
+                            var arr_1=[midpoint,POLAR[4],POLAR[5],POLAR[6],POLAR[7],POLAR[8],midpoint];
+                            var arr_2=[midpoint,POLAR[0],POLAR[1],POLAR[2],POLAR[3],POLAR[4],midpoint];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.split = line(POLAR[4],midpoint,{ stroke: KhanUtil.PINK});
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                        </div>
+                    </div>
+                    <div data-if="J[0]==10">
+                        <p><code>\overline{GH}</code> 的中垂線是對稱軸，並且通過 <code>C</code> 點，因為對稱軸兩邊的圖形翻過來會互相對齊，所以與<code>C</code> 點相連的邊會對齊，也就是夾角相等，所以 <code>\overline{GH}</code> 的中垂線平分 <code>\angle C</code>。</p>
+                        <div class="graphie" data-update="main">
+                            var midpoint=[(POLAR[6][0]+POLAR[7][0])/2,(POLAR[6][1]+POLAR[7][1])/2];
+                            var arr_1=[midpoint,POLAR[6],POLAR[5],POLAR[4],POLAR[3],POLAR[2],midpoint];
+                            var arr_2=[midpoint,POLAR[7],POLAR[8],POLAR[0],POLAR[1],POLAR[2],midpoint];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.split = graph.polygon.drawLineOfSymmetry( 13 , KhanUtil.PINK);
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                        </div>
+                    </div>
+                    <div data-if="J[0]==11">
+                        <p><code>\overline{DF}</code> 的中垂線是對稱軸，但沒有通過 <code>I</code> 點，所以 <code>\overline{DF}</code> 的中垂線沒有平分 <code>\angle I</code>。</p>
+                        <div class="graphie" data-update="main">
+                            
+                           var midpoint=[(POLAR[0][0]+POLAR[8][0])/2,(POLAR[0][1]+POLAR[8][1])/2];
+                            var arr_1=[midpoint,POLAR[0],POLAR[1],POLAR[2],POLAR[3],POLAR[4],midpoint];
+                            var arr_2=[midpoint,POLAR[4],POLAR[5],POLAR[6],POLAR[7],POLAR[8],midpoint];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.split = graph.polygon.drawLineOfSymmetry( 8 , KhanUtil.PINK);
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                            line(POLAR[3],POLAR[5],{ stroke: "purple"});
+                        </div>
+                    </div>
+                    <div data-if="J[0]==12">
+                        <p><code>\overline{AC}</code> 的中垂線是對稱軸，並且通過圖形上的邊 <code>\overline{FG}</code>，所以對稱軸垂直平分 <code>\overline{FG}</code>，所以 <code>\overline{AC}</code> 的中垂線垂直平分 <code>\overline{FG}</code>。</p>
+                        <div class="graphie" data-update="main">
+                            
+                           var midpoint=[(POLAR[6][0]+POLAR[5][0])/2,(POLAR[6][1]+POLAR[5][1])/2];
+                            var arr_1=[midpoint,POLAR[6],POLAR[5],POLAR[4],POLAR[3],POLAR[2],POLAR[1],midpoint];
+                            var arr_2=[midpoint,POLAR[6],POLAR[7],POLAR[8],POLAR[0],POLAR[1],midpoint];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.split = graph.polygon.drawLineOfSymmetry( 2 , KhanUtil.PINK);
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                            
+                            line(POLAR[0],POLAR[2],{ stroke: "purple"});
+                        </div>
+                    </div>
+                    <div class="graphie" data-update="main">
+                        for (var i = 0; i &lt; 9; i++) 
+                        {
+                            circle(POLAR[i],0.1,{stroke:"brown", fill: "brown" });
+                        }
+                    </div>
+                </div>
+                <p>所以敘述是<span class="hint_pink"><var>J[1]</var></span>的。</p>
+            </div>
+        </div>
+
+         <div id="case2">
+            <div class="vars">
+                <var id="J">randFromArray([[1,"不正確"],[2,"正確"],[3,"正確"],[4,"正確"],[5,"正確"],[6,"不正確"],[7,"正確"],[8,"不正確"],[9,"正確"],[10,"正確"],[11,"正確"],[12,"不正確"],[13,"正確"],[14,"不正確"],[15,"正確"]])</var>
+                <var id="ROTAT">randRange( 1, 100 )</var>
+                <var id="POLAR">(function(){
+                            var shape = [];
+                            for (var i = 0; i &lt; 10; i++) {
+                                shape[i]=polar(3,36*i+ROTAT);                              
+                            }
+                            shape[10]=shape[0];
+                            return shape;
+                    })()</var>
+            </div>
+            <p class="question">下圖是一個正十邊形，請判斷以下敘述是否正確：</p>    
+            <div class="problem">                  
+                <p data-if="J[0]==1"><code>\overline{CG}</code> 是對稱軸。</p>
+                <p data-if="J[0]==2"><code>\overline{DI}</code> 是對稱軸。</p>
+                <p data-if="J[0]==3"><code>\overline{AD}</code> 的中垂線是對稱軸。</p>
+                <p data-if="J[0]==4"><code>\overline{EF}</code> 的中垂線是對稱軸。</p>
+                <p data-if="J[0]==5"><code>\angle D</code> 的角平分線是對稱軸。</p>
+                <p data-if="J[0]==6"><code>\overline{AF}</code> 垂直平分 <code>\overline{CH}</code></p>
+                <p data-if="J[0]==7"><code>\overline{EJ}</code> 垂直平分 <code>\overline{CG}</code> 。</p>                
+                <p data-if="J[0]==8"><code>\angle B</code> 的角平分線垂直平分 <code>\overline{GH}</code> 。</p>
+                <p data-if="J[0]==9"><code>\angle H</code> 的角平分線垂直平分 <code>\overline{BD}</code> 。</p>
+
+                <p data-if="J[0]==10"><code>\angle A</code> 的角平分線平分 <code>\angle F</code>。</p>
+
+                <p data-if="J[0]==11">通過 <code>E</code> 點的對稱軸是 <code>\angle E</code> 的角平分線。</p>
+                <p data-if="J[0]==12"><code>\overline{GH}</code> 的中垂線平分 <code>\angle C</code>。</p>
+                <p data-if="J[0]==13"><code>\overline{DF}</code> 的中垂線平分 <code>\angle J</code>。</p>
+                <p data-if="J[0]==14"><code>\overline{AC}</code> 的中垂線垂直平分 <code>\overline{FI}</code>。</p>
+                <p data-if="J[0]==15"><code>\overline{CE}</code> 的中垂線垂直平分 <code>\overline{AG}</code>。</p>
+                <div class="graphie" id="main">
+                    init({ range: [ [ -5, 5 ], [ -5, 5 ] ]});
+                    graph.polygon = new RegularPolygon( [ 0, 0 ] , 10 , 3, ROTAT );
+
+                    var capsword=["A","B","C","D","E","F","G","H","I","J"]
+                    
+                    for (var i = 0; i &lt; 10; i++) 
+                    {
+                        circle(POLAR[i],0.1,{stroke:"brown", fill: "brown" });
+                        label([1.15*POLAR[i][0],1.15*POLAR[i][1]], capsword[i],"center");
+                    }
+                    
+                </div>
+            </div>                            
+            <p class="solution"><var>J[1]</var></p>
+                <ul class="choices" data-category="true">                   
+                    <li>正確</li>
+                    <li>不正確</li>
+                </ul>
+            <div class="hints">
+                <div>
+                    <p>正十邊形是線對稱圖形，有 <code>10</code> 條對稱軸。對稱軸兩邊的圖形像是照鏡子一樣，翻過去可以完全對齊。線對稱圖形有以下特性：</p>
+                    <p>1. 兩個對稱點之連線段會被對稱軸垂直平分。</p>
+                    <p>2. 對稱軸與圖形的邊相交，則對稱軸是那條線段的垂直平分線。</p>
+                    <p>3. 對稱軸與圖形的頂點相交，則對稱軸是那個角的角平分線。</p>
+                </div>
+                <div>
+                    <div data-if="J[0]==1">
+                        <p><code>\overline{CG}</code>兩邊的面積不同，所以不是對稱軸。</p>
+                        <div class="graphie" data-update="main">
+                            graph.splitLINE = line(POLAR[2],POLAR[6],{ stroke: KhanUtil.PINK});
+                            graph.half = graph.polygon.splitPath( graph.splitLINE ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.splitLINE.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                           
+                        </div>
+                    </div>
+                    <div data-if="J[0]==2">
+                        <p><code>\overline{DI}</code>的兩邊的圖形翻過去可以完全對齊，所以是對稱軸。</p>
+                        <div class="graphie" data-update="main">
+                            var arr_1=[POLAR[8],POLAR[3],POLAR[4],POLAR[5],POLAR[6],POLAR[7],POLAR[8]];
+                            var arr_2=[POLAR[8],POLAR[3],POLAR[2],POLAR[1],POLAR[0],POLAR[9],POLAR[8]];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.splitLINE = line(POLAR[3],POLAR[8],{ stroke: KhanUtil.PINK})
+                            graph.half = graph.polygon.splitPath( graph.splitLINE ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.splitLINE.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                           
+                        </div>
+                    </div>
+                    <div data-if="J[0]==3">
+                        <p><code>\overline{AD}</code> 的中垂線的兩邊的圖形翻過去可以完全對齊，所以是對稱軸。</p>
+                        <div class="graphie" data-update="main">
+                            var midpoint=[(POLAR[1][0]+POLAR[2][0])/2,(POLAR[1][1]+POLAR[2][1])/2];
+                            var midpoint_1=[(POLAR[6][0]+POLAR[7][0])/2,(POLAR[6][1]+POLAR[7][1])/2];
+                            var arr_1=[midpoint,POLAR[2],POLAR[3],POLAR[4],POLAR[5],POLAR[6],midpoint_1,midpoint];
+                            var arr_2=[midpoint,POLAR[1],POLAR[0],POLAR[9],POLAR[8],POLAR[7],POLAR[6],midpoint_1,midpoint];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+                            line(POLAR[0],POLAR[3],{stroke: KhanUtil.PINK});
+                            graph.split = graph.polygon.drawLineOfSymmetry( 3 , KhanUtil.PINK);
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                        </div>
+                    </div>
+                    <div data-if="J[0]==4">
+                        <p><code>\overline{EF}</code> 的中垂線的兩邊的圖形翻過去可以完全對齊，所以是對稱軸。</p>
+                        <div class="graphie" data-update="main">
+                            var midpoint=[(POLAR[4][0]+POLAR[5][0])/2,(POLAR[4][1]+POLAR[5][1])/2];
+                            var midpoint_1=[(POLAR[0][0]+POLAR[9][0])/2,(POLAR[0][1]+POLAR[9][1])/2];
+                            var arr_1=[midpoint,midpoint_1,POLAR[0],POLAR[1],POLAR[2],POLAR[3],POLAR[4],midpoint];
+                            var arr_2=[midpoint,POLAR[5],POLAR[6],POLAR[7],POLAR[8],POLAR[9],midpoint_1,midpoint];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+                            graph.split = graph.polygon.drawLineOfSymmetry( 9 , KhanUtil.PINK);
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                        </div>
+                    </div>
+                    <div data-if="J[0]==5">
+                        <p><code>\angle D</code> 的角平分線的兩邊的圖形翻過去可以完全對齊，所以是對稱軸。</p>
+                        <div class="graphie" data-update="main">
+                            
+                            var arr_1=[POLAR[3],POLAR[4],POLAR[5],POLAR[6],POLAR[7],POLAR[8],POLAR[3]];
+                            var arr_2=[POLAR[3],POLAR[2],POLAR[1],POLAR[0],POLAR[9],POLAR[8],POLAR[3]];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.split = graph.polygon.drawLineOfSymmetry( 6 , KhanUtil.PINK);
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                        </div>
+                    </div>
+
+                    <div data-if="J[0]==6">
+                        <p><code>\overline{AF}</code> 是對稱軸，但是 <code>C</code> 和 <code>H</code> 不是對稱點，所以 <code>\overline{AF}</code> 不會垂直平分 <code>C</code> 和 <code>H</code> 的連線。</p>
+                        <div class="graphie" data-update="main">
+                            var arr_1=[POLAR[0],POLAR[1],POLAR[2],POLAR[3],POLAR[4],POLAR[5],POLAR[0]];
+                            var arr_2=[POLAR[0],POLAR[5],POLAR[6],POLAR[7],POLAR[8],POLAR[9],POLAR[0]];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.splitLINE = line(POLAR[0],POLAR[5],{ stroke: KhanUtil.PINK});
+                            graph.half = graph.polygon.splitPath( graph.splitLINE ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.splitLINE.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                           line(POLAR[0],POLAR[5],{stroke: KhanUtil.PINK});
+                           line(POLAR[2],POLAR[7],{stroke: "purple"});
+                        </div>
+                    </div>
+
+                    <div data-if="J[0]==7">
+                        <p><code>\overline{EJ}</code> 是對稱軸，並且<code>C</code> 和 <code>G</code> 是對稱點，所以 <code>\overline{EJ}</code> 垂直平分 <code>C</code> 和 <code>G</code> 的連線。</p>
+                        <div class="graphie" data-update="main">
+                            var arr_1=[POLAR[0],POLAR[1],POLAR[2],POLAR[3],POLAR[4],POLAR[9],POLAR[0]];
+                            var arr_2=[POLAR[4],POLAR[5],POLAR[6],POLAR[7],POLAR[8],POLAR[9],POLAR[4]];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.splitLINE = line(POLAR[4],POLAR[9],{ stroke: KhanUtil.PINK});
+                            graph.half = graph.polygon.splitPath( graph.splitLINE ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.splitLINE.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                           
+                            line(POLAR[4],POLAR[9],{stroke: KhanUtil.PINK});
+                            line(POLAR[2],POLAR[6],{stroke: "purple"});                      
+                        </div>
+                    </div>
+                   
+                    <div data-if="J[0]==8">
+                        <p><code>\angle B</code> 的角平分線是對稱軸，但沒有通過 <code>\overline{GH}</code>，所以 <code>\angle B</code> 的角平分線沒有平分<code>\overline{GH}</code>。</p>
+                        <div class="graphie" data-update="main">
+                            
+                            var arr_1=[POLAR[3],POLAR[4],POLAR[5],POLAR[6],POLAR[1],POLAR[2],POLAR[3]];
+                            var arr_2=[POLAR[6],POLAR[7],POLAR[8],POLAR[9],POLAR[0],POLAR[1],POLAR[6]];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.splitLINE = line(POLAR[1],POLAR[6],{ stroke: KhanUtil.PINK});
+                            graph.half = graph.polygon.splitPath( graph.splitLINE ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.splitLINE.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                            line(POLAR[1],POLAR[6],{stroke: KhanUtil.PINK});
+                        </div>
+                    </div>
+                    <div data-if="J[0]==9">
+                        <p><code>\angle H</code> 的角平分線是對稱軸，並且 <code>B</code> 和 <code>D</code> 是對稱點，所以 <code>\angle H</code> 的角平分線垂直平分 <code>B</code> 和 <code>D</code> 的連線。</p>
+                        <div class="graphie" data-update="main">
+                            
+                            var arr_1=[POLAR[0],POLAR[1],POLAR[2],POLAR[7],POLAR[8],POLAR[9],POLAR[0]];
+                            var arr_2=[POLAR[4],POLAR[5],POLAR[6],POLAR[7],POLAR[2],POLAR[3],POLAR[4]];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.splitLINE = line(POLAR[2],POLAR[7],{ stroke: KhanUtil.PINK});
+                            graph.half = graph.polygon.splitPath( graph.splitLINE ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.splitLINE.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                            line(POLAR[1],POLAR[3],{stroke: KhanUtil.PINK});
+                        </div>
+                    </div>
+                    <div data-if="J[0]==10">
+                        <p><code>\angle A</code> 的角平分線是對稱軸，並且通過 <code>F</code> 點，因為對稱軸兩邊的圖形翻過來會互相對齊，所以與 <code>F</code> 點相連的邊會對齊，也就是夾角相等，所以 <code>\angle A</code> 的角平分線平分 <code>\angle F</code>。</p>
+                        <div class="graphie" data-update="main">
+                            
+                            var arr_1=[POLAR[0],POLAR[1],POLAR[2],POLAR[3],POLAR[4],POLAR[5],POLAR[0]];
+                            var arr_2=[POLAR[0],POLAR[5],POLAR[6],POLAR[7],POLAR[8],POLAR[9],POLAR[0]];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.splitLINE = line(POLAR[0],POLAR[5],{ stroke: KhanUtil.PINK});
+                            graph.half = graph.polygon.splitPath( graph.splitLINE ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.splitLINE.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                            line(POLAR[0],POLAR[5],{stroke: KhanUtil.PINK});
+                        </div>
+                    </div>
+
+
+                    <div data-if="J[0]==11">
+                        <p>因為對稱軸兩邊的圖形翻過來會互相對齊，所以與 <code>E</code>  點相連的邊會對齊，也就是夾角相等，所以通過 <code>E</code> 點的對稱軸會平分 <code>\angle E</code>。</p>
+                        <div class="graphie" data-update="main">
+                            var arr_1=[POLAR[0],POLAR[1],POLAR[2],POLAR[3],POLAR[4],POLAR[9],POLAR[0]];
+                            var arr_2=[POLAR[4],POLAR[5],POLAR[6],POLAR[7],POLAR[8],POLAR[9],POLAR[4]];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.splitLINE = line(POLAR[4],POLAR[9],{ stroke: KhanUtil.PINK});
+                            graph.half = graph.polygon.splitPath( graph.splitLINE ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.splitLINE.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                           
+                            line(POLAR[4],POLAR[9],{stroke: KhanUtil.PINK});
+                        </div>
+                    </div>
+                    <div data-if="J[0]==12">
+                        <p><code>\overline{GH}</code> 的中垂線是對稱軸，但沒有通過 <code>C</code> 點，所以 <code>\overline{GH}</code> 的中垂線沒有平分 <code>\angle C</code>。</p>
+                        <div class="graphie" data-update="main">
+                            var midpoint=[(POLAR[1][0]+POLAR[2][0])/2,(POLAR[1][1]+POLAR[2][1])/2];
+                            var midpoint_1=[(POLAR[6][0]+POLAR[7][0])/2,(POLAR[6][1]+POLAR[7][1])/2];
+                            var arr_1=[midpoint,POLAR[2],POLAR[3],POLAR[4],POLAR[5],POLAR[6],midpoint_1,midpoint];
+                            var arr_2=[midpoint,POLAR[1],POLAR[0],POLAR[9],POLAR[8],POLAR[7],POLAR[6],midpoint_1,midpoint];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                            graph.split = graph.polygon.drawLineOfSymmetry( 13 , KhanUtil.PINK);
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                        </div>
+                    </div>
+                    <div data-if="J[0]==13">
+                        <p><code>\overline{DF}</code> 的中垂線是對稱軸，並且通過 <code>J</code> 點，因為對稱軸兩邊的圖形翻過來會互相對齊，所以與 <code>J</code>  點相連的邊會對齊，也就是夾角相等，所以 <code>\overline{DF}</code> 的中垂線平分 <code>\angle J</code>。</p>
+                        <div class="graphie" data-update="main">
+                            var arr_1=[POLAR[0],POLAR[1],POLAR[2],POLAR[3],POLAR[4],POLAR[9],POLAR[0]];
+                            var arr_2=[POLAR[4],POLAR[5],POLAR[6],POLAR[7],POLAR[8],POLAR[9],POLAR[4]];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});
+
+                           graph.split = graph.polygon.drawLineOfSymmetry( 18 , KhanUtil.PINK);
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                            line(POLAR[3],POLAR[5],{stroke: KhanUtil.PINK});
+                        </div>
+                    </div>
+                    <div data-if="J[0]==14">
+                        <p><code>\overline{AC}</code> 的中垂線是對稱軸，但是 <code>F</code> 和 <code>I</code> 不是對稱點，所以 <code>\overline{AC}</code> 的中垂線沒有垂直平分 <code>F</code> 和 <code>I</code> 的連線。</p>
+                        <div class="graphie" data-update="main">
+                            line(POLAR[0],POLAR[2],{stroke: KhanUtil.RED});
+
+                            graph.split = graph.polygon.drawLineOfSymmetry( 2 , KhanUtil.PINK);
+                           
+                            line(POLAR[5],POLAR[8],{stroke: KhanUtil.BLUE});
+                        </div>
+                    </div>
+                    <div data-if="J[0]==15">
+                        <p><code>\overline{CE}</code> 的中垂線是對稱軸，並且 <code>A</code> 和 <code>G</code> 是對稱點，所以 <code>\overline{CE}</code> 的中垂線垂直平分 <code>A</code> 和 <code>G</code> 的連線。</p>
+                        <div class="graphie" data-update="main"> 
+                            var arr_1=[POLAR[3],POLAR[4],POLAR[5],POLAR[6],POLAR[7],POLAR[8],POLAR[3]];
+                            var arr_2=[POLAR[3],POLAR[2],POLAR[1],POLAR[0],POLAR[9],POLAR[8],POLAR[3]];
+
+                            path(arr_1,{fill:KhanUtil.BLUE});
+                            path(arr_2,{fill:KhanUtil.GREEN});                        
+                            graph.split = graph.polygon.drawLineOfSymmetry( 6 , KhanUtil.PINK);
+                            graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                            var temp = [];
+                            var i = 0;
+                            for( i = 0; i != graph.half.length; i++ ){
+                                temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                            }
+                            path( temp, { "stroke-width": 5, stroke: KhanUtil.RED } );
+                            line(POLAR[0],POLAR[6],{stroke: "purple"});
+                            line(POLAR[2],POLAR[4],{stroke: "purple"});
+                        </div>
+                    </div>
+                    <div class="graphie" data-update="main">                         
+                        for (var i = 0; i &lt; 9; i++) 
+                        {
+                            circle(POLAR[i],0.1,{stroke:"brown", fill: "brown" });
+                        }
+                    </div>
+                </div>
+                <p>所以敘述是<span class="hint_pink"><var>J[1]</var></span>的。</p>
+            </div>
+        </div>
+       
+    </div>
+    </div>
+</body>
+</html>
+
+
+
