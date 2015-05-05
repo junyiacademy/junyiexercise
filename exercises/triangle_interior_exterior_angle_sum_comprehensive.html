@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html data-require="math graphie word-problems interactive subhints">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>三角形的內角和與外角和綜合題型</title>
+    <script src="../khan-exercise.js"></script>
+    <script language="javascript">
+        function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+    </script>
+</head>
+<body>
+
+<div class="exercise">   
+    <div class="problems">
+        <div id="case1">
+            <div class="vars" data-ensure="divison_1!=divison_2&&proportion[2]!=divison_1&&divison_2!=proportion[2]">
+                <var id="fraction_1">randFromArray([6,9,10,12,18])</var>
+				<var id="unit">round(180/fraction_1)</var>               
+                <var id="divison_1">randRange(1,round(fraction_1/2))</var>
+                <var id="divison_2">randRange(1,fraction_1-divison_1-1)</var>
+                <var id="proportion">[divison_1 , divison_2 ,round(fraction_1-divison_1-divison_2)]</var>
+                <var id="ANS">round((max(divison_1,divison_2,round(fraction_1-divison_1-divison_2))-min(divison_1,divison_2,round(fraction_1-divison_1-divison_2)))*unit)</var>
+            </div>
+
+            <p class="question">有一 <code>\triangle ABC</code> ，它的三個內角 <code>A、B、C</code> 度數比依序為 <code><var>proportion[0]</var>:<var>proportion[1]</var>:<var>proportion[2]</var></code> ，則此三角形的最大角與最小角相差為多少度？</p>
+            
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>ANS</var></span> <code>^\circ</code>
+                <p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <p>三角形的內角和為 <code>180 ^\circ</code>，因此 <code>\angle A + \angle B + \angle C = 180 ^\circ</code>。</p>               
+                <div>
+                    <p>題目說 <code>\angle A：\angle B：\angle C = <var>proportion[0]</var>:<var>proportion[1]</var>:<var>proportion[2]</var> </code>，所以我們可以假設</p>
+                    <p><code>\angle A =</code> <code data-if="divison_1!=1"><var>divison_1</var></code><code>t</code>，<code>\angle B = </code> <code data-if="divison_2!=1"><var>divison_2</var></code><code>t</code>，<code>\angle C = </code> <code data-if="round(fraction_1-divison_1-divison_2)!=1"><var>round(fraction_1-divison_1-divison_2)</var></code><code>t</code> ，代入剛剛給的式子，得到：</p>
+                    <p><code data-if="divison_1!=1"><var>divison_1</var></code><code>t+</code> <code data-if="divison_2!=1"><var>divison_2</var></code><code>t+</code> <code data-if="round(fraction_1-divison_1-divison_2)!=1"><var>round(fraction_1-divison_1-divison_2)</var></code>
+                    <code>t</code> <code>=180 ^\circ</code></p>
+                    <p><code>\Rightarrow <var>fraction_1</var> t =180 ^\circ</code></p>
+                    <p><code>\Rightarrow  t =<var>unit</var> ^\circ</code></p>
+                </div>
+                 <div> 
+                    <p>把 <code>t</code> 帶回我們剛剛假設的，就可以得到 ：</p>
+                    <p><code>\angle A</code> <code>=</code> <code data-if="divison_1!=1"><var>divison_1</var></code><code>t</code> <code> =</code> <code data-if="divison_1!=1"><var>divison_1</var>\times</code> <code> <var>unit</var>^\circ</code><code  data-if="divison_1!=1"> = <var>divison_1*unit</var>^\circ</code></p>
+                    <p><code>\angle B</code> <code>=</code> <code data-if="divison_2!=1"><var>divison_2</var></code><code>t</code> <code> =</code> <code data-if="divison_2!=1"><var>divison_2</var>\times</code> <code> <var>unit</var>^\circ</code><code  data-if="divison_2!=1"> = <var>divison_2*unit</var>^\circ</code></p>
+                    <p><code>\angle C</code> <code>=</code> <code data-if="round(fraction_1-divison_1-divison_2)!=1"><var>round(fraction_1-divison_1-divison_2)</var></code><code>t</code> <code> =</code> <code data-if="round(fraction_1-divison_1-divison_2)!=1"><var>round(fraction_1-divison_1-divison_2)</var>\times</code> <code> <var>unit</var>^\circ</code><code  data-if="round(fraction_1-divison_1-divison_2)!=1"> = <var>round(fraction_1-divison_1-divison_2)*unit</var>^\circ</code>。</p>
+                </div>
+                <div>
+                    <p>所以最大角度為 <code><var>max(divison_1,divison_2,round(fraction_1-divison_1-divison_2))*unit</var>^\circ</code>，最小角度為 <code><var>min(divison_1,divison_2,round(fraction_1-divison_1-divison_2))*unit</var>^\circ</code>，</p>
+                    <p>因此最大角與最小角相差 <code><var>max(divison_1,divison_2,round(fraction_1-divison_1-divison_2))*unit</var>^\circ - </code><code><var>min(divison_1,divison_2,round(fraction_1-divison_1-divison_2))*unit</var>^\circ=</code> <code class="hint_pink"><var>ANS</var></code><code>^\circ</code>。</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="case2">
+            <div class="vars" data-ensure="oangleA &gt;30">
+                <var id="oangleC">randRange(100,150)</var>
+                <var id="proportion">randRange(1,4)*0.5</var>               
+                <var id="oangleA">360-oangleC*(proportion+1)</var>
+                <var id="ANS">round(180-oangleC)</var>
+            </div>
+
+            <p class="question">有一 <code>\triangle ABC</code> ，<code>\angle A</code> 的外角 <code>= <var>oangleA</var> ^\circ</code>，另外兩個角的外角不知道幾度，只知道 <code>\angle B</code> 的外角是 <code>\angle C</code> 的外角的 <code><var>proportion</var></code> 倍，則此 <code>\angle C</code> 為多少度？</p>
+            
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>ANS</var></span> <code>^\circ</code>
+                <p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>三角形的外角和為 <code>360 ^\circ</code>，因此</p>
+                    <p> <code>\angle A</code> 的外角 <code>+ \angle B</code>  的外角 <code>+ \angle C</code> 的外角 <code>= 360 ^\circ</code>。</p>
+                </div>               
+                <div>
+                    <p>題目說 <code>\angle A</code> 的外角 <code>= <var>oangleA</var> ^\circ</code>，代入可得：</p>
+                    <p><code><var>oangleA</var>^\circ</code> <code> + \angle B</code> 的外角 <code>+ \angle C</code> 的外角 <code>= 360^\circ</code></p>
+                    <p><code>\Rightarrow  \angle B</code> 的外角 <code>+\angle C</code> 的外角 <code>= <var>360-oangleA</var>^\circ</code>。</p>
+                </div>
+                <div>
+                    <p>又題目說 <code>\angle B</code> 的外角是 <code>\angle C</code> 的外角的 <code><var>proportion</var></code> 倍，所以我們可以假設 <code>\angle C</code> 的外角為 <code>t</code>，那 <code>\angle B </code> 的外角就為 <code><var>proportion</var> t</code>，代入剛剛的式子可以得到：</p>
+                    <p><code data-if="proportion!=1"><var>proportion</var> t+t</code><code data-if="proportion==1">t+t</code> <code>=<var>360-oangleA</var>^\circ</code></p>
+                    <p><code>\Rightarrow t = <var>oangleC</var> ^\circ</code></p>
+                    <p>因此，我們知道：</p>
+                    <p><code>\angle B</code> 的外角為 <code data-if="proportion!=1"><var>proportion</var></code><code>t=<var>proportion* oangleC</var>^\circ</code></p>
+                    <P><code>\angle C</code> 的外角為 <code>t = <var>oangleC</var>^\circ</code>。</p>
+                </div>
+                <p>所以 <code>\angle C</code> 為 <code>180^\circ-<var>oangleC</var> ^\circ=</code> <code class="hint_pink"><var>ANS</var></code><code>^\circ</code>。</p>
+            </div>
+        </div>
+
+		<div id="case3">
+            <div class="vars" data-ensure="AF[0] &gt; -2 && ANS &lt;150 && ANS &gt;100">
+                <var id="A_a">randRange(1,2)</var>
+                <var id="A_b">randRange(1,8)*5</var>
+                <var id="B_a">randRange(1,2)</var>
+                <var id="B_b">randRange(1,8)*5</var>
+                <var id="C_a">5-A_a-B_a</var>
+                <var id="C_b">randRange(1,8)*5</var>
+                <var id="x">round((360-A_b-B_b-C_b )/5)</var>
+                <var id="angleA_init">round(180-A_a*x-A_b)</var>
+                <var id="angleB_init">round(180-B_a*x-B_b)</var>
+                <var id="angleC_init">round(180-C_a *x-C_b)</var>
+                <var id="candidate,ans">randFromArray([[ "x" , x] , ["\\angle A" , angleA_init ] , ["\\angle B" ,angleB_init] , ["\\angle C" , angleC_init ]])</var>
+                <var id="angleA_exter">(function(){
+                            var shape="";
+                            A_a_x=""
+                            if(A_a!=1){A_a_x=A_a;}
+                            shape="("+A_a_x+"x"+"+"+A_b+")";
+                            return shape;
+                        })()</var>
+                <var id="angleB_exter">(function(){
+                            var shape="";
+                            B_a_x=""
+                            if(B_a!=1){B_a_x=B_a;}
+                            shape="("+B_a_x+"x"+"+"+B_b+")";
+                            return shape;
+                        })()</var>
+                <var id="angleC_exter">(function(){
+                            var shape="";
+                            C_a_x=""
+                            if(C_a!=1){C_a_x=C_a;}
+                            shape="("+C_a_x+"x"+"+"+C_b+")";
+                            return shape;
+                        })()</var>
+
+                <var id="angleA">round(180-angleA_init)</var>
+                <var id="angleB">round(180-angleB_init)</var>
+                <var id="ANS">round(360-angleA-angleB)</var>
+                <var id="SINS">[Math.sin((180-ANS)/180*Math.PI),Math.sin((180-angleA)/180*Math.PI)]</var>
+                <var id="LA">6*SINS[0]/SINS[1]</var>
+                <var id="POINT_A">polar(LA,180-angleB)</var>
+                <var id="AF">polar(LA+1,180-angleB)</var>
+                <var id="K">POINT_A[1]/(POINT_A[0]-3-3)</var>
+                <var id="B">POINT_A[1]-K*(POINT_A[0]-3)</var>
+                <var id="LABEL_C">polar(1, ANS/2)</var>
+                <var id="LABEL_A">polar(1, 178+ANS+angleA/2)</var>
+                <var id="LABEL_B">polar(1, angleB_init/2)</var>
+                <var id="LABEL_B_OUT">polar(1, angleB_init/2+90)</var>
+            </div>
+
+            <p class="question">有一 <code>\triangle ABC</code>，<code>\angle A</code> 的外角為 <code><var>angleA_exter</var>^\circ</code>，<code>\angle B</code> 的外角為 <code><var>angleB_exter</var>^\circ</code>，<code>\angle C</code> 的外角為 <code><var>angleC_exter</var>^\circ</code>，請求出 <code><var>candidate</var></code> 為多少。</p>
+            <div class="problem">
+                <div class="graphie">
+                    init({
+                        range: [[-6, 5], [-2, AF[1]+2]],
+                        scale: 40
+                    });
+                    line([-4,0],[4,0]);
+                    line([-3,0],[AF[0]-3,AF[1]]);
+                    line([3,0],[POINT_A[0]-3,POINT_A[1]]);
+                    label([-3,0],'C','below left');
+                    label([POINT_A[0]-3,POINT_A[1]],'A','above left');
+                    label([3,0],'B','below');
+
+                    arc( [3, 0], 0.5, 0, ANS, { stroke: KhanUtil.GREEN } );
+                    arc( [POINT_A[0]-3,POINT_A[1]], 0.5, 178+ANS, 178+ANS+angleA, { stroke: KhanUtil.GREEN } );
+                    arc([-3,0], 0.5, angleB_init, 180,{ stroke : KhanUtil.GREEN});
+                    
+                    label([LABEL_C[0]+3,LABEL_C[1]], angleB_exter+'^\\circ', { color : KhanUtil.GREEN});
+                    
+
+                    label([LABEL_A[0]+POINT_A[0]-2.5,LABEL_A[1]+POINT_A[1]], angleA_exter+'^\\circ', { color : KhanUtil.GREEN});
+                    
+                    label([LABEL_B_OUT[0]-3.5,LABEL_B_OUT[1]], angleC_exter+'^\\circ', { color : KhanUtil.GREEN});
+
+                    
+                    
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>ans</var></span> <code>^\circ</code>
+                <p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>三角形的外角和為 <code>360 ^\circ</code>，因此</p>
+                    <p> <code>\angle A</code> 的外角 <code>+ \angle B</code>  的外角 <code>+ \angle C</code> 的外角 <code>= 360 ^\circ</code>。</p>
+                </div>
+                <div>
+                    <p>代入題目說的條件，我們可以列出下面的式子：</p>
+                    <p><code><var>angleA_exter</var>+<var>angleB_exter</var>+<var>angleC_exter</var>=360 ^\circ</code></p>
+                    <p><code>\Rightarrow <var> A_a + B_a + C_a </var>x = <var>360-A_b-B_b-C_b </var>^\circ</code></p>
+                    <p><code>\Rightarrow x = <var>x</var>^\circ</code>。</p>
+                </div>
+                <div>
+                    <p>因此我們可以知道：</p>
+                    <p><code>\angle A</code> 的外角為 <code data-if="A_a!=1"><var>A_a</var></code><code>x+<var>A_b</var>=<var>A_a*x+ A_b</var>^\circ</code></p>
+                    <p><code>\angle B</code> 的外角為 <code data-if="B_a!=1"><var>B_a</var></code><code>x+<var>B_b</var>=<var>B_a*x+ B_b</var>^\circ</code></p>
+                    <p><code>\angle C</code> 的外角為 <code data-if="C_a!=1"><var>C_a</var></code><code>x+<var>C_b</var>=<var>C_a*x+ C_b</var>^\circ</code></p>
+                </div>
+                <div>
+                    <p>所以，<code>\angle A =180^\circ-<var>A_a*x+ A_b</var>^\circ=<var>angleA_init</var>^\circ</code></p>
+                    <p><code>\angle B =180^\circ-<var>B_a*x+B_b</var>^\circ=<var>angleB_init</var>^\circ</code></p>
+                    <p><code>\angle C =180^\circ-<var>C_a*x+C_b</var>^\circ=<var>angleC_init</var>^\circ。</code></p>
+                </div>
+                <p>此題要求的 <code><var>candidate</var></code> 即為 <code class="hint_pink"><var>ans</var></code><code>^\circ</code> 。</p>
+            </div>
+        </div>
+
+        
+    </div>
+</div>
+</body>
+</html>
