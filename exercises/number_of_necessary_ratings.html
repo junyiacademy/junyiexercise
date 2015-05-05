@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html data-require="math graphie word-problems interactive subhints math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>平分所需的作圖次數</title>
+    <script src="../khan-exercise.js"></script>
+    <script language="javascript">
+        function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+        function fff(arr, i, ans) {
+            for(var ii = i-1; ii >= 0; ii--){
+                if( ans > ii / i ){
+                    arr.push([[ii, i],[ii+1, i]]);
+                    break;
+                }else if( Math.abs( ans - ii / i) < 0.0001){
+                    arr.push([[ii, i],[ii, i]]);
+                    break;
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="exercise">   
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+                <var id="nums">pow(2,randRange(3,5))</var>
+                <var id="ANGLES_START">10</var>
+                <var id="ANGLES_END">180-ANGLES_START</var>
+                <var id="POINT_A">polar(5, ANGLES_START)</var>
+                <var id="POINT_B">polar(5, ANGLES_END)</var>
+                <var id="FA1,FA2,FA3,FA4,FA5">[[],[],[],[],[]]</var>
+            </div>
+
+            <p class="question">利用角平分線作圖將一個角平分成 <code><var>nums</var></code> 等份，至少須作<code>\underline{\qquad}</code>次角平分線。</p>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>nums-1</var></span> 次
+                <p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>角平分線作圖，可將一角平分成兩等份，每一等份為原角的 <code>\dfrac{1}{2}</code> ，共有 <code>2</code> 等份；</p>
+                    <div class="graphie" id="ratings">
+                        init({
+                            range: [[-5.5, 5.5], [-2, 7]],
+                            scale: 40
+                        });
+                        FA1 = [];
+                        var FA1_COLORS = [KhanUtil.GREEN,"#53FF53"];
+                        for(var i = 0; i &lt; 2; i++){
+                            FA1.push(arc( [0, 0], 1, ANGLES_START+(ANGLES_END-ANGLES_START)/2*i, ANGLES_START+(ANGLES_END-ANGLES_START)/2*(i+1), {fill : FA1_COLORS[i], stroke : FA1_COLORS[i]}));
+                            FA1.push(path([polar(1, (ANGLES_END-ANGLES_START)/2*i+ANGLES_START), [0, 0],polar(1, (ANGLES_END-ANGLES_START)/2*(i+1)+ANGLES_START)], {fill : FA1_COLORS[i], stroke : FA1_COLORS[i]}));
+                        }
+                        FA1.push(line([0, 0], POINT_A));
+                        FA1.push(line([0, 0], POINT_B));
+                        FA1.push(line([0, -1], [0, 6], {strokeDasharray : '-', "stroke-width" : 1.2}));
+                        FA1.push(circle(POINT_A, 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE}));
+                        FA1.push(circle(POINT_B, 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE}));
+                        FA1.push(circle([0, 0], 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE}));
+                        label(POINT_A,'A','below');
+                        label(POINT_B,'B','below');
+                        label([0, 0],'O','below left');
+                    </div>
+                </div>
+                <div>
+                    <p>若每一個 <code>\dfrac{1}{2}</code> 角再作一次角平分線作圖 (相當於作了 <code>1+2=3</code> 次角平分線作圖) ，則每一角為原角的 <code>\dfrac{1}{4}</code>，共有 <code>4</code> 等份。</p>
+                    <div class="graphie" data-update="ratings">
+                        FA2 = [];
+                        var FA2_COLORS = ["#FF9797","#FF5151","#FF0000","#930000"];
+                        for(var i = 0; i &lt; 4; i++){
+                            FA2.push(arc( [0, 0], 1.5, ANGLES_START+(ANGLES_END-ANGLES_START)/4*i, ANGLES_START+(ANGLES_END-ANGLES_START)/4*(i+1), {fill : FA2_COLORS[i], stroke : FA2_COLORS[i]}));
+                            FA2.push(path([polar(1.5, (ANGLES_END-ANGLES_START)/4*i+ANGLES_START), [0, 0],polar(1.5, (ANGLES_END-ANGLES_START)/4*(i+1)+ANGLES_START)], {fill : FA2_COLORS[i], stroke : FA2_COLORS[i]}));
+                            if(i!=0){
+                                FA1.push(line([0, 0], polar(6, ANGLES_START+(ANGLES_END-ANGLES_START)/4*i), {strokeDasharray : '-', "stroke-width" : 1.2}));
+                            }
+                        }
+                        $.each(FA1, function(i,elems){
+                            elems.toFront();
+                        });
+
+                    </div>
+                </div>
+                <div>
+                    <p>若每一個 <code>\dfrac{1}{4}</code> 角再作一次角平分線作圖 (相當於作了 <code>1+2+4=7</code> 次角平分線作圖) ，則每一角為原角的 <code>\dfrac{1}{8}</code>，共有 <code>8</code> 等份 (即 <code>2^3</code> 等份)。</p>
+                    <div class="graphie" data-update="ratings">
+                        FA3 = [];
+                        var FA3_COLORS = ["#3A006F","#8600FF","#9F35FF","#BE77FF","#0000C6","#005AB5","#4A4AFF","#46A3FF"];
+                        for(var i = 0; i &lt; 8; i++){
+                            FA3.push(arc( [0, 0], 2, ANGLES_START+(ANGLES_END-ANGLES_START)/8*i, ANGLES_START+(ANGLES_END-ANGLES_START)/8*(i+1), {fill : FA3_COLORS[i], stroke : FA3_COLORS[i]}));
+                            FA3.push(path([polar(2, (ANGLES_END-ANGLES_START)/8*i+ANGLES_START), [0, 0],polar(2, (ANGLES_END-ANGLES_START)/8*(i+1)+ANGLES_START)], {fill : FA3_COLORS[i], stroke : FA3_COLORS[i]}));
+                            if(i!=0){
+                                FA1.push(line([0, 0], polar(5, ANGLES_START+(ANGLES_END-ANGLES_START)/8*i), {strokeDasharray : '-', "stroke-width" : 1.2}));
+                                }
+                        }
+                        $.each(FA2, function(i,elems){
+                            elems.toFront();
+                        });
+                        $.each(FA1, function(i,elems){
+                            elems.toFront();
+                        });
+                    </div>
+                </div>
+                <div data-if="nums &gt; 8">
+                    <p>若每一個 <code>\dfrac{1}{8}</code> 角再作一次角平分線作圖 (相當於作了 <code>1+2+4+8=15</code> 次角平分線作圖) ，則每一角為原角的 <code>\dfrac{1}{16}</code>，共有 <code>16</code> 等份 (即 <code>2^4</code> 等份)。</p>
+                    <div class="graphie" data-update="ratings">
+                        FA4 = [];
+                        var FA4_COLORS = ["#642100","#844200","#A23400","#BB5E00"];
+                        for(var i = 0; i &lt; 16; i++){
+                            FA4.push(arc( [0, 0], 2.5, ANGLES_START+(ANGLES_END-ANGLES_START)/16*i, ANGLES_START+(ANGLES_END-ANGLES_START)/16*(i+1), {fill : FA4_COLORS[(i+1)%4], stroke : FA4_COLORS[(i+1)%4]}));
+                            FA4.push(path([polar(2.5, (ANGLES_END-ANGLES_START)/16*i+ANGLES_START), [0, 0],polar(2.5, (ANGLES_END-ANGLES_START)/16*(i+1)+ANGLES_START)], {fill : FA4_COLORS[(i+1)%4], stroke : FA4_COLORS[(i+1)%4]}));
+                            if(i!=0){
+                                FA1.push(line([0, 0], polar(4, ANGLES_START+(ANGLES_END-ANGLES_START)/16*i), {strokeDasharray : '-', "stroke-width" : 1.2}));
+                                }
+                        }
+                        $.each(FA3, function(i,elems){
+                            elems.toFront();
+                        });
+                        $.each(FA2, function(i,elems){
+                            elems.toFront();
+                        });
+                        $.each(FA1, function(i,elems){
+                            elems.toFront();
+                        });
+                    </div>
+                </div>
+                <div data-if="nums &gt; 16">
+                    <p>若每一個 <code>\dfrac{1}{16}</code> 角再作一次角平分線作圖 (相當於作了 <code>1+2+4+8+16=31</code> 次角平分線作圖) ，則每一角為原角的 <code>\dfrac{1}{32}</code>，共有 <code>32</code> 等份 (即 <code>2^5</code> 等份)。</p>
+                    <div class="graphie" data-update="ratings">
+                        FA5 = [];
+                        var FA5_COLORS = ["#548C00","#73BF00","#9AFF02","#5A5AAD"];
+                        for(var i = 0; i &lt; 32; i++){
+                            FA5.push(arc( [0, 0], 3, ANGLES_START+(ANGLES_END-ANGLES_START)/32*i, ANGLES_START+(ANGLES_END-ANGLES_START)/32*(i+1), {fill : FA5_COLORS[(i+1)%4], stroke : FA5_COLORS[(i+1)%4]}));
+                            FA5.push(path([polar(3, (ANGLES_END-ANGLES_START)/32*i+ANGLES_START), [0, 0],polar(3, (ANGLES_END-ANGLES_START)/32*(i+1)+ANGLES_START)], {fill : FA5_COLORS[(i+1)%4], stroke : FA5_COLORS[(i+1)%4]}));
+                            if(i!=0){
+                                FA1.push(line([0, 0], polar(3.5, ANGLES_START+(ANGLES_END-ANGLES_START)/32*i), {strokeDasharray : '-', "stroke-width" : 1.2}));
+                                }
+                        }
+                        $.each(FA4, function(i,elems){
+                            elems.toFront();
+                        });
+                        $.each(FA3, function(i,elems){
+                            elems.toFront();
+                        });
+                        $.each(FA2, function(i,elems){
+                            elems.toFront();
+                        });
+                        $.each(FA1, function(i,elems){
+                            elems.toFront();
+                        });
+                    </div>
+                </div>
+                <p>所以利用角平分線作圖將一個角平分成 <code><var>nums</var></code> 等份，至少須作 <code class="hint_pink"><var>round(nums-1)</var></code> 次角平分線。</p>
+            </div>
+        </div>
+
+        <div id="case2">
+            <div class="vars" data-ensure="isOdd(FRAC)">
+                <var id="ANS">randRange(3,5)</var>
+                <var id="nums">pow(2,ANS)</var>
+                <var id="FRAC">randRange(1, nums-1)</var>
+                <var id="ANS_VAL">FRAC/nums</var>
+                <var id="ANGLES_START">10</var>
+                <var id="ANGLES_END">180-ANGLES_START</var>
+                <var id="POINT_A">polar(5, ANGLES_START)</var>
+                <var id="POINT_B">polar(5, ANGLES_END)</var>
+                <var id="FA1,FA2,FA3,FA4,FA5">[[],[],[],[],[]]</var>
+                <var id="ANS_RANGE">(function(){
+                    var restu = [];
+                    for(var k = 31; k &gt; 0; k--){
+                        if(abs( ANS_VAL - k / 32 ) &lt; 0.0001){
+                            restu.push([[k, 32],[k, 32]]);
+                            for(var kk = 15; kk &gt;= 0; kk--){
+                                if( ANS_VAL &gt; kk / 16 ){
+                                    restu.push([[kk, 16],[kk+1, 16]]);
+                                    for(var kkk = 7; kkk &gt;= 0; kkk--){
+                                        if( ANS_VAL &gt; kkk / 8 ){
+                                            restu.push([[kkk, 8],[kkk+1, 8]]);
+                                            fff(restu, 4, ANS_VAL);
+                                            break;
+                                        }else if( abs( ANS_VAL - kkk / 8) &lt; 0.0001){
+                                            restu.push([[kkk, 8],[kkk, 8]]);
+                                            fff(restu, 4, ANS_VAL);
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }else if( abs( ANS_VAL - kk / 16) &lt; 0.0001){
+                                    restu.push([[kk, 16],[kk, 16]]);
+                                    for(var kkk = 7; kkk &gt;= 0; kkk--){
+                                        if( ANS_VAL &gt; kkk / 8 ){
+                                            restu.push([[kkk, 8],[kkk+1, 8]]);
+                                            fff(restu, 4, ANS_VAL);
+                                            break;
+                                        }else if( abs( ANS_VAL - kkk / 8) &lt; 0.0001){
+                                            restu.push([[kkk, 8],[kkk, 8]]);
+                                            fff(restu, 4, ANS_VAL);
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    return restu;
+                })()</var>
+            </div>
+
+            <p class="question">利用角平分線作圖，做出一個角的 <code>\dfrac{<var>FRAC</var>}{<var>nums</var>}</code> ，至少須作圖<code>\underline{\qquad}</code>次。</p>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>ANS</var></span> 次
+                <p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>角平分線作圖，可將一角平分成兩等份，因此 <code>\overline{OA}</code> 和這條角平分線的夾角是 <code>\angle AOB</code> 的 <code>\dfrac{1}{2}</code> 倍。</p>
+                    <div class="graphie" id="ratings_2">
+                        init({
+                            range: [[-5.5, 5.5], [-2, 7]],
+                            scale: 40
+                        });
+                        FA1 = [];
+                        var FA1_COLORS = [KhanUtil.GREEN,"#53FF53"];
+                        for(var i = 0; i &lt; 2; i++){
+                            FA1.push(arc( [0, 0], 1, ANGLES_START+(ANGLES_END-ANGLES_START)/2*i, ANGLES_START+(ANGLES_END-ANGLES_START)/2*(i+1), {fill : FA1_COLORS[i], stroke : FA1_COLORS[i]}));
+                            FA1.push(path([polar(1, (ANGLES_END-ANGLES_START)/2*i+ANGLES_START), [0, 0],polar(1, (ANGLES_END-ANGLES_START)/2*(i+1)+ANGLES_START)], {fill : FA1_COLORS[i], stroke : FA1_COLORS[i]}));
+                        }
+                        FA1.push(line([0, 0], POINT_A));
+                        FA1.push(line([0, 0], POINT_B));
+                        FA1.push(line([0, -1], [0, 6], {strokeDasharray : '-', "stroke-width" : 1.2}));
+                        FA1.push(circle(POINT_A, 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE}));
+                        FA1.push(circle(POINT_B, 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE}));
+                        FA1.push(circle([0, 0], 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE}));
+                        label(POINT_A,'A','below');
+                        label(POINT_B,'B','below');
+                        label([0, 0],'O','below left');
+                        label([0, 5], '\\small{\\dfrac{1}{2}}', 'left')
+                    </div>
+                </div>
+                <div>
+                    <p>這有一點像終極密碼的遊戲，從中間看最快！我們可以發現 <code>\dfrac{<var>FRAC</var>}{<var>nums</var>}</code> 在 <code><var>ANS_VAL &lt; 0.5 ? 0 : '\\dfrac{1}{2}'</var></code> 和 <code><var>ANS_VAL &lt; 0.5 ? '\\dfrac{1}{2}' : 1</var></code> 之間，所以 <code><var>ANS_VAL &lt; 0.5 ? '\\dfrac{1}{2}' : 0</var></code> 和 <code><var>ANS_VAL &lt; 0.5 ? 1: '\\dfrac{1}{2}'</var></code> 之間的數字就不用管了！</p>
+                    <p>因此，以 <code>\overline{OA}</code> 為始邊，做 <code>\angle AOB</code> 的 <code><var>ANS_VAL &lt; 0.5 ? 0 : '\\dfrac{1}{2}'</var></code> 倍和 <code><var>ANS_VAL &lt; 0.5 ? '\\dfrac{1}{2}' : 1</var></code> 倍之間角平分線。因此 <code>\overline{OA}</code> 和新的角平分線的夾角是 <code>\angle AOB</code> 的 <code>\dfrac{<var>ANS_VAL &lt; 0.5 ? 1 : 3</var>}{4}</code> 倍。</p>
+                    <div class="graphie" data-update="ratings_2">
+                        FA2 = [];
+                        var FA2_COLORS = ["#FF9797","#FF5151","#FF0000","#930000"];
+                        for(var i = (ANS_VAL &lt; 0.5 ? 0 : 2 ); i &lt; (ANS_VAL &lt; 0.5 ? 2 : 4 ); i++){
+                            FA2.push(arc( [0, 0], 1.5, ANGLES_START+(ANGLES_END-ANGLES_START)/4*i, ANGLES_START+(ANGLES_END-ANGLES_START)/4*(i+1), {fill : FA2_COLORS[i], stroke : FA2_COLORS[i]}));
+                            FA2.push(path([polar(1.5, (ANGLES_END-ANGLES_START)/4*i+ANGLES_START), [0, 0],polar(1.5, (ANGLES_END-ANGLES_START)/4*(i+1)+ANGLES_START)], {fill : FA2_COLORS[i], stroke : FA2_COLORS[i]}));
+                        }
+                        FA1.push(line([0, 0], polar(6, ANGLES_START+(ANGLES_END-ANGLES_START)/4*(ANS_VAL &lt; 0.5 ? 1 : 3)), {strokeDasharray : '-', "stroke-width" : 1.2}));
+                        $.each(FA1, function(i,elems){
+                            elems.toFront();
+                        });
+                        label(polar(6, ANGLES_START+(ANGLES_END-ANGLES_START)/4*(ANS_VAL &lt; 0.5 ? 1 : 3)), '\\small{\\dfrac{'+(ANS_VAL &lt; 0.5 ? 1 : 3)+'}{4}}', 'above');
+                    </div>
+                </div>
+                <div>
+                    <p>再做一次終極密碼！我們可以發現 <code>\dfrac{<var>FRAC</var>}{<var>nums</var>}</code> 在 <code><var>fraction(ANS_RANGE[3][0][0],ANS_RANGE[3][0][1],true,false,false,false)</var></code> 和 <code><var>fraction(ANS_RANGE[3][1][0],ANS_RANGE[3][1][1],true,false,false,false)</var></code> 之間，所以其他部分就不用管了！</p>
+                    <p>因此，以 <code>\overline{OA}</code> 為始邊，做 <code>\angle AOB</code> 的 <code><var>fraction(ANS_RANGE[3][0][0],ANS_RANGE[3][0][1],true,false,false,false)</var></code> 倍和 <code><var>fraction(ANS_RANGE[3][1][0],ANS_RANGE[3][1][1],true,false,false,false)</var></code> 倍之間角平分線。因此 <code>\overline{OA}</code> 和新的角平分線的夾角是 <code>\angle AOB</code> 的 <code>\dfrac{<var>round((ANS_RANGE[3][0][0]+ANS_RANGE[3][1][0]))</var>}{8}</code> 倍。</p>
+                    <div class="graphie" data-update="ratings_2">
+                        FA3 = [];
+                        var FA3_COLORS = ["#3A006F","#8600FF","#9F35FF","#BE77FF","#0000C6","#005AB5","#4A4AFF","#46A3FF"];
+                        for(var i = 0; i &lt; ((ANS_RANGE[2][0][0]+ANS_RANGE[2][1][0])&gt;(2*ANS_RANGE[3][0][0]+2*ANS_RANGE[3][1][0])?(ANS_RANGE[3][0][0]+ANS_RANGE[3][1][0])+1:(ANS_RANGE[3][0][0]+ANS_RANGE[3][1][0])); i++){
+                            FA3.push(arc( [0, 0], 2, ANGLES_START+(ANGLES_END-ANGLES_START)/8*i, ANGLES_START+(ANGLES_END-ANGLES_START)/8*(i+1), {fill : FA3_COLORS[i], stroke : FA3_COLORS[i]}));
+                            FA3.push(path([polar(2, (ANGLES_END-ANGLES_START)/8*i+ANGLES_START), [0, 0],polar(2, (ANGLES_END-ANGLES_START)/8*(i+1)+ANGLES_START)], {fill : FA3_COLORS[i], stroke : FA3_COLORS[i]}));
+                        }
+                        FA1.push(line([0, 0], polar(6, ANGLES_START+(ANGLES_END-ANGLES_START)/8*round((ANS_RANGE[3][0][0]+ANS_RANGE[3][1][0]))), {strokeDasharray : '-', "stroke-width" : 1.2}));
+                        $.each(FA2, function(i,elems){
+                            elems.toFront();
+                        });
+                        $.each(FA1, function(i,elems){
+                            elems.toFront();
+                        });
+                        label(polar(6, ANGLES_START+(ANGLES_END-ANGLES_START)/8*round((ANS_RANGE[3][0][0]+ANS_RANGE[3][1][0]))), '\\small{\\dfrac{'+(ANS_RANGE[3][0][0]+ANS_RANGE[3][1][0])+'}{8}}', 'above');
+                    </div>
+                </div>
+                <div data-if="nums &gt;= 16">
+                    <p>還要再做一次終極密碼！我們可以發現 <code>\dfrac{<var>FRAC</var>}{<var>nums</var>}</code> 在 <code><var>fraction(ANS_RANGE[2][0][0],ANS_RANGE[2][0][1],true,false,false,false)</var></code> 和 <code><var>fraction(ANS_RANGE[2][1][0],ANS_RANGE[2][1][1],true,false,false,false)</var></code> 之間，所以其他部分就不用管了！</p>
+                    <p>因此，以 <code>\overline{OA}</code> 為始邊，做 <code>\angle AOB</code> 的 <code><var>fraction(ANS_RANGE[2][0][0],ANS_RANGE[2][0][1],true,false,false,false)</var></code> 倍和 <code><var>fraction(ANS_RANGE[2][1][0],ANS_RANGE[2][1][1],true,false,false,false)</var></code> 倍之間角平分線。因此 <code>\overline{OA}</code> 和新的角平分線的夾角是 <code>\angle AOB</code> 的 <code>\dfrac{<var>round((ANS_RANGE[2][0][0]+ANS_RANGE[2][1][0]))</var>}{16}</code> 倍。</p>
+                    <div class="graphie" data-update="ratings_2">
+                        FA4 = [];
+                        var FA4_COLORS = ["#642100","#844200","#A23400","#BB5E00"];
+                        for(var i = 0; i &lt; ((ANS_RANGE[1][0][0]+ANS_RANGE[1][1][0])&gt;(2*ANS_RANGE[2][0][0]+2*ANS_RANGE[2][1][0])?(ANS_RANGE[2][0][0]+ANS_RANGE[2][1][0])+1:(ANS_RANGE[2][0][0]+ANS_RANGE[2][1][0])); i++){
+                            FA4.push(arc( [0, 0], 2.5, ANGLES_START+(ANGLES_END-ANGLES_START)/16*i, ANGLES_START+(ANGLES_END-ANGLES_START)/16*(i+1), {fill : FA4_COLORS[(i+1)%4], stroke : FA4_COLORS[(i+1)%4]}));
+                            FA4.push(path([polar(2.5, (ANGLES_END-ANGLES_START)/16*i+ANGLES_START), [0, 0],polar(2.5, (ANGLES_END-ANGLES_START)/16*(i+1)+ANGLES_START)], {fill : FA4_COLORS[(i+1)%4], stroke : FA4_COLORS[(i+1)%4]}));
+                        }
+                        FA1.push(line([0, 0], polar(6, ANGLES_START+(ANGLES_END-ANGLES_START)/16*round((ANS_RANGE[2][0][0]+ANS_RANGE[2][1][0]))), {strokeDasharray : '-', "stroke-width" : 1.2}));
+                        $.each(FA3, function(i,elems){
+                            elems.toFront();
+                        });
+                        $.each(FA2, function(i,elems){
+                            elems.toFront();
+                        });
+                        $.each(FA1, function(i,elems){
+                            elems.toFront();
+                        });
+                        label(polar(6, ANGLES_START+(ANGLES_END-ANGLES_START)/16*round((ANS_RANGE[2][0][0]+ANS_RANGE[2][1][0]))), '\\small{\\dfrac{'+(ANS_RANGE[2][0][0]+ANS_RANGE[2][1][0])+'}{16}}', 'above');
+                    </div>
+                </div>
+                <div data-if="nums==32">
+                    <p>最後做一次終極密碼！我們可以發現 <code>\dfrac{<var>FRAC</var>}{<var>nums</var>}</code> 在 <code><var>fraction(ANS_RANGE[1][0][0],ANS_RANGE[1][0][1],true,false,false,false)</var></code> 和 <code><var>fraction(ANS_RANGE[1][1][0],ANS_RANGE[1][1][1],true,false,false,false)</var></code> 之間，所以其他部分就不用管了！</p>
+                    <p>因此，以 <code>\overline{OA}</code> 為始邊，做 <code>\angle AOB</code> 的 <code><var>fraction(ANS_RANGE[1][0][0],ANS_RANGE[1][0][1],true,false,false,false)</var></code> 倍和 <code><var>fraction(ANS_RANGE[1][1][0],ANS_RANGE[1][1][1],true,false,false,false)</var></code> 倍之間角平分線。因此 <code>\overline{OA}</code> 和新的角平分線的夾角是 <code>\angle AOB</code> 的 <code>\dfrac{<var>round((ANS_RANGE[1][0][0]+ANS_RANGE[1][1][0]))</var>}{32}</code> 倍。</p>
+                    <div class="graphie" data-update="ratings_2">
+                        FA5 = [];
+                        var FA5_COLORS = ["#548C00","#73BF00","#9AFF02","#5A5AAD"];
+                        for(var i = 0; i &lt; (ANS_RANGE[1][0][0]+ANS_RANGE[1][1][0]); i++){
+                            FA5.push(arc( [0, 0], 3, ANGLES_START+(ANGLES_END-ANGLES_START)/32*i, ANGLES_START+(ANGLES_END-ANGLES_START)/32*(i+1), {fill : FA5_COLORS[(i+1)%4], stroke : FA5_COLORS[(i+1)%4]}));
+                            FA5.push(path([polar(3, (ANGLES_END-ANGLES_START)/32*i+ANGLES_START), [0, 0],polar(3, (ANGLES_END-ANGLES_START)/32*(i+1)+ANGLES_START)], {fill : FA5_COLORS[(i+1)%4], stroke : FA5_COLORS[(i+1)%4]}));
+                        }
+                        FA1.push(line([0, 0], polar(4, ANGLES_START+(ANGLES_END-ANGLES_START)/32*round((ANS_RANGE[1][0][0]+ANS_RANGE[1][1][0]))), {strokeDasharray : '-', "stroke-width" : 1.2}));
+                        $.each(FA4, function(i,elems){
+                            elems.toFront();
+                        });
+                        $.each(FA3, function(i,elems){
+                            elems.toFront();
+                        });
+                        $.each(FA2, function(i,elems){
+                            elems.toFront();
+                        });
+                        $.each(FA1, function(i,elems){
+                            elems.toFront();
+                        });
+                        label(polar(4, ANGLES_START+(ANGLES_END-ANGLES_START)/32*round((ANS_RANGE[1][0][0]+ANS_RANGE[1][1][0]))), '\\small{\\dfrac{'+(ANS_RANGE[1][0][0]+ANS_RANGE[1][1][0])+'}{32}}', 'center');
+                    </div>
+                </div>
+                <div>
+                    <p>所以總共做了 <code class="hint_pink"><var>ANS</var></code> 次角平分線。</p>
+                    <p>約分到最簡分數之後，看分母是 <code>2</code> 的幾次方，角平分線就是做幾次。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="case3">
+            <div class="vars" data-ensure="isOdd(FRAC)">
+                <var id="ANS">randRange(3,5)</var>
+                <var id="nums">pow(2,ANS)</var>
+                <var id="FRAC">randRange(1, nums-1)</var>
+                <var id="ANS_VAL">FRAC/nums</var>
+                <var id="ANS_RANGE">(function(){
+                    var restu = [];
+                    for(var k = 31; k &gt; 0; k--){
+                        if(abs( ANS_VAL - k / 32 ) &lt; 0.0001){
+                            restu.push([[k, 32],[k, 32]]);
+                            for(var kk = 15; kk &gt;= 0; kk--){
+                                if( ANS_VAL &gt; kk / 16 ){
+                                    restu.push([[kk, 16],[kk+1, 16]]);
+                                    for(var kkk = 7; kkk &gt;= 0; kkk--){
+                                        if( ANS_VAL &gt; kkk / 8 ){
+                                            restu.push([[kkk, 8],[kkk+1, 8]]);
+                                            fff(restu, 4, ANS_VAL);
+                                            break;
+                                        }else if( abs( ANS_VAL - kkk / 8) &lt; 0.0001){
+                                            restu.push([[kkk, 8],[kkk, 8]]);
+                                            fff(restu, 4, ANS_VAL);
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }else if( abs( ANS_VAL - kk / 16) &lt; 0.0001){
+                                    restu.push([[kk, 16],[kk, 16]]);
+                                    for(var kkk = 7; kkk &gt;= 0; kkk--){
+                                        if( ANS_VAL &gt; kkk / 8 ){
+                                            restu.push([[kkk, 8],[kkk+1, 8]]);
+                                            fff(restu, 4, ANS_VAL);
+                                            break;
+                                        }else if( abs( ANS_VAL - kkk / 8) &lt; 0.0001){
+                                            restu.push([[kkk, 8],[kkk, 8]]);
+                                            fff(restu, 4, ANS_VAL);
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    return restu;
+                })()</var>
+                <var id="FA">(function(){
+                    var arr = [];
+                    (ANS_RANGE[3][0][0]+ANS_RANGE[3][1][0]) == 1 ? arr.push(['AC_2']) : ((ANS_RANGE[3][0][0]+ANS_RANGE[3][1][0]) == 7 ? arr.push(['BC_2']) : arr.push(['C_1C_2']));
+                    if((ANS_RANGE[2][0][0]+ANS_RANGE[2][1][0]) === 1){
+                        arr.push(['AC_3']);
+                    }else if((ANS_RANGE[2][0][0]+ANS_RANGE[2][1][0]) === 15){
+                        arr.push(['BC_3']);
+                    }else if(ANS_RANGE[2][0][0] &gt;= 3 && ANS_RANGE[2][1][0] &lt;= 5){
+                        arr.push(['C_1C_3']);
+                    }else{
+                        arr.push(['C_2C_3']);
+                    }
+                    if(ANS_RANGE[1][0][0]+ANS_RANGE[1][1][0] === 1){
+                        arr.push(['AC_4']);
+                    }else if(ANS_RANGE[1][0][0]+ANS_RANGE[1][1][0] === 31){
+                        arr.push(['BC_4']);
+                    }else if(FRAC === 15 || FRAC === 17){
+                        arr.push(['C_1C_4']);
+                    }else if(FRAC === 7 || FRAC === 9 || FRAC === 23 || FRAC === 25){
+                        arr.push(['C_2C_4']);
+                    }else {
+                        arr.push(['C_3C_4']);
+                    }
+                    return arr;
+                })()</var>
+            </div>
+
+            <p class="question">若利用中垂線作圖，取一線段長的 <code>\dfrac{<var>FRAC</var>}{<var>nums</var>}</code> ，至少須作圖幾次。</p>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>ANS</var></span> 次
+                <p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>中垂線作圖，可將一線段平分成兩等份，中垂線交 <code>\overline{AB}</code> 於 <code>C_1</code>，因此 <code>\overline{AC_1}</code> 的長度是 <code>\overline{AB}</code> 的 <code>\dfrac{1}{2}</code> 倍。</p>
+                    <div class="graphie" id="ratings_3">
+                        init({
+                            range: [[-5.5, 5.5], [-2, 4]],
+                            scale: 40
+                        });
+                        line([-5,0],[5,0]);
+                        label([-5, 0], 'A', 'below left', {color : KhanUtil.BLUE});
+                        label([5, 0], 'B', 'below right', {color : KhanUtil.BLUE});
+                        label([0, -0.2], '\\tiny{C_1}', 'below', {color : KhanUtil.BLUE});
+                        circle([-5,0], 0.1, { fill : KhanUtil.BLUE, stroke : KhanUtil.BLUE});
+                        circle([5,0], 0.1, { fill : KhanUtil.BLUE, stroke : KhanUtil.BLUE});
+                        label([-5, 0], 0, 'above left');
+                        label([5, 0], 1, 'above right');
+                        line([0, -0.3],[0,3]);
+                        circle([0,0], 0.1, { fill : KhanUtil.GRAY, stroke : KhanUtil.GRAY});
+                        label([0,3],'\\tiny{\\dfrac{1}{2}}','above');
+                    </div>
+                </div>
+                <div>
+                    <p>這有一點像終極密碼的遊戲，從中間看最快！我們可以發現 <code>\dfrac{<var>FRAC</var>}{<var>nums</var>}</code> 在 <code><var>ANS_VAL &lt; 0.5 ? 0 : '\\dfrac{1}{2}'</var></code> 和 <code><var>ANS_VAL &lt; 0.5 ? '\\dfrac{1}{2}' : 1</var></code> 之間，所以 <code><var>ANS_VAL &lt; 0.5 ? '\\dfrac{1}{2}' : 0</var></code> 和 <code><var>ANS_VAL &lt; 0.5 ? 1: '\\dfrac{1}{2}'</var></code> 之間的數字就不用管了！</p>
+                    <p>因此，做 <code>\overline{<var>ANS_VAL &lt; 0.5 ? 'AC' : 'BC'</var>_1}</code> 的中垂線，交 <code>\overline{AB}</code> 於 <code>C_2</code>。因此 <code>\overline{AC_2}</code> 的長度是 <code>\overline{AB}</code> 的 <code>\dfrac{<var>ANS_VAL &lt; 0.5 ? 1 : 3</var>}{4}</code> 倍。</p>
+                    <div class="graphie" data-update="ratings_3">
+                        var xcoord = ANS_VAL &lt; 0.5 ? -2.5 : 2.5;
+                        line([xcoord, -0.3], [xcoord, 3], {strokeDasharray : '-', "stroke-width" : 1.2, stroke : KhanUtil.GRAY});
+                        label([xcoord, 3], '\\tiny{\\dfrac{'+ (ANS_VAL &lt; 0.5 ? 1 : 3) +'}{4}}', 'above');
+                        label([xcoord, -0.2], '\\tiny{C_2}', 'below', {color : KhanUtil.BLUE});
+                        circle([xcoord,0], 0.1, { fill : KhanUtil.GRAY, stroke : KhanUtil.GRAY});
+                    </div>
+                </div>
+                <div>
+                    <p>再做一次終極密碼！我們可以發現 <code>\dfrac{<var>FRAC</var>}{<var>nums</var>}</code> 在 <code><var>fraction(ANS_RANGE[3][0][0],ANS_RANGE[3][0][1],true,false,false,false)</var></code> 和 <code><var>fraction(ANS_RANGE[3][1][0],ANS_RANGE[3][1][1],true,false,false,false)</var></code> 之間，所以其他部分就不用管了！</p>
+                    <p>因此，做 <code>\overline{<var>FA[0]</var>}</code> 的中垂線，交 <code>\overline{AB}</code> 於 <code>C_3</code>。因此 <code>\overline{AC_3}</code> 的長度是 <code>\overline{AB}</code> 的 <code>\dfrac{<var>round((ANS_RANGE[3][0][0]+ANS_RANGE[3][1][0]))</var>}{8}</code> 倍。</p>
+                    <div class="graphie" data-update="ratings_3">
+                        var xcoord2 = (ANS_RANGE[3][0][0]+ANS_RANGE[3][1][0])/8*10-5;
+                        line([xcoord2, -0.3], [xcoord2, 3], {strokeDasharray : '-', "stroke-width" : 1.2, stroke : (ANS===3?KhanUtil.GREEN:KhanUtil.GRAY)});
+                        label([xcoord2, 3], '\\tiny{\\dfrac{'+ (ANS_RANGE[3][0][0]+ANS_RANGE[3][1][0]) +'}{8}}', 'above');
+                        label([xcoord2, -0.2], '\\tiny{C_3}', 'below', {color : KhanUtil.BLUE});
+                        circle([xcoord2,0], 0.1, { fill : KhanUtil.GRAY, stroke : KhanUtil.GRAY});
+                    </div>
+                </div>
+                <div data-if="ANS &gt;= 4">
+                    <p>還要做一次終極密碼！我們可以發現 <code>\dfrac{<var>FRAC</var>}{<var>nums</var>}</code> 在 <code><var>fraction(ANS_RANGE[2][0][0],ANS_RANGE[2][0][1],true,false,false,false)</var></code> 和 <code><var>fraction(ANS_RANGE[2][1][0],ANS_RANGE[2][1][1],true,false,false,false)</var></code> 之間，所以其他部分就不用管了！</p>
+                    <p>因此，做 <code>\overline{<var>FA[1]</var>}</code> 的中垂線，交 <code>\overline{AB}</code> 於 <code>C_4</code>。因此 <code>\overline{AC_4}</code> 的長度是 <code>\overline{AB}</code> 的 <code>\dfrac{<var>round((ANS_RANGE[2][0][0]+ANS_RANGE[2][1][0]))</var>}{16}</code> 倍。</p>
+                    <div class="graphie" data-update="ratings_3">
+                        var xcoord3 = (ANS_RANGE[2][0][0]+ANS_RANGE[2][1][0])/16*10-5;
+                        line([xcoord3, -0.3], [xcoord3, 3], {strokeDasharray : '-', "stroke-width" : 1.2, stroke : (ANS===4?KhanUtil.GREEN:KhanUtil.GRAY)});
+                        label([xcoord3, 3], '\\tiny{\\dfrac{'+ (ANS_RANGE[2][0][0]+ANS_RANGE[2][1][0]) +'}{16}}', 'above');
+                        label([xcoord3, -0.2], '\\tiny{C_4}', 'below', {color : KhanUtil.BLUE});
+                        circle([xcoord3,0], 0.1, { fill : KhanUtil.GRAY, stroke : KhanUtil.GRAY});
+                    </div>
+                </div>
+                <div data-if="ANS===5">
+                    <p>最後再做一次終極密碼！我們可以發現 <code>\dfrac{<var>FRAC</var>}{<var>nums</var>}</code> 在 <code><var>fraction(ANS_RANGE[1][0][0],ANS_RANGE[1][0][1],true,false,false,false)</var></code> 和 <code><var>fraction(ANS_RANGE[1][1][0],ANS_RANGE[1][1][1],true,false,false,false)</var></code> 之間，所以其他部分就不用管了！</p>
+                    <p>因此，做 <code>\overline{<var>FA[2]</var>}</code> 的中垂線，交 <code>\overline{AB}</code> 於 <code>C_5</code>。因此 <code>\overline{AC_5}</code> 的長度是 <code>\overline{AB}</code> 的 <code>\dfrac{<var>round((ANS_RANGE[1][0][0]+ANS_RANGE[1][1][0]))</var>}{32}</code> 倍。</p>
+                    <div class="graphie" data-update="ratings_3">
+                        var xcoord4 = (ANS_RANGE[1][0][0]+ANS_RANGE[1][1][0])/32*10-5;
+                        line([xcoord4, -0.3], [xcoord4, 3], {strokeDasharray : '-', "stroke-width" : 1.2, stroke : (ANS===5?KhanUtil.GREEN:KhanUtil.GRAY)});
+                        label([xcoord4, 3], '\\tiny{\\dfrac{'+ (ANS_RANGE[1][0][0]+ANS_RANGE[1][1][0]) +'}{32}}', 'above');
+                        label([xcoord4, -0.2], '\\tiny{C_5}', 'below', {color : KhanUtil.BLUE});
+                        circle([xcoord4,0], 0.1, { fill : KhanUtil.GRAY, stroke : KhanUtil.GRAY});
+                    </div>
+                </div>
+                <div>
+                    <p>所以總共做了 <code class="hint_pink"><var>ANS</var></code> 次中垂線。</p>
+                    <p>約分到最簡分數之後，看分母是 <code>2</code> 的幾次方 ，中垂線就是做幾次。</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="case4">
+            <div class="vars" data-ensure="W_ANS[0]+W_ANS[1] !== 8 && W_ANS[0]+W_ANS[1] !== 16 && W_ANS[0]+W_ANS[1] !== 32 && W_ANS[0]+W_ANS[1] !== 64">
+                <var id="ANS">randRange(3,6)</var>
+                <var id="ANGLES_START">10</var>
+                <var id="ANGLES_END">180-ANGLES_START</var>
+                <var id="POINT_A">polar(5, ANGLES_START)</var>
+                <var id="POINT_B">polar(5, ANGLES_END)</var>
+                <var id="FA1,FA2,FA3,FA4,FA5">[[],[],[],[],[]]</var>
+                <var id="NUMS">pow(2, ANS)</var>
+                <var id="R_ANS">randRangeUnique(1, NUMS-1, 3)</var>
+                <var id="W_ANS">randRange(1, NUMS-1, 2)</var>
+                <var id="CHOICES_ARR">[W_ANS,[R_ANS[0],NUMS-R_ANS[0]],[R_ANS[1],NUMS-R_ANS[1]],[R_ANS[2],NUMS-R_ANS[2]]].sort(function(){return 0.5-Math.random();})</var>
+            </div>
+
+            <div class="question">
+                <p class="question">若利用角平分線作圖 <code><var>ANS</var></code> 次，將一角平分為兩部分，則這兩個角度比不可能為下列何者？</p>
+                <p><code>(A)\qquad <var>CHOICES_ARR[0][0]</var>:<var>CHOICES_ARR[0][1]</var></code></p>
+                <p><code>(B)\qquad <var>CHOICES_ARR[1][0]</var>:<var>CHOICES_ARR[1][1]</var></code></p>
+                <p><code>(C)\qquad <var>CHOICES_ARR[2][0]</var>:<var>CHOICES_ARR[2][1]</var></code></p>
+                <p><code>(D)\qquad <var>CHOICES_ARR[3][0]</var>:<var>CHOICES_ARR[3][1]</var></code></p>
+            </div>
+
+            <div class="solution"><var>W_ANS[0]+':'+W_ANS[1]</var></div>
+                <ul class="choices" data-category="true">
+                <li><var>CHOICES_ARR[0][0]+':'+CHOICES_ARR[0][1]</var></li>
+                <li><var>CHOICES_ARR[1][0]+':'+CHOICES_ARR[1][1]</var></li>
+                <li><var>CHOICES_ARR[2][0]+':'+CHOICES_ARR[2][1]</var></li>
+                <li><var>CHOICES_ARR[3][0]+':'+CHOICES_ARR[3][1]</var></li>
+            </ul>
+
+            <div class="hints">
+                <div>
+                    <p>角平分線作圖，每次都將一角平分成兩等份，如果要分得更細，必需要是 <code>2^n</code> 等份才做得出來。如下圖：</p>
+                    <div class="graphie" id="ratings_4">
+                        init({
+                            range: [[-5.5, 5.5], [-2, 7]],
+                            scale: 40
+                        });
+
+                        FA4 = [];
+                        var FA4_COLORS = ["#642100","#844200","#A23400","#BB5E00"];
+                        for(var i = 0; i &lt; 1; i++){
+                            FA4.push(arc( [0, 0], 2.5, ANGLES_START+(ANGLES_END-ANGLES_START)/16*i, ANGLES_START+(ANGLES_END-ANGLES_START)/16*(i+1), {fill : FA4_COLORS[(i+1)%4], stroke : FA4_COLORS[(i+1)%4]}));
+                            FA4.push(path([polar(2.5, (ANGLES_END-ANGLES_START)/16*i+ANGLES_START), [0, 0],polar(2.5, (ANGLES_END-ANGLES_START)/16*(i+1)+ANGLES_START)], {fill : FA4_COLORS[(i+1)%4], stroke : FA4_COLORS[(i+1)%4]}));
+                        }
+                        FA1.push(line([0, 0], polar(4, ANGLES_START+(ANGLES_END-ANGLES_START)/16), {strokeDasharray : '-', "stroke-width" : 1.2}));
+
+                        FA3 = [];
+                        var FA3_COLORS = ["#3A006F","#8600FF","#9F35FF","#BE77FF","#0000C6","#005AB5","#4A4AFF","#46A3FF"];
+                        for(var i = 0; i &lt; 2; i++){
+                            FA3.push(arc( [0, 0], 2, ANGLES_START+(ANGLES_END-ANGLES_START)/8*i, ANGLES_START+(ANGLES_END-ANGLES_START)/8*(i+1), {fill : FA3_COLORS[i], stroke : FA3_COLORS[i]}));
+                            FA3.push(path([polar(2, (ANGLES_END-ANGLES_START)/8*i+ANGLES_START), [0, 0],polar(2, (ANGLES_END-ANGLES_START)/8*(i+1)+ANGLES_START)], {fill : FA3_COLORS[i], stroke : FA3_COLORS[i]}));
+                        }
+                        FA1.push(line([0, 0], polar(5, ANGLES_START+(ANGLES_END-ANGLES_START)/8), {strokeDasharray : '-', "stroke-width" : 1.2}));
+
+                        FA2 = [];
+                        var FA2_COLORS = ["#FF9797","#FF5151","#FF0000","#930000"];
+                        for(var i = 0; i &lt; 2; i++){
+                            FA2.push(arc( [0, 0], 1.5, ANGLES_START+(ANGLES_END-ANGLES_START)/4*i, ANGLES_START+(ANGLES_END-ANGLES_START)/4*(i+1), {fill : FA2_COLORS[i], stroke : FA2_COLORS[i]}));
+                            FA2.push(path([polar(1.5, (ANGLES_END-ANGLES_START)/4*i+ANGLES_START), [0, 0],polar(1.5, (ANGLES_END-ANGLES_START)/4*(i+1)+ANGLES_START)], {fill : FA2_COLORS[i], stroke : FA2_COLORS[i]}));
+                        }
+                        FA1.push(line([0, 0], polar(6, ANGLES_START+(ANGLES_END-ANGLES_START)/4), {strokeDasharray : '-', "stroke-width" : 1.2}));
+
+                        FA1 = [];
+                        var FA1_COLORS = [KhanUtil.GREEN,"#53FF53"];
+                        for(var i = 0; i &lt; 2; i++){
+                            FA1.push(arc( [0, 0], 1, ANGLES_START+(ANGLES_END-ANGLES_START)/2*i, ANGLES_START+(ANGLES_END-ANGLES_START)/2*(i+1), {fill : FA1_COLORS[i], stroke : FA1_COLORS[i]}));
+                            FA1.push(path([polar(1, (ANGLES_END-ANGLES_START)/2*i+ANGLES_START), [0, 0],polar(1, (ANGLES_END-ANGLES_START)/2*(i+1)+ANGLES_START)], {fill : FA1_COLORS[i], stroke : FA1_COLORS[i]}));
+                        }
+                        FA1.push(line([0, 0], POINT_A));
+                        FA1.push(line([0, 0], POINT_B));
+                        FA1.push(line([0, -1], [0, 6], {strokeDasharray : '-', "stroke-width" : 1.2}));
+                        FA1.push(circle(POINT_A, 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE}));
+                        FA1.push(circle(POINT_B, 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE}));
+                        FA1.push(circle([0, 0], 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE}));
+                        label(POINT_A,'A','below');
+                        label(POINT_B,'B','below');
+                        label([0, 0],'O','below left');
+                        label([0, 5], '\\small{\\dfrac{1}{2}}', 'left');
+
+                        label(polar(6, ANGLES_START+(ANGLES_END-ANGLES_START)/4), '\\tiny{\\dfrac{1}{4}}', 'center');
+                        label(polar(5, ANGLES_START+(ANGLES_END-ANGLES_START)/8), '\\tiny{\\dfrac{1}{8}}', 'center');
+                        label(polar(4.5, ANGLES_START+(ANGLES_END-ANGLES_START)/16), '\\tiny{\\dfrac{1}{16}\\cdots\\cdots}', 'center');
+                    </div>
+                </div>
+                <div>
+                    <p>將選項中比的兩邊的數字相加，變成分母：</p>
+                    <p><code><var>CHOICES_ARR[0][0]</var>:<var>CHOICES_ARR[0][1]</var> \Rightarrow \dfrac{<var>CHOICES_ARR[0][0]</var>}{<var>CHOICES_ARR[0][0]+CHOICES_ARR[0][1]</var>}+\dfrac{<var>CHOICES_ARR[0][1]</var>}{<var>CHOICES_ARR[0][0]+CHOICES_ARR[0][1]</var>}=1</code></p>
+                    <p><code><var>CHOICES_ARR[1][0]</var>:<var>CHOICES_ARR[1][1]</var> \Rightarrow \dfrac{<var>CHOICES_ARR[1][0]</var>}{<var>CHOICES_ARR[1][0]+CHOICES_ARR[1][1]</var>}+\dfrac{<var>CHOICES_ARR[1][1]</var>}{<var>CHOICES_ARR[1][0]+CHOICES_ARR[1][1]</var>}=1</code></p>
+                    <p><code><var>CHOICES_ARR[2][0]</var>:<var>CHOICES_ARR[2][1]</var> \Rightarrow \dfrac{<var>CHOICES_ARR[2][0]</var>}{<var>CHOICES_ARR[2][0]+CHOICES_ARR[2][1]</var>}+\dfrac{<var>CHOICES_ARR[2][1]</var>}{<var>CHOICES_ARR[2][0]+CHOICES_ARR[2][1]</var>}=1</code></p>
+                    <p><code><var>CHOICES_ARR[3][0]</var>:<var>CHOICES_ARR[3][1]</var> \Rightarrow \dfrac{<var>CHOICES_ARR[3][0]</var>}{<var>CHOICES_ARR[3][0]+CHOICES_ARR[3][1]</var>}+\dfrac{<var>CHOICES_ARR[3][1]</var>}{<var>CHOICES_ARR[3][0]+CHOICES_ARR[3][1]</var>}=1</code></p>
+                </div>
+                <div>
+                    <p>我們可以發現大部份的分數都是 <code>\dfrac{1}{<var>NUMS</var>}</code> 的倍數， <code><var>NUMS</var>=2^<var>ANS</var></code> ，可以用角平分線作 <code><var>ANS</var></code> 次畫出來，但是 <code>\dfrac{<var>W_ANS[0]</var>}{<var>W_ANS[0]+W_ANS[1]</var>}</code> 和 <code>\dfrac{<var>W_ANS[1]</var>}{<var>W_ANS[0]+W_ANS[1]</var>}</code> 的分母不是 <code>2</code> 的次冪，所以畫不出來。</p>
+                    <p>所以兩個角度比不可能是 <code class="hint_pink"><var>W_ANS[0]</var>:<var>W_ANS[1]</var></code> 。</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="case5">
+            <div class="vars" data-ensure="W_ANS[0]+W_ANS[1] !== 8 && W_ANS[0]+W_ANS[1] !== 16 && W_ANS[0]+W_ANS[1] !== 32 && W_ANS[0]+W_ANS[1] !== 64">
+                <var id="ANS">randRange(3,6)</var>
+                <var id="ANGLES_START">10</var>
+                <var id="ANGLES_END">180-ANGLES_START</var>
+                <var id="POINT_A">polar(5, ANGLES_START)</var>
+                <var id="POINT_B">polar(5, ANGLES_END)</var>
+                <var id="FA1,FA2,FA3,FA4,FA5">[[],[],[],[],[]]</var>
+                <var id="NUMS">pow(2, ANS)</var>
+                <var id="R_ANS">randRangeUnique(1, NUMS-1, 3)</var>
+                <var id="W_ANS">randRange(1, NUMS-1, 2)</var>
+                <var id="CHOICES_ARR">[W_ANS,[R_ANS[0],NUMS-R_ANS[0]],[R_ANS[1],NUMS-R_ANS[1]],[R_ANS[2],NUMS-R_ANS[2]]].sort(function(){return 0.5-Math.random();})</var>
+            </div>
+
+            <div class="question">
+                <p class="question">若利用中垂線作圖 <code><var>ANS</var></code> 次，將一線段平分為兩部分，則這兩線段比不可能為下列何者？</p>
+                <p><code>(A)\qquad <var>CHOICES_ARR[0][0]</var>:<var>CHOICES_ARR[0][1]</var></code></p>
+                <p><code>(B)\qquad <var>CHOICES_ARR[1][0]</var>:<var>CHOICES_ARR[1][1]</var></code></p>
+                <p><code>(C)\qquad <var>CHOICES_ARR[2][0]</var>:<var>CHOICES_ARR[2][1]</var></code></p>
+                <p><code>(D)\qquad <var>CHOICES_ARR[3][0]</var>:<var>CHOICES_ARR[3][1]</var></code></p>
+            </div>
+
+            <div class="solution"><var>W_ANS[0]+':'+W_ANS[1]</var></div>
+                <ul class="choices" data-category="true">
+                <li><var>CHOICES_ARR[0][0]+':'+CHOICES_ARR[0][1]</var></li>
+                <li><var>CHOICES_ARR[1][0]+':'+CHOICES_ARR[1][1]</var></li>
+                <li><var>CHOICES_ARR[2][0]+':'+CHOICES_ARR[2][1]</var></li>
+                <li><var>CHOICES_ARR[3][0]+':'+CHOICES_ARR[3][1]</var></li>
+            </ul>
+
+            <div class="hints">
+                <div>
+                    <p>中垂線作圖，每次都將一線段平分成兩等份，如果要分得更細，必需要是 <code>2^n</code> 等份才做得出來。如下圖：</p>
+                    <div class="graphie" id="ratings_5">
+                        init({
+                            range: [[-5.5, 5.5], [-2, 4]],
+                            scale: 40
+                        });
+                        line([-5,0],[5,0]);
+                        label([-5, 0], 'A', 'below left', {color : KhanUtil.BLUE});
+                        label([5, 0], 'B', 'below right', {color : KhanUtil.BLUE});
+                        label([0, -0.2], '\\tiny{C_1}', 'below', {color : KhanUtil.BLUE});
+                        label([-2.5, -0.2], '\\tiny{C_2}', 'below', {color : KhanUtil.BLUE});
+                        label([-3.75, -0.2], '\\tiny{C_3}', 'below', {color : KhanUtil.BLUE});
+                        circle([-5,0], 0.1, { fill : KhanUtil.BLUE, stroke : KhanUtil.BLUE});
+                        circle([5,0], 0.1, { fill : KhanUtil.BLUE, stroke : KhanUtil.BLUE});
+                        label([-5, 0], 0, 'above left');
+                        label([5, 0], 1, 'above right');
+                        line([0, -0.3],[0,3]);
+                        line([-2.5, -0.3],[-2.5,3]);
+                        line([-3.75, -0.3],[-3.75,3]);
+                        circle([0,0], 0.1, { fill : KhanUtil.GRAY, stroke : KhanUtil.GRAY});
+                        circle([-2.5,0], 0.1, { fill : KhanUtil.GRAY, stroke : KhanUtil.GRAY});
+                        circle([-3.75,0], 0.1, { fill : KhanUtil.GRAY, stroke : KhanUtil.GRAY});
+                        label([0,3],'\\tiny{\\dfrac{1}{2}}','above');
+                        label([-2.5,3],'\\tiny{\\dfrac{1}{4}}','above');
+                        label([-3.75,3],'\\tiny{\\dfrac{1}{8}}','above');
+                        label([-3.75,2],'\\cdots','above left');
+                        
+                    </div>
+                </div>
+                <div>
+                    <p>將選項中比的兩邊的數字相加，變成分母：</p>
+                    <p><code><var>CHOICES_ARR[0][0]</var>:<var>CHOICES_ARR[0][1]</var> \Rightarrow \dfrac{<var>CHOICES_ARR[0][0]</var>}{<var>CHOICES_ARR[0][0]+CHOICES_ARR[0][1]</var>}+\dfrac{<var>CHOICES_ARR[0][1]</var>}{<var>CHOICES_ARR[0][0]+CHOICES_ARR[0][1]</var>}=1</code></p>
+                    <p><code><var>CHOICES_ARR[1][0]</var>:<var>CHOICES_ARR[1][1]</var> \Rightarrow \dfrac{<var>CHOICES_ARR[1][0]</var>}{<var>CHOICES_ARR[1][0]+CHOICES_ARR[1][1]</var>}+\dfrac{<var>CHOICES_ARR[1][1]</var>}{<var>CHOICES_ARR[1][0]+CHOICES_ARR[1][1]</var>}=1</code></p>
+                    <p><code><var>CHOICES_ARR[2][0]</var>:<var>CHOICES_ARR[2][1]</var> \Rightarrow \dfrac{<var>CHOICES_ARR[2][0]</var>}{<var>CHOICES_ARR[2][0]+CHOICES_ARR[2][1]</var>}+\dfrac{<var>CHOICES_ARR[2][1]</var>}{<var>CHOICES_ARR[2][0]+CHOICES_ARR[2][1]</var>}=1</code></p>
+                    <p><code><var>CHOICES_ARR[3][0]</var>:<var>CHOICES_ARR[3][1]</var> \Rightarrow \dfrac{<var>CHOICES_ARR[3][0]</var>}{<var>CHOICES_ARR[3][0]+CHOICES_ARR[3][1]</var>}+\dfrac{<var>CHOICES_ARR[3][1]</var>}{<var>CHOICES_ARR[3][0]+CHOICES_ARR[3][1]</var>}=1</code></p>
+                </div>
+                <div>
+                    <p>我們可以發現大部份的分數都是 <code>\dfrac{1}{<var>NUMS</var>}</code> 的倍數， <code><var>NUMS</var>=2^<var>ANS</var></code> ，可以用中垂線作 <code><var>ANS</var></code> 次畫出來，但是 <code>\dfrac{<var>W_ANS[0]</var>}{<var>W_ANS[0]+W_ANS[1]</var>}</code> 和 <code>\dfrac{<var>W_ANS[1]</var>}{<var>W_ANS[0]+W_ANS[1]</var>}</code> 的分母不是 <code>2</code> 的次冪，所以畫不出來。</p>
+                    <p>所以兩個角度比不可能是 <code class="hint_pink"><var>W_ANS[0]</var>:<var>W_ANS[1]</var></code> 。</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
