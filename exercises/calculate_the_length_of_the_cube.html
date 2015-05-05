@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html data-require="math graphie word-problems interactive subhints">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>正方體邊長的計算</title>
+    <script src="../khan-exercise.js"></script>
+
+</head>
+<body>
+
+<div class="exercise">   
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+                <var id="LENGTH">randRange(2, 10)</var>
+				<var id="ANS">round(LENGTH*12)</var>
+            </div>
+
+            <p class="question">邊長 <code><var>LENGTH</var></code> 公分的正方體，邊長總長度加起來是幾公分呢？</p>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>ANS</var></span> 公分
+                <p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <p>我們知道正方體有 <code>12</code> 條邊。</p>
+                <div>
+					<p style="font-weight : normal">邊長 <code><var>LENGTH</var></code> 公分的正方體，邊長總長度為</p>
+					<p><code>\qquad <var>LENGTH</var>\times 12 = \color{#FF00AF}{<var>ANS</var>}</code> 公分。</p>
+				</div>
+            </div>
+        </div>
+
+		<div id="case2">
+            <div class="vars">
+                <var id="LENGTH">randRange(2, 10)</var>
+                <var id="INDENT_LENGTH">LENGTH*pow(0.9,LENGTH)</var>
+				<var id="ANS">round(LENGTH*12)</var>
+                <var id="S1">INDENT_LENGTH*sqrt(3)/2</var>
+            </div>
+
+			<div class="problem">
+                <div class="graphie" id="cube_case1">
+					init({
+						range: [[-INDENT_LENGTH-3, INDENT_LENGTH+5], [-INDENT_LENGTH-2, INDENT_LENGTH+3]],
+						scale: 30
+					});
+					path([[-INDENT_LENGTH,-INDENT_LENGTH],[-INDENT_LENGTH,INDENT_LENGTH],[INDENT_LENGTH,INDENT_LENGTH],[INDENT_LENGTH,-INDENT_LENGTH],[-INDENT_LENGTH,-INDENT_LENGTH]]);
+                    path([[-INDENT_LENGTH,INDENT_LENGTH],[-INDENT_LENGTH+S1,INDENT_LENGTH+INDENT_LENGTH/2],[INDENT_LENGTH+S1,INDENT_LENGTH+INDENT_LENGTH/2],[INDENT_LENGTH,INDENT_LENGTH],[-INDENT_LENGTH,INDENT_LENGTH]]);
+                    path([[INDENT_LENGTH+S1,INDENT_LENGTH+INDENT_LENGTH/2],[INDENT_LENGTH,INDENT_LENGTH],[INDENT_LENGTH,-INDENT_LENGTH],[INDENT_LENGTH+S1,-INDENT_LENGTH+INDENT_LENGTH/2],[INDENT_LENGTH+S1,INDENT_LENGTH+INDENT_LENGTH/2]]); 
+					line([-INDENT_LENGTH+S1,INDENT_LENGTH+INDENT_LENGTH/2],[-INDENT_LENGTH+S1,-INDENT_LENGTH+INDENT_LENGTH/2],{strokeDasharray: "-"});
+                    line([-INDENT_LENGTH,-INDENT_LENGTH],[-INDENT_LENGTH+S1,-INDENT_LENGTH+INDENT_LENGTH/2],{strokeDasharray: "-"});
+                    line([INDENT_LENGTH+S1,-INDENT_LENGTH+INDENT_LENGTH/2],[-INDENT_LENGTH+S1,-INDENT_LENGTH+INDENT_LENGTH/2],{strokeDasharray: "-"});
+                    line([-INDENT_LENGTH,-INDENT_LENGTH],[INDENT_LENGTH,-INDENT_LENGTH],{stroke : KhanUtil.RED});
+                    label([0,-INDENT_LENGTH],LENGTH+"\\enspace 公分","below");
+                </div>
+            </div>
+			
+            <p class="question">求上圖正方體的總邊長為多少公分？</p>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>ANS</var></span> 公分
+                <p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <p>我們知道正方體有 <code>12</code> 條邊。</p>
+                <div>
+                    <p style="font-weight : normal">邊長 <code><var>LENGTH</var></code> 公分的正方體，邊長總長度為</p>
+                    <p><code>\qquad <var>LENGTH</var>\times 12 = \color{#FF00AF}{<var>ANS</var>}</code> 公分。</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="case3">
+            <div class="vars">
+                <var id="SUM_LENGTH">randFromArray([24,36,48,60,72,96,108,240,360])</var>
+                <var id="LENGTH">round(SUM_LENGTH/12)</var>
+            </div>
+
+            <p class="question">有一個用 <code><var>SUM_LENGTH</var></code> 公分長的竹子製作的正方體，請問這個正方體的邊長是幾公分呢？</p>
+
+            <div class="solution" data-type="multiple">
+                <span class="sol"><var>LENGTH</var></span> 公分
+                <p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <p>我們知道正方體有 <code>12</code> 條邊。</p>
+                <p><code><var>SUM_LENGTH</var></code> 公分長的竹子要平分成 <code>12</code> 份，就可以算出一邊的長是幾公分了。</p>
+                <p><code><var>SUM_LENGTH</var>\div 12=<var>LENGTH</var></code></p>
+                <p>正方體的邊長為 <code class="hint_pink"><var>LENGTH</var></code> 公分。</p>
+            </div>
+        </div>
+
+        <div id="case4">
+            <div class="vars" data-ensure="RIGHT_ANS[0] === 1">
+                <var id="S">[round(randRange(1,16)*12),randRange(12,200),randRange(12,200),randRange(12,200)].sort(function(){ return 0.5 - Math.random(); })</var>
+                <var id="RIGHT_ANS">
+                (function(){
+                    count = 0;
+                    right_index = 0;
+                    $.each( S, function(i, elems){
+                        if( elems % 12 === 0 ) {
+                            count++;
+                            right_index = i;
+                        }
+                    });
+                    return [count, right_index];
+                })()</var>
+            </div>
+
+            <div class="question">
+                <p>下列長度中，哪些剛好可以圍成一個邊長為整數的正方體？</p>
+                <p><code><var>S[0]</var></code> 公分、<code><var>S[1]</var></code> 公分、<code><var>S[2]</var></code> 公分、<code><var>S[3]</var></code> 公分</p>
+            </div>
+
+            <div class="solution"><var>S[RIGHT_ANS[1]]</var></div>
+            <ul class="choices" data-category="true">
+                <li><var>S[0]</var></li>
+                <li><var>S[1]</var></li>
+                <li><var>S[2]</var></li>
+                <li><var>S[3]</var></li>
+            </ul>
+
+            <div class="hints">
+                <p>我們知道正方體有 <code>12</code> 條邊。</p>
+                <p>我們可以算一算，哪些長度除以 <code>12</code> 剛好可以被整除。</p>
+                <p><code><var>S[0]</var>\div 12 = <var>floor(S[0]/12)</var></code> <code data-if="S[0]%12 !== 0">\cdots<var>S[0]%12</var></code> 。<span data-if="S[0]%12 !== 0">不能</span><span data-if="S[0]%12 === 0">能</span>圍成邊長為整數的正方體。</p>
+                <p><code><var>S[1]</var>\div 12 = <var>floor(S[1]/12)</var></code> <code data-if="S[1]%12 !== 0">\cdots<var>S[1]%12</var></code> 。<span data-if="S[1]%12 !== 0">不能</span><span data-if="S[1]%12 === 0">能</span>圍成邊長為整數的正方體。</p>
+                <p><code><var>S[2]</var>\div 12 = <var>floor(S[2]/12)</var></code> <code data-if="S[2]%12 !== 0">\cdots<var>S[2]%12</var></code> 。<span data-if="S[2]%12 !== 0">不能</span><span data-if="S[2]%12 === 0">能</span>圍成邊長為整數的正方體。</p>
+                <p><code><var>S[3]</var>\div 12 = <var>floor(S[3]/12)</var></code> <code data-if="S[3]%12 !== 0">\cdots<var>S[3]%12</var></code> 。<span data-if="S[3]%12 !== 0">不能</span><span data-if="S[3]%12 === 0">能</span>圍成邊長為整數的正方體。</p>
+                <p>所以答案要選擇 <code class="hint_pink"><var>S[RIGHT_ANS[1]]</var></code> 公分。</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
