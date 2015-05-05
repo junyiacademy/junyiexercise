@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers angles">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>平行線的判別(基本題)</title>
+    <script src="../khan-exercise.js"></script>
+    <script language="javascript">
+        function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+
+        function segmentsIntr(a, b, c, d){ 
+                var denominator = (b[1] - a[1])*(d[0] - c[0]) - (a[0] - b[0])*(c[1] - d[1]);  
+                  
+                var x = ( (b[0] - a[0]) * (d[0] - c[0]) * (c[1] - a[1])   
+                            + (b[1] - a[1]) * (d[0] - c[0]) * a[0]   
+                            - (d[1] - c[1]) * (b[0] - a[0]) * c[0]) / denominator ;  
+                
+                var y = -( (b[1] - a[1]) * (d[1] - c[1]) * (c[0] - a[0])   
+                            + (b[0] - a[0]) * (d[1] - c[1]) * a[1]   
+                            - (d[0] - c[0]) * (b[1] - a[1]) * c[1] ) / denominator;  
+                return [x,y];
+            }
+     </script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+                <var id="type">randFromArray( [ [ 1, "平行" ], [ 2, "不平行" ] ] )</var>
+                <var id="angle1">randRange( 30, 150 )</var>
+                <var id="angle">
+                        (function(){
+                           if(type[0]==1){return [angle1,0];}
+                           if(type[0]==2){
+                                if(angle1==30){
+                                    var d=randRange( 1, 9 );
+                                    return [angle1+d,d];
+                                }
+                                if(angle1==150){
+                                    var d=randRange( -9, -1 );
+                                    return [angle1+d,d];
+                                    }
+                                if(angle1!=30&&angle1!=150){
+                                    var d=randRangeNonZero(-10,10);
+                                    return [angle1+d,d];
+                                    }
+                                }
+                        })()</var>              
+                <var id="angle2">angle[0]</var>
+                <var id="disangle">angle[1]</var>
+                <var id="arcnum">randRange( 1, 4 )</var>
+            </div>
+            <div class="problem">
+                <p>如圖，<code data-if="arcnum&lt;3">\angle 1 = <var>angle1</var>^\circ，\angle 2 = <var>angle2</var>^\circ</code><code data-if="arcnum&gt;2">\angle 1 = <var>180-angle1</var>^\circ，\angle 2 = <var>180-angle2</var>^\circ</code>，請判斷 <code>L_{1}</code>與<code>L_{2}</code>是否平行？</p>
+                <div class="graphie" id="original">
+                    init({
+                        range: [ [ -18, 16 ], [-5, 8] ], scale: 15
+                    });
+                    line([-15, 3], [15, 3]);
+                    label([-15, 3], "L_{1}","above",{color:"purple"});
+
+                    line([0,0],polar(13,angle1));
+                    line([0,0],polar(8,180+angle1));
+
+                    label(polar(15,540-disangle), "L_{2}","below",{color:"purple"});
+                    line([0,0],polar(15,360-disangle));
+                    line([0,0],polar(15,540-disangle));                   
+
+                    var xlian=polar(6,angle1);
+                    var focusp=segmentsIntr([0,0],xlian,[-5,3],[5,3]);
+                    
+                    if(arcnum==1){
+                    arc( [0, 0], 1, -disangle, angle1, { stroke: "green" } );
+                    label( polar(2,(-disangle+angle1)/2),  "\\small{2}", "center", { color: "green" }); 
+
+                    var a1_lab=polar(2,angle1/2);
+                    arc( focusp, 1, 0, angle1, { stroke: "green" } );
+                    label( [a1_lab[0]+focusp[0],a1_lab[1]+focusp[1]],  "\\small{1}", "center", { color: "green" });   }
+
+                    if(arcnum==2){
+                     var aa=polar(2,(360-disangle+angle1)/2);
+                    arc( [0, 0], 1, 180-disangle, 180+angle1, { stroke: "green" } );
+                    label( polar(2,(360-disangle+angle1)/2),  "\\small{2}", "center", { color: "green" }); 
+
+                    arc( focusp, 1, 180, 180+angle1, { stroke: "green" } );
+                    label( [aa[0]+focusp[0],aa[1]+focusp[1]],  "\\small{1}", "center", { color: "green" });   }
+
+                    if(arcnum==3){
+                    arc( [0, 0], 1, angle1,180-disangle, { stroke: "green" } );
+                    label( polar(2,(180+angle1-disangle)/2),  "\\small{2}", "center", { color: "green" }); 
+
+                    var a1_lab=polar(2,(180+angle1-disangle)/2);
+                    arc( focusp, 1,  angle1,180, { stroke: "green" } );
+                    label( [a1_lab[0]+focusp[0],a1_lab[1]+focusp[1]],  "\\small{1}", "center", { color: "green" });   }
+
+                    if(arcnum==4){
+                    arc( [0, 0], 1,  180+angle1,360-disangle, { stroke: "green" } );
+                    label( polar(2,(540+angle1-disangle)/2),  "\\small{2}", "center", { color: "green" }); 
+
+                    var a1_lab=polar(2,(540+angle1-disangle)/2);
+                    arc( focusp, 1,  180+angle1,360, { stroke: "green" } );
+                    label( [a1_lab[0]+focusp[0],a1_lab[1]+focusp[1]],  "\\small{1}", "center", { color: "green" });   }
+                                  
+                </div>              
+            </div>
+
+            <p class="solution"><var>type[1]</var></p>
+                <ul class="choices" data-show="2">
+                    <li>平行</li>
+                    <li>不平行</li>
+                </ul>
+
+            <div class="hints">
+                <p>因為 <code>\angle 1</code> <code data-if="type[0]==1"> =</code><code data-if="type[0]==2"> \neq</code> <code>\angle 2</code> 即同位角<span data-if="type[0]==2">不</span>相等</p>
+                <p>根據平行線的判別方法 <code data-if="type[0]==1">L_{1} // L_{2}</code><code data-if="type[0]==2">L_{1} \nparallel L_{2}</code></p>
+                <p>因此答案為<span data-if="type[0]==2" class="hint_pink">不</span><span class="hint_pink">平行</span>。</p>
+
+            </div>
+        </div>
+
+        <div id="case2">
+            <div class="vars">
+                <var id="type">randFromArray( [ [ 1, "平行" ], [ 2, "不平行" ] ] )</var>
+                <var id="angle1">randRange( 30, 150 )</var>
+                <var id="angle">
+                        (function(){
+                           if(type[0]==1){return [angle1,0];}
+                           if(type[0]==2){
+                                if(angle1==30){
+                                    var d=randRange( 1, 9 );
+                                    return [angle1+d,d];
+                                }
+                                if(angle1==150){
+                                    var d=randRange( -9, -1 );
+                                    return [angle1+d,d];
+                                    }
+                                if(angle1!=30&&angle1!=150){
+                                    var d=randRangeNonZero(-10,10);
+                                    return [angle1+d,d];
+                                    }
+                                }
+                        })()</var>              
+                <var id="angle2">angle[0]</var>
+                <var id="disangle">angle[1]</var>
+                <var id="arcnum">randRange( 1,2 )</var>
+            </div>
+            <div class="problem">
+                <p>如圖，<code data-if="arcnum==1">\angle 1 = <var>angle1</var>^\circ，\angle 2 = <var>angle2</var>^\circ</code><code data-if="arcnum==2">\angle 1 = <var>180-angle1</var>^\circ，\angle 2 = <var>180-angle2</var>^\circ</code>，請判斷 <code>L_{1}</code>與<code>L_{2}</code>是否平行？</p>
+                <div class="graphie" id="original">
+                    init({
+                        range: [ [ -18, 16 ], [-5, 8] ], scale: 15
+                    });
+                    line([-15, 3], [15, 3]);
+                    label([-15, 3], "L_{1}","above",{color:"purple"});
+
+                    line([0,0],polar(13,angle1));
+                    line([0,0],polar(8,180+angle1));
+
+                    label(polar(15,540-disangle), "L_{2}","below",{color:"purple"});
+                    line([0,0],polar(15,360-disangle));
+                    line([0,0],polar(15,540-disangle));                   
+
+                    var xlian=polar(6,angle1);
+                    var focusp=segmentsIntr([0,0],xlian,[-5,3],[5,3]);
+                    
+                    if(arcnum==1){
+                    arc( [0, 0], 1, -disangle, angle1, { stroke: "green" } );
+                    label( polar(2,(-disangle+angle1)/2),  "\\small{2}", "center", { color: "green" }); 
+
+                    var aa=polar(2,(360-disangle+angle1)/2);
+
+                    arc( focusp, 1, 180, 180+angle1, { stroke: "green" } );
+                    label( [aa[0]+focusp[0],aa[1]+focusp[1]],  "\\small{1}", "center", { color: "green" });   }
+
+                    if(arcnum==2){
+                    arc( [0, 0], 1, angle1,180-disangle, { stroke: "green" } );
+                    label( polar(2,(180+angle1-disangle)/2),  "\\small{2}", "center", { color: "green" });   
+
+                    var a1_lab=polar(2,(540+angle1-disangle)/2);
+                    arc( focusp, 1,  180+angle1,360, { stroke: "green" } );
+                    label( [a1_lab[0]+focusp[0],a1_lab[1]+focusp[1]],  "\\small{1}", "center", { color: "green" });
+                    }
+                                  
+                </div>              
+            </div>
+
+            <p class="solution"><var>type[1]</var></p>
+                <ul class="choices" data-show="2">
+                    <li>平行</li>
+                    <li>不平行</li>
+                </ul>
+
+            <div class="hints">
+                <p>因為 <code>\angle 1</code> <code data-if="type[0]==1"> =</code><code data-if="type[0]==2"> \neq</code> <code>\angle 2</code> 即內錯角<span data-if="type[0]==2">不</span>相等</p>
+                <p>根據平行線的判別方法 <code data-if="type[0]==1">L_{1} // L_{2}</code><code data-if="type[0]==2">L_{1} \nparallel L_{2}</code></p>
+                <p>因此答案為<span data-if="type[0]==2" class="hint_pink">不</span><span class="hint_pink">平行</span>。</p>
+            </div>
+        </div>
+
+        <div id="case3">
+            <div class="vars">
+                <var id="type">randFromArray( [ [ 1, "平行" ], [ 2, "不平行" ] ] )</var>
+                <var id="angle1">randRange( 30, 150 )</var>
+                <var id="angle">
+                        (function(){
+                           if(type[0]==1){return [angle1,0];}
+                           if(type[0]==2){
+                                if(angle1==30){
+                                    var d=randRange( 1, 9 );
+                                    return [angle1+d,d];
+                                }
+                                if(angle1==150){
+                                    var d=randRange( -9, -1 );
+                                    return [angle1+d,d];
+                                    }
+                                if(angle1!=30&&angle1!=150){
+                                    var d=randRangeNonZero(-10,10);
+                                    return [angle1+d,d];
+                                    }
+                                }
+                        })()</var>              
+                <var id="angle2">angle[0]</var>
+                <var id="disangle">angle[1]</var>
+                <var id="arcnum">randRange( 1, 2 )</var>
+            </div>
+            <div class="problem">
+                <p>如圖，<code data-if="arcnum==2">\angle 1 = <var>angle1</var>^\circ，\angle 2 = <var>180-angle2</var>^\circ</code><code data-if="arcnum==1">\angle 1 = <var>180-angle1</var>^\circ，\angle 2 = <var>angle2</var>^\circ</code>，請判斷 <code>L_{1}</code>與<code>L_{2}</code>是否平行？</p>
+                <div class="graphie" id="original">
+
+                    init({
+                        range: [ [ -18, 16 ], [-5, 10] ], scale: 15
+                    });
+                    line([-15, 5], [15, 5]);
+                    label([-15, 5], "L_{1}","above",{color:"purple"});
+
+                    line([0,0],polar(13,angle1));
+                    line([0,0],polar(6,180+angle1));
+
+                    label(polar(15,540-disangle), "L_{2}","below",{color:"purple"});
+                    line([0,0],polar(15,360-disangle));
+                    line([0,0],polar(15,540-disangle));                   
+
+                    var xlian=polar(6,angle1);
+                    var focusp=segmentsIntr([0,0],xlian,[-5,5],[5,5]);
+                    
+                    if(arcnum==1){
+                        var a1_lab=polar(2,(540+angle1-disangle)/2);
+                        arc( focusp, 1,  180+angle1,360, { stroke: "green" } );
+                        label( [a1_lab[0]+focusp[0],a1_lab[1]+focusp[1]],  "\\small{1}", "center", { color: "green" }); 
+
+                        arc( [0, 0], 1, -disangle, angle1, { stroke: "green" } );
+                        label( polar(2,(-disangle+angle1)/2),  "\\small{2}", "center", { color: "green" }); 
+                    }
+
+                    if(arcnum==2){
+                        var aa=polar(2,(360-disangle+angle1)/2);
+                        arc( focusp, 1, 180, 180+angle1, { stroke: "green" } );
+                        label( [aa[0]+focusp[0],aa[1]+focusp[1]],  "\\small{1}", "center", { color: "green" }); 
+                        arc( [0, 0], 1, angle1,180-disangle, { stroke: "green" } );
+                    label( polar(2,(180+angle1-disangle)/2),  "\\small{2}", "center", { color: "green" }); 
+                    }   
+                </div>              
+            </div>
+
+            <p class="solution"><var>type[1]</var></p>
+                <ul class="choices" data-show="2">
+                    <li>平行</li>
+                    <li>不平行</li>
+                </ul>
+
+            <div class="hints">
+                <p>因為 <code data-if="type[0]==1">\angle 1 + \angle 2 = 180^\circ</code><code data-if="type[0]==2">\angle 1 + \angle 2  \neq 180^\circ</code>即同側內角<span data-if="type[0]==2">不</span>互補</p>
+                <p>根據平行線的判別方法 <code data-if="type[0]==1">L_{1} // L_{2}</code><code data-if="type[0]==2">L_{1} \nparallel L_{2}</code></p>
+                <p>因此答案為<span data-if="type[0]==2" class="hint_pink">不</span><span class="hint_pink">平行</span>。</p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
