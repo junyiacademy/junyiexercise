@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>弓形的周長與面積</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 40px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+    </style>
+    <script type="text/javascript">
+		function polar(r, th) {
+	        if (typeof r === "number") {
+	            r = [r, r];
+	        }
+	        th = th * Math.PI / 180;
+	        return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+	    }
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">		
+		<div id="case1-1">
+            <div class="vars">
+            	<var id="angle">randFromArray([60,120])</var>
+                <var id="radius">randRange(1, 5)</var>
+                <var id="R">radius+6</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+                <var id="area1">radius*radius*angle/360</var>
+                <var id="area">radius*radius/4</var>
+                <var id="aa">polar(2.5,ROTATE_ARC+angle/2)</var>
+                <var id="cos_angle">(function(){
+							var shape="";
+								if(angle==60){shape=shape+"\\dfrac{\\sqrt{3}}{2}";}
+								if(angle==120){shape=shape+ "\\dfrac{1}{2}";}
+							return shape;
+						})()</var>
+                <var id="sin_angle">(function(){
+							var shape="";
+								if(angle==120){shape=shape+"\\dfrac{\\sqrt{3}}{2}";}
+								if(angle==60){shape=shape+ "\\dfrac{1}{2}";}
+							return shape;
+						})()</var>
+                
+            </div>
+			<p class="question">如圖，圓 <code>O</code> 的半徑為 <code><var>radius</var></code> 公分，圓心角 <code>\angle AOB = <var>angle</var></code> 度，請求出黃色弓形的面積為多少平方公分。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 3, R + 3], [-R - 3, R + 3]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R,{ stroke: "black" });
+						circle([0, 0], 0.1, { stroke: "black" ,fill:"black"}); 
+						graph.aAngle = (ROTATE_ARC  + angle)+90 ;					
+						label([0, 0], "O", labelDirection(graph.aAngle));						
+						arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + angle, { stroke: "#FFA500"});
+						arc( [0, 0], R-0.1, ROTATE_ARC, ROTATE_ARC + angle ,{stroke: "#FFA500",fill:"#FFA500"});
+						graph.arc=arc([0, 0], 1, ROTATE_ARC, ROTATE_ARC + angle, { stroke: "black"});  
+						graph.label=label( [aa[0], aa[1]],  "\\tiny{"+angle+"^{\\circ}}", "center", { color: "black" });                    	
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						var poiB = [R*Math.cos((ROTATE_ARC + angle)*Math.PI/180),R*Math.sin((ROTATE_ARC + angle)*Math.PI/180)];
+						line(poiA,[0,0],{stroke: "black"});
+						line([0,0],poiB,{stroke: "black"});
+						line(poiA,poiB, { stroke: "black"});
+						label( [1.15*(poiA[0]),1.15*poiA[1]],  "A", "center", { color: "black" });
+						label( [1.15*(poiB[0]),1.15*poiB[1]],  "B", "center", { color: "black" });	
+						
+
+						var poiD=[(poiA[0]+poiB[0])/2,(poiA[1]+poiB[1])/2];
+						graph.circle=circle(poiD, 0.1, { stroke: "black" ,fill:"black"}); 
+						graph.circle.hide();
+						graph.label_3=label( [1.15*(poiD[0]),1.15*poiD[1]],  "D", "center", { color: "black" });
+						graph.label_3.hide();
+
+						graph.line=line(poiD,[0,0],{stroke: "black"});
+						graph.line.hide();
+						var bb=polar(3.5,ROTATE_ARC+angle/4)
+						graph.label_2=label( [bb[0], bb[1]],  "\\tiny{"+angle/2+"^{\\circ}}", "center", { color: "black" }); 
+						graph.label_2.hide();
+						graph.arc_2=arc([0, 0], 1, ROTATE_ARC, ROTATE_ARC + angle/2, { stroke: "black"});  
+				</div>
+			</div>
+			
+		   <div class="solution" data-type="multiple">
+			    <span class="sol" data-type="rational"><var>area1</var></span><code>\pi-\enspace</code><input type="text" style="width:30px" id="intPart"><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("sqrtPart").value,document.getElementById("intPart").value]</div>
+				    <div class="validator-function">
+				    if (guess[0]==3){
+					    if(radius==2){
+					    	if (document.getElementById("intPart").value.length==0||guess[1].replace(/[ ]/g,"")==1){
+						    return true;
+							}
+					    }
+					    if(radius==1&&guess[1].replace(/[ ]/g,"")=="1/4"){return true;}
+					    if((radius==3&&guess[1].replace(/[ ]/g,"")=="9/4")||(radius==3&&guess[1].replace(/[ ]/g,"")=="21/4")){return true;}
+					    if(radius==4&&guess[1].replace(/[ ]/g,"")=="4"){return true;}
+					    if((radius==5&&guess[1].replace(/[ ]/g,"")=="25/4")||(radius==5&&guess[1].replace(/[ ]/g,"")=="61/4")){return true;}
+					}
+                    </div>
+				</div>
+				<p class="example">整數，例如 <code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace3/4</code></p>
+            </div>
+
+
+            <div class="hints">
+				<p>首先我們來觀察一下這個扇形 <code>OAB</code>，如果我們要算黃色弓形面積，可以先計算扇形面積，再減去 <code>\triangle OAB</code> 就可以了！</p>
+				<div>
+					<p>因為我們知道圓心角，扇形面積我們可以使用：</p>
+					<p><code>\pi \times <var>radius</var>^2 \times \dfrac{<var>angle</var>^\circ}{360^\circ} =  <var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi</code>。</p>
+				</div>
+				<div>
+					<p>那三角形面積要怎麼計算呢？我們可以在 <code>\angle AOB</code> 劃一條角平分線到 <code>AB</code>上，這樣就切割成兩個面積一樣的 <code>30^\circ - 60^\circ - 90^\circ</code> 的直角三角形。</p>
+					<div class="graphie" data-update="fan_shaped">
+						graph.label.hide();
+						graph.arc.hide();
+						graph.line.show();
+						graph.label_2.show();
+						graph.circle.show();
+						graph.label_3.show();
+					</div>
+				</div>
+				<div>
+					<p>利用特殊角的比例關係 <code>30^\circ - 60^\circ - 90^\circ</code> 所對應邊長的比例為 <code>1 - \sqrt{3} - 2</code>，得到：</p>
+					<p><code>\overline{OD} = <var>radius</var> \times  <var>cos_angle</var></code><br/><code> \overline{AD}=\overline{BD} = <var>radius</var> \times <var>sin_angle</var></code></p>
+					<div>
+						<p>如此一來我們就可以算出直角三角形面積：</p>
+						<p><code>\triangle DOA = \triangle DOB</code></p>
+					</div>
+					<p><code>  = \dfrac{1}{2}\times (<var>radius</var>\times  <var>cos_angle</var>) \times (<var>radius</var>\times <var>sin_angle</var>)</code></p>
+					<p><code> =\dfrac{ <var>radius</var>^2}{8} \times \sqrt{3}  </code></p>
+					<p><code>= <var>mixedFractionFromImproper(radius*radius,8,true,true,false,false)</var>\sqrt{3}</code></p>
+				</div>
+				<div>
+					<p>所以 <code>\triangle AOB</code> 面積為：</p>
+					<p><code>2 \times \dfrac{<var>radius</var>^2}{8} \times \sqrt{3} </code></p>
+					<p><code>= \dfrac{<var>radius</var>^2}{4} \times \sqrt{3}</code></p>
+					<p><code data-if="area!=1">= <var>fraction(radius*radius,4,true,true,false,false)</var>\sqrt{3}</code><code  data-if="area==1" >= \sqrt{3}</code>。</p>
+				</div>
+				<div>
+					<p>所以弓形面積為：扇形 <code>OAB</code> 面積 <code>- \triangle OAB</code> 面積 </p>
+					<p><code>=</code><code  data-if="area!=1" class="hint_pink"><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi - <var>fraction(radius*radius,4,true,true,false,false)</var>\sqrt{3}</code><code  data-if="area==1" class="hint_pink"><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi - \sqrt{3}</code></p>
+				</div>
+			</div>
+        </div>
+		
+		<div id="case1-2">
+            <div class="vars">
+            	<var id="angle">90</var>
+                <var id="radius">randRange(1, 5)</var>
+                <var id="R">radius+6</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+                <var id="area1">radius*radius*angle/360</var>
+                <var id="area2">radius*radius/2</var>               
+            </div>
+			<p class="question">如圖，圓 <code>O</code> 的半徑為 <code><var>radius</var></code> 公分，圓心角 <code>\angle AOB</code> 是直角，請求出黃色弓形的面積為多少平方公分。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 3, R + 3], [-R - 3, R + 3]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R,{ stroke: "black" });
+						circle([0, 0], 0.1, { stroke: "black" ,fill:"black"}); 
+						                    	
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						var poiB = [R*Math.cos((ROTATE_ARC + angle)*Math.PI/180),R*Math.sin((ROTATE_ARC + angle)*Math.PI/180)];
+						line(poiA,[0,0],{stroke: "black"});
+						line([0,0],poiB,{stroke: "black"});
+						line(poiA,poiB, { stroke: "black"});
+						label( [1.15*(poiA[0]),1.15*poiA[1]],  "A", "center", { color: "black" });
+						label( [1.15*(poiB[0]),1.15*poiB[1]],  "B", "center", { color: "black" });	
+						graph.aAngle = (ROTATE_ARC  + angle)+90 ;					
+						label([0, 0], "O", labelDirection(graph.aAngle));						
+						arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + angle, { stroke: "#FFA500"});
+						arc( [0, 0], R, ROTATE_ARC, ROTATE_ARC + angle ,{stroke: "#FFA500",fill:"#FFA500"});					 
+				</div>
+			</div>
+			
+		   <div class="solution" data-type="multiple">
+			    <input type="text" style="width:30px" id="piPart"><code>\pi-\enspace</code><span class="sol" data-type="rational"><var>area2</var></span>
+			    <div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("piPart").value</div>
+				    <div class="validator-function">
+				    if(radius==2){
+				    	if (document.getElementById("piPart").value.length==0||guess.replace(/[ ]/g,"")==1){
+					    return true;
+						}
+				    }
+				    if(radius==1&&guess.replace(/[ ]/g,"")=="1/4"){return true;}
+				    if((radius==3&&guess.replace(/[ ]/g,"")=="9/4")||(radius==3&&guess.replace(/[ ]/g,"")=="21/4")){return true;}
+				    if(radius==4&&guess.replace(/[ ]/g,"")=="4"){return true;}
+				    if((radius==5&&guess.replace(/[ ]/g,"")=="25/4")||(radius==5&&guess.replace(/[ ]/g,"")=="61/4")){return true;}
+					
+                    </div>
+				</div>
+				<p class="example">整數，例如 <code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace3/4</code></p>
+            </div>
+
+
+            <div class="hints">
+				<p>首先我們來觀察一下這個扇形 <code>OAB</code> ，如果我們要算黃色弓形面積，可以先計算扇形面積，再減去 <code>\triangle OAB</code> 就可以了！</p>
+				<div>
+					<p>因為我們知道圓心角，扇形面積我們可以使用：</p>
+					<p><code>\pi \times <var>radius</var>^2 \times \dfrac{<var>angle</var>^\circ}{360^\circ} =  </code><code data-if="area1==1">\pi</code><code data-if="area1!=1"><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi</code>。</p>
+				</div>
+				<div>
+					<p>那三角形面積要怎麼計算呢？這是一個直角三角形，兩股為半徑，所以面積為：</p>
+					<p><code>\dfrac{1}{2} \times<var>radius</var>^2 = <var>fraction(radius*radius,2,true,true,false,false)</var></code>。</p>
+				</div>
+				<div>
+					<p>所以弓形面積為：扇形 <code>OAB</code> 面積 <code>- \triangle OAB</code> 面積 </p>
+					<p><code>=</code><code  data-if="area1==1" class="hint_pink">\pi - <var>fraction(radius*radius,2,true,true,false,false)</var></code><code  data-if="area1!=1" class="hint_pink"><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi - <var>fraction(radius*radius,2,true,true,false,false)</var></code> 。</p>
+				</div>
+			</div>	
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+            	<var id="angle">60</var>
+                <var id="radius">randRange(1, 5)</var>
+                <var id="R">radius+6</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+                <var id="area1">radius*radius*angle/360</var>
+                <var id="area">radius*radius/4</var>               
+            </div>
+			<p class="question">如圖，圓 <code>O</code> 的半徑為 <code><var>radius</var></code> 公分，<code>\triangle AOB</code>為正三角形，面積為 <code data-if="area!=1"><var>fraction(radius*radius,4,true,true,false,false)</var>\sqrt{3}</code><code  data-if="area==1" >\sqrt{3}</code> ，請求出黃色弓形的面積為多少平方公分。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 3, R + 3], [-R - 3, R + 3]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R,{ stroke: "black" });
+						circle([0, 0], 0.1, { stroke: "black" ,fill:"black"}); 
+						                    	
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						var poiB = [R*Math.cos((ROTATE_ARC + angle)*Math.PI/180),R*Math.sin((ROTATE_ARC + angle)*Math.PI/180)];
+						line(poiA,[0,0],{stroke: "black"});
+						line([0,0],poiB,{stroke: "black"});
+						line(poiA,poiB, { stroke: "black"});
+						label( [1.15*(poiA[0]),1.15*poiA[1]],  "A", "center", { color: "black" });
+						label( [1.15*(poiB[0]),1.15*poiB[1]],  "B", "center", { color: "black" });	
+						graph.aAngle = (ROTATE_ARC  + angle)+90 ;					
+						label([0, 0], "O", labelDirection(graph.aAngle));						
+						arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + angle, { stroke: "#FFA500"});
+						arc( [0, 0], R, ROTATE_ARC, ROTATE_ARC + angle ,{stroke: "#FFA500",fill:"#FFA500"});					 
+				</div>
+			</div>
+			
+		   <div class="solution" data-type="multiple">
+			    <span class="sol" data-type="rational"><var>area1</var></span><code>\pi-\enspace</code><input type="text" style="width:30px" id="intPart"><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("sqrtPart").value,document.getElementById("intPart").value]</div>
+				    <div class="validator-function">
+				    if (guess[0]==3){
+					    if(radius==2){
+					    	if (document.getElementById("intPart").value.length==0||guess[1].replace(/[ ]/g,"")==1){
+						    return true;
+							}
+					    }
+					    if(radius==1&&guess[1].replace(/[ ]/g,"")=="1/4"){return true;}
+					    if((radius==3&&guess[1].replace(/[ ]/g,"")=="9/4")||(radius==3&&guess[1].replace(/[ ]/g,"")=="21/4")){return true;}
+					    if(radius==4&&guess[1].replace(/[ ]/g,"")=="4"){return true;}
+					    if((radius==5&&guess[1].replace(/[ ]/g,"")=="25/4")||(radius==5&&guess[1].replace(/[ ]/g,"")=="61/4")){return true;}
+					}
+                    </div>
+				</div>
+				<p class="example">整數，例如 <code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace3/4</code></p>
+            </div>
+
+
+
+            <div class="hints">
+				<p>首先我們來觀察一下這個扇形 <code>OAB</code> ，如果我們要算黃色弓形面積，可以先計算扇形面積，再減去 <code>\triangle OAB</code> 就可以了！</p>
+				<div>
+					<p>因為題目告訴我們 <code>\triangle OAB</code> 是正三角形，所以我們知道圓心角為 <code>60^\circ</code>，扇形面積我們可以使用：</p>
+					<p><code>\pi \times <var>radius</var>^2 \times \dfrac{<var>angle</var>^\circ}{360^\circ} =  </code><code data-if="area1==1">\pi</code><code data-if="area1!=1"><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi</code>。</p>
+				</div>
+				<div>
+					<p>所以弓形面積為：扇形 <code>OAB</code> 面積 <code>- \triangle OAB</code> 面積 </p>
+					<p><code>=</code><code  data-if="area!=1" class="hint_pink"><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi - <var>fraction(radius*radius,4,true,true,false,false)</var>\sqrt{3}</code><code  data-if="area==1" class="hint_pink"><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi - \sqrt{3}</code> 。</p>
+				</div>
+			</div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+            	<var id="angle">randFromArray([60,120])</var>
+                <var id="radius">randRange(1, 5)</var>
+                <var id="R">radius+6</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+                <var id="fan_area">radius*radius*angle/360</var>
+                <var id="area">radius*radius/4</var> 
+                <var id="aa">polar(2.5,ROTATE_ARC+angle/2)</var>
+                <var id="cos_angle">(function(){
+							var shape="";
+								if(angle==60){shape=shape+"\\dfrac{\\sqrt{3}}{2}";}
+								if(angle==120){shape=shape+ "\\dfrac{1}{2}";}
+							return shape;
+						})()</var>
+                <var id="sin_angle">(function(){
+							var shape="";
+								if(angle==120){shape=shape+"\\dfrac{\\sqrt{3}}{2}";}
+								if(angle==60){shape=shape+ "\\dfrac{1}{2}";}
+							return shape;
+						})()</var>
+                
+            </div>
+			<p class="question">如圖，圓 <code>O</code> 的半徑為 <code><var>radius</var></code> 公分，扇形面積為 <code><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi</code> ，請求出黃色弓形的面積為多少平方公分。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 3, R + 3], [-R - 3, R + 3]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R,{ stroke: "black" });
+						circle([0, 0], 0.1, { stroke: "black" ,fill:"black"}); 
+						graph.arc=arc([0, 0], 1, ROTATE_ARC, ROTATE_ARC + angle, { stroke: "black"});  
+						graph.label=label( [aa[0], aa[1]],  "\\tiny{"+angle+"^{\\circ}}", "center", { color: "black" });   
+						graph.label.hide();
+						graph.arc.hide();
+
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						var poiB = [R*Math.cos((ROTATE_ARC + angle)*Math.PI/180),R*Math.sin((ROTATE_ARC + angle)*Math.PI/180)];
+						line(poiA,[0,0],{stroke: "black"});
+						line([0,0],poiB,{stroke: "black"});
+						line(poiA,poiB, { stroke: "black"});
+						label( [1.15*(poiA[0]),1.15*poiA[1]],  "A", "center", { color: "black" });
+						label( [1.15*(poiB[0]),1.15*poiB[1]],  "B", "center", { color: "black" });	
+						graph.aAngle = (ROTATE_ARC  + angle)+90 ;					
+						label([0, 0], "O", labelDirection(graph.aAngle));						
+						arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + angle, { stroke: "#FFA500"});
+						arc( [0, 0], R, ROTATE_ARC, ROTATE_ARC + angle ,{stroke: "#FFA500",fill:"#FFA500"});
+
+						var poiD=[(poiA[0]+poiB[0])/2,(poiA[1]+poiB[1])/2];
+						graph.circle=circle(poiD, 0.1, { stroke: "black" ,fill:"black"}); 
+						graph.circle.hide();
+						graph.label_3=label( [1.15*(poiD[0]),1.15*poiD[1]],  "D", "center", { color: "black" });
+						graph.label_3.hide();
+
+						graph.line=line(poiD,[0,0],{stroke: "black"});
+						graph.line.hide();
+						var bb=polar(2.5,ROTATE_ARC+angle/4)
+						graph.label_2=label( [bb[0], bb[1]],  "\\tiny{"+angle/2+"^{\\circ}}", "center", { color: "black" }); 
+						graph.label_2.hide();
+						graph.arc_2=arc([0, 0], 1, ROTATE_ARC, ROTATE_ARC + angle/2, { stroke: "black"});  
+						graph.arc_2.hide();
+				</div>
+			</div>
+			
+		   <div class="solution" data-type="multiple">
+			    <span class="sol" data-type="rational"><var>fan_area</var></span><code>\pi-\enspace</code><input type="text" style="width:30px" id="intPart"><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("sqrtPart").value,document.getElementById("intPart").value]</div>
+				    <div class="validator-function">
+				    if (guess[0]==3){
+					    if(radius==2){
+					    	if (document.getElementById("intPart").value.length==0||guess[1].replace(/[ ]/g,"")==1){
+						    return true;
+							}
+					    }
+					    if(radius==1&&guess[1].replace(/[ ]/g,"")=="1/4"){return true;}
+					    if((radius==3&&guess[1].replace(/[ ]/g,"")=="9/4")||(radius==3&&guess[1].replace(/[ ]/g,"")=="21/4")){return true;}
+					    if(radius==4&&guess[1].replace(/[ ]/g,"")=="4"){return true;}
+					    if((radius==5&&guess[1].replace(/[ ]/g,"")=="25/4")||(radius==5&&guess[1].replace(/[ ]/g,"")=="61/4")){return true;}
+					}
+                    </div>
+				</div>
+				<p class="example">整數，例如 <code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace3/4</code></p>
+            </div>
+
+            <div class="hints">
+				<p>首先我們來觀察一下這個扇形 <code>OAB</code>，如果我們要算黃色弓形面積，可以先計算扇形面積，再減去 <code>\triangle OAB</code> 就可以了！</p>
+				<div>
+					<p>我們有扇形面積了，要怎麼算三角形面積呢？首先我們要知道圓心角，可以利用扇形面積來求得：</p>
+					<p>扇形面積： <code>\pi \times <var>radius</var>^2 \times \dfrac{\angle AOB}{360^\circ} =  <var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi</code>。</p>
+					<p>由此我們可以計算出圓心角為：<code><var>angle</var>^\circ</code></p>
+					<div class="graphie" data-update="fan_shaped">
+						graph.label.show();
+						graph.arc.show();
+					</div>
+				</div>
+				<div>
+					<p>那三角形面積要怎麼計算呢？我們可以在 <code>\angle AOB</code> 劃一條角平分線到 <code>AB</code>上，這樣就切割成兩個面積一樣的 <code>30^\circ - 60^\circ - 90^\circ</code> 的直角三角形。</p>
+					<div class="graphie" data-update="fan_shaped">
+						graph.label.hide();
+						graph.arc.hide();
+						graph.line.show();
+						graph.arc_2.show();
+						graph.label_2.show();
+						graph.circle.show();
+						graph.label_3.show();
+					</div>
+				</div>
+				<div>
+					<p>利用特殊角的比例關係 <code>30^\circ - 60^\circ - 90^\circ</code> 所對應邊長的比例為 <code>1 - \sqrt{3} - 2</code>，得到：</p>
+					<p><code>\overline{OD} = <var>radius</var> \times  <var>cos_angle</var></code><br/><code> \overline{AD}=\overline{BD} = <var>radius</var> \times <var>sin_angle</var></code></p>
+					<div>
+						<p>如此一來我們就可以算出直角三角形面積：</p>
+						<p><code>\triangle DOA = \triangle DOB</code></p>
+					</div>
+					<p><code>  = \dfrac{1}{2}\times (<var>radius</var>\times  <var>cos_angle</var>) \times (<var>radius</var>\times <var>sin_angle</var>)</code></p>
+					<p><code> =\dfrac{ <var>radius</var>^2}{8} \times \sqrt{3}  </code></p>
+					<p><code>= <var>mixedFractionFromImproper(radius*radius,8,true,true,false,false)</var>\sqrt{3}</code></p>
+				</div>
+				<div>
+					<p>所以 <code>\triangle AOB</code> 面積為：</p>
+					<p><code>2 \times \dfrac{<var>radius</var>^2}{8} \times \sqrt{3} </code></p>
+					<p><code>= \dfrac{<var>radius</var>^2}{4} \times \sqrt{3}</code></p>
+					<p><code data-if="area!=1">= <var>fraction(radius*radius,4,true,true,false,false)</var>\sqrt{3}</code><code  data-if="area==1" >= \sqrt{3}</code>。</p>
+				</div>
+				<div>
+					<p>所以弓形面積為：扇形 <code>OAB</code> 面積 <code>- \triangle OAB</code> 面積 </p>
+					<p><code>=</code><code  data-if="area!=1" class="hint_pink"><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi - <var>fraction(radius*radius,4,true,true,false,false)</var>\sqrt{3}</code><code  data-if="area==1" class="hint_pink"><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi - \sqrt{3}</code></p>
+				</div>
+			</div>
+        </div>
+
+        <div id="case4">
+            <div class="vars" data-ensure="2*radius*angle !== 360">
+            	<var id="angle">randFromArray([60,120])</var>
+                <var id="radius">randRange(1, 5)</var>
+                <var id="R">radius+6</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+                <var id="fan_area">radius*radius*angle/360</var>
+                <var id="area">radius*radius/4</var> 
+                <var id="larc">2*radius*angle/360</var>
+                <var id="aa">polar(2.5,ROTATE_ARC+angle/2)</var>
+                <var id="cos_angle">(function(){
+							var shape="";
+								if(angle==60){shape=shape+"\\dfrac{\\sqrt{3}}{2}";}
+								if(angle==120){shape=shape+ "\\dfrac{1}{2}";}
+							return shape;
+						})()</var>
+                <var id="sin_angle">(function(){
+							var shape="";
+								if(angle==120){shape=shape+"\\dfrac{\\sqrt{3}}{2}";}
+								if(angle==60){shape=shape+ "\\dfrac{1}{2}";}
+							return shape;
+						})()</var>
+                
+            </div>
+			<p class="question">如圖，圓 <code>O</code> 的半徑為 <code><var>radius</var></code> 公分，扇形周長為 <code>（<var>2*radius</var> + <var>fraction(2*radius*angle,360,true,true,false,false)</var> \pi）</code> ，請求出黃色弓形的面積為多少平方公分。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 3, R + 3], [-R - 3, R + 3]],
+                            scale: [15, 15]
+                        });
+                          circle([0, 0], R,{ stroke: "black" });
+						circle([0, 0], 0.2, { stroke: "black" ,fill:"black"});                       	
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						var poiB = [R*Math.cos((ROTATE_ARC + angle)*Math.PI/180),R*Math.sin((ROTATE_ARC + angle)*Math.PI/180)];
+						line(poiA,[0,0],{stroke: "black"});
+						line([0,0],poiB,{stroke: "black"});
+						line(poiA,poiB, { stroke: "black"});
+						label( [1.15*(poiA[0]),1.15*poiA[1]],  "A", "center", { color: "black" });
+						label( [1.15*(poiB[0]),1.15*poiB[1]],  "B", "center", { color: "black" });	
+
+						graph.aAngle = (ROTATE_ARC  + angle)+90 ;					
+						label([0, 0], "O", labelDirection(graph.aAngle));						
+						arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + angle, { stroke: "#FFA500"});
+						arc( [0, 0], R-0.1, ROTATE_ARC, ROTATE_ARC + angle ,{stroke: "#FFA500",fill:"#FFA500"});
+
+						graph.arc=arc([0, 0], 1, ROTATE_ARC, ROTATE_ARC + angle, { stroke: "black"});  
+						graph.label=label( [aa[0], aa[1]],  "\\tiny{"+angle+"^{\\circ}}", "center", { color: "black" });                    	
+						graph.arc.hide();
+						graph.label.hide();
+						var poiD=[(poiA[0]+poiB[0])/2,(poiA[1]+poiB[1])/2];
+						graph.circle=circle(poiD, 0.1, { stroke: "black" ,fill:"black"}); 
+						graph.circle.hide();
+						graph.label_3=label( [1.15*(poiD[0]),1.15*poiD[1]],  "D", "center", { color: "black" });
+						graph.label_3.hide();
+
+						graph.line=line(poiD,[0,0],{stroke: "black"});
+						graph.line.hide();
+						var bb=polar(2.5,ROTATE_ARC+angle/4)
+						graph.label_2=label( [bb[0], bb[1]],  "\\tiny{"+angle/2+"^{\\circ}}", "center", { color: "black" }); 
+						graph.label_2.hide();
+						graph.arc_2=arc([0, 0], 1, ROTATE_ARC, ROTATE_ARC + angle/2, { stroke: "black"}); 
+						graph.arc_2.hide();
+				</div>
+			</div>
+			
+		    <div class="solution" data-type="multiple">
+			    <span class="sol" data-type="rational"><var>fan_area</var></span><code>\pi-\enspace</code><input type="text" style="width:30px" id="intPart"><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("sqrtPart").value,document.getElementById("intPart").value]</div>
+				    <div class="validator-function">
+				    if (guess[0]==3){
+					    if(radius==2){
+					    	if (document.getElementById("intPart").value.length==0||guess[1].replace(/[ ]/g,"")==1){
+						    return true;
+							}
+					    }
+					    if(radius==1&&guess[1].replace(/[ ]/g,"")=="1/4"){return true;}
+					    if((radius==3&&guess[1].replace(/[ ]/g,"")=="9/4")||(radius==3&&guess[1].replace(/[ ]/g,"")=="21/4")){return true;}
+					    if(radius==4&&guess[1].replace(/[ ]/g,"")=="4"){return true;}
+					    if((radius==5&&guess[1].replace(/[ ]/g,"")=="25/4")||(radius==5&&guess[1].replace(/[ ]/g,"")=="61/4")){return true;}
+					}
+                    </div>
+				</div>
+				<p class="example">整數，例如 <code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace3/4</code></p>
+            </div>
+
+
+            <div class="hints">
+				<p>首先我們來觀察一下這個扇形 <code>OAB</code>，如果我們要算黃色弓形面積，可以先計算扇形面積，再減去 <code>\triangle OAB</code> 就可以了！</p>
+				<div>
+					<p>我們要算扇形面積要先知道圓心角，可是題目並沒有告訴我們，要怎麼辦呢？我們可以利用扇形周長來求得：</p>
+					<p> 扇形周長<code>=2 \times <var>radius</var> +</code> 弧長 <code>AB = （<var>2*radius</var> + <var>fraction(2*radius*angle,360,true,true,false,false)</var> \pi）</code>。</p>
+					<p>由此我們可以知道弧長 <code>AB</code> 為：<code><var>fraction(2*radius*angle,360,true,true,false,false)</var> \pi</code></p>
+					<p>又 <code><var>fraction(2*radius*angle,360,true,true,false,false)</var> \pi = 2\pi \times <var>radius</var> \times \dfrac{\angle AOB}{360^\circ}</code> </p>
+					<p>可以得到圓心角 <code>OAB</code> 為 <code><var>angle</var>^\circ</code>。</p>
+					<div class="graphie" data-update="fan_shaped">
+						graph.label.show();
+						graph.arc.show();
+					</div>
+				</div>
+				<p>我們有圓心角，就可以算出扇形面積為：<code>\pi \times <var>radius</var>^2 \times \dfrac{<var>angle</var>^\circ}{360^\circ} =  <var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi</code>。</p>
+				<div>
+					<p>那三角形面積要怎麼計算呢？我們可以在 <code>\angle AOB</code> 劃一條角平分線到 <code>AB</code>上，這樣就切割成兩個面積一樣的 <code>30^\circ - 60^\circ - 90^\circ</code> 的直角三角形。</p>
+					<div class="graphie" data-update="fan_shaped">
+						graph.label.hide();
+						graph.arc.hide();
+						graph.line.show();
+						graph.arc_2.show();
+						graph.label_2.show();
+						graph.circle.show();
+						graph.label_3.show();
+					</div>
+				</div>
+				<div>
+					<p>利用特殊角的比例關係 <code>30^\circ - 60^\circ - 90^\circ</code> 所對應邊長的比例為 <code>1 - \sqrt{3} - 2</code>，得到：</p>
+					<p><code>\overline{OD} = <var>radius</var> \times  <var>cos_angle</var></code><br/><code> \overline{AD}=\overline{BD} = <var>radius</var> \times <var>sin_angle</var></code></p>
+					<div>
+						<p>如此一來我們就可以算出直角三角形面積：</p>
+						<p><code>\triangle DOA = \triangle DOB</code></p>
+					</div>
+					<p><code>  = \dfrac{1}{2}\times (<var>radius</var>\times  <var>cos_angle</var>) \times (<var>radius</var>\times <var>sin_angle</var>)</code></p>
+					<p><code> =\dfrac{ <var>radius</var>^2}{8} \times \sqrt{3}  </code></p>
+					<p><code>= <var>mixedFractionFromImproper(radius*radius,8,true,true,false,false)</var>\sqrt{3}</code></p>
+				</div>
+				<div>
+					<p>所以 <code>\triangle AOB</code> 面積為：</p>
+					<p><code>2 \times \dfrac{<var>radius</var>^2}{8} \times \sqrt{3} </code></p>
+					<p><code>= \dfrac{<var>radius</var>^2}{4} \times \sqrt{3}</code></p>
+					<p><code data-if="area!=1">= <var>fraction(radius*radius,4,true,true,false,false)</var>\sqrt{3}</code><code  data-if="area==1" >= \sqrt{3}</code>。</p>
+				</div>
+				<div>
+					<p>所以弓形面積為：扇形 <code>OAB</code> 面積 <code>- \triangle OAB</code> 面積 </p>
+					<p><code>=</code><code  data-if="area!=1" class="hint_pink"><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi - <var>fraction(radius*radius,4,true,true,false,false)</var>\sqrt{3}</code><code  data-if="area==1" class="hint_pink"><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi - \sqrt{3}</code></p>
+				</div>
+			</div>
+        </div>
+
+        <div id="case5">
+            <div class="vars">
+            	<var id="angle">randFromArray([60,120])</var>
+                <var id="radius">randRange(1, 5)</var>
+                <var id="R">radius+6</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+                <var id="fan_area">radius*radius*angle/360</var>
+                <var id="area">radius*radius/4</var> 
+                <var id="aa">polar(2.5,ROTATE_ARC+angle/2)</var>
+                <var id="cos_angle">(function(){
+							var shape="";
+								if(angle==60){shape=shape+"\\dfrac{\\sqrt{3}}{2}";}
+								if(angle==120){shape=shape+ "\\dfrac{1}{2}";}
+							return shape;
+						})()</var>
+                <var id="sin_angle">(function(){
+							var shape="";
+								if(angle==120){shape=shape+"\\dfrac{\\sqrt{3}}{2}";}
+								if(angle==60){shape=shape+ "\\dfrac{1}{2}";}
+							return shape;
+						})()</var>
+                
+            </div>
+			<p class="question">如圖，有一圓 <code>O</code> ，<code>\angle AOB</code> 角度為 <code><var>angle</var>^\circ</code> ，扇形面積為 <code><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi</code> ，請求出黃色弓形的面積為多少平方公分。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 3, R + 3], [-R - 3, R + 3]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R,{ stroke: "black" });
+						circle([0, 0], 0.1, { stroke: "black" ,fill:"black"}); 
+						graph.arc=arc([0, 0], 1, ROTATE_ARC, ROTATE_ARC + angle, { stroke: "black"});  
+						graph.label=label( [aa[0], aa[1]],  "\\tiny{"+angle+"^{\\circ}}", "center", { color: "black" });   					
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						var poiB = [R*Math.cos((ROTATE_ARC + angle)*Math.PI/180),R*Math.sin((ROTATE_ARC + angle)*Math.PI/180)];
+						line(poiA,[0,0],{stroke: "black"});
+						line([0,0],poiB,{stroke: "black"});
+						line(poiA,poiB, { stroke: "black"});
+						label( [1.15*(poiA[0]),1.15*poiA[1]],  "A", "center", { color: "black" });
+						label( [1.15*(poiB[0]),1.15*poiB[1]],  "B", "center", { color: "black" });	
+						graph.aAngle = (ROTATE_ARC  + angle)+90 ;					
+						label([0, 0], "O", labelDirection(graph.aAngle));						
+						arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + angle, { stroke: "#FFA500"});
+						arc( [0, 0], R, ROTATE_ARC, ROTATE_ARC + angle ,{stroke: "#FFA500",fill:"#FFA500"});
+
+						var poiD=[(poiA[0]+poiB[0])/2,(poiA[1]+poiB[1])/2];
+						graph.circle=circle(poiD, 0.1, { stroke: "black" ,fill:"black"}); 
+						graph.circle.hide();
+						graph.label_3=label( [1.15*(poiD[0]),1.15*poiD[1]],  "D", "center", { color: "black" });
+						graph.label_3.hide();
+
+						graph.line=line(poiD,[0,0],{stroke: "black"});
+						graph.line.hide();
+						var bb=polar(2.5,ROTATE_ARC+angle/4)
+						graph.label_2=label( [bb[0], bb[1]],  "\\tiny{"+angle/2+"^{\\circ}}", "center", { color: "black" }); 
+						graph.label_2.hide();
+						graph.arc_2=arc([0, 0], 1, ROTATE_ARC, ROTATE_ARC + angle/2, { stroke: "black"});  
+						graph.arc_2.hide();
+				</div>
+			</div>
+			
+		   <div class="solution" data-type="multiple">
+			    <span class="sol" data-type="rational"><var>fan_area</var></span><code>\pi-\enspace</code><input type="text" style="width:30px" id="intPart"><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("sqrtPart").value,document.getElementById("intPart").value]</div>
+				    <div class="validator-function">
+				    if (guess[0]==3){
+					    if(radius==2){
+					    	if (document.getElementById("intPart").value.length==0||guess[1].replace(/[ ]/g,"")==1){
+						    return true;
+							}
+					    }
+					    if(radius==1&&guess[1].replace(/[ ]/g,"")=="1/4"){return true;}
+					    if((radius==3&&guess[1].replace(/[ ]/g,"")=="9/4")||(radius==3&&guess[1].replace(/[ ]/g,"")=="21/4")){return true;}
+					    if(radius==4&&guess[1].replace(/[ ]/g,"")=="4"){return true;}
+					    if((radius==5&&guess[1].replace(/[ ]/g,"")=="25/4")||(radius==5&&guess[1].replace(/[ ]/g,"")=="61/4")){return true;}
+					}
+                    </div>
+				</div>
+				<p class="example">整數，例如 <code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace3/4</code></p>
+            </div>
+
+
+            <div class="hints">
+				<p>首先我們來觀察一下這個扇形 <code>OAB</code>，如果我們要算黃色弓形面積，可以先計算扇形面積，再減去 <code>\triangle OAB</code> 就可以了！</p>
+				<p>我們有扇形面積了，接下來就是算三角形面積，可是半徑不知道怎麼辦？可以利用扇形面積來求得：<br/>扇形面積： <code>\pi \times 半徑^2 \times \dfrac{<var>angle</var>^\circ}{360^\circ} =  <var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi</code>。<br/>由此我們可以計算出半徑為：<code><var>radius</var></code></p>
+				
+				<div>
+					<p>那三角形面積要怎麼計算呢？我們可以在 <code>\angle AOB</code> 劃一條角平分線到 <code>AB</code>上，這樣就切割成兩個面積一樣的 <code>30^\circ - 60^\circ - 90^\circ</code> 的直角三角形。</p>
+					<div class="graphie" data-update="fan_shaped">
+						graph.label.hide();
+						graph.arc.hide();
+						graph.line.show();
+						graph.arc_2.show();
+						graph.label_2.show();
+						graph.circle.show();
+						graph.label_3.show();
+					</div>
+				</div>
+				<div>
+					<p>利用特殊角的比例關係 <code>30^\circ - 60^\circ - 90^\circ</code> 所對應邊長的比例為 <code>1 - \sqrt{3} - 2</code>，得到：</p>
+					<p><code>\overline{OD} = <var>radius</var> \times  <var>cos_angle</var></code><br/><code> \overline{AD}=\overline{BD} = <var>radius</var> \times <var>sin_angle</var></code></p>
+					<div>
+						<p>如此一來我們就可以算出直角三角形面積：</p>
+						<p><code>\triangle DOA = \triangle DOB</code></p>
+					</div>
+					<p><code>  = \dfrac{1}{2}\times (<var>radius</var>\times  <var>cos_angle</var>) \times (<var>radius</var>\times <var>sin_angle</var>)</code></p>
+					<p><code> =\dfrac{ <var>radius</var>^2}{8} \times \sqrt{3}  </code></p>
+					<p><code>= <var>mixedFractionFromImproper(radius*radius,8,true,true,false,false)</var>\sqrt{3}</code></p>
+				</div>
+				<div>
+					<p>所以 <code>\triangle AOB</code> 面積為：</p>
+					<p><code>2 \times \dfrac{<var>radius</var>^2}{8} \times \sqrt{3} </code></p>
+					<p><code>= \dfrac{<var>radius</var>^2}{4} \times \sqrt{3}</code></p>
+					<p><code data-if="area!=1">= <var>fraction(radius*radius,4,true,true,false,false)</var>\sqrt{3}</code><code data-if="area==1" >= \sqrt{3}</code>。</p>
+				</div>
+				<div>
+					<p>所以弓形面積為：扇形 <code>OAB</code> 面積 <code>- \triangle OAB</code> 面積 </p>
+					<p><code>=</code><code  data-if="area!=1" class="hint_pink"><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi - <var>fraction(radius*radius,4,true,true,false,false)</var>\sqrt{3}</code><code  data-if="area==1" class="hint_pink"><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi - \sqrt{3}</code></p>
+				</div>
+			</div>
+        </div>
+		
+        <div id="case6">
+            <div class="vars">
+            	<var id="angle">randFromArray([60,120])</var>
+                <var id="radius">randRange(1, 5)</var>
+                <var id="R">radius+6</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+                <var id="fan_area">radius*radius*angle/360</var>
+                <var id="area">radius*radius/4</var>
+                <var id="aa">polar(2.5,ROTATE_ARC+angle/2)</var>
+                <var id="cos_angle">(function(){
+							var shape="";
+								if(angle==60){shape=shape+"\\dfrac{\\sqrt{3}}{2}";}
+								if(angle==120){shape=shape+ "\\dfrac{1}{2}";}
+							return shape;
+						})()</var>
+                <var id="sin_angle">(function(){
+							var shape="";
+								if(angle==120){shape=shape+"\\dfrac{\\sqrt{3}}{2}";}
+								if(angle==60){shape=shape+ "\\dfrac{1}{2}";}
+							return shape;
+						})()</var>
+                
+            </div>
+			<p class="question">如圖，有一圓 <code>O</code> ，圓心角<code>\angle AOB</code> 為 <code><var>angle</var>^\circ</code> ，扇形周長為 <code>（<var>2*radius</var> + <var>fraction(2*radius*angle,360,true,true,false,false)</var> \pi）</code> ，請求出黃色弓形的面積為多少平方公分。</p>
+			<div class="problem">
+			    <div class="graphie" id="fan_shaped">
+				    init({
+                            range: [[-R - 3, R + 3], [-R - 3, R + 3]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R,{ stroke: "black" });
+						circle([0, 0], 0.1, { stroke: "black" ,fill:"black"}); 
+						graph.arc=arc([0, 0], 1, ROTATE_ARC, ROTATE_ARC + angle, { stroke: "black"});  
+						graph.label=label( [aa[0], aa[1]],  "\\tiny{"+angle+"^{\\circ}}", "center", { color: "black" });   					
+						var poiA = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];				
+						var poiB = [R*Math.cos((ROTATE_ARC + angle)*Math.PI/180),R*Math.sin((ROTATE_ARC + angle)*Math.PI/180)];
+						line(poiA,[0,0],{stroke: "black"});
+						line([0,0],poiB,{stroke: "black"});
+						line(poiA,poiB, { stroke: "black"});
+						label( [1.15*(poiA[0]),1.15*poiA[1]],  "A", "center", { color: "black" });
+						label( [1.15*(poiB[0]),1.15*poiB[1]],  "B", "center", { color: "black" });	
+						graph.aAngle = (ROTATE_ARC  + angle)+90 ;					
+						label([0, 0], "O", labelDirection(graph.aAngle));						
+						arc([0, 0], R, ROTATE_ARC, ROTATE_ARC + angle, { stroke: "#FFA500"});
+						arc( [0, 0], R, ROTATE_ARC, ROTATE_ARC + angle ,{stroke: "#FFA500",fill:"#FFA500"});
+
+						var poiD=[(poiA[0]+poiB[0])/2,(poiA[1]+poiB[1])/2];
+						graph.circle=circle(poiD, 0.1, { stroke: "black" ,fill:"black"}); 
+						graph.circle.hide();
+						graph.label_3=label( [1.15*(poiD[0]),1.15*poiD[1]],  "D", "center", { color: "black" });
+						graph.label_3.hide();
+
+						graph.line=line(poiD,[0,0],{stroke: "black"});
+						graph.line.hide();
+						var bb=polar(2.5,ROTATE_ARC+angle/4)
+						graph.label_2=label( [bb[0], bb[1]],  "\\tiny{"+angle/2+"^{\\circ}}", "center", { color: "black" }); 
+						graph.label_2.hide();
+						graph.arc_2=arc([0, 0], 1, ROTATE_ARC, ROTATE_ARC + angle/2, { stroke: "black"});  
+						graph.arc_2.hide();
+				</div>
+			</div>
+			
+		    <div class="solution" data-type="multiple">
+			    <span class="sol" data-type="rational"><var>fan_area</var></span><code>\pi-\enspace</code><input type="text" style="width:30px" id="intPart"><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("sqrtPart").value,document.getElementById("intPart").value]</div>
+				    <div class="validator-function">
+				    if (guess[0]==3){
+					    if(radius==2){
+					    	if (document.getElementById("intPart").value.length==0||guess[1].replace(/[ ]/g,"")==1){
+						    return true;
+							}
+					    }
+					    if(radius==1&&guess[1].replace(/[ ]/g,"")=="1/4"){return true;}
+					    if((radius==3&&guess[1].replace(/[ ]/g,"")=="9/4")||(radius==3&&guess[1].replace(/[ ]/g,"")=="21/4")){return true;}
+					    if(radius==4&&guess[1].replace(/[ ]/g,"")=="4"){return true;}
+					    if((radius==5&&guess[1].replace(/[ ]/g,"")=="25/4")||(radius==5&&guess[1].replace(/[ ]/g,"")=="61/4")){return true;}
+					}
+                    </div>
+				</div>
+				<p class="example">整數，例如 <code>6</code></p>
+				<p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+				<p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+				<p class="example">帶分數，例：<code>1\enspace3/4</code></p>
+            </div>
+
+
+            <div class="hints">
+				<p>首先我們來觀察一下這個扇形 <code>OAB</code>，如果我們要算黃色弓形面積，可以先計算扇形面積，再減去 <code>\triangle OAB</code> 就可以了！</p>
+				<div>
+					<p>我們要算扇形面積要先知道半徑，可是題目只有告訴我們圓心角，要怎麼辦呢？我們可以利用扇形周長來求得：</p>
+					<p>扇形周長<code>=2 \times <var>radius</var> +</code> 弧長 <code>AB = （<var>2*radius</var> + <var>fraction(2*radius*angle,360,true,true,false,false)</var> \pi）</code>。</p>
+					<p>由此我們可以知道弧長 <code>AB</code> 為：<code><var>fraction(2*radius*angle,360,true,true,false,false)</var> \pi</code> </p>
+					<p>又 <code><var>fraction(2*radius*angle,360,true,true,false,false)</var> \pi = 2\pi \times 半徑 \times \dfrac{<var>angle</var>^\circ}{360^\circ}</code> </p>
+					<p>可以得到半徑為： <code><var>radius</var></code></p>
+				</div>
+				<div>
+					<p>我們有半徑，就可以算出扇形面積為：</p>
+					<p><code>\pi \times <var>radius</var>^2 \times \dfrac{<var>angle</var>^\circ}{360^\circ} =  <var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi</code>。</p>
+				</div>
+				<div>
+					<p>那三角形面積要怎麼計算呢？我們可以在 <code>\angle AOB</code> 劃一條角平分線到 <code>AB</code>上，這樣就切割成兩個面積一樣的 <code>30^\circ - 60^\circ - 90^\circ</code> 的直角三角形。</p>
+					<div class="graphie" data-update="fan_shaped">
+						graph.label.hide();
+						graph.arc.hide();
+						graph.line.show();
+						graph.arc_2.show();
+						graph.label_2.show();
+						graph.circle.show();
+						graph.label_3.show();
+					</div>
+				</div>
+				<div>
+					<p>利用特殊角的比例關係 <code>30^\circ - 60^\circ - 90^\circ</code> 所對應邊長的比例為 <code>1 - \sqrt{3} - 2</code>，得到：</p>
+					<p><code>\overline{OD} = <var>radius</var> \times  <var>cos_angle</var></code><br/><code> \overline{AD}=\overline{BD} = <var>radius</var> \times <var>sin_angle</var></code></p>
+					<p>如此一來我們就可以算出直角三角形面積：</p>
+					<p><code>\triangle DOA = \triangle DOB</code></p>
+					<p><code>  = \dfrac{1}{2}\times (<var>radius</var>\times  <var>cos_angle</var>) \times (<var>radius</var>\times <var>sin_angle</var>)</code></p>
+					<p><code> =\dfrac{ <var>radius</var>^2}{8} \times \sqrt{3}  </code></p>
+					<p><code>= <var>mixedFractionFromImproper(radius*radius,8,true,true,false,false)</var>\sqrt{3}</code></p>
+				</div>
+				<div>
+					<p>所以 <code>\triangle AOB</code> 面積為：</p>
+					<p><code>2 \times \dfrac{<var>radius</var>^2}{8} \times \sqrt{3} </code></p>
+					<p><code>= \dfrac{<var>radius</var>^2}{4} \times \sqrt{3}</code></p>
+					<p><code data-if="area!=1">= <var>fraction(radius*radius,4,true,true,false,false)</var>\sqrt{3}</code><code data-if="area==1" >= \sqrt{3}</code>。</p>
+				</div>
+				<div>
+					<p>所以弓形面積為：扇形 <code>OAB</code> 面積 <code>- \triangle OAB</code> 面積 </p>
+					<p><code>=</code><code data-if="area!=1" class="hint_pink"><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi - <var>fraction(radius*radius,4,true,true,false,false)</var>\sqrt{3}</code><code data-if="area==1" class="hint_pink"><var>fraction(radius*radius*angle,360,true,true,false,false)</var> \pi - \sqrt{3}</code></p>
+				</div>
+			</div>
+        </div>
+
+	</div>
+	</div>
+</body>
+</html>
