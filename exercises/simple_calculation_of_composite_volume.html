@@ -23,6 +23,14 @@
                                    vect[2] * vect[2]);
             return _.map(vect, function(e) { return e / length; });
         };
+		
+		var moveCoords = function(coords, moveTo) {
+			for( var i = 0; i < coords.length; i++ ){
+				coords[i][0] += moveTo[0];
+				coords[i][1] += moveTo[1];
+			}
+			return coords;
+		};
     </script>
 </head>
 <body>
@@ -34,22 +42,17 @@
 		<div id="case1">
             <div class="vars">
 				<var id="LENGTH">randRange(7, 10)*10</var>
-                <var id="WIDTH">randRange(1, 4)*10</var>
+                <var id="WIDTH">randRange(6, 8)*10</var>
                 <var id="HEIGHT">randRange(6, 8)*10</var>
                 <var id="MAX">max(max(LENGTH, WIDTH), HEIGHT)</var>
                 <var id="XBORD">LENGTH/MAX</var>
                 <var id="YBORD">WIDTH/MAX</var>
                 <var id="ZBORD">HEIGHT/MAX</var>
 				
-				<var id="COLOR1">"#D7ED3A"</var>
-                <var id="COLOR2">"#38C77F"</var>
-                <var id="COLOR3">"#78D0EF"</var>
-                <var id="COLOR4">"#F0B63A"</var>
-				
 				<!--INNER-FACES-->
 				<var id="INNER_LENGTH">randRange(2, 5)*10</var>
-				<var id="INNER_WIDTH">WIDTH</var>
-				<var id="INNER_HEIGHT">randRange(1, 4)*10</var>
+				<var id="INNER_WIDTH">randRange(1, 4)*10</var>
+				<var id="INNER_HEIGHT">HEIGHT</var>
 				<var id="INNER_XBORD">INNER_LENGTH/MAX</var>
 				<var id="INNER_YBORD">INNER_WIDTH/MAX</var>
 				<var id="INNER_ZBORD">INNER_HEIGHT/MAX</var>
@@ -57,78 +60,8 @@
 				
 				<var id="BIG_VOLUME">round(LENGTH*WIDTH*HEIGHT)</var>
 				<var id="SMALL_VOLUME">round(INNER_LENGTH*INNER_WIDTH*INNER_HEIGHT)</var>
-				<var id="YANGLE">-PI / 8</var>
-                <var id="XANGLE">0</var>
-				<var id="VERTICES">[
-                    [LENGTH/MAX, WIDTH/MAX, HEIGHT/MAX],
-                    [LENGTH/MAX, WIDTH/MAX, -HEIGHT/MAX],
-                    [LENGTH/MAX, -WIDTH/MAX, -HEIGHT/MAX],
-                    [LENGTH/MAX, -WIDTH/MAX, HEIGHT/MAX],
-                    [-LENGTH/MAX, WIDTH/MAX, HEIGHT/MAX],
-                    [-LENGTH/MAX, WIDTH/MAX, -HEIGHT/MAX],
-                    [-LENGTH/MAX, -WIDTH/MAX, -HEIGHT/MAX],
-                    [-LENGTH/MAX, -WIDTH/MAX, HEIGHT/MAX],
-					[INNER_XBORD, INNER_WIDTH/MAX, INNER_HEIGHT/MAX],
-                    [INNER_XBORD, INNER_WIDTH/MAX, -INNER_HEIGHT/MAX],
-                    [INNER_XBORD, -INNER_WIDTH/MAX, -INNER_HEIGHT/MAX],
-                    [INNER_XBORD, -INNER_WIDTH/MAX, INNER_HEIGHT/MAX],
-                    [-INNER_XBORD, INNER_WIDTH/MAX, INNER_HEIGHT/MAX],
-                    [-INNER_XBORD, INNER_WIDTH/MAX, -INNER_HEIGHT/MAX],
-                    [-INNER_XBORD, -INNER_WIDTH/MAX, -INNER_HEIGHT/MAX],
-                    [-INNER_XBORD, -INNER_WIDTH/MAX, INNER_HEIGHT/MAX],
-                ]</var>
-				<var id="SCALE">4.0</var>
-				<var id="FACES">[
-                    {
-                        verts: [3, 2, 1, 0],
-                        color: COLOR1,
-                        labels: [[[XBORD, 0, ZBORD], WIDTH]]
-                    }, {
-                        verts: [4, 5, 6, 7],
-                        color: COLOR1,
-                        labels: [[[-XBORD, 0, -ZBORD], WIDTH]]
-                    }, {
-                        verts: [0, 1, 5, 4],
-                        color: COLOR3,
-                        labels: [[[-XBORD, YBORD, 0], HEIGHT]]
-                    }, {
-                        verts: [2, 3, 7, 6],
-                        color: COLOR3,
-                        labels: [[[-XBORD, -YBORD, 0], HEIGHT]]
-                    }, {
-                        verts: [1, 2, 6, 5],
-                        color: COLOR2,
-                        labels: [[[0, -YBORD, -ZBORD], LENGTH]]
-                    }, {
-                        verts: [3, 0, 4, 7],
-                        color: COLOR2,
-                        labels: [[[0, YBORD, ZBORD], LENGTH]]
-                    }, {
-                        verts: [11, 10, 9, 8],
-                        color: COLOR_WHITE,
-                    }, {
-                        verts: [12, 13, 14, 15],
-                        color: COLOR_WHITE,
-                    }, {
-                        verts: [8, 9, 13, 12],
-                        color: COLOR_WHITE,
-                        labels: [[[-INNER_XBORD, INNER_YBORD, 0], INNER_HEIGHT]]
-                    }, {
-                        verts: [10, 11, 15, 14],
-                        color: COLOR_WHITE,
-                        labels: [[[-INNER_XBORD, -INNER_YBORD, 0], INNER_HEIGHT]]
-                    }, {
-                        verts: [9, 10, 14, 13],
-                        color: COLOR_WHITE,
-                        labels: [[[0, -INNER_YBORD, -INNER_ZBORD], INNER_LENGTH]]
-                    }, {
-                        verts: [11, 8, 12, 15],
-                        color: COLOR_WHITE,
-                        labels: [[[0, INNER_YBORD, INNER_ZBORD], INNER_LENGTH]]
-                    }
-                ]</var>
-				<var id="GRAPH">{}</var>
-                <var id="UNWRAPGRAPH">{}</var>
+				
+				<var id="S">1.8</var>
 
 			</div>
 
@@ -137,62 +70,24 @@
 					<p>請計算下面形體的體積：（下圖單位：公分）</p>
 					<div class="graphie">
 						init({range: [[-2, 2], [-2, 2]], scale: [120, 120]});
-						addMouseLayer();
-
-						graph.obj = make3dObject(VERTICES, { scale: SCALE });
-						_.each(FACES, function(face) {
-							graph.obj.addFace(face);
-						});
-
-						graph.obj.setPos([0, 0, 5]);
-
-						graph.obj.rotate(1, 0, 0, YANGLE);
-						graph.obj.rotate(0, 1, 0, XANGLE);
-
-						graph.obj.doDraw();
-
-						GRAPH = graph;
-
-						var spinner;
-						setTimeout(function() {
-							spinner = setInterval(function() {
-								GRAPH.obj.rotate(0, 1, 0, 0.01);
-								GRAPH.obj.doDraw();
-							}, 50);
-						}, 300);
-
-						var mouseTarget = mouselayer.rect(0, 0, 400, 400).attr({
-							fill: "#000", opacity: 0.0
-						});
-						$(mouseTarget[0]).bind("vmousedown", function(event) {
-							GRAPH.lastX = event.pageX;
-							GRAPH.lastY = event.pageY;
-
-							clearInterval(spinner);
-
-							$(document).bind("vmousemove vmouseup", function(event) {
-								event.preventDefault();
-
-								var dx = (event.pageX - GRAPH.lastX) / 200 * PI;
-								var dy = (event.pageY - GRAPH.lastY) / 200 * PI;
-
-								GRAPH.lastX = event.pageX;
-								GRAPH.lastY = event.pageY;
-
-								var xAxis = normalize(GRAPH.obj.perspective[1]);
-								var yAxis = normalize(GRAPH.obj.perspective[0]);
-
-								GRAPH.obj.rotate(xAxis[0], xAxis[1], xAxis[2], -dx / 2);
-								GRAPH.obj.rotate(yAxis[0], yAxis[1], yAxis[2], -dy / 2);
-
-								GRAPH.obj.doDraw();
-
-								if (event.type === "vmouseup") {
-									$(document).unbind("vmousemove vmouseup");
-								}
-							})
-						});
-
+						
+						path([[-XBORD/2,ZBORD/2],[XBORD/2,ZBORD/2],[XBORD/2+YBORD/S,ZBORD/2+YBORD/S],[-XBORD/2+YBORD/S,ZBORD/2+YBORD/S],[-XBORD/2,ZBORD/2]],{ });
+						
+						path(moveCoords([[-INNER_XBORD/2,INNER_ZBORD/2],[-INNER_XBORD/2+INNER_YBORD/S,INNER_ZBORD/2+INNER_YBORD/S],[-INNER_XBORD/2+INNER_YBORD/S,-INNER_ZBORD/2+INNER_YBORD/S],[-INNER_XBORD/2,-INNER_ZBORD/2],[-INNER_XBORD/2,INNER_ZBORD/2]],[(YBORD-INNER_YBORD)/2/S,(YBORD-INNER_YBORD)/2/S]),{  "stroke-width" : 0.5,fill : "#9D9D9D"});
+						path(moveCoords([[-INNER_XBORD/2,-INNER_ZBORD/2],[-INNER_XBORD/2,INNER_ZBORD/2],[INNER_XBORD/2,INNER_ZBORD/2],[INNER_XBORD/2,-INNER_ZBORD/2],[-INNER_XBORD/2,-INNER_ZBORD/2]],[(YBORD-INNER_YBORD)/2/S+INNER_YBORD/S,(YBORD-INNER_YBORD)/2/S+INNER_YBORD/S]),{ "stroke-width" : 0.5, fill : "#d0d0d0"});
+						path(moveCoords([[-INNER_XBORD/2,INNER_ZBORD/2],[INNER_XBORD/2,INNER_ZBORD/2],[INNER_XBORD/2,-INNER_ZBORD/2],[-INNER_XBORD/2,-INNER_ZBORD/2],[-INNER_XBORD/2,INNER_ZBORD/2]],[(YBORD-INNER_YBORD)/2/S,(YBORD-INNER_YBORD)/2/S]),{ "stroke-width" : 1, fill : "#BEBEBE", strokeDasharray: "-"});
+						path(moveCoords([[INNER_XBORD/2,INNER_ZBORD/2],[INNER_XBORD/2+INNER_YBORD/S,INNER_ZBORD/2+INNER_YBORD/S],[INNER_XBORD/2+INNER_YBORD/S,-INNER_ZBORD/2+INNER_YBORD/S],[INNER_XBORD/2,-INNER_ZBORD/2],[INNER_XBORD/2,INNER_ZBORD/2]],[(YBORD-INNER_YBORD)/2/S,(YBORD-INNER_YBORD)/2/S]),{ "stroke-width" : 1, fill : COLOR_WHITE, strokeDasharray: "-"});
+						
+						path([[-XBORD/2,ZBORD/2],[XBORD/2,ZBORD/2],[XBORD/2,-ZBORD/2],[-XBORD/2,-ZBORD/2],[-XBORD/2,ZBORD/2]],{ });
+						path([[XBORD/2,ZBORD/2],[XBORD/2+YBORD/S,ZBORD/2+YBORD/S],[XBORD/2+YBORD/S,-ZBORD/2+YBORD/S],[XBORD/2,-ZBORD/2],[XBORD/2,ZBORD/2]],{ });
+						
+						label([0,-ZBORD/2],LENGTH, 'below');
+						label([-XBORD/2,0],HEIGHT, 'left');
+						label([XBORD/2+YBORD/S/2,-ZBORD/2+YBORD/S/2],WIDTH,'below right');
+						label([-INNER_XBORD/2+INNER_YBORD/2/S+(YBORD-INNER_YBORD)/2/S,INNER_ZBORD/2+INNER_YBORD/S/2+(YBORD-INNER_YBORD)/2/S], "\\tiny{"+INNER_WIDTH+"}",'left', {color : KhanUtil.RED});
+						line([-INNER_XBORD/2+(YBORD-INNER_YBORD)/2/S,INNER_ZBORD/2+(YBORD-INNER_YBORD)/2/S],[(YBORD-INNER_YBORD)/2/S-INNER_XBORD/2+INNER_YBORD/S,INNER_ZBORD/2+INNER_YBORD/S+(YBORD-INNER_YBORD)/2/S],{stroke : KhanUtil.RED});
+						line([-INNER_XBORD/2+(YBORD-INNER_YBORD)/2/S+INNER_YBORD/S,INNER_ZBORD/2+(YBORD-INNER_YBORD)/2/S+INNER_YBORD/S],[INNER_XBORD/2+(YBORD-INNER_YBORD)/2/S+INNER_YBORD/S,INNER_ZBORD/2+(YBORD-INNER_YBORD)/2/S+INNER_YBORD/S],{stroke: KhanUtil.BLUE});
+						label([(YBORD-INNER_YBORD)/2/S+INNER_YBORD/S,INNER_ZBORD/2+(YBORD-INNER_YBORD)/2/S+INNER_YBORD/S-0.1],"\\tiny{"+INNER_LENGTH+"}",'above',{ color : KhanUtil.BLUE});
 					</div>
 				</div>
 			</div>	
@@ -230,15 +125,10 @@
                 <var id="YBORD">WIDTH/MAX</var>
                 <var id="ZBORD">HEIGHT/MAX</var>
 				
-				<var id="COLOR1">"#D7ED3A"</var>
-                <var id="COLOR2">"#38C77F"</var>
-                <var id="COLOR3">"#78D0EF"</var>
-                <var id="COLOR4">"#F0B63A"</var>
-				
 				<!--INNER-FACES-->
 				<var id="INNER_LENGTH">randRange(2, 4)*5</var>
-				<var id="INNER_WIDTH">randRange(1, 2)*5</var>
-				<var id="INNER_HEIGHT">HEIGHT</var>
+				<var id="INNER_WIDTH">WIDTH</var>
+				<var id="INNER_HEIGHT">randRange(1, 3)*5</var>
 				<var id="INNER_XBORD">INNER_LENGTH/MAX</var>
 				<var id="INNER_YBORD">INNER_WIDTH/MAX</var>
 				<var id="INNER_ZBORD">INNER_HEIGHT/MAX</var>
@@ -246,79 +136,8 @@
 				
 				<var id="BIG_VOLUME">round(LENGTH*WIDTH*HEIGHT)</var>
 				<var id="SMALL_VOLUME">round(INNER_LENGTH*INNER_WIDTH*INNER_HEIGHT)</var>
-				<var id="YANGLE">-PI / 8</var>
-                <var id="XANGLE">0</var>
-				<var id="VERTICES">[
-                    [LENGTH/MAX, WIDTH/MAX, HEIGHT/MAX],
-                    [LENGTH/MAX, WIDTH/MAX, -HEIGHT/MAX],
-                    [LENGTH/MAX, -WIDTH/MAX, -HEIGHT/MAX],
-                    [LENGTH/MAX, -WIDTH/MAX, HEIGHT/MAX],
-                    [-LENGTH/MAX, WIDTH/MAX, HEIGHT/MAX],
-                    [-LENGTH/MAX, WIDTH/MAX, -HEIGHT/MAX],
-                    [-LENGTH/MAX, -WIDTH/MAX, -HEIGHT/MAX],
-                    [-LENGTH/MAX, -WIDTH/MAX, HEIGHT/MAX],
-					[INNER_XBORD, INNER_WIDTH/MAX, INNER_HEIGHT/MAX],
-                    [INNER_XBORD, INNER_WIDTH/MAX, -INNER_HEIGHT/MAX],
-                    [INNER_XBORD, -INNER_WIDTH/MAX, -INNER_HEIGHT/MAX],
-                    [INNER_XBORD, -INNER_WIDTH/MAX, INNER_HEIGHT/MAX],
-                    [-INNER_XBORD, INNER_WIDTH/MAX, INNER_HEIGHT/MAX],
-                    [-INNER_XBORD, INNER_WIDTH/MAX, -INNER_HEIGHT/MAX],
-                    [-INNER_XBORD, -INNER_WIDTH/MAX, -INNER_HEIGHT/MAX],
-                    [-INNER_XBORD, -INNER_WIDTH/MAX, INNER_HEIGHT/MAX],
-                ]</var>
-				<var id="SCALE">4.0</var>
-				<var id="FACES">[
-                    {
-                        verts: [3, 2, 1, 0],
-                        color: COLOR1,
-                        labels: [[[XBORD, 0, ZBORD], WIDTH]]
-                    }, {
-                        verts: [4, 5, 6, 7],
-                        color: COLOR1,
-                        labels: [[[-XBORD, 0, -ZBORD], WIDTH]]
-                    }, {
-                        verts: [0, 1, 5, 4],
-                        color: COLOR3,
-                        labels: [[[-XBORD, YBORD, 0], HEIGHT]]
-                    }, {
-                        verts: [2, 3, 7, 6],
-                        color: COLOR3,
-                        labels: [[[-XBORD, -YBORD, 0], HEIGHT]]
-                    }, {
-                        verts: [1, 2, 6, 5],
-                        color: COLOR2,
-                        labels: [[[0, -YBORD, -ZBORD], LENGTH]]
-                    }, {
-                        verts: [3, 0, 4, 7],
-                        color: COLOR2,
-                        labels: [[[0, YBORD, ZBORD], LENGTH]]
-                    }, {
-                        verts: [11, 10, 9, 8],
-                        color: COLOR_WHITE,
-						labels: [[[INNER_XBORD, 0, INNER_ZBORD], INNER_WIDTH]]
-                    }, {
-                        verts: [12, 13, 14, 15],
-                        color: COLOR_WHITE,
-						labels: [[[-INNER_XBORD, 0, -INNER_ZBORD], INNER_WIDTH]]
-                    }, {
-                        verts: [8, 9, 13, 12],
-                        color: COLOR_WHITE,
-                    }, {
-                        verts: [10, 11, 15, 14],
-                        color: COLOR_WHITE,
-                    }, {
-                        verts: [9, 10, 14, 13],
-                        color: COLOR_WHITE,
-                        labels: [[[0, -INNER_YBORD, -INNER_ZBORD], INNER_LENGTH]]
-                    }, {
-                        verts: [11, 8, 12, 15],
-                        color: COLOR_WHITE,
-                        labels: [[[0, INNER_YBORD, INNER_ZBORD], INNER_LENGTH]]
-                    }
-                ]</var>
-				<var id="GRAPH">{}</var>
-                <var id="UNWRAPGRAPH">{}</var>
-
+				
+				<var id="S">1.8</var>
 			</div>
 
 			<div class="question">
@@ -326,62 +145,26 @@
 					<p>請計算下面形體的體積：（下圖單位：公分）</p>
 					<div class="graphie">
 						init({range: [[-2, 2], [-2, 2]], scale: [120, 120]});
-						addMouseLayer();
-
-						graph.obj = make3dObject(VERTICES, { scale: SCALE });
-						_.each(FACES, function(face) {
-							graph.obj.addFace(face);
-						});
-
-						graph.obj.setPos([0, 0, 5]);
-
-						graph.obj.rotate(1, 0, 0, YANGLE);
-						graph.obj.rotate(0, 1, 0, XANGLE);
-
-						graph.obj.doDraw();
-
-						GRAPH = graph;
-
-						var spinner;
-						setTimeout(function() {
-							spinner = setInterval(function() {
-								GRAPH.obj.rotate(0, 1, 0, 0.01);
-								GRAPH.obj.doDraw();
-							}, 50);
-						}, 300);
-
-						var mouseTarget = mouselayer.rect(0, 0, 400, 400).attr({
-							fill: "#000", opacity: 0.0
-						});
-						$(mouseTarget[0]).bind("vmousedown", function(event) {
-							GRAPH.lastX = event.pageX;
-							GRAPH.lastY = event.pageY;
-
-							clearInterval(spinner);
-
-							$(document).bind("vmousemove vmouseup", function(event) {
-								event.preventDefault();
-
-								var dx = (event.pageX - GRAPH.lastX) / 200 * PI;
-								var dy = (event.pageY - GRAPH.lastY) / 200 * PI;
-
-								GRAPH.lastX = event.pageX;
-								GRAPH.lastY = event.pageY;
-
-								var xAxis = normalize(GRAPH.obj.perspective[1]);
-								var yAxis = normalize(GRAPH.obj.perspective[0]);
-
-								GRAPH.obj.rotate(xAxis[0], xAxis[1], xAxis[2], -dx / 2);
-								GRAPH.obj.rotate(yAxis[0], yAxis[1], yAxis[2], -dy / 2);
-
-								GRAPH.obj.doDraw();
-
-								if (event.type === "vmouseup") {
-									$(document).unbind("vmousemove vmouseup");
-								}
-							})
-						});
-
+						
+						path([[-INNER_XBORD/2,INNER_ZBORD/2],[-INNER_XBORD/2+YBORD/S,INNER_ZBORD/2+YBORD/S],[-INNER_XBORD/2+YBORD/S,-INNER_ZBORD/2+YBORD/S],[-INNER_XBORD/2,-INNER_ZBORD/2],[-INNER_XBORD/2,INNER_ZBORD/2]],{"stroke-width" : 1, fill : "#BEBEBE", strokeDasharray: "-"});
+						path([[-INNER_XBORD/2,INNER_ZBORD/2],[-INNER_XBORD/2+YBORD/S,INNER_ZBORD/2+YBORD/S],[INNER_XBORD/2+YBORD/S,INNER_ZBORD/2+YBORD/S],[INNER_XBORD/2,INNER_ZBORD/2],[-INNER_XBORD/2,INNER_ZBORD/2]],{"stroke-width" : 1, fill : "#d0d0d0", strokeDasharray: "-"});
+						path([[-INNER_XBORD/2+YBORD/S,-INNER_ZBORD/2+YBORD/S],[-INNER_XBORD/2,-INNER_ZBORD/2],[INNER_XBORD/2,-INNER_ZBORD/2],[INNER_XBORD/2+YBORD/S,-INNER_ZBORD/2+YBORD/S],[-INNER_XBORD/2+YBORD/S,-INNER_ZBORD/2+YBORD/S]],{"stroke-width" : 1, fill : "#d0d0d0", strokeDasharray: "-"});
+						path([[INNER_XBORD/2,INNER_ZBORD/2],[INNER_XBORD/2+YBORD/S,INNER_ZBORD/2+YBORD/S],[INNER_XBORD/2+YBORD/S,-INNER_ZBORD/2+YBORD/S],[INNER_XBORD/2,-INNER_ZBORD/2],[INNER_XBORD/2,INNER_ZBORD/2]],{"stroke-width" : 1, fill : "#BEBEBE", strokeDasharray: "-"});
+						
+						path([[-XBORD/2,ZBORD/2],[XBORD/2,ZBORD/2],[XBORD/2,-ZBORD/2],[-XBORD/2,-ZBORD/2],[-XBORD/2,ZBORD/2]],{ });
+						path([[XBORD/2,ZBORD/2],[XBORD/2+YBORD/S,ZBORD/2+YBORD/S],[XBORD/2+YBORD/S,-ZBORD/2+YBORD/S],[XBORD/2,-ZBORD/2],[XBORD/2,ZBORD/2]],{ });
+						
+						label([0,-ZBORD/2],LENGTH, 'below');
+						label([-XBORD/2,0],HEIGHT, 'left');
+						label([XBORD/2+YBORD/S/2,-ZBORD/2+YBORD/S/2],WIDTH,'below right');
+						
+						line([-INNER_XBORD/2,INNER_ZBORD/2],[INNER_XBORD/2,INNER_ZBORD/2],{ stroke : KhanUtil.RED});
+						line([-INNER_XBORD/2,-INNER_ZBORD/2],[-INNER_XBORD/2,INNER_ZBORD/2],{ stroke : KhanUtil.BLUE});
+						
+						label([0, INNER_ZBORD/2-0.1], "\\tiny{"+INNER_LENGTH+"}",'above',{color : KhanUtil.RED});
+						label([-INNER_XBORD/2,0], "\\tiny{"+INNER_HEIGHT+"}", 'left', { color : KhanUtil.BLUE});
+						
+						path([[-XBORD/2,ZBORD/2],[XBORD/2,ZBORD/2],[XBORD/2+YBORD/S,ZBORD/2+YBORD/S],[-XBORD/2+YBORD/S,ZBORD/2+YBORD/S],[-XBORD/2,ZBORD/2]],{ });
 					</div>
 				</div>
 			</div>	
@@ -410,7 +193,7 @@
 		</div>
 		
 		<div id="case3">
-            <div class="vars">
+            <div class="vars" data-ensure="INNER_LENGTH &lt; LENGTH">
 				<var id="LENGTH">randRange(2, 5)*10</var>
                 <var id="WIDTH">LENGTH</var>
                 <var id="HEIGHT">LENGTH</var>
@@ -419,11 +202,6 @@
                 <var id="YBORD">WIDTH/MAX</var>
                 <var id="ZBORD">HEIGHT/MAX</var>
 				
-				<var id="COLOR1">"#D7ED3A"</var>
-                <var id="COLOR2">"#38C77F"</var>
-                <var id="COLOR3">"#78D0EF"</var>
-                <var id="COLOR4">"#F0B63A"</var>
-				
 				<!--INNER-FACES-->
 				<var id="INNER_LENGTH">randRange(5,10)*2</var>
 				<var id="INNER_WIDTH">INNER_LENGTH</var>
@@ -431,84 +209,10 @@
 				<var id="INNER_XBORD">INNER_LENGTH/MAX</var>
 				<var id="INNER_YBORD">INNER_WIDTH/MAX</var>
 				<var id="INNER_ZBORD">INNER_HEIGHT/MAX</var>
-				<var id="COLOR_WHITE">"#F8F8F8"</var>
 				
 				<var id="BIG_VOLUME">round(LENGTH*WIDTH*HEIGHT)</var>
 				<var id="SMALL_VOLUME">round(INNER_LENGTH*INNER_WIDTH*INNER_HEIGHT/8)</var>
-				<var id="YANGLE">-PI / 8</var>
-                <var id="XANGLE">0</var>
-				<var id="VERTICES">[
-                    [LENGTH/MAX, WIDTH/MAX, HEIGHT/MAX],
-                    [LENGTH/MAX, WIDTH/MAX, -HEIGHT/MAX],
-                    [LENGTH/MAX, -WIDTH/MAX, -HEIGHT/MAX],
-                    [LENGTH/MAX, -WIDTH/MAX, HEIGHT/MAX],
-                    [-LENGTH/MAX, WIDTH/MAX, HEIGHT/MAX],
-                    [-LENGTH/MAX, WIDTH/MAX, -HEIGHT/MAX],
-                    [-LENGTH/MAX, -WIDTH/MAX, -HEIGHT/MAX],
-                    [-LENGTH/MAX, -WIDTH/MAX, HEIGHT/MAX],
-					[-XBORD+INNER_XBORD, -YBORD+INNER_YBORD, -ZBORD+INNER_ZBORD],
-                    [-XBORD+INNER_XBORD, -YBORD+INNER_YBORD, -ZBORD],
-                    [-XBORD+INNER_XBORD, -YBORD, -ZBORD],
-                    [-XBORD+INNER_XBORD, -YBORD, -ZBORD+INNER_ZBORD],
-                    [-XBORD, -YBORD+INNER_YBORD, -ZBORD+INNER_ZBORD],
-                    [-XBORD, -YBORD+INNER_YBORD, -ZBORD],
-                    [-XBORD, -YBORD, -ZBORD],
-                    [-XBORD, -YBORD, -ZBORD+INNER_ZBORD],
-                ]</var>
-				<var id="SCALE">4.0</var>
-				<var id="FACES">[
-                    {
-                        verts: [3, 2, 1, 0],
-                        color: COLOR1,
-                        labels: [[[XBORD, 0, ZBORD], WIDTH]]
-                    }, {
-                        verts: [4, 5, 6, 7],
-                        color: COLOR1,
-                        labels: [[[-XBORD, 0, -ZBORD], WIDTH]]
-                    }, {
-                        verts: [0, 1, 5, 4],
-                        color: COLOR3,
-                        labels: [[[-XBORD, YBORD, 0], HEIGHT]]
-                    }, {
-                        verts: [2, 3, 7, 6],
-                        color: COLOR3,
-                        labels: [[[-XBORD, -YBORD, 0], HEIGHT]]
-                    }, {
-                        verts: [1, 2, 6, 5],
-                        color: COLOR2,
-                        labels: [[[0, -YBORD, -ZBORD], LENGTH]]
-                    }, {
-                        verts: [3, 0, 4, 7],
-                        color: COLOR2,
-                        labels: [[[0, YBORD, ZBORD], LENGTH]]
-                    }, {
-                        verts: [11, 10, 9, 8],
-                        color: COLOR_WHITE,
-						labels: [[[-1, -1, -ZBORD+INNER_ZBORD/2], INNER_WIDTH/2]]
-                    }, {
-                        verts: [12, 13, 14, 15],
-                        color: COLOR_WHITE,
-						labels: [[[-1, -1, -ZBORD+INNER_ZBORD/2], INNER_WIDTH/2]]
-                    }, {
-                        verts: [8, 9, 13, 12],
-                        color: COLOR_WHITE,
-                        labels: [[[-XBORD+INNER_XBORD/2, -1, -1], INNER_HEIGHT/2]]
-                    }, {
-                        verts: [10, 11, 15, 14],
-                        color: COLOR_WHITE,
-                        labels: [[[-XBORD+INNER_XBORD/2, -1, -1], INNER_HEIGHT/2]]
-                    }, {
-                        verts: [9, 10, 14, 13],
-                        color: COLOR_WHITE,
-                        labels: [[[-1, -YBORD+INNER_YBORD/2, -1], INNER_LENGTH/2]]
-                    }, {
-                        verts: [11, 8, 12, 15],
-                        color: COLOR_WHITE,
-                        labels: [[[-1, -YBORD+INNER_YBORD/2, -1], INNER_LENGTH/2]]
-                    }
-                ]</var>
-				<var id="GRAPH">{}</var>
-                <var id="UNWRAPGRAPH">{}</var>
+				<var id="S">1.8</var>
 			</div>
 
 			<div class="question">
@@ -516,62 +220,26 @@
 					<p>請計算下面形體的體積：（下圖單位：公分）</p>
 					<div class="graphie">
 						init({range: [[-2, 2], [-2, 2]], scale: [120, 120]});
-						addMouseLayer();
-
-						graph.obj = make3dObject(VERTICES, { scale: SCALE });
-						_.each(FACES, function(face) {
-							graph.obj.addFace(face);
-						});
-
-						graph.obj.setPos([0, 0, 5]);
-
-						graph.obj.rotate(1, 0, 0, YANGLE);
-						graph.obj.rotate(0, 1, 0, XANGLE);
-
-						graph.obj.doDraw();
-
-						GRAPH = graph;
-
-						var spinner;
-						setTimeout(function() {
-							spinner = setInterval(function() {
-								GRAPH.obj.rotate(0, 1, 0, 0.01);
-								GRAPH.obj.doDraw();
-							}, 50);
-						}, 300);
-
-						var mouseTarget = mouselayer.rect(0, 0, 400, 400).attr({
-							fill: "#000", opacity: 0.0
-						});
-						$(mouseTarget[0]).bind("vmousedown", function(event) {
-							GRAPH.lastX = event.pageX;
-							GRAPH.lastY = event.pageY;
-
-							clearInterval(spinner);
-
-							$(document).bind("vmousemove vmouseup", function(event) {
-								event.preventDefault();
-
-								var dx = (event.pageX - GRAPH.lastX) / 200 * PI;
-								var dy = (event.pageY - GRAPH.lastY) / 200 * PI;
-
-								GRAPH.lastX = event.pageX;
-								GRAPH.lastY = event.pageY;
-
-								var xAxis = normalize(GRAPH.obj.perspective[1]);
-								var yAxis = normalize(GRAPH.obj.perspective[0]);
-
-								GRAPH.obj.rotate(xAxis[0], xAxis[1], xAxis[2], -dx / 2);
-								GRAPH.obj.rotate(yAxis[0], yAxis[1], yAxis[2], -dy / 2);
-
-								GRAPH.obj.doDraw();
-
-								if (event.type === "vmouseup") {
-									$(document).unbind("vmousemove vmouseup");
-								}
-							})
-						});
-
+						path([[-XBORD/2,ZBORD/2],[XBORD/2,ZBORD/2],[XBORD/2+YBORD/S,ZBORD/2+YBORD/S],[-XBORD/2+YBORD/S,ZBORD/2+YBORD/S],[-XBORD/2,ZBORD/2]],{ fill : "#FFDC35"});
+						path([[-XBORD/2,ZBORD/2],[XBORD/2,ZBORD/2],[XBORD/2,-ZBORD/2],[-XBORD/2,-ZBORD/2],[-XBORD/2,ZBORD/2]],{ fill : "#FFDC35" });
+						path([[XBORD/2,ZBORD/2],[XBORD/2+YBORD/S,ZBORD/2+YBORD/S],[XBORD/2+YBORD/S,-ZBORD/2+YBORD/S],[XBORD/2,-ZBORD/2],[XBORD/2,ZBORD/2]],{ fill : "#D9B300" });
+						
+						path([[XBORD/2-INNER_XBORD,ZBORD/2],[XBORD/2-INNER_XBORD,ZBORD/2-INNER_ZBORD],[XBORD/2-INNER_XBORD+INNER_YBORD/S,ZBORD/2-INNER_ZBORD+INNER_YBORD/S],[XBORD/2-INNER_XBORD+INNER_YBORD/S,ZBORD/2+INNER_YBORD/S],[XBORD/2-INNER_XBORD,ZBORD/2]], { fill : "#FF8040"});
+						path([[XBORD/2-INNER_XBORD+INNER_YBORD/S,ZBORD/2-INNER_ZBORD+INNER_YBORD/S],[XBORD/2+INNER_YBORD/S,ZBORD/2-INNER_ZBORD+INNER_YBORD/S],[XBORD/2+INNER_YBORD/S,ZBORD/2+INNER_YBORD/S],[XBORD/2-INNER_XBORD+INNER_YBORD/S,ZBORD/2+INNER_YBORD/S],[XBORD/2-INNER_XBORD+INNER_YBORD/S,ZBORD/2-INNER_ZBORD+INNER_YBORD/S]],{ fill : "#D26900"});
+						path([[XBORD/2-INNER_XBORD+INNER_YBORD/S,ZBORD/2-INNER_ZBORD+INNER_YBORD/S],[XBORD/2+INNER_YBORD/S,ZBORD/2-INNER_ZBORD+INNER_YBORD/S],[XBORD/2,ZBORD/2-INNER_ZBORD],[XBORD/2-INNER_XBORD,ZBORD/2-INNER_ZBORD],[XBORD/2-INNER_XBORD+INNER_YBORD/S,ZBORD/2-INNER_ZBORD+INNER_YBORD/S]], { fill : "#FF8000"});
+						
+						label([0,-ZBORD/2],LENGTH, 'below');
+						label([-XBORD/2,0],HEIGHT, 'left');
+						label([XBORD/2+YBORD/S/2,-ZBORD/2+YBORD/S/2],WIDTH,'below right');
+						
+						line([XBORD/2-INNER_XBORD,ZBORD/2],[XBORD/2-INNER_XBORD,ZBORD/2-INNER_ZBORD],{ stroke : KhanUtil.RED});
+						label([XBORD/2-INNER_XBORD,ZBORD/2-INNER_ZBORD/2],"\\tiny{"+INNER_HEIGHT+"}", 'left', { color : KhanUtil.RED});
+						
+						line([XBORD/2-INNER_XBORD,ZBORD/2-INNER_ZBORD],[XBORD/2,ZBORD/2-INNER_ZBORD],{ stroke : KhanUtil.BLUE});
+						label([XBORD/2-INNER_XBORD/2,ZBORD/2-INNER_ZBORD],"\\tiny{"+INNER_HEIGHT+"}", 'below', { color : KhanUtil.BLUE});
+						
+						line([XBORD/2-INNER_XBORD+INNER_YBORD/S,ZBORD/2+INNER_YBORD/S],[XBORD/2-INNER_XBORD,ZBORD/2],{ stroke : KhanUtil.GREEN});
+						label([XBORD/2-INNER_XBORD+INNER_YBORD/S/2,ZBORD/2+INNER_ZBORD/2],"\\tiny{"+INNER_HEIGHT+"}", 'left', { color : KhanUtil.GREEN});
 					</div>
 				</div>
 			</div>	
@@ -638,22 +306,22 @@
 					line([0,0],[L+LTWO,0],{stroke:" #FFA500"});
 					line([L+W/1.414,W/1.414+HTWO],[L+W/1.414+LTWO,W/1.414+HTWO],{stroke:" #FFA500"});
 					
-					line([W/1.414, H+W/1.414],[0, H],{stroke:" red"});
+					line([W/1.414, H+W/1.414],[0, H],{stroke:" #0000FF"});
 					
-					line([0,0],[0, H],{stroke:" #0000FF"});
-					line([L,HTWO],[L, H],{stroke:" #0000FF"});
-					line([L+LTWO,0],[L+LTWO, HTWO],{stroke:" #0000FF"});
+					line([0,0],[0, H],{stroke:"red "});
+					line([L,HTWO],[L, H],{stroke:" red"});
+					line([L+LTWO,0],[L+LTWO, HTWO],{stroke:" red"});
 					
                    
-                    label([(W/1.414)*0.4, H+(W/1.414)*0.5],"\\color{red}{"+ WFAKE*10 + "\\text{ " + UNIT + "}"+"}", "left");
+                    label([(W/1.414)*0.4, H+(W/1.414)*0.5],"\\color{#0000FF}{"+ WFAKE*10 + "\\text{ " + UNIT + "}"+"}", "left");
                    
                     label([L+LTWO*0.5+1+W/1.414, HTWO+W/1.414], "\\color{#FFA500}{"+LTWO*10 + "\\text{ " + UNIT + "}"+"}", "above");
 					label([L*0.5+W/1.414,W/1.414+H], "\\color{#FFA500}{"+L*10 + "\\text{ " + UNIT + "}"+"}", "above");
 					label([L+LTWO*0.5,0.3],"\\color{#FFA500}{"+ (K[0]+K[1])*10 + "\\text{ " + UNIT + "}"+"}", "below");
 					 
-					label([L, H*0.9], "\\color{#0000FF}{"+J[0]*10 + "\\text{ " + UNIT + "}"+"}", "right");
-					 label([0,H*0.5], "\\color{#0000FF}{"+H*10 + "\\text{ " + UNIT + "}"+"}", "left");
-                    label([L+LTWO, HTWO*0.5], "\\color{#0000FF}{"+HTWO*10 + "\\text{ " + UNIT + "}"+"}", "right");
+					label([L, H*0.9], "\\color{red}{"+J[0]*10 + "\\text{ " + UNIT + "}"+"}", "right");
+					 label([0,H*0.5], "\\color{red}{"+H*10 + "\\text{ " + UNIT + "}"+"}", "left");
+                    label([L+LTWO, HTWO*0.5], "\\color{red}{"+HTWO*10 + "\\text{ " + UNIT + "}"+"}", "right");
 
 
                 </div>
@@ -677,8 +345,8 @@
 						path([ [L, H], [L+LTWO, H],[L+W/1.414+LTWO,H+W/1.414],[L+W/1.414, H+W/1.414],[L, H], true],{fill: KhanUtil.GREEN});
 						path([ [L+LTWO, H],[L+LTWO, HTWO],[L+W/1.414+LTWO, W/1.414+HTWO],[L+W/1.414+LTWO,H+W/1.414],[L+LTWO, H], true],{fill: KhanUtil.GREEN});
 						line([L+W/1.414,W/1.414+HTWO],[L+W/1.414+LTWO,W/1.414+HTWO],{stroke:" #FFA500"});
-						line([L,HTWO],[L, H],{stroke:" #0000FF"});
-						line([L+LTWO,0],[L+LTWO, HTWO],{stroke:" #0000FF"});
+						line([L,HTWO],[L, H],{stroke:"red"});
+						line([L+LTWO,0],[L+LTWO, HTWO],{stroke:" red"});
 						line([L+W/1.414,W/1.414+HTWO],[L+W/1.414,W/1.414+H]);
 						line([L, HTWO], [L+W/1.414, HTWO+W/1.414]);
 					</div>
@@ -698,7 +366,7 @@
             <div class="vars">
 				<var id="WFAKE">randRange(8, 10)</var>
 				<var id="J">randFromArray([[1, 2],[1, 3],[1, 4],[2, 4],[2, 5]])</var>
-				<var id="K">randFromArray([[1, 2,3],[1, 3,4],[1, 4,5]])</var>
+				<var id="K">randFromArray([[1, 4,3],[1, 3,4],[1, 4,5]])</var>
 				<var id="H">J[0]+J[1]</var>
 				<var id="HTWO">J[1]</var>				
 				<var id="L">K[0]</var>
@@ -731,24 +399,34 @@
                     path([ [L,HTWO],[L+LTWO, HTWO], true]);
                     path([ [L, HTWO], [L+W/1.414, HTWO+W/1.414], true]);
 					
-					path([ [L+LTWO, H],[L+2*LTWO, H], [L+2*LTWO+W/1.414, H+W/1.414],[L+W/1.414+LTWO,H+W/1.414], [L+LTWO, H], true]);
-					path([ [L+W/1.414,W/1.414+HTWO],[L+W/1.414+LTWO,W/1.414+HTWO],[L+W/1.414+LTWO,H+W/1.414],[L+W/1.414+LTWO,W/1.414+HTWO],[L+LTWO, HTWO],[L+W/1.414+LTWO,W/1.414+HTWO], true]);
+					path([ [L+LTWO, H],[L+2*LTWO, H], true]);
+					line([L+2*LTWO+W/1.414, H+W/1.414],[L+2*LTWO, H]);
+					
+					line([L+LTWO, H],[L+W/1.414+LTWO,H+W/1.414]);
+					
+					var x=HTWO+L+LTWO-H+W/1.414
+					
+					line([L+W/1.414,W/1.414+HTWO],[x,W/1.414+HTWO]);
+					line([L+W/1.414+LTWO,W/1.414+HTWO],[x,W/1.414+HTWO],{strokeDasharray: "-",stroke: "black"});
+					line([L+W/1.414+LTWO,H+W/1.414],[L+W/1.414+LTWO,W/1.414+HTWO],{strokeDasharray: "-",stroke: "black"});
+					
+					line([L+W/1.414+LTWO,W/1.414+HTWO],[L+LTWO, HTWO],{strokeDasharray: "-",stroke: "black"});
 					
 					line([L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414],{stroke:" #FFA500"});
 					line([0,0],[L+2*LTWO,0],{stroke:" #FFA500"});
                     line([L+2*LTWO+W/1.414, H+W/1.414],[L+W/1.414+LTWO,H+W/1.414],{stroke:" #FFA500"});
 					
-					line([L+2*LTWO+W/1.414, H+W/1.414], [L+2*LTWO+W/1.414, W/1.414],{stroke:" #0000FF"});
-					line([L+LTWO, HTWO], [L+LTWO, H],{stroke:" #0000FF"});
-					line([L+2*LTWO, 0], [L+2*LTWO+W/1.414, W/1.414],{stroke:" red"});
+					line([L+2*LTWO+W/1.414, H+W/1.414], [L+2*LTWO+W/1.414, W/1.414],{stroke:"red"});
+					line([L+LTWO, HTWO], [L+LTWO, H],{stroke:" red"});
+					line([L+2*LTWO, 0], [L+2*LTWO+W/1.414, W/1.414],{stroke:" #0000FF"});
 					
 					label([L*0.5+W/1.414,W/1.414+H], "\\color{#FFA500}{"+L*10 + "\\text{ " + UNIT + "}"+"}", "above");
 					label([L+LTWO*0.7,0.3],"\\color{#FFA500}{"+ (K[0]+K[1]+K[2])*10 + "\\text{ " + UNIT + "}"+"}", "below");
 					label([(L+W/1.414+LTWO+2),H+W/1.414],"\\color{#FFA500}{"+ K[2]*10 + "\\text{ " + UNIT + "}"+"}", "above");
 					
-					label([L+2*LTWO+W/1.414, W/1.414+2], "\\color{#0000FF}{"+H*10 + "\\text{ " + UNIT + "}"+"}", "right");
-					label([L+LTWO, HTWO], "\\color{#0000FF}{"+J[0]*10 + "\\text{ " + UNIT + "}"+"}", "right");
-					label([L+2*LTWO+2, 3], "\\color{red}{"+WFAKE*10 + "\\text{ " + UNIT + "}"+"}", "below right");
+					label([L+2*LTWO+W/1.414, W/1.414+2], "\\color{red}{"+H*10 + "\\text{ " + UNIT + "}"+"}", "right");
+					label([L+LTWO, HTWO], "\\color{red}{"+J[0]*10 + "\\text{ " + UNIT + "}"+"}", "right");
+					label([L+2*LTWO+2, 3], "\\color{#0000FF}{"+WFAKE*10 + "\\text{ " + UNIT + "}"+"}", "below right");
                 </div>
 				</div>
 			</div>	
@@ -769,11 +447,16 @@
 						path([ [L, H], [L,HTWO],[L+LTWO, HTWO],[L+LTWO, H],[L, H], true],{fill: KhanUtil.GREEN,opacity: 0.5});
 						path([ [L, H], [L+LTWO, H],[L+W/1.414+LTWO,H+W/1.414],[L+W/1.414, H+W/1.414],[L, H], true],{fill: KhanUtil.GREEN,opacity: 0.5});
 						path([ [L+LTWO, H],[L+LTWO, HTWO],[L+W/1.414+LTWO, W/1.414+HTWO],[L+W/1.414+LTWO,H+W/1.414],[L+LTWO, H], true],{fill: KhanUtil.GREEN,opacity: 0.5});
-						line([L+W/1.414,W/1.414+HTWO],[L+W/1.414+LTWO,W/1.414+HTWO]);
+						
 						line([L+LTWO, H],[L+2*LTWO, H]);
 						line([L+W/1.414,W/1.414+HTWO],[L+W/1.414,W/1.414+H]);
 						line([L, HTWO], [L+W/1.414, HTWO+W/1.414]);
-						line([L+LTWO, HTWO], [L+LTWO, H],{stroke:" #0000FF"})
+						line([L+LTWO, HTWO], [L+LTWO, H],{stroke:" red"});
+						line([L+W/1.414+LTWO,H+W/1.414],[L+W/1.414+LTWO,W/1.414+HTWO],{strokeDasharray: "-",stroke: "black"});
+						line([L+W/1.414+LTWO,W/1.414+HTWO],[L+LTWO, HTWO],{strokeDasharray: "-",stroke: "black"});
+						var x=HTWO+L+LTWO-H+W/1.414
+						line([L+W/1.414,W/1.414+HTWO],[x,W/1.414+HTWO]);
+						line([L+W/1.414+LTWO,W/1.414+HTWO],[x,W/1.414+HTWO],{strokeDasharray: "-",stroke: "black"});
 					</div>
 				</div>
 				<p>大長方體的體積<code>=</code>長<code>\times</code>寬<code>\times</code>高。</p>
@@ -790,8 +473,8 @@
 		<div id="case6">
             <div class="vars">
 				<var id="WFAKE">randRange(8, 10)</var>
-				<var id="J">randFromArray([[1, 2],[1, 3],[1, 4],[2, 4],[2, 5]])</var>
-				<var id="K">randFromArray([[4, 2,1],[6, 3,1],[5, 3,1]])</var>
+				<var id="J">randFromArray([[1, 3],[2, 3],[1, 4],[2, 4],[3, 4]])</var>
+				<var id="K">randFromArray([[5, 3,1],[6, 3,1],[5, 3,2],[5, 4,1],[5, 4,2]])</var>
 				<var id="H">J[0]</var>
 				<var id="HTWO">J[1]+J[0]</var>				
 				<var id="L">K[0]</var>
@@ -809,38 +492,45 @@
 				<div class="problem">
 					<p>請計算下面形體的體積：（下圖單位：公分）</p>
 					<div class="graphie" id="original">
-                    init({ range: [[-5, L+W+LTWO*3 + 1], [-2, HTWO+W + 1]], scale: 20 });
-
+                    init({ range: [[-2, L+W+K[2]*3 + 4], [-2, HTWO+W + 1]], scale: 20 });
+						
 					path([ [0,0],[0, H], true]);
 					path([ [L,HTWO],[L, H], true]);
-					path([[L+2*LTWO,0],[L+2*LTWO, H], true]);
+					path([[L+LTWO+K[2],0],[L+LTWO+K[2], H], true]);
 					path([[W/1.414, H+W/1.414],[0, H], true]);
 
-
-                    path([ [L+W/1.414,W/1.414+HTWO],[L+W/1.414,W/1.414+H], true]);
-                   
-                    path([ [L,HTWO],[L+LTWO, HTWO], true]);
+					line([L+K[2], H], [L+W/1.414+K[2],H+W/1.414]);
+					line([L+K[2], H], [L, H]);
+					
+                    line( [L+W/1.414,W/1.414+HTWO],[L+W/1.414,W/1.414+H],{strokeDasharray: "-",stroke: "black"});
+                    line( [L,H],[L+W/1.414,W/1.414+H],{strokeDasharray: "-",stroke: "black"});
+				   
+                    path([ [L,HTWO],[L+K[2], HTWO], true]);
                     path([ [L, HTWO], [L+W/1.414, HTWO+W/1.414], true]);
 					
-					line( [L+LTWO, H],[L+2*LTWO, H]);
-					line([L+2*LTWO, H], [L+2*LTWO+W/1.414, H+W/1.414]);
-					path([ [L+W/1.414,W/1.414+HTWO],[L+W/1.414+LTWO,W/1.414+HTWO],[L+W/1.414+LTWO,H+W/1.414],[L+W/1.414+LTWO,W/1.414+HTWO],[L+LTWO, HTWO],[L+W/1.414+LTWO,W/1.414+HTWO], true]);
-					line([L+W/1.414, H+W/1.414], [W/1.414, H+W/1.414]);
-					line([L+2*LTWO+W/1.414, H+W/1.414], [L+2*LTWO+W/1.414, W/1.414],{stroke:" #0000FF"});
+					line( [L+K[2], H],[L+LTWO+K[2], H]);
+					line([L+LTWO+K[2], H], [L+LTWO+K[2]+W/1.414, H+W/1.414]);
+					path([ [L+W/1.414,W/1.414+HTWO],[L+W/1.414+K[2],W/1.414+HTWO],[L+W/1.414+K[2],H+W/1.414],[L+W/1.414+K[2],W/1.414+HTWO],[L+K[2], HTWO],[L+W/1.414+K[2],W/1.414+HTWO], true]);
 					
-					line([0,0],[L+2*LTWO,0],{stroke:" #FFA500"});
+					line([W/1.414, H+W/1.414],[H+L-HTWO+W/1.414, H+W/1.414]);
+					line([L+W/1.414+K[2], H+W/1.414],[H+L-HTWO+W/1.414, H+W/1.414],{strokeDasharray: "-",stroke: "black"});
 					
-					line([L+LTWO, HTWO], [L+LTWO, H],{stroke:" #0000FF"});
-					line([L+2*LTWO, 0], [L+2*LTWO+W/1.414, W/1.414],{stroke:" red"});
-					line([L+2*LTWO+W/1.414, H+W/1.414],[L+W/1.414+LTWO,H+W/1.414],{stroke:" #FFA500"});
+					line([L+LTWO+K[2]+W/1.414, H+W/1.414], [L+LTWO+K[2]+W/1.414, W/1.414],{stroke:" red"});
+					
+					line([0,0],[L+LTWO+K[2],0],{stroke:" #FFA500"});
+					
+					line([L+K[2], HTWO], [L+K[2], H],{stroke:" red"});
+					line([L+LTWO+K[2], 0], [L+LTWO+K[2]+W/1.414, W/1.414],{stroke:" #0000FF"});
+					line([L+LTWO+K[2]+W/1.414, H+W/1.414],[L+W/1.414+K[2],H+W/1.414],{stroke:" #FFA500"});
 					line([0, H], [L, H],{stroke:" #FFA500"});
-					label([L+LTWO, HTWO-J[0]], "\\color{#0000FF}{"+J[1]*10 + "\\text{ " + UNIT + "}"+"}", "right");
-					label([L+2*LTWO+2, 2], "\\color{red}{"+WFAKE*10 + "\\text{ " + UNIT + "}"+"}", "right");
-					label([L+LTWO*0.7,0.3],"\\color{#FFA500}{"+ (K[0]+K[1]+K[2])*10 + "\\text{ " + UNIT + "}"+"}", "below");
-					label([(L+W/1.414+LTWO+2),H+W/1.414],"\\color{#FFA500}{"+ K[1]*10 + "\\text{ " + UNIT + "}"+"}", "above");
+						
+					label([L+K[2], J[1]+0.5], "\\color{red}{"+J[1]*10 + "\\text{ " + UNIT + "}"+"}", "right");
+					label([L+LTWO+K[2]+2, 2], "\\color{#0000FF}{"+WFAKE*10 + "\\text{ " + UNIT + "}"+"}", "right");
+					label([L+K[2]*0.5,0.3],"\\color{#FFA500}{"+ (K[0]+K[1]+K[2])*10 + "\\text{ " + UNIT + "}"+"}", "below");
+					label([(L+W/1.414+K[2]+1),H+W/1.414],"\\color{#FFA500}{"+ K[1]*10 + "\\text{ " + UNIT + "}"+"}", "above");
 					label([L*0.5,H], "\\color{#FFA500}{"+L*10 + "\\text{ " + UNIT + "}"+"}", "above");
-					label([L+2*LTWO+W/1.414, W/1.414+0.8], "\\color{#0000FF}{"+H*10 + "\\text{ " + UNIT + "}"+"}", "right");
-                                            
+					label([L+LTWO+K[2]+W/1.414, W/1.414+0.8], "\\color{red}{"+H*10 + "\\text{ " + UNIT + "}"+"}", "right");	
+						         
                 </div>
 				</div>
 			</div>	
@@ -858,25 +548,25 @@
 				<div>
 					<p>畫出輔助線，將圖形變成兩個長方體</p>
 					<div class="graphie" data-update="original">
-						line([L+LTWO, H], [L+W/1.414+LTWO,H+W/1.414],{stroke:" green"});
-						line([L+LTWO, H], [L, H],{stroke:" green"});
+						line([L+K[2], H], [L+W/1.414+K[2],H+W/1.414],{stroke:" green"});
+						line([L+K[2], H], [L, H],{stroke:" green"});
 					</div>
 					<div class="graphie" id="original1">
 						init({ range: [[0, L+W+LTWO*2 + 1], [-2, HTWO+W + 1]], scale: 20 });
 
 					path([ [L,HTWO],[L, H], true]);					
                                    
-                    path([ [L,HTWO],[L+LTWO, HTWO], true]);
+                    path([ [L,HTWO],[L+K[2], HTWO], true]);
                     path([ [L, HTWO], [L+W/1.414, HTWO+W/1.414], true]);					
-					path([ [L+W/1.414,W/1.414+HTWO],[L+W/1.414+LTWO,W/1.414+HTWO],[L+W/1.414+LTWO,H+W/1.414],[L+W/1.414+LTWO,W/1.414+HTWO],[L+LTWO, HTWO],[L+W/1.414+LTWO,W/1.414+HTWO], true]);					
-					line([L+LTWO, HTWO], [L+LTWO, H],{stroke:" #0000FF"});
+					path([ [L+W/1.414,W/1.414+HTWO],[L+W/1.414+K[2],W/1.414+HTWO],[L+W/1.414+K[2],H+W/1.414],[L+W/1.414+K[2],W/1.414+HTWO],[L+K[2], HTWO],[L+W/1.414+K[2],W/1.414+HTWO], true]);					
+					line([L+K[2], HTWO], [L+K[2], H],{stroke:" red"});
 					
-					line([L+LTWO, H],[L,H],{stroke:" #FFA500"});
-					line([L+LTWO, H],[L+W/1.414+LTWO,H+W/1.414],{stroke:" red"});
+					line([L+K[2], H],[L,H],{stroke:" #FFA500"});
+					line([L+K[2], H],[L+W/1.414+K[2],H+W/1.414],{stroke:" #0000FF"});
 					
-					label([L+LTWO, HTWO-1], "\\color{#0000FF}{"+J[1]*10 + "\\text{ " + UNIT + "}"+"}", "right");
+					label([L+K[2], HTWO-1], "\\color{red}{"+J[1]*10 + "\\text{ " + UNIT + "}"+"}", "right");
 					label([L+1,H],"\\color{#FFA500}{"+ K[2]*10 + "\\text{ " + UNIT + "}"+"}", "below");
-					label([L+LTWO+4, H+3], "\\color{red}{"+WFAKE*10 + "\\text{ " + UNIT + "}"+"}", "right");
+					label([L+K[2]+4, H+3], "\\color{#0000FF}{"+WFAKE*10 + "\\text{ " + UNIT + "}"+"}", "right");
 								
 					</div>
 					<div class="graphie" id="original2">
@@ -884,21 +574,21 @@
 
 					path([ [0,0],[0, H], true]);
 					
-					path([[L+2*LTWO,0],[L+2*LTWO, H], true]);
+					path([[L+LTWO+K[2],0],[L+LTWO+K[2], H], true]);
 					path([[W/1.414, H+W/1.414],[0, H], true]);
 
 					
-					line([L+2*LTWO, H], [L+2*LTWO+W/1.414, H+W/1.414]);
-					line([L+2*LTWO+W/1.414, H+W/1.414], [W/1.414, H+W/1.414]);
-					line([L+2*LTWO+W/1.414, H+W/1.414], [L+2*LTWO+W/1.414, W/1.414],{stroke:" #0000FF"});
+					line([L+LTWO+K[2], H], [L+LTWO+K[2]+W/1.414, H+W/1.414]);
+					line([L+LTWO+K[2]+W/1.414, H+W/1.414], [W/1.414, H+W/1.414]);
+					line([L+LTWO+K[2]+W/1.414, H+W/1.414], [L+LTWO+K[2]+W/1.414, W/1.414],{stroke:" red"});
 					
-					line([0,0],[L+2*LTWO,0],{stroke:" #FFA500"});
+					line([0,0],[L+LTWO+K[2],0],{stroke:" #FFA500"});
 					
-					line([L+2*LTWO, 0], [L+2*LTWO+W/1.414, W/1.414],{stroke:" red"});
-					line([0, H], [L+2*LTWO, H]);
-					label([L+2*LTWO+2, 2], "\\color{red}{"+WFAKE*10 + "\\text{ " + UNIT + "}"+"}", "right");
-					label([L+LTWO*0.7,0.3],"\\color{#FFA500}{"+ (K[0]+K[1]+K[2])*10 + "\\text{ " + UNIT + "}"+"}", "below");
-					label([L+2*LTWO+W/1.414, W/1.414+0.8], "\\color{#0000FF}{"+H*10 + "\\text{ " + UNIT + "}"+"}", "right");
+					line([L+LTWO+K[2], 0], [L+LTWO+K[2]+W/1.414, W/1.414],{stroke:" #0000FF"});
+					line([0, H], [L+LTWO+K[2], H]);
+					label([L+LTWO+K[2]+2, 2], "\\color{#0000FF}{"+WFAKE*10 + "\\text{ " + UNIT + "}"+"}", "right");
+					label([L+K[2]*0.7,0.3],"\\color{#FFA500}{"+ (K[0]+K[1]+K[2])*10 + "\\text{ " + UNIT + "}"+"}", "below");
+					label([L+LTWO+K[2]+W/1.414, W/1.414+0.8], "\\color{red}{"+H*10 + "\\text{ " + UNIT + "}"+"}", "right");
 
 					</div>
 				</div>
