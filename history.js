@@ -168,6 +168,9 @@ function renderReadOnlyProblem(event, args) {
                                 thissolutionarea.attr("title", $._("正確答案"));
                             } else {
                                 thissolutionarea.attr("title", $._("錯誤答案"));
+                                thissolutionarea.append(
+                                    $("<p class='solution'>" + $._("答案錯誤") + "</p>")
+                                );
                             }
                         } else if (answerType === "custom") {
                             if (validator(guess)) {
@@ -188,7 +191,7 @@ function renderReadOnlyProblem(event, args) {
                                 );
                             }
                         } else {
-                            var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
+                            var thisAnswerData = Khan.answerTypes[answerType].setup(null, solution);
 
                             thisAnswerData.showGuess(guess);
 
@@ -205,6 +208,9 @@ function renderReadOnlyProblem(event, args) {
                                     .removeClass("correct-activity")
                                     .addClass("incorrect-activity");
                                 thissolutionarea.attr("title", $._("錯誤答案"));
+                                thissolutionarea.append(
+                                    $("<p class='solution'>" + $._("答案錯誤") + "</p>")
+                                );
                             }
                         }
                     }
