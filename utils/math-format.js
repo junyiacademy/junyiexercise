@@ -23,7 +23,7 @@ $.extend(KhanUtil, {
         if (f[1] === 1) {
             return f[0];
         } else {
-            return "\\" + (dfrac ? "d" : "") + "frac{" + f[0] + "}{" + f[1] + "}";
+            return (n < 0 ? "-" : "") + "\\" + (dfrac ? "d" : "") + "frac{" + Math.abs(f[0]) + "}{" + Math.abs(f[1]) + "}";
         }
     },
 
@@ -236,16 +236,17 @@ $.extend(KhanUtil, {
     cardinal: function(num) 
     {
         var cardinalNums = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九" , "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九"];
-		var cardinalUnits = ["", "十", "百", "千", "萬", "億", "兆", "点", ""]; 
+		var cardinalUnits = ["", "十", "百", "千", "萬", "億", "兆"]; 
+		//Get integer part of the digital
 		var a = ("" + num).replace(/(^0*)/g, "").split("."), k = 0, re = "";
 		if (num<20) return re += cardinalNums[num];
 		for (var i = a[0].length - 1; i >= 0; i--) {
 			switch (k) { 
-				case 0: re = cardinalUnits[8] + re; break; 
+				case 0: re = cardinalUnits[0] + re; break; 
 				case 4: if (!new RegExp("0{4}\\d{" + (a[0].length - i - 1) + "}$").test(a[0])) 
 					re = cardinalUnits[4] + re; break; 
-				case 8: re = cardinalUnits[5] + re; cardinalUnits[8] = cardinalUnits[5]; break;
-				case 12: re = cardinalUnits[6] + re; cardinalUnits[8] = cardinalUnits[6]; k = 0; break;
+				case 8: re = cardinalUnits[5] + re; break;
+				case 12: re = cardinalUnits[6] + re; k = 0; break;
 			} 
 			if ( (k % 4 == 3 || k % 4 == 2) && a[0].charAt(i + 2) != 0 && a[0].charAt(i + 1) == 0) {
 				re = cardinalNums[0] + re;
@@ -260,6 +261,23 @@ $.extend(KhanUtil, {
     Cardinal: function(n) {
         var card = KhanUtil.cardinal(n);
         return card.charAt(0).toUpperCase() + card.slice(1);
+    },
+
+    ordinal: function(n) {
+        if (n <= 9) {
+            return ["zeroth", "first", "second", "third", "fourth", "fifth",
+                    "sixth", "seventh", "eighth", "ninth"][n];
+        } else if (Math.floor(n / 10) % 10 === 1) {
+            // Teens
+            return n + "th";
+        } else {
+            var lastDigit = n % 10;
+            if (1 <= lastDigit && lastDigit <= 3) {
+                return n + ["st", "nd", "rd"][lastDigit - 1];
+            } else {
+                return n + "th";
+            }
+        }
     },
 
     // Depends on expressions.js for expression formatting
@@ -280,8 +298,8 @@ $.extend(KhanUtil, {
         } else if (underRadical[1] === 1) {
             // The absolute value of the number under the radical is a perfect square
 
-            rootString += KhanUtil.fraction(-b + underRadical[0], 2 * a, true, true, true) + ","
-                + KhanUtil.fraction(-b - underRadical[0], 2 * a, true, true, true);
+            rootString += KhanUtil.fraction(-b + underRadical[0], 2 * a, true, true, true) + "," +
+                KhanUtil.fraction(-b - underRadical[0], 2 * a, true, true, true);
         } else {
             // under the radical can be partially simplified
             var divisor = KhanUtil.getGCD(b, 2 * a, underRadical[0]);
@@ -301,16 +319,26 @@ $.extend(KhanUtil, {
     // Thanks to Ghostoy on http://stackoverflow.com/questions/6784894/commafy/6786040#6786040
     commafy: function(num) {
         var str = num.toString().split(".");
+        var thousands = icu.getDecimalFormatSymbols().grouping_separator;
+        var decimal = icu.getDecimalFormatSymbols().decimal_separator;
 
         if (str[0].length >= 5) {
-            str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, "$1{,}");
+            str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g,
+                                    "$1{" + thousands + "}");
         }
 
         if (str[1] && str[1].length >= 5) {
             str[1] = str[1].replace(/(\d{3})(?=\d)/g, "$1\\;");
         }
 
-        return str.join(".");
+        return str.join(decimal);
+    },
+
+    // Rounds num to X places, and uses the proper decimal point.
+    // But does *not* insert thousands separators.
+    localeToFixed: function(num, places) {
+        var decimal = icu.getDecimalFormatSymbols().decimal_separator;
+        return num.toFixed(places).replace(".", decimal);
     },
 
     // Formats strings like "Axy + By + Cz + D" where A, B, and C are variables
@@ -385,7 +413,8 @@ $.extend(KhanUtil, {
     },
 
     randVar: function() {
-        return KhanUtil.randFromArray(["x", "k", "y", "a", "n", "r", "p", "u", "v"]);
+        // NOTE(jeresig): i18n: I assume it's OK to have roman letters here
+        return KhanUtil.randFromArray(["a", "k", "n", "p", "q", "r", "t", "x", "y", "z"]);
     },
 
     eulerFormExponent: function(angle) {
@@ -433,12 +462,56 @@ $.extend(KhanUtil, {
         if (real === 0 && imaginary === 0) {
             return "0";
         } else if (real === 0) {
-            return imaginary + "i";
+            return (imaginary === 1 ? "" : imaginary === -1 ? "-" : imaginary) + "i";
         } else if (imaginary === 0) {
             return real;
         } else {
             return KhanUtil.expr(["+", real, ["*", imaginary, "i"]]);
         }
+    },
+
+    // Assumes that the real and imaginary parts of integers
+    complexRegex: function(real, imaginary) {
+        var regex;
+
+        if (imaginary === 0) {
+            regex = "^\\s*";
+            regex += (real < 0 ? "[-\\u2212]\\s*" + (-real) : real) + "\\s*$";
+            return regex;
+        }
+
+        regex = "^\\s*";
+        if (imaginary < 0) {
+            regex += "[-\\u2212]\\s*";
+        }
+        if (imaginary !== 1 && imaginary !== -1) {
+            regex += Math.abs(imaginary) + "\\s*";
+        }
+        regex += "i\\s*";
+
+        if (real === 0) {
+            regex += "$";
+        } else {
+            regex = "(?:" + regex;
+            regex += real < 0 ? "[-\\u2212]" : "\\+";
+            regex += "\\s*" + Math.abs(real) + "\\s*$)|(?:^\\s*";
+
+            if (real < 0) {
+                regex += "[-\\u2212]\\s*";
+            }
+
+            regex += Math.abs(real) + "\\s*";
+            regex += imaginary < 0 ? "[-\\u2212]" : "\\+";
+            regex += "\\s*" + Math.abs(imaginary);
+
+            if (imaginary === 1 || imaginary === -1) {
+                regex += "?";
+            }
+
+            regex += "\\s*i\\s*$)";
+        }
+
+        return regex;
     },
 
     complexFraction: function(real, realDenominator, imag, imagDenominator) {
@@ -473,7 +546,7 @@ $.extend(KhanUtil, {
         var exponent = KhanUtil.scientificExponent(num);
         var factor = Math.pow(10, exponent);
         precision -= 1; // To account for the 1s digit
-        var mantissa = KhanUtil.roundTo(precision, num / factor).toFixed(precision);
+        var mantissa = KhanUtil.localeToFixed(KhanUtil.roundTo(precision, num / factor), precision);
         return mantissa;
     },
 
