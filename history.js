@@ -133,6 +133,14 @@ function renderReadOnlyProblem(event, args) {
                     .data("hint", hintNumber)
                     .prepend($._("提示 #%(num)s", {num: (hintNumber + 1)}));
                 hintNumber += 1;
+            } else if (value[0] == 'skipped-activity'){
+                thissolutionarea
+                    .removeClass("correct-activity")
+                    .addClass("incorrect-activity");
+                thissolutionarea.attr("title", $._("跳過這題"));
+                thissolutionarea.append(
+                    $("<p class='solution'>" + $._("跳過這題") + "</p>")
+                );
             } else { // This panel is a solution (or the first panel)
                 thissolutionarea.data("hint", false);
                 // See above, this shouldn't be i18n-ized
@@ -166,6 +174,9 @@ function renderReadOnlyProblem(event, args) {
                                     .removeClass("incorrect-activity")
                                     .addClass("correct-activity");
                                 thissolutionarea.attr("title", $._("正確答案"));
+                                thissolutionarea.append(
+                                    $("<p class='solution'>" + $._("答案正確") + "</p>")
+                                );
                             } else {
                                 thissolutionarea.attr("title", $._("錯誤答案"));
                                 thissolutionarea.append(
@@ -203,6 +214,9 @@ function renderReadOnlyProblem(event, args) {
                                     .addClass("correct-activity");
 
                                 thissolutionarea.attr("title", $._("正確答案"));
+                                thissolutionarea.append(
+                                    $("<p class='solution'>" + $._("答案正確") + "</p>")
+                                );
                             } else {
                                 thissolutionarea
                                     .removeClass("correct-activity")
