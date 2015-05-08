@@ -174,14 +174,8 @@ function renderReadOnlyProblem(event, args) {
                                     .removeClass("incorrect-activity")
                                     .addClass("correct-activity");
                                 thissolutionarea.attr("title", $._("正確答案"));
-                                thissolutionarea.append(
-                                    $("<p class='solution'>" + $._("答案正確") + "</p>")
-                                );
                             } else {
                                 thissolutionarea.attr("title", $._("錯誤答案"));
-                                thissolutionarea.append(
-                                    $("<p class='solution'>" + $._("答案錯誤") + "</p>")
-                                );
                             }
                         } else if (answerType === "custom") {
                             if (validator(guess)) {
@@ -202,7 +196,7 @@ function renderReadOnlyProblem(event, args) {
                                 );
                             }
                         } else {
-                            var thisAnswerData = Khan.answerTypes[answerType].setup(null, solution);
+                            var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
 
                             thisAnswerData.showGuess(guess);
 
@@ -214,17 +208,11 @@ function renderReadOnlyProblem(event, args) {
                                     .addClass("correct-activity");
 
                                 thissolutionarea.attr("title", $._("正確答案"));
-                                thissolutionarea.append(
-                                    $("<p class='solution'>" + $._("答案正確") + "</p>")
-                                );
                             } else {
                                 thissolutionarea
                                     .removeClass("correct-activity")
                                     .addClass("incorrect-activity");
                                 thissolutionarea.attr("title", $._("錯誤答案"));
-                                thissolutionarea.append(
-                                    $("<p class='solution'>" + $._("答案錯誤") + "</p>")
-                                );
                             }
                         }
                     }
