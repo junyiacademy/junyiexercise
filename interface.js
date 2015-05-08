@@ -187,7 +187,8 @@ function handleAttempt(data) {
     if (Exercises.pretestMode) {
         $(Exercises).trigger("updateAnswerHistory", {
             name: Exercises.currentCard.get('exerciseName'),
-            pass: score.correct
+            pass: score.correct,
+            skip: skipped
         });
     }
 
