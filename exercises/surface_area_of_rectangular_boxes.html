@@ -41,115 +41,24 @@
                 <var id="COLOR2">"#38C77F"</var>
                 <var id="COLOR3">"#78D0EF"</var>
                 <var id="COLOR4">"#F0B63A"</var>
-            </div>
-            <div class="vars">
-                <var id="YANGLE">-PI / 8</var>
-                <var id="XANGLE">0</var>
-                <var id="VERTICES">[
-                    [LENGTH/MAX, WIDTH/MAX, HEIGHT/MAX],
-                    [LENGTH/MAX, WIDTH/MAX, -HEIGHT/MAX],
-                    [LENGTH/MAX, -WIDTH/MAX, -HEIGHT/MAX],
-                    [LENGTH/MAX, -WIDTH/MAX, HEIGHT/MAX],
-                    [-LENGTH/MAX, WIDTH/MAX, HEIGHT/MAX],
-                    [-LENGTH/MAX, WIDTH/MAX, -HEIGHT/MAX],
-                    [-LENGTH/MAX, -WIDTH/MAX, -HEIGHT/MAX],
-                    [-LENGTH/MAX, -WIDTH/MAX, HEIGHT/MAX]
-                ]</var>
-                <var id="SCALE">4.0</var>
-                <var id="FACES">[
-                    {
-                        verts: [3, 2, 1, 0],
-                        color: COLOR1,
-                        labels: [[[XBORD, 0, ZBORD], WIDTH]]
-                    }, {
-                        verts: [4, 5, 6, 7],
-                        color: COLOR1,
-                        labels: [[[-XBORD, 0, -ZBORD], WIDTH]]
-                    }, {
-                        verts: [0, 1, 5, 4],
-                        color: COLOR3,
-                        labels: [[[-XBORD, YBORD, 0], HEIGHT]]
-                    }, {
-                        verts: [2, 3, 7, 6],
-                        color: COLOR3,
-                        labels: [[[-XBORD, -YBORD, 0], HEIGHT]]
-                    }, {
-                        verts: [1, 2, 6, 5],
-                        color: COLOR2,
-                        labels: [[[0, -YBORD, -ZBORD], LENGTH]]
-                    }, {
-                        verts: [3, 0, 4, 7],
-                        color: COLOR2,
-                        labels: [[[0, YBORD, ZBORD], LENGTH]]
-                    }
-                ]</var>
-				<var id="GRAPH">{}</var>
-                <var id="UNWRAPGRAPH">{}</var>
+				<var id="S">sqrt(3)</var>
             </div>
 			
             <div class="question">
-                <p>這個盒子的表面積多大？
-                在這個盒子上按滑鼠左鍵或手指拖曳來旋轉它。</p>
+                <p>這個盒子的表面積多大？</p>
             </div>
 			<div class="graphie">
-				init({range: [[-2, 2], [-2, 2]], scale: [100, 100]});
-				addMouseLayer();
-
-				graph.obj = make3dObject(VERTICES, { scale: SCALE });
-				_.each(FACES, function(face) {
-					graph.obj.addFace(face);
-				});
-
-				graph.obj.setPos([0, 0, 5]);
-
-				graph.obj.rotate(1, 0, 0, YANGLE);
-				graph.obj.rotate(0, 1, 0, XANGLE);
-
-				graph.obj.doDraw();
-
-				GRAPH = graph;
-
-				var spinner;
-				setTimeout(function() {
-					spinner = setInterval(function() {
-						GRAPH.obj.rotate(0, 1, 0, 0.01);
-						GRAPH.obj.doDraw();
-					}, 50);
-				}, 300);
-
-				var mouseTarget = mouselayer.rect(0, 0, 400, 400).attr({
-					fill: "#000", opacity: 0.0
-				});
-				$(mouseTarget[0]).bind("vmousedown", function(event) {
-					GRAPH.lastX = event.pageX;
-					GRAPH.lastY = event.pageY;
-
-					clearInterval(spinner);
-
-					$(document).bind("vmousemove vmouseup", function(event) {
-						event.preventDefault();
-
-						var dx = (event.pageX - GRAPH.lastX) / 200 * PI;
-						var dy = (event.pageY - GRAPH.lastY) / 200 * PI;
-
-						GRAPH.lastX = event.pageX;
-						GRAPH.lastY = event.pageY;
-
-						var xAxis = normalize(GRAPH.obj.perspective[1]);
-						var yAxis = normalize(GRAPH.obj.perspective[0]);
-
-						GRAPH.obj.rotate(xAxis[0], xAxis[1], xAxis[2], -dx / 2);
-						GRAPH.obj.rotate(yAxis[0], yAxis[1], yAxis[2], -dy / 2);
-
-						GRAPH.obj.doDraw();
-
-						if (event.type === "vmouseup") {
-							$(document).unbind("vmousemove vmouseup");
-						}
-					})
-				});
+				init({range: [[-2, 2], [-ZBORD/2-0.2, ZBORD/2+YBORD/S+0.2]], scale: [100, 100]});
+				
+				path([[-XBORD/2,-ZBORD/2],[XBORD/2,-ZBORD/2],[XBORD/2,ZBORD/2],[-XBORD/2,ZBORD/2],[-XBORD/2,-ZBORD/2]],{ stroke: COLOR1, strokeWidth: 1, fill: COLOR1});
+				path([[-XBORD/2,ZBORD/2],[XBORD/2,ZBORD/2],[XBORD/2+YBORD/S,ZBORD/2+YBORD/S/2],[-XBORD/2+YBORD/S,ZBORD/2+YBORD/S/2],[-XBORD/2,ZBORD/2]], { stroke: COLOR2, strokeWidth: 1, fill: COLOR2});
+				path([[XBORD/2,ZBORD/2],[XBORD/2,-ZBORD/2],[XBORD/2+YBORD/S,-ZBORD/2+YBORD/S/2],[XBORD/2+YBORD/S,ZBORD/2+YBORD/S/2],[XBORD/2,ZBORD/2]], { stroke: COLOR3, strokeWidth: 1, fill: COLOR3});
+				
+				label([-XBORD/2-0.1,0], HEIGHT);
+				label([0,-ZBORD/2-0.1], LENGTH);
+				label([XBORD/2+YBORD/S/2+0.1,-ZBORD/2+YBORD/S/4-0.1], WIDTH);
             </div>
-            <div class="solution">
+            <div class="solution" data-forms="integer">
                 <var>2 * LENGTH * WIDTH +
                     2 * LENGTH * HEIGHT +
                     2 * WIDTH * HEIGHT</var>
@@ -158,145 +67,17 @@
             <div class="hints">
                 <p>為了要知道它的表面積，我們先找出每一個面的面積，然後將各面的面積相加。</p>
                 <div>
-                    <p>為了更容易找出每一個面的面積，讓我們試著把盒子打開：
-                    <input type="submit" value="打開它！"
-                        onclick="KhanUtil.tmpl.getVAR('UNWRAPGRAPH.unwrap()')"
-                    /></p>
+                    <p>為了更容易找出每一個面的面積，讓我們試著把盒子打開：</p>
                     <div class="graphie">
-                        var verts = [
-                            [LENGTH/MAX, WIDTH/MAX, HEIGHT/MAX],
-                            [LENGTH/MAX, WIDTH/MAX, -HEIGHT/MAX],
-                            [LENGTH/MAX, -WIDTH/MAX, -HEIGHT/MAX],
-                            [LENGTH/MAX, -WIDTH/MAX, HEIGHT/MAX],
-                            [-LENGTH/MAX, WIDTH/MAX, HEIGHT/MAX],
-                            [-LENGTH/MAX, WIDTH/MAX, -HEIGHT/MAX],
-                            [-LENGTH/MAX, -WIDTH/MAX, -HEIGHT/MAX],
-                            [-LENGTH/MAX, -WIDTH/MAX, HEIGHT/MAX],
-                            [LENGTH/MAX, WIDTH/MAX, HEIGHT/MAX],
-                            [LENGTH/MAX, -WIDTH/MAX, HEIGHT/MAX],
-                            [-LENGTH/MAX, WIDTH/MAX, HEIGHT/MAX],
-                            [-LENGTH/MAX, -WIDTH/MAX, HEIGHT/MAX],
-                            [LENGTH/MAX, WIDTH/MAX, HEIGHT/MAX],
-                            [-LENGTH/MAX, WIDTH/MAX, HEIGHT/MAX]
-                        ];
-
-                        var faces = [
-                            {
-                                verts: [5, 6, 2, 1],
-                                color: COLOR2
-                            }, {
-                                verts: [4, 5, 1, 0],
-                                color: COLOR3
-                            }, {
-                                verts: [6, 7, 3, 2],
-                                color: COLOR3
-                            }, {
-                                verts: [1, 2, 9, 8],
-                                color: COLOR1
-                            }, {
-                                verts: [6, 5, 10, 11],
-                                color: COLOR1
-                            }, {
-                                verts: [13, 12, 3, 7],
-                                color: COLOR2
-                            }, {
-                                verts: [0, 1, 5, 4],
-                                color: COLOR3
-                            }, {
-                                verts: [11, 10, 5, 6],
-                                color: COLOR1
-                            }, {
-                                verts: [7, 3, 12, 13],
-                                color: COLOR2
-                            }
-                        ];
-
-                        var size = 2 * WIDTH / MAX + 2 * HEIGHT / MAX;
-                        init({range: [[-2, 2], [-2, 2]], scale: [100, 100]});
-
-                        graph.obj = make3dObject(verts);
-                        _.each(faces, function(face) {
-                            graph.obj.addFace(face);
-                        });
-
-                        graph.obj.setPos([0, -0.6, 5]);
-
-                        graph.obj.rotate(1, 0, 0, PI / 8);
-                        graph.obj.rotate(0, 1, 0, PI / 10);
-
-                        graph.obj.setScale(8 / size);
-
-                        graph.obj.doDraw();
-
-                        UNWRAPGRAPH = graph;
-                        UNWRAPGRAPH.unwrapped = false;
-
-                        graph.unwrap = function() {
-                            if (UNWRAPGRAPH.unwrapped) {
-                                return;
-                            }
-
-                            UNWRAPGRAPH.unwrapped = true;
-
-                            var last = 0;
-
-                            $({ t: 0 }).animate({ t: PI },
-                            {
-                                duration: 3000,
-                                easing: "linear",
-                                step: function(now, fx) {
-                                    verts[4][2] = verts[0][2] =
-                                        cos(now) * HEIGHT / MAX;
-
-                                    verts[4][1] = verts[0][1] =
-                                        WIDTH / MAX +
-                                        2 * cos((PI - now) / 2) * HEIGHT / MAX;
-
-                                    verts[3][2] = verts[7][2] =
-                                        cos(now) * HEIGHT / MAX;
-
-                                    verts[3][1] = verts[7][1] =
-                                        -WIDTH / MAX -
-                                        2 * cos((PI - now) / 2) * HEIGHT / MAX;
-
-                                    verts[8][2] = verts[9][2] =
-                                        cos(now) * HEIGHT / MAX;
-
-                                    verts[8][0] = verts[9][0] =
-                                        LENGTH / MAX +
-                                        2 * cos((PI - now) / 2) * HEIGHT / MAX;
-
-                                    verts[10][2] = verts[11][2] =
-                                        cos(now) * HEIGHT / MAX;
-
-                                    verts[10][0] = verts[11][0] =
-                                        -LENGTH / MAX -
-                                        2 * cos((PI - now) / 2) * HEIGHT / MAX;
-
-                                    verts[12][2] = verts[13][2] =
-                                        cos(now) * HEIGHT / MAX +
-                                        2 * sin(now) * WIDTH / MAX;
-
-                                    verts[12][1] = verts[13][1] =
-                                        -WIDTH / MAX -
-                                        2 * cos(PI / 2 -
-                                        now / 2) * HEIGHT / MAX +
-                                        2 * cos(now) * WIDTH / MAX;
-
-                                    if (now &lt; PI / 2) {
-                                        UNWRAPGRAPH.obj.rotate(0, 1, 0,
-                                            -2 / 10 * (now - last));
-                                    } else {
-                                        UNWRAPGRAPH.obj.rotate(1, 0, 0,
-                                            -2 / 8 * (now - last));
-                                    }
-
-                                    last = now;
-
-                                    UNWRAPGRAPH.obj.doDraw();
-                                }
-                            });
-                        };
+                        init({range: [[-2, 2], [-YBORD/2-ZBORD-YBORD-0.2, YBORD/2+ZBORD+0.2]], scale: [100, 100]});
+						
+						path([[-XBORD/2,-YBORD/2],[XBORD/2,-YBORD/2],[XBORD/2,YBORD/2],[-XBORD/2,YBORD/2],[-XBORD/2,-YBORD/2]], { stroke: COLOR2, strokeWidth: 1, fill: COLOR2});
+						path([[-XBORD/2,-YBORD/2],[XBORD/2,-YBORD/2],[XBORD/2,-YBORD/2-ZBORD],[-XBORD/2,-YBORD/2-ZBORD],[-XBORD/2,-YBORD/2]], { stroke: COLOR1, strokeWidth: 1, fill: COLOR1});
+						path([[XBORD/2,-YBORD/2-ZBORD],[-XBORD/2,-YBORD/2-ZBORD],[-XBORD/2,-YBORD/2-ZBORD-YBORD],[XBORD/2,-YBORD/2-ZBORD-YBORD],[XBORD/2,-YBORD/2-ZBORD]], { stroke: COLOR2, strokeWidth: 1, fill: COLOR2});
+						path([[-XBORD/2,YBORD/2],[XBORD/2,YBORD/2],[XBORD/2,YBORD/2+ZBORD],[-XBORD/2,YBORD/2+ZBORD],[-XBORD/2,YBORD/2]], { stroke: COLOR1, strokeWidth: 1, fill: COLOR1});
+						
+						path([[-XBORD/2,-YBORD/2],[-XBORD/2-ZBORD,-YBORD/2],[-XBORD/2-ZBORD,YBORD/2],[-XBORD/2,YBORD/2],[-XBORD/2,-YBORD/2]], {stroke: COLOR3, strokeWidth: 1, fill: COLOR3});
+						path([[XBORD/2,-YBORD/2],[XBORD/2+ZBORD,-YBORD/2],[XBORD/2+ZBORD,YBORD/2],[XBORD/2,YBORD/2],[XBORD/2,-YBORD/2]], {stroke: COLOR3, strokeWidth: 1, fill: COLOR3});
                     </div>
                 </div>
                 <div id="unwrapped" data-unwrap>
@@ -309,8 +90,8 @@
                             init({range: [[-1, width + 1], [-1, height + 1]],
                                 scale: [400 / width, 400 / width]});
 
-                            makeSquare(0, HEIGHT, 0, WIDTH, COLOR1);
-                            makeSquare(1, HEIGHT, 1, WIDTH, COLOR1);
+                            makeSquare(0, HEIGHT, 0, WIDTH, COLOR3);
+                            makeSquare(1, HEIGHT, 1, WIDTH, COLOR3);
                             label([0.8 + HEIGHT / 2, WIDTH + 1.2],
                                 HEIGHT, "below");
                             label([1.1 + HEIGHT, 1 + WIDTH / 2],
@@ -323,8 +104,8 @@
                             label([3.1 + HEIGHT + WIDTH, 1 + LENGTH / 2],
                                 LENGTH, "left");
 
-                            makeSquare(HEIGHT + WIDTH + 4, LENGTH, 0, HEIGHT, COLOR3);
-                            makeSquare(HEIGHT + WIDTH + 5, LENGTH, 1, HEIGHT, COLOR3);
+                            makeSquare(HEIGHT + WIDTH + 4, LENGTH, 0, HEIGHT, COLOR1);
+                            makeSquare(HEIGHT + WIDTH + 5, LENGTH, 1, HEIGHT, COLOR1);
                             label([4.8 + HEIGHT + WIDTH + LENGTH / 2, 1.2 + HEIGHT],
                                 LENGTH, "below");
                             label([5.1 + HEIGHT + WIDTH + LENGTH, 1 + HEIGHT / 2],
@@ -358,7 +139,7 @@
                     </p>
                     <p>
                         所以，這個盒子的表面積是
-                        <code><var>2 * WIDTH * HEIGHT +
+                        <code class="hint_pink"><var>2 * WIDTH * HEIGHT +
                                 2 * LENGTH * WIDTH +
                                 2 * HEIGHT * LENGTH</var></code> 。
                     </p>
@@ -375,7 +156,6 @@
 
             <p class="question">
                 這個正方體的表面積多大？
-                在這個正方體上按住滑鼠左鍵或手指拖曳來旋轉它。
             </p>
 
             <div class="hints" data-apply="appendContents">
@@ -410,7 +190,7 @@
                     </p>
                     <p>
                         所以，這個正方體的表面積是
-                        <code><var>6 * WIDTH * WIDTH</var></code> 。
+                        <code class="hint_pink"><var>6 * WIDTH * WIDTH</var></code> 。
                     </p>
                 </div>
             </div>
