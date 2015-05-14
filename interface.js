@@ -223,8 +223,8 @@ function handleAttempt(data) {
         $("#next-question-button")
             .prop("disabled", false)
             .removeClass("buttonDisabled")
-            .show()
-        if(!/iPad/i.test(navigator.userAgent)) // check if is ipad device
+            .show();
+        if(!/iphone|ipod|ipad/i.test(navigator.userAgent)) // check if is ipad device
         {
             $("#next-question-button").focus();
         }
