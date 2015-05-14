@@ -191,16 +191,6 @@ function handleAttempt(data) {
         });
     }
 
-    var curTime = new Date().getTime();
-    var timeTaken = Math.round((curTime - lastAttemptOrHint) / 1000);
-    var stringifiedGuess = JSON.stringify(score.guess);
-    var attemptData = null;
-    if (!localMode) {
-        attemptData = buildAttemptData(
-            score.correct, ++attempts, stringifiedGuess, timeTaken, skipped);
-    }
-    lastAttemptOrHint = curTime;
-
     Exercises.guessLog.push(score.guess);
     Exercises.userActivityLog.push([
             score.correct ? "correct-activity" : "incorrect-activity",
@@ -289,6 +279,16 @@ function handleAttempt(data) {
         // wait for the special assessment mode triggers to fire instead.
         $(Exercises).trigger("gotoNextProblem");
     }
+
+    var curTime = new Date().getTime();
+    var timeTaken = Math.round((curTime - lastAttemptOrHint) / 1000);
+    var stringifiedGuess = JSON.stringify(score.guess);
+    var attemptData = null;
+    if (!localMode) {
+        attemptData = buildAttemptData(
+            score.correct, ++attempts, stringifiedGuess, timeTaken, skipped);
+    }
+    lastAttemptOrHint = curTime;
 
     // Save the problem results to the server
     var requestUrl = "problems/" + problemNum + "/attempt";
@@ -400,7 +400,7 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         data = Khan.getSeedInfo();
     }
 
-    _.extend(data, {
+    return _.extend(data, {
         // Ask for camel casing in returned response
         casing: "camel",
 
@@ -451,8 +451,6 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         // Whether the user is skipping the question
         skipped: skipped ? 1 : 0
     });
-
-    return data;
 }
 
 
