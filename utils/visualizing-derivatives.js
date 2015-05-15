@@ -981,7 +981,7 @@ $.extend(KhanUtil, {
 
             var self = this;
             _.each(this.problem.fnArray, function(fn, i) {
-                var nth = i > 0 ? "next" : "first";
+                var nth = i > 0 ? "二" : "一";
 
                 fn = fn.derivative();
 
@@ -989,35 +989,35 @@ $.extend(KhanUtil, {
                 var inc;
                 if (nCoefs === 1) {
                     if (fn.coefs[0] === 0) {
-                        inc = "zero";
+                        inc = " 0";
                     } else if (fn.coefs[0] > 0) {
-                        inc = "constant and positive";
+                        inc = "常數且為正值";
                     } else {
-                        inc = "constant and negative";
+                        inc = "常數且為負值";
                     }
                 } else if (nCoefs === 2) {
                     var val = fn.evalOf(0) +
                                 fn.evalOf(self.INTERVAL_WIDTH);
                     if (val >= 0) {
                         if (fn.coefs[1] > 0) {
-                            inc = "increasing and positive";
+                            inc = "遞增且為正值";
                         } else {
-                            inc = "decreasing and positive";
+                            inc = "遞減且為正值";
                         }
                     } else {
                         if (fn.coefs[1] > 0) {
-                            inc = "increasing and negative";
+                            inc = "遞增且為負值";
                         } else {
-                            inc = "decreasing and negative";
+                            inc = "遞減且為負值";
                         }
                     }
                 }
 
                 var hint;
                 if (moveDeriv) {
-                    hint = "The " + nth + " section of the derivative is " + inc + ", so it corresponds to an original function whose <b>slope</b> is " + inc + ".";
+                    hint = "第" + nth + "段的導函數圖形的值為" + inc + "，所以他對應到原始的函數的<b>斜率</b>是" + inc + "。";
                 } else {
-                    hint = "The " + nth + " section of the antiderivative has a " + inc + " slope, so it corresponds to an original function that is " + inc + ".";
+                    hint = "第" + nth + "段的反導數圖形有" + inc + "的斜率，所以其對應到的原始函數的值為" + inc + "。";
                 }
 
                 var hintproblem = self.problem.slice(i, i + 1);
@@ -1030,7 +1030,7 @@ $.extend(KhanUtil, {
 
             var lastHint;
             if (this.noSolution) {
-                lastHint = "Because these sections do not appear next to each other in the graph of <code>f(x)</code>, there is no solution.";
+                lastHint = "因為這圖形並沒有出現在 <code>f(x)</code>，所以沒有對應的解。";
                 hints.push("<p>" + lastHint + "</p>");
                 hints.push("<div class='graphie'> PROBLEM.showNoAnswer(); </div>");
             } else {
@@ -1038,7 +1038,7 @@ $.extend(KhanUtil, {
                                 return "<code>x \\in [" + range.join(", ") + "]</code>";
                             }).join(" and ");
                 var fnVar = moveDeriv ? "f'(x)" : "F(x)";
-                lastHint = "The function in the window corresponds to <code>" + fnVar + "</code> where " + solnText + ".";
+                lastHint = "這個視窗所對應的函數 <code>" + fnVar + "</code> 其中 " + solnText + ".";
 
                 var firstAnswer = this.problemRanges[0][0];
                 hints.push("<p>" + lastHint + "</p>");
