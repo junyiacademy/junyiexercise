@@ -1180,6 +1180,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
 
             // Insert correct answer as first of possibleChoices
             if (!isCategory) {
+                $(solutionClone).runModules();
                 possibleChoices.splice(0, 0, $(solutionClone));
             }
 
