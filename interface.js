@@ -589,10 +589,11 @@ function enableCheckAnswer() {
         .prop("disabled", false)
         .removeClass("buttonDisabled")
         .val(originalCheckAnswerText);
-
-    $("#skip-question-button")
+    setTimeout(function(){
+        $("#skip-question-button")
         .prop("disabled", false)
-        .removeClass("buttonDisabled");
+        .removeClass("buttonDisabled");}
+        , 2000);
 }
 
 function disableCheckAnswer() {
