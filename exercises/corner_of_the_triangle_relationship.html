@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers graphie-geometry math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>三角形的邊角關係</title>
+    <script src="../khan-exercise.js"></script>
+    <script language="javascript">
+        function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+
+        function getLength(a, b){
+            return Math.sqrt(Math.pow(a[1] - b[1], 2) + Math.pow(a[0] - b[0], 2));
+        }
+
+        function getCentre(a, b, c, x, y, z){
+            return [(a * x[0] / (a + b + c) + b * y[0] / (a + b + c) + c * z[0] / (a + b + c)), (a * x[1] / (a + b + c) + b * y[1] / (a + b + c) + c * z[1] / (a + b + c))];
+        }
+
+        function hasFocus(pa, pb, pc, pd) {
+			if (Math.abs(pa[0] - pb[0]) < 0.001 || Math.abs(pc[0] - pd[0]) < 0.001) {
+				return false;
+			}
+			var klab = (pa[1] - pb[1]) / (pa[0] - pb[0]);
+			var klcd = (pc[1] - pd[1]) / (pc[0] - pd[0]);
+			if (Math.abs(klab - klcd) < 0.001) {
+				return false;
+			}
+			return true;
+		}
+
+        function getBetAngle(a, b, c, d){
+    		var k1 = (a[1] - b[1]) / (a[0] - b[0]);
+    		var k2 = (c[1] - d[1]) / (c[0] - d[0]);
+    		return Math.acos(Math.abs((1 + k1 * k2) / (Math.sqrt(1+Math.pow(k1,2))) / (Math.sqrt(1+Math.pow(k2,2)))))*180 / Math.PI;
+        }
+    </script>
+</head>
+<body>
+
+<div class="exercise">   
+    <div class="problems">
+        <div id="case1">
+            <div class="vars" data-ensure="ANGLES[0] &gt; 100 && ANGLES[1] !== ANGLES[2] && R[1] - R[0] &lt;= 8">
+            	<var id="ASK_INIT">['AB','AC','BC']</var>
+            	<var id="ANS_INIT">['C','B','A']</var>
+            	<var id="J">randRangeUnique(1,4,3)</var>
+            	<var id="ASK">[ASK_INIT[J[0]-1],ASK_INIT[J[1]-1],ASK_INIT[J[2]-1]]</var>
+            	<var id="ANS">[ANS_INIT[J[0]-1],ANS_INIT[J[1]-1],ANS_INIT[J[2]-1]]</var>
+            	<var id="ANGLES">randomTriangleAngles.triangle().sort(function(a,b){return b-a;})</var>
+            	<var id="TR">(function(){
+            		return new Triangle( [ 0, 0 ], ANGLES , 10 , {} );
+            	})()</var>
+            	<var id="RAN">TR.points</var>
+            	<var id="R">[round(min(RAN[0][0],RAN[1][0],RAN[2][0])),round(max(RAN[0][0],RAN[1][0],RAN[2][0])),round(min(RAN[0][1],RAN[1][1],RAN[2][1])),round(max(RAN[0][1],RAN[1][1],RAN[2][1]))]</var>
+            </div>
+
+            <div class="question">
+            	<p class="question">如圖，<code>\triangle ABC</code> 中，<code>\overline{<var>ASK[0]</var>}&gt;\overline{<var>ASK[1]</var>}&gt;\overline{<var>ASK[2]</var>}</code>，則 <code>\angle A</code>、<code>\angle B</code>、<code>\angle C</code> 的大小關係為何？</p>
+            	<div class="problem">
+            		<div class="graphie" id="triangles">
+            			init({
+            				range: [[R[0]-2, R[1]+2], [R[2]-2, R[3]+2]],
+            				scale: 40
+            			});
+
+            			TR.draw();
+            			TR.labels = { "points": ANS };
+            			TR.drawLabels();
+            		</div>
+            	</div>
+            </div>	
+            <div class="solution" data-type="multiple">
+            	<p><code>\angle </code> <input type="text" id="a1" style="width:20px;"> <code>\color{red}{&gt;} \angle </code> <input type="text" id="a2" style="width:20px;"> <code>\color{red}{&gt;} \angle </code> <input type="text" id="a3" style="width:20px;"></p>
+                <div class="sol" data-type="custom">
+					<div class="guess">[$('#a1').val().toUpperCase().replace(/[ ]/g,""),$('#a2').val().toUpperCase().replace(/[ ]/g,""),$('#a3').val().toUpperCase().replace(/[ ]/g,"")]</div>
+					<div class="validator-function">
+						if(guess[0] === '' || guess[1] === '' || guess[2] === ''){
+							return "";
+						}else{
+							return guess[0] === ANS[0] &amp;&amp; guess[1] === ANS[1] &amp;&amp; guess[2] === ANS[2];
+						}
+						
+					</div>
+				</div>
+				<p class="example">英文，例 <code>：A</code> 或 <code>a</code></p>
+            </div>
+
+            <div class="hints">
+            	<p>這題主要用到三角形的大邊對大角性質。</p>
+            	<div>
+            		<p>因為題目說 <code>\overline{<var>ASK[0]</var>}&gt;\overline{<var>ASK[1]</var>}&gt;\overline{<var>ASK[2]</var>}</code> ，從圖我們知道 ：</p>
+            		<p><code>\qquad \overline{AB}</code> 對應的角是 <code>\angle C</code>；</p>
+            		<p><code>\qquad \overline{BC}</code> 對應的角是 <code>\angle A</code>；</p>
+            		<p><code>\qquad \overline{AC}</code> 對應的角是 <code>\angle B</code>；</p>
+            	</div>
+            	<div>
+            		<p>利用大邊對大角性質，我們知道三個角度的大小關係為 ：</p>
+            		<p><code class="hint_pink">\qquad \angle <var>ANS[0]</var> &gt; \angle <var>ANS[1]</var> &gt; \angle <var>ANS[2]</var></code></p>
+            	</div>
+            </div>
+        </div>
+
+        <div id="case2">
+            <div class="vars" data-ensure="(angleA+angleB) &gt; 200">
+                <var id="angleA">randRange(70, 90)</var>
+				<var id="angleB">randRange(100, 140)</var>
+                <var id="ANS">round(360-angleA-angleB)</var>
+                <var id="SINS">[Math.sin((180-ANS)/180*Math.PI),Math.sin((180-angleA)/180*Math.PI)]</var>
+                <var id="LA">6*SINS[0]/SINS[1]</var>
+                <var id="POINT_A">polar(LA,180-angleB)</var>
+                <var id="AF">polar(LA+1,180-angleB)</var>
+                <var id="K">POINT_A[1]/(POINT_A[0]-3-3)</var>
+                <var id="B">POINT_A[1]-K*(POINT_A[0]-3)</var>
+                <var id="LABEL_C">polar(1, 180+ANS/2)</var>
+                <var id="LABEL_A">polar(1, 178+ANS+angleA/2)</var>
+                <var id="LABEL_B">polar(1, 180-angleB/2)</var>
+
+                <var id="ASK_INIT">['AB','AC','BC']</var>
+            	<var id="ANS_INIT">['ACB','ABC','BAC']</var>
+                <var id="J">randRangeUnique(1,4,3)</var>
+            	<var id="ASK">[ASK_INIT[J[0]-1],ASK_INIT[J[1]-1],ASK_INIT[J[2]-1]]</var>
+            	<var id="ANSS">[ANS_INIT[J[0]-1],ANS_INIT[J[1]-1],ANS_INIT[J[2]-1]]</var>
+
+            	<var id="angleC">angleA+angleB-180</var>
+            	<var id="tops">(function(){
+            		return angleC &gt; 180 - angleA ? [ANSS[1].charAt(1),ANSS[2].charAt(1),ANSS[0].charAt(1)] : ( angleC &lt; 180 - angleB ? [ANSS[0].charAt(1),ANSS[1].charAt(1),ANSS[2].charAt(1)] : [ANSS[0].charAt(1),ANSS[2].charAt(1),ANSS[1].charAt(1)] );
+            	})()</var>
+            	<var id="outs">(function(){
+            		var out1 = tops[0] === 'A' ? 1 : ( tops[0] === 'B' ? 2 : 3 );
+            		var out2 = tops[1] === 'A' ? 1 : ( tops[1] === 'B' ? 2 : 3 );
+            		var out3 = 6 - out1 - out2;
+            		return [out1, out2, out3];
+            	})()</var>
+            </div>
+
+            <p class="question">如圖，<code>\triangle ABC</code> 中，若 <code>\overline{<var>ASK[0]</var>}&gt;\overline{<var>ASK[1]</var>}&gt;\overline{<var>ASK[2]</var>}</code> ，且 <code>\angle BAC</code>、<code>\angle ABC</code>、<code>\angle ACB</code> 的外角分別為 <code>\angle 1</code>、<code>\angle 2</code>、<code>\angle 3</code>，則外角的大小關係為何？</p>
+            <div class="problem">
+                <div class="graphie" id="triangles2">
+                    init({
+                        range: [[-5, 5], [-2, AF[1]+2]],
+                        scale: 40
+                    });
+                    line([-4,0],[3,0]);
+                    line([-3,0],[AF[0]-3,AF[1]]);
+                    line([4,4*K+B],[POINT_A[0]-3,POINT_A[1]]);
+                    arc( [3, 0], 0.5, 180, 178+ANS, { stroke: KhanUtil.GREEN } );
+                    arc( [POINT_A[0]-3,POINT_A[1]], 0.5, 178+ANS, 178+ANS+angleA, { stroke: KhanUtil.GREEN } );
+                    arc( [-3,0], 0.5, 180-angleB, 180, { stroke: KhanUtil.GREEN });
+                    label([LABEL_C[0]+3,LABEL_C[1]], outs[2]);
+                    label([LABEL_A[0]+POINT_A[0]-3,LABEL_A[1]+POINT_A[1]], outs[0]);
+                    label([LABEL_B[0]-3,LABEL_B[1]], outs[1]);
+                    label([-3,0],tops[1],'below');
+                    label([POINT_A[0]-3,POINT_A[1]],tops[0],'left');
+                    label([3,0],tops[2],'above right');
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                <p><code>\angle </code> <input type="text" id="a4" style="width:20px;"> <code>\color{red}{&gt;} \angle </code> <input type="text" id="a5" style="width:20px;"> <code>\color{red}{&gt;} \angle </code> <input type="text" id="a6" style="width:20px;"></p>
+                <div class="sol" data-type="custom">
+					<div class="guess">[$('#a4').val().replace(/[ ]/g,""),$('#a5').val().replace(/[ ]/g,""),$('#a6').val().replace(/[ ]/g,"")]</div>
+					<div class="validator-function">
+						if(guess[0] === '' || guess[1] === '' || guess[2] === ''){
+							return "";
+						}else{
+							return guess[0] == outs[2] &amp;&amp; guess[1] == outs[1] &amp;&amp; guess[2] == outs[0];
+						}
+						
+					</div>
+				</div>
+                <p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+            	<p>這題主要用到三角形的大邊對大角性質。</p>
+            	<div>
+            		<p>因為題目說 <code>\overline{<var>ASK[0]</var>}&gt;\overline{<var>ASK[1]</var>}&gt;\overline{<var>ASK[2]</var>}</code> ，從圖我們知道 ：</p>
+            		<p><code>\qquad \overline{AB}</code> 對應的角是 <code>\angle ACB</code>；</p>
+            		<p><code>\qquad \overline{BC}</code> 對應的角是 <code>\angle BAC</code>；</p>
+            		<p><code>\qquad \overline{AC}</code> 對應的角是 <code>\angle ABC</code>；</p>
+            	</div>
+            	<div>
+            		<p>利用大邊對大角性質，我們知道三個角度的大小關係為 ：</p>
+            		<p><code>\qquad \angle <var>ANSS[0]</var> &gt; \angle <var>ANSS[1]</var> &gt; \angle <var>ANSS[2]</var></code></p>
+            	</div>
+            	<div>
+            		<p>因為外角為 <code>180^\circ-</code> 內角，所以內角越大，外角會越小，</p>
+            		<p>我們可以得到外角的關係為 :</p>
+            		<p><code class="hint_pink">\qquad \angle <var>outs[2]</var> &gt; \angle <var>outs[1]</var> &gt; \angle <var>outs[0]</var></code></p>
+            	</div>
+            </div>
+        </div>
+
+        <div id="case3">
+            <div class="vars" data-ensure="ensurelen &gt; 2 && ensurelen &lt; 5 && abs(LEN_AB - LEN_AC) &gt; 0.001">
+                <var id="TRI">4</var>
+                <var id="TOP_A">[randRange(-TRI,TRI),randRange(1,TRI)]</var>
+                <var id="TOP_B">[randRange(-TRI,0),randRange(-TRI,-1)]</var>
+                <var id="TOP_C">[randRange(0,TRI),randRange(-TRI,-1)]</var>
+                <var id="LEN_AB">getLength(TOP_A,TOP_B)</var>
+                <var id="LEN_AC">getLength(TOP_A,TOP_C)</var>
+                <var id="LEN_BC">getLength(TOP_B,TOP_C)</var>
+                <var id="CEN">getCentre(LEN_BC, LEN_AC, LEN_AB, TOP_A, TOP_B, TOP_C)</var>
+                <var id="ensurelen">(LEN_AB+LEN_AC+LEN_BC-max(LEN_AB, LEN_AC, LEN_BC)) - max(LEN_AB, LEN_AC, LEN_BC)</var>
+                <var id="RELATION">LEN_AC - LEN_AB</var>
+                <var id="ANS">RELATION &lt; 0 ? '&lt;' : '&gt;'</var>
+            </div>
+
+            <div class="question">
+            	<p class="question">如圖，<code>\triangle ABC</code> 中，若 <code>\overline{AC} <var>ANS</var> \overline{AB}</code>，且 <code>\overline{DB}</code>、<code>\overline{DC}</code> 分別為 <code>\angle ABC</code>、<code>\angle ACB</code> 的角平分線，試比較 <code>\angle 1</code> 與 <code>\angle 2</code> 的大小？</p>
+            	<div class="problem">
+            		<div class="graphie" id="triangles3">
+            			init({
+            				range: [[-5, 5], [-5, 5]],
+            				scale: 40
+            			});
+
+                        path([TOP_A, TOP_B, TOP_C, TOP_A]);
+                        line(CEN,TOP_B);
+                        line(CEN,TOP_C);
+                        label(TOP_A,'A','above');
+                        label(TOP_B,'B','left');
+                        label(TOP_C,'C','right');
+                        label(CEN, 'D', 'above');
+                        var ang1 = getBetAngle(TOP_B,CEN,TOP_B,TOP_C);
+                        var ang2 = getBetAngle(TOP_B,TOP_C,TOP_B,[TOP_B[0]+1,TOP_B[1]]);
+
+                        var ang3 = getBetAngle(TOP_C,CEN,TOP_C,TOP_B);
+                        var ang4 = getBetAngle(TOP_C,TOP_B,TOP_C,[TOP_C[0]-1,TOP_C[1]]);
+                        if(TOP_B[1] &lt;= TOP_C[1]){
+                        	label([polar(1,ang2 + ang1 / 2)[0]+TOP_B[0],polar(1,ang2 + ang1 / 2)[1]+TOP_B[1]],'\\small{1}'); 
+                        }else{
+                        	label([polar(1,(ang1-ang2) / 2)[0]+TOP_B[0],polar(1,(ang1-ang2) / 2)[1]+TOP_B[1]],'\\small{1}');
+                        }
+                        if(TOP_B[1] &lt;= TOP_C[1]){
+                        	label([polar(1, 180+ang4-ang3 / 2)[0]+TOP_C[0],polar(1,180+ang4-ang3 / 2)[1]+TOP_C[1]],'\\small{2}');
+                        }else{
+                        	label([polar(1, 180-ang4-ang3 / 2)[0]+TOP_C[0],polar(1,180-ang4-ang3 / 2)[1]+TOP_C[1]],'\\small{2}');
+                        }
+            		</div>
+            	</div>
+            </div>	
+            <div class="solution" data-type="multiple">
+                <p><code>\angle 1\quad</code><span class="sol" data-type="list" data-choices="['', '&lt;', '&gt;']"><var>ANS</var></span><code>\quad\angle 2</code></p>
+				<p class="example">在下拉列表中選擇正確的答案</p>
+            </div>
+
+            <div class="hints">
+                <p>這題主要用到三角形的大邊對大角性質。</p>
+                <div>
+                    <p>因為題目說 <code>\overline{AC}<var>ANS</var>\overline{AB}</code> ，從圖我們知道：</p>
+                    <p><code>\qquad\overline{AB}</code> 對應的角是 <code>\angle ACB</code></p>
+                    <p><code>\qquad\overline{AC}</code> 對應的角是 <code>\angle ABC</code></p>
+                </div>
+                <div>
+                    <p>利用大邊對大角性質，我們知道兩個角度的大小關係為</p>
+                    <p><code>\qquad\angle ABC <var>ANS</var>\angle ACB</code></p>
+                </div>
+                <div>
+                    <p>因為 <code>\overline{DB}</code>、<code>\overline{DC}</code> 分別為 <code>\angle ABC</code>、<code>\angle ACB</code> 的角平分線，因此</p>
+                    <p><code>\qquad\angle 1 = \dfrac{1}{2} \angle ABC</code></p>
+                    <p><code>\qquad\angle 2 = \dfrac{1}{2} \angle ACB</code></p>
+                </div>
+                <div>
+                    <p>所以我們可以得到角度大小關係為：</p>
+                    <p><code>\angle 1 = \dfrac{1}{2} \angle ABC \enspace<var>ANS</var>\enspace \dfrac{1}{2} \angle ACB = \angle 2</code></p>
+                </div>
+                <p>答案為 <code class="hint_pink"><var>ANS</var></code> 。</p>
+            </div>
+        </div>
+
+        <div id="case4">
+            <div class="vars" data-ensure="ANGLES[0] &gt; 100 && ANGLES[1] !== ANGLES[2] && R[1] - R[0] &lt;= 8">
+                <var id="ASK_INIT">['AB','AC','BC']</var>
+                <var id="ANS_INIT">['C','B','A']</var>
+                <var id="J">randRangeUnique(1,4,3)</var>
+                <var id="ASK">[ASK_INIT[J[0]-1],ASK_INIT[J[1]-1],ASK_INIT[J[2]-1]]</var>
+                <var id="ANS">[ANS_INIT[J[0]-1],ANS_INIT[J[1]-1],ANS_INIT[J[2]-1]]</var>
+                <var id="ANGLES">randomTriangleAngles.triangle().sort(function(a,b){return b-a;})</var>
+                <var id="TR">(function(){
+                    return new Triangle( [ 0, 0 ], ANGLES , 10 , {} );
+                })()</var>
+                <var id="RAN">TR.points</var>
+                <var id="R">[round(min(RAN[0][0],RAN[1][0],RAN[2][0])),round(max(RAN[0][0],RAN[1][0],RAN[2][0])),round(min(RAN[0][1],RAN[1][1],RAN[2][1])),round(max(RAN[0][1],RAN[1][1],RAN[2][1]))]</var>
+            </div>
+
+            <div class="question">
+                <p class="question">如圖，<code>\triangle ABC</code> 中，<code>\angle <var>ANS[0]</var>&gt;\angle <var>ANS[1]</var>&gt;\angle <var>ANS[2]</var></code>，則 <code>\overline{AB}</code>、<code>\overline{BC}</code>、<code>\overline{AC}</code> 的大小關係為何？</p>
+                <div class="problem">
+                    <div class="graphie" id="triangles">
+                        init({
+                            range: [[R[0]-2, R[1]+2], [R[2]-2, R[3]+2]],
+                            scale: 40
+                        });
+
+                        TR.draw();
+                        TR.labels = { "points": ANS };
+                        TR.drawLabels();
+                    </div>
+                </div>
+            </div>  
+            <div class="solution" data-type="multiple">
+                <p><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="aa1" style="width:25px;"></span> <code>\color{red}{&gt;} </code> <span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="aa2" style="width:25px;"></span> <code>\color{red}{&gt;} </code> <span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" id="aa3" style="width:25px;"></span></p>
+                <div class="sol" data-type="custom">
+                    <div class="guess">[$('#aa1').val().toUpperCase().replace(/[ ]/g,""),$('#aa2').val().toUpperCase().replace(/[ ]/g,""),$('#aa3').val().toUpperCase().replace(/[ ]/g,"")]</div>
+                    <div class="validator-function">
+                        if(guess[0] === '' || guess[1] === '' || guess[2] === ''){
+                            return "";
+                        }else{
+                            return (guess[0] === ASK[0] || guess[0] === ASK[0].charAt(1)+ASK[0].charAt(0)) &amp;&amp; (guess[1] === ASK[1] || guess[1] === ASK[1].charAt(1)+ASK[1].charAt(0)) &amp;&amp; (guess[2] === ASK[2] || guess[2] === ASK[2].charAt(1)+ASK[2].charAt(0));
+                        }
+                        
+                    </div>
+                </div>
+                <p class="example">英文，例 <code>：A</code> 或 <code>a</code></p>
+            </div>
+
+            <div class="hints">
+                <p>這題主要用到三角形的大角對大邊性質。</p>
+                <div>
+                    <p>因為題目說 <code>\angle <var>ANS[0]</var>&gt;\angle <var>ANS[1]</var>&gt;\angle <var>ANS[2]</var></code> ，從圖我們知道 ：</p>
+                    <p><code>\qquad\angle A</code> 對應的邊是 <code>\overline{BC}</code>；</p>
+                    <p><code>\qquad\angle B</code> 對應的邊是 <code>\overline{AC}</code>；</p>
+                    <p><code>\qquad\angle C</code> 對應的邊是 <code>\overline{AB}</code>；</p>
+                </div>
+                <div>
+                    <p>利用大角對大邊性質，我們知道三個邊的大小關係為 ：</p>
+                    <p><code class="hint_pink">\qquad \overline{<var>ASK[0]</var>} &gt; \overline{<var>ASK[1]</var>} &gt; \overline{<var>ASK[2]</var>}</code></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

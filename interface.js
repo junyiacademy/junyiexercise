@@ -224,8 +224,11 @@ function handleAttempt(data) {
         $("#next-question-button")
             .prop("disabled", false)
             .removeClass("buttonDisabled")
-            .show()
-            .focus();
+            .show();
+        if(!/iphone|ipod|ipad/i.test(navigator.userAgent)) // check if is ipad device
+        {
+            $("#next-question-button").focus();
+        }
         $("#positive-reinforcement").show();
         $("#skip-question-button").prop("disabled", true);
     } else {

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html data-require="math graphie word-problems angles interactive subhints">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>樞紐定理與逆樞紐定理</title>
+    <script src="../khan-exercise.js"></script>
+    <script language="javascript">
+        function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+        function rotatePoint(p, deg, c) {
+            var rad = KhanUtil.toRadians(deg),
+                cos = Math.cos(rad),
+                sin = Math.sin(rad),
+                c = c || [0, 0],
+                cx = c[0],
+                cy = c[1],
+                px = p[0],
+                py = p[1],
+                x = cx + (px - cx) * cos - (py - cy) * sin,
+                y = cy + (px - cx) * sin + (py - cy) * cos;
+            return [KhanUtil.roundTo(9, x), KhanUtil.roundTo(9, y)];
+        }
+    </script>
+</head>
+<body>
+
+<div class="exercise">   
+    <div class="problems">
+		<div id="case1">
+            <div class="vars">
+                <var id="angle">randRangeUnique(45,135,2)</var>
+                <var id="angleA">angle[0]</var>
+                <var id="angleD">angle[1]</var>
+                <var id="START_ANGLE">randRange(0,360)</var>
+                <var id="END_ANGLEA">START_ANGLE+angleA</var>
+                <var id="END_ANGLED">START_ANGLE+angleD</var>
+                <var id="SIDE_LENGTH">randRange(3,5,2)</var>
+                <var id="C_POLAR">polar(SIDE_LENGTH[0],START_ANGLE)</var>
+                <var id="B_POLAR">polar(SIDE_LENGTH[1],END_ANGLEA)</var>
+                <var id="E_POLAR">polar(SIDE_LENGTH[0],START_ANGLE)</var>
+                <var id="F_POLAR">polar(SIDE_LENGTH[1],END_ANGLED)</var>
+
+                <var id="RANGE_LEFT">round(min(C_POLAR[0],B_POLAR[0],0))</var>
+                <var id="RANGE_RIGHT">round(max(C_POLAR[0],B_POLAR[0],0))</var>
+                <var id="RANGE_UP">round(max(C_POLAR[1],B_POLAR[1],E_POLAR[1]+2,F_POLAR[1]+1,2))</var>
+                <var id="RANGE_BELOW">round(min(C_POLAR[1],B_POLAR[1],0,E_POLAR[1]+1,F_POLAR[1]+1))</var>
+                <var id="move_len">abs(RANGE_RIGHT-RANGE_LEFT)+6</var>
+                <var id="RANGE_RIGHT_2">round(max(E_POLAR[0]+move_len,F_POLAR[0]+move_len,move_len))</var>
+                <var id="ans">(function(){
+                           if(angleA&gt;angleD){
+                           var shape="&gt;";
+                           return shape;}
+                           if(angleA&lt;angleD){var shape="&lt;";
+                           }
+                           return shape;
+                        })()</var>
+            </div>
+
+            <p class="question">有兩個三角形 <code>\triangle ABC</code> 與 <code>\triangle DEF</code>，其中 <code>\overline{AB} = \overline{DE}</code>，<code>\overline{AC} = \overline{DF}</code>，<code>\angle A = <var>angleA</var>^\circ</code>，<code>\angle D = <var>angleD</var>^\circ</code>，請判斷 <code>\overline{BC}</code> 與 <code>\overline{EF}</code> 的大小關係。</p>
+            <div class="problem">
+                <div class="graphie">
+                     init({
+                            range: [[RANGE_LEFT-2, RANGE_RIGHT_2+3], [RANGE_BELOW-2, RANGE_UP+2]],
+                            scale: 20
+                        });
+                    
+                    graph.AC = line([0,0],C_POLAR,{stroke:"blue"});
+                    graph.BA = line([0,0],B_POLAR,{stroke:"blue"});
+                    graph.BC = line(C_POLAR,B_POLAR,{stroke:"blue"});
+
+                    graph.C = label(polar(SIDE_LENGTH[0]+0.5,START_ANGLE-5),"\\small{B}",{color:"black"});
+                    graph.B = label(polar(SIDE_LENGTH[1]+0.5,END_ANGLEA+5),"\\small{C}",{color:"black"});
+                    graph.A = label(polar(0.8,(START_ANGLE+END_ANGLEA)/2+180),"\\small{A}",{color:"black"});
+                    
+                    graph.CPOINT = circle(polar(SIDE_LENGTH[0],START_ANGLE),0.1,{fill : "red",stroke: "red"});
+                    graph.BPOINT = circle(polar(SIDE_LENGTH[1],END_ANGLEA),0.1,{fill : "red",stroke: "red"});
+                    graph.APOINT = circle([0,0],0.1,{fill : "red",stroke: "red"});
+
+                    graph.DE = line([move_len,1],[E_POLAR[0]+move_len,E_POLAR[1]+1],{stroke:"blue"});
+                    graph.DF = line([move_len,1],[F_POLAR[0]+move_len,F_POLAR[1]+1],{stroke:"blue"});
+                    graph.EF = line([E_POLAR[0]+move_len,E_POLAR[1]+1],[F_POLAR[0]+move_len,F_POLAR[1]+1],{stroke:"blue"});
+
+                    graph.EPOINT = circle([E_POLAR[0]+move_len,E_POLAR[1]+1],0.1,{fill : "red",stroke: "red"});
+                    graph.FPOINT = circle([F_POLAR[0]+move_len,F_POLAR[1]+1],0.1,{fill : "red",stroke: "red"});
+                    graph.DPOINT = circle([move_len,1],0.1,{fill : "red",stroke: "red"});
+                    var lableE=polar(SIDE_LENGTH[0]+0.5,START_ANGLE-5);
+                    var lableF=polar(SIDE_LENGTH[1]+0.5,END_ANGLED+5);
+                    var lableD=polar(0.8,(START_ANGLE+END_ANGLEA)/2+180)
+                    graph.D = label([lableD[0]+move_len,lableD[1]+1],"\\small{D}",{color:"black"}); 
+                    graph.E = label([lableE[0]+move_len,lableE[1]+1],"\\small{E}",{color:"black"}); 
+                    graph.F = label([lableF[0]+move_len,lableF[1]+1],"\\small{F}",{color:"black"}); 
+
+                    var aa=polar(1.1,START_ANGLE+angleA/2);
+                    graph.arc=arc([0, 0], 0.5, START_ANGLE, START_ANGLE + angleA, { stroke: "purple"});
+                    graph.label=label( [aa[0], aa[1]],  "\\tiny{"+angleA+"^{\\circ}}", "center", { color: "purple" });
+
+                     var bb=polar(1.1,START_ANGLE+angleD/2);
+                     graph.arc=arc([move_len,1], 0.5, START_ANGLE, START_ANGLE + angleD, { stroke: "purple"});
+                    graph.label=label( [bb[0]+move_len, bb[1]+1],  "\\tiny{"+angleD+"^{\\circ}}", "center", { color: "purple" }); 
+
+                </div>
+            </div>           
+            <div class="solution" data-type="multiple">
+                <p><code>\overline{ BC }\enspace</code> <span class="sol" data-type="list" data-choices="['', '&lt;', '&gt;']"><var>ans</var></span> <code>\enspace\overline{EF}</code></p>
+                <p class="example">在下拉列表中選擇正確的答案</p>
+            </div>
+            <div class="hints">
+               <div>
+                    <p>這題主要用到樞紐定理，即若兩三角形中，有兩組對應邊相等，則所夾的角越大，其所對的第三邊也越大。</p>
+                    <p>(比較一下：跟大角對大邊性質差在哪裡？)</p>
+               </div>
+               <p>因為題目說 <code>\overline{AB} = \overline{DE}</code>，<code>\overline{AC} = \overline{DF}</code>，也就是滿足樞紐定理的兩組對應邊相等的條件，另外題目也說 <code>\angle A = <var>angleA</var>^\circ</code>，<code>\angle D = <var>angleD</var>^\circ</code>，因此 <code>\angle A <var>ans</var> \angle D</code>。</p>
+               <p>利用樞紐定理，我們知道大小關係為 <code class="hint_pink">\overline{BC} <var>ans</var> \overline{EF}</code> 。</p>
+            </div>
+        </div>
+
+        <div id="case2">
+            <div class="vars">
+                <var id="angle">randRangeUnique(45,135,2)</var>
+                <var id="angleA">angle[0]</var>
+                <var id="angleD">angle[1]</var>
+                <var id="START_ANGLE">randRange(0,360)</var>
+                <var id="END_ANGLEA">START_ANGLE+angleA</var>
+                <var id="END_ANGLED">START_ANGLE+angleD</var>
+                <var id="SIDE_LENGTH">randRange(3,5,2)</var>
+                <var id="C_POLAR">polar(SIDE_LENGTH[0],START_ANGLE)</var>
+                <var id="B_POLAR">polar(SIDE_LENGTH[1],END_ANGLEA)</var>
+                <var id="E_POLAR">polar(SIDE_LENGTH[0],START_ANGLE)</var>
+                <var id="F_POLAR">polar(SIDE_LENGTH[1],END_ANGLED)</var>
+
+                <var id="RANGE_LEFT">round(min(C_POLAR[0],B_POLAR[0],0))</var>
+                <var id="RANGE_RIGHT">round(max(C_POLAR[0],B_POLAR[0],0))</var>
+                <var id="RANGE_UP">round(max(C_POLAR[1],B_POLAR[1],E_POLAR[1]+2,F_POLAR[1]+1,2))</var>
+                <var id="RANGE_BELOW">round(min(C_POLAR[1],B_POLAR[1],0,E_POLAR[1]+1,F_POLAR[1]+1))</var>
+                <var id="move_len">abs(RANGE_RIGHT-RANGE_LEFT)+6</var>
+                <var id="RANGE_RIGHT_2">round(max(E_POLAR[0]+move_len,F_POLAR[0]+move_len,move_len))</var>
+                <var id="ans">(function(){
+                           if(angleA&gt;angleD){
+                           var shape="&gt;";
+                           return shape;}
+                           if(angleA&lt;angleD){var shape="&lt;";
+                           }
+                           return shape;
+                        })()</var>
+            </div>
+
+            <p class="question">有兩個三角形 <code>\triangle ABC</code> 與 <code>\triangle DEF</code>，其中 <code>\overline{AB} = \overline{DE}</code>，<code>\overline{AC} = \overline{DF}</code>，<code>\overline{BC} <var>ans</var> \overline{EF}</code>，請判斷 <code>\angle A</code> 與 <code>\angle D</code> 的大小關係。</p>
+            <div class="problem">
+                <div class="graphie">
+                     init({
+                            range: [[RANGE_LEFT-2, RANGE_RIGHT_2+3], [RANGE_BELOW-2, RANGE_UP+2]],
+                            scale: 20
+                        });
+                    
+                    graph.AC = line([0,0],C_POLAR,{stroke:"blue"});
+                    graph.BA = line([0,0],B_POLAR,{stroke:"blue"});
+                    graph.BC = line(C_POLAR,B_POLAR,{stroke:"blue"});
+
+                    graph.C = label(polar(SIDE_LENGTH[0]+0.5,START_ANGLE-5),"\\small{B}",{color:"black"});
+                    graph.B = label(polar(SIDE_LENGTH[1]+0.5,END_ANGLEA+5),"\\small{C}",{color:"black"});
+                    graph.A = label(polar(0.8,(START_ANGLE+END_ANGLEA)/2+180),"\\small{A}",{color:"black"});
+                    
+                    graph.CPOINT = circle(polar(SIDE_LENGTH[0],START_ANGLE),0.1,{fill : "red",stroke: "red"});
+                    graph.BPOINT = circle(polar(SIDE_LENGTH[1],END_ANGLEA),0.1,{fill : "red",stroke: "red"});
+                    graph.APOINT = circle([0,0],0.1,{fill : "red",stroke: "red"});
+
+                    graph.DE = line([move_len,1],[E_POLAR[0]+move_len,E_POLAR[1]+1],{stroke:"blue"});
+                    graph.DF = line([move_len,1],[F_POLAR[0]+move_len,F_POLAR[1]+1],{stroke:"blue"});
+                    graph.EF = line([E_POLAR[0]+move_len,E_POLAR[1]+1],[F_POLAR[0]+move_len,F_POLAR[1]+1],{stroke:"blue"});
+
+                    graph.EPOINT = circle([E_POLAR[0]+move_len,E_POLAR[1]+1],0.1,{fill : "red",stroke: "red"});
+                    graph.FPOINT = circle([F_POLAR[0]+move_len,F_POLAR[1]+1],0.1,{fill : "red",stroke: "red"});
+                    graph.DPOINT = circle([move_len,1],0.1,{fill : "red",stroke: "red"});
+                    var lableE=polar(SIDE_LENGTH[0]+0.5,START_ANGLE-5);
+                    var lableF=polar(SIDE_LENGTH[1]+0.5,END_ANGLED+5);
+                    var lableD=polar(0.8,(START_ANGLE+END_ANGLEA)/2+180);
+                    graph.D = label([lableD[0]+move_len,lableD[1]+1],"\\small{D}",{color:"black"}); 
+                    graph.E = label([lableE[0]+move_len,lableE[1]+1],"\\small{E}",{color:"black"}); 
+                    graph.F = label([lableF[0]+move_len,lableF[1]+1],"\\small{F}",{color:"black"});  
+
+                </div>
+            </div>           
+            <div class="solution" data-type="multiple">
+                <p><code>\angle A \enspace</code> <span class="sol" data-type="list" data-choices="['', '&lt;', '&gt;']"><var>ans</var></span> <code>\enspace\angle D</code></p>
+                <p class="example">在下拉列表中選擇正確的答案</p>
+            </div>
+            <div class="hints">
+               <div>
+                    <p>這題主要用到逆樞紐定理，若兩三角形中，有兩組對應邊相等，則第三邊越大，其所對的夾角也越大。</p>
+                    <p>(比較一下：跟大邊對大角性質差在哪裡？跟樞紐定理差在哪裡？)</p>
+               </div>
+               <p>因為題目說 <code>\overline{AB} = \overline{DE}</code>，<code>\overline{AC} = \overline{DF}</code>，也就是滿足逆樞紐定理的兩組對應邊相等的條件。</p>
+               <p>另外題目還說 <code>\overline{BC} <var>ans</var> \overline{EF}</code>，因此利用逆樞紐定理，我們知道大小關係為 <code class="hint_pink">\angle A <var>ans</var> \angle D</code> 。</p>
+            </div>
+        </div>
+
+        <div id="case3">
+            <div class="vars">
+                <var id="angle">randRangeUnique(45,135,2)</var>
+                <var id="angle1">angle[0]</var>
+                <var id="angle2">angle[1]</var>
+                <var id="radius">randRange(1, 5)</var>
+                <var id="R">radius+6</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+                <var id="ans">(function(){
+                           if(angle1&gt;angle2){
+                           var shape="&gt;";
+                           return shape;}
+                           if(angle1&lt;angle2){var shape="&lt;";
+                           }
+                           return shape;
+                        })()</var>
+            </div>
+
+            <p class="question">如圖，有一圓 <code>O</code>，<code>O</code> 為圓心，<code>\overline{AB}、\overline{CD}</code> 為圓上兩條弦，若 <code>\angle AOB = <var>angle1</var>^\circ、</code> <code>\angle COD = <var>angle2</var>^\circ</code>，試比較 <code>\overline{AB}</code> 與 <code>\overline{CD}</code> 大小。</p>
+            <div class="problem">
+                <div class="graphie">
+                     init({
+                            range: [[-R - 3, R + 3], [-R - 3, R + 3]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], R,{ stroke: "black" });
+                        circle([0, 0], 0.2, { stroke: "blue" ,fill:"blue"}); 
+
+                        var angle3=(360-angle1-angle2)/2;
+                        var aa=polar(2,(2*ROTATE_ARC+2*angle1+angle3)/2);
+                        graph.label=label( [aa[0], aa[1]],  "O", "center", { color: "black" });  
+
+                        var poiB = [R*Math.cos((ROTATE_ARC)*Math.PI/180),R*Math.sin((ROTATE_ARC)*Math.PI/180)];             
+                        var poiA = [R*Math.cos((ROTATE_ARC + angle1)*Math.PI/180),R*Math.sin((ROTATE_ARC + angle1)*Math.PI/180)];
+                        line(poiA,[0,0],{stroke: "black"});
+                        line([0,0],poiB,{stroke: "black"});
+                        line(poiA,poiB, { stroke: "black"});
+                        label( [1.15*(poiA[0]),1.15*poiA[1]],  "B", "center", { color: "black" });
+                        label( [1.15*(poiB[0]),1.15*poiB[1]],  "A", "center", { color: "black" }); 
+                        circle(poiA, 0.2, { stroke: "blue" ,fill:"blue"}); 
+                        circle(poiB, 0.2, { stroke: "blue" ,fill:"blue"}); 
+                        graph.arc=arc([0, 0], 1, ROTATE_ARC, ROTATE_ARC + angle1, { stroke: "purple"});  
+                        graph.label=label( polar(2,ROTATE_ARC+angle1/2),  "\\tiny{"+angle1+"^{\\circ}}", "center", { color: "purple" });  
+                        
+                        var poiC = [R*Math.cos((ROTATE_ARC + angle1+angle3)*Math.PI/180),R*Math.sin((ROTATE_ARC + angle1+angle3)*Math.PI/180)];             
+                        var poiD = [R*Math.cos((ROTATE_ARC + angle1+angle3 + angle2)*Math.PI/180),R*Math.sin((ROTATE_ARC + angle1+angle3 + angle2)*Math.PI/180)];
+
+                        line(poiC,[0,0],{stroke: "black"});
+                        line([0,0],poiD,{stroke: "black"});
+                        line(poiC,poiD, { stroke: "black"});
+                        label( [1.15*(poiC[0]),1.15*poiC[1]],  "C", "center", { color: "black" });
+                        label( [1.15*(poiD[0]),1.15*poiD[1]],  "D", "center", { color: "black" }); 
+                        circle(poiC, 0.2, { stroke: "blue" ,fill:"blue"}); 
+                        circle(poiD, 0.2, { stroke: "blue" ,fill:"blue"}); 
+
+                        graph.arc=arc([0, 0], 1, ROTATE_ARC + angle1+angle3, ROTATE_ARC + angle1+angle3 + angle2, { stroke: "purple"});  
+                        graph.label=label( polar(2,(ROTATE_ARC*2 + angle1*2+angle3*2 + angle2)/2),  "\\tiny{"+angle2+"^{\\circ}}", "center", { color: "purple" });
+                       
+                </div>
+            </div>           
+            <div class="solution" data-type="multiple">
+                <p><code>\overline{AB} \enspace</code> <span class="sol" data-type="list" data-choices="['', '&lt;', '&gt;']"><var>ans</var></span> <code>\enspace\overline{CD}</code></p>
+                <p class="example">在下拉列表中選擇正確的答案</p>
+            </div>
+            <div class="hints">
+               <div>
+                    <p>這題主要用到樞紐定理，即若兩三角形中，有兩組對應邊相等，則所夾的角越大，其所對的第三邊也越大。</p>
+                    <p>(比較一下：跟大角對大邊性質差在哪裡？)</p>
+               </div>
+               <div>
+                    <p>因為這是一個圓，而一個圓的半徑都相等，</p>
+                    <p>因此 <code>\overline{OA} =\overline{OB}=\overline{OC} = \overline{OD}</code>，</p>
+                    <p>也就是滿足樞紐定理的兩組對應邊相等的條件。</p>
+                    <p>題目也說 <code>\angle AOB = <var>angle1</var>^\circ</code>，<code>\angle COD = <var>angle2</var>^\circ</code>，</p>
+                    <p>因此 <code>\angle AOB <var>ans</var> \angle COD</code>。</p>
+               </div>
+               <p>利用樞紐定理，我們知道大小關係為 <code class="hint_pink">\overline{AB} <var>ans</var> \overline{CD}</code>。</p>
+            </div>
+        </div>
+
+        <div id="case4">
+            <div class="vars">
+                <var id="relation,ans,num">randFromArray([[ "&lt;" , "&gt;",1] , [ "&gt;" ,"&lt;",2]])</var>
+                <var id="angle">randRange(1, 350)</var>
+                <var id="R">randRange(6, 10)</var>
+                <var id="R_1">(function(){
+                            var a=randRange(5, 8);
+                            var gnum=a+1;
+                            var lnum=a-1;
+                           if(num==1){
+                                return [lnum,gnum];}
+                           if(num==2){return [gnum,lnum];}
+                        })()</var>         
+                <var id="ROTATE_ARC">randRange(0, 359)</var>
+            </div>
+
+            <p class="question">如圖，<code>\overline{AB}</code> 與 <code>\overline{CD}</code> 交於 <code>E</code> 點，且 <code>E</code> 點為 <code>CD</code> 的中點，<code>\overline{AC} = \overline{BD}、</code> <code>\overline{AE} <var>relation</var> \overline{BE}</code> ，則 <code>\angle 1</code> 與 <code>\angle 2</code> 的大小關係為何？</p>
+            <div class="problem">
+                <div class="graphie">       
+                        init({
+                            range: [[-R - 3, R + 3], [-R - 3, R + 3]],
+                            scale: [15, 15]
+                        });
+
+                        circle([0, 0], 0.2, { stroke: "blue" ,fill:"blue"}); 
+                       
+                        var aa=rotatePoint(polar(2,90),angle,[0,0]);
+                        graph.label=label( [aa[0], aa[1]],  "E", "center", { color: "black" });  
+                        var poiD = rotatePoint(polar(R,45),angle,[0,0]);
+                        var poiA = rotatePoint(polar(R_1[0],180),angle,[0,0]);
+                        var poiC = rotatePoint(polar(R,225),angle,[0,0]);
+                        var poiB = rotatePoint(polar(R_1[1],360),angle,[0,0]);
+
+                        var poi2 = rotatePoint(polar(R_1[1],368),angle,[0,0]);
+                        var poi1 = rotatePoint(polar(R_1[0],188),angle,[0,0]);
+                       
+                        line(poiA,poiB, { stroke: "black"});
+                        line(poiC,poiD, { stroke: "black"});
+                        line(poiC,poiA, { stroke: "black"});
+                        line(poiB,poiD, { stroke: "black"});
+
+                        label( [1.2*(poiB[0]),1.2*poiB[1]],  "B", "center", { color: "black" });
+                        label( [1.2*(poiA[0]),1.2*poiA[1]],  "A", "center", { color: "black" }); 
+                        circle(poiA, 0.2, { stroke: "blue" ,fill:"blue"}); 
+                        circle(poiB, 0.2, { stroke: "blue" ,fill:"blue"}); 
+
+                        label( [1.15*(poiC[0]),1.15*poiC[1]],  "C", "center", { color: "black" });
+                        label( [1.15*(poiD[0]),1.15*poiD[1]],  "D", "center", { color: "black" }); 
+                        circle(poiC, 0.2, { stroke: "blue" ,fill:"blue"}); 
+                        circle(poiD, 0.2, { stroke: "blue" ,fill:"blue"}); 
+
+                        label( [0.85*(poi1[0]),0.85*poi1[1]],  "1", "center", { color: "black" });
+                        label( [0.85*(poi2[0]),0.85*poi2[1]],  "2", "center", { color: "black" }); 
+                       
+                        
+                </div>
+            </div>           
+            <div class="solution" data-type="multiple">
+                <p><code>\angle 1 \enspace</code> <span class="sol" data-type="list" data-choices="['', '&lt;', '&gt;']"><var>ans</var></span> <code>\enspace\angle 2</code></p>
+                <p class="example">在下拉列表中選擇正確的答案</p>
+            </div>
+            <div class="hints">
+               <div>
+                    <p>這題主要用到逆樞紐定理，若兩三角形中，有兩組對應邊相等，則第三邊越大，其所對的夾角也越大。</p>
+                    <p>(比較一下：跟大邊對大角性質差在哪裡？跟樞紐定理差在哪裡？)</p>
+               </div>
+               <p>因為題目說 <code>E</code> 點為 <code>CD</code> 的中點，因此 <code>\overline{CE} = \overline{DE}</code>，又 <code>\overline{AC} = \overline{BD}</code>，也就是滿足逆樞紐定理的兩組對應邊相等的條件。</p>
+               <p>再看題目的條件 <code>\overline{AE} <var>relation</var> \overline{BE}</code>，因此利用逆樞紐定理，我們知道 <code>\angle C <var>relation</var> \angle D</code>。</p>
+               <div>
+                    <p>我們離答案只差一點點了，根據三角形內角和為 <code>180^\circ</code>，我們可以得到：</p>
+                    <p><code>\angle 1 + \angle C + \angle AEC</code> <code> = \angle 2 + \angle D + \angle BED</code> <code> = 180^\circ</code></p>
+                    <p>由於 <code>\angle AEC</code> 與 <code>\angle BED</code> 為對頂角，所以 <code>\angle AEC = \angle BED</code> ，因此可得到：</p>
+                    <p><code>\angle 1 + \angle C = \angle 2 + \angle D</code>。</p>
+               </div>
+               <p>剛剛我們已經利用逆樞紐定理得到 <code>\angle C <var>relation</var> \angle D</code>，所以可以推得所求大小關係為 <code class="hint_pink">\angle 1 <var>ans</var> \angle 2</code> 。</p>
+            </div>
+        </div>
+
+
+        <div id="case5">
+            <div class="vars">
+                <var id="num">randRange(0,3)</var>
+                <var id="ask1_1">["BD","AB","AB","AC"][num]</var>
+                <var id="ask1_2">["CD","AC","BD","CD"][num]</var>
+                <var id="ask2_1">["AB","BD","AC","AB"][num]</var>
+                <var id="ask2_2">["AC","CD","CD","BD"][num]</var>
+                <var id="base">["AD","AD","BC","BC"][num]</var>
+                <var id="triangle_1">["ACD","ACD","ABC","ABC"][num]</var>
+                <var id="triangle_2">["ABD","ABD","BCD","BCD"][num]</var>
+                <var id="angle_1">["ADC","BAD","ABC","BCD"][num]</var>
+                <var id="angle_2">["ADB","CAD","CBD","ACB"][num]</var>
+                <var id="ans">["AC","BD","AC","BD"][num]</var>
+                <var id="ans_2">["AB","CD","CD","AB "][num]</var>
+
+            </div>
+
+            <p class="question">如圖，四邊形 <code>ABCD</code> 中，已知 <code>\overline {<var>ask1_1</var>}=\overline {<var>ask1_2</var>}</code>，請問 <code>\overline {<var>ask2_1</var>}</code> 與 <code>\overline {<var>ask2_2</var>}</code> 的大小關係為何？</p>
+            <div class="problem">
+                <div class="graphie">
+                     init({
+                            range: [[ - 6, 8], [-10, 2]],
+                            scale:20
+                        }); 
+                            var ang1=randRange(330,345);
+                            var ang2=randRange(275,320);
+                            var Cpoint=polar(6,ang1);
+                            var Bpoint=polar(6,ang2);
+                            var ang=randRange(185,265);
+                            var Apoint=polar(4,ang);
+                           
+                            line(Cpoint,Apoint);
+                            line(Cpoint,Bpoint);
+                            line(Apoint,Bpoint);
+                            line([0,0],Apoint);
+                            line(Cpoint,[0,0]);
+                            line([0,0],Bpoint);
+
+                            graph.CPOINT = circle(Cpoint,0.1,{fill : "red",stroke: "red"});
+                            graph.BPOINT = circle(Bpoint,0.1,{fill : "red",stroke: "red"});
+                            graph.APOINT = circle(Apoint,0.1,{fill : "red",stroke: "red"});
+                            graph.DPOINT = circle([0,0],0.1,{fill : "red",stroke: "red"}); 
+                            var arr=new Array();
+                            if(num==0){arr=["C","B","A","D"];                            
+                            } 
+                            if(num==1){arr=["B","C","D","A"];
+                            } 
+                            if(num==2){arr=["A","D","C","B"];
+                            }
+                            if(num==3){arr=["D","A","B","C"];
+                            }                                         
+                            label(polar(6.4,ang1),"\\small{"+arr[0]+"}",{color:"black"});
+                            label(polar(6.4,ang2),"\\small{"+arr[1]+"}",{color:"black"});
+                            label(polar(4.4,ang),"\\small{"+arr[2]+"}",{color:"black"});
+                            label(polar(0.8,90),"\\small{"+arr[3]+"}",{color:"black"});
+                </div>
+            </div>
+
+            <div class="solution" data-type="multiple">    
+                <span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="a5_1"></span><code>\enspace&gt;\enspace</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="a5_2"></span>
+                <div class="sol" data-type="custom">
+                    <div class="guess">[$('#a5_1').val().toUpperCase().replace(/[ ]/g,""),$('#a5_2').val().toUpperCase().replace(/[ ]/g,""),]</div>
+                    <div class="validator-function">
+                        if(guess[0]==""&&guess[1]=="")
+                        {return "";}
+                        if(num==0&&(guess[0]=="AC"||guess[0]=="CA")&&(guess[1]=="AB"||guess[1]=="BA"))
+                        {return true;}
+                        if(num==1&&(guess[0]=="BD"||guess[0]=="DB")&&(guess[1]=="CD"||guess[1]=="DC"))
+                        {return true;}
+                        if(num==2&&(guess[0]=="AC"||guess[0]=="CA")&&(guess[1]=="CD"||guess[1]=="DC"))
+                        {return true;}
+                        if(num==3&&(guess[0]=="BD"||guess[0]=="DB")&&(guess[1]=="AB"||guess[1]=="BA"))
+                        {return true;}
+                    
+
+                    </div>
+
+                </div>
+
+                <p class="example">英文，例 <code>：A</code> 或 <code>a</code></p>   
+
+            </div>
+            <div class="hints">
+               <div>
+               <p>我們看一下 <code>\triangle{<var>triangle_1</var>}</code> 與 <code>\triangle{<var>triangle_2</var>}</code> ，因為題目說 <code>\overline {<var>ask1_1</var>}=\overline {<var>ask1_2</var>}</code> ，<code>\overline {<var>base</var>} =\overline {<var>base</var>}</code>，也就滿足樞紐定理的兩組對應邊相等的條件。</p>
+               </div>
+               <div>
+               <p>由圖中我們可以觀察到 <code>\angle{<var>angle_1</var>}&gt;\angle{<var>angle_2</var>}</code>，因此利用樞紐定理，我們知道大小關係為 <code class="hint_pink"><var>ans</var>&gt;<var>ans_2</var></code></p>
+               </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
