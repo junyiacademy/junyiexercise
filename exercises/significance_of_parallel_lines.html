@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>平行線的意義</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		#answer_area .sol input[type=text] {
+					width: 50px;
+				}
+		.table_p { margin-top:5px;margin-bottom:5px}
+	</style>
+	<script language="javascript">
+		function getFocus(pa, pb, pc, pd) {
+			var klab = (pa[1] - pb[1]) / (pa[0] - pb[0]);
+			var llab = pa[1] - pa[0]*klab;
+			var klcd = (pc[1] - pd[1]) / (pc[0] - pd[0]);
+			var llcd = pc[1] - pc[0] * klcd;
+			return [(llcd - llab) / (klab - klcd), klab * (llcd - llab) / (klab - klcd) + llab];
+		}
+		var getParallelLength = function(pa, pb, pc, pd) {
+			var klab = (pa[1] - pb[1]) / (pa[0] - pb[0]);
+			var klcd = (pc[1] - pd[1]) / (pc[0] - pd[0]);
+			var llab = pa[1] - pa[0]*klab;
+			var llcd = pc[1] - pc[0] * klcd;
+			return Math.abs(-llab-(-llcd)) / Math.sqrt(Math.pow(klab,2)+1);
+		};
+	</script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+        <div id="case1">
+			<div class="vars" data-ensure="!(J[1] === 5 && J[2] === 6)">
+				<var id="J">randRangeUnique(1,7,3).sort(function(a,b){return a - b;})</var>
+				<var id="T">getFocus([1,2.5],[1+5/sqrt(3),-2.5],[1,-1.5],[8,2.5])</var>
+				<var id="S">getFocus([5,2.5],[5/sqrt(3)+5,-2.5],[1,-1.5],[8,2.5])</var>
+				<var id="Q">getFocus([1,-0.5],[6,5/sqrt(3)-0.5],[4,-2.5],[4-5/sqrt(3),2.5])</var>
+				<var id="P">getFocus([1,-2.5],[6,5/sqrt(3)-2.5],[4,-2.5],[4-5/sqrt(3),2.5])</var>
+            </div>
+		
+			<div class="question">
+				<p class="question spin">下列敘述哪些正確？</p>
+				<div class="problem">
+					<table>
+						<tr>
+							<td><p class="table_p hint_green"><code>\surd</code></p></td><td><p class="table_p hint_red"><code>\times</code></p></td><td></td>
+						</tr>
+						<tr data-if="1 === J[0] || 1 === J[1] || 1 === J[2]">
+							<td><input type="radio" name="aq" value='1'/></td><td><input type="radio" name="aq" value='2'/></td><td><p class="table_p">平行線的平行線還是平行線。</p></td>
+						</tr>
+						<tr data-if="2 === J[0] || 2 === J[1] || 2 === J[2]">
+							<td><input type="radio" name="bq" value='1'/></td><td><input type="radio" name="bq" value='2'/></td><td><p class="table_p">垂直線的垂直線還是垂直線。</p></td>
+						</tr>
+						<tr data-if="3 === J[0] || 3 === J[1] || 3 === J[2]">
+							<td><input type="radio" name="cq" value='1'/></td><td><input type="radio" name="cq" value='2'/></td><td><p class="table_p">平行線的垂直線是垂直線。</p></td>
+						</tr>
+						<tr data-if="4 === J[0] || 4 === J[1] || 4 === J[2]">
+							<td><input type="radio" name="dq" value='1'/></td><td><input type="radio" name="dq" value='2'/></td><td><p class="table_p">垂直線的平行線是平行線。</p></td>
+						</tr>
+						<tr data-if="5 === J[0] || 5 === J[1] || 5 === J[2]">
+							<td><input type="radio" name="eq" value='1'/></td><td><input type="radio" name="eq" value='2'/></td><td><p class="table_p">兩直線永不相交，則它們平行。</p></td>
+						</tr>
+						<tr data-if="6 === J[0] || 6 === J[1] || 6 === J[2]">
+							<td><input type="radio" name="fq" value='1'/></td><td><input type="radio" name="fq" value='2'/></td><td><p class="table_p">兩直線的距離處處相等，則它們平行。</p></td>
+						</tr>
+					</table>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <div class="sol" data-type="custom">
+                	<span class="instruction"> 選擇你的答案</span>
+					<div class="guess">
+					(function(){
+						var ansarr = [1,2,1,2,1,1];
+						return [ansarr[J[0]-1],ansarr[J[1]-1],ansarr[J[2]-1]];
+					})()</div>
+					<div class="validator-function">
+						if($('input:radio:checked').length &lt; 3){ return '';}	
+						var asa = [1,1,1];
+						$('input:radio:checked').each(function(i){if(this.value != guess[i]){ asa[i] = 2 };});
+						return asa[0] == 1 &amp;&amp; asa[1] == 1 &amp;&amp; asa[2] == 1;
+					</div>
+				</div>
+            </div>
+			
+			<div class="hints">
+				<div data-if="1 === J[0] || 1 === J[1] || 1 === J[2]">
+					<p style="font-weight : bold ; color : blue">平行線的平行線還是平行線：</p>
+					<p>如圖所示， <code>L_1 // L_2</code> ，<code>L_2 // L_3</code> ，則 <code>L_1 // L_3</code> 。</p>
+					<div class="graphie" id="ans_1">
+						init({range: [ [-1, 12], [-3, 3] ],scale: 30});
+						line([2,-2.5],[1,2.5], { stroke : KhanUtil.ORANGE});
+						line([5,-2.5],[4,2.5], { stroke : KhanUtil.GREEN});
+						line([7,-2.5],[6,2.5], { stroke : KhanUtil.BLUE});
+						label([1.5,0],'L_1','left', { color : KhanUtil.ORANGE});
+						label([4.5,0],'L_2','left', { color : KhanUtil.GREEN});
+						label([6.5,0],'L_3','left', { color : KhanUtil.BLUE});
+					</div>
+				</div>
+				<div data-if="2 === J[0] || 2 === J[1] || 2 === J[2]">
+					<p style="font-weight : bold ; color : blue">垂直線的垂直線還是垂直線：</p>
+					<p>如圖所示， <code>L_1 \perp L_2</code> ，<code>L_2 \perp L_3</code> ，則 <code>L_1 // L_3</code> 。</p>
+					<div class="graphie" id="ans_2">
+						init({range: [ [-1, 12], [-3, 3] ],scale: 30});
+						line([1,2.5],[1+5/sqrt(3),-2.5], { stroke : KhanUtil.ORANGE});
+						line([5,2.5],[5/sqrt(3)+5,-2.5], { stroke : KhanUtil.RED});
+						line([1,-1.5],[8,2.5], { stroke : KhanUtil.BLUE});
+						line([T[0]-0.25*sqrt(3),T[1]-0.25],[T[0]-0.25*sqrt(3)-0.25,T[1]-0.25+0.25*sqrt(3)], { stroke : KhanUtil.GREEN});
+						line([T[0]-0.25,T[1]+0.25*sqrt(3)],[T[0]-0.25*sqrt(3)-0.25,T[1]-0.25+0.25*sqrt(3)], { stroke : KhanUtil.GREEN});
+						line([S[0]-0.25*sqrt(3),S[1]-0.25],[S[0]-0.25*sqrt(3)-0.25,S[1]-0.25+0.25*sqrt(3)], { stroke : KhanUtil.GREEN});
+						line([S[0]-0.25,S[1]+0.25*sqrt(3)],[S[0]-0.25*sqrt(3)-0.25,S[1]-0.25+0.25*sqrt(3)], { stroke : KhanUtil.GREEN});
+
+						label([1+5/sqrt(3),-2.5],'L_1','left', { color : KhanUtil.ORANGE});
+						label([5/sqrt(3)+5,-2.5],'L_3','left', { color : KhanUtil.RED});
+						label([4.5,0],'L_2','below', { color : KhanUtil.BLUE});
+					</div>
+				</div>
+				<div data-if="3 === J[0] || 3 === J[1] || 3 === J[2]">
+					<p style="font-weight : bold ; color : blue">平行線的垂直線是垂直線：</p>
+					<p>如圖所示， <code>L_1 // L_2</code> ，<code>L_2 \perp L_3</code> ，則 <code>L_1 \perp L_3</code> 。</p>
+					<div class="graphie" id="ans_3">
+						init({range: [ [-1, 12], [-3, 3] ],scale: 30});
+						line([1,2.5],[1+5/sqrt(3),-2.5], { stroke : KhanUtil.ORANGE});
+						line([5,2.5],[5/sqrt(3)+5,-2.5], { stroke : KhanUtil.BLUE});
+						line([1,-1.5],[8,2.5], { stroke : KhanUtil.RED});
+						line([S[0]-0.25*sqrt(3),S[1]-0.25],[S[0]-0.25*sqrt(3)-0.25,S[1]-0.25+0.25*sqrt(3)], { stroke : KhanUtil.GREEN});
+						line([S[0]-0.25,S[1]+0.25*sqrt(3)],[S[0]-0.25*sqrt(3)-0.25,S[1]-0.25+0.25*sqrt(3)], { stroke : KhanUtil.GREEN});
+
+						label([1+5/sqrt(3),-2.5],'L_1','left', { color : KhanUtil.ORANGE});
+						label([5/sqrt(3)+5,-2.5],'L_2','left', { color : KhanUtil.BLUE});
+						label([4.5,0],'L_3','below', { color : KhanUtil.RED});
+					</div>
+				</div>
+				<div data-if="4 === J[0] || 4 === J[1] || 4 === J[2]">
+					<p style="font-weight : bold ; color : blue">垂直線的平行線是平行線：</p>
+					<p>如圖所示， <code>L_1 \perp L_2</code> ，<code>L_2 // L_3</code> ，則 <code>L_1 \perp L_3</code> 。</p>
+					<div class="graphie" id="ans_4">
+						init({range: [ [-1, 12], [-3, 3] ],scale: 30});
+						line([1,-2.5],[6,5/sqrt(3)-2.5], { stroke : KhanUtil.BLUE});
+						line([1,-0.5],[6,5/sqrt(3)-0.5], { stroke : KhanUtil.ORANGE});
+						line([4,-2.5],[4-5/sqrt(3),2.5], { stroke : KhanUtil.RED});
+						line([Q[0]-0.25*sqrt(3),Q[1]-0.25],[Q[0]-0.25*sqrt(3)-0.25,Q[1]-0.25+0.25*sqrt(3)], { stroke : KhanUtil.GREEN});
+						line([Q[0]-0.25,Q[1]+0.25*sqrt(3)],[Q[0]-0.25*sqrt(3)-0.25,Q[1]-0.25+0.25*sqrt(3)], { stroke : KhanUtil.GREEN});
+
+						label([4,-2.5],'L_1','right', { color : KhanUtil.RED});
+						label([6,5/sqrt(3)-0.5],'L_2','right', { color : KhanUtil.ORANGE});
+						label([6,5/sqrt(3)-2.5],'L_3','right', { color : KhanUtil.BLUE});
+					</div>
+				</div>
+				<div data-if="5 === J[0] || 5 === J[1] || 5 === J[2]">
+					<p style="font-weight : bold ; color : blue">兩直線永不相交，則它們平行 ：</p>
+					<p>如圖所示，兩條直線永不相交，如果沿一個方向是距離越來越遠，那麼沿反方向就是距離越來越近，最後會相交，所以兩直線距離必為處處相等，也就是它們平行。</p>
+					<div class="graphie" id="ans_5">
+						init({range: [ [-1, 12], [-3, 3] ],scale: 30});
+						line([1,-2.5],[7,6/sqrt(3)-2.5], { stroke : KhanUtil.BLUE});
+						line([1,-0.5],[6,5/sqrt(3)-0.5], { stroke : KhanUtil.ORANGE});
+						line(Q,P);
+						line([Q[0]+1,Q[1]+1/sqrt(3)],[P[0]+1,P[1]+1/sqrt(3)]);
+						line([Q[0]+3,Q[1]+3/sqrt(3)],[P[0]+3,P[1]+3/sqrt(3)]);
+						label([1,-2.5],'L_1','left',{ color : KhanUtil.BLUE});
+						label([6,5/sqrt(3)-0.5],'L_2','right', { color : KhanUtil.ORANGE});
+					</div>
+				</div>
+				<div data-if="6 === J[0] || 6 === J[1] || 6 === J[2]">
+					<p style="font-weight : bold ; color : blue">兩直線的距離處處相等，則它們平行 ：</p>
+					<p>如圖所示，兩條直線距離處處相等，則量距離的線同時垂直於兩條直線，也就是它們平行。</p>
+					<div class="graphie" id="ans_6">
+						init({range: [ [-1, 12], [-3, 3] ],scale: 30});
+						line([1,-2.5],[7,6/sqrt(3)-2.5], { stroke : KhanUtil.BLUE});
+						line([1,-0.5],[6,5/sqrt(3)-0.5], { stroke : KhanUtil.ORANGE});
+						line(Q,P);
+						line([Q[0]+1,Q[1]+1/sqrt(3)],[P[0]+1,P[1]+1/sqrt(3)]);
+						line([Q[0]+3,Q[1]+3/sqrt(3)],[P[0]+3,P[1]+3/sqrt(3)]);
+						label([1,-2.5],'L_1','left',{ color : KhanUtil.BLUE});
+						label([6,5/sqrt(3)-0.5],'L_2','right', { color : KhanUtil.ORANGE});
+					</div>
+				</div>
+				<div>
+					<table>
+						<tr data-if="1 === J[0] || 1 === J[1] || 1 === J[2]">
+						<td><p class="table_p hint_pink"><code>\surd</code></p></td><td><p class="table_p">平行線的平行線還是平行線。</p></td>
+						</tr>
+						<tr data-if="2 === J[0] || 2 === J[1] || 2 === J[2]">
+						<td><p class="table_p hint_pink"><code>\times</code></p></td><td><p class="table_p">垂直線的垂直線還是垂直線。</p></td>
+						</tr>
+						<tr data-if="3 === J[0] || 3 === J[1] || 3 === J[2]">
+						<td><p class="table_p hint_pink"><code>\surd</code></p></td><td><p class="table_p">平行線的垂直線是垂直線。</p></td>
+						</tr>
+						<tr data-if="4 === J[0] || 4 === J[1] || 4 === J[2]">
+						<td><p class="table_p hint_pink"><code>\times</code></p></td><td><p class="table_p">垂直線的平行線是平行線。</p></td>
+						</tr>
+						<tr data-if="5 === J[0] || 5 === J[1] || 5 === J[2]">
+						<td><p class="table_p hint_pink"><code>\surd</code></p></td><td><p class="table_p">兩直線永不相交，則它們平行。</p></td>
+						</tr>
+						<tr data-if="6 === J[0] || 6 === J[1] || 6 === J[2]">
+						<td><p class="table_p hint_pink"><code>\surd</code></p></td><td><p class="table_p">兩直線的距離處處相等，則它們平行。</p></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars" data-ensure="ens">
+				<var id="Q">randFromArray([[0,1,2],[1,1,randFromArray([0,2])],[0,0,randFromArray([1,2])]]).sort(function(){return 1-Math.random()})</var>
+				<var id="Ll">3-Math.random()*6</var>
+				<var id="Lr">3-Math.random()*6</var>
+				<var id="KL1">(Ll - Lr) / (-10)</var>
+				<var id="KL2">Q[0] === 0 ? KL1 : (Q[0] === 1 ? -1/KL1 : 0.5+KL1)</var>
+				<var id="KL3">Q[1] === 0 ? KL1 : (Q[1] === 1 ? -1/KL1 : 0.5+KL1)</var>
+				<var id="KL4">Q[2] === 0 ? KL1 : (Q[2] === 1 ? -1/KL1 : 0.5+KL1)</var>
+				<var id="J">randRangeUnique(1,7,4).sort(function(a,b){return a - b;})</var>
+				<var id="ens">(function(){
+				    if(KL1 === KL2 &amp;&amp; getParallelLength([-5,Ll],[5,Lr],[(-4-1)/KL2,-4],[(4-1)/KL2,4]) &lt;0.3){
+				    	return false;
+				    }
+				    if(KL1 === KL3 &amp;&amp; getParallelLength([-5,Ll],[5,Lr],[(-4-2)/KL3,-4],[(4-2)/KL3,4]) &lt;0.3){
+				    	return false;
+				    }
+				    if(KL1 === KL4 &amp;&amp; getParallelLength([-5,Ll],[5,Lr],[(-4-3)/KL4,-4],[(4-3)/KL4,4]) &lt;0.3){
+				    	return false;
+				    }
+				    if(KL2 === KL3 &amp;&amp; getParallelLength([(-4-1)/KL2,-4],[(4-1)/KL2,4],[(-4-2)/KL3,-4],[(4-2)/KL3,4]) &lt;0.3){
+				    	return false;
+				    }
+				    if(KL2 === KL4 &amp;&amp; getParallelLength([(-4-1)/KL2,-4],[(4-1)/KL2,4],[(-4-3)/KL4,-4],[(4-3)/KL4,4]) &lt;0.3){
+				    	return false;
+				    }
+				    if(KL3 === KL4 &amp;&amp; getParallelLength([(-4-2)/KL3,-4],[(4-2)/KL3,4],[(-4-3)/KL4,-4],[(4-3)/KL4,4]) &lt;0.3){
+				    	return false;
+				    }
+				    return true;
+				})()</var>
+				<var id="REL">(function(){
+					var sq = eval(Q.join('+'));
+					if(sq === 1){
+						return Q.indexOf(1) === 2 ? ['平行','平行','垂直','平行','垂直','垂直'] : (Q.indexOf(1) === 1 ? ['平行','垂直','平行','垂直','平行','垂直'] : ['垂直','平行','平行','垂直','垂直','平行']);
+					}else if(sq === 2 &amp;&amp; Q.indexOf(2) !== -1){
+						return Q.indexOf(2) === 2 ? ['平行','平行','夾一個銳角','平行','夾一個銳角','夾一個銳角'] : (Q.indexOf(2) === 1 ? ['平行','夾一個銳角','平行','夾一個銳角','平行','夾一個銳角'] : ['夾一個銳角','平行','平行','夾一個銳角','夾一個銳角','平行']);
+					}else if(sq === 2){
+						return Q.indexOf(0) === 2 ? ['垂直','垂直','平行','平行','垂直','垂直'] : (Q.indexOf(0) === 1 ? ['垂直','平行','垂直','垂直','平行','垂直'] : ['平行','垂直','垂直','垂直','垂直','平行']);
+					}else if(sq === 3){
+						if(Q[0] === 0){
+							return Q.indexOf(1) === 1 ? ['平行','垂直','夾一個銳角','垂直','夾一個銳角','夾一個銳角'] : ['平行','夾一個銳角','垂直','夾一個銳角','垂直','夾一個銳角'];
+						}else if(Q[0] === 1){
+							return Q.indexOf(0) === 1 ? ['垂直','平行','夾一個銳角','垂直','夾一個銳角','夾一個銳角'] : ['垂直','夾一個銳角','平行','夾一個銳角','垂直','夾一個銳角'];
+						}else{
+							return Q.indexOf(0) === 1 ? ['夾一個銳角','平行','垂直','夾一個銳角','夾一個銳角','垂直'] : ['夾一個銳角','垂直','平行','夾一個銳角','夾一個銳角','垂直'];
+						}
+					}else{
+						return Q.indexOf(2) === 0 ? ['夾一個銳角','垂直','垂直','夾一個銳角','夾一個銳角','平行'] : (Q.indexOf(2) === 1 ? ['垂直','夾一個銳角','垂直','夾一個銳角','平行','夾一個銳角'] : ['垂直','垂直','夾一個銳角','平行','夾一個銳角','夾一個銳角']);
+					}
+				})()</var>
+            </div>
+		
+			<div class="question">
+				<p class="question spin">請問下列直線哪兩條互相平行？</p>
+				<div class="problem">
+					<div class="graphie" id="parallel">
+						init({range: [ [-6, 6], [-7, 5] ],scale: 30});
+						graph.l1 = line([-5,Ll],[5,Lr], { stroke : KhanUtil.GREEN});
+						graph.l2 = line([(-4-1)/KL2,-4],[(4-1)/KL2,4], { stroke : KhanUtil.RED});
+						graph.l3 = line([(-4-2)/KL3,-4],[(4-2)/KL3,4], { stroke : KhanUtil.ORANGE});
+						graph.l4 = line([(-4-3)/KL4,-4],[(4-3)/KL4,4], { stroke : KhanUtil.BLUE});
+
+						label([6,-5],'L_1','left',{ color : KhanUtil.GREEN});
+						label([6,-5.5],'L_2','left',{ color : KhanUtil.RED});
+						label([6,-6],'L_3','left',{ color : KhanUtil.ORANGE});
+						label([6,-6.5],'L_4','left',{ color : KhanUtil.BLUE});
+						line([4,-5],[5,-5],{ stroke : KhanUtil.GREEN});
+						line([4,-5.5],[5,-5.5],{ stroke : KhanUtil.RED});
+						line([4,-6],[5,-6],{ stroke : KhanUtil.ORANGE});
+						line([4,-6.5],[5,-6.5],{ stroke : KhanUtil.BLUE});
+					</div>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+				<p data-if="1 === J[0] || 1 === J[1] || 1 === J[2] || 1 === J[3]"><input type="checkbox" id="a1"/><span onclick="if($('#a1').attr('checked')){$('#a1').removeAttr('checked')}else{$('#a1').attr('checked','checked')}"><code>L_1 和 L_2</code></span></p>
+				<p data-if="2 === J[0] || 2 === J[1] || 2 === J[2] || 2 === J[3]"><input type="checkbox" id="a2"/><span onclick="if($('#a2').attr('checked')){$('#a2').removeAttr('checked')}else{$('#a2').attr('checked','checked')}"><code>L_1 和 L_3</code></p>
+				<p data-if="3 === J[0] || 3 === J[1] || 3 === J[2] || 3 === J[3]"><input type="checkbox" id="a3"/><span onclick="if($('#a3').attr('checked')){$('#a3').removeAttr('checked')}else{$('#a3').attr('checked','checked')}"><code>L_1 和 L_4</code></p>
+				<p data-if="4 === J[0] || 4 === J[1] || 4 === J[2] || 4 === J[3]"><input type="checkbox" id="a4"/><span onclick="if($('#a4').attr('checked')){$('#a4').removeAttr('checked')}else{$('#a4').attr('checked','checked')}"><code>L_2 和 L_3</code></p>
+				<p data-if="5 === J[0] || 5 === J[1] || 5 === J[2] || 5 === J[3]"><input type="checkbox" id="a5"/><span onclick="if($('#a5').attr('checked')){$('#a5').removeAttr('checked')}else{$('#a5').attr('checked','checked')}"><code>L_2 和 L_4</code></p>
+				<p data-if="6 === J[0] || 6 === J[1] || 6 === J[2] || 6 === J[3]"><input type="checkbox" id="a6"/><span onclick="if($('#a6').attr('checked')){$('#a6').removeAttr('checked')}else{$('#a6').attr('checked','checked')}"><code>L_3 和 L_4</code></p>
+				<p><input type="checkbox" id="a7" value="7" /><span onclick="if($('#a7').attr('checked')){$('#a7').removeAttr('checked')}else{$('#a7').attr('checked','checked')}"><code>都沒有平行</code></p>
+                <div class="sol" data-type="custom">
+					<div class="guess">1</div>
+					<div class="validator-function">
+						if($("input:[type='checkbox']:checked").length == 0){ return "";}
+						var sum = eval(Q.join('+'));
+						if(sum === 3){
+							if($("input:[type='checkbox']:checked").length == 1){
+								if($('#a'+(Q.indexOf(0)+1)).length){
+									return $('#a'+(Q.indexOf(0)+1)).attr('checked');
+								}else {
+									return $('#a7').attr('checked');
+								}
+							}else{
+								return false;
+							}
+						}
+						if(sum === 1){
+							var index1 = Q.indexOf(0);
+							var index2 = Q.lastIndexOf(0);
+							if(index1 === 0 &amp;&amp; index2 === 1){
+								return ($('#a1').length ? $('#a1').attr('checked') : true) &amp;&amp; ($('#a2').length ? $('#a2').attr('checked') : true) &amp;&amp; ($('#a4').length ? $('#a4').attr('checked') : true) &amp;&amp; ($('#a3').length ? !$('#a3').attr('checked') : true) &amp;&amp; ($('#a5').length ? !$('#a5').attr('checked') : true) &amp;&amp; ($('#a6').length ? !$('#a6').attr('checked') : true) &amp;&amp; !$('#a7').attr('checked');
+							}else if(index1 === 1 &amp;&amp; index2 === 2){
+								return ($('#a2').length ? $('#a2').attr('checked') : true) &amp;&amp; ($('#a3').length ? $('#a3').attr('checked') : true) &amp;&amp; ($('#a6').length ? $('#a6').attr('checked') : true) &amp;&amp; ($('#a1').length ? !$('#a1').attr('checked') : true) &amp;&amp; ($('#a5').length ? !$('#a5').attr('checked') : true) &amp;&amp; ($('#a4').length ? !$('#a4').attr('checked') : true) &amp;&amp; !$('#a7').attr('checked');
+							}else if(index1 === 0 &amp;&amp; index2 === 2){
+								return ($('#a1').length ? $('#a1').attr('checked') : true) &amp;&amp; ($('#a3').length ? $('#a3').attr('checked') : true) &amp;&amp; ($('#a5').length ? $('#a5').attr('checked') : true) &amp;&amp; ($('#a2').length ? !$('#a2').attr('checked') : true) &amp;&amp; ($('#a6').length ? !$('#a6').attr('checked') : true) &amp;&amp; ($('#a4').length ? !$('#a4').attr('checked') : true) &amp;&amp; !$('#a7').attr('checked');
+							}
+						}
+						if(sum === 4){
+							if($("input:[type='checkbox']:checked").length == 1){
+								var index1 = Q.indexOf(1);
+								var index2 = Q.lastIndexOf(1);
+								if(index1 === 0 &amp;&amp; index2 === 1){
+									return ($('#a4').length ? $('#a4').attr('checked') : $('#a7').attr('checked'));
+								}else if(index1 === 0 &amp;&amp; index2 === 2){
+									return ($('#a5').length ? $('#a5').attr('checked') : $('#a7').attr('checked'));
+								}else if(index1 === 1 &amp;&amp; index2 === 2){
+									return ($('#a6').length ? $('#a6').attr('checked') : $('#a7').attr('checked'));
+								}
+							}else return false;
+						}
+						if( sum === 2 ){
+							if(Q.indexOf(2) === -1){
+								var index1 = Q.indexOf(1);
+								var index2 = Q.lastIndexOf(1);
+								var index3 = Q.indexOf(0);
+								var an = (index3 === 0 ? [1,6] : (index3 === 1 ? [2,5] : [3,4]));
+								for(var i = 1; i &lt;= 6; i++){
+									if(i != an[0] &amp;&amp; i != an[1] &amp;&amp; ($('#a'+i).length ? $('#a'+i).attr('checked') : false)){
+										return false;
+									}
+								}
+								return ($('#a'+an[0]).length ? $('#a'+an[0]).attr('checked') : true) &amp;&amp; ($('#a'+an[1]).length ? $('#a'+an[1]).attr('checked') : true) &amp;&amp; (!$('#a'+an[0]).length &amp;&amp; !$('#a'+an[1]).length ? $('#a7').attr('checked') : !$('#a7').attr('checked'));
+							}else{
+								var index1 = Q.indexOf(0);
+								var index2 = Q.lastIndexOf(0);
+								if(index1 === 0 &amp;&amp; index2 === 1){
+									return ($('#a1').length ? $('#a1').attr('checked') : true) &amp;&amp; ($('#a2').length ? $('#a2').attr('checked') : true) &amp;&amp; ($('#a4').length ? $('#a4').attr('checked') : true) &amp;&amp; ($('#a3').length ? !$('#a3').attr('checked') : true) &amp;&amp; ($('#a5').length ? !$('#a5').attr('checked') : true) &amp;&amp; ($('#a6').length ? !$('#a6').attr('checked') : true) &amp;&amp; !$('#a7').attr('checked');
+								}else if(index1 === 1 &amp;&amp; index2 === 2){
+									return ($('#a2').length ? $('#a2').attr('checked') : true) &amp;&amp; ($('#a3').length ? $('#a3').attr('checked') : true) &amp;&amp; ($('#a6').length ? $('#a6').attr('checked') : true) &amp;&amp; ($('#a1').length ? !$('#a1').attr('checked') : true) &amp;&amp; ($('#a5').length ? !$('#a5').attr('checked') : true) &amp;&amp; ($('#a4').length ? !$('#a4').attr('checked') : true) &amp;&amp; !$('#a7').attr('checked');
+								}else if(index1 === 0 &amp;&amp; index2 === 2){
+									return ($('#a1').length ? $('#a1').attr('checked') : true) &amp;&amp; ($('#a3').length ? $('#a3').attr('checked') : true) &amp;&amp; ($('#a5').length ? $('#a5').attr('checked') : true) &amp;&amp; ($('#a2').length ? !$('#a2').attr('checked') : true) &amp;&amp; ($('#a6').length ? !$('#a6').attr('checked') : true) &amp;&amp; ($('#a4').length ? !$('#a4').attr('checked') : true) &amp;&amp; !$('#a7').attr('checked');
+								}
+							}
+						}
+					</div>
+				</div>
+            </div>
+			
+			<div class="hints">
+				<p data-if="1 === J[0] || 1 === J[1] || 1 === J[2] || 1 === J[3]" style="font-weight : normal"><code>L_1 和 L_2</code><span data-if="REL[0]!=='平行'"><var>REL[0]</var></span><span class="hint_pink" data-if="REL[0]==='平行'"><var>REL[0]</var></span>。</p>
+				<p data-if="2 === J[0] || 2 === J[1] || 2 === J[2] || 2 === J[3]" style="font-weight : normal"><code>L_1 和 L_3</code><span data-if="REL[1]!=='平行'"><var>REL[1]</var></span><span class="hint_pink" data-if="REL[1]==='平行'"><var>REL[1]</var></span>。</p>
+				<p data-if="3 === J[0] || 3 === J[1] || 3 === J[2] || 3 === J[3]" style="font-weight : normal"><code>L_1 和 L_4</code><span data-if="REL[2]!=='平行'"><var>REL[2]</var></span><span class="hint_pink" data-if="REL[2]==='平行'"><var>REL[2]</var></span>。</p>
+				<p data-if="4 === J[0] || 4 === J[1] || 4 === J[2] || 4 === J[3]" style="font-weight : normal"><code>L_2 和 L_3</code><span data-if="REL[3]!=='平行'"><var>REL[3]</var></span><span class="hint_pink" data-if="REL[3]==='平行'"><var>REL[3]</var></span>。</p>
+				<p data-if="5 === J[0] || 5 === J[1] || 5 === J[2] || 5 === J[3]" style="font-weight : normal"><code>L_2 和 L_4</code><span data-if="REL[4]!=='平行'"><var>REL[4]</var></span><span class="hint_pink" data-if="REL[4]==='平行'"><var>REL[4]</var></span>。</p>
+				<p data-if="6 === J[0] || 6 === J[1] || 6 === J[2] || 6 === J[3]" style="font-weight : normal"><code>L_3 和 L_4</code><span data-if="REL[5]!=='平行'"><var>REL[5]</var></span><span class="hint_pink" data-if="REL[5]==='平行'"><var>REL[5]</var></span>。</p>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>
