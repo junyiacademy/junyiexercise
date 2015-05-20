@@ -720,31 +720,6 @@ var Khan = (function() {
             };
         },
 
-        /**
-         * Hijacks a specified link so that it opens up the issue form.
-         * @param {string} selector The link selector - defaults to "#issue-report-button"
-         */
-        initReportIssueLink: function(selector) {
-            selector = selector || "#issue-report-button";
-            $(selector).click(function(e) {
-
-                e.preventDefault();
-                
-                $('#issueReportForm').modal('show');
-                html2canvas($("#outer-wrapper"), {
-                    onrendered: function(canvas) {
-                        theCanvas = canvas;
-                        var issueImgUrl = canvas.toDataURL("image/png");
-
-                        $('#issueImgLarge').attr('href',issueImgUrl);
-                        $('#issueImgLarge').addClass('cloud-zoom');
-                        $('#issueImg').attr('src',issueImgUrl);
-                        $('#issueImgLarge').CloudZoom();
-                     }
-                });
-            });
-        },
-
         cleanupProblem: function() {
             $("#workarea, #hintsarea").runModules(problem, "Cleanup");
         }
@@ -1776,7 +1751,13 @@ var Khan = (function() {
         };
 
         initializeCalculator();
-        Khan.initReportIssueLink("#issue-report-button");
+
+        // trigger outside issue report system
+        $("#issue-report-button").click(function(e) {
+            e.preventDefault();
+            $("#report").click();
+        });
+
 
         $("#answer_area").delegate("input.button, select", "keydown", function(e) {
             // Don't want to go back to exercise dashboard; just do nothing on backspace

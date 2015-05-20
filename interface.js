@@ -187,7 +187,8 @@ function handleAttempt(data) {
     if (Exercises.pretestMode) {
         $(Exercises).trigger("updateAnswerHistory", {
             name: Exercises.currentCard.get('exerciseName'),
-            pass: score.correct
+            pass: score.correct,
+            skip: skipped
         });
     }
 
@@ -591,10 +592,11 @@ function enableCheckAnswer() {
         .prop("disabled", false)
         .removeClass("buttonDisabled")
         .val(originalCheckAnswerText);
-
-    $("#skip-question-button")
+    setTimeout(function(){
+        $("#skip-question-button")
         .prop("disabled", false)
-        .removeClass("buttonDisabled");
+        .removeClass("buttonDisabled");}
+        , 2000);
 }
 
 function disableCheckAnswer() {
