@@ -304,9 +304,8 @@ var Khan = (function() {
         },
 
         warnTimeout: function() {
-            $(Exercises).trigger("warning", [$._("Your internet might be too " +
-                    "slow to see an exercise. Refresh the page or " +
-                    "<a href='' id='warn-report'>report a problem</a>."),
+            $(Exercises).trigger("warning", [$._("你的網路連線可能太慢. 請重新整理或" +
+                    "向均一回報問題."),
                     false]);
             // TODO(alpert): This event binding is kind of gross
             $("#warn-report").click(function(e) {
@@ -328,8 +327,8 @@ var Khan = (function() {
                 warning = $._("You should enable font download in your " +
                     "browser to improve the appearance of math expressions");
             }
-
-            $(Exercises).trigger("warning", [warning, true]);
+            // Show the message to users is confusing. Few people can understand it.
+            // $(Exercises).trigger("warning", [warning, true]);
         },
 
         // TODO(alpert): This doesn't need to be in the Khan object.
