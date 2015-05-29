@@ -422,8 +422,10 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
 
         // Whether we're currently in review mode
         review_mode: Exercises.reviewMode ? 1 : 0,
+
+        // Which stage we're at in practice mode
+        is_starting: Exercises.startMode ? 1 : 0,
         is_challenging: Exercises.challengeMode ? 1 : 0,
-        pending_mode: !Exercises.challengeMode && ! Exercises.startMode ? 1 : 0,
 
         // Whether we are currently working on a topic, as opposed to an exercise
         topic_mode: (!Exercises.reviewMode && !Exercises.practiceMode && !Exercises.pretestMode) ? 1 : 0,
