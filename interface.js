@@ -187,7 +187,8 @@ function handleAttempt(data) {
     if (Exercises.pretestMode) {
         $(Exercises).trigger("updateAnswerHistory", {
             name: Exercises.currentCard.get('exerciseName'),
-            pass: score.correct
+            pass: score.correct,
+            skip: skipped
         });
     }
 
@@ -213,8 +214,11 @@ function handleAttempt(data) {
         $("#next-question-button")
             .prop("disabled", false)
             .removeClass("buttonDisabled")
-            .show()
-            .focus();
+            .show();
+        if(!/iphone|ipod|ipad/i.test(navigator.userAgent)) // check if is ipad device
+        {
+            $("#next-question-button").focus();
+        }
         $("#positive-reinforcement").show();
         $("#skip-question-button").prop("disabled", true);
     } else {
@@ -588,10 +592,11 @@ function enableCheckAnswer() {
         .prop("disabled", false)
         .removeClass("buttonDisabled")
         .val(originalCheckAnswerText);
-
-    $("#skip-question-button")
+    setTimeout(function(){
+        $("#skip-question-button")
         .prop("disabled", false)
-        .removeClass("buttonDisabled");
+        .removeClass("buttonDisabled");}
+        , 2000);
 }
 
 function disableCheckAnswer() {
