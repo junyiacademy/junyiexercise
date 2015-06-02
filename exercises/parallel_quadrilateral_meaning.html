@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html data-require="math graphie interactive math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>平行四邊形的意義</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+		#answer_area .sol input[type=text] {
+			width: 50px;
+		}
+	</style>
+	<script language="javascript">
+        function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+
+        function getLine(pa, pb) {
+            var klab = (pa[1] - pb[1]) / (pa[0] - pb[0]);
+            var llab = pa[1] - pa[0]*klab;
+            return [klab,llab];
+        }
+
+        function getFocus(pa, pb, pc, pd) {
+            var klab = (pa[1] - pb[1]) / (pa[0] - pb[0]);
+            var llab = pa[1] - pa[0]*klab;
+            var klcd = (pc[1] - pd[1]) / (pc[0] - pd[0]);
+            var llcd = pc[1] - pc[0] * klcd;
+            return [(llcd - llab) / (klab - klcd), klab * (llcd - llab) / (klab - klcd) + llab];
+        }
+
+        function getFocusByLine(line_a, line_b){
+            var ka = line_a[0];
+            var kb = line_b[0];
+            var la = line_a[1];
+            var lb = line_b[1];
+            return [(lb - la) / (ka - kb), ka * (lb - la) / (ka - kb) + la];
+        }
+    </script>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+            </div>
+            <p class="question">
+                現有一四邊形 <code>ABCD</code>，經過測量發現，<code>\overline{AB}//\overline{CD}，\overline{AC}//\overline{BD}</code>，請問這是什麼四邊形？
+            </p>
+            
+            <div class="solution" data-type="multiple">
+                <p><input type="text" id="ansstr" style="width : 100px"/></p>
+                <div class="sol" data-type="custom">
+                    <div class="guess">$('#ansstr').val().replace(/\s/g,"").trim()</div>
+                    <div class="validator-function">
+                        return guess.length === 0 ? '' : guess === '平行四邊形';
+                    </div>
+                </div>
+				<p class="example">國語，例：<code>正方形</code></p>
+            </div>
+
+            <div class="hints">
+                <p>在四邊形 <code>ABCD</code> 中，<code>\overline{AB}</code> 與 <code>\overline{CD}</code> 為一組對邊，<code>\overline{AC}</code> 與 <code>\overline{BD}</code> 也為一組對邊。</p>
+                <p>因此在這個四邊形裡面，我們發現他 <code>\lceil 兩組對邊平行 \rfloor</code> 。</p>
+                <p>所以答案為 <span class="hint_pink">平行四邊形</span> 。</p>
+            </div> 
+        </div>
+
+        <div id="case2">
+            <div class="vars">
+                <var id="types">randRange(1,5)</var>
+                <var id="sel,ans,wans">[['正方形','是','不是'],['長方形','是','不是'],['菱形','是','不是'],['箏形','不是','是'],['梯形','不是','是']][types-1]</var>
+                <var id="graphie_path">(function(){
+                    switch(types){
+                        case 1:
+                          return [[-5,-5],[5,-5],[5,5],[-5,5],[-5,-5]];
+                          break;
+                        case 2:
+                          return [[-7,-5],[7,-5],[7,5],[-7,5],[-7,-5]];
+                          break;
+                        case 3:
+                          return [[0,-7],[5,0],[0,7],[-5,0],[0,-7]];
+                          break;
+                        case 4:
+                          return [[0,-7],[5,2],[0,7],[-5,2],[0,-7]];
+                          break;
+                        default:
+                          return [[-7,-6],[7,-6],[4,6],[-4,6],[-7,-6]];
+                    }
+                })()</var>
+            </div>
+            <p class="question">
+                <span class="hint_blue"><var>sel</var></span>是否是平行四邊形？
+            </p>
+            
+            <div class="problem">
+                <div class="graphie" id="main_2">
+                    init({range: [[-8,8], [-8, 8]], scale : 20});
+                    path(graphie_path, { fill : KhanUtil.GREEN, opacity : 0.2});
+                </div>
+            </div>
+
+            <p class="solution"><code><var>ans</var></code></p>
+                <ul class="choices">
+                <li><code><var>wans</var></code></li>
+            </ul>
+
+            <div class="hints">
+                <p>注意這些四邊形可以同時是很多種特殊四邊形的，例如正方形同時也是長方形與菱形，所以要判斷是不是平行四邊形，就要從平行四邊形的定義下手，檢查這個四邊形是不是兩組對邊平行。</p>
+                <p>觀察一下，在<span class="hint_blue"><var>sel</var></span>中，<span class="hint_red"><var>ans</var></span>兩雙對邊互相平行的。</p>
+                <p>因此<span><var>sel</var></span><span class="hint_pink"><var>ans</var></span>平行四邊形 。</p>
+            </div> 
+        </div>
+
+        <div id="case3">
+            <div class="vars">
+                <var id="C">['A','B','C','D','E','F','G','H','I','J','K','L','M'].sort(function(){return 0.5-Math.random()})</var>
+                <var id="R_ANS">[C[1],C[3],C[9],C[11]].join('')</var>
+                <var id="W_ANS_INIT">[[C[5],C[6],C[10],C[11]].join(''),[C[1],C[2],C[6],C[5]].join(''),[C[2],C[3],C[9],C[10]].join(''),[C[1],C[2],C[10],C[11]].join(''),[C[0],C[7],C[9],C[3]].join('')]</var>
+                <var id="W_ANS_INDEX">randRangeUnique(1,6,3)</var>
+                <var id="W_ANS">[W_ANS_INIT[W_ANS_INDEX[0]-1],W_ANS_INIT[W_ANS_INDEX[1]-1],W_ANS_INIT[W_ANS_INDEX[2]-1]]</var>
+
+                <var id="P_ABOVE_R">polar(3,randRange(30,60))</var>
+                <var id="P_ABOVE_L">[-P_ABOVE_R[0],P_ABOVE_R[1]]</var>
+                <var id="S">randRange(1,2)</var>
+                <var id="P_BELOW_L">[P_ABOVE_L[0]-S,-P_ABOVE_L[1]]</var>
+                <var id="P_BELOW_R">[P_ABOVE_R[0]-S,-P_ABOVE_R[1]]</var>
+
+                <var id="LINE_BELOW">getLine(P_BELOW_L,P_BELOW_R)</var>
+                <var id="LINE_ABOVE">getLine(P_ABOVE_R,P_ABOVE_L)</var>
+                <var id="LINE_LEFT">getLine(P_BELOW_L,P_ABOVE_L)</var>
+                <var id="LINE_RIGHT">getLine(P_ABOVE_R,P_BELOW_R)</var>
+
+                <var id="LINE_1">getLine([0,0], [P_ABOVE_L[0]+0.5,P_ABOVE_L[1]])</var>
+                <var id="LINE_2">getLine([0,0], [(P_BELOW_L[1]+1-LINE_LEFT[1])/LINE_LEFT[0],P_BELOW_L[1]+1])</var>
+
+                <var id="P1">getFocusByLine(LINE_1,LINE_LEFT)</var>
+                <var id="P6">getFocusByLine(LINE_1,LINE_ABOVE)</var>
+                <var id="P2">getFocusByLine(LINE_LEFT,LINE_ABOVE)</var>
+                <var id="P3">getFocusByLine(LINE_LEFT,LINE_2)</var>
+                <var id="P4">getFocusByLine(LINE_LEFT,LINE_BELOW)</var>
+                <var id="P5">getFocusByLine(LINE_2,LINE_BELOW)</var>
+                <var id="P7">getFocusByLine(LINE_2,LINE_1)</var>
+
+                <var id="P8">getFocusByLine(LINE_RIGHT,LINE_1)</var>
+                <var id="P9">getFocusByLine(LINE_BELOW,LINE_1)</var>
+                <var id="P10">getFocusByLine(LINE_RIGHT,LINE_BELOW)</var>
+                <var id="P11">getFocusByLine(LINE_2,LINE_RIGHT)</var>
+                <var id="P12">getFocusByLine(LINE_ABOVE,LINE_RIGHT)</var>
+                <var id="P13">getFocusByLine(LINE_2,LINE_ABOVE)</var>
+            </div>
+
+            <p class="question">
+                如圖，<code>\overline{<var>R_ANS.charAt(0)+R_ANS.charAt(1)</var>} // \overline{<var>R_ANS.charAt(3)+R_ANS.charAt(2)</var>}</code>，<code>\overline{<var>R_ANS.charAt(0)+R_ANS.charAt(3)</var>} // \overline{<var>R_ANS.charAt(1)+R_ANS.charAt(2)</var>}</code>，其餘的線皆不與其他線平行，請從選項中選出下列何者為平行四邊形？
+            </p>
+
+            <div class="problem">
+                <div class="graphie" id="main_3">
+                    init({range: [[-10,10], [-8, 8]], scale : 20});
+
+                    line([10,10*LINE_ABOVE[0]+LINE_ABOVE[1]],[-10,-10*LINE_ABOVE[0]+LINE_ABOVE[1]]);
+                    line([10,10*LINE_BELOW[0]+LINE_BELOW[1]],[-10,-10*LINE_BELOW[0]+LINE_BELOW[1]]);
+
+                    line([(10-LINE_LEFT[1])/LINE_LEFT[0],10],[(-10-LINE_LEFT[1])/LINE_LEFT[0],-10]);
+                    line([(10-LINE_RIGHT[1])/LINE_RIGHT[0],10],[(-10-LINE_RIGHT[1])/LINE_RIGHT[0],-10]);
+
+                    line([(10-LINE_1[1])/LINE_1[0],10],[(-10-LINE_1[1])/LINE_1[0],-10]);
+                    line([10,10*LINE_2[0]+LINE_2[1]],[-10,-10*LINE_2[0]+LINE_2[1]]);
+
+                    label(P1, "\\tiny{"+C[0]+"}",'above', { color : KhanUtil.RED});
+                    circle(P1, 0.05, { stroke : KhanUtil.RED, fill : KhanUtil.RED});
+
+                    label(P6, "\\tiny{"+C[5]+"}",'above', { color : KhanUtil.GREEN});
+                    circle(P6, 0.05, { stroke : KhanUtil.GREEN, fill : KhanUtil.GREEN});
+
+                    label(P2, "\\tiny{"+C[1]+"}",'left', { color : KhanUtil.ORANGE});
+                    circle(P2, 0.05, { stroke : KhanUtil.ORANGE, fill : KhanUtil.ORANGE});
+
+                    label(P3, "\\tiny{"+C[2]+"}",'left', { color : KhanUtil.GREEN});
+                    circle(P3, 0.05, { stroke : KhanUtil.GREEN, fill : KhanUtil.GREEN});
+
+                    label(P4, "\\tiny{"+C[3]+"}",'below right', { color : KhanUtil.RED});
+                    circle(P4, 0.05, { stroke : KhanUtil.RED, fill : KhanUtil.RED});
+
+                    label(P5, "\\tiny{"+C[4]+"}",'below', { color : KhanUtil.BLUE});
+                    circle(P5, 0.05, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+
+                    label(P7, "\\tiny{"+C[6]+"}",'below', { color : KhanUtil.BLUE});
+                    circle(P7, 0.05, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+
+                    label(P8, "\\tiny{"+C[7]+"}",'right', { color : KhanUtil.ORANGE});
+                    circle(P8, 0.05, { stroke : KhanUtil.ORANGE, fill : KhanUtil.ORANGE});
+
+                    label(P9, "\\tiny{"+C[8]+"}",'below', { color : KhanUtil.GREEN});
+                    circle(P9, 0.05, { stroke : KhanUtil.GREEN, fill : KhanUtil.GREEN});
+
+                    label(P10, "\\tiny{"+C[9]+"}",'below', { color : KhanUtil.BLUE});
+                    circle(P10, 0.05, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+
+                    label(P11, "\\tiny{"+C[10]+"}",'right', { color : KhanUtil.RED});
+                    circle(P11, 0.05, { stroke : KhanUtil.RED, fill : KhanUtil.RED});
+
+                    label(P12, "\\tiny{"+C[11]+"}",'above right', { color : KhanUtil.RED});
+                    circle(P12, 0.05, { stroke : KhanUtil.RED, fill : KhanUtil.RED});
+
+                    label(P13, "\\tiny{"+C[12]+"}",'above right', { color : KhanUtil.BLUE});
+                    circle(P13, 0.05, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+                </div>
+            </div>
+            
+            <p class="solution"><code><var>R_ANS</var></code></p>
+                <ul class="choices">
+                <li><code><var>W_ANS[0]</var></code></li>
+                <li><code><var>W_ANS[1]</var></code></li>
+                <li><code><var>W_ANS[2]</var></code></li>
+            </ul>
+
+            <div class="hints">
+                <p>我們可以從平行四邊形的定義下手，檢查這個四邊形是不是兩組對邊平行。</p>
+                <p>觀察一下，在這些線中，因為 <code>\overline{<var>R_ANS.charAt(0)+R_ANS.charAt(1)</var>} // \overline{<var>R_ANS.charAt(3)+R_ANS.charAt(2)</var>}</code>，<code>\overline{<var>R_ANS.charAt(0)+R_ANS.charAt(3)</var>} // \overline{<var>R_ANS.charAt(1)+R_ANS.charAt(2)</var>}</code>，所以 <code><var>R_ANS</var></code> 的兩雙對邊是互相平行的。</p>
+                <p>因此答案是 <code class="hint_pink"><var>R_ANS</var></code> 。</p>
+            </div> 
+        </div>
+
+        <div id="case4">
+            <div class="vars">
+                <var id="T">randRange(1,2)</var>
+                <var id="CHS">['ABCDEF','ABCDEFGHI'][T-1]</var>
+            </div>
+            <p class="question">
+                如圖，<code>\overline{AC}//\overline{DF}</code><code data-if="T===2">//\overline{GI}</code>，<code data-if="T===2">\overline{AG}//\overline{BH}</code><code data-if="T===1">\overline{AD}//\overline{BE}</code>，且 <code data-if="T===2">\overline{CI}</code><code data-if="T===1">\overline{CF}</code> 不平行 <code data-if="T===2">\overline{BH}</code><code data-if="T===1">\overline{BE}</code>，請問下圖中有幾個平行四邊形？
+            </p>
+
+            <div class="problem">
+                <div class="graphie" id="main_4">
+                    init({range: [[-10,10], [-8, 8]], scale : 20});
+
+                    if(T===2){
+                        line([-8,3],[8,3]);
+                        line([-8,0],[8,0]);
+                        line([-8,-3],[8,-3]);
+                        line([-7,-5],[-5,5]);
+                        line([-3,-5],[-1,5]);
+                        line([5,-5],[3,5]);
+                        label([-5.5,3],'A','above left');
+                        label([-1.5,3],'B','above left');
+                        label([3.5,3],'C','above right');
+
+                        label([-6.3,-3],'G','above left');
+                        label([-2.3,-3],'H','above left');
+                        label([4.3,-3],'I','above right');
+
+                        label([-5.8,0],'D','above left');
+                        label([-1.8,0],'E','above left');
+                        label([3.8,0],'F','above right');
+                    }else{
+                        line([-8,2],[8,2]);
+                        line([-8,-2],[8,-2]);
+                        line([-7,-5],[-5,5]);
+                        line([-3,-5],[-1,5]);
+                        line([5,-5],[3,5]);
+
+                        label([-5.5,2],'A','above left');
+                        label([-1.5,2],'B','above left');
+                        label([3.5,2],'C','above right');
+
+                        label([-6,-2],'D','above left');
+                        label([-2,-2],'E','above left');
+                        label([4,-2],'F','above right');
+                    }
+                </div>
+            </div>
+            
+            <div class="solution" data-type="multiple">
+                <p>有<span class="sol" data-forms="integer"><var>T === 2 ? 3 : 1</var></span>個</p>
+                <p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+                <p>我們要從平行四邊形的定義下手，檢查這個四邊形是不是兩組對邊平行。</p>
+                <p>因為 <code>\overline{AC}//\overline{DF}</code><code data-if="T===2">//\overline{GI}</code>，<code data-if="T===2">\overline{AG}//\overline{BH}</code><code data-if="T===1">\overline{AD}//\overline{BE}</code>，所以我們選兩組平行線所圍成的四邊形都是平行四邊形，滿足<span class="hint_blue">兩雙對邊互相平行</span>的定義。</p>
+                <div data-if="T === 2">
+                    <p>我們可以很快地看出，四邊形 <code>ABED</code> 以及 <code>DEHG</code> 都是平行四邊形，</p>
+                    <p>不過別忘了，因為 <code>\overline{AB}//\overline{GH}</code>，因此四邊形 <code>ABHG</code> 也是平行四邊形，</p>
+                </div>
+                <div data-if="T === 1">
+                    <p>我們可以很快地看出，四邊形 <code>ABED</code> 是平行四邊形，</p>
+                </div>
+                <p>因此答案是 <code class="hint_pink"><var>T === 2 ? 3 : 1</var></code> 個。</p>
+            </div> 
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
