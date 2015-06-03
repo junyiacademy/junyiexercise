@@ -639,7 +639,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
      */
     decimal: numberAnswerType("decimal"),
 
-    rational: numberAnswerType("integer, proper, improper, mixed"),
+    rational: numberAnswerType("integer, proper, improper, mixed, decimal"),
 
     // A little bit of a misnomer as proper fractions are also accepted
     improper: numberAnswerType("integer, proper, improper"),

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html data-require="math graphie interactive math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>平行四邊形的判別</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+		#answer_area .sol input[type=text] {
+			width: 50px;
+		}
+	</style>
+	<script language="javascript">
+        function getEQUA(x, sum){
+            var a = KhanUtil.randRange(2,4);
+            return [a, Math.round(sum - x * a)];
+        }
+
+        function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars" data-ensure="angleD &gt; 0 &amp;&amp; EQUA_A[1] !== 0 &amp;&amp; EQUA_B[1] !== 0 &amp;&amp; EQUA_C[1] !== 0 &amp;&amp; EQUA_D[1] !== 0 &amp;&amp; min(angleA,angleB,angleC,angleD) - max(angleA,angleB,angleC,angleD) !== 0">
+                <var id="T">randRange(1,10)</var>
+                <var id="angleA,angleB,angleC,angleD">(function(){
+                    if(T &lt; 6){
+                        var angleA = round(randRange(3,15)*10);
+                        var angleB = round(180-angleA);
+                        var angleC = angleA;
+                        var angleD = angleB;
+                        return [angleA,angleB,angleC,angleD];
+                    } else {
+                        var angleA = round(randRange(6,12)*10);
+                        var angleB = round(round(randRange(20,240-angleA)/10)*10);
+                        var angleC = randRange(min(20,360-angleA-angleB &lt; 0 ? 1 : 360-angleA-angleB),max(20,360-angleA-angleB));
+                        angleC = round(angleC/10 &lt; 1 ? 1 : angleC/10)*10;
+                        var angleD = round(360-angleA-angleB-angleC);
+                        return [angleA,angleB,angleC,angleD];
+                    }
+                })()</var>
+                <var id="X">round(randRange(1,5)*10)</var>
+                <var id="EQUA_A">getEQUA(X,angleA)</var>
+                <var id="EQUA_B">getEQUA(X,angleB)</var>
+                <var id="EQUA_C">getEQUA(X,angleC)</var>
+                <var id="EQUA_D">getEQUA(X,angleD)</var>
+            </div>
+            <p class="question">
+                有一四邊形 <code>ABCD</code> 的角度依序為 <code>\angle A = <var>EQUA_A[0]</var>x+<var>EQUA_A[1]</var></code>、<code>\angle B = <var>EQUA_B[0]</var>x+<var>EQUA_B[1]</var></code>、<code>\angle C = <var>EQUA_C[0]</var>x+<var>EQUA_C[1]</var></code>、<code>\angle D = <var>EQUA_D[0]</var>x+<var>EQUA_D[1]</var></code>，請判斷 <code>ABCD</code> 是不是平行四邊形？
+            </p>
+            
+            <p class="solution"><code><var>T &lt; 6 ? '是' : '不是'</var></code></p>
+                <ul class="choices">
+                    <li><code><var>T &lt; 6 ? '不是' : '是'</var></code></li>
+                </ul>
+
+            <div class="hints">
+                <p>此題題目給我們角度，要我們判斷是否為平行四邊形，這就要用到平行四邊形的判別性質：「兩雙對角分別相等」。</p>
+                <div>
+                    <p>所以我們首先要計算這個四邊形的各個角度為何，</p>
+                    <p>利用四邊形內角和為 <code>360^\circ</code>，可以列出：</p>
+                    <p><code>(<var>EQUA_A[0]</var>x+<var>EQUA_A[1]</var>)^\circ+(<var>EQUA_B[0]</var>x+<var>EQUA_B[1]</var>)^\circ+(<var>EQUA_C[0]</var>x+<var>EQUA_C[1]</var>)^\circ+(<var>EQUA_D[0]</var>x+<var>EQUA_D[1]</var>)^\circ=360^\circ</code></p>
+                    <p><code>\Rightarrow <var>round(EQUA_A[0]+EQUA_B[0]+EQUA_C[0]+EQUA_D[0])</var>x = <var>round(360-EQUA_A[1]-EQUA_B[1]-EQUA_C[1]-EQUA_D[1])</var></code></p>
+                    <p><code>\Rightarrow x = <var>X</var></code></p>
+                </div>
+                <div>
+                    <p>因此我們就可以解出：</p>
+                    <p><code>\angle A = (<var>EQUA_A[0]</var> \times <var>X</var>+<var>EQUA_A[1]</var>)^\circ = <var>angleA</var>^\circ</code></p>
+                    <p><code>\angle B = (<var>EQUA_B[0]</var> \times <var>X</var>+<var>EQUA_B[1]</var>)^\circ = <var>angleB</var>^\circ</code></p>
+                    <p><code>\angle C = (<var>EQUA_C[0]</var> \times <var>X</var>+<var>EQUA_C[1]</var>)^\circ = <var>angleC</var>^\circ</code></p>
+                    <p><code>\angle D = (<var>EQUA_D[0]</var> \times <var>X</var>+<var>EQUA_D[1]</var>)^\circ = <var>angleD</var>^\circ</code></p>
+                </div>
+                <div>
+                    <p data-if="T &lt; 6">因為滿足兩組對角相等，因此 <span class="hint_pink">是</span> 平行四邊形。</p>
+                    <p data-if="T &gt; 5">因為不滿足兩組對角相等，因此 <span class="hint_pink">不是</span> 平行四邊形 。</p>
+                </div>
+            </div> 
+        </div>
+
+        <div id="case2">
+            <div class="vars">
+                <var id="side1">randRange(2,8)</var>
+                <var id="side2">randRange(2,8)</var>
+                <var id="S">randRangeExclude(2,8,[side1,side2])</var>
+                <var id="ans,side3,side4">side1 === side2 ? [0, S, S] : randFromArray([[1, side1, side2], [0, side2, side1]])</var>
+            </div>
+            <p class="question">
+                有一四邊形 <code>ABCD</code> 的邊長依序為 <code><var>side1</var></code> 、<code><var>side2</var></code> 、<code><var>side3</var></code> 、<code><var>side4</var></code> ，請判斷 <code>ABCD</code> 是不是平行四邊形？
+            </p>
+            
+            <p class="solution"><code><var>ans === 1 ? '是' : '不是'</var></code></p>
+                <ul class="choices">
+                    <li><code><var>ans === 1 ? '不是' : '是'</var></code></li>
+                </ul>
+
+            <div class="hints">
+                <p>此題題目給我們邊長，要我們判斷是否為平行四邊形，這就要用到平行四邊形的判別性質：「兩雙對邊分別相等」。</p>
+                <p>所以我們首先要觀察一下對邊是否相等，即觀察第一個邊有沒有等於第三個邊，第二個邊有沒有等於第四個邊。</p>
+                <div>
+                    <p data-if="ans===1">由於題目給的邊長滿足此性質，因此 <span class="hint_pink">是</span> 平行四邊形 。</p>
+                    <p data-if="ans===0">由於題目給的邊長不滿足此性質，因此 <span class="hint_pink">不是</span> 平行四邊形 。</p>
+                </div>
+            </div> 
+        </div>
+
+        <div id="case3">
+            <div class="vars">
+                <var id="side1">randRange(2,8)</var>
+                <var id="side2">randRange(2,8)</var>
+                <var id="S">randRangeExclude(2,8,[side1,side2])</var>
+                <var id="ans,side3,side4">side1 === side2 ? [0, S, S] : randFromArray([[1, side1, side2], [0, side2, side1]])</var>
+                <var id="ANG">randRange(60,90)</var>
+                <var id="PA">polar(side1,30+ANG)</var>
+                <var id="PB">polar(side2,210)</var>
+                <var id="PC">polar(side3,210+ANG)</var>
+                <var id="PD">polar(side4,30)</var>
+            </div>
+            <p class="question">
+                有一四邊形 <code>ABCD</code> 中，<code>O</code> 是 <code>\overline{AC}</code>、<code>\overline{BD}</code> 的交點，且 <code>\overline{OA} = <var>side1</var></code> 、<code>\overline{OB} = <var>side2</var></code> 、<code>\overline{OC} = <var>side3</var></code> 、<code>\overline{OD} = <var>side4</var></code> ，請判斷 <code>ABCD</code> 是不是平行四邊形？
+            </p>
+            <div class="problem">
+                <div class="graphie" id="main_3">
+                    init({range: [[-10, 10], [-10, 10]], scale : 20});
+
+                    style({strokeWidth : 1});
+                    line(PA, PC);
+                    line(PB, PD);
+                    path([PA, PB, PC, PD, PA]);
+                    label(polar(1, 30+ANG/2), 'O', { color : KhanUtil.RED});
+                    label(polar(1+side1,30+ANG), 'A', { color : KhanUtil.BLUE});
+                    label(polar(1+side2,210), 'B', { color : KhanUtil.BLUE});
+                    label(polar(1+side3,210+ANG), 'C', { color : KhanUtil.BLUE});
+                    label(polar(1+side4,30), 'D', { color : KhanUtil.BLUE});
+                    circle([0, 0], 0.1, { fill : KhanUtil.RED, stroke : KhanUtil.RED});
+                </div>
+            </div>
+            
+            <p class="solution"><code><var>ans === 1 ? '是' : '不是'</var></code></p>
+                <ul class="choices">
+                    <li><code><var>ans === 1 ? '不是' : '是'</var></code></li>
+                </ul>
+
+            <div class="hints">
+                <p>此題題目給我們對角線，要我們判斷是否為平行四邊形，這就要用到平行四邊形的判別性質：「對角線互相平分」。</p>
+                <p>因此，如果是平行四邊形，那麼 <code>\overline{OA} = \overline{OC}</code>，<code>\overline{OB} = \overline{OD}</code>，所以我們首先要觀察一下對角線是否互相平分。</p>
+                <div>
+                    <p data-if="ans === 1">由於題目給的對角線滿足此性質，因此 <span class="hint_pink">是</span> 平行四邊形 。</p>
+                    <p data-if="ans === 0">由於題目給的對角線不滿足此性質，因此 <span class="hint_pink">不是</span> 平行四邊形 。</p>
+                </div>
+            </div> 
+        </div>
+
+        <div id="case4">
+            <div class="vars">
+                <var id="T">randRange(1,10) &gt; 5 ? 0 : 1</var>
+                <var id="R_ANS">['\\overline{AB}//\\overline{CD}，\\overline{AD}//\\overline{BC}','\\overline{AB}//\\overline{CD}，\\overline{AB} = \\overline{CD}','\\overline{AD}//\\overline{BC}，\\overline{AD} = \\overline{BC}','\\overline{AO} = \\overline{CO}，\\overline{BO} = \\overline{DO}','O 為 \\overline{AC} 中點，O 為 \\overline{BD} 中點','\\overline{AB} = \\overline{CD}，\\overline{AD} = \\overline{BC}','\\angle A = \\angle C，\\angle B = \\angle D','\\overline{AB}//\\overline{CD}，\\angle A = \\angle C']</var>
+                <var id="W_ANS">['\\angle A + \\angle B = \\angle C + \\angle D = 180^\\circ','\\angle A = \\angle B，\\angle C = \\angle D','\\overline{AD}//\\overline{BC}，\\overline{AB} = \\overline{CD}','\\overline{AC} = \\overline{BD}','\\overline{AO} = \\overline{BO}，\\overline{CO} = \\overline{DO}','\\overline{AB} = \\overline{BC}，\\overline{CD} = \\overline{AD}','\\overline{AB}//\\overline{CD}，\\angle A = \\angle B']</var>
+                <var id="ANS_INIT">T === 0 ? [[randRange(1,8)], randRangeUnique(1,8,3)] : [randRangeUnique(1,9,3),[randRange(1,7)]]</var>
+                <var id="QES_ARR">randRangeUnique(1,5,4)</var>
+                <var id="QES">(function(){
+                	var ANS_STR_INIT = [];
+                	$.each(ANS_INIT[0], function(i, el){
+                		ANS_STR_INIT.push(R_ANS[el - 1]);
+                	});
+                	$.each(ANS_INIT[1], function(j, ele){
+                		ANS_STR_INIT.push(W_ANS[ele - 1]);
+                	});
+                	var RESULT_ARR = [];
+                	$.each(QES_ARR, function(k, elem){
+                		RESULT_ARR.push(ANS_STR_INIT[elem - 1]);
+                	})
+                	return RESULT_ARR;
+                })()</var>
+                <var id="CH">(function(){
+                	var ar = T === 0 ? [1,0,0,0] : [0,0,0,1];
+                	var arr_sol = [ar[QES_ARR[0]-1],ar[QES_ARR[1]-1],ar[QES_ARR[2]-1],ar[QES_ARR[3]-1]];
+                	$.each(arr_sol, function(i, elem){
+                		$('#a'+i).val(elem);
+                	});
+                	return arr_sol;
+                })()</var>
+            </div>
+
+            <p class="question">
+                有一四邊形 <code>ABCD</code> 中，<code>O</code> 是對角線 <code>\overline{AC}</code> 、<code>\overline{BD}</code> 的交點，請判斷下列哪一個條件哪一個<code data-if="T === 0" class="hint_red">\underline{\underline{可以}}</code><code data-if="T === 1" class="hint_red">\underline{\underline{不能}}</code>用來判定 <code>ABCD</code> 是平行四邊形？
+            </p>
+
+            <div class="problem">
+            	<div class="graphie" id="main_4">
+                	init({range: [[-7, 9], [-5, 5]], scale : 20});
+                	style({strokeWidth : 1});
+                	path([[-5,-3],[5,-3],[7,3],[-3,3],[-5,-3]]);
+                	line([-5,-3],[7,3]);
+                	line([5,-3],[-3,3]);
+                	label([-3,3], 'A', 'above left', { color : KhanUtil.BLUE});
+                	label([-5,-3], 'B', 'below left', { color : KhanUtil.BLUE});
+                	label([5,-3], 'C', 'below right', { color : KhanUtil.BLUE});
+                	label([7,3], 'D', 'above right', { color : KhanUtil.BLUE});
+                	label([1,0], 'O', 'above', { color : KhanUtil.BLUE});
+                </div>
+                <p class="qesarr"><code>A.\qquad <var>QES[0]</var></code></p>
+                <p class="qesarr"><code>B.\qquad <var>QES[1]</var></code></p>
+                <p class="qesarr"><code>C.\qquad <var>QES[2]</var></code></p>
+                <p class="qesarr"><code>D.\qquad <var>QES[3]</var></code></p>
+            </div>
+            
+            <div class="solution" data-type="multiple">
+				<div>
+					<p><input type="radio" name="c4" id="a0" /><code>A</code></p>
+					<p><input type="radio" name="c4" id="a1" /><code>B</code></p>
+					<p><input type="radio" name="c4" id="a2" /><code>C</code></p>
+					<p><input type="radio" name="c4" id="a3" /><code>D</code></p>
+				</div>
+				<div class="sol" data-type="custom">
+					<div class="guess">$('input:radio:checked').val()</div>
+					<div class="validator-function">
+						if(guess == 'undefined'){
+							return "";
+						}
+						if(guess == 1){
+							return true;
+						}
+						return false;
+					</div>
+				</div>
+			</div>
+
+            <div class="hints">
+            	<p>平行四邊形要如何判別？就要用到平行四邊形的判別性質。</p>
+            	<p>判別性質有：兩雙對角分別相等、兩雙對邊分別相等、一雙對邊平行且相等、兩對角線互相平分。</p>
+            	<div>
+            		<p>分別檢查各個選項是否滿足判別性質，因此答案是 </p>
+            		<p><code class="hint_pink">\qquad<var>T === 0 ? R_ANS[ANS_INIT[0][0]-1] : W_ANS[ANS_INIT[1][0]-1]</var></code> 。</p>
+            	</div>
+            </div> 
+        </div>
+
+        <div id="case5">
+            <div class="vars">
+            	<var id="PROP1">randFromArray([[1,2],[1,3],[2,3]])</var>
+            	<var id="PROP2">randFromArray([[1,2],[1,3],[2,3]])</var>
+            	<var id="ans">abs((PROP1[0]/PROP1[1]+PROP2[0]/PROP2[1]) - 1) &lt; 0.0001 ? 1 : 0</var>
+            </div>
+            <p class="question">
+                如圖，平行四邊形 <code>ABCD</code> 中，<code>\overline{AE} = \dfrac{<var>PROP1[0]</var>}{<var>PROP1[1]</var>} \overline{AB}</code> ，<code>\overline{DF} = \dfrac{<var>PROP2[0]</var>}{<var>PROP2[1]</var>} \overline{CD}</code> ，請判斷 <code>AFCE</code> 是不是平行四邊形？
+            </p>
+            <div class="problem">
+                <div class="graphie" id="main_3">
+                    init({range: [[-7, 9], [-5, 5]], scale : 20});
+                    style({strokeWidth : 1});
+                	path([[-5,-3],[5,-3],[7,3],[-3,3],[-5,-3]], { fill : KhanUtil.BLUE, opacity : 0.5});
+                	line([-3,3],[10*PROP2[0]/PROP2[1]-5,-3]);
+                	line([5,-3],[10*PROP1[0]/PROP1[1]-3,3]);
+                	label([-3,3], 'A', 'above left', { color : KhanUtil.BLUE});
+                	label([-5,-3], 'D', 'below left', { color : KhanUtil.BLUE});
+                	label([5,-3], 'C', 'below right', { color : KhanUtil.BLUE});
+                	label([7,3], 'B', 'above right', { color : KhanUtil.BLUE});
+                	label([10*PROP1[0]/PROP1[1]-3,3], 'E', 'above', { color : KhanUtil.RED});
+                	label([10*PROP2[0]/PROP2[1]-5,-3], 'F', 'below', { color : KhanUtil.RED});
+                </div>
+            </div>
+            
+            <p class="solution"><code><var>ans === 1 ? '是' : '不是'</var></code></p>
+                <ul class="choices">
+                    <li><code><var>ans === 1 ? '不是' : '是'</var></code></li>
+                </ul>
+
+            <div class="hints">
+                <p>此題要用到平行四邊形的判別性質：「一組對邊平行且相等」。</p>
+                <p>因為 <code>E</code> 、<code>F</code> 分別在 <code>\overline{AB}</code> 、<code>\overline{CD}</code> 上，因此 <code>\overline{AE}//\overline{CF}</code>。</p>
+                <div>
+                	<p data-if="ans === 1">因為 <code>\overline{AE} = \dfrac{<var>PROP1[0]</var>}{<var>PROP1[1]</var>} \overline{AB} = \dfrac{<var>PROP1[0]</var>}{<var>PROP1[1]</var>} \overline{CD} = \overline{CF}</code> ，</p>
+                	<p data-if="ans === 1">滿足一組對邊平行且相等，因此 <span class="hint_pink">是</span> 平行四邊形 。</p>
+                	<p data-if="ans !== 1">因為 <code>\overline{AE} = \dfrac{<var>PROP1[0]</var>}{<var>PROP1[1]</var>} \overline{AB} \neq (1 - \dfrac{<var>PROP2[0]</var>}{<var>PROP2[1]</var>}) \overline{CD} = \overline{CF}</code> ，</p>
+                	<p data-if="ans !== 1">不滿足一組對邊平行且相等，因此 <span class="hint_pink">不是</span> 平行四邊形 。</p>
+                </div>
+            </div> 
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
