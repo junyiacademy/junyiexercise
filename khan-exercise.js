@@ -546,6 +546,9 @@ var Khan = (function() {
                         pad = null;
                     }
                     $("#scratchpad div").children().remove();
+                    if (actions.isVisible()) { // create a new scratch pad
+                        pad = new DrawingScratchpad($("#scratchpad div")[0]);
+                    }
                 },
 
                 resize: function() {
