@@ -229,8 +229,12 @@
                     $("input[name='linear']:checked").attr("id")
                 ]</div>
                 <div class="validator-function">
+                	if(($("input[name='linear']:checked").length === 0)){
+                    	return "";
+                    }
+                    
                     if (_.isEqual(guess, [[-5, 5], [5, 5], "exists"])) {
-                        return "";
+                        return "迴歸直線存在時，別忘記移動獲得迴歸直線哦！";
                     }
 
                     var low = _.first(POINTS), high = _.last(POINTS);
@@ -450,11 +454,15 @@
                 </div>
                 <div class="guess">[
                     GRAPH.pointA.coord, GRAPH.pointB.coord,
-                    $("input[name='linear']:checked").attr("id")
+                    $("input[name='nonlinear']:checked").attr("id")
                 ]</div>
                 <div class="validator-function">
+                	if(0 === $("input[name='nonlinear']:checked").length){
+                    	return "";
+                    }
+
                     if (_.isEqual(guess, [[-5, 5], [5, 5], "exists"])) {
-                        return "";
+                        return "迴歸直線存在時，別忘記移動獲得迴歸直線哦！";
                     }
 
                     return guess[2] === "notexists";
