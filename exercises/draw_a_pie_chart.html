@@ -30,30 +30,14 @@
 			}
 			return array;
 		}
-        function accAdd(arg1,arg2){
-            var r1,r2,m;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2))
-            return (arg1*m+arg2*m)/m
-        }
-        function Subtr(arg1,arg2){
-            var r1,r2,m,n;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2));
-            //last modify by deeka
-            //动态控制精度长度
-            n=(r1>=r2)?r1:r2;
-            return ((arg1*m-arg2*m)/m).toFixed(n);
-        }
+
 	</script>
 </head>
 <body>
 	<div class="exercise">
     <div class="problems">
 	 <div id="case1">
-            <div class="vars" data-ensure="M&lt;=45 && K&lt;=45 && L&lt;=45 && J&lt;=45 ">
+            <div class="vars" data-ensure="M&lt;=45 && K&lt;=45 && L&lt;=45 && J&lt;=45 && J !== 25">
 				<var id="numsArray">
 				(function(){
 					var arr = sortNumbers(randRangeUnique(1,100,3));
@@ -414,6 +398,9 @@
 				<div class="sol" data-type="custom">
 				    <div class="guess">[minutePoint.coord,hourPoint.coord,thirdPoint.coord,lastPoint.coord]</div>
 				    <div class="validator-function">
+                        if(KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270){
+                            return "";
+                        }
 						var greenAns = KhanUtil.findAngle(guess[2],[0,0])-KhanUtil.findAngle(guess[0],[0,0]);
 						greenAns&gt;360?greenAns-=360:(greenAns&lt;0?greenAns+=360:greenAns=greenAns);
 						var orangeAns = KhanUtil.findAngle(guess[0],[0,0])-KhanUtil.findAngle(guess[1],[0,0]);
@@ -427,6 +414,7 @@
 						if(arr[0]==ansArr[0] && arr[1]==ansArr[1] && arr[2]==ansArr[2] && arr[3]==ansArr[3]){
 							return true;
 						}
+                        return false;
                     </div>
 				</div>
 				<p class="example">移動圓內直線，使其滿足題目中給出的條件</p>
@@ -480,15 +468,19 @@
 		<div class="problem"><p>請算出每種動物所占圓心角的度數並將答案填寫入下表。</p></div>
 		<table class="nLimit" style="background-color:sandybrown">
 				<tr><td>動物名稱</td><td>狗</td><td>貓</td><td>兔子</td><td>天竺鼠</td></tr>
-				<tr><td>比率</td><td><input type="text" id="a_1" style="height:60px;width:50px;background:sandybrown;border:0px;text-align:center"></td><td><input type="text" id="a_2" style="height:60px;width:50px;background:sandybrown;border:0px;text-align:center"></td><td><input type="text" id="a_3" style="height:60px;width:50px;background:sandybrown;border:0px;text-align:center"></td><td><input type="text" id="a_4" style="height:60px;width:50px;background:sandybrown;border:0px;text-align:center"></td></tr>
+				<tr><td>度數</td><td><input type="text" id="a_1" style="height:60px;width:50px;background:sandybrown;border:0px;text-align:center"></td><td><input type="text" id="a_2" style="height:60px;width:50px;background:sandybrown;border:0px;text-align:center"></td><td><input type="text" id="a_3" style="height:60px;width:50px;background:sandybrown;border:0px;text-align:center"></td><td><input type="text" id="a_4" style="height:60px;width:50px;background:sandybrown;border:0px;text-align:center"></td></tr>
 		</table>
 		<div class="solution" data-type="multiple">
 			<div class="sol" data-type="custom">
-				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value]</div>
+				    <div class="guess">[$('#a_1').val().replace(/[ ]/g,""),$('#a_2').val().replace(/[ ]/g,""),$('#a_3').val().replace(/[ ]/g,""),$('#a_4').val().replace(/[ ]/g,"")]</div>
 				    <div class="validator-function">
-						if(guess[0].replace(/[ ]/g,"")==J && guess[1].replace(/[ ]/g,"")==K && guess[2].replace(/[ ]/g,"")==L && guess[3].replace(/[ ]/g,"")==M){
+                        if(guess[0]=='' || guess[1]=='' || guess[2]=='' || guess[3]==''){
+                            return '';
+                        }
+						if(guess[0]==J && guess[1]==K && guess[2]==L && guess[3]==M){
 							return true;
 						}
+                        return false;
                     </div>
 				</div>
 				<p class="example">在表中填入整數，例如 <code>6</code></p>
@@ -496,7 +488,7 @@
 		<div class="hints">
 			<p>狗占全部的比率是 <code><var>fraction(J,360,true,true,false,false)</var></code> ，表示它在圓形圖中是 <code><var>fraction(J,360,true,true,false,false)</var></code> 圓 的扇形，</p>
 			<div>
-				<p>所以，狗：<code>360^{\circ}\times<var>fraction(J,360,true,true,false,false)</var>=<var>J</var>^{\circ}</code> ，圓心角為 <code><var>J</var>^{\circ}</code> 。</p>
+				<p>所以，狗：<code>360^{\circ}\times<var>fraction(J,360,true,true,false,false)</var>=<var>J</var>^{\circ}</code> ，圓心角為 <code class="hint_pink"><var>J</var>^{\circ}</code> 。</p>
 				<div class="graphie" id="dog">
 					init({ range: [[-1.5, 2.5], [-1.5, 1.5]], scale: 45 });
 					circle([0,0],1);
@@ -510,7 +502,7 @@
 			
 			<p>貓占全部的比率是 <code><var>fraction(K,360,true,true,false,false)</var></code> ，表示它在圓形圖中是 <code><var>fraction(K,360,true,true,false,false)</var></code> 圓 的扇形，</p>
 			<div>
-				<p>所以，貓：<code>360^{\circ}\times<var>fraction(K,360,true,true,false,false)</var>=<var>K</var>^{\circ}</code> ，圓心角為 <code><var>K</var>^{\circ}</code> 。</p>
+				<p>所以，貓：<code>360^{\circ}\times<var>fraction(K,360,true,true,false,false)</var>=<var>K</var>^{\circ}</code> ，圓心角為 <code class="hint_pink"><var>K</var>^{\circ}</code> 。</p>
 				<div class="graphie" id="cat">
 					init({ range: [[-1.5, 2.5], [-1.5, 1.5]], scale: 45 });
 					circle([0,0],1);
@@ -524,7 +516,7 @@
 			
 			<p>兔子占全部的比率是 <code><var>fraction(L,360,true,true,false,false)</var></code> ，表示它在圓形圖中是 <code><var>fraction(L,360,true,true,false,false)</var></code> 圓 的扇形，</p>
 			<div>
-				<p>所以，兔子：<code>360^{\circ}\times<var>fraction(L,360,true,true,false,false)</var>=<var>L</var>^{\circ}</code> ，圓心角為 <code><var>L</var>^{\circ}</code> 。</p>
+				<p>所以，兔子：<code>360^{\circ}\times<var>fraction(L,360,true,true,false,false)</var>=<var>L</var>^{\circ}</code> ，圓心角為 <code class="hint_pink"><var>L</var>^{\circ}</code> 。</p>
 				<div class="graphie" id="rabbit">
 					init({ range: [[-1.5, 2.5], [-1.5, 1.5]], scale: 45 });
 					circle([0,0],1);
@@ -538,7 +530,7 @@
 			
 			<p>天竺鼠占全部的比率是 <code><var>fraction(M,360,true,true,false,false)</var></code> ，表示它在圓形圖中是 <code><var>fraction(M,360,true,true,false,false)</var></code> 圓 的扇形，</p>
 			<div>
-				<p>所以，天竺鼠：<code>360^{\circ}\times<var>fraction(M,360,true,true,false,false)</var>=<var>M</var>^{\circ}</code> ，圓心角為 <code><var>M</var>^{\circ}</code> 。</p>
+				<p>所以，天竺鼠：<code>360^{\circ}\times<var>fraction(M,360,true,true,false,false)</var>=<var>M</var>^{\circ}</code> ，圓心角為 <code class="hint_pink"><var>M</var>^{\circ}</code> 。</p>
 				<div class="graphie" id="mouse">
 					init({ range: [[-1.5, 2.5], [-1.5, 1.5]], scale: 45 });
 					circle([0,0],1);
@@ -553,7 +545,7 @@
 	</div>
 	
 	<div id="case3">
-            <div class="vars" data-ensure="M&lt;=45 && K&lt;=45 && L&lt;=45 && J&lt;=45 ">
+            <div class="vars" data-ensure="M&lt;=45 && K&lt;=45 && L&lt;=45 && J&lt;=45 && J !== 25">
 				<var id="numsArray">
 				(function(){
 					var arr = sortNumbers(randRangeUnique(1,50,3));
@@ -922,6 +914,10 @@
 				<div class="sol" data-type="custom">
 				    <div class="guess">[minutePoint.coord,hourPoint.coord,thirdPoint.coord,lastPoint.coord]</div>
 				    <div class="validator-function">
+                        if(KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270){
+                            return "";
+                        }
+
 						var greenAns = KhanUtil.findAngle(guess[2],[0,0])-KhanUtil.findAngle(guess[0],[0,0]);
 						greenAns&gt;360?greenAns-=360:(greenAns&lt;0?greenAns+=360:greenAns=greenAns);
 	
@@ -936,6 +932,7 @@
 						if(arr[0]==ansArr[0] && arr[1]==ansArr[1] && arr[2]==ansArr[2] && arr[3]==ansArr[3]){
 							return true;
 						}
+                        return false;
                     </div>
 				</div>
 				<p class="example">移動圓內直線，使其滿足題目中給出的條件</p>
@@ -1060,11 +1057,15 @@
 		</div>
 		<div class="solution" data-type="multiple">
 				<div class="sol" data-type="custom">
-				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value]</div>
+				    <div class="guess">[$("#a_1").val().replace(/[ ]/g,""),$("#a_2").val().replace(/[ ]/g,""),$("#a_3").val().replace(/[ ]/g,""),$("#a_4").val().replace(/[ ]/g,""),$("#a_5").val().replace(/[ ]/g,"")]</div>
 				    <div class="validator-function">
-						if(guess[0].replace(/[ ]/g,"")==K && guess[1].replace(/[ ]/g,"")==L && guess[2].replace(/[ ]/g,"")==N && guess[3].replace(/[ ]/g,"")==M && guess[4].replace(/[ ]/g,"")==J){
+                        if(guess[0]=='' || guess[1]=='' || guess[2]=='' || guess[3]=='' || guess[4]==''){
+                            return "";
+                        }
+						if(guess[0]==K && guess[1]==L && guess[2]==N && guess[3]==M && guess[4]==J){
 							return true;
 						}
+                        return false;
                     </div>
 				</div>
 				<p class="example">在圖中填空處填入整數，<br/>例如 <code>6</code></p>
@@ -1075,12 +1076,12 @@
 			</div>
 			<div>
 				<p>所以，我們可以知道 <code>:</code></p>
-				<p><var>SORT_ALL[4][0]</var> 是 <code><var>SORT_ALL[4][1]</var>\%</code></p>
+				<p style="font-weight : bold"><var>SORT_ALL[4][0]</var> 是 <code class="hint_pink"><var>SORT_ALL[4][1]</var>\%</code></p>
 			</div>
-			<p><var>SORT_ALL[3][0]</var> 是 <code><var>SORT_ALL[3][1]</var>\%</code></p>
-			<p><var>SORT_ALL[2][0]</var> 是 <code><var>SORT_ALL[2][1]</var>\%</code></p>
-			<p><var>SORT_ALL[1][0]</var> 是 <code><var>SORT_ALL[1][1]</var>\%</code></p>
-			<p><var>SORT_ALL[0][0]</var> 是 <code><var>SORT_ALL[0][1]</var>\%</code></p>
+			<p style="font-weight : bold"><var>SORT_ALL[3][0]</var> 是 <code class="hint_pink"><var>SORT_ALL[3][1]</var>\%</code></p>
+			<p style="font-weight : bold"><var>SORT_ALL[2][0]</var> 是 <code class="hint_pink"><var>SORT_ALL[2][1]</var>\%</code></p>
+			<p style="font-weight : bold"><var>SORT_ALL[1][0]</var> 是 <code class="hint_pink"><var>SORT_ALL[1][1]</var>\%</code></p>
+			<p style="font-weight : bold"><var>SORT_ALL[0][0]</var> 是 <code class="hint_pink"><var>SORT_ALL[0][1]</var>\%</code></p>
 		</div>
 	</div>
 	</div>
