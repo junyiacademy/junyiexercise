@@ -1086,7 +1086,7 @@ var Khan = (function() {
         randomSeed = problemSeed;
 
         // Check to see if we want to test a specific problem
-        if (localMode) {
+        if (localMode || Khan.query.problem != undefined) {
             id = typeof id !== "undefined" ? id : Khan.query.problem;
         }
 
