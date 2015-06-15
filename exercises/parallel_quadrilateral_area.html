@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html data-require="math graphie interactive math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>平行四邊形的面積</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+		#answer_area .sol input[type=text] {
+			width: 50px;
+		}
+	</style>
+	<script language="javascript">
+		function eachArray(canDidt,quaArr){
+			//return path
+			var resArr = [];
+			var canArr = canDidt.split('');
+    		$.each(canArr, function(i,elem){
+    			$.each(quaArr,function(j,jelem){
+    				if(i === 0 && elem === jelem[1]){
+    					resArr.push(jelem[0]);
+    					resArr.push(jelem[0]);
+    				}else if(elem === jelem[1]){
+    					resArr.splice(i,0,jelem[0]);
+    				}
+    			});
+    		});
+    		return resArr;
+		}
+
+		function getSlope(pa, pb){
+			return (pa[1] - pb[1]) / (pa[0] - pb[0]);
+		}
+
+		function getFocus(pa, pb, pc, pd) {
+			var klab = (pa[1] - pb[1]) / (pa[0] - pb[0]);
+			var llab = pa[1] - pa[0]*klab;
+			var klcd = (pc[1] - pd[1]) / (pc[0] - pd[0]);
+			var llcd = pc[1] - pc[0] * klcd;
+			return [(llcd - llab) / (klab - klcd), klab * (llcd - llab) / (klab - klcd) + llab];
+		}
+
+	</script>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+                <var id="sideAB,sideCE">randFromArray([[10,6],[10,8],[13,12],[13,5],[5,4],[5,3],[25,7],[25,24]])</var>
+                <var id="sideBC">randRange(15,25)</var>
+                <var id="sideDE">sqrt(pow(sideAB,2)-pow(sideCE,2))</var>
+                <var id="ans">sideBC*sideDE</var>
+            </div>
+            <p class="question">
+                如圖，平行四邊形 <code>ABCD</code> 的一邊長 <code>\overline{AB}=<var>sideAB</var></code> ，另一邊長 <code>\overline{BC} = <var>sideBC</var></code> ，過 <code>D</code> 點作 <code>\overleftrightarrow{BC}</code> 的垂線交於 <code>E</code> 點。若 <code>\overline{CE} = <var>sideCE</var></code> ，請求出 <code>ABCD</code> 的面積。
+            </p>
+            <div class="problem">
+                <div class="graphie" id="main">
+                    init({range: [[-sideBC/2-6, sideBC/2+sideCE+6], [-sideDE/2-7, sideDE/2+7]], scale : 8});
+
+                    path([[-sideBC/2,-sideDE/2],[sideBC/2,-sideDE/2],[sideBC/2+sideCE,sideDE/2],[-sideBC/2+sideCE,sideDE/2],[-sideBC/2,-sideDE/2]], { fill : KhanUtil.GRAY, opacity : 0.5});
+                    label([-sideBC/2,-sideDE/2], 'B', 'below left', { color : KhanUtil.BLUE});
+                    label([-sideBC/2+sideCE,sideDE/2], 'A', 'above left', { color : KhanUtil.BLUE});
+                    label([sideBC/2,-sideDE/2], 'C', 'below', { color : KhanUtil.BLUE});
+                    label([sideBC/2+sideCE,sideDE/2], 'D', 'above right', { color : KhanUtil.BLUE});
+                    line([sideBC/2+sideCE,sideDE/2],[sideBC/2+sideCE,-sideDE/2], { stroke : KhanUtil.GRAY, "stroke-dasharray": "-"});
+                    line([sideBC/2+sideCE,-sideDE/2],[sideBC/2,-sideDE/2], { stroke : KhanUtil.GRAY, "stroke-dasharray": "-"});
+                    label([sideBC/2+sideCE,-sideDE/2], 'E', 'below right', { color : KhanUtil.BLUE});
+                    line([sideBC/2+sideCE,-sideDE/2+1],[sideBC/2+sideCE-1,-sideDE/2+1]);
+                    line([sideBC/2+sideCE-1,-sideDE/2],[sideBC/2+sideCE-1,-sideDE/2+1]);
+
+                    label([-sideBC/2+sideCE/2,0],'\\small{'+sideAB+'}','above left');
+                    label([0,-sideDE/2+1],'\\small{'+sideBC+'}','below');
+                    label([sideBC/2+sideCE/2,-sideDE/2+1],'\\small{'+sideCE+'}','below');
+                </div>
+            </div>
+            
+            <div class="solution" data-type="multiple">
+                <p>面積為<span class="sol" data-forms="integer"><var>ans</var></span></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+            	<p>平行四邊形面積為底乘以高，在這個平行四邊形中，我們可以發現底為 <code>\overline{BC}</code>，高為 <code>\overline{DE}</code>。
+            	</p>
+            	<p><code>\overline{BC}</code> 題目給我們了，那 <code>\overline{DE}</code> 怎麼求呢？首先因為平行四邊形中，對邊相等，因此 <code>\overline{CD} = \overline{AB}</code>。</p>
+            	<div>
+            		<p>有了 <code>\overline{CD}</code> 的長度後，我們就可以利用直角三角形的畢氏定理，來求出高了！</p>
+            		<p>因為 <code>\overline{DE}^2+\overline{CE}^2 = \overline{CD}^2</code></p>
+            		<p><code>\Rightarrow \overline{DE} = \sqrt{\overline{CD}^2-\overline{CE}^2}</code></p>
+            		<p><code>=\sqrt{<var>sideAB</var>^2-<var>sideCE</var>^2}</code></p>
+            		<p><code>=<var>sideDE</var></code></p>
+            	</div>
+            	<p>因此面積為 <code>\overline{BC} \times \overline{DE} = <var>sideBC</var>\times <var>sideDE</var> = \color{#FF00AF}{<var>ans</var>}</code> 。</p>
+            </div> 
+        </div>
+
+        <div id="case2">
+            <div class="vars">
+            	<var id="TRI">randRange(25,40)</var>
+                <var id="QUA_AREA">round(4*TRI)</var>
+                <var id="num">randRange(2,3)</var>
+                <var id="CANDIDT">num === 2 ? randFromArray(['BCD','ACD','ABC','ABD','ABO+OCD','AOD+BOC']) : randFromArray(['DABCO','ABCDO','BCDAO','BADCO'])</var>
+                <var id="QUA_PATH">(function(){
+                	var bleft = randRange(8,12);
+                	var linece = randRange(5,8);
+                	var highde = randRange(8,12);
+                	return [[[-bleft+linece,highde],'A'],[[-bleft,-highde],'B'],[[bleft,-highde],'C'],[[bleft+linece,highde],'D'],[[linece/2,0],'O']];
+                })()</var>
+                <var id="L">CANDIDT.length</var>
+                <var id="GRAY_PATH">(function(){
+                	if(L === 3 || L === 5){
+                		return eachArray(CANDIDT,QUA_PATH);
+                	}else{
+                		var canArrInit = CANDIDT.split('+');
+                		var canArrL = canArrInit[0].split('');
+                		var canArrR = canArrInit[1].split('');
+                		var resArrL = eachArray(canArrInit[0],QUA_PATH);
+                		var resArrR = eachArray(canArrInit[1],QUA_PATH);
+                		return [resArrL,resArrR];
+                	}
+                })()</var>
+                <var id="ANS">round(TRI*num)</var>
+            </div>
+            <p class="question">
+                如圖，平行四邊形 <code>ABCD</code> 兩對角線相交於 <code>O</code> 點，若平行四邊形的面積 <code>= <var>QUA_AREA</var></code> ，請求出灰色區域 <code><var>CANDIDT</var></code> 的面積。
+            </p>
+            <div class="problem">
+                <div class="graphie" id="main_2">
+                    init({range: [[-20, 28], [-20, 20]], scale : 8});
+                    path([QUA_PATH[0][0],QUA_PATH[1][0],QUA_PATH[2][0],QUA_PATH[3][0],QUA_PATH[0][0]]);
+                    if(L === 7){
+                    	path(GRAY_PATH[0], { fill : KhanUtil.GRAY, opacity : 0.5});
+                    	path(GRAY_PATH[1], { fill : KhanUtil.GRAY, opacity : 0.5});
+                    }else {
+                    	path(GRAY_PATH, { fill : KhanUtil.GRAY, opacity : 0.5});
+                    }
+                    line(QUA_PATH[0][0],QUA_PATH[2][0]);
+                    line(QUA_PATH[1][0],QUA_PATH[3][0]);
+                    label(QUA_PATH[0][0], 'A', 'above left', { color : KhanUtil.BLUE});
+                    label(QUA_PATH[1][0], 'B', 'below left', { color : KhanUtil.BLUE});
+                    label(QUA_PATH[2][0], 'C', 'below right', { color : KhanUtil.BLUE});
+                    label(QUA_PATH[3][0], 'D', 'above right', { color : KhanUtil.BLUE});
+                    label([0.5*QUA_PATH[0][0][0]+0.5*QUA_PATH[2][0][0], 0.5*QUA_PATH[0][0][1]+0.5*QUA_PATH[2][0][1]], 'O', 'below', { color : KhanUtil.GREEN});
+                </div>
+            </div>
+            
+            <div class="solution" data-type="multiple">
+                <p>面積為<span class="sol" data-forms="integer"><var>ANS</var></span></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+            	<p>平行四邊形中，對角線將平行四邊形面積分成相等的四等分。</p>
+            	<p>因此，<code>\triangle AOB = \triangle BOC = \triangle COD = \triangle AOD</code>，而這些三角形全部加起來等於平行四邊形面積，因此一塊三角形面積為 <code><var>QUA_AREA</var>\div 4 = <var>TRI</var></code>。</p>
+            	<div>
+            		<p>而我們要求的區域就是 <code class="hint_orange"><var>num</var></code> 塊三角形組合而成，</p>
+            		<p>因此面積為 <code><var>num</var> \times <var>TRI</var> = \color{#FF00AF}{<var>ANS</var>}</code> 。</p>
+            	</div>
+            </div> 
+        </div>
+
+        <div id="case3">
+            <div class="vars" data-ensure="yfocus - highde/2 &lt; 0.5 &amp;&amp; isInt(ANS/2)">
+            	<var id="sideBE">randRange(6,10)</var>
+            	<var id="sideCF">randRange(8,12)</var>
+            	<var id="ANS">round(sideBE*sideCF)</var>
+            	<var id="bleft">randRange(8,12)</var>
+            	<var id="linece">randRange(5,8)</var>
+            	<var id="highde">randRange(8,12)</var>
+            	<var id="SLOPE_BE">getSlope([-bleft,-highde/2],[-5,highde/2])</var>
+            	<var id="SLOPE_CF">-1/SLOPE_BE</var>
+            	<var id="cfb">-highde/2-SLOPE_CF*bleft</var>
+            	<var id="beb">-highde/2+SLOPE_BE*bleft</var>
+            	<var id="xfocus">(cfb-beb)/(SLOPE_BE-SLOPE_CF)</var>
+            	<var id="yfocus">SLOPE_BE*xfocus+beb</var>
+            </div>
+            <p class="question">
+                如圖，平行四邊形中 <code>E</code> 在 <code>\overline{AD}</code> 上，<code>F</code> 在 <code>\overline{BE}</code> 上，<code>\overline{CF} \bot \overline{BE}</code>，<code>\overline{BE} = <var>sideBE</var></code> ，<code>\overline{CF} = <var>sideCF</var></code> ，請求出平行四邊形的面積。
+            </p>
+            <div class="problem">
+                <div class="graphie" id="main_3">
+                    init({range: [[-28, 20], [-20, 20]], scale : 8});
+                    path([[-bleft-linece,highde/2],[-bleft,-highde/2],[bleft,-highde/2],[bleft-linece,highde/2],[-bleft-linece,highde/2]]);
+                    line([-bleft,-highde/2],[-5,highde/2]);
+                    line([bleft,-highde/2],[xfocus,yfocus]);
+
+                    label([-bleft-linece,highde/2], 'A', 'above left', { color : KhanUtil.BLUE});
+                    label([-bleft,-highde/2], 'B', 'below left', { color : KhanUtil.BLUE});
+                    label([bleft,-highde/2], 'C', 'below right', { color : KhanUtil.BLUE});
+                    label([bleft-linece,highde/2], 'D', 'above right', { color : KhanUtil.BLUE});
+                    label([-5,highde/2], 'E', 'above', { color : KhanUtil.BLUE});
+                    label([xfocus,yfocus], 'F', 'below', { color : KhanUtil.BLUE});
+                </div>
+            </div>
+            
+            <div class="solution" data-type="multiple">
+                <p>面積為<span class="sol" data-forms="integer"><var>ANS</var></span></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+            	<div>
+            		<p>將 <code>\overline{CE}</code> 連起來，我們看到平行四邊形內部有一個 <code>\triangle CBE</code>。</p>
+            		<div class="graphie" data-update="main_3">
+            			line([bleft,-highde/2],[-5,highde/2], { stroke : KhanUtil.GREEN});
+            		</div>
+            	</div>
+            	<div>
+            		<p>這裡用到一個重要觀念，<code>\triangle CBE = \dfrac{1}{2}</code> 平行四邊形面積。( 回想一下，為什麼呢？)</p>
+            		<p>因此我們要算平行四邊形面積，只要把 <code>\triangle CBE \times 2</code> 就好了！</p>
+            	</div>
+            	<div>
+            		<p>那 <code>\triangle CBE</code> 要怎麼求呢？因為 <code>\overline{CF} \bot \overline{BE}</code>，我們把頭稍微轉一下，就會發現，<code>\triangle CBE</code> 的底是 <code>\overline{BE}</code>，而高就是 <code>\overline{CF}</code>，因此</p>
+            		<p><code>\triangle CBE = \dfrac{1}{2}\times <var>sideBE</var> \times <var>sideCF</var> = <var>ANS/2</var></code>。</p>
+            	</div>
+            	<p>所以平行四邊形面積為 <code><var>ANS/2</var> \times 2 = \color{#FF00AF}{<var>ANS</var>}</code> 。</p>
+            </div> 
+        </div>
+
+        <div id="case4">
+            <div class="vars">
+            	<var id="AREA_1">randRange(8,15)</var>
+            	<var id="AREA_2">randRange(8,15)</var>
+            	<var id="AREA_3">randRange(8,15)</var>
+            	<var id="ANS">AREA_1+AREA_2-AREA_3</var>
+            	<var id="CEN">getFocus([-15,12],[10,-12],[-20,-12],[15,12])</var>
+            	<var id="O">(function(){
+            		var ox = AREA_1 &gt; AREA_2 ? CEN[0]+2 : CEN[0]-2;
+            		var oy = AREA_3 &gt; ANS ? CEN[1]-2 : CEN[1]+2;
+            		return [ox,oy];
+            	})()</var>
+            	<var id="path_arr">[[-15,12],[-20,-12],[10,-12],[15,12],[-15,12]]</var>
+            </div>
+            <p class="question">
+                如圖，平行四邊形 <code>ABCD</code> 中，<code>O</code> 為內部一點。若 <code>\triangle AOB</code> 面積為 <code><var>AREA_1</var></code> 平方單位，<code>\triangle COD</code> 面積為 <code><var>AREA_2</var></code> 平方單位，<code>\triangle AOD</code> 面積為 <code><var>AREA_3</var></code> 平方單位，則 <code>\triangle BOC</code> 面積為多少平方單位？
+            </p>
+            <div class="problem">
+                <div class="graphie" id="main_4">
+                    init({range: [[-28, 20], [-20, 20]], scale : 8});
+                    path(path_arr);
+                    $.each(path_arr, function(i, elem){
+                    	line(O, elem);
+                    });
+                    label([-15,12], 'A', 'above left');
+                    label([-20,-12], 'B', 'below left');
+                    label([10,-12], 'C', 'below right');
+                    label([15,12], 'D', 'above right');
+                    label(O, 'O', 'below right');
+                </div>
+            </div>
+            
+            <div class="solution" data-type="multiple">
+                <p>面積為<span class="sol" data-forms="integer"><var>ANS</var></span>平方单位</p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+            	<div>
+            		<p>我們過 <code>O</code> 作平行 <code>\overline{AB}</code> 與 <code>\overline{BC}</code> 的線，我們看到平行四邊形被切成四個小平行四邊形。</p>
+            		<div class="graphie" data-update="main_4">
+            			line([5*(O[1]+12)/24-20,O[1]],[5*(O[1]+12)/24+10,O[1]], { stroke : KhanUtil.GREEN});
+            			line([O[0]-(5*(O[1]+12)/24-20)-20,-12],[O[0]-(5*(O[1]+12)/24-20)-15,12], { stroke : KhanUtil.GREEN});
+            		</div>
+            	</div>
+            	<div>
+            		<p>而這每個小平行四邊形中 <code>\overline{OA}、\overline{OB}、\overline{OC}、\overline{OD}</code> 分別為他們的對角線，因此這四個小平行四邊形裡面的兩個小三角形面積都相等！我們把相等面積的三角形畫上一樣的顏色。</p>
+            		<div class="graphie" data-update="main_4">
+            			path([[-20,-12],[5*(O[1]+12)/24-20,O[1]],O,[O[0]-(5*(O[1]+12)/24-20)-20,-12],[-20,-12]], { fill : 'yellow', opacity : 0.5});
+            			path([O,[5*(O[1]+12)/24-20,O[1]],[-15,12],[O[0]-(5*(O[1]+12)/24-20)-15,12],O], { fill : KhanUtil.RED, opacity : 0.5});
+            			path([O,[O[0]-(5*(O[1]+12)/24-20)-15,12],[15,12],[5*(O[1]+12)/24+10,O[1]],O], { fill : KhanUtil.GREEN, opacity : 0.5});
+            			path([O,[5*(O[1]+12)/24+10,O[1]],[10,-12],[O[0]-(5*(O[1]+12)/24-20)-20,-12],O], { fill : KhanUtil.BLUE, opacity : 0.5});
+            		</div>
+            	</div>
+            	<div>
+            		<p>於是我們發現：</p>
+            		<p><code>\triangle AOB+\triangle COD</code> 面積為一塊紅色 + 一塊黃色 + 一塊綠色 + 一塊藍色。</p>
+            		<p><code>\triangle BOC+\triangle AOD</code> 面積為一塊紅色 + 一塊黃色 + 一塊綠色 + 一塊藍色。</p>
+            		<p>因此我們得到了一個關係：<code>\triangle AOB + \triangle COD = \triangle BOC + \triangle AOD</code> 。</p>
+            	</div>
+            	<p>所以 <code>\triangle BOC</code> 面積 <code>= <var>AREA_1</var> + <var>AREA_2</var> - <var>AREA_3</var> = \color{#FF00AF}{<var>ANS</var>}</code> 平方單位。</p>
+            </div> 
+        </div>
+
+        <div id="case5">
+            <div class="vars" data-ensure="isInt(AREA_ADF)">
+            	<var id="ANS">randRange(6,10)</var>
+            	<var id="SIDE_DE">randRange(8,12)</var>
+            	<var id="AREA_ADF">ANS*SIDE_DE/2</var>
+            	<var id="AE">randRange(2,5)</var>
+            	<var id="SLOPE_BC">getSlope([ANS,0],[ANS+AE,SIDE_DE])</var>
+            	<var id="SLOPE_DF">-1/SLOPE_BC</var>
+            	<var id="bbc">-ANS*SLOPE_BC</var>
+            	<var id="bdf">SIDE_DE-AE*SLOPE_DF</var>
+            	<var id="xfocus">(bbc-bdf)/(SLOPE_DF-SLOPE_BC)</var>
+            	<var id="yfocus">SLOPE_BC*xfocus+bbc</var>
+            </div>
+            <p class="question">
+                如圖，平行四邊形 <code>ABCD</code> 中，<code>E</code>、<code>F</code> 分別在 <code>\overline{AB}</code> 與 <code>\overline{BC}</code> 邊上，且 <code>\triangle ADF = <var>AREA_ADF</var></code> ，<code>DE \bot AB</code> ，<code>DE = <var>SIDE_DE</var></code> ，請問 <code>\overline{AB}</code> 長度為何？
+            </p>
+            <div class="problem">
+                <div class="graphie" id="main_5">
+                    init({range: [[-3, ANS+AE+3], [-3, SIDE_DE+3]], scale : 20});
+
+                    path([[0,0],[ANS,0],[ANS+AE,SIDE_DE],[AE,SIDE_DE],[0,0]]);
+                    line([AE,SIDE_DE],[AE,0]);
+                    label([0,0], 'A', 'below left');
+                    label([ANS,0], 'B', 'below right');
+                    label([ANS+AE,SIDE_DE], 'C', 'above right');
+                    label([AE,SIDE_DE], 'D', 'above left');
+                    label([AE,0], 'E', 'below');
+
+                    line([AE,SIDE_DE],[xfocus,yfocus]);
+                    label([xfocus,yfocus], 'F', 'right');
+                    line([0,0],[xfocus,yfocus]);
+                </div>
+            </div>
+            
+            <div class="solution" data-type="multiple">
+                <p><code>\overline{AB}=\quad</code><span class="sol" data-forms="integer"><var>ANS</var></span></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+
+            <div class="hints">
+            	<p>這題我們用到一個重要的觀念，<code>\triangle ADF = \dfrac{1}{2}</code> 平行四邊形 <code>ABCD</code> 面積 ( 回想一下為什麼。)</p>
+            	<p>因為 <code>\overline{DE} \bot \overline{AB}</code>，所以題目給的 <code>\overline{DE}</code> 是這個平行四邊形的高，而題目要問的 <code>\overline{AB}</code> 就是底。</p>
+            	<div>
+            		<p>從前面的觀察我們可以列出以下式子：</p>
+            		<p><code>\triangle ADF =\dfrac{1}{2} \times \overline{DE} \times \overline{AB}</code></p>
+            		<p>代入題目給的條件得到：</p>
+            		<p><code><var>AREA_ADF</var> = \dfrac{1}{2} \times <var>SIDE_DE</var> \times \overline{AB}</code></p>
+            	</div>
+            	<p>所以 <code>\overline{AB}</code> 長度為 <code> = \dfrac{2 \times <var>AREA_ADF</var>}{<var>SIDE_DE</var>} = \color{#FF00AF}{<var>ANS</var>}</code> 。</p>
+            </div> 
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

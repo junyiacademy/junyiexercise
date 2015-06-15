@@ -207,7 +207,7 @@ function handleAttempt(data) {
             score.correct ? "correct-activity" : "incorrect-activity",
             stringifiedGuess, timeTaken]);
 
-    if (score.correct) {
+    if (score.correct || skipped) {
         $(Exercises).trigger("problemDone", {
             card: Exercises.currentCard,
             attempts: attempts
@@ -409,7 +409,7 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         casing: "camel",
 
         // Whether we're moving to the next problem (i.e., correctness)
-        complete: correct ? 1 : 0,
+        complete: correct || skipped ? 1 : 0,
 
         count_hints: hintsUsed,
         time_taken: timeTaken,
