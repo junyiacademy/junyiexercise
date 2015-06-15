@@ -639,7 +639,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
      */
     decimal: numberAnswerType("decimal"),
 
-    rational: numberAnswerType("integer, proper, improper, mixed"),
+    rational: numberAnswerType("integer, proper, improper, mixed, decimal"),
 
     // A little bit of a misnomer as proper fractions are also accepted
     improper: numberAnswerType("integer, proper, improper"),
@@ -906,6 +906,11 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     // Check whether that answer is right by validating it
                     // with the cooresponding validator
                     var pass = validators[i].validator(g);
+
+                    // Some exercises' validator return nothing for wrong answer.
+                    if (pass === undefined) {
+                        pass = false;
+                    }
 
                     // If the answer is required, and no answer was provided,
                     // break;
