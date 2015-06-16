@@ -907,6 +907,11 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     // with the cooresponding validator
                     var pass = validators[i].validator(g);
 
+                    // Some exercises' validator return nothing for wrong answer.
+                    if (pass === undefined) {
+                        pass = false;
+                    }
+
                     // If the answer is required, and no answer was provided,
                     // break;
                     if (pass === "" && validators[i].required) {

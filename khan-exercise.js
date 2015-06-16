@@ -546,6 +546,9 @@ var Khan = (function() {
                         pad = null;
                     }
                     $("#scratchpad div").children().remove();
+                    if (actions.isVisible()) { // create a new scratch pad
+                        pad = new DrawingScratchpad($("#scratchpad div")[0]);
+                    }
                 },
 
                 resize: function() {
@@ -1083,7 +1086,7 @@ var Khan = (function() {
         randomSeed = problemSeed;
 
         // Check to see if we want to test a specific problem
-        if (localMode) {
+        if (localMode || Khan.query.problem != undefined) {
             id = typeof id !== "undefined" ? id : Khan.query.problem;
         }
 
