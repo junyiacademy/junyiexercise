@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html data-require="math graphie interactive congruency">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>梯形的性質（中線，面積）</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        .table_p { margin-top:5px;margin-bottom:5px}
+        .sun_bold { font-weight: bold;}
+		#answer_area .sol input[type=text] {
+			width: 50px;
+		}
+    </style>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+        <div id="case1-1">
+            <div class="vars">
+                <var id="J">randRange(1,5)</var>
+                <var id="QES_SORT">randRangeUnique(1,8,7)</var>
+                <var id="QES">(function(){
+                    var res = [];
+                    res[0] = ['\\quad\\dfrac{n[2a_1+(n-1)d]}{2}','A'];
+                    res[1] = ['\\quad\\dfrac{(首項+末項)\\times 項數}{2}','B'];
+                    res[2] = ['\\quad等差中項 \\times 項數','C'];
+                    res[3] = ['\\quad\\dfrac{底 \\times 高}{2}','D'];
+                    res[4] = ['\\quad\\dfrac{(上底+下底)\\times 高}{2}','E'];
+                    res[5] = ['\\quad底 \\times 高','F'];
+                    res[6] = ['\\quad梯形兩腰中點連線 \\times 高','G'];
+                    var resu = [];
+                    $.each(QES_SORT, function(i,elems){
+                        resu[i] = res[elems-1];
+                    });
+                    $.each(resu, function(e, elemsr){
+                        $('#aq'+(e+1)).val(elemsr[1]);
+                    });
+                    return resu;
+                })()</var>
+                <var id="ANS">['1A','2BE','3CG','4D','5DF']</var>
+            </div>
+            <p class="question">
+                有一個演講廳，座位的排列像一個梯形，老師派小明算演講廳座位數，以下是小明的算法，請依照他的思路選出適用的公式。
+            </p>
+            <div class="problem">
+                <p data-if="J === 1" class="hint_blue sun_bold">先看第一排座位數、總排數，然後看第二排跟第一排差多少座位，以此算出總座位數。</p>
+                <p data-if="J === 2" class="hint_blue sun_bold">先算總排數，然後算第一排、最後一排座位數，以此算出總座位數。</p>
+                <p data-if="J === 3" class="hint_blue sun_bold">先走到中間那排，算那排座位數，再看排數有多少，以此算出總座位數。</p>
+                <p data-if="J === 4" class="hint_blue sun_bold">把梯形切成兩個三角形，用三角形面積公式計算。</p>
+                <p data-if="J === 5" class="hint_blue sun_bold">把梯形切成一個平行四邊形和一個三角形，分別用平行四邊形和三角形面積公式計算。</p>
+                <table>
+                    <tr>
+                        <td><input type="checkbox" name="aq" id="aq1" /></td><td><p class="table_p"><code>A.<var>QES[0][0]</var></code>。</p></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="aq" id="aq2" /></td><td><p class="table_p"><code>B.<var>QES[1][0]</var></code>。</p></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="aq" id="aq3" /></td><td><p class="table_p"><code>C.<var>QES[2][0]</var></code>。</p></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="aq" id="aq4" /></td><td><p class="table_p"><code>D.<var>QES[3][0]</var></code>。</p></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="aq" id="aq5" /></td><td><p class="table_p"><code>E.<var>QES[4][0]</var></code>。</p></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="aq" id="aq6" /></td><td><p class="table_p"><code>F.<var>QES[5][0]</var></code>。</p></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="aq" id="aq7" /></td><td><p class="table_p"><code>G.<var>QES[6][0]</var></code>。</p></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="solution" data-type="multiple">
+			    <span class="instruction">選擇所有正確的答案</span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">0</div>
+				    <div class="validator-function">
+                        var ansStr = [J];
+                        if($("input:[type='checkbox']:checked").length == 0){ return "";}
+                        $.each($("input:[type='checkbox']:checked"), function(){
+                            ansStr.push($(this).val());
+                        });
+                        var resStr = ansStr.sort().join('');
+                        for(var ii = 0; ii &lt; ANS.length; ii++){
+                            if(resStr === ANS[ii]){
+                                return true;
+                            }
+                        }
+                        return false;
+					</div>
+				</div>
+			</div>
+
+            <div class="hints">
+                <div>
+                    <p>因為梯形有一組對邊平行，從上底到下底的長度是很平穩的遞增（或遞減），分段看就像是等差數列。</p>
+                    <div class="graphie" id="main">
+                        init({range: [[-8, 8], [-5, 6]], scale : 20});
+
+                        line([-7, 5],[-4, -4], { stroke : KhanUtil.GREEN, strokeWidth : 1});
+                        line([7, 5],[4, -4], { stroke : KhanUtil.GREEN, strokeWidth : 1});
+                        line([-7, 5],[7, 5], { stroke : KhanUtil.GREEN, strokeWidth : 4});
+                        line([-4, -4],[4, -4], { stroke : KhanUtil.GREEN, strokeWidth : 4});
+                        line([-4.7,-2],[4.7,-2], { stroke : KhanUtil.GREEN, strokeWidth : 4, "stroke-dasharray": "-"});
+                        line([0,-3.9],[0,-2], { arrows: "->"});
+                        line([0,-1.9],[0,5], { arrows: "->", "stroke-dasharray": "-"});
+                    </div>
+                    <p>所以 <span class="hint_red">總座位數</span> <code>=</code> <span class="hint_red">梯形面積</span></p>
+                </div>
+                <div data-if="J === 1">
+                    <p>用等差級數的角度計算：第一排座位數 <code>=a_1</code> 、總排數 <code>=n</code> ，然後看第二排跟第一排差多少座位 <code>=</code> 公差 <code>d</code>。</p>
+                    <p>所以總座位數 <code class="hint_pink">S=\dfrac{n[2a_1+(n-1)d]}{2}</code> 。</p>
+                </div>
+                <div data-if="J === 2">
+                    <p>用等差級數的角度計算：總排數 <code>=</code> 項數，第一排座位數 <code>=</code> 首項、最後一排座位數 <code>=</code> 末項。</p>
+                    <p>所以總座位數 <code class="hint_pink">=\dfrac{(首項+末項)\times 項數}{2}</code> 。</p>
+                    <p>用梯形面積的角度計算：總排數 <code>=</code> 高，第一排座位數 <code>=</code> 上底、最後一排座位數 <code>=</code> 下底。</p>
+                    <p>所以總座位數 <code class="hint_pink">=\dfrac{(上底+下底)\times 高}{2}</code> 。</p>
+                </div>
+                <div data-if="J === 3">
+                    <p>用等差級數的角度計算：中間那排座位數 <code>=</code> 等差中項，排數 <code>=</code> 項數。</p>
+                    <p>所以總座位數 <code class="hint_pink">=等差中項 \times 項數</code> 。</p>
+                    <p>用梯形面積的角度計算：中間那排座位數 <code>=</code> 梯形兩腰中點連線，排數 <code>=</code> 高。</p>
+                    <p>所以總座位數 <code class="hint_pink">=梯形兩腰中點連線 \times 高</code> 。</p>
+                </div>
+                <div data-if="J === 4">
+                    <p>用三角形面積公式計算，第一排和最後一排分別是兩個三角形的底，兩三角形的高相等。</p>
+                    <p>所以總座位數 <code>=</code> 兩個三角形的 <code class="hint_pink">\dfrac{底 \times 高}{2}</code> 。</p>
+                </div>
+                <div data-if="J === 5">
+                    <p>用三角形和平行四邊形的面積公式計算，平行四邊形的底是第一排和最後一排取其短的那排，三角形的底是第一排和最後一排兩排相減的差，兩圖形的高相等。</p>
+                    <p>所以總座位數 <code>=</code> 三角形的 <code class="hint_pink">\dfrac{底 \times 高}{2}</code> 加上平行四邊形的 <code class="hint_pink">底 \times 高</code> 。</p>
+                </div>
+            </div> 
+        </div>
+
+        <div id="case1-2">
+            <div class="vars">
+                <var id="J">randRange(1,5)</var>
+				<var id="a_1">randRange(8,20)</var>
+				<var id="n">randRange(6,15)</var>
+				<var id="d">randRange(1,3)</var>
+				<var id="a_n">a_1+2*(n-1)</var>
+				<var id="M">randRange(10,25)</var>
+				<var id="ans">n*(2*a_1+(n-1)*d)/2</var>
+            </div>
+            <p class="question">
+                有一個演講廳，座位的排列像一個梯形，老師派小明算演講廳座位數，以下是小明的算法，請依照他的思路把座位數算出來。
+            </p>
+            <div class="problem">
+                <div data-if="J === 1">
+                    <p>先看第一排有 <code><var>a_1</var></code> 個座位，總排數有 <code><var>n</var></code> 排，發現後面一排比前面一排多 <code><var>d</var></code> 個座位，因此用等差級數的公式計算：</p>
+                    <p><code>S=\dfrac{n[2a_1+(n-1)d]}{2}</code></p>
+                    <p><code>=</code><input type="text" style="width:30px" id="a1"/><code>\times\lbrack 2\times</code><input type="text" style="width:30px" id="a2"/><code>+(<var>n</var>-1)\times</code><input type="text" style="width:30px" id="a3"/><code>\rbrack\div 2=</code><input type="text" style="width:30px" id="a4"/></p>
+                </div>
+                <div data-if=" J === 2">
+                    <p>先算排數有 <code><var>n</var></code> 排，然後算第一排有 <code><var>a_1</var></code> 個座位，最後一排有 <code><var>a_n</var></code> 個座位，所以用等差級數的公式（梯形公式）計算：</p>
+                    <p><code>S=\dfrac{第一排+最後一排}{2}\times 排數</code></p>
+                    <p><code>=\dfrac{(上底+下底)\times 高}{2}</code></p>
+                    <p><code>=(</code><input type="text" style="width:30px" id="a5"/><code>+</code><input type="text" style="width:30px" id="a6"/><code>)\times</code><input type="text" style="width:30px" id="a7"/><code>\div 2=</code><input id="a8" type="text" style="width:30px"/></p>
+                </div>
+                <div data-if="J === 3">
+                    <p>先走到中間那排，算那排座位數有 <code><var>M</var></code> 個座位，再看排數有 <code><var>n</var></code> 排，所以用等差級數的公式（梯形公式）計算：</p>
+                    <p><code>S=等差中項 \times 項數</code></p>
+                    <p><code>=梯形兩腰中點連線 \times 高</code></p>
+                    <p><code>=</code><input type="text" style="width:30px" id="a9"/><code>\times</code><input type="text" style="width:30px" id="a10"/><code>=</code><input type="text" style="width:30px" id="a11"/></p>
+                </div>
+                <div data-if="J === 4">
+                    <p>把梯形切成兩個三角形，用三角形面積公式計算。</p>
+                    <p>排數為 <code><var>n</var></code> 排，第一排有 <code><var>a_1</var></code> 個座位，最後一排有 <code><var>a_n</var></code> 個座位，所以用三角形 <code>\dfrac{底 \times 高}{2}</code> 公式計算：</p>
+                    <p>以第一排為底的三角形：</p>
+                    <p><code>S_1=\dfrac{底 \times 高}{2}</code></p>
+                    <p><code>=(</code> <input type="text" style="width:30px" id="a12"/> <code>\times</code> <input type="text" id="a13" style="width:30px"/> <code>)\div 2</code></p>
+                    <p>以最後一排為底的三角形：</p>
+                    <p><code>S_2=\dfrac{底 \times 高}{2}</code></p>
+                    <p><code>=(</code> <input type="text" style="width:30px" id="a14"/> <code>\times 高)\div 2</code></p>
+                    <p>所以總座位數 <code>=S_1+S_2= </code><input type="text" style="width:30px" id="a15"/></p>
+                </div>
+                <div data-if="J === 5">
+                    <p>把梯形切成一個平行四邊形和一個三角形，分別用平行四邊形和三角形面積公式計算。</p>
+                    <p>排數為 <code><var>n</var></code> 排，第一排有 <code><var>a_1</var></code> 個座位，最後一排有 <code><var>a_n</var></code> 個座位，所以座位數為 <input type="text" style="width:30px" id="a16"/></p>
+                    <p>把第一排座位數和最後一排座位數對齊取其短者，得到平行四邊形的底為 <input type="text" style="width:30px" id="a17"/> ，高為 <input type="text" style="width:30px" id="a18"/> ，所以平行四邊形面積為 <code>底 \times 高</code>。</p>
+                    <p>把第一排座位數和最後一排座位數相減，得到剩下的三角形的底為 <input type="text" style="width:30px" id="a19"/> ，高為 <input type="text" style="width:30px" id="a20"/> ，所以平行四邊形面積為 <code>\dfrac{底 \times 高}{2}</code>。</p>
+                    <p>所以總座位數 <code>=</code> <input type="text" style="width:30px" id="a21"/></p>
+                </div>
+            </div>
+            <div class="solution" data-type="multiple">
+                <span class="instruction">填入正確的答案</span>
+                <div class="sol" data-type="custom">
+                    <div class="guess">[[1,2,3,4],[5,6,7,8],[9,10,11],[12,13,14,15],[16,17,18,19,20,21]][J-1]</div>
+                    <div class="validator-function">
+                        var isEmpty = 0;
+                        $.each(guess, function(e, elemg){
+                            if($('#a'+elemg).val().trim() != ''){
+                                isEmpty = 1;
+                            }
+                        });
+                        if(isEmpty == 0){
+                            return '';
+                        }
+                        if(J === 5){
+                            return $('#a16').val().trim() == (a_1+a_n)*n/2 &amp;&amp; $('#a17').val().trim() == a_1 &amp;&amp; $('#a18').val().trim() == n &amp;&amp; $('#a19').val().trim() == a_n-a_1 &amp;&amp; $('#a20').val().trim() == n &amp;&amp; $('#a21').val().trim() == a_1*n+(a_n-a_1)*n/2;
+                        }else if( J === 4){
+                            return $('#a12').val().trim() == a_1 &amp;&amp; $('#a13').val().trim() == n &amp;&amp; $('#a14').val().trim() == a_n &amp;&amp; $('#a15').val().trim() == a_1*n/2+a_n*n/2
+                        }else if(J === 3){
+                            return $('#a9').val().trim() == M &amp;&amp; $('#a10').val().trim() == n &amp;&amp; $('#a11').val().trim() == M*n;
+                        }else if(J === 2){
+                            return $('#a5').val().trim() == a_1 &amp;&amp; $('#a6').val().trim() == a_n &amp;&amp; $('#a7').val().trim() == n &amp;&amp; $('#a8').val().trim() == (a_1 + a_n)/2*n;
+                        }else {
+                            return $('#a1').val().trim() == n &amp;&amp; $('#a2').val().trim() == a_1 &amp;&amp; $('#a3').val().trim() == d &amp;&amp; $('#a4').val().trim() == ans;
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="hints">
+				<div data-if="J === 1">
+                    <p><code>S=\dfrac{n[2a_1+(n-1)d]}{2}</code></p>
+                    <p><code>=</code><code class="hint_pink"><var>n</var></code> <code>\times \lbrack2\times</code><code class="hint_pink"><var>a_1</var></code><code>+(<var>n</var></code><code>-1)\times</code><code class="hint_pink"><var>d</var></code><code>\rbrack\div 2=</code><code class="hint_pink"><var>ans</var></code></p>
+                </div>
+                <div data-if="J === 2">
+                    <p><code>S=\dfrac{第一排+最後一排}{2}\times 排數</code></p>
+                    <p><code>=\dfrac{(上底+下底)\times 高}{2}</code></p>
+                    <p><code>=(</code><code class="hint_pink"><var>a_1</var></code><code>+</code><code class="hint_pink"><var>a_n</var></code><code>)\times</code><code class="hint_pink"><var>n</var></code><code>\div 2=</code><code class="hint_pink"><var>(a_1 + a_n)/2*n</var></code></p>                   
+                </div>
+                <div data-if="J === 3">
+                    <p><code>S=等差中項 \times 項數</code></p>
+                    <p><code>=梯形兩腰中點連線 \times 高</code></p>
+                    <p><code>=</code><code class="hint_pink"><var>M</var></code><code>\times</code><code class="hint_pink"><var>n</var></code><code>=</code><code class="hint_pink"><var>M*n</var></code></p>
+                </div>
+                <div data-if="J === 4">
+                    <p>以第一排為底的三角形：</p>
+                    <p><code>S_1=\dfrac{底 \times 高}{2}</code></p>
+                    <p><code>=(</code> <code class="hint_pink"><var>a_1</var></code> <code>\times</code> <code class="hint_pink"><var>n</var></code> <code>)\div 2</code><code>=</code><code class="hint_pink"><var>a_1*n/2</var></code></p>
+                    <p>以最後一排為底的三角形：</p>
+                    <p><code>S_2=\dfrac{底 \times 高}{2}</code></p>
+                    <p><code>=(</code> <code class="hint_pink"><var>a_n</var></code> <code>\times</code><code><var>n</var></code> <code>)\div 2</code><code>=</code><code class="hint_pink"><var>a_n*n/2</var></code></p>
+                    <p>所以總座位數 <code>=<var>a_1*n/2</var>+<var>a_n*n/2</var>= </code><code class="hint_pink"><var>a_1*n/2+a_n*n/2</var></code></p>
+                </div>
+                <div data-if="J === 5">
+					<p>排數為 <code><var>n</var></code> 排，第一排有 <code><var>a_1</var></code> 個座位，最後一排有 <code><var>a_n</var></code> 個座位，所以座位數為 <code class="hint_pink"><var>(a_1+a_n)*n/2</var></code></p>
+                    <p>把第一排座位數和最後一排座位數對齊取其短者，得到平行四邊形的底為 <code class="hint_pink"><var>a_1</var></code> ，高為 <code class="hint_pink"><var>n</var></code> ，所以平行四邊形面積為 <code class="hint_pink"><var>a_1</var></code> <code>\times</code> <code class="hint_pink"><var>n</var></code><code>=</code><code class="hint_pink"><var>a_1*n</var></code>。</p>
+                    <p>把第一排座位數和最後一排座位數相減，得到剩下的三角形的底為 <code class="hint_pink"><var>a_n-a_1</var></code> ，高為 <code class="hint_pink"><var>n</var></code> ，所以平行四邊形面積為 <code class="hint_pink"><var>a_n-a_1</var></code><code>\times</code><code class="hint_pink"><var>n</var></code><code>\div2</code><code> = </code><code class="hint_pink"><var>(a_n-a_1)*n/2</var></code></p>
+                    <p>所以總座位數 <code>=</code><code><var>a_1*n</var></code><code>+</code><code><var>(a_n-a_1)*n/2</var></code> <code>=</code><code class="hint_pink"><var>a_1*n+(a_n-a_1)*n/2</var></code></p>
+                </div>
+                
+            </div> 
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+                <var id="A">randFromArray([[2,4],[2,6],[2,10],[6,10],[6,14],[10,18]])</var>
+				<var id="B">A[0]/2</var>
+				<var id="C">A[1]/2</var>
+				<var id="D">C-B</var>
+				<var id="E">4/D</var>
+				<var id="CHARS">['A','E','F','G','B','C','J','I','H','D']</var>
+				<var id="ANS">[B*E+(C*E-B*E)/4,B*E+(C*E-B*E)/4*3]</var>
+				<var id="F">getGCD(ANS[0],ANS[1])</var>
+            </div>
+            <p class="question">
+                題目敘述：如下圖，梯形 <code>ABCD</code> 中，<code>\overline{AD}// \overline{BC}</code>，<code>E</code>、<code>F</code>、<code>G</code> 將 <code>\overline{AB}</code> 四等分，<code>H</code>、<code>I</code>、<code>J</code> 將 <code>\overline{DC}</code> 四等分，<code>\overline{AD}: \overline{BC}= <var>A[0]/2</var>:<var>A[1]/2</var> </code>，則梯形 <code>AFID</code> 和梯形 <code>FBCI</code> 的面積比為何？
+            </p>
+            <div class="problem">
+                <div class="graphie" id="main">
+                        init({range: [[-8, 15], [-5, 6]], scale : 20});
+						
+						path([[-4, 5],[-7, -4],[-7+A[1], -4],[-4+A[0], 5],[-4, 5]], { stroke : "black", strokeWidth : 2, fill : KhanUtil.GREEN, opacity : 0.2});
+						
+                        line([-4, 5],[-4+A[0], 5], { stroke : KhanUtil.GREEN, strokeWidth : 4});
+                        line([-7, -4],[(-7+A[1]), -4], { stroke : KhanUtil.GREEN, strokeWidth : 4});
+						
+						for(var i = 0 ; i&lt;=4 ; i++){
+							line([3/4*i-7,9/4*i-4],[(-4+A[0]+7-A[1])/4*i-7+A[1],9/4*i-4]);
+							circle([3/4*i-7,9/4*i-4], 0.15, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+							circle([(-4+A[0]+7-A[1])/4*i-7+A[1],9/4*i-4], 0.15, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+							label([3/4*i-7,9/4*i-4], CHARS[4-i], 'left', { color : KhanUtil.ORANGE});
+							label([(-4+A[0]+7-A[1])/4*i-7+A[1],9/4*i-4], CHARS[i+5], 'right', { color : KhanUtil.ORANGE});
+						}
+						
+                </div>
+			</div>
+		
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol"><var>ANS[0]/F</var></span><code>\quad : \quad</code><span class="sol"><var>ANS[1]/F</var></span>
+				<p class="example">整數，例：6</p>
+			</div>
+
+			
+            <div class="hints">
+                <p>
+					我們知道梯形面積 <code>=\frac{上底+下底}{2}\times 高</code>，又知道梯形的兩腰中點連線段長 <code>=\frac{上底+下底}{2}</code>，所以梯形面積<code>=</code>梯形兩腰中點連線段長 <code>\times</code>高。
+				</p>
+				<p>
+					所以兩梯形的高相等時，面積比<code>=</code>兩腰中點連線比所以 梯形 <code>AFID</code> 和梯形 <code>FBCI</code> 的面積比 <code>=\overline{EH}:\overline{GJ}</code>。
+				</p>
+				<div>
+					<p>因為梯形有一組對邊平行，從上底到下底的長度是很平穩的遞增（或遞減），分段看就像是等差數列。	</p>			
+					<div class="graphie" id="main">
+                        init({range: [[-8, 8], [-5, 6]], scale : 20});
+
+                        line([-7, 5],[-4, -4], { stroke : KhanUtil.GREEN, strokeWidth : 1});
+                        line([7, 5],[4, -4], { stroke : KhanUtil.GREEN, strokeWidth : 1});
+                        line([-7, 5],[7, 5], { stroke : KhanUtil.GREEN, strokeWidth : 4});
+                        line([-4, -4],[4, -4], { stroke : KhanUtil.GREEN, strokeWidth : 4});
+                        line([-4.7,-2],[4.7,-2], { stroke : KhanUtil.GREEN, strokeWidth : 4, "stroke-dasharray": "-"});
+                        line([0,-3.9],[0,-2], { arrows: "->"});
+                        line([0,-1.9],[0,5], { arrows: "->", "stroke-dasharray": "-"});
+					</div>
+				</div>
+				<div>
+					<p>又因為 <code>E</code>、<code>F</code>、<code>G</code> 將 <code>\overline{AB}</code> 四等分，<code>H</code>、<code>I</code>、<code>J</code> 將<code>\overline{DC}</code> 四等分，所以 <code>\overline{AD}</code>、<code>\overline{EH}</code>、<code>\overline{FI}</code>、<code>\overline{GJ}</code>、<code>\overline{BC}</code> 成等差數列。</p>						
+					<p>所以<code> \overline{AD}:\overline{EH}:\overline{FI}:\overline{GJ}:\overline{BC}</code><code>= <var>B</var> :\overline{EH}:\overline{FI}:\overline{GJ}: <var>C</var> </code>。將比例擴分，因為有 <code>4</code> 個間距，所以擴分倍數為 <code>4\div( <var>C</var> - <var>B</var>)= <var>E</var> </code>。<code>= <var>B</var> \times <var>E</var> :\overline{EH}\times <var>E</var> :\overline{FI}\times <var>E</var> :\overline{GJ}\times <var>E</var> : <var>C</var> \times<var>E</var></code></p>			
+					<p><code>= <var>B*E</var> :\overline{EH}\times <var>E</var> :\overline{FI}\times <var>E</var> :\overline{GJ}\times <var>E</var> : <var>C*E</var> </code><code>=<var>B*E</var></code><code>:</code> <code class="hint_pink"><var>ANS[0]</var></code> <code>:<var>B*E+(C*E-B*E)/2</var></code> <code>:</code> <code class="hint_pink"><var>ANS[1]</var></code> <code>:<var>C*E</var></code></p>		
+				</div>
+				<p>
+					所以梯形 <code>AFID</code> 和梯形 <code>FBCI</code> 的面積比<code>=\overline{EH}:\overline{GJ}= </code><code class="hint_pink"><var> ANS[0]/F </var></code><code> \enspace:\enspace </code><code class="hint_pink"><var> ANS[1]/F </var></code>。
+				</p>
+            </div> 
+        </div>
+    </div>
+</div>
+</body>
+</html>
