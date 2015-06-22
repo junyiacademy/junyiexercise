@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>複習比大小</title>
+    <script src="../khan-exercise.js"></script>
+    <script language="javascript">
+    	function excludeArr(given, target){
+    		var l = given.length;
+    		if(l !== target.length){
+    			return false;
+    		}
+    		var suma = 0;
+    		var sumb = 0;
+    		for(var i = 0; i < l; i++){
+    			if(given[i] === target[i]){
+    				suma++;
+    			}else if(given[i] === target[l-i-1]){
+    				sumb++;
+    			}
+    		}
+    		return suma === l && sumb === l;
+    	}
+
+        function excludeEqual(given, target){
+            var l = given.length;
+            if(l !== target.length){
+                return false;
+            }
+            var sum = 0;
+            for(var i = 0; i < l; i++){
+                if(given[i] === target[i]){
+                    sum++;
+                }
+            }
+            return sum === l;
+        }
+    </script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+			<div class="vars" data-ensure="!excludeArr(ORD,W_ORD_1) && !excludeArr(ORD,W_ORD_2) && !excludeArr(ORD,W_ORD_3) && !excludeArr(W_ORD_1,W_ORD_3) && !excludeArr(W_ORD_1,W_ORD_2) && !excludeArr(W_ORD_2,W_ORD_3)">
+				<var id="W_ORD_1">randRangeUnique(1,5,4)</var>
+				<var id="W_ORD_2">randRangeUnique(1,5,4)</var>
+				<var id="W_ORD_3">randRangeUnique(1,5,4)</var>
+				<var id="COLO">[[KhanUtil.RED, '紅'],[KhanUtil.GREEN, '綠'],[KhanUtil.BLUE, '藍'],[KhanUtil.GRAY, '灰']]</var>
+				<var id="ORD">randRangeUnique(1,5,4)</var>
+				<var id="BALL_C">[COLO[ORD[0]-1],COLO[ORD[1]-1],COLO[ORD[2]-1],COLO[ORD[3]-1]]</var>
+				<var id="J">randRange(1,4)</var>
+				<var id="ANS_ORDER">randRangeUnique(1,4,3)</var>
+				<var id="ANS_ARR">(function(){
+					var W_BALL_C_1 = [COLO[W_ORD_1[0]-1],COLO[W_ORD_1[1]-1],COLO[W_ORD_1[2]-1],COLO[W_ORD_1[3]-1]];
+					var W_BALL_C_2 = [COLO[W_ORD_2[0]-1],COLO[W_ORD_2[1]-1],COLO[W_ORD_2[2]-1],COLO[W_ORD_2[3]-1]];
+					var W_BALL_C_3 = [COLO[W_ORD_3[0]-1],COLO[W_ORD_3[1]-1],COLO[W_ORD_3[2]-1],COLO[W_ORD_3[3]-1]];
+					var RES_INIT = [W_BALL_C_1,W_BALL_C_2,W_BALL_C_3];
+					var RES = [];
+					for( var i = 0; i &lt; 3; i++){
+						if(i === J - 1){
+							RES.push(BALL_C);
+						}
+						RES.push(RES_INIT[ANS_ORDER[i]-1]);
+					}
+					if( J === 4 ){
+						RES.push(BALL_C);
+					}
+					return RES;
+				})()</var>
+                <var id="M_INIT">[[BALL_C[0],BALL_C[1]],[BALL_C[1],BALL_C[2]],[BALL_C[2],BALL_C[3]]]</var>
+                <var id="M_ORDER">randRangeUnique(1,4,3)</var>
+				<var id="M">[M_INIT[M_ORDER[0]-1],M_INIT[M_ORDER[1]-1],M_INIT[M_ORDER[2]-1]]</var>
+				<var id="GL">[randRange(0,1) === 1 ? '&lt;' : '&gt;',randRange(0,1) === 1 ? '&lt;' : '&gt;',randRange(0,1) === 1 ? '&lt;' : '&gt;',randRange(0,1) === 1 ? '&lt;' : '&gt;']</var>
+				<var id="T">randRange(1,10)</var>
+			</div>
+            <p class="question">紅球、白球、綠球、藍球在天平上的重量比較如下圖，請問下列選項何者正確？</p>
+            <div class="problem">
+            	<div class="graphie" id="main1">
+            		init({ range: [[-5.5, 5.5], [-2.5, 2.5]], scale: 45 });
+            		ellipse([-3.5,-2],[1.4,0.3], { fill : "black"});
+            		line([-3.5,-2],[-3.5,2], { strokeWidth : 6});
+            		circle([-3.5,1],0.15, { fill : "black"});
+            		if(randRange(1,10) &gt; 5){
+            			line([-4.5,0.5],[-2.5,1.5], { strokeWidth : 4});
+            			line([-5,-1],[-4.5,0.5]);
+            			line([-4,-1],[-4.5,0.5]);
+                        line([-3,0],[-2.5,1.5]);
+                        line([-2,0],[-2.5,1.5]);
+                        ellipse([-4.5,-1],[0.6,0.1], { fill : "black"});
+                        ellipse([-2.5,0],[0.6,0.1], { fill : "black"});
+                        circle([-4.5,-0.8],0.3, { stroke : M[0][0][0], fill : M[0][0][0]});
+                        circle([-2.5,0.2],0.3, { stroke : M[0][1][0], fill : M[0][1][0]});
+            		}else{
+						line([-4.5,1.5],[-2.5,0.5], { strokeWidth : 4});
+						line([-5,0],[-4.5,1.5]);
+						line([-4,0],[-4.5,1.5]);
+                        line([-3,-1],[-2.5,0.5]);
+                        line([-2,-1],[-2.5,0.5]);
+                        ellipse([-4.5,0],[0.6,0.1], { fill : "black"});
+                        ellipse([-2.5,-1],[0.6,0.1], { fill : "black"});
+                        circle([-4.5,0.2],0.3, { stroke : M[0][1][0], fill : M[0][1][0]});
+                        circle([-2.5,-0.8],0.3, { stroke : M[0][0][0], fill : M[0][0][0]});
+            		}
+
+            		ellipse([0,-2],[1.4,0.3], { fill : "black"});
+            		line([0,-2],[0,2], { strokeWidth : 6});
+            		circle([0,1],0.15, { fill : "black"});
+            		if(randRange(1,10) &gt; 5){
+            			line([-1,0.5],[1,1.5], { strokeWidth : 4});
+            			line([-1.5,-1],[-1,0.5]);
+            			line([-0.5,-1],[-1,0.5]);
+                        line([0.5,0],[1,1.5]);
+                        line([1.5,0],[1,1.5]);
+                        ellipse([-1,-1],[0.6,0.1], { fill : "black"});
+                        ellipse([1,0],[0.6,0.1], { fill : "black"});
+                        circle([-1,-0.8],0.3, { stroke : M[1][0][0], fill : M[1][0][0]});
+                        circle([1,0.2],0.3, { stroke : M[1][1][0], fill : M[1][1][0]});
+            		}else{
+						line([-1,1.5],[1,0.5], { strokeWidth : 4});
+						line([-1.5,0],[-1,1.5]);
+						line([-0.5,0],[-1,1.5]);
+                        line([1.5,-1],[1,0.5]);
+                        line([0.5,-1],[1,0.5]);
+                        ellipse([-1,0],[0.6,0.1], { fill : "black"});
+                        ellipse([1,-1],[0.6,0.1], { fill : "black"});
+                        circle([-1,0.2],0.3, { stroke : M[1][1][0], fill : M[1][1][0]});
+                        circle([1,-0.8],0.3, { stroke : M[1][0][0], fill : M[1][0][0]});
+            		}
+
+            		ellipse([3.5,-2],[1.4,0.3], { fill : "black"});
+            		line([3.5,-2],[3.5,2], { strokeWidth : 6});
+            		circle([3.5,1],0.15, { fill : "black"});
+            		if(randRange(1,10) &gt; 5){
+            			line([2.5,0.5],[4.5,1.5], { strokeWidth : 4});
+            			line([2,-1],[2.5,0.5]);
+            			line([3,-1],[2.5,0.5]);
+                        line([5,0],[4.5,1.5]);
+                        line([4,0],[4.5,1.5]);
+                        ellipse([2.5,-1],[0.6,0.1], { fill : "black"});
+                        ellipse([4.5,0],[0.6,0.1], { fill : "black"});
+                        circle([2.5,-0.8],0.3, { stroke : M[2][0][0], fill : M[2][0][0]});
+                        circle([4.5,0.2],0.3, { stroke : M[2][1][0], fill : M[2][1][0]});
+            		}else{
+						line([2.5,1.5],[4.5,0.5], { strokeWidth : 4});
+						line([2,0],[2.5,1.5]);
+						line([3,0],[2.5,1.5]);
+                        line([5,-1],[4.5,0.5]);
+                        line([4,-1],[4.5,0.5]);
+                        ellipse([2.5,0],[0.6,0.1], { fill : "black"});
+                        ellipse([4.5,-1],[0.6,0.1], { fill : "black"});
+                        circle([2.5,0.2],0.3, { stroke : M[2][1][0], fill : M[2][1][0]});
+                        circle([4.5,-0.8],0.3, { stroke : M[2][0][0], fill : M[2][0][0]});
+            		}
+            	</div>
+            	<p data-if="J !== 1"><code>A.\quad \color{<var>ANS_ARR[0][0][0]</var>}{<var>ANS_ARR[0][0][1]</var>} <var>GL[0]</var> \color{<var>ANS_ARR[0][1][0]</var>}{<var>ANS_ARR[0][1][1]</var>} <var>GL[0]</var> \color{<var>ANS_ARR[0][2][0]</var>}{<var>ANS_ARR[0][2][1]</var>} <var>GL[0]</var> \color{<var>ANS_ARR[0][3][0]</var>}{<var>ANS_ARR[0][3][1]</var>}</code></p>
+
+            	<p data-if="J === 1 && T &gt; 5"><code>A.\quad \color{<var>ANS_ARR[0][3][0]</var>}{<var>ANS_ARR[0][3][1]</var>} &lt; \color{<var>ANS_ARR[0][2][0]</var>}{<var>ANS_ARR[0][2][1]</var>} &lt; \color{<var>ANS_ARR[0][1][0]</var>}{<var>ANS_ARR[0][1][1]</var>} &lt; \color{<var>ANS_ARR[0][0][0]</var>}{<var>ANS_ARR[0][0][1]</var>}</code></p>
+
+            	<p data-if="J === 1 && T &lt; 6"><code>A.\quad \color{<var>ANS_ARR[0][0][0]</var>}{<var>ANS_ARR[0][0][1]</var>} &gt; \color{<var>ANS_ARR[0][1][0]</var>}{<var>ANS_ARR[0][1][1]</var>} &gt; \color{<var>ANS_ARR[0][2][0]</var>}{<var>ANS_ARR[0][2][1]</var>} &gt; \color{<var>ANS_ARR[0][3][0]</var>}{<var>ANS_ARR[0][3][1]</var>}</code></p>
+
+            	<p data-if="J !== 2"><code>B.\quad \color{<var>ANS_ARR[1][0][0]</var>}{<var>ANS_ARR[1][0][1]</var>} <var>GL[1]</var> \color{<var>ANS_ARR[1][1][0]</var>}{<var>ANS_ARR[1][1][1]</var>} <var>GL[1]</var> \color{<var>ANS_ARR[1][2][0]</var>}{<var>ANS_ARR[1][2][1]</var>} <var>GL[1]</var> \color{<var>ANS_ARR[1][3][0]</var>}{<var>ANS_ARR[1][3][1]</var>}</code></p>
+
+            	<p data-if="J === 2 && T &lt; 6"><code>B.\quad \color{<var>ANS_ARR[1][0][0]</var>}{<var>ANS_ARR[1][0][1]</var>} &gt; \color{<var>ANS_ARR[1][1][0]</var>}{<var>ANS_ARR[1][1][1]</var>} &gt; \color{<var>ANS_ARR[1][2][0]</var>}{<var>ANS_ARR[1][2][1]</var>} &gt; \color{<var>ANS_ARR[1][3][0]</var>}{<var>ANS_ARR[1][3][1]</var>}</code></p>
+
+            	<p data-if="J === 2 && T &gt; 5"><code>B.\quad \color{<var>ANS_ARR[1][3][0]</var>}{<var>ANS_ARR[1][3][1]</var>} &lt; \color{<var>ANS_ARR[1][2][0]</var>}{<var>ANS_ARR[1][2][1]</var>} &lt; \color{<var>ANS_ARR[1][1][0]</var>}{<var>ANS_ARR[1][1][1]</var>} &lt; \color{<var>ANS_ARR[1][0][0]</var>}{<var>ANS_ARR[1][0][1]</var>}</code></p>
+
+            	<p data-if="J !== 3"><code>C.\quad \color{<var>ANS_ARR[2][0][0]</var>}{<var>ANS_ARR[2][0][1]</var>} <var>GL[2]</var> \color{<var>ANS_ARR[2][1][0]</var>}{<var>ANS_ARR[2][1][1]</var>} <var>GL[2]</var> \color{<var>ANS_ARR[2][2][0]</var>}{<var>ANS_ARR[2][2][1]</var>} <var>GL[2]</var>\color{<var>ANS_ARR[2][3][0]</var>}{<var>ANS_ARR[2][3][1]</var>}</code></p>
+
+            	<p data-if="J === 3 && T &lt; 6"><code>C.\quad \color{<var>ANS_ARR[2][0][0]</var>}{<var>ANS_ARR[2][0][1]</var>} &gt; \color{<var>ANS_ARR[2][1][0]</var>}{<var>ANS_ARR[2][1][1]</var>} &gt; \color{<var>ANS_ARR[2][2][0]</var>}{<var>ANS_ARR[2][2][1]</var>} &gt; \color{<var>ANS_ARR[2][3][0]</var>}{<var>ANS_ARR[2][3][1]</var>}</code></p>
+
+            	<p data-if="J === 3 && T &gt; 5"><code>C.\quad \color{<var>ANS_ARR[2][3][0]</var>}{<var>ANS_ARR[2][3][1]</var>} &lt; \color{<var>ANS_ARR[2][2][0]</var>}{<var>ANS_ARR[2][2][1]</var>} &lt; \color{<var>ANS_ARR[2][1][0]</var>}{<var>ANS_ARR[2][1][1]</var>} &lt; \color{<var>ANS_ARR[2][0][0]</var>}{<var>ANS_ARR[2][0][1]</var>}</code></p>
+
+            	<p data-if="J !== 4"><code>D.\quad \color{<var>ANS_ARR[3][0][0]</var>}{<var>ANS_ARR[3][0][1]</var>} <var>GL[3]</var> \color{<var>ANS_ARR[3][1][0]</var>}{<var>ANS_ARR[3][1][1]</var>} <var>GL[3]</var> \color{<var>ANS_ARR[3][2][0]</var>}{<var>ANS_ARR[3][2][1]</var>} <var>GL[3]</var> \color{<var>ANS_ARR[3][3][0]</var>}{<var>ANS_ARR[3][3][1]</var>}</code></p>
+
+            	<p data-if="J === 4 && T &lt; 6"><code>D.\quad \color{<var>ANS_ARR[3][0][0]</var>}{<var>ANS_ARR[3][0][1]</var>} &gt; \color{<var>ANS_ARR[3][1][0]</var>}{<var>ANS_ARR[3][1][1]</var>} &gt; \color{<var>ANS_ARR[3][2][0]</var>}{<var>ANS_ARR[3][2][1]</var>} &gt; \color{<var>ANS_ARR[3][3][0]</var>}{<var>ANS_ARR[3][3][1]</var>}</code></p>
+
+            	<p data-if="J === 4 && T &gt; 5"><code>D.\quad \color{<var>ANS_ARR[3][3][0]</var>}{<var>ANS_ARR[3][3][1]</var>} &lt; \color{<var>ANS_ARR[3][2][0]</var>}{<var>ANS_ARR[3][2][1]</var>} &lt; \color{<var>ANS_ARR[3][1][0]</var>}{<var>ANS_ARR[3][1][1]</var>} &lt; \color{<var>ANS_ARR[3][0][0]</var>}{<var>ANS_ARR[3][0][1]</var>}</code></p>
+            </div>	
+			<div class="solution" data-type="multiple">
+				<p><input type="radio" name="ratioa" id="a1" /> <code>A</code></p>
+				<p><input type="radio" name="ratioa" id="a2" /> <code>B</code></p>
+				<p><input type="radio" name="ratioa" id="a3" /> <code>C</code></p>
+				<p><input type="radio" name="ratioa" id="a4" /> <code>D</code></p>
+                <div class="sol" data-type="custom">
+                    <div class="guess">$('#a'+J).prop('checked')</div>
+                    <div class="validator-function">
+                        var cou = 0;
+                        $("input[name='ratioa']").each(function(){
+                            if($(this).prop('checked')){
+                                cou = 1;
+                            }
+                        });
+                        if( cou === 0 ){
+                            return "";
+                        }
+                        return guess;
+                    </div>
+                </div>
+            </div>
+
+			<div class="hints">
+				<div>
+                    <p>球放在天平上，比較重的會沉在下面。</p>
+                    <p>所以由上圖可知： <code>\color{<var>M[0][0][0]</var>}{<var>M[0][0][1]</var>} &gt; \color{<var>M[0][1][0]</var>}{<var>M[0][1][1]</var>}</code> 、 <code>\color{<var>M[1][0][0]</var>}{<var>M[1][0][1]</var>} &gt; \color{<var>M[1][1][0]</var>}{<var>M[1][1][1]</var>}</code> 、 <code>\color{<var>M[2][0][0]</var>}{<var>M[2][0][1]</var>} &gt; \color{<var>M[2][1][0]</var>}{<var>M[2][1][1]</var>}</code> 。</p>
+                </div>
+                <p data-if="!excludeEqual([1,2,3], M_ORDER)">利用不等式的遞移律，得到： <code>\color{<var>BALL_C[0][0]</var>}{<var>BALL_C[0][1]</var>} &gt; \color{<var>BALL_C[1][0]</var>}{<var>BALL_C[1][1]</var>}</code> 、 <code>\color{<var>BALL_C[1][0]</var>}{<var>BALL_C[1][1]</var>} &gt; \color{<var>BALL_C[2][0]</var>}{<var>BALL_C[2][1]</var>}</code> 、 <code>\color{<var>BALL_C[2][0]</var>}{<var>BALL_C[2][1]</var>} &gt; \color{<var>BALL_C[3][0]</var>}{<var>BALL_C[3][1]</var>}</code> 。</p>
+                <div>
+                    <p>所以整理出來變成： </p>
+                    <p><code>\qquad\color{<var>BALL_C[0][0]</var>}{<var>BALL_C[0][1]</var>} &gt; \color{<var>BALL_C[1][0]</var>}{<var>BALL_C[1][1]</var>} &gt; \color{<var>BALL_C[2][0]</var>}{<var>BALL_C[2][1]</var>} &gt; \color{<var>BALL_C[3][0]</var>}{<var>BALL_C[3][1]</var>}</code></p> 
+                    <p><code>\qquad\quad</code>或是</p>
+                    <p><code>\qquad\color{<var>BALL_C[3][0]</var>}{<var>BALL_C[3][1]</var>} &lt; \color{<var>BALL_C[2][0]</var>}{<var>BALL_C[2][1]</var>} &lt; \color{<var>BALL_C[1][0]</var>}{<var>BALL_C[1][1]</var>} &lt; \color{<var>BALL_C[0][0]</var>}{<var>BALL_C[0][1]</var>}</code> 。</p>
+                    <p>因此，答案選 <code class="hint_pink"><var>['A','B','C','D'][J-1]</var></code> 。</p>
+                </div>
+			</div>
+        </div>
+
+        <div id="case2">
+            <div class="vars">
+                <var id="S,T">[randRange(1,10),randRange(1,10)]</var>
+                <var id="SC,TC,QC">[S &gt; 5 ? '&gt;' : '&lt;', T &gt; 5 ? '大於' : '小於', T &gt; 5 ? '&gt;' : '&lt;']</var>
+                <var id="ANS">S &gt; 5 ? (T &gt; 5 ? 2 : 3) : (T &gt; 5 ? 1 : 4)</var>
+            </div>
+            <div class="question">
+                <p>在數線上， <code>O</code> 為原點，<code>A</code> 點的坐標為 <code>a</code>，<code>B</code> 點的坐標為 <code>b</code>。若 <code>a - b <var>SC</var> 0</code> ，且 <code>a</code>、<code>b</code> 皆<code>\underline{<var>TC</var>}</code> <code>0</code>，則下列何者是 <code>A</code>、<code>B</code>、<code>O</code> 三點在數線上的位值關係？</p>
+            </div>
+
+            <div class="problem">
+                <div class="graphie">
+                    init({ range: [[-5.5, 5.5], [-2.5, 2.5]], scale: 45 });
+                    line([-4,1.5],[3,1.5], { arrows : "->"});
+                    line([-4,0.5],[3,0.5], { arrows : "->"});
+                    line([-4,-0.5],[3,-0.5], { arrows : "->"});
+                    line([-4,-1.5],[3,-1.5], { arrows : "->"});
+
+                    label([-4.5,1.5],'(A)','left');
+                    label([-4.5,0.5],'(B)','left');
+                    label([-4.5,-0.5],'(C)','left');
+                    label([-4.5,-1.5],'(D)','left');
+
+                    circle([-2,1.5], 0.1, { stroke : KhanUtil.RED, fill : KhanUtil.RED});
+                    circle([0,1.5], 0.1, { stroke : KhanUtil.GREEN, fill : KhanUtil.GREEN});
+                    circle([2,1.5], 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+                    label([-2,1.5], 'O', 'above', { color : KhanUtil.RED});
+                    label([0,1.5], 'A', 'above', { color : KhanUtil.GREEN});
+                    label([2,1.5], 'B', 'above', { color : KhanUtil.BLUE});
+
+                    circle([-2,0.5], 0.1, { stroke : KhanUtil.RED, fill : KhanUtil.RED});
+                    circle([0,0.5], 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+                    circle([2,0.5], 0.1, { stroke : KhanUtil.GREEN, fill : KhanUtil.GREEN});
+                    label([-2,0.5], 'O', 'above', { color : KhanUtil.RED});
+                    label([0,0.5], 'B', 'above', { color : KhanUtil.BLUE});
+                    label([2,0.5], 'A', 'above', { color : KhanUtil.GREEN});
+
+                    circle([-2,-0.5], 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+                    circle([0,-0.5], 0.1, { stroke : KhanUtil.GREEN, fill : KhanUtil.GREEN});
+                    circle([2,-0.5], 0.1, { stroke : KhanUtil.RED, fill : KhanUtil.RED});
+                    label([-2,-0.5], 'B', 'above', { color : KhanUtil.BLUE});
+                    label([0,-0.5], 'A', 'above', { color : KhanUtil.GREEN});
+                    label([2,-0.5], 'O', 'above', { color : KhanUtil.RED});
+
+                    circle([-2,-1.5], 0.1, { stroke : KhanUtil.GREEN, fill : KhanUtil.GREEN});
+                    circle([0,-1.5], 0.1, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE});
+                    circle([2,-1.5], 0.1, { stroke : KhanUtil.RED, fill : KhanUtil.RED});
+                    label([-2,-1.5], 'A', 'above', { color : KhanUtil.GREEN});
+                    label([0,-1.5], 'B', 'above', { color : KhanUtil.BLUE});
+                    label([2,-1.5], 'O', 'above', { color : KhanUtil.RED});
+                </div>
+            </div>  
+            <div class="solution" data-type="multiple">
+                <p><input type="radio" name="ratioa" id="a1" /> <code>A</code></p>
+                <p><input type="radio" name="ratioa" id="a2" /> <code>B</code></p>
+                <p><input type="radio" name="ratioa" id="a3" /> <code>C</code></p>
+                <p><input type="radio" name="ratioa" id="a4" /> <code>D</code></p>
+                <div class="sol" data-type="custom">
+                    <div class="guess">$('#a'+ANS).prop('checked')</div>
+                    <div class="validator-function">
+                        var cou = 0;
+                        $("input[name='ratioa']").each(function(){
+                            if($(this).prop('checked')){
+                                cou = 1;
+                            }
+                        });
+                        if( cou === 0 ){
+                            return "";
+                        }
+                        return guess;
+                    </div>
+                </div>
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p><code>a - b <var>SC</var> 0</code> 也就是 <code>a <var>SC</var> b</code></p>
+                    <p><code>a</code>、<code>b</code> 皆<code>\underline{<var>TC</var>}</code> <code>0</code> 也就是 <code>a<var>QC</var>0</code> 、<code>b<var>QC</var>0</code></p>
+                </div>
+                <p>所以將數字依序排列，得到 <code data-if="ANS === 1">b &gt; a &gt; 0</code><code data-if="ANS === 2">a &gt; b &gt; 0</code><code data-if="ANS === 3">0 &gt; a &gt; b</code><code data-if="ANS === 4">0 &gt; b &gt; a</code></p>
+                <p>所以 <code>A</code>、<code>B</code>、<code>O</code> 在數線上由左到右的排列依序是 <code class="hint_pink" data-if="ANS === 1">O</code><code class="hint_pink" data-if="ANS === 2">O</code><code class="hint_pink" data-if="ANS === 3">B</code><code class="hint_pink" data-if="ANS === 4">A</code>、<code class="hint_pink" data-if="ANS === 1">A</code><code class="hint_pink" data-if="ANS === 2">B</code><code class="hint_pink" data-if="ANS === 3">A</code><code class="hint_pink" data-if="ANS === 4">B</code>、<code class="hint_pink" data-if="ANS === 1">B</code><code class="hint_pink" data-if="ANS === 2">A</code><code class="hint_pink" data-if="ANS === 3">O</code><code class="hint_pink" data-if="ANS === 4">O</code> 。</p>
+            </div>
+        </div>
+
+        <div id="case3">
+            <div class="vars">
+                <var id="S,T">[randRange(1,10),randRange(1,10)]</var>
+                <var id="SC,TC">[S &gt; 5 ? '&gt;' : '&lt;', T &gt; 5 ? '&gt;' : '&lt;']</var>
+                <var id="ANS">S &gt; 5 ? (T &gt; 5 ? 1 : 3) : (T &gt; 5 ? 4 : 2)</var>
+            </div>
+            <div class="question">
+                <p><code>|a| <var>SC</var> |b|</code> 、<code>a - b <var>TC</var> 0</code>，請問下列何者正確？</p>
+            </div>
+
+            <div class="problem">
+                <p>(A)<code>\quad a &gt; 0 </code></p>
+                <p>(B)<code>\quad b &gt; 0 </code></p>
+                <p>(C)<code>\quad a &lt; 0 </code></p>
+                <p>(D)<code>\quad b &lt; 0 </code></p>
+            </div>  
+            <div class="solution" data-type="multiple">
+                <p><input type="radio" name="ratioa" id="a1" /> <code>A</code></p>
+                <p><input type="radio" name="ratioa" id="a2" /> <code>B</code></p>
+                <p><input type="radio" name="ratioa" id="a3" /> <code>C</code></p>
+                <p><input type="radio" name="ratioa" id="a4" /> <code>D</code></p>
+                <div class="sol" data-type="custom">
+                    <div class="guess">$('#a'+ANS).prop('checked')</div>
+                    <div class="validator-function">
+                        var cou = 0;
+                        $("input[name='ratioa']").each(function(){
+                            if($(this).prop('checked')){
+                                cou = 1;
+                            }
+                        });
+                        if( cou === 0 ){
+                            return "";
+                        }
+                        return guess;
+                    </div>
+                </div>
+            </div>
+
+            <div class="hints">
+                <div>
+                    <p>利用數線表示，令 <code>A</code> 點的坐標為 <code>a</code>、<code>B</code> 點的坐標為 <code>b</code>、<code>O</code> 為原點。<code>|a| <var>SC</var> |b|</code> 也就是 <code><var>S &gt; 5 ? 'A' : 'B'</var></code> 離原點 <code>O</code> 比較遠。</p>
+                    <p>如圖，這些點都是 <code>A</code>、<code>B</code> 可能的位置。</p>
+                    <div class="graphie">
+                        init({ range: [[-5.5, 5.5], [-1, 1]], scale: 45 });
+                        line([-4,-0.5],[4,-0.5]);
+                        label([0,-0.5],'O','above', { color : KhanUtil.RED});
+                        circle([0,-0.5],0.1, { fill : KhanUtil.BLUE, stroke : KhanUtil.BLUE});
+                        circle([2,-0.5],0.1, { fill : KhanUtil.BLUE, stroke : KhanUtil.BLUE});
+                        circle([3,-0.5],0.1, { fill : KhanUtil.BLUE, stroke : KhanUtil.BLUE});
+                        circle([-2,-0.5],0.1, { fill : KhanUtil.BLUE, stroke : KhanUtil.BLUE});
+                        circle([-3,-0.5],0.1, { fill : KhanUtil.BLUE, stroke : KhanUtil.BLUE});
+                        if(S &gt; 5){
+                            label([2,-0.5],'B','above');
+                            label([3,-0.5],'A','above');
+                            label([-2,-0.5],'B','above');
+                            label([-3,-0.5],'A','above');
+                        }else{
+                            label([2,-0.5],'A','above');
+                            label([3,-0.5],'B','above');
+                            label([-2,-0.5],'A','above');
+                            label([-3,-0.5],'B','above');
+                        }
+                    </div>
+                </div>
+                <div>
+                    <p><code>a - b <var>TC</var> 0</code> 也就是 <code>a <var>TC</var> b</code> 。</p>
+                    <p data-if="S &gt; 5 && T &lt; 6">由上圖可知， <code>A</code> 只能是 <span class="hint_orange">左邊</span> 那個，而 <code>B</code> 左右都可以。</p>
+                    <p data-if="S &gt; 5 && T &gt; 5">由上圖可知， <code>A</code> 只能是 <span class="hint_orange">右邊</span> 那個，而 <code>B</code> 左右都可以。</p>
+                    <p data-if="S &lt; 5 && T &gt; 5">由上圖可知， <code>B</code> 只能是 <span class="hint_orange">左邊</span> 那個，而 <code>A</code> 左右都可以。</p>
+                    <p data-if="S &lt; 5 && T &lt; 5">由上圖可知， <code>B</code> 只能是 <span class="hint_orange">右邊</span> 那個，而 <code>A</code> 左右都可以。</p>
+                </div>
+                <div>
+                    <p data-if="S &gt; 5 && T &lt; 6">所以答案是 <code class="hint_pink">a &lt; 0</code> 。</p>
+                    <p data-if="S &gt; 5 && T &gt; 5">所以答案是 <code class="hint_pink">a &gt; 0</code> 。</p>
+                    <p data-if="S &lt; 5 && T &gt; 5">所以答案是 <code class="hint_pink">b &lt; 0</code> 。</p>
+                    <p data-if="S &lt; 5 && T &lt; 5">所以答案是 <code class="hint_pink">b &gt; 0</code> 。</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="case4">
+            <div class="vars">
+                <var id="A">randRange(-10,10)</var>
+                <var id="B">randRange(-10,10)</var>
+                <var id="SIGN_A">randRange(1,2)</var>
+                <var id="SIGN_B">randRange(1,2)</var>
+                <var id="REL_A">SIGN_A === 1 ? A : -A</var>
+                <var id="REL_B">SIGN_B === 1 ? B : -B</var>
+                <var id="L">REL_A &gt; REL_B ? '&gt;' : (REL_A === REL_B ? '=' : '&lt;')</var>
+            </div>
+            <div class="question">
+                <p><code>a = <var>A</var></code>、<code>b = <var>B</var></code>，則 <code><var>SIGN_A === 1 ? '' : '-'</var> a \quad ? \quad <var>SIGN_B === 1 ? '' : '-'</var> b </code></p>
+            </div>
+  
+            <div class="solution" data-type="multiple">
+                <code><var>SIGN_A === 1 ? '' : '-'</var>a\quad</code><span class="sol" data-type="list" data-choices="['','=','&gt;','&lt;']"><var>L</var></span><code>\quad <var>SIGN_B === 1 ? '' : '-'</var>b</code>
+            </div>
+
+            <div class="hints">
+                <p>將數字 <code>a</code>、<code>b</code> 帶入，則 <code><var>REL_A</var></code> 和 <code><var>REL_B</var></code> 比較。</p>
+                <p><code><var>REL_A</var><var>L</var><var>REL_B</var></code>，所以答案是 <code class="hint_pink"><var>SIGN_A === 1 ? '' : '-'</var> a <var>L</var> <var>SIGN_B === 1 ? '' : '-'</var> b </code> 。</p>
+            </div>
+        </div>
+		
+    </div>
+    </div>
+</body>
+</html>
