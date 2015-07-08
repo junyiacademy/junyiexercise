@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html data-require="math graphie interactive congruency">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>等腰梯形的特性</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars" data-ensure="isEven(J-K) &amp;&amp; J !== K &amp;&amp; isINTEGER === 1">
+                <var id="J,K,L">[randRange(3, 10), randRange(3, 10), randRange(3, 10)]</var>
+                <var id="THREE_PART">[round(abs(J-K)/2), min(J,K), round(abs(J-K)/2)]</var>
+                <var id="ANS">pow(THREE_PART[0]+THREE_PART[1],2)+pow(L,2)</var>
+                <var id="isINTEGER">isInt(sqrt(ANS)) ? 0 : 1</var>
+            </div>
+            <p class="question">
+                如下圖，等腰梯形 <code>ABCD</code> 的兩底分別是 <code><var>J</var></code> 和 <code><var>K</var></code> ，高為 <code><var>L</var></code> ，請問對角線 <code>\overline{AC}</code> 的長度為何？
+            </p>
+            <div class="problem">
+                <div class="graphie" id="main">
+                    init({range: [[-8, 8], [4-L, 8]], scale : 30});
+                    path([[-J/2, 6], [J/2, 6], [K/2, 6-L], [-K/2, 6-L], [-J/2, 6]], {stroke : KhanUtil.GREEN, fill : KhanUtil.ORANGE, opacity : 0.5});
+                    line([J/2, 6], [-K/2, 6-L], { stroke : KhanUtil.GREEN, opacity : 0.5});
+                    label([-J/2, 6], "\\small{D}", 'above left', {color : KhanUtil.BLUE});
+                    label([J/2, 6], "\\small{C}", 'above right', {color : KhanUtil.BLUE});
+                    label([K/2, 6-L], "\\small{B}", 'below right', {color : KhanUtil.BLUE});
+                    label([-K/2, 6-L], "\\small{A}", 'below left', {color : KhanUtil.BLUE});
+                    graph.JP = label([0, 6], "\\small{"+J+"}", 'above', {color : KhanUtil.GREEN});
+                    graph.KP = label([0, 6-L], "\\small{"+K+"}", 'below', {color : KhanUtil.GREEN});
+                    circle([-J/2, 6], 0.1, { stroke : 'blue', fill : 'blue'});
+                    circle([J/2, 6], 0.1, { stroke : 'blue', fill : 'blue'});
+                    circle([K/2, 6-L], 0.1, { stroke : 'blue', fill : 'blue'});
+                    circle([-K/2, 6-L], 0.1, { stroke : 'blue', fill : 'blue'});
+                </div>
+            </div>
+            <div class="solution" data-type="multiple">
+			    <span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart"></span>
+				<div class="sol" data-type="custom">
+				    <div class="guess">$("#sqrtPart").val()</div>
+				    <div class="validator-function">
+						return guess == ANS;
+					</div>
+				</div>
+				<p class="example">整數，例 <code>6</code></p>
+			</div>
+
+            <div class="hints">
+            	<div>
+            		<p>在圖中將梯形的高畫出來，</p>
+            		<div class="graphie" data-update="main">
+            			if( J &gt; K){
+            				line([-K/2, 6],[-K/2, 6-L], { stroke : "#A23400"});
+            				line([-K/2, 5],[-K/2+1, 5], { stroke : "purple"});
+            				line([-K/2+1, 5],[-K/2+1, 6], { stroke : "purple"});
+            				label([-K/2, 6], "\\small{E}", 'above', { color : "#A23400"});
+            				circle([-K/2, 6], 0.1, { stroke : 'blue', fill : 'blue'});
+            				label([-K/2, 6-L/2], "\\small{"+L+"}", 'right',  { color : "#A23400"});
+            			}else{
+            				line([J/2, 6],[J/2, 6-L], { stroke : "#A23400"});
+            				line([J/2, 7-L],[J/2-1, 7-L], { stroke : "purple"});
+            				line([J/2-1, 7-L],[J/2-1, 6-L], { stroke : "purple"});
+            				label([J/2, 6-L], "\\small{E}", 'below', { color : "#A23400"});
+            				circle([J/2, 6-L], 0.1, { stroke : 'blue', fill : 'blue'});
+            				label([J/2, 6-L/2], "\\small{"+L+"}", 'left', { color : "#A23400"});
+            			}
+            		</div>
+            	</div>
+            	<div>
+            		<p>將比較短的底對應到比較長的底，因為是等腰梯形，我們會發現比較長的底被分成 <code class="hint_red"><var>THREE_PART[0]</var></code> 、<code class="hint_red"><var>min(J,K)</var></code>、<code class="hint_red"><var>THREE_PART[0]</var></code> 三段；</p>
+            		<div class="graphie" data-update="main">
+            			if( J &gt; K){
+            				graph.JP.hide();
+            				label([0, 6], "\\small{"+K+"}", 'above', {color : KhanUtil.RED});
+            				line([-J/2, 6], [J/2, 6], {stroke : KhanUtil.RED});
+            				circle([K/2, 6], 0.1, { stroke : "blue", fill : "blue"});
+            				label([J/4-K/4+K/2, 6], "\\small{"+THREE_PART[0]+"}", 'above', {color : KhanUtil.RED});
+            				label([-(J/4-K/4+K/2), 6], "\\small{"+THREE_PART[0]+"}", 'above', {color : KhanUtil.RED});
+            			}else{
+            				graph.KP.hide();
+            				label([0, 6-L], "\\small{"+J+"}", 'below', {color : KhanUtil.RED});
+            				line([-K/2, 6-L], [K/2, 6-L], {stroke : KhanUtil.RED});
+            				circle([-J/2, 6-L], 0.1, { stroke : "blue", fill : "blue"});
+            				label([K/4-J/4+J/2, 6-L], "\\small{"+THREE_PART[0]+"}", 'below', {color : KhanUtil.RED});
+            				label([-(K/4-J/4+J/2), 6-L], "\\small{"+THREE_PART[0]+"}", 'below', {color : KhanUtil.RED});
+            			}
+            		</div>
+            	</div>
+            	<div>
+            		<p>利用畢氏定理，我們可以算出對角線長：</p>
+            		<p><code>=\sqrt{ <var>L</var>^2+( <var>THREE_PART[0]</var> + <var>THREE_PART[1]</var> )^2}=\sqrt{ <var>pow(L,2)</var> + <var>pow(THREE_PART[0]+THREE_PART[1],2)</var> }= \color{#FF00AF}{\sqrt{ <var>ANS</var> }} </code>。</p>
+            	</div>
+            </div> 
+        </div>
+
+        <div id="case2">
+            <div class="vars" data-ensure="isInt(ANS)">
+                <var id="K_INDEX">randRange(1,6)</var>
+                <var id="K_INIT">randRange(1,[3,7,8,8,5,4][K_INDEX-1])</var>
+                <var id="L,K,J,M">(function(){
+					var s = [[3,4-K_INIT,4+K_INIT,5],[6,8-K_INIT,8+K_INIT,10],[5,12-K_INIT,12+K_INIT,13],[9,12-K_INIT,12+K_INIT,15],[8,15-K_INIT,15+K_INIT,17],[12,16-K_INIT,16+K_INIT,20]][K_INDEX-1];
+					var mid;
+					if(Math.random() &gt; 0.5 ){
+						mid = s[2];
+						s[2] = s[1];
+						s[1] = mid; 
+					}
+					return s;
+                })()</var>
+                <var id="ANS">pow(L,2)</var>
+                <var id="THREE_PART">[round(abs(J-K)/2), min(J,K), round(abs(J-K)/2)]</var>
+            </div>
+            <p class="question">
+                如下圖，等腰梯形 <code>ABCD</code> 的兩底分別是 <code><var>min(J,K)</var></code> 和 <code><var>max(J,K)</var></code> ，對角線長為 <code><var>M</var></code> ，請問高為多少？
+            </p>
+            <div class="problem">
+                <div class="graphie" id="main">
+                    init({range: [[-12, 12], [4-L, 8]], scale : 20});
+                    path([[-J/2, 6], [J/2, 6], [K/2, 6-L], [-K/2, 6-L], [-J/2, 6]], {stroke : KhanUtil.GREEN, fill : KhanUtil.ORANGE, opacity : 0.5});
+                    line([J/2, 6], [-K/2, 6-L], { stroke : "#A23400", opacity : 0.5});
+                    label([J/4-K/4,6-L/2],M,'below left', { color : "#A23400"});
+                    label([-J/2, 6], "\\small{D}", 'above left', {color : KhanUtil.BLUE});
+                    label([J/2, 6], "\\small{C}", 'above right', {color : KhanUtil.BLUE});
+                    label([K/2, 6-L], "\\small{B}", 'below right', {color : KhanUtil.BLUE});
+                    label([-K/2, 6-L], "\\small{A}", 'below left', {color : KhanUtil.BLUE});
+                    graph.JP = label([0, 6], "\\small{"+J+"}", 'above', {color : KhanUtil.GREEN});
+                    graph.KP = label([0, 6-L], "\\small{"+K+"}", 'below', {color : KhanUtil.GREEN});
+                    circle([-J/2, 6], 0.1, { stroke : 'blue', fill : 'blue'});
+                    circle([J/2, 6], 0.1, { stroke : 'blue', fill : 'blue'});
+                    circle([K/2, 6-L], 0.1, { stroke : 'blue', fill : 'blue'});
+                    circle([-K/2, 6-L], 0.1, { stroke : 'blue', fill : 'blue'});
+                </div>
+            </div>
+            <div class="solution" data-forms="integer"><var>L</var></div>
+
+            <div class="hints">
+            	<div>
+            		<p>在圖中將梯形的高畫出來，</p>
+            		<div class="graphie" data-update="main">
+            			if( J &gt; K){
+            				line([-K/2, 6],[-K/2, 6-L], { stroke : "#7373B9"});
+            				line([-K/2, 5.5],[-K/2+0.5, 5.5], { stroke : "purple"});
+            				line([-K/2+0.5, 5.5],[-K/2+0.5, 6], { stroke : "purple"});
+            				label([-K/2, 6], "\\small{E}", 'above', { color : "#7373B9"});
+            				circle([-K/2, 6], 0.1, { stroke : 'blue', fill : 'blue'});
+            			}else{
+            				line([J/2, 6],[J/2, 6-L], { stroke : "#7373B9"});
+            				line([J/2, 6.5-L],[J/2-0.5, 6.5-L], { stroke : "purple"});
+            				line([J/2-0.5, 6.5-L],[J/2-0.5, 6-L], { stroke : "purple"});
+            				label([J/2, 6-L], "\\small{E}", 'below', { color : "#7373B9"});
+            				circle([J/2, 6-L], 0.1, { stroke : 'blue', fill : 'blue'});
+            			}
+            		</div>
+            	</div>
+            	<div>
+            		<p>將比較短的底對應到比較長的底，因為是等腰梯形，我們會發現比較長的底被分成 <code class="hint_red"><var>THREE_PART[0]</var></code> 、<code class="hint_red"><var>min(J,K)</var></code>、<code class="hint_red"><var>THREE_PART[0]</var></code> 三段；</p>
+            		<div class="graphie" data-update="main">
+            			if( J &gt; K){
+            				graph.JP.hide();
+            				label([0, 6], "\\small{"+K+"}", 'above', {color : KhanUtil.RED});
+            				line([-J/2, 6], [J/2, 6], {stroke : KhanUtil.RED});
+            				circle([K/2, 6], 0.1, { stroke : "blue", fill : "blue"});
+            				label([J/4-K/4+K/2, 6], "\\small{"+THREE_PART[0]+"}", 'above', {color : KhanUtil.RED});
+            				label([-(J/4-K/4+K/2), 6], "\\small{"+THREE_PART[0]+"}", 'above', {color : KhanUtil.RED});
+            			}else{
+            				graph.KP.hide();
+            				label([0, 6-L], "\\small{"+J+"}", 'below', {color : KhanUtil.RED});
+            				line([-K/2, 6-L], [K/2, 6-L], {stroke : KhanUtil.RED});
+            				circle([-J/2, 6-L], 0.1, { stroke : "blue", fill : "blue"});
+            				label([K/4-J/4+J/2, 6-L], "\\small{"+THREE_PART[0]+"}", 'below', {color : KhanUtil.RED});
+            				label([-(K/4-J/4+J/2), 6-L], "\\small{"+THREE_PART[0]+"}", 'below', {color : KhanUtil.RED});
+            			}
+            		</div>
+            	</div>
+            	<div>
+            		<p>利用畢氏定理，我們可以算出高：</p>
+            		<p><code>=\sqrt{ <var>M</var>^2-( <var>THREE_PART[0]</var> + <var>THREE_PART[1]</var> )^2}=\sqrt{ <var>pow(M,2)</var> - <var>pow(THREE_PART[0]+THREE_PART[1],2)</var> }= \sqrt{ <var>ANS</var> }=\color{#FF00AF}{<var>L</var>} </code>。</p>
+            	</div>
+            </div> 
+        </div>
+    </div>
+</div>
+</body>
+</html>
