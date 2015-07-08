@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>液體與固體的體積計算-進階</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		 #answer_area .sol input[type=text] {
+					width: 50px;
+				}
+	</style>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+        <div id="case1">
+			<div class="vars">
+				<var id="J,K">randFromArray([[10,5],[12,4],[10,6],[15,5],[15,6],[20,4],[20,6],[20,10]])</var>
+				<var id="L,M">randFromArray([[10,15],[11,15],[12,15],[13,16],[13,18],[13,19],[13,20],[14,17],[14,19],[14,20],[15,25],[15,18],[15,21],[16,21],[16,22],[16,23],[17,22],[17,23],[18,23],[19,26],[20,24],[20,25],[21,26],[22,28],[22,30]])</var>
+				<var id="H">M - L</var>
+				<var id="ANS">H * J * K</var>
+				<var id="S">sqrt(3)</var>
+				<var id="P">8</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>有一個容器，內部是長、寬、高分別為 <code><var>J</var></code> 公分、 <code><var>K</var></code> 公分、 <code>40</code> 公分的長方體。容器內部水面高度原來是 <code><var>L</var></code> 公分，放入鐵塊後水面升高成 <code><var>M</var></code> 公分，請問鐵塊的體積是多少立方公分？</p>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>ANS</var></span> <code>立方公分</code></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<div>
+					<p>題目的意思是這樣子的：</p>
+					<div class="graphie" id="advance_volume_1">
+						init({
+							range: [ [-1, 12], [-1, 7] ],scale: 35
+						});
+
+						path([[0.5,0.5],[0.5+J/P,0.5],[0.5+J/P,0.5+L/P],[0.5,0.5+L/P],[0.5,0.5]], { strokeWidth : 0.1, stroke : "#46A3FF", fill : "#46A3FF"});
+						path([[0.5,0.5+L/P],[0.5+K/P/S,0.5+L/P+K/P/S/2],[0.5+K/P/S+J/P,0.5+L/P+K/P/S/2],[0.5+J/P,0.5+L/P],[0.5,0.5+L/P]], { strokeWidth : 0.1, stroke : "#66B3FF", fill : "#66B3FF"});
+						path([[0.5+J/P,0.5+L/P],[0.5+K/P/S+J/P,0.5+K/P/S/2+L/P],[0.5+K/P/S+J/P,0.5+K/P/S/2],[0.5+J/P,0.5],[0.5+J/P,0.5+L/P]], { strokeWidth : 0.1, stroke : "#46A3FF", fill : "#46A3FF"});
+
+						path([[0.5,0.5],[0.5+J/P,0.5],[0.5+J/P,0.5+40/P],[0.5,0.5+40/P],[0.5,0.5]], {strokeWidth : 1});
+						path([[0.5,0.5+40/P],[0.5+K/P/S,0.5+40/P+K/P/S/2],[0.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[0.5+J/P,0.5+40/P],[0.5,0.5+40/P]], {strokeWidth : 1});
+						line([0.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[0.5+K/P/S+J/P,0.5+K/P/S/2], {strokeWidth : 1});
+						line([0.5+K/P/S+J/P,0.5+K/P/S/2],[0.5+J/P,0.5], {strokeWidth : 1});
+						line([0.5+K/P/S,0.5+40/P+K/P/S/2],[0.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+						line([0.5,0.5],[0.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+						line([0.5+K/P/S+J/P,0.5+K/P/S/2],[0.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+
+						label([3.5+K/P/S/2+J/P/2,3],"\\Rightarrow");
+
+						path([[6.5,0.5],[6.5+J/P,0.5],[6.5+J/P,0.5+M/P],[6.5,0.5+M/P],[6.5,0.5]], { strokeWidth : 0.1, stroke : "#46A3FF", fill : "#46A3FF"});
+						path([[6.5,0.5+M/P],[6.5+K/P/S,0.5+M/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+M/P+K/P/S/2],[6.5+J/P,0.5+M/P],[6.5,0.5+M/P]], { strokeWidth : 0.1, stroke : "#66B3FF", fill : "#66B3FF"});
+						path([[6.5+J/P,0.5+M/P],[6.5+K/P/S+J/P,0.5+K/P/S/2+M/P],[6.5+K/P/S+J/P,0.5+K/P/S/2],[6.5+J/P,0.5],[6.5+J/P,0.5+M/P]], { strokeWidth : 0.1, stroke : "#46A3FF", fill : "#46A3FF"});
+
+						path([[6.7,0.7],[6.7+J/P/1.5,0.7],[6.7+J/P/1.5,0.7+M/P/2],[6.7,0.7+M/P/2],[6.7,0.7]], { strokeWidth : 0.1, stroke : "#FFF0AC", fill : "#FFF0AC"});
+						path([[6.7,0.7+M/P/2],[6.7+K/P/S,0.7+M/P/2+K/P/S/2],[6.7+K/P/S+J/P/1.5,0.7+M/P/2+K/P/S/2],[6.7+J/P/1.5,0.7+M/P/2],[6.7,0.7+M/P/2]], { strokeWidth : 0.1, stroke : "#FFF0AC", fill : "#FFF0AC"});
+						path([[6.7+J/P/1.5,0.7+M/P/2],[6.7+K/P/S+J/P/1.5,0.7+K/P/S/2+M/P/2],[6.7+K/P/S+J/P/1.5,0.7+K/P/S/2],[6.7+J/P/1.5,0.7],[6.7+J/P/1.5,0.7+M/P/2]], { strokeWidth : 0.1, stroke : "#FFF0AC", fill : "#FFF0AC"});
+
+						path([[6.5,0.5],[6.5+J/P,0.5],[6.5+J/P,0.5+40/P],[6.5,0.5+40/P],[6.5,0.5]],{strokeWidth : 1});
+						path([[6.5,0.5+40/P],[6.5+K/P/S,0.5+40/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[6.5+J/P,0.5+40/P],[6.5,0.5+40/P]],{strokeWidth : 1});
+						line([6.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+K/P/S/2],{strokeWidth : 1});
+						line([6.5+K/P/S+J/P,0.5+K/P/S/2],[6.5+J/P,0.5],{strokeWidth : 1});
+						line([6.5+K/P/S,0.5+40/P+K/P/S/2],[6.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+						line([6.5,0.5],[6.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+						line([6.5+K/P/S+J/P,0.5+K/P/S/2],[6.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+
+						label([0.5,L/P/2+0.5],"\\tiny{"+L+"}","left", {color : KhanUtil.RED});
+						line([0.5,0.5],[0.5,L/P+0.5],{ stroke : KhanUtil.RED});
+						label([0.5+J/P/2,0.5],"\\tiny{"+J+"}","below", {color : KhanUtil.ORANGE});
+						line([0.5,0.5],[0.5+J/P,0.5],{ stroke : KhanUtil.ORANGE});
+						label([0.5+J/P+K/P/S/2,0.5+K/P/S/4],"\\tiny{"+K+"}","right", {color : KhanUtil.PURPLE});
+						line([0.5+J/P,0.5],[0.5+J/P+K/P/S,0.5+K/P/S/2],{ stroke : KhanUtil.PURPLE});
+						line([0.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[0.5+K/P/S+J/P,0.5+K/P/S/2], {stroke : "#984B4B"});
+						label([0.5+K/P/S+J/P,0.5+20/P+K/P/S/2],"\\tiny{40}","right", {color : "#984B4B"});
+
+						label([6.5,M/P/2+0.5],"\\tiny{"+M+"}","left", {color : KhanUtil.RED});
+						line([6.5,0.5],[6.5,M/P+0.5],{ stroke : KhanUtil.RED});
+						label([6.5+J/P/2,0.5],"\\tiny{"+J+"}","below", {color : KhanUtil.ORANGE});
+						line([6.5,0.5],[6.5+J/P,0.5],{ stroke : KhanUtil.ORANGE});
+						label([6.5+J/P+K/P/S/2,0.5+K/P/S/4],"\\tiny{"+K+"}","right", {color : KhanUtil.PURPLE});
+						line([6.5+J/P,0.5],[6.5+J/P+K/P/S,0.5+K/P/S/2],{ stroke : KhanUtil.PURPLE});
+						line([6.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+K/P/S/2], {stroke : "#984B4B"});
+						label([6.5+K/P/S+J/P,0.5+20/P+K/P/S/2],"\\tiny{40}","right", {color : "#984B4B"});
+
+					</div>
+				</div>
+				<p>把一物體放入水中，水上升的容量和物體的體積相等。</p>
+				<div>
+					<p>水面上升的高度為 <code>\color{<var>KhanUtil.RED</var>}{<var>M</var>}-\color{<var>KhanUtil.RED</var>}{<var>L</var>}=\color{<var>KhanUtil.GREEN</var>}{<var>H</var>}</code> 公分。</p>
+					<div class="graphie" id="advance_volume_1_2">
+						init({
+							range: [ [1, 11], [-1, 7] ],scale: 35
+						});
+
+						path([[6.5,0.5],[6.5+J/P,0.5],[6.5+J/P,0.5+M/P],[6.5,0.5+M/P],[6.5,0.5]], { strokeWidth : 0.1, stroke : "#46A3FF", fill : "#46A3FF"});
+						path([[6.5,0.5+M/P],[6.5+K/P/S,0.5+M/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+M/P+K/P/S/2],[6.5+J/P,0.5+M/P],[6.5,0.5+M/P]], { strokeWidth : 0.1, stroke : "#66B3FF", fill : "#66B3FF"});
+						path([[6.5+J/P,0.5+M/P],[6.5+K/P/S+J/P,0.5+K/P/S/2+M/P],[6.5+K/P/S+J/P,0.5+K/P/S/2],[6.5+J/P,0.5],[6.5+J/P,0.5+M/P]], { strokeWidth : 0.1, stroke : "#46A3FF", fill : "#46A3FF"});
+
+						path([[6.7,0.7],[6.7+J/P/1.5,0.7],[6.7+J/P/1.5,0.7+M/P/2],[6.7,0.7+M/P/2],[6.7,0.7]], { strokeWidth : 0.1, stroke : "#FFF0AC", fill : "#FFF0AC"});
+						path([[6.7,0.7+M/P/2],[6.7+K/P/S,0.7+M/P/2+K/P/S/2],[6.7+K/P/S+J/P/1.5,0.7+M/P/2+K/P/S/2],[6.7+J/P/1.5,0.7+M/P/2],[6.7,0.7+M/P/2]], { strokeWidth : 0.1, stroke : "#FFF0AC", fill : "#FFF0AC"});
+						path([[6.7+J/P/1.5,0.7+M/P/2],[6.7+K/P/S+J/P/1.5,0.7+K/P/S/2+M/P/2],[6.7+K/P/S+J/P/1.5,0.7+K/P/S/2],[6.7+J/P/1.5,0.7],[6.7+J/P/1.5,0.7+M/P/2]], { strokeWidth : 0.1, stroke : "#FFF0AC", fill : "#FFF0AC"});
+
+						path([[6.5,0.5+L/P],[6.5+J/P,0.5+L/P],[6.5+J/P,0.5+M/P],[6.5,0.5+M/P],[6.5,0.5+L/P]], { strokeWidth : 0.1, stroke : KhanUtil.PINK, fill : KhanUtil.PINK});
+						path([[6.5,0.5+M/P],[6.5+K/P/S,0.5+M/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+M/P+K/P/S/2],[6.5+J/P,0.5+M/P],[6.5,0.5+M/P]], { strokeWidth : 0.1, stroke : KhanUtil.PINK, fill : KhanUtil.PINK});
+						path([[6.5+J/P,0.5+M/P],[6.5+K/P/S+J/P,0.5+K/P/S/2+M/P],[6.5+K/P/S+J/P,0.5+K/P/S/2+L/P],[6.5+J/P,0.5+L/P],[6.5+J/P,0.5+M/P]], { strokeWidth : 0.1, stroke : KhanUtil.PINK, fill : KhanUtil.PINK});
+
+						path([[6.5,0.5],[6.5+J/P,0.5],[6.5+J/P,0.5+40/P],[6.5,0.5+40/P],[6.5,0.5]],{strokeWidth : 1});
+						path([[6.5,0.5+40/P],[6.5+K/P/S,0.5+40/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[6.5+J/P,0.5+40/P],[6.5,0.5+40/P]],{strokeWidth : 1});
+						line([6.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+K/P/S/2],{strokeWidth : 1});
+						line([6.5+K/P/S+J/P,0.5+K/P/S/2],[6.5+J/P,0.5],{strokeWidth : 1});
+						line([6.5+K/P/S,0.5+40/P+K/P/S/2],[6.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+						line([6.5,0.5],[6.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+						line([6.5+K/P/S+J/P,0.5+K/P/S/2],[6.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+
+						label([6.5,M/P/2+0.5],"\\tiny{"+M+"}","left", {color : KhanUtil.RED});
+						line([6.5,0.5],[6.5,M/P+0.5],{ stroke : KhanUtil.RED});
+						label([6.5+J/P/2,0.5],"\\tiny{"+J+"}","below", {color : KhanUtil.ORANGE});
+						line([6.5,0.5],[6.5+J/P,0.5],{ stroke : KhanUtil.ORANGE});
+						label([6.5+J/P+K/P/S/2,0.5+K/P/S/4],"\\tiny{"+K+"}","right", {color : KhanUtil.PURPLE});
+						line([6.5+J/P,0.5],[6.5+J/P+K/P/S,0.5+K/P/S/2],{ stroke : KhanUtil.PURPLE});
+						line([6.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+K/P/S/2], {stroke : "#984B4B"});
+						label([6.5+K/P/S+J/P,0.5+20/P+K/P/S/2],"\\tiny{40}","right", {color : "#984B4B"});
+						line([6.5,L/P+0.5],[6.5,M/P+0.5], {stroke : KhanUtil.GREEN});
+						label([6.5,0.5+(L+M)/P/2],'\\small{\\color{green}{？}=\\color{red}{'+M+'}-\\color{red}{'+L+'}=\\color{green}{'+H+"}}",'left');
+					</div>
+				</div>
+				<p>水上升的容量為 <code>\color{<var>KhanUtil.ORANGE</var>}{<var>J</var>}\times\color{<var>KhanUtil.PURPLE</var>}{<var>K</var>}\times\color{<var>KhanUtil.GREEN</var>}{<var>H</var>}=\color{<var>KhanUtil.PINK</var>}{<var>ANS</var>}</code> 毫升。（也就是上圖<span class="hint_pink">粉紅色</span>的部分）。</p>
+				<p><code>1</code> 毫升 <code>=1</code> 立方公分。</p>
+				<div>
+					<p><code><var>ANS</var></code> 毫升 <code>=<var>ANS</var></code> 立方公分。</p>
+					<p>所以我們知道鐵塊的體積是 <code class="hint_pink"><var>ANS</var></code> 立方公分。</p>
+				</div>
+			</div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars" data-ensure="isInt(M)">
+				<var id="J,K,S1,S2,S3">randFromArray([[10,5,10,4,6],[12,4,10,8,5],[10,6,5,4,9],[15,5,10,5,3],[15,6,20,9,2],[20,4,10,4,8],[20,6,10,9,4],[20,10,5,4,10],[20,6,15,4,4],[20,6,12,10,2],[12,4,16,2,3]])</var>
+				<var id="L">randRange(20,30)</var>
+				<var id="SMALL_C">S1 * S2 * S3</var>
+				<var id="M">SMALL_C/J/K+L</var>
+				<var id="H">M - L</var>
+				<var id="S">sqrt(3)</var>
+				<var id="P">8</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>有一個長方體容器，內部長、寬、高分別是 <code><var>J</var></code> 公分、<code><var>K</var></code> 公分、<code>40</code> 公分，容器內部水面高度原來是 <code><var>L</var></code> 公分，放入長、寬、高分別為 <code><var>S1</var></code> 公分、 <code><var>S2</var></code> 公分、 <code><var>S3</var></code> 公分的長方體鐵塊後，水面高度會變成幾公分？</p>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>M</var></span> <code>公分</code></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<div>
+					<p>題目的意思是這樣子的：</p>
+					<div class="graphie" id="advance_volume_1">
+						init({
+							range: [ [-1, 12], [-1, 7] ],scale: 35
+						});
+
+						path([[0.5,0.5],[0.5+J/P,0.5],[0.5+J/P,0.5+L/P],[0.5,0.5+L/P],[0.5,0.5]], { strokeWidth : 0.1, stroke : "#46A3FF", fill : "#46A3FF"});
+						path([[0.5,0.5+L/P],[0.5+K/P/S,0.5+L/P+K/P/S/2],[0.5+K/P/S+J/P,0.5+L/P+K/P/S/2],[0.5+J/P,0.5+L/P],[0.5,0.5+L/P]], { strokeWidth : 0.1, stroke : "#66B3FF", fill : "#66B3FF"});
+						path([[0.5+J/P,0.5+L/P],[0.5+K/P/S+J/P,0.5+K/P/S/2+L/P],[0.5+K/P/S+J/P,0.5+K/P/S/2],[0.5+J/P,0.5],[0.5+J/P,0.5+L/P]], { strokeWidth : 0.1, stroke : "#46A3FF", fill : "#46A3FF"});
+
+						path([[0.5,0.5],[0.5+J/P,0.5],[0.5+J/P,0.5+40/P],[0.5,0.5+40/P],[0.5,0.5]], {strokeWidth : 1});
+						path([[0.5,0.5+40/P],[0.5+K/P/S,0.5+40/P+K/P/S/2],[0.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[0.5+J/P,0.5+40/P],[0.5,0.5+40/P]], {strokeWidth : 1});
+						line([0.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[0.5+K/P/S+J/P,0.5+K/P/S/2], {strokeWidth : 1});
+						line([0.5+K/P/S+J/P,0.5+K/P/S/2],[0.5+J/P,0.5], {strokeWidth : 1});
+						line([0.5+K/P/S,0.5+40/P+K/P/S/2],[0.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+						line([0.5,0.5],[0.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+						line([0.5+K/P/S+J/P,0.5+K/P/S/2],[0.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+
+						label([3.5+K/P/S/2+J/P/2,3],"\\Rightarrow");
+
+						path([[6.5,0.5],[6.5+J/P,0.5],[6.5+J/P,0.5+M/P],[6.5,0.5+M/P],[6.5,0.5]], { strokeWidth : 0.1, stroke : "#46A3FF", fill : "#46A3FF"});
+						path([[6.5,0.5+M/P],[6.5+K/P/S,0.5+M/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+M/P+K/P/S/2],[6.5+J/P,0.5+M/P],[6.5,0.5+M/P]], { strokeWidth : 0.1, stroke : "#66B3FF", fill : "#66B3FF"});
+						path([[6.5+J/P,0.5+M/P],[6.5+K/P/S+J/P,0.5+K/P/S/2+M/P],[6.5+K/P/S+J/P,0.5+K/P/S/2],[6.5+J/P,0.5],[6.5+J/P,0.5+M/P]], { strokeWidth : 0.1, stroke : "#46A3FF", fill : "#46A3FF"});
+
+						path([[6.7,0.7],[6.7+J/P/1.5,0.7],[6.7+J/P/1.5,0.7+M/P/2],[6.7,0.7+M/P/2],[6.7,0.7]], { strokeWidth : 0.1, stroke : "#FFF0AC", fill : "#FFF0AC"});
+						path([[6.7,0.7+M/P/2],[6.7+K/P/S,0.7+M/P/2+K/P/S/2],[6.7+K/P/S+J/P/1.5,0.7+M/P/2+K/P/S/2],[6.7+J/P/1.5,0.7+M/P/2],[6.7,0.7+M/P/2]], { strokeWidth : 0.1, stroke : "#FFF0AC", fill : "#FFF0AC"});
+						path([[6.7+J/P/1.5,0.7+M/P/2],[6.7+K/P/S+J/P/1.5,0.7+K/P/S/2+M/P/2],[6.7+K/P/S+J/P/1.5,0.7+K/P/S/2],[6.7+J/P/1.5,0.7],[6.7+J/P/1.5,0.7+M/P/2]], { strokeWidth : 0.1, stroke : "#FFF0AC", fill : "#FFF0AC"});
+
+						path([[6.5,0.5],[6.5+J/P,0.5],[6.5+J/P,0.5+40/P],[6.5,0.5+40/P],[6.5,0.5]],{strokeWidth : 1});
+						path([[6.5,0.5+40/P],[6.5+K/P/S,0.5+40/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[6.5+J/P,0.5+40/P],[6.5,0.5+40/P]],{strokeWidth : 1});
+						line([6.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+K/P/S/2],{strokeWidth : 1});
+						line([6.5+K/P/S+J/P,0.5+K/P/S/2],[6.5+J/P,0.5],{strokeWidth : 1});
+						line([6.5+K/P/S,0.5+40/P+K/P/S/2],[6.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+						line([6.5,0.5],[6.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+						line([6.5+K/P/S+J/P,0.5+K/P/S/2],[6.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+
+						label([0.5,L/P/2+0.5],"\\tiny{"+L+"}","left", {color : KhanUtil.RED});
+						line([0.5,0.5],[0.5,L/P+0.5],{ stroke : KhanUtil.RED});
+						label([0.5+J/P/2,0.5],"\\tiny{"+J+"}","below", {color : KhanUtil.ORANGE});
+						line([0.5,0.5],[0.5+J/P,0.5],{ stroke : KhanUtil.ORANGE});
+						label([0.5+J/P+K/P/S/2,0.5+K/P/S/4],"\\tiny{"+K+"}","right", {color : KhanUtil.PURPLE});
+						line([0.5+J/P,0.5],[0.5+J/P+K/P/S,0.5+K/P/S/2],{ stroke : KhanUtil.PURPLE});
+						line([0.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[0.5+K/P/S+J/P,0.5+K/P/S/2], {stroke : "#984B4B"});
+						label([0.5+K/P/S+J/P,0.5+20/P+K/P/S/2],"\\tiny{40}","right", {color : "#984B4B"});
+
+						label([6.5,M/P/2+0.5],"\\tiny{？}","left", {color : KhanUtil.GREEN});
+						line([6.5,0.5],[6.5,M/P+0.5],{ stroke : KhanUtil.GREEN});
+						label([6.5+J/P/2,0.5],"\\tiny{"+J+"}","below", {color : KhanUtil.ORANGE});
+						line([6.5,0.5],[6.5+J/P,0.5],{ stroke : KhanUtil.ORANGE});
+						label([6.5+J/P+K/P/S/2,0.5+K/P/S/4],"\\tiny{"+K+"}","right", {color : KhanUtil.PURPLE});
+						line([6.5+J/P,0.5],[6.5+J/P+K/P/S,0.5+K/P/S/2],{ stroke : KhanUtil.PURPLE});
+						line([6.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+K/P/S/2], {stroke : "#984B4B"});
+						label([6.5+K/P/S+J/P,0.5+20/P+K/P/S/2],"\\tiny{40}","right", {color : "#984B4B"});
+
+					</div>
+				</div>
+				<p>把一物體放入水中，水上升的容量和物體的體積相等。</p>
+				<p>我們知道這個長方體鐵塊的長、寬、高分別是 <code><var>S1</var></code> 公分、<code><var>S2</var></code> 公分和 <code><var>S3</var></code> 公分。</p>
+				<p>長方體的體積為 <code><var>S1</var>\times<var>S2</var>\times<var>S3</var>=<var>SMALL_C</var></code> 。</p>
+				<div>
+					<p>可以運用水上升的容量 <code>=</code> 物體的體積列出式子。也就是說<span class="hint_pink">粉紅色</span>部分水的容量 <code>=</code> 長方體鐵塊的體積。</p>
+					<div class="graphie" id="advance_volume_1_2">
+						init({
+							range: [ [3, 11], [-1, 7] ],scale: 35
+						});
+
+						path([[6.5,0.5],[6.5+J/P,0.5],[6.5+J/P,0.5+M/P],[6.5,0.5+M/P],[6.5,0.5]], { strokeWidth : 0.1, stroke : "#46A3FF", fill : "#46A3FF"});
+						path([[6.5,0.5+M/P],[6.5+K/P/S,0.5+M/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+M/P+K/P/S/2],[6.5+J/P,0.5+M/P],[6.5,0.5+M/P]], { strokeWidth : 0.1, stroke : "#66B3FF", fill : "#66B3FF"});
+						path([[6.5+J/P,0.5+M/P],[6.5+K/P/S+J/P,0.5+K/P/S/2+M/P],[6.5+K/P/S+J/P,0.5+K/P/S/2],[6.5+J/P,0.5],[6.5+J/P,0.5+M/P]], { strokeWidth : 0.1, stroke : "#46A3FF", fill : "#46A3FF"});
+
+						path([[6.7,0.7],[6.7+J/P/1.5,0.7],[6.7+J/P/1.5,0.7+M/P/2],[6.7,0.7+M/P/2],[6.7,0.7]], { strokeWidth : 0.1, stroke : "#FFF0AC", fill : "#FFF0AC"});
+						path([[6.7,0.7+M/P/2],[6.7+K/P/S,0.7+M/P/2+K/P/S/2],[6.7+K/P/S+J/P/1.5,0.7+M/P/2+K/P/S/2],[6.7+J/P/1.5,0.7+M/P/2],[6.7,0.7+M/P/2]], { strokeWidth : 0.1, stroke : "#FFF0AC", fill : "#FFF0AC"});
+						path([[6.7+J/P/1.5,0.7+M/P/2],[6.7+K/P/S+J/P/1.5,0.7+K/P/S/2+M/P/2],[6.7+K/P/S+J/P/1.5,0.7+K/P/S/2],[6.7+J/P/1.5,0.7],[6.7+J/P/1.5,0.7+M/P/2]], { strokeWidth : 0.1, stroke : "#FFF0AC", fill : "#FFF0AC"});
+
+						path([[6.5,0.5+L/P],[6.5+J/P,0.5+L/P],[6.5+J/P,0.5+M/P],[6.5,0.5+M/P],[6.5,0.5+L/P]], { strokeWidth : 0.1, stroke : KhanUtil.PINK, fill : KhanUtil.PINK});
+						path([[6.5,0.5+M/P],[6.5+K/P/S,0.5+M/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+M/P+K/P/S/2],[6.5+J/P,0.5+M/P],[6.5,0.5+M/P]], { strokeWidth : 0.1, stroke : KhanUtil.PINK, fill : KhanUtil.PINK});
+						path([[6.5+J/P,0.5+M/P],[6.5+K/P/S+J/P,0.5+K/P/S/2+M/P],[6.5+K/P/S+J/P,0.5+K/P/S/2+L/P],[6.5+J/P,0.5+L/P],[6.5+J/P,0.5+M/P]], { strokeWidth : 0.1, stroke : KhanUtil.PINK, fill : KhanUtil.PINK});
+
+						path([[6.5,0.5],[6.5+J/P,0.5],[6.5+J/P,0.5+40/P],[6.5,0.5+40/P],[6.5,0.5]],{strokeWidth : 1});
+						path([[6.5,0.5+40/P],[6.5+K/P/S,0.5+40/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[6.5+J/P,0.5+40/P],[6.5,0.5+40/P]],{strokeWidth : 1});
+						line([6.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+K/P/S/2],{strokeWidth : 1});
+						line([6.5+K/P/S+J/P,0.5+K/P/S/2],[6.5+J/P,0.5],{strokeWidth : 1});
+						line([6.5+K/P/S,0.5+40/P+K/P/S/2],[6.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+						line([6.5,0.5],[6.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+						line([6.5+K/P/S+J/P,0.5+K/P/S/2],[6.5+K/P/S,0.5+K/P/S/2],{strokeWidth : 1,"stroke-dasharray": "-"});
+
+						label([6.5,M/P/2+0.5],"\\tiny{？}","left", {color : KhanUtil.GREEN});
+						line([6.5,0.5],[6.5,M/P+0.5],{ stroke : KhanUtil.GREEN});
+						label([6.5+J/P/2,0.5],"\\tiny{"+J+"}","below", {color : KhanUtil.ORANGE});
+						line([6.5,0.5],[6.5+J/P,0.5],{ stroke : KhanUtil.ORANGE});
+						label([6.5+J/P+K/P/S/2,0.5+K/P/S/4],"\\tiny{"+K+"}","right", {color : KhanUtil.PURPLE});
+						line([6.5+J/P,0.5],[6.5+J/P+K/P/S,0.5+K/P/S/2],{ stroke : KhanUtil.PURPLE});
+						line([6.5+K/P/S+J/P,0.5+40/P+K/P/S/2],[6.5+K/P/S+J/P,0.5+K/P/S/2], {stroke : "#984B4B"});
+						label([6.5+K/P/S+J/P,0.5+20/P+K/P/S/2],"\\tiny{40}","right", {color : "#984B4B"});
+					</div>
+				</div>
+				<p><code><var>J</var>\times<var>K</var>\times</code> 高 <code>=<var>SMALL_C</var></code> 。</p>
+				<p>高 <code>=<var>SMALL_C</var>\div<var>J</var>\div<var>K</var>=<var>H</var></code> 。</p>
+				<p>水面從 <code><var>L</var></code> 公分上升 <code><var>H</var></code> 公分 <code>=\color{<var>KhanUtil.PINK</var>}{<var>M</var>}</code> 公分。</p>
+			</div>
+		</div>
+		
+		<div id="case3">
+			<div class="vars">
+				<var id="J">randRange(4,7)*10</var>
+				<var id="K,L">randFromArray([[30,29],[31,30],[32,31],[31,29],[35,34],[36,35],[35,33],[22,21],[21,20],[21,19]])</var>
+				<var id="M">round(K - L)</var>
+				<var id="ANS">round(J * J * M)</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>有一個<span class="hint_green">正方體</span>容器中有一個鐵球，這個<span class="hint_green">正方體</span>容器內部邊長 <code><var>J</var></code> 公分，水深 <code><var>K</var></code> 公分。當我拿出這個鐵球後，水深變成 <code><var>L</var></code> 公分，請問這個鐵球的體積是幾立方公分？</p>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>ANS</var></span> <code>立方公分</code></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<p>把一物體放入水中，水上升的容量和物體的體積相等。</p>
+				<p>取出鐵球後，發現水面從 <code><var>K</var></code> 下降了 <code><var>M</var></code> 公分變成 <code><var>L</var></code> 。</p>
+				<p>鐵球的體積為 <code><var>J</var>\times<var>J</var>\times<var>M</var>=\color{#FF00AF}{<var>ANS</var>}</code> 立方公分。</p>
+			</div>
+		</div>
+
+		<div id="case4">
+			<div class="vars" data-ensure="isInt(HC)">
+				<var id="J,K,L,M,N">randFromArray([[5,5,15,6,100],[5,4,15,4,100],[5,4,20,4,100],[6,5,15,6,120],[6,5,15,6,100],[8,5,15,6,120],[10,2,15,6,100],[10,4,15,6,200],[10,5,15,6,250],[10,6,15,4,240],[10,9,15,6,180],[10,8,15,6,320]])</var>
+				<var id="HC">N / J / K</var>
+				<var id="H">round(HC+M)</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>有一個長 <code><var>J</var></code> 公分、寬 <code><var>K</var></code> 公分、高 <code><var>L</var></code> 公分的長方體容器中，原有水的高度為 <code><var>M</var></code> 公分。放入一塊  <code><var>N</var></code> 立方公分的木頭（木頭完全沈入水中），水面會升高到幾公分？</p>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>H</var></span> <code>公分</code></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<p>把一物體放入水中，水上升的容量和物體的體積相等。</p>
+				<p>我們可以把體積 <code><var>N</var></code> 立方公分的木頭換成 <code><var>N</var></code> 毫升容量的水。</p>
+				<p><code><var>N</var></code> 毫升的水要裝入這個長方體容器中，那它的高度會是多高呢？</p>
+				<div>
+					<p>我們可以列出式子 <code><var>J</var>\times<var>K</var>\times</code> 高 <code>=<var>N</var></code> 。</p>
+					<p>所以高為 <code><var>HC</var></code> 公分。</p>
+				</div>
+				<p>原來的高度是 <code><var>M</var></code> 公分，所以水面上升到 <code><var>M</var>+<var>HC</var>=\color{#FF00AF}{<var>H</var>}</code> 公分。</p>
+			</div>
+		</div>
+
+		<div id="case5">
+			<div class="vars" data-ensure="isInt(HC)">
+				<var id="J,K,L,M,N">randFromArray([[5,5,15,6,100],[5,4,15,4,100],[5,4,20,4,100],[6,5,15,6,120],[6,5,15,6,100],[8,5,15,6,120],[10,2,15,6,100],[10,4,15,6,200],[10,5,15,6,250],[10,6,15,4,240],[10,9,15,6,180],[10,8,15,6,320]])</var>
+				<var id="HC">N / J / K</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>有一個長 <code><var>J</var></code> 公分、寬 <code><var>K</var></code> 公分、高 <code><var>L</var></code> 公分的長方體容器中，原有水的高度為 <code><var>M</var></code> 公分。放入一塊  <code><var>N</var></code> 立方公分的木頭（木頭完全沈入水中），水面會升高幾公分？</p>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>HC</var></span> <code>公分</code></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<p>把一物體放入水中，水上升的容量和物體的體積相等。</p>
+				<p>我們可以把體積 <code><var>N</var></code> 立方公分的木頭換成 <code><var>N</var></code> 毫升容量的水。</p>
+				<p><code><var>N</var></code> 毫升的水要裝入這個長方體容器中，那它的高度會是多高呢？</p>
+				<div>
+					<p>我們可以列出式子 <code><var>J</var>\times<var>K</var>\times</code> 高 <code>=<var>N</var></code> 。</p>
+					<p>所以高為 <code><var>HC</var></code> 公分。</p>
+				</div>
+				<p>所以水面會上升 <code class="hint_pink"><var>HC</var></code> 公分。</p>
+			</div>
+		</div>
+
+		<div id="case6">
+			<div class="vars">
+				<var id="J">randRange(15,25)</var>
+				<var id="K">randRange(20,40)</var>
+				<var id="L">randFromArray([0.5,1,2])</var>
+				<var id="M,N">randFromArray([[37,25],[36,34],[37,34],[36,35],[38,26],[30,28],[30,29],[25,24],[27,25]])</var>
+				<var id="P">round(J-L*2)</var>
+				<var id="Q">round(K-L*2)</var>
+				<var id="H">M-N</var>
+				<var id="ANS">round(P*Q*H)</var>
+            </div>
+		
+			<div class="question">
+				<div class="problem">
+					<p>有一個長方體魚缸，外面的長、寬、高分別是 <code><var>J</var></code> 公分、<code><var>K</var></code> 公分和 <code>50</code> 公分，玻璃的厚度是 <code><var>L</var></code> 公分，把魚缸裡的石頭撈出來後，水深從 <code><var>M</var></code> 公分變成 <code><var>N</var></code> 公分。請算一算石頭的體積是幾立方公分？</p>
+				</div>
+			</div>		
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>ANS</var></span> <code>立方公分</code></p>
+				<p class="example">整數，例：<code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<p>把一物體放入水中，水上升的容量和物體的體積相等。</p>
+				<p>拿走石頭後，魚缸內部水下降部分的體積，就是石頭的體積。</p>
+				<div>
+					<p>我們要先算出魚缸內部的長和寬。</p>
+					<p><code>\qquad</code>外部的長 <code>-</code> 厚度 <code>=</code> 內部的長。</p>
+					<p><code>\qquad</code>外部的寬 <code>-</code> 厚度 <code>=</code> 內部的寬。</p>
+				</div>
+				<p>記得長和寬的厚度都有兩側喔！</p>
+				<p>長為 <code><var>J</var>-<var>L</var>\times 2=<var>P</var></code> 。寬為 <code><var>K</var>-<var>L</var>\times 2=<var>Q</var></code> 。</p>
+				<p>拿走石頭後，水下降了 <code><var>M</var>-<var>N</var>=<var>H</var></code> 公分。</p>
+				<p>石頭的體積 <code>=<var>P</var>\times<var>Q</var>\times<var>H</var>=\color{#FF00AF}{<var>ANS</var>}</code> 立方公分。</p>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>
