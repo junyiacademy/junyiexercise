@@ -1459,6 +1459,27 @@ var Khan = (function() {
         return answerType;
     }
 
+    function wantMoreHints(hint) {
+        var button = '<div id="want-more-hints"><input type="button" class="simple-button green" value="看不懂提示"></div>';
+        hint.append(button);
+        var exercise_name = this.Exercises.BottomlessQueue.current.card.attributes.exerciseName;
+
+        $("#want-more-hints").click(function(e) {
+            e.preventDefault();
+            $.ajax({ url: "/api/v1/user/want_more_hints", 
+                type: 'PUT',
+                data:{'exercise_name': exercise_name, 'problem_id': problemID},
+                success: function(notifications) {
+                    console.log('success'); 
+                }, 
+                error: function() {
+                    console.log('fail'); 
+                } 
+            });
+        });
+        console.log('exerciseName: ' + exercise_name +', problemID: ' + problemID);
+    }
+
     function showHint() {
         // Called when user hits hint button triggering showHint event or when
         // the server side data says the last_count_hints is not 0 when
@@ -1478,6 +1499,7 @@ var Khan = (function() {
 
         if (hints.length === 0) {
             $(hint).addClass("last-hint");
+            wantMoreHints($(hint));
         }
 
         // TODO(james): figure out a way to trigger hintUsed to ensure that the
