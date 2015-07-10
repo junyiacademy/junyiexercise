@@ -32,7 +32,7 @@ $.extend(KhanUtil, {
         );
 
         graph.graph.medianLabel.remove();
-        graph.graph.medianLabel = graph.label([median, -1.7], "\\text{中位數}", "below", { color: KhanUtil.GREEN });
+        graph.graph.medianLabel = graph.label([median, -1.7], "\\text{中間值}", "below", { color: KhanUtil.GREEN });
 
         graph.graph.median = median;
     },
@@ -61,7 +61,7 @@ $.extend(KhanUtil, {
         graph.graph.stddevLine.scale(stddev, 1, graph.graph.stddevLine.attr("path")[0][1], graph.graph.stddevLine.attr("path")[0][2]);
 
         graph.graph.stddevValueLabel.remove();
-        graph.graph.stddevValueLabel = graph.label([stddev / 2 + mean, -1.3], "s \\approx " + stddev, "below", { color: KhanUtil.GREEN });
+        graph.graph.stddevValueLabel = graph.label([stddev / 2 + mean, -1.3], "\\sigma \\approx " + stddev, "below", { color: KhanUtil.GREEN });
 
         if (stddev > 0) {
 
@@ -80,7 +80,7 @@ $.extend(KhanUtil, {
             graph.graph.meanValueLabel.remove();
             graph.graph.meanValueLabel = graph.label(
                 [mean, KhanUtil.gaussianPDF(mean, stddev, mean) * 5 - 0.2],
-                "\\bar{x} \\approx " + mean, "above", { color: KhanUtil.BLUE }
+                "\\mu \\approx " + mean, "above", { color: KhanUtil.BLUE }
             );
 
             var points = [];
