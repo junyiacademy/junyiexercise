@@ -77,17 +77,6 @@
             </p>
 
             <div class="problem">
-                <!--
-                    If this didn't exist you would get the following error:
-
-                        Uncaught TypeError: Cannot read property 'graph' of undefined
-
-                    Because:
-
-                        - Both problems use the same .hints.
-                        - .hints uses .graphie.
-                        - The other problem uses graphie so .hints's .graphies must use data-update.
-                -->
                 <div class="graphie" id="graph" style="display: none;"></div>
                 <div class="column">
                     <span class="columnhead">千</span>
@@ -121,7 +110,6 @@
                 <var>
                     (function() {
                         Khan.scratchpad.disable();
-                        // click handlers
                         $( "#problemarea .thou" ).bind( "vmousedown", function( event ) {
                             event.preventDefault();
                             $( this ).toggleClass( 'thou-selected' );
@@ -178,10 +166,8 @@
                 <div class="show-guess">
                     var places = digits( guess * 1000 );
 
-                    // unselect everything
                     $( "#problemarea .place-value" ).removeClass( 'thou-selected hund-selected ten-selected one-selected tenth-selected, hundth-selected, thouth-selected' );
 
-                    // select the approprate number of each thing
                     $( "#problemarea .thou" ).slice( 0, places[6] || 0 ).addClass( 'thou-selected' );
                     $( "#problemarea .hund" ).slice( 0, places[5] || 0 ).addClass( 'hund-selected' );
                     $( "#problemarea .ten" ).slice( 0, places[4] || 0 ).addClass( 'ten-selected' );
@@ -261,9 +247,8 @@
                             }
 
                             return coins[ coin.index() - 1 ];
-                        }
+                        };
 
-                        // click handlers
                         $( "#problemarea .thou" ).bind( "vmousedown", function( event ) {
                             event.preventDefault();
                             $( this ).toggleClass( 'thou-selected' );
@@ -299,7 +284,6 @@
                             }
                         });
 
-                        // mouseover handlers
                         $( "#problemarea .dime" ).bind( "vmouseover", function( event ) {
                             graph.getCoinCircle( this ).attr({ stroke: '#999' });
                         });
@@ -307,7 +291,6 @@
                             graph.getCoinCircle( this ).attr({ stroke: '#999' });
                         });
 
-                        // mouseout handlers
                         $( "#problemarea .dime" ).bind( "vmouseout", function( event ) {
                             if ( $( this ).hasClass( 'dime-selected' ) ) {
                                 graph.getCoinCircle( this ).attr({ stroke: '#000' });
@@ -350,7 +333,6 @@
                 <div class="show-guess">
                     var places = digits( guess * 100 );
 
-                    // unselect everything
                     $( "#problemarea .bill" ).removeClass( 'thou-selected hund-selected ten-selected one-selected' );
                     $( "#problemarea .dime" ).removeClass( 'dime-selected' );
                     $( "#problemarea .penny" ).removeClass( 'penny-selected' );
@@ -361,7 +343,6 @@
                         this.attr({ fill: '#eee', stroke: '#ddd' });
                     });
 
-                    // select the approprate number of each thing
                     $( "#problemarea .thou" ).slice( 0, places[5] || 0 ).addClass( 'thou-selected' );
                     $( "#problemarea .hund" ).slice( 0, places[4] || 0 ).addClass( 'hund-selected' );
                     $( "#problemarea .ten" ).slice( 0, places[3] || 0 ).addClass( 'ten-selected' );
@@ -411,7 +392,6 @@
             </p>
 
             <div class="graphie" data-update="graph">
-                // Select thousands.
                 var thous = $( '#problemarea .thou' );
                 thous.removeClass( 'thou-selected' );
 
@@ -430,7 +410,6 @@
             </p>
 
             <div class="graphie" data-update="graph">
-                // Select hundreds.
                 var hunds = $( '#problemarea .hund' );
                 hunds.removeClass( 'hund-selected' );
 
@@ -449,7 +428,6 @@
             </p>
 
             <div class="graphie" data-update="graph">
-                // Select tens.
                 var tens = $( '#problemarea .ten' );
                 tens.removeClass( 'ten-selected' );
 
@@ -468,7 +446,6 @@
             </p>
 
             <div class="graphie" data-update="graph">
-                // Select ones.
                 var ones = $( '#problemarea .one' );
                 ones.removeClass( 'one-selected' );
 
@@ -487,7 +464,6 @@
             </p>
 
             <div class="graphie" data-update="graph">
-                // Select dimes/tenths.
                 if ( $( '#place-value' ).length === 1 ) {
                     var tenths = $( '#problemarea .tenth' );
                     tenths.removeClass( 'tenth-selected' );
@@ -520,7 +496,6 @@
             </p>
 
             <div class="graphie" data-update="graph">
-                // Select pennies/hundredths.
                 if ( $( '#place-value' ).length === 1 ) {
                     var hundths = $( '#problemarea .hundth' );
                     hundths.removeClass( 'hundth-selected' );
@@ -553,7 +528,6 @@
             </p>
 
             <div class="graphie" data-update="graph">
-                // Select thousandths.
                 var thouths = $( '#problemarea .thouth' );
                 thouths.removeClass( 'thouth-selected' );
 
@@ -571,7 +545,7 @@
             <span data-if="ONES !== 0"><code>\large{\color{<var>BLUE</var>}{<var>ONES</var>}}</code> <var>plural( "個", ONES )</var>，</span>
             <span data-if="TENTHS !== 0"><code>\large{\color{purple}{<var>TENTHS</var>}}</code> <var>plural( "分", TENTHS )</var>，</span>
             <span data-if="THOUSANDTHS === 0" data-unwrap>
-                and <code>\large{\color{gray}{<var>HUNDREDTHS</var>}}</code> <var>plural( "毫", HUNDREDTHS )</var>.
+                和 <code>\large{\color{gray}{<var>HUNDREDTHS</var>}}</code> <var>plural( "毫", HUNDREDTHS )</var>.
             </span>
             <span data-else data-unwrap>
                 <span data-if="HUNDREDTHS !== 0"><code>\large{\color{gray}{<var>HUNDREDTHS</var>}}</code> <var>plural( "毫", HUNDREDTHS )</var>，</span>
