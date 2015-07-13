@@ -12,41 +12,6 @@
             width: 30px;
         }
         </style>
-	<script type="text/javascript">
-	    function accDiv(arg1,arg2){
-            var t1=0,t2=0,r1,r2;
-            try{t1=arg1.toString().split(".")[1].length}catch(e){}
-            try{t2=arg2.toString().split(".")[1].length}catch(e){}
-            with(Math){
-                r1=Number(arg1.toString().replace(".",""))
-                r2=Number(arg2.toString().replace(".",""))
-                return (r1/r2)*pow(10,t2-t1);
-            }
-        }
-		function accMul(arg1,arg2){
-            var m=0,s1=arg1.toString(),s2=arg2.toString();
-            try{m+=s1.split(".")[1].length}catch(e){}
-            try{m+=s2.split(".")[1].length}catch(e){}
-            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
-        }
-        function accAdd(arg1,arg2){
-            var r1,r2,m;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2))
-            return (arg1*m+arg2*m)/m
-        }
-        function Subtr(arg1,arg2){
-            var r1,r2,m,n;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2));
-            //last modify by deeka
-            //动态控制精度长度
-            n=(r1>=r2)?r1:r2;
-            return ((arg1*m-arg2*m)/m).toFixed(n);
-        }
-	</script>
 </head>
 <body>
     <div class="exercise">
@@ -63,7 +28,7 @@
 			<p class="question">已知下圖的兩個三角形全等，依你的觀察在空格中填入適當的答案。</p>
 			<div class="problem">
 			    <p><code><var>qesPoint[0]</var></code> 的對應點是 <code>\underline{\enspace\enspace\enspace\enspace\enspace\enspace}</code> ，</p>
-				<p><code><var>qesLineStr_1</var></code> 的對應邊是 <code>\underline{\enspace\enspace\enspace\enspace\enspace\enspace}</code> 。</p>
+				<p><code>\overline{<var>qesLineStr_1</var>}</code> 的對應邊是 <code>\underline{\enspace\enspace\enspace\enspace\enspace\enspace}</code> 。</p>
 			    <div class="graphie" id="angle_edge">
 				    init({
                         range: [ [-1, 6.5], [-1,graHigh+1] ],
@@ -81,15 +46,20 @@
 				</div>
 			</div>
 			<div class="solution" data-type="multiple">
-			    <code><var>qesPoint[0]</var></code>&nbsp;的對應點是&nbsp;<span class="sol" data-type="text"><var>qesPoint[1]</var></span><br />
-				<code>\overline{<var>qesLineStr_1</var>}</code>&nbsp;的對應邊是&nbsp;線段&nbsp;<input type="text" id="a_1" style="width:50px"></var><br />
+			    <code><var>qesPoint[0]</var></code>&nbsp;的對應點是&nbsp;<input type="text" id="a_1" style="width:50px"><br />
+				<code>\overline{<var>qesLineStr_1</var>}</code>&nbsp;的對應邊是&nbsp;線段&nbsp;<input type="text" id="a_2" style="width:50px"></var><br />
 				<div class="sol" data-type="custom">
-				    <div class="guess">document.getElementById("a_1").value</div>
+				    <div class="guess">[$('#a_1').val(),$('#a_2').val()]</div>
 				    <div class="validator-function">
-					var ng = guess.replace(/[ ]/g,"");
-					if(ng==qesLineStr_2||ng==qesLine[1]){
+				    var np = guess[0].replace(/[ ]/g,"");
+					var ng = guess[1].replace(/[ ]/g,"");
+					if(np=="" && ng==""){
+						return "";
+					}
+					if(np==qesPoint[1] && (ng==qesLine[1].split("").reverse().join("") || ng==qesLine[1])){
 					    return true;
 					}
+					return false;
                     </div>
 				</div>
 				<p class="example">大寫英文字母</p>
@@ -114,9 +84,9 @@
             </div>
 			<p class="question">已知 <code>\triangle{ABC}\cong\triangle{DEF}</code> ，並且 <code>A、B、C</code> 的對應點分別是 <code>D、E、F</code> ，若 <code>\angle{A}=<var>J</var>^{\circ}</code> ，<code>\angle{B}=<var>K</var>^{\circ}</code> ，求 <code>\angle{D}、\angle{E}、\angle{F}</code> 。</p>
 			<div class="solution" data-type="multiple">
-			    <code>\angle{D}\enspace=\enspace</code><span class="sol" data-forms="integer"><var>J</var></span><br />
-				<code>\angle{E}\enspace=\enspace</code><span class="sol" data-forms="integer"><var>K</var></span><br />
-				<code>\angle{F}\enspace=\enspace</code><span class="sol" data-forms="integer"><var>180-J-K</var></span>
+			    <code>\angle{D}=</code><span class="sol" data-forms="integer"><var>J</var></span><code>^\circ</code><br />
+				<code>\angle{E}=</code><span class="sol" data-forms="integer"><var>K</var></span><code>^\circ</code><br />
+				<code>\angle{F}=</code><span class="sol" data-forms="integer"><var>round(180-J-K)</var></span><code>^\circ</code>
 				<p class="example">整數，例：<code>6</code></p>	
             </div>
             <div class="hints">
