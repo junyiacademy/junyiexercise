@@ -8,44 +8,20 @@
         #answer_area .sol input[type=text] {
             width: 30px;
         }
-        </style>
-<script type="text/javascript">
-	    function accDiv(arg1,arg2){
-            var t1=0,t2=0,r1,r2;
-            try{t1=arg1.toString().split(".")[1].length}catch(e){}
-            try{t2=arg2.toString().split(".")[1].length}catch(e){}
-            with(Math){
-                r1=Number(arg1.toString().replace(".",""))
-                r2=Number(arg2.toString().replace(".",""))
-                return (r1/r2)*pow(10,t2-t1);
-            }
-        }
-		function accMul(arg1,arg2){
-            var m=0,s1=arg1.toString(),s2=arg2.toString();
-            try{m+=s1.split(".")[1].length}catch(e){}
-            try{m+=s2.split(".")[1].length}catch(e){}
-            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
-        }
-        function accAdd(arg1,arg2){
-            var r1,r2,m;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2))
-            return (arg1*m+arg2*m)/m
-        }
-        function Subtr(arg1,arg2){
-            var r1,r2,m,n;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2));
-            //last modify by deeka
-            //动态控制精度长度
-            n=(r1>=r2)?r1:r2;
-            return ((arg1*m-arg2*m)/m).toFixed(n);
-        }
-	</script>
+    </style>
+    <script type="text/javascript">
+    	function minSpa(arr){
+    		arr.sort(function(a,b){return a-b;});
+    		var min = 1000;
+    		for(var i = 0; i < arr.length-1;i++){
+    			if(arr[i+1] - arr[i] < min){
+    				min = arr[i+1] - arr[i];
+    			}
+    		}
+    		return min;
+    	}
 
-
+    </script>
 </head>
 <body>
     <div class="exercise">
@@ -142,10 +118,11 @@
         </div>
 		
 		<div id="case3">
-            <div class="vars">
+            <div class="vars" data-ensure="M &gt; 30">
 				<var id="J">randRange(100,150)</var>
 				<var id="ang">J-90</var>
 				<var id="K">randRange(30,60)</var>
+				<var id="M">minSpa([ang+K,180-ang+K+100,180-ang,ang])</var>
             </div>
             <p class="question">如圖，<code>A</code>、<code>B</code>、<code>C</code> 為圓 <code>O</code> 上三點，已知 <code>\angle{BAC}=<var>J</var>^{\circ}</code>，則 <code>\angle{BOC}=</code> ？</p>
 			<div class="problem">
@@ -191,13 +168,15 @@
         </div>
 		
 		<div id="case4">
-            <div class="vars">
+            <div class="vars" data-ensure="M &gt; 50">
 				<var id="J">randRange(90,120)</var>
 				<var id="K">randRange(60,80)</var>
 				<var id="angC">180-J</var>
 				<var id="angD">180-K</var>
 				<var id="angle">randRange(15,60)</var>
 				<var id="R">angD+J-angC-K</var>
+				<var id="POLARS">[angle,(angle+2*angC)%360,(angle-6*K+360+360)%360,(angle+360-4*K)%360]</var>
+				<var id="M">minSpa([angle,(angle+2*angC)%360,(angle-6*K+360+360)%360,(angle+360-4*K)%360])</var>
             </div>
             <p class="question">如下圖，圖上四點 <code>A</code>、<code>B</code>、<code>C</code>、<code>D</code> 構成一四邊形。已知 <code>\angle{A}=<var>J</var>^{\circ}</code>、<code>\angle{B}=<var>K</var>^{\circ}</code>，則 <code>\widehat{BC}-\widehat{AD}</code> 是多少度數？</p>
 			<div class="problem">
@@ -209,10 +188,10 @@
 					circle([0,0],2);
 					circle([0,0],0.03);
 					label( [0,0],  "\\small{O}", "above", { color: "black" });
-					var pointD = polar(2, angle);
-					var pointB = polar(2, angle+2*angC);
-					var pointC = polar(2, angle+360-2*K-2*K+360-2*K);
-					var pointA = polar(2, angle+360-2*K-2*K);
+					var pointD = polar(2, POLARS[0]);
+					var pointB = polar(2, POLARS[1]);
+					var pointC = polar(2, POLARS[2]);
+					var pointA = polar(2, POLARS[3]);
 					label( pointD,  "\\small{D}", "above right", { color: "black" });
 					label( pointB,  "\\small{B}", "below left", { color: "black" });
 					label( pointC,  "\\small{C}", "below right", { color: "black" });
@@ -245,7 +224,7 @@
 				</p>
 				<p><code>\Longrightarrow\enspace 2\widehat{BC}+\widehat{AB}+\widehat{CD}=<var>2*angD+2*J</var>^{\circ}\cdots\enspace (2)</code></p>
 				<p><code>(2)-(1)：2\widehat{BC}-2\widehat{AD}=<var>2*R</var></code></p>
-				<p><code>\enspace\enspace\enspace\therefore\enspace\widehat{BC}-\widehat{AD}=</code><code class="hint_pink"><var>R</var></code> 。</p>
+				<p><code>\enspace\enspace\enspace\therefore\enspace\widehat{BC}-\widehat{AD}=</code><code class="hint_pink"><var>R</var>^\circ</code> 。</p>
             </div>
         </div>
 		
