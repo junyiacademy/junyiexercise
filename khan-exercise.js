@@ -1459,9 +1459,9 @@ var Khan = (function() {
         return answerType;
     }
 
-    function wantMoreHints(hint) {
-        var button = '<div id="want-more-hints"><input type="button" class="simple-button green" value="看不懂提示"></div>';
-        hint.append(button);
+    function wantMoreHints() {
+        var button = '<div id="want-more-hints"><input type="button" class="simple-button green" value="多給我一些提示，謝謝！"></div>';
+        $('#hintsarea').append(button);
         var exercise_name = this.Exercises.BottomlessQueue.current.card.attributes.exerciseName;
 
         $("#want-more-hints").click(function(e) {
@@ -1476,6 +1476,11 @@ var Khan = (function() {
                     console.log('fail'); 
                 } 
             });
+            $("#want-more-hints input")
+                .attr("disabled", "disabled")
+                .attr("value", "均一小天使：我們知道囉！")
+                .removeClass('green')
+                .addClass('blue');
         });
         console.log('exerciseName: ' + exercise_name +', problemID: ' + problemID);
     }
