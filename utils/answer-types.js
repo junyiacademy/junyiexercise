@@ -186,7 +186,52 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 // box to allow for alternative radix points
                 var input = $('<input type="text">');
             }
-            $(solutionarea).append(input);
+
+
+            var fractionForms = ['proper', 'improper', 'mixed'];
+            var shouldEnableFractionMode = fractionForms.filter(function(n) {
+                return acceptableForms.indexOf(n) != -1
+            })
+            if(shouldEnableFractionMode){
+                var input = $('<input id="non_fraction_mode_input" type="text">');
+                var checkbox = '<div class="checkbox"><label><input type="checkbox" id="checkedFractionMode"> 我要輸入直式分數</label></div>'
+                var fraction_mode_div = '<div id="fraction_mode_div" style="display:none">' +
+                                        '<table border="0" cellpadding="0" cellspacing="0">' +
+                                        '<tr>' +
+                                        '<td rowspan=3 style="vertical-align:middle">' +
+                                        '<input id="signed_int" type="text" style="width:35px;position:relative;left:-3px;"></td>' +
+                                        '<td>' +
+                                        '<input id="num" type="text" style="width:35px;"></td>' +
+                                        '</tr>' +
+                                        '<tr>' +
+                                        '<td><hr style="margin-top:6px;margin-bottom:6px;border-color:black;border-width:2px"/></td>' +
+                                        '</tr>' +
+                                        '<tr>' +
+                                        '<td><input id="denom" type="text" style="width:35px"></td>' +
+                                        '</tr>' + 
+                                        '</table>' +
+                                        '</div>' 
+                $(solutionarea).append(input);
+                $(solutionarea).append(fraction_mode_div);
+                $(solutionarea).append(checkbox);
+
+                $("#checkedFractionMode").change(function() {
+                    $("div#fraction_mode_div input").val("");
+                    $("#non_fraction_mode_input").val("");
+                    $("#non_fraction_mode_input").toggle();
+                    $("#fraction_mode_div").toggle();
+                })
+                $("div#fraction_mode_div input").keyup(function (){
+                    if ($("#checkedFractionMode").prop("checked") == true){
+                        var ans = $("div#fraction_mode_div input#signed_int").val() + " " +
+                                  $("div#fraction_mode_div input#num").val() + "/" +
+                                  $("div#fraction_mode_div input#denom").val();
+                        $("#non_fraction_mode_input").val(ans);
+                    }
+                });
+            }else {
+                $(solutionarea).append(input);
+            }
 
             // retrieve the example texts from the different forms
             var exampleForms = {
