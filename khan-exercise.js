@@ -1483,7 +1483,6 @@ var Khan = (function() {
                 .removeClass('green')
                 .addClass('blue');
         });
-        console.log('exerciseName: ' + exercise_name +', problemID: ' + problemID);
     }
 
     function showHint() {
