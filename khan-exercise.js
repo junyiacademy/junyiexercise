@@ -1474,7 +1474,7 @@ var Khan = (function() {
                     console.log('success'); 
                 }, 
                 error: function() {
-                    console.log('fail'); 
+                    alert('均一小天使：有錯誤，麻煩回報給均一，謝謝。'); 
                 } 
             });
             $("#want-more-hints input")
