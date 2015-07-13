@@ -1460,8 +1460,9 @@ var Khan = (function() {
     }
 
     function wantMoreHints() {
-        var button = '<div id="want-more-hints"><input type="button" class="simple-button green" value="多給我一些提示，謝謝！"></div>';
+        var button = '<div id="want-more-hints" style="display:none"><input type="button" class="simple-button green" value="多給我一些提示，謝謝！"></div>';
         $('#hintsarea').append(button);
+        $('#want-more-hints').fadeIn('slow');
         var exercise_name = this.Exercises.BottomlessQueue.current.card.attributes.exerciseName;
 
         $("#want-more-hints").click(function(e) {
@@ -1504,7 +1505,7 @@ var Khan = (function() {
 
         if (hints.length === 0) {
             $(hint).addClass("last-hint");
-            wantMoreHints($(hint));
+            wantMoreHints();
         }
 
         // TODO(james): figure out a way to trigger hintUsed to ensure that the
