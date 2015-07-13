@@ -1470,8 +1470,7 @@ var Khan = (function() {
             $.ajax({ url: "/api/v1/user/want_more_hints", 
                 type: 'PUT',
                 data:{'exercise_name': exercise_name, 'problem_id': problemID},
-                success: function(notifications) {
-                    console.log('success'); 
+                success: function() {
                 }, 
                 error: function() {
                     alert('均一小天使：有錯誤，麻煩回報給均一，謝謝。'); 
