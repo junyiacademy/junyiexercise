@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>數線上的不等式2</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="numberline_to_inequality">
+    		<div class="vars" data-ensure="maxLength &lt; 16 &amp;&amp; maxLength &gt; 4">
+    			<var id="P1,P2">[randRange(-8,8),randRange(-8,8)]</var>
+    			<var id="HOLLOW">[randRange(0,1),randRange(0,1)]</var>
+    			<var id="T">randRange(0,1)</var>
+    			<var id="MAX_P,MIN_P">[max(P1,P2), min(P1,P2)]</var>
+    			<var id="maxLength">MAX_P - MIN_P</var>
+    			<var id="ANS">(function(){
+    				var ANS_1 = [];
+    				var ANS_2 = [];
+    				if( T === 0 ){
+    					if(HOLLOW[0] === 0 ){
+    						ANS_1 = ['&ge;',MIN_P];
+    					}else{
+    						ANS_1 = ['&gt;',MIN_P];
+    					}
+
+    					if(HOLLOW[1] === 0 ){
+    						ANS_2 = ['&le;',MAX_P];
+    					}else{
+    						ANS_2 = ['&lt;',MAX_P];
+    					}
+    				}else{
+    					if(HOLLOW[0] === 0 ){
+    						ANS_1 = ['&le;',MIN_P];
+    					}else{
+    						ANS_1 = ['&lt;',MIN_P];
+    					}
+
+    					if(HOLLOW[1] === 0 ){
+    						ANS_2 = ['&ge;',MAX_P];
+    					}else{
+    						ANS_2 = ['&gt;',MAX_P];
+    					}
+    				}
+    				return ANS_2[1] &gt; ANS_1[1] ? [ANS_1,ANS_2] : [ANS_2,ANS_1];
+    			})()</var>
+    			<var id="C">randFromArray(['a','b','c','k','m','n','p','q','r','s','t','u','v','w','y','z'])</var>
+    			<var id="C_A_O">T === 0 ? '且' : '或'</var>
+    		</div>
+
+	        <div class="question">
+	            <p>寫下下圖表示的不等式(答案處數字先填小的再填大的):</p>
+	            <div class="graphie">
+	            	init({range: [ [-10.5, 10.5], [-1.5, 1.5] ], scale : 25 });
+	            	line([-10,0],[10,0]);
+	            	for(var i = 0; i &lt; 11; i++){
+	            		line([i,-0.4],[i,0.4], { strokeWidth : 1.2});
+	            		line([-i,-0.4],[-i,0.4], { strokeWidth : 1.2});
+	            		label([i,-0.4], "\\small{"+i+"}", 'below');
+	            		label([-i,-0.4], "\\small{"+(-i)+"}", 'below');
+	            	}
+	            	circle([MIN_P,0], 0.3, { stroke : KhanUtil.BLUE, fill : HOLLOW[0] === 0 ? KhanUtil.BLUE : ''});
+	            	circle([MAX_P,0], 0.3, { stroke : KhanUtil.BLUE, fill : HOLLOW[1] === 0 ? KhanUtil.BLUE : ''});
+	            	if( T === 0 ){
+	            		line([MIN_P+0.3,0],[MAX_P-0.3,0], { stroke : KhanUtil.BLUE, strokeWidth : 3.5});
+	            	}else{
+	            		line([MIN_P-0.3,0],[-10,0], { stroke : KhanUtil.BLUE, strokeWidth : 3.5, arrows : "->"});
+	            		line([MAX_P+0.3,0],[10,0], { stroke : KhanUtil.BLUE, strokeWidth : 3.5, arrows : "->"});
+	            	}
+	            </div>
+	        </div>
+
+	        <p class="solution" data-type="multiple">
+	            <code><var>C</var></code>
+	            <span class="sol" data-type="list" data-choices="['', '&lt;', '&gt;', '&le;', '&ge;', '&ne;']">
+	                <var>ANS[0][0]</var>
+	            </span>
+	            <span class="sol"><var>ANS[0][1]</var></span>
+	            <br/>
+	            <code>\enspace</code>
+	            <span class="sol" data-type="list" data-choices="['', '且', '或']">
+	                <var>C_A_O</var>
+	            </span>
+	            <br/>
+	            <code><var>C</var></code>
+	            <span class="sol" data-type="list" data-choices="['', '&lt;', '&gt;', '&le;', '&ge;', '&ne;']">
+	                <var>ANS[1][0]</var>
+	            </span>
+	            <span class="sol"><var>ANS[1][1]</var></span>
+	        </p>
+
+	        <div class="hints">
+	        	<p data-if="T === 1">箭頭由點 <code><var>MIN_P</var></code> 往左射，又由點 <code><var>MAX_P</var></code> 往右射，因此表示有些點在 <code><var>MIN_P</var></code> 以下，有些點在 <code><var>MAX_P</var></code> 以上。</p>
+	        	<p data-if="T === 0">線段由點 <code><var>MIN_P</var></code> 連到點 <code><var>MAX_P</var></code> ，因此表示點在 <code><var>MIN_P</var></code> 以上和 <code><var>MAX_P</var></code> 以下。</p>
+	        	<p>左邊圓圈是 <span class="hint_green"><var>HOLLOW[0] === 0 ? '實心' : '空心'</var></span> 的，代表點 <code><var>MIN_P</var></code> <span data-if="HOLLOW[0] === 1">不</span>包含在內；右邊圓圈是 <span class="hint_blue"><var>HOLLOW[1] === 0 ? '實心' : '空心'</var></span> 的，代表點 <code><var>MAX_P</var></code> <span data-if="HOLLOW[1] === 1">不</span>包含在內。</p>
+	        	<div>
+	        		<p data-if="T === 1">因為點不可能同時出現在左邊和右邊，所以選單要選「或」。</p>
+	        		<p data-if="T === 0">因為點必須同時符合 <code><var>MIN_P</var></code> 以上和 <code><var>MAX_P</var></code> 以下，所以選單要選「且」。</p>
+	        	</div>
+	        	<p>所以答案是 <code class="hint_pink"><var>C</var><var>ANS[0][0]</var><var>ANS[0][1]</var></code> <span class="hint_pink"><var>C_A_O</var></span> <code class="hint_pink"><var>C</var><var>ANS[1][0]</var><var>ANS[1][1]</var></code> 。</p>
+	        </div>
+		</div>
+
+		<div id="inequality_to_numberline">
+    		<div class="vars" data-ensure="maxLength &lt; 16 &amp;&amp; maxLength &gt; 2">
+    			<var id="P1,P2">[(randRange(-8,-1)+randRange(1,9)/10).toFixed(1),(randRange(0,8)+randRange(1,9)/10).toFixed(1)]</var>
+    			<var id="HOLLOW">[randRange(0,1),randRange(0,1)]</var>
+    			<var id="T">randRange(0,1)</var>
+    			<var id="MAX_P,MIN_P">[max(P1,P2), min(P1,P2)]</var>
+    			<var id="maxLength">abs(abs(MAX_P) - abs(MIN_P))</var>
+    			<var id="ANS">(function(){
+    				var ANS_1 = [];
+    				var ANS_2 = [];
+    				if( T === 0 ){
+    					if(HOLLOW[0] === 0 ){
+    						ANS_1 = ['&ge;',MIN_P];
+    					}else{
+    						ANS_1 = ['&gt;',MIN_P];
+    					}
+
+    					if(HOLLOW[1] === 0 ){
+    						ANS_2 = ['&le;',MAX_P];
+    					}else{
+    						ANS_2 = ['&lt;',MAX_P];
+    					}
+    				}else{
+    					if(HOLLOW[0] === 0 ){
+    						ANS_1 = ['&le;',MIN_P];
+    					}else{
+    						ANS_1 = ['&lt;',MIN_P];
+    					}
+
+    					if(HOLLOW[1] === 0 ){
+    						ANS_2 = ['&ge;',MAX_P];
+    					}else{
+    						ANS_2 = ['&gt;',MAX_P];
+    					}
+    				}
+    				return ANS_2[1] &gt; ANS_1[1] ? [ANS_1,ANS_2] : [ANS_2,ANS_1];
+    			})()</var>
+    			<var id="C">randFromArray(['a','b','c','k','m','n','p','q','r','s','t','u','v','w','y','z'])</var>
+    			<var id="C_A_O">T === 0 ? '且' : '或'</var>
+    			<var id="ANS_ARR">randRangeUnique(1,4,3)</var>
+    		</div>
+
+	        <div class="question">
+	            <p>下方數線圖, 何者能表示 <code><var>C</var><var>ANS[0][0]</var><var>ANS[0][1]</var></code> <span><var>C_A_O</var></span> <code><var>C</var><var>ANS[1][0]</var><var>ANS[1][1]</var></code>？</p>
+	            <div class="graphie">
+	            	init({range: [ [-12.5, 10.5], [-9, 1.5] ], scale : 20 });
+	            	line([-10,0],[10,0]);
+	            	line([-10,-3],[10,-3]);
+	            	line([-10,-6],[10,-6]);
+
+	            	label([-10.5,0],'A','left', { color : KhanUtil.GREEN});
+	            	label([-10.5,-3],'B','left', { color : KhanUtil.GREEN});
+	            	label([-10.5,-6],'C','left', { color : KhanUtil.GREEN});
+	            	for(var i = 0; i &lt; 11; i++){
+	            		line([i,-0.4],[i,0.4], { strokeWidth : 1.2});
+	            		line([-i,-0.4],[-i,0.4], { strokeWidth : 1.2});
+	            		label([i,-0.4], "\\small{"+i+"}", 'below');
+	            		label([-i,-0.4], "\\small{"+(-i)+"}", 'below');
+
+	            		line([i,-0.4-3],[i,0.4-3], { strokeWidth : 1.2});
+	            		line([-i,-0.4-3],[-i,0.4-3], { strokeWidth : 1.2});
+	            		label([i,-0.4-3], "\\small{"+i+"}", 'below');
+	            		label([-i,-0.4-3], "\\small{"+(-i)+"}", 'below');
+
+	            		line([i,-0.4-6],[i,0.4-6], { strokeWidth : 1.2});
+	            		line([-i,-0.4-6],[-i,0.4-6], { strokeWidth : 1.2});
+	            		label([i,-0.4-6], "\\small{"+i+"}", 'below');
+	            		label([-i,-0.4-6], "\\small{"+(-i)+"}", 'below');
+	            	}
+	            	circle([MIN_P,-3*ANS_ARR.indexOf(1)], 0.3, { stroke : KhanUtil.BLUE, fill : HOLLOW[0] === 0 ? KhanUtil.BLUE : ''});
+	            	circle([MAX_P,-3*ANS_ARR.indexOf(1)], 0.3, { stroke : KhanUtil.BLUE, fill : HOLLOW[1] === 0 ? KhanUtil.BLUE : ''});
+	            	if( T === 0 ){
+	            		line([MIN_P+0.3,-3*ANS_ARR.indexOf(1)],[MAX_P-0.3,-3*ANS_ARR.indexOf(1)], { stroke : KhanUtil.BLUE, strokeWidth : 3.5});
+	            		if(randRange(0,1)===0){
+		            		circle([MIN_P,-3*ANS_ARR.indexOf(2)], 0.3, { stroke : KhanUtil.BLUE, fill : HOLLOW[0] === 1 ? KhanUtil.BLUE : ''});
+		            		circle([MAX_P,-3*ANS_ARR.indexOf(2)], 0.3, { stroke : KhanUtil.BLUE, fill : HOLLOW[1] === 1 ? KhanUtil.BLUE : ''});
+		            		line([MIN_P+0.3,-3*ANS_ARR.indexOf(2)],[MAX_P-0.3,-3*ANS_ARR.indexOf(2)], { stroke : KhanUtil.BLUE, strokeWidth : 3.5});
+		            	}else{
+		            		circle([-MIN_P,-3*ANS_ARR.indexOf(2)], 0.3, { stroke : KhanUtil.BLUE, fill : HOLLOW[0] === 1 ? KhanUtil.BLUE : ''});
+		            		circle([-MAX_P,-3*ANS_ARR.indexOf(2)], 0.3, { stroke : KhanUtil.BLUE, fill : HOLLOW[1] === 1 ? KhanUtil.BLUE : ''});
+		            		line([-MIN_P-0.3,-3*ANS_ARR.indexOf(2)],[-MAX_P+0.3,-3*ANS_ARR.indexOf(2)], { stroke : KhanUtil.BLUE, strokeWidth : 3.5});
+		            	}
+	            		var qy = randRange(0,1);
+	            		circle([-MIN_P,-3*ANS_ARR.indexOf(3)], 0.3, { stroke : KhanUtil.BLUE, fill : HOLLOW[0] === qy ? KhanUtil.BLUE : ''});
+	            		circle([-MAX_P,-3*ANS_ARR.indexOf(3)], 0.3, { stroke : KhanUtil.BLUE, fill : HOLLOW[1] === qy ? KhanUtil.BLUE : ''});
+	            		line([-MIN_P+0.3,-3*ANS_ARR.indexOf(3)],[10,-3*ANS_ARR.indexOf(3)], { stroke : KhanUtil.BLUE, strokeWidth : 3.5, arrows : "->"});
+	            		line([-MAX_P-0.3,-3*ANS_ARR.indexOf(3)],[-10,-3*ANS_ARR.indexOf(3)], { stroke : KhanUtil.BLUE, strokeWidth : 3.5, arrows : "->"});
+	            	}else{
+	            		line([MIN_P-0.3,-3*ANS_ARR.indexOf(1)],[-10,-3*ANS_ARR.indexOf(1)], { stroke : KhanUtil.BLUE, strokeWidth : 3.5, arrows : "->"});
+	            		line([MAX_P+0.3,-3*ANS_ARR.indexOf(1)],[10,-3*ANS_ARR.indexOf(1)], { stroke : KhanUtil.BLUE, strokeWidth : 3.5, arrows : "->"});
+	            		circle([-MIN_P,-3*ANS_ARR.indexOf(2)], 0.3, { stroke : KhanUtil.BLUE, fill : HOLLOW[0] === 0 ? KhanUtil.BLUE : ''});
+	            		circle([-MAX_P,-3*ANS_ARR.indexOf(2)], 0.3, { stroke : KhanUtil.BLUE, fill : HOLLOW[1] === 0 ? KhanUtil.BLUE : ''});
+	            		line([-MIN_P-0.3,-3*ANS_ARR.indexOf(2)],[-MAX_P+0.3,-3*ANS_ARR.indexOf(2)], { stroke : KhanUtil.BLUE, strokeWidth : 3.5});
+	            		var ty = randRange(0,1);
+	            		circle([-MIN_P,-3*ANS_ARR.indexOf(3)], 0.3, { stroke : KhanUtil.BLUE, fill : HOLLOW[0] === ty ? KhanUtil.BLUE : ''});
+	            		circle([-MAX_P,-3*ANS_ARR.indexOf(3)], 0.3, { stroke : KhanUtil.BLUE, fill : HOLLOW[1] === ty ? KhanUtil.BLUE : ''});
+	            		line([-MIN_P+0.3,-3*ANS_ARR.indexOf(3)],[10,-3*ANS_ARR.indexOf(3)], { stroke : KhanUtil.BLUE, strokeWidth : 3.5, arrows : "->"});
+	            		line([-MAX_P-0.3,-3*ANS_ARR.indexOf(3)],[-10,-3*ANS_ARR.indexOf(3)], { stroke : KhanUtil.BLUE, strokeWidth : 3.5, arrows : "->"});
+	            	}
+	            </div>
+	        </div>
+
+	        <div class="solution" data-type="multiple">
+	            <p><input type="radio" name="ratioa" id="a0" /> <code>A</code></p>
+				<p><input type="radio" name="ratioa" id="a1" /> <code>B</code></p>
+				<p><input type="radio" name="ratioa" id="a2" /> <code>C</code></p>
+                <div class="sol" data-type="custom">
+                    <div class="guess">$('#a'+ANS_ARR.indexOf(1)).prop('checked')</div>
+                    <div class="validator-function">
+                        var cou = 0;
+                        $("input[name='ratioa']").each(function(){
+                            if($(this).prop('checked')){
+                                cou = 1;
+                            }
+                        });
+                        if( cou === 0 ){
+                            return "";
+                        }
+                        return guess;
+                    </div>
+                </div>
+	        </div>
+
+	        <div class="hints">
+	        	<div>
+	        		<p data-if="T === 0">因為題目是「且」，所以兩個不等式要有交集，所以圖示應該是一個線段。</p>
+	        		<p data-if="T === 1">因為題目是「或」，檢查一下範圍，不等式沒有交集，所以圖示應該是兩條射線。</p>
+	        	</div>
+	        	<div>
+	        		<p><code><var>C</var><var>ANS[0][0]</var><var>ANS[0][1]</var></code>，所以左端點是 <code><var>ANS[0][1]</var></code> ；</p>
+	        		<p><code><var>C</var><var>ANS[1][0]</var><var>ANS[1][1]</var></code>，所以右端點是 <code><var>ANS[1][1]</var></code> 。</p>
+	        	</div>
+	        	<div>
+	        		<p><code><var>C</var><var>ANS[0][0]</var><var>ANS[0][1]</var></code>，所以 <code><var>ANS[0][1]</var></code> 是<span class="hint_green"><var>HOLLOW[0] === 0 ? '實心' : '空心'</var></span>；</p>
+	        		<p><code><var>C</var><var>ANS[1][0]</var><var>ANS[1][1]</var></code>，所以 <code><var>ANS[1][1]</var></code> 是<span class="hint_green"><var>HOLLOW[1] === 0 ? '實心' : '空心'</var></span>。</p>
+	        	</div>
+	        	<p>所以答案是 <code class="hint_pink"><var>['A','B','C'][ANS_ARR.indexOf(1)]</var></code> 。</p>
+	        </div>
+		</div>
+
+	</div>
+    </div>
+</body>
+</html>

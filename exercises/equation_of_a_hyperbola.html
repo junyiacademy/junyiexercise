@@ -17,8 +17,8 @@
         <var id="A">randRange( 2, 9 )</var>
         <var id="B" data-ensure=" A !== B" >randRange( 2, 9 )</var>
 
-        <var id="H">randRange( -9, 9 )</var>
-        <var id="K">randRange( -9, 9 )</var>
+        <var id="H">randRangeNonZero( -9, 9 )</var>
+        <var id="K">randRangeNonZero( -9, 9 )</var>
 
         <var id="WHICH_NEG">rand(2)</var>
 
@@ -35,18 +35,18 @@
         <div>
             <div class="question">
                 <p>雙曲線<code>H</code>的方程式為<code><var>WHICH_NEG === 1 ? expr(["-", Y2T, X2T]) : expr(["-", X2T, Y2T])</var> = 1</code>。</p>
-                <p>請寫出漸進線的方程式</p>
+                <p>請寫出漸近線的方程式</p>
             </div>
 
             <div class="solution" data-type="multiple">
                 <p>
-                    <code>y = \pm (</code><span class="sol" data-fallback="1"><var>B/A</var></span>
-                    <code>)(x + </code><span class="sol" data-fallback="0"><var>-H</var></span>
-                    <code>) + </code><span class="sol" data-fallback="0"><var>K</var></span>
+                    <code>y = \pm (</code><span class="sol" data-fallback="1" data-type="rational"><var>B/A</var></span>
+                    <code>)(x + </code><span class="sol" data-fallback="0" data-forms="integer"><var>-H</var></span>
+                    <code>) + </code><span class="sol" data-fallback="0" data-forms="integer"><var>K</var></span>
                 </p>
 
-                <p class="example">enter integers, <em>simplified</em> fractions, or <em>exact</em> decimals for each term</p>
-                <p class="example">pay attention to the sign of each number you enter to be sure the entire equation is correct</p>
+                <p class="example">整數，分數或精確的小數</p>
+                <p class="example">注意你輸入的每一個數字的符號，以確保整個方程是正確的</p>
             </div>
         </div>
     </div>
@@ -67,7 +67,7 @@
             <p><code> <var>plus("y", -K)</var> = \pm \sqrt { <var>Y_MINUS</var> <var>B*B</var> <var>X_MINUS</var> \dfrac{ <var>X</var> \cdot <var> B*B </var> }{<var> A*A </var>}}</code></p>
         </div>
         <div>
-            <p>當<code>x</code>跑到正無限大或負無限大時，括號內的常數項<code><var>Y_MINUS</var><var>H</var></code>相對顯得很小，所以可以直接忽略。</p>
+            <p>當<code>x</code>跑到正無限大或負無限大時，根號內的常數項<code><var>Y_MINUS</var><var>B*B</var></code>相對顯得很小，所以可以直接忽略。</p>
             <p><code><var>plus( "y", -K )</var> \approx \pm \sqrt {\dfrac{ <var>X</var> \cdot <var> B*B </var> }{<var> A*A </var>}}</code></p>
 
             <p><code><var>plus( "y", -K )</var> \approx \pm \left(\dfrac{<var>B</var> \cdot (<var>plus( "x", -H )</var>)}{<var> A </var>}\right)</code></p>
@@ -78,9 +78,9 @@
                 <span data-if="K > 0">等號左右兩邊都加上<code><var>K</var></code>。</span>
                 <span data-else-if="K < 0">等號左右兩邊都減掉<code><var>-K</var></code>，</span>
                 <span data-else>重寫一次</span>
-                得到漸進線方程式:
+                得到漸近線方程式:
             </p>
-            <p><code>y = \pm \dfrac{<var>reduce( A, B )[1]</var>}{<var>reduce( A, B )[0]</var>}(<var>plus( "x", -H )</var>)<var>K &gt;= 0 ? "+" : ""</var> <var>K</var></code></p>
+            <p><code>y = \color{#FF00AF}{\pm <var>fraction(B,A,true,true,false,false)</var>(<var>plus( "x", -H )</var>)<var>K &gt;= 0 ? "+" : ""</var> <var>K</var>}</code></p>
         </div>
     </div>
     </div>
