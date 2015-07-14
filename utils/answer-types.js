@@ -235,22 +235,20 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     $("#fraction_mode_div").toggle();
                     if ($("#checkedFractionMode").prop("checked") == true){
                         $("#default_input").val("");
-                        if (navigator.userAgent.match(/(ipad)/i)) { 
-                            $("div#fraction_mode_div input#signed_int").focus();
-                        }
+                        $("div#fraction_mode_div input#signed_int").focus();
                     }
                 })
 
                 // create ans from Fraction Mode to default input 
                 $("div#fraction_mode_div input").keyup(function (){
                     if ($("#checkedFractionMode").prop("checked") == true){
-                        if($("div#fraction_mode_div input#num").val() === "" && 
-                           $("div#fraction_mode_div input#denom").val() === "") {
-                            var ans = $("div#fraction_mode_div input#signed_int").val();
-                        }else {
-                            var ans = $("div#fraction_mode_div input#signed_int").val() + " " +
-                                      $("div#fraction_mode_div input#num").val() + "/" +
-                                      $("div#fraction_mode_div input#denom").val();
+                        var num = $("div#fraction_mode_div input#num").val();
+                        var denom = $("div#fraction_mode_div input#denom").val();
+                        var signed_int = $("div#fraction_mode_div input#signed_int").val();
+                        if(num === "" || denom === "") {
+                            var ans = signed_int;
+                        } else {
+                            var ans = signed_int + " " + num + "/" + denom;
                         }
                         $("#default_input").val(ans);
                     }
