@@ -1460,7 +1460,7 @@ var Khan = (function() {
     }
 
     function wantMoreHints() {
-        var button = '<div id="want-more-hints" style="display:none"><input type="button" class="simple-button green" value="多給我一些提示，謝謝！"></div>';
+        var button = '<div id="want-more-hints" style="display:none"><input type="button" class="simple-button green" value="請多給我一些提示，謝謝！"></div>';
         $('#hintsarea').append(button);
         $('#want-more-hints').fadeIn('slow');
         var exercise_name = this.Exercises.BottomlessQueue.current.card.attributes.exerciseName;
@@ -1481,6 +1481,7 @@ var Khan = (function() {
                 .attr("value", "均一小天使：我們知道囉！")
                 .removeClass('green')
                 .addClass('blue');
+            $("#want-more-hints").fadeOut(1500);
         });
     }
 
