@@ -211,6 +211,10 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                                         '</tr>' + 
                                         '</table>' +
                                         '</div>' 
+                // show numeric keyboard for ipad
+                if (navigator.userAgent.match(/(ipad)/i)) { 
+                    fraction_mode_div = fraction_mode_div.replace(/<input/g,'<input pattern="[0-9]*"');
+                }
                 $(solutionarea).append(input);
                 $(solutionarea).append(fraction_mode_div);
                 $(solutionarea).append(checkbox);
