@@ -12,70 +12,37 @@
 		.margin_style{margin: 5px 1px 5px 1px}
         </style>
 <script type="text/javascript">
-	    function accDiv(arg1,arg2){
-            var t1=0,t2=0,r1,r2;
-            try{t1=arg1.toString().split(".")[1].length}catch(e){}
-            try{t2=arg2.toString().split(".")[1].length}catch(e){}
-            with(Math){
-                r1=Number(arg1.toString().replace(".",""))
-                r2=Number(arg2.toString().replace(".",""))
-                return (r1/r2)*pow(10,t2-t1);
-            }
-        }
-		function accMul(arg1,arg2){
-            var m=0,s1=arg1.toString(),s2=arg2.toString();
-            try{m+=s1.split(".")[1].length}catch(e){}
-            try{m+=s2.split(".")[1].length}catch(e){}
-            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
-        }
-        function accAdd(arg1,arg2){
-            var r1,r2,m;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2))
-            return (arg1*m+arg2*m)/m
-        }
-        function Subtr(arg1,arg2){
-            var r1,r2,m,n;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2));
-            //last modify by deeka
-            //动态控制精度长度
-            n=(r1>=r2)?r1:r2;
-            return ((arg1*m-arg2*m)/m).toFixed(n);
-        }
 		function chg2(num,quesMin,quesMax,showIndex){
 		    var ansNums = KhanUtil.randRange(num-quesMax,num-quesMin);
 			var arr = KhanUtil.randRangeUnique(1,num,ansNums);
-			for(var i = 0;i<=ansNums-1;i++){
+			for(var i = 0;i<ansNums;i++){
 			    document.getElementById("t_"+arr[i]).style.display="none";
 			}
 			document.getElementById("t_"+showIndex).style.display="block";
 			return [num-ansNums,arr];
 		}
 		function chg3(num){
-			document.getElementById(num).value="";
+			$('#'+num).val("");
 			return num;
 		}
 		function chg4(num1,num2,num3){
 			var randNum = KhanUtil.randRange(1,3);
 			if(randNum == 1){
-				document.getElementById("c_1").value=num1;
-				document.getElementById("c_2").value=num2;
-				document.getElementById("c_3").value=num3;
+				$('#c_1').val(num1);
+				$('#c_2').val(num2);
+				$('#c_3').val(num3);
 				return [num1,num2,num3];
 			}
 			if(randNum == 2){
-				document.getElementById("c_1").value=num2;
-				document.getElementById("c_2").value=num1;
-				document.getElementById("c_3").value=num3;
+				$('#c_1').val(num2);
+				$('#c_2').val(num1);
+				$('#c_3').val(num3);
 				return [num2,num1,num3];
 			}
 			if(randNum == 3){
-				document.getElementById("c_1").value=num2;
-				document.getElementById("c_2").value=num3;
-				document.getElementById("c_3").value=num1;
+				$('#c_1').val(num2);
+				$('#c_2').val(num3);
+				$('#c_3').val(num1);
 				return [num2,num3,num1];
 			}
 			return 1;
@@ -133,6 +100,7 @@
 						if(document.getElementById("c_"+J).checked){
 							return true;
 						}
+						return false;
 					</div>
 				</div>
             </div>
@@ -143,10 +111,7 @@
 		
 		<div id="case2">
             <div class="vars">
-            	<var id="num">randRangeUnique(1,100,3)</var>
-				<var id="right_1">num[0]</var>
-				<var id="wro_1">num[1]</var>
-				<var id="wro_2">num[2]</var>
+            	<var id="right_1,wro_1,wro_2">randRangeUnique(1,100,3)</var>
 				<var id="change">chg3(right_1)</var>
 				<var id="change2">chg4(right_1,wro_1,wro_2)</var>
 				<var id="test">(function(){Khan.scratchpad.disable();})()</var>
