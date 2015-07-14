@@ -182,30 +182,87 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 });
                 var input = $(inputMarkup);
             } else {
-                // people don't always set their locale right, so use a text
-                // box to allow for alternative radix points
-                var input = $('<input type="text">');
+                // show numeric keyboard for ipad
+                if (navigator.userAgent.match(/(ipad)/i)) { 
+                    var input = $('<input type="text" pattern="[0-9]*">');
+                }else {
+                    // people don't always set their locale right, so use a text
+                    // box to allow for alternative radix points
+                    var input = $('<input type="text">');
+                }
             }
-            $(solutionarea).append(input);
+
+
+            // Fraction Mode: hide default input & show fraction UI (three inputs) 
+            var fractionForms = ['proper', 'improper', 'mixed'];
+            var shouldEnableFractionMode = fractionForms.filter(function(n) {
+                return acceptableForms.indexOf(n) != -1
+            })
+            if(shouldEnableFractionMode){
+                input.attr("id", "default_input");
+                var checkbox = '<div class="checkbox"><label style="font-size:14px">'+
+                               '<input type="checkbox" id="checkedFractionMode"> 我要輸入直式分數</label></div>'
+                var fraction_mode_div = '<div id="fraction_mode_div" style="display:none">' +
+                                        '<table border="0" cellpadding="0" cellspacing="0">' +
+                                        '<tr>' +
+                                        '<td rowspan=3 style="vertical-align:middle">' +
+                                        '<input id="signed_int" type="text" tabindex="11" style="width:35px;position:relative;left:-3px;"></td>' +
+                                        '<td>' +
+                                        '<input id="num" type="text" tabindex="13" style="width:35px;"></td>' +
+                                        '</tr>' +
+                                        '<tr>' +
+                                        '<td><hr style="margin-top:6px;margin-bottom:6px;border-color:black;border-width:2px"/></td>' +
+                                        '</tr>' +
+                                        '<tr>' +
+                                        '<td><input id="denom" type="text" tabindex="12" style="width:35px"></td>' +
+                                        '</tr>' + 
+                                        '</table>' +
+                                        '</div>' 
+
+                // show numeric keyboard for ipad
+                if (navigator.userAgent.match(/(ipad)/i)) { 
+                    fraction_mode_div = fraction_mode_div.replace(/<input/g,'<input pattern="[0-9]*"');
+                }
+
+                $(solutionarea).append(input);
+                $(solutionarea).append(fraction_mode_div);
+                $(solutionarea).append(checkbox);
+
+                // toggle interface and clean input when entering Fraction Mode
+                $("#checkedFractionMode").change(function() {
+                    $("div#fraction_mode_div input").val("");
+                    $("#default_input").toggle();
+                    $("#fraction_mode_div").toggle();
+                    if ($("#checkedFractionMode").prop("checked") == true){
+                        $("#default_input").val("");
+                        $("div#fraction_mode_div input#signed_int").focus();
+                    }
+                })
+
+                // create ans from Fraction Mode to default input 
+                $("div#fraction_mode_div input").keyup(function (){
+                    if ($("#checkedFractionMode").prop("checked") == true){
+                        if($("div#fraction_mode_div input#num").val() === "" && 
+                           $("div#fraction_mode_div input#denom").val() === "") {
+                            var ans = $("div#fraction_mode_div input#signed_int").val();
+                        }else {
+                            var ans = $("div#fraction_mode_div input#signed_int").val() + " " +
+                                      $("div#fraction_mode_div input#num").val() + "/" +
+                                      $("div#fraction_mode_div input#denom").val();
+                        }
+                        $("#default_input").val(ans);
+                    }
+                });
+            }else {
+                $(solutionarea).append(input);
+            }
 
             // retrieve the example texts from the different forms
             var exampleForms = {
                 integer: "整數，例：<code>6</code>",
 
                 proper: (function() {
-                        if (options.simplify === "optional") {
-                            return "<em>真</em>分數，例：<code><var>fraction( 6, 10 )</var></code>請輸入<code>6/10</code>";
-                        } else {
-                            return "真分數的<em>最簡</em>分數，例：<code><var>fraction( 3, 5 )</var></code>請輸入<code>3/5</code>";
-                        }
-                    })(),
-
-                improper: (function() {
-                        if (options.simplify === "optional") {
-                            return "<em>假</em>分數，例：<code><var>fraction( 14, 8 )</var></code>請輸入<code>14/8</code>";
-                        } else {
-                            return "假分數的<em>最簡</em>分數，例：<code><var>fraction( 7, 4 )</var></code>請輸入<code>7/4</code>";
-                        }
+                        return "分數，請勾選下方【我要輸入直式分數】進行回答";
                     })(),
 
                 pi: "pi 的倍數，例如 <code>12\\ \\text{pi}</code> 或 <code>2/3\\ \\text{pi}</code>",
@@ -215,8 +272,6 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 percent: "百分比，例：<code>12.34\\%</code>",
 
                 dollar: "金額表示：例：<code>$2.75</code>",
-
-                mixed: "帶分數，例：<code><var>1</var>\ <var>fraction( 3, 4, false, true )</var></code>請輸入<code>1\\ 3/4</code>，整數和分數中間記得空一格喔！",
 
                 decimal: (function() {
                         if (options.inexact === undefined) {
