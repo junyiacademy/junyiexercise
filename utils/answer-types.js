@@ -182,9 +182,14 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 });
                 var input = $(inputMarkup);
             } else {
-                // people don't always set their locale right, so use a text
-                // box to allow for alternative radix points
-                var input = $('<input type="text">');
+                // show numeric keyboard for ipad
+                if (navigator.userAgent.match(/(ipad)/i)) { 
+                    var input = $('<input type="text" pattern="[0-9]*">');
+                }else {
+                    // people don't always set their locale right, so use a text
+                    // box to allow for alternative radix points
+                    var input = $('<input type="text">');
+                }
             }
 
 
