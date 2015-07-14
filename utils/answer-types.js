@@ -199,15 +199,15 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                                         '<table border="0" cellpadding="0" cellspacing="0">' +
                                         '<tr>' +
                                         '<td rowspan=3 style="vertical-align:middle">' +
-                                        '<input id="signed_int" type="text" style="width:35px;position:relative;left:-3px;"></td>' +
+                                        '<input id="signed_int" type="text" tabindex="11" style="width:35px;position:relative;left:-3px;"></td>' +
                                         '<td>' +
-                                        '<input id="num" type="text" style="width:35px;"></td>' +
+                                        '<input id="num" type="text" tabindex="13" style="width:35px;"></td>' +
                                         '</tr>' +
                                         '<tr>' +
                                         '<td><hr style="margin-top:6px;margin-bottom:6px;border-color:black;border-width:2px"/></td>' +
                                         '</tr>' +
                                         '<tr>' +
-                                        '<td><input id="denom" type="text" style="width:35px"></td>' +
+                                        '<td><input id="denom" type="text" tabindex="12" style="width:35px"></td>' +
                                         '</tr>' + 
                                         '</table>' +
                                         '</div>' 
@@ -217,9 +217,12 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
 
                 $("#checkedFractionMode").change(function() {
                     $("div#fraction_mode_div input").val("");
-                    $("#non_fraction_mode_input").val("");
                     $("#non_fraction_mode_input").toggle();
                     $("#fraction_mode_div").toggle();
+                    if ($("#checkedFractionMode").prop("checked") == true){
+                        $("#non_fraction_mode_input").val("");
+                        $("div#fraction_mode_div input#signed_int").focus();
+                    }
                 })
                 $("div#fraction_mode_div input").keyup(function (){
                     if ($("#checkedFractionMode").prop("checked") == true){
