@@ -1481,7 +1481,7 @@ var Khan = (function() {
                 .attr("value", "均一小天使：我們知道囉！")
                 .removeClass('green')
                 .addClass('blue');
-            $("#want-more-hints").fadeOut(1500);
+            $("#want-more-hints").fadeOut(3000);
         });
     }
 
