@@ -1346,8 +1346,9 @@ var Khan = (function() {
             examples.children().tmpl();
 
             if (examples.length && examples.text().length > 0 && $.prototype.qtip != null) {
-                if($('#solutionarea input[type=text]:not([readonly])').length >= 1) {
-                    $('#solutionarea input[type=text]:not([readonly])').each(function() {
+                var inputs = $('#solutionarea input[type=text]:not([readonly])').not("div #fraction_mode_div input");
+                if(inputs.length >= 1) {
+                    inputs.each(function() {
                         $( this ).qtip({
                             content: {
                                 text: examples.clone().runModules(),
