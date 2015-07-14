@@ -188,13 +188,15 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             }
 
 
+            // Fraction Mode: hide default input & show fraction UI (three inputs) 
             var fractionForms = ['proper', 'improper', 'mixed'];
             var shouldEnableFractionMode = fractionForms.filter(function(n) {
                 return acceptableForms.indexOf(n) != -1
             })
             if(shouldEnableFractionMode){
-                var input = $('<input id="non_fraction_mode_input" type="text">');
-                var checkbox = '<div class="checkbox"><label><input type="checkbox" id="checkedFractionMode"> 我要輸入直式分數</label></div>'
+                var input = $('<input id="default_input" type="text">');
+                var checkbox = '<div class="checkbox"><label style="font-size:14px">'+
+                               '<input type="checkbox" id="checkedFractionMode"> 我要輸入直式分數</label></div>'
                 var fraction_mode_div = '<div id="fraction_mode_div" style="display:none">' +
                                         '<table border="0" cellpadding="0" cellspacing="0">' +
                                         '<tr>' +
@@ -211,29 +213,39 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                                         '</tr>' + 
                                         '</table>' +
                                         '</div>' 
+
                 // show numeric keyboard for ipad
                 if (navigator.userAgent.match(/(ipad)/i)) { 
                     fraction_mode_div = fraction_mode_div.replace(/<input/g,'<input pattern="[0-9]*"');
                 }
+
                 $(solutionarea).append(input);
                 $(solutionarea).append(fraction_mode_div);
                 $(solutionarea).append(checkbox);
 
+                // toggle interface and clean input when entering Fraction Mode
                 $("#checkedFractionMode").change(function() {
                     $("div#fraction_mode_div input").val("");
-                    $("#non_fraction_mode_input").toggle();
+                    $("#default_input").toggle();
                     $("#fraction_mode_div").toggle();
                     if ($("#checkedFractionMode").prop("checked") == true){
-                        $("#non_fraction_mode_input").val("");
+                        $("#default_input").val("");
                         $("div#fraction_mode_div input#signed_int").focus();
                     }
                 })
+
+                // create ans from Fraction Mode to default input 
                 $("div#fraction_mode_div input").keyup(function (){
                     if ($("#checkedFractionMode").prop("checked") == true){
-                        var ans = $("div#fraction_mode_div input#signed_int").val() + " " +
-                                  $("div#fraction_mode_div input#num").val() + "/" +
-                                  $("div#fraction_mode_div input#denom").val();
-                        $("#non_fraction_mode_input").val(ans);
+                        if($("div#fraction_mode_div input#num").val() === "" && 
+                           $("div#fraction_mode_div input#denom").val() === "") {
+                            var ans = $("div#fraction_mode_div input#signed_int").val();
+                        }else {
+                            var ans = $("div#fraction_mode_div input#signed_int").val() + " " +
+                                      $("div#fraction_mode_div input#num").val() + "/" +
+                                      $("div#fraction_mode_div input#denom").val();
+                        }
+                        $("#default_input").val(ans);
                     }
                 });
             }else {
