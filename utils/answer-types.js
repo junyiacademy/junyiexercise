@@ -201,7 +201,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             if(shouldEnableFractionMode){
                 input.attr("id", "default_input");
                 var checkbox = '<div class="checkbox"><label style="font-size:14px">'+
-                               '<input type="checkbox" id="checkedFractionMode"> 我要輸入直式分數</label></div>'
+                               '<input type="checkbox" id="checkedFractionMode"> 輸入直式分數</label></div>'
                 var fraction_mode_div = '<div id="fraction_mode_div" style="display:none">' +
                                         '<table border="0" cellpadding="0" cellspacing="0">' +
                                         '<tr>' +
@@ -235,7 +235,9 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     $("#fraction_mode_div").toggle();
                     if ($("#checkedFractionMode").prop("checked") == true){
                         $("#default_input").val("");
-                        $("div#fraction_mode_div input#signed_int").focus();
+                        if (navigator.userAgent.match(/(ipad)/i)) { 
+                            $("div#fraction_mode_div input#signed_int").focus();
+                        }
                     }
                 })
 
@@ -262,7 +264,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 integer: "整數，例：<code>6</code>",
 
                 proper: (function() {
-                        return "分數，請勾選下方【我要輸入直式分數】進行回答";
+                        return "分數，請勾選下方【輸入直式分數】進行回答";
                     })(),
 
                 pi: "pi 的倍數，例如 <code>12\\ \\text{pi}</code> 或 <code>2/3\\ \\text{pi}</code>",
