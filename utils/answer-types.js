@@ -199,7 +199,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 return acceptableForms.indexOf(n) != -1
             })
             if(shouldEnableFractionMode){
-                var input = $('<input id="default_input" type="text">');
+                input.attr("id", "default_input");
                 var checkbox = '<div class="checkbox"><label style="font-size:14px">'+
                                '<input type="checkbox" id="checkedFractionMode"> 我要輸入直式分數</label></div>'
                 var fraction_mode_div = '<div id="fraction_mode_div" style="display:none">' +
