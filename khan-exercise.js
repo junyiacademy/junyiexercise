@@ -1346,8 +1346,9 @@ var Khan = (function() {
             examples.children().tmpl();
 
             if (examples.length && examples.text().length > 0 && $.prototype.qtip != null) {
-                if($('#solutionarea input[type=text]:not([readonly])').length >= 1) {
-                    $('#solutionarea input[type=text]:not([readonly])').each(function() {
+                var inputs = $('#solutionarea input[type=text]:not([readonly])').not("div #fraction_mode_div input");
+                if(inputs.length >= 1) {
+                    inputs.each(function() {
                         $( this ).qtip({
                             content: {
                                 text: examples.clone().runModules(),
@@ -1459,6 +1460,32 @@ var Khan = (function() {
         return answerType;
     }
 
+    function wantMoreHints() {
+        var button = '<div id="want-more-hints" style="display:none"><input type="button" class="simple-button green" value="請多給我一些提示，謝謝！"></div>';
+        $('#hintsarea').append(button);
+        $('#want-more-hints').fadeIn('slow');
+        var exercise_name = this.Exercises.BottomlessQueue.current.card.attributes.exerciseName;
+
+        $("#want-more-hints").click(function(e) {
+            e.preventDefault();
+            $.ajax({ url: "/api/v1/user/want_more_hints", 
+                type: 'PUT',
+                data:{'exercise_name': exercise_name, 'problem_id': problemID},
+                success: function() {
+                }, 
+                error: function() {
+                    alert('均一小天使：有錯誤，麻煩回報給均一，謝謝。'); 
+                } 
+            });
+            $("#want-more-hints input")
+                .attr("disabled", "disabled")
+                .attr("value", "均一小天使：我們知道囉！")
+                .removeClass('green')
+                .addClass('blue');
+            $("#want-more-hints").fadeOut(3000);
+        });
+    }
+
     function showHint() {
         // Called when user hits hint button triggering showHint event or when
         // the server side data says the last_count_hints is not 0 when
@@ -1478,6 +1505,7 @@ var Khan = (function() {
 
         if (hints.length === 0) {
             $(hint).addClass("last-hint");
+            wantMoreHints();
         }
 
         // TODO(james): figure out a way to trigger hintUsed to ensure that the
