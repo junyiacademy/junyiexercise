@@ -193,14 +193,15 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             }
 
 
-            // Fraction Mode: hide default input & show fraction UI (three inputs) 
+            // Fraction Mode: hide default input & show fraction inptut UI (three inputs) 
+            // Enable it by adding data-fraction-mode-ui="true" attr for .solution element in html exercise templates
             var fractionForms = ['proper', 'improper', 'mixed'];
-            var shouldEnableFractionMode = fractionForms.filter(function(n) {
+            var supportedFractionTypes = fractionForms.filter(function(n) {
                 return acceptableForms.indexOf(n) != -1
             })
-            if(shouldEnableFractionMode.length > 0){
+            if(supportedFractionTypes.length > 0){
                 input.attr("id", "default_input");
-                var checkbox = '<div class="checkbox"><label style="font-size:14px">'+
+                var checkbox = '<div class="checkbox" id="checkbox_div" style="display:none"><label style="font-size:14px">'+
                                '<input type="checkbox" id="checkedFractionMode"> 輸入直式分數</label></div>'
                 var fraction_mode_div = '<div id="fraction_mode_div" style="display:none">' +
                                         '<table border="0" cellpadding="0" cellspacing="0">' +

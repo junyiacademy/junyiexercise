@@ -1282,6 +1282,11 @@ var Khan = (function() {
         debugLog("decided on answer type " + answerType);
         answerData = Khan.answerTypes[answerType].setup(solutionarea, solution);
 
+        // show fraction input UI
+        if (solution.data("fraction-mode-ui") === true){
+            solutionarea.find("#checkbox_div").show();
+        }
+
         validator = answerData.validator;
         getAnswer = answerData.answer;
         debugLog("validator created");
