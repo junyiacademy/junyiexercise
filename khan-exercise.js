@@ -1282,7 +1282,7 @@ var Khan = (function() {
         debugLog("decided on answer type " + answerType);
         answerData = Khan.answerTypes[answerType].setup(solutionarea, solution);
 
-        // show fraction input UI
+        // show fraction input 
         if (solution.data("fraction-input") === true){
             solutionarea.find("#fraction_mode_entry").show();
         }
