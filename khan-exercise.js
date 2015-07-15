@@ -1283,8 +1283,8 @@ var Khan = (function() {
         answerData = Khan.answerTypes[answerType].setup(solutionarea, solution);
 
         // show fraction input UI
-        if (solution.data("fraction-mode-ui") === true){
-            solutionarea.find("#checkbox_div").show();
+        if (solution.data("fraction-input") === true){
+            solutionarea.find("#fraction_mode_entry").show();
         }
 
         validator = answerData.validator;
