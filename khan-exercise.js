@@ -1458,8 +1458,12 @@ var Khan = (function() {
 
         return answerType;
     }
-
-    function wantMoreHints() {
+    /*
+        [Benny Hisao]
+        Mark wantMoreHints because this button is not necessary now.
+        It may be useful for future so we do not remove it.
+    */
+    /*function wantMoreHints() {
         var button = '<div id="want-more-hints" style="display:none"><input type="button" class="simple-button green" value="請多給我一些提示，謝謝！"></div>';
         $('#hintsarea').append(button);
         $('#want-more-hints').fadeIn('slow');
@@ -1483,7 +1487,7 @@ var Khan = (function() {
                 .addClass('blue');
             $("#want-more-hints").fadeOut(3000);
         });
-    }
+    }*/
 
     function showHint() {
         // Called when user hits hint button triggering showHint event or when
@@ -1504,7 +1508,7 @@ var Khan = (function() {
 
         if (hints.length === 0) {
             $(hint).addClass("last-hint");
-            wantMoreHints();
+            //wantMoreHints();
         }
 
         // TODO(james): figure out a way to trigger hintUsed to ensure that the
