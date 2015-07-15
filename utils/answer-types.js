@@ -193,15 +193,16 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             }
 
 
-            // Fraction Mode: hide default input & show fraction UI (three inputs) 
+            // Fraction Mode: hide default input & show fraction inputs
+            // Enable it by adding data-fraction-input="true" attr for .solution element in html exercise templates
             var fractionForms = ['proper', 'improper', 'mixed'];
-            var shouldEnableFractionMode = fractionForms.filter(function(n) {
+            var supportedFractionTypes = fractionForms.filter(function(n) {
                 return acceptableForms.indexOf(n) != -1
             })
-            if(shouldEnableFractionMode){
+            if(supportedFractionTypes.length > 0){
                 input.attr("id", "default_input");
-                var checkbox = '<div class="checkbox"><label style="font-size:14px">'+
-                               '<input type="checkbox" id="checkedFractionMode"> 輸入直式分數</label></div>'
+                var checkbox = '<div class="checkbox" id="fraction_mode_entry" style="display:none"><label style="font-size:14px">'+
+                               '<input type="checkbox" id="fraction_mode_checkbox"> 輸入直式分數</label></div>'
                 var fraction_mode_div = '<div id="fraction_mode_div" style="display:none">' +
                                         '<table border="0" cellpadding="0" cellspacing="0">' +
                                         '<tr>' +
@@ -229,11 +230,11 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 $(solutionarea).append(checkbox);
 
                 // toggle interface and clean input when entering Fraction Mode
-                $("#checkedFractionMode").change(function() {
+                $("#fraction_mode_checkbox").change(function() {
                     $("div#fraction_mode_div input").val("");
                     $("#default_input").toggle();
                     $("#fraction_mode_div").toggle();
-                    if ($("#checkedFractionMode").prop("checked") == true){
+                    if ($("#fraction_mode_checkbox").prop("checked") == true){
                         $("#default_input").val("");
                         $("div#fraction_mode_div input#signed_int").focus();
                     }
@@ -241,7 +242,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
 
                 // create ans from Fraction Mode to default input 
                 $("div#fraction_mode_div input").keyup(function (){
-                    if ($("#checkedFractionMode").prop("checked") == true){
+                    if ($("#fraction_mode_checkbox").prop("checked") == true){
                         var num = $("div#fraction_mode_div input#num").val();
                         var denom = $("div#fraction_mode_div input#denom").val();
                         var signed_int = $("div#fraction_mode_div input#signed_int").val();
