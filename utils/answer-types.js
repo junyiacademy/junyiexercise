@@ -263,7 +263,19 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 integer: "整數，例：<code>6</code>",
 
                 proper: (function() {
-                        return "分數，請勾選下方【輸入直式分數】進行回答";
+                        if (options.simplify === "optional") {
+                            return "<em>真</em>分數，例：<code><var>fraction( 6, 10 )</var></code>請輸入<code>6/10</code>";
+                        } else {
+                            return "真分數的<em>最簡</em>分數，例：<code><var>fraction( 3, 5 )</var></code>請輸入<code>3/5</code>";
+                        }
+                    })(),
+
+                improper: (function() {
+                        if (options.simplify === "optional") {
+                            return "<em>假</em>分數，例：<code><var>fraction( 14, 8 )</var></code>請輸入<code>14/8</code>";
+                        } else {
+                            return "假分數的<em>最簡</em>分數，例：<code><var>fraction( 7, 4 )</var></code>請輸入<code>7/4</code>";
+                        }
                     })(),
 
                 pi: "pi 的倍數，例如 <code>12\\ \\text{pi}</code> 或 <code>2/3\\ \\text{pi}</code>",
@@ -273,6 +285,8 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 percent: "百分比，例：<code>12.34\\%</code>",
 
                 dollar: "金額表示：例：<code>$2.75</code>",
+
+                mixed: "帶分數，例：<code><var>1</var>\ <var>fraction( 3, 4, false, true )</var></code>請輸入<code>1\\ 3/4</code>，整數和分數中間記得空一格喔！",
 
                 decimal: (function() {
                         if (options.inexact === undefined) {
