@@ -20,29 +20,6 @@
                 return (r1/r2)*pow(10,t2-t1);
             }
         }
-		function accMul(arg1,arg2){
-            var m=0,s1=arg1.toString(),s2=arg2.toString();
-            try{m+=s1.split(".")[1].length}catch(e){}
-            try{m+=s2.split(".")[1].length}catch(e){}
-            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
-        }
-        function accAdd(arg1,arg2){
-            var r1,r2,m;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2))
-            return (arg1*m+arg2*m)/m
-        }
-        function Subtr(arg1,arg2){
-            var r1,r2,m,n;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2));
-            //last modify by deeka
-            //动态控制精度长度
-            n=(r1>=r2)?r1:r2;
-            return ((arg1*m-arg2*m)/m).toFixed(n);
-        }
 	</script>
 </head>
 <body>
@@ -52,18 +29,18 @@
             <div class="vars">
 				<var id="names">randFromArray(["阿寶","老皮","小紅帽","大野狼","小智","小小兵"])</var>
 				<var id="sports">randFromArray([["走路","走"],["跑步","跑"]])</var>
-				<var id="J">randRange(200,1000)/100</var>
+				<var id="J">accDiv(randRange(200,1000),100)</var>
             </div>
 			<p class="question"><var>names</var><var>sports[0]</var>的速率是 <code><var>J</var></code> 公里<code>/</code>時，若將公里換成公尺，他<var>sports[0]</var>的速率是多少公尺<code>/</code>時？</p>
 			<div class="solution" data-type="multiple">
-				<span class="sol" data-forms="integer"><var>1000*J</var></span> <code>公尺/時</code>
+				<span class="sol" data-forms="integer"><var>round(1000*J)</var></span> <code>公尺/時</code>
 			</div>
             <div class="hints">
 				<p><code>1</code> 公里 <code>=1000</code> 公尺，</p>
 				<p><code>\color{gray}{\small{公里/時}}</code> <code>\times 1000=</code> <code>\color{gray}{\small{公尺/時}}</code> ，</p>
-				<p><code><var>J</var>\times 1000=<var>1000*J</var></code></p>
-				<p><code>1</code> 小時<var>sports[1]</var> <code><var>J</var></code> 公里，也就是 <code>1</code> 小時<var>sports[1]</var>了 <code class="hint_green"><var>1000*J</var></code> 公尺。</p>
-				<p>因此，<var>names</var><var>sports[0]</var>的速率是 <code class="hint_pink"><var>1000*J</var></code> 公尺<code>/</code>時。</p>
+				<p><code><var>J</var>\times 1000=<var>round(1000*J)</var></code></p>
+				<p><code>1</code> 小時<var>sports[1]</var> <code><var>J</var></code> 公里，也就是 <code>1</code> 小時<var>sports[1]</var>了 <code class="hint_green"><var>round(1000*J)</var></code> 公尺。</p>
+				<p>因此，<var>names</var><var>sports[0]</var>的速率是 <code class="hint_pink"><var>round(1000*J)</var></code> 公尺<code>/</code>時。</p>
             </div>
         </div>
 		
@@ -75,14 +52,14 @@
             </div>
 			<p class="question"><var>names</var><var>sports[0]</var>的速率是 <code><var>J</var></code> 公里<code>/</code>分，若換成時速，<var>names</var><var>sports[0]</var>的速率是多少公里<code>/</code>時？</p>
 			<div class="solution" data-type="multiple">
-				<span class="sol" data-forms="integer"><var>60*J</var></span> <code>公里/時</code>
+				<span class="sol" data-forms="integer"><var>round(60*J)</var></span> <code>公里/時</code>
 			</div>
             <div class="hints">
 				<p><code>1</code> 小時 <code>=60</code> 分，</p>
 				<p><code>\color{gray}{\small{公里/分}}</code><code>\times 60=</code> <code>\color{gray}{\small{公里/時}}</code>，</p>
-				<p><code><var>J</var>\times 60=<var>60*J</var></code></p>
-				<p><code>1</code> 分鐘<var>sports[1]</var> <code><var>J</var></code> 公里，所以 <code>1</code> 小時就<var>sports[1]</var>了 <code><var>60*J</var></code> 公里。</p>
-				<p>因此，<var>names</var><var>sports[0]</var>的速率是 <code class="hint_pink"><var>60*J</var></code> 公里<code>/</code>時。</p>
+				<p><code><var>J</var>\times 60=<var>round(60*J)</var></code></p>
+				<p><code>1</code> 分鐘<var>sports[1]</var> <code><var>J</var></code> 公里，所以 <code>1</code> 小時就<var>sports[1]</var>了 <code><var>round(60*J)</var></code> 公里。</p>
+				<p>因此，<var>names</var><var>sports[0]</var>的速率是 <code class="hint_pink"><var>round(60*J)</var></code> 公里<code>/</code>時。</p>
             </div>
         </div>
 		
@@ -90,7 +67,7 @@
             <div class="vars">
 				<var id="names">randFromArray(["小王","小明","小蔣","小陳","小李","小星"])</var>
 				<var id="K">randRange(10,90)</var>
-				<var id="J">60*K</var>
+				<var id="J">round(60*K)</var>
             </div>
 			<p class="question"><var>names</var>走路的速率是 <code><var>J</var></code> 公尺<code>/</code>時，若換算成分速，他走路的速率是多少公尺<code>/</code>分？</p>
 			<div class="solution" data-type="multiple">
@@ -106,7 +83,7 @@
 		<div id="case4">
             <div class="vars">
 				<var id="K">randFromArray([0.2,0.25,0.5,1,2,1.25,1.2])</var>
-				<var id="J">60*K</var>
+				<var id="J">round(60*K)</var>
 				<var id="K_s">
 				(function(){
 					if(K==0.2){
@@ -129,12 +106,12 @@
             </div>
 			<p class="question">有一架遙控飛機，飛行速率是 <code><var>J</var></code> 公里<code>/</code>時，這架遙控飛機的飛行速率是多少公尺<code>/</code>分？</p>
 			<div class="solution" data-type="multiple">
-				<span class="sol" data-forms="integer"><var>1000*K</var></span> <code>公尺/分</code>
+				<span class="sol" data-forms="integer"><var>round(1000*K)</var></span> <code>公尺/分</code>
 			</div>
             <div class="hints">
-				<p>先算 <code>1</code> 小時飛幾公尺，<code><var>J</var></code> <code>\color{gray}{\small{公里/時}}</code> <code>\times 1000=<var>1000*J</var></code> <code>\color{gray}{\small{公尺/時}}</code> ，</p>
-				<p>再算 <code>1</code> 分鐘飛幾公尺，<code><var>1000*J</var></code> <code>\color{gray}{\small{公尺/時}}</code> <code>\div 60=<var>1000*K</var></code> <code>\color{gray}{\small{公尺/分}}</code> ，</p>
-				<p>因此，這架遙控飛機的飛行速率是 <code class="hint_pink"><var>1000*K</var></code> 公尺<code>/</code>分。</p>
+				<p>先算 <code>1</code> 小時飛幾公尺，<code><var>J</var></code> <code>\color{gray}{\small{公里/時}}</code> <code>\times 1000=<var>round(1000*J)</var></code> <code>\color{gray}{\small{公尺/時}}</code> ，</p>
+				<p>再算 <code>1</code> 分鐘飛幾公尺，<code><var>round(1000*J)</var></code> <code>\color{gray}{\small{公尺/時}}</code> <code>\div 60=<var>round(1000*K)</var></code> <code>\color{gray}{\small{公尺/分}}</code> ，</p>
+				<p>因此，這架遙控飛機的飛行速率是 <code class="hint_pink"><var>round(1000*K)</var></code> 公尺<code>/</code>分。</p>
             </div>
         </div>
 		
