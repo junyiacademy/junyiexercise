@@ -1,4 +1,4 @@
-(function() {
+﻿(function() {
 
 /*
  * Answer types
@@ -246,6 +246,9 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                         var num = $("div#fraction_mode_div input#num").val();
                         var denom = $("div#fraction_mode_div input#denom").val();
                         var signed_int = $("div#fraction_mode_div input#signed_int").val();
+                        if(signed_int === "0") {
+                            signed_int = "";
+                        }
                         if(num === "" || denom === "") {
                             var ans = signed_int;
                         } else {
