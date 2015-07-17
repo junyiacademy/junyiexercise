@@ -418,7 +418,7 @@ function Multiplier(a, b, digitsA, digitsB, deciA, deciB) {
 
     this.show = function() {
         graph.init({
-            range: [[-2 - maxNumDigits, 12], [-1 - digitsB.length * digitsA.length, 3]],
+            range: [[-2 - maxNumDigits, 12], [-2 - digitsB.length * digitsA.length, 3]],
             scale: [20, 40]
         });
 
