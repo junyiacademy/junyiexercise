@@ -28,7 +28,7 @@
                 <var id="ANS">round((max(divison_1,divison_2,round(fraction_1-divison_1-divison_2))-min(divison_1,divison_2,round(fraction_1-divison_1-divison_2)))*unit)</var>
             </div>
 
-            <p class="question">有一 <code>\triangle ABC</code> ，它的三個內角 <code>A、B、C</code> 度數比依序為 <code><var>proportion[0]</var>:<var>proportion[1]</var>:<var>proportion[2]</var></code> ，則此三角形的最大角與最小角相差為多少度？</p>
+            <p class="question">有一 <code>\triangle ABC</code> ，他的三個內角 <code>A、B、C</code> 度數比依序為 <code><var>proportion[0]</var>:<var>proportion[1]</var>:<var>proportion[2]</var></code> ，則此三角形的最大角與最小角相差為多少度？</p>
             
             <div class="solution" data-type="multiple">
                 <span class="sol"><var>ANS</var></span> <code>^\circ</code>
@@ -59,7 +59,7 @@
         </div>
 
         <div id="case2">
-            <div class="vars" data-ensure="oangleA &gt;30">
+            <div class="vars" data-ensure="oangleA &gt;30 && oangleA &lt; 170 && isInt(oangleA)">
                 <var id="oangleC">randRange(100,150)</var>
                 <var id="proportion">randRange(1,4)*0.5</var>               
                 <var id="oangleA">360-oangleC*(proportion+1)</var>
@@ -96,7 +96,7 @@
         </div>
 
 		<div id="case3">
-            <div class="vars" data-ensure="AF[0] &gt; -2 && ANS &lt;150 && ANS &gt;100">
+            <div class="vars" data-ensure="AF[0] &gt; -2 && ANS &lt;150 && ANS &gt;100 && angleA_init &lt; 180 && angleB_init &lt; 180 && angleC_init &lt; 180">
                 <var id="A_a">randRange(1,2)</var>
                 <var id="A_b">randRange(1,8)*5</var>
                 <var id="B_a">randRange(1,2)</var>
@@ -110,21 +110,21 @@
                 <var id="candidate,ans">randFromArray([[ "x" , x] , ["\\angle A" , angleA_init ] , ["\\angle B" ,angleB_init] , ["\\angle C" , angleC_init ]])</var>
                 <var id="angleA_exter">(function(){
                             var shape="";
-                            A_a_x=""
+                            A_a_x="";
                             if(A_a!=1){A_a_x=A_a;}
                             shape="("+A_a_x+"x"+"+"+A_b+")";
                             return shape;
                         })()</var>
                 <var id="angleB_exter">(function(){
                             var shape="";
-                            B_a_x=""
+                            B_a_x="";
                             if(B_a!=1){B_a_x=B_a;}
                             shape="("+B_a_x+"x"+"+"+B_b+")";
                             return shape;
                         })()</var>
                 <var id="angleC_exter">(function(){
                             var shape="";
-                            C_a_x=""
+                            C_a_x="";
                             if(C_a!=1){C_a_x=C_a;}
                             shape="("+C_a_x+"x"+"+"+C_b+")";
                             return shape;
@@ -155,20 +155,20 @@
                     line([-4,0],[4,0]);
                     line([-3,0],[AF[0]-3,AF[1]]);
                     line([3,0],[POINT_A[0]-3,POINT_A[1]]);
-                    label([-3,0],'C','below left');
+                    label([-3,0],'B','below left');
                     label([POINT_A[0]-3,POINT_A[1]],'A','above left');
-                    label([3,0],'B','below');
+                    label([3,0],'C','below');
 
                     arc( [3, 0], 0.5, 0, ANS, { stroke: KhanUtil.GREEN } );
                     arc( [POINT_A[0]-3,POINT_A[1]], 0.5, 178+ANS, 178+ANS+angleA, { stroke: KhanUtil.GREEN } );
                     arc([-3,0], 0.5, angleB_init, 180,{ stroke : KhanUtil.GREEN});
                     
-                    label([LABEL_C[0]+3,LABEL_C[1]], angleB_exter+'^\\circ', { color : KhanUtil.GREEN});
+                    label([LABEL_C[0]+3,LABEL_C[1]], angleC_exter+'^\\circ', { color : KhanUtil.GREEN});
                     
 
                     label([LABEL_A[0]+POINT_A[0]-2.5,LABEL_A[1]+POINT_A[1]], angleA_exter+'^\\circ', { color : KhanUtil.GREEN});
                     
-                    label([LABEL_B_OUT[0]-3.5,LABEL_B_OUT[1]], angleC_exter+'^\\circ', { color : KhanUtil.GREEN});
+                    label([LABEL_B_OUT[0]-3.5,LABEL_B_OUT[1]], angleB_exter+'^\\circ', { color : KhanUtil.GREEN});
 
                     
                     
