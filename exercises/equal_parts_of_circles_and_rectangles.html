@@ -31,7 +31,7 @@
 				init({
 					range: [ [-2.5, 2.5], [-2.5, 2.5] ],scale: 40
 				});
-				circle([0, 0], 2,{stroke:"red",fill:"red","fill-opacity": 0.1});
+				circle([0, 0], 2,{stroke:"red",fill:KhanUtil.BLUE,"fill-opacity": 0.5});
 				for(var i = 0;i&lt;parts;i++){
 					line([0,0],polar(2,parts_ang*i),{stroke:"red"});
 				}
@@ -52,6 +52,7 @@
 					if(guess == 0){
 						return true;
 					}
+					return false;
 				</div>
 			</div>
 		</div>
@@ -134,13 +135,13 @@
 				var col = ORANGE;
 				if(gra_type==1){
 					for(var i = 1;i&lt;=parts;i++){
-						col = rands_arr[i-1]==0?"#F8F8F8":ORANGE;
-						arc([0, 0], 2, parts_ang*(i-1), parts_ang*i, true, { stroke: ORANGE, fill: col, "fill-opacity": 0.1 });
+						col = rands_arr[i-1]==0?"#F8F8F8":KhanUtil.BLUE;
+						arc([0, 0], 2, parts_ang*(i-1), parts_ang*i, true, { stroke: ORANGE, fill: col, "fill-opacity": 0.3 });
 					}
 				}else{
 					for(var i = 0;i&lt;parts;i++){
-						col = rands_arr[i]==0?"#F8F8F8":ORANGE;
-						path([[0+i,-2],[0+i,2],[1+i,2],[1+i,-2],[0+i,-2]],{ stroke: ORANGE, fill: col, "fill-opacity": 0.1 });
+						col = rands_arr[i]==0?"#F8F8F8":KhanUtil.BLUE;
+						path([[0+i,-2],[0+i,2],[1+i,2],[1+i,-2],[0+i,-2]],{ stroke: ORANGE, fill: col, "fill-opacity": 0.3 });
 					}
 				}
 			</div>
@@ -160,6 +161,7 @@
 					if(guess == 0){
 						return true;
 					}
+					return false;
 				</div>
 			</div>
 		</div>
@@ -175,7 +177,9 @@
 			<var id="types">randFromArray([["長方形",1],["正方形",2]])</var>
 			<var id="parts">4</var>
 			<var id="ud_randge">types[1]==2?[-1.6, 1.6]:[-2.6, 2.6]</var>
-			<var id="colours">randFromArray([ORANGE,"#28AE7B","red","#6495ED"])</var>
+			<var id="cols_init">randRange(0,3)</var>
+			<var id="colours">["#FFA500","#28AE7B","red","#6495ED"][cols_init]</var>
+			<var id="fill_cols">["#FFA500","#28AE7B","red","#6495ED"][3-cols_init]</var>
 			<var id="rands_arr">
 			(function(){
 				var arrn = new Array();
@@ -244,7 +248,7 @@
 					init({
 						range: [ [-1.6, 1.6], ud_randge ],scale: 40
 					});
-					path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 					style({stroke: colours});
 					if(set_lines[0]==1){
 						if(rands_arr_right[0]==1){
@@ -309,7 +313,7 @@
 					init({
 						range: [ [-1.6, 1.6], ud_randge ],scale: 40
 					});
-					path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 					style({stroke: colours});
 					if(set_lines[1]==1){
 						if(rands_arr_right[1]==1){
@@ -374,7 +378,7 @@
 					init({
 						range: [ [-1.6, 1.6], ud_randge ],scale: 40
 					});
-					path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 					style({stroke: colours});
 					if(set_lines[2]==1){
 						if(rands_arr_right[2]==1){
@@ -441,7 +445,7 @@
 					init({
 						range: [ [-1.6, 1.6], ud_randge ],scale: 40
 					});
-					path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 					style({stroke: colours});
 					if(set_lines[3]==1){
 						if(rands_arr_right[3]==1){
@@ -506,7 +510,7 @@
 					init({
 						range: [ [-1.6, 1.6], ud_randge ],scale: 40
 					});
-					path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 					style({stroke: colours});
 					if(set_lines[4]==1){
 						if(rands_arr_right[4]==1){
@@ -609,7 +613,7 @@
 						init({
 							range: [ [-1.6, 1.6], ud_randge ],scale: 40
 						});
-						path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 						style({stroke: colours});
 						if(set_lines[0]==1){
 							line([-1.5,0],[1.5,0]);
@@ -637,7 +641,7 @@
 						init({
 							range: [ [-1.6, 1.6], ud_randge ],scale: 40
 						});
-						path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 						style({stroke: colours});
 						if(set_lines[1]==1){
 							line([-1.5,0],[1.5,0]);
@@ -664,7 +668,7 @@
 						init({
 							range: [ [-1.6, 1.6], ud_randge ],scale: 40
 						});
-						path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 						style({stroke: colours});
 						if(set_lines[2]==1){
 							line([-1.5,0],[1.5,0]);
@@ -691,7 +695,7 @@
 						init({
 							range: [ [-1.6, 1.6], ud_randge ],scale: 40
 						});
-						path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 						style({stroke: colours});
 						if(set_lines[3]==1){
 							line([-1.5,0],[1.5,0]);
@@ -718,7 +722,7 @@
 						init({
 							range: [ [-1.6, 1.6], ud_randge ],scale: 40
 						});
-						path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						path([[-1.5,ud_randge[0]+0.1],[-1.5,ud_randge[1]-0.1],[1.5,ud_randge[1]-0.1],[1.5,ud_randge[0]+0.1],[-1.5,ud_randge[0]+0.1]],{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 						style({stroke: colours});
 						if(set_lines[4]==1){
 							line([-1.5,0],[1.5,0]);
@@ -749,7 +753,9 @@
 		<div class="vars" data-ensure="sum &gt;0 && sum &lt;4 && sum_s &gt;=4 && sum_s &lt;=5">
 			<var id="parts">randRange(2,3)</var>
 			<var id="ud_randge">[-1.6,1.6]</var>
-			<var id="colours">randFromArray([ORANGE,"#28AE7B","red","#6495ED"])</var>
+			<var id="cols_init">randRange(0,3)</var>
+			<var id="colours">["#FFA500","#28AE7B","red","#6495ED"][cols_init]</var>
+			<var id="fill_cols">["#FFA500","#28AE7B","red","#6495ED"][3-cols_init]</var>
 			<var id="rands_arr">
 			(function(){
 				var arrn = [1,1,1,1,1];
@@ -821,7 +827,7 @@
 					init({
 						range: [ [-1.6, 1.6], ud_randge ],scale: 40
 					});
-					circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					circle([0,0],1.5,{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 					style({stroke: colours});
 					if(set_lines[0]==1){
 						if(rands_arr_right[0]==1){
@@ -936,7 +942,7 @@
 					init({
 						range: [ [-1.6, 1.6], ud_randge ],scale: 40
 					});
-					circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					circle([0,0],1.5,{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 					style({stroke: colours});
 					if(set_lines[1]==1){
 						if(rands_arr_right[1]==1){
@@ -1051,7 +1057,7 @@
 					init({
 						range: [ [-1.6, 1.6], ud_randge ],scale: 40
 					});
-					circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					circle([0,0],1.5,{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 					style({stroke: colours});
 					if(set_lines[2]==1){
 						if(rands_arr_right[2]==1){
@@ -1168,7 +1174,7 @@
 					init({
 						range: [ [-1.6, 1.6], ud_randge ],scale: 40
 					});
-					circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					circle([0,0],1.5,{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 					style({stroke: colours});
 					if(set_lines[3]==1){
 						if(rands_arr_right[3]==1){
@@ -1283,7 +1289,7 @@
 					init({
 						range: [ [-1.6, 1.6], ud_randge ],scale: 40
 					});
-					circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+					circle([0,0],1.5,{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 					style({stroke: colours});
 					if(set_lines[4]==1){
 						if(rands_arr_right[4]==1){
@@ -1438,7 +1444,7 @@
 						init({
 							range: [ [-1.6, 1.6], ud_randge ],scale: 40
 						});
-						circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						circle([0,0],1.5,{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 						style({stroke: colours});
 						if(parts==2){
 							line(polar(1.5,angs[0]),polar(1.5,angs[0]+180));
@@ -1454,7 +1460,7 @@
 						init({
 							range: [ [-1.6, 1.6], ud_randge ],scale: 40
 						});
-						circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						circle([0,0],1.5,{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 						style({stroke: colours});
 						if(parts==2){
 							line(polar(1.5,angs[2]),polar(1.5,angs[2]+180));
@@ -1469,7 +1475,7 @@
 						init({
 							range: [ [-1.6, 1.6], ud_randge ],scale: 40
 						});
-						circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						circle([0,0],1.5,{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 						style({stroke: colours});
 						if(parts==2){
 							line(polar(1.5,angs[4]),polar(1.5,angs[4]+180));
@@ -1484,7 +1490,7 @@
 						init({
 							range: [ [-1.6, 1.6], ud_randge ],scale: 40
 						});
-						circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						circle([0,0],1.5,{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 						style({stroke: colours});
 						if(parts==2){
 							line(polar(1.5,angs[6]),polar(1.5,angs[6]+180));
@@ -1499,7 +1505,7 @@
 						init({
 							range: [ [-1.6, 1.6], ud_randge ],scale: 40
 						});
-						circle([0,0],1.5,{stroke:colours,fill:colours,"fill-opacity": 0.1});
+						circle([0,0],1.5,{stroke:colours,fill:fill_cols,"fill-opacity": 0.3});
 						style({stroke: colours});
 						if(parts==2){
 							line(polar(1.5,angs[8]),polar(1.5,angs[8]+180));

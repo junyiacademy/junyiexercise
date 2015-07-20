@@ -1,4 +1,4 @@
-(function() {
+﻿(function() {
 
 /*
  * Answer types
@@ -182,11 +182,84 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 });
                 var input = $(inputMarkup);
             } else {
-                // people don't always set their locale right, so use a text
-                // box to allow for alternative radix points
-                var input = $('<input type="text">');
+                // show numeric keyboard for ipad
+                if (navigator.userAgent.match(/(ipad)/i)) { 
+                    var input = $('<input type="text" pattern="[0-9]*">');
+                }else {
+                    // people don't always set their locale right, so use a text
+                    // box to allow for alternative radix points
+                    var input = $('<input type="text">');
+                }
             }
-            $(solutionarea).append(input);
+
+
+            // Fraction Mode: hide default input & show fraction inputs
+            // Enable it by adding data-fraction-input="true" attr for .solution element in html exercise templates
+            var fractionForms = ['proper', 'improper', 'mixed'];
+            var supportedFractionTypes = fractionForms.filter(function(n) {
+                return acceptableForms.indexOf(n) != -1
+            })
+            if(supportedFractionTypes.length > 0){
+                input.attr("id", "default_input");
+                var checkbox = '<div class="checkbox" id="fraction_mode_entry" style="display:none"><label style="font-size:14px">'+
+                               '<input type="checkbox" id="fraction_mode_checkbox"> 輸入直式分數</label></div>'
+                var fraction_mode_div = '<div id="fraction_mode_div" style="display:none">' +
+                                        '<table border="0" cellpadding="0" cellspacing="0">' +
+                                        '<tr>' +
+                                        '<td rowspan=3 style="vertical-align:middle">' +
+                                        '<input id="signed_int" type="text" tabindex="11" style="width:35px;position:relative;left:-3px;"></td>' +
+                                        '<td>' +
+                                        '<input id="num" type="text" tabindex="13" style="width:35px;"></td>' +
+                                        '</tr>' +
+                                        '<tr>' +
+                                        '<td><hr style="margin-top:6px;margin-bottom:6px;border-color:black;border-width:2px"/></td>' +
+                                        '</tr>' +
+                                        '<tr>' +
+                                        '<td><input id="denom" type="text" tabindex="12" style="width:35px"></td>' +
+                                        '</tr>' + 
+                                        '</table>' +
+                                        '</div>' 
+
+                // show numeric keyboard for ipad
+                if (navigator.userAgent.match(/(ipad)/i)) { 
+                    fraction_mode_div = fraction_mode_div.replace(/<input/g,'<input pattern="[0-9]*"');
+                }
+
+                $(solutionarea).append(input);
+                $(solutionarea).append(fraction_mode_div);
+                $(solutionarea).append(checkbox);
+
+                // toggle interface and clean input when entering Fraction Mode
+                $("#fraction_mode_checkbox").change(function() {
+                    $("div#fraction_mode_div input").val("");
+                    $("#default_input").toggle();
+                    $("#fraction_mode_div").toggle();
+                    if ($("#fraction_mode_checkbox").prop("checked") == true){
+                        $("#default_input").val("");
+                        $("div#fraction_mode_div input#signed_int").focus();
+                    }
+                })
+
+                // create ans from Fraction Mode to default input 
+                $("div#fraction_mode_div input").keyup(function (){
+                    if ($("#fraction_mode_checkbox").prop("checked") == true){
+                        var num = $("div#fraction_mode_div input#num").val();
+                        var denom = $("div#fraction_mode_div input#denom").val();
+                        var signed_int = $("div#fraction_mode_div input#signed_int").val();
+                        if(signed_int === "0") {
+                            signed_int = "";
+                        }
+                        if(num === "" || denom === "") {
+                            var ans = signed_int;
+                        } else {
+                            var ans = signed_int + " " + num + "/" + denom;
+                        }
+                        $("#default_input").val(ans);
+                    }
+                });
+            }else {
+                $(solutionarea).append(input);
+            }
 
             // retrieve the example texts from the different forms
             var exampleForms = {
