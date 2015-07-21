@@ -111,14 +111,11 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                         return true;
                     } else {
                         if (guess === guess.toLowerCase()) {
-                            return "Your answer is almost correct, but must be " +
-                                   "in capital letters.";
+                            return "你的答案其實很接近了！請把小寫字母換為大寫唷！";
                         } else if (guess === guess.toUpperCase()) {
-                            return "Your answer is almost correct, but must not " +
-                                   "be in capital letters.";
+                            return "你的答案其實很接近了！請把大寫字母換為小寫唷！";
                         } else {
-                            return "Your answer is almost correct, but must be " +
-                                   "in the correct case.";
+                            return "你的答案其實很接近了！請換成正確的大小寫唷！";
                         }
                     }
                 } else {
