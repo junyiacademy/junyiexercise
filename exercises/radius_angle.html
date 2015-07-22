@@ -10,39 +10,6 @@
         }
         </style>
 <script type="text/javascript">
-	    function accDiv(arg1,arg2){
-            var t1=0,t2=0,r1,r2;
-            try{t1=arg1.toString().split(".")[1].length}catch(e){}
-            try{t2=arg2.toString().split(".")[1].length}catch(e){}
-            with(Math){
-                r1=Number(arg1.toString().replace(".",""))
-                r2=Number(arg2.toString().replace(".",""))
-                return (r1/r2)*pow(10,t2-t1);
-            }
-        }
-		function accMul(arg1,arg2){
-            var m=0,s1=arg1.toString(),s2=arg2.toString();
-            try{m+=s1.split(".")[1].length}catch(e){}
-            try{m+=s2.split(".")[1].length}catch(e){}
-            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
-        }
-        function accAdd(arg1,arg2){
-            var r1,r2,m;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2))
-            return (arg1*m+arg2*m)/m
-        }
-        function Subtr(arg1,arg2){
-            var r1,r2,m,n;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2));
-            //last modify by deeka
-            //动态控制精度长度
-            n=(r1>=r2)?r1:r2;
-            return ((arg1*m-arg2*m)/m).toFixed(n);
-        }
 		function chg2(num,quesMin,quesMax){
 		    var ansNums = KhanUtil.randRange(num-quesMax,num-quesMin);
 			var arr = KhanUtil.randRangeUnique(1,num,ansNums);
@@ -60,40 +27,13 @@
     <div class="problems">
         <div id="case1">
             <div class="vars">
-				<var id="JK">randFromArray([[2,4],[4,8],[6,12],[8,16]])</var>
-				<var id="J">JK[0]</var>
-				<var id="K">JK[1]</var>
+				<var id="J,K">randFromArray([[2,4],[4,8],[6,12],[8,16]])</var>
 				<var id="smm">J/2</var>
 				<var id="angs">Math.acos(J/K)*180/Math.PI</var>
 				<var id="high">J*Math.sin(angs*Math.PI/180)</var>
 				<var id="len">J*Math.cos(angs*Math.PI/180)</var>
-				<var id="change">chg2(4,2,4)</var>
-				<var id="n1">
-				(function(){
-					if(ans_1.style.display!='none'){return 1;}
-					return 0;
-				})()</var>
-				<var id="n2">
-				(function(){
-					if(ans_2.style.display!='none'&&ans_1.style.display!='none'){return 2;}
-					if(ans_2.style.display!='none'){return 1;}
-					return 0;
-				})()</var>
-				<var id="n3">
-				(function(){
-					if(ans_3.style.display!='none'&&ans_2.style.display!='none'&&ans_1.style.display!='none'){return 3;}
-					if(ans_3.style.display!='none'&&(ans_2.style.display!='none'||ans_1.style.display!='none')){return 2;}
-					if(ans_3.style.display!='none'){return 1;}
-					return 0;
-				})()</var>
-				<var id="n4">
-				(function(){
-					if(change[0]==4){return 4;}
-					if(change[0]==3&&ans_4.style.display!='none'){return 3;}
-					if(change[0]==2&&ans_4.style.display!='none'){return 2;}
-					if(change[0]==1&&ans_4.style.display!='none'){return 1;}
-					return 0;
-				})()</var>
+				<var id="n1">1</var>
+				<var id="n2">2</var>
             </div>
             <p class="question">如圖， <code>\overline{PA}</code> 、<code>\overline{PB}</code> 為 <code>P</code> 到圓 <code>O</code> 的兩切線，<code>A</code> 、<code>B</code> 為切點。已知 <code>\overline{AO}=<var>J</var></code> 公分、 <code>\overline{PO}=<var>K</var></code> 公分，則</p>
 			<div class="problem">
@@ -118,21 +58,15 @@
 				</div>
 				<p id="ans_1"><code>(<var>n1</var>)\enspace\angle{AOB}=？</code></p>
 				<p id="ans_2"><code>(<var>n2</var>)\enspace\widehat{AB} 的度數是多少？</code></p>
-				<p id="ans_3"><code>(<var>n3</var>)\enspace陰影部分的周長？</code></p>
-				<p id="ans_4"><code>(<var>n4</var>)\enspace陰影部分的面積？</code></p>
 			</div>
 			<div class="solution" data-type="multiple">
 				<p data-if="n1!=0"><code>(<var>n1</var>)</code><input type="text" id="casea1" style="width:50px"><code>\enspace^{\circ}</code></p>
 				<p data-if="n2!=0"><code>(<var>n2</var>)</code><input type="text" id="casea2" style="width:50px"><code>\enspace^{\circ}</code></p>
-				<p data-if="n3!=0"><code>(<var>n3</var>)</code><input type="text" id="casea3" style="width:25px"><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart_1"></span><code>\enspace+\enspace</code><input type="text" id="casea5" style="width:25px"><code>\pi</code>公分</p>
-				<p data-if="n4!=0"><code>(<var>n4</var>)</code><input type="text" id="casea4" style="width:25px"></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart_2"></span><code>\enspace+\enspace</code><input type="text" id="casea6" style="width:25px"><code>\pi</code>平方公分</p>
 				<div class="sol" data-type="custom">
 				    <div class="guess">1</div>
 				    <div class="validator-function">
-					var arr6 = new Array();
-					var arr7 = new Array();
-					var rigans6 = false;
-					var rigans7 = false;
+					
+					
 					var countAnswers = 0;
 					var rightAnswers = 0;
 					if(n1!=0){
@@ -145,52 +79,18 @@
 						var ng_1 = document.getElementById("casea2").value.replace(/[ ]/g,"");
 						(ng_1==120||ng_1=="120")?rightAnswers+=1:rightAnswers+=0;
 					}
-					if(n3!=0){
-						countAnswers += 3;
-						var ng_2 = document.getElementById("casea3").value.replace(/[ ]/g,"");
-						var ng_4 = document.getElementById("sqrtPart_1").value.replace(/[ ]/g,"");
-						(ng_2==2*J||ng_2==""+2*J)?rightAnswers+=1:rightAnswers+=0;
-						(ng_4==3||ng_4=="3")?rightAnswers+=1:rightAnswers+=0;
-						var ng_6 = document.getElementById("casea5").value.replace(/[ ]/g,"");
-						if(ng_6.indexOf("/")&gt;=0){
-							arr6 = ng_6.replace(/[ ]/g,"").split("/");
-							rigans6 = arr6[0]/arr6[1]-2*J/3&lt;0.0001;
-							rigans6==true?rightAnswers+=1:rightAnswers+=0;
-						}
-						if(ng_6.indexOf("/")&lt;0){
-							rigans6 = ng_6-2*J/3&lt;0.0001;
-							rigans6==true?rightAnswers+=1:rightAnswers+=0;
-						}
-					}
-					if(n4!=0){
-						countAnswers += 3;
-						var ng_3 = document.getElementById("casea4").value.replace(/[ ]/g,"");
-						var ng_5 = document.getElementById("sqrtPart_2").value.replace(/[ ]/g,"");
-						var ng_7 = document.getElementById("casea6").value.replace(/[ ]/g,"");
-						(ng_3==J*J||ng_3==""+J*J)?rightAnswers+=1:rightAnswers+=0;
-						(ng_5==3||ng_5=="3")?rightAnswers+=1:rightAnswers+=0;
-						if(ng_7.indexOf("/")&gt;=0){
-							arr7=ng_7.replace(/[ ]/g,"").split("/");
-							rigans7 = arr7[0]/arr7[1]+J*J/3&lt;0.0001;
-							rigans7==true?rightAnswers+=1:rightAnswers+=0;
-						}
-						if(ng_7.indexOf("/")&lt;0){
-							rigans7 = ng_7+J*J/3&lt;0.0001;
-							rigans7==true?rightAnswers+=1:rightAnswers+=0;
-						}
+					if(ng_0==0&&ng_1==0){
+					return "";
 					}
 					return countAnswers==rightAnswers;
                     </div>
 				</div>
-				<p class="example">整數，例：<code>6</code></p>
-                <p class="example">帶分數，例：<code>1\enspace 3/4</code></p>
-                <p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>	
-                <p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>	
+				<p class="example">整數，例：<code>6</code></p>	
             </div>
             <div class="hints">
 				<p data-if="n1!=0"><code>(<var>n1</var>)\because\overline{PA}</code> 為切線，<code>A</code> 為切點，且 <code>\overline{AO}=<var>J</var></code> 、<code>\overline{PO}=<var>K</var></code></p>
 				<p data-if="n1!=0"><code>\therefore\triangle{OAP}</code> 角度滿足 <code>30^{\circ}\enspace-\enspace60^{\circ}\enspace-\enspace90^{\circ}</code> ，即 <code>\angle{AOP}=60^{\circ}</code></p>
-				<p data-if="n1!=0">同理， <code>\angle{BOP}=60^{\circ}</code> ，<code>\therefore\angle{AOB}=\angle{AOP}+\angle{BOP}=</code><code class="hint_green">120^{\circ}</code></p>
+				<p data-if="n1!=0">同理， <code>\angle{BOP}=60^{\circ}</code> ，<code>\therefore\angle{AOB}=\angle{AOP}+\angle{BOP}=</code><code class="hint_pink">120^{\circ}</code></p>
 				<p data-if="n2!=0"><code>(<var>n2</var>)</code> 圓心角 <code>=</code> 所對弧的度數</p>
 				<p data-if="n2!=0&&n1==0">所以，我們需要先算出圓心角 <code>\angle{AOB}</code> 的度數。</p>
 				
@@ -198,27 +98,8 @@
 				<p data-if="n2!=0&&n1==0"><code>\therefore\triangle{OAP}</code> 角度滿足 <code>30^{\circ}\enspace-\enspace60^{\circ}\enspace-\enspace90^{\circ}</code> ，即 <code>\angle{AOP}=60^{\circ}</code></p>
 				<p data-if="n2!=0&&n1==0">同理， <code>\angle{BOP}=60^{\circ}</code> ，<code>\therefore\angle{AOB}=\angle{AOP}+\angle{BOP}=120^{\circ}</code></p>
 				
-				<p data-if="n2!=0"><code>\therefore\widehat{AB}=\angle{AOB}=</code><code class="hint_green">120^{\circ}</code></p>
-				
-				<p data-if="n3!=0"><code>(<var>n3</var>)</code> 陰影部分周長為 <code>\overline{PA}+\overline{PB}+\widehat{AB}</code> 長度之和</p>
-				<p data-if="n3!=0">根據畢氏定理可知 <code>\overline{PA}=\sqrt{\overline{PO}^{2}-\overline{OA}^{2}}=\overline{PB}</code></p>
-				<p data-if="n3!=0"><code>\widehat{AB}</code> 的長 <code>=2\pi\times<var>J</var>\times\dfrac{\widehat{AB}}{360^{\circ}}</code> </p>
-				<p data-if="n3!=0&&n2==0&&n1==0">其中 <code>\widehat{AB}=\angle{AOB}=\angle{AOP}+\angle{BOP}</code> </p>
-				<p data-if="n3!=0&&n2==0&&n1==0">根據 <code>\triangle{AOP}</code> 和 <code>\triangle{BOP}</code> 中的長度關係，我們可知 <code>\angle{AOP}=\angle{BOP}=60^{\circ}</code> ，</p>
-				<p data-if="n3!=0&&n2==0&&n1==0"><code>\therefore\widehat{AB}=120^{\circ}</code></p>
-				<p data-if="n3!=0&&n2==0&&n1!=0">其中 <code>\widehat{AB}=\angle{AOB}=120^{\circ}</code> </p>
-				<p data-if="n3!=0"><code>\therefore\enspace</code>陰影部份周長 <code>=2\times\sqrt{<var>K</var>^{2}-<var>J</var>^{2}}+2\pi\times<var>J</var>\times\dfrac{120^{\circ}}{360^{\circ}}</code></p>
-				<p data-if="n3!=0"><code>=</code><code class="hint_green"><var>formattedSquareRootOf(4*(K*K-J*J))</var>+<var>fraction(2*J,3,true,true,false,false)</var>\pi</code>(公分)</p>
-				<p data-if="n4!=0"><code>(<var>n4</var>)</code> 陰影部分面積 <code>=</code> 四邊形<code>OAPB</code>面積 - 扇形<code>OAB</code>面積</p>
-				<div data-if="n4!=0">
-					<p>四邊形<code>OAPB</code>面積 <code>=S_\triangle{OAP}+S_\triangle{OBP}</code></p>
-					<p><code>=2\cdot S_\triangle{OAP}=2\cdot(\dfrac{1}{2}\cdot\overline{PA}\cdot\overline{AO})</code></p>
-				</div>
-				<p data-if="n4!=0&&(n2!=0||n3!=0)">扇形<code>OAB</code>面積 <code>=<var>J</var>^{2}\cdot\pi\cdot\dfrac{\widehat{AB}}{360^{\circ}}=<var>J</var>^{2}\cdot\pi\cdot\dfrac{\widehat{120^{\circ}}}{360^{\circ}}</code></p>
-				<p data-if="n4!=0&&n3==0&&n2==0"><code>\enspace</code>扇形<code>OAB</code>面積 <code>=<var>J</var>^{2}\cdot\pi\cdot\dfrac{\widehat{AB}}{360^{\circ}}=<var>J</var>^{2}\cdot\pi\cdot\dfrac{\widehat{120^{\circ}}}{360^{\circ}}</code></p>
-				<p data-if="n4!=0">陰影部份面積 <code>=</code> <code>2\cdot(\dfrac{1}{2}\cdot<var>formattedSquareRootOf(K*K-J*J)</var>\cdot <var>J</var>)-<var>fraction(J*J,3,true,true,false,false)</var>\pi</code></p>
-				<p data-if="n4!=0"><code>=</code><code class="hint_green"><var>formattedSquareRootOf(J*J*(K*K-J*J))</var>-<var>fraction(J*J,3,true,true,false,false)</var>\pi</code></p>
-            </div>
+				<p data-if="n2!=0"><code>\therefore\widehat{AB}=\angle{AOB}=</code><code class="hint_pink">120^{\circ}</code></p>
+			</div>
         </div>
 		
 		<div id="case2">
@@ -288,9 +169,200 @@
 				<p>所以本題的答案為 <code>\widehat{AB}=\angle{AOB}=</code><code class="hint_pink">\enspace<var>J</var>^{\circ}</code> 。</p>
             </div>
         </div>
-		
-    </div>
-		
+		 <div id="case4">
+            <div class="vars">
+				<var id="J,K">randFromArray([[2,4],[4,8],[6,12],[8,16]])</var>
+				<var id="smm">J/2</var>
+				<var id="angs">Math.acos(J/K)*180/Math.PI</var>
+				<var id="high">J*Math.sin(angs*Math.PI/180)</var>
+				<var id="len">J*Math.cos(angs*Math.PI/180)</var>
+				<var id="n1">n1=0</var>
+				<var id="n2">n2=0</var>
+				<var id="n3">
+				(function(){
+					
+					if(ans_3.style.display!='none'){return 1;}
+					return 0;
+				})()</var>
+				
+            </div>
+            <p class="question">如圖， <code>\overline{PA}</code> 、<code>\overline{PB}</code> 為 <code>P</code> 到圓 <code>O</code> 的兩切線，<code>A</code> 、<code>B</code> 為切點。已知 <code>\overline{AO}=<var>J</var></code> 公分、 <code>\overline{PO}=<var>K</var></code> 公分，則</p>
+			<div class="problem">
+			    <div class="graphie" id="radius_angle_1">
+                    init({
+                        range: [ [-1, 12], [-3, 3] ],
+                        scale: 40
+                    });
+					circle([2,0],2);
+					path([[2,0],[len/smm+2,high/smm],[K/smm+2,0],[len/smm+2,-high/smm],[2,0]],{stroke: "black", fill: "gray",strokeDasharray: "-"})
+					arc([2,0],2,360-angs,angs,{fill:"white"});
+					path([[2,0],[len/smm+2,high/smm],[len/smm+2,-high/smm],[2,0]],{stroke: "white", fill: "white"})
+					line([2,0],[len/smm+2,high/smm],{strokeDasharray: "-",stroke: "black"});
+					line([2,0],[len/smm+2,-high/smm],{strokeDasharray: "-",stroke: "black"});
+					line([2,0],[K/smm+2,0],{strokeDasharray: "-",stroke: "black"});
+					line([len/smm+2,-high/smm],[K/smm+2,0],{stroke: "black"});
+					line([len/smm+2,high/smm],[K/smm+2,0],{stroke: "black"});
+					label( [2,0],  "\\small{O}", "left", { color: "black" });
+					label( [K/smm+2,0],  "\\small{P}", "right", { color: "black" });
+					label( [len/smm+2,high/smm],  "\\small{A}", "above right", { color: "black" });
+					label( [len/smm+2,-high/smm],  "\\small{B}", "below right", { color: "black" });
+				</div>
+				
+				<p id="ans_3"><code>\enspace陰影部分的周長？</code></p>
+					
+			</div>
+			<div class="solution" data-type="multiple">
+				
+				<p>
+				<input type="text" id="casea3" style="width:25px">
+				<span style="font: 150% Arial; padding: 0 0 0 5px;">√</span>
+				<span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;">
+				<input type="text" style="width:30px" id="sqrtPart_1"></span><code>\enspace+\enspace</code>
+				<input type="text" id="casea5" style="width:25px"><code>\pi</code>公分</p>
+				<div class="sol" data-type="custom">
+				    <div class="guess">1</div>
+				    <div class="validator-function">
+					var arr6 = new Array();
+					var rigans6 = false;
+					var countAnswers = 0;
+					var rightAnswers = 0;
+					if(n3!=0){
+						countAnswers += 3;
+						var ng_2 = document.getElementById("casea3").value.replace(/[ ]/g,"");
+						var ng_4 = document.getElementById("sqrtPart_1").value.replace(/[ ]/g,"");
+						(ng_2==2*J||ng_2==""+2*J)?rightAnswers+=1:rightAnswers+=0;
+						(ng_4==3||ng_4=="3")?rightAnswers+=1:rightAnswers+=0;
+						var ng_6 = document.getElementById("casea5").value.replace(/[ ]/g,"");
+						if(ng_6.indexOf("/")&gt;=0){
+							arr6 = ng_6.replace(/[ ]/g,"").split("/");
+							rigans6 = -(arr6[0]/arr6[1]-2*J/3)&lt;0.0001;
+							rigans6==true?rightAnswers+=1:rightAnswers+=0;
+						}
+						if(ng_6.indexOf("/")&lt;0){
+							rigans6 = -(ng_6-2*J/3)&lt;0.0001;
+							rigans6==true?rightAnswers+=1:rightAnswers+=0;
+						}
+					}
+				   if(ng_2==0&&ng_4 ==0){
+				   return "";
+				   }
+					return countAnswers==rightAnswers;
+                    </div>
+				</div>
+				<p class="example">整數，例：<code>6</code></p>
+                <p class="example">帶分數，例：<code>1\enspace 3/4</code></p>
+                <p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>	
+                <p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>	
+            </div>
+            <div class="hints">
+				<p data-if="n3!=0"><code></code> 陰影部分周長為 <code>\overline{PA}+\overline{PB}+\widehat{AB}</code> 長度之和</p>
+				<p data-if="n3!=0">根據畢氏定理可知 <code>\overline{PA}=\sqrt{\overline{PO}^{2}-\overline{OA}^{2}}=\overline{PB}</code></p>
+				<p data-if="n3!=0"><code>\widehat{AB}</code> 的長 <code>=2\pi\times<var>J</var>\times\dfrac{\widehat{AB}}{360^{\circ}}</code> </p>
+				<p data-if="n3!=0&&n2==0&&n1==0">其中 <code>\widehat{AB}=\angle{AOB}=\angle{AOP}+\angle{BOP}</code> </p>
+				<p data-if="n3!=0&&n2==0&&n1==0">根據 <code>\triangle{AOP}</code> 和 <code>\triangle{BOP}</code> 中的長度關係，我們可知 <code>\angle{AOP}=\angle{BOP}=60^{\circ}</code> ，</p>
+				<p data-if="n3!=0&&n2==0&&n1==0"><code>\therefore\widehat{AB}=120^{\circ}</code></p>
+				<p data-if="n3!=0&&n2==0&&n1!=0">其中 <code>\widehat{AB}=\angle{AOB}=120^{\circ}</code> </p>
+				<p data-if="n3!=0"><code>\therefore\enspace</code>陰影部份周長 <code>=2\times\sqrt{<var>K</var>^{2}-<var>J</var>^{2}}+2\pi\times<var>J</var>\times\dfrac{120^{\circ}}{360^{\circ}}</code></p>
+				<p data-if="n3!=0"><code>=</code><code class="hint_pink"><var>formattedSquareRootOf(4*(K*K-J*J))</var>+<var>fraction(2*J,3,true,true,false,false)</var>\pi</code>(公分)</p>
+            </div>
+        </div>
+		 <div id="case5">
+            <div class="vars">
+				<var id="J,K">randFromArray([[2,4],[4,8],[6,12],[8,16]])</var>
+				<var id="smm">J/2</var>
+				<var id="angs">Math.acos(J/K)*180/Math.PI</var>
+				<var id="high">J*Math.sin(angs*Math.PI/180)</var>
+				<var id="len">J*Math.cos(angs*Math.PI/180)</var>
+				<var id="n1">0</var>
+				<var id="n2">0</var>
+				<var id="n4">1</var>
+            </div>
+            <p class="question">如圖， <code>\overline{PA}</code> 、<code>\overline{PB}</code> 為 <code>P</code> 到圓 <code>O</code> 的兩切線，<code>A</code> 、<code>B</code> 為切點。已知 <code>\overline{AO}=<var>J</var></code> 公分、 <code>\overline{PO}=<var>K</var></code> 公分，則</p>
+			<div class="problem">
+			    <div class="graphie" id="radius_angle_1">
+                    init({
+                        range: [ [-1, 12], [-3, 3] ],
+                        scale: 40
+                    });
+					circle([2,0],2);
+					path([[2,0],[len/smm+2,high/smm],[K/smm+2,0],[len/smm+2,-high/smm],[2,0]],{stroke: "black", fill: "gray",strokeDasharray: "-"})
+					arc([2,0],2,360-angs,angs,{fill:"white"});
+					path([[2,0],[len/smm+2,high/smm],[len/smm+2,-high/smm],[2,0]],{stroke: "white", fill: "white"})
+					line([2,0],[len/smm+2,high/smm],{strokeDasharray: "-",stroke: "black"});
+					line([2,0],[len/smm+2,-high/smm],{strokeDasharray: "-",stroke: "black"});
+					line([2,0],[K/smm+2,0],{strokeDasharray: "-",stroke: "black"});
+					line([len/smm+2,-high/smm],[K/smm+2,0],{stroke: "black"});
+					line([len/smm+2,high/smm],[K/smm+2,0],{stroke: "black"});
+					label( [2,0],  "\\small{O}", "left", { color: "black" });
+					label( [K/smm+2,0],  "\\small{P}", "right", { color: "black" });
+					label( [len/smm+2,high/smm],  "\\small{A}", "above right", { color: "black" });
+					label( [len/smm+2,-high/smm],  "\\small{B}", "below right", { color: "black" });
+				</div>
+				<p id="ans_4"><code>\enspace陰影部分的面積？</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<p>
+				<input type="text" id="casea4" style="width:25px"></span><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span>
+				<span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart_2"></span><code>\enspace-\enspace</code>
+				<input type="text" id="casea6" style="width:25px"><code>\pi</code>平方公分</p>
+				<div class="sol" data-type="custom">
+				    <div class="guess">1</div>
+				    <div class="validator-function">
+					var arr7 = new Array();
+					var rigans7 = false;
+					var countAnswers = 0;
+					var rightAnswers = 0;
+					
+					if(n4!=0){
+						countAnswers += 3;
+						var ng_3 = document.getElementById("casea4").value.replace(/[ ]/g,"");
+						var ng_5 = document.getElementById("sqrtPart_2").value.replace(/[ ]/g,"");
+						var ng_7 = document.getElementById("casea6").value.replace(/[]/g,"");
+						(ng_3==J*J||ng_3==""+J*J)?rightAnswers+=1:rightAnswers+=0;
+						(ng_5==3||ng_5=="3")?rightAnswers+=1:rightAnswers+=0;
+						if(ng_7.indexOf("/")&gt;=0){
+						
+							arr7=ng_7.replace(/[ ]/g,"").split("/");
+							rigans7 = -arr7[0]/arr7[1]+J*J/3&lt;0.0001;
+							rigans7==true?rightAnswers+=1:rightAnswers+=0;
+						}
+						if(ng_7.indexOf("/")&lt;0){
+							rigans7 = -(ng_7+J*J/3)&lt;0.0001;
+							rigans7==true?rightAnswers+=1:rightAnswers+=0;
+						}
+					}
+					
+					
+					if(ng_3==0 &&ng_5==0&&ng_7==0){
+					return"";
+					}
+					return countAnswers==rightAnswers;
+                    </div>
+				</div>
+				<p class="example">整數，例：<code>6</code></p>
+                <p class="example">帶分數，例：<code>1\enspace 3/4</code></p>
+                <p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>	
+                <p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>	
+            </div>
+            <div class="hints">
+				<p><code></code> 圓心角 <code>=</code> 所對弧的度數</p>
+				<p>所以，我們需要先算出圓心角 <code>\angle{AOB}</code> 的度數。</p>
+				
+				<p><code>\because\overline{PA}</code> 為切線，<code>A</code> 為切點，且 <code>\overline{AO}=<var>J</var></code> 、<code>\overline{PO}=<var>K</var></code></p>
+				<p><code>\therefore\triangle{OAP}</code> 角度滿足 <code>30^{\circ}\enspace-\enspace60^{\circ}\enspace-\enspace90^{\circ}</code> ，即 <code>\angle{AOP}=60^{\circ}</code></p>
+				<p>同理， <code>\angle{BOP}=60^{\circ}</code> ，<code>\therefore\angle{AOB}=\angle{AOP}+\angle{BOP}=120^{\circ}</code></p>
+				<p><code>\therefore\widehat{AB}=\angle{AOB}=</code><code>120^{\circ}</code></p>
+				<p data-if="n4!=0"><code></code> 陰影部分面積 <code>=</code> 四邊形<code>OAPB</code>面積 - 扇形<code>OAB</code>面積</p>
+				<div data-if="n4!=0">
+					<p>四邊形<code>OAPB</code>面積 <code>=S_\triangle{OAP}+S_\triangle{OBP}</code></p>
+					<p><code>=2\cdot S_\triangle{OAP}=2\cdot(\dfrac{1}{2}\cdot\overline{PA}\cdot\overline{AO})</code></p>
+				</div>
+				<p data-if="n4!=0&&n2!=0">扇形<code>OAB</code>面積 <code>=<var>J</var>^{2}\cdot\pi\cdot\dfrac{\widehat{AB}}{360^{\circ}}=<var>J</var>^{2}\cdot\pi\cdot\dfrac{\widehat{120^{\circ}}}{360^{\circ}}</code></p>
+				<p data-if="n4!=0&&n2==0"><code>\enspace</code>扇形<code>OAB</code>面積 <code>=<var>J</var>^{2}\cdot\pi\cdot\dfrac{\widehat{AB}}{360^{\circ}}=<var>J</var>^{2}\cdot\pi\cdot\dfrac{\widehat{120^{\circ}}}{360^{\circ}}</code></p>
+				<p data-if="n4!=0">陰影部份面積 <code>=</code> <code>2\cdot(\dfrac{1}{2}\cdot<var>formattedSquareRootOf(K*K-J*J)</var>\cdot <var>J</var>)-<var>fraction(J*J,3,true,true,false,false)</var>\pi</code></p>
+				<p data-if="n4!=0"><code>=</code><code class="hint_pink"><var>formattedSquareRootOf(J*J*(K*K-J*J))</var>-<var>fraction(J*J,3,true,true,false,false)</var>\pi</code></p>
+            </div>
+        </div>
 	</div>
 	</div>
 </body>
