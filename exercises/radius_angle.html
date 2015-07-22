@@ -18,6 +18,26 @@
 			}
 			return [num-ansNums,arr];
 		}
+		if (!Array.prototype.indexOf)
+			{
+			  Array.prototype.indexOf = function(elt /*, from*/)
+			  {
+			    var len = this.length >>> 0;
+			    var from = Number(arguments[1]) || 0;
+			    from = (from < 0)
+			         ? Math.ceil(from)
+			         : Math.floor(from);
+			    if (from < 0)
+			      from += len;
+			    for (; from < len; from++)
+			    {
+			      if (from in this &&
+			          this[from] === elt)
+			        return from;
+			    }
+			    return -1;
+			  };
+			}
 	</script>
 
 
@@ -235,11 +255,11 @@
 						var ng_6 = document.getElementById("casea5").value.replace(/[ ]/g,"");
 						if(ng_6.indexOf("/")&gt;=0){
 							arr6 = ng_6.replace(/[ ]/g,"").split("/");
-							rigans6 = -(arr6[0]/arr6[1]-2*J/3)&lt;0.0001;
+							rigans6 = abs(arr6[0]/arr6[1]-2*J/3)&lt;0.0001;
 							rigans6==true?rightAnswers+=1:rightAnswers+=0;
 						}
 						if(ng_6.indexOf("/")&lt;0){
-							rigans6 = -(ng_6-2*J/3)&lt;0.0001;
+							rigans6 = abs(ng_6-2*J/3)&lt;0.0001;
 							rigans6==true?rightAnswers+=1:rightAnswers+=0;
 						}
 					}
@@ -250,7 +270,6 @@
                     </div>
 				</div>
 				<p class="example">整數，例：<code>6</code></p>
-                <p class="example">帶分數，例：<code>1\enspace 3/4</code></p>
                 <p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>	
                 <p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>	
             </div>
@@ -323,11 +342,11 @@
 						if(ng_7.indexOf("/")&gt;=0){
 						
 							arr7=ng_7.replace(/[ ]/g,"").split("/");
-							rigans7 = -arr7[0]/arr7[1]+J*J/3&lt;0.0001;
+							rigans7 = abs(arr7[0]/arr7[1]-J*J/3)&lt;0.0001;
 							rigans7==true?rightAnswers+=1:rightAnswers+=0;
 						}
 						if(ng_7.indexOf("/")&lt;0){
-							rigans7 = -(ng_7+J*J/3)&lt;0.0001;
+							rigans7 = abs(ng_7-J*J/3)&lt;0.0001;
 							rigans7==true?rightAnswers+=1:rightAnswers+=0;
 						}
 					}
@@ -340,7 +359,6 @@
                     </div>
 				</div>
 				<p class="example">整數，例：<code>6</code></p>
-                <p class="example">帶分數，例：<code>1\enspace 3/4</code></p>
                 <p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>	
                 <p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>	
             </div>
