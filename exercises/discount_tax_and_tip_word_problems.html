@@ -13,6 +13,7 @@
             <div class="vars">
                 <var id="DOLLARS">randRange(4,25)*50</var>
                 <var id="SALES_TAX">randRange(5,18)</var>
+				<var id="S">roundTo(2,DOLLARS*(SALES_TAX/100))</var>
                 <var id="TOTAL_PRICE">roundTo(2, (1+(SALES_TAX/100))*DOLLARS)</var>
                 <var id="TOTAL_PRICEroundto">roundTo(0, (1+(SALES_TAX/100))*DOLLARS)</var>
             </div>
@@ -25,8 +26,8 @@
                     <p>營業稅是由買東西的人所要支付，但是由店家收取，為了避免麻煩，在台灣看到的售價通常己將營業稅納入計算。</p>
                 </div>
                 <div>
-                    <p>想要算出總價格，首要計算出營業稅有多少錢，計算方法是以<var>plural(fruit(1))</var>的價錢乘上營業稅率。.</p>
-                    <p><code class="hint_green"><var>DOLLARS</var></code> <code>\times</code> <code class="hint_blue"><var>SALES_TAX</var>\%</code> = </p>
+                    <p>想要算出總價格，首要計算出營業稅有多少錢，計算方法是以<var>plural(fruit(1))</var>的價錢乘上營業稅率。</p>
+                    <p><code class="hint_green"><var>DOLLARS</var></code> <code>\times</code> <code class="hint_blue"><var>SALES_TAX</var>\%</code> <code>= ?</code></p>
                 </div>
                 <div>
                     <p>百分比符號(<code>\%</code>)的意思是“100份中佔幾份”，所以<code class="hint_blue"><var>SALES_TAX</var>\%</code>就等於<code class="hint_blue">\displaystyle\frac{<var>SALES_TAX</var>}{100}</code>，也就是<code class="hint_blue"><var>SALES_TAX</var> \div 100</code>。</p>
@@ -34,12 +35,12 @@
                 </div>
                 <div>
                     <p>以商品本身的價格再乘上換成十進位後的營業稅率就是該商品需支付的營業稅金額。</p>
-                    <p><code class="hint_green"><var>DOLLARS</var></code> <code>  <code>\times</code> <code class="hint_blue"><var>SALES_TAX/100</var></code>=</code> <code class="hint_purple"><var>((SALES_TAX/100) * DOLLARS)</var></code>
+                    <p><code class="hint_green"><var>DOLLARS</var></code> <code>\times</code> <code class="hint_blue"><var>SALES_TAX</var>\%</code> <code>=</code> <code class="hint_purple"><var>S</code></var></p>
                 </div>
                 <div>
                     <p>將營業稅和原商品欲售的價格，這才是<var>person(1)</var>該訂的標價。<p>
-                    <p><code class="hint_purple"><var>((SALES_TAX/100) * DOLLARS)</var></code> + <code class="hint_green"><var>DOLLARS</var></code> <code>=</code> <code class="hint_orange"><var>TOTAL_PRICE</var></code>
-                    <p class="final_answer">經過四捨五入後，<var>person(1)</var>應該標價<code class="hint_orange"><var>TOTAL_PRICEroundto</var>元。</code></p>
+                    <p><code class="hint_purple"><var>S</var></code> + <code class="hint_green"><var>DOLLARS</var></code> <code>=</code> <code class="hint_pink"><var>TOTAL_PRICE</var></code>
+                    <p class="final_answer">經過四捨五入後，<var>person(1)</var>應該標價<code class="hint_pink"><var>TOTAL_PRICEroundto</var>元。</code></p>
                 </div>
                 </div>
         </div>
@@ -59,7 +60,7 @@
                 <div>在美國，各州有獨立徵收的稅，所以商品標價中都不含營業稅，營業稅會在結帳時計入，所以結帳時產生看到的價錢和實際該支付的價錢不一時也別太驚訝。</div>
                 <div>
                     <p>想要算出營業稅的金額時，將物品售價乘上營業稅率時即可。</p>
-                    <p><code class="hint_green">$<var>PRICE</var></code> <code>\times</code> <code class="hint_blue"><var>TAX</var>\%</code><code> =</code></p>
+                    <p><code class="hint_green">$<var>PRICE</var></code> <code>\times</code> <code class="hint_blue"><var>TAX</var>\%</code><code> =?</code></p>
                 </div>
                 <div>
                     <p>百分比符號(<code>\%</code>)的意思是“100份中佔幾份”，所以<code class="hint_blue"><var>TAX</var>\%</code>就等於<code class="hint_blue"><var>TAX</var> \div 100</code>。</p>
@@ -67,8 +68,8 @@
                 </div>
                 <div>
                     <p>以商品本身的價格再乘上換成十進位後的營業稅率就是該商品需支付的營業稅金額。</p>
-                    <p><code class="hint_green">$<var>PRICE</var></code> <code>\times</code> <code class="hint_blue"><var>(TAX/100).toFixed(3)</var></code> = <code class="hint_orange">$<var>TOTAL_TAX</var></code>
-                    <p class="final_answer">四捨五入至百分位後，你需要支付<code class="hint_orange">$<var>TOTAL_TAXRoundto</var></code>美元的稅金。</p>
+                    <p><code class="hint_green">$<var>PRICE</var></code> <code>\times</code> <code class="hint_blue"><var>(TAX/100).toFixed(3)</var></code> <code>=</code> <code class="hint_pink">$<var>TOTAL_TAX</var></code>
+                    <p class="final_answer">四捨五入至百分位後，你需要支付<code class="hint_pink">$<var>TOTAL_TAXRoundto</var></code>美元的稅金。</p>
                 </div>
             </div>
         </div>
@@ -77,17 +78,18 @@
             <div class="vars">
                 <var id="PRICE">(randRange(5,15)*500)</var>
                 <var id="DISCOUNT">randRange(1,11)*5</var>
+				<var id="S">(DISCOUNT/100) * PRICE</var>
                 <var id="DISCOUNT_PRICE">roundTo(2, PRICE - ( (DISCOUNT/100) * PRICE))</var>
             </div>
             <div class="question spin">                    
-                    <p><var>person(1)</var>在百貨公司買<var>clothing( 1 )</var>，百貨公司當時買<var>clothing( 1 )</var>有<var>DISCOUNT</var>%折扣的促消活動。如果<var>clothing( 1 )</var>的原價為<var>PRICE</var>元,請問<var>person(1)</var>需要付多少錢?</p>
+                    <p><var>person(1)</var>在百貨公司買<var>clothing( 1 )</var>，百貨公司當時買<var>clothing( 1 )</var>有<var>DISCOUNT</var>%折扣的促消活動。如果<var>clothing( 1 )</var>的原價為<var>PRICE</var>元,請問<var>person(1)</var>需要付多少錢？</p>
             </div>
 
             <p class="solution" data-forms="dollar"><var>DISCOUNT_PRICE</var></p>
             <div class="hints">
                 <div>
                     <p>首先，先算出折扣金額，將售價乘上折扣率即為折扣金額。</p>
-                    <p><code class="hint_blue"><var>PRICE</var></code> <code>\times</code> <code class="hint_green"><var>DISCOUNT</var>\%</code> <code>=</code></p>
+                    <p><code class="hint_blue"><var>PRICE</var></code> <code>\times</code> <code class="hint_green"><var>DISCOUNT</var>\%</code> <code>=?</code></p>
                 </div>
                 <div>
                     <p>百分比符號(<code>\%</code>)的意思是“100份中佔幾份”，所以<code class="hint_green"><var>DISCOUNT</var>\%</code>就等於<code class="hint_green">\displaystyle\frac{<var>DISCOUNT</var>}{100}</code>也就是<code class="hint_green"><var>DISCOUNT</var> \div 100</code>。</p>
@@ -95,12 +97,12 @@
                 </div>
                 <div>
                     <p>將售價乘上折扣轉換成小數後的值，我們就可以算出折扣金額。</p>
-                    <p><code class="hint_blue"><var>PRICE</var></code><code> <code>\times</code> <code class="hint_green"><var>(DISCOUNT/100)</var></code> = </code><code class="hint_purple"><var>((DISCOUNT/100) * PRICE)</var></code>
+                    <p><code class="hint_blue"><var>PRICE</var></code> <code>\times</code> <code class="hint_green"><var>DISCOUNT</var>\%</code> <code>=</code> <code class="hint_purple"><var>S</var></code></p>
                 </div>
                 <div>
                     <p>將售價減去折扣後，就是<var>person(1)</var>所需支付的金額。<p>
-                    <p><code class="hint_blue"><var>PRICE</var></code> <code>-</code> <code class="hint_purple"><var>(DISCOUNT/100*PRICE)</var></code><code> = </code><code class="hint_orange"><var>DISCOUNT_PRICE</var></code>，</p>
-                    <p class="final_answer"><var>person(1)</var>買<var>clothing(1)</var>需要花<code class="hint_orange"><var>DISCOUNT_PRICE</var></code>元。</p>
+                    <p><code class="hint_blue"><var>PRICE</var></code> <code>-</code> <code class="hint_purple"><var>(DISCOUNT/100*PRICE)</var></code> <code> = </code> <code class="hint_pink"><var>DISCOUNT_PRICE</var></code></p>
+                    <p class="final_answer"><var>person(1)</var>買<var>clothing(1)</var>需要花<code class="hint_pink"><var>DISCOUNT_PRICE</var></code>元。</p>
                 </div>
             </div>
         </div>
@@ -120,16 +122,16 @@
                 <div>
                     <p>要算出折扣掉的金額，只需將金額乘上折扣數。</p>
                     
-                    <p><code class="hint_green"><var>PRICE</var></code> <code>\times</code> <code class="hint_blue"><var>DISCOUNT</var>\%</code>=?</p>
+                    <p><code class="hint_green"><var>PRICE</var></code> <code>\times</code> <code class="hint_blue"><var>DISCOUNT</var>\%</code> <code>=?</code></p>
                 </div>
                 <div>
-                    <p>百分比符號(<code>\%</code>)的意思是“100份中佔幾份”，所以<code class="hint_blue"><var>DISCOUNT</var>\%</code>就等於<code class="hint_blue">\displaystyle\frac{<var>DISCOUNT</var>}{100}</code>也就是<code class="hint_blue"><var>DISCOUNT</var> \div 100</code>.</p>
+                    <p>百分比符號(<code>\%</code>)的意思是“100份中佔幾份”，所以<code class="hint_blue"><var>DISCOUNT</var>\%</code>就等於<code class="hint_blue">\displaystyle\frac{<var>DISCOUNT</var>}{100}</code>也就是<code class="hint_blue"><var>DISCOUNT</var> \div 100</code>。</p>
                     <p><code class="hint_blue"><var>DISCOUNT</var> \div 100 = <var>(DISCOUNT/100)</var></code>
                 </div>
                 <div>
                     <p>將售價乘上折扣轉換成小數後的值，我們就可以算出折扣金額。</p>
-                    <p> <code class="hint_green"><var>PRICE</var></code> <code>\times</code> <code class="hint_blue"><var>(DISCOUNT/100)</var></code> = <code class="hint_orange"><var>TOTAL_DISCOUNT</var></code></p>
-                    <p class="final_answer">你將可省下<code class="hint_orange"><var>TOTAL_DISCOUNT</var></code>元。</p>
+                    <p> <code class="hint_green"><var>PRICE</var></code> <code>\times</code> <code class="hint_blue"><var>(DISCOUNT/100)</var></code> <code>=</code> <code class="hint_pink"><var>TOTAL_DISCOUNT</var></code></p>
+                    <p class="final_answer">你將可省下<code class="hint_pink"><var>TOTAL_DISCOUNT</var></code>元。</p>
                 </div>
             </div>
         </div>
@@ -153,29 +155,29 @@
             <p class="solution" data-forms="dollar"><var>TOTAL</var></p>
             <div class="hints">
                 <div>
-                    <p>小費金額等於<code><var>BILL_FORMAT</var> \times <var>TIP_PERCENT</var>\%</code>.</p>
-                    <p data-if="TIP_PERCENT !== 10">我們可以先算出<code class="hint_purple">10\%</code>小費<span data-if="TIP_PERCENT === 5">然後再除以2，就是<code>5\%</code>的金額。</span><span data-else-if="TIP_PERCENT === 20">然後再乘以2，就是<code>20\%</code>的金額。</span><span data-else>及<code class="hint_pink">5\%</code>小費的金額，後再加總起來。</span></p>
+                    <p>小費金額等於<code><var>BILL_FORMAT</var> \times <var>TIP_PERCENT</var>\%</code>。</p>
+                    <p data-if="TIP_PERCENT !== 10">我們可以先算出<code class="hint_purple">10\%</code>小費<span data-if="TIP_PERCENT === 5">然後再除以2，就是<code>5\%</code>的金額。</span><span data-else-if="TIP_PERCENT === 20">然後再乘以2，就是<code>20\%</code>的金額。</span><span data-else>及<code>5\%</code>小費的金額，後再加總起來。</span></p>
                 </div>
                 <div>
                     <p>我們計算<code class="hint_purple">10\%</code>小費，只需將<code><var>BILL_FORMAT</var></code>的小數點向左移動一位即可。</p>
-                    <p> <code><var>BILL_FORMAT</var> \times </code>  <code class="hint_purple">10\%</code> = <code class="hint_purple"><var>TIP_TEN_PERCENT</var></code></p>
+                    <p> <code><var>BILL_FORMAT</var> \times </code>  <code class="hint_purple">10\%</code> <code>=</code> <code class="hint_purple"><var>TIP_TEN_PERCENT</var></code></p>
                 </div>
                 <div data-if="TIP_PERCENT !== 10">
                     <div data-if="TIP_PERCENT % 10 === 5">
-                        <p>我們要計算<code class="hint_pink">5\%</code>小費，只要將<code class="hint_purple">10\%</code>小費除以2即可。</p>
-                        <p><code><var>BILL_FORMAT</var> \times </code> <code class="hint_pink">5\%</code> <code>=</code> <code class="hint_purple"><var>TIP_TEN_PERCENT</var></code><code> \div 2 = </code><code class="hint_pink"><var>TIP_FIVE_PERCENT</var></code>。</p>
+                        <p>我們要計算<code>5\%</code>小費，只要將<code class="hint_orange">10\%</code>小費除以2即可。</p>
+                        <p><code><var>BILL_FORMAT</var> \times </code> <code>5\%</code> <code>=</code> <code class="hint_purple"><var>TIP_TEN_PERCENT</var></code><code> \div 2 = </code><code><var>TIP_FIVE_PERCENT</var></code></p>
                     </div>
                     <div data-else>
-                        <p>我們想計算<code class="hint_green">20\%</code>小費，只需將<code class="hint_purple">10\%</code>小費乘以2即可。</p>
-                        <p> <code><var>BILL_FORMAT</var> \times </code> <code class="hint_green">20\%</code>= <code class="hint_purple"><var>TIP_TEN_PERCENT</var></code><code> \times 2 = </code><code class="hint_green"><var>TIP_AMOUNT_FORMAT</var></code>。</p>
+                        <p>我們想計算<code class="hint_green">20\%</code>小費，只需將<code class="hint_orange">10\%</code>小費乘以2即可。</p>
+                        <p> <code><var>BILL_FORMAT</var> \times </code> <code>20\%</code> <code>=</code> <code><var>TIP_TEN_PERCENT</var></code><code> \times 2 = </code><code ><var>TIP_AMOUNT_FORMAT</var></code></p>
                     </div>
                 </div>
                 <div data-if="TIP_PERCENT === 15">
-                    <p>再將<code class="hint_purple"><var>TIP_TEN_PERCENT</var></code> + <code class="hint_pink"><var>TIP_FIVE_PERCENT</var> =</code><code> <var>TIP_AMOUNT_FORMAT</var></code>，就可以算出<code>15\%</code>的小費金額。</p>
+                    <p>再將<code class="hint_green"><var>TIP_TEN_PERCENT</var></code> + <code class="hint_green"><var>TIP_FIVE_PERCENT</var> =</code><code> <var>TIP_AMOUNT_FORMAT</var></code>，就可以算出<code>15\%</code>的小費金額。</p>
                 </div>
                 <p>將餐點金額加上小費金額就是需要付的總金額。</p>
-                <p><code><var>BILL_FORMAT</var> + <var>TIP_AMOUNT_FORMAT</var> = </code><code class="hint_orange"><var>TOTAL</var></code>.</p>
-                <p class="final_answer"><var>person(1)</var>最後總共付了<code class="hint_orange"><var>TOTAL</var></code>元。</p>
+                <p><code><var>BILL_FORMAT</var> + <var>TIP_AMOUNT_FORMAT</var> = </code> <code class="hint_pink"><var>TOTAL</var></code></p>
+                <p class="final_answer"><var>person(1)</var>最後總共付了<code class="hint_pink"><var>TOTAL</var></code>元。</p>
             </div>
         </div>
 
