@@ -59,6 +59,7 @@
                     <var id="VALS">pickIntegerBasePositiveExponent()</var>
                     <var id="BASE">VALS.base</var>
                     <var id="EXP">VALS.exp</var>
+					<var id="J">round(pow( BASE, EXP ))</var>
 
                     <var id="NEG_ONE_HINT">BASE > 0 ? "" : ( isEven( EXP ) ? "偶數" : "奇數" )</var>
                 </div>
@@ -72,7 +73,7 @@
 
                         <p>任何數字的零次方等於... ?</p>
 
-                        <p>任何次方數為的零的數字，值都會是<span class="hint_blue">1</span>.</p>
+                        <p>任何次方數為的零的數字，值都會是<span class="hint_pink">1</span>。</p>
 
                     </div>
 
@@ -81,21 +82,51 @@
                         <p>任何數字的一次方等於... ?</p>
 
                         <p>無論<code>x</code>是多少，<code>x^{1}=x</code>。</p>
+						
+						<p><code>所以<var>BASE</var>^{1}=</code><code class="hint_pink"><var>BASE</var></code>。</p>
 
                     </div>
 
-                    <div data-unwrap data-else-if="BASE === 0 || BASE === 1 || BASE === -1">
+                    <div data-unwrap data-else-if="BASE === 0 || BASE === 1">
 
                         <p><var>Cardinal( BASE )</var> 的 <var>NEG_ONE_HINT</var> 次方是多少... ?</p>
 
-                        <p><var>Cardinal( BASE )</var> 的 <var>NEG_ONE_HINT</var> 次方等於 <span class="hint_blue"><var>cardinal( round( pow( BASE, EXP ) ) )</var></span>.</p>
+                        <p><var>Cardinal( BASE )</var> 的 <var>NEG_ONE_HINT</var> 次方等於 <code class="hint_pink"><var>cardinal( round( pow( BASE, EXP ) ) )</var></code>。</p>
+
+                    </div>
+					
+					<div data-unwrap data-else-if="BASE === -1">
+
+                        <p><code>(<var>BASE</var>)^{1}=<var>BASE</var></code></p>
+						<p><code>(<var>BASE</var>)^{2}=(<var>BASE</var>)(<var>BASE</var>)=1</code></p>
+						<p><code>(<var>BASE</var>)^{3}=(<var>BASE</var>)(<var>BASE</var>)(<var>BASE</var>)=<var>BASE</var></code></p>
+						<p><code>(<var>BASE</var>)^{4}=(<var>BASE</var>)(<var>BASE</var>)(<var>BASE</var>)(<var>BASE</var>)=1</code></p>
+						<p><code>(<var>BASE</var>)^{5}=(<var>BASE</var>)(<var>BASE</var>)(<var>BASE</var>)(<var>BASE</var>)(<var>BASE</var>)=<var>BASE</var></code></p>
+
+						<p><code>(<var>BASE</var>)的奇數次方=-1</code></p>
+						<p><code>(<var>BASE</var>)的偶數次方=1</code></p>
+
+						<p><code>(<var>BASE</var>)^{<var>EXP</var>}=</code><code class="hint_pink"><var>round( pow( BASE, EXP ) )</var></code></p>
 
                     </div>
 
-                    <div data-unwrap data-else>
+                    <div data-unwrap data-else-if="BASE >= 0">
 
-                        <p data-each="expandExponent( BASE, EXP ) as v"><code>= <var>v</var></code></p>
+                        <p data-each="expandExponent( BASE, EXP ) as v"> = <code><var>v</var></code></p>
+						
+						<p>所以 <code><var>BASE</var>^{<var>EXP</var>}</code> 的值為<code class="hint_pink"><var>pow( BASE, EXP )</var></code></p>
+						
+					</div>
+						
+					<div data-unwrap data-else-if="BASE < 0">
 
+                        <p data-each="expandExponent( BASE, EXP ) as v"> = <code><var>v</var></code></p>
+						
+						<p>所以 <code>(<var>BASE</var>)^{<var>EXP</var>}</code> 的值為 <code class="hint_pink"><var>pow( BASE, EXP )</var></code></p>
+						
+					</div>
+						
+						
                     </div>
                 </div>
             </div>
