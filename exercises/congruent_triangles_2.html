@@ -27,7 +27,11 @@
             <var id="TR_A">
                 function(){
                     var trA = new Triangle( [ 3, -5 ], ANGLES ,6, {} );
-                    trA.labels = { "points" : [ "A", "B", "C" ], "sides" : clearArray( trA.niceSideLengths, SIDES_A ), "angles" : clearArray( trA.niceAngles, ANGLES_A ) };
+                    var trAna = trA.niceAngles;
+                    $.each(trAna, function(i, elem){
+                        trAna[i] = '\\color{#28AE7B}{\\small{'+elem+'}}';
+                    });
+                    trA.labels = { "points" : [ "A", "B", "C" ], "sides" : clearArray( trA.niceSideLengths, SIDES_A ), "angles" : clearArray( trAna, ANGLES_A ) };
                     return trA;
                 }()
             </var>
@@ -35,6 +39,9 @@
                 function(){
                     var trB = new Triangle( [ TR_A.centroid[ 0 ],  TR_A.centroid[ 1  ] ], ANGLES, 6, {} );
                     trB.rotate( 180 );
+                    $.each(ANGLES_B, function(i, elem){
+                        ANGLES_B[i] = elem != '' ?  '\\color{red}{'+elem+'}' : '';
+                    });
                     trB.labels = { "points" : [ "D", "", "" ], "sides" : clearArray( trB.niceSideLengths, SIDES_B ),"angles" : ANGLES_B };
                     return trB;
                 }()
@@ -44,7 +51,7 @@
         <div class="question">
             <div class="graphie" id="triangle">
                 init({
-                    range: [ [-1, 15 ], [ -7, 2.5 ] ]
+                    range: [ [-1, 13 ], [ -7, 2.5 ] ]
                 })
                 TR_A.draw();
                 TR_A.drawLabels();
@@ -52,7 +59,7 @@
                 TR_B.drawLabels();
             </div>
         </div>
-        <div class="solution"><var>ANSWER</var></div>
+        <div class="solution" data-forms="integer"><var>ANSWER</var></div>
 
         <div class="problems">
             <div id="parr">
@@ -68,7 +75,7 @@
                     <p>因此，兩個三角形是全等的。</p>
                     <p>如果兩個三角形彼此全等，那它們的三個角也會彼此相等。</p>
                     <p>如果我們把三角形 ABC 旋轉後再重疊到另一個三角形上，我們可以發現角 x 對應到的是角 <var>ANGLE_LABELS[ ANG_LEFT ]</var> 。</p>
-                    <p>因此，角 x 是 <var>ANSWER</var> 度。</p>
+                    <p>因此，角 x 是 <code class="hint_pink"><var>ANSWER</var></code> 度。</p>
                 </div>
             </div>
 
@@ -79,15 +86,15 @@
                     <var id="ANGLES_A">ANG_FIRST</var>
                     <var id="ANGLES_B">clearArray( [ "x", "x", "x" ], [ ANG_LEFT ] )</var>
                 </div>
-                <div class="solution"><var>TR_B.angles[ ANG_LEFT ]</var></div>
+                <div class="solution" data-forms="integer"><var>TR_B.angles[ ANG_LEFT ]</var></div>
                 <div class="hints">
                     <p>這兩個三角形有三個對等的邊 (其中一個邊是共用的)。</p>
                     <p>因此，兩個三角形是全等的。</p>
                     <p>如果兩個三角形彼此全等，那它們的三個角也會彼此相等。</p>
                     <p>如果我們把三角形 ABC 旋轉後再重疊到另一個三角形上，我們可以發現角 x 對應到的是角 <var>ANGLE_LABELS[ ANG_LEFT ]</var> 。</p>
-                    <p><code><var>ANGLE_LABELS[ ANG_LEFT ]</var> = 180 - <var>TR_A.angles[ ANG_FIRST[ 0 ] ]</var> -  <var>TR_A.angles[ ANG_FIRST[ 1 ] ]</var></code></p>
+                    <p>角 <code><var>ANGLE_LABELS[ ANG_LEFT ]</var> = 180^\circ - <var>TR_A.angles[ ANG_FIRST[ 0 ] ]</var>^\circ -  <var>TR_A.angles[ ANG_FIRST[ 1 ] ]</var>^\circ</code></p>
                     <div>
-                        <p><code><var>ANGLE_LABELS[ ANG_LEFT ]</var> = x = <var>TR_B.angles[ ANG_LEFT ]</var></code></p>
+                        <p>角 <code><var>ANGLE_LABELS[ ANG_LEFT ]</var> = x = \color{#FF00AF}{<var>TR_B.angles[ ANG_LEFT ]</var>^\circ}</code></p>
                         <div class="graphie" data-update="triangle">
                             TR_A.labels.angles = TR_A.niceAngles;
                             TR_A.drawLabels();
@@ -98,7 +105,7 @@
             </div>
 
             <div id="opposite">
-                <div class="vars">
+                <div class="vars" data-ensure="ANGLES[0] &lt; 120">
                     <var id="NEW_ANG">
                         function(){
                             var newAng = RAND_ANG;
@@ -131,19 +138,34 @@
                     <var id="ANG">ANGLES[ 0 ] / 2</var>
                     <var id="TR_A">
                         function(){
-                            var trA = new Triangle( [ 7, -3 ], ANGLES ,6, {} );
+                            var trA = new Triangle( [ 5, -3 ], ANGLES ,5, {} );
                             trA.rotationCenter = trA.points[ 0 ];
                             trA.rotate( ANG );
-                            trA.labels = { "points" : [ "", "B", "C" ], "sides" : clearArray( trA.niceSideLengths, SIDES_A ), "angles" : clearArray( trA.niceAngles, ANGLES_A ) };
+                            var trAna = trA.niceAngles;
+                            var trAns = trA.niceSideLengths;
+                            $.each(trAns, function(i, elem){
+                                trAns[i] = '\\small{'+elem+'}';
+                            });
+                            $.each(trAna, function(i, elem){
+                                trAna[i] = '\\color{#28AE7B}{\\small{'+elem+'}}';
+                            });
+                            trA.labels = { "points" : [ "", "B", "C" ], "sides" : clearArray( trAns, SIDES_A ), "angles" : clearArray( trAna, ANGLES_A ) };
                             return trA;
                         }()
                     </var>
                     <var id="TR_B">
                         function(){
-                            var trB = new Triangle( [ 7 - cos( ANG * PI / 180 ) * TR_A.sideLengths[ 0 ], -3 - sin( ANG * PI / 180 ) * TR_A.sideLengths[ 0 ] ], [ ANGLES[ 1 ], ANGLES[ 0 ], ANGLES[ 2 ] ] , 6, {} );
+                            var trB = new Triangle( [ 5 - cos( ANG * PI / 180 ) * TR_A.sideLengths[ 0 ], -3 - sin( ANG * PI / 180 ) * TR_A.sideLengths[ 0 ] ], [ ANGLES[ 1 ], ANGLES[ 0 ], ANGLES[ 2 ] ] , 5, {} );
                             trB.rotationCenter = trB.points[ 0 ];
                             trB.rotate( -ANG );
-                            trB.labels = { "points" : [ "D", "", "E" ], "sides" : clearArray( trB.niceSideLengths, SIDES_B ), "angles" : ANGLES_B };
+                            var trBns = trB.niceSideLengths;
+                            $.each(trBns, function(i, elem){
+                                trBns[i] = '\\small{'+elem+'}';
+                            });
+                            $.each(ANGLES_B, function(i, elem){
+                                ANGLES_B[i] = elem != '' ?  '\\color{red}{'+elem+'}' : '';
+                            });
+                            trB.labels = { "points" : [ "D", "", "E" ], "sides" : clearArray( trBns, SIDES_B ), "angles" : ANGLES_B };
                             return trB;
                         }()
                     </var>
@@ -152,7 +174,7 @@
                 <div class="question">
                     <div class="graphie" id="oppTriangle">
                     init({
-                        range: [ [-1, 15 ], [ -7, 2.5 ] ]
+                        range: [ [-1, 13 ], [ -7, 2.5 ] ]
                     })
                     TR_A.draw();
                     TR_A.drawLabels();
@@ -161,23 +183,23 @@
                     label( TR_B.points[ 1 ], "A", "above" );
                     </div>
                 </div>
-                <div class="solution"><var>ANSWER</var></div>
+                <div class="solution" data-forms="integer"><var>ANSWER</var></div>
                 <div class="hints">
                     <p>這兩個三角形有兩個對等的邊和一個對等的夾角。</p>
                     <p>因此，兩個三角形是全等的。</p>
                     <p>如果兩個三角形彼此全等，那它們的三個角也會彼此相等。</p>
                     <p>如果我們把三角形 <code>EDA</code> 翻轉後再重疊到另一個三角形上，我們可以發現角 x 對應到的是角 <var>ANGLE_LABELS[ SHOW_ANGLE ]</var> 。</p>
                     <div data-if="! SAME_ANGLE">
-                        <p><code><var>ANGLE_LABELS[ SHOW_ANGLE ]</var> = 180 - <var>TR_A.angles[ ANG_FIRST[ 0 ] ]</var> -  <var>TR_A.angles[ ANG_FIRST[ 1 ] ]</var></code></p>
+                        <p>角 <code><var>ANGLE_LABELS[ SHOW_ANGLE ]</var> = 180^\circ - <var>TR_A.angles[ ANG_FIRST[ 0 ] ]</var>^\circ -  <var>TR_A.angles[ ANG_FIRST[ 1 ] ]</var>^\circ</code></p>
                         <div>
-                            <p><code><var>ANGLE_LABELS[ SHOW_ANGLE ]</var> = x = <var>TR_B.angles[ ANG_LEFT ]</var></code></p>
+                            <p>角 <code><var>ANGLE_LABELS[ SHOW_ANGLE ]</var> = x = <var>TR_B.angles[ ANG_LEFT ]</var>^\circ</code></p>
                             <div class="graphie" data-update="oppTriangle">
                                 TR_A.labels.angles = TR_A.niceAngles;
                                 TR_A.drawLabels();
                             </div>
                         </div>
                     </div>
-					<p>因此，角 x 是 <var>ANSWER</var> 度。</p>
+					<p>因此，角 x 是 <code class="hint_pink"><var>ANSWER</var></code> 度。</p>
                 </div>
             </div>
         </div>
