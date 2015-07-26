@@ -192,16 +192,6 @@ function handleAttempt(data) {
         });
     }
 
-    var curTime = new Date().getTime();
-    var timeTaken = Math.round((curTime - lastAttemptOrHint) / 1000);
-    var stringifiedGuess = JSON.stringify(score.guess);
-    var attemptData = null;
-    if (!localMode) {
-        attemptData = buildAttemptData(
-            score.correct, ++attempts, stringifiedGuess, timeTaken, skipped);
-    }
-    lastAttemptOrHint = curTime;
-
     Exercises.guessLog.push(score.guess);
     Exercises.userActivityLog.push([
             score.correct ? "correct-activity" : "incorrect-activity",
@@ -293,6 +283,16 @@ function handleAttempt(data) {
         // wait for the special assessment mode triggers to fire instead.
         $(Exercises).trigger("gotoNextProblem");
     }
+
+    var curTime = new Date().getTime();
+    var timeTaken = Math.round((curTime - lastAttemptOrHint) / 1000);
+    var stringifiedGuess = JSON.stringify(score.guess);
+    var attemptData = null;
+    if (!localMode) {
+        attemptData = buildAttemptData(
+            score.correct, ++attempts, stringifiedGuess, timeTaken, skipped);
+    }
+    lastAttemptOrHint = curTime;
 
     // Save the problem results to the server
     var requestUrl = "problems/" + problemNum + "/attempt";
@@ -404,7 +404,7 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         data = Khan.getSeedInfo();
     }
 
-    _.extend(data, {
+    return _.extend(data, {
         // Ask for camel casing in returned response
         casing: "camel",
 
@@ -422,6 +422,10 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
 
         // Whether we're currently in review mode
         review_mode: Exercises.reviewMode ? 1 : 0,
+
+        // Which stage we're at in practice mode
+        is_starting: Exercises.isStarting ? 1 : 0,
+        is_challenging: Exercises.isChallenging ? 1 : 0,
 
         // Whether we are currently working on a topic, as opposed to an exercise
         topic_mode: (!Exercises.reviewMode && !Exercises.practiceMode && !Exercises.pretestMode) ? 1 : 0,
@@ -455,8 +459,6 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         // Whether the user is skipping the question
         skipped: skipped ? 1 : 0
     });
-
-    return data;
 }
 
 
