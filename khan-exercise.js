@@ -722,7 +722,11 @@ var Khan = (function() {
         },
 
         scoreInput: function() {
-            var guess = Khan.asc(getAnswer());
+            var guess = getAnswer();
+            var not_transform_list = ["radio", "custom", "multiple"]
+            if (not_transform_list.indexOf(Khan.answerType) == 0) {
+                    guess = Khan.asc(guess)
+            }  // 全型轉半型
             var pass = validator(guess);
             var empty = checkIfAnswerEmpty(guess) || checkIfAnswerEmpty(pass);
 
@@ -1289,6 +1293,7 @@ var Khan = (function() {
             }
         }
 
+        Khan.answerType = answerType
         // Generate a type of problem
         // (this includes possibly generating the multiple choice problems,
         // if this fails then we will need to try generating another one.)
