@@ -723,8 +723,8 @@ var Khan = (function() {
 
         scoreInput: function() {
             var guess = getAnswer();
-            var not_transform_list = ["radio", "custom", "multiple"]
-            if (not_transform_list.indexOf(Khan.answerType) == 0) {
+            var asc_transform_list = ["text", "number", "decimal"]
+            if (asc_transform_list.indexOf(Khan.answerType) >= 0) {
                     guess = Khan.asc(guess)
             }  // 全型轉半型
             var pass = validator(guess);
