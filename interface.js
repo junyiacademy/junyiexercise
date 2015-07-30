@@ -265,6 +265,16 @@ function handleAttempt(data) {
         fast: !localMode && userExercise.secondsPerFastProblem >= timeTaken
     });
 
+    var curTime = new Date().getTime();
+    var timeTaken = Math.round((curTime - lastAttemptOrHint) / 1000);
+    var stringifiedGuess = JSON.stringify(score.guess);
+    var attemptData = null;
+    if (!localMode) {
+        attemptData = buildAttemptData(
+            score.correct, ++attempts, stringifiedGuess, timeTaken, skipped);
+    }
+    lastAttemptOrHint = curTime;
+
     if (localMode || Exercises.currentCard.get("preview")) {
         // Skip the server; just pretend we have success
         return false;
@@ -283,16 +293,6 @@ function handleAttempt(data) {
         // wait for the special assessment mode triggers to fire instead.
         $(Exercises).trigger("gotoNextProblem");
     }
-
-    var curTime = new Date().getTime();
-    var timeTaken = Math.round((curTime - lastAttemptOrHint) / 1000);
-    var stringifiedGuess = JSON.stringify(score.guess);
-    var attemptData = null;
-    if (!localMode) {
-        attemptData = buildAttemptData(
-            score.correct, ++attempts, stringifiedGuess, timeTaken, skipped);
-    }
-    lastAttemptOrHint = curTime;
 
     // Save the problem results to the server
     var requestUrl = "problems/" + problemNum + "/attempt";
