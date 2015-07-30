@@ -215,6 +215,12 @@ function handleAttempt(data) {
             .prop("disabled", false)
             .removeClass("buttonDisabled")
             .show();
+        $('#positive-trigger')
+            .attr('style', 'z-index:1;position:absolute;right:0px')
+            .effect('bounce', {}, 800, function(){
+                $(this).hide();
+            });
+
         if(!/iphone|ipod|ipad/i.test(navigator.userAgent)) // check if is ipad device
         {
             $("#next-question-button").focus();
