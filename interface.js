@@ -77,10 +77,10 @@ function exercisePointCalculator(){
     
     var proficient = userExercise.exerciseStates['proficient'];
     var suggested = userExercise.exerciseStates['suggested'];
-    if (userExercise.longest_streak + offset <= required_streak) {
+    if (userExercise.longestStreak + offset <= required_streak) {
         points = incomplete_exercise_points_base;
-    } else if (userExercise.longest_streak + offset < degrade_threshold) {
-        points = degrade_threshold - userExercise.longest_streak - offset;
+    } else if (userExercise.longestStreak + offset < degrade_threshold) {
+        points = degrade_threshold - userExercise.longestStreak - offset;
     }
 
     if (points < exercise_points_base) {
@@ -268,7 +268,7 @@ function handleAttempt(data) {
             var points = exercisePointCalculator();
             $('#answercontent .energy-points-badge')
             .html('+' +points.toString())
-            .attr('style', 'z-index:1;position:absolute;right:0px')
+            .attr('style', 'z-index:1;position:absolute;bottom:30px;right:10px;')
             .effect('bounce', {}, 1000, function(){
                 $(this).hide();
             }); 
