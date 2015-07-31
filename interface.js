@@ -56,6 +56,55 @@ $(Exercises)
     .bind("updateUserExercise", updateUserExercise)
     .bind("clearExistingProblem", clearExistingProblem);
 
+function exercisePointCalculator(){
+    // Warning!!!!!!!!!!!
+    // If you want to modify exercisePointCalculator, you have to modify
+    // 'ExercisePointCalculator()' in points.py too.
+
+    var min_streak_till_proficiency = 4;
+    var degrade_threshold = 19;
+    var incomplete_exercise_points_base = 15;
+    var exercise_points_base = 5;
+    var topic_exercise_multiplier = 3;
+    var suggested_exercise_multiplier = 3;
+    var incomplete_exercise_multiplier = 5;
+    var limit_exercises = 150;
+
+    var points = 0;
+    var offset = 0;
+    var required_streak = min_streak_till_proficiency;
+    //degrade_threshold = (required_streak + consts.DEGRADING_EXERCISES_AFTER_PROFICIENCY)
+    
+    var proficient = userExercise.exerciseStates['proficient'];
+    var suggested = userExercise.exerciseStates['suggested'];
+    if (userExercise.longest_streak + offset <= required_streak) {
+        points = incomplete_exercise_points_base;
+    } else if (userExercise.longest_streak + offset < degrade_threshold) {
+        points = degrade_threshold - userExercise.longest_streak - offset;
+    }
+
+    if (points < exercise_points_base) {
+        points = exercise_points_base;
+    }
+
+    if (!Exercises.reviewMode && !Exercises.practiceMode && !Exercises.pretestMode) {
+        // topic_mode
+        points = points * topic_exercise_multiplier;
+    } else if (suggested) {
+        points = points * suggested_exercise_multiplier;
+    }
+
+    if (! proficient) {
+        points = points * incomplete_exercise_multiplier;
+    }
+
+    if (userExercise.totalDone >= limit_exercises){
+        points = exercise_points_base;
+    }
+
+    return Math.ceil(points);
+
+}
 
 function problemTemplateRendered() {
     previewingItem = Exercises.previewingItem;
@@ -215,11 +264,17 @@ function handleAttempt(data) {
             .prop("disabled", false)
             .removeClass("buttonDisabled")
             .show();
-        $('#positive-trigger')
+        if ( hintsUsed == 0  && attempts == 0){
+            var points = exercisePointCalculator();
+            $('#answercontent .energy-points-badge')
+            .html('+' +points.toString())
             .attr('style', 'z-index:1;position:absolute;right:0px')
-            .effect('bounce', {}, 800, function(){
+            .effect('bounce', {}, 1000, function(){
                 $(this).hide();
-            });
+            }); 
+        }
+        
+        
 
         if(!/iphone|ipod|ipad/i.test(navigator.userAgent)) // check if is ipad device
         {
