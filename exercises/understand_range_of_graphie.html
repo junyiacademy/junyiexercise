@@ -25,30 +25,20 @@
 <div class="problems">
 	<div id="case1">
         <div class="vars">
-			<var id="arr_lu">[randRangeUnique(1,4,3),randRange(1,3)]</var>
-			<var id="arr_ru">[randRangeUnique(1,4,3),randRange(1,3)]</var>
-			<var id="arr_lb">[randRangeUnique(1,4,3),randRange(1,3)]</var>
-			<var id="arr_rb">[randRangeUnique(1,4,3),randRange(1,3)]</var>
+			<var id="arr_lu">[randRange(1,4),randRange(1,3)]</var>
 			<var id="s">randRange(10,20)/10</var>
-			<var id="x">randRange(10,20)/10</var>
-			<var id="y">randRange(10,20)/10</var>
-			<var id="z">randRange(10,20)/10</var>
         </div>
 		<p class="question">圓點是在圖形的內部、外部或周界上？選選看。</p>
 		<div class="problem">
 			<div class="graphie" id="edge1">
 				init({
-                    range: [ [-1, 12], [-5, 5] ],
+                    range: [ [-1, 7], [-1, 5] ],
                     scale: 40
                 });
-				line([-1,0],[12,0],{stroke:"#6495ED"});
-				line([5.5,5],[5.5,-5],{stroke:"#6495ED"});
-				label([-1,5],"(1)","below right");
-				label([5.5,5],"(2)","below right");
-				label([-1,0],"(3)","below right");
-				label([5.5,0],"(4)","below right");
-				path([[-1,5],[12,5],[12,-5],[-1,-5],[-1,5]],{stroke:"#6495ED"});
-				if(arr_lu[0][0]==1){
+				line([-1,0],[5.5,0],{stroke:"#6495ED"});
+				line([5.5,5],[5.5,0],{stroke:"#6495ED"});
+				path([[-1,5],[5.5,5],[5.5,0],[-1,0],[-1,5]],{stroke:"#6495ED"});
+				if(arr_lu[0]==1){
 					var sss = randRange(10,25)/10;
 					circle([2.25,2.5],sss,{stroke:"#28AE7B",fill:"#CEFFCE"});
 					if(arr_lu[1]==1){
@@ -58,7 +48,7 @@
 					}else {
 						circle([5.2,2.2],0.1,{fill:"black"});
 					}
-				} else if(arr_lu[0][0]==2){
+				} else if(arr_lu[0]==2){
 					path([[2.25-s,2.5+s],[2.25+s,2.5+s],[2.25+s,2.5-s],[2.25-s,2.5-s],[2.25-s,2.5+s]],{stroke:"#28AE7B",fill:"#CEFFCE"});
 					if(arr_lu[1]==1){
 						circle([2.25,2.5],0.1,{fill:"black"});
@@ -77,111 +67,15 @@
 						circle([5.2,2.2],0.1,{fill:"black"});
 					}
 				}
-				
-				if(arr_ru[0][0]==1){
-					var rrr = randRange(10,25)/10;
-					circle([8.75,2.5],rrr,{stroke:"red",fill:"#FF9797"});
-					if(arr_ru[1]==1){
-						circle([8.75,2.5],0.1,{fill:"black"});
-					}else if(arr_ru[1]==2){
-						circle([8.75+randFromArray([rrr,-rrr]),2.5],0.1,{fill:"black"});
-					}else {
-						circle([11.5,2.2],0.1,{fill:"black"});
-					}
-				} else if(arr_ru[0][0]==2){
-					path([[8.75-x,2.5+x],[8.75+x,2.5+x],[8.75+x,2.5-x],[8.75-x,2.5-x],[8.75-x,2.5+x]],{stroke:"red",fill:"#FF9797"});
-					if(arr_ru[1]==1){
-						circle([8.75,2.5],0.1,{fill:"black"});
-					}else if(arr_ru[1]==2){
-						circle([8.75+randFromArray([x,-x]),2.5],0.1,{fill:"black"});
-					}else {
-						circle([11.5,2.2],0.1,{fill:"black"});
-					}
-				} else {
-					path([[8.75-x,2.5+x],[8.75+x,2.5+x],[8.75,2.5-x],[8.75-x,2.5+x]],{stroke:"red",fill:"#FF9797"});
-					if(arr_ru[1]==1){
-						circle([8.75,2.5],0.1,{fill:"black"});
-					}else if(arr_ru[1]==2){
-						circle([8.75+randFromArray([x,-x]),2.5+x],0.1,{fill:"black"});
-					}else {
-						circle([11.5,2.2],0.1,{fill:"black"});
-					}
-				}
-				
-				if(arr_lb[0][0]==1){
-					var lll = randRange(10,25)/10;
-					circle([2.25,-2.5],lll,{stroke:"#FFA500",fill:"#FFFFAA"});
-					if(arr_lb[1]==1){
-						circle([2.25,-2.5],0.1,{fill:"black"});
-					}else if(arr_lb[1]==2){
-						circle([2.25+randFromArray([lll,-lll]),-2.5],0.1,{fill:"black"});
-					}else {
-						circle([5.2,-2.2],0.1,{fill:"black"});
-					}
-				} else if(arr_lb[0][0]==2){
-					path([[2.25-y,-2.5+y],[2.25+y,-2.5+y],[2.25+y,-2.5-y],[2.25-y,-2.5-y],[2.25-y,-2.5+y]],{stroke:"#FFA500",fill:"#FFFFAA"});
-					if(arr_lb[1]==1){
-						circle([2.25,-2.5],0.1,{fill:"black"});
-					}else if(arr_lb[1]==2){
-						circle([2.25+randFromArray([y,-y]),-2.5],0.1,{fill:"black"});
-					}else {
-						circle([5.2,-2.2],0.1,{fill:"black"});
-					}
-				} else {
-					path([[2.25-y,-2.5+y],[2.25+y,-2.5+y],[2.25,-2.5-y],[2.25-y,-2.5+y]],{stroke:"#FFA500",fill:"#FFFFAA"});
-					if(arr_lb[1]==1){
-						circle([2.25,-2.5],0.1,{fill:"black"});
-					}else if(arr_lb[1]==2){
-						circle([2.25+randFromArray([y,-y]),-2.5+y],0.1,{fill:"black"});
-					}else {
-						circle([5.2,-2.2],0.1,{fill:"black"});
-					}
-				}
-				
-				if(arr_rb[0][0]==1){
-					var zzz = randRange(10,25)/10;
-					circle([8.75,-2.5],zzz,{stroke:"purple",fill:"#DAB1D5"});
-					if(arr_rb[1]==1){
-						circle([8.75,-2.5],0.1,{fill:"black"});
-					}else if(arr_rb[1]==2){
-						circle([8.75+randFromArray([zzz,-zzz]),-2.5],0.1,{fill:"black"});
-					}else {
-						circle([11.2,-2.2],0.1,{fill:"black"});
-					}
-				} else if(arr_rb[0][0]==2){
-					path([[8.75-z,-2.5+z],[8.75+z,-2.5+z],[8.75+z,-2.5-z],[8.75-z,-2.5-z],[8.75-z,-2.5+z]],{stroke:"purple",fill:"#DAB1D5"});
-					if(arr_rb[1]==1){
-						circle([8.75,-2.5],0.1,{fill:"black"});
-					}else if(arr_rb[1]==2){
-						circle([8.75+randFromArray([z,-z]),-2.5],0.1,{fill:"black"});
-					}else {
-						circle([11.2,-2.2],0.1,{fill:"black"});
-					}
-				} else {
-					path([[8.75-z,-2.5+z],[8.75+z,-2.5+z],[8.75,-2.5-z],[8.75-z,-2.5+z]],{stroke:"purple",fill:"#DAB1D5"});
-					if(arr_rb[1]==1){
-						circle([8.75,-2.5],0.1,{fill:"black"});
-					}else if(arr_rb[1]==2){
-						circle([8.75+randFromArray([z,-z]),-2.5+z],0.1,{fill:"black"});
-					}else {
-						circle([11.2,-2.2],0.1,{fill:"black"});
-					}
-				}
 			</div>
 		</div>
 		<div class="solution" data-type="multiple">
-			<p><code>(1)\enspace</code><span class="sol" data-type="list" data-choices="['', '內部', '周界上', '外部']"><var>arr_lu[1]==1?"內部":(arr_lu[1]==2?"周界上":"外部")</var></span></p>
-			<p><code>(2)\enspace</code><span class="sol" data-type="list" data-choices="['', '內部', '周界上', '外部']"><var>arr_ru[1]==1?"內部":(arr_ru[1]==2?"周界上":"外部")</var></span></p>
-			<p><code>(3)\enspace</code><span class="sol" data-type="list" data-choices="['', '內部', '周界上', '外部']"><var>arr_lb[1]==1?"內部":(arr_lb[1]==2?"周界上":"外部")</var></span></p>
-			<p><code>(4)\enspace</code><span class="sol" data-type="list" data-choices="['', '內部', '周界上', '外部']"><var>arr_rb[1]==1?"內部":(arr_rb[1]==2?"周界上":"外部")</var></span></p>
+			<p><span class="sol" data-type="list" data-choices="['', '內部', '周界上', '外部']"><var>arr_lu[1]==1?"內部":(arr_lu[1]==2?"周界上":"外部")</var></span></p>
 			<p class="example">在下拉列表中選擇正確答案</p>
 		</div>
 
 		<div class="hints">
-			<p><code>(1)\enspace</code><span class="hint_pink"><var>arr_lu[1]==1?"內部":(arr_lu[1]==2?"周界上":"外部")</var></span></p>
-			<p><code>(2)\enspace</code><span class="hint_pink"><var>arr_ru[1]==1?"內部":(arr_ru[1]==2?"周界上":"外部")</var></span></p>
-			<p><code>(3)\enspace</code><span class="hint_pink"><var>arr_lb[1]==1?"內部":(arr_lb[1]==2?"周界上":"外部")</var></span></p>
-			<p style="font-weight:normal"><code>(4)\enspace</code><span class="hint_pink"><var>arr_rb[1]==1?"內部":(arr_rb[1]==2?"周界上":"外部")</var></span></p>
+			<p><span class="hint_pink"><var>arr_lu[1]==1?"內部":(arr_lu[1]==2?"周界上":"外部")</var></span></p>
 		</div>
 	</div>
 	
