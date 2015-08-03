@@ -1121,7 +1121,7 @@ var Khan = (function() {
         // we made earlier to ensure that every problem gets shown the
         // appropriate number of times
         } else if (problemBag.length > 0) {
-            problem = problemBag[problemBagIndex];
+            problem = problemBag[(problemBagIndex + skipCount) % problemCount];
             id = problem.data("id");
 
         // No valid problem was found, bail out
