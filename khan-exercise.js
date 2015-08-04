@@ -1085,6 +1085,10 @@ var Khan = (function() {
     }
 
     function makeProblem(skipCount, id, seed) {
+        if (!skipCount) {
+            skipCount = 0;
+        }
+
         debugLog("start of makeProblem");
 
         // Enable scratchpad (unless the exercise explicitly disables it later)
