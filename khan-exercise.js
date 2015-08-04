@@ -723,9 +723,16 @@ var Khan = (function() {
 
         scoreInput: function() {
             var guess = getAnswer();
-            var asc_transform_list = ["text", "number", "decimal"]
+            var asc_transform_list = ["text", "number", "decimal", "set", "multiple"];
             if (asc_transform_list.indexOf(Khan.answerType) >= 0) {
-                    guess = Khan.asc(guess)
+                    if (typeof guess === "string") {
+                        guess = Khan.asc(guess);
+                    }
+                    else if (Array.isArray(guess)) {
+                        for (index = 0; index < guess.length; ++index) {
+                            guess[index] = Khan.asc(guess[index]);
+                        }
+                    }
             }  // 全型轉半型
             var pass = validator(guess);
             var empty = checkIfAnswerEmpty(guess) || checkIfAnswerEmpty(pass);
