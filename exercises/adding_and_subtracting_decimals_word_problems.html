@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-require="math word-problems spin graphie graphie-helpers-arithmetic">
+<html data-require="math math-format word-problems spin graphie graphie-helpers-arithmetic">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>加法減法的小數問題</title>
@@ -16,14 +16,14 @@
                 <var id="C">randRange(1,9)*1</var>
                 <var id="fruit_1_integer">A+B+C</var>
                 <var id="fruit_1_decimal">(2)</var>
-                <var id="fruit_1">truncate_to_max(fruit_1_integer*pow(10,-fruit_1_decimal), 2)</var>
+                <var id="fruit_1">roundTo(4,truncate_to_max(fruit_1_integer*pow(10,-fruit_1_decimal), 2))</var>
                 <var id="D">randRange(3,9)*100</var>
                 <var id="E">randRange(1,9)*10</var>
                 <var id="F" data-ensure="F+C !== 10">randRange(1,9)*1</var>
                 <var id="fruit_2_integer">D+E+F</var>
                 <var id="fruit_2_decimal">(2)</var>
-                <var id="fruit_2">truncate_to_max(fruit_2_integer*pow(10,-fruit_2_decimal), 2)</var>
-                <var id="solution">truncate_to_max((fruit_1+fruit_2),2)</var>
+                <var id="fruit_2">roundTo(4,truncate_to_max(fruit_2_integer*pow(10,-fruit_2_decimal), 2))</var>
+                <var id="solution">roundTo(4,truncate_to_max((fruit_1+fruit_2),2))</var>
                 <var id="DUMMY">[]</var>
             </div>
 
@@ -47,7 +47,7 @@
                     graph.adder.showHint();
                 </div>
 
-                <p class="final_answer"><var>person(1)</var>需要付 <code><var>solution</var></code> 元。</p>
+                <p class="final_answer"><var>person(1)</var>需要付 <code class="hint_pink"><var>solution</var></code> 元。</p>
             </div>
         </div>
 
@@ -57,15 +57,15 @@
                 <var id="meters">randRange(1, 3)*100</var>
                 <var id="time_1_integer">randRange(2000,9999)</var>
                 <var id="time_1_decimal">(2)</var>
-                <var id="time_1">truncate_to_max(time_1_integer*pow(10,-time_1_decimal), 2)</var>
+                <var id="time_1">roundTo(4,truncate_to_max(time_1_integer*pow(10,-time_1_decimal), 2))</var>
                 <var id="time_2_integer" data-ensure="time_2_integer &lt; time_1_integer">randRange(2000,9999)</var>
                 <var id="time_2_decimal">(2)</var>
-                <var id="time_2">truncate_to_max(time_2_integer*pow(10,-time_2_decimal), 2)</var>
+                <var id="time_2">roundTo(4,truncate_to_max(time_2_integer*pow(10,-time_2_decimal), 2))</var>
                 <var id="time_3_integer">randRange(100,999)</var>
                 <var id="time_3_decimal">(2)</var>
-                <var id="time_3">truncate_to_max(time_3_integer*pow(10,-time_3_decimal), 2)</var>
+                <var id="time_3">roundTo(4,truncate_to_max(time_3_integer*pow(10,-time_3_decimal), 2))</var>
                 <var id="DUMMY">[]</var>
-                <var id="solution">truncate_to_max((time_1-time_2),2)</var>
+                <var id="solution">roundTo(4,truncate_to_max((time_1-time_2),2))</var>
             </div>
 
             <div class="question spin">
@@ -87,7 +87,7 @@
                 <div class="graphie" data-update="numbers" data-each="DecimalAdder.numHintsFor( time_1_integer, time_1_decimal, time_2_integer, time_2_decimal ) times">
                     graph.subtractor.showHint();
                 </div>
-                <p class="final_answer"><var>person(2)</var>比<var>person(1)</var>快上 <code><var>solution</var></code> 秒。</p>
+                <p class="final_answer"><var>person(2)</var>比<var>person(1)</var>快上 <code class="hint_pink"><var>solution</var></code> 秒。</p>
             </div>
         </div>
 
@@ -99,16 +99,16 @@
                 <var id="I">randRange(1,9)*1</var>
                 <var id="weight_1_integer">G+H+I</var>
                 <var id="weight_1_decimal">(2)</var>
-                <var id="weight_1">truncate_to_max(0.4536*weight_1_integer*pow(10,-weight_1_decimal), 2)</var>
+                <var id="weight_1">roundTo(4,truncate_to_max(0.4536*weight_1_integer*pow(10,-weight_1_decimal), 2))</var>
                 <var id="J">randRange(3,5)*100</var>
                 <var id="K">randRange(1,9)*10</var>
                 <var id="L">randRange(1,9)*1</var>
                 <var id="weight_2_integer">J+K+L</var>
                 <var id="weight_2_decimal">(2)</var>
-                <var id="weight_2">truncate_to_max(0.4536*weight_2_integer*pow(10,-weight_2_decimal), 2)</var>
-                <var id="height_1">randRange(16.5,22.5)*2.54</var>
-                <var id="height_2">randRange(16.5,22.5)*2.54</var>
-                <var id="solution">truncate_to_max((weight_1+weight_2),2)</var>
+                <var id="weight_2">roundTo(4,truncate_to_max(0.4536*weight_2_integer*pow(10,-weight_2_decimal), 2))</var>
+                <var id="height_1">roundTo(4,randRange(16.5,22.5)*2.54)</var>
+                <var id="height_2">roundTo(4,randRange(16.5,22.5)*2.54)</var>
+                <var id="solution">roundTo(4,truncate_to_max((weight_1+weight_2),2))</var>
                 <var id="DUMMY">[]</var>
             </div>
 
@@ -119,14 +119,14 @@
             </div>
 
             <div class="solution" data-type="multiple">
-                    <p><span class="sol"><var> weight_1+weight_2 </var></span> 磅</p>
+                    <p><span class="sol"><var> weight_1+weight_2 </var></span> 公斤</p>
             </div>
 
             <div class="hints">
                 <p>要知道寶寶們的總重，我們必須先把體重加起來。
                 <p><var>person(2)</var>的重量 <code>+</code> <var>person(3)</var>的重量 <code>=</code> 總重量。</p>
                 <div class="graphie" id="numbers">
-                    graph.adder = new DecimalAdder( weight_1*100, weight_1_decimal, weight_2*100, weight_2_decimal );
+                    graph.adder = new DecimalAdder( roundTo(4,weight_1*100), weight_1_decimal, roundTo(4,weight_2*100), weight_2_decimal );
                     graph.adder.show();
                     graph.adder.showDecimals();
                 </div>
@@ -137,7 +137,7 @@
                 <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
                     graph.adder.showHint();
                 </div>
-                <p class="final_answer">寶寶們總重 <code><var>solution</var></code> 公斤。</p>
+                <p class="final_answer">寶寶們總重 <code class="hint_pink"><var>solution</var></code> 公斤。</p>
             </div>
         </div>
 
@@ -149,15 +149,15 @@
                 <var id="O">randRange(2,9)</var>
                 <var id="amount_paid_integer">M*100+N*10+O</var>
                 <var id="amount_paid_decimal">(2)</var>
-                <var id="amount_paid">truncate_to_max(amount_paid_integer*pow(10,-amount_paid_decimal), 2)</var>
+                <var id="amount_paid">roundTo(4,truncate_to_max(amount_paid_integer*pow(10,-amount_paid_decimal), 2))</var>
                 <var id="P">randRange(1,M)*100</var>
                 <var id="Q">randRange(1,N)*10</var>
                 <var id="R">randRange(1,O)*1</var>
                 <var id="price_1_integer">P+Q+R</var>
                 <var id="price_1_decimal">(2)</var>
-                <var id="price_1">truncate_to_max(price_1_integer*pow(10,-price_1_decimal), 2)</var>
+                <var id="price_1">roundTo(4,truncate_to_max(price_1_integer*pow(10,-price_1_decimal), 2))</var>
                 <var id="time_1">randRange(3, 30)</var>
-                <var id="solution">truncate_to_max((amount_paid-price_1),2)</var>
+                <var id="solution">roundTo(4,truncate_to_max((amount_paid-price_1),2))</var>
                 <var id="DUMMY">[]</var>
             </div>
 
@@ -178,7 +178,7 @@
                 <div class="graphie" data-update="numbers" data-each="DecimalAdder.numHintsFor( amount_paid_integer, amount_paid_decimal, price_1_integer, price_1_decimal ) times">
                     graph.subtractor.showHint();
                 </div>
-                <p class="final_answer"><var>person(1)</var>收到 <code><var>solution</var></code> 元的零錢。</p>
+                <p class="final_answer"><var>person(1)</var>收到 <code class="hint_pink"><var>solution</var></code> 元的零錢。</p>
             </div>
         </div>
 
@@ -187,13 +187,13 @@
             <div class="vars">
                 <var id="rain_1_integer">randRange(101,999)</var>
                 <var id="rain_1_decimal">(2)</var>
-                <var id="rain_1">truncate_to_max(2.54*rain_1_integer*pow(10,-rain_1_decimal), 2)</var>
+                <var id="rain_1">roundTo(4,truncate_to_max(2.54*rain_1_integer*pow(10,-rain_1_decimal), 2))</var>
                 <var id="rain_2_integer">randRange(rain_1_integer+1,999)</var>
                 <var id="rain_2_decimal">(2)</var>
-                <var id="rain_2">truncate_to_max(2.54*rain_2_integer*pow(10,-rain_2_decimal), 2)</var>
-                <var id="snow_1">randRange(2.1,15.89)</var>
+                <var id="rain_2">roundTo(4,truncate_to_max(2.54*rain_2_integer*pow(10,-rain_2_decimal), 2))</var>
+                <var id="snow_1">roundTo(4,randRange(2.1,15.89))</var>
                 <var id="DUMMY">[]</var>
-                <var id="solution">truncate_to_max((rain_2-rain_1),2)</var>
+                <var id="solution">roundTo(4,truncate_to_max((rain_2-rain_1),2))</var>
             </div>
 
             <div class="question spin">
@@ -205,17 +205,17 @@
                 <p> <span class="sol"><var>rain_2-rain_1 </var></span> 公分</p>
             </div>
             <div class="hints">
-                <p>要知道降雨量的差別，我們可以把<var>person(1)</var>家鄉的降雨量減掉<var>person(2)</var>家鄉的降雨量。
+                <p>要知道降雨量的差別，我們可以把<var>person(1)</var>家鄉的降雨量減掉<var>person(2)</var>家鄉的降雨量。</p>
                 <p><var>person(2)</var>家鄉的降雨量 <code>-</code> <var>person(1)</var>家鄉的降雨量 <code>=</code> 降雨量的差別。</p>
                 <div class="graphie" id="numbers">
-                    graph.subtractor = new DecimalSubtractor( rain_2*100, rain_2_decimal, rain_1*100, rain_1_decimal );
+                    graph.subtractor = new DecimalSubtractor( roundTo(4,rain_2*100), rain_2_decimal, roundTo(4,rain_1*100), rain_1_decimal );
                     graph.subtractor.show();
                     graph.subtractor.showDecimals();
                 </div>
                 <div class="graphie" data-update="numbers" data-each="DecimalAdder.numHintsFor( rain_2_integer, rain_2_decimal, rain_1_integer, rain_1_decimal ) times">
                     graph.subtractor.showHint();
                 </div>
-                <p class="final_answer"><var>person(2)</var>的家鄉比<var>person(1)</var>的家鄉多 <code><var>solution</var><code> 公分的降雨量。</p>
+                <p class="final_answer"><var>person(2)</var>的家鄉比<var>person(1)</var>的家鄉多 <code class="hint_pink"><var>solution</var></code> 公分的降雨量。</p>
             </div>
         </div>
 
@@ -224,12 +224,12 @@
             <div class="vars">
                 <var id="distance_1_integer">randRange(100,2000)</var>
                 <var id="distance_1_decimal">(2)</var>
-                <var id="distance_1">truncate_to_max(distance_1_integer*pow(10,-distance_1_decimal), 2)</var>
+                <var id="distance_1">roundTo(4,truncate_to_max(distance_1_integer*pow(10,-distance_1_decimal), 2))</var>
                 <var id="distance_2_integer">randRange(100,distance_1_integer-1)</var>
                 <var id="distance_2_decimal">(2)</var>
-                <var id="distance_2">truncate_to_max(distance_2_integer*pow(10,-distance_2_decimal), 2)</var>
-                <var id="solution">truncate_to_max((distance_1+distance_2),2)</var>
-                <var id="time_1">randRange(20.2,52.17)</var>
+                <var id="distance_2">roundTo(4,truncate_to_max(distance_2_integer*pow(10,-distance_2_decimal), 2))</var>
+                <var id="solution">roundTo(4,truncate_to_max((distance_1+distance_2),2))</var>
+                <var id="time_1">roundTo(4,randRange(20.2,52.17))</var>
                 <var id="DUMMY">[]</var>
             </div>
 
@@ -242,7 +242,7 @@
                 <p> <span class="sol"><var>distance_1+distance_2</var></span> <var>plural(distance(1))</var></p>
             </div>
             <div class="hints">
-                <p>要知道<var>person(1)</var>的移動總距離，我們需要把兩段距離加起來。
+                <p>要知道<var>person(1)</var>的移動總距離，我們需要把兩段距離加起來。</p>
                 <p><var>vehicle(1)</var>的移動距離 <code>+</code> <var>vehicle(2)</var>的移動距離 <code>=</code> 總移動距離。</p>
                 <div class="graphie" id="numbers">
                     graph.adder = new DecimalAdder( distance_1_integer, distance_1_decimal, distance_2_integer, distance_2_decimal );
@@ -256,7 +256,7 @@
                 <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
                     graph.adder.showHint();
                 </div>
-                <p class="final_answer"><var>person(1)</var>總共移動 <code><var>solution</var></code> <var>plural(distance(1))</var>。</p>
+                <p class="final_answer"><var>person(1)</var>總共移動 <code class="hint_pink"><var>solution</var></code> <var>plural(distance(1))</var>。</p>
             </div>
         </div>
     </div>
