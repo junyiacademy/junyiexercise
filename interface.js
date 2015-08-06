@@ -115,6 +115,12 @@ function problemTemplateRendered() {
         }
     });
 
+    if(Exercises.notifyNextReview === true){
+        $("span.practice-exercise-topic-context.solid-hover").css("opacity", 100);
+        $("#notify_next_review").tooltip("show");
+        setTimeout('$("#notify_next_review").tooltip("hide")', 5000);
+    }
+
     // These shouldn't interfere...
     $(PerseusBridge).trigger("problemTemplateRendered");
     $(Khan).trigger("problemTemplateRendered");
