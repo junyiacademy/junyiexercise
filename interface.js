@@ -268,7 +268,7 @@ function handleAttempt(data) {
             var points = exercisePointCalculator();
             $('#answercontent .energy-points-badge')
             .html('+' +points.toString())
-            .attr('style', 'z-index:1;position:absolute;bottom:30px;right:10px;')
+            .attr('class', 'positive-trigger energy-points-badge')
             .effect('bounce', {}, 1000, function(){
                 $(this).hide();
             }); 
