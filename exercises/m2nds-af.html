@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>10000內的錢 (無 5 系列)</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        .imginsert{
+            height: 40px;opacity: 0.3;filter:alpha(opacity=30);-moz-opacity:0.3; -khtml-opacity:0.3; 
+        }
+        .imginsertnew{
+            height: 40px;opacity: 1;filter:alpha(opacity=100);-moz-opacity:1; -khtml-opacity:1; 
+        }
+    </style>
+    <script language="javascript">
+    	function setImgOpacity(m,n){
+			if($("#w"+m+n).val() == 0){
+				$("#img"+m+n).css('opacity' , '1');
+				$("#w"+m+n).val(1);
+			}else{
+				$("#img"+m+n).css('opacity' , '0.3');
+				$("#w"+m+n).val(0);
+			}
+    	}
+    </script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+		    <div class="vars">
+		        <var id="INT">randFromArray([1100,1004,1020,1033,1213,2200,2002,2020,2101,2431,3130,3304,3401,3021,3412,4100,4301,4003,4220,4321])</var>
+		        <var id="MONEY_PICS">['twd_1000.jpg','twd_100.jpg','money_10.png','money_1.png']</var>
+		        <var id="INSERT_IMGS">(function(){
+		        	for(var j = 1; j &lt; 5; j++){
+			        	for(var i = 1; i &lt; 5; i++){
+			        		$("#img"+j+i).attr("src",Khan.urlBase+"images/"+MONEY_PICS[i-1]);
+			        	}
+			        }
+		        })()</var>
+		        <var id="INT_NUMS">INT.toString().split('')</var>
+		    </div>
+            <div class="question">
+                <p>請從你的錢包中拿出以下的錢數。</p>
+                <p><code class="hint_green">$<var>INT</var></code></p>
+                <table>
+                	<tr>
+                		<td id="v11" onclick="setImgOpacity(1,1)"><input type="hidden" id="w11" value="0"/><img id="img11" class="imginsert"/></td>
+                		<td id="v12" onclick="setImgOpacity(1,2)"><input type="hidden" id="w12" value="0"/><img id="img12" class="imginsert"/></td>
+                		<td id="v13" onclick="setImgOpacity(1,3)"><input type="hidden" id="w13" value="0"/><img id="img13" class="imginsert"/></td>
+                		<td id="v14" onclick="setImgOpacity(1,4)"><input type="hidden" id="w14" value="0"/><img id="img14" class="imginsert"/></td>
+                	</tr>
+                	<tr>
+                		<td id="v21" onclick="setImgOpacity(2,1)"><input type="hidden" id="w21" value="0"/><img id="img21" class="imginsert"/></td>
+                		<td id="v22" onclick="setImgOpacity(2,2)"><input type="hidden" id="w22" value="0"/><img id="img22" class="imginsert"/></td>
+                		<td id="v23" onclick="setImgOpacity(2,3)"><input type="hidden" id="w23" value="0"/><img id="img23" class="imginsert"/></td>
+                		<td id="v24" onclick="setImgOpacity(2,4)"><input type="hidden" id="w24" value="0"/><img id="img24" class="imginsert"/></td>
+                	</tr>
+                	<tr>
+                		<td id="v31" onclick="setImgOpacity(3,1)"><input type="hidden" id="w31" value="0"/><img id="img31" class="imginsert"/></td>
+                		<td id="v32" onclick="setImgOpacity(3,2)"><input type="hidden" id="w32" value="0"/><img id="img32" class="imginsert"/></td>
+                		<td id="v33" onclick="setImgOpacity(3,3)"><input type="hidden" id="w33" value="0"/><img id="img33" class="imginsert"/></td>
+                		<td id="v34" onclick="setImgOpacity(3,4)"><input type="hidden" id="w34" value="0"/><img id="img34" class="imginsert"/></td>
+                	</tr>
+                	<tr>
+                		<td id="v41" onclick="setImgOpacity(4,1)"><input type="hidden" id="w41" value="0"/><img id="img41" class="imginsert"/></td>
+                		<td id="v42" onclick="setImgOpacity(4,2)"><input type="hidden" id="w42" value="0"/><img id="img42" class="imginsert"/></td>
+                		<td id="v43" onclick="setImgOpacity(4,3)"><input type="hidden" id="w43" value="0"/><img id="img43" class="imginsert"/></td>
+                		<td id="v44" onclick="setImgOpacity(4,4)"><input type="hidden" id="w44" value="0"/><img id="img44" class="imginsert"/></td>
+                	</tr>
+                </table>
+            </div>
+            <div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">(function(){
+					var thous = 1000*(parseInt($('#w11').val())+parseInt($('#w21').val())+parseInt($('#w31').val())+parseInt($('#w41').val()));
+					var hunds = 100*(parseInt($('#w12').val())+parseInt($('#w22').val())+parseInt($('#w32').val())+parseInt($('#w42').val()));
+					var tens = 10*(parseInt($('#w13').val())+parseInt($('#w23').val())+parseInt($('#w33').val())+parseInt($('#w43').val()));
+					var ones = (parseInt($('#w14').val())+parseInt($('#w24').val())+parseInt($('#w34').val())+parseInt($('#w44').val()));
+					return thous+hunds+tens+ones;
+				})()</div>
+				<div class="validator-function">
+					if(guess == 0){
+						return "";
+					}
+					return abs(guess - INT) &lt; 0.00001
+				</div>
+			</div>
+			<p class="example">利用滑鼠點選操作,選出對應的錢幣數</p>
+		</div>
+		<div class="hints">
+	    	<p><code class="hint_green"><var>INT</var></code> 代表 <code class="hint_pink"><var>INT_NUMS[0]</var></code> 張一千元鈔票、<code class="hint_pink"><var>INT_NUMS[1]</var></code> 張一百元鈔票、<code class="hint_pink"><var>INT_NUMS[2]</var></code> 枚十元硬幣、<code class="hint_pink"><var>INT_NUMS[3]</var></code> 枚一元硬幣。</p>
+	    </div>
+        </div>
+
+        <div id="case2">
+		    <div class="vars">
+		        <var id="INT">randFromArray([1100,1004,1020,1033,1213,2200,2002,2020,2101,2431,3130,3304,3401,3021,3412,4100,4301,4003,4220,4321])</var>
+		        <var id="MONEY_PICS">['twd_1000.jpg','twd_100.jpg','money_10.png','money_1.png']</var>
+		        <var id="INSERT_IMGS">(function(){
+		        	for(var j = 1; j &lt; 5; j++){
+			        	for(var i = 1; i &lt; 5; i++){
+			        		$("#img"+j+i).attr("src",Khan.urlBase+"images/"+MONEY_PICS[i-1]);
+			        	}
+			        }
+		        })()</var>
+		        <var id="INT_NUMS">INT.toString().split('')</var>
+		        <var id="DISPLAY_IMG">(function(){
+		        	for(var j = 1; j &lt; 5; j++){
+			        	for(var i = 1; i &lt; 5; i++){
+			        		if(j &gt; parseInt(INT_NUMS[i - 1])){
+			        			$("#img"+j+i).hide();
+			        		}
+			        	}
+			        }
+		        })()</var>
+		    </div>
+            <div class="question">
+                <p>你的錢包裡有這些錢，請問這樣共是多少錢呢？</p>
+                <table>
+                	<tr>
+                		<td id="v11"><input type="hidden" id="w11" value="0"/><img id="img11" class="imginsertnew"/></td>
+                		<td id="v12"><input type="hidden" id="w12" value="0"/><img id="img12" class="imginsertnew"/></td>
+                		<td id="v13"><input type="hidden" id="w13" value="0"/><img id="img13" class="imginsertnew"/></td>
+                		<td id="v14"><input type="hidden" id="w14" value="0"/><img id="img14" class="imginsertnew"/></td>
+                	</tr>
+                	<tr>
+                		<td id="v21"><input type="hidden" id="w21" value="0"/><img id="img21" class="imginsertnew"/></td>
+                		<td id="v22"><input type="hidden" id="w22" value="0"/><img id="img22" class="imginsertnew"/></td>
+                		<td id="v23"><input type="hidden" id="w23" value="0"/><img id="img23" class="imginsertnew"/></td>
+                		<td id="v24"><input type="hidden" id="w24" value="0"/><img id="img24" class="imginsertnew"/></td>
+                	</tr>
+                	<tr>
+                		<td id="v31"><input type="hidden" id="w31" value="0"/><img id="img31" class="imginsertnew"/></td>
+                		<td id="v32"><input type="hidden" id="w32" value="0"/><img id="img32" class="imginsertnew"/></td>
+                		<td id="v33"><input type="hidden" id="w33" value="0"/><img id="img33" class="imginsertnew"/></td>
+                		<td id="v34"><input type="hidden" id="w34" value="0"/><img id="img34" class="imginsertnew"/></td>
+                	</tr>
+                	<tr>
+                		<td id="v41"><input type="hidden" id="w41" value="0"/><img id="img41" class="imginsertnew"/></td>
+                		<td id="v42"><input type="hidden" id="w42" value="0"/><img id="img42" class="imginsertnew"/></td>
+                		<td id="v43"><input type="hidden" id="w43" value="0"/><img id="img43" class="imginsertnew"/></td>
+                		<td id="v44"><input type="hidden" id="w44" value="0"/><img id="img44" class="imginsertnew"/></td>
+                	</tr>
+                </table>
+            </div>
+            <div class="solution" data-forms="integer"><var>INT</var></div>
+		<div class="hints">
+	    	<p>圖中有 <code class="hint_pink"><var>INT_NUMS[0]</var></code> 張一千元鈔票、<code class="hint_pink"><var>INT_NUMS[1]</var></code> 張一百元鈔票、<code class="hint_pink"><var>INT_NUMS[2]</var></code> 枚十元硬幣、<code class="hint_pink"><var>INT_NUMS[3]</var></code> 枚一元硬幣。</p>
+	    </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
