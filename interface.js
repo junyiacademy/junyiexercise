@@ -518,7 +518,13 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         user_assessment_key: Exercises.userAssessmentKey,
 
         // Whether the user is skipping the question
-        skipped: skipped ? 1 : 0
+        skipped: skipped ? 1 : 0,
+
+        // For back-end ExercisePointCalculator caculates points.
+        proficient_state: userExercise.exerciseStates['proficient'] ? 1 : 0,
+
+        // For back-end ExercisePointCalculator caluates points
+        suggested_state: userExercise.exerciseStates['suggested'] ? 1 : 0
     });
 }
 
