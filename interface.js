@@ -56,6 +56,55 @@ $(Exercises)
     .bind("updateUserExercise", updateUserExercise)
     .bind("clearExistingProblem", clearExistingProblem);
 
+function exercisePointCalculator(){
+    // Warning!!!!!!!!!!!
+    // If you want to modify exercisePointCalculator, you have to modify
+    // 'ExercisePointCalculator()' in points.py too.
+
+    var min_streak_till_proficiency = 4;
+    var degrade_threshold = 19;
+    var incomplete_exercise_points_base = 15;
+    var exercise_points_base = 5;
+    var topic_exercise_multiplier = 3;
+    var suggested_exercise_multiplier = 3;
+    var incomplete_exercise_multiplier = 5;
+    var limit_exercises = 150;
+
+    var points = 0;
+    var offset = 0;
+    var required_streak = min_streak_till_proficiency;
+    //degrade_threshold = (required_streak + consts.DEGRADING_EXERCISES_AFTER_PROFICIENCY)
+    
+    var proficient = userExercise.exerciseStates['proficient'];
+    var suggested = userExercise.exerciseStates['suggested'];
+    if (userExercise.longestStreak + offset <= required_streak) {
+        points = incomplete_exercise_points_base;
+    } else if (userExercise.longestStreak + offset < degrade_threshold) {
+        points = degrade_threshold - userExercise.longestStreak - offset;
+    }
+
+    if (points < exercise_points_base) {
+        points = exercise_points_base;
+    }
+
+    if (!Exercises.reviewMode && !Exercises.practiceMode && !Exercises.pretestMode) {
+        // topic_mode
+        points = points * topic_exercise_multiplier;
+    } else if (suggested) {
+        points = points * suggested_exercise_multiplier;
+    }
+
+    if (! proficient) {
+        points = points * incomplete_exercise_multiplier;
+    }
+
+    if (userExercise.totalDone >= limit_exercises){
+        points = exercise_points_base;
+    }
+
+    return Math.ceil(points);
+
+}
 
 function problemTemplateRendered() {
     previewingItem = Exercises.previewingItem;
@@ -221,6 +270,18 @@ function handleAttempt(data) {
             .prop("disabled", false)
             .removeClass("buttonDisabled")
             .show();
+        if ( hintsUsed == 0  && attempts == 0){
+            var points = exercisePointCalculator();
+            $('#answercontent .energy-points-badge')
+            .html('+' +points.toString())
+            .attr('class', 'positive-trigger energy-points-badge')
+            .effect('bounce', {}, 1000, function(){
+                $(this).hide();
+            }); 
+        }
+        
+        
+
         if(!/iphone|ipod|ipad/i.test(navigator.userAgent)) // check if is ipad device
         {
             $("#next-question-button").focus();
@@ -463,7 +524,13 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         user_assessment_key: Exercises.userAssessmentKey,
 
         // Whether the user is skipping the question
-        skipped: skipped ? 1 : 0
+        skipped: skipped ? 1 : 0,
+
+        // For back-end ExercisePointCalculator caculates points.
+        proficient_state: userExercise.exerciseStates['proficient'] ? 1 : 0,
+
+        // For back-end ExercisePointCalculator caluates points
+        suggested_state: userExercise.exerciseStates['suggested'] ? 1 : 0
     });
 }
 
