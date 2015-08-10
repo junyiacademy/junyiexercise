@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>四位數的加減法(無進位)</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+	<div class="exercise">
+        <div class="problems">
+             <div id="case1">
+              <div class="vars">
+                     <var id="num">randFromArray([[1347,121],[1230,134], [1032,121], [1421,217], [1342,536], [2142,333], [1145,11], [1044,232], [4213,111], [1017,111], [4032,524]])</var>
+                     <var id="ANS">num[0]+num[1]</var>
+                     <var id="DUMMY">[]</var>
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                        <p>蛋糕店賣蛋糕，昨天賣出了 <code><var>num[0]</var></code> 個蛋糕，今天比昨天多賣 <code><var>num[1]</var></code> 個蛋糕，請問今天賣出幾個蛋糕？</p>
+                    </div>
+                </div>
+				<div class="solution"  data-forms="integer"><var>ANS</var></div>
+
+                <div class="hints">
+                  <p>因為今天比昨天『多』賣 <code><var>num[1]</var></code> 個蛋糕，所以今天賣的蛋糕為 <code><var>num[0]</var> + <var>num[1]</var></code> 。</p>
+                   <div class="graphie" id="numbers">
+		                graph.adder = new Adder( num[0], num[1] );
+		                graph.adder.show();
+		                DUMMY = Array( graph.adder.getNumHints() );
+		            </div>
+		            <div class="graphie" data-update="numbers" data-each="Array( new Adder( num[0], num[1] ).getNumHints() ) as dummy">
+	                    graph.adder.showHint();
+	                </div>
+	                <p>所以今天賣出 <code class="hint_pink"><var>ANS</var></code> 個蛋糕。</p>
+                </div>
+			</div>
+
+			<div id="case2">
+              <div class="vars">
+                 <var id="num">[["玉山",3952,"yushan.png","https://zh.wikipedia.org/zh-tw/%E7%8E%89%E5%B1%B1"],["雪山",3886,"xueshan.png","https://zh.wikipedia.org/wiki/%E9%9B%AA%E5%B1%B1_%28%E5%8F%B0%E7%81%A3%29"], ["七星山",1120,"qixingshan.png","https://zh.wikipedia.org/wiki/%E4%B8%83%E6%98%9F%E5%B1%B1_%28%E8%87%BA%E5%8C%97%E5%B8%82%29"], ["大霸尖山",3492,"dashan.png","https://zh.wikipedia.org/wiki/%E5%A4%A7%E9%9C%B8%E5%B0%96%E5%B1%B1"], ["合歡山",3422,"heshan.png","https://zh.wikipedia.org/wiki/%E5%90%88%E6%AD%A1%E5%B1%B1"], ["奇萊主山",3560,"qishan.png","https://zh.wikipedia.org/wiki/%E5%A5%87%E8%90%8A%E4%B8%BB%E5%B1%B1"]]</var>
+                 <var id="index_1,index_2">randRangeUnique(0,6,2)</var>
+                     <var id="matain">(function(){
+                        if(num[index_1][1]&gt;num[index_2][1]){return[num[index_1][0],num[index_1][1],num[index_2][0],num[index_2][1],num[index_1][2],num[index_2][2],num[index_1][3],num[index_2][3]];}
+                        if(num[index_1][1]&lt;num[index_2][1]){return[num[index_2][0],num[index_2][1],num[index_1][0],num[index_1][1],num[index_2][2],num[index_1][2],num[index_2][3],num[index_1][3]];}
+                    })() </var>
+                    
+                     <var id="ANS">matain[1]-matain[3]</var>
+                     <var id="randImg_1">matain[4]</var>
+                     <var id="randImg_2">matain[5]</var>
+                     <var id="url_1">matain[6]</var>
+                     <var id="url_2">matain[7]</var>
+                     <var id="url">(function(){
+                     	$('#u1').attr('href',url_1); 
+                     	$('#u2').attr('href',url_2);
+                     })() </var>
+					<var id="loadImg">
+					(function(){
+						$('#img_11').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_1+"\'&gt;");
+						$('#img_22').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_2+"\'&gt;");
+						
+					})()</var>
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                        <p><var>matain[0]</var>高度為 <code><var>matain[1]</var></code> 公尺，<var>matain[2]</var>高度為 <code><var>matain[3]</var></code> 公尺，請問<var>matain[0]</var>比<var>matain[2]</var>高多少公尺？</p>
+                        <table>
+							<tr align="center">
+								<td style="width:40%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_11"></td>
+							</tr>
+							<tr>
+								<td style="width:40%;vertical-align: middle;text-align:center;border:#DBDFE6 solid 2px;"><var>matain[0]</var> <code><var>matain[1]</var></code> 公尺 圖片來源:<a id="u1" target="_blank">維基百科</a></td>
+							</tr>
+							<tr align="center">
+								<td style="width:40%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_22"></td>								
+							</tr>
+							<tr>
+								<td style="width:40%;vertical-align: middle;text-align:center;border:#DBDFE6 solid 2px;"><var>matain[2]</var>  <code><var>matain[3]</var></code> 公尺 圖片來源:<a id="u2" target="_blank">維基百科</a></td>
+							</tr>
+							
+						</table>
+                    </div>
+                </div>
+				<div class="solution"  data-forms="integer"><var>ANS</var></div>
+
+                <div class="hints">
+                  	<div>
+                  		<p>求<var>matain[0]</var>『比』<var>matain[2]</var>高多少，要將<var>matain[0]</var>高度『減』<var>matain[2]</var>高度：</p>
+                  		<p><code>\qquad<var>matain[1]</var> - <var>matain[3]</var></code></p>
+                  	</div>
+                  <div class="graphie" id="numbers">
+		            
+		                graph.subtractor = new Subtractor( matain[1],matain[3] );
+                		graph.subtractor.show();
+		            </div>
+		            <div class="graphie" data-update="numbers" data-each="new Subtractor( matain[1],matain[3]).getNumHints()  times">
+	                    graph.subtractor.showHint();
+	                </div>
+	                <p><var>matain[0]</var>比<var>matain[2]</var>高 <code class="hint_pink"><var>ANS</var></code> 公尺。</p>
+                  
+                </div>
+			</div>
+			<div id="case3">
+              <div class="vars">
+                 <var id="num">[["伽利略",1564,"galileo.png","https://zh.wikipedia.org/wiki/%E4%BC%BD%E5%88%A9%E7%95%A5%C2%B7%E4%BC%BD%E5%88%A9%E8%8E%B1"],["牛頓",1643,"newton.png","https://zh.wikipedia.org/wiki/%E8%89%BE%E8%90%A8%E5%85%8B%C2%B7%E7%89%9B%E9%A1%BF"], ["居里夫人",1867,"Curie.png","https://zh.wikipedia.org/wiki/%E7%8E%9B%E4%B8%BD%C2%B7%E5%B1%85%E9%87%8C"], ["高斯",1777,"gauss.png","https://zh.wikipedia.org/wiki/%E5%8D%A1%E7%88%BE%C2%B7%E5%BC%97%E9%87%8C%E5%BE%B7%E9%87%8C%E5%B8%8C%C2%B7%E9%AB%98%E6%96%AF"], ["喬治華盛頓",1789,"washington.png","https://zh.wikipedia.org/wiki/%E5%8D%A1%E7%88%BE%C2%B7%E5%BC%97%E9%87%8C%E5%BE%B7%E9%87%8C%E5%B8%8C%C2%B7%E9%AB%98%E6%96%AF"], ["莫札特",1756,"mozart.png","https://zh.wikipedia.org/wiki/%E6%B2%83%E5%B0%94%E5%A4%AB%E5%86%88%C2%B7%E9%98%BF%E9%A9%AC%E5%BE%B7%E4%B9%8C%E6%96%AF%C2%B7%E8%8E%AB%E6%89%8E%E7%89%B9"]]</var>
+                 <var id="index_1,index_2">randRangeUnique(0,6,2)</var>
+                     <var id="matain">(function(){
+                        if(num[index_1][1]&gt;num[index_2][1]){return[num[index_1][0],num[index_1][1],num[index_2][0],num[index_2][1],num[index_1][2],num[index_2][2],num[index_1][3],num[index_2][3]];}
+                        if(num[index_1][1]&lt;num[index_2][1]){return[num[index_2][0],num[index_2][1],num[index_1][0],num[index_1][1],num[index_2][2],num[index_1][2],num[index_2][3],num[index_1][3]];}
+                    })() </var>
+                    
+                     <var id="ANS">matain[1]-matain[3]</var>
+                     <var id="randImg_1">matain[4]</var>
+                     <var id="randImg_2">matain[5]</var>
+                     <var id="url_1">matain[6]</var>
+                     <var id="url_2">matain[7]</var>
+                     <var id="url">(function(){
+                     	$('#u1').attr('href',url_1); 
+                     	$('#u2').attr('href',url_2);
+                     })() </var>
+					<var id="loadImg">
+					(function(){
+						$('#img_11').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_1+"\'&gt;");
+						$('#img_22').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_2+"\'&gt;");
+						
+					})()</var>
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                        <p><var>matain[2]</var>誕生於西元 <code><var>matain[3]</var></code> 年，<var>matain[0]</var>誕生於西元 <code><var>matain[1]</var></code> 年，請問<var>matain[0]</var>和<var>matain[2]</var>相差幾歲?</p>
+                        <table>
+                        	<tr align="center">
+								<td style="width:40%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_22"></td>								
+							</tr>
+							<tr>
+								<td style="width:40%;vertical-align: middle;text-align:center;border:#DBDFE6 solid 2px;"><var>matain[2]</var>  <code><var>matain[3]</var></code> 年出生 圖片來源:<a id="u2" target="_blank">維基百科</a></td>
+							</tr>
+							<tr align="center">
+								<td style="width:40%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_11"></td>
+							</tr>
+							<tr>
+								<td style="width:40%;vertical-align: middle;text-align:center;border:#DBDFE6 solid 2px;"><var>matain[0]</var> <code><var>matain[1]</var></code> 年出生 圖片來源:<a id="u1" target="_blank">維基百科</a></td>
+							</tr>		
+						</table>
+                    </div>
+                </div>
+				<div class="solution"  data-forms="integer"><var>ANS</var></div>
+
+                <div class="hints">
+                  <div>
+                  	<p>要算<var>matain[0]</var>和<var>matain[2]</var>差幾歲，要將<var>matain[0]</var>出生年份『減』<var>matain[2]</var>出生年份:</p>
+                  	<p><code>\qquad<var>matain[1]</var> - <var>matain[3]</var></code></p>
+                  </div>
+                  <div class="graphie" id="numbers">
+		            
+		                graph.subtractor = new Subtractor( matain[1],matain[3] );
+                		graph.subtractor.show();
+		            </div>
+		            <div class="graphie" data-update="numbers" data-each="new Subtractor( matain[1],matain[3]).getNumHints()  times">
+	                    graph.subtractor.showHint();
+	                </div>
+	                <p><var>matain[0]</var>和<var>matain[2]</var>相差 <code class="hint_pink"><var>ANS</var></code> 歲。</p>
+                  
+                </div>
+			</div>
+
+			<div id="case4">
+              <div class="vars">
+                 <var id="num">randFromArray([["牛頓",1643,22,"newton.png",1,"111"], ["畢卡索",1881,46,"guernica.png",2,"格爾尼卡"], ["畢卡索",1881,56,"womancrying.png",3,"哭泣的女人"], ["畢卡索",1881,40,"threemusicians.png",4,"三個音樂家"], ["畢卡索",1881,51,"dream.png",5,"夢"]])</var>       
+                    <var id="ANS">num[1]+num[2]</var>
+                     <var id="DUMMY">[]</var>
+                     <var id="randImg_1">num[3]</var>                    
+					<var id="loadImg">
+					(function(){
+						$('#img_11').append("&lt;img src=\'"+Khan.urlBase+"images/"+randImg_1+"\'&gt;");						
+					})()</var> 
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                    	<p><var>num[0]</var>誕生於西元<var>num[1]</var>年，<span data-if="num[4]==1">在他出生二十二年後發現萬有引力，</span><span data-if="num[4]!=1">他在 <code><var>num[2]</var></code> 歲時畫出著名的畫作《<var>num[5]</var>》</span>請問當時是西元幾年?</p>
+                        <table>
+                        	<tr align="center">
+								<td style="width:40%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_11"></td>								
+							</tr>
+							<tr>
+								<td data-if="num[4]==1" style="width:40%;vertical-align: middle;text-align:center;border:#DBDFE6 solid 2px;"><var>num[0]</var> 圖片來源:<a href="https://zh.wikipedia.org/wiki/%E8%89%BE%E8%90%A8%E5%85%8B%C2%B7%E7%89%9B%E9%A1%BF" target="_blank">維基百科</a></td>
+								<td data-if="num[4]==2" style="width:40%;vertical-align: middle;text-align:center;border:#DBDFE6 solid 2px;">《<var>num[5]</var>》<code><var>num[2]</var></code>歲 圖片來源:<a href="https://zh.wikipedia.org/wiki/%E5%B7%B4%E5%8B%83%E7%BE%85%C2%B7%E7%95%A2%E5%8D%A1%E7%B4%A2#/media/File:PicassoGuernica.jpg" target="_blank">維基百科</a></td>
+								<td data-if="num[4]!=1&&num[4]!=2" style="width:40%;vertical-align: middle;text-align:center;border:#DBDFE6 solid 2px;">《<var>num[5]</var>》<code><var>num[2]</var></code>歲</td>
+							</tr>		
+						</table>
+                    </div>
+                </div>
+				<div class="solution"  data-forms="integer"><var>ANS</var></div>
+
+                <div class="hints">
+                  <div class="graphie" id="numbers">
+		                graph.adder = new Adder( num[1], num[2] );
+		                graph.adder.show();
+		                DUMMY = Array( graph.adder.getNumHints() );
+		            </div>
+		            <div class="graphie" data-update="numbers" data-each="Array( new Adder( num[1], num[2] ).getNumHints() ) as dummy">
+	                    graph.adder.showHint();
+	                </div>
+	                <p>當時是西元 <code class="hint_pink"><var>ANS</var></code> 年。</p>
+                  
+                </div>
+			</div>
+
+			<div id="case5">
+              <div class="vars">
+                 <var id="num">randFromArray([[1,1861,1865,"lincoln.png"], [2,2006,2015,"standbyme.png","nobitasdinosaur.png"], [3,1974,2015,"hellokitty.png"]])</var>       
+                    <var id="ANS">num[2]-num[1]</var>                  
+					<var id="loadImg">
+					(function(){
+						$('#img_11').append("&lt;img src=\'"+Khan.urlBase+"images/"+num[3]+"\'&gt;");
+						if(num[0]==2){$('#img_12').append("&lt;img src=\'"+Khan.urlBase+"images/"+num[4]+"\'&gt;");}						
+					})()</var> 
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                    	<p data-if="num[0]==1">林肯在西元 <code><var>num[1]</var></code> 年上任美國第十六任總統，於 <code><var>num[2]</var></code> 年卸任，請問他的任期是多久呢?</p>
+                    	<p data-if="num[0]==2">華華一直以來都很喜歡哆啦A夢的電影版，其中最喜歡的兩部分別是 <code><var>num[2]</var></code> 年上映的STAND BY ME 哆啦A夢和 <code><var>num[1]</var></code> 年上映的大雄的恐龍，請問這兩部電影上映時間差了幾年?</p>
+                    	<p data-if="num[0]==3">Hello Kitty出生於 <code><var>num[1]</var></code> 年，請問她 <code><var>num[2]</var></code> 年時，她幾歲了?</p>
+                        <table>
+                        	<tr align="center">
+								<td style="width:40%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_11"></td>								
+							</tr>
+							<tr>
+								<td data-if="num[0]==1" style="width:40%;vertical-align: middle;text-align:center;border:#DBDFE6 solid 2px;">林肯 圖片來源:<a href="https://zh.wikipedia.org/wiki/%E4%BA%9A%E4%BC%AF%E6%8B%89%E7%BD%95%C2%B7%E6%9E%97%E8%82%AF" target="_blank">維基百科</a></td>
+								<td data-if="num[0]==2" style="width:40%;vertical-align: middle;text-align:center;border:#DBDFE6 solid 2px;">STAND BY ME 哆啦A夢 <code>2015</code>年 圖片來源:<a href="https://zh.wikipedia.org/wiki/STAND_BY_ME_%E5%93%86%E5%95%A6A%E5%A4%A2" target="_blank">維基百科</a></td>
+								<td data-if="num[0]==3" style="width:40%;vertical-align: middle;text-align:center;border:#DBDFE6 solid 2px;">hello kitty 圖片來源:<a href="https://zh.wikipedia.org/wiki/Hello_Kitty" target="_blank">維基百科</a></td>
+							</tr>
+							<tr data-if="num[0]==2">
+								<td style="width:40%;vertical-align: middle;text-align:center;border:#DBDFE6 solid 2px;" id="img_12"></td>
+							</tr>
+							<tr data-if="num[0]==2">
+								<td style="width:40%;vertical-align: middle;text-align:center;border:#DBDFE6 solid 2px;">大雄的恐龍 <code>2006</code>年 圖片來源:<a href="https://zh.wikipedia.org/wiki/%E5%A4%A7%E9%9B%84%E7%9A%84%E6%81%90%E9%BE%8D2006" target="_blank">維基百科</a></td>
+							</tr>		
+						</table>
+                    </div>
+                </div>
+				<div class="solution"  data-forms="integer"><var>ANS</var></div>
+
+                <div class="hints">
+                   <div class="graphie" id="numbers">
+		            
+		                graph.subtractor = new Subtractor(num[2],num[1] );
+                		graph.subtractor.show();
+		            </div>
+		            <div class="graphie" data-update="numbers" data-each="new Subtractor(num[2],num[1]).getNumHints()  times">
+	                    graph.subtractor.showHint();
+	                </div>
+	                <p data-if="num[0]==1">他的任期是 <code class="hint_pink"><var>ANS</var></code> 年。</p>
+                    <p data-if="num[0]==2">這兩部電影上映時間差了 <code class="hint_pink"><var>ANS</var></code> 年。</p>
+                    <p data-if="num[0]==3"><code><var>num[2]</var></code> 年時，hello kitty <code class="hint_pink"><var>ANS</var></code> 歲。</p>
+                </div>
+			</div>
+
+			<div id="case6">
+              <div class="vars">
+                     <var id="num">randFromArray([[4261,3125],[3131,1218], [2556,2117], [4558,2329], [5566,5039], [4262,3127], [1445,1229], [2231,2119], [1017,1009], [6243,5119], [8732,7415]])</var>
+                     <var id="ANS">num[0]-num[1]</var>
+                     <var id="img">"exploration.png"</var>
+                     <var id="loadImg">
+					(function(){
+						$('#img_11').append("&lt;img src=\'"+Khan.urlBase+"images/"+img+"\'&gt;");						
+					})()</var> 
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                        <p>老皮進入探險活寶的遊戲世界，第一次闖關得 <code><var>num[0]</var></code> 分，第二次闖關得 <code><var>num[1]</var></code> 分，請問兩次闖關相差幾分？</p>
+                        <table>
+                        	<tr align="center">
+								<td style="width:40%;vertical-align: middle;border:#DBDFE6 solid 2px;" id="img_11"></td>								
+							</tr>
+							<tr>
+								<td style="width:40%;vertical-align: middle;text-align:center;border:#DBDFE6 solid 2px;">探險活寶 圖片來源:<a href="https://zh.wikipedia.org/wiki/%E6%8E%A2%E9%9A%AA%E6%99%82%E5%85%89#.E9.9B.BB.E8.A6.96.E9.9B.86.E6.95.B8" target="_blank">維基百科</a></td>
+							</tr>
+									
+						</table>
+                    </div>
+                </div>
+				<div class="solution"  data-forms="integer"><var>ANS</var></div>
+
+                <div class="hints">
+                	<p>要求兩次闖關『差』幾分，分別先找出兩次分數比大小</p>
+                	<div>
+                		<p>將第一次闖關分數 <code><var>num[0]</var></code> 分『減』掉第二次闖關分數 <code><var>num[1]</var></code> 分</p>
+                		<p><code><var>num[0]</var> - <var>num[1]</var> =</code><code class="hint_pink'"><var>ANS</var></code></p>
+                	</div>
+                  <div class="graphie" id="numbers">
+		            
+		                graph.subtractor = new Subtractor(num[0],num[1] );
+                		graph.subtractor.show();
+		            </div>
+		            <div class="graphie" data-update="numbers" data-each="new Subtractor(num[0],num[1]).getNumHints()  times">
+	                    graph.subtractor.showHint();
+	                </div>
+					<p>所以兩次闖關相差 <code class="hint_pink'"><var>ANS</var></code> 分。</p>
+                </div>
+                </div>
+			</div>
+        </div>
+    </div>
+</body>
+</html>

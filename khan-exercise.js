@@ -709,6 +709,9 @@ var Khan = (function() {
         },
 
         asc: function(text) {  // 全型轉半型的 function
+            if (typeof text != "string") {
+                return text
+            }
             var asciiTable = "!\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
             var big5Table = "%uFF01%u201D%uFF03%uFF04%uFF05%uFF06%u2019%uFF08%uFF09%uFF0A%uFF0B%uFF0C%uFF0D%uFF0E%uFF0F%uFF10%uFF11%uFF12%uFF13%uFF14%uFF15%uFF16%uFF17%uFF18%uFF19%uFF1A%uFF1B%uFF1C%uFF1D%uFF1E%uFF1F%uFF20%uFF21%uFF22%uFF23%uFF24%uFF25%uFF26%uFF27%uFF28%uFF29%uFF2A%uFF2B%uFF2C%uFF2D%uFF2E%uFF2F%uFF30%uFF31%uFF32%uFF33%uFF34%uFF35%uFF36%uFF37%uFF38%uFF39%uFF3A%uFF3B%uFF3C%uFF3D%uFF3E%uFF3F%u2018%uFF41%uFF42%uFF43%uFF44%uFF45%uFF46%uFF47%uFF48%uFF49%uFF4A%uFF4B%uFF4C%uFF4D%uFF4E%uFF4F%uFF50%uFF51%uFF52%uFF53%uFF54%uFF55%uFF56%uFF57%uFF58%uFF59%uFF5A%uFF5B%uFF5C%uFF5D%uFF5E";
         
@@ -723,9 +726,16 @@ var Khan = (function() {
 
         scoreInput: function() {
             var guess = getAnswer();
-            var asc_transform_list = ["text", "number", "decimal"]
+            var asc_transform_list = ["text", "number", "decimal", "set", "multiple"];
             if (asc_transform_list.indexOf(Khan.answerType) >= 0) {
-                    guess = Khan.asc(guess)
+                    if (Array.isArray(guess)) {
+                        for (index = 0; index < guess.length; ++index) {
+                            guess[index] = Khan.asc(guess[index]);
+                        }
+                    }
+                    else {
+                        guess = Khan.asc(guess);
+                    }
             }  // 全型轉半型
             var pass = validator(guess);
             var empty = checkIfAnswerEmpty(guess) || checkIfAnswerEmpty(pass);
@@ -1085,6 +1095,10 @@ var Khan = (function() {
     }
 
     function makeProblem(skipCount, id, seed) {
+        if (!skipCount) {
+            skipCount = 0;
+        }
+
         debugLog("start of makeProblem");
 
         // Enable scratchpad (unless the exercise explicitly disables it later)
@@ -1121,7 +1135,7 @@ var Khan = (function() {
         // we made earlier to ensure that every problem gets shown the
         // appropriate number of times
         } else if (problemBag.length > 0) {
-            problem = problemBag[problemBagIndex];
+            problem = problemBag[(problemBagIndex + skipCount) % problemCount];
             id = problem.data("id");
 
         // No valid problem was found, bail out

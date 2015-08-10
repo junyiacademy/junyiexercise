@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers graphie-geometry math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>其他三角邊長比(cot,sec,csc)</title>
+    <script src="../khan-exercise.js"></script>
+	 <script>
+
+    function betterTriangle(width, height, A, B, C, a, b, c) {
+        var scale = 5 / Math.sqrt(width * width + height * height);
+        width *= scale;
+        height *= scale;
+
+        with ( KhanUtil.currentGraph ) {
+            // Leave some space for the labels
+            init({ range: [[-1.5, width + 1], [-1, height + 1]] });
+
+            path([ [0, 0], [width, 0], [0, height], true ]);
+
+            label( [0, height], A, "above left" );
+            label( [0, 0], C, "below left" );
+            label( [width, 0], B, "below right" );
+
+            label( [0, height/2], b, "left" );
+            label( [width/2, 0], a, "below" );
+            label( [width/2, height/2], c, "above right", {
+                labelDistance: 3
+            } );
+        }
+    }
+    </script>
+</head>
+<body>
+   <div class="exercise">
+        <div class="problems">
+             <div id="case1">
+                 <div class="vars">
+                    <var id="tlen">shuffle(randFromArray([[3,4], [6,8], [5,12], [7, 24], [8, 15], [10, 24], [12,16]]))</var>
+                    <var id="len">sqrt(tlen[0] * tlen[0] + tlen[1] * tlen[1])</var>
+                    <var id="num">randRange(1,2)</var>
+                    <var id="ANGLE">randFromArray([["B","A",tlen[0],tlen[1]],["B","A",tlen[1],tlen[0]],["A","B",tlen[0],tlen[1]],["A","B",tlen[1],tlen[0]]])</var>        			
+                    <var id="CSC">len/ANGLE[3]</var>
+                    <var id="gcd_csc">getGCD(len,ANGLE[3])</var>
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                        <p><code>\overline{<var>ANGLE[0]</var>C}</code> 長度為 <code><var>ANGLE[2]</var></code> 個單位</p>
+                        <p><code>\overline{<var>ANGLE[1]</var>C}</code> 長度為 <code><var>ANGLE[3]</var></code> 個單位</p>
+                        <p><code>\overline{AB}</code> 長度為 <code><var>len</var></code> 個單位</p>
+                        <p>請問<code>\csc(\angle <var>ANGLE[0]</var>)</code>是多少？</p>
+                         <div class="graphie">
+                        if(num==1){betterTriangle( ANGLE[3], ANGLE[2], ANGLE[0], ANGLE[1], "C", ANGLE[3], ANGLE[2], len );}
+                        if(num==2){betterTriangle( ANGLE[2], ANGLE[3], ANGLE[1], ANGLE[0], "C", ANGLE[2], ANGLE[3], len );}  
+                            
+                            path([ [ 0.4, 0 ], [ 0.4, 0.4 ], [ 0, 0.4 ] ]);
+                        </div>
+                    </div>
+                </div>
+				<div class="solution" data-type="rational" data-simplify="optional"><var>CSC</var></div>
+
+                <div class="hints">
+                  
+                    <p><code>\csc</code> 為 <code>\sin</code> 的倒數。</p>
+                    <p><code>\sin</code> 為對邊除以斜邊，對邊為 <code>\overline{<var>ANGLE[1]</var>C} = <var>ANGLE[3]</var></code>，斜邊為 <code>\overline{AB} = <var>len</var></code>。</p>
+                    <p>因此，<code>\sin(\angle <var>ANGLE[0]</var>) = \dfrac{<var>ANGLE[3]</var>}{<var>len</var>}</code>。</p>
+                    <div>
+                        <p>我們所要求的 <code>\csc(\angle <var>ANGLE[0]</var>)=\dfrac{1}{\sin(\angle <var>ANGLE[0]</var>)}</code></p>
+                        <p><code>\qquad\qquad =</code><code data-if="gcd_csc==1" class="hint_pink"> \dfrac{<var>len</var>}{<var>ANGLE[3]</var>}</code><code data-if="gcd_csc!=1"> \dfrac{<var>len</var>}{<var>ANGLE[3]</var>} =</code><code data-if="gcd_csc!=1" class="hint_pink"> <var>fraction(len,ANGLE[3],true,true,false,false)</var></code>。</p>
+                    </div>
+                </div>
+			</div>
+
+            <div id="case2">
+                 <div class="vars">
+                    <var id="tlen">shuffle(randFromArray([[3,4], [6,8], [5,12], [7, 24], [8, 15], [10, 24], [12,16]]))</var>
+                    <var id="len">sqrt(tlen[0] * tlen[0] + tlen[1] * tlen[1])</var>
+                    <var id="ANGLE">randFromArray([["B","A",tlen[0],tlen[1]],["B","A",tlen[1],tlen[0]],["A","B",tlen[0],tlen[1]],["A","B",tlen[1],tlen[0]]])</var>
+                    <var id="num">randRange(1,2)</var>                  
+                    <var id="SEC">len/ANGLE[2]</var>
+                    <var id="gcd_sec">getGCD(len,ANGLE[2])</var>
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                        <p><code>\overline{<var>ANGLE[1]</var>C}</code> 長度為 <code><var>ANGLE[3]</var></code> 個單位</p>
+                        <p><code>\overline{AB}</code> 長度為 <code><var>len</var></code> 個單位</p>
+                        <p><code>\overline{<var>ANGLE[0]</var>C}</code> 長度為 <code><var>ANGLE[2]</var></code> 個單位</p>                        
+                        <p>請問<code>\sec(\angle <var>ANGLE[0]</var>)</code>是多少？</p>
+                         <div class="graphie">
+                           if(num==1){betterTriangle( ANGLE[3], ANGLE[2], ANGLE[0], ANGLE[1], "C", ANGLE[3], ANGLE[2], len );}
+                            if(num==2){betterTriangle( ANGLE[2], ANGLE[3], ANGLE[1], ANGLE[0], "C", ANGLE[2], ANGLE[3], len );}  
+                            path([ [ 0.4, 0 ], [ 0.4, 0.4 ], [ 0, 0.4 ] ]);
+                        </div>
+                    </div>
+                </div>
+                <div class="solution" data-type="rational" data-simplify="optional"><var>SEC</var></div>
+
+                <div class="hints">
+                  
+                    <p><code>\sec</code> 為 <code>\cos</code> 的倒數。</p>
+                    <p><code>\cos</code> 為鄰邊除以斜邊，斜邊為 <code>\overline{AB} = <var>len</var></code>，鄰邊為 <code>\overline{<var>ANGLE[0]</var>C} = <var>ANGLE[2]</var></code>。</p>
+                    <p>因此，<code>\cos(\angle <var>ANGLE[0]</var>) = \dfrac{<var>ANGLE[2]</var>}{<var>len</var>}</code>。</p>
+                    <div>
+                        <p>我們所要求的 <code>\sec(\angle <var>ANGLE[0]</var>)=\dfrac{1}{\cos(\angle <var>ANGLE[0]</var>)}</code></p>
+                        <p><code>\qquad\qquad =</code><code data-if="gcd_sec==1" class="hint_pink"> \dfrac{<var>len</var>}{<var>ANGLE[2]</var>}</code><code data-if="gcd_sec!=1"> \dfrac{<var>len</var>}{<var>ANGLE[2]</var>} =</code><code data-if="gcd_sec!=1" class="hint_pink"> <var>fraction(len,ANGLE[2],true,true,false,false)</var></code>。</p>
+                    </div>
+                </div>
+            </div> 
+
+            <div id="case3">
+                 <div class="vars">
+                    <var id="tlen">shuffle(randFromArray([[3,4], [6,8], [5,12], [7, 24], [8, 15], [10, 24], [12,16]]))</var>
+                    <var id="len">sqrt(tlen[0] * tlen[0] + tlen[1] * tlen[1])</var>
+                    <var id="ANGLE">randFromArray([["B","A",tlen[0],tlen[1]],["B","A",tlen[1],tlen[0]],["A","B",tlen[0],tlen[1]],["A","B",tlen[1],tlen[0]]])</var>  
+                     <var id="num">randRange(1,2)</var>                
+                    <var id="COT">ANGLE[2]/ANGLE[3]</var>
+                    <var id="gcd_cot">getGCD(ANGLE[2],ANGLE[3])</var>
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                        <p><code>\overline{<var>ANGLE[1]</var>C}</code> 長度為 <code><var>ANGLE[3]</var></code> 個單位</p>
+                        <p><code>\overline{AB}</code> 長度為 <code><var>len</var></code> 個單位</p>
+                        <p><code>\overline{<var>ANGLE[0]</var>C}</code> 長度為 <code><var>ANGLE[2]</var></code> 個單位</p>                        
+                        <p>請問<code>\cot(\angle <var>ANGLE[0]</var>)</code>是多少？</p>
+                         <div class="graphie">
+                            if(num==1){betterTriangle( ANGLE[3], ANGLE[2], ANGLE[0], ANGLE[1], "C", ANGLE[3], ANGLE[2], len );}
+                        if(num==2){betterTriangle( ANGLE[2], ANGLE[3], ANGLE[1], ANGLE[0], "C", ANGLE[2], ANGLE[3], len );}  
+                            path([ [ 0.4, 0 ], [ 0.4, 0.4 ], [ 0, 0.4 ] ]);
+                        </div>
+                    </div>
+                </div>
+                <div class="solution" data-type="rational" data-simplify="optional"><var>COT</var></div>
+
+                <div class="hints">
+                  
+                    <p><code>\cot</code> 為 <code>\tan</code> 的倒數。</p>
+                    <p><code>\tan</code> 為對邊除以鄰邊，對邊為 <code>\overline{<var>ANGLE[1]</var>C} = <var>ANGLE[3]</var></code>，鄰邊為 <code>\overline{<var>ANGLE[0]</var>C} = <var>ANGLE[2]</var></code>。</p>
+                    <p>因此，<code>\tan(\angle <var>ANGLE[0]</var>) = \dfrac{<var>ANGLE[3]</var>}{<var>ANGLE[2]</var>}</code>。</p>
+                    <div>
+                        <p>我們所要求的 <code>\cot(\angle <var>ANGLE[0]</var>)=\dfrac{1}{\tan(\angle <var>ANGLE[0]</var>)}</code></p>
+                        <p><code>\qquad\qquad =</code><code data-if="gcd_cot==1" class="hint_pink"> \dfrac{<var>ANGLE[2]</var>}{<var>ANGLE[3]</var>}</code><code data-if="gcd_cot!=1"> \dfrac{<var>ANGLE[2]</var>}{<var>ANGLE[3]</var>} =</code> <code data-if="gcd_cot!=1" class="hint_pink"> <var>fraction(ANGLE[2],ANGLE[3],true,true,false,false)</var></code>。</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
