@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie-helpers graphie interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>利用定位板認識千位位值</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+        </style>
+	<script type="text/javascript">
+	</script>
+</head>
+<body>
+<div class="exercise">
+    <div class="vars">
+    	<var id="SHOW_NUMBERS">randRangeUnique(0,9,4)</var>
+    	<var id="ERROR_NUMBERS">(function(){
+    		var N = [0,1,2,3,4,5,6,7,8,9,10];
+    		N.splice($.inArray(SHOW_NUMBERS[i],N),1);
+    		for(var i = 0; i &lt; 4; i++){
+    			N.splice($.inArray(SHOW_NUMBERS[i],N),1);
+    		}
+    		return N;
+    	})()</var>
+		<var id="nums">[0,1,2,3,4,5,6,7,8,9]</var>
+		<var id="UPPER_CHAR">['零','一','二','三','四','五','六','七','八','九']</var>
+        <var id="NUMBER">digitsToInteger( SHOW_NUMBERS )</var>
+        <var id="NUMBER_CHAR">[UPPER_CHAR[SHOW_NUMBERS[0]],UPPER_CHAR[SHOW_NUMBERS[1]],UPPER_CHAR[SHOW_NUMBERS[2]],UPPER_CHAR[SHOW_NUMBERS[3]]]</var>
+    </div>
+    <div class="problems">
+    	<div id="case1">
+		<p class="question">請將 「<span class="hint_red"><var>NUMBER_CHAR[0]</var></span>千<span class="hint_red"><var>NUMBER_CHAR[1]</var></span>百<span class="hint_red"><var>NUMBER_CHAR[2]</var></span>十<span class="hint_red"><var>NUMBER_CHAR[3]</var></span>」 在下面的定位板中表示出來。</p>
+		<div class="problem">
+			<div class="graphie" id="prime_move">
+				init({
+                    range: [ [-1, 12], [-3, 3] ],
+                    scale: 40
+                });
+				path([[0,2],[0,-1],[11,-1],[11,2],[0,2]]);
+				line([0,1],[11,1]);
+				label( [11/4/2, 1.5],  "千位", "center", { color: "#6495ED" });
+				line([11/4,2],[11/4,-1]);
+				label( [11/4/2+11/4, 1.5],  "百位", "center", { color: "#6495ED" });
+				line([11/2,2],[11/2,-1]);
+				label( [11/4/2+11/4*2, 1.5],  "十位", "center", { color: "#6495ED" });
+				line([11/4*3,2],[11/4*3,-1]);
+				label( [11/4/2+11/4*3, 1.5],  "個位", "center", { color: "#6495ED" });
+				
+				addMouseLayer();
+				var graph = KhanUtil.currentGraph;
+				label1 = label([0,-2],nums[0],"center",{ color : KhanUtil.BLUE});
+				label2 = label([1,-2],nums[1],"center",{ color : KhanUtil.BLUE});
+				label3 = label([2,-2],nums[2],"center",{ color : KhanUtil.BLUE});
+				label4 = label([3,-2],nums[3],"center",{ color : KhanUtil.BLUE});
+				label5 = label([4,-2],nums[4],"center",{ color : KhanUtil.BLUE});
+				label6 = label([5,-2],nums[5],"center",{ color : KhanUtil.BLUE});
+				label7 = label([6,-2],nums[6],"center",{ color : KhanUtil.BLUE});
+				label8 = label([7,-2],nums[7],"center",{ color : KhanUtil.BLUE});
+				label9 = label([8,-2],nums[8],"center",{ color : KhanUtil.BLUE});
+				label10 = label([9,-2],nums[9],"center",{ color : KhanUtil.BLUE});
+				a1 = addMovablePoint({
+					coord: [0,-2],
+					onMove: function(x, y) {
+						var point = this;
+						point.setCoord([x, y]);
+						label1.remove();
+						label1 = graph.label([x,y],nums[0],"center",{ color : KhanUtil.BLUE});
+						point.updateLineEnds();
+					},
+					normalStyle: {
+						fill: "white",
+						stroke: "white"
+					},
+					highlightStyle: {
+						fill: "white",
+						stroke: "white"
+					}
+				});
+				a2 = addMovablePoint({
+					coord: [1,-2],
+					onMove: function(x, y) {
+						var point = this;
+						point.setCoord([x, y]);
+						label2.remove();
+						label2 = graph.label([x,y],nums[1],"center",{ color : KhanUtil.BLUE});
+						point.updateLineEnds();
+					},
+					normalStyle: {
+						fill: "white",
+						stroke: "white"
+					},
+					highlightStyle: {
+						fill: "white",
+						stroke: "white"
+					}
+				});
+				a3 = addMovablePoint({
+					coord: [2,-2],
+					onMove: function(x, y) {
+						var point = this;
+						point.setCoord([x, y]);
+						label3.remove();
+						label3 = graph.label([x,y],nums[2],"center",{ color : KhanUtil.BLUE});
+						point.updateLineEnds();
+					},
+					normalStyle: {
+						fill: "white",
+						stroke: "white"
+					},
+					highlightStyle: {
+						fill: "white",
+						stroke: "white"
+					}
+				});
+				a4 = addMovablePoint({
+					coord: [3,-2],
+					onMove: function(x, y) {
+						var point = this;
+						point.setCoord([x, y]);
+						label4.remove();
+						label4 = graph.label([x,y],nums[3],"center",{ color : KhanUtil.BLUE});
+						point.updateLineEnds();
+					},
+					normalStyle: {
+						fill: "white",
+						stroke: "white"
+					},
+					highlightStyle: {
+						fill: "white",
+						stroke: "white"
+					}
+				});
+				a5 = addMovablePoint({
+					coord: [4,-2],
+					onMove: function(x, y) {
+						var point = this;
+						point.setCoord([x, y]);
+						label5.remove();
+						label5 = graph.label([x,y],nums[4],"center",{ color : KhanUtil.BLUE});
+						point.updateLineEnds();
+					},
+					normalStyle: {
+						fill: "white",
+						stroke: "white"
+					},
+					highlightStyle: {
+						fill: "white",
+						stroke: "white"
+					}
+				});
+				a6 = addMovablePoint({
+					coord: [5,-2],
+					onMove: function(x, y) {
+						var point = this;
+						point.setCoord([x, y]);
+						label6.remove();
+						label6 = graph.label([x,y],nums[5],"center",{ color : KhanUtil.BLUE});
+						point.updateLineEnds();
+					},
+					normalStyle: {
+						fill: "white",
+						stroke: "white"
+					},
+					highlightStyle: {
+						fill: "white",
+						stroke: "white"
+					}
+				});
+				a7 = addMovablePoint({
+					coord: [6,-2],
+					onMove: function(x, y) {
+						var point = this;
+						point.setCoord([x, y]);
+						label7.remove();
+						label7 = graph.label([x,y],nums[6],"center",{ color : KhanUtil.BLUE});
+						point.updateLineEnds();
+					},
+					normalStyle: {
+						fill: "white",
+						stroke: "white"
+					},
+					highlightStyle: {
+						fill: "white",
+						stroke: "white"
+					}
+				});
+				a8 = addMovablePoint({
+					coord: [7,-2],
+					onMove: function(x, y) {
+						var point = this;
+						point.setCoord([x, y]);
+						label8.remove();
+						label8 = graph.label([x,y],nums[7],"center",{ color : KhanUtil.BLUE});
+						point.updateLineEnds();
+					},
+					normalStyle: {
+						fill: "white",
+						stroke: "white"
+					},
+					highlightStyle: {
+						fill: "white",
+						stroke: "white"
+					}
+				});
+				a9 = addMovablePoint({
+					coord: [8,-2],
+					onMove: function(x, y) {
+						var point = this;
+						point.setCoord([x, y]);
+						label9.remove();
+						label9 = graph.label([x,y],nums[8],"center",{ color : KhanUtil.BLUE});
+						point.updateLineEnds();
+					},
+					normalStyle: {
+						fill: "white",
+						stroke: "white"
+					},
+					highlightStyle: {
+						fill: "white",
+						stroke: "white"
+					}
+				});
+				a10 = addMovablePoint({
+					coord: [9,-2],
+					onMove: function(x, y) {
+						var point = this;
+						point.setCoord([x, y]);
+						label10.remove();
+						label10 = graph.label([x,y],nums[9],"center",{ color : KhanUtil.BLUE});
+						point.updateLineEnds();
+					},
+					normalStyle: {
+						fill: "white",
+						stroke: "white"
+					},
+					highlightStyle: {
+						fill: "white",
+						stroke: "white"
+					}
+				});
+			</div>
+		</div>
+		<div class="solution" data-type="multiple">
+			<div class="sol" data-type="custom">
+				<div class="guess">[a1.coord,a2.coord,a3.coord,a4.coord,a5.coord,a6.coord,a7.coord,a8.coord,a9.coord,a10.coord]</div>
+				<div class="validator-function">
+					
+					var newGuess = [guess[SHOW_NUMBERS[0]],guess[SHOW_NUMBERS[1]],guess[SHOW_NUMBERS[2]],guess[SHOW_NUMBERS[3]]];
+					var errGuess = [guess[ERROR_NUMBERS[0]],guess[ERROR_NUMBERS[1]],guess[ERROR_NUMBERS[2]],guess[ERROR_NUMBERS[3]],guess[ERROR_NUMBERS[4]],guess[ERROR_NUMBERS[5]]];
+					var emptyAns = "";
+					for(var a = 0; a &lt; 10; a++){
+						if(guess[a][0] == a && guess[a][1] == -2){
+							emptyAns = "";
+						}else{
+							emptyAns = 1;
+							break;
+						}
+					}
+					if(emptyAns == ""){
+						return "";
+					}
+					for(var i = 0; i &lt; 4; i++){
+						if(newGuess[i][0] &gt; 2.75*i && newGuess[i][0] &lt; 2.75*(i+1) && newGuess[i][1] &gt; -1 && newGuess[i][1] &lt; 1){
+						}else{
+							return false;
+						}
+					}
+					for(var j = 0; j &lt; 6; j++){
+						if(errGuess[j][0] &gt; 0 && errGuess[j][0] &lt; 11 && errGuess[j][1] &lt; 1 && errGuess[j][1] &gt; -1){
+							return false;
+						}
+					}
+					return true;
+				</div>
+			</div>
+			<div class="example">利用滑鼠拖拉操作</div>
+		</div>
+
+		<div class="hints">
+			<p>「<span class="hint_red"><var>NUMBER_CHAR[0]</var></span>千<span class="hint_red"><var>NUMBER_CHAR[1]</var></span>百<span class="hint_red"><var>NUMBER_CHAR[2]</var></span>十<span class="hint_red"><var>NUMBER_CHAR[3]</var></span>」代表 <code class="hint_pink"><var>SHOW_NUMBERS[0]</var></code> 個千、<code class="hint_pink"><var>SHOW_NUMBERS[1]</var></code> 個百、<code class="hint_pink"><var>SHOW_NUMBERS[2]</var></code> 個十、<code class="hint_pink"><var>SHOW_NUMBERS[3]</var></code> 個一。</p>
+		</div>
+	</div>
+</div>
+</div>
+</body>
+</html>
