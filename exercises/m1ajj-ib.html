@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>加數未知</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+    <div id="case1">
+        <div class="vars" data-ensure="ANS!=10">
+             <var id="A">randRange(10, 25)</var>
+             <var id="B">randRange(30,60)</var>
+             <var id="ANS">B-A</var>
+             <var id="BP">(A*10)/B</var>
+        </div>
+
+        <div class="problems">
+            <div class="question">
+                <P>哥哥有 <code><var>A</var></code> 元，爸爸再給哥哥一些錢後，哥哥剛好有足夠的錢可以買 <code><var>B</var></code> 元的餅乾。請問爸爸給哥哥多少錢？</P>
+            </div>
+        </div>
+       <div class="solution" data-type="multiple">
+      <span class="sol" data-forms="integer"><var>ANS</var></span>
+    </div>
+
+
+        <div class="hints">
+          <div>
+            <p> <code><var>A</var> + ( \enspace) = <var>B</var></code> </p>
+            <div class="graphie" id="line_inner_circle">
+              init({
+                      range: [ [-1, 11], [-2.5, 2.5] ],
+                      scale: 40
+                  });
+                    line([0,0],[10,0],{stroke:"blue", strokeWidth: 3.5}); 
+                    line([0,0.4],[0,-0.4],{stroke:"red", strokeWidth: 3});
+                    line([10,0.4],[10,-0.4],{stroke:"red", strokeWidth: 3});
+                    path([[0,-0.5],[0.2,-0.9],[4.8,-0.9],[5,-1.2],[5.2,-0.9],[9.8,-0.9],[10,-0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([5,-1.5], "\\small{餅乾"+B+"元}", "below",{color:"black"});
+                    circle([BP,0], 0.1, { stroke: "red" ,fill:"red"}); 
+                    path([[0,0.5],[0.2,0.9],[BP/2-0.2,0.9],[BP/2,1.2],[BP/2+0.2,0.9],[BP-0.2,0.9],[BP,0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([BP/2,2], "\\small{哥哥有"+A+"元}", "below",{color:"black"});
+                    path([[BP,0.5],[BP+0.2,0.9],[(10+BP)/2-0.2,0.9],[(10+BP)/2,1.2],[(10+BP)/2+0.2,0.9],[9.8,0.9],[10,0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([(10+BP)/2,2], "\\small{爸爸給哥哥？元}", "below",{color:"black"});
+                          
+            </div>
+          </div>
+          <div>
+        <div class="graphie" id="numbers_32">
+                graph.subtractor = new Subtractor( B, A );
+                graph.subtractor.show();
+        </div>
+      </div>
+            <div class="graphie" data-update="numbers_32" data-each="new Subtractor( B, A ).getNumHints() times">
+        graph.subtractor.showHint();
+      </div>
+          <p>爸爸給哥哥 <code class="hint_pink"><var>ANS</var></code> 元。</p>
+        </div>
+    </div>
+
+    <div id="case2">
+        <div class="vars" data-ensure="ANS!=10">
+             <var id="A">randRange(10, 25)</var>
+             <var id="B">randRange(30,60)</var>
+             <var id="ANS">B-A</var>
+             <var id="BP">(A*10)/B</var>
+        </div>
+
+        <div class="problems">
+            <div class="question">
+                <P>姊姊吃了 <code><var>A</var></code> 顆小番茄，弟弟也吃了一些小番茄。兩個人一共吃了 <code><var>B</var></code> 顆小番茄，請問弟弟吃了幾顆小番茄？</P>
+            </div>
+        </div>
+       <div class="solution" data-type="multiple">
+      <span class="sol" data-forms="integer"><var>ANS</var></span>
+    </div>
+
+
+        <div class="hints">
+          <div>
+            <p> <code><var>A</var> + ( \enspace) = <var>B</var></code> </p>
+            <div class="graphie" id="line_inner_circle">
+              init({
+                      range: [ [-1, 11], [-2.5, 2.5] ],
+                      scale: 40
+                  });
+                    line([0,0],[10,0],{stroke:"blue", strokeWidth: 3.5}); 
+                    line([0,0.4],[0,-0.4],{stroke:"red", strokeWidth: 3});
+                    line([10,0.4],[10,-0.4],{stroke:"red", strokeWidth: 3});
+                    path([[0,-0.5],[0.2,-0.9],[4.8,-0.9],[5,-1.2],[5.2,-0.9],[9.8,-0.9],[10,-0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([5,-1.5], "\\small{一共吃了"+B+"顆}", "below",{color:"black"});
+                    circle([BP,0], 0.1, { stroke: "red" ,fill:"red"}); 
+                    path([[0,0.5],[0.2,0.9],[BP/2-0.2,0.9],[BP/2,1.2],[BP/2+0.2,0.9],[BP-0.2,0.9],[BP,0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([BP/2,2], "\\small{姊姊吃"+A+"顆}", "below",{color:"black"});
+                    path([[BP,0.5],[BP+0.2,0.9],[(10+BP)/2-0.2,0.9],[(10+BP)/2,1.2],[(10+BP)/2+0.2,0.9],[9.8,0.9],[10,0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([(10+BP)/2,2], "\\small{弟弟吃？顆}", "below",{color:"black"});
+                          
+            </div>
+          </div>
+          <div>
+        <div class="graphie" id="numbers_32">
+                graph.subtractor = new Subtractor( B, A );
+                graph.subtractor.show();
+        </div>
+      </div>
+            <div class="graphie" data-update="numbers_32" data-each="new Subtractor( B, A ).getNumHints() times">
+        graph.subtractor.showHint();
+      </div>
+          <p>弟弟吃了 <code class="hint_pink"><var>ANS</var></code> 顆小番茄。</p>
+        </div>
+    </div>
+
+     <div id="case3">
+        <div class="vars" data-ensure="ANS!=10">
+             <var id="A">randRange(8, 15)</var>
+             <var id="B">randRange(20,50)</var>
+             <var id="ANS">B-A</var>
+             <var id="BP">(A*10)/B</var>
+        </div>
+
+        <div class="problems">
+            <div class="question">
+                <P>小華原本有 <code><var>A</var></code> 顆彈珠，又買了一些後，共有 <code><var>B</var></code> 顆彈珠。請問小華買了幾顆彈珠？</P>
+            </div>
+        </div>
+       <div class="solution" data-type="multiple">
+      <span class="sol" data-forms="integer"><var>ANS</var></span>
+    </div>
+
+
+        <div class="hints">
+          <div>
+            <p> <code><var>A</var> + ( \enspace) = <var>B</var></code> </p>
+            <div class="graphie" id="line_inner_circle">
+              init({
+                      range: [ [-1, 11], [-2.5, 2.5] ],
+                      scale: 40
+                  });
+                    line([0,0],[10,0],{stroke:"blue", strokeWidth: 3.5}); 
+                    line([0,0.4],[0,-0.4],{stroke:"red", strokeWidth: 3});
+                    line([10,0.4],[10,-0.4],{stroke:"red", strokeWidth: 3});
+                    path([[0,-0.5],[0.2,-0.9],[4.8,-0.9],[5,-1.2],[5.2,-0.9],[9.8,-0.9],[10,-0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([5,-1.5], "\\small{共有"+B+"顆彈珠}", "below",{color:"black"});
+                    circle([BP,0], 0.1, { stroke: "red" ,fill:"red"}); 
+                    path([[0,0.5],[0.2,0.9],[BP/2-0.2,0.9],[BP/2,1.2],[BP/2+0.2,0.9],[BP-0.2,0.9],[BP,0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([BP/2,2], "\\small{"+A+"顆彈珠}", "below",{color:"black"});
+                    path([[BP,0.5],[BP+0.2,0.9],[(10+BP)/2-0.2,0.9],[(10+BP)/2,1.2],[(10+BP)/2+0.2,0.9],[9.8,0.9],[10,0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([(10+BP)/2,2], "\\small{？顆彈珠}", "below",{color:"black"});
+                          
+            </div>
+          </div>
+          <div>
+        <div class="graphie" id="numbers_32">
+                graph.subtractor = new Subtractor( B, A );
+                graph.subtractor.show();
+        </div>
+      </div>
+            <div class="graphie" data-update="numbers_32" data-each="new Subtractor( B, A ).getNumHints() times">
+        graph.subtractor.showHint();
+      </div>
+          <p>小華買了 <code class="hint_pink"><var>ANS</var></code> 顆彈珠。</p>
+        </div>
+    </div>
+
+    <div id="case4">
+        <div class="vars" data-ensure="ANS!=10">
+             <var id="A">randRange(8, 20)</var>
+             <var id="B">randRange(25,50)</var>
+             <var id="ANS">B-A</var>
+             <var id="BP">(A*10)/B</var>
+        </div>
+
+        <div class="problems">
+            <div class="question">
+                <P>小均用珠子串手環，已經串了 <code><var>A</var></code> 顆，再串幾顆就有 <code><var>B</var></code> 顆？</P>
+            </div>
+        </div>
+       <div class="solution" data-type="multiple">
+      <span class="sol" data-forms="integer"><var>ANS</var></span>
+    </div>
+
+
+        <div class="hints">
+          <div>
+            <p> <code><var>A</var> + ( \enspace) = <var>B</var></code> </p>
+            <div class="graphie" id="line_inner_circle">
+              init({
+                      range: [ [-1, 11], [-2.5, 2.5] ],
+                      scale: 40
+                  });
+                    line([0,0],[10,0],{stroke:"blue", strokeWidth: 3.5}); 
+                    line([0,0.4],[0,-0.4],{stroke:"red", strokeWidth: 3});
+                    line([10,0.4],[10,-0.4],{stroke:"red", strokeWidth: 3});
+                    path([[0,-0.5],[0.2,-0.9],[4.8,-0.9],[5,-1.2],[5.2,-0.9],[9.8,-0.9],[10,-0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([5,-1.5], "\\small{"+B+"顆珠子}", "below",{color:"black"});
+                    circle([BP,0], 0.1, { stroke: "red" ,fill:"red"}); 
+                    path([[0,0.5],[0.2,0.9],[BP/2-0.2,0.9],[BP/2,1.2],[BP/2+0.2,0.9],[BP-0.2,0.9],[BP,0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([BP/2,2], "\\small{"+A+"顆}", "below",{color:"black"});
+                    path([[BP,0.5],[BP+0.2,0.9],[(10+BP)/2-0.2,0.9],[(10+BP)/2,1.2],[(10+BP)/2+0.2,0.9],[9.8,0.9],[10,0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([(10+BP)/2,2], "\\small{再串？顆}", "below",{color:"black"});
+                          
+            </div>
+          </div>
+          <div>
+        <div class="graphie" id="numbers_32">
+                graph.subtractor = new Subtractor( B, A );
+                graph.subtractor.show();
+        </div>
+      </div>
+            <div class="graphie" data-update="numbers_32" data-each="new Subtractor( B, A ).getNumHints() times">
+        graph.subtractor.showHint();
+      </div>
+          <p>再串 <code class="hint_pink"><var>ANS</var></code> 顆珠子。</p>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
