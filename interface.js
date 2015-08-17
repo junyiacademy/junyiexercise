@@ -360,7 +360,6 @@ function handleAttempt(data) {
         // wait for the special assessment mode triggers to fire instead.
         $(Exercises).trigger("gotoNextProblem");
     }
-
     // Save the problem results to the server
     var requestUrl = "problems/" + problemNum + "/attempt";
     request(requestUrl, attemptData).fail(function(xhr) {
@@ -495,7 +494,7 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         is_challenging: Exercises.isChallenging ? 1 : 0,
 
         // Whether we are currently working on a topic, as opposed to an exercise
-        topic_mode: (!Exercises.reviewMode && !Exercises.practiceMode && !Exercises.pretestMode) ? 1 : 0,
+        topic_mode: 0,
 
         // should be pretest_mode: (!Exercises.testMode && Exercises.pretestMode) ? 1 : 0,
         // but there's no testMode, so when it's in the preview page, it will go wrong.
