@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>被減數未知</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+     <div id="case1">
+        <div class="vars">
+             <var id="A">randRange(10, 25)</var>
+             <var id="B">randRange(20,50)</var>
+             <var id="ANS">A+B</var>
+             <var id="BP">(A*10)/(A+B)</var>
+             <var id="DUMMY">[]</var>
+        </div>
+
+        <div class="problems">
+            <div class="question">
+                <P>冰箱原本有一些蝦子，媽媽煮了 <code><var>A</var></code> 隻後，還剩 <code><var>B</var></code> 隻。請問冰箱裡原本有幾隻蝦子？</P>
+            </div>
+        </div>
+       <div class="solution" data-type="multiple">
+      <span class="sol" data-forms="integer"><var>ANS</var></span>
+    </div>
+        <div class="hints">
+          <div>
+            <p> <code> ( \enspace) - <var>A</var> = <var>B</var></code> </p>
+            <div class="graphie" id="line_inner_circle">
+              init({
+                      range: [ [-1, 11], [-2.5, 2.5] ],
+                      scale: 40
+                  });
+                    line([0,0],[10,0],{stroke:"blue", strokeWidth: 3.5}); 
+                    line([0,0.4],[0,-0.4],{stroke:"red", strokeWidth: 3});
+                    line([10,0.4],[10,-0.4],{stroke:"red", strokeWidth: 3});
+                    path([[0,0.5],[0.2,0.9],[4.8,0.9],[5,1.2],[5.2,0.9],[9.8,0.9],[10,0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([5,1.5], "\\small{？隻蝦子}", "above",{color:"black"});
+                    circle([BP,0], 0.1, { stroke: "red" ,fill:"red"}); 
+                    path([[0,-0.5],[0.2,-0.9],[BP/2-0.2,-0.9],[BP/2,-1.2],[BP/2+0.2,-0.9],[BP-0.2,-0.9],[BP,-0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([BP/2,-1.5], "\\small{煮"+A+"隻}", "below",{color:"black"});
+                    path([[BP,-0.5],[BP+0.2,-0.9],[(10+BP)/2-0.2,-0.9],[(10+BP)/2,-1.2],[(10+BP)/2+0.2,-0.9],[9.8,-0.9],[10,-0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([(10+BP)/2,-1.5], "\\small{剩下"+B+"隻}", "below",{color:"black"});                       
+            </div>
+          </div>
+          <div class="graphie" id="numbers_31">
+            graph.adder = new Adder( A, B );
+            graph.adder.show();
+          </div>
+      <div class="graphie" data-update="numbers_31" data-each="Array( new Adder( A, B ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+          <p>冰箱裡原本有 <code class="hint_pink"><var>ANS</var></code> 隻蝦子。</p>
+        </div>
+    </div>
+
+    <div id="case2">
+        <div class="vars">
+             <var id="A">randRange(10, 20)</var>
+             <var id="B">randRange(15,30)</var>
+             <var id="ANS">A+B</var>
+             <var id="BP">(A*10)/(A+B)</var>
+             <var id="DUMMY">[]</var>
+        </div>
+
+        <div class="problems">
+            <div class="question">
+                <P>小柔有一些貼紙，送給小蓉 <code><var>A</var></code> 張後，剩下 <code><var>B</var></code> 張，小柔原本有幾張貼紙？</P>
+            </div>
+        </div>
+       <div class="solution" data-type="multiple">
+      <span class="sol" data-forms="integer"><var>ANS</var></span>
+    </div>
+        <div class="hints">
+          <div>
+            <p> <code> ( \enspace) - <var>A</var> = <var>B</var></code> </p>
+            <div class="graphie" id="line_inner_circle">
+              init({
+                      range: [ [-1, 11], [-2.5, 2.5] ],
+                      scale: 40
+                  });
+                    line([0,0],[10,0],{stroke:"blue", strokeWidth: 3.5}); 
+                    line([0,0.4],[0,-0.4],{stroke:"red", strokeWidth: 3});
+                    line([10,0.4],[10,-0.4],{stroke:"red", strokeWidth: 3});
+                    path([[0,0.5],[0.2,0.9],[4.8,0.9],[5,1.2],[5.2,0.9],[9.8,0.9],[10,0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([5,1.5], "\\small{？張貼紙}", "above",{color:"black"});
+                    circle([BP,0], 0.1, { stroke: "red" ,fill:"red"}); 
+                    path([[0,-0.5],[0.2,-0.9],[BP/2-0.2,-0.9],[BP/2,-1.2],[BP/2+0.2,-0.9],[BP-0.2,-0.9],[BP,-0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([BP/2,-1.5], "\\small{送給小蓉"+A+"張}", "below",{color:"black"});
+                    path([[BP,-0.5],[BP+0.2,-0.9],[(10+BP)/2-0.2,-0.9],[(10+BP)/2,-1.2],[(10+BP)/2+0.2,-0.9],[9.8,-0.9],[10,-0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([(10+BP)/2,-1.5], "\\small{剩"+B+"張}", "below",{color:"black"});                       
+            </div>
+          </div>
+          <div class="graphie" id="numbers_31">
+            graph.adder = new Adder( A, B );
+            graph.adder.show();
+          </div>
+      <div class="graphie" data-update="numbers_31" data-each="Array( new Adder( A, B ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+          <p>小柔原本有 <code class="hint_pink"><var>ANS</var></code> 張貼紙。</p>
+        </div>
+    </div>
+
+    <div id="case3">
+        <div class="vars">
+             <var id="A">randRange(5, 15)</var>
+             <var id="B">randRange(5,15)</var>
+             <var id="ANS">A+B</var>
+             <var id="BP">(A*10)/(A+B)</var>
+             <var id="DUMMY">[]</var>
+        </div>
+
+        <div class="problems">
+            <div class="question">
+                <P>書架上有一些書，拿走 <code><var>A</var></code> 本後，還剩下 <code><var>B</var></code> 本書，請問書架上原本有幾本書？</P>
+            </div>
+        </div>
+       <div class="solution" data-type="multiple">
+      <span class="sol" data-forms="integer"><var>ANS</var></span>
+    </div>
+        <div class="hints">
+          <div>
+            <p> <code> ( \enspace) - <var>A</var> = <var>B</var></code> </p>
+            <div class="graphie" id="line_inner_circle">
+              init({
+                      range: [ [-1, 11], [-2.5, 2.5] ],
+                      scale: 40
+                  });
+                    line([0,0],[10,0],{stroke:"blue", strokeWidth: 3.5}); 
+                    line([0,0.4],[0,-0.4],{stroke:"red", strokeWidth: 3});
+                    line([10,0.4],[10,-0.4],{stroke:"red", strokeWidth: 3});
+                    path([[0,0.5],[0.2,0.9],[4.8,0.9],[5,1.2],[5.2,0.9],[9.8,0.9],[10,0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([5,1.5], "\\small{書架上有？本書}", "above",{color:"black"});
+                    circle([BP,0], 0.1, { stroke: "red" ,fill:"red"}); 
+                    path([[0,-0.5],[0.2,-0.9],[BP/2-0.2,-0.9],[BP/2,-1.2],[BP/2+0.2,-0.9],[BP-0.2,-0.9],[BP,-0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([BP/2,-1.5], "\\small{拿走"+A+"本}", "below",{color:"black"});
+                    path([[BP,-0.5],[BP+0.2,-0.9],[(10+BP)/2-0.2,-0.9],[(10+BP)/2,-1.2],[(10+BP)/2+0.2,-0.9],[9.8,-0.9],[10,-0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([(10+BP)/2,-1.5], "\\small{剩下"+B+"本}", "below",{color:"black"});                       
+            </div>
+          </div>
+          <div class="graphie" id="numbers_31">
+            graph.adder = new Adder( A, B );
+            graph.adder.show();
+          </div>
+      <div class="graphie" data-update="numbers_31" data-each="Array( new Adder( A, B ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+          <p>書架上原本有 <code class="hint_pink"><var>ANS</var></code> 本書。</p>
+        </div>
+    </div>
+
+    <div id="case4">
+        <div class="vars">
+             <var id="A">randRange(10, 30)</var>
+             <var id="B">randRange(5,20)</var>
+             <var id="ANS">A+B</var>
+             <var id="BP">(A*10)/(A+B)</var>
+             <var id="DUMMY">[]</var>
+        </div>
+
+        <div class="problems">
+            <div class="question">
+                <P>花店裡有一些玫瑰花，賣掉 <code><var>A</var></code> 朵後，還剩下 <code><var>B</var></code> 朵玫瑰花，請問花店裡原本有幾朵玫瑰花？</P>
+            </div>
+        </div>
+       <div class="solution" data-type="multiple">
+      <span class="sol" data-forms="integer"><var>ANS</var></span>
+    </div>
+        <div class="hints">
+          <div>
+            <p> <code> ( \enspace) - <var>A</var> = <var>B</var></code> </p>
+            <div class="graphie" id="line_inner_circle">
+              init({
+                      range: [ [-1, 11], [-2.5, 2.5] ],
+                      scale: 40
+                  });
+                    line([0,0],[10,0],{stroke:"blue", strokeWidth: 3.5}); 
+                    line([0,0.4],[0,-0.4],{stroke:"red", strokeWidth: 3});
+                    line([10,0.4],[10,-0.4],{stroke:"red", strokeWidth: 3});
+                    path([[0,0.5],[0.2,0.9],[4.8,0.9],[5,1.2],[5.2,0.9],[9.8,0.9],[10,0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([5,1.5], "\\small{花店裡有？朵玫瑰花}", "above",{color:"black"});
+                    circle([BP,0], 0.1, { stroke: "red" ,fill:"red"}); 
+                    path([[0,-0.5],[0.2,-0.9],[BP/2-0.2,-0.9],[BP/2,-1.2],[BP/2+0.2,-0.9],[BP-0.2,-0.9],[BP,-0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([BP/2,-1.5], "\\small{賣掉"+A+"朵}", "below",{color:"black"});
+                    path([[BP,-0.5],[BP+0.2,-0.9],[(10+BP)/2-0.2,-0.9],[(10+BP)/2,-1.2],[(10+BP)/2+0.2,-0.9],[9.8,-0.9],[10,-0.5]], {stroke:"red", strokeWidth: 3.5});
+                    label([(10+BP)/2,-1.5], "\\small{剩下"+B+"朵}", "below",{color:"black"});                       
+            </div>
+          </div>
+          <div class="graphie" id="numbers_31">
+            graph.adder = new Adder( A, B );
+            graph.adder.show();
+          </div>
+      <div class="graphie" data-update="numbers_31" data-each="Array( new Adder( A, B ).getNumHints() ) as dummy">
+                 graph.adder.showHint();
+            </div>
+          <p>花店裡原本有 <code class="hint_pink"><var>ANS</var></code> 朵玫瑰花。</p>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
