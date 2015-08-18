@@ -501,6 +501,8 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         // but there's no testMode, so when it's in the preview page, it will go wrong.
         pretest_mode: Exercises.pretestMode ? 1 : 0,
 
+        exam_mode: Exercises.examMode ? 1 : 0,
+
         // If working in the context of a LearningTask (on the new learning
         // dashboard), supply the task ID.
         task_id: Exercises.learningTask && Exercises.learningTask.get("id"),
