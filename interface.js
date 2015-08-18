@@ -252,15 +252,16 @@ function handleAttempt(data) {
             score.correct ? "correct-activity" : "incorrect-activity",
             stringifiedGuess, timeTaken]);
 
-    if (score.correct || skipped) {
+    if (score.correct || skipped || Exercises.examMode) {
         $(Exercises).trigger("problemDone", {
             card: Exercises.currentCard,
             attempts: attempts
         });
     }
 
-    // Update interface corresponding to correctness
-    if (skipped || Exercises.assessmentMode) {
+    // Update interface corresponding to correctness, 
+    // in examMode, we don't give feedback if it is correct or wrong
+    if (skipped || Exercises.assessmentMode || Exercises.examMode) {
         disableCheckAnswer();
     } else if (score.correct) {
         // Correct answer, so show the next question button.
@@ -354,8 +355,8 @@ function handleAttempt(data) {
         return false;
     }
 
-    if (skipped && !Exercises.assessmentMode) {
-        // Skipping should pull up the next card immediately - but, if we're in
+    if ((skipped || Exercises.examMode) && !Exercises.assessmentMode ) {
+        // Skipping or examMode should pull up the next card immediately - but, if we're in
         // assessment mode, we don't know what the next card will be yet, so
         // wait for the special assessment mode triggers to fire instead.
         $(Exercises).trigger("gotoNextProblem");
