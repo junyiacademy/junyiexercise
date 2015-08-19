@@ -1007,7 +1007,12 @@ var Khan = (function() {
             }).children(".problems").children();
 
             // ...and create a new problem bag with problems of our new exercise type.
-            problemBag = makeProblemBag(problems, 10, userExercise.exerciseModel.isQuizExercise);
+            if (Exercises.examMode) {  // we have to make sure we load all the problems in problemBag when in examMode
+                bagSize = Math.max(10, problems.length);
+            } else {
+                bagSize = 10;
+            }
+            problemBag = makeProblemBag(problems, bagSize, userExercise.exerciseModel.isQuizExercise);
 
             // Update related videos
             Khan.relatedVideos.setVideos(userExercise.exerciseModel);
@@ -1135,8 +1140,16 @@ var Khan = (function() {
         // we made earlier to ensure that every problem gets shown the
         // appropriate number of times
         } else if (problemBag.length > 0) {
-            problem = problemBag[(problemBagIndex + skipCount) % problemCount];
-            id = problem.data("id");
+            if (Exercises.examMode) {
+                problem = problemBag.filter(function(obj) {  // find problem which's id === our currentCard's quizPid
+                    return parseInt(obj.data("id")) === Exercises.currentCard.attributes.quizPid;
+                })[0];
+                id = Exercises.currentCard.attributes.quizPid;
+            } else {
+                problem = problemBag[(problemBagIndex + skipCount) % problemCount];
+                id = problem.data("id");
+            }
+            
 
         // No valid problem was found, bail out
         } else {

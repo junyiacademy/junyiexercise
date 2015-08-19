@@ -252,15 +252,16 @@ function handleAttempt(data) {
             score.correct ? "correct-activity" : "incorrect-activity",
             stringifiedGuess, timeTaken]);
 
-    if (score.correct || skipped) {
+    if (score.correct || skipped || Exercises.examMode) {
         $(Exercises).trigger("problemDone", {
             card: Exercises.currentCard,
             attempts: attempts
         });
     }
 
-    // Update interface corresponding to correctness
-    if (skipped || Exercises.assessmentMode) {
+    // Update interface corresponding to correctness, 
+    // in examMode, we don't give feedback if it is correct or wrong
+    if (skipped || Exercises.assessmentMode || Exercises.examMode) {
         disableCheckAnswer();
     } else if (score.correct) {
         // Correct answer, so show the next question button.
@@ -354,13 +355,12 @@ function handleAttempt(data) {
         return false;
     }
 
-    if (skipped && !Exercises.assessmentMode) {
-        // Skipping should pull up the next card immediately - but, if we're in
+    if ((skipped || Exercises.examMode) && !Exercises.assessmentMode ) {
+        // Skipping or examMode should pull up the next card immediately - but, if we're in
         // assessment mode, we don't know what the next card will be yet, so
         // wait for the special assessment mode triggers to fire instead.
         $(Exercises).trigger("gotoNextProblem");
     }
-
     // Save the problem results to the server
     var requestUrl = "problems/" + problemNum + "/attempt";
     request(requestUrl, attemptData).fail(function(xhr) {
@@ -495,11 +495,13 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         is_challenging: Exercises.isChallenging ? 1 : 0,
 
         // Whether we are currently working on a topic, as opposed to an exercise
-        topic_mode: (!Exercises.reviewMode && !Exercises.practiceMode && !Exercises.pretestMode) ? 1 : 0,
+        topic_mode: 0,
 
         // should be pretest_mode: (!Exercises.testMode && Exercises.pretestMode) ? 1 : 0,
         // but there's no testMode, so when it's in the preview page, it will go wrong.
         pretest_mode: Exercises.pretestMode ? 1 : 0,
+
+        exam_mode: Exercises.examMode ? 1 : 0,
 
         // If working in the context of a LearningTask (on the new learning
         // dashboard), supply the task ID.
