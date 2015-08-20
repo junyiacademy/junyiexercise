@@ -380,6 +380,7 @@ function handleAttempt(data) {
         // Hide the page so users don't continue, then warn the user about the
         // problem and encourage reloading the page
         $("#problem-and-answer").css("visibility", "hidden");
+        debugger;
         $(Exercises).trigger("warning",
                 $._("這一個畫面過期了。請<a href='" + window.location.href +
                     "'>重新整理</a>網頁。不用擔心，沒有損失進度。"
@@ -493,6 +494,8 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         // Which stage we're at in practice mode
         is_starting: Exercises.isStarting ? 1 : 0,
         is_challenging: Exercises.isChallenging ? 1 : 0,
+        is_task: Exercises.isTask ? 1 : 0,
+        mission_id: Exercises.missionId,
 
         // Whether we are currently working on a topic, as opposed to an exercise
         topic_mode: (!Exercises.reviewMode && !Exercises.practiceMode && !Exercises.pretestMode) ? 1 : 0,
