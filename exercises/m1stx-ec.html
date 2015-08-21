@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>正三角形與正方形的邊長關係</title>
+    <script src="../khan-exercise.js"></script>
+	<script language="javascript">
+		function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+	<div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="R">randFromArray([roundTo(0, Math.atan(0.5) * 180 / Math.PI), roundTo(0, Math.atan(3) * 180 / Math.PI), roundTo(0, Math.atan(0.4) * 180 / Math.PI)])</var>
+				<var id="T">randRange(1, 3)</var>
+				<var id="Q">["正三角形", "正方形", "長方形"]</var>
+				<var id="ANS">Q[T - 1]</var>
+				<var id="S">randRange(0, 359)</var>
+				<var id="ANGLES">(function(){
+					if(T == 1){
+						return [[S, S + 120, S + 240], [S + 60, S + 180, S + 300]];
+					}else if(T == 2){
+						return [[S, S + 90, S + 180, S + 270], [S + 45, S + 135, S + 225, S + 315]];
+					}else{
+						return [[R, 180 - R, 180 + R, 360 - R], [0, 90, 180, 270]];
+					}
+				})()</var>
+				<var id="LABELSS">T &lt; 3 ?randFromArray([[3, 3], [4, 4], [5, 5]]) : (R &lt; 25 ? [2, 5] : (R &lt; 50 ? [2, 4] : [3, 1]))</var>
+				<var id="P">(function(){
+					pathpoints = [];
+					labelspoints = [];
+					$.each(ANGLES[0], function(i, elem){
+						pathpoints.push(polar(3, elem));
+					});
+					$.each(ANGLES[1], function(i, elem){
+						if(T !== 3){
+							labelspoints.push(polar(3.1, elem));
+						}else{
+							i % 2 == 0 ? labelspoints.push(polar(3.75 * cos(R / 180 * Math.PI), elem)) : labelspoints.push(polar(3.75 * sin(R / 180 * Math.PI), elem));
+						}
+					});
+					pathpoints.push(pathpoints[0]);
+					return [pathpoints, labelspoints];
+				})()</var>
+				<var id="COLORS">["#6495ED", "#FFA500", "red", "#28AE7B", "purple"][randRange(0, 4)]</var>
+			</div>
+			<div class="question">
+				<p>請選出以下圖形最合適的描述。（下圖單位：公分）</p>
+				<div class="graphie" id="graph">
+					init({
+						range:[[-4.5,4.5], [-4.5,4.5]]
+					});
+					path(P[0], { stroke : COLORS, strokeWidth : 2});
+					path(P[0], { stroke : COLORS, fill : COLORS, opacity : 0.5});
+					$.each(P[1], function(i, elem){
+						label(elem, LABELSS[i % 2], 'center');
+					});
+				</div>
+			</div>
+			<p class="solution"><var>ANS</var></p>
+            <ul class="choices" data-category="true">
+                <li data-each="Q as choice"><var>choice</var></li>
+            </ul>
+			<div class="hints">
+				<div>
+					<p data-if="T == 1">正三角形的三條邊都一樣長。</p>
+					<p data-if="T == 2">正方形的四條邊都一樣長。</p>
+					<p data-if="T == 3">長方形的上下兩邊一樣長，左右兩邊一樣長。</p>
+				</div>
+				<p>因此，此題答案為 「<span class="hint_pink"><var>ANS</var></span>」。</p>
+			</div>
+		</div>
+
+		<div id="case2">
+			<div class="vars">
+				<var id="R">randFromArray([roundTo(0, Math.atan(0.5) * 180 / Math.PI), roundTo(0, Math.atan(3) * 180 / Math.PI), roundTo(0, Math.atan(0.4) * 180 / Math.PI)])</var>
+				<var id="T">randRange(1, 3)</var>
+				<var id="Q">["正三角形", "正方形", "長方形"]</var>
+				<var id="ANS">Q[T - 1]</var>
+				<var id="S">randRange(0, 359)</var>
+				<var id="ANGLES">(function(){
+					if(T == 1){
+						return [[S, S + 120, S + 240], [S + 60, S + 180, S + 300]];
+					}else if(T == 2){
+						return [[S, S + 90, S + 180, S + 270], [S + 45, S + 135, S + 225, S + 315]];
+					}else{
+						return [[R, 180 - R, 180 + R, 360 - R], [0, 90, 180, 270]];
+					}
+				})()</var>
+				<var id="LABELSS">T &lt; 3 ?randFromArray([[3, 3], [4, 4], [5, 5]]) : (R &lt; 25 ? [2, 5] : (R &lt; 50 ? [2, 4] : [3, 1]))</var>
+				<var id="P">(function(){
+					pathpoints = [];
+					labelspoints = [];
+					$.each(ANGLES[0], function(i, elem){
+						pathpoints.push(polar(3, elem));
+					});
+					$.each(ANGLES[1], function(i, elem){
+						if(T !== 3){
+							labelspoints.push(polar(3.1, elem));
+						}else{
+							i % 2 == 0 ? labelspoints.push(polar(3.75 * cos(R / 180 * Math.PI), elem)) : labelspoints.push(polar(3.75 * sin(R / 180 * Math.PI), elem));
+						}
+					});
+					pathpoints.push(pathpoints[0]);
+					return [pathpoints, labelspoints];
+				})()</var>
+				<var id="COLORS">["#6495ED", "#FFA500", "red", "#28AE7B", "purple"][randRange(0, 4)]</var>
+				<var id="ANS_INDEX">randRange(0, 2)</var>
+			</div>
+			<div class="question">
+				<p>看看以下 "<span style="font-weight:bold"><var>ANS</var></span>" ，填填看<input type="text" style="width:50px" readonly="readonly"/>裡的數字。（下圖單位：公分）</p>
+				<div class="graphie" id="graph">
+					init({
+						range:[[-6,6], [-4.5,4.5]]
+					});
+					path(P[0], { stroke : COLORS, strokeWidth : 2});
+					path(P[0], { stroke : COLORS, fill : COLORS, opacity : 0.5});
+					$.each(P[1], function(i, elem){
+						ANS_INDEX !== i ? label(elem, LABELSS[i % 2], 'center') : label(elem, "\\fbox{$\\quad$?$\\quad$}", 
+						(T == 3 &amp;&amp; ANS_INDEX == 1 || T != 3) ? 'center' : (ANS_INDEX == 0 ? 'right' : 'left'));
+					});
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>LABELSS[ANS_INDEX % 2]</var></span>公分
+			</div>
+			<div class="hints">
+				<div>
+					<p data-if="T == 1">正三角形的三條邊都一樣長，一條邊是多少，另外兩條邊就是多少。</p>
+					<p data-if="T == 2">正方形的四條邊都一樣長，一條邊是多少，另外三條邊就是多少。</p>
+					<p data-if="T == 3">長方形的上下兩邊一樣長，左右兩邊一樣長。</p>
+				</div>
+				<p>因此，此題答案為 「<code class="hint_pink"><var>LABELSS[ANS_INDEX % 2]</var></code>」公分。</p>
+			</div>
+		</div>
+
+		<div id="case3">
+			<div class="vars">
+				<var id="T">randRange(1, 4)</var>
+				<var id="ANS">['正確', '正確', '不正確', '正確'][T - 1]</var>
+				<var id="QUES">["正三角形的定義是 ： 有三條邊且所有邊長相等的封閉圖形。", "正方形的四條邊都相等。", "長方形的四條邊都相等。", "長方形的邊長，上下邊相同，左右邊相同。"][T - 1]</var>
+			</div>
+			<div class="question">
+				<p><span><var>QUES</var></span>這個說法是否正確 ？</p>
+			</div>
+			<p class="solution"><var>ANS</var></p>
+            <ul class="choices" data-category="true">
+                <li data-each="['正確', '不正確'] as choice"><var>choice</var></li>
+            </ul>
+			<div class="hints">
+				<p>答案是<span class="hint_pink"><var>ANS</var></span>。</p>
+			</div>
+		</div>
+
+	</div>
+</div>
+</body>
+</html>
