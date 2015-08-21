@@ -2251,9 +2251,9 @@ function Protractor(center) {
     var lineColor = "#789";
     var pro = this;
 
-    var r = 8.05;
-    var imgPos = graph.scalePoint([this.cx - r, this.cy + r - 0.225]);
-    this.set.push(graph.mouselayer.image(Khan.urlBase + "images/protractor.png", imgPos[0], imgPos[1], 322, 161));
+    var r = 8;
+    var imgPos = graph.scalePoint([this.cx - r + 0.225, this.cy + r - 0.225]);
+    this.set.push(graph.mouselayer.image(Khan.urlBase + "images/protractors.png", imgPos[0], imgPos[1], 312, 161));
     DrawInteractiveBoundry(graph);
 
     // Customized polar coordinate thingie to make it easier to draw the double-headed arrow thing.
@@ -2416,7 +2416,7 @@ function Protractor(center) {
         });
     };
 
-    this.set.attr({ opacity: 0.5 });
+    this.set.attr({ opacity: 1 });
     this.makeTranslatable();
     return this;
 }
