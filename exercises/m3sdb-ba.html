@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format graphie-geometry angles">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>認識多邊形</title>
+    <script src="../khan-exercise.js"></script>
+    <script type="text/javascript">
+    	function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+        Array.prototype.max = function(){  
+           return Math.max.apply({},this);
+        }
+        Array.prototype.min = function(){  
+           return Math.min.apply({},this);
+        }
+    </script>
+</head>
+<body>
+   <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                 <div class="vars">
+                 	<var id="T">randRange(0, 9)</var>
+                    <var id="SIDES">randRange(3, 8)</var>
+                    <var id="REGULAR_RADIUS">randRange(3, 6)</var>
+                    <var id="COLORS">["#6495ED", "#FFA500", "red", "#28AE7B", "purple"][randRange(0, 4)]</var>
+                    <var id="UN_REGULAR_PATH">(function(){
+                        average_angle = roundTo(0, 360 / SIDES / 2);
+                        angs = [];
+                        paths = [];
+                        for(var j = 0; j &lt; SIDES; j++){
+                            angs.push(randRange(2 * j * average_angle, (2 * j + 1) * average_angle));
+                        }
+                        for(var i = 0; i &lt; SIDES; i++){
+                            paths.push(polar(REGULAR_RADIUS, angs[i]));
+                        }
+                        paths.push(paths[0]);
+                        return paths;
+                    })()</var>
+                </div>
+
+                <div class="question">
+                    <p>以下是一個多邊形 ，有_____條邊 、有_____個角 、有_____個頂點？ </p>
+                    <div class="graphie" id="get_height">
+                        init({
+                            range: [ [-8, 8], [-8, 8] ],
+                            scale: 20
+                        });
+                        if(T &lt; 5){
+                            path(UN_REGULAR_PATH, { stroke : COLORS, fill: COLORS, opacity : 0.25 });
+                            path(UN_REGULAR_PATH, { stroke : COLORS});
+                        }else{
+                            graph.regularPolygon = new RegularPolygon([0, 0], SIDES, REGULAR_RADIUS, 0);
+                            path(graph.regularPolygon.path.graphiePath, { stroke : COLORS, fill: COLORS, opacity : 0.25 });
+                            path(graph.regularPolygon.path.graphiePath, { stroke : COLORS});
+                        }
+                    </div>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <span class="sol" data-forms="integer"><var>SIDES</var></span>條邊<br />
+                    <span class="sol" data-forms="integer"><var>SIDES</var></span>個角<br />
+                    <span class="sol" data-forms="integer"><var>SIDES</var></span>個頂點
+                    <p class="example">整數，例：<code>6</code></p>
+                </div>
+                <div class="hints">
+                    <p>首先我們要先觀察，此圖形有 <code class="hint_pink"><var>SIDES</var></code> 條邊。</p>
+                    <p>角是由兩條邊夾成，此圖形有 <code class="hint_pink"><var>SIDES</var></code> 個角。</p>
+                    <p>有角就會有頂點，這個圖形有 <code class="hint_pink"><var>SIDES</var></code> 個頂點。</p>
+                </div>
+            </div>
+
+            <div id="case2">
+                 <div class="vars">
+                    <var id="T">randRange(0, 9)</var>
+                    <var id="SIDES">randRange(3, 8)</var>
+                    <var id="REGULAR_RADIUS">randRange(3, 6)</var>
+                    <var id="COLORS">["#6495ED", "#FFA500", "red", "#28AE7B", "purple"][randRange(0, 4)]</var>
+                    <var id="UN_REGULAR_PATH">(function(){
+                        average_angle = roundTo(0, 360 / SIDES / 2);
+                        angs = [];
+                        paths = [];
+                        for(var j = 0; j &lt; SIDES; j++){
+                            angs.push(randRange(2 * j * average_angle, (2 * j + 1) * average_angle));
+                        }
+                        for(var i = 0; i &lt; SIDES; i++){
+                            paths.push(polar(REGULAR_RADIUS, angs[i]));
+                        }
+                        paths.push(paths[0]);
+                        return paths;
+                    })()</var>
+                    <var id="ANS_INIT">['三邊形','四邊形','五邊形','六邊形','七邊形','八邊形']</var>
+                    <var id="ANS">ANS_INIT[SIDES - 3]</var>
+                </div>
+
+                <div class="question">
+                    <p>以下是一個多邊形 ，它是屬於______？</p>
+                    <div class="graphie" id="GET_SIDES">
+                        init({
+                            range: [ [-8, 8], [-8, 8] ],
+                            scale: 20
+                        });
+                        if(T &lt; 5){
+                            path(UN_REGULAR_PATH, { stroke : COLORS, fill: COLORS, opacity : 0.25 });
+                            path(UN_REGULAR_PATH, { stroke : COLORS});
+                        }else{
+                            graph.regularPolygon = new RegularPolygon([0, 0], SIDES, REGULAR_RADIUS, 0);
+                            path(graph.regularPolygon.path.graphiePath, { stroke : COLORS, fill: COLORS, opacity : 0.25 });
+                            path(graph.regularPolygon.path.graphiePath, { stroke : COLORS});
+                        }
+                    </div>
+                </div>
+                <p class="solution" data-type="multiple">
+                    <span class="sol" data-type="list" data-choices="['', '三邊形', '四邊形', '五邊形', '六邊形', '七邊形', '八邊形']"><var>ANS</var></span>
+                </p>
+                <div class="hints">
+                    <div>
+                        <p>先觀察，此圖形有 <code class="hint_pink"><var>SIDES</var></code> 條邊。</p>
+                        <div class="graphie" data-update="GET_SIDES">
+                            var i = 0;
+                            setTimeout(function() {
+                                p = setInterval(function() {
+                                    if(T &lt; 5 &amp;&amp; i &lt; SIDES){
+                                        label(lineMidpoint([UN_REGULAR_PATH[i], UN_REGULAR_PATH[i + 1]]), i + 1, {  });
+                                        i++;
+                                    }else if(T &gt; 4 &amp;&amp; i &lt; SIDES){
+                                        label(lineMidpoint([graph.regularPolygon.path.graphiePath[2 * i], graph.regularPolygon.path.graphiePath[2 * i + 1]]), i + 1, {  });
+                                        i++;
+                                    }
+                                }, 500);
+                            }, 0);
+                        </div>
+                    </div>
+                    <p>我們稱它為<span class="hint_pink"><var>ANS</var></span>。</p>
+                </div>
+            </div>
+
+            <div id="case3">
+                 <div class="vars">
+                    <var id="T">randRange(0, 9)</var>
+                    <var id="SIDES">randRange(3, 8)</var>
+                    <var id="REGULAR_RADIUS">randRange(3, 6)</var>
+                    <var id="COLORS">["#6495ED", "#FFA500", "red", "#28AE7B", "purple"][randRange(0, 4)]</var>
+                    <var id="UN_REGULAR_PATH">(function(){
+                        average_angle = roundTo(0, 360 / SIDES / 2);
+                        angs = [];
+                        paths = [];
+                        for(var j = 0; j &lt; SIDES; j++){
+                            angs.push(randRange(2 * j * average_angle, (2 * j + 1) * average_angle));
+                        }
+                        for(var i = 0; i &lt; SIDES; i++){
+                            paths.push(polar(REGULAR_RADIUS, angs[i]));
+                        }
+                        paths.push(paths[0]);
+                        return paths;
+                    })()</var>
+                    <var id="ANS">['三邊形','四邊形','五邊形','六邊形','七邊形','八邊形'][SIDES - 3]</var>
+                    <var id="Q">['三','四','五','六','七','八'][SIDES - 3]</var>
+                </div>
+
+                <div class="question">
+                    <p>以下敘述是否正確 ：</p>
+                    <p><span class="hint_green"><var>ANS</var></span>有<code class="hint_red"><var>Q</var></code>條邊、<code class="hint_red"><var>Q</var></code>個角、<code class="hint_red"><var>Q</var></code>個頂點。</p>
+                    <div class="graphie" id="GET_RIGHTS">
+                        init({
+                            range: [ [-8, 8], [-8, 8] ],
+                            scale: 20
+                        });
+                        if(T &lt; 5){
+                            path(UN_REGULAR_PATH, { stroke : COLORS, fill: COLORS, opacity : 0.25 });
+                            path(UN_REGULAR_PATH, { stroke : COLORS});
+                        }else{
+                            graph.regularPolygon = new RegularPolygon([0, 0], SIDES, REGULAR_RADIUS, 0);
+                            path(graph.regularPolygon.path.graphiePath, { stroke : COLORS, fill: COLORS, opacity : 0.25 });
+                            path(graph.regularPolygon.path.graphiePath, { stroke : COLORS});
+                        }
+                    </div>
+                </div>
+                <p class="solution"><code><var>"是"</var></code></p>
+                <ul class="choices" data-category="true">
+                    <li data-each="['是', '否'] as index"><code><var>index</var></code></li>
+                </ul>
+                <div class="hints">
+                    <p><span class="hint_green"><var>ANS</var></span>的邊數、角數、頂點數都為 <code class="hint_red"><var>SIDES</var></code>。</p>
+                    <p>答案為<span class="hint_pink">是</span>。</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
