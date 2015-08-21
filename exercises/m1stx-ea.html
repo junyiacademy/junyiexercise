@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>平面與立體的辨別</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        .piaochecked {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+    <script type="text/javascript">
+    	function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+    </script>
+</head>
+<body>
+   <div class="exercise">
+        <div class="problems">
+             <div id="case1">
+                 <div class="vars">
+                    <var id="T">randRange(0, 3)</var>
+                    <var id="P">T &lt; 2 ? '立體' : '平面'</var>
+                    <var id="L">['正方體', '長方體', '長方形', '正方形']</var>
+                    <var id="ANS">L[T]</var>
+                    <var id="HEIGHT, LENGTH, WIDTH">randRangeUnique(3, 6, 3)</var>
+                    <var id="COLORS">["#6495ED", "#FFA500", "red", "#28AE7B", "purple"][randRange(0, 4)]</var>
+                    <var id="TOP_RANGE">T &lt; 2 ? 10 : WIDTH + 2</var>
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                        <p>請選出以下圖形最合適的描述。</p>
+                        <div class="graphie" id="plane_stereo_quadrilateral">
+                            init({
+                                range: [ [-6, 6], [-1, TOP_RANGE] ],
+                                scale: 30
+                            });
+                            if(T == 1){
+                                path([[0, 0], [0, HEIGHT], [LENGTH, LENGTH / sqrt(3) + HEIGHT], [LENGTH, LENGTH / sqrt(3) ], [0, 0]], { stroke : COLORS, fill : COLORS, opacity : 0.75});
+                                path([[0, 0], [0, HEIGHT], [-WIDTH * 0.5, WIDTH * 0.5 + HEIGHT], [-WIDTH * 0.5, WIDTH * 0.5 ], [0, 0]], { stroke : COLORS, fill : COLORS, opacity : 0.5});
+                                path([[0, HEIGHT], [LENGTH, LENGTH / sqrt(3) + HEIGHT], [LENGTH - WIDTH * 0.5, HEIGHT + LENGTH / sqrt(3) + WIDTH * 0.5 ], [-WIDTH * 0.5, WIDTH * 0.5  + HEIGHT], [0, HEIGHT]], { stroke : COLORS, fill : COLORS, opacity : 0.25});
+                            }else if(T == 0){
+                                WIDTH = HEIGHT/sqrt(3)*2;
+                                LENGTH = HEIGHT/2.5*2;
+                                HEIGHT = HEIGHT/2.5*2;
+                                path([[0, 0], [0, HEIGHT], [LENGTH, LENGTH / sqrt(3) + HEIGHT], [LENGTH, LENGTH / sqrt(3) ], [0, 0]], { stroke : COLORS, fill : COLORS, opacity : 0.75});
+                                path([[0, 0], [0, HEIGHT], [-WIDTH * 0.5, WIDTH * 0.5 + HEIGHT], [-WIDTH * 0.5, WIDTH * 0.5 ], [0, 0]], { stroke : COLORS, fill : COLORS, opacity : 0.5});
+                                path([[0, HEIGHT], [LENGTH, LENGTH / sqrt(3) + HEIGHT], [LENGTH - WIDTH * 0.5, HEIGHT + LENGTH / sqrt(3) + WIDTH * 0.5 ], [-WIDTH * 0.5, WIDTH * 0.5  + HEIGHT], [0, HEIGHT]], { stroke : COLORS, fill : COLORS, opacity : 0.25});
+                            }else if(T == 2){
+                                path([[-HEIGHT, 0], [HEIGHT, 0], [HEIGHT, WIDTH], [-HEIGHT, WIDTH], [-HEIGHT, 0]], { stroke : COLORS});
+                                path([[-HEIGHT, 0], [HEIGHT, 0], [HEIGHT, WIDTH], [-HEIGHT, WIDTH], [-HEIGHT, 0]], { stroke : COLORS, fill : COLORS, opacity : 0.5});
+                            }else{
+                                path([[-WIDTH/2, 0], [WIDTH/2, 0], [WIDTH/2, WIDTH], [-WIDTH/2, WIDTH], [-WIDTH/2, 0]], { stroke : COLORS});
+                                path([[-WIDTH/2, 0], [WIDTH/2, 0], [WIDTH/2, WIDTH], [-WIDTH/2, WIDTH], [-WIDTH/2, 0]], { stroke : COLORS, fill : COLORS, opacity : 0.5});
+                            }
+                        </div>
+                    </div>
+                </div>
+                <p class="solution"><var>ANS</var></p>
+                <ul class="choices" data-category="true">
+                    <li data-each="L as choice"><var>choice</var></li>
+                </ul>
+                <div class="hints">
+                    <p>先分類是立體的、還是平面的，正方體和長方體是立體的、正方形和長方形是平面的。</p>
+                    <p>這裡是<span class="hint_green"><var>P</var></span>的。</p>
+                    <div>
+                        <p data-if="T &gt; 1">正方形的四條邊都一樣長。</p>
+                        <p data-if="T &gt; 1">長方形的上下兩邊一樣長，左右兩邊一樣長。</p>
+                        <p data-if="T &lt; 2">正方體每個面的四條邊都一樣長。</p>
+                        <p data-if="T &lt; 2">長方體每個面的上下兩邊一樣長，左右兩邊一樣長。</p>
+                    </div>
+                    <p>因此，此題答案為 「<span class="hint_pink"><var>ANS</var></span>」。</p>
+                </div>
+            </div>
+
+            <div id="case2">
+                 <div class="vars">
+                    <var id="T">randRange(0, 359)</var>
+                    <var id="L">randRange(3, 5)</var>
+                    <var id="A, B, C">[polar(L, T), polar(L, T + 120), polar(L, T + 240)]</var>
+                    <var id="COLORS">["#6495ED", "#FFA500", "red", "#28AE7B", "purple"][randRange(0, 4)]</var>
+                    <var id="L">['正方體', '長方體', '長方形', '正方形']</var>
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                        <p>請選出以下圖形最合適的描述。</p>
+                        <div class="graphie" id="plane_stereo_quadrilateral">
+                            init({
+                                range: [ [-6, 6], [-6, 6] ],
+                                scale: 30
+                            });
+
+                             path([A, B, C, A], { stroke : COLORS });
+                             path([A, B, C, A], { stroke : COLORS, fill : COLORS, opacity : 0.5});
+                        </div>
+                    </div>
+                </div>
+                <p class="solution"><code>正三角形</code></p>
+                <ul class="choices">
+                    <li data-each="L as choice"><var>choice</var></li>
+                </ul>
+                <div class="hints">
+                    <p>正三角形是平面圖形。</p>
+                    <p>正三角形有三個頂點、三條邊、三個角，且三個邊都一樣長。</p>
+                    <p>因此，此題答案為<span class="hint_pink">正三角形</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
