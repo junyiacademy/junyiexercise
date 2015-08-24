@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>從圖形讀出分數</title>
+    <script src="../khan-exercise.js"></script>
+	<script type="text/javascript">
+		function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+	</script>
+</head>
+<body>
+	<div class="exercise">
+		<div class="problems">
+			<div id="case1">
+				<div class="vars">
+					<var id="T">randRange(1, 2)</var>
+					<var id="ALLFULLED">T == 1 ? randRange(3, 8) : randRange(2, 5) * 2</var>
+					<var id="START_ANGLE">randRange(0, 360)</var>
+					<var id="A_ANGLE">(0, 360 / ALLFULLED)</var>
+					<var id="FILLED">randRange(2, ALLFULLED - 1)</var>
+					<var id="COLORS">["#6495ED", "#FFA500", "red", "#28AE7B", "purple"][randRange(0, 4)]</var>
+					<var id="PRIME_FRACTOR">(function(){
+						prime_fractor = getPrimeFactorization(ALLFULLED);
+						if(prime_fractor.length &gt; 2){
+							return [prime_fractor[0], prime_fractor[1] * prime_fractor[2]].sort(function(a, b){return randRangeNonZero(-1, 1)});
+						}
+						return prime_fractor.sort(function(a, b){return randRangeNonZero(-1, 1)});
+					})()</var>
+				</div>
+				<div class="question">
+					<p>請問下圖著色部分是幾個 <code>\dfrac{1}{<var>ALLFULLED</var>}</code> 合起來的？是全部的幾分之幾？</p>
+					<div class="graphie" id="CIRCLE_PARTS">
+						init({range:[[-5, 5], [-4, 4]], scale : 30 });
+						if(T == 1){
+							for(var i = 0; i &lt; FILLED; i++){
+								arc([0, 0], 3, START_ANGLE + A_ANGLE * i, START_ANGLE + A_ANGLE * (i + 1), { stroke : COLORS, fill : COLORS, opacity : 0.25});
+								path([polar(3, START_ANGLE + A_ANGLE * i), polar(0, 0), polar(3, START_ANGLE + A_ANGLE * (i + 1))], { stroke : COLORS, fill : COLORS, opacity : 0.25});
+							}
+							circle([0, 0], 3);
+							for(var i = 0; i &lt; ALLFULLED; i++){
+								line([0, 0], polar(3, A_ANGLE * i + START_ANGLE));
+							}
+						}else{
+							path([[-4, 3], [-4 + PRIME_FRACTOR[0], 3], [-4 + PRIME_FRACTOR[0], 3 - PRIME_FRACTOR[1]], [-4, 3 - PRIME_FRACTOR[1]], [-4, 3]]);
+							path([[-4, 3], [-4 + min(FILLED, PRIME_FRACTOR[0]), 3], [-4 + min(FILLED, PRIME_FRACTOR[0]), 3 - floorTo(0, FILLED / PRIME_FRACTOR[0])], [-4 + FILLED % PRIME_FRACTOR[0], 3 - floorTo(0, FILLED / PRIME_FRACTOR[0])], [-4 + FILLED % PRIME_FRACTOR[0], 2 - floorTo(0, FILLED / PRIME_FRACTOR[0])], [-4, 2 - floorTo(0, FILLED / PRIME_FRACTOR[0])], [-4, 3]], { strokeWidth : 0, fill : COLORS, stroke : COLORS, opacity : 0.5}); 
+							for(var i = 1; i &lt; PRIME_FRACTOR[1]; i++){
+								line([-4, 3 - i], [-4 + PRIME_FRACTOR[0], 3 - i]);
+							}
+							for(var i = 1; i &lt; PRIME_FRACTOR[0]; i++){
+								line([-4 + i, 3], [-4 + i, 3 - PRIME_FRACTOR[1]]);
+							}
+						}
+					</div>
+				</div>
+
+				<div class="solution" data-type="multiple">
+					<p>是<span class="sol" data-forms="integer"><var>FILLED</var></span>個<code>\frac{1}{<var>ALLFULLED</var>}</code></p>
+					<p>佔全部的<span class="sol" data-type="rational" data-simplify="optional"><var>FILLED/ALLFULLED</var></span></p>
+					<p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>
+					<p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>
+					<p class="example">整數，例：<code>6</code></p>
+				</div>
+				<div class="hints">
+					<p>首先我們要先觀察這一個圖形被切成幾個等份。</p>
+					<p>這個圖形被切成<code><var>ALLFULLED</var></code>等份，所以一塊是多少呢？</p>
+					<p>一塊是<code> \dfrac{1}{<var>ALLFULLED</var>} </code>，著色的部分有幾塊？</p>
+					<div>
+						<p>因為著色的部分有 <code><var>FILLED</var></code> 塊，所以是 <code class="hint_pink"><var>FILLED</var></code> 個 <code>\dfrac{1}{<var>ALLFULLED</var>}</code>，</p>
+						<p>也就是 <code class="hint_pink">\dfrac{<var>FILLED</var>}{<var>ALLFULLED</var>}</code>。</p>
+					</div>
+				</div>
+			</div>
+
+			<div id="case2">
+				<div class="vars">
+					<var id="T">randRange(1, 2)</var>
+					<var id="Q">T == 1 ? 0 : randRange(1, 2)</var>
+					<var id="ALLFULLED">T == 1 ? randRange(3, 8) : randRange(2, 5) * 2</var>
+					<var id="START_ANGLE">randRange(0, 360)</var>
+					<var id="A_ANGLE">(0, 360 / ALLFULLED)</var>
+					<var id="FILLED">randRange(2, ALLFULLED - 1)</var>
+					<var id="COLORS">["#6495ED", "#FFA500", "red", "#28AE7B", "purple"][randRange(0, 4)]</var>
+					<var id="PRIME_FRACTOR">(function(){
+						if(Q == 1){
+							return [1, ALLFULLED];
+						}
+						prime_fractor = getPrimeFactorization(ALLFULLED);
+						if(prime_fractor.length &gt; 2){
+							return [prime_fractor[0], prime_fractor[1] * prime_fractor[2]].sort(function(a, b){return randRangeNonZero(-1, 1)});
+						}
+						return prime_fractor.sort(function(a, b){return randRangeNonZero(-1, 1)});
+					})()</var>
+					<var id="CHARS">[['塊','大餅'], ['條','緞帶'], ['盒','巧克力']][Q]</var>
+				</div>
+				<div class="question">
+					<p>這是一<span><var>CHARS[0] + CHARS[1]</var></span>，著色部分是 <code><var>FILLED</var></code>  個 <code>\dfrac{1}{<var>ALLFULLED</var>}</code> <span><var>CHARS[0]</var></span>合起來的，請問如何用分數表示著色部分是幾<span><var>CHARS[0] + CHARS[1]</var></span>？</p>
+					<div class="graphie" id="CIRCLE_PARTS">
+						init({range:[[-5, 7], [-4, 4]], scale : 30 });
+						if(T == 1){
+							for(var i = 0; i &lt; FILLED; i++){
+								arc([0, 0], 3, START_ANGLE + A_ANGLE * i, START_ANGLE + A_ANGLE * (i + 1), { stroke : COLORS, fill : COLORS, opacity : 0.25});
+								path([polar(3, START_ANGLE + A_ANGLE * i), polar(0, 0), polar(3, START_ANGLE + A_ANGLE * (i + 1))], { stroke : COLORS, fill : COLORS, opacity : 0.25});
+							}
+							circle([0, 0], 3);
+							for(var i = 0; i &lt; ALLFULLED; i++){
+								line([0, 0], polar(3, A_ANGLE * i + START_ANGLE));
+							}
+						}else{
+							path([[-4, 3], [-4 + PRIME_FRACTOR[0], 3], [-4 + PRIME_FRACTOR[0], 3 - PRIME_FRACTOR[1]], [-4, 3 - PRIME_FRACTOR[1]], [-4, 3]]);
+							path([[-4, 3], [-4 + min(FILLED, PRIME_FRACTOR[0]), 3], [-4 + min(FILLED, PRIME_FRACTOR[0]), 3 - floorTo(0, FILLED / PRIME_FRACTOR[0])], [-4 + FILLED % PRIME_FRACTOR[0], 3 - floorTo(0, FILLED / PRIME_FRACTOR[0])], [-4 + FILLED % PRIME_FRACTOR[0], 2 - floorTo(0, FILLED / PRIME_FRACTOR[0])], [-4, 2 - floorTo(0, FILLED / PRIME_FRACTOR[0])], [-4, 3]], { strokeWidth : 0, fill : COLORS, stroke : COLORS, opacity : 0.5}); 
+							for(var i = 1; i &lt; PRIME_FRACTOR[1]; i++){
+								line([-4, 3 - i], [-4 + PRIME_FRACTOR[0], 3 - i]);
+							}
+							for(var i = 1; i &lt; PRIME_FRACTOR[0]; i++){
+								line([-4 + i, 3], [-4 + i, 3 - PRIME_FRACTOR[1]]);
+							}
+						}
+					</div>
+				</div>
+
+				<div class="solution" data-type="multiple">
+					<p><span class="sol" data-type="rational" data-simplify="optional"><var>FILLED/ALLFULLED</var></span><var>CHARS[0]</var></p>
+					<p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>
+					<p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>
+					<p class="example">整數，例：<code>6</code></p>
+				</div>
+				<div class="hints">
+					<div>
+						<p data-if="ALLFULLED != 3">這<span><var>CHARS[0] + CHARS[1]</var></span>被分成 <code><var>ALLFULLED</var></code> 份，回憶一下我們在分數數詞序列所學的，我們拿其中的一小<span><var>CHARS[0]</var></span>是 <code>\frac{1}{<var>ALLFULLED</var>}</code> <span><var>CHARS[0] + CHARS[1]</var></span>，拿兩小<span><var>CHARS[0]</var></span>就是 <code>\frac{2}{<var>ALLFULLED</var>}</code>  <span><var>CHARS[0]+CHARS[1]</var></span>，拿三小<span><var>CHARS[0]</var></span>就是 <code>\frac{3}{<var>ALLFULLED</var>}</code> <span><var>CHARS[0]+CHARS[1]</var></span>，以此類推。那著色部分有幾小<span><var>CHARS[0]</var></span>呢？</p>
+						<p data-if="ALLFULLED == 3">這<span><var>CHARS[0] + CHARS[1]</var></span>被分成 <code><var>ALLFULLED</var></code> 份，回憶一下我們在分數數詞序列所學的，我們拿其中的一小<span><var>CHARS[0]</var></span>是 <code>\frac{1}{<var>ALLFULLED</var>}</code> <span><var>CHARS[0] + CHARS[1]</var></span>，拿兩小<span><var>CHARS[0]</var></span>就是 <code>\frac{2}{<var>ALLFULLED</var>}</code>  <span><var>CHARS[0]+CHARS[1]</var></span>，以此類推。那著色部分有幾小<span><var>CHARS[0]</var></span>呢？</p>
+					</div>
+					<p>著色部分有 <code><var>FILLED</var></code> 小<span><var>CHARS[0]</var></span>，所以答案是 <code class="hint_pink">\dfrac{<var>FILLED</var>}{<var>ALLFULLED</var>}</code>。</p>
+				</div>
+			</div>
+
+			<div id="case3">
+				<div class="vars">
+					<var id="T">randRange(1, 2)</var>
+					<var id="Q">T == 1 ? 0 : randRange(1, 2)</var>
+					<var id="ALLFULLED">T == 1 ? randRange(3, 8) : randRange(2, 5) * 2</var>
+					<var id="START_ANGLE">randRange(0, 360)</var>
+					<var id="A_ANGLE">(0, 360 / ALLFULLED)</var>
+					<var id="FILLED">ALLFULLED</var>
+					<var id="COLORS">["#6495ED", "#FFA500", "red", "#28AE7B", "purple"][randRange(0, 4)]</var>
+					<var id="PRIME_FRACTOR">(function(){
+						if(Q == 1){
+							return [1, ALLFULLED];
+						}
+						prime_fractor = getPrimeFactorization(ALLFULLED);
+						if(prime_fractor.length &gt; 2){
+							return [prime_fractor[0], prime_fractor[1] * prime_fractor[2]].sort(function(a, b){return randRangeNonZero(-1, 1)});
+						}
+						return prime_fractor.sort(function(a, b){return randRangeNonZero(-1, 1)});
+					})()</var>
+					<var id="CHARS">[['塊','大餅'], ['條','緞帶'], ['盒','巧克力']][Q]</var>
+				</div>
+				<div class="question">
+					<p>這是一<span><var>CHARS[0] + CHARS[1]</var></span>，著色部分是 <code><var>FILLED</var></code>  個 <code>\dfrac{1}{<var>ALLFULLED</var>}</code> <span><var>CHARS[0]</var></span>合起來的，請問如何用分數表示著色部分是幾<span><var>CHARS[0] + CHARS[1]</var></span>？</p>
+					<div class="graphie" id="CIRCLE_PARTS">
+						init({range:[[-5, 7], [-8, 4]], scale : 30 });
+						if(T == 1){
+							for(var i = 0; i &lt; FILLED; i++){
+								arc([0, 0], 3, START_ANGLE + A_ANGLE * i, START_ANGLE + A_ANGLE * (i + 1), { stroke : COLORS, fill : COLORS, opacity : 0.25});
+								path([polar(3, START_ANGLE + A_ANGLE * i), polar(0, 0), polar(3, START_ANGLE + A_ANGLE * (i + 1))], { stroke : COLORS, fill : COLORS, opacity : 0.25});
+							}
+							circle([0, 0], 3);
+							for(var i = 0; i &lt; ALLFULLED; i++){
+								line([0, 0], polar(3, A_ANGLE * i + START_ANGLE));
+							}
+						}else{
+							path([[-4, 3], [-4 + PRIME_FRACTOR[0], 3], [-4 + PRIME_FRACTOR[0], 3 - PRIME_FRACTOR[1]], [-4, 3 - PRIME_FRACTOR[1]], [-4, 3]]);
+							path([[-4, 3], [-4 + min(FILLED, PRIME_FRACTOR[0]), 3], [-4 + min(FILLED, PRIME_FRACTOR[0]), 3 - floorTo(0, FILLED / PRIME_FRACTOR[0])], [-4 + FILLED % PRIME_FRACTOR[0], 3 - floorTo(0, FILLED / PRIME_FRACTOR[0])], [-4 + FILLED % PRIME_FRACTOR[0], 2 - floorTo(0, FILLED / PRIME_FRACTOR[0])], [-4, 2 - floorTo(0, FILLED / PRIME_FRACTOR[0])], [-4, 3]], { strokeWidth : 0, fill : COLORS, stroke : COLORS, opacity : 0.5}); 
+							for(var i = 1; i &lt; PRIME_FRACTOR[1]; i++){
+								line([-4, 3 - i], [-4 + PRIME_FRACTOR[0], 3 - i]);
+							}
+							for(var i = 1; i &lt; PRIME_FRACTOR[0]; i++){
+								line([-4 + i, 3], [-4 + i, 3 - PRIME_FRACTOR[1]]);
+							}
+						}
+					</div>
+				</div>
+
+				<div class="solution" data-type="multiple">
+					<p><span class="sol" data-type="rational" data-simplify="optional"><var>FILLED/ALLFULLED</var></span><var>CHARS[0]</var></p>
+					<p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>
+					<p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>
+					<p class="example">整數，例：<code>6</code></p>
+				</div>
+				<div class="hints">
+					<div>
+						<p data-if="ALLFULLED != 3">這<span><var>CHARS[0] + CHARS[1]</var></span>被分成 <code><var>ALLFULLED</var></code> 份，回憶一下我們在分數數詞序列所學的，我們拿其中的一小<span><var>CHARS[0]</var></span>是 <code>\frac{1}{<var>ALLFULLED</var>}</code> <span><var>CHARS[0] + CHARS[1]</var></span>，拿兩小<span><var>CHARS[0]</var></span>就是 <code>\frac{2}{<var>ALLFULLED</var>}</code>  <span><var>CHARS[0]+CHARS[1]</var></span>，拿三小<span><var>CHARS[0]</var></span>就是 <code>\frac{3}{<var>ALLFULLED</var>}</code> <span><var>CHARS[0]+CHARS[1]</var></span>，以此類推。那著色部分有幾小<span><var>CHARS[0]</var></span>呢？</p>
+						<p data-if="ALLFULLED == 3">這<span><var>CHARS[0] + CHARS[1]</var></span>被分成 <code><var>ALLFULLED</var></code> 份，回憶一下我們在分數數詞序列所學的，我們拿其中的一小<span><var>CHARS[0]</var></span>是 <code>\frac{1}{<var>ALLFULLED</var>}</code> <span><var>CHARS[0] + CHARS[1]</var></span>，拿兩小<span><var>CHARS[0]</var></span>就是 <code>\frac{2}{<var>ALLFULLED</var>}</code>  <span><var>CHARS[0]+CHARS[1]</var></span>，以此類推。那著色部分有幾小<span><var>CHARS[0]</var></span>呢？</p>
+					</div>
+					<p>著色部分有 <code><var>FILLED</var></code> 小<span><var>CHARS[0]</var></span>，所以是 <code>\dfrac{<var>FILLED</var>}{<var>ALLFULLED</var>}</code> <span><var>CHARS[0] + CHARS[1]</var></span>，觀察一下這是不是就是一整<span><var>CHARS[0] + CHARS[1]</var></span>了呢？</p>
+					<p>因此答案是 <code>\dfrac{<var>FILLED</var>}{<var>ALLFULLED</var>} = \color{#FF00AF}{1}</code> <span><var>CHARS[0] + CHARS[1]</var></span>。</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
