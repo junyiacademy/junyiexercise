@@ -380,7 +380,6 @@ function handleAttempt(data) {
         // Hide the page so users don't continue, then warn the user about the
         // problem and encourage reloading the page
         $("#problem-and-answer").css("visibility", "hidden");
-        debugger;
         $(Exercises).trigger("warning",
                 $._("這一個畫面過期了。請<a href='" + window.location.href +
                     "'>重新整理</a>網頁。不用擔心，沒有損失進度。"
