@@ -494,7 +494,7 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         // Which stage we're at in practice mode
         is_starting: Exercises.isStarting ? 1 : 0,
         is_challenging: Exercises.isChallenging ? 1 : 0,
-        is_task: Exercises.isTask ? 1 : 0,
+        is_total_correct: Exercises.isTotalCorrect ? 1 : 0,
         mission_id: Exercises.missionId,
 
         // Whether we are currently working on a topic, as opposed to an exercise
