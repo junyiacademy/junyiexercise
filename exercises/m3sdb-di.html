@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format graphie-geometry angles">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>梯形的「底」與「高」</title>
+    <script src="../khan-exercise.js"></script>
+    <script type="text/javascript">
+    	function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+
+        function compareArray(arr1, arr2){
+            var arr1_length = arr1.length;
+            var arr2_length = arr2.length;
+            var count = 0;
+            if(arr1_length != arr2_length){
+                return false;
+            }else{
+                for(var i = 0; i < arr1_length; i++){
+                    if(arr1[i] != arr2[i]){
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        // //angulr coordinates transformed to polar coordinates
+        // function right2polar(x, y){
+        // 	r = Math.sqrt(x * x + y * y);
+        // 	thet = Math.atan(y / x * 180 / Math.PI);
+        // 	return [r, thet * 180 / Math.PI];
+        // }
+
+        //find random point on perpendicular of line l
+    //     function findPointOnPrependicular(l, sides, times){
+    //     	var x1 = l[0][0];
+    //     	var y1 = l[0][1];
+    //     	var x2 = l[1][0];
+    //     	var y2 = l[1][1];
+    //     	if(y2 - y1 != 0){
+    //     		var k = -(x2 - x1) / (y2 - y1);
+	   //      	var b = (y1 + y2) / 2 + (x1 - x2) * (x1 + x2) / (2 * y2 - 2 * y1); 
+				// //return [sides * times, sides * times * k + b];
+				// retrun [(y1 - 5 - b) / k, y1 - 5];
+    //     	}
+    //     	var newSlope = lineMidpoint(l);
+    //     	return [newSlope[0], newSlope[1] - 1 * sides];
+    //     }
+    </script>
+</head>
+<body>
+   <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                 <div class="vars" data-ensure="E">
+                 	<var id="T">randRange(0, 3)</var>
+                 	<var id="ROTATE_POINT">90 * T</var>
+                 	<var id="W">[['above', 'below', 'left'], ['left', 'right', 'above'], ['below', 'above', 'left'], ['right', 'left', 'above']][T]</var>
+                    <var id="LENGTH_ABOVE">randRange(2, 6)</var>
+                    <var id="LENGTH_BELOW">randRangeExclude(6, 10, [LENGTH_ABOVE])</var>
+                    <var id="HEIGHT">randRange(2, 6) * 2</var>
+                    <var id="BELOW_OFFSET">randRange(0, 6 - LENGTH_BELOW / 2)</var>
+                    <var id="DIRE">randRangeNonZero(-1, -1)</var>
+                    <var id="B">rotatePoint([-LENGTH_ABOVE / 2, HEIGHT / 2], ROTATE_POINT, [0, 0])</var>
+                    <var id="A">rotatePoint([LENGTH_ABOVE / 2, HEIGHT / 2], ROTATE_POINT, [0, 0])</var>
+                    <var id="C">rotatePoint([-LENGTH_BELOW / 2 + BELOW_OFFSET * DIRE, -HEIGHT / 2], ROTATE_POINT, [0, 0])</var>
+                    <var id="D">rotatePoint([LENGTH_BELOW / 2 + BELOW_OFFSET * DIRE, -HEIGHT / 2], ROTATE_POINT, [0, 0])</var>
+                    <var id="RIGHT_INDEX">randRange(0, 3)</var>
+                    <var id="RIGHT_POINT">[[[C[0], B[1]], C, B, [C[0], B[1]]], [[B[0], C[1]], B, C, [B[0], C[1]]], [[A[0], D[1]], A, D, [A[0], D[1]]], [[D[0], A[1]], D, A, [D[0], A[1]]]][RIGHT_INDEX]</var>
+                    <var id="COLORS">["#6495ED", "#FFA500", "red", "#28AE7B", "purple"][randRange(0, 4)]</var>
+                    <var id="E">(abs(B[0] - C[0]) === 0 || abs(B[0] - C[0]) &gt;= 1.5) &amp;&amp; (abs(A[0] - D[0]) === 0 || abs(A[0] - D[0]) &gt;= 1.5)</var>
+                    <var id="test">rotatePoint([1,1],90,[0,0])</var>
+                    <var id="Q">bisectAngle([RIGHT_POINT[0],RIGHT_POINT[1]], [RIGHT_POINT[0],RIGHT_POINT[2]],0.5)</var>
+                    <var id="TR">(LENGTH_ABOVE + LENGTH_BELOW) * HEIGHT / 2</var>
+                </div>
+
+                <div class="question">
+                    <p>圖為一個面積為 <code><var>TR</var></code> 平方公分的梯形，如果兩底各 <code><var>LENGTH_ABOVE</var></code> 公分、 <code><var>LENGTH_BELOW</var></code> 公分，求高為多少公分。</p>
+                    <div class="graphie" id="get_height">
+                        init({
+                            range: [ [-8, 8], [-8, 8] ],
+                            scale: 30
+                        });
+                        path([A, B, C, D, A], { stroke : COLORS, fill : COLORS, opacity : 0.25 } );
+                        path(RIGHT_POINT, { strokeWidth : 1, "stroke-dasharray": "-" });
+                        if(compareArray(RIGHT_POINT[0], B)){
+                            Q = bisectAngle([RIGHT_POINT[0],C], [RIGHT_POINT[0],A],0.5);
+                        }else if(compareArray(RIGHT_POINT[0], C)){
+                            Q = bisectAngle([RIGHT_POINT[0],B], [RIGHT_POINT[0],D],0.5);
+                        }else if(compareArray(RIGHT_POINT[0], A)){
+                            Q = bisectAngle([RIGHT_POINT[0],B], [RIGHT_POINT[0],D],0.5);
+                        }else if(compareArray(RIGHT_POINT[0], D)){
+                            Q = bisectAngle([RIGHT_POINT[0],A], [RIGHT_POINT[0],C],0.5);
+                        }
+                        path([RIGHT_POINT[0], [RIGHT_POINT[0][0], Q[1][1]], Q[1], [Q[1][0], RIGHT_POINT[0][1]]], { stroke : COLORS } );
+                        path([A, B, C, D, A], { stroke : COLORS } );
+                        label(lineMidpoint([A, B]), LENGTH_ABOVE, W[0]);
+                        label(lineMidpoint([C, D]), LENGTH_BELOW, W[1]);
+                        if(T == 1 || T == 3){
+                        	label(lineMidpoint([RIGHT_POINT[0], RIGHT_POINT[2]]), '?', W[2]);
+                        }else{
+                        	label(lineMidpoint([RIGHT_POINT[0], RIGHT_POINT[1]]), '?', W[2]);
+                        }
+                    </div>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <span class="sol" data-forms="integer"><var>HEIGHT</var></span>公分
+                </div>
+                <div class="hints">
+                    <p>求梯形的「底」或「高」，先找「面積」。</p>
+                    <div>
+                        <p>梯形面積 <code>=</code> （上底＋下底） <code>\times</code> 高  <code>\div 2</code> </p>
+                        <p>梯形面積 <code>\times 2 = </code> （上底＋下底）<code>\times</code> 高</p>
+                        <p>梯形面積 <code>\times 2 \div </code>（上底＋下底）<code>=</code> 高</p>
+                        <p><code><var>TR</var>\times 2 \div （<var>LENGTH_ABOVE</var>+<var>LENGTH_BELOW</var>）=<var>HEIGHT</var></code> 公分</p>
+                    </div>
+                    <p>梯形的高為「<code class="hint_pink"><var>HEIGHT</var></code>」公分。</p>
+                </div>
+            </div>
+
+            <div id="case2">
+                 <div class="vars" data-ensure="E">
+                 	<var id="T">randRange(0, 3)</var>
+                 	<var id="ROTATE_POINT">90 * T</var>
+                 	<var id="W">[['above', 'below', 'left'], ['left', 'right', 'above'], ['below', 'above', 'left'], ['right', 'left', 'above']][T]</var>
+                    <var id="QES">randRange(1, 2)</var>
+                    <var id="LENGTH_ABOVE">randRange(2, 6)</var>
+                    <var id="LENGTH_BELOW">randRangeExclude(6, 10, [LENGTH_ABOVE])</var>
+                    <var id="HEIGHT">randRange(2, 6) * 2</var>
+                    <var id="BELOW_OFFSET">randRange(0, 6 - LENGTH_BELOW / 2)</var>
+                    <var id="DIRE">randRangeNonZero(-1, -1)</var>
+                    <var id="B">rotatePoint([-LENGTH_ABOVE / 2, HEIGHT / 2], ROTATE_POINT, [0, 0])</var>
+                    <var id="A">rotatePoint([LENGTH_ABOVE / 2, HEIGHT / 2], ROTATE_POINT, [0, 0])</var>
+                    <var id="C">rotatePoint([-LENGTH_BELOW / 2 + BELOW_OFFSET * DIRE, -HEIGHT / 2], ROTATE_POINT, [0, 0])</var>
+                    <var id="D">rotatePoint([LENGTH_BELOW / 2 + BELOW_OFFSET * DIRE, -HEIGHT / 2], ROTATE_POINT, [0, 0])</var>
+                    <var id="RIGHT_INDEX">randRange(0, 3)</var>
+                    <var id="RIGHT_POINT">[[[C[0], B[1]], C, B, [C[0], B[1]]], [[B[0], C[1]], B, C, [B[0], C[1]]], [[A[0], D[1]], A, D, [A[0], D[1]]], [[D[0], A[1]], D, A, [D[0], A[1]]]][RIGHT_INDEX]</var>
+                    <var id="COLORS">["#6495ED", "#FFA500", "red", "#28AE7B", "purple"][randRange(0, 4)]</var>
+                    <var id="E">(abs(B[0] - C[0]) === 0 || abs(B[0] - C[0]) &gt;= 1.5) &amp;&amp; (abs(A[0] - D[0]) === 0 || abs(A[0] - D[0]) &gt;= 1.5)</var>
+                    <var id="test">rotatePoint([1,1],90,[0,0])</var>
+                    <var id="Q">bisectAngle([RIGHT_POINT[0],RIGHT_POINT[1]], [RIGHT_POINT[0],RIGHT_POINT[2]],0.5)</var>
+                    <var id="TR">(LENGTH_ABOVE + LENGTH_BELOW) * HEIGHT / 2</var>
+                    <var id="ANS">QES == 1 ? LENGTH_BELOW : LENGTH_ABOVE</var>
+                </div>
+
+                <div class="question">
+                    <p>圖為一個面積為 <code><var>TR</var></code> 平方公分的梯形，如果高為 <code><var>HEIGHT</var></code> 公分，<span><var>QES == 1 ? '上' : '下'</var></span>底長為 <code><var>QES == 1 ? LENGTH_ABOVE : LENGTH_BELOW</var></code> 公分，求<span><var>QES == 2 ? '上' : '下'</var></span>底長為多少公分。</p>
+                    <div class="graphie" id="get_height">
+                        init({
+                            range: [ [-8, 8], [-8, 8] ],
+                            scale: 30
+                        });
+                        path([A, B, C, D, A], { stroke : COLORS, fill : COLORS, opacity : 0.25 } );
+                        path(RIGHT_POINT, { strokeWidth : 1, "stroke-dasharray": "-" });
+                        if(compareArray(RIGHT_POINT[0], B)){
+                            Q = bisectAngle([RIGHT_POINT[0],C], [RIGHT_POINT[0],A],0.5);
+                        }else if(compareArray(RIGHT_POINT[0], C)){
+                            Q = bisectAngle([RIGHT_POINT[0],B], [RIGHT_POINT[0],D],0.5);
+                        }else if(compareArray(RIGHT_POINT[0], A)){
+                            Q = bisectAngle([RIGHT_POINT[0],B], [RIGHT_POINT[0],D],0.5);
+                        }else if(compareArray(RIGHT_POINT[0], D)){
+                            Q = bisectAngle([RIGHT_POINT[0],A], [RIGHT_POINT[0],C],0.5);
+                        }
+                        path([RIGHT_POINT[0], [RIGHT_POINT[0][0], Q[1][1]], Q[1], [Q[1][0], RIGHT_POINT[0][1]]], { stroke : COLORS } );
+                        path([A, B, C, D, A], { stroke : COLORS } );
+
+                        label(lineMidpoint([A, B]), QES == 1 ? LENGTH_ABOVE : '?', W[0]);
+                        label(lineMidpoint([C, D]), QES == 1 ? '?' : LENGTH_BELOW, W[1]);
+                        if(T == 1 || T == 3){
+                        	label(lineMidpoint([RIGHT_POINT[0], RIGHT_POINT[2]]), HEIGHT, W[2]);
+                        }else{
+                        	label(lineMidpoint([RIGHT_POINT[0], RIGHT_POINT[1]]), HEIGHT, W[2]);
+                        }
+
+                    </div>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <span class="sol" data-forms="integer"><var>ANS</var></span>公分
+                </div>
+                <div class="hints">
+                    <p>求梯形的「底」或「高」，先找「面積」。</p>
+                    <div>
+                        <p>梯形面積 <code>=</code> （上底＋下底） <code>\times</code> 高  <code>\div 2</code> </p>
+                        <p>梯形面積 <code>\times 2 = </code> （上底＋下底）<code>\times</code> 高</p>
+                        <p>梯形面積 <code>\times 2 \div </code>高 <code> = </code> （上底＋下底）</p>
+                        <p><code><var>TR</var>\times 2 \div <var>HEIGHT</var>=<var>LENGTH_ABOVE+LENGTH_BELOW</var></code> 公分</p>
+                        <p>因此可知上底 <code>+</code> 下底 <code>=<var>LENGTH_ABOVE+LENGTH_BELOW</var></code> 公分</p>
+                    </div>
+                    <div data-if="QES == 1">
+                    	<p><code><var>LENGTH_ABOVE+LENGTH_BELOW</var> = （上底＋下底）= <var>LENGTH_ABOVE</var> + 下底</code></p>
+                    	<p>下底　<code> = <var>LENGTH_ABOVE+LENGTH_BELOW</var> - <var>LENGTH_ABOVE</var> = \color{#FF00AF}{<var>LENGTH_BELOW</var>}</code></p>
+                    	<p>梯形的下底長為「<code class="hint_pink"><var>LENGTH_BELOW</var></code>」公分。</p>
+                    </div>
+                     <div data-if="QES == 2">
+                    	<p><code><var>LENGTH_ABOVE+LENGTH_BELOW</var> = （上底＋下底）= 上底 + <var>LENGTH_BELOW</var></code></p>
+                    	<p>上底　<code> = <var>LENGTH_ABOVE+LENGTH_BELOW</var> - <var>LENGTH_BELOW</var> = \color{#FF00AF}{<var>LENGTH_ABOVE</var>}</code></p>
+                    	<p>梯形的上底長為「<code class="hint_pink"><var>LENGTH_ABOVE</var></code>」公分。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
