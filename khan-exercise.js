@@ -1008,7 +1008,7 @@ var Khan = (function() {
 
             // ...and create a new problem bag with problems of our new exercise type.
             problemBag = makeProblemBag(problems, 10, userExercise.exerciseModel.isQuizExercise);
-
+            
             // Update related videos
             Khan.relatedVideos.setVideos(userExercise.exerciseModel);
 
@@ -1065,7 +1065,7 @@ var Khan = (function() {
         // problems (eg. exterior angles problem type of angles_of_a_polygon).
         if (userExercise.exerciseModel.isQuizExercise){
             dupWindowSize = 9;
-        }else{
+        }else {
             dupWindowSize = 5;
         }
         if (_.contains(pastHashes, varsHash) && consecutiveSkips < dupWindowSize) {
@@ -1130,15 +1130,17 @@ var Khan = (function() {
 
                 // Or by its ID
                 problems.filter("#" + id);
-
+        }
         // Otherwise we grab a problem at random from the bag of problems
         // we made earlier to ensure that every problem gets shown the
         // appropriate number of times
+        else if (Exercises.examMode) {
+            var problems = exercises.children(".problems").children();
+            id = Exercises.currentCard.attributes.quizPid;
+            problem = problems.filter("#"+id);
         } else if (problemBag.length > 0) {
             problem = problemBag[(problemBagIndex + skipCount) % problemCount];
             id = problem.data("id");
-
-        // No valid problem was found, bail out
         } else {
             return;
         }
