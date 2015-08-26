@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>用短除法找最小公倍數 1</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+        </style>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id = "J">randRange(0,1)</var>
+				<var id = "arr">J == 0 ? randFromArray([[36,30,2,3],[42,28,2,7],[60,70,2,5],[48,66,2,3],[26,52,2,13],[18,24,2,3],[12,20,2,2],[75,45,3,5],[84,68,2,2],[38,76,2,19]]) : randFromArray([[72,88,2,2,2,],[40,60,2,2,5]])</var>
+				<var id = "P"> J == 0 ? randRange(0,3) : randRange(0,4) </var>
+				<var id = "arr1">J == 0 ? (P == 0 ? [-3.5,1] : (P == 1 ? [-2.7,-0.2] :(P == 2 ? [-1,-1] : [0.5,-1]))) : (P == 0 ? [-3.5,1] : (P == 1 ? [-2.7,-0.2] :(P == 2 ? [-1,-2] : (P == 3 ? [0.5,-2] : [-2.2,-1.2]))))</var>			
+				<var id="lcm">getLCM(arr[0],arr[1])</var>
+			</div>
+			<p class="question">愁愁正在練習使用短除法找出 <code><var>arr[0]</var></code> 和 <code><var>arr[1]</var></code> 的最小公倍數，請協助她完成空格部分。</p>
+			<div class="problem">
+				<div class="graphie" id="gcd">
+					init({
+                        range: [ [-5, 5], [-3, 2] ],
+                        scale: 40
+                    });
+					line([-2.5,1.5],[-2.5,0.5]);
+					line([-2.5,0.5],[1.5,0.5]);
+					
+					label([-1,1],arr[0],"center");
+					label([0.5,1],arr[1],"center");
+					
+					line([-1.75,-0.5],[-1.75,0.5]);
+					line([-1.75,-0.5],[1.5,-0.5]);	
+					
+					label([-1,0],arr[0]/arr[2],"center");
+					label([0.5,0],arr[1]/arr[2],"center");
+					
+					if (J == 1){
+						line([-1.3,-1.5],[-1.3,-0.5]);
+						line([-1.3,-1.5],[1.5,-1.5]);
+						label([-1,-1],arr[0]/arr[2]/arr[3],"center");
+						label([0.5,-1],arr[1]/arr[2]/arr[3],"center");
+
+					}
+					label(arr1,"\\fbox{$\\quad$?$\\quad$}","center");
+					
+					if (P == 0){
+						if(J == 0){
+							label([-2.5,0],arr[3],"left");
+							label([-1,-1],arr[0]/arr[2]/arr[3],"center");
+							label([0.5,-1],arr[1]/arr[2]/arr[3],"center");
+						}
+					else{
+						label([-2.5,0],arr[3],"left");
+						label([-2.2,-1.2],arr[4],"center");
+						label([-1,-2],arr[0]/arr[2]/arr[3]/arr[4],"center");
+						label([0.5,-2],arr[1]/arr[2]/arr[3]/arr[4],"center");
+					}
+					}
+					else if (P == 1){
+						if(J == 0){
+							label([-3,1],arr[2],"left");
+							label([-1,-1],arr[0]/arr[2]/arr[3],"center");
+							label([0.5,-1],arr[1]/arr[2]/arr[3],"center");
+						}
+					else{
+						label([-3,1],arr[2],"left");
+						label([-2.2,-1.2],arr[4],"center");
+						label([-1,-2],arr[0]/arr[2]/arr[3]/arr[4],"center");
+						label([0.5,-2],arr[1]/arr[2]/arr[3]/arr[4],"center");
+					}
+					}
+					else if (P == 2){
+						if(J == 0){
+							label([-3,1],arr[2],"left");
+							label([-2.7,-0.2],arr[3],"center");
+							label([0.5,-1],arr[1]/arr[2]/arr[3],"center");
+						}
+						else{
+							label([-3,1],arr[2],"left");
+							label([-2.7,-0.2],arr[3],"center");
+							label([-2.2,-1.2],arr[4],"center");
+							label([0.5,-2],arr[1]/arr[2]/arr[3]/arr[4],"center");
+						}
+					}
+					else if (P == 3){
+						if(J == 0){
+							label([-3,1],arr[2],"left");
+							label([-2.7,-0.2],arr[3],"center");
+							label([-1,-1],arr[0]/arr[2]/arr[3],"center");
+						}
+						else{
+							label([-3,1],arr[2],"left");
+							label([-2.7,-0.2],arr[3],"center");
+							label([-2.2,-1.2],arr[4],"center");
+							label([-1,-2],arr[0]/arr[2]/arr[3]/arr[4],"center");	
+						}
+					}
+					else{
+						label([-3,1],arr[2],"left");
+						label([-2.7,-0.2],arr[3],"center");
+						label([-1,-2],arr[0]/arr[2]/arr[3]/arr[4],"center");
+						label([0.5,-2],arr[1]/arr[2]/arr[3]/arr[4],"center");	
+					}
+
+				</div>
+				<p>空格部分答案為 <input type="text" id="a_1" style="width:35px"></p>
+				<p data-if = "J==0 && P==0"> <code><var>arr[0]</var></code> 與 <code><var>arr[1]</var></code> 的最小公倍數為 <input type="text" id="a_2" style="width:40px"> <code> \times <var>arr[3]</var> \times <var>arr[0]/arr[2]/arr[3]</var> \times <var>arr[1]/arr[2]/arr[3]</var> = </code> <input type="text" id="a_3" style="width:40px"></p>
+				<p data-if = "J==0 && P==1"> <code><var>arr[0]</var></code> 與 <code><var>arr[1]</var></code> 的最小公倍數為 <code> <var>arr[2]</var> \times </code><input type="text" id="a_2" style="width:40px"> <code> \times <var>arr[0]/arr[2]/arr[3]</var> \times <var>arr[1]/arr[2]/arr[3]</var> = </code> <input type="text" id="a_3" style="width:40px"></p>
+				<p data-if = "J==0 && P==2"> <code><var>arr[0]</var></code> 與 <code><var>arr[1]</var></code> 的最小公倍數為 <code><var>arr[2]</var> \times <var>arr[3]</var> \times </code> <input type="text" id="a_2" style="width:40px"><code> \times <var>arr[1]/arr[2]/arr[3]</var>=</code> <input type="text" id="a_3" style="width:40px"></p>				
+				<p data-if = "J==0 && P==3"> <code><var>arr[0]</var></code> 與 <code><var>arr[1]</var></code> 的最小公倍數為 <code><var>arr[2]</var> \times <var>arr[3]</var> \times <var>arr[0]/arr[2]/arr[3]</var> \times </code> <input type="text" id="a_2" style="width:40px"><code>=</code><input type="text" id="a_3" style="width:40px"></p>
+				<p data-if = "J==1 && P==0"> <code><var>arr[0]</var></code> 與 <code><var>arr[1]</var></code> 的最小公倍數為 <input type="text" id="a_2" style="width:40px"> <code> \times <var>arr[3]</var> \times <var>arr[4]</var> \times <var>arr[0]/arr[2]/arr[3]/arr[4]</var> \times <var>arr[1]/arr[2]/arr[3]/arr[4]</var> = </code> <input type="text" id="a_3" style="width:40px"></p>
+				<p data-if = "J==1 && P==1"> <code><var>arr[0]</var></code> 與 <code><var>arr[1]</var></code> 的最小公倍數為 <code> <var>arr[2]</var> \times </code><input type="text" id="a_2" style="width:40px"> <code> \times <var>arr[4]</var> \times <var>arr[0]/arr[2]/arr[3]/arr[4]</var> \times <var>arr[1]/arr[2]/arr[3]/arr[4]</var> = </code> <input type="text" id="a_3" style="width:40px"></p>				
+				<p data-if = "J==1 && P==2"> <code><var>arr[0]</var></code> 與 <code><var>arr[1]</var></code> 的最小公倍數為 <code> <var>arr[2]</var> \times <var>arr[3]</var> \times <var>arr[4]</var> \times </code><input type="text" id="a_2" style="width:40px"><code> \times <var>arr[1]/arr[2]/arr[3]/arr[4]</var>=</code> <input type="text" id="a_3" style="width:40px"></p>
+				<p data-if = "J==1 && P==3"> <code><var>arr[0]</var></code> 與 <code><var>arr[1]</var></code> 的最小公倍數為 <code> <var>arr[2]</var> \times <var>arr[3]</var> \times <var>arr[4]</var> \times <var>arr[0]/arr[2]/arr[3]/arr[4]</var> \times </code><input type="text" id="a_2" style="width:40px"><code>=</code> <input type="text" id="a_3" style="width:40px"></p>				
+				<p data-if = "J==1 && P==4"> <code><var>arr[0]</var></code> 與 <code><var>arr[1]</var></code> 的最小公倍數為 <code> <var>arr[2]</var> \times <var>arr[3]</var> \times </code><input type="text" id="a_2" style="width:40px"> <code> \times <var>arr[0]/arr[2]/arr[3]/arr[4]</var> \times <var>arr[1]/arr[2]/arr[3]/arr[4]</var> = </code> <input type="text" id="a_3" style="width:40px"></p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="guess">[$("#a_1").val(),$("#a_2").val(),$("#a_3").val()]</div>
+				    <div class="validator-function">
+						var bol_1 = false;					
+						var bol_2 = false;
+
+						if((guess[0].replace(/[ ]/g,"")==arr[2])||(guess[0].replace(/[ ]/g,"")==arr[3]&&P==1)||(guess[0].replace(/[ ]/g,"")==arr[0]/arr[2]/arr[3]&&P==2&&J==0)||(guess[0].replace(/[ ]/g,"")==arr[0]/arr[2]/arr[3]/arr[4]&&P==2&&J==1)||(guess[0].replace(/[ ]/g,"")==arr[1]/arr[2]/arr[3]&&P==3&&J==0)||(guess[0].replace(/[ ]/g,"")==arr[1]/arr[2]/arr[3]/arr[4]&&P==3&&J==1)||(guess[0].replace(/[ ]/g,"")==arr[4]&&P==4)){
+							bol_1 = true;
+						}
+						if(J==0){
+							if((guess[1].replace(/[ ]/g,"")==arr[2]&&P==0)||(guess[1].replace(/[ ]/g,"")==arr[3]&&P==1)||(guess[1].replace(/[ ]/g,"")==arr[0]/arr[2]/arr[3]&&P==2)||(guess[1].replace(/[ ]/g,"")==arr[1]/arr[2]/arr[3]&&P==3)){
+								bol_2 = true;
+							}
+						}	
+						if(J==1){
+							if((guess[1].replace(/[ ]/g,"")==arr[2]&&P==0)||(guess[1].replace(/[ ]/g,"")==arr[3]&&P==1)||(guess[1].replace(/[ ]/g,"")==arr[0]/arr[2]/arr[3]/arr[4]&&P==2)||(guess[1].replace(/[ ]/g,"")==arr[1]/arr[2]/arr[3]/arr[4]&&P==3)||(guess[1].replace(/[ ]/g,"")==arr[4]&&P==4)){
+								bol_2 = true;
+							}
+						}
+						
+						if((guess[2].replace(/[ ]/g,"")==lcm) && bol_1 && bol_2){
+							return true;
+						}
+
+					</div>
+				</div>
+				<p class="example">填充題（整數）</p>
+			</div>
+			<div class="hints">
+				<p>短除法運算過程中，裡面的數會等於左邊與下方兩數相乘</p>
+				<p data-if = "P==0"> <code><var>arr[0]</var>=<var>arr[0]/arr[2]</var> \times \fbox{$\quad$?$\quad$} ，</code>答案為<code class="hint_pink"><var>arr[2]</var></code></p>
+				<p data-if = "P==1"> <code><var>arr[0]/arr[2]</var>=<var>arr[0]/arr[2]/arr[3]</var> \times \fbox{$\quad$?$\quad$} ，</code>答案為<code class="hint_pink"><var>arr[3]</var></code></p>
+				<p data-if = "J==0 && P==2"> <code><var>arr[0]/arr[2]</var>=<var>arr[3]</var> \times \fbox{$\quad$?$\quad$} ，</code>答案為<code class="hint_pink"><var>arr[0]/arr[2]/arr[3]</var></code></p>				
+				<p data-if = "J==0 && P==3"> <code><var>arr[1]/arr[2]</var>=<var>arr[3]</var> \times \fbox{$\quad$?$\quad$} ，</code>答案為<code class="hint_pink"><var>arr[1]/arr[2]/arr[3]</var></code></p>
+				<p data-if = "J==1 && P==2"> <code><var>arr[0]/arr[2]/arr[3]</var>=<var>arr[4]</var> \times \fbox{$\quad$?$\quad$} ，</code>答案為<code class="hint_pink"><var>arr[0]/arr[2]/arr[3]/arr[4]</var></code></p>
+				<p data-if = "J==1 && P==3"> <code><var>arr[1]/arr[2]/arr[3]</var>=<var>arr[4]</var> \times \fbox{$\quad$?$\quad$} ，</code>答案為<code class="hint_pink"><var>arr[1]/arr[2]/arr[3]/arr[4]</var></code></p>
+				<p data-if = "P==4"> <code><var>arr[0]/arr[2]/arr[3]</var>=<var>arr[0]/arr[2]/arr[3]/arr[4]</var> \times \fbox{$\quad$?$\quad$} ，</code>答案為<code class="hint_pink"><var>arr[4]</var></code></p>
+				
+				<p data-if = "J==0&&P==0">又最小公倍數為左列數字與下方數字相乘，<code class="hint_pink"><var>arr[2]</var></code><code> \times <var>arr[3]</var> \times <var>arr[0]/arr[2]/arr[3]</var> \times <var>arr[1]/arr[2]/arr[3]</var>=</code><code class="hint_pink"><var>lcm</var></code></p>
+				<p data-if = "J==1&&P==0">又最小公倍數為左列數字與下方數字相乘，<code class="hint_pink"><var>arr[2]</var></code><code> \times <var>arr[3]</var> \times <var>arr[4]</var> \times <var>arr[0]/arr[2]/arr[3]/arr[4]</var> \times <var>arr[1]/arr[2]/arr[3]/arr[4]</var>=</code><code class="hint_pink"><var>lcm</var></code></p>
+				<p data-if = "J==0&&P==1">又最小公倍數為左列數字與下方數字相乘，<code><var>arr[2]</var> \times </code><code class="hint_pink"><var>arr[3]</var></code><code> \times <var>arr[0]/arr[2]/arr[3]</var> \times <var>arr[1]/arr[2]/arr[3]</var> =</code><code class="hint_pink"><var>lcm</var></code></p>
+				<p data-if = "J==1&&P==1">又最小公倍數為左列數字與下方數字相乘，<code><var>arr[2]</var> \times </code><code class="hint_pink"><var>arr[3]</var></code><code> \times <var>arr[4]</var> \times <var>arr[0]/arr[2]/arr[3]/arr[4]</var> \times <var>arr[1]/arr[2]/arr[3]/arr[4]</var>=</code><code class="hint_pink"><var>lcm</var></code></p>			
+				<p data-if = "J==0&&P==2">又最小公倍數為左列數字與下方數字相乘，<code><var>arr[2]</var> \times <var>arr[3]</var> \times </code><code class="hint_pink"><var>arr[0]/arr[2]/arr[3]</var></code><code> \times <var>arr[1]/arr[2]/arr[3]</var>=</code><code class="hint_pink"><var>lcm</var></code></p>
+				<p data-if = "J==1&&P==2">又最小公倍數為左列數字與下方數字相乘，<code><var>arr[2]</var> \times <var>arr[3]</var> \times <var>arr[4]</var> /times </code><code class="hint_pink"><var>arr[0]/arr[2]/arr[3]arr[4]</var></code><code> \times <var>arr[1]/arr[2]/arr[3]/arr[4]</var>=</code><code class="hint_pink"><var>lcm</var></code></p>				
+				<p data-if = "J==0&&P==3">又最小公倍數為左列數字與下方數字相乘，<code><var>arr[2]</var> \times <var>arr[3]</var> \times <var>arr[0]/arr[2]/arr[3]</var> \times </code><code class="hint_pink"><var>arr[1]/arr[2]/arr[3]</var></code><code>=</code><code class="hint_pink"><var>lcm</var></code></p>				
+				<p data-if = "J==1&&P==3">又最小公倍數為左列數字與下方數字相乘，<code><var>arr[2]</var> \times <var>arr[3]</var> \times <var>arr[4]</var> \times <var>arr[0]/arr[2]/arr[3]/arr[4]</var> \times </code><code class="hint_pink"><var>arr[1]/arr[2]/arr[3]/arr[4]</var></code><code>=</code><code class="hint_pink"><var>lcm</var></code></p>				
+				<p data-if = "P==4">又最小公倍數為左列數字與下方數字相乘，<code><var>arr[2]</var> \times <var>arr[3]</var> \times </code><code class="hint_pink"><var>arr[4]</var></code><code> \times <var>arr[0]/arr[2]/arr[3]/arr[4]</var> \times <var>arr[1]/arr[2]/arr[3]/arr[4]</var>=</code><code class="hint_pink"><var>lcm</var></code></p>							
+			</div>
+		</div>
+		
+	</div>
+</body>
+</html>
