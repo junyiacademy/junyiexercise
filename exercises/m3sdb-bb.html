@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>生活中的多邊形</title>
+    <script src="../khan-exercise.js"></script>
+    <script language="javascript">	
+		function loadImg(elem,url){
+			document.getElementById(elem).src=url;
+		}			
+	</script>
+</head>
+<body>
+	<div class="exercise">
+        <div class="problems">
+			<div id="case1">
+              <div class="vars">
+                <var id="num">randRange(0, 13)</var>
+                <var id="picImg">["usdefense.png","footballfive.png","footballsix.png","eightdiagrams.png","windowfive.png","sixwall.png","sixwall2.png","fourwall.png","sixwall3.png","sixbee.png","fourwall2.png","twall.png","fivemagic.png","threemagic.png"][num]</var>
+                <var id="ANS">["五","五","六","八","五","六","六","四","六","六","四","十二","五","三"][num]</var>
+                <var id="QUE"> 
+					(function(){
+						if(num&lt;3||(num&gt;6&&num&lt;11))
+						{
+							return ["三","四","五","六"]
+						}
+						if(num&gt;2&&num&lt;7)
+						{
+							return ["五","六","七","八"]
+						}
+						if(num==11)
+						{
+							return ["三","四","七","八","十","十二"]
+						}
+						if(num==12||num==13)
+						{
+							return ["三","五","六","七"]
+						}
+					})()</var>
+				<var id="len">QUE.length</var>
+				<var id="loImg">
+					(function(){
+						loadImg("im1", Khan.urlBase + "images/" +picImg);	
+					})()</var>
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                        <p data-if="num==0">下圖是美國國防部的照片，請問圖中的紅色線條圍成的形狀是什麼？</p>
+                        <p  data-if="num!=0">下圖為<span data-if="num==1||num==2">足球圖片</span><span data-if="num==3">中國八卦鏡的圖片</span><span data-if="num==4">窗戶紋路的照片</span><span data-if="num==5||num==10">幾何圖形的照片</span><span data-if="num==11||num==6||num==7||num==8">地板磁磚的圖片</span><span data-if="num==9">蜜蜂蜂窩的照片</span><span data-if="num==12">十二面體的魔術方塊的圖片</span><span data-if="num==13">四面體的魔術方塊的圖片</span>，其中紅色外框圍成的形狀是什麼？</p>
+						<div style="width:200px;"><img id="im1" style="width:100%;height:100%;"></div>							
+                    </div>
+                </div>
+               	<p class="solution" data-type="radio"><code><var>ANS+"邊形"</var></code></p>
+               	<ul class="choices" data-category="true">
+                   	<li><code><var>QUE[0]+"邊形"</var></code></li>
+                    <li><code><var>QUE[1]+"邊形"</var></code></li>
+					<li><code><var>QUE[2]+"邊形"</var></code></li>
+					<li><code><var>QUE[3]+"邊形"</var></code></li>
+					<li data-if="num==11"><code><var>QUE[4]+"邊形"</var></code></li>
+					<li data-if="num==11"><code><var>QUE[5]+"邊形"</var></code></li>
+                </ul>
+
+                <div class="hints">                
+                  <p>仔細數數看，這個圖形有<var>ANS</var>條邊，所以是「<span class="hint_pink"><var>ANS</var>邊形</span>」。</p>
+                </div>
+			</div>			
+        </div>
+    </div>
+</body>
+</html>
