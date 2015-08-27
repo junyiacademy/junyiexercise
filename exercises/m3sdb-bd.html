@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>計算多邊形內角和</title>
+    <script src="../khan-exercise.js"></script>
+    <script type="text/javascript">
+    	function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+    </script>
+</head>
+<body>
+   <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                 <div class="vars">
+                    <var id="TI">randRange(0, 5)</var>
+                    <var id="T">['三','四','五','六','七','八'][TI]</var>
+                    <var id="SIDES">TI + 3</var>
+                    <var id="ANS">roundTo(0, (TI + 1) * 180)</var>
+                    <var id="REGULAR_RADIUS">randRange(3, 6)</var>
+                    <var id="COLORS">["#6495ED", "#FFA500", "red", "#28AE7B", "purple"][randRange(0, 4)]</var>
+                    <var id="UN_REGULAR_PATH">(function(){
+                        angs = [];
+                        paths = [];
+                        if(randRange(0, 9) &gt; 4){
+                            average_angle = roundTo(0, 360 / SIDES / 2);
+                            for(var j = 0; j &lt; SIDES; j++){
+                                angs.push(randRange(2 * j * average_angle, (2 * j + 1) * average_angle));
+                            }
+                            for(var i = 0; i &lt; SIDES; i++){
+                                paths.push(polar(REGULAR_RADIUS, angs[i]));
+                            }
+                        }else{
+                            sides_angle = randRange(0, 360);
+                            for(var i = 0; i &lt; SIDES; i++){
+                                paths.push(polar(REGULAR_RADIUS, sides_angle + 360 / SIDES * i));
+                            }
+                        }
+                        paths.push(paths[0]);
+                        return paths;
+                    })()</var>
+                </div>
+
+                <div class="question">
+                    <p>以下是一個<code><var>T</var></code>邊形，它的內角和是多少？</p>
+                    <div class="graphie" id="set_polygon">
+                        init({
+                            range: [ [-8, 8], [-8, 8] ],
+                            scale: 20
+                        });
+                        path(UN_REGULAR_PATH, { stroke : COLORS, fill: COLORS, opacity : 0.25 });
+                        path(UN_REGULAR_PATH, { stroke : COLORS});
+                    </div>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <span class="sol" data-forms="integer"><var>ANS</var></span><code>^\circ</code>
+                    <p class="example">整數，例：<code>6</code></p>
+                </div>
+                <div class="hints">
+                    <div class="graphie" data-update="set_polygon">
+                        counts = 3;
+                        setTimeout(function() {
+                            p = setInterval(function() {
+                                if(counts &lt; UN_REGULAR_PATH.length - 1){
+                                    line(UN_REGULAR_PATH[counts], UN_REGULAR_PATH[1], { "stroke-dasharray": "-" });
+                                    counts++;
+                                }
+                            }, 1000);
+                        }, 0);
+                    </div>
+                    <p>這個<code><var>T</var></code>邊形可以畫線出 <code class="hint_green"><var>TI</var></code> 條對角線，分成 <code class="hint_blue"><var>TI + 1</var></code> 個三角形。</p>
+                    <div>
+                        <p><code>1</code> 個三角形的內角和為 <code>180</code> 度，</p>
+                        <p>多邊形的角度可用三角形的角度表示，</p>
+                        <p><code class="hint_blue"><var>TI + 1</var></code> 個三角形的內角和 <code>= <var>TI + 1</var> \times 180^\circ = <var>ANS</var>^\circ</code></p>
+                    </div>
+                    <p>答案為 <code class="hint_pink"><var>ANS</var>^\circ</code> 。</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

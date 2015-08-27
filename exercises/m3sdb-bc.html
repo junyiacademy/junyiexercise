@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>認識正多邊形</title>
+    <script src="../khan-exercise.js"></script>
+    <script type="text/javascript">
+    	function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+    </script>
+</head>
+<body>
+   <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                 <div class="vars">
+                    <var id="T">['四','五','六','七','八'][randRange(0, 4)]</var>
+                </div>
+
+                <div class="question">
+                    <p>以下正<code><var>T</var></code>邊形的敘述，何者正確？</p>
+                    <p><var>person(1)</var>：只要邊長都一樣長，就是正<code><var>T</var></code>邊形。</p>
+                    <p><var>person(2)</var>：只要角度都一樣大，就是正<code><var>T</var></code>邊形。</p>
+                    <p><var>person(3)</var>：每個邊長一樣且角度都相同的多邊形，才是正<code><var>T</var></code>邊形。</p>
+                </div>
+                <p class="solution"><code><var>person(3)</var></code></p>
+                <ul class="choices">
+                    <li><code><var>person(1)</var></code></li>
+                    <li><code><var>person(2)</var></code></li>
+                </ul>
+                <div class="hints">
+                    <div>
+                        <p class="hint_blue">邊長都相同，未必是正<code><var>T</var></code>邊形，舉例來說 ：</p>
+                        <div class="graphie" id="same_sides">
+                            init({ range: [ [-8, 8], [-1, 9] ], scale: 30 });
+                            path([[-7, 4],[-4, 0],[-1, 4],[-4, 8],[-7, 4]]);
+                            path([[1, 1.5],[6, 1.5],[6, 6.5],[1, 6.5],[1, 1.5]]);
+                        </div>
+                        <p>以上兩個圖形， 每個邊長都是 <code class="hint_green"><var>randRange(1, 4)</var></code> 公分，</p>
+                        <p>左邊是菱形，右邊是正四邊形（正方形），</p>
+                        <p>所以邊長相同，不一定是正多邊形。</p>
+                    </div>
+                    <div>
+                        <p class="hint_blue">角度都相同，未必是正<code><var>T</var></code>邊形，舉例來說 ：</p>
+                        <div class="graphie" id="same_angles">
+                            init({ range: [ [0, 16], [-1, 9] ], scale: 30 });
+                            path([[1, 1.5],[6, 1.5],[6, 6.5],[1, 6.5],[1, 1.5]]);
+                            line([1, 2], [1.5, 2]);
+                            line([1.5, 2], [1.5, 1.5]);
+                            line([5.5, 2], [6, 2]);
+                            line([5.5, 2], [5.5, 1.5]);
+                            line([1, 6], [1.5, 6]);
+                            line([1.5, 6.5], [1.5, 6]);
+                            line([5.5, 6.5], [5.5, 6]);
+                            line([5.5, 6], [6, 6]);
+                            path([[7, 1.5],[14, 1.5],[14 , 6.5],[7, 6.5],[7, 1.5]]);
+                            line([7, 2], [7.5, 2]);
+                            line([7.5, 2], [7.5, 1.5]);
+                            line([13.5, 2], [14, 2]);
+                            line([13.5, 2], [13.5, 1.5]);
+                            line([7, 6], [7.5, 6]);
+                            line([7.5, 6.5], [7.5, 6]);
+                            line([13.5, 6.5], [13.5, 6]);
+                            line([13.5, 6], [14, 6]);
+                        </div>
+                        <p>以上兩個圖形， 每個角度都是 <code class="hint_green">90</code> 度，</p>
+                        <p>左邊是正四邊形（正方形），右邊是長方形，</p>
+                        <p>因此角度相同，不一定是正多邊形。</p>
+                    </div>
+                    <p><span class="hint_pink"><var>person(3)</var></span>的說法是正確的。每個邊長一樣且角度都相同的多邊形，才是正<code><var>T</var></code>邊形。</p>
+                </div>
+            </div>
+
+            <div id="case2">
+                <div class="vars"></div>
+                <div class="question">
+                    <p>以下正三角形的敘述，何者正確？</p>
+                    <p><var>person(1)</var>：只要邊長都一樣長，就是正三角形。</p>
+                    <p><var>person(2)</var>：只要角度都一樣大，就是正三角形。</p>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <p onclick="$('#radio1').prop('checked', 'checked')"><input type="radio" name="radios" value="1" id="radio1" /><var>person(1)</var></p>
+                    <p onclick="$('#radio2').prop('checked', 'checked')"><input type="radio" name="radios" value="2" id="radio2" /><var>person(2)</var></p>
+                    <p onclick="$('#radio3').prop('checked', 'checked')"><input type="radio" name="radios" value="3" id="radio3" />以上皆是</p>
+                    <div class="sol" data-type="custom">
+                        <div class="guess">$('input:radio[name="radios"]:checked').val()</div>
+                        <div class="validator-function">
+                            if(guess == null){
+                                return "";
+                            }
+                            return guess == 3;
+                        </div>
+                        <div class="show-guess">
+                            $('input:radio[name="radios"]:checked').val();
+                        </div>
+                    </div>
+                </div>
+                <div class="hints">
+                    <div>
+                        <p>正三角形（等邊三角形）是指一種三個邊均等長的三角形，其三個角大小相等，均為 <code class="hint_orange">60</code> 度。</p>
+                        <div class="graphie" id="regular_triangle">
+                            init({ range: [ [-5, 5], [-5, 4] ], scale: 30 });
+                            path([[-3, -3], [3, -3], [0, 3 * sqrt(3) - 3], [-3, -3]]);
+                            arc([-3, -3], 1, 0, 60);
+                            arc([3, -3], 1, 120, 180);
+                            arc([0, 3 * sqrt(3) - 3], 1, 240, 300);
+                            label([-1.5, -2.3], '60' + '\^\\circ', { color : '#FFA500' });
+                            label([1.5, -2.3], '60' + '\^\\circ', { color : '#FFA500' });
+                            label([0, 3 * sqrt(3) - 4.5], '60' + '\^\\circ', { color : '#FFA500' });
+                            label([-3, 0], '1公分', { color : '#6495ED' });
+                            label([3, 0], '1公分', { color : '#6495ED' });
+                            label([0, -4], '1公分', { color : '#6495ED' });
+                        </div>
+                        <p>要小心與其他多邊形的觀念搞混，</p>
+                        <p>只有在三角形時，若邊長相同或角度相同滿足任一條件，可確認正三角形。</p>
+                        <p>如果是其他的多邊形，則是需要兩個條件同時滿足，才能是正多邊形。</p>
+                    </div>
+                    <p>答案為<span class="hint_pink">以上皆是</span>。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
