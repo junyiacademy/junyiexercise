@@ -324,40 +324,98 @@
 			<div class="sol" data-type="custom">
 				<div class="guess">[graph.Points_1.coord,graph.Points_2.coord,graph.Points_3.coord,graph.Points_4.coord]</div>
 				<div class="validator-function">
+					
 					if(numSides&gt;4){
 						guess[4]=graph.Points_5.coord;
 					}
-					if(numSides&gt;5){guess[5]=graph.Points_6.coord;}
-					var count=0
+
+					if(numSides&gt;5){
+						guess[5]=graph.Points_6.coord;
+					}
+
+					console.log('guess:' + guess);
+					console.log('numSides:' + numSides);
+
+					var count=0;
+
 					for(var i = 0;i&lt;numSides;i++){
+
+						//console.log('guess[i][0]:' + guess[i][0]);
+						//console.log('guess[i][1]:' + guess[i][1]);
+
+						//console.log('line_point[i][0]:' + line_point[i][0]);
+						//console.log('line_point[i][1]:' + line_point[i][1]);
+
+						//console.log('-------');
+
 						if(guess[i][0]==line_point[i][0] && guess[i][1]==line_point[i][1]){
-						count++;							
+							count++;							
 						}
 					}
+
+
+
+
+					var compareArray = function(arr1, arr2) {
+
+
+						console.log("arr1:" + arr1);
+						console.log("arr2:" + arr2);
+						console.log("--------");
+
+						if (arr1.length != arr2.length)
+        					return false;
+
+
+        				for(var j = 0; j&lt;arr2.length; j++){
+
+        					if(arr1[j][0] !== arr2[j][0] || arr1[j][1] !== arr2[j][1]) {
+        						return false;
+        					}
+        				}
+
+        				return true;
+
+					}
+
+
+
+					console.log(Array.equals);
+
 					if(count==numSides){return "";}
-					var len=[];
-					var ANSnum=0;
-					var ANSnum_1=0;
-					
-					for(var i = 0;i&lt;numSides;i++){						
-						for(var j = 0;j&lt;numSides;j++){
-							if(guess[i][0]==ans_point[j][0] && guess[i][1]==ans_point[j][1]){							
-								ANSnum++;
-						}	
+
+					var replicated_guess = guess.concat(guess);
+					var cut_ans = ans_point.slice(0, numSides);
+
+					console.log('ans_point:' + ans_point);
+					console.log('replicated_guess' + replicated_guess);
+
+					for(var i = 0 ; i &lt; numSides; i++){
+
+						var cut_arr = replicated_guess.slice( i, i + numSides);
+
+						if(compareArray(cut_arr, cut_ans)){
+							return true;
 						}
+
 					}
-					guess[numSides]=guess[0];
-					for(var i=0;i&lt;numSides;i++){						
-						len[i]=Math.sqrt((guess[i][0] - guess[i+1][0]) * (guess[i][0] - guess[i+1][0]) + (guess[i][1] - guess[i+1][1]) * (guess[i][1] - guess[i+1][1]));						
-					}
-					for(var i=0;i&lt;numSides;i++){						
-						for(var j = 0;j&lt;numSides;j++){
-							if(Math.abs(len[i]-initlen[j])&lt;0.00001 ){							
-								ANSnum_1++;
+
+					cut_ans = cut_ans.reverse();
+
+					for(var i = 0 ; i &lt; numSides; i++){
+
+						var cut_arr = replicated_guess.slice( i, i + numSides);
+
+						if(compareArray(cut_arr, cut_ans)){
+							return true;
 						}
+
 					}
-					}
-					if(ANSnum==numSides&&ANSnum_1==numSides){return true;}
+
+
+					return false;
+
+
 				</div>
 			</div>
 			<p>請移動題目中紅色的點</p>
