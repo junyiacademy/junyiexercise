@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>尋找規律</title>
+    <script src="../khan-exercise.js"></script>
+    <script language="javascript">
+        function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+    </script>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+            <div class="vars">
+                <var id="J">randRange(5, 10)</var>
+                <var id="ANS">2 + J * 2</var>
+			</div>
+			<div class="question">
+				<p>攝影社一群朋友一起出去吃飯，店家把正方形的桌子如下拼成一個長方形，設正方形每邊只坐一個人，<code><var>J</var></code> 張桌子併起來可以坐多少人？</p>
+			</div>
+			<div class="problem">
+				<div class="graphie" id="table-around">
+                    init({ range: [[-11, 13], [-3, 3]], scale: 20 });
+                    path([[-9, -1], [-9 + 2 * J, -1], [-9 + 2 * J, 1], [-9, 1], [-9, -1]], { stroke : KhanUtil.ORANGE, fill : KhanUtil.ORANGE, opacity : 0.25 });
+                    path([[-9, -1], [-9 + 2 * J, -1], [-9 + 2 * J, 1], [-9, 1], [-9, -1]]);
+                    circle([-10, 0], 0.25, 'left', { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-8 + 2 * J, 0], 0.25, 'right', { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    for(var i = 1; i &lt; J; i++){
+                        line([-9 + i * 2, -1], [-9 + i * 2, 1], {  });
+                    }
+                    for(var i = 0; i &lt; J; i++){
+                        circle([-10 + i * 2 + 2, 2], 0.25, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                        circle([-10 + i * 2 + 2, -2], 0.25, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    }
+                 </div>
+			</div>
+            <div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>ANS</var></span>人
+            </div>
+			<div class="hints">
+                <p>增加一張桌子可以增加多少人？</p>
+                <p>增加一張桌子可以增加兩人。</p>
+                <p>所以 <code><var>J</var></code> 張桌子是 <code>2 + <var>J</var> \times 2 = \color{#FF00AF}{<var>ANS</var>}</code> 人。</p>
+            </div>
+		</div>
+		
+        <div id="case2">
+            <div class="vars">
+                <var id="J">randRange(5, 7)</var>
+                <var id="ANS">J * 4</var>
+            </div>
+            <div class="question">
+                <p>觀察下列用球排出的圖樣，請問要排出圖 <code><var>J</var></code> 要用幾個球？</p>
+            </div>
+            <div class="problem">
+                <div class="graphie" id="square-around">
+                    init({ range: [[-11, 13], [-9, 2]], scale: 20 });
+                    for(var i = 2; i &lt; 9; i++){
+                        circle([-10 + i * 2 + 3 + (i &gt; 4 ? 1 : 0), -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                        if(i != 3 &amp;&amp; i != 6 &amp;&amp; i != 7){
+                            circle([-10 + i * 2 + 3 + (i &gt; 4 ? 1 : 0), -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                        }
+                        if(i != 6 &amp;&amp; i != 7){
+                            circle([-10 + i * 2 + 3 + (i &gt; 4 ? 1 : 0), -2], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                        }
+                        if(i &gt; 4){
+                            circle([-10 + i * 2 + 3 + (i &gt; 4 ? 1 : 0), 0], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                        }
+                    }
+                    circle([-8, -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-6, -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-8, -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-6, -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    label([-7, -7], '圖1', 'below');
+                    label([-1, -7], '圖2', 'below');
+                    label([7, -7], '圖3', 'below');
+                 </div>
+            </div>
+            <div class="solution" data-type="multiple">
+                <span class="sol" data-forms="integer"><var>ANS</var></span>個
+            </div>
+            <div class="hints">
+                <p>一張圖總共有幾個球？怎樣把所有的球分成 <code><var>J</var></code> 份？一邊有幾個球？</p>
+                <p>圖 <code>3</code> 一邊可以用 <code>3</code> 個球來排，圖 <code>4</code> 一邊可以用 <code>4</code> 個球來排，所以圖 <code>4</code> 的球要用 <code>4\times 4=16</code> 個球來排。</p>
+                <p data-if="J &gt; 4">圖 <code>4</code> 一邊可以用 <code>4</code> 個球來排，圖 <code>5</code> 一邊可以用 <code>5</code> 個球來排，所以圖 <code>5</code> 的球要用 <code>4\times 5=20</code> 個球來排。</p>
+                <p data-if="J &gt; 5">圖 <code>5</code> 一邊可以用 <code>5</code> 個球來排，圖 <code>6</code> 一邊可以用 <code>6</code> 個球來排，所以圖 <code>6</code> 的球要用 <code>4\times 6=24</code> 個球來排。</p>
+                <p data-if="J &gt; 6">圖 <code>6</code> 一邊可以用 <code>6</code> 個球來排，圖 <code>7</code> 一邊可以用 <code>7</code> 個球來排，所以圖 <code>7</code> 的球要用 <code>4\times 7=28</code> 個球來排。</p>
+                <p>所以，答案為 <code class="hint_pink"><var>ANS</var></code> 個。</p>
+            </div>
+        </div>
+
+        <div id="case3">
+            <div class="vars">
+                <var id="J">randRange(5, 6)</var>
+                <var id="ANS">J == 5 ? 21 : 28</var>
+            </div>
+            <div class="question">
+                <p>觀察下列用球排出的圖樣，請問要排出圖 <code><var>J</var></code> 要用幾個球？</p>
+            </div>
+            <div class="problem">
+                <div class="graphie" id="square-around">
+                    init({ range: [[-11, 13], [-9, 2]], scale: 20 });
+                    circle([-8 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-6 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-8 , -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+
+                    circle([-3 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-1 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([1 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-3 , -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-1 , -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-3 , -2], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+
+                    circle([4 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([6 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([8 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([10 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([4 , -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([6 , -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([8 , -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([4 , -2], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([6 , -2], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([4 , 0], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    label([-7, -7], '圖1', 'below');
+                    label([-1, -7], '圖2', 'below');
+                    label([7, -7], '圖3', 'below');
+                 </div>
+            </div>
+            <div class="solution" data-type="multiple">
+                <span class="sol" data-forms="integer"><var>ANS</var></span>個
+            </div>
+            <div class="hints">
+                <div>
+                    <p>圖 <code>2</code> 比圖 <code>1</code> 多了 <code>3</code> 個球。</p>
+                    <p>圖 <code>3</code> 比圖 <code>2</code> 多了 <code>4</code> 個球。</p>
+                    <p>想想看圖 <code>4</code> 會比圖 <code>3</code> 多幾個球呢？</p>
+                </div>
+                <p>圖 <code>4</code> 比圖 <code>3</code> 多 <code>5</code> 個球，因此共 <code>3+3+4+5 = 15</code> 個球。</p>
+                <p data-if="J &gt;= 5">圖 <code>5</code> 比圖 <code>4</code> 多 <code>6</code> 個球，因此共 <code>15 + 6 = 21</code> 個球。</p>
+                <p data-if="J == 6">圖 <code>6</code> 比圖 <code>5</code> 多 <code>7</code> 個球，因此共 <code>21 + 7 = 28</code> 個球。</p>
+                <p>所以，答案為 <code class="hint_pink"><var>ANS</var></code> 個。</p>
+            </div>
+        </div>
+
+        <div id="case4">
+            <div class="vars">
+                <var id="J">randRange(5, 8)</var>
+                <var id="ANS">6 + 3 * ( J - 1 )</var>
+            </div>
+            <div class="question">
+                <p>觀察下列用球排出的圖樣，請問要排出圖 <code><var>J</var></code> 要用幾個球？</p>
+            </div>
+            <div class="problem">
+                <div class="graphie" id="square-around">
+                    init({ range: [[-11, 17], [-9, 2]], scale: 18 });
+                    circle([-9 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-7 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-5 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-9 , -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-7 , -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-9 , -2], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+
+                    circle([-2 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([0 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([2 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([4 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-2 , -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([0 , -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([2 , -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([-2 , -2], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([0 , -2], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+
+                    circle([7 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([9 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([11 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([13 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([15 , -6], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([7 , -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([9 , -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([11 , -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([13 , -4], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([7 , -2], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([9 , -2], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+                    circle([11 , -2], 0.4, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 0.75 });
+
+                    label([-7, -7], '圖1', 'below');
+                    label([1, -7], '圖2', 'below');
+                    label([11, -7], '圖3', 'below');
+                 </div>
+            </div>
+            <div class="solution" data-type="multiple">
+                <span class="sol" data-forms="integer"><var>ANS</var></span>個
+            </div>
+            <div class="hints">
+                <p>想想看每次多了幾個球？</p>
+                <p>每次多了 <code>3</code> 個球，所以圖 <code><var>J</var></code> 會是圖 <code>1</code> 的 <code>6</code> 個球加上每次多的 <code>3</code> 個球，所以是 <code>6 + 3 \times <var>J - 1</var> = \color{#FF00AF}{<var>ANS</var>}</code> 個。</p>
+            </div>
+        </div>
+
+	</div>
+	</div>
+</body>
+</html>
