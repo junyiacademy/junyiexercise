@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>平行四邊形的「底」與「高」</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+	<div class="exercise">
+        <div class="vars">
+            <var id="WIDTH, HEIGHT">[randRange( 10, 25 ), randRange( 10, 25 )]</var>
+            <var id="PARALLEL_AREA">WIDTH * HEIGHT</var>
+            <var id="DIRECTIONS">randRange( 1, 3 )</var>
+            <var id="SCALES">DIRECTIONS === 3 ? randRange( 3, 15 ) : randRange( 2, 8 )</var>
+            <var id="COLORS">[ BLUE, GREEN, PURPLE, ORANGE ][ randRange( 0, 3 ) ]</var>
+            <var id="_RANGES">DIRECTIONS !== 3 ? [ [ -25, -20 + WIDTH + SCALES + 5 ], [ -HEIGHT / 2 - 5, HEIGHT / 2 + 5 ] ] : [ [ -25, -20 + HEIGHT + 5 ], [ 20 - SCALES - WIDTH - 5, 25 ] ]</var>
+            <var id="_PATHS">(function(){
+                if( DIRECTIONS === 1 ) {
+                    return [ [-20, -HEIGHT / 2], [WIDTH - 20, -HEIGHT / 2], [WIDTH - 20 + SCALES, HEIGHT / 2], [SCALES - 20, HEIGHT / 2], [-20, -HEIGHT / 2] ];
+                } else if( DIRECTIONS === 2 ) {
+                    return [ [-20, HEIGHT / 2], [WIDTH - 20, HEIGHT / 2], [WIDTH - 20 + SCALES, -HEIGHT / 2], [SCALES - 20, -HEIGHT / 2], [-20, HEIGHT / 2] ];
+                } else {
+                    S = ( SCALES + WIDTH ) / 2;
+                    return [ [ -20, 20 ], [ HEIGHT - 20, 20 - SCALES ], [ HEIGHT - 20, 20 - SCALES - WIDTH ], [ -20, 20 - WIDTH ], [ -20, 20 ] ];
+                }
+            })()</var>
+            <var id="_UNITS">[ '公尺', '公分' ][ randRange( 0, 1 ) ]</var>
+        </div>
+        <div class="problems">
+    		<div id="case1">
+    			<div class="question">
+    				<p>下圖是面積為 <code><var>PARALLEL_AREA</var></code> 平方<var>_UNITS</var>的平行四邊形。如果底邊長為 <code><var>WIDTH</var></code> <var>_UNITS</var>，求底邊上的高。</p>
+    			</div>
+    			<div class="problem">
+    				<div class="graphie" id="get-height">
+                        init({ range: _RANGES, scale: 10 });
+
+                        path(_PATHS, { stroke : COLORS, fill : COLORS, opacity : 0.25 } );
+                        path(_PATHS, { stroke : COLORS } );
+                        if( DIRECTIONS === 3 ){
+                            line( [ HEIGHT - 20 - 1, 20 ], [ HEIGHT - 20 - 1, 20 - 1 ], {  } );
+                            line( [ HEIGHT - 20, 20 - 1 ], [ HEIGHT - 20 - 1, 20 - 1 ], {  } );
+                            line( _PATHS[ 0 ], [ HEIGHT - 20, 20 ], { stroke : KhanUtil.RED } );
+                            line( _PATHS[ 1 ], [ HEIGHT - 20, 20 ], { "stroke-dasharray": "-" } );
+                            label( [ HEIGHT / 2 - 20, 20 ] , '\\LARGE{？}', 'above' , { color : KhanUtil.RED } );
+                            label( [ HEIGHT - 20, 20 - SCALES - WIDTH / 2 ] , '\\LARGE{' + WIDTH + '}', 'right' , { color : COLORS } );
+                        } else if( DIRECTIONS === 2 ) {
+                            line( [ SCALES - 20, 1 - HEIGHT / 2 ], [ SCALES - 20 + 1, 1 - HEIGHT / 2 ], {  } );
+                            line( [ SCALES - 20 + 1, - HEIGHT / 2 ], [ SCALES - 20 + 1, 1 - HEIGHT / 2 ], {  } );
+                            line( _PATHS[ 3 ], [ SCALES - 20, HEIGHT / 2 ], { stroke : KhanUtil.RED } );
+                            label( [ SCALES - 20, 0 ] , '\\LARGE{？}', 'right' , { color : KhanUtil.RED } );
+                            label( [ SCALES - 20 + WIDTH / 2 , -HEIGHT / 2 ] , '\\LARGE{' + WIDTH + '}', 'below' , { color : COLORS } );
+                        } else {
+                            line( [ SCALES - 20, 1 - HEIGHT / 2 ], [ SCALES - 20 + 1, 1 - HEIGHT / 2 ], {  } );
+                            line( [ SCALES - 20 + 1, - HEIGHT / 2 ], [ SCALES - 20 + 1, 1 - HEIGHT / 2 ], {  } );
+                            line( _PATHS[ 3 ], [ SCALES - 20, - HEIGHT / 2 ], { stroke : KhanUtil.RED } );
+                            label( [ SCALES - 20, 0 ] , '\\LARGE{？}', 'right' , { color : KhanUtil.RED } );
+                            label( [ WIDTH / 2 - 20 , - HEIGHT / 2 ] , '\\LARGE{' + WIDTH + '}', 'below' , { color : COLORS } );
+                        }
+                     </div>
+    			</div>
+                <div class="solution" data-type="multiple">
+    				<span class="sol" data-forms="integer"><var>HEIGHT</var></span><var>_UNITS</var>
+                </div>
+    			<div class="hints">
+                    <p>求平行四邊形的「高」或「底」，先找面積。</p>
+                    <p>平行四邊形面積 <code>=</code>  底邊長 <code>\times</code> 高度</p>
+                    <div>
+                        <p>平行四邊形的高 <code>=</code> 面積 <code>\div</code> 底邊長</p>
+                        <p><code>\phantom{平行四邊形的高 }= <var>PARALLEL_AREA</var> \div <var>WIDTH</var></code></p>
+                        <p><code>\phantom{平行四邊形的高 }= <var>HEIGHT</var></code></p>
+                    </div>
+                    <p>答案為 <code class="hint_pink"><var>HEIGHT</var></code> <var>_UNITS</var>。</p>
+                </div>
+    		</div>
+
+            <div id="case2">
+                <div class="question">
+                    <p>下圖是面積為 <code><var>PARALLEL_AREA</var></code> 平方<var>_UNITS</var>的平行四邊形。如果高為 <code><var>HEIGHT</var></code> <var>_UNITS</var>，求底邊的長。</p>
+                </div>
+                <div class="problem">
+                    <div class="graphie" id="get-width">
+                        init({ range: _RANGES, scale: 10 });
+
+                        path(_PATHS, { stroke : COLORS, fill : COLORS, opacity : 0.25 } );
+                        path(_PATHS, { stroke : COLORS } );
+                        if( DIRECTIONS === 3 ){
+                            line( [ HEIGHT - 20 - 1, 20 ], [ HEIGHT - 20 - 1, 20 - 1 ], {  } );
+                            line( [ HEIGHT - 20, 20 - 1 ], [ HEIGHT - 20 - 1, 20 - 1 ], {  } );
+                            line( _PATHS[ 0 ], [ HEIGHT - 20, 20 ], { "stroke-dasharray": "-" } );
+                            line( _PATHS[ 1 ], [ HEIGHT - 20, 20 ], { "stroke-dasharray": "-" } );
+                            label( [ HEIGHT / 2 - 20, 20 ] , '\\LARGE{' + HEIGHT + '}', 'above' , {  } );
+                            label( [ HEIGHT - 20, 20 - SCALES - WIDTH / 2 ] , '\\LARGE{ ? }', 'right' , { color : KhanUtil.RED } );
+                        } else if( DIRECTIONS === 2 ) {
+                            line( [ SCALES - 20, 1 - HEIGHT / 2 ], [ SCALES - 20 + 1, 1 - HEIGHT / 2 ], {  } );
+                            line( [ SCALES - 20 + 1, - HEIGHT / 2 ], [ SCALES - 20 + 1, 1 - HEIGHT / 2 ], {  } );
+                            line( _PATHS[ 3 ], [ SCALES - 20, HEIGHT / 2 ], { "stroke-dasharray": "-" } );
+                            label( [ SCALES - 20, 0 ] , '\\LARGE{' + HEIGHT + '}', 'right' , {  } );
+                            label( [ SCALES - 20 + WIDTH / 2 , -HEIGHT / 2 ] , '\\LARGE{ ? }', 'below' , { color : KhanUtil.RED } );
+                        } else {
+                            line( [ SCALES - 20, 1 - HEIGHT / 2 ], [ SCALES - 20 + 1, 1 - HEIGHT / 2 ], {  } );
+                            line( [ SCALES - 20 + 1, - HEIGHT / 2 ], [ SCALES - 20 + 1, 1 - HEIGHT / 2 ], {  } );
+                            line( _PATHS[ 3 ], [ SCALES - 20, - HEIGHT / 2 ], { "stroke-dasharray": "-" } );
+                            label( [ SCALES - 20, 0 ] , '\\LARGE{' + HEIGHT + '}', 'right' , {  } );
+                            label( [ WIDTH / 2 - 20 , - HEIGHT / 2 ] , '\\LARGE{ ? }', 'below' , { color : KhanUtil.RED } );
+                        }
+                     </div>
+                </div>
+                <div class="solution" data-type="multiple">
+                    <span class="sol" data-forms="integer"><var>WIDTH</var></span><var>_UNITS</var>
+                </div>
+                <div class="hints">
+                    <p>求平行四邊形的「高」或「底」，先找面積。</p>
+                    <p>平行四邊形面積 <code>=</code>  底邊長 <code>\times</code> 高度</p>
+                    <div>
+                        <p>平行四邊形的底邊長 <code>=</code> 面積 <code>\div</code> 高度</p>
+                        <p><code>\phantom{平行四邊形的底邊長 }= <var>PARALLEL_AREA</var> \div <var>HEIGHT</var></code></p>
+                        <p><code>\phantom{平行四邊形的底邊長 }= <var>WIDTH</var></code></p>
+                    </div>
+                    <p>答案為 <code class="hint_pink"><var>WIDTH</var></code> <var>_UNITS</var>。</p>
+                </div>
+            </div>
+
+    	</div>
+	</div>
+</body>
+</html>

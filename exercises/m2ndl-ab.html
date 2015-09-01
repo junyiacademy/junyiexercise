@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>報讀3公斤內物品重</title>
+    <script src="../khan-exercise.js"></script>
+    <script language="javascript">
+        function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+    </script>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+            <div class="vars">
+                <var id="WEIGHT">randFromArray([1200, 1000, 1100, 1250, 1350, 1400, 1550, 1650, 1700, 1850, 1950, 2100, 2000, 2250, 2400, 2550, 2600, 2700, 2750, 2900, 2950])</var>
+				<var id="clockRadius">7.7</var>
+				<var id="outerPointRadius">clockRadius * 1.01</var>
+                <var id="S_WEIGHT">(function(){
+                    var start_ =  floorTo(0, WEIGHT / 1000) + '&nbsp;公斤';
+                    var end_ = roundTo(0, WEIGHT - 1000 * floorTo(0, WEIGHT / 1000)) + '&nbsp;公克';
+                    return roundTo(0, WEIGHT - 1000 * floorTo(0, WEIGHT / 1000)) == 0 ? start_ : start_ + '&nbsp;' + end_;
+                })()</var>
+			</div>
+			
+			<div class="question">
+				<p>請在下面的秤面中，將指針指到 <code><var>S_WEIGHT</var></code>的地方。</p>
+			</div>
+			<div class="problem">
+				<div class="graphie" id="get-weight">
+                        init({ range: [[-11, 11], [-9, 9]], scale: 20 });
+                        
+                        hourStartAngle = 90;
+                        addMouseLayer();
+
+                        circle([0, 0], 0.3, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE });
+                        circle([0, 0], outerPointRadius, { strokeWidth : 1 });
+
+                        label([0, 4.5], 3+'kg');
+                        label([0, 3], "秤重&nbsp;3kg");
+
+                        for(var i = 90; i &gt; -270; i-=1.5){
+                            line(polar(outerPointRadius, i), polar(outerPointRadius - 0.5, i), { strokeWidth : 0.5 });
+                        }
+
+                        for(var i = 90; i &gt; -270; i-=6){
+                            line(polar(outerPointRadius, i), polar(outerPointRadius - 0.75, i), { strokeWidth : 0.5 });
+                        }
+
+                        for(var i = 90; i &gt; -270; i-=120){
+                            line(polar(outerPointRadius, i), polar(outerPointRadius - 1, i), { strokeWidth : 1 });
+                        }
+
+                        for(var i = 90; i &gt; -270; i-=24){
+                            line(polar(outerPointRadius, i), polar(outerPointRadius - 1.5, i), { strokeWidth : 1 });
+                            i == - 150 || i == -30 ? 
+                            label(polar(outerPointRadius - 2, i), roundTo(0, ((-200) * (i / 24 - 3.75) ) /1000) + 'kg')
+                             : 
+                            label(polar(outerPointRadius - 2, i), "\\small{" + roundTo(0, (-200) * (i / 24 - 3.75) ) + "}");
+                        }
+                        
+                        function movePartnerPoint(options) {
+                            var x = options.x;
+                            var y = options.y;
+                            var point = options.point;
+                            var outerPoint = options.outerPoint;
+                            var isOuterPoint = options.isOuterPoint;
+                
+                            var ratio = outerPoint.constraints.fixedDistance.dist / point.constraints.fixedDistance.dist;
+                            if (isOuterPoint) {
+                                ratio = 1 / ratio;
+                                point.setCoord([x * ratio , y * ratio]);
+                                outerPoint.setCoord([x, y]);
+                            } else {
+                                point.setCoord([x, y]);
+                                outerPoint.setCoord([x * ratio, y * ratio]);
+                            }
+
+                            point.updateLineEnds();
+                            return point;
+                        }
+
+                        hourPoint = addMovablePoint({
+                            coord: polar(clockRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 60
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerHourPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        outerHourPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 72
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: hourPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        hourHand = addMovableLineSegment({
+                            pointA: hourPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: GREEN,
+                                "stroke-width": 2
+                            }
+                        });
+
+                    </div>
+			</div>
+            <div class="solution" data-type="multiple">
+				<div class="instruction">將對應的重量於秤面中表示出來</div>
+				<div class="sol" data-type="custom">
+				    <div class="guess">hourPoint.coord</div>
+				    <div class="validator-function">
+                        if(abs(guess[0] - 0) &lt; 0.0001 &amp;&amp; abs(guess[1] - 7.7) &lt; 0.0001){
+                            return "";
+                        }
+                        var as = (360 - KhanUtil.findAngle(guess, [0, 0])) % 360;
+                        return roundTo(0, (3000 / 360 * as + 750)) % 3000 == WEIGHT;
+                    </div>
+				</div>
+            </div>
+			
+			<div class="hints">
+                <p>將對應的重量於秤面中表示出來。</p>
+            </div>
+		</div>
+		
+	</div>
+	</div>
+</body>
+</html>
