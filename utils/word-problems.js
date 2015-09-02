@@ -236,12 +236,12 @@ $.fn["word-problemsLoad"] = function() {
     ]);
 
     var courses = new IncrementalShuffler([
-        new Noun("代數", {measureWord: new IncrementalShuffler(["堂", "節"])}),
-        new Noun("化學", {measureWord: new IncrementalShuffler(["堂", "節"])}),
-        new Noun("幾何學", {measureWord: new IncrementalShuffler(["堂", "節"])}),
-        new Noun("歷史", {measureWord: new IncrementalShuffler(["堂", "節"])}),
-        new Noun("物理", {measureWord: new IncrementalShuffler(["堂", "節"])}),
-        new Noun("英文", {measureWord: new IncrementalShuffler(["堂", "節"])})
+        new Noun("數學", {measureWord: new IncrementalShuffler(["堂", "節"])}),
+        new Noun("國文", {measureWord: new IncrementalShuffler(["堂", "節"])}),
+        new Noun("體育", {measureWord: new IncrementalShuffler(["堂", "節"])}),
+        new Noun("社會", {measureWord: new IncrementalShuffler(["堂", "節"])}),
+        new Noun("自然", {measureWord: new IncrementalShuffler(["堂", "節"])}),
+        new Noun("英語", {measureWord: new IncrementalShuffler(["堂", "節"])})
     ]);
 
     var exams = new IncrementalShuffler([
