@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>年齡問題</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+		<div class="problems">
+			<div id="case1">
+			<div class="vars">
+				<var id="A">randRange(3,15)</var>
+				<var id="B">randRange(2,A-1)</var>
+				<var id="C">randRange(1,B-1)</var>
+				<var id="jkArr">randFromArray([["大寶","二寶","小寶"]])</var>
+				<var id="J">randRange(0,2)</var>
+				<var id="P">A-B</var>
+				<var id="Q">B-C</var>
+				<var id="_SUM">A+B+C</var>
+				<var id="_ANSWER">(function() {
+                        if ( J==0 ) {
+                            return A;
+                        } else {
+						if(J==1)
+                            return B;
+						else return C;
+                        }
+                    })()		
+				</var>
+			</div>
+			
+			 <div class="question">
+                <p>大寶比二寶大 <code><var>P</var></code> 歲，二寶比小寶大 <code><var>Q</var></code> 歲，他們三個的年齡和是 <code><var>_SUM</var></code> 歲，請問<var>jkArr[J]</var>多少歲？</p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>_ANSWER</var></span>歲
+			</div>
+
+            <div class="hints">
+				<div>
+					<p>畫圖來理解這個問題</p>
+	                <div class="graphie">
+						init({ range: [[-6,6], [-2,2]], scale: 40 });
+						label( [ -5, 1 ], '大寶', 'left' );
+						label( [ -5, 0 ], '二寶', 'left' );
+						label( [ -5, -1 ], '小寶', 'left' );
+						line([-5,1],[5,1]);
+						line([-5,0],[10*B/A-5,0]);
+						line([10*B/A-5,0],[5,0],{"stroke-dasharray": "-"});
+						line([-5,-1],[10*C/A-5,-1]);
+						line([10*C/A-5,-1],[5,-1],{"stroke-dasharray": "-"});
+						line([-5,-1.5],[-5,1.5]);
+						line([10*B/A-5,0],[10*B/A-5,1],{"stroke-dasharray": "-"});
+						line([10*C/A-5,-1],[10*C/A-5,0],{"stroke-dasharray": "-"});
+						line([10*B/A-5,0],[10*B/A-5,-1],{"stroke-dasharray": "-"});
+						line([5,-1],[5,1],{"stroke-dasharray": "-"});
+						circle([10*C/A-5,-1],0.06,{fill:"blue"});
+						circle([10*B/A-5,0],0.06,{fill:"blue"});
+						circle([10*B/A-5,-1],0.06,{fill:"blue"});
+						circle([5,-1],0.06,{fill:"blue"});
+						circle([5,1],0.06,{fill:"blue"});
+						circle([5,0],0.06,{fill:"blue"});
+						label([5*(B+C)/A-5,-0.5],Q + "歲");
+						label([5*B/A,-0.5],P + "歲");
+						label([5*B/A,0.5],P + "歲");
+					</div>
+				</div>
+
+				<div>
+					<p>所以從上圖可以看出 <code><var>_SUM</var>+<var>P</var>+<var>Q</var>+<var>P</var>=<var>3*A</var></code>，</p>
+					<p>恰好等於 <code>3</code> 倍的大寶年齡，所以大寶是 <code><var>3*A</var>\div 3=<var>A</var></code> 歲。</p>
+					<p data-if="J&gt;=1"><code>所以二寶是 <var>A</var>-<var>P</var>=<var>B</var> 歲。</code></p>
+					<p data-if="J&gt;=2"><code>所以小寶是 <var>B</var>-<var>Q</var>=<var>C</var> 歲。</code></p>
+				</div>
+				<div>
+				<p data-if="J==0">大寶 <code class="hint_pink"><var>A</var></code> 歲。</p>
+				<p data-if="J==1">二寶 <code class="hint_pink"><var>B</var></code> 歲。</p>
+				<p data-if="J==2">小寶 <code class="hint_pink"><var>C</var></code> 歲。</p>
+				</div>
+				
+            </div>
+		</div>
+	
+		<div id="case2">
+			<div class="vars">
+				<var id="jkArr">randFromArray([[2,3],[2,4],[2,5],[2,6],[2,7],[2,8],[3,4],[3,6],[3,8]])</var>
+				<var id="A">jkArr[0]</var>
+				<var id="B">jkArr[1]</var>
+			</div>
+			 <div class="question">
+                <p>哥哥的年齡和文文差 <code><var>B</var></code> 歲，當哥哥的年齡是文文的 <code><var>A</var></code> 倍時，哥哥是幾歲？</p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>B/(A-1)*A</var></span>歲
+			</div>
+            <div class="hints">
+				<div>
+					<p><code>畫圖來理解這個問題</code></p>
+	                <div class="graphie">
+						init({ range: [[-6,6], [-2,2]], scale: 40 });
+						line([-5,1],[5,1]);
+						line([-5,0],[10/A-5,0]);
+						line([-5,2],[-5,-1],{"stroke-dasharray": "-"});
+						line([10/A-5,0],[10/A-5,1],{"stroke-dasharray": "-"});
+						line([5,1],[5,0],{"stroke-dasharray": "-"});
+						line([10/A-5,0],[5,0],{"stroke-dasharray": "-"});
+						circle([10/A-5,0],0.06,{fill:"blue"});
+						circle([5,0],0.06,{fill:"blue"});
+						circle([5,1],0.06,{fill:"blue"});
+						label([5/A-5,0.5],"1倍");
+						label([0,1.5],A + "倍");
+						label([5/A,0.5],B + "歲");
+						label( [ -5, 0 ], '文文', 'left' );
+						label( [ -5, 1 ], '哥哥', 'left' );
+					</div>
+				</div>
+				<div>
+					<p>列式找出一倍是多少， </p>
+					<p><code><var>A</var>-1=<var>A-1</var></code>，</p>
+					<p><code><var>B</var>\div<var>A-1</var>=<var>B/(A-1)</var></code>，</p>
+				</div>
+				<p>所以哥哥是 <code><var>B/(A-1)</var>\times<var>A</var>=\color{#FF00AF}{<var>B/(A-1)*A</var>}</code> 歲。</p>
+            </div>
+		</div>
+
+		<div id="case3">
+			<div class="vars">
+				<var id="jkArr">randFromArray([[23,5,3,9],[29,5,3,12],[35,5,3,15],[24,6,3,9],[30,6,3,12],[36,6,3,15],[31,7,3,12],[37,7,3,15],[26,8,3,9],[32,8,3,12],[38,8,3,15],[29,5,4,8],[41,5,4,12],[30,6,4,8],[42,6,4,12],[31,7,4,8],[43,7,4,12],[44,8,4,12],[40,7,4,11]])</var>
+			</div>
+			
+			 <div class="question">
+                <p>媽媽今年 <code><var>jkArr[0]</var></code> 歲，小梅今年 <code><var>jkArr[1]</var></code> 歲，媽媽說當她的年齡正好是小梅的 <code><var>jkArr[2]</var></code> 倍時，小梅就可以有一部腳踏車，請問那時候小梅幾歲？</p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>jkArr[3]</var></span>歲
+			</div>
+
+            <div class="hints">
+				<div>
+					<p>媽媽和小梅的年齡差是 <code><var>jkArr[0]-jkArr[1]</var></code> 歲，我們畫圖來理解這個問題</p>
+	                <div class="graphie">
+						init({ range: [[-6,6], [-2,2]], scale: 40 });
+						line([-5,1],[5,1]);
+						line([-5,0],[10/jkArr[2]-5,0]);
+						line([-5,-1],[-5,2],{"stroke-dasharray": "-"});
+						circle([5,1],0.06,{fill:"blue"});
+						line([10/jkArr[2]-5,0],[10/jkArr[2]-5,1],{"stroke-dasharray": "-"});
+						label([0,1.5],jkArr[2] + "倍");
+						label([5/jkArr[2]-5,-0.5],"1倍");
+						label([5/jkArr[2],0.5],(jkArr[0]-jkArr[1]) + "歲");
+						label( [ -5, 0 ], '小梅', 'left' );
+						label( [ -5, 1 ], '媽媽', 'left' );
+					</div>
+				</div>
+
+				<div>
+					<p>列式找出一倍是多少， </p>
+					<p><code><var>jkArr[2]</var>-1=<var>jkArr[2]-1</var>，</code></p>
+					<p><code><var>jkArr[0]-jkArr[1]</var>\div<var>jkArr[2]-1</var>=<var>jkArr[3]</var></code></p>
+				</div>
+				<p>所以那個時候小梅 <code class="hint_pink"><var>jkArr[3]</var></code> 歲。</p>
+            </div>
+		</div>
+	
+	</div>
+	</div>
+</body>
+</html>
