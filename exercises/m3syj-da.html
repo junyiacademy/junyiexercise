@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>扇形的面積（給半徑、幾分之幾圓）</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+	<div class="exercise">
+		<div class="vars">
+        	<var id="_RADII"> randRange( 1, 5 ) * 10 </var>
+        	<var id="_DIAMETER"> _RADII * 2 </var>
+        	<var id="_FRACT"> randFromArray( [ 1 / 4, 1 / 5, 1 / 9 ] ) </var>
+        	<var id="_FRACT_SHOW"> decimalFraction( _FRACT, true, true, false, false ) </var>
+        	<var id="_ANS"> roundTo( 2, _RADII * _RADII * 3.14 * _FRACT ) </var>
+		</div>
+	    <div class="problems">
+			<div id="case1">
+				<div class="question">
+					<p>一個半徑 <code><var>_RADII</var></code> 公分的 <code><var>_FRACT_SHOW</var></code> 圓扇形，它的面積是多少平方公分？</p>
+					<p>(圓周率為 <code>3.14</code> ，答案四捨五入至小數點后<span class="hint_green">兩位</span>)</p>
+				</div>
+				<div class="problem">
+					<div class="graphie" id="radii-exist">
+	                    init( { range: [ [ - 5, 5 ], [ - 5, 5 ] ], scale: 40 } );
+	                    circle( [ 0, 0 ], 4 );
+	                    arc( [ 0, 0 ], 4, 0, 360 * _FRACT, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 1 } );
+	                    path( [ [ 0, 0 ], [ 4, 0 ], polar( 4, 360 * _FRACT ), [ 0, 0 ] ], { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 1 } ); 
+	                    line( [ 0, 0 ], [ 4, 0 ], { stroke : KhanUtil.RED } );
+	                    line( [ 0, 0 ], polar( 4, 360 * _FRACT ) );
+	                    label( [ 2, 0 ], _RADII + '公分', 'below', { color :　KhanUtil.RED } );
+	                 </div>
+				</div>
+	            <div class="solution" data-type="multiple">
+					<span class="sol" data-forms="decimal" data-inexact data-max-error="0.01"><var>_ANS</var></span>平方公分
+	            </div>
+				<div class="hints">
+					<p><code><var>_FRACT_SHOW</var></code> 圓扇形的面積 <code>=</code> 圓面積的 <code><var>_FRACT_SHOW</var></code></p>
+					<div>
+						<p>所以 <code><var>_FRACT_SHOW</var></code> 弧長的面積為</p>
+						<p><code><var>_RADII</var> \times <var>_RADII</var> \times 3.14 \times <var>_FRACT_SHOW</var> <var>abs( _ANS - _RADII * _RADII * 3.14 * _FRACT ) &lt; 0.0001 ? '=' : '\\approx' </var> \color{#FF00AF}{<var>_ANS</var>}</code> 平方公分</p>
+					</div>
+	            </div>
+			</div>
+
+			<div id="case2">
+				<div class="question">
+					<p>一個直徑 <code><var>_DIAMETER</var></code> 公分的 <code><var>_FRACT_SHOW</var></code> 圓扇形，它的面積是多少平方公分？</p>
+					<p>(圓周率為 <code>3.14</code> ，答案四捨五入至小數點后<span class="hint_green">兩位</span>)</p>
+				</div>
+				<div class="problem">
+					<div class="graphie" id="diameter-exist">
+	                    init( { range: [ [ - 5, 5 ], [ - 5, 5 ] ], scale: 40 } );
+	                    circle( [ 0, 0 ], 4 );
+	                    arc( [ 0, 0 ], 4, 0, 360 * _FRACT, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 1 } );
+	                    path( [ [ 0, 0 ], [ 4, 0 ], polar( 4, 360 * _FRACT ), [ 0, 0 ] ], { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE, opacity : 1 } ); 
+	                    line( [ -4, 0 ], [ 4, 0 ], { stroke : KhanUtil.RED } );
+	                    line( [ 0, 0 ], polar( 4, 360 * _FRACT ) );
+	                    label( [ 0, 0 ], _DIAMETER + '公分', 'below', { color :　KhanUtil.RED } );
+	                 </div>
+				</div>
+	            <div class="solution" data-type="multiple">
+					<span class="sol" data-forms="decimal" data-inexact data-max-error="0.01"><var>_ANS</var></span>平方公分
+	            </div>
+				<div class="hints">
+					<div>
+						<p><code><var>_FRACT_SHOW</var></code> 圓扇形的面積 <code>=</code> 圓面積的 <code><var>_FRACT_SHOW</var></code></p>
+						<p>先求半徑為 <code><var>_DIAMETER</var> \div 2 = <var>_RADII</var></code> 公分</p>
+					</div>
+					<div>
+						<p>所以 <code><var>_FRACT_SHOW</var></code> 弧長的面積為</p>
+						<p><code><var>_RADII</var> \times <var>_RADII</var> \times 3.14 \times <var>_FRACT_SHOW</var> <var>abs( _ANS - _RADII * _RADII * 3.14 * _FRACT ) &lt; 0.0001 ? '=' : '\\approx' </var> \color{#FF00AF}{<var>_ANS</var>}</code> 平方公分</p>
+					</div>
+	            </div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>
