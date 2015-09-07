@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>三角形的中點連線性質2</title>
+    <script src="../khan-exercise.js"></script>
+    <script type="text/javascript">
+    	function lineMidpoint( line ) {
+		    return [(line[0][0] + line[1][0]) / 2, (line[0][1] + line[1][1]) / 2];
+		}
+    </script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars">
+			<var id="ABC"> randRange(1,10) * 2 </var>
+			<var id="ADE"> ABC / 2 </var>
+        </div>
+
+		<p class="question"><code>\triangle ABC</code> 中，<code>D</code> 、<code>E</code> 分別為 <code>\overline{AB}</code> 與 <code>\overline{AC}</code> 的中點，若 <code>\triangle ABC</code> 的周長為 <code><var>ABC</var></code> ，則 <code>\triangle ADE</code> 的周長 <code>=</code>_____。</p>
+
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>ADE</var></span>
+		</div>
+
+    	<div class="hints">
+			<p><code>D</code> 、<code>E</code> 分別為 <code>\overline{AB}</code> 與 <code>\overline{AC}</code> 的中點。</p>   
+			<div>
+				<p><code>\overline{AD} = \dfrac{1}{2} \overline{AB}</code> ，</p>
+				<p><code>\overline{AE} = \dfrac{1}{2} \overline{AC}</code> ，</p>
+				<p>而且根據三角形的中點連線性質</p>
+				<p><code>\overline{DE} = \dfrac{1}{2} \overline{BC}</code> 。</p>
+			</div>
+			<div>
+				<p><code>\phantom{=} \triangle ADE</code> 周長</p>
+				<p><code>= \overline{AD} + \overline{AE} + \overline{DE}</code></p>
+				<p><code>= \dfrac{1}{2} \overline{AB} + \dfrac{1}{2} \overline{AC} + \dfrac{1}{2} \overline{BC}</code></p>
+				<p><code>= \dfrac{1}{2} \times \triangle ABC</code> 周長</p>
+				<p><code>= \dfrac{1}{2} \times <var>ABC</var></code></p>
+				<p><code>= <var>ADE</var></code></p>
+			</div>
+			<p>因此答案為 <code class="hint_pink"><var>ADE</var></code>。</p>
+    	</div>
+	</div>
+
+	<div id="case2">
+        <div class="vars">
+			<var id="DE"> randRange( 1, 10 ) * 2 </var>
+			<var id="_ANS"> roundTo( 0, DE * 3.5 ) </var>
+			<var id="_PATHS"> [ [ -1.5, -1.5 ], [ 1.5, -1.5 ], [ 0.75, 1.5 ], [ -1.5, -1.5 ] ] </var>
+        </div>
+
+		<div class="question">
+			<p>如圖，<code>\triangle ABC</code> 中，<code>D</code> 、<code>E</code> 分別為 <code>\overline{AB}</code> 與 <code>\overline{AC}</code> 的中點，<code>F</code> 、<code>G</code> 分別為 <code>\overline{AD}</code> 與 <code>\overline{AE}</code> 的中點，若 <code>\overline{DE} = <var>DE</var></code>，則 <code>\overline{FG} + \overline{DE} + \overline{BC} =</code> _____。</p>
+			<div class="graphie" id="_triangle">
+                init({ range: [ [ -2.5, 2.5 ], [ -2.5, 2.5 ] ], scale: 60 });
+				path( _PATHS );
+				label( _PATHS[ 2 ], 'A', 'above' );
+				label( _PATHS[ 0 ], 'B', 'below left' );
+				label( _PATHS[ 1 ], 'C', 'below right' );
+				var D_point = lineMidpoint( [ _PATHS[ 0 ], _PATHS[ 2 ] ] );
+				var E_point = lineMidpoint( [ _PATHS[ 1 ], _PATHS[ 2 ] ] );
+				var F_point = lineMidpoint( [ D_point, _PATHS[ 2 ] ] );
+				var G_point = lineMidpoint( [ E_point, _PATHS[ 2 ] ] );
+				label( D_point, 'D', 'left' );
+				label( E_point, 'E', 'right' );
+				label( F_point, 'F', 'left' );
+				label( G_point, 'G', 'right' );
+				line( D_point, E_point );
+				line( F_point, G_point );
+			</div>		
+		</div>
+
+		<div class="solution" data-type="multiple">
+			<span class="sol"  data-forms="integer"><var>_ANS</var></span>
+		</div>
+
+    	<div class="hints">
+    		<div>
+    			<p>因為 <code>D</code> 、<code>E</code> 分別為 <code>\overline{AB}</code> 與 <code>\overline{AC}</code> 的中點，</p>
+    			<p>根據三角形的中點連線性質</p>
+    			<p><code>\overline{BC} = 2 \times \overline{DE} = 2 \times <var>DE</var> = <var>2 * DE</var></code> 。</p>
+    		</div>
+    		<p>同理 <code>\overline{FG} = \dfrac{1}{2} \overline{DE} = \dfrac{1}{2} \times <var>DE</var> = <var>roundTo( 0, DE / 2 )</var></code> 。</p>
+    		<p>所以 <code>\overline{FG} + \overline{DE} + \overline{BC} = <var>roundTo( 0, DE / 2 )</var> + <var>DE</var> + <var>2 * DE</var> = <var>_ANS</var></code> 。</p>
+    		<p>因此答案為 <code class="hint_pink"><var>_ANS</var></code>。</p>
+    	</div>
+	</div>
+
+    <div id="case3">
+        <div class="vars">
+			<var id="DE"> randRange( 1, 10 ) * 2 </var>
+			<var id="_ANS"> roundTo( 0, DE * 3.5 ) </var>
+			<var id="_PATHS"> [ [ -1.5, -1.5 ], [ 1.5, -1.5 ], [ 0.75, 1.5 ], [ -1.5, -1.5 ] ] </var>
+        </div>
+
+		<div class="question">
+			<p>如圖，<code>\triangle ABC</code> 中，<code>\overline{AF} : \overline{FD} : \overline{DB} = 1 : 1 : 2 </code> 、<code>\overline{FG} // \overline{DE} // \overline{BC}</code> ，<code>\overline{DE} = <var>DE</var></code>，則 <code>\overline{FG} + \overline{DE} + \overline{BC} = </code> _____。</p>
+			<div class="graphie" id="_triangle">
+                init({ range: [ [ -2.5, 2.5 ], [ -2.5, 2.5 ] ], scale: 60 });
+				path( _PATHS );
+				label( _PATHS[ 2 ], 'A', 'above' );
+				label( _PATHS[ 0 ], 'B', 'below left' );
+				label( _PATHS[ 1 ], 'C', 'below right' );
+				var D_point = lineMidpoint( [ _PATHS[ 0 ], _PATHS[ 2 ] ] );
+				var E_point = lineMidpoint( [ _PATHS[ 1 ], _PATHS[ 2 ] ] );
+				var F_point = lineMidpoint( [ D_point, _PATHS[ 2 ] ] );
+				var G_point = lineMidpoint( [ E_point, _PATHS[ 2 ] ] );
+				label( D_point, 'D', 'left' );
+				label( E_point, 'E', 'right' );
+				label( F_point, 'F', 'left' );
+				label( G_point, 'G', 'right' );
+				line( D_point, E_point );
+				line( F_point, G_point );
+			</div>		
+		</div>
+
+		<div class="solution" data-type="multiple">
+			<span class="sol"  data-forms="integer"><var>_ANS</var></span>
+		</div>
+
+    	<div class="hints">
+    		<div>
+    			<p>因為 <code>D</code> 為 <code>\overline{AB}</code> 的中點且 <code>\overline{DE} // \overline{BC}</code> ，</p>
+    			<p>根據三角形的中點連線性質</p>
+    			<p><code>\overline{BC} = 2 \times \overline{DE} = 2 \times <var>DE</var> = <var>2 * DE</var></code> 。</p>
+    		</div>
+    		<p>同理 <code>\overline{FG} = \dfrac{1}{2} \overline{DE} = \dfrac{1}{2} \times <var>DE</var> = <var>roundTo( 0, DE / 2 )</var></code> 。</p>
+    		<p>所以 <code>\overline{FG} + \overline{DE} + \overline{BC} = <var>roundTo( 0, DE / 2 )</var> + <var>DE</var> + <var>2 * DE</var> = <var>_ANS</var></code> 。</p>
+    		<p>因此答案為 <code class="hint_pink"><var>_ANS</var></code>。</p>
+    	</div>
+	</div>
+
+</div>
+</div>
+</body>
+</html>			
