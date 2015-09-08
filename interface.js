@@ -504,6 +504,7 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         pretest_mode: Exercises.pretestMode ? 1 : 0,
 
         exam_mode: Exercises.examMode ? 1 : 0,
+        exam_id: Exercises.examId,
 
         // If working in the context of a LearningTask (on the new learning
         // dashboard), supply the task ID.
