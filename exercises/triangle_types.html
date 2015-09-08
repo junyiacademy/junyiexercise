@@ -7,15 +7,15 @@
     <script>
         function scTriangle(){
             while( ! a || a === b || a === c || b === c ){
-                var a = KhanUtil.randRange( 25, 150 );
-                var b = KhanUtil.randRange( 25, 180 - a );
-                if ( a + b > 170 ){
-                    a = Math.max( 30, a - 15  );
-                    b = Math.max( 30, b - 15  );
-                }
+                var a = KhanUtil.randRange( 45, 70 );
+                var b = KhanUtil.randRange( 45, 70 );
+                // if ( a + b > 170 ){
+                //     a = Math.max( 45, a - 15  );
+                //     b = Math.max( 45, b - 15  );
+                // }
                 var c = 180 - a - b;
             }
-            var sa = KhanUtil.randRange( 4, 8 );
+            var sa = KhanUtil.randRange( 6, 8 );
             var sb = sa * Math.sin( b * Math.PI / 180 )  / Math.sin( a * Math.PI / 180 );
             var sc = sa * Math.sin( c * Math.PI / 180 )  / Math.sin( a * Math.PI / 180 );
             if ( Math.abs( a - b ) < 5 || Math.abs( a - c ) < 5  || Math.abs( b - c ) < 5 ){
@@ -25,14 +25,14 @@
         }
 
         function eqTriangle(){
-            var a = KhanUtil.randRange( 4, 8 );
+            var a = KhanUtil.randRange( 6, 8 );
             return [ [ 60, 60, 60 ], [ a, a, a ] ];
         }
 
         function isoTriangle(){
             var a = KhanUtil.randRange( 25, 75 );
             var c = 180 - 2 * a;
-            var sa = KhanUtil.randRange( 4, 8 );
+            var sa = KhanUtil.randRange( 6, 8 );
             var sc = sa * Math.sin( c * Math.PI / 180 )  / Math.sin( a * Math.PI / 180 );
             var ang = [ a, a, a ];
             var sides = [ sa, sa, sa ];
@@ -91,17 +91,17 @@
                     <li data-each="TYPES as t"><var>t</var></li>
                 </ul>
                 <div class="hints">
-                    <p>我們已經知道三角形裡面兩個角的角度，所以我們可以將<code>180</code>減去這兩個角，來找出第三個角。</p>
+                    <p>我們已經知道三角形裡面兩個角的角度，所以我們可以將 <code>180^\circ</code> 減去這兩個角，來找出第三個角。</p>
                     <div>
-                        <p><code>180 -<var>TRIANGLE[ 0 ][ 0 ]</var> - <var>TRIANGLE[ 0 ][ 1 ]</var> = <var>TRIANGLE[ 0 ][ 2 ]</var></code></p>
+                        <p><code>180^\circ - <var>TRIANGLE[ 0 ][ 0 ]</var>^\circ - <var>TRIANGLE[ 0 ][ 1 ]</var>^\circ = <var>TRIANGLE[ 0 ][ 2 ]</var>^\circ</code></p>
                         <div class="graphie" data-update="typeTr" >
                             graph.TR.labels = { "angles" : graph.TR.niceAngles };
                             graph.TR.drawLabels();
                         </div>
                     </div>
-                <p data-if="TYPE === '不等邊三角形'">因為三個角都不一樣，這是一個不等邊三角形。</p>
-                    <p data-else-if="TYPE === '等腰三角形'">有兩個角是一樣的，所以對應到的兩個邊也會是一樣的。因此，這是一個等腰三角形。</p>
-                    <p data-else>每一個角剛好都是60。這也代表說三個邊都是一樣長，所以這是一個正三角形。</p>
+                    <p data-if="TYPE === '不等邊三角形'">因為三個角都不一樣，這是一個<span class="hint_pink">不等邊三角形</span>。</p>
+                    <p data-else-if="TYPE === '等腰三角形'">有兩個角是一樣的，所以對應到的兩個邊也會是一樣的。因此，這是一個<span class="hint_pink">等腰三角形</span>。</p>
+                    <p data-else>每一個角剛好都是 <code>60^\circ</code> 。這也代表說三個邊都是一樣長，所以這是一個<span class="hint_pink">正三角形</span>。</p>
                 </div>
             </div>
             <div id="knownSides" data-type="knownAngles">
@@ -119,9 +119,9 @@
                     </div>
                 </div>
                 <div class="hints">
-                    <p data-if="TYPE === '不等邊三角形'">因為三個邊都不一樣長，這是一個不等邊三角形。</p>
-                    <p data-else-if="TYPE === '等腰三角形'">有兩個邊一樣長，因此，這是一個等腰三角形。</p>
-                    <p data-else>每一個邊都一樣長。這也代表說每一個角都是60，而且這是一個正三角形。</p>
+                    <p data-if="TYPE === '不等邊三角形'">因為三個邊都不一樣長，這是一個<span class="hint_pink">不等邊三角形</span>。</p>
+                    <p data-else-if="TYPE === '等腰三角形'">有兩個邊一樣長，因此，這是一個<span class="hint_pink">等腰三角形</span>。</p>
+                    <p data-else>每一個邊都一樣長。這也代表說每一個角都是60，而且這是一個<span class="hint_pink">正三角形</span>。</p>
                 </div>
             </div>
         </div>
