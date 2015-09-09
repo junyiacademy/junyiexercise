@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-require="math math-format graphie-helpers-arithmetic">
+<html data-require="math math-format graphie graphie-helpers-arithmetic word-problems">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>整數乘以小數</title>
@@ -45,13 +45,118 @@
 
                     <p><code><var>PRODUCT</var></code> 可以寫成 <code><var>PRODUCT.toFixed(1)</var></code></p>
                     
-                    <p>將 <code><var>PRODUCT.toFixed(1)</var><code> 小數點往左邊移 <code><var>SMALL_FACTOR_DECIMAL</var></code> 位會成為 <code><var>PRODUCT_DISPLAY</var></code> 平方公分</p>
+                    <p>將 <code><var>PRODUCT.toFixed(1)</var></code> 小數點往左邊移 <code><var>SMALL_FACTOR_DECIMAL</var></code> 位會成為 <code><var>PRODUCT_DISPLAY</var></code> 平方公分</p>
                     
                     <p>因此長方形的面積為 <code><var>PRODUCT_DISPLAY</var></code> 平方公分</p>
 
                 </div>
             </div>
-            
+
+    <!-- from multiplying_decimal_integer.html (to present different thinking) -->    
+    <div id="case3">
+        <div class="vars">
+            <var id="names">randFromArray([["盒","餅乾","片"],["包","糖果","顆"]])</var>
+            <var id="J">10*randRange( 1,9 )</var>
+            <var id="K">randRange( 1, 9 )</var>
+            <var id="PRODUCT">K * J</var>
+            <div data-ensure="BIG_FACTOR_DECIMAL > 0 || SMALL_FACTOR_DECIMAL > 0">
+                <var id="BIG_FACTOR_DECIMAL">0</var>
+                <var id="SMALL_FACTOR_DECIMAL">1</var>
+            </div>
+            <var id="SMALL_FACTOR_DIGITS">padDigitsToNum( digits( K ), SMALL_FACTOR_DECIMAL + 1 )</var>
+            <var id="BIG_FACTOR_DIGITS">padDigitsToNum( digits( J ), BIG_FACTOR_DECIMAL + 1 )</var>
+            <var id="R">J*K/10</var>
+        </div>
+        <p class="question">一<var>names[0]</var><var>names[1]</var>有 <code><var>J</var></code> <var>names[2]</var>，吃了 <code><var>K/10</var></code> <var>names[0]</var>是吃了幾<var>names[2]</var>？</p>
+        <div class="solution" data-type="multiple">
+            <span class="sol" data-type="rational"><var>R</var></span><code><var>names[2]</var></code>
+            <p class="example">整數，例：<code>6</code></p>
+            <p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+            <p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+            <p class="example">帶分數，例：<code>1\ 3/4</code></p>
+            <p class="example">小數，例：<code>0.75</code></p>
+        </div>
+
+        <div class="hints">
+            <p>我們可以用 <code><var>J</var>\times<var>K/10</var></code> 算出來到底是吃了幾<var>names[2]</var>，</p>
+            <div class="graphie" id="numbers">
+                graph.multiplier = new Multiplier( J, K, BIG_FACTOR_DIGITS, SMALL_FACTOR_DIGITS, BIG_FACTOR_DECIMAL, SMALL_FACTOR_DECIMAL );
+                graph.multiplier.show();
+                graph.multiplier.showDecimals();
+            </div>
+            <div class="graphie" data-update="numbers" data-each="Array( new Multiplier( J, K, BIG_FACTOR_DIGITS, SMALL_FACTOR_DIGITS, BIG_FACTOR_DECIMAL, SMALL_FACTOR_DECIMAL ).getNumHints() ) as dummy">
+                graph.multiplier.showHint();
+            </div>
+            <div class="graphie" data-update="numbers">
+                var graph = KhanUtil.currentGraph;
+                deciA = BIG_FACTOR_DECIMAL || 0;
+                deciB = SMALL_FACTOR_DECIMAL || 0;
+                digitsA = BIG_FACTOR_DIGITS || KhanUtil.digits(J);
+                digitsB = SMALL_FACTOR_DIGITS || KhanUtil.digits(K);
+                var digitsProduct = KhanUtil.integerToDigits(J * K);
+                var maxNumDigits = Math.max(deciA + deciB, digitsProduct.length);
+                var x = -maxNumDigits;
+                var y = -digitsB.length * digitsA.length;
+                graph.label([x, y + 1],
+                    "\\text{上面的數字，小數點右邊有 " + KhanUtil.plural(deciA, "位數") + "}", "right");
+                graph.label([x, y],
+                    "\\text{下面的數字，小數點右邊有 " + KhanUtil.plural(deciB, "位數") + "}", "right");
+                graph.label([x, y-1],
+                    "\\text{所以這兩個數字的乘積在小數點右邊有 " + deciA + " + " + deciB + " = " + (deciA + deciB)
+                    + " 位數}", "right");
+                graph.style({
+                    fill: "#000"
+                }, function() {
+                    graph.ellipse([-deciB - deciA + 0.5, -0.2 - digitsB.length], [0.09, 0.06]);
+                });
+            </div>
+            <p>也就是說 <code><var>J</var>\times<var>K/10</var></code> 的結果為 <code><var>R</var></code>，代表吃了 <code><var>R</var></code> <var>names[2]</var>，</p>
+            <p>因此，本題的答案為 <code class="hint_pink"><var>R</var></code> <var>names[2]</var> 。</p>
+        </div>
+    </div>
+
+    <div id="case2">
+        <div class="vars">
+            <var id="J">randRange( 11, 50 )</var>
+            <var id="K">randRange( 1, 599 )</var>
+            <var id="PRODUCT">K * J</var>
+            <div data-ensure="BIG_FACTOR_DECIMAL > 0 || SMALL_FACTOR_DECIMAL > 0">
+                <var id="BIG_FACTOR_DECIMAL">0</var>
+                <var id="SMALL_FACTOR_DECIMAL">2</var>
+            </div>
+            <var id="SMALL_FACTOR_DIGITS">padDigitsToNum( digits( K ), SMALL_FACTOR_DECIMAL + 1 )</var>
+            <var id="BIG_FACTOR_DIGITS">padDigitsToNum( digits( J ), BIG_FACTOR_DECIMAL + 1 )</var>
+            <var id="R">J*K/100</var>
+        </div>
+        <p class="question">長 <code><var>J</var></code> 公分、寬 <code><var>K/100</var></code> 公分的長方形，面積為幾平方公分？</p>
+        <div class="solution" data-type="multiple">
+            <span class="sol" data-type="rational"><var>R</var></span><code>平方公分</code>
+            <p class="example">整數，例：<code>6</code></p>
+            <p class="example">真分數的<em>最簡</em>分數，例：<code>3/5</code></p>
+            <p class="example">假分數的<em>最簡</em>分數，例：<code>7/4</code></p>
+            <p class="example">帶分數，例：<code>1\ 3/4</code></p>
+            <p class="example">小數，例：<code>0.75</code></p>
+        </div>
+
+        <div class="hints">
+            <p>長方形的面積計算方式為長 <code>\times</code> 寬，</p>
+            <p>所以用 <code><var>J</var>\times<var>K/100</var>=</code> 長方形的面積</p>
+            <div class="graphie" id="numbers">
+                graph.multiplier = new Multiplier( J, K, BIG_FACTOR_DIGITS, SMALL_FACTOR_DIGITS, BIG_FACTOR_DECIMAL, SMALL_FACTOR_DECIMAL );
+                graph.multiplier.show();
+                graph.multiplier.showDecimals();
+            </div>
+            <div class="graphie" data-update="numbers" data-each="Array( new Multiplier( J, K, BIG_FACTOR_DIGITS, SMALL_FACTOR_DIGITS, BIG_FACTOR_DECIMAL, SMALL_FACTOR_DECIMAL ).getNumHints() ) as dummy">
+                graph.multiplier.showHint();
+            </div>
+            <div class="graphie" data-update="numbers">
+                graph.multiplier.showDecimalsInProduct();
+            </div>
+            <p>因此，本題的答案為 <code class="hint_pink"><var>R</var></code> 平方公分。</p>
+        </div>
+    </div>
+    <!-- from multiplying_decimal_integer.html --> 
+        
             <div id="apply">
                 <div class="vars">
                     <var id="SMALL_FACTOR">randRange( 1, 9 )</var>
@@ -66,7 +171,7 @@
                                     ["包" ,"糖果" ,"顆"] ]</var>
                     
                 </div>
-                <div class="problem">
+                <div class="question">
                     <p>
                         一<var>type[idx][0]</var><var>type[idx][1]</var>有 <code><var>BIG_FACTOR</var></code> <var>type[idx][2]</var>
                         ，吃了 <code><var>SMALL_FACTOR_DISPLAY</var></code> <var>type[idx][0]</var>
@@ -99,6 +204,9 @@
                     
                 </div>
             </div>
+
+
+
         </div>
     </div>
 </body>

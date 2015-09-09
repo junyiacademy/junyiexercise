@@ -32,7 +32,7 @@ $.extend(KhanUtil, {
         );
 
         graph.graph.medianLabel.remove();
-        graph.graph.medianLabel = graph.label([median, -1.7], "\\text{中位數}", "below", { color: KhanUtil.GREEN });
+        graph.graph.medianLabel = graph.label([median, -1.7], "\\text{中間值}", "below", { color: KhanUtil.GREEN });
 
         graph.graph.median = median;
     },
