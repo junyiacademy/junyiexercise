@@ -68,6 +68,9 @@ function Adder(a, b, digitsA, digitsB) {
                 "\\color{#FFA500}{" + carry + "}", "below"));
             carryStr = "\\color{#FFA500}{" + carry + "}";
         }
+        if(sum > 10){
+            highlights.push(graph.label([pos.sideX, pos.sideY + 0.5], "加起來超過 10 了，我們需要進位到左邊的位值！", "above right"));
+        }
 
         this.showSideLabel("\\Large{"
             + prevCarryStr
