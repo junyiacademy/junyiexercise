@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>四位數乘以一位數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="DUMMY">[]</var>
+        </div>
+
+        <div class="problems">
+            <div id="case1">
+                <div class="vars">
+                    <var id="BIG_FACTOR, SMALL_FACTOR"> [ randRange( 1, 9 ) * 1000, randRange( 1, 9 ) ] </var>
+                </div>
+            </div>
+
+            <div id="case2">
+                <div class="vars">
+                    <var id="BIG_FACTOR, SMALL_FACTOR"> randFromArray( [ [1325, 3], [2115, 4], [3324, 3], [1112, 8], [5115, 5], [5427, 3], [1249,2] ] ) </var>
+                </div>
+            </div>
+
+            <div id="case3">
+                <div class="vars">
+                    <var id="J, K, L, M"> randRangeUnique( 1, 10, 4 ) </var>
+                    <var id="BIG_FACTOR"> J * 1000 + K * 100 + L * 10 + M </var>
+                    <var id="SMALL_FACTOR"> randRange( 1, 9 ) </var>
+                </div>
+            </div>
+
+            <div id="case4">
+                <div class="vars">
+                    <var id="J, K, L, M"> (function(){
+                        ss = randRangeUnique( 1, 10, 4 );
+                        ii = randRange( 0, 2 );
+                        ii == 0 ? ss[ 1 ] = 0 : ( ii == 1 ? ss[ 2 ] = 0 : ss[1] = 0, ss[ 2 ] = 0 );
+                        return ss;
+                    })() </var>
+                    <var id="BIG_FACTOR"> J * 1000 + K * 100 + L * 10 + M </var>
+                    <var id="SMALL_FACTOR"> randRange( 1, 9 ) </var>
+                </div>
+            </div>
+        </div>
+
+        <div class="question">
+            <br>
+            <div class="graphie" id="numbers">
+                graph.multiplier = new Multiplier( BIG_FACTOR, SMALL_FACTOR );
+                graph.multiplier.show();
+                DUMMY = Array( graph.multiplier.getNumHints() );
+            </div>
+        </div>
+
+        <div class="solution" data-forms="integer"><var>SMALL_FACTOR * BIG_FACTOR</var></div>
+
+        <div class="hints">
+            <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
+                graph.multiplier.showHint();
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
