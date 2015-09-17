@@ -476,7 +476,7 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         casing: "camel",
 
         // Whether we're moving to the next problem (i.e., correctness)
-        complete: correct || skipped ? 1 : 0,
+        correct: correct ? 1 : 0,
 
         count_hints: hintsUsed,
         time_taken: timeTaken,
