@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>三角柱的表面積</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .short input[type=text] {
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="A, B, C, D"> randFromArray( [ [ 20, 6, 4, 5 ], [ 10, 10, 12, 13 ], [ 5, 10, 12, 13 ] ] ) </var>
+				<var id="E"> B * C </var>
+				<var id="F"> ( B + 2 * D ) * A </var>
+				<var id="ANSWER"> E + F </var>
+			</div>
+                
+			<div class="question">
+				<div class="problem">
+					<p>試算下列三角柱的表面積。</p>
+					<div class="graphie">
+						init( { range : [ [ -10, 10 ], [ -7, 8 ] ], scale : 20 } );
+						path( [ [ 0, -6 ], [ 0, -6 + A / 2 ], [ -B / 2, -6 + A / 2 + C / 2 ], [ -B / 2, -6 + C / 2 ], [ 0, -6 ] ], { fill : "pink", opacity : 0.75 } );
+						path( [ [ 0, -6 ], [ 0, -6 + A / 2 ], [ B / 2, -6 + A / 2 + C / 2 ], [ B / 2, -6 + C / 2 ], [ 0, -6 ] ], { fill : "pink", opacity : 0.8 } );
+						path( [ [ 0, -6 + A / 2 ], [ -B / 2, -6 + A / 2 + C / 2 ], [ B / 2, -6 + A / 2 + C / 2 ], [ 0, -6 + A / 2 ] ], { fill : "pink", opacity : 0.45 } );
+						line( [ 0, -6 + A / 2 ], [ 0, -6 + A / 2 + C / 2 ], { "stroke-dasharray" : "-", stroke : "orange" } );
+						label( [ 0.5, -6 + A / 2 + C / 4 ], C, { color : "orange" } );
+						path( [ [ -0.4, -6 + A / 2 + C / 2 ], [ -0.4, -6 + A / 2 + C / 2 - 0.4 ], [ 0, -6 + A / 2 + C / 2 - 0.4 ] ] );
+						line( [ -B / 2, -6 + A / 2 + C / 2 ], [ -B / 2, -6 + C / 2 ], { stroke : "blue" } );
+						label( [ -B / 2 - 0.8, -6 + A / 4 + C / 2 ], A, { color : "blue" } );
+						line( [ 0, -6 + A / 2 ], [ -B / 2, -6 + A / 2 + C / 2 ], { stroke : "green" } );
+						label( [ -B / 4 - 0.5, -6 + A / 2 + C / 4 - 0.5 ], D, { color : "green" } );
+						line( [ 0, -6 + A / 2 ], [ B / 2, -6 + A / 2 + C / 2 ], { stroke : "green" } );
+						label( [ B / 4 + 0.5, -6 + A / 2 + C / 4 - 0.5 ], D, { color : "green" } );
+						line( [ -B / 2, -6 + A / 2 + C / 2 ], [ B / 2, -6 + A / 2 + C / 2 ], { stroke : "red" } );
+						label( [ 0, -6 + A / 2 + C / 2 + 0.5 ], B, { color : "red" } );
+					</div>
+					
+				</div>
+			</div>	
+					
+            <div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>ANSWER</var></span>平方公分
+			</div>
+				
+            <div class="hints">
+				<div>
+					<p>上下底的表面積為 <code><var>B</var> \times <var>C</var> \div 2 \times 2 = <var>E</var></code>。</p>
+					<p>側面表面積為 <code>(<var>B</var> + <var>D</var> + <var>D</var>) \times <var>A</var> = <var>F</var></code>。</p>
+				</div>
+				<p><code><var>E</var> + <var>F</var> = \color{#FF00AF}{<var>ANSWER</var>}</code> 平方公分</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="A, B, C, D"> randFromArray( [ [ 5, 12, 13, 13 ], [ 6, 8, 10, 10 ], [ 6, 8, 10, 15 ], [ 5, 12, 13, 10 ] ] ) </var>
+				<var id="E"> A * B </var>
+				<var id="F"> ( A + B + C ) * D </var>
+				<var id="ANSWER"> E + F </var>
+			</div>
+                
+			<div class="question">
+				<div class="problem">
+					<p>試算下列三角柱的表面積。</p>
+					<div class="graphie">
+						init( { range : [ [ -10, 13 ], [ -8, 10 ] ], scale : 22 } );
+						path( [ [ -8, -6 ], [ -8, -6 + B ], [ -8 + A, -6 ], [ -8, -6 ] ], { fill : "pink", opacity : 0.95 } );
+						path( [ [ -8 + A, -6 ], [ -8, -6 + B ], [ -10 + D, -6 + B + 4 ], [ -10 + A + D, -6 + 4.8 ], [ -8 + A, -6 ] ], { fill : "pink", opacity : 0.45 } );
+						path( [ [ -8, -5.6 ], [ -7.6, -5.6 ], [ -7.6, -6 ] ] );
+						line( [ -8, -6 ], [ -8, -6 + B ], { stroke : "blue" } );
+						label( [ -8 - 0.8, -6 + B / 2 ], B, { color : "blue" } );
+						line( [ -8, -6 ], [ -8 + A, -6 ], { stroke : "green" } );
+						label( [ -8 + A / 2, -6 - 0.7 ], A, { color : "green" } );
+						line( [ -8, -6 + B ], [ -8 + A, -6 ], { stroke : "orange" } );
+						label( [ -8 + A / 2 + 0.5, -6 + B / 2 + 0.3 ], C, { color : "orange" } );
+						line( [ -10 + A + D, -6 + 4.8 ], [ -8 + A, -6 ], { stroke : "purple" } );
+						label( [ -9 + A + D / 2 + 0.5, -3.8 ], D, { color : "purple" } );
+					</div>
+				</div>
+			</div>	
+					
+            <div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>ANSWER</var></span>平方公分
+			</div>
+
+            <div class="hints">
+				<div>
+					<p>上下底的表面積為 <code><var>A</var> \times <var>B</var> \div 2 \times 2 = <var>E</var></code>。</p>
+					<p>側面表面積為 <code>(<var>A</var> + <var>B</var> + <var>C</var>) \times <var>D</var> = <var>F</var></code>。</p>
+				</div>
+				<p><code><var>E</var> + <var>F</var> = \color{#FF00AF}{<var>ANSWER</var>}</code> 平方公分</p>
+            </div>
+        </div>
+		
+	 </div>
+	 </div>
+	  
+</body>
+</html>
