@@ -216,6 +216,10 @@ function Subtractor(a, b, digitsA, digitsB, decimalPlaces) {
             subStr = " - \\color{#6495ED}{" + subtrahend + "}";
         }
 
+        if(workingDigitsA[index] > 9) {
+            highlights[index].push(graph.label([pos.sideX, pos.sideY + 0.5], "相減不夠減，因此我們需要跟左邊的位值借位！", "above right"));
+        }
+
         var diff = workingDigitsA[index] - subtrahend;
         if (((a - b) / Math.pow(10, index)) > 1 || index < decimalPlaces) {
             graph.label([pos.max - index, pos.diff], "\\LARGE{" + diff + "}");
