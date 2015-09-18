@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>四位數除以二位數商為二位數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars" data-ensure=" isInt( QUOTIENT ) ">
+                    <var id="DIVISOR, DIVIDEND"> randFromArray( [ [71, 5964], [15,1425], [19,1216], [28,1484], [24,2256], [35,3430], [31,2666], [43,2494], [49,2499], [52,4992], [58,5626], [69,2829], [64,3392], [75,6900], [74,4514], [86,8084], [84,7980], [98,1372], [95,6460] ] ) </var>
+                    <var id="QUOTIENT"> DIVIDEND / DIVISOR </var>
+                    <var id="DUMMY">[]</var>
+                </div>
+
+                <div class="graphie" id="numbers">
+                    graph.divider = new Divider( DIVISOR, DIVIDEND );
+                    graph.divider.show();
+                    DUMMY = Array( graph.divider.getNumHints() );
+                </div>
+
+                <div class="solution" data-forms="integer"><var>QUOTIENT</var></div>
+
+                <div class="hints">
+                    <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
+                        graph.divider.showHint();
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="case2">
+                <div class="vars" data-ensure=" FINAL_REMAINDER &gt; 0 ">
+                    <var id="DIVISOR, DIVIDEND"> randFromArray( [ [68, 3006], [15,1429], [12,1043], [26,1543], [29,2499], [35,3299], [39,3215], [45,3897], [42,4018], [59,4097], [54,3098], [68,4035], [62,5297], [75,7368], [71,6783], [86,5097], [82,7983], [98,2876], [92,5497] ] ) </var>
+                    <var id="QUOTIENT"> floorTo( 0, DIVIDEND / DIVISOR ) </var>
+                    <var id="FINAL_REMAINDER"> DIVIDEND - DIVISOR * QUOTIENT </var>
+                    <var id="DUMMY">[]</var>
+                </div>
+
+                <div class="graphie" id="numbers">
+                    graph.divider = new Divider( DIVISOR, DIVIDEND );
+                    graph.divider.show();
+                    DUMMY = Array( graph.divider.getNumHints() );
+                </div>
+
+                <div class="solution" data-type="multiple">
+                    <p>商<code>\enspace\enspace = \enspace</code><span class="sol" data-forms="integer"><var>QUOTIENT</var></span> </p>
+                    <p>餘數<code> = \enspace</code><span class="sol" data-forms="integer"><var>FINAL_REMAINDER</var></span> </p>
+                    <p class="example">整數，例：<code>6</code></p>
+                </div>
+
+                <div class="hints">
+                    <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
+                        graph.divider.showHint();
+                    </div>
+                    <p>所以商是 <code class="hint_pink"><var>QUOTIENT</var></code> ，餘數是 <code class="hint_pink"><var>FINAL_REMAINDER</var></code> 。</p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
