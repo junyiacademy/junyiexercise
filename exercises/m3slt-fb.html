@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>四角柱的表面積</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .short input[type=text] {
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+			<div class="vars" data-ensure=" B &gt; 2 &amp;&amp; abs( A - C ) &gt; 2 ">
+				<var id="D"> randRange( 5, 10 ) </var>
+				<var id="B"> randRange( 1, D - 1 ) </var>
+				<var id="A, C"> randRangeUnique( 4, 11, 2 ) </var>
+				<var id="E"> randRange( 5, 10 ) </var>
+				<var id="F"> ( A + C ) * B </var>
+				<var id="G"> ( A + C + 2 * D ) * E </var>
+				<var id="ANSWER"> F + G </var>
+			</div>
+                
+			<div class="question">
+				<div class="problem">
+					<p>試算下列四角柱的表面積。</p>
+					<div class="graphie">
+						init( { range : [ [ -10, 10 ], [ -9, -7 + E + B / 2 + 2 ] ], scale : 20 } );
+						path( [ [ -5, -7 ], [ -5, -7 + E ], [ -5 + A, -7 + E ], [ -5 + A, -7 ], [ -5, -7 ] ], { fill : "#A6FFA6", opacity : 0.9 } );
+						path( [ [ -5, -7 + E ], [ -5 + A / 2 - C / 2, -7 + E + B / 2 ], [ -5 + A / 2 + C / 2, -7 + E + B / 2 ], [ -5 + A, -7 + E ], [ -5 , -7 + E ] ], { fill : "#A6FFA6" } );
+						if( A &lt; C ) {
+							path( [ [ -5, -7 ], [ -5, -7 + E ], [ -5 + A / 2 - C / 2, -7 + E + B / 2 ], [ -5 + A / 2 - C / 2, -7 + B / 2 ], [ -5, -7 ] ], { fill : "#A6FFA6", opacity : 0.75 } );
+							path( [ [ -5 + A, -7 ], [ -5 + A, -7 + E ], [ -5 + A / 2 + C / 2, -7 + E + B / 2 ], [ -5 + A / 2 + C / 2, -7 + B / 2 ], [ -5 + A, -7 ] ], { fill : "#A6FFA6", opacity : 0.75 } );
+						}
+						line( [ -5 + A / 2, -7 + E ], [ -5 + A / 2, -7 + E + B / 2 ], { "stroke-dasharray" : "-", stroke : "orange" } );
+						label( [ -5 + A / 2 + 0.6, -7 + E + B / 4 ], B, { color : "orange" } );
+						line( [ -5, -7 + E ], [ -5 + A, -7 + E ], { stroke : "blue" } );
+						label( [ -5 + A / 2, -7 + E - 0.8 ], A, { color : "blue" } );
+						line( [ -5 + A, -7 + E ], [ -5 + A, -7 ], { stroke : "green" } );
+						label( [ -5 + A + 0.5, -7 + E / 2 ], E, { color : "green" } );
+						line( [ -5 + A / 2 - C / 2, -7 + E + B / 2 ], [ -5 + A / 2 + C / 2, -7 + E + B / 2 ], { stroke : "purple" } );
+						label( [ -5 + A / 2, -7 + E + B / 2 + 0.6 ], C, { color : "purple" } );
+						line( [ -5, -7 + E ], [ -5 + A / 2 - C / 2, -7 + E + B / 2 ], { stroke : "red" } );
+						label( [ -5 + A / 4 - C / 4, -7 + E + B / 4 ], D, A &gt; C ? "above left" : "below left", { color : "red" } );
+						line( [ -5 + A / 2 + C / 2, -7 + E + B / 2 ], [ -5 + A, -7 + E ], { stroke : "red" } );
+						label( [ -5 + 3 * A / 4 + C / 4, -7 + E + B / 4 ], D, A &gt; C ? "above right" : "below right", { color : "red" } );
+					</div>
+					
+				</div>
+			</div>	
+					
+            <div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>ANSWER</var></span>平方公分
+			</div>
+
+            <div class="hints">
+				<div>
+					<p>上下底的表面積為上下底的表面積為 </p>
+					<p><code>\qquad (<var>A</var>+<var>C</var>) \times <var>B</var> \div 2 \times 2 = <var>F</var></code></p>
+					<p>側面表面積為 </p>
+					<p><code>\qquad (<var>A</var>+<var>D</var>+<var>C</var>+<var>D</var>) \times <var>E</var> = <var>G</var></code></p>
+				</div>
+				<p>四角柱的表面積 <code> = <var>F</var>+<var>G</var> = \color{#FF00AF}{<var>ANSWER</var>}</code> 平方公分</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="A, B, C"> randFromArray( [ [ 30, 25, 27 ], [ 20, 14, 13 ], [ 12, 6, 14 ], [ 18, 14, 15 ], [ 24, 12, 17 ] ] ) </var>
+				<var id="D"> randFromArray( [ 15, 10, 12, 14, 2 ] ) </var>
+				<var id="E"> A * B * 2 </var>
+				<var id="F"> ( A + C ) * 2 * D </var>
+				<var id="ANSWER"> E + F </var>
+			</div>
+                
+			<div class="question">
+				<div class="problem">
+					<p>試算下列四角柱的表面積。</p>
+					<div class="graphie">  
+						init( { range : [ [ -10, -8 + C / 4 + D / 2 + 0.86 * A / 2 + 2 ], [ -8, -6 + 0.86 * C / 2 + A / 4 + 2 ] ], scale : 18 } );
+						path( [ [ -8 + D / 2, -6 ], [ -8 + D / 2 + 0.86 * A / 2, -6 + A /  4 ], [ -8 + C / 4 + D / 2 + 0.86 * A / 2, -6 + 0.86 * C / 2 + A / 4 ], [ -8 + C / 4 + D / 2, -6 + 0.86 * C / 2 ] ], { fill : "#A6FFA6", opacity : 0.8 } );
+						path( [ [ -8, -6 ], [ -8 + D / 2, -6 ], [ -8 + C / 4 + D / 2, -6 + 0.86 * C / 2 ], [ -8 + C / 4, -6 + 0.86 * C / 2 ], [ -8, -6 ] ], { fill : "#A6FFA6" } );
+						path( [ [ -8 + C / 4 + D / 2, -6 + 0.86 * C / 2 ], [ -8 + C / 4 + D / 2 + 0.86 * A / 2, -6 + 0.86 * C / 2 + A / 4 ], [ -8 + C / 4 + 0.86 * A / 2, -6 + 0.86 * C / 2 + A / 4 ], [ -8 + C / 4, -6 + 0.86 * C / 2 ] ], { fill : "#A6FFA6", opacity : 0.7 } );
+						line( [ -8, -6 ], [ -8 + D / 2, -6 ], { stroke : "blue" } );
+						label( [ -8 + D / 4, -6.7 ], D, { color : "blue" } );
+						line( [ -8 + D / 2 + 0.86 * A / 2, -6 + A / 4 ], [ -8 + C / 4 + D / 2 + 0.86 * A / 2, -6 + 0.86 * C / 2 + A / 4 ], { stroke : "orange" } );
+						label( [ -8 + D / 2 + C / 8 + 0.86 * A / 2 + 0.6, -6 + A / 4 + 0.86 * C / 4 - 0.3 ], C, { color : "orange" } );
+						line( [ -8 + D / 2, -6 ], [ -8 + D / 2 + 0.86 * A / 2, -6 + A / 4 ], { stroke : "green" } );
+						label( [ -8 + D / 2 + 0.86 * A / 4 + 0.3, -6 + A / 8 - 0.5 ], A, { color : "green" } );
+						line( [ -8 + C / 4 + D / 2 + 0.86 * A / 2, -6 + 0.86 * C / 2 + A / 4 ], [ -8 + C /4 + D / 2 + 0.86 * A / 2, -6 + A / 4 + 0.86 * C / 2 - 0.86 * C / 4 ], { "stroke-dasharray" : "-", stroke : "purple" } );
+						label( [ -8 + C / 4 + D / 2 + 0.86 * A / 2, -6 + A / 4 + 0.86 * C / 2 - 0.43 * C / 4 ], B, "right", { color : "purple" } );
+						line( [ -8 + D / 2 + 0.86 * A / 2, -6 + A / 4 ], [ -8 + C / 4 + D / 2 + 0.86 * A / 2, -6 + A / 4 + 0.86 * C / 2 - 0.86 * C / 4 ], { "stroke-dasharray" : "-" } );
+					</div>
+				</div>
+			</div>	
+					
+            <div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>ANSWER</var></span>平方公分
+			</div>
+
+            <div class="hints">
+				<div>
+					<p>上下底的表面積為上下底的表面積為</p>
+					<p><code>\qquad <var>A</var>\times<var>B</var>\times 2=<var>E</var></code></p>
+					<p>側面表面積為</p>
+					<p><code>\qquad (<var>A</var>+<var>C</var>+<var>A</var>+<var>C</var>)\times<var>D</var>=<var>F</var></code></p>
+				</div>
+				<p>四角柱的表面積 <code> = <var>E</var>+<var>F</var> = \color{#FF00AF}{<var>ANSWER</var>}</code> 平方公分</p>
+            </div>
+        </div>
+		
+	 </div>
+	 </div>
+	  
+</body>
+</html>
