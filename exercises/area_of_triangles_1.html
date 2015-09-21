@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-require="math graphie word-problems interactive subhints">
+<html data-require="math math-format graphie word-problems interactive subhints">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>三角形的面積 1</title>
@@ -19,19 +19,19 @@
 <body>
 <div class="exercise">
     <div class="vars">
-        <var id="UNIT,UNIT_TEXT">randFromArray([
-            ["英吋", "英吋"],
-            ["英呎", "英呎"],
-            ["公尺", "公尺"],
-            ["公分", "公分"],
+		<var id="UNIT,UNIT_TEXT">randFromArray([
+            ["", "英吋"],
+            ["", "英呎"],
+            ["", "公尺"],
+            ["", "公分"],
             ["", "單位"]
         ])</var>
     </div>
     <div class="problems">
         <div id="right-triangle" data-weight="1">
             <div class="vars" data-ensure="(B % 2 === 0) || (H % 2 === 0)">
-                <var id="B">randRange(2, 9)</var>
-                <var id="H">randRange(2, 9)</var>
+                <var id="B">randRange(4, 9)</var>
+                <var id="H">randRange(4, 9)</var>
                 <var id="HYP">sqrt(B * B + H * H)</var>
             </div>
 
@@ -45,7 +45,6 @@
                         {stroke: BLUE, fill: "#eee"});
                     label([B / 2, 0], B + "\\text{ " + UNIT + "}", "below");
                     label([0, H / 2], H + "\\text{ " + UNIT + "}", "left");
-                    // Label hypotenuse if it's an integer
                     if (HYP === round(HYP)) {
                         label([B / 2, H * 0.55], HYP + "\\text{ " + UNIT + "}",
                             "right");
@@ -55,7 +54,7 @@
             </div>
 
             <div class="solution" data-type="multiple">
-                <span class="sol"><var>(B * H) / 2</var></span>
+                <span class="sol" data-forms="integer"><var>(B * H) / 2</var></span>
                 平方 <var>plural(UNIT_TEXT)</var>
             </div>
 
@@ -87,7 +86,7 @@
                 </p>
                 <p><code>
                     \text{面積} = \frac{1}{2} \times <var>B</var> \times
-                    <var>H</var> = <var>(B * H) / 2</var>
+                    <var>H</var> = \color{#FF00AF}{<var>roundTo( 5, (B * H) / 2 )</var>}
                 </code></p>
             </div>
         </div>
@@ -95,8 +94,8 @@
         <div id="acute-triangle" data-weight="2">
             <div class="vars" data-ensure="((B % 2 === 0) || (H % 2 === 0)) &&
                     (H !== HYP) && B !== TOP">
-                <var id="B">randRange(3, 9)</var>
-                <var id="H">randRange(2, 9)</var>
+                <var id="B">randRange(5, 9)</var>
+                <var id="H">randRange(4, 9)</var>
                 <var id="HYP">
                     randRange(H + 1, floor(sqrt(H * H + B * B) - 1))
                 </var>
@@ -126,7 +125,7 @@
             </div>
 
             <div class="solution" data-type="multiple">
-                <span class="sol"><var>(B * H) / 2</var></span>
+                <span class="sol" data-forms="integer"><var>(B * H) / 2</var></span>
                 平方 <var>plural(UNIT_TEXT)</var>
             </div>
 
@@ -216,15 +215,15 @@
                 </div>
                 <p><code>
                     \text{面積} = \frac{1}{2} \times <var>B</var> \times
-                    <var>H</var> = <var>(B * H) / 2</var>
+                    <var>H</var> = \color{#FF00AF}{<var>roundTo( 5, (B * H) / 2 )</var>}
                 </code></p>
             </div>
         </div>
 
         <div id="obtuse-triangle" data-weight="2">
             <div class="vars" data-ensure="(B % 2 === 0) || (H % 2 === 0)">
-                <var id="B">randRange(3, 9)</var>
-                <var id="H">randRange(2, 9)</var>
+                <var id="B">randRange(5, 9)</var>
+                <var id="H">randRange(4, 9)</var>
                 <var id="TOP">randFromArray([
                     randRange(-5, -1),
                     randRange(B + 1, B + 5)
@@ -261,7 +260,7 @@
             </div>
 
             <div class="solution" data-type="multiple">
-                <span class="sol"><var>(B * H) / 2</var></span>
+                <span class="sol" data-forms="integer"><var>(B * H) / 2</var></span>
                 平方 <var>plural(UNIT_TEXT)</var>
             </div>
 
@@ -277,7 +276,7 @@
                 </p>
                 <p><code>
                     \text{面積} = \frac{1}{2} \times <var>B</var> \times
-                    <var>H</var> = <var>(B * H) / 2</var>
+                    <var>H</var> = \color{#FF00AF}{<var>roundTo( 5, (B * H) / 2 )</var>}
                 </code></p>
             </div>
         </div>
