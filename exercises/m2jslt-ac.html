@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>立方堆疊</title>
+    <script src="../khan-exercise.js"></script>
+	<script type="text/javascript">
+		function MoveCoor(arr0,arr1,arr2,arr3,arr4,arr5){
+			return [[arr0[0]+arr5[0],arr0[1]+arr5[1]],[arr1[0]+arr5[0],arr1[1]+arr5[1]],[arr2[0]+arr5[0],arr2[1]+arr5[1]],[arr3[0]+arr5[0],arr3[1]+arr5[1]],[arr4[0]+arr5[0],arr4[1]+arr5[1]]];
+		}
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars">
+			<var id="J, K, L, M"> randFromArray( [ [ 15, 1, 5, 9 ], [ 15, 2, 4, 9 ], [ 17, 2, 6, 9 ], [ 18, 3, 6, 9 ], [ 19, 3, 7, 9 ], [ 19, 2, 8, 9 ], [ 22, 5, 8, 9 ], [ 23, 6, 8, 9 ], [ 24, 7, 8, 9 ] ] ) </var>
+			<var id="P"> ( J == 15 &amp;&amp; K == 2 ) ? 1 : ( J == 19 ? 2 : ( J == 17 ? randRange( 1, 2 ) : 0 ) ) </var>
+			<var id="Q"> ( K == 6 || K == 5 ) ? randRange( 1, 2 ) : 0 </var>			
+			<var id="A"> Math.cos( 30 * Math.PI / 180 ) </var>
+			<var id="B"> Math.cos( 60 * Math.PI / 180 ) </var>
+        </div>
+
+		<div class="question">
+			<p>下面形體的體積是多少立方公分？</p>
+			<div class="graphie" id="graph1">
+				init({range:[[-4, 4], [-3, 5]], scale : 40 });			
+					for(var i = 0; i &lt; 3 ; i++){
+						path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[A*i,-B*i]), {fill : "#00AEAE"});
+						path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[A*i,-B*i]), {fill : "#A6FFFF"});
+						path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[A*i,-B*i]), {fill : "#A6FFFF"});
+						for(var j = 0; j &lt; 3; j++){
+							path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i]), {fill : "#00AEAE"});
+							path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*j+A*i,-B*j-B*i]), {fill : "#A6FFFF"});
+							path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i]), {fill : "#A6FFFF"});					
+						}
+					}
+					for(var i = 0; i &lt;1 ; i++){
+						for(var j = 0; j &lt;3; j++){						
+							path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+1]), {fill : "#00BB00"});
+							path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+1]), {fill : "#A6FFA6"});
+							path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+1]), {fill : "#A6FFA6"});																					
+						}
+					}
+					if(J==15 || J==17){
+						path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*2+A*1,-B*2-B*1+1]), {fill : "#00BB00"});
+						path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*2+A*1,-B*2-B*1+1]), {fill : "#A6FFA6"});
+						path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*2+A*1,-B*2-B*1+1]), {fill : "#A6FFA6"});					
+						if(L==5 || L==6){
+							path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*0+A*1,-B*0-B*1+1]), {fill : "#00BB00"});
+							path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*0+A*1,-B*0-B*1+1]), {fill : "#A6FFA6"});
+							path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*0+A*1,-B*0-B*1+1]), {fill : "#A6FFA6"});					
+							if(K==2){
+								path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*0+A*2,-B*0-B*2+1]), {fill : "#00BB00"});
+								path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*0+A*2,-B*0-B*2+1]), {fill : "#A6FFA6"});
+								path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*0+A*2,-B*0-B*2+1]), {fill : "#A6FFA6"});					
+							}
+						}	
+					}
+					if(L==7 ||L==8){
+						for(var i = 1; i &lt;2 ; i++){
+							for(var j = 0; j &lt;3; j++){						
+								path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+1]), {fill : "#00BB00"});
+								path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+1]), {fill : "#A6FFA6"});
+								path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+1]), {fill : "#A6FFA6"});																					
+							}
+						}
+							path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*0+A*2,-B*0-B*2+1]), {fill : "#00BB00"});
+							path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*0+A*2,-B*0-B*2+1]), {fill : "#A6FFA6"});
+							path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*0+A*2,-B*0-B*2+1]), {fill : "#A6FFA6"});					
+
+						if(K!=3){
+							path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*1+A*2,-B*1-B*2+1]), {fill : "#00BB00"});
+							path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*1+A*2,-B*1-B*2+1]), {fill : "#A6FFA6"});
+							path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*1+A*2,-B*1-B*2+1]), {fill : "#A6FFA6"});					
+						}
+
+					}
+					path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[A*0,-B*0+2]), {fill : "#E1E100"});
+					path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[A*0,-B*0+2]), {fill : "#FFFFAA"});
+					path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[A*0,-B*0+2]), {fill : "#FFFFAA"});
+					if(P==1){
+						path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*1+A*0,-B*1-B*0+2]), {fill : "#E1E100"});
+						path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*1+A*0,-B*1-B*0+2]), {fill : "#FFFFAA"});
+						path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*1+A*0,-B*1-B*0+2]), {fill : "#FFFFAA"});																					
+					}
+					if(P==2){
+						path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*0+A*1,-B*0-B*1+2]), {fill : "#E1E100"});
+						path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*0+A*1,-B*0-B*1+2]), {fill : "#FFFFAA"});
+						path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*0+A*1,-B*0-B*1+2]), {fill : "#FFFFAA"});																					
+						if(K==3){
+							path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*1+A*0,-B*1-B*0+2]), {fill : "#E1E100"});
+							path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*1+A*0,-B*1-B*0+2]), {fill : "#FFFFAA"});
+							path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*1+A*0,-B*1-B*0+2]), {fill : "#FFFFAA"});																						
+						}
+					}
+					if(J==22||J==23){
+						for(var i = 0; i &lt;1 ; i++){		
+							for(var j = 0; j &lt;3; j++){						
+								path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+2]), {fill : "#E1E100"});
+								path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+2]), {fill : "#FFFFAA"});
+								path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+2]), {fill : "#FFFFAA"});																					
+							}
+						}
+						path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*0+A*1,-B*0-B*1+2]), {fill : "#E1E100"});
+						path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*0+A*1,-B*0-B*1+2]), {fill : "#FFFFAA"});
+						path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*0+A*1,-B*0-B*1+2]), {fill : "#FFFFAA"});																					
+						if(K==5){
+							path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*2+A*1,-B*2-B*1+2]), {fill : "#E1E100"});
+							path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*2+A*1,-B*2-B*1+2]), {fill : "#FFFFAA"});
+							path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*2+A*1,-B*2-B*1+2]), {fill : "#FFFFAA"});																					
+						}
+						if(K==6&&Q==1){
+							for(var i = 1; i &lt;2 ; i++){			
+								for(var j = 0; j &lt;3; j++){						
+									path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+2]), {fill : "#E1E100"});
+									path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+2]), {fill : "#FFFFAA"});
+									path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+2]), {fill : "#FFFFAA"});																					
+								}
+							}
+						}
+						 if(K==6&&Q==2){
+							path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*1+A*1,-B*1-B*1+2]), {fill : "#E1E100"});
+							path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*1+A*1,-B*1-B*1+2]), {fill : "#FFFFAA"});
+							path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*1+A*1,-B*1-B*1+2]), {fill : "#FFFFAA"});																					
+							path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*1+A*2,-B*1-B*2+2]), {fill : "#E1E100"});
+							path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*1+A*2,-B*1-B*2+2]), {fill : "#FFFFAA"});
+							path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*1+A*2,-B*1-B*2+2]), {fill : "#FFFFAA"});																					
+
+						}
+					}		
+					if(J==24){
+						for(var i = 0; i &lt;2 ; i++){
+							path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[A*i,-B*i+2]), {fill : "#E1E100"});
+							path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[A*i,-B*i+2]), {fill : "#FFFFAA"});
+							path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[A*i,-B*i+2]), {fill : "#FFFFAA"});
+						 
+							for(var j = 0; j &lt;3; j++){						
+								path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+2]), {fill : "#E1E100"});
+								path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+2]), {fill : "#FFFFAA"});
+								path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+2]), {fill : "#FFFFAA"});																					
+							}
+						}
+						path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*1+A*2,-B*1-B*2+2]), {fill : "#E1E100"});
+						path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*1+A*2,-B*1-B*2+2]), {fill : "#FFFFAA"});
+						path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*1+A*2,-B*1-B*2+2]), {fill : "#FFFFAA"});																						
+					}
+					if(J==18){
+						for(var i = 0; i &lt;2 ; i++){				
+							path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[A*i,-B*i+1]), {fill : "#00BB00"});
+							path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[A*i,-B*i+1]), {fill : "#A6FFA6"});
+							path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[A*i,-B*i+1]), {fill : "#A6FFA6"});					 
+							for(var j = 0; j &lt;3; j++){						
+								path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+1]), {fill : "#00BB00"});
+								path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+1]), {fill : "#A6FFA6"});
+								path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+1]), {fill : "#A6FFA6"});																					
+							}
+						}
+						for(var i = 0; i &lt;1 ; i++){
+							for(var j = 0; j &lt;3; j++){						
+								path(MoveCoor([0,1],[0,0],[-A,B],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+2]), {fill : "#E1E100"});
+								path(MoveCoor([0,1],[0,0],[A,B],[A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+2]), {fill : "#FFFFAA"});
+								path(MoveCoor([0,1],[A,B+1],[0,2*B+1],[-A,B+1],[0,1],[-A*j+A*i,-B*j-B*i+2]), {fill : "#FFFFAA"});																					
+							}
+						}
+					}				
+			</div>
+		</div>
+
+		<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>J</var></span>立方公分
+		</div>
+
+    	<div class="hints">
+			<div>
+				<p>上層 <code><var>K</var></code> 個</p>
+				<p>中層 <code><var>L</var></code> 個</p>
+				<p>底層 <code><var>M</var></code> 個</p>
+			</div>
+			<p>形體體積為 <code><var>K</var>+<var>L</var>+<var>M</var> = \color{#FF00AF}{<var>J</var>}</code></p>
+    	</div>
+	</div>
+</div>
+</div>
+</body>
+</html>			
