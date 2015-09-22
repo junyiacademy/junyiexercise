@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html data-require="math graphie interactive graphie-helpers graphie-helpers-arithmetic graphie-geometry">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>三角形的高(含直角三角形)</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+		.moveable_li { margin:10px 0px 10px 0px;}
+		.empty_ele {margin:10px 0px 10px 0px; height:43px;line-height:43px;overflow:hidden;border:solid 2px #EEEEEE;background-color:#ADADAD}
+		.b1,.b2,.b3,.b4,.b1b,.b2b,.b3b,.b4b,.b{display:block;overflow:hidden;}
+		.b1,.b2,.b3,.b1b,.b2b,.b3b{height:1px;}
+		.b2,.b3,.b4,.b2b,.b3b,.b4b,.b{border-left:1px solid #999;border-right:1px solid #999;}
+		.b1,.b1b{margin:0 3px;background:#999;}
+		.b2,.b2b{margin:0 2px;border-width:1px;}
+		.b3,.b3b{margin:0 1px;}
+		.b4,.b4b{height:1px;margin:0 1px;}
+		.d1,{background:#F7F8F9;}
+		.k{height:35px;}
+    </style>
+	
+	<script type="text/javascript">
+		function movein(ele){
+			$('#'+ele).css("border","2px solid #FFA500");
+		}
+		function moveout(ele){
+			$('#'+ele).css("border-width","0px");
+		}
+		function Triangleruler_1(center) {
+		    var graph = KhanUtil.currentGraph;
+		    this.set = graph.raphael.set();
+
+		    this.cx = center[0];
+		    this.cy = center[1];
+		    var pro = this;
+
+		    var r = 8.05;
+		    var imgPos = graph.scalePoint([this.cx - r, this.cy + r - 0.225]);
+		    this.set.push(graph.mouselayer.image(Khan.urlBase + "images/ruler.png", imgPos[0], imgPos[1], 204, 208));
+
+		    this.centerPoint = graph.addMovablePoint({
+		        coord: center,
+		        visible: false
+		    });
+	 
+		    this.moveTo = function moveTo(x, y,t) {
+		        var graph = KhanUtil.currentGraph;
+		        var start = graph.scalePoint(pro.centerPoint.coord);
+		        var end = graph.scalePoint([x, y]);
+		        var time = KhanUtil.getDistance(start, end) * t;  // 2ms per pixel
+
+		        $({ x: start[0], y: start[1] }).animate({ x: end[0], y: end[1] }, {
+		            duration: time,
+		            step: function(now, fx) {
+		                var dx = 0;
+		                var dy = 0;
+		                if (fx.prop === "x") {
+		                    dx = now - graph.scalePoint(pro.centerPoint.coord)[0];
+		                } else if (fx.prop === "y") {
+		                    dy = now - graph.scalePoint(pro.centerPoint.coord)[1];
+		                }
+		                $.each(pro.set.items, function() {
+		                    this.translate(dx, dy);
+		                });
+		                pro.centerPoint.setCoord([pro.centerPoint.coord[0] + dx / graph.scale[0], pro.centerPoint.coord[1] - dy / graph.scale[1]]);
+		            }
+		        });
+		    };
+
+		    this.set.attr({ opacity: 0.5 });
+		    return this;
+		}
+	</script>
+</head>
+<body>
+	<div class="exercise">
+        <div class="problems">
+			<div id="case1">
+              <div class="vars">
+                <var id="num">randFromArray([["BC","AD","A"], ["AC","BE","B"], ["AB","CF","C"]])</var>     
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                       <p>圖片為一個三角形，請問 <code>\overline{<var>num[0]</var>}</code> 的高是哪一個？</p>
+                       <div class="graphie" id="tri_1">
+                            init({
+                                    range: [ [-4, 4], [-1,6] ],
+                                    scale: 40
+                                });
+                                line([-3,0],[3,0],{stroke:"black"});
+                                label([-3.2,0],"\\small{B}",{color:"black"});
+
+                                line([-3,0],[0,3*sqrt(3)],{stroke:"black"});
+                                label([3.2,0],"\\small{C}",{color:"black"});
+
+                                line([3,0],[0,3*sqrt(3)],{stroke:"black"});
+                                label([0,3*sqrt(3)+0.2],"\\small{A}",{color:"black"});
+
+                                line([-3,0],[1.5,1.5*sqrt(3)],{stroke:"green"});
+                                label([1.7,1.5*sqrt(3)],"\\small{E}",{color:"black"});
+
+                                line([3,0],[-1.5,1.5*sqrt(3)],{stroke:"blue"});
+                                label([-1.7,1.5*sqrt(3)],"\\small{F}",{color:"black"});
+
+                                line([0,0],[0,3*sqrt(3)],{stroke:"red"});
+                                label([0,-0.2],"\\small{D}",{color:"black"});
+                            	path([[0,0],[0.2,0],[0.2,0.2],[0,0.2],[0,0]], {fill: "red", stroke: "red", opacity: 0.5 });
+                            	path([[-1.5,1.5*sqrt(3)],[-1.65,1.35*sqrt(3)],[-1.5,1.3*sqrt(3)],[-1.35,1.45*sqrt(3)],[-1.5,1.5*sqrt(3)]], {fill: "blue", stroke: "blue", opacity: 0.5 });
+                                path([[1.5,1.5*sqrt(3)],[1.65,1.35*sqrt(3)],[1.5,1.3*sqrt(3)],[1.35,1.45*sqrt(3)],[1.5,1.5*sqrt(3)]], {fill: "green", stroke: "green", opacity: 0.5 });
+                         </div>				
+                    </div>
+                </div>
+               	<p class="solution" data-type="radio"><code>\overline{<var>num[1]</var>}</code></p>
+               	<ul class="choices" data-category="true">
+                   	<li><code>\overline{AD}</code></li>
+                   	<li><code>\overline{BE}</code></li>
+                   	<li><code>\overline{CF}</code></li>
+                </ul>
+
+                <div class="hints">                
+                  <p>三角形的「高」為頂點到頂點對邊的垂直距離。</p>
+                  <p><code>\overline{<var>num[0]</var>}</code> 是 <code><var>num[2]</var></code> 點的對邊。</p>
+                  <p>答案是垂直於 <code>\overline{<var>num[0]</var>}</code> 且通過 <code><var>num[2]</var></code> 點的「<code class="hint_pink">\overline{<var>num[1]</var>}</code>」。</p>
+                </div>
+			</div>
+
+			<div id="case2">
+              <div class="vars" data-ensure="sorts">
+              	<var id="num">shuffle([["以 \\overline{BC} 為底，把三角板直角的邊放在 \\overline{BC} 上。",1],["把三角板沿著 、\\overline{BC} (底)，直到直角的另一邊通過點 A。",2],["沿著三角板往點 A 畫直線到 \\overline{BC}(底)，則這條線就是 \\overline{BC} 的高。",3]])</var>
+				<var id="sort_lis">
+				(function() {
+					$("#1_a").val(num[0][1]);
+					$("#2_a").val(num[1][1]);
+					$("#3_a").val(num[2][1]);
+					$( ".sortable1" ).sortable({cursor: "move",helper: 'clone',placeholder: 'empty_ele',revert: true,opacity: 0.6});
+				})()</var>
+				<var id="sorts">
+				(function(){
+					var arr = [];
+					for(var i = 1;i&lt;4;i++){
+						arr[i-1] = $('#'+i+'_a').val();
+					}
+					if(arr[0]&lt;arr[1] &amp;&amp; arr[1]&lt;arr[2]){
+						return false;
+					}
+					return true;
+				})()</var>  
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                       <p>請排出如何以三角板畫出三角形的高之步驟順序？</p>
+                       <ul class="sortable1">
+							<div id="1_a" class="moveable_li" onmouseover="movein('1_li')" onmouseout="moveout('1_li')">
+								<b class="b1"></b><b class="b2 d1"></b><b class="b3 d1"></b><b class="b4 d1"></b>
+								<div class="b d1 k">
+									<div style="font-size:80%"><code><var>num[0][0]</var></code></div>
+								</div>
+								<b class="b4b d1"></b><b class="b3b d1"></b><b class="b2b d1"></b><b class="b1b"></b>
+							</div>
+							<div id="2_a" class="moveable_li" onmouseover="movein('2_li')" onmouseout="moveout('2_li')">
+								<b class="b1"></b><b class="b2 d1"></b><b class="b3 d1"></b><b class="b4 d1"></b>
+								<div class="b d1 k">
+									<div style="font-size:80%"><code><var>num[1][0]</var></code></div>
+								</div>
+								<b class="b4b d1"></b><b class="b3b d1"></b><b class="b2b d1"></b><b class="b1b"></b>
+							</div>
+							<div id="3_a" class="moveable_li" onmouseover="movein('3_li')" onmouseout="moveout('3_li')">
+								<b class="b1"></b><b class="b2 d1"></b><b class="b3 d1"></b><b class="b4 d1"></b>
+								<div class="b d1 k">
+									<div style="font-size:80%"><code><var>num[2][0]</var></code></div>
+								</div>
+								<b class="b4b d1"></b><b class="b3b d1"></b><b class="b2b d1"></b><b class="b1b"></b>
+							</div>
+						</ul>
+						<div class="graphie" id="tri_2">
+                            init({
+                                    range: [ [-4, 4], [-1,6] ],
+                                    scale: 40
+                                });
+                                label([-3.2,0],"\\small{B}",{color:"black"});
+                                label([3.2,0],"\\small{C}",{color:"black"});
+                                path([[-3,0],[3,0],[0,3*sqrt(2)]], {fill: "#FFA500", stroke: "#FFA500", opacity: 0.5 })
+                                label([0,3*sqrt(2)+0.2],"\\small{A}",{color:"black"});      
+                         </div>	
+					</div>
+                </div>
+               	<div class="solution" data-type="multiple">
+				 <div class="instruction">用鼠標拖動並獲得正確的順序</div>
+				<div class="sol" data-type="custom">
+					<div class="guess">$( ".sortable1" ).sortable( 'toArray'  )</div>
+				    <div class="validator-function">
+						var guessArr = new Array();
+						for(var j = 0;j&lt;guess.length;j++){
+							guessArr[j]=$('#'+guess[j]).val();
+						}
+						if(guessArr[0]==num[0][1]&amp;&amp; guessArr[1]==num[1][1]&amp;&amp; guessArr[2]==num[2][1]){
+							return "";
+						}
+						if(guessArr[0]&lt;guessArr[1] &amp;&amp; guessArr[1]&lt;guessArr[2]){
+							return true;
+						}
+						return false;
+					</div>
+				</div>
+			</div>
+
+                <div class="hints"> 
+                <div>               
+	                  <p>第一步驟為<span class="hint_pink">【以 <code>\overline{BC}</code> 為底，把三角板直角的邊放在 <code>\overline{BC}</code> 上。】</span></p>
+	                  <div class="graphie" data-update="tri_2">
+	                  		line([-3,0],[3,0],{stroke:"red"});              
+	                 </div>	
+                 </div>
+                 <div>
+                 	<p>第二步驟為<span class="hint_pink">【把三角板沿著 <code>\overline{BC}</code> (底)，直到直角的另一邊通過點 <code>A</code> 。】</span></p>
+                 	<div class="graphie" data-update="tri_2">
+	                        addMouseLayer();
+                            graph.triangleruler = new Triangleruler_1( [5, -2.68] );							
+	                  		graph.triangleruler.moveTo( 8.01, -2.68 ,10);             	                        
+	                 </div>	
+                 </div>
+                 <div>
+                  	<p>第三步驟為<span class="hint_pink">【沿著三角板往點 <code>A</code> 畫直線到 <code>\overline{BC}</code> (底)，則這條線就是 <code>\overline{BC}</code> 的高。】</span></p>
+                  	<div class="graphie" data-update="tri_2">
+                  			 line([0,0],[0,3*sqrt(2)],{stroke:"blue", "stroke-dasharray": "-" });
+	                        addMouseLayer();							
+	                  		graph.triangleruler.moveTo( 13.01, -2.68 ,0.1);            	                        
+	                 </div>	
+                 </div>
+                </div>
+			</div>
+
+			<div id="case3">
+              <div class="vars">
+                <var id="num">randFromArray([["斜邊","股","？","股",2], ["斜邊","？","股","股",1], ["？","股","股","斜邊",0]])</var>              
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                       <p>請回答直角三角形的邊的名稱 ：</p>
+                       	<div class="graphie" id="tri3">
+                            init({
+                                    range: [ [-2, 4], [-1,4] ],
+                                    scale: 40
+                                });
+                            line([0,0],[0,3],{stroke:"blue"});
+                            line([0,0],[3,0],{stroke:"red"});
+                            line([0,3],[3,0],{stroke:"orange"});
+                            graph.label_1=label([1.9,1.6],"\\small{"+num[0]+"}",{color:"black"});
+                            graph.label_2=label([-0.25,1.25],"\\small{"+num[1]+"}",{color:"black"}); 
+                            graph.label_3=label([1.25,-0.25],"\\small{"+num[2]+"}",{color:"black"});
+                            path([[0,0],[0.2,0],[0.2,0.2],[0,0.2],[0,0]], {fill: "#FFA500", stroke: "green", opacity: 0.5 });
+                         </div>		
+                    </div>
+                </div>
+               	<p class="solution" data-type="radio"><code><var>num[3]</var></code></p>
+               	<ul class="choices" data-category="true">
+                   	<li><code>斜邊</code></li>
+                   	<li><code>股</code></li>
+                </ul>
+
+                <div class="hints">                
+                  <p>直角三角形中，直角的對邊稱為「斜邊」。<br/>另外兩條邊稱為「股」。</p>
+                  <div>
+                  	<div class="graphie" data-update="tri3">
+                  		if(num[4]==0){graph.label_1.hide();label([1.9,1.6],"\\small{"+num[3]+"}",{color:"#FF00AF"}); }
+                  		if(num[4]==1){ graph.label_2.hide();label([-0.25,1.25],"\\small{"+num[3]+"}",{color:"#FF00AF"}); }
+                  		if(num[4]==2){graph.label_3.hide();label([1.25,-0.25],"\\small{"+num[3]+"}",{color:"#FF00AF"}); }                   
+                    </div>	
+                  		<p>答案為「<span class="hint_pink"><var>num[3]</var></span>」。</p>
+                  </div>
+                </div>
+			</div>
+
+			<div id="case4">
+              <div class="vars">            
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                       <p>直角三角形的兩股可當成三角形的底和高來計算面積。</p>	
+                    </div>
+                </div>
+               	<p class="solution" data-type="radio"><code>是</code></p>
+               	<ul class="choices" data-category="true">
+                   	<li><code>是</code></li>
+                   	<li><code>否</code></li>
+                </ul>
+
+                <div class="hints"> 
+                	<div>               
+		                  <p>三角形的高是由某頂點出發，到達頂點對邊的垂直距離。</p>
+		                  <p>由 <code>A</code> 點出發，到達 <code>\overline{BC}</code> 的垂直距離是紅線，同時也是股。</p>
+		                  <div class="graphie" id="tri4">
+		                    init({
+		                            range: [ [-2, 4], [-1,4] ],
+		                            scale: 40
+		                        });
+		                    line([0,0],[0,3],{stroke:"red"});
+		                    line([0,0],[3,0],{stroke:"black"});
+		                    line([0,3],[3,0],{stroke:"black"});
+		                    graph.circle=circle([0,3], 0.1, { stroke: "blue" ,fill:"blue"}); 
+		                    label([0,3.3],"\\small{A}",{color:"black"});
+		                    label([-0.3,0],"\\small{B}",{color:"black"}); 
+		                    label([3.3,0],"\\small{C}",{color:"black"});
+		                    path([[0,0],[0.2,0],[0.2,0.2],[0,0.2],[0,0]], {fill: "#FFA500", stroke: "green", opacity: 0.5 });
+		                 </div>
+	                </div>
+                  <div>
+                  	<p>由 <code>C</code> 點出發，到達 <code>\overline{AB}</code> 的垂直距離是紅線，同時也是股。</p>
+                  	<div class="graphie" data-update="tri4">
+                  		    line([0,0],[0,3],{stroke:"black"});
+		                    line([0,0],[3,0],{stroke:"red"}); 
+		                    graph.circle.hide(); 
+		                    graph.circle_2=circle([3,0], 0.1, { stroke: "blue" ,fill:"blue"});            
+                    </div>	                 		
+                  </div>
+                   <div>
+	                  <p>答案為「<span class="hint_pink">是</span>」。</p>
+	                  <div class="graphie" data-update="tri4">
+	                  		    line([0,0],[0,3],{stroke:"blue"});
+			                    line([0,0],[3,0],{stroke:"red"}); 
+			                    graph.circle_2.hide();            
+	                    </div>	
+	                </div>
+                </div>
+			</div>
+
+			<div id="case5">
+              <div class="vars"> 
+              	<var id="num">randFromArray([["甲",1], ["甲",2], ["丙",3],["乙",4]])</var>
+              	<var id="linecolor">shuffle(["#6495ED","red","#28AE7B","purple"])</var>          
+                </div>
+
+                <div class="question">
+                    <div class="question">
+                       <p>請問下圖中，哪一條線是三角形的高？</p>
+                       <div class="graphie" id="tri5">
+	                  		   init({
+		                            range: [ [-4, 4], [-1,4] ],
+		                            scale: 50
+		                        });
+		                    if(num[1]==1||num[1]==2){
+		                    	line([0,0],[0,3],{stroke:linecolor[0]});
+		                    	path([[0,3],[3,0],[1.5,0],[0,3]], {fill: "#FFA500", stroke: "black", opacity: 0.5 });
+		                    	line([3,0],[0,3],{stroke:"black"});
+		                    	graph.line_1=line([0,3],[1.5,0],{stroke:linecolor[1]});		                    			                    	
+		                    	label([0.2,0.2],"\\small{甲}",{color:linecolor[0]});
+		                    	graph.label_1=label([1.7,0.2],"\\small{乙}",{color:linecolor[1]});
+		                    	if(num[1]==1){
+		                    		line([0,3],[2.25,0],{stroke: "black"});
+		                    		graph.line_2=line([0,3],[2.25,0],{stroke:linecolor[2]});
+		                    		graph.label_2=label([2.45,0.2],"\\small{丙}",{color:linecolor[2]});
+		                    		line([0,0],[1.5,0], { stroke: "black", "stroke-dasharray": "-" });
+		                    	}
+		                    	if(num[1]==2){
+		                    		graph.line_2=line([0,3],[3,0],{stroke:linecolor[2]});
+		                    		graph.label_2=label([2.9,0.5],"\\small{丙}",{color:linecolor[2]});
+		                    		line([0,0],[3,0],{stroke:"black"});
+		                    	}
+		                    	label([0,3.3],"\\small{A}",{color:"black"});
+		                    	label([-0.3,0],"\\small{B}",{color:"black"}); 
+		                    	label([3.3,0],"\\small{C}",{color:"black"});                	
+		                    } 
+		                    if(num[1]==3){
+		                    	line([0,0],[0,3],{stroke:linecolor[0]});
+		                    	path([[0,3],[-3,0],[-1.5,0],[0,3]], {fill: "#FFA500", stroke: "black", opacity: 0.5 });
+		                    	line([-3,0],[0,3],{stroke:"black"});
+		                    	graph.line_1=line([0,3],[-1.5,0],{stroke:linecolor[1]});		                    			                    	
+		                    	label([-0.2,0.2],"\\small{丙}",{color:linecolor[0]});
+		                    	graph.label_1=label([-1.7,0.2],"\\small{乙}",{color:linecolor[1]});
+
+		                    		line([0,3],[-2.25,0],{stroke: "black"});
+		                    		graph.line_2=line([0,3],[-2.25,0],{stroke:linecolor[2]});
+		                    		graph.label_2=label([-2.45,0.2],"\\small{甲}",{color:linecolor[2]});
+		                    		line([0,0],[-1.5,0], { stroke: "black", "stroke-dasharray": "-" });
+
+		                    	label([0,3.3],"\\small{A}",{color:"black"});
+		                    	label([0.3,0],"\\small{B}",{color:"black"}); 
+		                    	label([-3.3,0],"\\small{C}",{color:"black"});                	
+		                    } 
+		                    if(num[1]==4){
+		                    	path([[0,0],[-2,2],[0,1.4],[0,0]], {fill: "#FFA500", stroke: "black", opacity: 0.5 });
+		                    	line([0,1.4],[0,3], { stroke: "black", "stroke-dasharray": "-" });
+		                    	line([-2,2],[0,3],{stroke: "black", "stroke-dasharray": "-" });
+
+		                    	graph.line_1=line([-2,2],[0,3],{stroke:linecolor[0], "stroke-dasharray": "-" });
+		                    	graph.label_1=label([-0.2,3.2],"\\small{甲}",{color:linecolor[0]});
+
+		                    	line([-2,2],[0,2],{stroke:linecolor[1], "stroke-dasharray": "-" });
+		                    	label([-0.2,2.2],"\\small{乙}",{color:linecolor[1]});
+
+		                    	graph.line_2=line([0,0],[-2,2],{stroke:linecolor[2]});
+		                    	graph.label_2=label([-0.2,0.4],"\\small{丙}",{color:linecolor[2]});
+
+		                    	label([0.3,3.3],"\\small{A}",{color:"black"});
+		                    	label([0.3,0],"\\small{B}",{color:"black"}); 
+		                    	label([-2.2,2],"\\small{C}",{color:"black"});              	
+		                    }        
+	                    </div>	
+                    </div>
+                </div>
+               	<p class="solution" data-type="radio"><code><var>num[0]</var></code></p>
+               	<ul class="choices" data-category="true">
+                   	<li><code>甲</code></li>
+                   	<li><code>乙</code></li>
+                   	<li><code>丙</code></li>
+                </ul>
+
+                <div class="hints"> 
+                	<p>三角形的高是由某頂點出發，到達頂點對邊的垂直距離。</p>
+                	<p>請找與頂點垂直的線段。</p>
+                   <div>
+	                  <p>答案為「<span class="hint_pink"><var>num[0]</var></span>」。</p>
+	                  <div class="graphie" data-update="tri5">
+                  			 graph.line_1.hide();
+                  			 graph.line_2.hide();
+                  			 graph.label_1.hide();
+                  		     graph.label_2.hide();	                  		            
+	                    </div>	
+	                </div>
+                </div>
+			</div>					
+        </div>
+    </div>
+</body>
+</html>

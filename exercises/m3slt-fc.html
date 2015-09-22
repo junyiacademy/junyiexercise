@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>圓柱的表面積</title>
+    <script src="../khan-exercise.js"></script>
+    <script type="text/javascript">
+    	function getCoordFromEllipse( radians, longAxis, shortAxis ){
+    		var x = longAxis * Math.cos( radians / 180 * Math.PI );
+    		var y = shortAxis * Math.sin( radians / 180 * Math.PI );
+    		return [ x, y ];
+    	}
+    </script>
+</head>
+<body>
+	<div class="exercise">
+	    <div class="problems">
+			<div id="case1">
+				<div class="vars">
+		        	<var id="_RADII"> randRange( 2, 4 ) </var>
+		        	<var id="_HEIGHT"> randRange( 5, 9 ) </var>
+		        	<var id="_LABEL_Y"> getCoordFromEllipse( 59, _RADII, 0.4 * _RADII / 1.5 ) </var>
+		        	<var id="_PERIMETER"> 2 * Math.PI * _RADII</var>
+		        	<var id="_SURFACE"> 2 * _RADII * _HEIGHT + 2 * _RADII * _RADII </var>
+		        	<var id="_ABOVE, _BELOW"> randRangeUnique( - _PERIMETER / 2 + 1 + _RADII, _PERIMETER / 2 - 1 - _RADII, 2 ) </var>
+				</div>
+				<div class="question">
+					<p>底面半徑為 <code class="hint_green"><var>_RADII</var></code> 、高為 <code class="hint_blue"><var>_HEIGHT</var></code> 的圓柱體，它的表面積是多少？</p>
+				</div>
+				<div class="problem">
+					<div class="graphie" id="cylinder-surface">
+	                    init( { range: [ [ - 5, 5 ], [ 3 - _HEIGHT - 2, 5 ] ], scale: 20 } );
+
+	                    arc( [ 0, 3 ], [ _RADII, 0.4 * _RADII / 1.5 ], 0, 48 );
+                    	arc( [ 0, 3 ], [ _RADII, 0.4 * _RADII / 1.5 ], 70, 360 );
+
+                    	arc( [ 0, 3 - _HEIGHT ], [ _RADII, 0.4 * _RADII / 1.5 ], 0, 180, {
+	                        strokeDasharray: "- "
+	                    });
+	                    arc( [ 0, 3 - _HEIGHT ], [ _RADII, 0.4 * _RADII / 1.5 ], 180, 360 );
+
+	                    line( [ -_RADII, 3 ], [ -_RADII, 3 - _HEIGHT ] );
+	                    line( [ _RADII, 3 ], [ _RADII, 3 - _HEIGHT ], { stroke : KhanUtil.BLUE } );
+	                    line( [ _RADII, 3 ], [ 0, 3 ], { stroke : KhanUtil.GREEN } );
+
+	                    label( [ _LABEL_Y[ 0 ], _LABEL_Y[ 1 ] + 3 ], _RADII, { color : KhanUtil.GREEN } );
+	                    label( [ _RADII, 3 - _HEIGHT / 2 ], _HEIGHT, 'right', { color : KhanUtil.BLUE } );
+	                </div>
+	                <p><input type="submit" value="打開它！" onclick="$('#cylinder-surface-plane').show()" /></p>
+	                <div class="graphie" id="cylinder-surface-plane" style="display:none">
+	                 	init( { range: [ [ - 13, 13 ], [ 3 - _HEIGHT - _RADII * 2 - 2, 3 + 2 * _RADII + 2 ] ], scale: 20 } );
+	                 	path( [ [ - _PERIMETER / 2, 3 ], [ _PERIMETER / 2, 3 ], [ _PERIMETER / 2, 3 - _HEIGHT ], [ - _PERIMETER / 2, 3 - _HEIGHT ], [ - _PERIMETER / 2, 3 ] ] );
+	                 	circle( [ _ABOVE, 3 + _RADII ], _RADII );
+	                 	circle( [ _BELOW, 3 - _HEIGHT - _RADII ], _RADII );
+	                 	line( [ _ABOVE, 3 + _RADII ], [ _ABOVE, 3 ], { stroke : KhanUtil.GREEN } );
+	                 	label( [ _ABOVE, 3 + _RADII / 2 ], _RADII, 'right', { color : KhanUtil.GREEN } );
+	                 	line( [ _PERIMETER / 2, 3 ], [ _PERIMETER / 2, 3 - _HEIGHT ], { stroke : KhanUtil.BLUE } );
+	                 	label( [ _PERIMETER / 2, 3 - _HEIGHT / 2 ], _HEIGHT, 'left', { color : KhanUtil.BLUE } );
+	                </div>
+				</div>
+	            <div class="solution" data-type="multiple">
+					<span class="sol" data-forms="pi"><var>_SURFACE * Math.PI</var></span>
+	            </div>
+				<div class="hints">
+					<div>
+						<p>上下兩個底面的面積就是圓形的面積：</p>
+						<p><code>\qquad \pi r^2 = \pi \cdot <var>_RADII</var>^2 = <var>_RADII * _RADII</var> \pi</code></p>
+					</div>
+					<div>
+						<p>側面的面積就跟高為 <code><var>_HEIGHT</var></code> 、寬跟底面圓周一樣長的長方形面積一樣。</p>
+						<p>圓周長是 <code>2 \pi r = 2 \pi \cdot <var>_RADII</var> = <var>2 * _RADII</var> \pi</code> 。</p>
+						<p>所以，它的側面面積是 <code><var>2 * _RADII</var> \pi \cdot <var>_HEIGHT</var> = <var>2 * _RADII * _HEIGHT</var> \pi</code> 。</p>
+					</div>
+					<p>這個圓柱體的表面積是 <code><var>2 * _RADII * _HEIGHT</var> \pi + <var>_RADII * _RADII</var> \pi + <var>_RADII * _RADII</var> \pi = \color{#FF00AF}{<var>_SURFACE</var> \pi}</code> 。</p>
+	            </div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>

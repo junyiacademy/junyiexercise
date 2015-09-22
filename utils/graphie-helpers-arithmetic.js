@@ -68,6 +68,9 @@ function Adder(a, b, digitsA, digitsB) {
                 "\\color{#FFA500}{" + carry + "}", "below"));
             carryStr = "\\color{#FFA500}{" + carry + "}";
         }
+        if(sum > 10){
+            highlights.push(graph.label([pos.sideX, pos.sideY + 0.5], "加起來超過 10 了，我們需要進位到左邊的位值！", "above right"));
+        }
 
         this.showSideLabel("\\Large{"
             + prevCarryStr
@@ -211,6 +214,10 @@ function Subtractor(a, b, digitsA, digitsB, decimalPlaces) {
             highlights[index].push(graph.label([pos.max - index, pos.second],
                 "\\LARGE{\\color{#6495ED}{" + workingDigitsB[index] + "}}"));
             subStr = " - \\color{#6495ED}{" + subtrahend + "}";
+        }
+
+        if(workingDigitsA[index] > 9) {
+            highlights[index].push(graph.label([pos.sideX, pos.sideY + 0.5], "相減不夠減，因此我們需要跟左邊的位值借位！", "above right"));
         }
 
         var diff = workingDigitsA[index] - subtrahend;

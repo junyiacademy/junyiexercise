@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>運用數線比大小 </title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+		<div class="problems">
+			<div id="case1">
+				<div class="vars">
+					<var id="A, B">randFromArray([["左","小"],["右","大"]])</var>
+				</div>
+				
+				<div class="question">
+	                <p>在數線上，越<var>A</var>邊的數字將越<var>B</var>。</p>
+				</div>
+				
+				<div class="problem">
+					<p onclick="$('#c_1').prop('checked','checked')"><input type="radio" name="radios" id="c_1" value="0" /><code>是</code></p>
+					<p onclick="$('#c_2').prop('checked','checked')"><input type="radio" name="radios" id="c_2" value="1" /><code>否</code></p>
+	            </div>
+				
+				<div class="solution" data-type="multiple">
+				    <div class="sol" data-type="custom">
+							<div class="guess">$('input:radio[name="radios"]:checked').val()</div>
+		                    <div class="validator-function">
+		                    	if(guess == null){
+		                    		return "";
+		                    	}
+		                    	return guess == 0;
+		                    </div>
+	                    
+						<p>請在左邊選擇正確答案</p>
+					</div>
+	            </div>
+
+	            <div class="hints">
+	            	<div>
+	            		<p>在數線上，越左邊的數字越小、越右邊的數字越大。</p>
+	            		<div class="graphie" id="number-line-case1">
+							init( { range: [ [ -6, 6 ], [ -2, 2 ] ], scale: 40 } );
+							line( [ -5, 0 ], [ 5, 0 ], { arrows : "&gt;" });
+							for( var i = -5; i &lt; 5; i += 2 ) {
+								line( [ i, 0.3 ], [ i, -0.3 ] );
+								label( [ i, -0.6 ], ( i + 5 ) / 2 );
+							}
+						</div>
+	            	</div>
+					<p>所以答案為「<span class="hint_pink">是</span>」。</p>
+	            </div>
+			</div>
+
+			<div id="case2">
+				<div class="vars">
+					<var id="A, B"> randRangeUnique( 1, 10, 2 ) </var>
+					<var id="_LEFT, _RIGHT"> [ ( A + 3 ) * 200, ( B + 3 ) * 200 ] </var>
+					<var id="S">_LEFT &lt; _RIGHT ? 0 : 1</var>
+				</div>
+				
+				<div class="question">
+	                <div class="graphie" id="number-line-200">
+	                	init( { range: [ [ -1, 11 ], [ -2, 2 ] ], scale: 42 } );
+	                	line( [ 0, 0 ], [ 10, 0 ], { arrows : "&gt;" } );
+	                	for( var i = 1; i &lt; 10; i++ ) {
+	                		circle( [ i, 0 ], 0.075, { fill : 'black' } );
+	                		label( [ i, 0 ], '\\small{' + ( i + 3 ) * 200 + "}", 'below' );
+	                	}
+	                </div>
+
+	                <p>判斷大小關係：</p>
+	                <p onclick="$('#c_1').prop('checked','checked')">
+	                	<input type="radio" name="radios_1" id="c_1" value="0" /><code><var>_LEFT</var> &lt; <var>_RIGHT</var></code>
+	                </p>
+					<p onclick="$('#c_2').prop('checked','checked')">
+	                	<input type="radio" name="radios_1" id="c_2" value="1" /><code><var>_LEFT</var> &gt; <var>_RIGHT</var></code>
+	                </p>
+
+					<p>判斷位置關係：</p>
+	                <p onclick="$('#c_3').prop('checked','checked')">
+	                	<input type="radio" name="radios_2" id="c_3" value="0" /><code><var>_LEFT</var></code> 在 <code><var>_RIGHT</var></code> 的左邊
+	                </p>
+					<p onclick="$('#c_4').prop('checked','checked')">
+	                	<input type="radio" name="radios_2" id="c_4" value="1" /><code><var>_LEFT</var></code> 在 <code><var>_RIGHT</var></code> 的右邊
+	                </p>
+				</div>
+				
+				<div class="solution" data-type="multiple">
+				    <div class="sol" data-type="custom">
+							<div class="guess">[ $('input:radio[name="radios_1"]:checked').val(), $('input:radio[name="radios_2"]:checked').val() ]</div>
+		                    <div class="validator-function">
+		                    	if( guess[ 0 ] == null || guess[ 1 ] == null ){
+		                    		return "";
+		                    	}
+		                    	return guess[ 0 ] == S &amp;&amp; guess[ 1 ] == S;
+		                    </div>
+	                    
+						<p>請在左邊選擇正確答案</p>
+					</div>
+	            </div>
+
+	            <div class="hints">
+	            	<p>在數線上，越左邊的數字越小。</p>
+	            	<div>
+	            		<p>從數線上看，<code><var>_LEFT</var></code> 在 <code><var>_RIGHT</var></code> 的<span class="hint_pink"><var>S == 0 ? '左' : '右'</var></span>邊，</p>
+	            		<p>因此 <code><var>_LEFT</var> \color{#FF00AF}{<var>S == 0 ? '&lt;' : '&gt;'</var>} <var>_RIGHT</var></code> 。</p>
+		            	<div class="graphie" data-update="number-line-200">
+		            		ellipse( [ A, -0.5 ], [ 0.5, 0.25 ], { stroke: KhanUtil.RED });
+		            		ellipse( [ B, -0.5 ], [ 0.5, 0.25 ], { stroke: KhanUtil.RED });
+		            	</div>
+		            </div>
+	            </div>
+			</div>
+
+			<div id="case3">
+				<div class="vars">
+					<var id="A, B"> randRangeUnique( 1, 10, 2 ) </var>
+					<var id="_LEFT, _RIGHT"> [ ( A + 0 ) * 100, ( B + 0 ) * 100 ] </var>
+					<var id="S">_LEFT &lt; _RIGHT ? 0 : 1</var>
+				</div>
+				
+				<div class="question">
+	                <div class="graphie" id="number-line-200">
+	                	init( { range: [ [ -1, 11 ], [ -2, 2 ] ], scale: 42 } );
+	                	line( [ 0, 0 ], [ 10, 0 ], { arrows : "&gt;" } );
+	                	for( var i = 1; i &lt; 10; i++ ) {
+	                		circle( [ i, 0 ], 0.075, { fill : 'black' } );
+	                		label( [ i, 0 ], '\\small{' + ( i + 0 ) * 100 + "}", 'below' );
+	                	}
+	                </div>
+
+	                <p>判斷大小關係：</p>
+	                <p onclick="$('#c_1').prop('checked','checked')">
+	                	<input type="radio" name="radios_1" id="c_1" value="0" /><code><var>_LEFT</var> &lt; <var>_RIGHT</var></code>
+	                </p>
+					<p onclick="$('#c_2').prop('checked','checked')">
+	                	<input type="radio" name="radios_1" id="c_2" value="1" /><code><var>_LEFT</var> &gt; <var>_RIGHT</var></code>
+	                </p>
+
+					<p>判斷位置關係：</p>
+	                <p onclick="$('#c_3').prop('checked','checked')">
+	                	<input type="radio" name="radios_2" id="c_3" value="0" /><code><var>_LEFT</var></code> 在 <code><var>_RIGHT</var></code> 的左邊
+	                </p>
+					<p onclick="$('#c_4').prop('checked','checked')">
+	                	<input type="radio" name="radios_2" id="c_4" value="1" /><code><var>_LEFT</var></code> 在 <code><var>_RIGHT</var></code> 的右邊
+	                </p>
+				</div>
+				
+				<div class="solution" data-type="multiple">
+				    <div class="sol" data-type="custom">
+							<div class="guess">[ $('input:radio[name="radios_1"]:checked').val(), $('input:radio[name="radios_2"]:checked').val() ]</div>
+		                    <div class="validator-function">
+		                    	if( guess[ 0 ] == null || guess[ 1 ] == null ){
+		                    		return "";
+		                    	}
+		                    	return guess[ 0 ] == S &amp;&amp; guess[ 1 ] == S;
+		                    </div>
+	                    
+						<p>請在左邊選擇正確答案</p>
+					</div>
+	            </div>
+
+	            <div class="hints">
+	            	<p>在數線上，越左邊的數字越小。</p>
+	            	<div>
+	            		<p>從數線上看，<code><var>_LEFT</var></code> 在 <code><var>_RIGHT</var></code> 的<span class="hint_pink"><var>S == 0 ? '左' : '右'</var></span>邊，</p>
+	            		<p>因此 <code><var>_LEFT</var> \color{#FF00AF}{<var>S == 0 ? '&lt;' : '&gt;'</var>} <var>_RIGHT</var></code> 。</p>
+		            	<div class="graphie" data-update="number-line-200">
+		            		ellipse( [ A, -0.5 ], [ 0.5, 0.25 ], { stroke: KhanUtil.RED });
+		            		ellipse( [ B, -0.5 ], [ 0.5, 0.25 ], { stroke: KhanUtil.RED });
+		            	</div>
+		            </div>
+	            </div>
+			</div>
+
+			<div id="case4">
+				<div class="vars">
+					<var id="A, B"> randRangeUnique( 1, 10, 2 ) </var>
+					<var id="_LEFT, _RIGHT"> [ ( A + 0 ) * 100 + 50, ( B + 0 ) * 100 + 50 ] </var>
+					<var id="S">_LEFT &lt; _RIGHT ? 0 : 1</var>
+				</div>
+				
+				<div class="question">
+	                <div class="graphie" id="number-line-200">
+	                	init( { range: [ [ -1, 11 ], [ -2, 2 ] ], scale: 42 } );
+	                	line( [ 0, 0 ], [ 10, 0 ], { arrows : "&gt;" } );
+	                	for( var i = 1; i &lt; 10; i++ ) {
+	                		circle( [ i, 0 ], 0.075, { fill : 'black' } );
+	                		label( [ i, 0 ], '\\small{' + ( i * 100 + 50 ) + "}", 'below' );
+	                	}
+	                </div>
+
+	                <p>判斷大小關係：</p>
+	                <p onclick="$('#c_1').prop('checked','checked')">
+	                	<input type="radio" name="radios_1" id="c_1" value="0" /><code><var>_LEFT</var> &lt; <var>_RIGHT</var></code>
+	                </p>
+					<p onclick="$('#c_2').prop('checked','checked')">
+	                	<input type="radio" name="radios_1" id="c_2" value="1" /><code><var>_LEFT</var> &gt; <var>_RIGHT</var></code>
+	                </p>
+
+					<p>判斷位置關係：</p>
+	                <p onclick="$('#c_3').prop('checked','checked')">
+	                	<input type="radio" name="radios_2" id="c_3" value="0" /><code><var>_LEFT</var></code> 在 <code><var>_RIGHT</var></code> 的左邊
+	                </p>
+					<p onclick="$('#c_4').prop('checked','checked')">
+	                	<input type="radio" name="radios_2" id="c_4" value="1" /><code><var>_LEFT</var></code> 在 <code><var>_RIGHT</var></code> 的右邊
+	                </p>
+				</div>
+				
+				<div class="solution" data-type="multiple">
+				    <div class="sol" data-type="custom">
+							<div class="guess">[ $('input:radio[name="radios_1"]:checked').val(), $('input:radio[name="radios_2"]:checked').val() ]</div>
+		                    <div class="validator-function">
+		                    	if( guess[ 0 ] == null || guess[ 1 ] == null ){
+		                    		return "";
+		                    	}
+		                    	return guess[ 0 ] == S &amp;&amp; guess[ 1 ] == S;
+		                    </div>
+	                    
+						<p>請在左邊選擇正確答案</p>
+					</div>
+	            </div>
+
+	            <div class="hints">
+	            	<p>在數線上，越左邊的數字越小。</p>
+	            	<div>
+	            		<p>從數線上看，<code><var>_LEFT</var></code> 在 <code><var>_RIGHT</var></code> 的<span class="hint_pink"><var>S == 0 ? '左' : '右'</var></span>邊，</p>
+	            		<p>因此 <code><var>_LEFT</var> \color{#FF00AF}{<var>S == 0 ? '&lt;' : '&gt;'</var>} <var>_RIGHT</var></code> 。</p>
+		            	<div class="graphie" data-update="number-line-200">
+		            		ellipse( [ A, -0.5 ], [ 0.5, 0.25 ], { stroke: KhanUtil.RED });
+		            		ellipse( [ B, -0.5 ], [ 0.5, 0.25 ], { stroke: KhanUtil.RED });
+		            	</div>
+		            </div>
+	            </div>
+			</div>
+
+			<div id="case5">
+				<div class="vars">
+					<var id="A, B"> randRangeUnique( 1, 10, 2 ) </var>
+					<var id="_LEFT, _RIGHT"> [ A * 25 + 100, B * 25 + 100 ] </var>
+					<var id="S">_LEFT &lt; _RIGHT ? 0 : 1</var>
+				</div>
+				
+				<div class="question">
+	                <div class="graphie" id="number-line-200">
+	                	init( { range: [ [ -1, 11 ], [ -2, 2 ] ], scale: 42 } );
+	                	line( [ 0, 0 ], [ 10, 0 ], { arrows : "&gt;" } );
+	                	for( var i = 1; i &lt; 10; i++ ) {
+	                		circle( [ i, 0 ], 0.075, { fill : 'black' } );
+	                		label( [ i, 0 ], '\\small{' + ( i * 25 + 100 ) + "}", 'below' );
+	                	}
+	                </div>
+
+	                <p>判斷大小關係：</p>
+	                <p onclick="$('#c_1').prop('checked','checked')">
+	                	<input type="radio" name="radios_1" id="c_1" value="0" /><code><var>_LEFT</var> &lt; <var>_RIGHT</var></code>
+	                </p>
+					<p onclick="$('#c_2').prop('checked','checked')">
+	                	<input type="radio" name="radios_1" id="c_2" value="1" /><code><var>_LEFT</var> &gt; <var>_RIGHT</var></code>
+	                </p>
+
+					<p>判斷位置關係：</p>
+	                <p onclick="$('#c_3').prop('checked','checked')">
+	                	<input type="radio" name="radios_2" id="c_3" value="0" /><code><var>_LEFT</var></code> 在 <code><var>_RIGHT</var></code> 的左邊
+	                </p>
+					<p onclick="$('#c_4').prop('checked','checked')">
+	                	<input type="radio" name="radios_2" id="c_4" value="1" /><code><var>_LEFT</var></code> 在 <code><var>_RIGHT</var></code> 的右邊
+	                </p>
+				</div>
+				
+				<div class="solution" data-type="multiple">
+				    <div class="sol" data-type="custom">
+							<div class="guess">[ $('input:radio[name="radios_1"]:checked').val(), $('input:radio[name="radios_2"]:checked').val() ]</div>
+		                    <div class="validator-function">
+		                    	if( guess[ 0 ] == null || guess[ 1 ] == null ){
+		                    		return "";
+		                    	}
+		                    	return guess[ 0 ] == S &amp;&amp; guess[ 1 ] == S;
+		                    </div>
+	                    
+						<p>請在左邊選擇正確答案</p>
+					</div>
+	            </div>
+
+	            <div class="hints">
+	            	<p>在數線上，越左邊的數字越小。</p>
+	            	<div>
+	            		<p>從數線上看，<code><var>_LEFT</var></code> 在 <code><var>_RIGHT</var></code> 的<span class="hint_pink"><var>S == 0 ? '左' : '右'</var></span>邊，</p>
+	            		<p>因此 <code><var>_LEFT</var> \color{#FF00AF}{<var>S == 0 ? '&lt;' : '&gt;'</var>} <var>_RIGHT</var></code> 。</p>
+		            	<div class="graphie" data-update="number-line-200">
+		            		ellipse( [ A, -0.5 ], [ 0.5, 0.25 ], { stroke: KhanUtil.RED });
+		            		ellipse( [ B, -0.5 ], [ 0.5, 0.25 ], { stroke: KhanUtil.RED });
+		            	</div>
+		            </div>
+	            </div>
+			</div>
+
+			<div id="case6">
+				<div class="vars">
+					<var id="A, B"> randRangeUnique( 1, 10, 2 ) </var>
+					<var id="_LEFT, _RIGHT"> [ A * 10 + 310, B * 10 + 310 ] </var>
+					<var id="S">_LEFT &lt; _RIGHT ? 0 : 1</var>
+				</div>
+				
+				<div class="question">
+	                <div class="graphie" id="number-line-200">
+	                	init( { range: [ [ -1, 11 ], [ -2, 2 ] ], scale: 42 } );
+	                	line( [ 0, 0 ], [ 10, 0 ], { arrows : "&gt;" } );
+	                	for( var i = 1; i &lt; 10; i++ ) {
+	                		circle( [ i, 0 ], 0.075, { fill : 'black' } );
+	                		label( [ i, 0 ], '\\small{' + ( i * 10 + 310 ) + "}", 'below' );
+	                	}
+	                </div>
+
+	                <p>判斷大小關係：</p>
+	                <p onclick="$('#c_1').prop('checked','checked')">
+	                	<input type="radio" name="radios_1" id="c_1" value="0" /><code><var>_LEFT</var> &lt; <var>_RIGHT</var></code>
+	                </p>
+					<p onclick="$('#c_2').prop('checked','checked')">
+	                	<input type="radio" name="radios_1" id="c_2" value="1" /><code><var>_LEFT</var> &gt; <var>_RIGHT</var></code>
+	                </p>
+
+					<p>判斷位置關係：</p>
+	                <p onclick="$('#c_3').prop('checked','checked')">
+	                	<input type="radio" name="radios_2" id="c_3" value="0" /><code><var>_LEFT</var></code> 在 <code><var>_RIGHT</var></code> 的左邊
+	                </p>
+					<p onclick="$('#c_4').prop('checked','checked')">
+	                	<input type="radio" name="radios_2" id="c_4" value="1" /><code><var>_LEFT</var></code> 在 <code><var>_RIGHT</var></code> 的右邊
+	                </p>
+				</div>
+				
+				<div class="solution" data-type="multiple">
+				    <div class="sol" data-type="custom">
+							<div class="guess">[ $('input:radio[name="radios_1"]:checked').val(), $('input:radio[name="radios_2"]:checked').val() ]</div>
+		                    <div class="validator-function">
+		                    	if( guess[ 0 ] == null || guess[ 1 ] == null ){
+		                    		return "";
+		                    	}
+		                    	return guess[ 0 ] == S &amp;&amp; guess[ 1 ] == S;
+		                    </div>
+	                    
+						<p>請在左邊選擇正確答案</p>
+					</div>
+	            </div>
+
+	            <div class="hints">
+	            	<p>在數線上，越左邊的數字越小。</p>
+	            	<div>
+	            		<p>從數線上看，<code><var>_LEFT</var></code> 在 <code><var>_RIGHT</var></code> 的<span class="hint_pink"><var>S == 0 ? '左' : '右'</var></span>邊，</p>
+	            		<p>因此 <code><var>_LEFT</var> \color{#FF00AF}{<var>S == 0 ? '&lt;' : '&gt;'</var>} <var>_RIGHT</var></code> 。</p>
+		            	<div class="graphie" data-update="number-line-200">
+		            		ellipse( [ A, -0.5 ], [ 0.5, 0.25 ], { stroke: KhanUtil.RED });
+		            		ellipse( [ B, -0.5 ], [ 0.5, 0.25 ], { stroke: KhanUtil.RED });
+		            	</div>
+		            </div>
+	            </div>
+			</div>
+
+		</div>
+	</div>
+	
+</body>
+</html>

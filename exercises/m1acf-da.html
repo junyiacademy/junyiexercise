@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>99乘法表</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 60px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 30px;
+        }
+		table,tr,td{ border:1px solid black;}
+		td{ text-align:center;width:1em;padding:8px;font-size:1em;}
+    </style>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars" >
+                <var id="k">randRange(1, 5) </var>
+                <var id="m">randRange(1, 5) </var>
+			</div>
+
+			<p class="question">以下是九九乘法表的一部分，請在空格內填入適當的數字。</p>
+			<table>
+				<tr>
+				  <td><var>k*m</var></td>
+				  <td><var>(k+1)*m</var></td>
+				  <td><var>(k+2)*m</var></td>
+				  <td><var>(k+3)*m</var></td>
+				  <td><var>(k+4)*m</var></td>
+				</tr>
+				<tr>
+				  <td><var>k*(m+1)</var></td>
+				  <td><var>(k+1)*(m+1)</var></td>
+				  <td><var>(k+2)*(m+1)</var></td>
+				  <td><var>(k+3)*(m+1)</var></td>
+				  <td><var>(k+4)*(m+1)</var></td>
+				</tr>
+				<tr>
+				  <td><var>k*(m+2)</var></td>
+				  <td><var>(k+1)*(m+2)</var></td>
+				  <td><input type="text" id="ans" style="width:36px;height:36px;font-size:1em;text-align:center;"/></td>
+				  <td><var>(k+3)*(m+2)</var></td>
+				  <td><var>(k+4)*(m+2)</var></td>
+				</tr>
+				<tr>
+				  <td><var>k*(m+3)</var></td>
+				  <td><var>(k+1)*(m+3)</var></td>
+				  <td><var>(k+2)*(m+3)</var></td>
+				  <td><var>(k+3)*(m+3)</var></td>
+				  <td><var>(k+4)*(m+3)</var></td>
+				</tr>
+				<tr>
+				  <td><var>k*(m+4)</var></td>
+				  <td><var>(k+1)*(m+4)</var></td>
+				  <td><var>(k+2)*(m+4)</var></td>
+				  <td><var>(k+3)*(m+4)</var></td>
+				  <td><var>(k+4)*(m+4)</var></td>
+				</tr>
+			</table>
+
+			<div class="solution" data-type="multiple">	
+				<div class="sol" data-type="custom">
+					<div class="guess">$('#ans').val().replace(/[ ]/g,"")</div>
+					<div class="validator-function">
+						if(guess == ''){
+							return "";
+						}
+						return guess == ( k + 2 ) * ( m + 2 );
+					</div>
+				</div>			
+            </div>
+
+            <div class="hints">
+			    <p>觀察表格中的第三行，<br />會發現每個數字間都相差<code><var>m+2</var></code>。</p>
+				<p>觀察表格中的第三列，<br />會發現每個數字間都相差<code><var>k+2</var></code>。</p>
+				<div>
+					<p>從 「 行 」 來看，空格應該填入 <code><var>(k+1)*(m+2)</var> + <var>m+2</var> = \color{#FF00AF}{<var>(k+2)*(m+2)</var>}</code> 。</p>
+					<p>從 「 列 」 來看，空格應該填入 <code><var>(k+2)*(m+1)</var> + <var>k+2</var> = \color{#FF00AF}{<var>(k+2)*(m+2)</var>}</code> 。</p>
+				</div>
+			</div>
+	</div>
+	</div>
+</body>
+</html>
