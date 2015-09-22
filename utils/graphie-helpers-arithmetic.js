@@ -30,7 +30,7 @@ function Adder(a, b, digitsA, digitsB) {
 
     this.showHint = function() {
         this.removeHighlights();
-        if ((index === numHints - 2) && (numHints - 1 > digitsA.length)) {
+        if ((index === numHints - 2) && (numHints - 1 > Math.max(digitsA.length, digitsB.length))) {
             this.showFinalCarry();
             index++;
             return;
@@ -50,8 +50,8 @@ function Adder(a, b, digitsA, digitsB) {
             prevCarryStr = "\\color{#6495ED}{" + prevCarry + "} + ";
         }
 
-        sum = digitsA[index] + carry;
-        highlights = highlights.concat(drawDigits([digitsA[index]], x, pos.first, KhanUtil.BLUE));
+        sum = (digitsA[index] || 0) + carry;
+        highlights = highlights.concat(drawDigits([digitsA[index] || 0], x, pos.first, KhanUtil.BLUE));
 
         if (index < digitsB.length) {
             highlights = highlights.concat(drawDigits([digitsB[index]], x, pos.second, KhanUtil.BLUE));
@@ -68,13 +68,13 @@ function Adder(a, b, digitsA, digitsB) {
                 "\\color{#FFA500}{" + carry + "}", "below"));
             carryStr = "\\color{#FFA500}{" + carry + "}";
         }
-        if(sum > 10){
-            highlights.push(graph.label([pos.sideX, pos.sideY + 0.5], "加起來超過 10 了，我們需要進位到左邊的位值！", "above right"));
+        if(sum >= 10){
+            highlights.push(graph.label([pos.sideX, pos.sideY + 0.5], "加起來大於等於 10 了，我們需要進位到左邊的位值！", "above right"));
         }
 
         this.showSideLabel("\\Large{"
             + prevCarryStr
-            + "\\color{#6495ED}{" + digitsA[index] + "}"
+            + "\\color{#6495ED}{" + (digitsA[index] || 0) + "}"
             + addendStr
             + " = "
             + carryStr
