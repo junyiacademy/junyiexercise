@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>小數與定位板</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		table.nLimit{margin : 5px ; border : 0px solid black ; rules : cols&&rows;}
+		table.nLimit td { width: 60px; border: 0px solid black ;font-size : 20px; padding: 5px;}
+		.inp { width : 35px; height : 25px; text-align : center; font-size: 18px;}
+    </style>
+
+	
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars" data-ensure=" _DECIMAL &gt; 0 ">
+				<var id="_INT"> randRange( 0, 9 ) </var>
+				<var id="_DEC"> randRange( 0, 9 ) </var>
+				<var id="_DECIMAL"> roundTo(1,  _INT + _DEC / 10 ) </var>
+				<var id="_SDEC"> _DECIMAL.toFixed( 1 ) </var>
+			</div>
+			
+			 <div class="question">
+			 <div class="problem">
+                <p>請寫出 <code><var>_SDEC</var></code> 的十分位為何？</p>	
+			</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+			<span class="sol" data-forms="integer"><var>_DEC</var></span>
+			</div>
+
+            <div class="hints"> 
+				<p><code><var>_SDEC</var></code> 中，<code><var>_INT</var></code> 與 <code><var>_DEC</var></code> 中間的黑點稱為小數點，小數點的左邊就跟以前我們學的一樣，<code><var>_INT</var></code> 的位置是個位。那小數點的右邊呢？</p>
+				<div>
+					<p>小數點的右邊一個位置代表的就是將個位切成十份，因此叫做十分位，也就是說 ：</p>
+					<p><code>\qquad <var>_SDEC</var></code> 的十分位是 <code class="hint_pink"><var>_DEC</var></code></p>
+				</div>
+			</div>
+		</div>
+
+		<div id="case2">
+			<div class="vars" data-ensure=" !isInt( _DECIMAL ) ">
+				<var id="_INT"> randRange( 0, 9 ) </var>
+				<var id="_DEC"> randRange( 0, 9 ) </var>
+				<var id="_DECIMAL"> roundTo(1,  _INT + _DEC / 10 ) </var>
+			</div>
+			
+			 <div class="question">
+				 <div class="problem">
+	                <p>請將 <code><var>_DECIMAL</var></code> 填到定位板上。</p>	
+					<table class="nLimit" style="margin-left:50px">
+						<tr>
+							<td style="border-right : black 2px solid; border-bottom : black 2px solid;">個位</td>
+							<td style="border-bottom : black 2px solid;">十分位</td>
+						</tr>
+						<tr>
+							<td style="border-right : black 2px solid;"><input type="text" id="a_1" class="inp"><code>\huge.</code></td>
+							<td align="center"><input type="text" id="b_1" class="inp"></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<p>填入正確的答案</p>
+				<div class="sol" data-type="custom">
+					<div class="guess"> [ $( '#a_1' ).val(), $( '#b_1' ).val() ] </div>
+					<div class="validator-function">
+						if( guess[ 0 ].replace( /[ ]/g, "" ) == "" &amp;&amp; guess[ 1 ].replace( /[ ]/g, "" ) == "" ) {
+							return "";
+						}
+						return guess[ 0 ].replace( /[ ]/g, "" ) == _INT &amp;&amp; guess[ 1 ].replace( /[ ]/g, "" ) == _DEC;
+					</div>
+				</div>
+			</div>
+
+            <div class="hints"> 
+				<p><code><var>_DECIMAL</var></code> 中，<code><var>_INT</var></code> 與 <code><var>_DEC</var></code> 中間的黑點稱為小數點，小數點的左邊就跟以前我們學的一樣，<code><var>_INT</var></code> 的位置是個位。那小數點的右邊呢？</p>
+				<p>小數點的右邊一個位置代表的就是將個位切成十份，因此叫做十分位，也就是說 <code><var>_DECIMAL</var></code> 的十分位是 <code><var>_DEC</var></code>。</p>
+				<div>
+					<p>因此我們將定位板上的<span class="hint_blue">個位位置填</span> <code class="hint_pink"><var>_INT</var></code> ，<span class="hint_blue">十分位位置填 </span><code class="hint_pink"><var>_DEC</var></code> 。</p>
+				</div>
+			</div>
+		</div>
+
+		<div id="case3">
+			<div class="vars">
+				<var id="A"> randRange( 0, 9 ) </var>
+				<var id="B"> randRange( 1, 9 ) </var>
+				<var id="C"> A * 10 + B </var>
+				<var id="D"> roundTo( 2, A + B / 10 ) </var>
+				<var id="E, F"> randFromArray( [ [ 0, C ], [ D, 0 ], [ A, B ] ] ) </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>小明說 <code><var>A</var>.<var>B</var></code> 是 <code><var>C</var></code> 個 <code>0.1</code> ，因此小明像這樣將 <code><var>A</var>.<var>B</var></code> 紀錄在定位板，請問小明的作法是對的嗎？</p>	
+					<table class="nLimit" style="margin-left:50px">
+						<tr>
+							<td style="border-right : black 2px solid; border-bottom : black 2px solid;">個位</td>
+							<td style="border-bottom : black 2px solid;">十分位</td>
+						</tr>
+						<tr>
+							<td style="border-right : black 2px solid;"><code><var>E</var>\huge.</code></td>
+							<td align="center"><code><var>F</var></code></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<p onclick="$('#option_1').prop('checked', true)"><input id="option_1" type="radio" name="radios" value="0" />&nbsp;正確</p>
+				<p onclick="$('#option_2').prop('checked', true)"><input id="option_2" type="radio" name="radios" value="1" />&nbsp;不正確</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">$('input:radio[name="radios"]:checked').val()</div>
+					<div class="validator-function">
+		            	if(guess == null){
+	                		return "";
+	                	}
+	                	return ( guess == 0 &amp;&amp; E==A ) || ( guess == 1 &amp;&amp; E != A );
+		            </div>
+				</div>
+			</div>
+
+            <div class="hints"> 
+			<p><code><var>A</var>.<var>B</var></code> 中， <code><var>A</var></code> 與 <code><var>B</var></code> 中間的黑點稱為小數點，小數點的左邊就跟以前我們學的一樣， <code><var>A</var></code> 的位置是個位。那小數點的右邊呢？</p>
+			<p>小數點的右邊一個位置代表的就是將個位切成十份，因此叫做十分位，也就是說 <code><var>A</var>.<var>B</var></code> 的十分位是 <code><var>B</var></code> 。</p>
+			<p>因此我們必須要將定位板上的個位位置填 <code><var>A</var></code> ，十分位位置填 <code><var>B</var></code> ，注意定位板每一格只能填 <code>0\sim 9</code> 的整數，因此小明的做法是<span class="hint_pink" data-if="E==A">正確</span><span class="hint_pink" data-if="E!=A">錯誤</span>的。</p>
+			</div>
+		</div>
+
+		<div id="case4">
+			<div class="vars">
+				<var id="A"> randRange( 0, 9 ) </var>
+				<var id="B"> randRange( 1, 9 ) </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p><code><var>A</var>.<var>B</var></code> 是由 <input type="text" id="a_1" style="width:40px;text-align:center;"> 個 <code>1</code> 與 <input type="text" id="b_1" style="width:40px;text-align:center;"> 個 <code>0.1</code> 組成的。</p>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<p>填入正確的答案</p>
+				<div class="sol" data-type="custom">
+					<div class="guess"> [ $( '#a_1' ).val(), $( '#b_1' ).val() ] </div>
+					<div class="validator-function">
+						if( guess[ 0 ].replace( /[ ]/g, "" ) == "" &amp;&amp; guess[ 1 ].replace( /[ ]/g, "" ) == "" ) {
+							return "";
+						}
+						if( guess[ 0 ].replace( /[ ]/g, "" ) == A &amp;&amp; guess[ 1 ].replace( /[ ]/g, "" ) == B ) {
+							return true;
+						}
+						return false;
+					</div>
+				</div>
+			</div>
+
+
+            <div class="hints"> 
+			<p><code><var>A</var>.<var>B</var></code> 中，<code><var>A</var></code> 與 <code><var>B</var></code> 中間的黑點稱為小數點，小數點的左邊就跟以前我們學的一樣， <code><var>A</var></code> 的位置是個位。那小數點的右邊呢？</p>
+			<p>小數點的右邊一個位置代表的就是將個位切成十份，因此叫做十分位，也就是說 <code><var>A</var>.<var>B</var></code> 的十分位是 <code><var>B</var></code> 。</p>
+			<p>個位代表的位值是 <code>1</code> ，十分位代表的位值是 <code>0.1</code> ，因此 <span class="hint_blue"><code><var>A</var>.<var>B</var></code> 是由 <code class="hint_pink"><var>A</var></code> 個 <code>1</code> 與 <code class="hint_pink"><var>B</var></code> 個 <code>0.1</code> 構成的。</span></p>
+			</div>
+		</div>
+
+		
+		
+	</div>
+	</div>
+</body>
+</html>
