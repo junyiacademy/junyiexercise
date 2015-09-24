@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>複合圖形的面積計算(進階)</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="BC, CD, EF, DG"> randFromArray( [ [ 22, 10, 11, 5 ] ] ) </var>
+				<var id="A, B, C, D"> randFromArray( [ [ 10, 8, 12, 6 ], [ 12, 6, 10, 5 ], [ 12, 6, 8, 4 ], [ 20, 10, 12, 6 ], [ 22, 10, 11, 5 ], [ 21, 12, 14, 8 ], [ 30, 12, 15, 6 ] ] ) </var>
+				<var id="E"> A * C </var>
+				<var id="F"> roundTo( 1, B * C / 2 ) </var>
+				<var id="G"> roundTo( 1, F * 2 / D ) </var>
+				<var id="K">(function(){
+					for( var i = G; i &gt; 0; i-- ) {
+						if( E % i == 0 &amp;&amp; G % i == 0 ) {
+							return i;
+						}
+					}
+				})()</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>圖中 <code>ABCE</code> 是一個平行四邊形，請求出這個平行四邊形 <code>AB</code> 邊上的高(單位：公分)。</p>
+					<div class="graphie" id="pic">
+	                    init( { range : [ [ -23, 23 ], [ -8, 10 ] ], scale : 10 } );
+						path( [ [ -21, -6 ], [ -21 + BC, -6 ], [ -21 + CD + BC, -6 ], [ -21 + BC + CD / 2, -6 + EF ], [ -21 + CD / 2, -6 + EF ], [ -21, -6 ] ], { fill : "#EBD6D6", stroke : "#AD5A5A" } );
+						line( [ -21 + BC, -6 ], [ -21 + BC + CD / 2, -6 + EF ], { stroke : "#AD5A5A" } );
+						label( [ -22, -6.5 ], "B", { color : "black" } );
+						label( [ -21 + CD / 2 - 1, -5.5 + EF ], "A", { color : "black" } );
+						label( [ -21 + BC + CD / 2 + 1, -5.5 + EF ], "E", { color : "black" } );
+						label( [ -21 + BC + CD + 1, -6 ], "D", { color : "black" } );
+						label( [ -21 + BC, -7 ], "C", { color : "black" } );
+						line( [ -21, -6 ], [ -21 + BC, -6 ], { stroke : "blue" } );
+						label( [ -21 + BC / 2, -7 ], A, { color : "blue" } );
+						line( [ -21 + BC, -6 ], [ -21 + CD + BC, -6 ], { stroke : "green" } );
+						label( [ -21 + BC + CD / 2, -7 ], B, { color : "green" } );
+						line( [ -21 + BC + CD / 2, -6 ], [ -21 + CD / 2 + BC, -6 + EF ], { stroke : "orange" } );
+						label( [ -21 + BC + CD / 2 + 1, -6 + EF / 2 ], C, { color : "orange" } );
+						path( [ [ -21 + BC + CD / 2, -5.4 ], [ -21 + BC + CD / 2 + 0.6, -5.4 ], [ -21 + BC + CD / 2 + 0.6, -6 ] ] );
+						line( [ -21 + BC + CD, -6 ], [ -21 + BC + 2, -6 + 4 ], { stroke : "purple" } );
+						label( [ -21 + BC + CD / 2 + 2, -3 ], D, { color : "purple" } );
+						path( [ [ -21 + BC + 2 - 0.4, -6 + 4 - 0.6 ], [ -21 + BC + 2, -6 + 4 - 0.8 ], [ -21 + BC + 2 + 0.3, -6 + 4 - 0.1 ] ] );
+						line( [ -21 + BC + 2 + 0.9, -6 + 4 + 2 ], [ -21 + 3.8, -6 + 8 ] );
+						label( [ -21 + BC / 2 + 3.5, 2.7 ], "?", { color : "black" } );
+						path( [ [ -21 + 3.8 - 0.2, -6 + 8 - 0.4 ], [ -21 + 3.8 - 0.2 + 0.4, -6 + 8 - 0.4 ], [ -21 + 3.8 - 0.2 + 0.6, -6 + 8 ] ] );
+					</div>
+				</div>
+			</div>
+
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-type="number" data-forms="improper,integer" data-simplify="optional"><var>( E / K ) / ( G / K )</var>公分
+			</div>
+
+            <div class="hints"> 
+				<p>求「底」或「高」，先找面積。</p>
+				<div>
+					<p>平行四邊形面積 <code>=</code> 底 <code>\times</code> 高 <br />
+					<code>\phantom{平行四邊形面積 } = <var>A</var> \times <var>C</var></code> <br />
+					<code>\phantom{平行四邊形面積 } = <var>E</var></code>(平方公分)</p>
+
+					<p>平行四邊形的高 <code> = </code> 面積 <code>\div</code> 底。</p>
+					<p>先求三角形 <code>CDE</code> 的面積：<br />
+					<code><var>B</var> \times <var>C</var> \div 2 = <var>F</var></code>(平方公分)</p>
+
+					<p>三角形的底 <code>=</code> 面積 <code> \times 2 \div </code> 高 
+					<br /><code>\phantom{三角形的底 } = <var>F</var> \times 2 \div <var>D</var></code>
+					<br /><code>\phantom{三角形的底 } = <var>G</var></code>(公分)
+					<br /><code>\phantom{三角形的底 } = \overline{CE} =\overline{AB}</code></p>
+				</div>
+				<div>
+					<p>平行四邊形的高為 <code><var>E</var>\div<var>G</var>= \dfrac{<var>E</var>}{<var>G</var>}</code><code data-if="K==G">=<var>E/G</var>。</code><code data-if=" K !=1 &amp;&amp; K != G "> = \dfrac{<var>E / K</var>}{<var>G / K</var>}。</code></p>
+					<p>
+						答案為「
+							<code class="hint_pink" data-if="K!=G">\dfrac{<var>E / K</var>}{<var>G / K</var>}</code>
+							<code class="hint_pink" data-if="K==G"><var>E / G</var></code>
+						」公分。
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div id="case2">
+			<div class="vars">
+				<var id="A, B, C, D, E, F"> randFromArray( [ [ 30, 40, 14, 26, 12, 18 ], [ 30, 40, 12, 28, 14, 16 ], [ 20, 30, 12, 18, 8, 12 ], [ 20, 30, 14, 16, 6, 14 ], [ 20, 30, 10, 20, 10, 10 ], [ 10, 20, 10, 10, 5, 5 ], [ 10, 20, 8, 12, 4, 6 ] ] ) </var>
+				<var id="G"> roundTo( 1, A * C / 2 ) </var>
+				<var id="H"> roundTo( 1, ( F + A ) * D / 2 ) </var>
+				<var id="ANSWER"> roundTo( 1, G + H ) </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求著色部分面積(單位：公分)。</p>
+					<div class="graphie" id="pic">
+	                    init( { range : [ [ -23, 23 ], [ -17, -14 + A + 2 ] ], scale : 10 } );
+						path( [ [ -20, -15 ], [ -20, -15 + A ], [ -20 + B, -15 + A ], [ -20 + B, -15 ], [ -20, -15 ] ] );
+						path( [ [ -20, -15 ], [ -20 + C, -15 + A ], [ -20 + B, -15 + F ], [ -20 + B, -15 ], [ -20, -15 ] ], { fill : "#C4E1FF", stroke : "#ACD6FF" } );
+						line( [ -20,- 15 ], [ -20, -15 + A ], { stroke : "blue" } );
+						label( [ -21, -15 + A / 2 ], A, { color : "blue" } );
+						line( [ -20 + B, -15 ], [ -20, -15 ], { stroke : "green" } );
+						label( [ -20 + B / 2, -16 ], B, { color : "green" } );
+						line( [ -20, -15 + A ], [ -20 + C, -15 + A ], { stroke : "orange" } );
+						label( [ -20 + C / 2, -14 + A ], C, { color : "orange" } );
+						line( [ -20 + B, -15 + A ], [ -20 + C, -15 + A ], { stroke : "purple" } );
+						label( [ -20 + B / 2 + C /  2, -14 + A ], D, { color : "purple" } );
+						line( [ -20 + B, -15 + A ], [ -20 + B, -15 + F ], { stroke : "red" } );
+						label( [ -19 + B, -15 + A / 2 + F / 2 ], E, { color : "red" } );
+						line( [ -20 + B, -15 ], [ -20 + B, -15 + F ], { stroke : "grey" } );
+						label( [ -19 + B, -15 + F / 2 ], F, { color : "grey" } );
+						line( [ -20 + C, -15 ], [ -20 + C, -15 + A ] );
+						path( [ [ -20 + C + 0.6, -15 ], [ -20 + C + 0.6, -15 + 0.6 ], [ -20 + C, -15 + 0.6 ] ] );
+						path( [ [ -20, -15 + A - 0.6 ], [ -20 + 0.6, -15 + A - 0.6 ], [ -20 + 0.6, -15 + A ] ] );
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+                <span class="sol" data-forms="integer"><var>ANSWER</var></span>平方公分
+            </div>	
+
+
+            <div class="hints"> 
+				<p>仔細看，著色面積是由梯形<code>+</code>三角形組合而成的複合圖形。</p>
+				<div>
+					<p>三角形的面積為底<code>\times</code>高<code>\div 2 </code></p>
+					<p><code>\phantom{三角形的面積} = <var>C</var> \times <var>A</var> \div 2 </code></p>
+					<p><code>\phantom{三角形的面積} = <var>G</var></code></p>
+					<p>梯形的面積為<code>(</code>上底<code>+</code>下底<code>)\times</code>高<code>\div 2</code></p>
+					<p><code>\phantom{梯形的面積} = (<var>F</var>+<var>A</var>) \times <var>D</var>\div 2</code></p>
+					<p><code>\phantom{梯形的面積} = <var>F + A</var> \times <var>D</var>  \div 2 </code></p>
+					<p><code>\phantom{梯形的面積} = <var>H</var></code></p>
+				</div>
+				<div>
+					<p>三角形面積<code>+</code>梯形面積 <code>=<var>G</var> + <var>H</var> = <var>ANSWER</var></code>。</p>
+					<p>答案為「<code class="hint_pink"><var>ANSWER</var></code>」平方公分。</p>
+				</div>
+			</div>
+		</div>
+
+		<div id="case3">
+			<div class="vars" data-ensure=" ANSWER &gt; 0 &amp;&amp; isInt( ANSWER )">
+				<var id="A, B"> randFromArray( [ [ 5, 25 ], [ 5, 14 ], [ 5, 30 ], [ 4, 28 ], [ 4, 15 ], [ 6, 28 ], [ 6, 24 ], [ 7, 20 ] ] ) </var>
+				<var id="C"> A * B </var>
+				<var id="D"> A * A </var>
+				<var id="ANSWER"> 2 * C - D </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求著色部分面積(單位：公分)。</p>
+					<div class="graphie" id="pic">
+	                    init( { range : [ [ -19, 19 ], [ -20, 19 ] ], scale : 10 } );
+						path( [ [ -15.5, -15.5 * 14 / 3 + 66 ], [ -14.5, -14.5 * 14 / 3 + 66 ], [ -14.5 + 28, -14.5 * 14 / 3 + 66 ], [ -15.5 + 28, -15.5 * 14 / 3 + 66 ], [ -15.5, -15.5 * 14 / 3 + 66 ] ], { fill : "#FFD2D2", stroke : "#FF9797" } );
+						path( [ [ -3, 10 ], [ 2, 10 ], [ 2, -18 ], [ -3, -18 ], [ -3, 10 ] ], { fill : "#FFD2D2", stroke : "#FF9797" } );
+						path( [ [ -18, -18 ], [ -12, 10 ], [ 16, 10 ], [ 10, -18 ], [ -18, -18 ] ] );
+						line( [ 10, -18 ], [ -18, -18 ], { stroke : KhanUtil.BLUE } );
+						label( [ -4, -19 ], B, { color : KhanUtil.BLUE } );
+						line( [ -3, 10 ], [ 2, 10 ], { stroke : KhanUtil.GREEN } );
+						label( [ -0.5, 11 ], A, { color : KhanUtil.GREEN } );
+						line( [ -3, -15.5 * 14 / 3 + 66 ], [ -3, -14.5 * 14 / 3 + 66 ], { "stroke-dasharray" : "-", stroke : KhanUtil.PURPLE } );
+						line( [ 2, -15.5 * 14 / 3 + 66 ], [ 2, -14.5 * 14 / 3 + 66 ], { stroke : "#FFD2D2" } );
+						label( [ -2, -15 * 14 / 3 + 66 ], A, { color : KhanUtil.PURPLE } );
+						line( [ 4, 10 ], [ 4, -18 ], { "stroke-dasharray" : "-",stroke:KhanUtil.ORANGE } );
+						label( [ 5.3, 0 ], B, { color : KhanUtil.ORANGE } );
+						path( [ [ 2 + 0.6, -14.5 * 14 / 3 + 66 ], [ 2 + 0.6, -14.5 * 14 / 3 + 66 + 0.6 ], [ 2, -14.5 * 14 / 3 + 66 + 0.6 ] ] );
+						path( [ [ 2 + 0.6, -18 ], [ 2 + 0.6, -18 + 0.6 ], [ 2, -18 + 0.6 ] ] );
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+            	<span class="sol" data-forms="integer"><var>ANSWER</var></span>平方公分
+            </div>	
+
+
+            <div class="hints"> 
+				<p>我們可以發現，這是 長方形<code>+</code>平行四邊形<code>-</code>重疊的正方形組合而成的複合圖形。</p>
+				<div>
+					<p>長方形的面積為 長<code>\times</code>寬 <code> = <var>B</var> \times <var>A</var> = <var>C</var></code>。</p>
+					<p>平行四邊形的面積為 底邊長<code>\times</code>高度 <code> = <var>B</var> \times <var>A</var> = <var>C</var></code>。</p> 
+					<p>正方形的面積為 邊長相乘 <code>=<var>A</var> \times <var>A</var> = <var>D</var></code>。</p>
+				</div>
+				<div>
+					<p>長方形<code>+</code>平行四邊形<code>-</code>重疊的正方形<code>=<var>C</var>+<var>C</var>-<var>D</var>=<var>ANSWER</var></code>。</p>
+					<p>答案為「<code class="hint_pink"><var>ANSWER</var></code>」平方公分。</p>
+				</div>
+			</div>
+		</div>
+
+		<div id="case4">
+			<div class="vars" data-ensure=" isInt( ANSWER ) &amp;&amp; ANSWER &gt; 0 ">
+				<var id="A, B, C, D"> randFromArray( [ [ 3, 35, 14, 13 ], [ 5, 25, 8, 7 ], [ 4, 25, 9, 7 ], [ 4, 26, 8, 8 ], [ 6, 36, 13, 11 ], [ 6, 45, 18, 14 ], [ 7, 45, 17, 16 ] ] ) </var>
+				<var id="E"> ( C + D + A ) * A </var>
+				<var id="F"> B * A </var>
+				<var id="G"> A * A </var>
+				<var id="ANSWER"> E + F - G </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求著色部分面積(單位：公分)。</p>
+					<div class="graphie" id="pic">
+	                    init( { range : [ [ -19, 19 ], [ -20, 19 ] ], scale : 10 } );
+						path( [ [ -15.5, -15.5 * 14 / 3 + 66 ], [ -14.5, -14.5 * 14 / 3 + 66 ], [ -14.5 + 28, -14.5 * 14 / 3 + 66 ], [ -15.5 + 28, -15.5 * 14 / 3 + 66 ], [ -15.5, -15.5 * 14 / 3 + 66 ] ], { fill : "#DDDDFF", stroke : "#B9B9FF" } );
+						path( [ [ -3, 10 ], [ 2, 10 ], [ 2, -18 ], [ -3, -18 ], [ -3, 10 ] ], { fill : "#DDDDFF", stroke : "#B9B9FF" } );
+						path( [ [ -18, -18 ], [ -12, 10 ], [ 16, 10 ], [ 10, -18 ], [ -18, -18 ] ] );
+						line( [ 10, -18 ], [ -18, -18 ], { stroke : KhanUtil.BLUE } );
+						label( [ -4, -19 ], B, { color : KhanUtil.BLUE } );
+						line( [ 16, 10 ], [ 10, -18 ], { stroke : KhanUtil.BLUE } );
+						label( [ 15, -5 ], B, { color : KhanUtil.BLUE } );
+						line( [ -3, 10 ], [ 2, 10 ], { stroke : KhanUtil.GREEN } );
+						label( [ -0.5, 11 ], A, { color : KhanUtil.GREEN } );
+						line( [ 2, 10 ], [ 2, -15.5 * 14 / 3 + 66 ], { stroke : KhanUtil.PURPLE } );
+						label( [ 3, ( -15.5 * 14 / 3 + 76 ) / 2 ], C, { color : KhanUtil.PURPLE } );
+						line( [ 2, -18 ], [ 2, -14.5 * 14 / 3 + 66 ], { stroke : KhanUtil.ORANGE } );
+						label( [ 3, ( -14.5 * 14 / 3 + 66 - 18 ) / 2 ], D, { color : KhanUtil.ORANGE } );
+						line( [ -3, -15.5 * 14 / 3 + 66 ], [ -3, -14.5 * 14 / 3 + 66 ], { "stroke-dasharray" : "-", stroke : KhanUtil.PURPLE } );
+						line( [ 2, -15.5 * 14 / 3 + 66 ], [ 2, -14.5 * 14 / 3 + 66 ], { stroke : "#DDDDFF" } );
+						label( [ -2, -15 * 14 / 3 + 66 ], A, { color : KhanUtil.PURPLE } );
+						path( [ [ 2 + 0.6, -14.5 * 14 / 3 + 66 ], [ 2 + 0.6, -14.5 * 14 / 3 + 66 + 0.6 ], [ 2, -14.5 * 14 / 3 + 66 + 0.6 ] ] );
+						path( [ [ 2 + 0.6, -18 ], [ 2 + 0.6, -18 + 0.6 ], [ 2, -18 + 0.6 ] ] );
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+            	<span class="sol" data-forms="integer"><var>ANSWER</var></span>平方公分
+            </div>	
+
+
+            <div class="hints"> 
+				<p>我們可以發現，這是 長方形<code>+</code>平行四邊形<code>-</code>重疊的正方形組合而成的複合圖形。</p>
+				<div>
+					<p>長方形的面積為 長<code> \times </code>寬 <code> = (<var>C</var>+<var>D</var>+<var>A</var>)\times<var>A</var> =<var>E</var></code>。</p>
+					<p>平行四邊形的面積為 底邊長<code>\times</code>高度 <code>=<var>B</var>\times<var>A</var>=<var>F</var>。</code></p> 
+					<p>正方形的面積為 邊長相乘 <code>=<var>A</var>\times<var>A</var>=<var>G</var></code>。</p>
+				</div>
+				<div>
+					<p>長方形<code>+</code>平行四邊形<code>-</code>重疊的正方形<code>=<var>E</var>+<var>F</var>-<var>G</var>=<var>ANSWER</var></code>。</p>
+					<p>答案為「<code class="hint_pink"><var>ANSWER</var></code>」平方公分。</p>
+				</div>
+			</div>
+		</div>
+
+		
+	</div>
+	</div>
+</body>
+</html>
