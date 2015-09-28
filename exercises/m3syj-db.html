@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>扇形的面積（給半徑 圓心角）</title>
+    <script src="../khan-exercise.js"></script>
+	<script language="javascript">
+        function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+
+		function loadImg(elem, url, count ,width) {
+	        var loimg = document.getElementById(elem);
+	        var inner = "";
+	        for (var i = 1; i <= count; i++) {
+	            inner += "<img id=\"image" + elem + i + "\" width=" + width + "\" src="+url+">";
+	        }
+	        loimg.innerHTML += inner;	
+			loimg.innerHTML +="<br\>"
+	    }
+    </script>
+
+</head>
+
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+		<div class="vars">
+			<var id="ALLFULLED"> 2 </var>
+			<var id="A, B"> randFromArray( [ [ 30, 240 ], [ 20, 180 ], [ 30, 40 ], [ 40, 90 ], [ 50, 72 ] ] ) </var>
+			<var id="START_ANGLE"> 0 </var>
+			<var id="A_ANGLE"> B / ALLFULLED </var>
+			<var id="ANSWER"> roundTo( 5, A * A * 3.14 * B / 360 ) </var>
+		</div>
+
+		<div class="question">
+			<p>下圖扇形面積是多少？(圓周率為 <code>3.14</code> )</p>
+		</div>
+
+		<div class="graphie" id="graph1">
+			init( { range : [ [ -51, 51 ], [ -51, 51 ] ], scale : 4 } );
+			for( var i = 0; i &lt; ALLFULLED; i++ ) {
+				arc( [ 0, 0 ], A, START_ANGLE + A_ANGLE * i, START_ANGLE + A_ANGLE * ( i + 1 ), { fill : "#ACD6FF" } );
+				path( [ polar( A, START_ANGLE + A_ANGLE * i ), polar( 0, 0 ), polar( A, START_ANGLE + A_ANGLE * ( i + 1 ) ) ], { stroke : "#ACD6FF", fill : "#ACD6FF" } );
+			}
+			arc( [ 0, 0 ], 5, START_ANGLE, START_ANGLE + A_ANGLE * ALLFULLED , { stroke : "blue" } );
+			label( polar( 10, B / 2 ), B + "^\\circ", { color : "blue" } );
+			line( [ 0,0 ], polar( A, START_ANGLE ) );
+			line( [ 0,0 ], polar( A, START_ANGLE + A_ANGLE * ALLFULLED ) );
+			line( [ 0,0 ], [ A, 0 ], { stroke : "orange" } );
+			label( [ A / 2, -3 ], A, { color : "orange" } );
+		</div>
+
+		<div class="solution" data-type="multiple">
+           <span class="sol" data-forms="integer"><var>ANSWER</var></span>
+        </div>
+
+		<div class="hints">
+			<div>
+				<p>要計算扇形，先知道它是幾分之幾的圓</p>
+				<p><code><var>B</var>^\circ \div 360^\circ = <var>fraction( B, 360, true, true, false, false )</var></code></p>
+			</div>
+			<div>
+				<p>所以扇形的面積為 <code><var>fraction( B, 360, true, true, false, false )</var></code> 圓面積</p>
+				<p><code><var>A</var>\times<var>A</var> \times 3.14 \times <var>fraction( B, 360, true, true, false, false )</var> = <var>ANSWER</var></code></p>
+			</div>
+		</div>
+	</div>
+	
+	<div id="case2">
+		<div class="vars">
+			<var id="ALLFULLED"> 2 </var>
+			<var id="A, B"> randFromArray( [ [ 30, 240 ], [ 10, 180 ], [ 15, 160 ], [ 20, 90 ], [ 25, 144 ] ] ) </var>
+			<var id="R">A*2</var>
+			<var id="START_ANGLE"> 0 </var>
+			<var id="A_ANGLE"> B / ALLFULLED </var>
+			<var id="ANSWER"> roundTo( 5, A * A * 3.14 * B / 360 ) </var>
+		</div>
+
+		<div class="question">
+			<p>下圖扇形面積是多少？(直徑為 <code><var>R</var></code>，圓周率為 <code>3.14</code> )</p>
+		</div>
+
+		<div class="graphie" id="graph1">
+			init( { range : [ [ -51, 51 ], [ -51, 51 ] ], scale : 4 } );
+			for( var i = 0; i &lt; ALLFULLED; i++ ) {
+				arc( [ 0, 0 ], A, START_ANGLE + A_ANGLE * i, START_ANGLE + A_ANGLE * ( i + 1 ), { fill : "#ACD6FF" } );
+				path( [ polar( A, START_ANGLE + A_ANGLE * i ), polar( 0, 0 ), polar( A, START_ANGLE + A_ANGLE * ( i + 1 ) ) ], { stroke : "#ACD6FF", fill : "#ACD6FF" } );
+			}
+			arc( [ 0, 0 ], 5, START_ANGLE, START_ANGLE + A_ANGLE * ALLFULLED , { stroke : "blue" } );
+			label( polar( 10, B / 2 ), B + "^\\circ", { color : "blue" } );
+			line( [ 0, 0 ], polar( A, START_ANGLE ) );
+			line( [ 0, 0 ], polar( A, START_ANGLE + A_ANGLE * ALLFULLED ) );
+			line( [ 0, 0 ], [ A, 0 ], { stroke : ORANGE, strokeWidth : 2 } );
+			line( [ 0, 0 ], [ -A, 0 ], { stroke : ORANGE, strokeWidth : 2, "stroke-dasharray": "-" } );
+			label( [ A / 2, 0 ], R, "below", { color : ORANGE } );
+		</div>
+
+		<div class="solution" data-type="multiple">
+           <span class="sol" data-forms="integer"><var>ANSWER</var></span>
+        </div>
+
+		<div class="hints">
+			<div>
+				<p>扇形半徑為 <code><var>R</var>\div 2 = <var>A</var></code></p>
+				<p>要計算扇形，先知道它是幾分之幾的圓</p>
+				<p><code><var>B</var>^\circ \div 360^\circ = <var>fraction( B, 360, true, true, false, false )</var></code></p>
+			</div>
+			<div>
+				<p>所以扇形的面積為 <code><var>fraction( B, 360, true, true, false, false )</var></code> 圓面積</p>
+				<p><code><var>A</var>\times<var>A</var> \times 3.14 \times <var>fraction( B, 360, true, true, false, false )</var> = <var>ANSWER</var></code></p>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div id="case3">
+		<div class="vars">
+			<var id="S">
+				(function(){
+					loadImg("grid",Khan.urlBase+"images/"+"shrine.jpg",1,"100%");
+				})()
+			</var>
+		</div>
+		<div class="question">
+			<p>這是一把在日本平安時代的扇子。在日本文化中，它不僅是一把扇子，也常被當作贈禮；日本人會在微笑時拿出扇子遮住嘴巴以視禮貌；更有文人作家會將文學作品寫在上面，例如:源氏物語。</p>
+			<div id="grid"></div>
+			<p>請問，這把扇子的面積是多少？(半徑為 <code>60</code> 公分，圓心角 <code>120</code> 度，圓周率用 <code>π</code> 表示)</p>
+		</div>
+		
+		<div class="solution" data-type="multiple">
+           <span class="sol" data-forms="integer">1200</span><code>π</code>
+        </div>
+		<div class="hints">
+			<div>
+				<p>要計算扇形，先知道它是幾分之幾的圓</p>
+				<p><code><var>120</var>^{\circ} \div 360^{\circ}= \dfrac{1}{3}</code></p>
+			</div>
+			<div>
+				<p>所以 <code>\dfrac{1}{3}</code> 扇形的面積為</p>
+				<p><code>60 \times 60 \times π \times \dfrac{1}{3} = </code><code class="hint_pink">1200π</code>。</p>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+</div>
+</div>
+</body>
+</html>			
