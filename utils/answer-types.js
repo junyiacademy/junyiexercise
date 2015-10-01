@@ -200,7 +200,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 input.attr("id", "default_input");
                 var checkbox = '<div class="checkbox" id="fraction_mode_entry" style="display:none"><label style="font-size:14px">'+
                                '<input type="checkbox" id="fraction_mode_checkbox"> 輸入直式分數</label></div>'
-                var fraction_mode_div = '<div id="fraction_mode_div" style="display:none">' +
+                var fraction_mode_div = '<div id="fraction_mode_div" style="display:inline-block">' +
                                         '<table border="0" cellpadding="0" cellspacing="0">' +
                                         '<tr>' +
                                         '<td rowspan=3 style="vertical-align:middle">' +
@@ -224,7 +224,8 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
 
                 $(solutionarea).append(input);
                 $(solutionarea).append(fraction_mode_div);
-                $(solutionarea).append(checkbox);
+                $(solutionarea).parent().append(checkbox);
+                $(solutionarea).parent().find("#fraction_mode_div").toggle(false);
 
                 // toggle interface and clean input when entering Fraction Mode
                 $("#fraction_mode_checkbox").change(function() {
