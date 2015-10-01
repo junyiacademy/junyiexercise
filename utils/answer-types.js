@@ -194,8 +194,8 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             // Enable it by adding data-fraction-input="true" attr for .solution element in html exercise templates
             var fractionForms = ['proper', 'improper', 'mixed'];
             var supportedFractionTypes = fractionForms.filter(function(n) {
-                return acceptableForms.indexOf(n) != -1
-            })
+                return acceptableForms.indexOf(n) !== -1;
+            });
             if(supportedFractionTypes.length > 0){
                 input.attr("id", "default_input");
                 var checkbox = '<div class="checkbox" id="fraction_mode_entry" style="display:none"><label style="font-size:14px">'+
@@ -224,8 +224,14 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
 
                 $(solutionarea).append(input);
                 $(solutionarea).append(fraction_mode_div);
-                $(solutionarea).parent().append(checkbox);
-                $(solutionarea).parent().find("#fraction_mode_div").toggle(false);
+                if (solutionarea.parent()[0].id === "answercontent"){
+                    // do not append checkbox under "answercontent" level div
+                    $(solutionarea).append(checkbox);
+                    $(solutionarea).find("#fraction_mode_div").toggle(false);
+                }else{
+                    $(solutionarea).parent().append(checkbox);
+                    $(solutionarea).parent().find("#fraction_mode_div").toggle(false);
+                }
 
                 // toggle interface and clean input when entering Fraction Mode
                 $("#fraction_mode_checkbox").change(function() {
