@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>被除數未知的應用問題</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars">
+			<var id="P"> randRange( 10, 30 ) </var>
+			<var id="Q"> randRange( 3, 10 ) </var>
+			<var id="ANSWER"> P * Q </var>
+        </div>
+
+		<div class="question">
+			<p>王伯伯採收了一些蘋果，每 <code><var>P</var></code> 顆裝成一箱，總共裝了 <code><var>Q</var></code> 箱，王伯伯採收了幾顆蘋果？</p>
+		</div>
+
+		<div class="solution" data-forms="integer"><var>ANSWER</var></div>
+
+    	<div class="hints">
+			<div>
+				<p><code> (\quad) \div <var>P</var> = <var>Q</var></code></p>
+				<div class="graphie">
+                	init( { range: [ [ -6, 6], [ -1, 3] ], scale: 40 } );
+					line( [ -6, 0.5 ], [ 6, 0.5 ], { stroke : "red" } );
+					line( [ -6, 3 ], [ -6, 0 ], { stroke : "red" } );
+					line( [ 6, 3 ] , [ 6, 0 ], { stroke : "red" } );
+					for( var i = 1; i &lt; Q; i++ ) {
+						line( [ ( 12 / Q ) * i - 6, 0.4 ], [ ( 12 / Q ) * i - 6, 0.7 ], { stroke : KhanUtil.RED } );
+					}
+					for( var i = 0; i &lt; Q; i++ ) {
+						label( [ ( 12 / Q ) * ( i + 0.5 ) - 6, 0.5 ], "\\small{" + ( i + 1 ) + "}", "above", { color : KhanUtil.BLUE } );
+						label( [ ( 12 / Q ) * ( i + 0.5 ) - 6, 0.5 ], "\\small{" + ( P + "顆" ) + "}", "below", { color : KhanUtil.RED } );
+					}						
+					line( [ -6, 1.6 ], [ -2, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					line( [ 6, 1.6 ], [ 2, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					label( [ 0, 1.6 ], "採收了？顆蘋果", { color : KhanUtil.RED } );
+				</div>     
+			</div>
+			<p>王伯伯採收了 <code><var>P</var> \times <var>Q</var> = \color{#FF00AF}{<var>ANSWER</var>}</code> 顆蘋果。</p>
+    	</div>
+	</div>
+
+	<div id="case2">
+        <div class="vars">
+			<var id="P"> randRange( 3, 9 ) </var>
+			<var id="Q"> randRange( 5, 20 ) </var>
+			<var id="ANSWER"> P * Q </var>
+        </div>
+
+		<div class="question">
+			<p>曉萱將一包糖果平均分給 <code><var>P</var></code> 個人，每個人可以拿 <code><var>Q</var></code> 顆，請問一包糖果有幾顆？</p>
+		</div>
+
+		<div class="solution" data-forms="integer"><var>ANSWER</var></div>
+
+    	<div class="hints">
+			<div>
+				<p><code> (\quad) \div <var>P</var> = <var>Q</var></code></p>
+				<div class="graphie">
+                	init( { range: [ [ -6, 6 ], [ -1, 3 ] ], scale: 40 } );
+					line( [ -6, 0.5 ], [ 6, 0.5 ], { stroke : "red" } );
+					line( [ -6, 3 ], [ -6, 0 ], { stroke : "red" } );
+					line( [ 6, 3 ], [ 6, 0 ], { stroke : "red" } );
+					for( var i = 1; i &lt; P; i++ ) {
+						line( [ ( 12 / P ) * i - 6, 0.4 ], [ ( 12 / P ) * i - 6, 0.7 ], { stroke:"red" } );
+					}
+					for( var i = 0; i &lt; P; i++ ) {
+						label( [ ( 12 / P ) * ( i + 0.5 ) - 6, 0.5 ], "\\small{" + ( i + 1 ) + "}", "above", { color : KhanUtil.BLUE } );
+						label( [ ( 12 / P ) * ( i + 0.5 ) - 6, 0.5 ], "\\small{" + ( Q + "顆" ) + "}", "below", { color : KhanUtil.RED } );
+					}						
+					line( [ -6, 1.6 ], [ -1, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					line( [ 6, 1.6 ], [ 1, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					label( [ 0, 1.6 ], "？顆", { color : KhanUtil.RED } );
+				</div>     
+			</div>
+			<p>一包糖果有 <code><var>P</var> \times <var>Q</var> = \color{#FF00AF}{<var>ANSWER</var>}</code> 顆。</p>
+    	</div>
+	</div>
+
+	<div id="case3">
+        <div class="vars">
+			<var id="P"> randRange( 3, 9 ) </var>
+			<var id="Q"> randRange( 8, 20 ) </var>
+			<var id="R"> randRange( floorTo( 0, ( Q - 1 ) / 2 ), Q - 1 ) </var>
+			<var id="ANSWER"> P * Q + R </var>
+			<var id="L"> P / ( R / Q + P ) * 12 </var>
+        </div>
+
+		<div class="question">
+			<p>盤子上有一些小番茄，分給 <code><var>P</var></code> 個人，每個人拿 <code><var>Q</var></code> 顆，還剩下 <code><var>R</var></code> 顆，盤子上原本有幾顆小番茄？</p>
+		</div>
+
+		<div class="solution" data-forms="integer"><var>ANSWER</var></div>
+
+    	<div class="hints">
+			<div>
+				<p><code> (\quad) \div <var>P</var> = <var>Q</var>...<var>R</var></code></p>
+				<div class="graphie">
+                	init( { range: [ [ -6, 6 ], [ -1, 3 ] ], scale: 40 } );
+					line( [ -6, 0.5 ], [ 6, 0.5 ], { stroke : "red" } );
+					line( [ -6, 3 ], [ -6, 0 ], { stroke : "red" } );
+					line( [ 6, 3 ], [ 6, 0 ], { stroke : "red" } );
+					for( var i = 1; i &lt;= P; i++ ) {
+						line( [ ( L / P ) * i - 6, 0.4 ], [ ( L / P ) * i - 6, 0.7 ], { stroke : "red" } );
+					}
+					for( var i = 0; i &lt; P; i++ ) {
+						label( [ ( L / P ) * ( i + 0.5 ) - 6, 0.5 ], "\\small{" + ( i + 1 ) + "}", "above", { color : KhanUtil.BLUE } );
+						label( [ ( L / P ) * ( i + 0.5 ) - 6, 0.5 ], "\\small{" + ( Q + "顆" ) + "}", "below", { color : KhanUtil.RED } );
+					}						
+					line( [ -6, 1.6 ], [ -2, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					line( [ 6, 1.6 ], [ 2, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					label( [ 0, 1.6 ], "原有？顆小番茄", { color : KhanUtil.RED } );
+
+					label( [ L / 2, 0.5 ], "\\small{" + ( R + "顆" ) + "}", "below", { color : KhanUtil.GREEN } );
+				</div>     
+			</div>
+			<div>
+				<p>分給 <code><var>P</var></code> 個人，每個人拿 <code><var>Q</var></code> 顆，共有 </p>
+				<p><code>\qquad <var>P</var> \times <var>Q</var> = <var>P*Q</var></code> 顆</p>
+			</div>	
+			<div>
+				<p>再加上剩下的 <code><var>R</var></code> 顆，盤子上原本有 </p>
+				<p><code>\qquad <var> P * Q </var> + <var>R</var> = \color{#FF00AF}{<var>ANSWER</var>}</code> 顆</p>
+			</div>
+    	</div>
+	</div>
+
+	<div id="case4">
+        <div class="vars">
+			<var id="P"> randRange( 8, 20 ) </var>
+			<var id="Q"> randRange( 3, 9 ) </var>
+			<var id="R"> randRange( floorTo( 0, ( P - 1 ) / 2 ), P - 1 ) </var>
+			<var id="ANSWER"> P * Q + R </var>
+			<var id="L"> Q / ( R / P + Q ) * 12 </var>
+        </div>
+
+		<div class="question">
+			<p>老師買了一些巧克力，每 <code><var>P</var></code> 顆裝一袋，共裝成 <code><var>Q</var></code> 袋，還剩下 <code><var>R</var></code> 顆，老師買了幾顆巧克力？</p>
+		</div>
+
+		<div class="solution" data-forms="integer"><var>ANSWER</var></div>
+
+    	<div class="hints">
+			<div>
+				<p><code> (\quad) \div <var>P</var> = <var>Q</var>...<var>R</var></code></p>
+				<div class="graphie">
+                	init( { range: [ [ -6, 6 ], [ -1, 3 ] ], scale: 40 } );
+					line( [ -6, 0.5 ], [ 6, 0.5 ], { stroke : "red" } );
+					line( [ -6, 3 ], [ -6, 0 ], { stroke : "red" } );
+					line( [ 6, 3 ], [ 6, 0 ], { stroke : "red" } );
+					for( var i = 1; i &lt;= Q; i++ ) {
+						line( [ ( L / Q ) * i - 6, 0.4 ], [ ( L / Q ) * i - 6, 0.7 ], { stroke : "red" } );
+					}
+					for( var i = 0; i &lt; Q; i++ ) {
+						label( [ ( L / Q ) * ( i + 0.5 ) - 6, 0.5 ], "\\small{" + ( i + 1 ) + "}" , "above", { color : KhanUtil.BLUE } );
+						label( [ ( L / Q ) * ( i + 0.5 ) - 6, 0.5 ], "\\small{" + ( P + "顆" ) + "}", "below", { color : KhanUtil.RED } );
+					}				
+					line( [ -6, 1.6 ], [ -2, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					line( [ 6, 1.6 ], [ 2, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					label( [ 0, 1.6 ], "？顆巧克力", { color : "red" } );
+
+					label( [ L / 2, 0.5 ], "\\small{" + ( R + "顆" ) + "}", "below", { color : KhanUtil.GREEN } );
+				</div>     
+			</div>
+			<div>
+				<p>每 <code><var>P</var></code> 顆裝一袋，共裝成 <code><var>Q</var></code> 袋，共有 </p>
+				<p><code>\qquad <var>P</var> \times <var>Q</var> = <var>P*Q</var></code> 顆</p>
+			</div>			
+			<div>
+				<p>再加上剩下的 <code><var>R</var></code> 顆，老師買了 </p>
+				<p><code>\qquad <var>P*Q</var> + <var>R</var> = \color{#FF00AF}{<var>ANSWER</var>}</code> 顆</p>
+			</div>
+    	</div>
+	</div>
+
+	
+</div>
+</div>
+</body>
+</html>
