@@ -194,13 +194,13 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             // Enable it by adding data-fraction-input="true" attr for .solution element in html exercise templates
             var fractionForms = ['proper', 'improper', 'mixed'];
             var supportedFractionTypes = fractionForms.filter(function(n) {
-                return acceptableForms.indexOf(n) != -1
-            })
+                return acceptableForms.indexOf(n) !== -1;
+            });
             if(supportedFractionTypes.length > 0){
                 input.attr("id", "default_input");
                 var checkbox = '<div class="checkbox" id="fraction_mode_entry" style="display:none"><label style="font-size:14px">'+
                                '<input type="checkbox" id="fraction_mode_checkbox"> 輸入直式分數</label></div>'
-                var fraction_mode_div = '<div id="fraction_mode_div" style="display:none">' +
+                var fraction_mode_div = '<div id="fraction_mode_div" style="display:inline-block">' +
                                         '<table border="0" cellpadding="0" cellspacing="0">' +
                                         '<tr>' +
                                         '<td rowspan=3 style="vertical-align:middle">' +
@@ -222,9 +222,18 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     fraction_mode_div = fraction_mode_div.replace(/<input/g,'<input pattern="[0-9]*"');
                 }
 
+                // possible values of $("solutionarea") are:
+                // 1. <div id="solutionarea"> ... </div>  (usual case)
+                // 2. <span class="sol"> ... </span>      (special case, caused by html question files)
                 $(solutionarea).append(input);
                 $(solutionarea).append(fraction_mode_div);
-                $(solutionarea).append(checkbox);
+                if (solutionarea.parent()[0].id === "answercontent"){
+                    $(solutionarea).append(checkbox);
+                    $(solutionarea).find("#fraction_mode_div").toggle(false);
+                }else{
+                    $(solutionarea).parent().append(checkbox);
+                    $(solutionarea).parent().find("#fraction_mode_div").toggle(false);
+                }
 
                 // toggle interface and clean input when entering Fraction Mode
                 $("#fraction_mode_checkbox").change(function() {
