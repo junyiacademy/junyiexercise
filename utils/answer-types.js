@@ -222,10 +222,12 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     fraction_mode_div = fraction_mode_div.replace(/<input/g,'<input pattern="[0-9]*"');
                 }
 
+                // possible values of $("solutionarea") are:
+                // 1. <div id="solutionarea"> ... </div>  (usual case)
+                // 2. <span class="sol"> ... </span>      (special case, caused by html question files)
                 $(solutionarea).append(input);
                 $(solutionarea).append(fraction_mode_div);
                 if (solutionarea.parent()[0].id === "answercontent"){
-                    // do not append checkbox under "answercontent" level div
                     $(solutionarea).append(checkbox);
                     $(solutionarea).find("#fraction_mode_div").toggle(false);
                 }else{
