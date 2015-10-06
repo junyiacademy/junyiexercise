@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>被乘數未知的應用問題</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars">
+			<var id="A"> randRange( 2, 9 ) </var>
+			<var id="ANSWER"> floorTo( 0, randRange( 11, 99 ) / A ) </var>
+			<var id="B"> ANSWER * A </var>
+        </div>
+
+		<div class="question">
+			<p>小敏有一些糖果，小波的糖果數量是小敏的 <code><var>A</var></code> 倍。小波有 <code><var>B</var></code> 顆糖果，小敏有幾顆糖果？</p>
+		</div>
+
+		<div class="solution" data-forms="integer"><var>ANSWER</var></div>
+
+    	<div class="hints">
+			<div>
+				<p><code>( \quad ) \times <var>A</var> = <var>B</var></code></p>
+				<div class="graphie">
+                	init( { range : [ [ -6, 6 ], [ -1, 3 ] ], scale: 40 } );
+					line( [ -6, 0.5 ], [ 6, 0.5 ], { stroke : "red" } );
+					line( [ -6, 3 ], [ -6, 0 ], { stroke : "red" } );
+					line( [ 6, 3 ], [ 6, 0 ], { stroke : "red" } );
+					for( var i = 1; i &lt; A; i++ ) {
+						line( [ ( 12 / A ) * i - 6, 0.4 ], [ ( 12 / A ) * i - 6, 0.7 ], { stroke : "red" } );
+					}
+					for( var i = 0; i &lt; A; i++ ) {
+						label( [ ( 12 / A ) * ( i + 0.5 ) - 6, 0.5 ], "\\small{" + ( i + 1 ) + "}", "above", { color : KhanUtil.BLUE } );
+					}
+					label( [ ( 12 / A ) * 0.5 - 6, 0.5 ], "\\small{" + "？颗" + "}", "below", { color : KhanUtil.GREEN } );
+					line( [ -6, 1.6 ], [ -1, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					line( [ 6, 1.6 ], [ 1, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					label( [ 0, 1.6 ], B + "颗糖果", { color : "red" } );
+				</div>     
+			</div>
+			<p>小敏有 <code><var>B</var>\div<var>A</var> = \color{#FF00AF}{<var>ANSWER</var>}</code> 顆糖果。</p>
+    	</div>
+	</div>
+
+	<div id="case2">
+        <div class="vars">
+			<var id="A"> randRange( 2, 9 ) </var>
+			<var id="ANSWER"> floorTo( 0, randRange( 40, 150 ) / A ) </var>
+			<var id="B"> ANSWER * A </var>
+        </div>
+
+		<div class="question">
+			<p>小梅買了 <code><var>A</var></code> 包一樣的餅乾，花了 <code><var>B</var></code> 元，一包餅乾多少錢？</p>
+		</div>
+
+		<div class="solution" data-forms="integer"><var>ANSWER</var></div>
+
+    	<div class="hints">
+			<div>
+				<p><code>( \quad ) \times <var>A</var> = <var>B</var></code></p>
+				<div class="graphie">
+                	init( { range : [ [ -6, 6 ], [ -1, 3 ] ], scale: 40 } );
+					line( [ -6, 0.5 ], [ 6, 0.5 ], { stroke : "red" } );
+					line( [ -6, 3 ], [ -6, 0 ], { stroke : "red" } );
+					line( [ 6, 3 ], [ 6, 0 ], { stroke : "red" } );
+					for( var i = 1; i &lt; A; i++ ) {
+						line( [ ( 12 / A ) * i - 6, 0.4 ], [ ( 12 / A ) * i - 6, 0.7 ], { stroke : "red" } );
+					}
+					for( var i = 0; i &lt; A; i++ ) {
+						label( [ ( 12 / A ) * ( i + 0.5 ) - 6, 0.5 ], "\\small{" + ( i + 1 ) + "}", "above", { color : KhanUtil.BLUE } );
+					}
+					label( [ ( 12 / A ) * 0.5 - 6, 0.5 ], "\\small{" + "？元" + "}", "below", { color : KhanUtil.GREEN } );
+					line( [ -6, 1.6 ], [ -1, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					line( [ 6, 1.6 ], [ 1, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					label( [ 0, 1.6 ], B + "元", { color : "red" } );
+				</div>     
+			</div>
+			<p>一包餅乾 <code><var>B</var>\div<var>A</var> = \color{#FF00AF}{<var>ANSWER</var>}</code> 元。</p>
+    	</div>
+	</div>
+
+	<div id="case3">
+        <div class="vars" data-ensure=" isInt( ANSWER ) ">
+			<var id="A, B"> randFromArray( [ [ 9, 270 ], [ 9, 405 ], [ 8, 480 ], [ 8, 400 ], [ 7, 385 ], [ 7, 357 ], [ 6, 288 ], [ 6, 378 ], [ 5, 245 ], [ 4, 252 ], [ 4, 228 ], [ 3, 147 ], [ 3, 162 ] ] ) </var>
+			<var id="ANSWER"> B / A </var>
+        </div>
+
+		<div class="question">
+			<p>小琪走一步的距離是固定的，她走了 <code><var>A</var></code> 步，共走了 <code><var>B</var></code> 公分。小琪一步的距離是幾公分？</p>
+		</div>
+
+		<div class="solution" data-forms="integer"><var>ANSWER</var></div>
+
+    	<div class="hints">
+			<div>
+				<p><code>( \quad ) \times <var>A</var> = <var>B</var></code></p>
+				<div class="graphie">
+                	init( { range : [ [ -6, 6 ], [ -1, 3 ] ], scale: 40 } );
+					line( [ -6, 0.5 ], [ 6, 0.5 ], { stroke : "red" } );
+					line( [ -6, 3 ], [ -6, 0 ], { stroke : "red" } );
+					line( [ 6, 3 ], [ 6, 0 ], { stroke : "red" } );
+					for( var i = 1; i &lt; A; i++ ) {
+						line( [ ( 12 / A ) * i - 6, 0.4 ], [ ( 12 / A ) * i - 6, 0.7 ], { stroke : "red" } );
+					}
+					for( var i = 0; i &lt; A; i++ ) {
+						label( [ ( 12 / A ) * ( i + 0.5 ) - 6, 0.5 ], "\\small{" + ( i + 1 ) + "}", "above", { color : KhanUtil.BLUE } );
+					}
+					label( [ ( 12 / A ) * 0.5 - 6, 0.5 ], "\\small{" + "？公分" + "}", "below", { color : KhanUtil.GREEN } );
+					line( [ -6, 1.6 ], [ -1, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					line( [ 6, 1.6 ], [ 1, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					label( [ 0, 1.6 ], B + "公分", { color : "red" } );
+				</div>     
+			</div>
+			<p>小琪一步的距離是 <code><var>B</var>\div<var>A</var> = \color{#FF00AF}{<var>ANSWER</var>}</code> 公分。</p>
+    	</div>
+	</div>
+
+	<div id="case4">
+        <div class="vars">
+			<var id="A"> randRange( 2, 9 ) </var>
+			<var id="ANSWER"> floorTo( 0, randRange( 100, 300 ) / A ) </var>
+			<var id="B"> ANSWER * A </var>
+        </div>
+
+		<div class="question">
+			<p>禮堂有 <code><var>A</var></code> 排座位，每排坐的人數固定，總共可以坐 <code><var>B</var></code> 人。每排可以坐幾個人？</p>
+		</div>
+
+		<div class="solution" data-forms="integer"><var>ANSWER</var></div>
+
+    	<div class="hints">
+			<div>
+				<p><code>( \quad ) \times <var>A</var> = <var>B</var></code></p>
+				<div class="graphie">
+                	init( { range : [ [ -6, 6 ], [ -1, 3 ] ], scale: 40 } );
+					line( [ -6, 0.5 ], [ 6, 0.5 ], { stroke : "red" } );
+					line( [ -6, 3 ], [ -6, 0 ], { stroke : "red" } );
+					line( [ 6, 3 ], [ 6, 0 ], { stroke : "red" } );
+					for( var i = 1; i &lt; A; i++ ) {
+						line( [ ( 12 / A ) * i - 6, 0.4 ], [ ( 12 / A ) * i - 6, 0.7 ], { stroke : "red" } );
+					}
+					for( var i = 0; i &lt; A; i++ ) {
+						label( [ ( 12 / A ) * ( i + 0.5 ) - 6, 0.5 ], "\\small{" + ( i + 1 ) + "}", "above", { color : KhanUtil.BLUE } );
+					}
+					label( [ ( 12 / A ) * 0.5 - 6, 0.5 ], "\\small{" + "？人" + "}", "below", { color : KhanUtil.GREEN } );
+					line( [ -6, 1.6 ], [ -1, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					line( [ 6, 1.6 ], [ 1, 1.6 ], { stroke : "red", "stroke-dasharray" : "-" } );
+					label( [ 0, 1.6 ], B + "人", { color : "red" } );
+				</div>     
+			</div>
+			<p>每排可以坐 <code><var>B</var>\div<var>A</var> = \color{#FF00AF}{<var>ANSWER</var>}</code> 人。</p>
+    	</div>
+	</div>
+
+	
+</div>
+</div>
+</body>
+</html>

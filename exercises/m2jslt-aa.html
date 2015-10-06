@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>認識體積</title>
+    <script src="../khan-exercise.js"></script>
+    <script script="text/javascript">
+
+		function radioClick( id ) {
+			$( '#' + id ).prop( 'checked', true );
+		}
+
+	</script>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="QUES">(function(){
+					var res = [];
+					res.push("把同一塊黏土，捏成不同的造型。");
+					res.push("把一個蛋糕切成 8 小塊再合起來。");
+					res.push("把一個空的鋁罐壓扁。");
+					res.push("把一個蘋果切成兩半後再合起來。");
+					return res;
+				})()</var>
+				<var id="Q"> randRangeUnique( 0, 4, 4 ) </var>
+				<var id="_QUES"> [ QUES[ Q[ 0 ] ], QUES[ Q[ 1 ] ], QUES[ Q[ 2 ] ], QUES[ Q[ 3 ] ] ] </var>
+			</div>
+			
+			<div class="question">
+			<div class="problem">
+                <p>下列選項哪一個物體的體積會變小？</p>
+				<p onclick="radioClick('option_1')"><input id="option_1" type="radio" name="radios" value="0"/>&nbsp;<code><var>_QUES[ 0 ]</var></code></p>
+				<p onclick="radioClick('option_2')"><input id="option_2" type="radio" name="radios" value="1"/>&nbsp;<code><var>_QUES[ 1 ]</var></code></p>
+				<p onclick="radioClick('option_3')"><input id="option_3" type="radio" name="radios" value="2"/>&nbsp;<code><var>_QUES[ 2 ]</var></code></p>
+				<p onclick="radioClick('option_4')"><input id="option_4" type="radio" name="radios" value="3"/>&nbsp;<code><var>_QUES[ 3 ]</var></code></p>	
+			</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			<p>請選擇正確的答案</p>
+			<div class="sol" data-type="custom">
+				<div class="guess">$('input:radio[name="radios"]:checked').val()</div>
+	            <div class="validator-function">
+	            	if(guess == null){
+                		return "";
+                	}
+                	return guess ==  Q.indexOf( 2 );
+	            </div>
+            </div>
+			</div>
+
+            <div class="hints"> 
+				<span class="hint_pink">鋁罐空氣的減少會讓鋁罐的體積變小。</span>
+			</div>
+		</div>
+	
+		<div id="case2">
+			<div class="vars" data-ensure=" max( _VOL1, _VOL2 ) / min( _VOL1, _VOL2 ) &gt; 2 &amp;&amp; _PATHS[ 3 ][ 2 ][ 1 ] &lt; 18">
+				<var id="J, K, L"> randRangeUnique( 3, 8, 3 ) </var>
+				<var id="M, N, O"> randRangeUnique( 3, 8, 3 ) </var>
+				<var id="_VOL1"> J * K * L </var>
+				<var id="_VOL2"> M * N * O </var>
+				<var id="COL1, COL2">(function(){
+					var cols = ["#6495ED", "#FFA500", "red", "#28AE7B", "purple"];
+					var inds = randRangeUnique( 0, 4, 2 );
+					return [ cols[ inds[ 0 ] ], cols[ inds[ 1 ] ] ];
+				})()</var>
+				<var id="_PATHS">(function(){
+					var s = [];
+
+					s.push( [ [ 0, 0 ], [ 0, J ], [ sqrt( 3 ) / 2 * K, J + K / 2 ], [ sqrt( 3 ) / 2 * K, K / 2 ], [ 0, 0 ] ] );
+					s.push( [ [ 0, 0 ], [ 0, J ], [- L / 2, J + L / 2 * sqrt( 3 ) ],[ - L / 2, L / 2 * sqrt( 3 ) ], [ 0, 0 ] ] );
+					s.push( [ [ 0, J ], [- L / 2, J + L / 2 * sqrt( 3 ) ], [ sqrt( 3 ) / 2 * K - L / 2, J + K / 2 + L / 2 * sqrt( 3 ) ], [ sqrt( 3 ) / 2 * K, J + K / 2 ], [ 0, J ] ] );
+
+					s.push( [ [ 0, 0 ], [ 0, M ], [ sqrt( 3 ) / 2 * N, M + N / 2 ], [ sqrt( 3 ) / 2 * N, N / 2 ], [ 0, 0 ] ] );
+					s.push( [ [ 0, 0 ], [ 0, M ], [- O / 2, M + O / 2 * sqrt( 3 ) ],[ - O / 2, O / 2 * sqrt( 3 ) ], [ 0, 0 ] ] );
+					s.push( [ [ 0, M ], [- O / 2, M + O / 2 * sqrt( 3 ) ], [ sqrt( 3 ) / 2 * N - O / 2, M + N / 2 + O / 2 * sqrt( 3 ) ], [ sqrt( 3 ) / 2 * N, M + N / 2 ], [ 0, M ] ] );
+
+					return s;
+				})()</var>
+			</div>	
+			
+			<div class="question">
+				<div class="problem">
+	                <p>比比看，哪個體積比較大？</p>
+	                <table>
+	                	<tr>
+	                		<td>
+								<div class="graphie" id="compare-volumes-1" style="float : left;" onclick="$( '#option_1' ).prop( 'checked', true )">
+									init( { range : [ [ - L / 2 - 1, K / 2 * sqrt( 3 ) + 1 ], [ -1, max( M + N / 2 + O / 2 * sqrt( 3 ), J + K / 2 + L / 2 * sqrt( 3 ) ) + 1 ] ], scale : 20 } );
+									graph.p0 = path( _PATHS[ 0 ], { fill : COL1, stroke : COL1, opacity : 0.75 } );
+									graph.p1 = path( _PATHS[ 1 ], { fill : COL1, stroke : COL1, opacity : 0.55 } );
+									graph.p2 = path( _PATHS[ 2 ], { fill : COL1, stroke : COL1, opacity : 0.35 } );
+									path( _PATHS[ 0 ], { stroke : COL1 } );
+									path( _PATHS[ 1 ], { stroke : COL1 } );
+									path( _PATHS[ 2 ], { stroke : COL1 } );
+								</div>
+							</td>
+							<td>
+								<div class="graphie" id="compare-volumes-2" style="float : left;" onclick="$( '#option_2' ).prop( 'checked', true )">
+									init( { range : [ [ - O / 2 - 1, N / 2 * sqrt( 3 ) + 1 ], [ -1, max( M + N / 2 + O / 2 * sqrt( 3 ), J + K / 2 + L / 2 * sqrt( 3 ) ) + 1 ] ], scale : 20 } );
+									graph.p3 = path( _PATHS[ 3 ], { fill : COL2, stroke : COL2, opacity : 0.75 } );
+									graph.p4 = path( _PATHS[ 4 ], { fill : COL2, stroke : COL2, opacity : 0.55 } );
+									graph.p5 = path( _PATHS[ 5 ], { fill : COL2, stroke : COL2, opacity : 0.35 } );
+									path( _PATHS[ 3 ], { stroke : COL2 } );
+									path( _PATHS[ 4 ], { stroke : COL2 } );
+									path( _PATHS[ 5 ], { stroke : COL2 } );
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td id="s1" align="center"><input id="option_1" type="radio" name="radios" value="0" /></td>
+							<td id="s2" align="center"><input id="option_2" type="radio" name="radios" value="1" /></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			<p>請選擇正確的答案</p>
+			<div class="sol" data-type="custom">
+				<div class="guess">$('input:radio[name="radios"]:checked').val()</div>
+	            <div class="validator-function">
+	            	if( guess == null ) {
+                		return "";
+                	}
+                	return _VOL1 &gt; _VOL2 ? guess == 0 : guess == 1;
+	            </div>
+            </div>
+			</div>
+
+            <div class="hints"> 
+			</div>
+			
+		</div>
+	
+	
+		<div id="case3">
+			<div class="vars">
+				<var id="A, B"> randFromArray( [ [ 8, 8 ], [ 7, 7 ], [ 5, 7 ], [ 17, 21 ], [ 22, 56 ] ] ) </var>
+				<var id="QUES">(function(){
+					var res = [];
+					res.push( "積木邊長不知道，所以無法比較體積" );
+					res.push( "郁欣排的正方體比較大" );
+					res.push( "小貝排的長方體比較大" );
+					res.push( "兩人排的形體體積一樣大" );
+					return res;
+				})()</var>
+				<var id="Q"> randRangeUnique( 0, 4, 4 ) </var>
+				<var id="_QUES"> [ QUES[ Q[ 0 ] ], QUES[ Q[ 1 ] ], QUES[ Q[ 2 ] ], QUES[ Q[ 3 ] ] ] </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>郁欣用 <code><var>A</var></code> 個大小相同的正立方體積木堆了一個正方體；小貝也用 <code><var>B</var></code> 個相同的積木排出一個長方體，請問下列敘述哪個是正確的？</p>
+					<p onclick="radioClick('option_1')"><input id="option_1" type="radio" name="raidos" value="0"/>&nbsp;<code><var>_QUES[ 0 ]</var></code></p>
+					<p onclick="radioClick('option_2')"><input id="option_2" type="radio" name="raidos" value="1"/>&nbsp;<code><var>_QUES[ 1 ]</var></code></p>
+					<p onclick="radioClick('option_3')"><input id="option_3" type="radio" name="raidos" value="2"/>&nbsp;<code><var>_QUES[ 2 ]</var></code></p>
+					<p onclick="radioClick('option_4')"><input id="option_4" type="radio" name="raidos" value="3"/>&nbsp;<code><var>_QUES[ 3 ]</var></code></p>
+				</div>
+			</div>
+
+			<div class="solution" data-type="multiple">
+				<p>請選擇正確的答案</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">$('input:radio[name="raidos"]:checked').val()</div>
+		            <div class="validator-function">
+		            	if( guess == null ) {
+	                		return "";
+	                	}
+	                	return ( guess ==  Q.indexOf( 1 ) &amp;&amp; A &gt; B || guess ==  Q.indexOf( 2 ) &amp;&amp; A &lt; B || guess ==  Q.indexOf( 3 ) &amp;&amp; A== B );
+		            </div>
+	            </div>
+			</div>
+
+            <div class="hints"> 
+				<p data-if="A==B">兩人拿相同的數量的正立方塊，所以<span class="hint_pink">排得體積一樣大</span></p>
+				<p data-if="A &gt;B">郁欣用了更多數量的正立方塊，所以<span class="hint_pink">郁欣排得體積更大</span></p>
+				<p data-if="A &lt;B">小貝用了更多數量的正立方塊，所以<span class="hint_pink">小貝排得體積更大</span></p>
+			</div>
+			
+		</div>
+		
+		<div id="case4">
+			<div class="vars">
+				<var id="QUES">(function(){
+					var res = [];
+					res.push("同一塊黏土捏掉一半。");
+					res.push("被壓扁後的牛奶盒。");
+					res.push("一顆西瓜被切成4片後又合起來。");
+					res.push("小蝌蚪變青蛙。");
+					return res;
+				})()</var>
+				<var id="Q"> randRangeUnique( 0, 4, 4 ) </var>
+				<var id="_QUES"> [ QUES[ Q[ 0 ] ], QUES[ Q[ 1 ] ], QUES[ Q[ 2 ] ], QUES[ Q[ 3 ] ] ] </var>
+			</div>
+			
+			 <div class="question">
+			 	<div class="problem">
+	                <p>下列的敘述，體積不會改變的是哪個？</p>
+					<p onclick="radioClick('option_1')"><input id="option_1" type="radio" name="radios" value="0"/>&nbsp;<code><var>_QUES[ 0 ]</var></code></p>
+					<p onclick="radioClick('option_2')"><input id="option_2" type="radio" name="radios" value="1"/>&nbsp;<code><var>_QUES[ 1 ]</var></code></p>
+					<p onclick="radioClick('option_3')"><input id="option_3" type="radio" name="radios" value="2"/>&nbsp;<code><var>_QUES[ 2 ]</var></code></p>
+					<p onclick="radioClick('option_4')"><input id="option_4" type="radio" name="radios" value="3"/>&nbsp;<code><var>_QUES[ 3 ]</var></code></p>
+				</div>
+			</div>
+
+			<div class="solution" data-type="multiple">
+				<p>請選擇正確的答案</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">$('input:radio[name="radios"]:checked').val()</div>
+	            	<div class="validator-function">
+		            	if(guess == null){
+	                		return "";
+	                	}
+	                	return guess ==  Q.indexOf( 2 );
+		        	</div>
+		        </div>
+            </div>
+
+            <div class="hints"> 
+				<p>體積表示物體占空間的大小，依題目敘述可得知，<span class="hint_pink">一顆西瓜被切成 <code>4</code> 片後又合起來，體積不會改變。</span></p>
+			</div>
+		</div>
+		
+	
+		<div id="case5">
+			<div class="vars">
+			<var id="A, B, C"> randFromArray( [ [ "小貝把一塊黏土捏成杯子的造型，再捏成水壺的造型，請問黏土的體積？", 2, "黏土的體積不變。" ], [ "把一個西瓜切成 24 塊再合在一起，西瓜的體積？", 2, "西瓜的體積不變。" ], [ "小貝把氣球裡面充滿空氣，請問氣球的體積會？", 0, "氣球的體積會變大。" ], [ "把空的鋁箔包踩扁後，鋁箔包的體積會？", 1, "鋁箔包的體積會變小。" ], [ "小貝在吹氣球，吹氣後，氣球的體積會有什麼變化？", 0, "氣球的體積會變大。" ], [ "毛毛把一塊蛋糕切成 8 塊，切開前和切開後，蛋糕的總體積會有什麼改變？", 2, "蛋糕的體積不變。" ] ] ) </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p><var>A</var></p>
+					<p onclick="radioClick('option_1')"><input id="option_1" type="radio" name="count_numbers_1" value="0"/>&nbsp; 變大</p>
+					<p onclick="radioClick('option_2')"><input id="option_2" type="radio" name="count_numbers_1" value="1"/>&nbsp; 變小</p>
+					<p onclick="radioClick('option_3')"><input id="option_3" type="radio" name="count_numbers_1" value="2"/>&nbsp; 不變</p>
+				</div>
+			</div>
+
+			<div class="solution" data-type="multiple">
+				<p>請選擇正確的答案</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">$('input:radio[name="count_numbers_1"]:checked').val()</div>
+	            	<div class="validator-function">
+		            	if(guess == null){
+	                		return "";
+	                	}
+	                	return guess == B;
+		            </div>
+           	 </div>
+			</div>
+
+            <div class="hints"> 
+				<p>體積表示物體占空間的大小，依題目敘述可得知，<span class="hint_pink"><var>C</var></span></p>
+			</div>
+		</div>
+		
+	</div>
+	</div>
+</body>
+</html>
+
