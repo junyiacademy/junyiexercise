@@ -55,6 +55,8 @@
     function getAnswer(PRIMES, REMAINS) {
         var text = '';
         var sum = 0;
+        var i_array = [0,0,0,0];
+        var cnt = 0;
         _.each(PRIMES, function(prime, y) {
             excludePrimes = getExcludePrimes(PRIMES, prime);
             for (var i=1; i < prime; i++) {
@@ -63,6 +65,8 @@
                     text += excludePrimes[0] + ' X ' + excludePrimes[1] + ' X <code class="hint_pink">' + i + '</code> + ';
                     sum += excludePrimes[0] * excludePrimes[1] * i;
                     // return [excludePrimes[0] * excludePrimes[1] * i, i];
+                    i_array[cnt] = i;
+                    cnt += 1;
                 }
             }
         });
@@ -71,10 +75,11 @@
             var temp = sum + PRIMES[0] * PRIMES[1] * PRIMES[2] * i;
             if (temp > 0) {
                 text += PRIMES[0] + ' X ' + PRIMES[1] + ' X ' + PRIMES[2] + ' X<code class="hint_pink">' + i + '</code> = <code class="hint_pink">' + temp + '</code>';
+                i_array[3] = i;
                 break;
             }
         };
-        return [text, temp];
+        return [text, temp, i_array];
     }
 
     </script>
@@ -104,9 +109,10 @@
             <div class="question"></div>
             <div class="problem">
                 <p>
-                    某正整數除以<var>A</var>餘 <var>RA</var>，除以 <var>B</var> 餘 <var>RB</var> ，除以 <var>C</var> 餘 <var>RC</var>，請問最小為何？
+                    某正整數除以 <code><var>A</var></code> 餘 <code><var>RA</var></code>，除以 <code><var>B</var></code> 餘 <code><var>RB</var></code> ，除以 <code><var>C</var></code> 餘 <code><var>RC</var></code>，請問最小為何？
+                    請點選下方按鈕，尋找滿足題目所需的數。
                 </p>
-                <div class="graphie">
+                <div class="graphie" id="CRT">
 
                     // Save a reference to KhanUtil.currentGraph.graph to workaround the issue
                     // of the custom validator depending on KhanUtil.currentGraph and
@@ -368,8 +374,30 @@
             <div class="solution" data-forms="integer"><var>MIN[1]</var></div>
             <div class="hints">
                 <p>
-                <var>MIN[0]</var>
+                    <var>MIN[0]</var>
                 </p>
+                <div class="graphie" data-update="CRT">
+                    graph.primes[PRIMES[0]].exponent = MIN[2][0];
+                    graph.primes[PRIMES[0]].update();
+                    graph.updateTotal();
+                </div>
+                <div class="graphie" data-update="CRT">
+                    graph.primes[PRIMES[1]].exponent = MIN[2][1];
+                    graph.primes[PRIMES[1]].update();
+                    graph.updateTotal();
+                </div>
+                <div class="graphie" data-update="CRT">
+                    graph.primes[PRIMES[2]].exponent = MIN[2][2];
+                    graph.primes[PRIMES[2]].update();
+                    graph.updateTotal();
+                </div>
+                <div class="graphie" data-update="CRT">
+                    var multiSum = graph.multiSum();
+                    graph.primes[multiSum].exponent = MIN[2][3];
+                    graph.primes[multiSum].update();
+                    graph.updateTotal();
+                </div>
+
             </div>
         </div>
     </div>
