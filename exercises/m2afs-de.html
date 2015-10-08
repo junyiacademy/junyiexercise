@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>同分母帶分數及假分數的加減法</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+	<div class="problems">
+		<div id="case01">
+            <div class="vars">
+                <var id="PM">randRangeNonZero( -1, 1 )</var>
+                <var id="SIGN">( PM === 1 ? "+" : "-")</var>
+                <var id="W1">randRange( 2, 19 )</var>
+                <var id="W2">( PM === 1 ? randRange( 1, 19 ) : randRange( -W1 + 1, -1 ))</var>
+
+                <div data-ensure="getLCM( D1, D2 ) < 61 && D1 === D2">
+                    <var id="D1">randRange( 3, 20 )</var>
+                    <var id="D2">randRange( 3, 20 )</var>
+                </div>
+                <div data-ensure="( PM === 1 ? (N1 / D1) + (N2 / D2) < 1 : (N1 / D1) + PM * (N2 / D2) > 0)">
+                    <var id="N1">randRange( 1, D1 - 1 )</var>
+                    <var id="N2">randRange( 1, D2 - 1 )</var>
+                </div>
+
+                <var id="GCD1">getGCD( N1, D1 )</var>
+                <var id="SIMP_N1">N1 / GCD1</var>
+                <var id="SIMP_D1">D1 / GCD1</var>
+
+                <var id="GCD2">getGCD( N2, D2 )</var>
+                <var id="SIMP_N2">N2 / GCD2</var>
+                <var id="SIMP_D2">D2 / GCD2</var>
+
+                <var id="LCM">getLCM( SIMP_D1, SIMP_D2 )</var>
+                <var id="GCD">getGCD( SIMP_N1 * LCM / SIMP_D1 + PM * SIMP_N2 * LCM / SIMP_D2 , LCM )</var>
+            </div>
+
+            <p class="problem">請用帶分數(約分過後的喔!)回答下面的問題。</p>
+            <p class="question"><code><var>expr(["+", W1 + fraction( N1, D1 ), W2 + fraction( N2, D2 )])</var> = {?}</code></p>
+            <div class="solution" data-type="mixed"><var>W1 + W2 + N1 / D1 + PM * N2 / D2</var></div>
+
+            <div class="hints">
+                <div>
+                    <p>將帶分數的整數與分數分離，記得加上加號(+)喔:</p>
+                    <p><code>= \blue{<var>W1</var>} + \blue{<var>fraction( N1, D1 )</var>} <var>SIGN</var> \pink{<var>abs( W2 )</var>} <var>SIGN</var> \pink{<var>fraction( N2, D2 )</var>}</code></p>
+                </div>
+
+                <div>
+                    <p>把整數送作一堆，分數送作另一堆:</p>
+                    <p><code>= \blue{<var>W1</var>} <var>SIGN</var> \pink{<var>abs( W2 )</var>} + \blue{<var>fraction( N1, D1 )</var>} <var>SIGN</var> \pink{<var>fraction( N2, D2 )</var>}</code></p>
+                </div>
+
+                <div>                    
+					<p>將兩個整數相<span data-if="PM === 1">加</span><span data-else>減</span> :</p>
+                    <p><code>=<var>W1 + W2</var> + \blue{<var>fraction( N1, D1 )</var>} <var>SIGN</var> \pink{<var>fraction( N2, D2 )</var>}</code></p>
+                </div>
+
+                <div>
+                    <p>將兩個分數相<span data-if="PM === 1">加</span><span data-else>減</span> :</p>					
+                    <p><code>= <var>expr(["+", W1 + W2, fraction( N1 + PM * N2, D2 )])</var></code></p>
+                </div>
+
+                <div>
+                    <p>再將整數與分數合併成新的帶分數:</p>
+                    <p><code>= <var>W1 + W2 + fraction( SIMP_N1 * LCM / SIMP_D1 + PM * SIMP_N2 * LCM / SIMP_D2, LCM )</var></code></p>
+                </div>
+
+                <div data-if="GCD > 1">
+                    <p>化簡:</p>
+                    <p><code>= <var>W1 + W2 + fractionReduce( SIMP_N1 * LCM / SIMP_D1 + PM * SIMP_N2 * LCM / SIMP_D2, LCM )</var></code></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="case02">
+            <div class="vars">
+                <var id="PM">-1</var>
+                <var id="SIGN">"-"</var>
+                <var id="W1">randRange( 2, 19 )</var>
+                <var id="W2">randRange( -W1 + 1, -1 )</var>
+
+                <div>
+                    <var id="D2">randRange( 3, 20 )</var>
+                    <var id="D1">D2</var>
+                </div>
+                <div>
+                    <var id="N2">randRange( 1, D2 - 1 )</var>
+                    <var id="N1">D2</var>
+                </div>
+
+                <var id="LCM">D2</var>
+                <var id="GCD">getGCD( N1 - N2 , LCM )</var>
+            </div>
+            <p class="problem">請用帶分數(約分過的喔!)回答以下的問題。</p>
+            <p class="question"><code><var>expr(["+", W1 + 1, W2 + fraction( N2, D2 )])</var> = {?}</code></p>
+            <div class="solution" data-type="mixed"><var>W1 + 1 + W2 + PM * N2 / D2</var></div>
+            <div class="hints">
+                <div>
+                    <p>再進行運算前，我們將 <code><var>W1+1</var></code> 轉換成分母為<code><var>D1</var></code> 的帶分數: 如 <code>=\blue{<var>W1</var>} + \blue{<var>fraction( N1, D1)</var>}</code> ，所以我們可以將原本的式子轉換成:</p>
+                    <p><code>= \blue{<var>W1</var>}\blue{<var>fraction( N1, D1 )</var>} <var>SIGN</var> \pink{<var>abs( W2 )</var>}\pink{<var>fraction( N2, D2 )</var>}</code></p>
+                </div>
+                <div>
+                    <p>將這些帶分數的整數與分數分開:</p>
+                    <p><code>= \blue{<var>W1</var>} + \blue{<var>fraction( N1, D1 )</var>} <var>SIGN</var> \pink{<var>abs( W2 )</var>} <var>SIGN</var> \pink{<var>fraction( N2, D2 )</var>}</code></p>
+                </div>
+                <div>
+                    <p>把整數送作一堆，分數送作另一堆:</p>
+                    <p><code>= \blue{<var>W1</var>} <var>SIGN</var> \pink{<var>abs( W2 )</var>} + \blue{<var>fraction( N1, D1 )</var>} <var>SIGN</var> \pink{<var>fraction( N2, D2 )</var>}</code></p>
+                </div>
+                <div>
+                    <p>將兩個整數相<span data-if="PM === 1">加</span><span data-else>減</span> :</p>
+                    <p><code>=<var>W1 + W2</var> + \blue{<var>fraction( N1, D1 )</var>} <var>SIGN</var> \pink{<var>fraction( N2, D2 )</var>}</code></p>
+                </div>
+                <div>
+                    <p>將兩個分數相<span data-if="PM === 1">加</span><span data-else>減</span> :</p>
+                    <p><code>= <var>expr(["+", W1 + W2, fraction( N1 + PM * N2, D2 )])</var></code></p>
+                </div>
+                <div>
+                    <p>再將整數與分數合併成新的帶分數:</p>
+                    <p><code>= <var>W1 + W2 + fraction( N1 - N2, D2)</var></code></p>
+                </div>
+                <div data-if="GCD > 1">
+                    <p>化簡:</p>
+                    <p><code>= <var>W1 + W2 + fractionReduce( N1 - N2 , LCM )</var></code></p>
+                </div>
+            </div>
+        </div>
+
+		<div id="case2">
+			<div class="vars" data-ensure=" D != E ">
+		        <var id="A"> randRange( 1, 4 ) </var>
+				<var id="B"> randRange( 4, 10 ) </var>
+				<var id="C"> randRange( 1, B - 1 ) </var>
+				<var id="D"> randRange( B + 1, 4 * B - 1 ) </var>
+				<var id="E"> A * B + C </var>
+				<var id="V"> randRange( 0, 2 ) </var>
+				<var id="ANSWER">(function(){		
+					if( V == 1 || V == 0 ) {
+						return E + D;
+					} else {
+						if( E &gt; D ) {
+							return E - D;
+						} else {
+							return  D - E;
+						}
+					}
+				})()</var>
+	    	</div>
+
+	        <div class="question">
+				<p data-if="V == 0"><code><var>A</var>\dfrac {<var>C</var>}{<var>B</var>}+\dfrac {<var>D</var>}{<var>B</var>}=?</code></p>
+				<p data-if="V == 1"><code>\dfrac {<var>D</var>}{<var>B</var>}+<var>A</var>\dfrac {<var>C</var>}{<var>B</var>}=?</code></p>
+				<p data-if="V == 2 &amp;&amp; E &gt; D"><code><var>A</var>\dfrac {<var>C</var>}{<var>B</var>}-\dfrac {<var>D</var>}{<var>B</var>}=?</code></p>
+				<p data-if="V == 2 &amp;&amp; E &lt;= D"><code>\dfrac {<var>D</var>}{<var>B</var>}-<var>A</var>\dfrac {<var>C</var>}{<var>B</var>}=?</code></p>
+				<p>請用假分數表示。</p>
+			</div>
+			
+			<div class="solution" data-forms="improper" data-simplify="optional"><var>ANSWER/B</var></div>
+            
+			<div class="hints">
+	        	<p>因為這兩個分數一個是假分數一個是帶分數，因此我們需要先將他們轉換成同為假分數或同為帶分數。</p> 
+				<p>因為題目要用假分數表示，因此我們來練習一下先轉換成假分數再做加減。因此首先我們將<code><var>A</var>\dfrac {<var>C</var>}{<var>B</var>}</code>化成假分數。</p>
+				<div>
+			   		<p><code><var>A</var>\dfrac {<var>C</var>}{<var>B</var>} = <var>A</var>+\dfrac {<var>C</var>}{<var>B</var>}</code>，首先我們先將整數部分轉換成跟分數部分同樣分母<code><var>B</var></code>。</p>
+			   		<p><code><var>A</var>=<var>A</var>\times \dfrac {<var>B</var>}{<var>B</var>}=\dfrac {<var>A*B</var>}{<var>B</var>}</code>。</p> 
+			    </div>
+				<div>
+			   		<p>因此，<code><var>A</var>+\dfrac {<var>C</var>}{<var>B</var>}=\dfrac {<var>A*B</var>}{<var>B</var>}+\dfrac {<var>C</var>}{<var>B</var>}=\dfrac {<var>E</var>}{<var>B</var>}</code></p>
+			   		<p>這樣我們就成功將帶分數轉成假分數了。那我們要怎麼計算題目呢？</p>
+			    </div>
+				<div>
+					<p>所以題目變成兩個同分母的假分數相<span data-if="V!=2">加</span><span data-if="V==2">減</span>：</p>
+			   		<p data-if="V==0"><code><var>A</var>\dfrac {<var>C</var>}{<var>B</var>}+\dfrac {<var>D</var>}{<var>B</var>}=\dfrac {<var>E</var>+<var>D</var>}{<var>B</var>}=</code><code class="hint_pink">\dfrac {<var>ANSWER</var>}{<var>B</var>}</code></p>
+			   		<p data-if="V==1"><code>\dfrac {<var>D</var>}{<var>B</var>}+<var>A</var>\dfrac {<var>C</var>}{<var>B</var>}=\dfrac {<var>D</var>+<var>E</var>}{<var>B</var>}=</code><code class="hint_pink">\dfrac {<var>ANSWER</var>}{<var>B</var>}</code></p>
+			   		<p data-if="V==2&amp;&amp;E&gt;D"><code><var>A</var>\dfrac {<var>C</var>}{<var>B</var>}-\dfrac {<var>D</var>}{<var>B</var>}=\dfrac {<var>E</var>-<var>D</var>}{<var>B</var>}=</code><code class="hint_pink">\dfrac {<var>ANSWER</var>}{<var>B</var>}</code></p>
+			   		<p data-if="V==2&amp;&amp;E&lt;D"><code>\dfrac {<var>D</var>}{<var>B</var>}-<var>A</var>\dfrac {<var>C</var>}{<var>B</var>}=\dfrac {<var>D</var>-<var>E</var>}{<var>B</var>}=</code><code class="hint_pink">\dfrac {<var>ANSWER</var>}{<var>B</var>}</code></p>
+			    </div>
+	        </div>
+    	</div>
+    
+		<div id="case3">
+			<div class="vars" data-ensure="C+G&lt;B&amp;&amp;((V==2&amp;&amp;A&gt;F&amp;&amp;C&gt;G||V==2&amp;&amp;A&lt;F&amp;&amp;C&lt;G)||V!=2)">
+		        <var id="A"> randRange( 1, 4 ) </var>
+				<var id="B"> randRange( 4, 10 ) </var>
+				<var id="D"> randRange( B + 1, 4 * B - 1 ) </var>
+				<var id="F"> floorTo( 0, D / B ) </var>
+				<var id="G"> D % B </var>
+				<var id="C"> randRange( 1, B - 1 ) </var>
+				<var id="E"> A * B + C </var>
+				<var id="V"> randRange( 0, 2 ) </var>
+				<var id="ANSWER1">(function(){
+					if( V == 1 || V == 0 ) {
+						return C + G;
+					} else {
+						if(E &gt; D) {
+							return C - G;
+						} else {
+							return  G - C;
+						}
+					}
+				})()</var>
+				<var id="ANSWER2">(function(){
+					if( V == 1 || V == 0 ) {
+						return A + F;
+					} else {
+						if( E &gt; D ) return A - F;
+						else return  F - A;
+					}
+				})()</var>
+	    	</div>
+
+	        <div class="question">
+				<p data-if="V==0"><code><var>A</var>\dfrac {<var>C</var>}{<var>B</var>}+\dfrac {<var>D</var>}{<var>B</var>}=?</code></p>
+				<p data-if="V==1"><code>\dfrac {<var>D</var>}{<var>B</var>}+<var>A</var>\dfrac {<var>C</var>}{<var>B</var>}=?</code></p>
+				<p data-if="V==2&&E&gt;D"><code><var>A</var>\dfrac {<var>C</var>}{<var>B</var>}-\dfrac {<var>D</var>}{<var>B</var>}=?</code></p>
+				<p data-if="V==2&&E&lt;=D"><code>\dfrac {<var>D</var>}{<var>B</var>}-<var>A</var>\dfrac {<var>C</var>}{<var>B</var>}=?</code></p>
+				<p>請用帶分數表示。</p>
+			</div>
+				
+			<p class="solution" data-type="number" data-forms="mixed" data-simplify="optional"><var>((ANSWER2*B)+ANSWER1)/B</var></p>
+	            
+			<div class="hints">
+	        	<p>因為這兩個分數一個是假分數一個是帶分數，因此我們需要先將他們轉換成同為假分數或同為帶分數。</p> 
+			   	<p>因為題目要用帶分數表示，因此我們來練習一下先轉換成帶分數再做加減。因此首先我們將<code>\dfrac {<var>D</var>}{<var>B</var>}</code>化成帶分數。</p>
+			   	<div>
+			   		<p>我們先求帶分數的整數部分，<code><var>D</var>\div<var>B</var>=\color{#FFA042}{<var>F</var>}\cdots\color{#9999CC}{<var>G</var>}</code>。</p>
+			   		<p>商<code>\color{#FFA042}{<var>F</var>}</code>即為整數部分。餘數<code>\color{#9999CC}{<var>G</var>}</code>代表還有<code>\color{#9999CC}{<var>G</var>}</code>個 <code>\dfrac{1}{<var>B</var>}</code>，因此分數部分為<code>\color{#9999CC}{\dfrac{<var>G</var>}{<var>B</var>}}</code>。這樣我們就得到<code>\dfrac {<var>D</var>}{<var>B</var>}</code>的帶分數，表示為<code>\color{#FFA042}{<var>F</var>}\color{#9999CC}{\dfrac{<var>G</var>}{<var>B</var>}}</code>。</p> 
+			   	</div>
+			   	<div>
+			   		<p>所以題目變成兩個同分母的帶分數相<span data-if="V!=2">加</span><span data-if="V==2">減</span>：</p>
+			   		<p>先把整數部分與分數部分分離：</p>
+			   		<p data-if="V==0"><code>\color{#FF2D2D}{<var>A</var>}+\color{#53FF53}{\dfrac {<var>C</var>}{<var>B</var>}}+\color{#FFA042}{<var>F</var>}+\color{#9999CC}{\dfrac{<var>G</var>}{<var>B</var>}}</code></p>
+			   		<p data-if="V==1"><code>\color{#FFA042}{<var>F</var>}+\color{#9999CC}{\dfrac{<var>G</var>}{<var>B</var>}}+\color{#FF2D2D}{<var>A</var>}+\color{#53FF53}{\dfrac {<var>C</var>}{<var>B</var>}}</code></p>
+			   		<p data-if="V==2&&E&gt;D"><code>\color{#FF2D2D}{<var>A</var>}+\color{#53FF53}{\dfrac {<var>C</var>}{<var>B</var>}}-(\color{#FFA042}{<var>F</var>}+\color{#9999CC}{\dfrac{<var>G</var>}{<var>B</var>}})</code></p>
+			   		<p data-if="V==2&&E&lt;=D"><code>\color{#FFA042}{<var>F</var>}+\color{#9999CC}{\dfrac{<var>G</var>}{<var>B</var>}}-(\color{#FF2D2D}{<var>A</var>}+\color{#53FF53}{\dfrac {<var>C</var>}{<var>B</var>}})</code></p>
+			   		<p>把整數算做一堆，分數算做一堆：</p>
+			   		<p data-if="V==0"><code>(\color{#FF2D2D}{<var>A</var>}+\color{#FFA042}{<var>F</var>})+(\color{#53FF53}{\dfrac {<var>C</var>}{<var>B</var>}}+\color{#9999CC}{\dfrac{<var>G</var>}{<var>B</var>}})</code></p>
+			   		<p data-if="V==1"><code>(\color{#FFA042}{<var>F</var>}+\color{#FF2D2D}{<var>A</var>})+(\color{#9999CC}{\dfrac{<var>G</var>}{<var>B</var>}}+\color{#53FF53}{\dfrac {<var>C</var>}{<var>B</var>}})</code></p>
+			   		<p data-if="V==2&&E&gt;D"><code>(\color{#FF2D2D}{<var>A</var>}-\color{#FFA042}{<var>F</var>})+(\color{#53FF53}{\dfrac {<var>C</var>}{<var>B</var>}}-\color{#9999CC}{\dfrac{<var>G</var>}{<var>B</var>}})</code></p>
+			   		<p data-if="V==2&&E&lt;=D"><code>(\color{#FFA042}{<var>F</var>}-\color{#FF2D2D}{<var>A</var>})+(\color{#53FF53}{\color{#9999CC}{\dfrac{<var>G</var>}{<var>B</var>}}-\dfrac {<var>C</var>}{<var>B</var>}})</code></p>
+			   	</div>
+			   	<div>
+			   		<p>把整數部分與分數部分相<span data-if="V!=2">加</span><span data-if="V==2">減</span>：</p>
+			   		<p><code>=<var>ANSWER2</var>+\dfrac{<var>ANSWER1</var>}{<var>B</var>}</code></p>
+			   		<p>最後再合併成新的帶分數：</p>
+			   		<p><code class="hint_pink"><var>ANSWER2</var>\dfrac{<var>ANSWER1</var>}{<var>B</var>}</code></p>
+			   	</div>
+	        </div> 
+	    </div>
+    
+		<div id="case4">
+			<div class="vars" data-ensure="(V==1&amp;&amp;((A&gt;C&amp;&amp;A-C&gt;B)||(A&lt;C&amp;&amp;C-A&gt;B)))||V==0">
+				<var id="B"> randRange( 4, 10 ) </var>
+				<var id="A"> randRange( B + 1, 4 * B - 1 ) </var>
+				<var id="C" data-ensure="A != C"> randRange( B + 1, 4 * B - 1 ) </var>
+				<var id="V"> randRange( 0, 1 ) </var>
+				<var id="ANSWER">(function(){
+					if( V == 0 ) {
+						return A + C;
+					} else {
+						if( A &gt; C ) {
+							return A - C;
+						} else {
+							return C - A;
+						}
+					}
+				})()</var>
+	    	</div>
+
+	        <div class="question">
+				<p data-if="V==0"><code>\dfrac {<var>A</var>}{<var>B</var>}+\dfrac {<var>C</var>}{<var>B</var>}=?</code></p>
+				<p data-if="V==1&amp;&amp;A&gt;C"><code>\dfrac {<var>A</var>}{<var>B</var>}-\dfrac {<var>C</var>}{<var>B</var>}=?</code></p>
+				<p data-if="V==1&amp;&amp;C&gt;A"><code>\dfrac {<var>C</var>}{<var>B</var>}-\dfrac {<var>A</var>}{<var>B</var>}=?</code></p>
+				<p>請用假分數表示。</p>
+			</div>
+			
+			<div class="solution" data-type="number" data-forms="improper" data-simplify="optional"><var>ANSWER/B</var></div>
+            
+			<div class="hints">
+	           	<p>因為這兩個分數都是同分母的假分數，因此我們可以直接相<span data-if="V!=1">加</span><span data-if="V==1">減</span>。</p> 
+			   	<div>
+			    	<p data-if="V==0"><code>\dfrac {<var>A</var>}{<var>B</var>}+\dfrac {<var>C</var>}{<var>B</var>}</code></p>
+					<p data-if="V==1&&A&gt;C"><code>\dfrac {<var>A</var>}{<var>B</var>}-\dfrac {<var>C</var>}{<var>B</var>}</code></p>
+					<p data-if="V==1&&C&gt;A"><code>\dfrac {<var>C</var>}{<var>B</var>}-\dfrac {<var>A</var>}{<var>B</var>}</code></p>
+			    	<p>同分母的分數，分子直接相<span data-if="V!=1">加</span><span data-if="V==1">減</span>：</p> 
+					<p data-if="V==0"><code>\dfrac {<var>A</var>+<var>C</var>}{<var>B</var>}</code></p>
+					<p data-if="V==1&&A&gt;C"><code>\dfrac {<var>A</var>-<var>C</var>}{<var>B</var>}</code></p>
+					<p data-if="V==1&&C&gt;A"><code>\dfrac {<var>C</var>-<var>A</var>}{<var>B</var>}</code></p>
+			   	</div>
+			   	<div>
+			   		<p>將分子相<span data-if="V!=1">加</span><span data-if="V==1">減</span>，就得到題目要求的答案：</p>
+			   		<p><code class="hint_pink">\dfrac {<var>ANSWER</var>}{<var>B</var>}</code></p>
+			   	</div>
+	        </div> 
+    	</div>
+    
+		<div id="case5">
+			<div class="vars" data-ensure="(V==1&amp;&amp;((A&gt;C&amp;&amp;A-C&gt;B&amp;&amp;(A-C)%B!=0)||(A&lt;C&amp;&amp;(C-A)&gt;B&amp;&amp;(C-A)%B!=0)))||V==0&amp;&amp;(A+C)%B!=0">
+				<var id="B"> randRange( 4, 10 ) </var>
+				<var id="A"> randRange( B + 1, 4 * B - 1 ) </var>
+				<var id="C" data-ensure=" A != C "> randRange ( B + 1, 4 * B - 1 ) </var>
+				<var id="V"> randRange( 0, 1 ) </var>
+				<var id="ANSWER">(function(){		
+					if( V == 0 ) {
+						return A+C;
+					} else {
+						if( A &gt; C ) {
+							return A - C;
+						} else {
+							return C - A;
+						}
+					}
+				})()</var>
+			</div>
+
+	        <div class="question">
+				<p data-if="V==0"><code>\dfrac {<var>A</var>}{<var>B</var>}+\dfrac {<var>C</var>}{<var>B</var>}=?</code></p>
+				<p data-if="V==1&amp;&amp;A&gt;C"><code>\dfrac {<var>A</var>}{<var>B</var>}-\dfrac {<var>C</var>}{<var>B</var>}=?</code></p>
+				<p data-if="V==1&amp;&amp;C&gt;A"><code>\dfrac {<var>C</var>}{<var>B</var>}-\dfrac {<var>A</var>}{<var>B</var>}=?</code></p>
+				<p>請用帶分數表示。</p>
+			</div>
+			
+			<p class="solution" data-type="number" data-forms="mixed" data-simplify="optional"><var>ANSWER/B</var></p>
+            
+			<div class="hints">
+	           	<p>因為這兩個分數都是同分母的假分數，因此我們可以直接相<span data-if="V!=1">加</span><span data-if="V==1">減</span>。</p> 
+			   	<div>
+			    	<p data-if="V==0"><code>\dfrac {<var>A</var>}{<var>B</var>}+\dfrac {<var>C</var>}{<var>B</var>}</code></p>
+					<p data-if="V==1&&A&gt;C"><code>\dfrac {<var>A</var>}{<var>B</var>}-\dfrac {<var>C</var>}{<var>B</var>}</code></p>
+					<p data-if="V==1&&C&gt;A"><code>\dfrac {<var>C</var>}{<var>B</var>}-\dfrac {<var>A</var>}{<var>B</var>}</code></p>
+			    	<p>同分母的分數，分子直接相<span data-if="V!=1">加</span><span data-if="V==1">減</span>：</p> 
+					<p data-if="V==0"><code>\dfrac {<var>A</var>+<var>C</var>}{<var>B</var>}</code></p>
+					<p data-if="V==1&&A&gt;C"><code>\dfrac {<var>A</var>-<var>C</var>}{<var>B</var>}</code></p>
+					<p data-if="V==1&&C&gt;A"><code>\dfrac {<var>C</var>-<var>A</var>}{<var>B</var>}</code></p>
+			   	</div>
+			   	<div>
+			   		<p>將分子相<span data-if="V!=1">加</span><span data-if="V==1">減</span>，就得到假分數：</p>
+			   		<p><code>\dfrac {<var>ANSWER</var>}{<var>B</var>}</code></p>
+			   	</div>
+			   	<div>
+			   		<p>因為我們要用帶分數表示這個答案，因此我們要將她轉換成帶分數。我們先求帶分數的整數部分，<code><var>ANSWER</var>\div <var>B</var> =\color{#FFA042}{<var>floorTo(0,ANSWER/B)</var>}\cdots\color{#9999CC}{<var>ANSWER%B</var>}</code>。</p>
+			   		<p>商<code>\color{#FFA042}{<var>floorTo(0,ANSWER/B)</var>}</code>即為整數部分。</p>
+			   		<p>餘數<code>\color{#9999CC}{<var>ANSWER%B</var>}</code>代表還有<code>\color{#9999CC}{<var>ANSWER%B</var>}</code>個<code>\dfrac{1}{<var>B</var>}</code>，因此分數部分為<code>\color{#9999CC}{\dfrac{<var>ANSWER%B</var>}{<var>B</var>}}</code>。這樣我們就得到<code>\dfrac {<var>ANSWER</var>}{<var>B</var>}</code>的帶分數表示為 <code class="hint_pink"><var>floorTo(0,ANSWER/B)</var>\dfrac{<var>ANSWER%B</var>}{<var>B</var>}</code>。</p>
+			   	</div>
+	        </div> 
+    	</div>
+
+	</div>
+    </div>
+</body>
+</html>
