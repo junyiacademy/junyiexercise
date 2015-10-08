@@ -200,7 +200,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 input.attr("id", "default_input");
                 var checkbox = '<div class="checkbox" id="fraction_mode_entry" style="display:none"><label style="font-size:14px">'+
                                '<input type="checkbox" id="fraction_mode_checkbox"> 輸入直式分數</label></div>'
-                var fraction_mode_div = '<div id="fraction_mode_div" style="display:inline-block">' +
+                var fraction_mode_div = '<div id="fraction_mode_div" style="display:none">' +
                                         '<table border="0" cellpadding="0" cellspacing="0">' +
                                         '<tr>' +
                                         '<td rowspan=3 style="vertical-align:middle">' +
@@ -229,17 +229,19 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 $(solutionarea).append(fraction_mode_div);
                 if (solutionarea.parent()[0].id === "answercontent"){
                     $(solutionarea).append(checkbox);
-                    $(solutionarea).find("#fraction_mode_div").toggle(false);
                 }else{
                     $(solutionarea).parent().append(checkbox);
-                    $(solutionarea).parent().find("#fraction_mode_div").toggle(false);
                 }
 
                 // toggle interface and clean input when entering Fraction Mode
                 $("#fraction_mode_checkbox").change(function() {
                     $("div#fraction_mode_div input").val("");
                     $("#default_input").toggle();
-                    $("#fraction_mode_div").toggle();
+                    $("#fraction_mode_div").toggle(0, function(){ 
+                        if ($(this).is(':visible')){
+                            $(this).css('display','inline-block');
+                        }
+                    });
                     if ($("#fraction_mode_checkbox").prop("checked") == true){
                         $("#default_input").val("");
                         $("div#fraction_mode_div input#signed_int").focus();
