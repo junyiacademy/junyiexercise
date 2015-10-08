@@ -227,7 +227,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 // 2. <span class="sol"> ... </span>      (special case, caused by html question files)
                 $(solutionarea).append(input);
                 $(solutionarea).append(fraction_mode_div);
-                if (solutionarea.parent()[0].id === "answercontent"){
+                if ((solutionarea.parent().length !== 0) && solutionarea.parent()[0].id === "answercontent"){
                     $(solutionarea).append(checkbox);
                 }else{
                     $(solutionarea).parent().append(checkbox);
