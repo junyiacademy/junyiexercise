@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>偶數與奇數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+	<div class="exercise">
+		<div class="problems">
+			<div id="case1">
+				<div class="vars">
+					<var id="T"> [ "偶數", "奇數" ] </var>
+					<var id="A"> randRange( 0, 1 ) </var>
+				</div>		
+				<div class="question">
+					<p>若數字可以被 <code>2</code> 整除，那這個數字一定是<var>T[ A ]</var>。</p>
+					<p onclick="$('#option_1').prop( 'checked', true )"><input id="option_1" type="radio" name="count_numbers_1" value="0" />&nbsp;是</p>
+					<p onclick="$('#option_2').prop( 'checked', true )"><input id="option_2" type="radio" name="count_numbers_1" value="1" />&nbsp;否</p>
+				</div>
+		
+				<div class="solution" data-type="multiple">
+					<p>請選擇正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">$('input:radio[name="count_numbers_1"]:checked').val()</div>
+						<div class="validator-function">
+							if(guess == null){
+								return "";
+							}
+							return guess == A;
+						</div>
+					</div>
+				</div>
+
+				<div class="hints">
+					<div>
+						<p>若數字可以被 <code>2</code> 整除，它一定可以用「 <code>2</code> 個一排」的方式排列整齊。</p>
+						<p>舉例來說， <code>8</code> 可以被 <code>2</code> 整除，而且 <code>8</code> 也可以排列成：</p>
+						<div class="graphie">
+							init( { range : [ [ -6, 6 ], [ -2, 2 ] ], scale : 40 } );
+							circle( [ -5, -1 ], 0.5 );
+							circle( [ -3.5, -1 ], 0.5 );
+							circle( [ -2, -1 ], 0.5 );
+							circle( [ -0.5, -1 ], 0.5 );
+							circle( [ -5, 1 ], 0.5 );
+							circle( [ -3.5, 1 ], 0.5 );
+							circle( [ -2, 1 ], 0.5 );
+							circle( [ -0.5, 1 ], 0.5 );	
+						</div>
+					</div>
+					<p>所以<span>「若數字可以被 <code>2</code> 整除，那這個數字一定是<span class="hint_pink">偶數</span>」</span>。</p>	
+				</div>
+			</div>
+
+			<div id="case2">
+				<div class="vars">
+					<var id="T"> [ "偶數", "奇數" ] </var>
+					<var id="A"> randRange( 0, 1 ) </var>
+				</div>		
+				<div class="question">
+					<p>若數字被 <code>2</code> 除餘 <code>1</code> ，那這個數字一定是<var>T[ A ]</var></p>
+					<p onclick="$('#option_1').prop( 'checked', true )"><input id="option_1" type="radio" name="count_numbers_1" value="1"/>&nbsp;是</p>
+					<p onclick="$('#option_2').prop( 'checked', true )"><input id="option_2" type="radio" name="count_numbers_1" value="0"/>&nbsp;否</p>		
+				</div>		
+				<div class="solution" data-type="multiple">
+					<p>請選擇正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">$('input:radio[name="count_numbers_1"]:checked').val()</div>
+						<div class="validator-function">
+							if(guess == null){
+								return "";
+							}
+							return guess == A;
+						</div>
+					</div>
+				</div>
+				<div class="hints">
+					<div>
+						<p>若數字被 <code>2</code> 除餘 <code>1</code> ，那麼這個數字用「<code>2</code> 個一排」的方式排列後，會多出 <code>1</code> 個。</p>
+						<p>舉例來說， <code>7</code> 被 <code>2</code> 除餘 <code>1</code> ，「<code>2</code> 個一排」的方式排列後，會多出 <code>1</code> 個。</p>
+						<div class="graphie">                 
+							init({ range: [[-6,6], [-2,2]], scale: 40 });
+							circle([-5,-1],0.5)
+							circle([-3.5,-1],0.5)
+							circle([-2,-1],0.5)
+							circle([-5,1],0.5)
+							circle([-3.5,1],0.5)
+							circle([-2,1],0.5)
+							circle([-0.5,1],0.5)											
+						</div>
+					</div>
+					<div>
+						<p>所以<span>「若數字被 <code>2</code> 除餘 <code>1</code> ，那這個數字一定是<span class="hint_pink">奇數</span>」</span>。</p>
+					</div>				
+				</div>
+			</div>
+
+			<div id="case3">
+				<div class="vars">
+					<var id="A"> randRange( 2, 14 ) </var>
+					<var id="B"> A % 2 </var>
+					<var id="C"> floorTo( 0, A / 2 ) </var>
+					<var id="D"> B == 0 ? 1 : 0 </var>
+				</div>
+			
+				<div class="question">
+					<p>想一想，<code><var>A</var></code> 是奇數還是偶數？</p>
+					<p onclick="$('#option_1').prop( 'checked', true )"><input id="option_1" type="radio" name="count_numbers_1" value="0"/>&nbsp;奇數</p>
+					<p onclick="$('#option_2').prop( 'checked', true )"><input id="option_2" type="radio" name="count_numbers_1" value="1"/>&nbsp;偶數</p>		
+				</div>		
+				<div class="solution" data-type="multiple">
+					<p>請選擇正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">$('input:radio[name="count_numbers_1"]:checked').val()</div>
+						<div class="validator-function">
+							if(guess == null){
+								return "";
+							}
+							return guess == D;
+						</div>
+					</div>
+				</div>
+
+				<div class="hints">
+					<div>
+						<p data-if="B==0"><code><var>A</var>\div 2=<var>C</var>...<var>B</var></code>，所以 <code><var>A</var></code> 是<span class="hint_pink">偶數</span>。</p>
+						<p data-if="B==1"><code><var>A</var>\div 2=<var>C</var>...<var>B</var></code>，所以 <code><var>A</var></code> 是<span class="hint_pink">奇數</span>。</p>
+					</div>				
+				</div>
+			</div>
+
+			<div id="case4">
+				<div class="vars">
+				</div>
+			
+				<div class="question">
+					<p>偶數<code>+</code>偶數<code>=</code>？</p>
+					<p onclick="$('#option_1').prop( 'checked', true )"><input id="option_1" type="radio" name="count_numbers_1" value="0"/>&nbsp;奇數</p>
+					<p onclick="$('#option_2').prop( 'checked', true )"><input id="option_2" type="radio" name="count_numbers_1" value="1"/>&nbsp;偶數</p>
+				</div>
+			
+				<div class="solution" data-type="multiple">
+					<p>請選擇正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">$('input:radio[name="count_numbers_1"]:checked').val()</div>
+						<div class="validator-function">
+							if(guess == null){
+								return "";
+							}
+							return guess == 1;
+						</div>
+					</div>
+				</div>
+
+				<div class="hints">
+					<p>試著舉例子看看：<code>2</code> 是偶數，那 <code>2+2</code> 是奇數還是偶數呢？</p>
+					<p><code>2+2=</code> <code class="hint_blue">4</code>，<code class="hint_blue">4</code> <code>\div 2=2</code>，所以 <code class="hint_blue">4</code> 是偶數。</p>
+					<p>所以，偶數<code>+</code>偶數<code>=</code><span class="hint_pink">偶數</span>。</p>
+				</div>
+			</div>
+
+			<div id="case5">
+				<div class="vars">
+				</div>
+			
+				<div class="question">
+					<p>奇數<code>+</code>偶數<code>=</code>？</p>
+					<p onclick="$('#option_1').prop( 'checked', true )"><input id="option_1" type="radio" name="count_numbers_1" value="1"/>&nbsp;奇數</p>
+					<p onclick="$('#option_2').prop( 'checked', true )"><input id="option_2" type="radio" name="count_numbers_1" value="0"/>&nbsp;偶數</p>
+				</div>
+			
+				<div class="solution" data-type="multiple">
+					<p>請選擇正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">$('input:radio[name="count_numbers_1"]:checked').val()</div>
+						<div class="validator-function">
+							if(guess == null){
+								return "";
+							}
+							return guess == 1;
+						</div>
+					</div>
+				</div>
+
+				<div class="hints">
+					<p>試著舉例子看看：<code>1</code> 是奇數、<code>2</code> 是偶數，那 <code>1+2</code> 是奇數還是偶數呢？</p>
+					<p><code>1+2=</code> <code class="hint_blue">3</code>，<code class="hint_blue">3</code> <code>\div 2=1...1</code>，所以 <code class="hint_blue">3</code> 是奇數。</p>
+					<p>所以，奇數<code>+</code>偶數<code>=</code><span class="hint_pink">奇數</span>。</p>
+				</div>
+			</div>
+
+			<div id="case6">
+				<div class="vars">
+				</div>
+			
+				<div class="question">
+					<p>奇數<code>+</code>奇數<code>=</code>？</p>
+					<p onclick="$('#option_1').prop( 'checked', true )"><input id="option_1" type="radio" name="count_numbers_1" value="0"/>&nbsp;奇數</p>
+					<p onclick="$('#option_2').prop( 'checked', true )"><input id="option_2" type="radio" name="count_numbers_1" value="1"/>&nbsp;偶數</p>
+			
+				</div>
+			
+				<div class="solution" data-type="multiple">
+					<p>請選擇正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">$('input:radio[name="count_numbers_1"]:checked').val()</div>
+						<div class="validator-function">
+							if(guess == null){
+								return "";
+							}
+							return guess == 1;
+						</div>
+					</div>
+				</div>
+
+				<div class="hints">
+					<p>試著舉例子看看：<code>1</code> 是奇數，那 <code>1+1</code> 是奇數還是偶數呢？</p>
+					<p><code>1+1=</code> <code class="hint_blue">2</code>，<code class="hint_blue">2</code> <code>\div 2=1</code>，所以 <code class="hint_blue">2</code> 是偶數。</p>
+					<p>所以，奇數<code>+</code>奇數<code>=</code><span class="hint_pink">偶數</span>。</p>
+				</div>
+			</div>
+
+			<div id="case7">
+				<div class="vars">
+				</div>
+			
+				<div class="question">
+					<p>偶數<code>+</code>奇數<code>=</code>？</p>
+					<p onclick="$('#option_1').prop( 'checked', true )"><input id="option_1" type="radio" name="count_numbers_1" value="1"/>&nbsp;奇數</p>
+					<p onclick="$('#option_2').prop( 'checked', true )"><input id="option_2" type="radio" name="count_numbers_1" value="0"/>&nbsp;偶數</p>
+			
+				</div>
+			
+				<div class="solution" data-type="multiple">
+					<p>請選擇正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">$('input:radio[name="count_numbers_1"]:checked').val()</div>
+						<div class="validator-function">
+							if(guess == null){
+								return "";
+							}
+							return guess == 1;
+						</div>
+					</div>
+				</div>
+
+				<div class="hints">
+					<p>試著舉例子看看：<code>2</code> 是偶數、 <code>1</code> 是奇數，那 <code>2+1</code> 是奇數還是偶數呢？</p>
+					<p><code>2+1=</code> <code class="hint_blue">3</code>，<code class="hint_blue">3</code> <code>\div 2=1...1</code>，所以 <code class="hint_blue">3</code> 是奇數。</p>
+					<p>所以，偶數<code>+</code>奇數<code>=</code><span class="hint_pink">奇數</span>。</p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>			
