@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>乘法的間隔問題</title>
+    <script src="../khan-exercise.js"></script>
+	<script language="javascript">
+		function loadimg(center,imgname,xsize,ysize) {
+			var graph = KhanUtil.currentGraph;
+			this.set = graph.raphael.set();
+			this.cx = center[0];
+			this.cy = center[1];
+			var lineColor = "#789";
+			var pro = this;
+			var r = 3.05;
+			var imgPos = graph.scalePoint([this.cx - r, this.cy + r]);
+			this.set.push(graph.mouselayer.image(Khan.urlBase + "images/"+imgname, imgPos[0], imgPos[1], xsize,ysize));
+			return this;
+		}
+    </script>
+	
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="A"> randRange( 4, 8 ) </var>
+				<var id="B"> randRange( 2, 8 ) * 5 </var>
+				<var id="ANSWER"> B * ( A - 1 ) </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>連續兩顆香菇之間，算一個間隔。從第 <code>1</code> 顆香菇到第 <code><var>A</var></code> 顆香菇之間：</p>
+	                <p>● 有 <input type="text" id="a_1" style="width:50px;"> 個間隔。</p>
+					<p>● 距離 <input type="text" id="b_1" style="width:50px;"> 公分。</p>
+					<div class="graphie" id="p1">
+						init( { range: [ [ -6.5, 6.5 ], [ -2, 3 ] ], scale : 40 } );
+						line( [ -5.7, 0 ], [ A - 1 - 5.7 + ( A - 1 ) * 0.5, 0 ], { stroke : KhanUtil.BLUE } );
+						addMouseLayer();
+	                	Khan.scratchpad.enable();
+						for( var i = 0; i &lt; A; i++ ) {
+							label( [ i - 5.7 + i * 0.5, 1.5 ], i + 1, "above" );
+							circle( [ i - 5.7 + i * 0.5, 0 ], 0.01, { stroke : "#F8F8F8" } );
+							new loadimg( [ i - 3 + i * 0.5, -2 ] , "mashroom.gif", 30, 40 );
+						}
+						for( var i = 0; i &lt; A - 1; i++ ) {
+							label( [ i - 5.7 + 0.5 + i * 0.5 + 0.25, 0 ], "\\small{" + B + "公分}", "below" );
+						}
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<p>填入正確的答案</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">[$('#a_1').val(),$('#b_1').val()]</div>
+					<div class="validator-function">
+						if(guess[0].replace(/[ ]/g,"")==""&amp;&amp;guess[1].replace(/[ ]/g,"")==""){
+							return "";
+						}
+						if(guess[0].replace(/[ ]/g,"")==A-1&amp;&amp;guess[1].replace(/[ ]/g,"")==ANSWER){
+							return true;
+						}
+					</div>
+				</div>
+            </div>
+
+
+            <div class="hints">
+            	<div>
+			  		<p>數一數，總共有 <code class="hint_pink"><var>A-1</var></code> 個間隔。</p>
+			  		<div class="graphie" data-update="p1">
+			  			var _COUNT = 0;
+			  			setTimeout(function() {
+							p = setInterval(function() {
+								label( [ _COUNT - 5.7 + 0.5 + _COUNT * 0.5 + 0.25, -0.5 ], _COUNT + 1, "below", { color : RED } );
+								_COUNT++;
+								if( _COUNT == A - 1 ) {
+									clearInterval( p );
+								}
+							}, 750 );
+						}, 0 );
+			  		</div>
+				</div>
+			  	<p>一個間隔是 <code><var>B</var></code> 公分，<br />
+			  	<code><var>A-1</var></code> 個間隔是 <code><var>B</var>\times<var>A-1</var> =\color{#FF00AF}{<var>ANSWER</var>}</code> 公分。</p>
+            </div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="A"> randRange( 4, 8 ) </var>
+				<var id="B"> randRange( 2, 8 ) * 5 </var>
+				<var id="ANSWER"> B * ( A - 1 ) </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>連續兩個蛋糕之間，算一個間隔。從第 <code>1</code> 個蛋糕到第 <code><var>A</var></code> 個蛋糕之間：</p>
+	                <p>● 有 <input type="text" id="a_1" style="width:50px;"> 個間隔。</p>
+					<p>● 距離 <input type="text" id="b_1" style="width:50px;"> 公分。</p>
+					<div class="graphie" id="p1">
+						init( { range: [ [ -6.5, 6.5 ], [ -2, 3 ] ], scale : 40 } );
+						line( [ -5.7, 0 ], [ A - 1 - 5.7 + ( A - 1 ) * 0.5, 0 ], { stroke : KhanUtil.BLUE } );
+						addMouseLayer();
+	                	Khan.scratchpad.enable();
+						for( var i = 0; i &lt; A; i++ ) {
+							label( [ i - 5.7 + i * 0.5, 1.5 ], i + 1, "above" );
+							circle( [ i - 5.7 + i * 0.5, 0 ], 0.01, { stroke : "#F8F8F8" } );
+							new loadimg( [ i - 3 + i * 0.5, -2 ] , "cake.gif", 30, 40 );
+						}
+						for( var i = 0; i &lt; A - 1; i++ ) {
+							label( [ i - 5.7 + 0.5 + i * 0.5 + 0.25, 0 ], "\\small{" + B + "公分}", "below" );
+						}
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<p>填入正確的答案</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">[$('#a_1').val(),$('#b_1').val()]</div>
+					<div class="validator-function">
+						if(guess[0].replace(/[ ]/g,"")==""&amp;&amp;guess[1].replace(/[ ]/g,"")==""){
+							return "";
+						}
+						if(guess[0].replace(/[ ]/g,"")==A-1&amp;&amp;guess[1].replace(/[ ]/g,"")==ANSWER){
+							return true;
+						}
+					</div>
+				</div>
+            </div>
+
+
+            <div class="hints">
+            	<div>
+			  		<p>數一數，總共有 <code class="hint_pink"><var>A-1</var></code> 個間隔。</p>
+			  		<div class="graphie" data-update="p1">
+			  			var _COUNT = 0;
+			  			setTimeout(function() {
+							p = setInterval(function() {
+								label( [ _COUNT - 5.7 + 0.5 + _COUNT * 0.5 + 0.25, -0.5 ], _COUNT + 1, "below", { color : RED } );
+								_COUNT++;
+								if( _COUNT == A - 1 ) {
+									clearInterval( p );
+								}
+							}, 750 );
+						}, 0 );
+			  		</div>
+				</div>
+			  	<p>一個間隔是 <code><var>B</var></code> 公分，<br />
+			  	<code><var>A-1</var></code> 個間隔是 <code><var>B</var>\times<var>A-1</var> =\color{#FF00AF}{<var>ANSWER</var>}</code> 公分。</p>
+            </div>
+		</div>
+		
+		<div id="case3">
+			<div class="vars">
+				<var id="A"> randRange( 4, 8 ) </var>
+				<var id="B"> randRange( 15, 30 ) </var>
+				<var id="ANSWER"> B * ( A - 1 ) </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>連續兩個仙人掌之間，算一個間隔。從第 <code>1</code> 個仙人掌到第 <code><var>A</var></code> 個仙人掌之間：</p>
+	                <p>● 有 <input type="text" id="a_1" style="width:50px;"> 個間隔。</p>
+					<p>● 距離 <input type="text" id="b_1" style="width:50px;"> 公分。</p>
+					<div class="graphie" id="p1">
+						init( { range: [ [ -6.5, 6.5 ], [ -2, 3 ] ], scale : 40 } );
+						line( [ -5.7, 0 ], [ A - 1 - 5.7 + ( A - 1 ) * 0.5, 0 ], { stroke : KhanUtil.BLUE } );
+						addMouseLayer();
+	                	Khan.scratchpad.enable();
+						for( var i = 0; i &lt; A; i++ ) {
+							label( [ i - 5.7 + i * 0.5, 1.5 ], i + 1, "above" );
+							circle( [ i - 5.7 + i * 0.5, 0 ], 0.01, { stroke : "#F8F8F8" } );
+							new loadimg( [ i - 3 + i * 0.5, -2 ] , "cacti.gif", 30, 40 );
+						}
+						for( var i = 0; i &lt; A - 1; i++ ) {
+							label( [ i - 5.7 + 0.5 + i * 0.5 + 0.25, 0 ], "\\small{" + B + "公分}", "below" );
+						}
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<p>填入正確的答案</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">[$('#a_1').val(),$('#b_1').val()]</div>
+					<div class="validator-function">
+						if(guess[0].replace(/[ ]/g,"")==""&amp;&amp;guess[1].replace(/[ ]/g,"")==""){
+							return "";
+						}
+						if(guess[0].replace(/[ ]/g,"")==A-1&amp;&amp;guess[1].replace(/[ ]/g,"")==ANSWER){
+							return true;
+						}
+					</div>
+				</div>
+            </div>
+
+
+            <div class="hints">
+            	<div>
+			  		<p>數一數，總共有 <code class="hint_pink"><var>A-1</var></code> 個間隔。</p>
+			  		<div class="graphie" data-update="p1">
+			  			var _COUNT = 0;
+			  			setTimeout(function() {
+							p = setInterval(function() {
+								label( [ _COUNT - 5.7 + 0.5 + _COUNT * 0.5 + 0.25, -0.5 ], _COUNT + 1, "below", { color : RED } );
+								_COUNT++;
+								if( _COUNT == A - 1 ) {
+									clearInterval( p );
+								}
+							}, 750 );
+						}, 0 );
+			  		</div>
+				</div>
+			  	<p>一個間隔是 <code><var>B</var></code> 公分，<br />
+			  	<code><var>A-1</var></code> 個間隔是 <code><var>B</var>\times<var>A-1</var> =\color{#FF00AF}{<var>ANSWER</var>}</code> 公分。</p>
+            </div>
+		</div>
+		
+		<div id="case4">
+			<div class="vars">
+				<var id="A"> randRange( 4, 8 ) </var>
+				<var id="B"> randRange( 15, 30 ) </var>
+				<var id="ANSWER"> B * ( A - 1 ) </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>連續兩棵樹之間，算一個間隔。從第 <code>1</code> 棵樹到第 <code><var>A</var></code> 棵樹之間：</p>
+	                <p>● 有 <input type="text" id="a_1" style="width:50px;"> 個間隔。</p>
+					<p>● 距離 <input type="text" id="b_1" style="width:50px;"> 公尺。</p>
+					<div class="graphie" id="p1">
+						init( { range: [ [ -6.5, 6.5 ], [ -2, 3 ] ], scale : 40 } );
+						line( [ -5.7, 0 ], [ A - 1 - 5.7 + ( A - 1 ) * 0.5, 0 ], { stroke : KhanUtil.BLUE } );
+						addMouseLayer();
+	                	Khan.scratchpad.enable();
+						for( var i = 0; i &lt; A; i++ ) {
+							label( [ i - 5.7 + i * 0.5, 1.5 ], i + 1, "above" );
+							circle( [ i - 5.7 + i * 0.5, 0 ], 0.01, { stroke : "#F8F8F8" } );
+							new loadimg( [ i - 3 + i * 0.5, -2 ] , "coco.gif", 30, 40 );
+						}
+						for( var i = 0; i &lt; A - 1; i++ ) {
+							label( [ i - 5.7 + 0.5 + i * 0.5 + 0.25, 0 ], "\\small{" + B + "公尺}", "below" );
+						}
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<p>填入正確的答案</p>
+				<div class="sol" data-type="custom">
+					<div class="guess">[$('#a_1').val(),$('#b_1').val()]</div>
+					<div class="validator-function">
+						if(guess[0].replace(/[ ]/g,"")==""&amp;&amp;guess[1].replace(/[ ]/g,"")==""){
+							return "";
+						}
+						if(guess[0].replace(/[ ]/g,"")==A-1&amp;&amp;guess[1].replace(/[ ]/g,"")==ANSWER){
+							return true;
+						}
+					</div>
+				</div>
+            </div>
+
+
+            <div class="hints">
+            	<div>
+			  		<p>數一數，總共有 <code class="hint_pink"><var>A-1</var></code> 個間隔。</p>
+			  		<div class="graphie" data-update="p1">
+			  			var _COUNT = 0;
+			  			setTimeout(function() {
+							p = setInterval(function() {
+								label( [ _COUNT - 5.7 + 0.5 + _COUNT * 0.5 + 0.25, -0.5 ], _COUNT + 1, "below", { color : RED } );
+								_COUNT++;
+								if( _COUNT == A - 1 ) {
+									clearInterval( p );
+								}
+							}, 750 );
+						}, 0 );
+			  		</div>
+				</div>
+			  	<p>一個間隔是 <code><var>B</var></code> 公尺，<br />
+			  	<code><var>A-1</var></code> 個間隔是 <code><var>B</var>\times<var>A-1</var> =\color{#FF00AF}{<var>ANSWER</var>}</code> 公尺。</p>
+            </div>
+		</div>
+	
+	</div>
+	</div>
+</body>
+</html>
+
