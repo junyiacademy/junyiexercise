@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>內容物為多個個數的分數</title>
+    <script src="../khan-exercise.js"></script>
+	<script type="text/javascript">
+		if (!Array.prototype.indexOf){  
+	        Array.prototype.indexOf = function(elt /*, from*/){  
+	        var len = this.length >>> 0;  
+	        var from = Number(arguments[1]) || 0;  
+	        from = (from < 0)  
+	             ? Math.ceil(from)  
+	             : Math.floor(from);  
+	        if (from < 0)  
+	          from += len;  
+	        for (; from < len; from++)  
+	        {  
+	          if (from in this &&  
+	              this[from] === elt)  
+	            return from;  
+	        }  
+	        return -1;  
+	      };  
+	    }
+
+    	function isRepeat(arr) {
+		   return /(\x0f[^\x0f]+)\x0f[\s\S]*\1/.test("\x0f"+arr.join("\x0f\x0f") +"\x0f");
+		}
+	</script>
+	
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="W, A"> randFromArray( [ [ "包", "巧克力" ], [ "盒", "綠豆糕" ], [ "籃", "蘋果" ], [ "籠", "包子" ], [ "包", "糖果" ], [ "盒", "喜餅" ] ] ) </var>
+				<var id="B"> randFromArray( [ 6, 8, 10, 12, 14, 15, 15, 18, 20 ] ) </var>
+				<var id="C"> getNontrivialFactor( B ) </var>
+				<var id="D"> B / C </var>
+				<var id="ADD_OPTION">(function(){
+					$('#a1').empty();
+					for(var i = 0; i &lt; D + 1; i++){
+						if( i == 0 ) {
+							$('#a1').append("&lt;option value=\'" + i + "\'&gt;"+""+"&lt;\/option&gt;");
+						} else {
+							$('#a1').append("&lt;option value=\'" + i + "\'&gt;"+i+"&lt;\/option&gt;");
+						}
+					}
+				})()</var>
+				<var id="QUES">(function(){
+					var res = [];
+					res.push("1/" + B );
+					res.push("1/" + C );
+					res.push("1/" + D );
+					res.push(C + "/" + B );
+					return res;
+				})()</var>
+				<var id="Q"> randRangeUnique( 0, 4, 4 ) </var>
+				<var id="_QUES"> [ QUES[ Q[ 0 ] ], QUES[ Q[ 1 ] ], QUES[ Q[ 2 ] ], QUES[ Q[ 3 ] ] ] </var>
+				<var id="ADD2_OPTION">(function(){
+					$('#b1').empty();
+					for( var i = 0; i &lt; 5; i++ ) {
+						if( i == 0 ) {
+							$('#b1').append("&lt;option value=\'" + i + "\'&gt;"+""+"&lt;\/option&gt;");
+						} else {
+							$('#b1').append("&lt;option value=\'" + i + "\'&gt;"+_QUES[ i-1]+"&lt;\/option&gt;");
+						}	
+					}
+				})()</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>媽媽買了一<var>W</var><var>A</var>，裡面有 <code><var>B</var></code> 個， 因為家中有 <code><var>C</var></code> 個人， 所以平分成 <code><var>C</var></code> 份。請回答下列問題： </p>
+					<p>(<code>1</code>)一份有<select id="a1" style="width:50px"></select>個。</p>
+					<p>(<code>2</code>)一份是幾分之幾<var>W</var>？<select id="b1" style="width:50px"></select><var>W</var>。</p>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+                <div class="sol" data-type="custom">
+	                <div class="guess">1</div>
+	                <div class="validator-function">
+	                    if(document.getElementById("a1").value==0 || document.getElementById("b1").value==0){
+							return "";
+						}	
+						if(document.getElementById("a1").value==D &amp;&amp; document.getElementById("b1").value==Q.indexOf( 1 ) + 1){
+							return true;
+						}
+						return false;
+	                </div>
+                </div>
+	        </div>
+
+            <div class="hints"> 
+				<div>
+					<p>我們可以畫一個圖來幫助我們思考，因為一<var>W</var>有 <code><var>B</var></code> 個，所以我們可以畫一個有 <code><var>B</var></code> 格的表格：</p>
+					<div class="graphie" id="pic">
+	                    init( { range : [ [ -7, 6 ], [ -4, 4 ] ], scale : 20 } );
+						path( [ [ -6, -4 ], [ -6, 4 ], [ 4, 4 ], [ 4, -4 ], [ -6, -4 ] ] );
+						for( var i = 1; i &lt; C; i++ ) {
+							line( [ -6, ( 8 / C ) * i - 4 ], [ 4, ( 8 / C ) * i - 4 ] );
+						}
+						for( var i = 1; i &lt; D; i++ ) {
+							line( [ ( 10 / D ) * i - 6, -4 ], [ ( 10 / D ) * i - 6, 4 ] );
+						}
+					</div>
+				</div>
+				<div>
+				<p>接下來我們將他分成 <code><var>C</var></code> 等份，數一下一份有幾個呢？</p>
+					<div class="graphie" data-update="pic">
+						for( var i = 1; i &lt; C; i++ ) {
+							line( [ -6, ( 8 / C ) * i - 4 ], [ 4, ( 8 / C ) * i - 4 ], { stroke : "red" } );
+						}
+						for( var i = 1; i &lt; D; i++ ) {
+							line( [ ( 10 / D ) * i - 6, -4 ], [ ( 10 / D ) * i - 6, 4 ], { "stroke-dasharray" : "-", stroke : "blue" } );
+						}
+					</div>
+				</div>
+				<div>
+					<p>數一下我們知道一份有 <code class="hint_pink"><var>D</var></code> 個，那一份是幾分之幾<var>W</var>呢？</p>
+					<div class="graphie" data-update="pic">
+						path( [ [ -6, 4 ], [ 4, 4 ], [ 4, ( 8 / C ) * ( C - 1 ) - 4 ], [ -6, ( 8 / C ) * ( C - 1 ) - 4 ], [ -6, -4 ] ], { fill : "grey", opacity : 0.8 } );
+					</div>
+				</div>
+				<p>要注意的是我們說他是幾分之幾<var>W</var>，要看的是分成幾份，這邊媽媽把東西分成 <code><var>C</var></code> 份，所以一份是 <code class="hint_pink">\dfrac{1}{<var>C</var>}</code> <var>W</var>。</p>
+			</div>
+		</div>
+
+		<div id="case2">
+			<div class="vars">
+				<var id="Q, A"> randFromArray( [ [ "包", "巧克力" ], [ "盒", "綠豆糕" ], [ "籃", "蘋果" ], [ "籠", "包子" ], [ "包", "糖果" ], [ "盒", "喜餅" ] ] ) </var>
+				<var id="B"> randFromArray( [ 6, 8, 10, 12, 14, 15, 15, 18, 20 ] ) </var>	
+				<var id="C"> getNontrivialFactor( B ) </var>
+				<var id="E"> randRange( 1, C - 1 ) </var>
+				<var id="D"> B / C </var>
+				<var id="ANSWER"> D * E </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>安強有一<var>Q</var><var>A</var>，裡面有 <code><var>B</var></code> 個，伊婷吃了 <code>\dfrac{<var>E</var>}{<var>C</var>}</code> <var>Q</var>，是吃了幾個？</p>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>ANSWER</var></span>個
+			</div>
+
+            <div class="hints"> 
+				<div>
+					<p>我們可以畫一個圖來幫助我們思考，因為有 <code><var>B</var></code> 個，所以我們可以畫一個有 <code><var>B</var></code> 格的表格：</p>
+					<div class="graphie" id="pic">
+	                    init( { range : [ [ -7, 6 ], [ -4, 4 ] ], scale : 20 } );
+						path( [ [ -6, -4 ], [ -6, 4 ], [ 4, 4 ], [ 4, -4 ], [ -6, -4 ] ] );
+						for( var i = 1; i &lt; C; i++ ) {
+							line( [ -6, ( 8 / C ) * i - 4 ], [ 4, ( 8 / C ) * i - 4 ] );
+						}
+						for( var i = 1; i &lt; D; i++ ) {
+							line( [ ( 10 / D ) * i - 6, -4 ], [ ( 10 / D ) * i - 6, 4 ] );
+						}
+					</div>
+				</div>
+				<div>
+					<p>伊婷吃了 <code>\dfrac{<var>E</var>}{<var>C</var>}</code> <var>Q</var> ，也就是說伊婷把這<var>Q</var><var>A</var>分成了 <code><var>C</var></code> 份， 自己吃了 <code><var>E</var></code> 份。 因此我們可以先將他分成 <code><var>C</var></code> 份。</p>
+					<div class="graphie" data-update="pic">
+						for( var i = 1; i &lt; C; i++ ) {
+							line( [ -6, ( 8 / C ) * i - 4 ], [ 4, ( 8 / C ) * i - 4 ], { stroke : "red" } );
+						}
+						for( var i = 1; i &lt; D; i++ ) {
+							line( [ ( 10 / D ) * i - 6, -4 ], [ ( 10 / D ) * i - 6, 4 ], { "stroke-dasharray" : "-", stroke : "blue" } );
+						}
+					</div>
+				</div>
+				<div>
+					<p>觀察一下我們知道一份有 <code><var>D</var></code> 個，那 <code><var>E</var></code> 份有幾個呢？</p>
+					<div class="graphie" data-update="pic">
+						path( [ [ -6, 4 ], [ 4, 4 ], [ 4, 4 - ( 8 / C ) * E ], [ -6, 4 - ( 8 / C ) * E ], [ -6, -4 ] ], { fill : "grey", opacity : 0.65 } );
+					</div>
+				</div>
+				<p>所以 <code><var>E</var></code> 份有 <code class="hint_pink"><var>ANSWER</var></code> 個。</p>
+			</div>
+		</div>
+
+		<div id="case3">
+			<div class="vars" data-ensure="!isRepeat([F/C,1/F,E/C,1/E,1/B,1/C])">
+				<var id="W, A"> randFromArray( [ [ "包", "巧克力" ], [ "盒", "綠豆糕" ], [ "籃", "蘋果" ], [ "籠", "包子" ], [ "包", "糖果" ], [ "盒", "喜餅" ] ] ) </var>
+				<var id="B"> randFromArray( [ 6, 8, 10, 12, 14, 15, 15, 18, 20 ] ) </var>
+				<var id="C"> getNontrivialFactor( B ) </var>
+				<var id="D"> B / C </var>
+				<var id="E"> randRange( 2, C - 1 ) </var>
+				<var id="F"> D * E </var>
+				<var id="ADD_OPTION">(function(){
+					$('#a1').empty();
+					for( var i = 0; i &lt; C + 1; i++ ) {
+						if( i == 0 ) {
+							$('#a1').append("&lt;option value=\'"+i+"\'&gt;"+""+"&lt;\/option&gt;");
+						} else {
+							$('#a1').append("&lt;option value=\'"+i+"\'&gt;"+i+"&lt;\/option&gt;");
+						}		
+					}
+				})()</var>
+				<var id="QUES">(function(){
+					var res = [];
+					res.push(F+"/"+C);
+					res.push("1/"+F);
+					res.push(E+"/"+C);
+					res.push("1/"+E);
+					res.push("1/"+B);
+					res.push("1/"+C);
+					return res;
+				})()</var>
+				<var id="Q"> randRangeUnique( 0, 6, 6 ) </var>
+				<var id="_QUES"> [ QUES[ Q[ 0 ] ], QUES[ Q[ 1 ] ], QUES[ Q[ 2 ] ],  QUES[ Q[ 3 ] ], QUES[ Q[ 4 ] ], QUES[ Q[ 5 ] ] ] </var>
+				<var id="ADD2_OPTION">(function(){
+					$('#b1').empty();
+					for( var i = 0; i &lt; 7; i++ ) {						
+						if( i == 0 ) {
+							$('#b1').append("&lt;option value=\'"+i+"\'&gt;"+""+"&lt;\/option&gt;");
+						} else {
+							$('#b1').append("&lt;option value=\'"+i+"\'&gt;"+_QUES[ i-1]+"&lt;\/option&gt;");
+						}
+					}
+				})()</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>媽媽買了一<var>W</var><var>A</var>，裡面有 <code><var>B</var></code> 個，媽媽將他平分成 <code><var>C</var></code> 份，竹安吃了 <code><var>F</var></code> 個，請回答下列問題：</p>
+					<p>(<code>1</code>)竹安吃了<select id="a1" style="width:50px"></select>份。</p>
+					<p>(<code>2</code>)所以竹安吃了幾分之幾<var>W</var>？<select id="b1" style="width:50px"></select><var>W</var>。</p>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+                <div class="sol" data-type="custom">
+	                <div class="guess">1</div>
+	                <div class="validator-function">
+	                  if(document.getElementById("a1").value==0 || document.getElementById("b1").value==0){
+							return "";
+						}	
+						if(document.getElementById("a1").value==E &amp;&amp; document.getElementById("b1").value==Q.indexOf( 2 ) + 1 ){
+							return true;
+						}
+						return false;
+	                </div>
+                </div>
+	        </div>
+
+            <div class="hints"> 
+				<div>
+					<p>我們可以畫一個圖來幫助我們思考，因為一<var>W</var>有 <code><var>B</var></code> 個，所以我們可以畫一個有 <code><var>B</var></code> 格的表格：</p>
+					<div class="graphie" id="pic">
+	                    init( { range : [ [ -7, 6 ], [ -4, 4 ] ], scale : 20 } );
+						path( [ [ -6, -4 ], [ -6, 4 ], [ 4, 4 ], [ 4, -4 ], [ -6, -4 ] ] );
+						for( var i = 1; i &lt; C; i++ ) {
+							line( [ -6, ( 8 / C ) * i - 4 ], [ 4, ( 8 / C ) * i - 4 ] );
+						}
+						for( var i = 1; i &lt; D; i++ ) {
+							line( [ ( 10 / D ) * i - 6, -4 ], [ ( 10 / D ) * i - 6, 4 ] );
+						}
+					</div>
+				</div>
+				<div>
+					<p>接下來我們將他分成 <code><var>C</var></code> 等份，數一下一份有幾個呢？</p>
+					<div class="graphie" data-update="pic">
+						for( var i = 1; i &lt; C; i++ ) {
+							line( [ -6, ( 8 / C ) * i - 4 ], [ 4, ( 8 / C  ) * i - 4 ], { stroke : "red", "stroke-width" : 3 } );
+						}
+						for( var i = 1; i &lt; D; i++ ) {
+							line( [ ( 10 / D ) * i - 6, -4 ], [ ( 10 / D ) * i - 6, 4 ], { "stroke-dasharray" : "-", stroke : "blue", "stroke-width" : 3 } );
+						}
+					</div>
+				</div>
+				<div>
+					<p>數一下我們知道一份有 <code><var>D</var></code> 個，竹安吃了 <code><var>F</var></code> 個是幾份呢？</p>
+					<div class="graphie" data-update="pic">
+						path( [ [ -6, 4 ], [ 4, 4 ], [ 4, 4 - ( 8 / C ) * E ], [ -6, 4 - ( 8 / C ) * E ], [ -6, -4 ] ], { fill : "grey", opacity : 0.65 } );
+					</div>
+				</div>
+				<p>我們可以從圖中觀察到竹安吃了 <code class="hint_pink"><var>E</var></code> 份，而媽媽把東西分成 <code><var>C</var></code> 份，所以用分數表示就是 <code class="hint_pink">\dfrac{<var>E</var>}{<var>C</var>}</code> <var>W</var>。</p>
+			</div>
+		</div>
+
+		
+	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>印度乘法</title>
+    <script src="../khan-exercise.js"></script>
+    <style>
+    .graphie {
+        float: left;
+    }
+    </style>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars">
+                <var id="X">randRange(1,9)</var>
+                <var id="Y">randRange(1,9)</var>
+            </div>
+            <div class="question">
+                嘗試計算：
+                <code>
+                    <var>10+X</var>
+                    \times
+                    <var>10+Y</var>
+                </code>
+                <br>
+                <div id="area">
+                    <div class="graphie">
+
+                        init({range: [[-2, 10+X+Y],[-15, 10+Y]], scale:9});
+
+                        <!-- XY square -->
+                        path([[0,0],[10+X,0],[10+X,10+Y],[0,10+Y], true], {fill:"#e88"});
+                        label([10+X/2, 10+Y/2], X*Y + "\\text{}", "center");
+
+                        <!-- X square -->
+                        path([[0,0],[10+X,0],[10+X,10],[0,10], true], {fill:"#007DFF"});
+                        label([10+X/2, 0], X + "\\text{}", "below");
+                        label([10+X/2, 5], X*10 + "\\text{}", "center");
+
+                        <!-- Y square -->
+                        path([[0,0],[10,0],[10,10+Y],[0,10+Y], true], {fill:"#ddd"});
+                        label([-1, 10+Y/2], Y + "\\text{}", "left");
+                        label([5, 10+Y/2], Y*10, "center");
+
+                        <!-- basic square -->
+                        path([[0,0],[10,0],[10,10],[0,10], true], {fill:"#88e"});
+                        label([5,0], 10, "below");
+                        label([5,5], 100, "center");
+                        label([-1,5], 10, "left");
+
+                        var answer = (10+X+Y)*10 + X*Y;
+                        label([(10+X)/2, -4], (10+X) + '×' + (10+Y) + '=' + answer , "below", {
+                            labelDistance: 4,
+                            color: "#fff",
+                            background: "cornflowerblue"
+                        });
+                    </div>
+                    <span style="font-size: 36px;position: absolute;margin-top: 60px;">⇔</span>
+                    <div class="graphie" style="margin-left: 60px;">
+
+                        init({range: [[-2, 10+X+Y],[-15, 10+Y]], scale:9});
+
+                        <!-- 10+X+Y square -->
+                        path([[0,0],[10+X+Y,0],[10+X+Y,10],[0,10], true], {fill:"#ddd"});
+                        label([10+X+Y/2, 5], 10*Y + "\\text{}", "center");
+                        label([10+X+Y/2, 0], Y + "\\text{}", "below");
+
+                        <!-- XY square -->
+                        path([[10,10],[10+X,0],[10+X,10+Y],[10,10+Y], true], {fill:"#e88"});
+                        label([10+X/2, 10+Y/2], X*Y + "\\text{}", "center");
+
+                        <!-- X square -->
+                        path([[0,0],[10+X,0],[10+X,10],[0,10], true], {fill:"#007DFF"});
+                        label([10+X/2, 0], X + "\\text{}", "below");
+                        label([10+X/2, 5], X*10 + "\\text{}", "center");
+
+                        <!-- basic square -->
+                        path([[0,0],[10,0],[10,10],[0,10], true], {fill:"#88e"});
+                        label([5,0], 10, "below");
+                        label([5,5], 100, "center");
+                        label([-1,5], 10, "left");
+
+                        var answer = (10+X+Y)*10 + X*Y;
+                        var preAdd = 10+X;
+                        label([(10+X+Y/2)/2, -4], '(' + preAdd + '+' + Y + ')' +' × 10 + ' + X + '×' + Y + '=' + answer, "below", {
+                            labelDistance: 4,
+                            color: "#fff",
+                            background: "cornflowerblue"
+                        });
+                    </div>
+                </div>
+            </div>
+            <div class="solution">
+                <code>
+                    <var>(10+X)*(10+Y)</var>
+                </code>
+            </div>
+            <div class="hints">
+                <p>
+                <code>
+                    (<var>10+X</var> + <var>Y</var>) \times 10 + <var>X</var> \times <var>Y</var> = <var>(10+X)*(10+Y)</var>
+                </code>
+                </p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
