@@ -47,10 +47,10 @@
 
     <div class="problem">
         <p data-if="LOCATION === '超級市場'" class="spin">
-             一個超級市場的{買家|統計員|高階主管}將每一個分店內的<var>ITEM</var>庫存量做出枝葉圖:
+             一個超級市場的{買家|統計員|高階主管}將每一家分店內的<var>ITEM</var>庫存量做出枝葉圖:
         </p>
         <p data-if="LOCATION === '百貨公司'" class="spin">
-            一個連鎖百貨公司的{買家|統計員|區經理}將每一個分店內的<var>ITEM</var>庫存量做出枝葉圖:
+            一個連鎖百貨公司的{買家|統計員|區經理}將每一家分店內的<var>ITEM</var>庫存量做出枝葉圖:
         </p>
         <p data-if="LOCATION === '動物園'" class="spin">
             {政府|一個保育團體|動物園管理員}{製做出|公佈了}國內的所有動物園裡面，<var>ITEM</var>數量的枝葉圖:
@@ -76,11 +76,23 @@
 
     <div class="hints">
         <p>
-            枝葉圖左邊的縱列代表十位數；右邊的每一個數字都代表一個<var>LOCATION</var>裡面，<var>ITEM</var>的數量的個位數。
+            枝葉圖左邊的縱列代表十位數；右邊的每一個數字都代表一
+            <span data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'">
+                家分店裡面，<var>ITEM</var>庫存量的個位數。
+            </span>
+            <span data-if="LOCATION === '動物園'">
+                間動物園裡面，<var>ITEM</var>數量的個位數。
+            </span>
         </p>
         <div>
             <p>
-                我們可以結合十位數與在右邊的個位數來寫出來每一個<var>LOCATION</var>裡面<var>ITEM</var>的數量:
+                我們可以結合十位數與在右邊的個位數來寫出來每一
+                <span data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'">
+                    家分店裡面，<var>ITEM</var>的庫存量。
+                </span>
+                <span data-if="LOCATION === '動物園'">
+                    間動物園裡面，<var>ITEM</var>的數量。
+                </span>
             </p>
             <p>
                 <code>
@@ -117,23 +129,38 @@
             </p>
         </div>
         <div>
-            <p>現在我們知道<var>LOCATION</var>有多少<var>ITEM_UNIT</var><var>ITEM</var>:</p>
-            <p><code>\qquad</code><var>toSentenceTex( RAW_DATA, "還有" )</var></p>
+            <p>現在我們知道
+                <span data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'">
+                    每一家分店裡面，<var>ITEM</var>的庫存量有多少<var>ITEM_UNIT</var>。
+                </span>
+                <span data-if="LOCATION === '動物園'">
+                    每一間動物園裡面，<var>ITEM</var>的數量有多少<var>ITEM_UNIT</var>。
+                </span>
+            </p>
+            <p><var>toSentenceTex( RAW_DATA, "還有" )</var></p>
         </div>
         <div>
             <p>
-            <span data-if="TYPE === 'smallest'">在所有的<var>LOCATION</var>裡面，<var>ITEM</var>最少的有幾<var>ITEM_UNIT</var>?</span>
-            <span data-else-if="TYPE === 'largest'">在所有的<var>LOCATION</var>裡面，<var>ITEM</var>最多的有幾<var>ITEM_UNIT</var>?</span>
+
+            <span data-if="TYPE === 'smallest'">
+                <span data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'">在所有的分店之中，<var>ITEM</var>的庫存量最少的有幾<var>ITEM_UNIT</var>?</span>
+                <span data-if="LOCATION === '動物園'">在所有的動物園之中，<var>ITEM</var>最少的有幾<var>ITEM_UNIT</var>?</span>
+            </span>
+            <span data-else-if="TYPE === 'largest'">
+                <span data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'">在所有的分店之中，<var>ITEM</var>的庫存量最多有幾<var>ITEM_UNIT</var>?</span>
+                <span data-if="LOCATION === '動物園'">在所有的動物園之中，<var>ITEM</var>最多有幾<var>ITEM_UNIT</var>?</span>
+            </span>
             <span data-else>
-                有多少個<var>LOCATION</var>有
+                <span data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'">有多少家分店的<var>ITEM</var>庫存量</span>
+                <span data-if="LOCATION === '動物園'">有多少間動物園的<var>ITEM</var>數量</span>
                 <span data-if="TYPE === 'how-many'">剛好</span>
                 <span data-if="TYPE === 'less-than'">少於</span>
                 <span data-if="TYPE === 'greater-than'">多於</span>
-                <var>AMOUNT</var><var>ITEM_UNIT</var><var>ITEM</var>?
+                <code><var>AMOUNT</var></code> <var>ITEM_UNIT</var>?
             </span>
             </p>
             <p data-if="SOLUTION > 0">
-                <code>\qquad</code><var>toSentenceTex( RAW_DATA, "還有", IS_SOLUTION, "hint_pink" )</var>
+                <var>toSentenceTex( RAW_DATA, "還有", IS_SOLUTION, "hint_pink" )</var>
             </p>
         </div>
         <div>
@@ -163,15 +190,23 @@
                 </code>
             </p>
             <p><strong>
-                <span data-if="TYPE === 'smallest'"><var>ITEM</var>數量最少的<var>LOCATION</var>有<var>SOLUTION</var>個<var>ITEM</var>。</span>
-                <span data-else-if="TYPE === 'largest'"><var>ITEM</var>數量最多的<var>LOCATION</var>有<var>SOLUTION</var>個<var>ITEM</var>。</span>
+                <span data-if="TYPE === 'smallest'">
+                    <span data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'"><var>ITEM</var>庫存量最少的分店有 <code><var>SOLUTION</var></code> <var>ITEM_UNIT</var><var>ITEM</var>。</span>
+                    <span data-if="LOCATION === '動物園'"><var>ITEM</var>數量最少的動物園有 <code><var>SOLUTION</var></code> <var>ITEM_UNIT</var><var>ITEM</var>。</span></span>
+                </span>
+                <span data-else-if="TYPE === 'largest'">
+                    <span data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'"><var>ITEM</var>庫存量最多的分店有 <code><var>SOLUTION</var></code> <var>ITEM_UNIT</var><var>ITEM</var>。</span>
+                    <span data-if="LOCATION === '動物園'"><var>ITEM</var>數量最多的動物園有 <code><var>SOLUTION</var></code> <var>ITEM_UNIT</var><var>ITEM</var>。</span></span>
+                </span>
                 <span data-else>
-                    <var>SOLUTION</var>個<var>LOCATION</var>有
+                    <span data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'">有 <code><var>SOLUTION</var></code> 家分店的<var>ITEM</var>庫存量</span>
+                    <span data-if="LOCATION === '動物園'">有 <code><var>SOLUTION</var></code> 間動物園的<var>ITEM</var>數量</span>
                     <span data-if="TYPE === 'how-many'">剛好</span>
                     <span data-if="TYPE === 'less-than'">少於</span>
                     <span data-if="TYPE === 'greater-than'">多於</span>
-                    <var>AMOUNT</var><var>ITEM_UNIT</var><var>ITEM</var>.
+                    <code><var>AMOUNT</var></code> <var>ITEM_UNIT</var>。
                 </span>
+
             </strong></p>
         </div>
     </div>
@@ -188,11 +223,15 @@
                 <var id="IS_SOLUTION">function( x ) { return x === AMOUNT; }</var>
                 <var id="SOLUTION">_.reduce( RAW_DATA, function( memo, num ) { return num === AMOUNT ? ++memo : memo; }, 0 )</var>
             </div>
-
-            <p class="question">有多少個<var>LOCATION</var>有剛好<var>AMOUNT</var><var>ITEM_UNIT</var><var>ITEM</var>?</p>
+            
+            <div class="question">
+                <p data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'">有多少家分店的庫存量剛好等於 <code><var>AMOUNT</var></code> <var>ITEM_UNIT</var><var>ITEM</var>?</p>
+                <p data-if="LOCATION === '動物園'">有多少間動物園的<var>ITEM</var>數量剛好等於 <code><var>AMOUNT</var></code> <var>ITEM_UNIT</var><var>ITEM</var>?</p>
+            </div>
 
             <div class="solution" data-type="multiple">
-                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> <var>LOCATION</var></p>
+                <p data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'"><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> 家</p>
+                <p data-if="LOCATION === '動物園'"><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> 間</p>
             </div>
         </div>
 
@@ -204,10 +243,14 @@
                 <var id="SOLUTION">_.reduce( RAW_DATA, function( memo, num ) { return num &lt; AMOUNT ? ++memo : memo; }, 0 )</var>
             </div>
 
-            <p class="question">有多少個<var>LOCATION</var>有少於<var>AMOUNT</var><var>ITEM_UNIT</var><var>ITEM</var>?</p>
+            <div class="question">
+                <p data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'">有多少家分店的庫存量小於 <code><var>AMOUNT</var></code> <var>ITEM_UNIT</var><var>ITEM</var>?</p>
+                <p data-if="LOCATION === '動物園'">有多少間動物園的<var>ITEM</var>數量小於 <code><var>AMOUNT</var></code> <var>ITEM_UNIT</var><var>ITEM</var>?</p>               
+            </div>
 
             <div class="solution" data-type="multiple">
-                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> <var>LOCATION</var></p>
+                <p data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'"><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> 家</p>
+                <p data-if="LOCATION === '動物園'"><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> 間</p>
             </div>
         </div>
 
@@ -219,10 +262,14 @@
                 <var id="SOLUTION">_.reduce( RAW_DATA, function( memo, num ) { return num &gt; AMOUNT ? ++memo : memo; }, 0 )</var>
             </div>
 
-            <p class="question">有多少個<var>LOCATION</var>具有多於<var>AMOUNT</var><var>ITEM_UNIT</var><var>ITEM</var>?</p>
+            <div class="question">
+                <p data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'">有多少家分店的庫存量大於 <code><var>AMOUNT</var></code> <var>ITEM_UNIT</var><var>ITEM</var>?</p>
+                <p data-if="LOCATION === '動物園'">有多少間動物園的<var>ITEM</var>數量大於 <code><var>AMOUNT</var></code> <var>ITEM_UNIT</var><var>ITEM</var>?</p>                 
+            </div>
 
             <div class="solution" data-type="multiple">
-                <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> <var>LOCATION</var></p>
+                <p data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'"><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> 家</p>
+                <p data-if="LOCATION === '動物園'"><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span> 間</p>
             </div>
         </div>
 
@@ -234,10 +281,18 @@
                 <var id="SOLUTION">AMOUNT</var>
             </div>
 
-            <p class="question">
-                <span data-if="TYPE === 'smallest'">在所有<var>LOCATION</var>之中，<var>ITEM</var>數量最少的是有幾<var>ITEM_UNIT</var>?</span>
-                <span data-if="TYPE === 'largest'">在所有<var>LOCATION</var>之中，<var>ITEM</var>數量最多的是有幾<var>ITEM_UNIT</var>?</span>
-            </p>
+            <div class="question">
+                <p data-if="LOCATION === '超級市場'|| LOCATION ==='百貨公司'">
+                    <span data-if="TYPE === 'smallest'">在所有的分店中，<var>ITEM</var>的庫存量最少的有幾<var>ITEM_UNIT</var>?</span>
+                    <span data-if="TYPE === 'largest'">在所有的分店中，<var>ITEM</var>的庫存量最多的有幾<var>ITEM_UNIT</var>?</span>
+                </p>
+                <p data-if="LOCATION === '動物園'">
+                    <span data-if="TYPE === 'smallest'">在所有<var>LOCATION</var>之中，<var>ITEM</var>數量最少的有幾<var>ITEM_UNIT</var>?</span>
+                    <span data-if="TYPE === 'largest'">在所有<var>LOCATION</var>之中，<var>ITEM</var>數量最多的有幾<var>ITEM_UNIT</var>?</span>                    
+                </p>
+
+
+            </div>
 
             <div class="solution" data-type="multiple">
                 <p><span style="padding-right: 5px" class="sol" data-forms="integer"><var>SOLUTION</var></span><var>ITEM_UNIT</var><var>ITEM</var></p>
