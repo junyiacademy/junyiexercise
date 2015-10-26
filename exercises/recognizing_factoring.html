@@ -19,31 +19,31 @@
             </div>
             <p class="question"><code>x-1</code> 是不是<code><var>A</var>x^2</code>的因式？</p>
 			<div class="problem">
+				<p onclick="$('#c_1').prop('checked', true)"><input type="radio" id="c_1" name="name" value="shi" /><code>x-1</code> 是 <code><var>A</var>x^2</code>的因式</span></p>
+				<p onclick="$('#c_2').prop('checked', true)"><input type="radio" id="c_2" name="name" value="bushi" /><code>x-1</code> 不是 <code><var>A</var>x^2</code>的因式</span></p>
 				<p>多項式可分解為：</p>
 				<p><code><var>A</var>x^2 =</code> <code>(x-1)(</code><input type="text" id="a_1" style="width:30px"><code>x + </code> <input type="text" id="a_2" style="width:30px"><code> ) + </code> <input type="text" id="a_3" style="width:30px"></p>				
 			</div>
-
 			<div class="solution" data-type="multiple">
-				<p>
-					<span class="sol" data-type="list" data-choices="['','是', '不是']">
-						<var>"不是"</var>
-					</span> 多項式的因式
-				</p>
 				<div class="sol" data-type="custom">
-					<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value]</div>
+					<div class="guess">[[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value],[document.getElementById("c_1").checked,document.getElementById("c_2").checked]]</div>
 					<div class="validator-function">
-						if(guess[0].replace(/[ ]/g,"")=="" && guess[1].replace(/[ ]/g,"")=="" && guess[2].replace(/[ ]/g,"")==""){
+						if(guess[0][0].replace(/[ ]/g,"")=="" || guess[0][1].replace(/[ ]/g,"")=="" || guess[0][2].replace(/[ ]/g,"")=="" ){
+							return "";
+							}
+						if(guess[1][0]==false &amp;&amp; guess[1][1]==false){
 							return "";
 						}
-						if(guess[0].replace(/[ ]/g,"")==A && guess[1].replace(/[ ]/g,"")==A && guess[2].replace(/[ ]/g,"")==A){
+						if(guess[0][0].replace(/[ ]/g,"")==A &amp;&amp; guess[0][1].replace(/[ ]/g,"")==A &amp;&amp; guess[0][2].replace(/[ ]/g,"")==A &amp;&amp; guess[1][1]){
 							return true;
 						}
-						return false;
+						else return false;
 					</div>
 				</div>
 				<p class="example">整數，例：<code>6</code></p>
 				<p class="problem">選擇並在題目下方空格內填入答案</p>
-			</div>		
+			</div>
+
             <div class="hints">
 				<div class="graphie" id="number-line">
 				init({
@@ -71,34 +71,40 @@
 			<div class="vars">
                 <var id="A">randFromArray(["x-1","2x+7"])</var>
             </div>
-            <p class="question"><code><var>A</var></code> 是不是<code>2x^2+5x-7</code>的因式？</p>
+            <p class="question"><code><var>A</var></code> 是不是 <code>2x^2+5x-7</code>的因式？</p>
+			<p onclick="$('#c_1').prop('checked', true)"><input type="radio" id="c_1" name="name" value="shi" /><code><var>A</var></code> 是 <code>2x^2+5x-7</code>的因式</span></p>
+			<p onclick="$('#c_2').prop('checked', true)"><input type="radio" id="c_2" name="name" value="bushi" /><code><var>A</var></code> 不是 <code>2x^2+5x-7</code>的因式</span></p>
+
 			<p>多項式可分解為：</p>
-				<p><code>2x^2+5x-7 =</code> <code>(<var>A</var>)(</code><input type="text" id="a_1" style="width:30px"><code>x + </code> <input type="text" id="a_2" style="width:30px"><code> ) + </code> <input type="text" id="a_3" style="width:30px"></p>				
+			<p><code>2x^2+5x-7 =</code> <code>(<var>A</var>)(</code><input type="text" id="a_1" style="width:30px"><code>x + </code> <input type="text" id="a_2" style="width:30px"><code> ) + </code> <input type="text" id="a_3" style="width:30px"></p>
+
 			<div class="solution" data-type="multiple">
-				<p>
-					<span class="sol" data-type="list" data-choices="['','是', '不是']">
-						<var>"是"</var>
-					</span> 多項式的因式
-				</p>
 				<div class="sol" data-type="custom">
-					<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value]</div>
+					<div class="guess">[[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value],[document.getElementById("c_1").checked,document.getElementById("c_2").checked]]</div>
 					<div class="validator-function">
+						if(guess[0][0].replace(/[ ]/g,"")=="" || guess[0][1].replace(/[ ]/g,"")=="" || guess[0][2].replace(/[ ]/g,"")=="" ){
+							return "";
+						}							
+						if(guess[1][0]==false && guess[1][1]==false){
+							return "";
+						}
 						if(A=="x-1"){
-							if(guess[0].replace(/[ ]/g,"")==2 && guess[1].replace(/[ ]/g,"")==7 && guess[2].replace(/[ ]/g,"")==0){
+							if(guess[0][0].replace(/[ ]/g,"")==2 && guess[0][1].replace(/[ ]/g,"")==7 && guess[0][2].replace(/[ ]/g,"")==0 && guess[1][0]){
 								return true;
 							}
 						}
 						if(A=="2x+7"){
-							if(guess[0].replace(/[ ]/g,"")==1 && guess[1].replace(/[ ]/g,"")==-1 && guess[2].replace(/[ ]/g,"")==0){
+							if(guess[0][0].replace(/[ ]/g,"")==1 && guess[0][1].replace(/[ ]/g,"")==-1 && guess[0][2].replace(/[ ]/g,"")==0 && guess[1][0]){
 								return true;
 							}
-						}
-						return false;
+						}						
+						else return false;
 					</div>
 				</div>
 				<p class="example">整數，例：<code>6</code></p>
 				<p class="problem">選擇並在題目下方空格內填入答案</p>
-			</div>		
+			</div>
+
             <div class="hints">
 				<div class="graphie" id="number-line">
 				init({
@@ -133,29 +139,30 @@
 				<p>而 <code>2x^2+5x-7=\enspace</code><code class="hint_pink">(<var>A</var>)(<var>A=="x-1"?"2x+7":"x-1"</var>)</code> 為其因式分解。</p>
             </div>
 		</div>
-
 		<div id="case3">
 			<div class="vars">
                 <var id="A">randRange(2,10)</var>
             </div>
             <p class="question"><code>x-1</code> 是不是<code><var>A</var>x^2-<var>A</var></code>的因式？</p>
+			<p onclick="$('#c_1').prop('checked', true)"><input type="radio" id="c_1" name="name" value="shi" /><code>x-1</code>是<code><var>A</var>x^2-<var>A</var></code>的因式</span></p>
+			<p onclick="$('#c_2').prop('checked', true)"><input type="radio" id="c_2" name="name" value="bushi" /><code>x-1</code>不是<code><var>A</var>x^2-<var>A</var></code>的因式</span></p>
 
 			<p>多項式可分解為：</p>
-				<p><code><var>A</var>x^2-<var>A</var>=</code> <input type="text" id="a_1" style="width:30px"><code>(x-1)(x+1)</code></p>				
-
+			<p><code><var>A</var>x^2-<var>A</var>=</code> <input type="text" id="a_1" style="width:30px"><code>(x-1)(x+1)</code></p>
 			<div class="solution" data-type="multiple">
-				<p>
-					<span class="sol" data-type="list" data-choices="['','是', '不是']">
-						<var>"是"</var>
-					</span> 多項式的因式
-				</p>
 				<div class="sol" data-type="custom">
-					<div class="guess">[document.getElementById("a_1").value]</div>
+					<div class="guess">[[document.getElementById("a_1").value],[document.getElementById("c_1").checked,document.getElementById("c_2").checked]]</div>
 					<div class="validator-function">
-						if(guess[0].replace(/[ ]/g,"")==A){
-							return true;
+						if(guess[0][0].replace(/[ ]/g,"")=="" ){
+							return "";
+						}							
+						if(guess[1][0]==false && guess[1][1]==false){
+							return "";
 						}
-						return false;
+						if(guess[0][0].replace(/[ ]/g,"")==A && guess[1][0]){
+							return true;
+						}								
+						else return false;
 					</div>
 				</div>
 				<p class="example">整數，例：<code>6</code></p>
@@ -168,42 +175,45 @@
 				<p>而且 <code><var>A</var>x^2-<var>A</var>=\enspace</code><code class="hint_pink"><var>A</var>(x-1)(x+1)</code> 為其因式分解。</p>
             </div>
 		</div>
-
 		<div id="case4">
 			<div class="vars">
                 <var id="A">randFromArray(["3x-1","-5x+7"])</var>
             </div>
             <p class="question"><code>(<var>A</var>)</code> 是不是 <code>-15x^2+26x-7</code> 的因式？</p>
 			<div class="problem">
-				<p>多項式可分解為：</p>
-				<p><code>-15x^2+26x-7 =</code> <code>(<var>A</var>)(</code><input type="text" id="a_1" style="width:30px"><code>x + </code> <input type="text" id="a_2" style="width:30px"><code> ) + </code> <input type="text" id="a_3" style="width:30px"></p>
+				<p onclick="$('#c_1').prop('checked', true)"><input type="radio" id="c_1" name="name" value="shi" /><code>(<var>A</var>)</code>是<code>-15x^2+26x-7</code>的因式</p>
+				<p onclick="$('#c_2').prop('checked', true)"><input type="radio" id="c_2" name="name" value="bushi" /><code>(<var>A</var>)</code>不是<code>-15x^2+26x-7</code>的因式</p>
 			</div>
 
+			<p>多項式可分解為：</p>
+			<p><code>-15x^2+26x-7 =</code> <code>(<var>A</var>)(</code><input type="text" id="a_1" style="width:30px"><code>x + </code> <input type="text" id="a_2" style="width:30px"><code> ) + </code> <input type="text" id="a_3" style="width:30px"></p>				
+
 			<div class="solution" data-type="multiple">
-				<p>
-					<span class="sol" data-type="list" data-choices="['','是', '不是']">
-						<var>"是"</var>
-					</span> 多項式的因式
-				</p>
 				<div class="sol" data-type="custom">
-					<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value]</div>
+					<div class="guess">[[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value],[document.getElementById("c_1").checked,document.getElementById("c_2").checked]]</div>
 					<div class="validator-function">
+						if(guess[0][0].replace(/[ ]/g,"")=="" || guess[0][1].replace(/[ ]/g,"")=="" || guess[0][2].replace(/[ ]/g,"")=="" ){
+							return "";
+						}							
+						if(guess[1][0]==false &amp;&amp; guess[1][1]==false){
+							return "";
+						}
 						if(A=="3x-1"){
-							if(guess[0].replace(/[ ]/g,"")==-5 && guess[1].replace(/[ ]/g,"")==7 && guess[2].replace(/[ ]/g,"")==0){
+							if(guess[0][0].replace(/[ ]/g,"")==-5 && guess[0][1].replace(/[ ]/g,"")==7 && guess[0][2].replace(/[ ]/g,"")==0 && guess[1][0]){
 								return true;
 							}
 						}
 						if(A=="-5x+7"){
-							if(guess[0].replace(/[ ]/g,"")==3 && guess[1].replace(/[ ]/g,"")==-1 && guess[2].replace(/[ ]/g,"")==0){
+							if(guess[0][0].replace(/[ ]/g,"")==3 && guess[0][1].replace(/[ ]/g,"")==-1 && guess[0][2].replace(/[ ]/g,"")==0 && guess[1][0]){
 								return true;
 							}
-						}
+						}						
 						return false;
 					</div>
 				</div>
 				<p class="example">整數，例：<code>6</code></p>
 				<p class="problem">選擇並在題目下方空格內填入答案</p>
-			</div>		
+			</div>	
             <div class="hints">
 				<p><code>3x-1</code> 能整除 <code>-15x^2+26x-7</code></p>
 				<p><code>(-15x^2+26x-7) \div ( <var>A</var> ) = <var>A=="3x-1"?"-5x+7":"3x-1"</var></code></p>
@@ -213,7 +223,6 @@
 				
             </div>
 		</div>
-		
 		<div id="case5">
 			<div class="vars">
                 <var id="A">randRange(2,4)</var>
