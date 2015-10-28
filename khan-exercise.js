@@ -1397,12 +1397,15 @@ var Khan = (function() {
                                 classes: "ui-tooltip-light leaf-tooltip"
                             },
                             position: {
-                                my: "bottom left",
-                                at: "top right"
+                                viewport: $(window),
+                                my: "top left",
+                                at: "bottom right",
                             },
                             show: 'focus',
                             hide: 'blur',
                             container: $("#solutionarea"),
+                            adjust: { resize: true },
+                            style: { classes: 'ui-tooltip-light', width: "250px" },
                         });
 
                     });
