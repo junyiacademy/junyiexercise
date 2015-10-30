@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>線性規劃</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+	<div class="problems">
+		<div id="linear">
+			<div class="vars">
+				<var id="NUM">randRange(3, 5)</var>
+                <var id="CENTER">[randRange(-3, 3), randRange(-3, 3)]</var>
+                <var id="RAD">randRange(3, 5)</var>
+                <var id="SORTX">function(x){
+                    for (var i = 0; i &lt; x.length; i++){
+                        for (var j = i + 1; j &lt; x.length; j++){
+                            if (x[i] > x[j]){
+                                var tmp = x[i];
+                                x[i] = x[j];
+                                x[j] = tmp;
+                            }
+                        }
+                    }
+                    return x;
+                }</var>
+				<var id="XS">SORTX(randRangeUnique(CENTER[0] - RAD, CENTER[0] + RAD, NUM))</var>
+                <var id="CHOOSE">function(c, r, x, n){
+                    var ys = [];
+                    for (var i = 0; i &lt; n; i++){
+                        if (i % 2  == 0){
+                            ys[i] = c[1] + round(sqrt(pow(r, 2) - pow(c[0] - x[i], 2)));
+                        } else {
+                            ys[i] = c[1] - round(sqrt(pow(r, 2) - pow(c[0] - x[i], 2)));
+                        }
+                    }
+                    return ys;
+                }</var>
+                <var id="YS">CHOOSE(CENTER, RAD, XS, NUM)</var>
+                <var id="COORDS">function(x, y, n){
+                    var points = [];
+                    for (var i = 0; i &lt; n; i++){
+                        points[i] = [x[i], y[i]];
+                    }
+                    return points;
+                }</var>
+                <var id="ORDER">function(points, c, n){
+                    var order = [];
+                    var i = 0;
+                    var j = n - 1;
+                    for (var k = 0; k &lt; n; k++){
+                        if (points[k][1] &gt; c[1]){
+                            order[i] = points[k];
+                            i++;
+                        } else {
+                            order[j] = points[k];
+                            j--;
+                        }
+                    }
+                    return order;
+                }</var>
+                <var id="POINTS">ORDER(COORDS(XS, YS, NUM), CENTER, NUM)</var>
+                <var id="SLOPE">randRange(-8, 8) / randRange(1, 5)</var>
+			</div>
+
+			<div class="problem">
+				<div class="graphie">
+					graphInit({
+						range: 10,
+						scale: 25,
+						axisArrows: "&lt;-&gt;",
+                        tickStep: 1,
+                        labelStep: 1,
+                        gridOpacity: 0.1,
+                        axisOpacity: 0.3,
+                        tickOpacity: 0.5,
+                        labelOpacity: 0.5
+					});
+					addMouseLayer();
+
+					_.each(POINTS, function(point){
+                        circle(point, 0.1, { fill: "black" });
+                    });
+                    POINTS.push(POINTS[0]);
+                    path(POINTS);
+
+                    graph.pointA = addMovablePoint({
+                        coord: [0, 0],
+                        snapX: 0.5,
+                        snapY: 0.5,
+                        visible: false
+                    });
+                    graph.pointB = addMovablePoint({
+                        coord: [1, SLOPE],
+                        snapX: 0.5,
+                        snapY: 0.5,
+                        visible: false
+                    });
+					graph.line = addMovableLineSegment({
+                        pointA: graph.pointA,
+                        pointZ: graph.pointB,
+                        snapX:0.1,
+                        snapY:0.1,
+                        extendLine: true
+                    });
+
+                    graph.line.onMove = function(dX, dY){
+                        this.pointA.setCoord([this.coordA[0], this.coordA[1]]);
+                        this.pointZ.setCoord([this.coordZ[0], this.coordZ[1]]);
+                    }
+
+				</div>
+			</div>
+
+			<p class="question"></p>
+
+			<div class="solution" data-type="custom">
+                <div class="instruction">
+                </div>
+                <div class="guess">[graph.pointA.coord, graph.pointB.coord]</div>
+                <div class="validator-function">
+                    var slope = (guess[0][1] - guess[1][1]) / (guess[0][0] - guess[1][0]);
+                    var funcY = function(x){
+                        return guess[0][1] + (x - guess[0][0]) * slope;
+                    }
+                    var count = 0;
+
+                    if (slope &gt; 0){
+                        for (var i = 0; i &lt; NUM; i++){
+                            if (abs(POINTS[i][1] - funcY(POINTS[i][0])) &lt; 0.1){
+                                count++;
+                            } else if (POINTS[i][1] &lt; funcY(POINTS[i][0])){
+                                return false;
+                            }
+                        }
+                        if (count &gt; 0){  return true;}
+                        else {  return false;}
+                    } else {
+                        for (var i = 0; i &lt; NUM; i++){
+                            if (abs(POINTS[i][1] - funcY(POINTS[i][0])) &lt; 0.1){
+                                count++;
+                            } else if (POINTS[i][1] &gt; funcY(POINTS[i][0])){
+                                return false;
+                            }
+                        }
+                        if (count &gt; 0){  return true;}
+                        else {  return false;}
+                    }
+                </div>
+                <div class="show-guess">
+                    GRAPH.pointA.setCoord(guess[0]);
+                    GRAPH.pointB.setCoord(guess[1]);
+                </div>
+
+			</div>
+
+		</div>
+	</div>
+
+	<div class="hints">
+
+	</div>
+</div>
+</body>
+</html>
