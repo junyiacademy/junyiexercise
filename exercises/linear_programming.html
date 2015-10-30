@@ -61,10 +61,13 @@
                     return order;
                 }</var>
                 <var id="POINTS">ORDER(COORDS(XS, YS, NUM), CENTER, NUM)</var>
-                <var id="SLOPE">randRange(-8, 8) / randRange(1, 5)</var>
+                <var id="A">randRange(-5,5)</var>
+                <var id="B">randRange(-5,5)</var>
+                <var id="SLOPE">B / (-1* A)</var>
 			</div>
 
 			<div class="problem">
+                試著移動圖中的直線，來求目標函數 <code>f(x,y) = <var>A</var>x + <var>B</var> y </code> 在找出在多邊形區域限制內可達到的最大值之處。
 				<div class="graphie">
 					graphInit({
 						range: 10,
@@ -92,7 +95,7 @@
                         visible: false
                     });
                     graph.pointB = addMovablePoint({
-                        coord: [1, SLOPE],
+                        coord: [-B, A],
                         snapX: 0.5,
                         snapY: 0.5,
                         visible: false
@@ -113,7 +116,11 @@
 				</div>
 			</div>
 
-			<p class="question"></p>
+			<p class="question">
+                 <code>f(x,y) = <var>A</var>x + <var>B</var> y 
+                    ＝<var>A* graph.pointA[0]+ B* graph.pointA[1]</var></code>
+
+            </p>
 
 			<div class="solution" data-type="custom">
                 <div class="instruction">
