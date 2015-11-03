@@ -16,7 +16,7 @@ _.defaults(Exercises, {
         // Currently we render perseus question by the same way with html exercises.
         // return (userExerciseOverride || userExercise).exerciseModel.isQuizExercise ?
         //     "perseus" : "khan-exercises";
-        return "khan-exercises";
+        return "perseus";
     }
 });
 
@@ -172,7 +172,7 @@ function problemTemplateRendered() {
 
     // These shouldn't interfere...
     $(PerseusBridge).trigger("problemTemplateRendered");
-    $(Khan).trigger("problemTemplateRendered");
+    //$(Khan).trigger("problemTemplateRendered");
 }
 
 function newProblem(e, data) {
@@ -218,6 +218,7 @@ function handleAttempt(data) {
         score = PerseusBridge.scoreInput();
     } else if (framework === "khan-exercises") {
         score = Khan.scoreInput();
+        //score = PerseusBridge.scoreInput();
     }
 
     // Stop if the user didn't try to skip the question and also didn't yet
@@ -397,6 +398,7 @@ function onHintButtonClicked() {
         $(PerseusBridge).trigger("showHint");
     } else if (framework === "khan-exercises") {
         $(Khan).trigger("showHint");
+        //$(PerseusBridge).trigger("showHint");
     }
 }
 
@@ -469,6 +471,7 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         data = PerseusBridge.getSeedInfo();
     } else if (framework === "khan-exercises") {
         data = Khan.getSeedInfo();
+        //data = PerseusBridge.getSeedInfo();
     }
 
     return _.extend(data, {
@@ -597,7 +600,6 @@ function request(method, data) {
     return deferred.promise();
 }
 
-
 function readyForNextProblem(e, data) {
     if (!firstProblem) {
         // As both of the following variables are only used to make sure the
@@ -620,6 +622,7 @@ function readyForNextProblem(e, data) {
         $(PerseusBridge).trigger("readyForNextProblem", data);
     } else if (framework === "khan-exercises") {
         $(Khan).trigger("readyForNextProblem", data);
+        //$(PerseusBridge).trigger("readyForNextProblem", data);
     }
 }
 
@@ -660,7 +663,7 @@ function gotoNextProblem() {
 function updateUserExercise(e, data) {
     var framework = Exercises.getCurrentFramework();
     if (framework === "perseus") {
-        // TODO(alpert)
+        $(PerseusBridge).trigger("updateUserExercise", data);
     } else if (framework === "khan-exercises") {
         $(Khan).trigger("updateUserExercise", data);
     }
