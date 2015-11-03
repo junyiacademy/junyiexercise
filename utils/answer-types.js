@@ -271,46 +271,62 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
 
             // retrieve the example texts from the different forms
             var exampleForms = {
-                integer: "整數，例：<code>6</code>",
+                integer: "整數，例：<code>\\color{red}{\\text{6}}</code>",
 
                 proper: (function() {
                         if (options.simplify === "optional") {
-                            return "<em>真</em>分數，例：<code><var>fraction( 6, 10 )</var></code>請輸入<code>6/10</code>";
+                            return "分數，例：<code><var>fraction( 3, 5 )</var></code>輸入<code>\\color{red}{\\text{3/5}}</code>";
                         } else {
-                            return "真分數的<em>最簡</em>分數，例：<code><var>fraction( 3, 5 )</var></code>請輸入<code>3/5</code>";
+                            return "分數，例：<code><var>fraction( 3, 5 )</var></code>輸入<code>\\color{red}{\\text{3/5}}</code>(要化簡)";
                         }
                     })(),
 
                 improper: (function() {
                         if (options.simplify === "optional") {
-                            return "<em>假</em>分數，例：<code><var>fraction( 14, 8 )</var></code>請輸入<code>14/8</code>";
+                            return "<code><var>fraction( 14, 8 )</var></code>輸入<code>\\color{red}{\\text{14/8}}</code>";
                         } else {
-                            return "假分數的<em>最簡</em>分數，例：<code><var>fraction( 7, 4 )</var></code>請輸入<code>7/4</code>";
+                            return "<code><var>fraction( 7, 4 )</var></code>請輸入<code>\\color{red}{\\text{7/4}}</code>(要化簡)";
                         }
                     })(),
 
-                pi: "pi 的倍數，例如 <code>12\\ \\text{pi}</code> 或 <code>2/3\\ \\text{pi}</code>",
+                pi: "<code>\\pi</code>輸入<code>\\color{red}{\\text{pi}}</code>",
 
-                log: "LOG的數學式, 例如 <code>\\log(100)</code>",
+                log: "LOG的數學式, 例如 <code>\\color{red}{\\log(100)}</code>",
 
-                percent: "百分比，例：<code>12.34\\%</code>",
+                percent: "百分比，例：<code>\\color{red}{\\text{12.34%}}</code>",
 
-                dollar: "金額表示：例：<code>$2.75</code>",
+                dollar: "金額表示：例：<code>\\color{red}{$2.75}</code>",
 
-                mixed: "帶分數，例：<code><var>1</var>\ <var>fraction( 3, 4, false, true )</var></code>請輸入<code>1\\ 3/4</code>，整數和分數中間記得空一格喔！",
+                mixed: "<code><var>1</var>\ <var>fraction( 3, 4, false, true )</var></code>輸入<code>\\color{red}{\\text{1 3/4}}</code>(整數與分數中間空一格)",
 
                 decimal: (function() {
                         if (options.inexact === undefined) {
-                            return "小數，例：<code>0.75</code>";
+                            return "小數，例：<code>\\color{red}{0.75}</code>";
                         } else {
-                            return "小數，例：<code>0.75</code>";
+                            return "小數，例：<code>\\color{red}{0.75}</code>";
                         }
                     })()
             };
 
             // extract the examples for the given forms
             var examples = [];
-            $.each(acceptableForms, function(i, form) {
+            var simplifiedAcceptableForms = acceptableForms.slice();
+            if (simplifiedAcceptableForms.length > 3){
+                // do not show example of proper and example of improper at the same time
+                if (simplifiedAcceptableForms.indexOf("proper") !== -1 && 
+                    simplifiedAcceptableForms.indexOf("improper") !== -1){
+                    simplifiedAcceptableForms = _.without(simplifiedAcceptableForms, "improper");
+                }
+                // do not show example of integer
+                if (simplifiedAcceptableForms.length > 3){
+                    simplifiedAcceptableForms = _.without(simplifiedAcceptableForms, "integer");
+                }
+                // do not show example of decimal
+                if (simplifiedAcceptableForms.length > 3){
+                    simplifiedAcceptableForms = _.without(simplifiedAcceptableForms, "decimal");
+                }
+            }
+            $.each(simplifiedAcceptableForms, function(i, form) {
                 if (exampleForms[form] != null) {
                     examples.push(exampleForms[form]);
                 }
