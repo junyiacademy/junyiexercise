@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html data-require="math word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>假分數與帶分數的等值分數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+		<div class="problems">
+			<div id="case1">
+				<div class="vars" data-ensure=" M != 1 ">
+					<var id="AI, BI"> randRangeUnique( 3, 40, 2 ).sort( function( a, b ){ return b - a; } ) </var>
+					<var id="M"> randRange( 2, 100 / AI ) </var>
+					<var id="CI, DI"> [ AI * M, BI * M ] </var>
+					<var id="S"> binop( 1 ) </var>
+					<var id="T"> randRange( 1, 4 ) </var>
+					<var id="Q"> randRange( 1, 2 ) </var>
+					<var id="A, B, C, D"> Q == 1 ? [ AI, BI, CI, DI ] : [ CI, DI, AI, BI ] </var>
+					<var id="_CHARS">(function(){
+						switch( T )
+							{
+							case 1:
+								return [ '左邊', '分子', '右邊', C, A, D, B, '分母' ];<!--右邊的分子，左邊的分子，右邊的分母，左邊的分母-->
+								break;
+							case 2:
+								return [ '左邊', '分母', '右邊', D, B, C, A, '分子' ];
+								break;
+							case 3:
+								return [ '右邊', '分子', '左邊', A, C, B, D, '分母' ];
+								break;
+							case 4:
+								return [ '右邊', '分母', '左邊', B, D, A, C, '分子' ];
+								break;
+							default:
+								return '';
+							}
+					})()</var>
+					<var id="_SIGN"> _CHARS[ 3 ] &gt; _CHARS[ 4 ] ? [ '除以', '乘以' ] : [ '乘以', '除以' ]</var>
+					<var id="_ANS"> T == 1 ? A : ( T == 2 ? B : ( T == 3 ? C : D ) ) </var>
+				</div>
+
+				<div class="question">
+					<p><code><var>S</var></code> 的位置要代入什麼數字，才會使等式成立呢？</p>
+					<p><code>\dfrac{<var>T==1 ? S : A</var>}{<var>T==2 ? S : B</var>} = \dfrac{<var>T==3 ? S : C</var>}{<var>T==4 ? S : D</var>}</code></p>
+				</div>
+			
+				<div class="solution" data-forms="integer"><span><var>_ANS</var></span></div>				            
+				<div class="hints">
+					<p>要得到<var>_CHARS[0]</var>的<var>_CHARS[7]</var> <code><var>_CHARS[6]</var></code> 的話，<var>_CHARS[2]</var>的<var>_CHARS[7]</var> <code><var>_CHARS[5]</var></code> 需<var>_SIGN[0]</var> <code><var>M</var></code>。</p>
+					<p>要得到<var>_CHARS[0]</var><var>_CHARS[1]</var>的話，<var>_CHARS[2]</var>的<var>_CHARS[1]</var>也要<var>_SIGN[0]</var> <code><var>M</var></code> 就可以。</p>
+					<p><code><var>_CHARS[3]</var> <var>_CHARS[ 3 ] &gt; _CHARS[ 4 ] ? '\\div' : '\\times'</var> <var>M</var> = <var>_CHARS[4]</var></code></p>
+					<div>
+						<p>注意到，我們將分子、分母同時<var>_SIGN[0]</var> <code>{<var>M</var>}</code> ，</p>
+						<p>我們可以寫成 <code>\dfrac{<var>M</var>}{<var>M</var>}</code> ，經過約分後等於 <code>1</code> 。</p>
+						<p>所以我們计算這樣的問題時，<var>_SIGN[0]</var> <code>1</code> 並不會改變原來分數的值。</p>
+					</div>
+					<p>原來式子變成：<code>\dfrac{<var>_CHARS[3]&gt;_CHARS[4]?max(A,C):min(A,C)</var>}{<var>_CHARS[3]&gt;_CHARS[4]?max(B,D):min(B,D)</var>} <var>_CHARS[ 3 ] &gt; _CHARS[ 4 ] ? '\\div' : '\\times'</var> \dfrac{<var>M</var>}{<var>M</var>} = \dfrac{<var>_CHARS[3]&gt;_CHARS[4]?min(A,C):max(A,C)</var>}{<var>_CHARS[3]&gt;_CHARS[4]?min(B,D):max(B,D)</var>} </code>，所以<code><var>S</var> = \color{#FF00AF}{<var>_ANS</var>}</code>。</p>
+				</div> 
+			</div>
+    
+			<div id="case2">
+				<div class="vars">
+					<var id="J"> randRange( 1, 3 ) </var>
+					<var id="K"> randRange( 1, 2 ) </var>
+					<var id="L"> randRange( 1, 3 ) </var>
+					<var id="C1"> randRange( 1, 12 ) </var>
+					<var id="Bf"> randRange( 2, 11 ) </var>
+					<var id="D1"> Bf + ( Bf &gt;= C1 ? 1 : 0 ) </var>
+					<var id="C"> C1 &gt; D1 ? D1 : C1 </var>
+					<var id="D"> C1 &gt; D1 ? C1 : D1 </var>
+					<var id="M"> randRange( 3, 9 ) </var>
+					<var id="A"> C * M </var>
+					<var id="B"> D * M </var>
+					<var id="SYMBOL"> binop( 1 ) </var>
+					<var id="ANSWER">(function() {
+                        if ( K==1 ) {
+							if(L==1) return D;
+							if(L==2) return C;
+							if(L==3) return J;
+                        } 
+						else {
+							if(L==1) return B;
+							if(L==2) return A;
+							if(L==3) return J;
+                        }
+                    })()
+					</var>
+				</div>
+				<div class="question">
+					<p><code><var>SYMBOL</var></code>等於哪個數字時，才會使得等式成立呢？</p>
+					<p data-if="K==1&amp;&amp;L==1"><code><var>J</var>\dfrac{<var>A</var>}{<var>B</var>} = <var>J</var>\dfrac{<var>C</var>}{<var>SYMBOL</var>}</code></p>
+					<p data-if="K==1&amp;&amp;L==2"><code><var>J</var>\dfrac{<var>A</var>}{<var>B</var>} = <var>J</var>\dfrac{<var>SYMBOL</var>}{<var>D</var>}</code></p>
+					<p data-if="K==1&amp;&amp;L==3"><code><var>J</var>\dfrac{<var>A</var>}{<var>B</var>} = <var>SYMBOL</var>\dfrac{<var>C</var>}{<var>D</var>}</code></p>
+					<p data-if="K==2&amp;&amp;L==1"><code><var>J</var>\dfrac{<var>C</var>}{<var>D</var>} = <var>J</var>\dfrac{<var>A</var>}{<var>SYMBOL</var>}</code></p>
+					<p data-if="K==2&amp;&amp;L==2"><code><var>J</var>\dfrac{<var>C</var>}{<var>D</var>} = <var>J</var>\dfrac{<var>SYMBOL</var>}{<var>B</var>}</code></p>
+					<p data-if="K==2&amp;&amp;L==3"><code><var>J</var>\dfrac{<var>C</var>}{<var>D</var>} = <var>SYMBOL</var>\dfrac{<var>A</var>}{<var>B</var>}</code></p>
+				</div>			
+				<div class="solution" data-forms="integer"><span><var>ANSWER</var></span></div>				            
+				<div class="hints">
+					<p data-if="K==1&amp;&amp;L==1">想將左邊分數部分的分子 <code><var>A</var></code> 變成右邊分數部分的分子 <code><var>C</var></code> ，我們需要將左邊的分子 <code><var>A</var></code> 除以 <code><var>M</var></code> 。</p>
+					<p data-if="K==1&amp;&amp;L==2">想將左邊分數部分的分母 <code><var>B</var></code> 變成右邊分數部分的分母 <code><var>D</var></code> ，我們需要將左邊的分母 <code><var>B</var></code> 除以 <code><var>M</var></code>。</p>
+					<p data-if="K==2&amp;&amp;L==1">想將左邊分數部分的分子 <code><var>C</var></code> 變成右邊分數部分的分子 <code><var>A</var></code> ，我們需要將左邊的分子 <code><var>C</var></code> 乘以 <code><var>M</var></code>。</p>
+					<p data-if="K==2&amp;&amp;L==2">想將左邊分數部分的分母 <code><var>D</var></code> 變成右邊分數部分的分母 <code><var>B</var></code> ，我們需要將左邊的分母 <code><var>D</var></code> 乘以 <code><var>M</var></code>。</p>
+					<p data-if="K==1&amp;&amp;L==3">左邊分數部分的分子 <code><var>A</var></code> 除以 <code><var>M</var></code> 就變成右邊分數部分的分子 <code><var>C</var></code> 。</p>
+					<p data-if="K==2&amp;&amp;L==3">左邊分數部分的分子 <code><var>C</var></code> 乘以 <code><var>M</var></code> 就變成右邊分數部分的分子 <code><var>A</var></code> 。</p>
+					<div>
+						<p data-if="K==1&amp;&amp;L==1">因此想要得到右邊分數部分的分母，我們只要將左邊分數部分的分母 <code><var>B</var></code> 除以 <code><var>M</var></code> 就可以了。</p>
+						<p data-if="K==1&amp;&amp;L==2">因此想要得到右邊分數部分的分子，我們只要將左邊分數部分的分子 <code><var>A</var></code> 除以 <code><var>M</var></code> 就可以了。</p>
+						<p data-if="K==2&amp;&amp;L==1">因此想要得到右邊分數部分的分母，我們只要將左邊分數部分的分母 <code><var>D</var></code> 乘以 <code><var>M</var></code> 就可以了。</p>
+						<p data-if="K==2&amp;&amp;L==2">因此想要得到右邊分數部分的分子，我們只要將左邊分數部分的分子 <code><var>C</var></code> 乘以 <code><var>M</var></code> 就可以了。</p>
+						<p data-if="K==1&amp;&amp;L==3">左邊分數部分的分母 <code><var>B</var></code> 除以 <code><var>M</var></code> 就變成右邊分數部分的分母 <code><var>D</var></code> 。</p>
+						<p data-if="K==2&amp;&amp;L==3">左邊分數部分的分母 <code><var>D</var></code> 乘以 <code><var>M</var></code> 就變成右邊分數部分的分母 <code><var>B</var></code> 。</p>
+						<p data-if="K==1&amp;&amp;L==1"><code><var>B</var> \div <var>M</var> = <var>D</var></code></p>
+						<p data-if="K==1&amp;&amp;L==2"><code><var>A</var> \div <var>M</var> = <var>C</var></code></p>
+						<p data-if="K==2&amp;&amp;L==1"><code><var>D</var> \times <var>M</var> = <var>B</var></code></p>
+						<p data-if="K==2&amp;&amp;L==2"><code><var>C</var> \times <var>M</var> = <var>A</var></code></p>
+					</div>
+					<div>
+						<p data-if="K==1">我們發現，左邊分數部分的分子、分母同時除以 <code>{<var>M</var>}</code> ，這樣子的操作並不會改變分數的大小。</p>
+						<p data-if="K==2">我們發現，左邊分數部分的分子、分母同時乘以 <code>{<var>M</var>}</code> ，這樣子的操作並不會改變分數的大小。</p>
+						<p data-if="K==1">用式子表示就是：<code>\dfrac{<var>A</var>}{<var>B</var>}=\dfrac{<var>A</var>\div <var>M</var>}{<var>B</var>\div <var>M</var>}=\dfrac{<var>C</var>}{<var>D</var>}</code>。</p>
+						<p data-if="K==2">用式子表示就是：<code>\dfrac{<var>C</var>}{<var>D</var>}=\dfrac{<var>C</var>\times <var>M</var>}{<var>D</var>\times <var>M</var>}=\dfrac{<var>A</var>}{<var>B</var>}</code>。</p>
+					</div>
+					<p>要注意的是，我們在找帶分數的等值分數時，帶分數的整數部分不會隨著改變，因此右邊分數的整數部分還是 <code><var>J</var></code>。</p>
+					<p data-if="K==1">所以 <code><var>J</var>\dfrac{<var>A</var>}{<var>B</var>} = <var>J</var>\dfrac{<var>C</var>}{<var>D</var>} </code> ，可以得到 <code><var>SYMBOL</var> = </code> <code  class="hint_pink"><var>ANSWER</var></code> 。</p>
+					<p data-if="K==2">所以 <code><var>J</var>\dfrac{<var>C</var>}{<var>D</var>} = <var>J</var>\dfrac{<var>A</var>}{<var>B</var>} </code> ，可以得到 <code><var>SYMBOL</var> = </code> <code  class="hint_pink"><var>ANSWER</var></code> 。</p>
+				</div> 
+			</div>		
+		</div>
+    </div>
+</body>
+</html>
