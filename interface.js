@@ -709,9 +709,9 @@ function clearExistingProblem() {
     $("#positive-reinforcement").hide();
 
     // Wipe out any previous problem
-    if(Khan && Khan.cleanupProblem) Khan.cleanupProblem();
+    //if(Khan && Khan.cleanupProblem) Khan.cleanupProblem();
     if(PerseusBridge && PerseusBridge.cleanupProblem) PerseusBridge.cleanupProblem();
-    $("#workarea, #hintsarea, #solutionarea").empty();
+    //$("#workarea, #hintsarea, #solutionarea").empty();
 
     // Take off the event handlers for disabling check answer; we'll rebind
     // if we actually want them
