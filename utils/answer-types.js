@@ -635,8 +635,18 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
 
             // validator function
             return function(guess) {
-                guess = $.trim(guess);
-                var ret = false;
+                // The fallback variable is used in place of the answer, if no
+                // answer is provided (i.e. the field is left blank)
+                var fallback =
+                    options.fallback != null ? "" + options.fallback : "";
+
+                guess = $.trim(guess) || fallback;
+                var score = {
+                    empty: guess === "",
+                    correct: false,
+                    message: null,
+                    guess: guess
+                };
 
                 // iterate over all the acceptable forms, and if one of the
                 // answers is correct, return true
@@ -653,27 +663,54 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                             // If the exact correct number was returned,
                             // return true
                             if (exact || options.simplify === "optional") {
-                                ret = true;
+                                score.correct = true;
+                                score.message = options.message || null;
+                                // If the answer is correct, don't say it's
+                                // empty. This happens, for example, with the
+                                // coefficient type where guess === "" but is
+                                // interpreted as "1" which is correct.
+                                score.empty = false;
                             } else if (form === "percent") {
                                 // Otherwise, an error was returned
-                                ret = inexactMessages.missingPercentSign;
+                                score.empty = true;
+                                score.message = inexactMessages.missingPercentSign;
                             } else {
-                                ret = inexactMessages.unsimplified;
+                                if (options.simplify !== "enforced") {
+                                    score.empty = true;
+                                }
+                                score.message = inexactMessages.unsimplified;
                             }
 
                             return false; // break;
                         } else if (piApprox &&
                                    predicate(val, Math.abs(val * 0.001))) {
-                            ret = "Your answer is close, but you may have " +
-                                  "approximated pi. Enter your answer as a " +
-                                  "multiple of pi, like <code>12\\ " +
-                                  "\\text{pi}</code> or <code>2/3\\ " +
-                                  "\\text{pi}</code>";
+                            score.empty = true;
+                            score.message = $._("Your answer is close, but you may " +
+                                      "have approximated pi. Enter your " +
+                                      "answer as a multiple of pi, like " +
+                                      "<code>12\\ \\text{pi}</code> or " +
+                                      "<code>2/3\\ \\text{pi}</code>");
                         }
                     }
                 });
 
-                return ret;
+                if (score.correct === false) {
+                    var interpretedGuess = false;
+                    _.each(forms, function(form) {
+                        if(_.any(form(guess), function(t) {
+                                return t.value != null && !_.isNaN(t.value);})) {
+                            interpretedGuess = true;
+                        }
+                    });
+                    if (!interpretedGuess) {
+                        score.empty = true;
+                        score.message = $._("We could not understand your answer. " +
+                            "Please check your answer for extra text or symbols.");
+                        return score;
+                    }
+                }
+
+                return score;
             };
         }
     },

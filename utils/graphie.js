@@ -230,6 +230,8 @@
             }).join("");
         };
 
+        $.extend(KhanUtil, {svgPath: svgPath});
+
         var processAttributes = function(attrs) {
             var transformers = {
                 scale: function(scale) {

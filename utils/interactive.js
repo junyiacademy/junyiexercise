@@ -2223,7 +2223,11 @@ $.extend(KhanUtil.Graphie.prototype, {
     },
 
     Protractor: function(center) {
-        return new Protractor(center);
+        return new Protractor(this, center);
+    },
+
+    Ruler: function(options) {
+        return new Ruler(this, options || {});
     },
 
     Triangleruler: function(center){
@@ -2242,8 +2246,8 @@ function DrawInteractiveBoundry(graph) {
                 [xrange[0], yrange[0]]], {stroke: "#BBBBBB"});
 }
 
-function Protractor(center) {
-    var graph = KhanUtil.currentGraph;
+function Protractor(graph, center) {
+    //var graph = KhanUtil.currentGraph;
     this.set = graph.raphael.set();
 
     this.cx = center[0];
@@ -2601,6 +2605,252 @@ function Triangleruler(center) {
     this.set.attr({ opacity: 0.5 });
     this.makeTranslatable();
     this.rotateTo(0);
+    return this;
+}
+
+function Ruler(graphie, options) {
+    var kvector = KhanUtil.kvector;
+    _.defaults(options, {
+        center: [0, 0],
+        pixelsPerUnit: 40,
+        ticksPerUnit: 10,   // 10 or power of 2
+        units: 10,          // the length the ruler can measure
+        label: "",          // e.g "cm" (the shorter, the better)
+        style: {
+            fill: null,
+            stroke: KhanUtil.GRAY
+        }
+    });
+
+    var light = _.extend({}, options.style, {strokeWidth: 1});
+    var bold  = _.extend({}, options.style, {strokeWidth: 2});
+
+    // Ruler dimensions in pixels
+    var width = options.units * options.pixelsPerUnit;
+    var height = 50;        // arbitrary, but looks good
+
+    // Bottom left corner of the ruler in graphie units
+    var leftBottom = graphie.unscalePoint(
+        kvector.subtract(
+            graphie.scalePoint(options.center),
+            kvector.scale([width, -height], 0.5)
+        )
+    );
+
+    var graphieUnitsPerUnit = options.pixelsPerUnit / graphie.scale[0];
+    var graphieUnitsHeight = height / graphie.scale[0];
+
+    // Top right corner of the ruler in graphie units
+    var rightTop = kvector.add(
+        leftBottom,
+        [options.units * graphieUnitsPerUnit, graphieUnitsHeight]
+    );
+
+    var tickHeight = 1.0;   // percent of ruler height
+    var tickHeightMap;      // mapping of tick frequency to tick height
+                            // {n: h} means every n-th tick will have height h
+
+    if (options.ticksPerUnit === 10) {
+        // decimal, as on a centimeter ruler
+        tickHeightMap = {
+            10: tickHeight,
+            5:  tickHeight * 0.55,
+            1:  tickHeight * 0.35
+        };
+    } else {
+        // powers of 2, as on an inch ruler
+        var sizes = [1, 0.6, 0.45, 0.3];
+
+        tickHeightMap = {};
+        for (var i = options.ticksPerUnit; i >= 1; i /= 2) {
+            tickHeightMap[i] = tickHeight * (sizes.shift() || 0.2);
+        }
+    }
+
+    var tickFrequencies = _.keys(tickHeightMap).sort(function(a, b) {
+        return b - a;
+    });
+
+    function getTickHeight(i) {
+        for (var k = 0; k < tickFrequencies.length; k++) {
+            var key = tickFrequencies[k];
+            if (i % key === 0) {
+                return tickHeightMap[key];
+            }
+        }
+    }
+
+    // Draw the ruler
+    var left = leftBottom[0];
+    var bottom = leftBottom[1];
+    var right = rightTop[0];
+    var top = rightTop[1];
+
+    var numTicks = options.units * options.ticksPerUnit + 1;
+
+    var set = graphie.raphael.set();
+
+    var px = 1 / graphie.scale[0]; // one pixel
+    set.push(graphie.line([left - px, bottom], [right + px, bottom], bold));
+    set.push(graphie.line([left - px, top], [right + px, top], bold));
+
+    _.times(numTicks, function(i) {
+        var n = i / options.ticksPerUnit;
+        var x = left + n * graphieUnitsPerUnit;
+        var height = getTickHeight(i) * graphieUnitsHeight;
+
+        var style = (i === 0 || i === numTicks - 1) ? bold : light;
+        set.push(graphie.line([x, bottom], [x, bottom + height], style));
+
+        if (n % 1 === 0) {
+            // Graphie labels are difficult to rotate in IE8,
+            // so use raphael.text() instead
+            var coord = graphie.scalePoint([x, top]);
+            var text;
+            var offset;
+
+            if (n === 0) {
+                // Unit label
+                text = options.label;
+                offset = {
+                    mm: 13,
+                    cm: 11,
+                    m: 8,
+                    km: 11,
+                    in: 8,
+                    ft: 8,
+                    yd: 10,
+                    mi: 10
+                }[text] || (3 * text.toString().length);
+            } else {
+                // Tick label
+                text = n;
+                offset = -3 * (n.toString().length + 1);
+            }
+            var label = graphie.raphael.text(
+                coord[0] + offset,
+                coord[1] + 10,
+                text
+            );
+            label.attr({
+                "font-family": "katex_main",
+                "font-size": "12px",
+                "color": "#444"
+            });
+            set.push(label);
+        }
+    });
+
+    // Add a mouse target
+    var mouseTarget = graphie.mouselayer.path(KhanUtil.svgPath([
+        leftBottom, [left, top], rightTop, [right, bottom], /* closed */ true
+    ]));
+    mouseTarget.attr({
+        fill: "#000",
+        opacity: 0,
+        stroke: "#000",
+        "stroke-width": 2
+    });
+    set.push(mouseTarget);
+
+    var setNodes = $.map(set, function(el) { return el.node; });
+    $(setNodes).css("cursor", "move");
+
+    $(setNodes).bind("vmousedown", function(event) {
+        event.preventDefault();
+        var startx = event.pageX - $(graphie.raphael.canvas.parentNode).offset().left;
+        var starty = event.pageY - $(graphie.raphael.canvas.parentNode).offset().top;
+
+        $(document).bind("vmousemove.ruler", function(event) {
+            // mouse{X|Y} are in pixels relative to the SVG
+            var mouseX = event.pageX - $(graphie.raphael.canvas.parentNode).offset().left;
+            var mouseY = event.pageY - $(graphie.raphael.canvas.parentNode).offset().top;
+            // can't go beyond 10 pixels from the edge
+            mouseX = Math.max(10, Math.min(graphie.xpixels - 10, mouseX));
+            mouseY = Math.max(10, Math.min(graphie.ypixels - 10, mouseY));
+
+            var dx = mouseX - startx;
+            var dy = mouseY - starty;
+
+            set.translate(dx, dy);
+            leftBottomHandle.setCoord([leftBottomHandle.coord[0] + dx / graphie.scale[0], leftBottomHandle.coord[1] - dy / graphie.scale[1]]);
+            rightBottomHandle.setCoord([rightBottomHandle.coord[0] + dx / graphie.scale[0], rightBottomHandle.coord[1] - dy / graphie.scale[1]]);
+
+            startx = mouseX;
+            starty = mouseY;
+        });
+
+        $(document).one("vmouseup", function(event) {
+            $(document).unbind("vmousemove.ruler");
+        });
+    });
+
+    // Handles for rotation
+    var leftBottomHandle = graphie.addMovablePoint({
+        coord: leftBottom,
+        normalStyle: {
+            fill: KhanUtil.INTERACTIVE,
+            "fill-opacity": 0,
+            stroke: KhanUtil.INTERACTIVE
+        },
+        highlightStyle: {
+            fill: KhanUtil.INTERACTING,
+            "fill-opacity": 0.1,
+            stroke: KhanUtil.INTERACTING
+        },
+        pointSize: 6, // or 8 maybe?
+        onMove: function(x, y) {
+            var dy = rightBottomHandle.coord[1] - y;
+            var dx = rightBottomHandle.coord[0] - x;
+            var angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            var center = kvector.scale(kvector.add([x, y], rightBottomHandle.coord), 0.5);
+            var scaledCenter = graphie.scalePoint(center);
+            var oldCenter = kvector.scale(kvector.add(leftBottomHandle.coord, rightBottomHandle.coord), 0.5);
+            var scaledOldCenter = graphie.scalePoint(oldCenter);
+            var diff = kvector.subtract(scaledCenter, scaledOldCenter);
+            set.rotate(-angle, scaledOldCenter[0], scaledOldCenter[1]);
+            set.translate(diff[0], diff[1]);
+        }
+    });
+    var rightBottomHandle = graphie.addMovablePoint({
+        coord: [right, bottom],
+        normalStyle: {
+            fill: KhanUtil.INTERACTIVE,
+            "fill-opacity": 0,
+            stroke: KhanUtil.INTERACTIVE
+        },
+        highlightStyle: {
+            fill: KhanUtil.INTERACTING,
+            "fill-opacity": 0.1,
+            stroke: KhanUtil.INTERACTING
+        },
+        pointSize: 6, // or 8 maybe?
+        onMove: function(x, y) {
+            var dy = y - leftBottomHandle.coord[1];
+            var dx = x - leftBottomHandle.coord[0];
+            var angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            var center = kvector.scale(kvector.add([x, y], leftBottomHandle.coord), 0.5);
+            var scaledCenter = graphie.scalePoint(center);
+            var oldCenter = kvector.scale(kvector.add(leftBottomHandle.coord, rightBottomHandle.coord), 0.5);
+            var scaledOldCenter = graphie.scalePoint(oldCenter);
+            var diff = kvector.subtract(scaledCenter, scaledOldCenter);
+            set.rotate(-angle, scaledOldCenter[0], scaledOldCenter[1]);
+            set.translate(diff[0], diff[1]);
+        }
+    });
+
+    // Make each handle rotate the ruler about the other one
+    leftBottomHandle.constraints.fixedDistance.dist = width / graphie.scale[0];
+    leftBottomHandle.constraints.fixedDistance.point = rightBottomHandle;
+    rightBottomHandle.constraints.fixedDistance.dist = width / graphie.scale[0];
+    rightBottomHandle.constraints.fixedDistance.point = leftBottomHandle;
+
+    this.remove = function() {
+        set.remove();
+        leftBottomHandle.remove();
+        rightBottomHandle.remove();
+    };
+
     return this;
 }
 
