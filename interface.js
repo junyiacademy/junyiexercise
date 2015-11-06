@@ -218,7 +218,6 @@ function handleAttempt(data) {
         score = PerseusBridge.scoreInput();
     } else if (framework === "khan-exercises") {
         score = Khan.scoreInput();
-        //score = PerseusBridge.scoreInput();
     }
 
     // Stop if the user didn't try to skip the question and also didn't yet
@@ -398,7 +397,6 @@ function onHintButtonClicked() {
         $(PerseusBridge).trigger("showHint");
     } else if (framework === "khan-exercises") {
         $(Khan).trigger("showHint");
-        //$(PerseusBridge).trigger("showHint");
     }
 }
 
@@ -471,7 +469,6 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         data = PerseusBridge.getSeedInfo();
     } else if (framework === "khan-exercises") {
         data = Khan.getSeedInfo();
-        //data = PerseusBridge.getSeedInfo();
     }
 
     return _.extend(data, {
@@ -622,7 +619,6 @@ function readyForNextProblem(e, data) {
         $(PerseusBridge).trigger("readyForNextProblem", data);
     } else if (framework === "khan-exercises") {
         $(Khan).trigger("readyForNextProblem", data);
-        //$(PerseusBridge).trigger("readyForNextProblem", data);
     }
 }
 
