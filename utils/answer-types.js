@@ -54,7 +54,7 @@ var inexactMessages = {
 // Remove cleanupMath and texCleanup when tex.js is moved in from KA.
 // Function to restore a node to a non-math-processed state
 var texCleanup = function(jquery_element) {
-    jquery_element.find('.MathJax').each(function(){this.remove();});
+    jquery_element.find('.MathJax').each(function(){$(this).remove();});
     return jquery_element;
 };
 
