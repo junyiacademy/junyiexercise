@@ -15,44 +15,44 @@
     <div class="problems">
         <div id="case1">
             <div class="vars">
-                <var id="X">randRange(2,9)</var>
-                <var id="Y">randRange(2,9)</var>
+                <var id="X">randRange(2,8)</var>
+                <var id="Y">randRange(1,9)</var>
             </div>
             <div class="question">
-                請根據下圖嘗試計算：
+                請根據下示意圖嘗試計算：
                 <code>
                     <var>10*Y+X</var>
                     \times 
-                    <var>10*Y+10-X</var>
+                    <var>10*Y+10-X</var>=
                 </code>
                 <br>
                 <div id="area">
                     <div class="graphie">
                     
-                        init({range: [[-2, 12+X],[-15, 15+Y]], scale:9});
+                        init({range: [[-2, 12+X],[-15, 25-X]], scale:8});
 
                         <!-- XY square -->
-                        path([[0,0],[10+X,0],[10+X,10+Y],[0,10+Y], true], {fill:"#e88"});
-                        label([10+X/2, 10+Y/2], X*Y + "\\text{}", "center");
+                        path([[0,0],[10+X,0],[10+X,20-X],[0,20-X], true], {fill:"#e88"});
+                        label([10+X/2, 10+(10-X)/2], X*(10-X) + "\\text{}", "center");
 
                         <!-- X square -->
                         path([[0,0],[10+X,0],[10+X,10],[0,10], true], {fill:"#007DFF"});
                         label([10+X/2, 0], X + "\\text{}", "below");
-                        label([10+X/2, 5], X*10 + "\\text{}", "center");
+                        label([10+X/2, 5], Y*X*10 + "\\text{}", "center");
 
                         <!-- Y square -->
-                        path([[0,0],[10,0],[10,10+Y],[0,10+Y], true], {fill:"#ddd"});
-                        label([-1, 10+Y/2], Y + "\\text{}", "left");
-                        label([5, 10+Y/2], Y*10, "center");
+                        path([[0,0],[10,0],[10,20-X],[0,20-X], true], {fill:"#ddd"});
+                        label([0, 10+(10-X)/2], (10-X) + "\\text{}", "left");
+                        label([5, 10+(10-X)/2], Y*10*(10-X), "center");
 
                         <!-- basic square -->
                         path([[0,0],[10,0],[10,10],[0,10], true], {fill:"#88e"});
-                        label([5,0], 10, "below");
-                        label([5,5], 100, "center");
-                        label([-1,5], 10, "left");
+                        label([5,0], 10*Y, "below");
+                        label([5,5], 100*Y*Y, "center");
+                        label([0,5], 10*Y, "left");
 
-                        var answer = (10+X+Y)*10 + X*Y;
-                        label([(10+X)/2, -4], (10+X) + '×' + (10+Y)  , "below", {
+                        var answer = (Y*10+X)*(Y*10+(10-X));
+                        label([(10+X)/2, -4], (Y*10+X) + '×' + (Y*10+(10-X))  , "below", {
                             labelDistance: 4,
                             color: "#fff",
                             background: "cornflowerblue"
@@ -60,33 +60,31 @@
                     </div>
                     <span style="font-size: 36px;position: absolute;margin-top: 100px;">⇔</span>
                     <div class="graphie" style="margin-left: 60px;">
-                        var Y=10-X
 
-                        init({range: [[-2, 12+X+Y],[-15, 15+Y]], scale:9});
+                        init({range: [[-2, 22],[-15, 25-X]], scale:8});
 
                         <!-- 10+X+Y square -->
-                        path([[0,0],[10+X+Y,0],[10+X+Y,10],[0,10], true], {fill:"#ddd"});
-                        label([10+X+Y/2, 5], 10*Y + "\\text{}", "center");
-                        label([10+X+Y/2, 0], Y + "\\text{}", "below");
+                        path([[0,0],[20,0],[20,10],[0,10], true], {fill:"#ddd"});
+                        label([10+X+(10-X)/2, 5], Y*10*(10-X) + "\\text{}", "center");
+                        label([10+X+(10-X)/2, 0], (10-X) + "\\text{}", "below");
 
                         <!-- XY square -->
-                        path([[10,10],[10+X,0],[10+X,10+Y],[10,10+Y], true], {fill:"#e88"});
-                        label([10+X/2, 10+Y/2], X*Y + "\\text{}", "center");
+                        path([[10,10],[10+X,10],[10+X,20-X],[10,20-X], true], {fill:"#e88"});
+                        label([10+X/2, 10+(10-X)/2], X*(10-X) + "\\text{}", "center");
 
                         <!-- X square -->
                         path([[0,0],[10+X,0],[10+X,10],[0,10], true], {fill:"#007DFF"});
                         label([10+X/2, 0], X + "\\text{}", "below");
-                        label([10+X/2, 5], X*10 + "\\text{}", "center");
+                        label([10+X/2, 5], Y*X*10 + "\\text{}", "center");
 
                         <!-- basic square -->
                         path([[0,0],[10,0],[10,10],[0,10], true], {fill:"#88e"});
-                        label([5,0], 10, "below");
-                        label([5,5], 100, "center");
-                        label([-1,5], 10, "left");
+                        label([5,0], Y*10, "below");
+                        label([5,5], Y*Y*100, "center");
+                        label([0,5], Y*10, "left");
 
-                        var answer = (10+X+Y)*10 + X*Y;
-                        var preAdd = 10+X;
-                        label([(10+X+Y)/2, -4], '(' + preAdd + '+' + Y + ')' +' × 10 + ' + X + '×' + Y , "below", {
+                        var answer = (Y*10+X)*(Y*10+(10-X));
+                        label([10, -4], '(' + (Y*10+X) + '+' + (10-X) + ')' + '×' +Y*10 + '+' + X + '×' + (10-X) , "below", {
                             labelDistance: 4,
                             color: "#fff",
                             background: "cornflowerblue"
@@ -96,13 +94,20 @@
             </div>
             <div class="solution">
                 <code>
-                    <var>(10+X)*(10+Y)</var>
+                    <var>(Y*10+X)*(Y*10+10-X)</var>
                 </code>
             </div>
             <div class="hints">
                 <p>
                 <code>
-                    (<var>10+X</var> + <var>Y</var>) \times 10 + <var>X</var> \times <var>Y</var> = <var>(10+X)*(10+Y)</var>
+                    計算 &nbsp; <var>Y*10+X</var>\times <var>Y*10+10-X</var>，其實就是在算一個"長&nbsp; <var>Y*10+X</var>、寬 &nbsp; <var>Y*10+10-X</var> &nbsp;"的矩形面積<p>
+                    我們將原本的矩形分成四塊，分別是 &nbsp; <var>Y*10</var>\times<var>Y*10</var>、<var>X</var>\times <var>Y*10</var>、<var>Y*10</var> \times<var>(10-X)</var>、<var>X</var> \times <var>10-X</var><p>
+                    我們可以將 &nbsp; <var>Y*10</var>\times<var>Y*10</var>、<var>X</var>\times <var>Y*10</var>、<var>Y*10</var> \times<var>(10-X)</var> &nbsp; 這三塊組成一個大矩形<p>
+                    合成的大矩形長為&nbsp;(<var>Y*10+X</var> + <var>10-X</var>)、寬為 &nbsp; <var>Y*10</var>；
+                    而剩下那塊則是 &nbsp; <var>X</var> \times <var>10-X</var> &nbsp; 的矩形<p>
+                    如此以來，(<var>Y*10+X</var> + <var>10-X</var>)\times <var>Y*10</var> = <var>Y*10+10</var> \times <var>Y*10</var> &nbsp; 是"某10倍 &nbsp;乘 &nbsp; 某10倍"的運算<p>
+                    剩下的 &nbsp; <var>X</var> \times <var>(10-X)</var>  &nbsp; 則是一個"個位乘個位的運算"<p>
+                    比直接"二位數乘二位數"方便許多了！
                 </code>
                 </p>
             </div>
