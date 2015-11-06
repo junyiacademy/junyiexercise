@@ -14,9 +14,9 @@ _.defaults(Exercises, {
 
     getCurrentFramework: function(userExerciseOverride) {
         // Currently we render perseus question by the same way with html exercises.
-        // return (userExerciseOverride || userExercise).exerciseModel.isQuizExercise ?
-        //     "perseus" : "khan-exercises";
-        return "perseus";
+        return (userExerciseOverride || userExercise).exerciseModel.isQuizExercise ?
+            "perseus" : "khan-exercises";
+        // return "perseus";
     }
 });
 
@@ -711,7 +711,7 @@ function clearExistingProblem() {
     // Wipe out any previous problem
     //if(Khan && Khan.cleanupProblem) Khan.cleanupProblem();
     if(PerseusBridge && PerseusBridge.cleanupProblem) PerseusBridge.cleanupProblem();
-    //$("#workarea, #hintsarea, #solutionarea").empty();
+    $("#workarea, #hintsarea, #solutionarea").empty();
 
     // Take off the event handlers for disabling check answer; we'll rebind
     // if we actually want them
