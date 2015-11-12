@@ -1,346 +1,1 @@
-<!DOCTYPE html>
-<html data-require="math math-format graphie graphie-helpers">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>報讀日期與星期</title>
-    <script src="../khan-exercise.js"></script>
-<style type="text/css">
-		 #answer_area .sol input[type=text] {
-            width: 20px;
-        }		 
-		.hanzi {
-	        line-height:1em; 
-            font-size:1.5em
-        }
-	    .pinyin {
-	        line-height:1em; 
-            font-size:0.4em;
-            vertical-align:middle;
-            padding:0px 0px 0px 0px;
-        }
-		table.nLimit{margin:5px ;border:1px }
-		table.nLimit td { width:300px;border: 1px solid #AAA;font-size:12px;}
-		table.nLimit td { padding: 5px; }
-		.bordered{
-			border: 1px solid #AAA;
-		}
-		.back{
-			background-image:url(Khan.urlBase+'images/red_back.jpg');
-			background-size:cover
-		
-		}
-</style>
-<script type="text/javascript">
-	function setStyle_2(elemId) {
-        var obj = document.getElementById(elemId);  
-		obj.style.backgroundImage = "url(" + Khan.urlBase +"images/red_back.jpg"+ ")";
-        obj.style.backgroundSize = "cover";
-    }
-	function value(j)
-	{
-		while(j>7)
-		{
-			j=j-7;
-		}
-		return j;
-	}
-	function day(i,q)
-	{
-		if(i>=q)
-		{
-			i=i-q;
-			if(i==0) return "六";
-			if(i==1) return "日";
-			if(i==2) return "一";
-			if(i==3) return "二";
-			if(i==4) return "三";
-			if(i==5) return "四";
-			if(i==6) return "五";
-		
-		}
-		if(i<q)
-		{
-			i=q-i;
-			if(i==1) return "五";
-			if(i==2) return "四";
-			if(i==3) return "三";
-			if(i==4) return "二";
-			if(i==5) return "一";
-			if(i==6) return "日";
-		}
-		
-	}
-	function loadImg(elem,url,count,width)
-	{	
-		var loimg = document.getElementById(elem);
-		var inner = "";
-		for(var i=1;i<=count;i++){
-			inner+="<img id=\"image"+elem+i+"\" width="+width+">";
-		}
-		loimg.innerHTML+=inner;
-		for(var j=1;j<=count;j++){
-			document.getElementById("image"+elem+j).src=url;
-		}
-	}
-	function isIn(array,elem)
-	{
-		for(var v in array)
-		{
-			if(elem==array[v])
-				return true;
-		}
-		return false;
-	}
-	function WTN(i)
-	{
-		if(i=="一") return 1;
-		if(i=="二") return 2;
-		if(i=="三") return 3;
-		if(i=="四") return 4;
-		if(i=="五") return 5;
-		if(i=="六") return 6;
-		if(i=="日") return 7;
-	
-	}	function getchinese(p)		{			var input=new Array(2);			var input1;			var re="";							if(p==10){ re="十";}			if(p!=10)			{				if(p<10){input=[p];input1=1;}				if(p>10){					var x= parseInt(p/10);					if(x==1){x=0;}					var y= p%10;					input=[x,y];					input1=2;					if(p>20&&p<30||p==31){input=[x,0,y];input1=3;}				}					for(var i=0;i<input1;i++)				{								if(input[i]=="1")						re=re+ "一";					 else if(input[i]=="2")						re=re+ "二";					 else if(input[i]=="3")						re=re+ "三";					 else if(input[i]=="4")						re=re+ "四";					 else if(input[i]=="5")						re=re+ "五";					 else if(input[i]=="6")						re=re+ "六";					 else if(input[i]=="7")						re=re+ "七";					 else if(input[i]=="8")						re=re+ "八";					 else if(input[i]=="9")						re=re+ "九";					else if(input[i]=="0")						re=re+ "十";									}			}						return re;		}
-</script>
-</head>
-<body>
-    <div class="exercise">
-        <div class="problems">
-		<div id="case1">
-			<div class="vars">				<var id="type">randRange(1,2)</var>
-				<var id="J">randFromArray([["一"],["二"],["三"],["四"]])</var>
-				<var id="K">randFromArray([["一"],["二"],["三"],["四"],["五"]])</var>
-				<var id="M">randFromArray([["一"],["二"],["三"],["四"]])</var>
-				<var id="N">randFromArray([["一"],["二"],["三"],["四"],["六"]])</var>
-				<var id="year">randRange(103,105)</var>
-				<var id="month">randRange(1,12)</var>
-				<var id="mon">(function(){
-								if(month==1) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
-								if(month==2 && year==104) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29];
-								if(month==2 && year!=104) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28];
-								if(month==3) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
-								if(month==4) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
-								if(month==5) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
-								if(month==6) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
-								if(month==7) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
-								if(month==8) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
-								if(month==9) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
-								if(month==10) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
-								if(month==11) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
-								if(month==12) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
-				})()</var>
-				<var id="date">mon</var>				
-				
-				<var id="dayJ">WTN(J)*7+WTN(K)-6</var>
-				<var id="dayM">WTN(M)*7+WTN(N)-6</var>								<var id="cmonth">getchinese(month)</var>				<var id="cdayJ">getchinese(dayJ)</var>				<var id="cdayM">getchinese(dayM)</var>
-			</div>
-			<div class="question">
-					<p class="problem">
-						<p>看看下面的月曆。</p>
-						<p align="center">中華民國<code><var>year</var></code>年<code><var>month</var></code>月</p>
-						<table class="nLimit">
-							<tr>
-							<td align="center" class="hint_red">星期日</td><td align="center">星期一</td><td align="center">星期二</td><td align="center">星期三</td><td align="center">星期四</td><td align="center">星期五</td><td align="center" class="hint_red">星期六</td>
-							</tr>
-							<tr align="center" >
-							<td class="hint_red" id="grid11"><var>date[0]</var></td><td id="grid12"><var>date[1]</var></td><td id="grid13"><var>date[2]</var></td><td id="grid14"><var>date[3]</var></td><td  id="grid15"><var>date[4]</var></td><td id="grid16"><var>date[5]</var></td><td class="hint_red" id="grid17"><var>date[6]</var></td>
-							</tr >
-							<tr align="center">
-							<td  class="hint_red" id="grid21"><var>date[7]</var></td><td  id="grid22"><var>date[8]</var></td><td  id="grid23"><var>date[9]</var></td><td id="grid24"><var>date[10]</var></td><td id="grid25"><var>date[11]</var></td><td id="grid26"><var>date[12]</var></td><td class="hint_red" id="grid27"><var>date[13]</var></td>
-							</tr >
-							<tr align="center">
-							<td  class="hint_red" id="grid31"><var>date[14]</var></td><td id="grid32"><var>date[15]</var></td><td id="grid33"><var>date[16]</var></td><td id="grid34"><var>date[17]</var></td><td id="grid35"><var>date[18]</var></td><td id="grid36"><var>date[19]</var></td><td class="hint_red" id="grid37"><var>date[20]</var></td>
-							</tr>
-							<tr align="center">
-							<td   class="hint_red" id="grid41"><var>date[21]</var></td><td id="grid42"><var>date[22]</var></td><td id="grid43"><var>date[23]</var></td><td id="grid44"><var>date[24]</var></td><td id="grid45"><var>date[25]</var></td><td id="grid46"><var>date[26]</var></td><td class="hint_red" id="grid47"><var>date[27]</var></td>
-							</tr>
-							<tr align="center" data-if="date.length==29">
-							<td  class="hint_red" ><var>29</var></td><td></td><td></td><td></td><td><code>\enspace</code></td><td></td><td ></td>
-							</tr>
-							<tr align="center" data-if="date.length==30">
-							<td  class="hint_red" ><var>29</var></td><td><var>30</var></td><td></td><td></td><td><code>\enspace</code></td><td></td><td ></td>
-							</tr>
-							<tr align="center" data-if="date.length==31">
-							<td  class="hint_red" ><var>29</var></td><td><var>30</var></td><td><var>31</var></td><td></td><td><code>\enspace</code></td><td></td><td ></td>
-							</tr>
-						</table>
-					</p>
-						<p data-if="type==1">爸爸的生日是第<var>J</var>個星期<var>K</var>，是幾月幾日？</p>
-						<p data-if="type==2">學校在第<var>M</var>個星期<var>N</var>放假，是幾月幾日？</p>
-			</div>			<div class="solution" data-type="multiple">			<p><input type="text"  id="grid1" style="width:40px;"> 月 <input type="text"  id="grid2" style="width:40px;"> 日</p>			<div class="sol" data-type="custom">				<div class="guess">[document.getElementById("grid1").value,document.getElementById("grid2").value]</div>				<div class="validator-function">						if(guess[0]==null&&guess[1]==null){							return "";						}						if((type==1&&guess[0]==month&&guess[1]==dayJ)||(type==1&&guess[0]==cmonth&&guess[1]==cdayJ))						{							return true;						}						if((type==2&&guess[0]==month&&guess[1]==dayM)||(type==2&&guess[0]==cmonth&&guess[1]==cdayM))						{							return true;						}				</div>			</div>				<p class="example">整數，例：<code>6</code></p>				<p class="example">大寫，例：<code>六</code></p>		</div>
-			<div class="hints">
-				<p  data-if="type==1"><code class="hint_pink"><var>month</var></code> 月 <code  class="hint_pink"><var>dayJ</var></code> 日，或者 <code class="hint_pink"><var>cmonth</var></code> 月 <code  class="hint_pink"><var>cdayJ</var></code> 日。</p>					
-				<p  data-if="type==2"><code class="hint_pink"><var>month</var></code> 月 <code  class="hint_pink"><var>dayM</var></code> 日，或者 <code class="hint_pink"><var>cmonth</var></code> 月 <code  class="hint_pink"><var>cdayM</var></code> 日。</p>						
-			</div>
-		</div>				<div id="case2">			<div class="vars">				<var id="J">randFromArray([["一"],["二"],["三"],["四"]])</var>				<var id="K">randFromArray([["一"],["二"],["三"],["四"],["五"]])</var>				<var id="M">randFromArray([["一"],["二"],["三"],["四"]])</var>				<var id="N">randFromArray([["一"],["二"],["三"],["四"],["六"]])</var>				<var id="year">randRange(103,105)</var>				<var id="month">randRange(1,12)</var>				<var id="mon">(function(){								if(month==1) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==2 && year==104) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29];								if(month==2 && year!=104) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28];								if(month==3) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==4) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];								if(month==5) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==6) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];								if(month==7) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==8) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==9) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];								if(month==10) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==11) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];								if(month==12) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];				})()</var>				<var id="date">mon</var>				<var id="counts">						(function()						{							var elem="grid";							path="images/red_back.jpg";							i=randRange(0,27);								switch(i)									{										case 0:elem+="11";break;case 1:elem+="12";break;case 2:elem+="13";break;case 3:elem+="14";break;case 4:elem+="15";break;case 5:elem+="16";break;case 6:elem+="17";break;										case 7:elem+="21";break;case 8:elem+="22";break;case 9:elem+="23";break;case 10:elem+="24";break;case 11:elem+="25";break;case 12:elem+="26";break;case 13:elem+="27";break;										case 14:elem+="31";break;case 15:elem+="32";break;case 16:elem+="33";break;case 17:elem+="34";break;case 18:elem+="35";break;case 19:elem+="36";break;case 20:elem+="37";break;										case 21:elem+="41";break;case 22:elem+="42";break;case 23:elem+="43";break;case 24:elem+="44";break;case 25:elem+="45";break;case 26:elem+="46";break;case 27:elem+="47";break;									}											setStyle_2(elem);															return [elem,i];						})()				</var>				<var id="C">counts</var>				<var id="D">C[1]+1</var>				<var id="week">day(value(D),7)</var>				<var id="dayJ">WTN(J)*7+WTN(K)-6</var>				<var id="dayM">WTN(M)*7+WTN(N)-6</var>				<var id="ans">counts[1]+1</var>				<var id="cmonth">getchinese(month)</var>				<var id="cans">getchinese(ans)</var>			</div>			<div class="question">					<p class="problem">						<p>看看下面的月曆。</p>						<p align="center">中華民國 <code><var>year</var></code> 年 <code><var>month</var></code> 月</p>						<table class="nLimit">							<tr>							<td align="center" class="hint_red">星期日</td><td align="center">星期一</td><td align="center">星期二</td><td align="center">星期三</td><td align="center">星期四</td><td align="center">星期五</td><td align="center" class="hint_red">星期六</td>							</tr>							<tr align="center" >							<td class="hint_red" id="grid11"><var>date[0]</var></td><td id="grid12"><var>date[1]</var></td><td id="grid13"><var>date[2]</var></td><td id="grid14"><var>date[3]</var></td><td  id="grid15"><var>date[4]</var></td><td id="grid16"><var>date[5]</var></td><td class="hint_red" id="grid17"><var>date[6]</var></td>							</tr >							<tr align="center">							<td  class="hint_red" id="grid21"><var>date[7]</var></td><td  id="grid22"><var>date[8]</var></td><td  id="grid23"><var>date[9]</var></td><td id="grid24"><var>date[10]</var></td><td id="grid25"><var>date[11]</var></td><td id="grid26"><var>date[12]</var></td><td class="hint_red" id="grid27"><var>date[13]</var></td>							</tr >							<tr align="center">							<td  class="hint_red" id="grid31"><var>date[14]</var></td><td id="grid32"><var>date[15]</var></td><td id="grid33"><var>date[16]</var></td><td id="grid34"><var>date[17]</var></td><td id="grid35"><var>date[18]</var></td><td id="grid36"><var>date[19]</var></td><td class="hint_red" id="grid37"><var>date[20]</var></td>							</tr>							<tr align="center">							<td   class="hint_red" id="grid41"><var>date[21]</var></td><td id="grid42"><var>date[22]</var></td><td id="grid43"><var>date[23]</var></td><td id="grid44"><var>date[24]</var></td><td id="grid45"><var>date[25]</var></td><td id="grid46"><var>date[26]</var></td><td class="hint_red" id="grid47"><var>date[27]</var></td>							</tr>							<tr align="center" data-if="date.length==29">							<td  class="hint_red" ><var>29</var></td><td></td><td></td><td></td><td><code>\enspace</code></td><td></td><td ></td>							</tr>							<tr align="center" data-if="date.length==30">							<td  class="hint_red" ><var>29</var></td><td><var>30</var></td><td></td><td></td><td><code>\enspace</code></td><td></td><td ></td>							</tr>							<tr align="center" data-if="date.length==31">							<td  class="hint_red" ><var>29</var></td><td><var>30</var></td><td><var>31</var></td><td></td><td><code>\enspace</code></td><td></td><td ></td>							</tr>						</table>					</p>						<p>在月曆上圈起來的是阿姨出國的日期，是幾月幾日？</p>			</div>			<div class="solution" data-type="multiple">			<p><input type="text"  id="grid1" style="width:40px;"> 月 <input type="text"  id="grid2" style="width:40px;"> 日</p>			<div class="sol" data-type="custom">				<div class="guess">[document.getElementById("grid1").value,document.getElementById("grid2").value]</div>				<div class="validator-function">						if(guess[0]==null&&guess[1]==null){							return "";						}						if((guess[0]==month&&guess[1]==ans)||(guess[0]==cmonth&&guess[1]==cans))						{							return true;						}				</div>			</div>				<p class="example">整數，例：<code>6</code></p>				<p class="example">大寫，例：<code>六</code></p>		</div>					<div class="hints">				<p><code  class="hint_pink"><var>month</var></code> 月 <code  class="hint_pink"><var>counts[1]+1</var></code> 日，或者 <code class="hint_pink"><var>cmonth</var></code> 月 <code  class="hint_pink"><var>cans</var></code> 日。</p>									</div>		</div>		
-		<div id="case3">
-			<div class="vars" data-ensure="5&lt;K && K&lt;30" >
-				<var id="date">randFromArray([[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","","","","",""],
-											 [" ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","","","",""],
-											 [" "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","","",""],
-											 [" "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","",""],
-											 [" "," "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"",""],
-											 [" "," "," "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,""],
-											 [" "," "," "," "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]])
-				</var>
-				<var id="J">date</var>
-				<var id="K">randRange(0,35)</var>
-				<var id="DBF">(function(){
-									J[K]=J[K]+"&lt;br /\&gt;端午節";			
-				})()</var>
-			
-				<var id="a">(function(){
-							if(J[0]==1) return 1;
-							if(J[1]==1) return 0;
-							if(J[2]==1) return -1;
-							if(J[3]==1) return -2;
-							if(J[4]==1) return -3;
-							if(J[5]==1) return -4;
-							if(J[6]==1) return -5;
-				})()</var>
-				<var id="b">(function(){
-							if(J[0]==1) return 1;
-							if(J[1]==1) return 0;
-							if(J[2]==1) return -1;
-							if(J[3]==1) return -2;
-							if(J[4]==1) return -3;
-							if(J[5]==1) return -4;
-							if(J[6]==1) return -5;
-				})()</var>				<var id="ans">K+a</var>
-				<var id="cmonth">getchinese(6)</var>				<var id="cans">getchinese(ans)</var>
-			</div>
-			<div class="question">
-				<p>下面是 <code>6</code> 月的月曆，看月曆回答問題。</p>
-						<table class="nLimit">
-						<tr>
-						<td align="center" class="hint_red">星期日</td><td align="center">星期一</td><td align="center">星期二</td><td align="center">星期三</td><td align="center">星期四</td><td align="center">星期五</td><td align="center">星期六</td>
-						</tr>
-						<tr>
-						<td  align="center" class="hint_red"><var>J[0]</var></td><td  align="center"><var>J[1]</var></td><td  align="center"><var>J[2]</var></td><td  align="center"><var>J[3]</var></td><td  align="center"><var>J[4]</var></td><td  align="center"><var>J[5]</var></td><td  align="center"><var>J[6]</var></td>
-						</tr>
-						<tr>
-						<td  align="center" class="hint_red"><var>J[7]</var></td><td  align="center"><var>J[8]</var></td><td  align="center"><var>J[9]</var></td><td  align="center"><var>J[10]</var></td><td  align="center"><var>J[11]</var></td><td  align="center"><var>J[12]</var></td><td  align="center"><var>J[13]</var></td>
-						</tr>
-						<tr>
-						<td  align="center" class="hint_red"><var>J[14]</var></td><td  align="center"><var>J[15]</var></td><td  align="center"><var>J[16]</var></td><td  align="center"><var>J[17]</var></td><td  align="center"><var>J[18]</var></td><td  align="center"><var>J[19]</var></td><td  align="center"><var>J[20]</var></td>
-						</tr>
-						<tr>
-						<td  align="center" class="hint_red"><var>J[21]</var></td><td  align="center"><var>J[22]</var></td><td  align="center"><var>J[23]</var></td><td  align="center"><var>J[24]</var></td><td  align="center"><var>J[25]</var></td><td  align="center"><var>J[26]</var></td><td  align="center"><var>J[27]</var></td>
-						</tr>
-						<tr>
-						<td  align="center" class="hint_red"><var>J[28]</var></td><td  align="center"><var>J[29]</var></td><td  align="center"><var>J[30]</var></td><td  align="center"><var>J[31]</var></td><td  align="center"><var>J[32]</var></td><td  align="center"><var>J[33]</var></td><td  align="center"><var>J[34]</var></td>
-						</tr>
-						<tr>
-						<td  align="center" class="hint_red"><var>J[35]</var></td><td  align="center"></td><td  align="center"></td><td  align="center"><code>\enspace</code></td><td  align="center"></td><td  align="center"></td><td  align="center"></td>
-						</tr>
-						</table>
-			</div>
-			<div class="problem">
-				<p>端午節是幾月幾日？</p>
-			</div>
-			<div class="solution" data-type="multiple">			<p><input type="text"  id="grid1" style="width:40px;"> 月 <input type="text"  id="grid2" style="width:40px;"> 日</p>			<div class="sol" data-type="custom">				<div class="guess">[document.getElementById("grid1").value,document.getElementById("grid2").value]</div>				<div class="validator-function">						if(guess[0]==null&&guess[1]==null){							return "";						}						if((guess[0]==6&&guess[1]==ans)||(guess[0]==cmonth&&guess[1]==cans))						{							return true;						}				</div>			</div>				<p class="example">整數，例：<code>6</code></p>				<p class="example">大寫，例：<code>六</code></p>		</div>
-			<div class="hints">
-					<p><code class="hint_pink"><var>6</var></code> 月 <code class="hint_pink"><var>K+a</var></code> 日，或者 <code class="hint_pink"><var>cmonth</var></code> 月 <code  class="hint_pink"><var>cans</var></code> 日。</p>		
-			</div>
-		</div>		
-		<div id="case4">
-			<div class="vars">
-				<var id="J">randRange(1,12)</var>
-				<var id="K">randRange(5,25)</var>				
-				<var id="L">randRangeUnique(-1,2,2)</var>				<var id="day">(function(){					if(L[0]==-1){return "昨天";}					if(L[0]==0){return "今天";}					if(L[0]==1){return "明天";}					if(L[0]==2){return "後天";}				}())</var>				<var id="ans">(function(){					if(L[1]==-1){return "昨天";}					if(L[1]==0){return "今天";}					if(L[1]==1){return "明天";}					if(L[1]==2){return "後天";}				}())</var>
-			</div>
-			<div class="question">
-					<p class="problem">
-						<p>想一想，練習做做看。</p>
-					</p>
-						<p>如果<var>day</var>是 <code><var>J</var></code> 月 <code><var>K+L[0]</var></code> 日，那 <code><var>J</var></code> 月 <code><var>K+L[1]</var></code> 日是什麼時候？</p>			</div>
-			<div class="solution" data-type="multiple">
-					<p><span class="sol" data-type="list" data-choices="['','今天','明天','昨天','後天']"><var>ans</var></span>
-					</p>
-					<p class="example">在下拉列表中選擇正確的答案</p>
-			</div>
-			<div class="hints">
-					<p class="hint_pink"><var>ans</var></p>
-			</div>
-		</div>				<div id="case5">			<div class="vars">				<var id="J">randRange(1,12)</var>				<var id="K">randRange(5,25)</var>								<var id="L">randRangeUnique(-1,2,2)</var>				<var id="day">(function(){					if(L[0]==-1){return "昨天";}					if(L[0]==0){return "今天";}					if(L[0]==1){return "明天";}					if(L[0]==2){return "後天";}				}())</var>				<var id="ans">(function(){					if(L[1]==-1){return "昨天";}					if(L[1]==0){return "今天";}					if(L[1]==1){return "明天";}					if(L[1]==2){return "後天";}				}())</var>			</div>			<div class="question">					<p class="problem">						<p>想一想，練習做做看。</p>					</p>						<p> 如果 <code><var>J</var></code> 月 <code><var>K+L[0]</var></code> 日是<var>day</var>的日期，那 <code><var>J</var></code> 月 <code><var>K+L[1]</var></code>  日是哪一天的日期？</p>			</div>			<div class="solution" data-type="multiple">					<p><span class="sol" data-type="list" data-choices="['','今天','明天','昨天','後天']"><var>ans</var></span>					</p>					<p class="example">在下拉列表中選擇正確的答案</p>			</div>			<div class="hints">					<p class="hint_pink"><var>ans</var></p>			</div>		</div>
-		<div id="case6">
-			<div class="vars">								<var id="K">randRange(1,7)</var>				<var id="L">randRangeUnique(-1,2,2)</var>				<var id="d">(function(){					if(K+L[0]==0||K+L[0]==7){return "日";}					if(K+L[0]==1||K+L[0]==8){return "一";}					if(K+L[0]==2||K+L[0]==9){return "二";}					if(K+L[0]==3){return "三";}					if(K+L[0]==4){return "四";}					if(K+L[0]==5){return "五";}					if(K+L[0]==6){return "六";}				}())</var>				<var id="day">(function(){					if(L[0]==-1){return "昨天";}					if(L[0]==0){return "今天";}					if(L[0]==1){return "明天";}					if(L[0]==2){return "後天";}				}())</var>				<var id="day1">(function(){					if(L[1]==-1){return "昨天";}					if(L[1]==0){return "今天";}					if(L[1]==1){return "明天";}					if(L[1]==2){return "後天";}				}())</var>				<var id="ans">(function(){					if(K+L[1]==0||K+L[1]==7){return "日";}					if(K+L[1]==1||K+L[1]==8){return "一";}					if(K+L[1]==2||K+L[1]==9){return "二";}					if(K+L[1]==3){return "三";}					if(K+L[1]==4){return "四";}					if(K+L[1]==5){return "五";}					if(K+L[1]==6){return "六";}				}())</var>						
-			</div>
-			<div class="question">
-				<p>想一想，練習做做看。</p>
-					<p class="problem">
-						<p>如果<var>day</var>是星期<var>d</var>，那<var>day1</var>是星期幾？</p>
-					</p>
-			</div>
-			<div class="solution" data-type="multiple">
-				<p>星期<code>\enspace</code><span class="sol" data-type="list" data-choices="['','一','二','三','四','五','六','日']"><var>ans</var></span></p>
-				<p class="example">在下拉列表中選擇正確的答案</p>
-			</div>
-			<div class="hints">
-				<p><code class="hint_pink">星期<var>ans</var></code></p>
-			</div>
-		</div>						
-		<div id="case7">
-			<div class="vars">
-				<var id="year">randRange(103,105)</var>
-				<var id="date">randFromArray([[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","","","","",""],
-											 [" ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","","","",""],
-											 [" "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","","",""],
-											 [" "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","",""],
-											 [" "," "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"",""],
-											 [" "," "," "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,""],
-											 [" "," "," "," "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]])
-				</var>
-				<var id="J">date</var>
-				<var id="K">randRange(5,25)</var>
-				<var id="L">value(K)</var>
-				<var id="p">J[6]</var>
-				<var id="M">day(L,J[6])</var>								<var id="D">randRangeUnique(0,3,2)</var>
-				<var id="day">(function(){					if(D[0]==0){return "昨天";}					if(D[0]==1){return "今天";}					if(D[0]==2){return "明天";}					if(D[0]==3){return "後天";}				}())</var>				<var id="day1">(function(){					if(D[1]==0){return "昨天";}					if(D[1]==1){return "今天";}					if(D[1]==2){return "明天";}					if(D[1]==3){return "後天";}				}())</var>				<var id="ans">(function(){					if(D[0]==0){						if(D[1]==1){return 1;}						if(D[1]==2){return 2;}						if(D[1]==3){return 3;}					}					if(D[0]==1){						if(D[1]==0){return -1;}						if(D[1]==2){return 1;}						if(D[1]==3){return 2;}					}					if(D[0]==2){						if(D[1]==0){return -2;}						if(D[1]==1){return -1;}						if(D[1]==3){return 1;}					}					if(D[0]==3){						if(D[1]==0){return -3;}						if(D[1]==1){return -2;}						if(D[1]==2){return -1;}					}				}())</var>
-			</div>
-			<div class="question">
-				<p>看看下面的月曆，回答問題。</p>
-                <p align="center">民國<code>\enspace<var>year</var>\enspace</code>年 <code>6</code> 月</p>
-					<table class="nLimit">
-						<tr>
-						<td align="center" class="hint_red">星期日</td><td align="center">星期一</td><td align="center">星期二</td><td align="center">星期三</td><td align="center">星期四</td><td align="center">星期五</td><td align="center">星期六</td>
-						</tr>
-						<tr>
-						<td  align="center" class="hint_red"><var>J[0]</var></td><td  align="center"><var>J[1]</var></td><td  align="center"><var>J[2]</var></td><td  align="center"><var>J[3]</var></td><td  align="center"><var>J[4]</var></td><td  align="center"><var>J[5]</var></td><td  align="center"><var>J[6]</var></td>
-						</tr>
-						<tr>
-						<td  align="center" class="hint_red"><var>J[7]</var></td><td  align="center"><var>J[8]</var></td><td  align="center"><var>J[9]</var></td><td  align="center"><var>J[10]</var></td><td  align="center"><var>J[11]</var></td><td  align="center"><var>J[12]</var></td><td  align="center"><var>J[13]</var></td>
-						</tr>
-						<tr>
-						<td  align="center" class="hint_red"><var>J[14]</var></td><td  align="center"><var>J[15]</var></td><td  align="center"><var>J[16]</var></td><td  align="center"><var>J[17]</var></td><td  align="center"><var>J[18]</var></td><td  align="center"><var>J[19]</var></td><td  align="center"><var>J[20]</var></td>
-						</tr>
-						<tr>
-						<td  align="center" class="hint_red"><var>J[21]</var></td><td  align="center"><var>J[22]</var></td><td  align="center"><var>J[23]</var></td><td  align="center"><var>J[24]</var></td><td  align="center"><var>J[25]</var></td><td  align="center"><var>J[26]</var></td><td  align="center"><var>J[27]</var></td>
-						</tr>
-						<tr>
-						<td  align="center" class="hint_red"><var>J[28]</var></td><td  align="center"><var>J[29]</var></td><td  align="center"><var>J[30]</var></td><td  align="center"><var>J[31]</var></td><td  align="center"><var>J[32]</var></td><td  align="center"><var>J[33]</var></td><td  align="center"><var>J[34]</var></td>
-						</tr>
-						<tr>
-						<td  align="center" class="hint_red"><var>J[35]</var></td><td  align="center"></td><td  align="center"></td><td  align="center"><code>\enspace</code></td><td  align="center"></td><td  align="center"></td><td  align="center"></td>
-						</tr>
-					</table>
-            </div>
-			<div class="problem">
-				<p><var>day</var>是<code>\enspace 6 \enspace</code>月<code>\enspace<var>K</var>\enspace</code>日，星期幾？</p>
-			</div>
-			<div class="solution" data-type="multiple">
-				<p>星期 <span class="sol" data-type="list" data-choices="['','一','二','三','四','五','六','日']"><var>M</var></span></p>
-				<p class="example">在下拉列表中選擇正確的答案</p>
-			</div>
-			<div class="hints">
-					<p class="hint_pink">星期<var>M</var></p>
-			</div>
-		</div>
-		</div>
-	</div>
-</body>
-</html>
-								
-								
-								
+<!DOCTYPE html><html data-require="math math-format graphie graphie-helpers"><head>    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">    <title>報讀日期與星期</title>    <script src="../khan-exercise.js"></script><style type="text/css">		 #answer_area .sol input[type=text] {            width: 20px;        }		 		.hanzi {	        line-height:1em;             font-size:1.5em        }	    .pinyin {	        line-height:1em;             font-size:0.4em;            vertical-align:middle;            padding:0px 0px 0px 0px;        }		table.nLimit{margin:5px ;border:1px }		table.nLimit td { width:300px;border: 1px solid #AAA;font-size:12px;}		table.nLimit td { padding: 5px; }		.bordered{			border: 1px solid #AAA;		}		.back{			background-image:url(Khan.urlBase+'images/red_back.jpg');			background-size:cover				}</style><script type="text/javascript">	function setStyle_2(elemId) {        var obj = document.getElementById(elemId);  		obj.style.backgroundImage = "url(" + Khan.urlBase +"images/red_back.jpg"+ ")";        obj.style.backgroundSize = "cover";    }	function value(j)	{		while(j>7)		{			j=j-7;		}		return j;	}	function day(i,q)	{		if(i>=q)		{			i=i-q;			if(i==0) return "六";			if(i==1) return "日";			if(i==2) return "一";			if(i==3) return "二";			if(i==4) return "三";			if(i==5) return "四";			if(i==6) return "五";				}		if(i<q)		{			i=q-i;			if(i==1) return "五";			if(i==2) return "四";			if(i==3) return "三";			if(i==4) return "二";			if(i==5) return "一";			if(i==6) return "日";		}			}	function loadImg(elem,url,count,width)	{			var loimg = document.getElementById(elem);		var inner = "";		for(var i=1;i<=count;i++){			inner+="<img id=\"image"+elem+i+"\" width="+width+">";		}		loimg.innerHTML+=inner;		for(var j=1;j<=count;j++){			document.getElementById("image"+elem+j).src=url;		}	}	function isIn(array,elem)	{		for(var v in array)		{			if(elem==array[v])				return true;		}		return false;	}	function WTN(i)	{		if(i=="一") return 1;		if(i=="二") return 2;		if(i=="三") return 3;		if(i=="四") return 4;		if(i=="五") return 5;		if(i=="六") return 6;		if(i=="日") return 7;		}	function getchinese(p)		{			var input=new Array(2);			var input1;			var re="";							if(p==10){ re="十";}			if(p!=10)			{				if(p<10){input=[p];input1=1;}				if(p>10){					var x= parseInt(p/10);					if(x==1){x=0;}					var y= p%10;					input=[x,y];					input1=2;					if(p>20&&p<30||p==31){input=[x,0,y];input1=3;}				}					for(var i=0;i<input1;i++)				{								if(input[i]=="1")						re=re+ "一";					 else if(input[i]=="2")						re=re+ "二";					 else if(input[i]=="3")						re=re+ "三";					 else if(input[i]=="4")						re=re+ "四";					 else if(input[i]=="5")						re=re+ "五";					 else if(input[i]=="6")						re=re+ "六";					 else if(input[i]=="7")						re=re+ "七";					 else if(input[i]=="8")						re=re+ "八";					 else if(input[i]=="9")						re=re+ "九";					else if(input[i]=="0")						re=re+ "十";									}			}						return re;		}</script></head><body>    <div class="exercise">        <div class="problems">		<div id="case1">			<div class="vars">				<var id="type">randRange(1,2)</var>				<var id="J">randFromArray([["一"],["二"],["三"],["四"]])</var>				<var id="K">randFromArray([["一"],["二"],["三"],["四"],["五"]])</var>				<var id="M">randFromArray([["一"],["二"],["三"],["四"]])</var>				<var id="N">randFromArray([["一"],["二"],["三"],["四"],["六"]])</var>				<var id="year">randRange(103,105)</var>				<var id="month">randRange(1,12)</var>				<var id="mon">(function(){								if(month==1) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==2 && year==104) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29];								if(month==2 && year!=104) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28];								if(month==3) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==4) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];								if(month==5) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==6) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];								if(month==7) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==8) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==9) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];								if(month==10) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==11) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];								if(month==12) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];				})()</var>				<var id="date">mon</var>												<var id="dayJ">WTN(J)*7+WTN(K)-6</var>				<var id="dayM">WTN(M)*7+WTN(N)-6</var>								<var id="cmonth">getchinese(month)</var>				<var id="cdayJ">getchinese(dayJ)</var>				<var id="cdayM">getchinese(dayM)</var>			</div>			<div class="question">					<p class="problem">						<p>看看下面的月曆。</p>						<p align="center">中華民國<code><var>year</var></code>年<code><var>month</var></code>月</p>						<table class="nLimit">							<tr>							<td align="center" class="hint_red">星期日</td><td align="center">星期一</td><td align="center">星期二</td><td align="center">星期三</td><td align="center">星期四</td><td align="center">星期五</td><td align="center" class="hint_red">星期六</td>							</tr>							<tr align="center" >							<td class="hint_red" id="grid11"><var>date[0]</var></td><td id="grid12"><var>date[1]</var></td><td id="grid13"><var>date[2]</var></td><td id="grid14"><var>date[3]</var></td><td  id="grid15"><var>date[4]</var></td><td id="grid16"><var>date[5]</var></td><td class="hint_red" id="grid17"><var>date[6]</var></td>							</tr >							<tr align="center">							<td  class="hint_red" id="grid21"><var>date[7]</var></td><td  id="grid22"><var>date[8]</var></td><td  id="grid23"><var>date[9]</var></td><td id="grid24"><var>date[10]</var></td><td id="grid25"><var>date[11]</var></td><td id="grid26"><var>date[12]</var></td><td class="hint_red" id="grid27"><var>date[13]</var></td>							</tr >							<tr align="center">							<td  class="hint_red" id="grid31"><var>date[14]</var></td><td id="grid32"><var>date[15]</var></td><td id="grid33"><var>date[16]</var></td><td id="grid34"><var>date[17]</var></td><td id="grid35"><var>date[18]</var></td><td id="grid36"><var>date[19]</var></td><td class="hint_red" id="grid37"><var>date[20]</var></td>							</tr>							<tr align="center">							<td   class="hint_red" id="grid41"><var>date[21]</var></td><td id="grid42"><var>date[22]</var></td><td id="grid43"><var>date[23]</var></td><td id="grid44"><var>date[24]</var></td><td id="grid45"><var>date[25]</var></td><td id="grid46"><var>date[26]</var></td><td class="hint_red" id="grid47"><var>date[27]</var></td>							</tr>							<tr align="center" data-if="date.length==29">							<td  class="hint_red" ><var>29</var></td><td></td><td></td><td></td><td><code>\enspace</code></td><td></td><td ></td>							</tr>							<tr align="center" data-if="date.length==30">							<td  class="hint_red" ><var>29</var></td><td><var>30</var></td><td></td><td></td><td><code>\enspace</code></td><td></td><td ></td>							</tr>							<tr align="center" data-if="date.length==31">							<td  class="hint_red" ><var>29</var></td><td><var>30</var></td><td><var>31</var></td><td></td><td><code>\enspace</code></td><td></td><td ></td>							</tr>						</table>					</p>						<p data-if="type==1">爸爸的生日是第<var>J</var>個星期<var>K</var>，是幾月幾日？</p>						<p data-if="type==2">學校在第<var>M</var>個星期<var>N</var>放假，是幾月幾日？</p>			</div>			<div class="solution" data-type="multiple">			<p><input type="text"  id="grid1" style="width:40px;"> 月 <input type="text"  id="grid2" style="width:40px;"> 日</p>			<div class="sol" data-type="custom">				<div class="guess">[document.getElementById("grid1").value,document.getElementById("grid2").value]</div>				<div class="validator-function">						if(guess[0]==null&&guess[1]==null){							return "";						}						if((type==1&&guess[0]==month&&guess[1]==dayJ)||(type==1&&guess[0]==cmonth&&guess[1]==cdayJ))						{							return true;						}						if((type==2&&guess[0]==month&&guess[1]==dayM)||(type==2&&guess[0]==cmonth&&guess[1]==cdayM))						{							return true;						}				</div>			</div>				<p class="example">整數，例：<code>6</code></p>				<p class="example">大寫，例：<code>六</code></p>		</div>			<div class="hints">				<p  data-if="type==1"><code class="hint_pink"><var>month</var></code> 月 <code  class="hint_pink"><var>dayJ</var></code> 日，或者 <code class="hint_pink"><var>cmonth</var></code> 月 <code  class="hint_pink"><var>cdayJ</var></code> 日。</p>									<p  data-if="type==2"><code class="hint_pink"><var>month</var></code> 月 <code  class="hint_pink"><var>dayM</var></code> 日，或者 <code class="hint_pink"><var>cmonth</var></code> 月 <code  class="hint_pink"><var>cdayM</var></code> 日。</p>									</div>		</div>				<div id="case2">			<div class="vars">				<var id="J">randFromArray([["一"],["二"],["三"],["四"]])</var>				<var id="K">randFromArray([["一"],["二"],["三"],["四"],["五"]])</var>				<var id="M">randFromArray([["一"],["二"],["三"],["四"]])</var>				<var id="N">randFromArray([["一"],["二"],["三"],["四"],["六"]])</var>				<var id="year">randRange(103,105)</var>				<var id="month">randRange(1,12)</var>				<var id="mon">(function(){								if(month==1) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==2 && year==104) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29];								if(month==2 && year!=104) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28];								if(month==3) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==4) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];								if(month==5) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==6) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];								if(month==7) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==8) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==9) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];								if(month==10) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];								if(month==11) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];								if(month==12) return [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];				})()</var>				<var id="date">mon</var>				<var id="counts">						(function()						{							var elem="grid";							path="images/red_back.jpg";							i=randRange(0,27);								switch(i)									{										case 0:elem+="11";break;case 1:elem+="12";break;case 2:elem+="13";break;case 3:elem+="14";break;case 4:elem+="15";break;case 5:elem+="16";break;case 6:elem+="17";break;										case 7:elem+="21";break;case 8:elem+="22";break;case 9:elem+="23";break;case 10:elem+="24";break;case 11:elem+="25";break;case 12:elem+="26";break;case 13:elem+="27";break;										case 14:elem+="31";break;case 15:elem+="32";break;case 16:elem+="33";break;case 17:elem+="34";break;case 18:elem+="35";break;case 19:elem+="36";break;case 20:elem+="37";break;										case 21:elem+="41";break;case 22:elem+="42";break;case 23:elem+="43";break;case 24:elem+="44";break;case 25:elem+="45";break;case 26:elem+="46";break;case 27:elem+="47";break;									}											setStyle_2(elem);															return [elem,i];						})()				</var>				<var id="C">counts</var>				<var id="D">C[1]+1</var>				<var id="week">day(value(D),7)</var>				<var id="dayJ">WTN(J)*7+WTN(K)-6</var>				<var id="dayM">WTN(M)*7+WTN(N)-6</var>				<var id="ans">counts[1]+1</var>				<var id="cmonth">getchinese(month)</var>				<var id="cans">getchinese(ans)</var>			</div>			<div class="question">					<p class="problem">						<p>看看下面的月曆。</p>						<p align="center">中華民國 <code><var>year</var></code> 年 <code><var>month</var></code> 月</p>						<table class="nLimit">							<tr>							<td align="center" class="hint_red">星期日</td><td align="center">星期一</td><td align="center">星期二</td><td align="center">星期三</td><td align="center">星期四</td><td align="center">星期五</td><td align="center" class="hint_red">星期六</td>							</tr>							<tr align="center" >							<td class="hint_red" id="grid11"><var>date[0]</var></td><td id="grid12"><var>date[1]</var></td><td id="grid13"><var>date[2]</var></td><td id="grid14"><var>date[3]</var></td><td  id="grid15"><var>date[4]</var></td><td id="grid16"><var>date[5]</var></td><td class="hint_red" id="grid17"><var>date[6]</var></td>							</tr >							<tr align="center">							<td  class="hint_red" id="grid21"><var>date[7]</var></td><td  id="grid22"><var>date[8]</var></td><td  id="grid23"><var>date[9]</var></td><td id="grid24"><var>date[10]</var></td><td id="grid25"><var>date[11]</var></td><td id="grid26"><var>date[12]</var></td><td class="hint_red" id="grid27"><var>date[13]</var></td>							</tr >							<tr align="center">							<td  class="hint_red" id="grid31"><var>date[14]</var></td><td id="grid32"><var>date[15]</var></td><td id="grid33"><var>date[16]</var></td><td id="grid34"><var>date[17]</var></td><td id="grid35"><var>date[18]</var></td><td id="grid36"><var>date[19]</var></td><td class="hint_red" id="grid37"><var>date[20]</var></td>							</tr>							<tr align="center">							<td   class="hint_red" id="grid41"><var>date[21]</var></td><td id="grid42"><var>date[22]</var></td><td id="grid43"><var>date[23]</var></td><td id="grid44"><var>date[24]</var></td><td id="grid45"><var>date[25]</var></td><td id="grid46"><var>date[26]</var></td><td class="hint_red" id="grid47"><var>date[27]</var></td>							</tr>							<tr align="center" data-if="date.length==29">							<td  class="hint_red" ><var>29</var></td><td></td><td></td><td></td><td><code>\enspace</code></td><td></td><td ></td>							</tr>							<tr align="center" data-if="date.length==30">							<td  class="hint_red" ><var>29</var></td><td><var>30</var></td><td></td><td></td><td><code>\enspace</code></td><td></td><td ></td>							</tr>							<tr align="center" data-if="date.length==31">							<td  class="hint_red" ><var>29</var></td><td><var>30</var></td><td><var>31</var></td><td></td><td><code>\enspace</code></td><td></td><td ></td>							</tr>						</table>					</p>						<p>在月曆上圈起來的是阿姨出國的日期，是幾月幾日？</p>			</div>			<div class="solution" data-type="multiple">			<p><input type="text"  id="grid1" style="width:40px;"> 月 <input type="text"  id="grid2" style="width:40px;"> 日</p>			<div class="sol" data-type="custom">				<div class="guess">[document.getElementById("grid1").value,document.getElementById("grid2").value]</div>				<div class="validator-function">						if(guess[0]==null&&guess[1]==null){							return "";						}						if((guess[0]==month&&guess[1]==ans)||(guess[0]==cmonth&&guess[1]==cans))						{							return true;						}				</div>			</div>				<p class="example">整數，例：<code>6</code></p>				<p class="example">大寫，例：<code>六</code></p>		</div>					<div class="hints">				<p><code  class="hint_pink"><var>month</var></code> 月 <code  class="hint_pink"><var>counts[1]+1</var></code> 日，或者 <code class="hint_pink"><var>cmonth</var></code> 月 <code  class="hint_pink"><var>cans</var></code> 日。</p>									</div>		</div>				<div id="case3">			<div class="vars" data-ensure="5&lt;K && K&lt;30" >				<var id="date">randFromArray([[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","","","","",""],											 [" ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","","","",""],											 [" "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","","",""],											 [" "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","",""],											 [" "," "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"",""],											 [" "," "," "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,""],											 [" "," "," "," "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]])				</var>				<var id="J">date</var>				<var id="K">randRange(0,35)</var>				<var id="DBF">(function(){									J[K]=J[K]+"&lt;br /\&gt;端午節";							})()</var>							<var id="a">(function(){							if(J[0]==1) return 1;							if(J[1]==1) return 0;							if(J[2]==1) return -1;							if(J[3]==1) return -2;							if(J[4]==1) return -3;							if(J[5]==1) return -4;							if(J[6]==1) return -5;				})()</var>				<var id="b">(function(){							if(J[0]==1) return 1;							if(J[1]==1) return 0;							if(J[2]==1) return -1;							if(J[3]==1) return -2;							if(J[4]==1) return -3;							if(J[5]==1) return -4;							if(J[6]==1) return -5;				})()</var>				<var id="ans">K+a</var>				<var id="cmonth">getchinese(6)</var>				<var id="cans">getchinese(ans)</var>			</div>			<div class="question">				<p>下面是 <code>6</code> 月的月曆，看月曆回答問題。</p>						<table class="nLimit">						<tr>						<td align="center" class="hint_red">星期日</td><td align="center">星期一</td><td align="center">星期二</td><td align="center">星期三</td><td align="center">星期四</td><td align="center">星期五</td><td align="center">星期六</td>						</tr>						<tr>						<td  align="center" class="hint_red"><var>J[0]</var></td><td  align="center"><var>J[1]</var></td><td  align="center"><var>J[2]</var></td><td  align="center"><var>J[3]</var></td><td  align="center"><var>J[4]</var></td><td  align="center"><var>J[5]</var></td><td  align="center"><var>J[6]</var></td>						</tr>						<tr>						<td  align="center" class="hint_red"><var>J[7]</var></td><td  align="center"><var>J[8]</var></td><td  align="center"><var>J[9]</var></td><td  align="center"><var>J[10]</var></td><td  align="center"><var>J[11]</var></td><td  align="center"><var>J[12]</var></td><td  align="center"><var>J[13]</var></td>						</tr>						<tr>						<td  align="center" class="hint_red"><var>J[14]</var></td><td  align="center"><var>J[15]</var></td><td  align="center"><var>J[16]</var></td><td  align="center"><var>J[17]</var></td><td  align="center"><var>J[18]</var></td><td  align="center"><var>J[19]</var></td><td  align="center"><var>J[20]</var></td>						</tr>						<tr>						<td  align="center" class="hint_red"><var>J[21]</var></td><td  align="center"><var>J[22]</var></td><td  align="center"><var>J[23]</var></td><td  align="center"><var>J[24]</var></td><td  align="center"><var>J[25]</var></td><td  align="center"><var>J[26]</var></td><td  align="center"><var>J[27]</var></td>						</tr>						<tr>						<td  align="center" class="hint_red"><var>J[28]</var></td><td  align="center"><var>J[29]</var></td><td  align="center"><var>J[30]</var></td><td  align="center"><var>J[31]</var></td><td  align="center"><var>J[32]</var></td><td  align="center"><var>J[33]</var></td><td  align="center"><var>J[34]</var></td>						</tr>						<tr>						<td  align="center" class="hint_red"><var>J[35]</var></td><td  align="center"></td><td  align="center"></td><td  align="center"><code>\enspace</code></td><td  align="center"></td><td  align="center"></td><td  align="center"></td>						</tr>						</table>			</div>			<div class="problem">				<p>端午節是幾月幾日？</p>			</div>			<div class="solution" data-type="multiple">			<p><input type="text"  id="grid1" style="width:40px;"> 月 <input type="text"  id="grid2" style="width:40px;"> 日</p>			<div class="sol" data-type="custom">				<div class="guess">[document.getElementById("grid1").value,document.getElementById("grid2").value]</div>				<div class="validator-function">						if(guess[0]==null&&guess[1]==null){							return "";						}						if((guess[0]==6&&guess[1]==ans)||(guess[0]==cmonth&&guess[1]==cans))						{							return true;						}				</div>			</div>				<p class="example">整數，例：<code>6</code></p>				<p class="example">大寫，例：<code>六</code></p>		</div>			<div class="hints">					<p><code class="hint_pink"><var>6</var></code> 月 <code class="hint_pink"><var>K+a</var></code> 日，或者 <code class="hint_pink"><var>cmonth</var></code> 月 <code  class="hint_pink"><var>cans</var></code> 日。</p>					</div>		</div>				<div id="case4">			<div class="vars">				<var id="J">randRange(1,12)</var>				<var id="K">randRange(5,25)</var>								<var id="L">randRangeUnique(-1,2,2)</var>				<var id="day">(function(){					if(L[0]==-1){return "昨天";}					if(L[0]==0){return "今天";}					if(L[0]==1){return "明天";}					if(L[0]==2){return "後天";}				}())</var>				<var id="ans">(function(){					if(L[1]==-1){return "昨天";}					if(L[1]==0){return "今天";}					if(L[1]==1){return "明天";}					if(L[1]==2){return "後天";}				}())</var>			</div>			<div class="question">					<p class="problem">						<p>想一想，練習做做看。</p>					</p>						<p>如果<var>day</var>是 <code><var>J</var></code> 月 <code><var>K+L[0]</var></code> 日，那 <code><var>J</var></code> 月 <code><var>K+L[1]</var></code> 日是什麼時候？</p>			</div>			<div class="solution" data-type="multiple">					<p><span class="sol" data-type="list" data-choices="['','今天','明天','昨天','後天']"><var>ans</var></span>					</p>					<p class="example">在下拉列表中選擇正確的答案</p>			</div>			<div class="hints">					<p class="hint_pink"><var>ans</var></p>			</div>		</div>				<div id="case5">			<div class="vars">				<var id="J">randRange(1,12)</var>				<var id="K">randRange(5,25)</var>								<var id="L">randRangeUnique(-1,2,2)</var>				<var id="day">(function(){					if(L[0]==-1){return "昨天";}					if(L[0]==0){return "今天";}					if(L[0]==1){return "明天";}					if(L[0]==2){return "後天";}				}())</var>				<var id="ans">(function(){					if(L[1]==-1){return "昨天";}					if(L[1]==0){return "今天";}					if(L[1]==1){return "明天";}					if(L[1]==2){return "後天";}				}())</var>			</div>			<div class="question">					<p class="problem">						<p>想一想，練習做做看。</p>					</p>						<p> 如果 <code><var>J</var></code> 月 <code><var>K+L[0]</var></code> 日是<var>day</var>的日期，那 <code><var>J</var></code> 月 <code><var>K+L[1]</var></code>  日是哪一天的日期？</p>			</div>			<div class="solution" data-type="multiple">					<p><span class="sol" data-type="list" data-choices="['','今天','明天','昨天','後天']"><var>ans</var></span>					</p>					<p class="example">在下拉列表中選擇正確的答案</p>			</div>			<div class="hints">					<p class="hint_pink"><var>ans</var></p>			</div>		</div>		<div id="case6">			<div class="vars">								<var id="K">randRange(1,7)</var>				<var id="L">randRangeUnique(-1,2,2)</var>				<var id="d">(function(){					if(K+L[0]==0||K+L[0]==7){return "日";}					if(K+L[0]==1||K+L[0]==8){return "一";}					if(K+L[0]==2||K+L[0]==9){return "二";}					if(K+L[0]==3){return "三";}					if(K+L[0]==4){return "四";}					if(K+L[0]==5){return "五";}					if(K+L[0]==6){return "六";}				}())</var>				<var id="day">(function(){					if(L[0]==-1){return "昨天";}					if(L[0]==0){return "今天";}					if(L[0]==1){return "明天";}					if(L[0]==2){return "後天";}				}())</var>				<var id="day1">(function(){					if(L[1]==-1){return "昨天";}					if(L[1]==0){return "今天";}					if(L[1]==1){return "明天";}					if(L[1]==2){return "後天";}				}())</var>				<var id="ans">(function(){					if(K+L[1]==0||K+L[1]==7){return "日";}					if(K+L[1]==1||K+L[1]==8){return "一";}					if(K+L[1]==2||K+L[1]==9){return "二";}					if(K+L[1]==3){return "三";}					if(K+L[1]==4){return "四";}					if(K+L[1]==5){return "五";}					if(K+L[1]==6){return "六";}				}())</var>									</div>			<div class="question">				<p>想一想，練習做做看。</p>					<p class="problem">						<p>如果<var>day</var>是星期<var>d</var>，那<var>day1</var>是星期幾？</p>					</p>			</div>			<div class="solution" data-type="multiple">				<p>星期<code>\enspace</code><span class="sol" data-type="list" data-choices="['','一','二','三','四','五','六','日']"><var>ans</var></span></p>				<p class="example">在下拉列表中選擇正確的答案</p>			</div>			<div class="hints">				<p><code class="hint_pink">星期<var>ans</var></code></p>			</div>		</div>								<div id="case7">			<div class="vars">				<var id="year">randRange(103,105)</var>				<var id="date">randFromArray([[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","","","","",""],											 [" ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","","","",""],											 [" "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","","",""],											 [" "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"","",""],											 [" "," "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"",""],											 [" "," "," "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,""],											 [" "," "," "," "," "," ",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]])				</var>				<var id="J">date</var>				<var id="K">randRange(5,25)</var>				<var id="L">value(K)</var>				<var id="p">J[6]</var>				<var id="M">day(L,J[6])</var>								<var id="D">randRangeUnique(0,3,2)</var>				<var id="day">(function(){					if(D[0]==0){return "昨天";}					if(D[0]==1){return "今天";}					if(D[0]==2){return "明天";}					if(D[0]==3){return "後天";}				}())</var>				<var id="day1">(function(){					if(D[1]==0){return "昨天";}					if(D[1]==1){return "今天";}					if(D[1]==2){return "明天";}					if(D[1]==3){return "後天";}				}())</var>				<var id="ans">(function(){					if(D[0]==0){						if(D[1]==1){return 1;}						if(D[1]==2){return 2;}						if(D[1]==3){return 3;}					}					if(D[0]==1){						if(D[1]==0){return -1;}						if(D[1]==2){return 1;}						if(D[1]==3){return 2;}					}					if(D[0]==2){						if(D[1]==0){return -2;}						if(D[1]==1){return -1;}						if(D[1]==3){return 1;}					}					if(D[0]==3){						if(D[1]==0){return -3;}						if(D[1]==1){return -2;}						if(D[1]==2){return -1;}					}				}())</var>			</div>			<div class="question">				<p>看看下面的月曆，回答問題。</p>                <p align="center">民國<code>\enspace<var>year</var>\enspace</code>年 <code>6</code> 月</p>					<table class="nLimit">						<tr>						<td align="center" class="hint_red">星期日</td><td align="center">星期一</td><td align="center">星期二</td><td align="center">星期三</td><td align="center">星期四</td><td align="center">星期五</td><td align="center">星期六</td>						</tr>						<tr>						<td  align="center" class="hint_red"><var>J[0]</var></td><td  align="center"><var>J[1]</var></td><td  align="center"><var>J[2]</var></td><td  align="center"><var>J[3]</var></td><td  align="center"><var>J[4]</var></td><td  align="center"><var>J[5]</var></td><td  align="center"><var>J[6]</var></td>						</tr>						<tr>						<td  align="center" class="hint_red"><var>J[7]</var></td><td  align="center"><var>J[8]</var></td><td  align="center"><var>J[9]</var></td><td  align="center"><var>J[10]</var></td><td  align="center"><var>J[11]</var></td><td  align="center"><var>J[12]</var></td><td  align="center"><var>J[13]</var></td>						</tr>						<tr>						<td  align="center" class="hint_red"><var>J[14]</var></td><td  align="center"><var>J[15]</var></td><td  align="center"><var>J[16]</var></td><td  align="center"><var>J[17]</var></td><td  align="center"><var>J[18]</var></td><td  align="center"><var>J[19]</var></td><td  align="center"><var>J[20]</var></td>						</tr>						<tr>						<td  align="center" class="hint_red"><var>J[21]</var></td><td  align="center"><var>J[22]</var></td><td  align="center"><var>J[23]</var></td><td  align="center"><var>J[24]</var></td><td  align="center"><var>J[25]</var></td><td  align="center"><var>J[26]</var></td><td  align="center"><var>J[27]</var></td>						</tr>						<tr>						<td  align="center" class="hint_red"><var>J[28]</var></td><td  align="center"><var>J[29]</var></td><td  align="center"><var>J[30]</var></td><td  align="center"><var>J[31]</var></td><td  align="center"><var>J[32]</var></td><td  align="center"><var>J[33]</var></td><td  align="center"><var>J[34]</var></td>						</tr>						<tr>						<td  align="center" class="hint_red"><var>J[35]</var></td><td  align="center"></td><td  align="center"></td><td  align="center"><code>\enspace</code></td><td  align="center"></td><td  align="center"></td><td  align="center"></td>						</tr>					</table>            </div>			<div class="problem">				<p>請問<var>day</var> <code>\enspace 6 \enspace</code>月<code>\enspace<var>K</var>\enspace</code>日是星期幾？</p>			</div>			<div class="solution" data-type="multiple">				<p>星期 <span class="sol" data-type="list" data-choices="['','一','二','三','四','五','六','日']"><var>M</var></span></p>				<p class="example">在下拉列表中選擇正確的答案</p>			</div>			<div class="hints">					<p class="hint_pink">星期<var>M</var></p>			</div>		</div>		</div>	</div></body></html>																								
