@@ -558,6 +558,21 @@ $.fn["word-problemsLoad"] = function() {
         {present: "遛", past: "遛", noun: new Noun("狗", {measureWord: "隻"}), done: "遛", continuous: "遛"}
     ]);
 
+    var juices = new IncrementalShuffler([
+        "蘋果汁",
+        "柳橙汁",
+        "芹菜汁",
+        "芭樂汁",
+        "西瓜汁",
+        "鳳梨汁",
+        "酪梨汁",
+        "百香果汁",
+        "葡萄汁",
+        "葡萄柚汁",
+        "番茄汁",
+        "菠菜汁"
+    ]);
+
     var indefiniteArticle = function(word) {
         var vowels = ["a", "e", "i", "o", "u"];
         if (_(vowels).indexOf(word[0].toLowerCase()) > -1) {
@@ -755,6 +770,9 @@ $.fn["word-problemsLoad"] = function() {
             return animals.get(i - 1)[2];
         },
         
+        juice: function(i) {
+            return juices.get(i - 1);
+        },
         // measure word helper.(for Chinese)  There are two signatures
         // - measureWord(NOUN): return measure word of NOUN if available
         // - measureWord(NUMBER, NOUN): return "NUMBER measureWord NOUN", use default measure word if not available

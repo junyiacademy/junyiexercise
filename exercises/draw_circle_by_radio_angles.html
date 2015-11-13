@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie time interactive word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>利用圓心角繪製圓形圖</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+		table.nLimit{margin:5px ;border:1px }
+		table.nLimit td { text-align:center;min-width:60px;max-width:100px;border: 1px solid #AAA; padding: 5px;font-size : 14px ; margin : 0 0 ;}
+    </style>
+	<script type="text/javascript">
+		function getAngles(arr){
+			return [Math.round(arr[1] - arr[0]) , Math.round(arr[2] - arr[1]) , Math.round(arr[3] - arr[2]) , Math.round(arr[0] - arr[3] + 360) ];
+		}
+	</script>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+            <div class="vars" data-ensure=" SUM_PERC &lt; 20">
+				<var id="PERC_ARRAY">randRangeUnique(1,11,3)</var>
+				<var id="SUM_PERC">eval(PERC_ARRAY.join('+'))</var>
+				<var id="J_PERC,K_PERC,L_PERC,M_PERC">[PERC_ARRAY[0]*5,PERC_ARRAY[1]*5,PERC_ARRAY[2]*5,round(20-SUM_PERC)*5]</var>
+				<var id="J,K,L,M">[3.6*J_PERC,3.6*K_PERC,3.6*L_PERC,3.6*M_PERC]</var>
+				<var id="clockRadius">3.75</var>
+				<var id="outerPointRadius">clockRadius * 1.01</var>
+			</div>
+			
+			<div class="question">
+				<p>下面是果菜汁的成分統計表</p>
+				<table class="nLimit">
+					<tr>
+						<td>成分</td><td><var>juice(1)</var></td><td><var>juice(2)</var></td><td><var>juice(3)</var></td><td><var>juice(4)</var></td><td>合計</td>
+					</tr>
+					<tr>
+						<td>重量（毫升）</td><td><code><var>J</var></code></td><td><code><var>K</var></code></td><td><code><var>L</var></code></td><td><code><var>M</var></code></td><td><code>360</code></td>
+					</tr>
+					<tr>
+						<td>百分率</td><td><code><var>J_PERC</var>\%</code></td><td><code><var>K_PERC</var>\%</code></td><td><code><var>L_PERC</var>\%</code></td><td><code><var>M_PERC</var>\%</code></td><td><code>100\%</code></td>
+					</tr>
+				</table>
+				<p>請根據各項成分所占的百分率，在下圖當中畫出圓形百分圖：</p>
+			</div>
+			<div class="problem">
+				<div class="graphie" id="clock">
+						init({ range: [[-11, 11], [-9, 9]], scale: 20 });
+						
+                        minuteStartAngle = 90;
+                        hourStartAngle = 0;
+						thirdStartAngle = 180;
+						lastStartAngle = 270;
+
+                        var percentCircle = addAnalogCircle({ radius: clockRadius, hourTicks: 0,minuteTicks: 0,middleTicks: 0});
+                        percentCircle.draw();
+                        addMouseLayer();
+
+						graph.protractor = new Protractor( [0, 0] );
+						
+                        function movePartnerPoint(options) {
+                            var x = options.x;
+                            var y = options.y;
+                            var point = options.point;
+                            var outerPoint = options.outerPoint;
+                            var isOuterPoint = options.isOuterPoint;
+				
+                            var ratio = outerPoint.constraints.fixedDistance.dist / point.constraints.fixedDistance.dist;
+                            if (isOuterPoint) {
+                                ratio = 1 / ratio;
+                                point.setCoord([x * ratio , y * ratio]);
+                                outerPoint.setCoord([x, y]);
+                            } else {
+                                point.setCoord([x, y]);
+                                outerPoint.setCoord([x * ratio, y * ratio]);
+                            }
+
+                            point.updateLineEnds();
+                            return point;
+                        }
+
+                        minutePoint = addMovablePoint({
+                            coord: polar( clockRadius, minuteStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerMinutePoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+						
+						thirdPoint = addMovablePoint({
+                            coord: polar( clockRadius, thirdStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerThirdPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+						
+						lastPoint = addMovablePoint({
+                            coord: polar( clockRadius, lastStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerLastPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        outerMinutePoint = addMovablePoint({
+                            coord: polar(outerPointRadius, minuteStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: minutePoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+						
+						outerThirdPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, thirdStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: thirdPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+						
+						outerLastPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, lastStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: lastPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        hourPoint = addMovablePoint({
+                            coord: polar(clockRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerHourPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        outerHourPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: hourPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        minuteHand = addMovableLineSegment({
+                            pointA: minutePoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: ORANGE,
+                                "stroke-width": 5
+                            }
+                        });
+						
+						thirdHand = addMovableLineSegment({
+                            pointA: thirdPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: GREEN,
+                                "stroke-width": 5
+                            }
+                        });
+						
+						lastHand = addMovableLineSegment({
+                            pointA: lastPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: RED,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        hourHand = addMovableLineSegment({
+                            pointA: hourPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: BLUE,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        centerPoint = addMovablePoint({
+                            coord: [0, 0],
+                            constraints: {
+                                fixed: true
+                            },
+                            normalStyle: {
+                                fill: "#fff",
+                                stroke: "#000",
+                                "stroke-width": 2
+                            }
+                        });
+                    </div>
+			</div>
+            <div class="solution" data-type="multiple">
+				<div class="instruction">畫圖（移動圓形圖上面分隔線）</div>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[minutePoint.coord,hourPoint.coord,thirdPoint.coord,lastPoint.coord]</div>
+				    <div class="validator-function">
+						ANGLES_INIT = [KhanUtil.findAngle(guess[0],[0,0]),KhanUtil.findAngle(guess[1],[0,0]),KhanUtil.findAngle(guess[2],[0,0]),KhanUtil.findAngle(guess[3],[0,0])];
+						if ( ANGLES_INIT[0] == 90 &amp;&amp; ANGLES_INIT[1] == 0 &amp;&amp; ANGLES_INIT[2] == 180 &amp;&amp; ANGLES_INIT[3] == 270 ) {
+							return "";
+						}
+						ANGLES_SORT = sortNumbers(ANGLES_INIT);
+						ANGLES_RES = sortNumbers(getAngles(ANGLES_SORT));
+						ANSWER_SORT = sortNumbers([J,K,L,M]);
+						return ANGLES_RES[0] == ANSWER_SORT[0] &amp;&amp; ANGLES_RES[1] == ANSWER_SORT[1] &amp;&amp; ANGLES_RES[2] == ANSWER_SORT[2] &amp;&amp; ANGLES_RES[3] == ANSWER_SORT[3];
+                    </div>
+				</div>
+            </div>
+			
+			<div class="hints">
+				<p>題目給我們的是圓形圖，我們必須先根據它提供的百分率來計算在圓形圖上面每塊區域扇形的圓心角度數。再使用量角器來繪製圓形圖。</p>
+				<p>一個圓的圓心角等於 <code>360</code> 度。</p>
+				<div>
+					<p><var>juice(1)</var>占了 <code><var>J_PERC</var>\%</code>，也可以說是整個圓的 <code><var>J_PERC</var>\%</code>。<br /><var>juice(1)</var>占了 <code>360\times<var>J_PERC</var>\%=<var>J</var></code> 度。</p>
+				</div>
+				<div>
+					<p><var>juice(2)</var>占了 <code><var>K_PERC</var>\%</code>，也可以說是整個圓的 <code><var>K_PERC</var>\%</code>。<br /><var>juice(2)</var>占了 <code>360\times<var>K_PERC</var>\%=<var>K</var></code> 度。</p>
+				</div>
+				<div>
+					<p><var>juice(3)</var>占了 <code><var>L_PERC</var>\%</code>，也可以說是整個圓的 <code><var>L_PERC</var>\%</code>。<br /><var>juice(3)</var>占了 <code>360\times<var>L_PERC</var>\%=<var>L</var></code> 度。</p>
+				</div>
+				<div>
+					<p><var>juice(4)</var>占了 <code><var>M_PERC</var>\%</code>，也可以說是整個圓的 <code><var>M_PERC</var>\%</code>。<br /><var>juice(4)</var>占了 <code>360\times<var>M_PERC</var>\%=<var>M</var></code> 度。</p>
+				</div>
+				<p>繪製圓形圖時需要先找出一條圓心與圓周的連線當作基準，並使用量角器，在圓上分別找出 <code class="hint_pink"><var>J</var></code> 度、 <code class="hint_pink"><var>K</var></code> 度、 <code class="hint_pink"><var>L</var></code> 度、 <code class="hint_pink"><var>M</var></code> 度。</p>
+				<div>
+					<div class="graphie" data-update="clock">
+						minuteStartAngle = 90;
+						minutePoint1 = circle( polar( clockRadius, minuteStartAngle ), 0.05,{stroke: "#FFF0AC",fill:"#FFF0AC"});
+						minuteHand1 = line(polar( clockRadius, minuteStartAngle ),[0,0],{stroke: "#FFF0AC","stroke-width": 2});
+					</div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( J-90 );
+						hourStartAngle = 90-J;
+						hourPoint1 = circle(polar(clockRadius, hourStartAngle),0.05,{stroke: "#005AB5",fill:"#005AB5"});
+						hourHand1 = line(polar(clockRadius, hourStartAngle),[0,0],{stroke: "#005AB5","stroke-width": 2});
+					</div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( J+K-90 );
+						lastStartAngle = 90-J-K;
+						lastPoint1 = circle(polar( clockRadius, lastStartAngle ),0.05,{stroke: "#FF9797",fill:"#FF9797"});
+						lastHand1 = line(polar( clockRadius, lastStartAngle ),[0,0],{stroke: "#FF9797","stroke-width": 2});
+                    </div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( J+K+L-90 );
+						thirdStartAngle = 90-J-K-L;
+						thirdPoint1 = circle(polar( clockRadius, thirdStartAngle ),0.05,{stroke: "#01B468",fill:"#01B468"});
+						thirdHand1 = line(polar( clockRadius, thirdStartAngle ),[0,0],{stroke: "#01B468","stroke-width": 2});
+					</div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( 270 );
+					</div>
+				</div>
+            </div>
+		</div>
+		
+		<div id="case2">
+            <div class="vars" data-ensure=" SUM_PERC &lt; 20">
+				<var id="PERC_ARRAY">randRangeUnique(1,11,3)</var>
+				<var id="SUM_PERC">eval(PERC_ARRAY.join('+'))</var>
+				<var id="J_PERC,K_PERC,L_PERC,M_PERC">[PERC_ARRAY[0]*5,PERC_ARRAY[1]*5,PERC_ARRAY[2]*5,round(20-SUM_PERC)*5]</var>
+				<var id="J,K,L,M">[3.6*J_PERC,3.6*K_PERC,3.6*L_PERC,3.6*M_PERC]</var>
+				<var id="clockRadius">3.75</var>
+				<var id="outerPointRadius">clockRadius * 1.01</var>
+				<var id="MULTIP">randRange(1,2)</var>
+			</div>
+			
+			<div class="question">
+				<p>下面是均一中小學教職員與學生血型人數統計表</p>
+				<table class="nLimit">
+					<tr>
+						<td>血型</td><td><code>A</code>型</td><td><code>B</code>型</td><td><code>O</code>型</td><td><code>AB</code>型</td><td>合計</td>
+					</tr>
+					<tr>
+						<td>人數（人）</td><td><code><var>round(J*MULTIP)</var></code></td><td><code><var>round(K*MULTIP)</var></code></td><td><code><var>round(L*MULTIP)</var></code></td><td><code><var>round(M*MULTIP)</var></code></td><td><code><var>360*MULTIP</var></code></td>
+					</tr>
+					<tr>
+						<td>百分率</td><td><code><var>J_PERC</var>\%</code></td><td><code><var>K_PERC</var>\%</code></td><td><code><var>L_PERC</var>\%</code></td><td><code><var>M_PERC</var>\%</code></td><td><code>100\%</code></td>
+					</tr>
+				</table>
+				<p>請根據各項血型所占的百分率，在下圖當中畫出圓形百分圖：</p>
+			</div>
+			<div class="problem">
+				<div class="graphie" id="clock">
+						init({ range: [[-11, 11], [-9, 9]], scale: 20 });
+						
+                        minuteStartAngle = 90;
+                        hourStartAngle = 0;
+						thirdStartAngle = 180;
+						lastStartAngle = 270;
+
+                        var percentCircle = addAnalogCircle({ radius: clockRadius, hourTicks: 0,minuteTicks: 0,middleTicks: 0});
+                        percentCircle.draw();
+                        addMouseLayer();
+
+						graph.protractor = new Protractor( [0, 0] );
+						
+                        function movePartnerPoint(options) {
+                            var x = options.x;
+                            var y = options.y;
+                            var point = options.point;
+                            var outerPoint = options.outerPoint;
+                            var isOuterPoint = options.isOuterPoint;
+				
+                            var ratio = outerPoint.constraints.fixedDistance.dist / point.constraints.fixedDistance.dist;
+                            if (isOuterPoint) {
+                                ratio = 1 / ratio;
+                                point.setCoord([x * ratio , y * ratio]);
+                                outerPoint.setCoord([x, y]);
+                            } else {
+                                point.setCoord([x, y]);
+                                outerPoint.setCoord([x * ratio, y * ratio]);
+                            }
+
+                            point.updateLineEnds();
+                            return point;
+                        }
+
+                        minutePoint = addMovablePoint({
+                            coord: polar( clockRadius, minuteStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerMinutePoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+						
+						thirdPoint = addMovablePoint({
+                            coord: polar( clockRadius, thirdStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerThirdPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+						
+						lastPoint = addMovablePoint({
+                            coord: polar( clockRadius, lastStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerLastPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        outerMinutePoint = addMovablePoint({
+                            coord: polar(outerPointRadius, minuteStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: minutePoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+						
+						outerThirdPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, thirdStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: thirdPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+						
+						outerLastPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, lastStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: lastPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        hourPoint = addMovablePoint({
+                            coord: polar(clockRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerHourPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        outerHourPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: hourPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        minuteHand = addMovableLineSegment({
+                            pointA: minutePoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: ORANGE,
+                                "stroke-width": 5
+                            }
+                        });
+						
+						thirdHand = addMovableLineSegment({
+                            pointA: thirdPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: GREEN,
+                                "stroke-width": 5
+                            }
+                        });
+						
+						lastHand = addMovableLineSegment({
+                            pointA: lastPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: RED,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        hourHand = addMovableLineSegment({
+                            pointA: hourPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: BLUE,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        centerPoint = addMovablePoint({
+                            coord: [0, 0],
+                            constraints: {
+                                fixed: true
+                            },
+                            normalStyle: {
+                                fill: "#fff",
+                                stroke: "#000",
+                                "stroke-width": 2
+                            }
+                        });
+                    </div>
+			</div>
+            <div class="solution" data-type="multiple">
+				<div class="instruction">畫圖（移動圓形圖上面分隔線）</div>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[minutePoint.coord,hourPoint.coord,thirdPoint.coord,lastPoint.coord]</div>
+				    <div class="validator-function">
+						ANGLES_INIT = [KhanUtil.findAngle(guess[0],[0,0]),KhanUtil.findAngle(guess[1],[0,0]),KhanUtil.findAngle(guess[2],[0,0]),KhanUtil.findAngle(guess[3],[0,0])];
+						if ( ANGLES_INIT[0] == 90 &amp;&amp; ANGLES_INIT[1] == 0 &amp;&amp; ANGLES_INIT[2] == 180 &amp;&amp; ANGLES_INIT[3] == 270 ) {
+							return "";
+						}
+						ANGLES_SORT = sortNumbers(ANGLES_INIT);
+						ANGLES_RES = sortNumbers(getAngles(ANGLES_SORT));
+						ANSWER_SORT = sortNumbers([J,K,L,M]);
+						return ANGLES_RES[0] == ANSWER_SORT[0] &amp;&amp; ANGLES_RES[1] == ANSWER_SORT[1] &amp;&amp; ANGLES_RES[2] == ANSWER_SORT[2] &amp;&amp; ANGLES_RES[3] == ANSWER_SORT[3];
+                    </div>
+				</div>
+            </div>
+			
+			<div class="hints">
+				<p>題目給我們的是圓形圖，我們必須先根據它提供的百分率來計算在圓形圖上面每塊區域扇形的圓心角度數。再使用量角器來繪製圓形圖。</p>
+				<p>一個圓的圓心角等於 <code>360</code> 度。</p>
+				<div>
+					<p><code>A</code> 型占了 <code><var>J_PERC</var>\%</code>，也可以說是整個圓的 <code><var>J_PERC</var>\%</code>。<br /><code>A</code> 型占了 <code>360\times<var>J_PERC</var>\%=<var>J</var></code> 度。</p>
+				</div>
+				<div>
+					<p><code>B</code> 型占了 <code><var>K_PERC</var>\%</code>，也可以說是整個圓的 <code><var>K_PERC</var>\%</code>。<br /><code>B</code> 型占了 <code>360\times<var>K_PERC</var>\%=<var>K</var></code> 度。</p>
+				</div>
+				<div>
+					<p><code>O</code> 型占了 <code><var>L_PERC</var>\%</code>，也可以說是整個圓的 <code><var>L_PERC</var>\%</code>。<br /><code>O</code> 型占了 <code>360\times<var>L_PERC</var>\%=<var>L</var></code> 度。</p>
+				</div>
+				<div>
+					<p><code>AB</code> 型占了 <code><var>M_PERC</var>\%</code>，也可以說是整個圓的 <code><var>M_PERC</var>\%</code>。<br /><code>AB</code> 型占了 <code>360\times<var>M_PERC</var>\%=<var>M</var></code> 度。</p>
+				</div>
+				<p>繪製圓形圖時需要先找出一條圓心與圓周的連線當作基準，並使用量角器，在圓上分別找出 <code class="hint_pink"><var>J</var></code> 度、 <code class="hint_pink"><var>K</var></code> 度、 <code class="hint_pink"><var>L</var></code> 度、 <code class="hint_pink"><var>M</var></code> 度。</p>
+				<div>
+					<div class="graphie" data-update="clock">
+						minuteStartAngle = 90;
+						minutePoint1 = circle( polar( clockRadius, minuteStartAngle ), 0.05,{stroke: "#FFF0AC",fill:"#FFF0AC"});
+						minuteHand1 = line(polar( clockRadius, minuteStartAngle ),[0,0],{stroke: "#FFF0AC","stroke-width": 2});
+					</div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( J-90 );
+						hourStartAngle = 90-J;
+						hourPoint1 = circle(polar(clockRadius, hourStartAngle),0.05,{stroke: "#005AB5",fill:"#005AB5"});
+						hourHand1 = line(polar(clockRadius, hourStartAngle),[0,0],{stroke: "#005AB5","stroke-width": 2});
+					</div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( J+K-90 );
+						lastStartAngle = 90-J-K;
+						lastPoint1 = circle(polar( clockRadius, lastStartAngle ),0.05,{stroke: "#FF9797",fill:"#FF9797"});
+						lastHand1 = line(polar( clockRadius, lastStartAngle ),[0,0],{stroke: "#FF9797","stroke-width": 2});
+                    </div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( J+K+L-90 );
+						thirdStartAngle = 90-J-K-L;
+						thirdPoint1 = circle(polar( clockRadius, thirdStartAngle ),0.05,{stroke: "#01B468",fill:"#01B468"});
+						thirdHand1 = line(polar( clockRadius, thirdStartAngle ),[0,0],{stroke: "#01B468","stroke-width": 2});
+					</div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( 270 );
+					</div>
+				</div>
+            </div>
+		</div>
+		
+		<div id="case3">
+            <div class="vars" data-ensure=" SUM_PERC &lt; 20">
+				<var id="PERC_ARRAY">randRangeUnique(1,11,3)</var>
+				<var id="SUM_PERC">eval(PERC_ARRAY.join('+'))</var>
+				<var id="J_PERC,K_PERC,L_PERC,M_PERC">[PERC_ARRAY[0]*5,PERC_ARRAY[1]*5,PERC_ARRAY[2]*5,round(20-SUM_PERC)*5]</var>
+				<var id="J,K,L,M">[3.6*J_PERC,3.6*K_PERC,3.6*L_PERC,3.6*M_PERC]</var>
+				<var id="clockRadius">3.75</var>
+				<var id="outerPointRadius">clockRadius * 1.01</var>
+			</div>
+			
+			<div class="question">
+				<p>下面是班級圖書種類統計表</p>
+				<table class="nLimit">
+					<tr>
+						<td>種類</td><td>科學類</td><td>傳記類</td><td>藝術類</td><td>文史類</td><td>合計</td>
+					</tr>
+					<tr>
+						<td>數量（本）</td><td><code><var>J</var></code></td><td><code><var>K</var></code></td><td><code><var>L</var></code></td><td><code><var>M</var></code></td><td><code>360</code></td>
+					</tr>
+					<tr>
+						<td>百分率</td><td><code><var>J_PERC</var>\%</code></td><td><code><var>K_PERC</var>\%</code></td><td><code><var>L_PERC</var>\%</code></td><td><code><var>M_PERC</var>\%</code></td><td><code>100\%</code></td>
+					</tr>
+				</table>
+				<p>請根據各項種類所占的百分率，在下圖當中畫出圓形百分圖：</p>
+			</div>
+			<div class="problem">
+				<div class="graphie" id="clock">
+						init({ range: [[-11, 11], [-9, 9]], scale: 20 });
+						
+                        minuteStartAngle = 90;
+                        hourStartAngle = 0;
+						thirdStartAngle = 180;
+						lastStartAngle = 270;
+
+                        var percentCircle = addAnalogCircle({ radius: clockRadius, hourTicks: 0,minuteTicks: 0,middleTicks: 0});
+                        percentCircle.draw();
+                        addMouseLayer();
+
+						graph.protractor = new Protractor( [0, 0] );
+						
+                        function movePartnerPoint(options) {
+                            var x = options.x;
+                            var y = options.y;
+                            var point = options.point;
+                            var outerPoint = options.outerPoint;
+                            var isOuterPoint = options.isOuterPoint;
+				
+                            var ratio = outerPoint.constraints.fixedDistance.dist / point.constraints.fixedDistance.dist;
+                            if (isOuterPoint) {
+                                ratio = 1 / ratio;
+                                point.setCoord([x * ratio , y * ratio]);
+                                outerPoint.setCoord([x, y]);
+                            } else {
+                                point.setCoord([x, y]);
+                                outerPoint.setCoord([x * ratio, y * ratio]);
+                            }
+
+                            point.updateLineEnds();
+                            return point;
+                        }
+
+                        minutePoint = addMovablePoint({
+                            coord: polar( clockRadius, minuteStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerMinutePoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+						
+						thirdPoint = addMovablePoint({
+                            coord: polar( clockRadius, thirdStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerThirdPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+						
+						lastPoint = addMovablePoint({
+                            coord: polar( clockRadius, lastStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerLastPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        outerMinutePoint = addMovablePoint({
+                            coord: polar(outerPointRadius, minuteStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: minutePoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+						
+						outerThirdPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, thirdStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: thirdPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+						
+						outerLastPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, lastStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: lastPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        hourPoint = addMovablePoint({
+                            coord: polar(clockRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerHourPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        outerHourPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: hourPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        minuteHand = addMovableLineSegment({
+                            pointA: minutePoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: ORANGE,
+                                "stroke-width": 5
+                            }
+                        });
+						
+						thirdHand = addMovableLineSegment({
+                            pointA: thirdPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: GREEN,
+                                "stroke-width": 5
+                            }
+                        });
+						
+						lastHand = addMovableLineSegment({
+                            pointA: lastPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: RED,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        hourHand = addMovableLineSegment({
+                            pointA: hourPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: BLUE,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        centerPoint = addMovablePoint({
+                            coord: [0, 0],
+                            constraints: {
+                                fixed: true
+                            },
+                            normalStyle: {
+                                fill: "#fff",
+                                stroke: "#000",
+                                "stroke-width": 2
+                            }
+                        });
+                    </div>
+			</div>
+            <div class="solution" data-type="multiple">
+				<div class="instruction">畫圖（移動圓形圖上面分隔線）</div>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[minutePoint.coord,hourPoint.coord,thirdPoint.coord,lastPoint.coord]</div>
+				    <div class="validator-function">
+						ANGLES_INIT = [KhanUtil.findAngle(guess[0],[0,0]),KhanUtil.findAngle(guess[1],[0,0]),KhanUtil.findAngle(guess[2],[0,0]),KhanUtil.findAngle(guess[3],[0,0])];
+						if ( ANGLES_INIT[0] == 90 &amp;&amp; ANGLES_INIT[1] == 0 &amp;&amp; ANGLES_INIT[2] == 180 &amp;&amp; ANGLES_INIT[3] == 270 ) {
+							return "";
+						}
+						ANGLES_SORT = sortNumbers(ANGLES_INIT);
+						ANGLES_RES = sortNumbers(getAngles(ANGLES_SORT));
+						ANSWER_SORT = sortNumbers([J,K,L,M]);
+						return ANGLES_RES[0] == ANSWER_SORT[0] &amp;&amp; ANGLES_RES[1] == ANSWER_SORT[1] &amp;&amp; ANGLES_RES[2] == ANSWER_SORT[2] &amp;&amp; ANGLES_RES[3] == ANSWER_SORT[3];
+                    </div>
+				</div>
+            </div>
+			
+			<div class="hints">
+				<p>題目給我們的是圓形圖，我們必須先根據它提供的百分率來計算在圓形圖上面每塊區域扇形的圓心角度數。再使用量角器來繪製圓形圖。</p>
+				<p>一個圓的圓心角等於 <code>360</code> 度。</p>
+				<div>
+					<p>科學類占了 <code><var>J_PERC</var>\%</code>，也可以說是整個圓的 <code><var>J_PERC</var>\%</code>。<br />科學類占了 <code>360\times<var>J_PERC</var>\%=<var>J</var></code> 度。</p>
+				</div>
+				<div>
+					<p>傳記類占了 <code><var>K_PERC</var>\%</code>，也可以說是整個圓的 <code><var>K_PERC</var>\%</code>。<br />傳記類占了 <code>360\times<var>K_PERC</var>\%=<var>K</var></code> 度。</p>
+				</div>
+				<div>
+					<p>藝術類占了 <code><var>L_PERC</var>\%</code>，也可以說是整個圓的 <code><var>L_PERC</var>\%</code>。<br />藝術類占了 <code>360\times<var>L_PERC</var>\%=<var>L</var></code> 度。</p>
+				</div>
+				<div>
+					<p>文史類占了 <code><var>M_PERC</var>\%</code>，也可以說是整個圓的 <code><var>M_PERC</var>\%</code>。<br />文史類占了 <code>360\times<var>M_PERC</var>\%=<var>M</var></code> 度。</p>
+				</div>
+				<p>繪製圓形圖時需要先找出一條圓心與圓周的連線當作基準，並使用量角器，在圓上分別找出 <code class="hint_pink"><var>J</var></code> 度、 <code class="hint_pink"><var>K</var></code> 度、 <code class="hint_pink"><var>L</var></code> 度、 <code class="hint_pink"><var>M</var></code> 度。</p>
+				<div>
+					<div class="graphie" data-update="clock">
+						minuteStartAngle = 90;
+						minutePoint1 = circle( polar( clockRadius, minuteStartAngle ), 0.05,{stroke: "#FFF0AC",fill:"#FFF0AC"});
+						minuteHand1 = line(polar( clockRadius, minuteStartAngle ),[0,0],{stroke: "#FFF0AC","stroke-width": 2});
+					</div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( J-90 );
+						hourStartAngle = 90-J;
+						hourPoint1 = circle(polar(clockRadius, hourStartAngle),0.05,{stroke: "#005AB5",fill:"#005AB5"});
+						hourHand1 = line(polar(clockRadius, hourStartAngle),[0,0],{stroke: "#005AB5","stroke-width": 2});
+					</div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( J+K-90 );
+						lastStartAngle = 90-J-K;
+						lastPoint1 = circle(polar( clockRadius, lastStartAngle ),0.05,{stroke: "#FF9797",fill:"#FF9797"});
+						lastHand1 = line(polar( clockRadius, lastStartAngle ),[0,0],{stroke: "#FF9797","stroke-width": 2});
+                    </div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( J+K+L-90 );
+						thirdStartAngle = 90-J-K-L;
+						thirdPoint1 = circle(polar( clockRadius, thirdStartAngle ),0.05,{stroke: "#01B468",fill:"#01B468"});
+						thirdHand1 = line(polar( clockRadius, thirdStartAngle ),[0,0],{stroke: "#01B468","stroke-width": 2});
+					</div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( 270 );
+					</div>
+				</div>
+            </div>
+		</div>
+		
+		<div id="case4">
+            <div class="vars" data-ensure=" M_PERC  &lt;= 40 ">
+				<var id="PERC_ARRAY">[randRange(3,6),randRange(3,6),randRange(3,6)]</var>
+				<var id="SUM_PERC">eval(PERC_ARRAY.join('+'))</var>
+				<var id="J_PERC,K_PERC,L_PERC,M_PERC">[PERC_ARRAY[0]*5,PERC_ARRAY[1]*5,PERC_ARRAY[2]*5,round(20-SUM_PERC)*5]</var>
+				<var id="J,K,L,M">[3.6*J_PERC,3.6*K_PERC,3.6*L_PERC,3.6*M_PERC]</var>
+				<var id="clockRadius">3.75</var>
+				<var id="outerPointRadius">clockRadius * 1.01</var>
+			</div>
+			
+			<div class="question">
+				<p>下面是<var>person(1)</var>每周開銷統計表</p>
+				<table class="nLimit">
+					<tr>
+						<td>開銷</td><td>娛樂費</td><td>交通費</td><td>伙食費</td><td>雜支</td><td>合計</td>
+					</tr>
+					<tr>
+						<td>金額（元）</td><td><code><var>J*10</var></code></td><td><code><var>K*10</var></code></td><td><code><var>L*10</var></code></td><td><code><var>M*10</var></code></td><td><code>3600</code></td>
+					</tr>
+					<tr>
+						<td>百分率</td><td><code><var>J_PERC</var>\%</code></td><td><code><var>K_PERC</var>\%</code></td><td><code><var>L_PERC</var>\%</code></td><td><code><var>M_PERC</var>\%</code></td><td><code>100\%</code></td>
+					</tr>
+				</table>
+				<p>請根據各項開銷所占的百分率，在下圖當中畫出圓形百分圖：</p>
+			</div>
+			<div class="problem">
+				<div class="graphie" id="clock">
+						init({ range: [[-11, 11], [-9, 9]], scale: 20 });
+						
+                        minuteStartAngle = 90;
+                        hourStartAngle = 0;
+						thirdStartAngle = 180;
+						lastStartAngle = 270;
+
+                        var percentCircle = addAnalogCircle({ radius: clockRadius, hourTicks: 0,minuteTicks: 0,middleTicks: 0});
+                        percentCircle.draw();
+                        addMouseLayer();
+
+						graph.protractor = new Protractor( [0, 0] );
+						
+                        function movePartnerPoint(options) {
+                            var x = options.x;
+                            var y = options.y;
+                            var point = options.point;
+                            var outerPoint = options.outerPoint;
+                            var isOuterPoint = options.isOuterPoint;
+				
+                            var ratio = outerPoint.constraints.fixedDistance.dist / point.constraints.fixedDistance.dist;
+                            if (isOuterPoint) {
+                                ratio = 1 / ratio;
+                                point.setCoord([x * ratio , y * ratio]);
+                                outerPoint.setCoord([x, y]);
+                            } else {
+                                point.setCoord([x, y]);
+                                outerPoint.setCoord([x * ratio, y * ratio]);
+                            }
+
+                            point.updateLineEnds();
+                            return point;
+                        }
+
+                        minutePoint = addMovablePoint({
+                            coord: polar( clockRadius, minuteStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerMinutePoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+						
+						thirdPoint = addMovablePoint({
+                            coord: polar( clockRadius, thirdStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerThirdPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+						
+						lastPoint = addMovablePoint({
+                            coord: polar( clockRadius, lastStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerLastPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        outerMinutePoint = addMovablePoint({
+                            coord: polar(outerPointRadius, minuteStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: minutePoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+						
+						outerThirdPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, thirdStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: thirdPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+						
+						outerLastPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, lastStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: lastPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        hourPoint = addMovablePoint({
+                            coord: polar(clockRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerHourPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        outerHourPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 20
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: hourPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        minuteHand = addMovableLineSegment({
+                            pointA: minutePoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: ORANGE,
+                                "stroke-width": 5
+                            }
+                        });
+						
+						thirdHand = addMovableLineSegment({
+                            pointA: thirdPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: GREEN,
+                                "stroke-width": 5
+                            }
+                        });
+						
+						lastHand = addMovableLineSegment({
+                            pointA: lastPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: RED,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        hourHand = addMovableLineSegment({
+                            pointA: hourPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: BLUE,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        centerPoint = addMovablePoint({
+                            coord: [0, 0],
+                            constraints: {
+                                fixed: true
+                            },
+                            normalStyle: {
+                                fill: "#fff",
+                                stroke: "#000",
+                                "stroke-width": 2
+                            }
+                        });
+                    </div>
+			</div>
+            <div class="solution" data-type="multiple">
+				<div class="instruction">畫圖（移動圓形圖上面分隔線）</div>
+				<div class="sol" data-type="custom">
+				    <div class="guess">[minutePoint.coord,hourPoint.coord,thirdPoint.coord,lastPoint.coord]</div>
+				    <div class="validator-function">
+						ANGLES_INIT = [KhanUtil.findAngle(guess[0],[0,0]),KhanUtil.findAngle(guess[1],[0,0]),KhanUtil.findAngle(guess[2],[0,0]),KhanUtil.findAngle(guess[3],[0,0])];
+						if ( ANGLES_INIT[0] == 90 &amp;&amp; ANGLES_INIT[1] == 0 &amp;&amp; ANGLES_INIT[2] == 180 &amp;&amp; ANGLES_INIT[3] == 270 ) {
+							return "";
+						}
+						ANGLES_SORT = sortNumbers(ANGLES_INIT);
+						ANGLES_RES = sortNumbers(getAngles(ANGLES_SORT));
+						ANSWER_SORT = sortNumbers([J,K,L,M]);
+						return ANGLES_RES[0] == ANSWER_SORT[0] &amp;&amp; ANGLES_RES[1] == ANSWER_SORT[1] &amp;&amp; ANGLES_RES[2] == ANSWER_SORT[2] &amp;&amp; ANGLES_RES[3] == ANSWER_SORT[3];
+                    </div>
+				</div>
+            </div>
+			
+			<div class="hints">
+				<p>題目給我們的是圓形圖，我們必須先根據它提供的百分率來計算在圓形圖上面每塊區域扇形的圓心角度數。再使用量角器來繪製圓形圖。</p>
+				<p>一個圓的圓心角等於 <code>360</code> 度。</p>
+				<div>
+					<p>娛樂費占了 <code><var>J_PERC</var>\%</code>，也可以說是整個圓的 <code><var>J_PERC</var>\%</code>。<br />娛樂費占了 <code>360\times<var>J_PERC</var>\%=<var>J</var></code> 度。</p>
+				</div>
+				<div>
+					<p>交通費占了 <code><var>K_PERC</var>\%</code>，也可以說是整個圓的 <code><var>K_PERC</var>\%</code>。<br />交通費占了 <code>360\times<var>K_PERC</var>\%=<var>K</var></code> 度。</p>
+				</div>
+				<div>
+					<p>伙食費占了 <code><var>L_PERC</var>\%</code>，也可以說是整個圓的 <code><var>L_PERC</var>\%</code>。<br />伙食費占了 <code>360\times<var>L_PERC</var>\%=<var>L</var></code> 度。</p>
+				</div>
+				<div>
+					<p>雜支占了 <code><var>M_PERC</var>\%</code>，也可以說是整個圓的 <code><var>M_PERC</var>\%</code>。<br />雜支占了 <code>360\times<var>M_PERC</var>\%=<var>M</var></code> 度。</p>
+				</div>
+				<p>繪製圓形圖時需要先找出一條圓心與圓周的連線當作基準，並使用量角器，在圓上分別找出 <code class="hint_pink"><var>J</var></code> 度、 <code class="hint_pink"><var>K</var></code> 度、 <code class="hint_pink"><var>L</var></code> 度、 <code class="hint_pink"><var>M</var></code> 度。</p>
+				<div>
+					<div class="graphie" data-update="clock">
+						minuteStartAngle = 90;
+						minutePoint1 = circle( polar( clockRadius, minuteStartAngle ), 0.05,{stroke: "#FFF0AC",fill:"#FFF0AC"});
+						minuteHand1 = line(polar( clockRadius, minuteStartAngle ),[0,0],{stroke: "#FFF0AC","stroke-width": 2});
+					</div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( J-90 );
+						hourStartAngle = 90-J;
+						hourPoint1 = circle(polar(clockRadius, hourStartAngle),0.05,{stroke: "#005AB5",fill:"#005AB5"});
+						hourHand1 = line(polar(clockRadius, hourStartAngle),[0,0],{stroke: "#005AB5","stroke-width": 2});
+					</div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( J+K-90 );
+						lastStartAngle = 90-J-K;
+						lastPoint1 = circle(polar( clockRadius, lastStartAngle ),0.05,{stroke: "#FF9797",fill:"#FF9797"});
+						lastHand1 = line(polar( clockRadius, lastStartAngle ),[0,0],{stroke: "#FF9797","stroke-width": 2});
+                    </div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( J+K+L-90 );
+						thirdStartAngle = 90-J-K-L;
+						thirdPoint1 = circle(polar( clockRadius, thirdStartAngle ),0.05,{stroke: "#01B468",fill:"#01B468"});
+						thirdHand1 = line(polar( clockRadius, thirdStartAngle ),[0,0],{stroke: "#01B468","stroke-width": 2});
+					</div>
+				</div>
+				<div>
+					<div class="graphie" data-update="clock">
+						graph.protractor.moveTo( 0, 0 );
+						graph.protractor.rotateTo( 270 );
+					</div>
+				</div>
+            </div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>
