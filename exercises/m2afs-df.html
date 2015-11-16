@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+    <head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>分數與除法的關係</title>
+        <script src="../khan-exercise.js"></script>
+        <script type="text/javascript">
+            function moveCoord( init, skips ) {
+                return [ init[ 0 ] + skips[ 0 ], init[ 1 ] + skips[ 1 ] ];
+            }
+        </script>
+    </head>
+    <body>
+        <div class="exercise">
+
+            <div class="problems">
+                <div id="case1">
+                	<div class="vars" data-ensure=" !isInt( N / _HUM ) &amp;&amp; getGCD( N, _HUM ) == 1">
+                		<var id="N"> randRange( 2, 5 ) </var>
+                        <var id="_HUM"> randRange( N + 1, N + 5 ) </var>
+                        <var id="T"> randFromArray( [ "蛋糕", "披薩", "蔥油餅" ] ) </var>
+                        <var id="BR"> ceilTo( 0, N / 3 ) - 1 </var>
+                        <var id="C"> [ [ -3, 3 ], [ 2, 3 ], [ 7, 3 ], [ -3, -3 ], [ 2, -3 ], [ 7, -3 ] ] </var>
+                        <var id="_COLORS"> [ RED, BLUE, ORANGE, GREEN ] </var>
+                        <var id="_OPACITY"> [ 0.25, 0.25, 0.25, 0.25, 0.35, 0.35, 0.45, 0.45, 0.5, 0.5 ] </var>
+                	</div>
+
+                	<div class="question">
+                		<p class="question">老師把 <code><var>N</var></code> 個<var>T</var>分給 <code><var>_HUM</var></code> 個人，每個人可以得到幾個<var>T</var>？</p>
+                	</div>
+
+                	<p class="solution" data-fraction-input="true"  data-type="mixed"><var>N / _HUM</var></p>
+
+                	<div class="hints">
+                        <div>
+                            <p>現在有 <code><var>N</var></code> 個<code><var>T</var></code> ，我們可以畫個圖形來輔助我們觀察。</p>
+                            <div class="graphie" id="case1-graphie">
+                                init( { range: [ [ -6, 10 ], [ BR * ( -6 ) , 6 ] ], scale: 30 } );
+                                for( var i = 0; i &lt; N; i++ ) {
+                                    circle( C[ i ], 2, {  } );
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            <p>因為現在要分給 <code><var>_HUM</var></code> 個人，所以我們可以先將<var>T</var>分成 <code><var>_HUM</var></code> 等份。</p>
+                            <div class="graphie" data-update="case1-graphie">
+                                for( var i = 0; i &lt; N; i++ ) {
+                                    for( var j = 0; j &lt; _HUM; j++ ) {
+                                        line( C[ i ], moveCoord( polar( 2, j * ( 360 / _HUM ) ), C[ i ] ) );
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            <p>如圖，所以每個人在每一個<var>T</var>都可以拿到一個等份。</p>
+                            <div class="graphie" data-update="case1-graphie">
+                                for( var i = 0; i &lt; N; i++ ) {
+                                    for( var j = 0; j &lt; _HUM; j++ ) {
+                                        arc( C[ i ], 2, j * ( 360 / _HUM ), ( j + 1 ) * ( 360 / _HUM ), true, { fill: _COLORS[ ( j + 1 ) % 4 ], "fill-opacity": _OPACITY[ j ]  } );
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <p>因為現在有 <code><var>N</var></code> 個<var>T</var>，所以每個人都可以拿到 <code><var>N</var></code> 個等份，一個等份是 <code>\dfrac{1}{<var>_HUM</var>}</code> 個<var>T</var>，因此每個人拿到 <code>\dfrac{<var>N</var>}{<var>_HUM</var>}</code> 個<var>T</var>。所以我們知道 <code><var>N</var></code> 個<var>T</var>分給 <code><var>_HUM</var></code> 個人，可以用 <code class="hint_pink"><var>fraction(N, _HUM, true, true, false, false)</var></code> 來表示每個人拿到的<var>T</var>。</p>
+                	</div>
+                </div>
+
+                <div id="case2">
+                    <div class="vars" data-ensure=" !isInt( L / H ) ">
+                        <var id="H"> randRange( 2, 5 ) </var>
+                        <var id="L"> H * randRange( 1, 3 ) + 1 </var>
+						<var id="_AVERAGE"> floorTo( 0, L / H ) </var>
+						<var id="_COLORS"> [ RED, BLUE, ORANGE, GREEN ] </var>
+                        <var id="_OPACITY"> [ 0.25, 0.25, 0.25, 0.25, 0.7, 0.35, 0.45, 0.45, 0.5, 0.5 ] </var>
+                        <var id="T"> randRange( 1, 2 ) </var>
+                    </div>
+
+                    <div class="question">
+                        <p>如圖，一條繩子有 <code><var>L</var></code> 公尺，平分給 <code><var>H</var></code> 個人，每個人可以得到幾公尺？請用<var>T == 2 ? '假' : '帶'</var>分數表示。</p>
+						<div class="graphie" id="case2-graphie">
+    						init( { range : [ [ -7, 10 ], [ -1 , 1 ] ], scale : 30 } );
+    						path( [ [ -7, -0.5 ], [ 10, -0.5 ], [ 10, 0.5 ], [ -7, 0.5 ], [ -7, -0.5 ] ], { strokeWidth : 1 } );
+    						for( var i = 0; i &lt; L; i++ ) {
+    						  line( [ ( 17 / L ) * i - 7, -0.5 ], [ ( 17 / L ) * i - 7, 0.5 ], { strokeWidth : 1 } );
+    					    }
+						</div>
+                    </div>
+
+                    <p data-if="T == 2" class="solution" data-fraction-input="true"  data-type="number" data-forms="improper"><var> L / H </var></p>
+                    <p data-if="T == 1" class="solution" data-fraction-input="true"  data-type="number" data-forms="mixed"><var> L / H </var></p>
+
+                    <div class="hints">
+    					<div>
+        					<p>這條繩子有 <code><var>L</var></code> 公尺，要平分給 <code><var>H</var></code> 個人，我們可以先分給這 <code><var>H</var></code> 個人一人 <code><var>_AVERAGE</var></code> 公尺。還剩下 <code>1</code> 公尺，要怎麼分給 <code><var>H</var></code> 個人呢？</p>
+        					<div class="graphie" data-update="case2-graphie">
+                                switch( _AVERAGE ) {
+    								case 1:
+    									for( var i = 0; i &lt; L - 1; i++ ) {
+    										path( [ [ -7 + ( 17 / L ) * i, -0.5 ], [ -7 + ( 17 / L ) * i, 0.5 ], [ -7 + ( 17 / L ) * ( i + 1 ), 0.5 ], [ -7 + ( 17 / L ) * ( i + 1 ), -0.5 ] ], { fill : _COLORS[ ( i + 1 ) % 4 ], "fill-opacity" : _OPACITY[ i ], "stroke-width" : 1});
+    									}
+    									break;
+    								case 2:
+    									for(var i = 0; i &lt; L - 1; i+= 2 ) {
+    										path( [ [ -7 + ( 17 / L ) * i, -0.5 ], [ -7 + ( 17 / L ) * i, 0.5 ], [ -7 + ( 17 / L ) * ( i + 2 ), 0.5 ], [ -7 + ( 17 / L ) * ( i + 2 ), -0.5 ] ], { fill : _COLORS[ ( i + 1 ) % 4 ], "fill-opacity" : _OPACITY[ i ], "stroke-width":1 } );
+    									}
+    									break;
+    								case 3:
+    									for(var i = 0; i &lt; L - 1;i += 3 ) {
+    										path( [ [ -7 + ( 17 / L ) * i, -0.5 ], [ -7 + ( 17 / L ) * i, 0.5 ], [ -7 + ( 17 / L ) * ( i + 3 ), 0.5 ], [ -7 + ( 17 / L ) * ( i + 3 ), -0.5 ] ], { fill : _COLORS[ ( i + 1 ) % 4 ], "fill-opacity" : _OPACITY[ i ], "stroke-width" : 1 } );
+    									}
+    									break;
+    								}
+                            </div>
+    					</div>
+    					<div>
+    						<p>我們可以將這 <code>1</code> 公尺平分成 <code><var>H</var></code> 等份，一個人拿一等份，也就是 <code>\dfrac{1}{<var>H</var>}</code> 公尺，這樣就可以分給 <code><var>H</var></code> 個人了！</p>
+    						<div class="graphie" data-update="case2-graphie">
+    							 switch( _AVERAGE ) {
+    								case 1:
+    									for( var i = 0; i &lt; H; i++ ) {
+    									   path( [ [ -7 + ( 17 / L ) * ( L - 1 ) + i * ( 17 / ( L * H ) ), -0.5 ], [ -7 + ( 17 / L ) * ( L - 1 ) + i * ( 17 / ( L * H ) ), 0.5 ], [ -7 + ( 17 / L ) * ( L - 1 ) + ( i + 1 ) * ( 17 / ( L * H ) ), 0.5 ], [ -7 + ( 17 / L ) * ( L - 1 ) + ( i + 1 ) * ( 17 / ( L * H ) ), -0.5 ] ], { fill : _COLORS[ ( i + 1 ) % 4 ], "fill-opacity" : _OPACITY[ i ], "stroke-width" : 1 } );
+    									}
+    									break;
+    								case 2:
+    									for( var i = 0, j = 0; i &lt; H; i++, j += 2 ) {
+    									   path( [ [ -7 + ( 17 / L ) * ( L - 1 ) + i * ( 17 / ( L * H ) ), -0.5 ], [ -7 + ( 17 / L ) * ( L - 1 ) + i * ( 17 / ( L * H ) ), 0.5 ], [ -7 + ( 17 / L ) * ( L - 1 ) + ( i + 1 ) * ( 17 / ( L * H ) ), 0.5 ], [ -7 + ( 17 / L ) * ( L - 1 ) + ( i + 1 ) * ( 17 / ( L * H ) ), -0.5 ] ], { fill : _COLORS[ ( j + 1 ) % 4 ], "fill-opacity" : _OPACITY[ j ], "stroke-width" : 1 } );
+    									}
+    									break;
+    								case 3:
+    									for( var i = 0, j = 0; i &lt; H; i++, j += 3 ) {
+    									   path( [ [ -7 + ( 17 / L ) * ( L - 1 ) + i * ( 17 / ( L * H ) ), -0.5 ], [ -7 + ( 17 / L ) * ( L - 1 ) + i * ( 17 / ( L * H ) ), 0.5 ], [ -7 + ( 17 / L ) * ( L - 1 ) + ( i + 1 ) * ( 17 / ( L * H ) ), 0.5 ], [ -7 + ( 17 / L ) * ( L - 1 ) + ( i + 1 ) * ( 17 / ( L * H ) ), -0.5 ] ], { fill : _COLORS[ ( j + 1 ) % 4 ], "fill-opacity" : _OPACITY[ j ], "stroke-width" : 1 } );
+    									}
+    									break;
+    								}
+    						</div>
+    					</div>
+					    <p>所以每個人都拿到了 <code><var>_AVERAGE</var>+\dfrac{1}{<var>H</var>}</code> 公尺的繩子，用帶分數表示也就是 <code class="hint_pink" data-if="T == 1"><var>_AVERAGE</var> \dfrac{1}{<var>H</var>}</code><code data-if="T == 2"><var>_AVERAGE</var> \dfrac{1}{<var>H</var>}</code> 公尺。</p>
+    					<div data-if="T == 2">
+    					   <p>因為我們需要用假分數表示，因此我們要將這個帶分數轉換成假分數：</p>
+    					   <p><code><var>_AVERAGE</var>+\dfrac{1}{<var>H</var>}=\dfrac{<var>H*_AVERAGE</var>}{<var>H</var>}+\dfrac{1}{<var>H</var>}=\dfrac{<var>H*_AVERAGE+1</var>}{<var>H</var>}</code>。所以我們知道 <code><var>L</var></code> 公尺的繩子分給 <code><var>H</var></code> 個人，可以用 <code class="hint_pink">\dfrac{<var>L</var>}{<var>H</var>}</code> 來表示每個人拿到的繩子長度。</p>
+    					</div>
+                    </div>
+                </div>
+
+				<div id="case3">
+                	<div class="vars" data-ensure=" !isInt( N / _HUM ) ">
+                        <var id="_HUM"> randRange( 2, 5 ) </var>
+						<var id="N"> randRange( _HUM + 1, _HUM * 2 + 1 ) </var>
+						<var id="_AVERAGE"> floorTo( 0, N / _HUM ) </var>
+                        <var id="BR"> ceilTo( 0, N / 4 ) - 1 </var>
+                        <var id="C"> [ [ -3, 3 ], [ 1, 3 ], [ 5, 3 ],[ 9, 3 ], [ -3, -2 ], [ 1, -2 ], [ 5, -2 ], [ 9, -2],[ -3, -7 ], [ 1, -7 ], [ 5, -7 ], [ 9, -7]] </var>
+                        <var id="_COLORS"> [ RED, PURPLE, ORANGE, GREEN, ] </var>
+                        <var id="_OPACITY"> [ 0.25, 0.25, 0.25, 0.25, 0.7, 0.7, 0.7, 0.7, 0.5, 0.5 ] </var>
+						<var id="QUES">(function(){
+								var res = [];
+								res.push("小哲對");
+								res.push("小偉對");
+								res.push("兩個人都對");
+								res.push("兩個人都不對");
+								return res;
+						})()</var>
+						<var id="Q"> randRangeUnique( 0, 4, 4 ) </var>
+						<var id="_QUES"> [ QUES[ Q[ 0 ] ], QUES[ Q[ 1 ] ], QUES[ Q[ 2 ] ], QUES[ Q[ 3 ] ] ] </var>
+                	</div>
+
+                	<div class="question">
+                		<p>小安想把 <code><var>N</var></code> 個披薩平分給 <code><var>_HUM</var></code> 個人，但不知道怎麼分，小哲跟小偉經過了，它們分別想到一個方法：</p>
+						<p>小哲說：「我們可以先把 <code><var>N</var></code> 個披薩都先分成 <code><var>_HUM</var></code> 等份，每個人在每個披薩拿一等分就好了。」</p>
+						<div class="graphie" id="case3-graphie1">
+                                init( { range: [ [ -5, 12 ], [ BR * ( -6 ) , 6 ] ], scale: 30 } );
+                                for( var i = 0; i &lt; N; i++ ) {
+                                    circle( C[ i ], 1.5, {  } );
+                                }
+								
+								for( var i = 0; i &lt; N; i++ ) {
+                                    for( var j = 0; j &lt; _HUM; j++ ) {
+                                        arc( C[ i ], 1.5, j * ( 360 / _HUM ), ( j + 1 ) * ( 360 / _HUM ), true, { fill: _COLORS[ ( j + 1 ) % 4 ], "fill-opacity": _OPACITY[ j ]  } );
+                                    }
+                                }
+                            </div>
+						<p>小偉說：「我們可以先把 <code><var>_AVERAGE*_HUM</var></code> 個披薩分給 <code><var>_HUM</var></code> 個人，<code><var>_HUM</var></code> 個人一人 <code><var>_AVERAGE</var></code> 個，剩下一個再切成 <code><var>_HUM</var></code> 等份，一個人再拿 <code>\dfrac{1}{<var>_HUM</var>}</code> 個披薩。」</p>
+							<div class="graphie" id="case3-graphie2">
+                                init( { range: [ [ -5, 12 ], [ BR * ( -6 ) , 6 ] ], scale: 30 } );
+								switch (_AVERAGE){
+								case 1:
+									for( var i = 0; i &lt; N; i++ ) {
+										if (i &lt; N-1){
+											circle( C[ i ], 1.5, { fill: _COLORS[ ( i + 1 ) % 4 ], "fill-opacity": _OPACITY[ i ] } );
+										}
+										else{
+											circle( C[ i ], 1.5, {  } );
+											for( var j = 0; j &lt; _HUM; j++ ) {
+												arc( C[ i ], 1.5, j * ( 360 / _HUM ), ( j + 1 ) * ( 360 / _HUM ), true, { fill: _COLORS[ ( j + 1 ) % 4 ], "fill-opacity": _OPACITY[ j ]  } );
+											}
+										}
+									}
+									break;
+								case 2:
+									for( var i = 0,j = 0; i &lt; N; i+=2,j++ ) {
+										if (i &lt; N-2){
+											circle( C[ i ], 1.5, { fill: _COLORS[ ( j + 1) % 4 ], "fill-opacity": _OPACITY[ j ] } );
+											circle( C[ i +1], 1.5, { fill: _COLORS[ ( j + 1 ) % 4 ], "fill-opacity": _OPACITY[ j ] } );
+										}
+										else{
+											circle( C[ i ], 1.5, {  } );
+											for( var j = 0; j &lt; _HUM; j++ ) {
+												arc( C[ i ], 1.5, j * ( 360 / _HUM ), ( j + 1 ) * ( 360 / _HUM ), true, { fill: _COLORS[ ( j + 1 ) % 4 ], "fill-opacity": _OPACITY[ j ]  } );
+											}
+										}
+									}
+									break;
+								}
+
+                            </div>
+							<p>想一想誰分的方法是對的呢？</p>
+							<p onclick="$('#option_1').prop('checked', true)"><input id="option_1" type="radio" name="count_numbers_1" value="0"/>&nbsp;<code><var>_QUES[ 0 ]</var></code></p>
+							<p onclick="$('#option_2').prop('checked', true)"><input id="option_2" type="radio" name="count_numbers_1" value="1"/>&nbsp;<code><var>_QUES[ 1 ]</var></code></p>
+							<p onclick="$('#option_3').prop('checked', true)"><input id="option_3" type="radio" name="count_numbers_1" value="2"/>&nbsp;<code><var>_QUES[ 2 ]</var></code></p>
+							<p onclick="$('#option_4').prop('checked', true)"><input id="option_4" type="radio" name="count_numbers_1" value="3"/>&nbsp;<code><var>_QUES[ 3 ]</var></code></p>
+                	</div>
+
+                	<div class="solution" data-type="multiple">
+    					<p>請選擇正確的答案</p>
+    					<div class="sol" data-type="custom">
+        					<div class="guess">$('input:radio[name="count_numbers_1"]:checked').val()</div>
+        					<div class="validator-function">
+        	            	if(guess == null){
+                        		return "";
+                        	}
+                        	return guess ==  Q.indexOf( 2 );
+        					</div>
+    					</div>
+					</div>
+
+                	<div class="hints">
+                       <p>小哲的方法每個人可以拿到 <code><var>N</var></code> 等份，一個等份是原本的披薩分成 <code><var>_HUM</var></code> 等份，所以一個等份是 <code>\dfrac{1}{<var>_HUM</var>}</code> 個披薩，那 <code><var>N</var></code> 個等份是多少披薩呢？</p>
+					   <p><code><var>N</var></code> 個 <code>\dfrac{1}{<var>_HUM</var>}</code> 就是 <code>\dfrac{1}{<var>_HUM</var>}</code>，也就是每個人都可以拿到 <code class="hint_blue">\dfrac{<var>N</var>}{<var>_HUM</var>}</code>。那小偉的方法呢？</p>
+					   <p>小偉的方法每個人可以拿到 <code><var>_AVERAGE</var></code> 個完整的披薩，還有一個等份，也就是 <code>\dfrac{1}{<var>_HUM</var>}</code>。因此小偉的方法每個人可以拿到 <code class="hint_blue"><var>_AVERAGE</var> \dfrac{1}{<var>_HUM</var>}</code>。</p>
+					   <p><code><var>_AVERAGE</var> \dfrac{1}{<var>_HUM</var>}</code> 轉換成假分數後就是 <code>\dfrac{<var>_AVERAGE*_HUM+1</var>}{<var>_HUM</var>}</code>，因此小哲跟小偉的方法，每個人都可以拿到一樣多的披薩，都是 <code>\dfrac{<var>N</var>}{<var>_HUM</var>}</code> 個，所以兩個人的方法<span class="hint_pink">都對</span>。所以我們知道 <code><var>N</var></code> 個披薩分給 <code><var>_HUM</var></code> 個人，可以用 <code class="hint_pink">\dfrac{<var>N</var>}{<var>_HUM</var>}</code> 來表示每個人拿到的披薩。</p>
+                	</div>
+                </div>
+
+            </div>
+        </div>
+    </body>
+</html>
