@@ -525,5 +525,19 @@ $.extend(KhanUtil, {
     RED: "#DF0030",
     GRAY: "gray",
     BLACK: "black",
+    LIGHT_BLUE: "#9AB8ED",
+    LIGHT_ORANGE: "#EDD19B",
+    LIGHT_PINK: "#ED9BD3",
+    LIGHT_GREEN: "#9BEDCE",
+    LIGHT_PURPLE: "#DA9BED",
+    LIGHT_RED: "#ED9AAC",
+    LIGHT_GRAY: "#ED9B9B",
+    LIGHT_BLACK: "#ED9B9B",
     BACKGROUND: "#FAFAFA"
+});
+
+$.extend(KhanUtil, {
+    INTERACTING: KhanUtil.PINK,
+    INTERACTIVE: KhanUtil.ORANGE,
+    DYNAMIC: KhanUtil.BLUE
 });
