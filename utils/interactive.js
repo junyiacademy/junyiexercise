@@ -2255,16 +2255,20 @@ function Protractor(graph, center) {
     var lineColor = "#789";
     var pro = this;
 
-    var r = 8;
-    var imgPos = graph.scalePoint([this.cx - r + 0.225, this.cy + r - 0.225]);
-    this.set.push(graph.mouselayer.image(Khan.urlBase + "images/protractors.png", imgPos[0], imgPos[1], 312, 161));
-    DrawInteractiveBoundry(graph);
+    var r = graph.unscaleVector(180.5)[0];
+    var imgPos = graph.scalePoint([this.cx - r, this.cy + r - graph.unscaleVector(10.5)[1]]);
+    this.set.push(graph.mouselayer.image(
+            "https://ka-perseus-graphie.s3.amazonaws.com/e9d032f2ab8b95979f674fbfa67056442ba1ff6a.png",
+            imgPos[0], imgPos[1], 360, 180));
+
 
     // Customized polar coordinate thingie to make it easier to draw the double-headed arrow thing.
     // angle is what you'd expect -- use that big protractor on your screen :)
     // pixels from edge is relative to the edge of the protractor; it's not the full radius
     var arrowHelper = function(angle, pixelsFromEdge) {
         var scaledRadius = graph.scaleVector(r);
+        scaledRadius[0] -= 16;
+        scaledRadius[1] -= 16;
         var scaledCenter = graph.scalePoint(center);
         var x = Math.sin((angle + 90) * Math.PI / 180) * (scaledRadius[0] + pixelsFromEdge) + scaledCenter[0];
         var y = Math.cos((angle + 90) * Math.PI / 180) * (scaledRadius[1] + pixelsFromEdge) + scaledCenter[1];
@@ -2320,13 +2324,38 @@ function Protractor(graph, center) {
     this.rotateHandle.mouseTarget.attr({ scale: 2.0 });
 
     // Make the arrow-thing grow and shrink with mouseover/out
-    $(this.rotateHandle.mouseTarget[0]).bind("vmouseover", function(event) {
-        arrow.animate({ scale: 1.5 }, 50);
-    });
-    $(this.rotateHandle.mouseTarget[0]).bind("vmouseout", function(event) {
-        arrow.animate({ scale: 1.0 }, 50);
+    var isDragging = false;
+    var isHovering = false;
+    var isHighlight = function() {
+        return isHovering || isDragging;
+    };
+
+    var self = this;
+    $(self.rotateHandle.mouseTarget[0]).bind("vmousedown", function(event) {
+        isDragging = true;
+        arrow.animate({ scale: 1.5, fill: KhanUtil.INTERACTING }, 50);
+
+        $(document).bind("vmouseup.rotateHandle", function(event) {
+            isDragging = false;
+
+            if (!isHighlight()) {
+                arrow.animate({ scale: 1.0, fill: KhanUtil.INTERACTIVE }, 50);
+            }
+
+            $(document).unbind("vmouseup.rotateHandle");
+        });
     });
 
+    $(self.rotateHandle.mouseTarget[0]).bind("vmouseover", function(event) {
+        isHovering = true;
+        arrow.animate({ scale: 1.5, fill: KhanUtil.INTERACTING }, 50);
+    });
+    $(self.rotateHandle.mouseTarget[0]).bind("vmouseout", function(event) {
+        isHovering = false;
+        if (!isHighlight()) {
+            arrow.animate({ scale: 1.0, fill: KhanUtil.INTERACTIVE }, 50);
+        }
+    });
 
     var setNodes = $.map(this.set, function(el) { return el.node; });
     this.makeTranslatable = function makeTranslatable() {
@@ -2337,7 +2366,7 @@ function Protractor(graph, center) {
             var startx = event.pageX - $(graph.raphael.canvas.parentNode).offset().left;
             var starty = event.pageY - $(graph.raphael.canvas.parentNode).offset().top;
 
-            $(document).bind("vmousemove", function(event) {
+            $(document).bind("vmousemove.protractor", function(event) {
                 // mouse{X|Y} are in pixels relative to the SVG
                 var mouseX = event.pageX - $(graph.raphael.canvas.parentNode).offset().left;
                 var mouseY = event.pageY - $(graph.raphael.canvas.parentNode).offset().top;
@@ -2358,7 +2387,7 @@ function Protractor(graph, center) {
             });
 
             $(document).one("vmouseup", function(event) {
-                $(document).unbind("vmousemove");
+                $(document).unbind("vmousemove.protractor");
             });
         });
     };

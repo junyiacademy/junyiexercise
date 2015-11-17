@@ -84,6 +84,9 @@
         };
 
         var unscaleVector = function(point) {
+            if (typeof point === "number") {
+                return unscaleVector([point, point]);
+            }
             return [point[0] / xScale, point[1] / yScale];
         };
 
