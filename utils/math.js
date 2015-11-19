@@ -392,6 +392,22 @@ $.extend(KhanUtil, {
         return Math.round((num * factor).toFixed(5)) / factor;
     },
 
+    /**
+     * Return a string of num rounded to a fixed precision decimal places,
+     * with an approx symbol if num had to be rounded, and trailing 0s
+     */
+    toFixedApprox: function(num, precision) {
+        // TODO(jack): Make this locale-dependent like
+        // KhanUtil.localeToFixed
+        var knumber = KhanUtil.knumber;
+        var fixedStr = num.toFixed(precision);
+        if (knumber.equal(+fixedStr, num)) {
+            return fixedStr;
+        } else {
+            return "\\approx " + fixedStr;
+        }
+    },
+
     floorTo: function(precision, num) {
         var factor = Math.pow(10, precision).toFixed(5);
         return Math.floor((num * factor).toFixed(5)) / factor;

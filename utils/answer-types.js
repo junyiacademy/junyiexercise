@@ -46,6 +46,8 @@
  *
  */
 
+var MAXERROR_EPSILON = Math.pow(2, -42);
+
 var inexactMessages = {
     unsimplified: "你的答案其實很接近了！要記得簡化或約分唷！",
     missingPercentSign: "你的答案其實很接近了，但缺一個<code>\\%</code> 的符號唷。"
@@ -158,10 +160,20 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             var options = $.extend({
                 simplify: "required",
                 ratio: false,
-                maxError: Math.pow(2, -42),
                 forms: Khan.answerTypes.predicate.defaultForms,
             }, solutionData);
             var acceptableForms = options.forms.split(/\s*,\s*/);
+
+            // TODO(jack): remove options.inexact in favor of options.maxError
+            if (options.inexact === undefined) {
+                // If we aren't allowing inexact, ensure that we don't have a
+                // large maxError as well.
+                options.maxError = 0;
+            }
+            // Allow a small tolerance on maxError, to avoid numerical
+            // representation issues (2.3 should be correct for a solution of
+            // 2.45 with maxError=0.15).
+            options.maxError = +options.maxError + MAXERROR_EPSILON;
 
             if (window.Modernizr && Modernizr.touch) {
                 // Use special HTML5 input element for touch devices, so we can
@@ -338,10 +350,27 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             options = $.extend({
                 simplify: "required",
                 ratio: false,
-                maxError: Math.pow(2, -42),
                 forms: Khan.answerTypes.predicate.defaultForms
             }, options);
-            var acceptableForms = options.forms.split(/\s*,\s*/);
+            var acceptableForms;
+            // this is maintaining backwards compatibility
+            // TODO(merlob) fix all places that depend on this, then delete
+            if (!_.isArray(options.forms)) {
+                acceptableForms = options.forms.split(/\s*,\s*/);
+            } else {
+                acceptableForms = options.forms;
+            }
+
+            // TODO(jack): remove options.inexact in favor of options.maxError
+            if (options.inexact === undefined) {
+                // If we aren't allowing inexact, ensure that we don't have a
+                // large maxError as well.
+                options.maxError = 0;
+            }
+            // Allow a small tolerance on maxError, to avoid numerical
+            // representation issues (2.3 should be correct for a solution of
+            // 2.45 with maxError=0.15).
+            options.maxError = +options.maxError + MAXERROR_EPSILON;
 
             // If percent is an acceptable form, make sure it's the last one
             // in the list so we don't prematurely complain about not having
