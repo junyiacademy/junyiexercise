@@ -414,12 +414,9 @@
 
                 var $span = $("<span>").addClass("graphie-label");
 
-                if (latex) {
-                    var $script = $("<script type='math/tex'>").text(text);
-                    $span.append($script);
-                } else {
-                    $span.html(text);
-                }
+            if (!latex) {
+                $span.html(text);
+            }
 
                 var pad = currentStyle["label-distance"];
 
@@ -451,16 +448,16 @@
                     });
                 };
 
-                if (latex) {
-                    $span.processMath(text, /* force */ false);
-                } else {
-                    var width = span.scrollWidth;
-                    var height = span.scrollHeight;
-                    setLabelMargins(span, [width, height]);
-                }
-                setNeedsLabelTypeset();
-                return $span;
-            },
+            if (latex) {
+                $span.processMath(text, /* force */ false);
+            } else {
+                var width = span.scrollWidth;
+                var height = span.scrollHeight;
+                setLabelMargins(span, [width, height]);
+            }
+
+            return $span;
+        },
 
             plotParametric: function(fn, range) {
                 currentStyle.strokeLinejoin || (currentStyle.strokeLinejoin = "round");
