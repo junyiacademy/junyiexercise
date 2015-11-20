@@ -485,7 +485,7 @@ function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
         attempt_number: attemptNum,
 
         // The answer the user gave
-        attempt_content: attemptContent,
+        attempt_content: 'attemptContent',
 
         // Whether we're currently in review mode
         review_mode: Exercises.reviewMode ? 1 : 0,

@@ -1,4 +1,38 @@
 ﻿(function() {
+// Function used to get the text of the choices, which is then used
+// to check against the correct answer
+var extractRawCode = function(elem) {
+    var $elem = $(elem).clone(true);
+    var code = $elem.find("code");
+    if (code.length) {
+        // If there are <code> tags in the element, remove them and replace
+        // them with their original formulas
+        $.each(code, function(i, elem) {
+            $(elem).replaceWith(
+                // TODO(emily): Adding <code> and <script> tags around this is
+                // a horrible hack to make this code backwards-compatible with
+                // the old extractRawCode (so that timeline works, etc). Remove
+                // this at some point and make it just return the formula, not
+                // the wrapping.
+                '<code><script type="math/tex">' +
+                KhanUtil.retrieveMathFormula(elem) +
+                '</script></code>'
+            );
+        });
+    }
+    return $elem.html();
+};
+function getTextSquish(elem) {
+    return $(elem).text().replace(/\s+/g, "");
+}
+// TODO(alpert): Don't duplicate from khan-exercise.js
+function checkIfAnswerEmpty(guess) {
+    // If multiple-answer, join all responses and check if that's empty
+    // Remove commas left by joining nested arrays in case multiple-answer is
+    // nested
+    return $.trim(guess) === "" || (guess instanceof Array &&
+             $.trim(guess.join("").replace(/,/g, "")) === "");
+}
 
 /*
  * Answer types
@@ -71,7 +105,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
         setupFunctional: function(solutionarea, solutionText, solutionData) {
             // Add a text box
             var input;
-            if (window.Modernizr && Modernizr.touch) {
+            if (window.Modernizr && Modernizr.touchevents) {
                 // special flag for iOS devices
                 input = $('<input type="text" autocapitalize="off">');
             } else {
@@ -79,18 +113,11 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             }
             $(solutionarea).append(input);
 
-            // The fallback variable is used in place of the answer, if no
-            // answer is provided (i.e. the field is left blank)
-            var fallback = solutionData.fallback;
-
             return {
                 validator: Khan.answerTypes.text.createValidatorFunctional(
                         solutionText, solutionData),
                 answer: function() {
-                    // return the value in the text box, or the fallback
-                    return input.val().length > 0 ?
-                        input.val() :
-                        (fallback != null ? fallback + "" : "");
+                    return input.val();
                 },
                 solution: $.trim(solutionText),
                 examples: [],
@@ -107,22 +134,32 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             correct = $.trim(correct);
 
             return function(guess) {
-                guess = $.trim(guess);
+                // The fallback variable is used in place of the answer, if no
+                // answer is provided (i.e. the field is left blank)
+                var fallback =
+                    options.fallback != null ? "" + options.fallback : "";
+
+                guess = $.trim(guess) || fallback;
+                var score = {
+                    empty: false,
+                    correct: false,
+                    message: null,
+                    guess: guess
+                };
                 if (guess.toLowerCase() === correct.toLowerCase()) {
                     if (correct === guess || options.correctCase === "optional") {
-                        return true;
+                        score.correct = true;
                     } else {
                         if (guess === guess.toLowerCase()) {
-                            return "你的答案其實很接近了！請把小寫字母換為大寫唷！";
+                            score.message = "你的答案其實很接近了！請把小寫字母換為大寫唷！";
                         } else if (guess === guess.toUpperCase()) {
-                            return "你的答案其實很接近了！請把大寫字母換為小寫唷！";
+                            score.message = "你的答案其實很接近了！請把大寫字母換為小寫唷！";
                         } else {
-                            return "你的答案其實很接近了！請換成正確的大小寫唷！";
+                            score.message = "你的答案其實很接近了！請換成正確的大小寫唷！";
                         }
                     }
-                } else {
-                    return false;
                 }
+                return score;
             };
         }
     },
@@ -805,17 +842,11 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             }
             $(solutionarea).append(input);
 
-            // The fallback variable is used in place of the answer, if no
-            // answer is provided (i.e. the field is left blank)
-            var fallback = solutionData.fallback;
-
             return {
                 validator: Khan.answerTypes.regex.createValidatorFunctional(
                         solutionText, solutionData),
                 answer: function() {
-                   return input.val().length > 0 ?
-                       input.val() :
-                       (fallback != null ? fallback + "" : "");
+                   return input.val();
                 },
                 solution: $.trim(solutionText),
                 examples: [],
@@ -834,8 +865,18 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             regex = new RegExp($.trim(regex), flags);
 
             return function(guess) {
-                guess = $.trim(guess);
-                return guess.match(regex) != null;
+                // The fallback variable is used in place of the answer, if no
+                // answer is provided (i.e. the field is left blank)
+                var fallback =
+                    options.fallback != null ? "" + options.fallback : "";
+
+                guess = $.trim(guess) || fallback;
+                return {
+                    empty: false,
+                    correct: guess.match(regex) != null,
+                    message: null,
+                    guess: guess
+                };
             };
         }
     },
@@ -870,12 +911,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 validator: Khan.answerTypes.radical.createValidatorFunctional(
                         solutionText, solutionData),
                 answer: function() {
-                    // Store the entered values in a list
-                    // If nothing is typed into one of the boxes, use 1
-                    return [
-                        inte.val().length > 0 ? inte.val() : "1",
-                        rad.val().length > 0 ? rad.val() : "1"
-                    ];
+                    return [$.trim(inte.val()), $.trim(rad.val())];
                 },
                 solution: ans,
                 examples: (options.simplify === "required") ?
@@ -898,6 +934,18 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             var ans = KhanUtil.splitRadical(ansSquared);
 
             return function(guess) {
+                // If nothing typed into either box, don't grade the answer
+                if (guess[0].length === 0 && guess[1].length === 0) {
+                    return {
+                        empty: true,
+                        correct: false,
+                        message: null,
+                        guess: guess
+                    };
+                }
+                // If nothing is typed into one of the boxes, use 1
+                guess[0] = guess[0].length > 0 ? guess[0] : "1";
+                guess[1] = guess[1].length > 0 ? guess[1] : "1";
                 // Parse the two floats from the guess
                 var inteGuess = parseFloat(guess[0]);
                 var radGuess = parseFloat(guess[1]);
@@ -910,15 +958,21 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 // portion are the same as what is given by splitRadical
                 var simplified = inteGuess === ans[0] && radGuess === ans[1];
 
+                var score = {
+                    empty: false,
+                    correct: false,
+                    message: null,
+                    guess: guess
+                };
+
                 if (correct) {
                     if (simplified || options.simplify === "optional") {
-                        return true;
+                        score.correct = true;
                     } else {
-                        return inexactMessages.unsimplified;
+                        score.message = inexactMessages.unsimplified;
                     }
-                } else {
-                    return false;
-                }
+                } 
+		return score;
             };
         }
     },
@@ -1035,44 +1089,60 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
 
                 // create a validator for each of the solutions
                 var validator = Khan.answerTypes[type].createValidator(sol);
-
-                // Store each of the validators, and whether or not that
-                // answer is required
-                validators.push({
-                    validator: validator,
-                    required: sol.attr("required") != undefined
-                });
+                validators.push(validator);
             });
 
             return function(guess) {
-                var valid = true;
-                var missing_required_answer = false;
+                var score = {
+                    empty: true,
+                    correct: true,
+                    message: null,
+                    guess: guess
+                };
+                var blockGradingMessage = null;
+
+                // If the answer is completely empty, don't grade it
+                if (checkIfAnswerEmpty(guess)) {
+                    score.empty = true;
+                    score.correct = false;
+                    return score;
+                }
 
                 // Iterate over each of the elements in the guess
                 $.each(guess, function(i, g) {
                     // Check whether that answer is right by validating it
-                    // with the cooresponding validator
-                    var pass = validators[i].validator(g);
+                    // with the corresponding validator
+                    var pass = validators[i](g);
 
-                    // Some exercises' validator return nothing for wrong answer.
-                    if (pass === undefined) {
-                        pass = false;
-                    }
-
-                    // If the answer is required, and no answer was provided,
-                    // break;
-                    if (pass === "" && validators[i].required) {
-                        missing_required_answer = true;
-                        return false;
-                    } else{
-                        valid = valid && pass;
+                    if (pass.message && pass.empty) {
+                        // Special case where a validator returns a message
+                        // for an "empty" response. This probably means it's
+                        // not really empty, but a correct-but-not-simplified
+                        // answer. Rather that treating this as actually empty,
+                        // possibly leading to the entire multiple being marked
+                        // wrong for being incomplete, note the situation but
+                        // continue determining whether the entire answer is
+                        // otherwise correct or not before forwarding on the
+                        // message.
+                        blockGradingMessage = pass.message;
+                    } else {
+                        score.empty = score.empty && pass.empty;
+                        score.correct = score.correct && pass.correct;
+                        // TODO(eater): This just forwards one message
+                        score.message = score.message || pass.message;
                     }
                 });
 
-                if (missing_required_answer) {
-                    return "";
+                if (score.correct && blockGradingMessage != null) {
+                    return {
+                        empty: true,
+                        correct: false,
+                        message: blockGradingMessage,
+                        guess: guess
+                    };
                 } else {
-                    return valid;
+                    score.empty = false;
+                    return score;
                 }
             };
         }
@@ -1182,12 +1252,19 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             });
 
             return function(guess) {
-                // Whether the entire solution is correct or not
-                var valid = true,
+                var score = {
+                    // If there are no validators, empty input is correct
+                    empty: validatorArray.length === 0 ? false : true,
+                    correct: true,
+                    message: null,
+                    guess: guess
+                };
+                var blockGradingMessage = null;
+
                 // Store a copy of each of the validators. If one correctly
                 // identifies a guess, remove it from this array, so duplicate
                 // answers aren't marked correct twice
-                    unusedValidators = validatorArray.slice(0);
+                var unusedValidators = validatorArray.slice(0);
 
                 // Go through each of the guesses
                 $.each(guess, function(i, g) {
@@ -1198,17 +1275,35 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     $.each(unusedValidators, function(i, validator) {
                         var pass = validator(g);
 
+                        // If this validator is trying to block grading
+                        if (pass.empty && pass.message) {
+                            // remove the working validator
+                            unusedValidators.splice(i, 1);
+                            // We want to block the entire answer from being
+                            // accepted as correct but continue checking in
+                            // case another part is wrong.
+                            blockGradingMessage = pass.message;
+                            correct = true;
+                            // break
+                            return false;
+                        }
+
                         // If this validator completely accepts this answer
                         // or returns a check answer message
-                         if (pass !== false) {
+                        if (pass.correct || pass.message) {
                             // remove the working validator
                             unusedValidators.splice(i, 1);
                             // store correct
-                            correct = pass;
+                            correct = pass.correct || pass.message;
                             // break
                             return false;
                         }
                     });
+
+                    if (!checkIfAnswerEmpty(g) &&
+                            !checkIfAnswerEmpty(correct)) {
+                        score.empty = false;
+                    }
 
                     // If we didn't get it right, and the answer isn't empty,
                     // the entire solution is false
@@ -1221,18 +1316,14 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     //              is correct? While this could be abused, it
                     //              would seem more friendly.
                     if (!correct && $.trim([g].join("")) !== "") {
-                        valid = false;
-                        return false;
+                        score.correct = false;
+                        return false;  // break
                     }
 
                     // If we have a check answer message
                     if (typeof correct === "string") {
-                        valid = correct;
-                    }
-
-                    // If we've run out of validators, stop
-                    if (unusedValidators.length === 0) {
-                        return false;
+                        score.message = correct;
+                        score.correct = false;
                     }
                 });
 
@@ -1243,14 +1334,24 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     if (unusedValidators.length >
                         validatorArray.length - guess.length) {
                         // incorrect, more answers needed
-                        valid = false;
+                        score.correct = false;
                     }
                 // Otherwise, if not all of the answers were provided
                 } else if (unusedValidators.length > 0) {
                     // incorrect, some of the answers are missing
-                    valid = false;
+                    score.correct = false;
                 }
-                return valid;
+
+                if (score.correct && blockGradingMessage != null) {
+                    return {
+                        empty: true,
+                        correct: false,
+                        message: blockGradingMessage,
+                        guess: guess
+                    };
+                } else {
+                    return score;
+                }
             };
         }
     },
@@ -1279,91 +1380,81 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
      */
     radio: {
         setup: function(solutionarea, solution) {
-            // Function used to get the text of the choices, which is then used
-            // to check against the correct answer
-            var extractRawCode = function(solution) {
-                return $(solution).clone()
-                    .find(".MathJax").remove().end()
-                    .find("code script").removeAttr("id").end()
-                    .html();
-            };
-
             // Add a list to the solution area
-            var list = $("<ul></ul>");
-            list.on("click", "input:radio", function() {
-                $(this).focus();
-            });
-            $(solutionarea).append(list);
+            var $list = $("<ul></ul>");
+            $(solutionarea).append($list);
 
-            // Get all of the wrong choices
-            var choices = $(solution).siblings(".choices");
+            // Retrieve the list of choices from the problem
+            var $choices = $(solution).siblings(".choices");
 
-            var solutionClone = $(solution).clone();
+            // Get the wrong choices and the solution. Note that we cleanup all
+            // the math here, so we don't have to deal with annoying MathJax
+            // stuff in our solutions, and also that we can directly compare
+            // the .text() values of all of the nodes
+            var $choicesClone = $choices.clone(true).texCleanup();
+            var $solutionClone = $(solution).clone(true).texCleanup();
 
-            // Set number of choices equal to all wrong plus one correct
-            var numChoices = choices.children().length + 1;
-            // Or set number as specified
-            if (choices.data("show")) {
-                numChoices = parseFloat(choices.data("show"));
-            }
+            // Retrieve the text of the solution so we can store it later
+            var solutionText = $solutionClone.text();
 
-            // Optionally include none of the above as a choice
-            var showNone = choices.data("none");
-            var noneIsCorrect = false;
-            if (showNone) {
-                noneIsCorrect = KhanUtil.rand(numChoices) === 0;
-                numChoices -= 1;
-            }
+            // Whether this is a category question, or if we should shuffle the
+            // answers up.
+            var isCategory = !!$choices.data("category");
 
-            // If a category exercise, the correct answer is already included
-            // in .choices and choices are always presented in the same order
-            var isCategory = choices.data("category");
-            var possibleChoices = choices.children().get();
+            var possibleChoices;
             if (isCategory) {
-                numChoices -= 1;
+                // If it's a category question, insert the solution into the
+                // list of choices at the correct place, by comparing by the
+                // text value of the elements.
+                var correctText = getTextSquish($solutionClone);
+                possibleChoices = _.map(
+                    $choicesClone.children().get(),
+                    function(elem) {
+                        if (getTextSquish(elem) === correctText) {
+                            return $solutionClone[0];
+                        } else {
+                            return elem;
+                        }
+                    });
             } else {
-                possibleChoices = KhanUtil.shuffle(possibleChoices);
+                // Otherwise, the possible choices is just the correct answer
+                // and the other choices. We shuffle the choices here so that
+                // when we slice off some of the choices later, we don't always
+                // slice off the same ones.
+                possibleChoices = $solutionClone.get().concat(
+                    KhanUtil.shuffle($choicesClone.children().get())
+                );
             }
 
-            // Add the correct answer
-            if (!noneIsCorrect && !isCategory) {
-                $(solutionClone).data("correct", true);
-            }
+            // The number of choices is either the number specified or the
+            // number of choices in the list of possible choices.
+            var numChoices = +$choices.data("show") || possibleChoices.length;
 
-            // Insert correct answer as first of possibleChoices
-            if (!isCategory) {
-                $(solutionClone).runModules();
-                possibleChoices.splice(0, 0, $(solutionClone));
-            }
+            // Whether to show a "none of the above" solution in our set of
+            // answers.
+            var showNone = !!$choices.data("none");
 
-            // Remove duplicates
-            var dupes = {};
-            var shownChoices = [];
-            var solutionTextSquish = texCleanup(solutionClone).text().replace(/\s+/g, "");
-            for (var i = 0; i < possibleChoices.length &&
-                                shownChoices.length < numChoices; i++) {
-                var choice = $(possibleChoices[i]);
-                var choiceTextSquish = texCleanup(choice.clone(true)).text().replace(/\s+/g, "");
+            // This code removes duplicate answers by looking at the text
+            // values of the choices and keeping the non-duplicate answers
+            var shownChoices = _.uniq(possibleChoices, false, function(elem) {
+                return getTextSquish(elem);
+            });
 
-                if (isCategory && solutionTextSquish === choiceTextSquish) {
-                    choice.data("correct", true);
-                }
-
-                if (!dupes[choiceTextSquish]) {
-                    dupes[choiceTextSquish] = true;
-
-                    // i == 0 is the solution except in category mode; skip it
-                    // when none is correct
-                    if (!(noneIsCorrect && i === 0) || isCategory) {
-                        shownChoices.push(choice);
-                    }
-                }
-            }
+            // Here, we duplicate the old behaviour where, if there is one less
+            // choice than we want, we will just add in the "none of the above"
+            // choice instead of having it replace one of the real ones.
+            var addNoneChoice = showNone &&
+                    shownChoices.length === numChoices - 1;
 
             // If removing duplicates made it so there aren't enough showing
-            // solutions, regenerate the problem
-            if (shownChoices.length < numChoices) {
+            // solutions (and we're not going to add in one last choice),
+            // regenerate the problem
+            if (shownChoices.length < numChoices && !addNoneChoice) {
                 return false;
+            // Otherwise, if there are too many choices, throw away some from
+            // the end
+            } else if (shownChoices.length > numChoices) {
+                shownChoices = shownChoices.slice(0, numChoices);
             }
 
             // Shuffle the answers if we're not in category mode
@@ -1371,71 +1462,101 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 shownChoices = KhanUtil.shuffle(shownChoices);
             }
 
-            // If showNone, replace the last solution with "None of the above",
-            // which reveals the correct answer when it is picked and is right
-            if (showNone) {
-                var none = $("<span>").html("以上皆非");
-
-                none.data("noneOfTheAbove", true);
-
-                if (noneIsCorrect) {
-                    none.data("correct", true);
-                    solutionText = none.text();
-                    list.data("realAnswer",
-                            $(solutionClone)
-                                .runModules()
-                                .contents()
-                                .wrapAll('<span class="value""></span>')
-                                .parent());
+            // Find the index of the correct answer
+            var correctIndex;
+            _.each(shownChoices, function(choice, i) {
+                if (choice === $solutionClone[0]) {
+                    correctIndex = i;
                 }
-
-                shownChoices.push(none);
-            }
-            var correctIndex = -1;
-            $.each(shownChoices, function(i, choice) {
-                // Wrap each of the choices in elements and add a radio button
-                if (choice.data("correct")) {
-                correctIndex = i + "";
-            }
-                choice.contents()
-                    .wrapAll('<li><label><span class="value"></span></label></li>')
-                    .parent()
-                    .before(
-                        $('<input type="radio" name="solution">')
-                            .val(i)
-                    )
-                    .parent().parent()
-                    .appendTo(list);
             });
 
+            // We figure out if the "none of the above" choice is correct if we
+            // have such an answer and if the last shown answer is correct.
+            // Note that we check against numChoices to decide if it is the
+            // last choice, not shownChoices.length, because in the case that
+            // we're going to be strictly adding the "none of the above"
+            // choice, shownChoices.length won't accurately show the number of
+            // choices that will be shown.
+            var noneIsCorrect = showNone && correctIndex === numChoices - 1;
+
+            // If showNone, replace the last solution with "None of the above",
+            // which reveals the correct answer when it is picked and is right.
+            if (showNone) {
+                var $none = $("<span>").html($._("None of the above"));
+                $none.data("noneOfTheAbove", true);
+
+                // If the answer is correct, we add some data about what the
+                // true answer is so we can show it later
+                if (noneIsCorrect) {
+                    $list.data("realAnswer",
+                        $("<span>").addClass("value").append(
+                            $solutionClone.clone(true).contents()
+                        )
+                    );
+                }
+
+                var noneIndex = shownChoices.length - 1;
+                if (addNoneChoice) {
+                    noneIndex = shownChoices.length;
+                }
+
+                shownChoices.splice(noneIndex, 1,
+                    // We have to wrap this in something so that when we unwrap
+                    // it below, it maintains its data attributes
+                    $("<span>").append($none));
+            }
+
+            // Wrap each of the choices in elements and add radio buttons
+            var wrappedChoices = _.map(shownChoices, function(choice, i) {
+                return $("<li><label></label></li>").find("label").append([
+                    $('<input type="radio" name="solution">').val(i),
+                    $('<span class="value"></span>').append(
+                        $(choice).contents()
+                    )
+                ]).end();
+            });
+
+            // Here we finally re-run modules, so that the math is reformatted
+            $list.append(wrappedChoices).runModules();
+
             return {
-                validator: Khan.answerTypes.radio.createValidator(solution, correctIndex, noneIsCorrect),
+                // We send some extra data to the validator so that it is
+                // easier to grade
+                validator: Khan.answerTypes.radio.createValidator({
+                    solution: solution,
+                    index: correctIndex,
+                    noneIsCorrect: noneIsCorrect
+                }),
                 answer: function() {
                     // Find the chosen answer
-                    var choice = list.find("input:checked");
+                    var $choice = $list.find("input:checked");
 
                     // If nothing's checked, return null immediately
-                    if (choice.length === 0) {
+                    if ($choice.length === 0) {
                         return null;
                     }
 
                     // Find it's cooresponding value
-                    var choiceVal = choice.siblings(".value");
+                    var $choiceVal = $choice.siblings(".value");
 
                     // This (probably) only does something useful when the
                     // selected answer is the "none of the above" one
-                    var choiceNoneChild = choiceVal.children().eq(0);
+                    var $choiceNoneChild = $choiceVal.children().eq(0);
 
                     return {
                         // Some data about the "none of the above" answer
-                        isNone: choiceNoneChild.data("noneOfTheAbove"),
+                        isNone: $choiceNoneChild.data("noneOfTheAbove"),
                         // The raw text value that was chosen
-                        value: extractRawCode(choiceVal),
+                        // TODO(emily): Remove this at the same time references
+                        // to guess.value are removed down below, maybe (unless
+                        // we want to have the text of the correct answer in
+                        // the database)
+                        value: extractRawCode($choiceVal),
                         // The index of the value that was chosen
-                        index: choice.val()
+                        index: +$choice.val()
                     };
                 },
-                solution: $.trim($(solution).text()),
+                solution: solutionText,
                 examples: [],
                 showGuess: function(guess) {
                     if (guess == null) {
@@ -1443,38 +1564,82 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                                        .attr("checked", false);
                     } else {
                         // Select the correct radio button
-                        list.children().filter(function() {
-                            // TODO(emily): remove this backwards-compatible
-                            // code in 7/13
-                            if (guess.index != null) {
-                                // Filter using the index to choose the radio
-                                return guess.index ===
-                                    $(this).find("input").val();
-                            } else {
-                                // Fall back to the old style of checking
-                                return $.trim(extractRawCode(
-                                        $(this).find("span")
-                                    )) === $.trim(guess);
-                            }
+                        $list.children().filter(function() {
+                            // Filter using the index to choose the radio
+                            return guess.index ===
+                                $(this).find("input").val();
                         }).find("input").attr("checked", true);
                     }
                 }
             };
         },
-        createValidator: function(solution, correctIndex, noneIsCorrect) {
+        createValidator: function(solution) {
+            // TODO(emily): Remove this backwards compatible code sometime
+            // after 8/2013
+            var correct = extractRawCode(solution.solution || solution);
+
+            function showReal() {
+                // Hacky stuff to make the correct solution appear when "none
+                // of the above" is the correct answer
+                var $list = $("#solutionarea").find("ul");
+                var $choice =
+                    $list.children().filter(function() {
+                        return $(this).find("span.value > span")
+                                      .data("noneOfTheAbove");
+                    }).find("input");
+                $choice.next().fadeOut("fast", function() {
+                    var $real = $list.data("realAnswer");
+                    $(this).replaceWith($real);
+                    $real.tex().fadeIn("fast");
+                });
+            }
+
             return function(guess) {
+                var score = {
+                    empty: false,
+                    correct: false,
+                    message: null,
+                    guess: guess
+                };
+
                 if (guess == null) {
-                    return "";
+                    score.empty = true;
+                    return score;
                 }
-                var list = $("#solutionarea").find("ul");
-                var choice =list.find("input:checked");
-                if (noneIsCorrect && choice.val() === correctIndex) {
-                    choice.next().fadeOut("fast", function() {
-                        $(this).replaceWith(list.data("real-answer"))
-                               .fadeIn("fast");
-                    });
+
+                if (guess.index) {
+                    // New solutions include information about the correct
+                    // answer like the correct index, etc. We can use that to
+                    // make checking a lot simpler.
+
+                    if (guess.isNone && solution.noneIsCorrect) {
+                        showReal();
+                        score.correct = true;
+                    } else {
+                        score.correct = guess.index === solution.index;
+                    }
+                } else {
+                    // Old solutions just included the solution element, so we
+                    // have to use the old checks to see if the solution is
+                    // correct
+                    // TODO(emily): Remove this backwards compatible code
+                    // sometime after 8/2013
+
+                    // Check to see if the "none of the above" answer is
+                    // checked
+                    if (guess.isNone &&
+                            $("#solutionarea").find("ul").data("real-answer") != null) {
+                        showReal();
+                        score.correct = true;
+                    // Otherwise, just compare the text
+                    } else if ($.trim(guess.value).replace(/\r\n?|\n/g, "") ===
+                               $.trim(correct.replace(/\r\n?|\n/g, ""))) {
+                        score.correct = true;
+                    } else {
+                        score.correct = false;
+                    }
                 }
-                return guess.index === correctIndex;
+                return score;
             };
         }
     },
@@ -1517,7 +1682,12 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
 
             return function(guess) {
                 guess = $.trim(guess);
-                return correct === guess;
+                return {
+                    empty: false,
+                    correct: correct === guess,
+                    message: null,
+                    guess: guess
+                };
             };
         }
     },
@@ -1606,7 +1776,20 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             };
 
             return function(guess) {
-                return validator(guess);
+                var pass = validator(guess);
+                // If `pass` is an object, it's a new-style return type
+                if (typeof pass === "object") {
+                    return pass;
+                } else {
+                    // TODO(eater): For now most custom answers use the "old"
+                    // true/false/""/"..." return type.
+                    return {
+                        empty: pass === "",
+                        correct: pass === true,
+                        message: typeof pass === "string" ? pass : null,
+                        guess: guess
+                    };
+                }
             };
         }
     },
@@ -1621,7 +1804,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
         // TODO(alpert): Use predicate or something like that?
         setupFunctional: function(solutionarea, solutionText, solutionData) {
             var input;
-            if (window.Modernizr && Modernizr.touch) {
+            if (window.Modernizr && Modernizr.touchevents) {
                 // special flag for iOS devices
                 input = $('<input type="text" autocapitalize="off">');
             } else {
@@ -1629,15 +1812,11 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             }
             $(solutionarea).append(input);
 
-            var fallback = solutionData.fallback;
-
             return {
                 validator: Khan.answerTypes.primeFactorization.createValidatorFunctional(
                         solutionText, solutionData),
                 answer: function() {
-                    return input.val().length > 0 ?
-                        input.val() :
-                        (fallback != null ? fallback + "" : "");
+                    return input.val();
                 },
                 solution: $.trim(solutionText),
                 examples: [
@@ -1656,11 +1835,31 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             return function(guess) {
                 // Get rid of all the whitespace
                 guess = guess.split(" ").join("").toLowerCase();
-                // Split on x, *, or unicode x, sort, and join with xs
-                guess = KhanUtil.sortNumbers(guess.split(/x|\*|\u00d7/))
-                                .join("x");
+                // Split on x, *, or unicode x
+                guess = guess.split(/x|\*|\u00d7/);
+
+                // Replace a^b with b lots of axa
+                var terms = [];
+                for (var i = 0; i < guess.length; i++) {
+                    var t = guess[i].split('^');
+                    if (t.length > 1) {
+                        for (var j = 0; j < t[1]; j++) {
+                            terms.push(t[0]);
+                        }
+                    } else {
+                        terms.push(guess[i]);
+                    }
+                }
+
+                // Sort, and join with xs
+                guess = KhanUtil.sortNumbers(terms).join("x");
                 // perform simple string comparison
-                return guess === correct;
+                return {
+                    empty: guess === "",
+                    correct: guess === correct,
+                    message: null,
+                    guess: guess
+                };
             };
         }
     },
@@ -1679,7 +1878,9 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 validator: Khan.answerTypes.checkbox.createValidatorFunctional(
                         solutionText, solutionData),
                 answer: function() {
-                    return input.is(":checked");
+                    // False as "" so that checkIfAnswerEmpty recognizes it as
+                    // empty
+                    return input.is(":checked") || "";
                 },
                 solution: $.trim(solutionText),
                 examples: [],
@@ -1693,7 +1894,28 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             correct = $.trim(correct) === "true";
 
             return function(guess) {
-                return correct === guess;
+                var score = {
+                    empty: false,
+                    correct: false,
+                    message: null,
+                    guess: guess
+                };
+                // If checkbox is unchecked, guess will be ""; cast to bool
+                /* jshint -W018 */
+                if (!!correct === !!guess) {
+                /* jshint +W018 */
+                    score.correct = true;
+                } else if (!guess) {
+                    // If unchecked, we'll say that the answer is empty, which
+                    // is necessary to ensure that a new question with
+                    // checkboxes counts as empty. Empty in a multiple grades
+                    // as false though so this shouldn't have any adverse
+                    // effects.
+                    score.empty = true;
+                } else {
+                    score.correct = false;
+                }
+                return score;
             };
         }
     },

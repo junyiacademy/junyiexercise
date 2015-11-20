@@ -737,16 +737,7 @@ var Khan = (function() {
                         guess = Khan.asc(guess);
                     }
             }  // 全型轉半型
-            var pass = validator(guess);
-            var empty = checkIfAnswerEmpty(guess) || checkIfAnswerEmpty(pass);
-
-            // Really disentangling the true/false/""/"..." mess? Incroyable!
-            return {
-                empty: empty,
-                correct: pass === true,
-                message: typeof pass === "string" ? pass : null,
-                guess: guess
-            };
+            return validator(guess);
         },
 
         cleanupProblem: function() {
