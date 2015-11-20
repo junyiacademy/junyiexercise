@@ -172,7 +172,7 @@ function problemTemplateRendered() {
 
     // These shouldn't interfere...
     $(PerseusBridge).trigger("problemTemplateRendered");
-    //$(Khan).trigger("problemTemplateRendered");
+    $(Khan).trigger("problemTemplateRendered");
 }
 
 function newProblem(e, data) {
