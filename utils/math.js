@@ -408,6 +408,21 @@ $.extend(KhanUtil, {
         }
     },
 
+    /**
+     * Return a string of num rounded to precision decimal places, with an
+     * approx symbol if num had to be rounded, but no trailing 0s if it was
+     * not rounded.
+     */
+    roundToApprox: function(num, precision) {
+        var knumber = KhanUtil.knumber;
+        var fixed = KhanUtil.roundTo(precision, num);
+        if (knumber.equal(fixed, num)) {
+            return String(fixed);
+        } else {
+            return KhanUtil.toFixedApprox(num, precision);
+        }
+    },
+
     floorTo: function(precision, num) {
         var factor = Math.pow(10, precision).toFixed(5);
         return Math.floor((num * factor).toFixed(5)) / factor;
