@@ -14,31 +14,32 @@ function renderReadOnlyProblem(event, args) {
      */
     var userExercise = args.userExercise;
     var solutionarea = $("#solutionarea");
+    if (typeof userExercise !== "undefined" && userExercise.readOnly) {
+        var timelinecontainer = $("<div id='timelinecontainer'>")
+            .append("<div>\n" +
+                    "<div id='previous-problem' class='simple-button'>" +
+                    "上一個問題" + "</div>\n" +
+                    "\n</div>")
+            .append("<div>\n" +
+                    "<div id='next-problem' class='simple-button'>" +
+                    "下一個問題" + "</div>\n" +
+                    "\n</div>")
+            .insertBefore("#problem-and-answer");
 
-    var timelinecontainer = $("<div id='timelinecontainer'>")
-        .append("<div>\n" +
-                "<div id='previous-problem' class='simple-button'>" +
-                "上一個問題" + "</div>\n" +
-                "\n</div>")
-        .append("<div>\n" +
-                "<div id='next-problem' class='simple-button'>" +
-                "下一個問題" + "</div>\n" +
-                "\n</div>")
-        .insertBefore("#problem-and-answer");
+        $("#next-problem").click(function() {
+            window.location.href = userExercise.nextProblemUrl;
+        });
 
-    $("#next-problem").click(function() {
-        window.location.href = userExercise.nextProblemUrl;
-    });
+        $("#previous-problem").click(function() {
+            if (!$(this).data("disabled")) {
+                window.location.href = userExercise.previousProblemUrl;
+            }
+        });
 
-    $("#previous-problem").click(function() {
-        if (!$(this).data("disabled")) {
-            window.location.href = userExercise.previousProblemUrl;
-        }
-    });
-
-    $("#hint").attr("disabled", true);
-    $("#answercontent input").attr("disabled", true);
-    $("#answercontent select").attr("disabled", true);
+        $("#hint").attr("disabled", true);
+        $("#answercontent input").attr("disabled", true);
+        $("#answercontent select").attr("disabled", true);
+    }
 
 }
 
