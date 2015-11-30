@@ -12,16 +12,7 @@ function renderReadOnlyProblem(event, args) {
      * If you want to recover timeline,
      * check commit c52d552 in khan-exercises repository.
      */
-
-    var framework = Exercises.getCurrentFramework();
-
     var userExercise = args.userExercise;
-    var answerData = args.answerData;
-    var answerType = args.answerType;
-    var solution = args.solution;
-    var hints = args.hints;
-    var problem = args.problem;
-
     var solutionarea = $("#solutionarea");
 
     var timelinecontainer = $("<div id='timelinecontainer'>")
