@@ -8,6 +8,11 @@ $(Exercises)
         .bind("newProblem", renderReadOnlyProblem);
 
 function renderReadOnlyProblem(event, args) {
+    /* Timeline is removed.
+     * If you want to recover timeline,
+     * check commit c52d552 in khan-exercises repository.
+     */
+
     var framework = Exercises.getCurrentFramework();
 
     var userExercise = args.userExercise;
