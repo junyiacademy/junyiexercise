@@ -1,10 +1,5 @@
 (function() {
 
-// var knumber = KhanUtil.knumber;
-// var kvector = KhanUtil.kvector;
-// var kpoint = KhanUtil.kpoint;
-// var kline = KhanUtil.kline;
-
 function sum(array) {
     return _.reduce(array, function(memo, arg) { return memo + arg; }, 0);
 }

@@ -2,7 +2,7 @@
  * Point Utils
  * A point is an array of two numbers e.g. [0, 0].
  */
-(function(require) {
+(function() {
 
 var kvector = KhanUtil.kvector;
 var knumber = KhanUtil.knumber;

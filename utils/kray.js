@@ -4,7 +4,7 @@
  * For example, [[0, 0], [1, 0]] is the ray starting at the origin and
  * traveling along the positive x-axis.
  */
-(function(require) {
+(function() {
 
 var kvector = KhanUtil.kvector;
 var kpoint = KhanUtil.kpoint;
