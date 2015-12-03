@@ -13,10 +13,14 @@ _.defaults(Exercises, {
     khanExercisesUrlBase: "/khan-exercises/",
 
     getCurrentFramework: function(userExerciseOverride) {
-        // Currently we render perseus question by the same way with html exercises.
-        return (userExerciseOverride || userExercise).exerciseModel.isQuizExercise ?
-            "perseus" : "khan-exercises";
-        // return "perseus";
+        if (PerseusBridge.localMode) {
+            return "perseus";
+        }
+        else {
+            // Currently we render perseus question by the same way with html exercises.
+            return (userExerciseOverride || userExercise).exerciseModel.isQuizExercise ?
+                "perseus" : "khan-exercises";
+        }
     }
 });
 
@@ -271,7 +275,7 @@ function handleAttempt(data) {
             .prop("disabled", false)
             .removeClass("buttonDisabled")
             .show();
-        if ( hintsUsed == 0  && attempts == 0){
+        if ( !localMode && hintsUsed == 0  && attempts == 0){
             var points = exercisePointCalculator();
             $('#answercontent .energy-points-badge')
             .html('+' +points.toString())
@@ -650,7 +654,7 @@ function upcomingExercise(e, data) {
 function gotoNextProblem() {
     var framework = Exercises.getCurrentFramework();
     if (framework === "perseus") {
-        // TODO(alpert)
+        $(PerseusBridge).trigger("gotoNextProblem");
     } else if (framework === "khan-exercises") {
         $(Khan).trigger("gotoNextProblem");
     }
@@ -724,8 +728,9 @@ function clearExistingProblem() {
         .css("top", 0)
         .find(".info-box-header")
             .show();
-
-    Khan.scratchpad.clear();
+    if (!localMode) {
+        Khan.scratchpad.clear();
+    }
 }
 
 })();
