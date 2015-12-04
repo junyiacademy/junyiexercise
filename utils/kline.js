@@ -2,7 +2,7 @@
  * Line Utils
  * A line is an array of two points e.g. [[-5, 0], [5, 0]].
  */
-(function(require) {
+(function() {
 
 var kpoint = KhanUtil.kpoint;
 var kvector = KhanUtil.kvector;
