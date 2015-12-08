@@ -4071,6 +4071,9 @@ function Protractor(graph, center) {
             }
         });
     };
+    this.remove = function() {
+        this.set.remove();
+    };
 
     this.set.attr({ opacity: 1 });
     this.makeTranslatable();
