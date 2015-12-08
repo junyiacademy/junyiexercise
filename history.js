@@ -25,6 +25,14 @@ function renderReadOnlyProblem(event, args) {
                     "下一個問題" + "</div>\n" +
                     "\n</div>")
             .insertBefore("#problem-and-answer");
+        $.fn.disable = function() {
+            this.addClass("disabled")
+                .css({
+                    cursor: "default !important"
+                })
+                .data("disabled", true);
+            return this;
+        }
 
         $("#next-problem").click(function() {
             window.location.href = userExercise.nextProblemUrl;
@@ -35,6 +43,10 @@ function renderReadOnlyProblem(event, args) {
                 window.location.href = userExercise.previousProblemUrl;
             }
         });
+
+        if (userExercise.totalDone === 0) {
+            $("#previous-problem").disable();
+        }
 
         $("#hint").attr("disabled", true);
         $("#answercontent input").attr("disabled", true);
