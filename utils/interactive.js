@@ -3845,12 +3845,12 @@ $.extend(KhanUtil.Graphie.prototype, {
         };
     })(),
 
-    protractor: function(center) {
-        return new Protractor(this, center);
+    Protractor: function(center) {
+        return new Protractor(center);
     },
 
     Ruler: function(options) {
-        return new Ruler(this, options || {});
+        return new Ruler(options || {});
     },
 
     Triangleruler: function(center){
@@ -3869,8 +3869,8 @@ function DrawInteractiveBoundry(graph) {
                 [xrange[0], yrange[0]]], {stroke: "#BBBBBB"});
 }
 
-function Protractor(graph, center) {
-    //var graph = KhanUtil.currentGraph;
+function Protractor(center) {
+    var graph = KhanUtil.currentGraph;
     this.set = graph.raphael.set();
 
     this.cx = center[0];
@@ -4263,7 +4263,8 @@ function Triangleruler(center) {
     return this;
 }
 
-function Ruler(graphie, options) {
+function Ruler(options) {
+    var graphie = KhanUtil.currentGraph
     var kvector = KhanUtil.kvector;
     _.defaults(options, {
         center: [0, 0],
