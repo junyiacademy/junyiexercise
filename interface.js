@@ -709,9 +709,13 @@ function clearExistingProblem() {
     $("#positive-reinforcement").hide();
 
     // Wipe out any previous problem
-    if(Khan && Khan.cleanupProblem) Khan.cleanupProblem();
-    if(PerseusBridge && PerseusBridge.cleanupProblem) PerseusBridge.cleanupProblem();
-    $("#workarea, #hintsarea, #solutionarea").empty();
+    if (framework === "perseus") {
+        if(PerseusBridge && PerseusBridge.cleanupProblem) PerseusBridge.cleanupProblem();   
+    } else if (framework === "khan-exercises") {
+        if(Khan && Khan.cleanupProblem) Khan.cleanupProblem();
+    }
+
+    $("#workarea, #hintsarea, #solutionarea, #sourcearea").empty();
 
     // Take off the event handlers for disabling check answer; we'll rebind
     // if we actually want them
