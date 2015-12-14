@@ -1482,7 +1482,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             // If showNone, replace the last solution with "None of the above",
             // which reveals the correct answer when it is picked and is right.
             if (showNone) {
-                var $none = $("<span>").html($._("None of the above"));
+                var $none = $("<span>").html($._("以上皆非"));
                 $none.data("noneOfTheAbove", true);
 
                 // If the answer is correct, we add some data about what the
@@ -1590,6 +1590,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 $choice.next().fadeOut("fast", function() {
                     var $real = $list.data("realAnswer");
                     $(this).replaceWith($real);
+                    // tex()有問題，造成showReal顯示錯誤答案
                     $real.tex().fadeIn("fast");
                 });
             }
@@ -1613,7 +1614,8 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     // make checking a lot simpler.
 
                     if (guess.isNone && solution.noneIsCorrect) {
-                        showReal();
+                        // showReal 有問題，暫時先不顯示正確答案。
+                        // showReal();
                         score.correct = true;
                     } else {
                         score.correct = guess.index === solution.index;
@@ -1629,6 +1631,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     // checked
                     if (guess.isNone &&
                             $("#solutionarea").find("ul").data("real-answer") != null) {
+                        // showReal 有問題，暫時先不顯示正確答案。
                         showReal();
                         score.correct = true;
                     // Otherwise, just compare the text
@@ -1777,8 +1780,8 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
 
             return function(guess) {
                 var pass = validator(guess);
-                // If `pass` is an object, it's a new-style return type
                 var empty = checkIfAnswerEmpty(guess) || checkIfAnswerEmpty(pass);
+                // If `pass` is an object, it's a new-style return type
                 if (typeof pass === "object") {
                     return pass;
                 } else {
