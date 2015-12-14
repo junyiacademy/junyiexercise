@@ -1778,13 +1778,14 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             return function(guess) {
                 var pass = validator(guess);
                 // If `pass` is an object, it's a new-style return type
+                var empty = checkIfAnswerEmpty(guess) || checkIfAnswerEmpty(pass);
                 if (typeof pass === "object") {
                     return pass;
                 } else {
                     // TODO(eater): For now most custom answers use the "old"
                     // true/false/""/"..." return type.
                     return {
-                        empty: pass === "",
+                        empty: empty,
                         correct: pass === true,
                         message: typeof pass === "string" ? pass : null,
                         guess: guess
