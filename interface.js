@@ -13,10 +13,14 @@ _.defaults(Exercises, {
     khanExercisesUrlBase: "/khan-exercises/",
 
     getCurrentFramework: function(userExerciseOverride) {
-        // Currently we render perseus question by the same way with html exercises.
-        // return (userExerciseOverride || userExercise).exerciseModel.isQuizExercise ?
-        //     "perseus" : "khan-exercises";
-        return "khan-exercises";
+        if (PerseusBridge.localMode) {
+            return "perseus";
+        }
+        else {
+            // Currently we render perseus question by the same way with html exercises.
+            return (userExerciseOverride || userExercise).exerciseModel.isQuizExercise ?
+                "perseus" : "khan-exercises";
+        }
     }
 });
 
@@ -271,7 +275,7 @@ function handleAttempt(data) {
             .prop("disabled", false)
             .removeClass("buttonDisabled")
             .show();
-        if ( hintsUsed == 0  && attempts == 0){
+        if ( !localMode && hintsUsed == 0  && attempts == 0){
             var points = exercisePointCalculator();
             $('#answercontent .energy-points-badge')
             .html('+' +points.toString())
@@ -597,7 +601,6 @@ function request(method, data) {
     return deferred.promise();
 }
 
-
 function readyForNextProblem(e, data) {
     if (!firstProblem) {
         // As both of the following variables are only used to make sure the
@@ -651,7 +654,7 @@ function upcomingExercise(e, data) {
 function gotoNextProblem() {
     var framework = Exercises.getCurrentFramework();
     if (framework === "perseus") {
-        // TODO(alpert)
+        $(PerseusBridge).trigger("gotoNextProblem");
     } else if (framework === "khan-exercises") {
         $(Khan).trigger("gotoNextProblem");
     }
@@ -660,7 +663,7 @@ function gotoNextProblem() {
 function updateUserExercise(e, data) {
     var framework = Exercises.getCurrentFramework();
     if (framework === "perseus") {
-        // TODO(alpert)
+        $(PerseusBridge).trigger("updateUserExercise", data);
     } else if (framework === "khan-exercises") {
         $(Khan).trigger("updateUserExercise", data);
     }
@@ -706,9 +709,13 @@ function clearExistingProblem() {
     $("#positive-reinforcement").hide();
 
     // Wipe out any previous problem
-    if(Khan && Khan.cleanupProblem) Khan.cleanupProblem();
-    if(PerseusBridge && PerseusBridge.cleanupProblem) PerseusBridge.cleanupProblem();
-    $("#workarea, #hintsarea, #solutionarea").empty();
+    if (framework === "perseus") {
+        if(PerseusBridge && PerseusBridge.cleanupProblem) PerseusBridge.cleanupProblem();   
+    } else if (framework === "khan-exercises") {
+        if(Khan && Khan.cleanupProblem) Khan.cleanupProblem();
+    }
+
+    $("#workarea, #hintsarea, #solutionarea, #sourcearea").empty();
 
     // Take off the event handlers for disabling check answer; we'll rebind
     // if we actually want them
@@ -725,8 +732,9 @@ function clearExistingProblem() {
         .css("top", 0)
         .find(".info-box-header")
             .show();
-
-    Khan.scratchpad.clear();
+    if (!localMode) {
+        Khan.scratchpad.clear();
+    }
 }
 
 })();
