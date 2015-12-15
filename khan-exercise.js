@@ -1748,13 +1748,6 @@ var Khan = (function() {
 
         initializeCalculator();
 
-        // trigger outside issue report system
-        $("#issue-report-button").click(function(e) {
-            e.preventDefault();
-            $("#report").click();
-        });
-
-
         $("#answer_area").delegate("input.button, select", "keydown", function(e) {
             // Don't want to go back to exercise dashboard; just do nothing on backspace
             if (e.keyCode === 8) {
