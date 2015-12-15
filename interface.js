@@ -168,6 +168,12 @@ function problemTemplateRendered() {
         }
     });
 
+    // trigger outside issue report system
+    $("#issue-report-button").click(function(e) {
+        e.preventDefault();
+        $("#report").click();
+    });
+
     if(Exercises.notifyNextReview === true){
         $("span.practice-exercise-topic-context.solid-hover").css("opacity", 100);
         $("#notify_next_review").tooltip("show");
