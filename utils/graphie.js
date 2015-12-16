@@ -84,6 +84,9 @@
         };
 
         var unscaleVector = function(point) {
+            if (typeof point === "number") {
+                return unscaleVector([point, point]);
+            }
             return [point[0] / xScale, point[1] / yScale];
         };
 
@@ -208,7 +211,7 @@
             });
         };
 
-        var svgPath = function(points) {
+        var svgPath = function(points, alreadyScaled) {
             // Bound a number by 1e-6 and 1e20 to avoid exponents after toString
             function boundNumber(num) {
                 if (num === 0) {
@@ -220,15 +223,17 @@
                 }
             }
 
-            return $.map(points, function(point, i) {
-                if (point === true) {
-                    return "z";
-                } else {
-                    var scaled = scalePoint(point);
-                    return (i === 0 ? "M" : "L") + boundNumber(scaled[0]) + " " + boundNumber(scaled[1]);
-                }
-            }).join("");
-        };
+        return $.map(points, function(point, i) {
+            if (point === true) {
+                return "z";
+            } else {
+                var scaled = alreadyScaled ? point : scalePoint(point);
+                return (i === 0 ? "M" : "L") + boundNumber(scaled[0]) + " " + boundNumber(scaled[1]);
+            }
+        }).join("");
+    };
+
+        $.extend(KhanUtil, {svgPath: svgPath});
 
         var processAttributes = function(attrs) {
             var transformers = {
@@ -377,6 +382,12 @@
                 return p;
             },
 
+            scaledPath: function(points) {
+                var p = raphael.path(svgPath(points, /* alreadyScaled */ true));
+                p.graphiePath = points;
+                return p;
+            },
+
             line: function(start, end) {
                 return this.path([start, end]);
             },
@@ -403,12 +414,9 @@
 
                 var $span = $("<span>").addClass("graphie-label");
 
-                if (latex) {
-                    var $script = $("<script type='math/tex'>").text(text);
-                    $span.append($script);
-                } else {
-                    $span.html(text);
-                }
+            if (!latex) {
+                $span.html(text);
+            }
 
                 var pad = currentStyle["label-distance"];
 
@@ -429,10 +437,27 @@
                     });
                 };
                 $span.setPosition(point);
+                
+                var span = $span[0];
 
-                setNeedsLabelTypeset();
-                return $span;
-            },
+                $span.processMath = function(math, force) {
+                    KhanUtil.processMath(span, math, force, function() {
+                        var width = span.scrollWidth;
+                        var height = span.scrollHeight;
+                        setLabelMargins(span, [width, height]);
+                    });
+                };
+
+            if (latex) {
+                $span.processMath(text, /* force */ false);
+            } else {
+                var width = span.scrollWidth;
+                var height = span.scrollHeight;
+                setLabelMargins(span, [width, height]);
+            }
+
+            return $span;
+        },
 
             plotParametric: function(fn, range) {
                 currentStyle.strokeLinejoin || (currentStyle.strokeLinejoin = "round");
@@ -578,12 +603,19 @@
                 xRange = options.range[0];
                 yRange = options.range[1];
 
-                var w = (xRange[1] - xRange[0]) * xScale, h = (yRange[1] - yRange[0]) * yScale;
-                raphael.setSize(w, h);
-                $(el).css({
-                    "width": w,
-                    "height": h
-                });
+            var w = (xRange[1] - xRange[0]) * xScale, h = (yRange[1] - yRange[0]) * yScale;
+            raphael.setSize(w, h);
+
+            $(el).css({
+                "width": w,
+                "height": h
+            });
+
+            this.range = options.range;
+            this.scale = scale;
+            this.dimensions = [w, h];
+            this.xpixels = w;
+            this.ypixels = h;
 
                 return this;
             },
