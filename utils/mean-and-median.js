@@ -3,7 +3,7 @@ $.extend(KhanUtil, {
     updateMean: function(mean) {
         var graph = KhanUtil.currentGraph;
 
-        $(graph.graph.meanValueLabel).html(mean).tmpl();
+        $(graph.graph.meanValueLabel).html(mean).tmpl().tex();
 
         graph.graph.meanArrow.translate((mean * graph.scale[0]) - graph.graph.meanArrow.attr("translation").x, 0);
         graph.graph.meanValueLabel.remove();
