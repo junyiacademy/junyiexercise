@@ -262,8 +262,11 @@ $.extend(KhanUtil.Graphie.prototype, {
     // in the way of mouse events. This adds another SVG element on top
     // of everything else where we can add invisible shapes with mouse
     // handlers wherever we want.
-    addMouseLayer: function() {
+    addMouseLayer: function(options) {
         var graph = this;
+        options = _.extend({
+            allowScratchpad: false
+        }, options);
 
         // Attach various metrics that are used by the interactive functions.
         // TODO: Add appropriate helper functions in graphie and replace a lot of
@@ -295,7 +298,9 @@ $.extend(KhanUtil.Graphie.prototype, {
 
         graph.mouselayer = Raphael(graph.raphael.canvas.parentNode, graph.xpixels, graph.ypixels);
         $(graph.mouselayer.canvas).css("z-index", 1);
-        Khan.scratchpad.disable();
+        if (!options.allowScratchpad) {
+            Khan.scratchpad.disable();
+        }
     },
 
     /**
