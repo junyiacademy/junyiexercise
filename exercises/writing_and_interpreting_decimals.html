@@ -20,38 +20,11 @@
 		.hint_purple{ color: purple; }
 	</style>
 	<script type="text/javascript">
-		function accDiv(arg1,arg2){
-            var t1=0,t2=0,r1,r2;
-            try{t1=arg1.toString().split(".")[1].length}catch(e){}
-            try{t2=arg2.toString().split(".")[1].length}catch(e){}
-            with(Math){
-                r1=Number(arg1.toString().replace(".",""))
-                r2=Number(arg2.toString().replace(".",""))
-                return (r1/r2)*pow(10,t2-t1);
-            }
-        }
 		function accMul(arg1,arg2){
             var m=0,s1=arg1.toString(),s2=arg2.toString();
             try{m+=s1.split(".")[1].length}catch(e){}
             try{m+=s2.split(".")[1].length}catch(e){}
             return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
-        }
-        function accAdd(arg1,arg2){
-            var r1,r2,m;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2))
-            return (arg1*m+arg2*m)/m
-        }
-        function Subtr(arg1,arg2){
-            var r1,r2,m,n;
-            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
-            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
-            m=Math.pow(10,Math.max(r1,r2));
-            //last modify by deeka
-            //动态控制精度长度
-            n=(r1>=r2)?r1:r2;
-            return ((arg1*m-arg2*m)/m).toFixed(n);
         }
 	</script>
 </head>
@@ -176,7 +149,6 @@
 								return bol1;					
 							</div>
 						</div>
-						<!-- <p class="example">小數，例：<code>0.75</code></p> -->
 					</div>
 					<div class="hints">
 						<p>我們先表示出小數點左邊各個位數；</p>
@@ -245,7 +217,8 @@
 					</var>
 				</div>
 				<div class="question">
-					<p style="font-size:18px"><code>A = </code><code data-if="thousands!=0"><var>thousands</var>\times 1000+</code><code data-if="hundreds!=0"><var>hundreds</var>\times 100+</code><code data-if="tens!=0"><var>tens</var>\times 10+</code><code data-if="ones!=0"><var>ones</var>\times 1 + </code><code data-if="tenths!=0"><var>tenths</var>\times <var>fraction(1,10)</var> + </code><code data-if="hundredths!=0"><var>hundredths</var>\times<var>fraction(1,100)</var></code><code data-if="thousandths!=0">+<var>thousandths</var>\times<var>fraction(1,1000)</var></code></span></p>
+					<p style="font-size:18px"><code>A = </code><code data-if="thousands!=0"><var>thousands</var>\times 1000+</code><code data-if="hundreds!=0"><var>hundreds</var>\times 100 +</code><code data-if="tens!=0"><var>tens</var>\times 10+ </code><code data-if="ones!=0"><var>ones</var>\times 1 + </code><code data-if="tenths!=0"><var>tenths</var>\times <var>fraction(1,10)</var> + </code></p>
+					<p style="font-size:18px"><code>\phantom{A = }</code><code data-if="hundredths!=0"><var>hundredths</var>\times<var>fraction(1,100)</var></code><code data-if="thousandths!=0">+<var>thousandths</var>\times<var>fraction(1,1000)</var></code></span></p>
 					<p>請用小數表示 <code>A</code> 的值：</p>
 					<p><input type="text" id="textbox1" style="width:8em;height:1.5em;text-align:center;" /></p>
 					<p><span data-if="type==2">請用小數表示 <code>A</code> 的十倍的值為：</span><span data-if="type==3">請用小數表示 <code>A</code> 的十分之一的值為：</span></p>
