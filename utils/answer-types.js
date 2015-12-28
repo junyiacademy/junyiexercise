@@ -245,7 +245,12 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             var supportedFractionTypes = fractionForms.filter(function(n) {
                 return acceptableForms.indexOf(n) !== -1;
             });
-            if(supportedFractionTypes.length > 0){
+            var isSolutionAreaInTable = $(solutionarea).parent().is("tr") || $(solutionarea).parent().is("td")
+            // Fraction Mode will be disabled if:
+            //      1. answer type is not proper/improper/mixed
+            //                          or
+            //      2. $(solutionarea) element is in <table> tag
+            if(supportedFractionTypes.length > 0 && !isSolutionAreaInTable){
                 input.attr("id", "default_input");
                 var checkbox = '<div class="checkbox" id="fraction_mode_entry" style="display:none"><label style="font-size:14px">'+
                                '<input type="checkbox" id="fraction_mode_checkbox"> 輸入直式分數</label></div>'
@@ -1524,12 +1529,15 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
 
             // Wrap each of the choices in elements and add radio buttons
             var wrappedChoices = _.map(shownChoices, function(choice, i) {
-                return $("<li><label></label></li>").find("label").append([
-                    $('<input type="radio" name="solution">').val(i),
-                    $('<span class="value"></span>').append(
-                        $(choice).contents()
-                    )
-                ]).end();
+                choiceContent = $(choice).contents();
+                if (choiceContent.length){
+                    return $("<li><label></label></li>").find("label").append([
+                        $('<input type="radio" name="solution">').val(i),
+                        $('<span class="value"></span>').append(
+                            choiceContent
+                        )
+                    ]).end();
+                }
             });
 
             // Here we finally re-run modules, so that the math is reformatted
@@ -1606,7 +1614,6 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 $choice.next().fadeOut("fast", function() {
                     var $real = $list.data("realAnswer");
                     $(this).replaceWith($real);
-                    // tex()有問題，造成showReal顯示錯誤答案
                     $real.tex().fadeIn("fast");
                 });
             }
@@ -1630,8 +1637,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     // make checking a lot simpler.
 
                     if (guess.isNone && solution.noneIsCorrect) {
-                        // showReal 有問題，暫時先不顯示正確答案。
-                        // showReal();
+                        showReal();
                         score.correct = true;
                     } else {
                         score.correct = guess.index === solution.index;
@@ -1647,7 +1653,6 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     // checked
                     if (guess.isNone &&
                             $("#solutionarea").find("ul").data("real-answer") != null) {
-                        // showReal 有問題，暫時先不顯示正確答案。
                         showReal();
                         score.correct = true;
                     // Otherwise, just compare the text
