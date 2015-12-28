@@ -181,6 +181,11 @@ var Khan = (function() {
             link.rel = "stylesheet";
             link.href = urlBase + "css/grids.css";
             document.getElementsByTagName("head")[0].appendChild(link);
+
+            link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = urlBase + "local-only/katex/katex.less.css";
+            document.getElementsByTagName("head")[0].appendChild(link);
         })();
     }
 
@@ -705,6 +710,7 @@ var Khan = (function() {
                 // TODO(csilvers): I18N: pick the file based on lang=XX param
                 urlBase+"local-only/localeplanet/icu.en-US.js",
                 urlBase+"local-only/i18n.js",
+                urlBase+"local-only/katex/katex.js",
                 urlBase+"exercises-stub.js",
                 urlBase+"history.js",
                 urlBase+"interface.js"
