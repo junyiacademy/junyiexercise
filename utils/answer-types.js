@@ -1432,7 +1432,8 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     $choicesClone.children().get(),
                     function(elem) {
                         if (getTextSquish(elem) === correctText) {
-                            return $solutionClone[0];
+                            $(elem).data("correct", true);
+                            return elem;
                         } else {
                             return elem;
                         }
@@ -1486,7 +1487,8 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             // Find the index of the correct answer
             var correctIndex;
             _.each(shownChoices, function(choice, i) {
-                if (choice === $solutionClone[0]) {
+                var correctText = getTextSquish($solutionClone)
+                if (getTextSquish(choice) === correctText) {
                     correctIndex = i;
                 }
             });
@@ -1598,10 +1600,6 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             };
         },
         createValidator: function(solution) {
-            // TODO(emily): Remove this backwards compatible code sometime
-            // after 8/2013
-            var correct = extractRawCode(solution.solution || solution);
-
             function showReal() {
                 // Hacky stuff to make the correct solution appear when "none
                 // of the above" is the correct answer
@@ -1631,38 +1629,13 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     return score;
                 }
 
-                if (guess.index) {
-                    // New solutions include information about the correct
-                    // answer like the correct index, etc. We can use that to
-                    // make checking a lot simpler.
-
-                    if (guess.isNone && solution.noneIsCorrect) {
+                if (guess.isNone && solution.noneIsCorrect) {
                         showReal();
                         score.correct = true;
                     } else {
                         score.correct = guess.index === solution.index;
-                    }
-                } else {
-                    // Old solutions just included the solution element, so we
-                    // have to use the old checks to see if the solution is
-                    // correct
-                    // TODO(emily): Remove this backwards compatible code
-                    // sometime after 8/2013
-
-                    // Check to see if the "none of the above" answer is
-                    // checked
-                    if (guess.isNone &&
-                            $("#solutionarea").find("ul").data("real-answer") != null) {
-                        showReal();
-                        score.correct = true;
-                    // Otherwise, just compare the text
-                    } else if ($.trim(guess.value).replace(/\r\n?|\n/g, "") ===
-                               $.trim(correct.replace(/\r\n?|\n/g, ""))) {
-                        score.correct = true;
-                    } else {
-                        score.correct = false;
-                    }
                 }
+
                 return score;
             };
         }
