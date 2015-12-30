@@ -108,7 +108,7 @@ function updateEquation() {
 
     graph.labelHolder.remove();
 
-    $("#equationAnswer").html("<code>y =" + KhanUtil.fractionReduce(graph.MN, graph.MD) + "x +" + KhanUtil.fractionReduce(graph.BN, graph.BD) + "</code>").tmpl();
+    $("#equationAnswer").html("<code>y =" + KhanUtil.fractionReduce(graph.MN, graph.MD) + "x +" + KhanUtil.fractionReduce(graph.BN, graph.BD) + "</code>").runModules();
     $("#slope-sol input").val((graph.MN / graph.MD) + "");
     $("#intercept-sol input").val((graph.BN / graph.BD) + "");
 }
@@ -227,13 +227,13 @@ function redrawParabola(fShowFocusDirectrix) {
     var vertexY = currParabola.getVertexY();
 
     if (fShowFocusDirectrix) {
-        $("#focus-x-label").html("<code>" + currParabola.getFocusX() + "</code>").tmpl();
-        $("#focus-y-label").html("<code>" + KhanUtil.localeToFixed(currParabola.getFocusY(), 2) + "</code>").tmpl();
-        $("#directrix-label").html("<code>" + "y = " + KhanUtil.localeToFixed(currParabola.getDirectrixK(), 2) + "</code>").tmpl();
+        $("#focus-x-label").html("<code>" + currParabola.getFocusX() + "</code>").runModules();
+        $("#focus-y-label").html("<code>" + KhanUtil.localeToFixed(currParabola.getFocusY(), 2) + "</code>").runModules();
+        $("#directrix-label").html("<code>" + "y = " + KhanUtil.localeToFixed(currParabola.getDirectrixK(), 2) + "</code>").runModules();
     } else {
         var equation = "y - " + vertexY + "=" + leadingCoefficient + "(x - " + vertexX + ")^{2}";
         equation = KhanUtil.cleanMath(equation);
-        $("#equation-label").html("<code>" + equation + "</code>").tmpl();
+        $("#equation-label").html("<code>" + equation + "</code>").runModules();
     }
     $("#leading-coefficient input").val(leadingCoefficient);
     $("#vertex-x input").val(vertexX);
@@ -606,9 +606,9 @@ function redrawComplexPolarForm(angle, radius) {
 
     var equation = KhanUtil.polarForm(radius, angle, point.getUseEulerForm());
 
-    $("#number-label").html("<code>" + equation + "</code>").tmpl();
-    $("#current-radius").html("<code>" + radius + "</code>").tmpl();
-    $("#current-angle").html("<code>" + KhanUtil.piFraction(angle, true) + "</code>").tmpl();
+    $("#number-label").html("<code>" + equation + "</code>").runModules();
+    $("#current-radius").html("<code>" + radius + "</code>").runModules();
+    $("#current-angle").html("<code>" + KhanUtil.piFraction(angle, true) + "</code>").runModules();
 }
 
 function labelDirection(angle) {
