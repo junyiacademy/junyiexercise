@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>分數除以整數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+			<div id="case1">
+				<div class="vars">
+					<var id="Deno1">randRange(2,9)</var>
+					<var id="Deno2">randRange(2,9)</var>
+					<var id="AnsDeno">Deno1*Deno2</var>
+				</div>
+				<div class="question">
+					<p><code>\dfrac{1}{<var>Deno1</var>}\div <var>Deno2</var>=?</code></p>
+				</div>
+				<div class="solution" data-fraction-input="true"  data-type="rational" >
+					<var>1/AnsDeno</var>
+				</div>
+				<div class="hints">
+					<div>
+						<div class="graphie" id="division">
+							init({
+								range: [ [-0.5,Deno1+1], [-0.5,Deno2+1] ],
+								scale: 40
+								});
+							path([[0,0],[1,0],[1,Deno2],[0,Deno2],[0,0]], {stroke: "#F8F8F8",fill: "#DF0030"});
+							for (var i = 1;i&lt;Deno1; i++){
+								path([[i,0],[i+1,0],[i+1,Deno2],[i,Deno2],[i,0]], {stroke: "#F8F8F8",fill: "#CCCCCC"});
+							}
+							
+							label([0.2,Deno2+1], "\\frac{"+1+"}{"+Deno1+"}", "bottom",{color:"#DF0030"});
+						</div>
+						<p>這是 <code>\red{1}</code> 個長方形，畫出他的 <code>\red\dfrac{1}{<var>Deno1</var>}</code>。</p>
+					</div>
+					<div>
+						<div class="graphie" data-update="division">
+							// path([[0,0],[0,1],[1,1],[1,0],[0,0]], {stroke: "#F8F8F8",fill: "#6495ED"});
+							for (var i = 0;i&lt;Deno2; i++){
+								path([[0,i],[0,i+1],[1,i+1],[1,i],[0,i]], {stroke: "#F8F8F8",fill: "#DF0030"});
+							}
+							for (var i = 1;i&lt;Deno2; i++){
+								for (var j = 1; j&lt;Deno1; j++){
+									path([[j,i],[j,i+1],[j+1,i+1],[j+1,i],[j,i]], {stroke: "#F8F8F8",fill: "#CCCCCC"});
+								}
+							}
+							label([0,0.5], "\\frac{"+1+"}{"+Deno2+"}", "left",{color:"#6495ED"});
+						</div>
+						<p> 將這個長方形再平分成 <code>\blue<var>Deno2</var></code> 份。</p>
+						<p> 總共可以平分成 <code>\red<var>Deno1</var>\times\blue<var>Deno2</var></code> 份。</p>
+					</div>
+					<div>
+						<div class="graphie" data-update="division">
+							path([[0,0],[0,1],[1,1],[1,0],[0,0]], {stroke: "#F8F8F8",fill: "#6495ED"});
+						</div>
+						<p><code>\dfrac{\red{1}}{\red<var>Deno1</var>}</code> 的 <code>\blue\dfrac{1}{<var>Deno2</var>}</code> 是 <code>\dfrac{\red{1}}{\red{<var>Deno1</var>}\times\blue{<var>Deno2</var>}}</code>。</p>
+						<!--
+						<p> 一份就是 <code>\red\dfrac{1}{<var>Deno1</var>}</code> 的 <code>\blue\dfrac{1}{<var>Deno2</var>}</code>。</p>
+						<p> 所以我們可以用 <code>\red\dfrac{1}{<var>Deno1</var>}\times \blue\dfrac{1}{<var>Deno2</var>}</code> 來計算。</p>
+						-->
+					</div>
+					<div>
+						<div class="graphie" data-update="division">
+
+							for (var i = 0;i&lt;Deno2; i++){
+								path([[0,i],[0,i+1],[1,i+1],[1,i],[0,i]], {stroke: "#F8F8F8",fill: "#D18E9C"});
+							}
+							path([[0,0],[0,1],[1,1],[1,0],[0,0]], {stroke: "#F8F8F8",fill: "#28AE7B"});
+							label([0.8,-0.5], "\\frac{"+1+"}{"+AnsDeno+"}", "left",{color:"#28AE7B"});
+						</div>
+						<p>所以 <code>\red\dfrac{1}{<var>Deno1</var>}\div\blue<var>Deno2</var></code></p>
+						<p><code>\quad=\red\dfrac{1}{<var>Deno1</var>}\times\blue\dfrac{1}{<var>Deno2</var>}</code></p>
+						<p><code>\quad=\dfrac{\red{1}}{\red<var>Deno1</var>\times\blue<var>Deno2</var>}</code></p>
+						<p><code>\quad=\green\dfrac{1}{<var>AnsDeno</var>}</code>。</p>
+						<p>答案是 <code>\pink\dfrac{1}{<var>AnsDeno</var>}</code>。</p>
+					</div>
+				</div>
+			</div> 
+			<div id="case2">
+				<div class="vars" data-ensure="getGCD(Deno1,Numr1) === 1">
+					<var id="Deno1">randRange(3,9)</var>
+					<var id="Numr1">randRange(2,Deno1-1)</var>
+					<var id="Deno2">randRange(2,9)</var>
+					<var id="AnsDeno">Deno1*Deno2</var>
+					<var id="GCD">getGCD(Numr1, AnsDeno)</var>
+					<var id="SimpDeno">Deno1*Deno2/GCD</var>
+					<var id="SimpNumr">Numr1/GCD</var>
+				</div>
+				<div class="question">
+					<p><code>\dfrac{<var>Numr1</var>}{<var>Deno1</var>}\div <var>Deno2</var>=?</code></p>
+					<p>(答案要盡量約分)</p>
+				</div>
+				<div class="solution" data-fraction-input="true"  data-type="rational" >
+					<var>Numr1/AnsDeno</var>
+				</div>
+				<div class="hints">
+					<div>
+						<div class="graphie" id="division">
+							init({
+								range: [ [-0.5,Deno1+1], [-0.5,Deno2+1] ],
+								scale: 40
+								});
+							for(var i = 0;i&lt;Numr1; i++){
+								path([[i,0],[i+1,0],[i+1,Deno2],[i,Deno2],[i,0]], {stroke: "#F8F8F8",fill: "#DF0030"});
+							}
+							for (var i = Numr1;i&lt;Deno1; i++){
+								path([[i,0],[i+1,0],[i+1,Deno2],[i,Deno2],[i,0]], {stroke: "#F8F8F8",fill: "#CCCCCC"});
+							}
+							
+							label([0.2+(Numr1-1)/2,Deno2+1], "\\frac{"+Numr1+"}{"+Deno1+"}", "bottom",{color:"#DF0030"});
+						</div>
+						<p> 這是 <code>\red{1}</code> 個長方形，畫出他的 <code>\red\dfrac{<var>Numr1</var>}{<var>Deno1</var>}</code>。</p>
+					</div>
+					<div>
+						<div class="graphie" data-update="division">
+							for (var i = 1;i&lt;Deno2; i++){
+								for (var j = Numr1; j&lt;Deno1; j++){
+									path([[j,i],[j,i+1],[j+1,i+1],[j+1,i],[j,i]], {stroke: "#F8F8F8",fill: "#CCCCCC"});
+								}
+							}
+							
+							for(var i = 0;i&lt;Numr1; i++){
+								path([[i,0],[i,1],[i+1,1],[i+1,0],[i,0]], {stroke: "#F8F8F8",fill: "#DF0030"});
+							}
+							for (var i = 1;i&lt;Deno2; i++){
+								for (var j = 0; j&lt;Numr1; j++){
+									path([[j,i],[j,i+1],[j+1,i+1],[j+1,i],[j,i]], {stroke: "#F8F8F8",fill: "#DF0030"});
+								}
+							}
+							label([0,0.5], "\\frac{"+1+"}{"+Deno2+"}", "left",{color:"#6495ED"});
+						</div>
+						<p>將這個長方形再平分成 <code>\blue<var>Deno2</var></code> 份</p>
+						<p>總共可以平分成 <code> \red<var>Deno1</var>\times\blue<var>Deno2</var></code> 份。</p>
+					</div>
+					<div>
+						<div class="graphie" data-update="division">
+							for(var i = 0;i&lt;Numr1; i++){
+								path([[i,0],[i,1],[i+1,1],[i+1,0],[i,0]], {stroke: "#F8F8F8",fill: "#6495ED"});
+							}
+						</div>
+						
+						<p><code>\red\dfrac{<var>Numr1</var>}{<var>Deno1</var>}</code> 的 <code>\blue\dfrac{1}{<var>Deno2</var>}</code> 是 <code>\dfrac{<var>Numr1</var>}{<var>Deno1</var>\times<var>Deno2</var>}</code>。</p>
+						
+					</div>
+					<div>
+						<div class="graphie" data-update="division">
+							/*
+							for (var i = 1;i&lt;Deno2; i++){
+								for (var j = Numr1; j&lt;Deno1; j++){
+									path([[j,i],[j,i+1],[j+1,i+1],[j+1,i],[j,i]], {stroke: "#F8F8F8",fill: "#CCCCCC"});
+								}
+							}
+							*/
+							for(var i = 0;i&lt;Numr1; i++){
+								path([[i,0],[i,1],[i+1,1],[i+1,0],[i,0]], {stroke: "#F8F8F8",fill: "#28AE7B"});
+							}
+							
+							for (var i = 1;i&lt;Deno2; i++){
+								for (var j = 0; j&lt;Numr1; j++){
+									path([[j,i],[j,i+1],[j+1,i+1],[j+1,i],[j,i]], {stroke: "#F8F8F8",fill: "#D18E9C"});
+								}
+							}
+							
+							GREEN = label([0.8+(Numr1-1)/2,-0.5], "\\frac{"+Numr1+"}{"+AnsDeno+"}", "left",{color:"#28AE7B"});
+						</div>
+						<p>所以 <code>\red\dfrac{<var>Numr1</var>}{<var>Deno1</var>}\div\blue<var>Deno2</var></code></p>
+						<p><code>\quad=\red\dfrac{<var>Numr1</var>}{<var>Deno1</var>}\times\blue\dfrac{1}{<var>Deno2</var>}</code></p>
+						<p><code>\quad=\dfrac{\red{<var>Numr1</var>}}{\red<var>Deno1</var>\times\blue<var>Deno2</var>}</code></p>
+						<p><code>\quad=\green\dfrac{<var>Numr1</var>}{<var>AnsDeno</var>}</code>。</p>
+						<p data-if="GCD===1">因此答案是 <code>\pink\dfrac{<var>SimpNumr</var>}{<var>SimpDeno</var>}</code>。</p>
+					</div>
+					<div data-if="GCD !== 1">
+						<div class="graphie" data-update="division">
+							GREEN.remove();
+							label([0.8+(Numr1-1)/2,-0.5], "\\frac{"+SimpNumr+"}{"+SimpDeno+"}", "left",{color:"#28AE7B"});
+						</div>
+						<p>我們要記得將答案盡量約分：</p>
+						<p><code>\qquad\dfrac{\cancel{<var>Numr1</var>}^\red{<var>SimpNumr</var>}}{\cancel{<var>AnsDeno</var>}^\red{<var>SimpDeno</var>}} </code></p>
+						<p><code>\quad =\pink\dfrac{<var>SimpNumr</var>}{<var>SimpDeno</var>}</code></p>
+						<p>因此答案是 <code>\pink\dfrac{<var>SimpNumr</var>}{<var>SimpDeno</var>}</code>。</p>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+</body>
+</html>
