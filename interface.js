@@ -233,6 +233,9 @@ function handleAttempt(data) {
     // Stop if the user didn't try to skip the question and also didn't yet
     // enter a response
     if (score.empty && !skipped) {
+        if (score.message) {
+            $("#check-answer-results > p").html(score.message).tmpl().show();
+        }
         return false;
     }
 
