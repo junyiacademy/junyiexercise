@@ -781,7 +781,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     }
                 });
 
-                if (score.correct === false && score.empty === false) {
+                if (score.correct === false) {
                     var interpretedGuess = false;
                     _.each(forms, function(form) {
                         if(_.any(form(guess), function(t) {
@@ -791,8 +791,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     });
                     if (!interpretedGuess) {
                         score.empty = true;
-                        score.message = $._("We could not understand your answer. " +
-                            "Please check your answer for extra text or symbols.");
+                        score.message = $._("無法識別你的答案哦！請重新輸入。");
                         return score;
                     }
                 }
