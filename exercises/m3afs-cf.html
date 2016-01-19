@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers word-problems">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>分數乘法應用 2</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+			<div id="case1">
+				<div class="vars">
+					<var id="Denominator">randRange(10,13)</var>
+					<var id="times">randRange(4,6)</var>
+					<var id="name">randFromArray(["哥哥","爸爸","爺爺"])</var>
+					<var id="Numerator">
+						(function(){
+							var num=0; 
+							while(1){
+								num=randRange(7,9);
+								if((getGCD(Denominator,num)==1) && (getGCD(times,num)==1)){
+									return num;
+								}
+							}
+						})()
+					</var>
+				</div>
+				<div class="question">
+					<p><var>name</var> 每天固定慢跑 <code><var>mixedFractionFromImproper(Denominator,Numerator,true,true,false,false)</var></code> 公里，<var>name</var>上週跑了 <code><var>times</var></code> 天。<var>name</var>上週總共跑了多少公里？</p>					
+				</div>
+				<div class="solution" data-fraction-input="true"  data-type="rational">
+					<var>times*Denominator/Numerator</var>
+				</div>
+				<div class="hints">
+					<div><p><var>name</var> 每天固定慢跑 <code><var>mixedFractionFromImproper(Denominator,Numerator,true,true,false,false)</var></code> 公里，</p></div>
+					<div><p><var>name</var>上週跑了 <code><var>times</var></code> 天，</div>
+					<p>也就是慢跑一天的距離乘以天數，</p>
+					<p><code><var>mixedFractionFromImproper(Denominator,Numerator,true,true,false,false)</var>\times<var>times</var>=\dfrac{<var>Denominator</var>}{<var>Numerator</var>}\times<var>times</var>=\dfrac{<var>Denominator*times</var>}{<var>Numerator</var>}=<var>mixedFractionFromImproper(Denominator*times,Numerator,true,true,false,false)</var></code> 。</code></p>
+				</div>
+			</div> 
+			
+			<div id="case2">
+				<div class="vars">
+					<var id="total">randFromArray([[3,7],[5,6],[5,7],[5,8]])</var>
+					<var id="jeans">randFromArray([[2,5],[3,5],[2,7],[3,7]])</var>
+					<var id="name">randFromArray(["弟弟","妹妹","姊姊"])</var>
+					<var id="gac_num">getGCD(total[0]*jeans[0],total[1]*jeans[1])</var>
+				</div>
+				<div class="question">
+					<p>冰箱裡還有 <code>\dfrac{<var>total[0]</var>}{<var>total[1]</var>}</code> 盒冰淇淋，<var>name</var>吃了其中的 <code>\dfrac{<var>jeans[0]</var>}{<var>jeans[1]</var>}</code> ，<var>name</var>吃了幾盒冰淇淋？</p>
+				</div>
+				<div class="solution" data-fraction-input="true"  data-type="rational">
+					<var>(total[0]*jeans[0])/(total[1]*jeans[1])</var>
+				</div>
+				<div class="hints">
+					<p><var>name</var>吃了冰箱裡 <code>\dfrac{<var>total[0]</var>}{<var>total[1]</var>}</code> 盒冰淇淋中的 <code>\dfrac{<var>jeans[0]</var>}{<var>jeans[1]</var>}</code> ，</p>
+					<p>我們可以用 <code>\dfrac{<var>total[0]</var>}{<var>total[1]</var>}</code> 乘以 <code>\dfrac{<var>jeans[0]</var>}{<var>jeans[1]</var>}</code> 來表示。</p>
+					<p><code>\dfrac{<var>total[0]</var>}{<var>total[1]</var>}\times\dfrac{<var>jeans[0]</var>}{<var>jeans[1]</var>}=\dfrac{<var>total[0]</var>\times<var>jeans[0]</var>}{<var>total[1]</var>\times<var>jeans[1]</var>}=\dfrac{<var>total[0]*jeans[0]</var>}{<var>total[1]*jeans[1]</var>}<span data-if="gac_num!=1">=\dfrac{<var>gac_num</var>\times<var>total[0]*jeans[0]/gac_num</var>}{<var>gac_num</var>\times<var>total[1]*jeans[1]/gac_num</var>}=\dfrac{<var>total[0]*jeans[0]/gac_num</var>}{<var>total[1]*jeans[1]/gac_num</var>}</span></code></p>
+					<p><var>name</var>吃了 <code class="hint_pink"><span data-if="gac_num==1">\dfrac{<var>total[0]*jeans[0]</var>}{<var>total[1]*jeans[1]</var>}</span><span data-if="gac_num!=1">\dfrac{<var>total[0]*jeans[0]/gac_num</var>}{<var>total[1]*jeans[1]/gac_num</var>}</span></code> 盒冰淇淋。</p>
+				</div>
+			</div>
+			
+			<div id="case3">
+				<div class="vars">
+					<var id="height">randFromArray([[5,6],[6,7],[5,7]])</var>
+					<var id="frac_num">
+						(function(){
+							var num=new Array(2);
+							switch(height[0]){
+								case 5:num[0]=height[0]-randRange(1,2);break;
+								case 6:num[0]=height[0]-1;break;
+							}
+							num[1]=height[0];
+							return num;
+						})()
+					</var>					
+					<var id="ggcd">getGCD((height[1]*height[0]+height[0])*frac_num[0],frac_num[1]*height[1])</var>
+				</div>
+				<div class="question">
+					<p>一條繩子長 <code><var>mixedFractionFromImproper(height[0]+height[0]*height[1],height[1],true,true,false,false)</var></code> 公尺，<code>\dfrac{<var>frac_num[0]</var>}{<var>frac_num[1]</var>}</code> 條繩子長幾公尺？</p>
+				</div>
+				<div class="solution" data-fraction-input="true"  data-type="rational">
+					<var>((height[0]*height[1]+height[0])/height[1])*(frac_num[0]/frac_num[1])</var>
+				</div>
+				<div class="hints">
+					<div><p><code><var>mixedFractionFromImproper(height[0]+height[0]*height[1],height[1],true,true,false,false)</var></code> 公尺的 <code>\dfrac{<var>frac_num[0]</var>}{<var>frac_num[1]</var>}</code> ，</p></div>
+					<div><p>我們可以用 <code><var>mixedFractionFromImproper(height[0]+height[0]*height[1],height[1],true,true,false,false)</var></code> 乘以 <code>\dfrac{<var>frac_num[0]</var>}{<var>frac_num[1]</var>}</code> 來求長度：</p></div>
+					<div><p><code><var>mixedFractionFromImproper(height[0]+height[0]*height[1],height[1],true,true,false,false)</var>\times\dfrac{<var>frac_num[0]</var>}{<var>frac_num[1]</var>}</code></p></div>
+					<div><p><code>=\dfrac{<var>height[1]*height[0]+height[0]</var>}{<var>height[1]</var>}\times\dfrac{<var>frac_num[0]</var>}{<var>frac_num[1]</var>}</code></p></div>
+					<div><p><code>= \dfrac{<var>height[1]*height[0]+height[0]</var>\times<var>frac_num[0]</var>}{<var>height[1]</var>\times<var>frac_num[1]</var>}=\dfrac{<var>(height[1]*height[0]+height[0])*frac_num[0]</var>}{<var>frac_num[1]*height[1]</var>}</code></p></div>
+					<div><p><code>=\dfrac{<var>((height[1]*height[0]+height[0])*frac_num[0])/ggcd</var>}{<var>frac_num[1]*height[1]/ggcd</var>}=<var>mixedFractionFromImproper(frac_num[0]*(height[1]+1),height[1],true,true,false,false)</var></code></p></div>
+					<p>所以，<code>\dfrac{<var>frac_num[0]</var>}{<var>frac_num[1]</var>}</code> 條繩子長 <code class="hint_pink"><var>mixedFractionFromImproper(frac_num[0]*(height[1]+1),height[1],true,true,false,false)</var></code> 公尺。</p>
+				</div>
+			</div>
+			
+			<div id="case4">
+				<div class="vars">
+					<var id="book">randFromArray([[7,9],[8,9],[7,8]])</var>
+					<var id="time_num">randRange(4,6)</var>
+					<var id="name">randFromArray(["蘋果汁","汽水","柳橙汁","紅茶","綠茶","水"])</var>
+					<var id="ggcd">getGCD(time_num,book[1])</var>
+				</div>
+				<div class="question">
+					<p>一瓶<var>name</var> 有 <code><var>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 公升，<code><var>time_num</var></code> 瓶 <var>name</var>一共有多少公升？</p>
+				</div>
+				<div class="solution" data-fraction-input="true"  data-type="rational">
+					<var>(book[0]*time_num/book[1])</var>
+				</div>
+				<div class="hints">
+					<p>一瓶<var>name</var>有 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 公升，</p>
+					<p>要知道 <code><var>time_num</var></code> 瓶<var>name</var>有多少公升，</p>
+					<p>我們就可以用 <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 乘以 <code><var>time_num</var></code> 得出<var>name</var>總公升數。</p>
+					<p><code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}\times<var>time_num</var></code> = <code>\dfrac{<var>book[0]</var>\times<var>time_num</var>}{<var>book[1]</var>}</code> = <code>\dfrac{<var>book[0]*time_num</var>}{<var>book[1]</var>}</code></p> 
+					<span data-if="ggcd!=1"><p>再化簡得到 <code>\dfrac{<var>book[0]*time_num/ggcd</var>}{<var>book[1]/ggcd</var>} =<var>mixedFractionFromImproper(book[0]*time_num,book[1],true,true,false,false)</var></code>。</p></span>
+					<p>所以 <code><var>time_num</var></code> 瓶<var>name</var>總共有 <code class="hint_pink"><var>mixedFractionFromImproper(book[0]*time_num,book[1],true,true,false,false)</var></code> 公升。</p>
+				</div>
+			</div>
+			
+			<div id="case5">
+				<div class="vars">
+					<var id="book">randFromArray([[2,5],[3,4],[4,5]])</var>
+					<var id="data">randRange(1,2)</var>
+					<var id="num">randRange(2,3)</var>
+					<var id="ggcd">getGCD((book[1]*data+book[0])*num,book[1])</var>
+					<var id="name">randFromArray(["果汁","汽水","礦泉水","葡萄酒"])</var>
+					<var id="name1">randFromArray(["弟弟","妹妹","哥哥","姊姊"])</var>
+					<var id="sum">
+						(function(){
+							var s = 0;
+							for(var k = 0;k&lt;3;k++){
+								if(k!=1){
+									s+=1;
+									$('#pic_'+(k+1)).val('true');
+								}else{
+									$('#pic_'+(k+1)).val('false');
+								}
+							}
+							return s;
+						})()
+					</var>
+				</div>
+				<div class="question">
+					<p><var>name</var>一瓶 <code><var>num</var></code> 公升，<var>name1</var>喝了 <code><var>data</var>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 瓶，<var>name1</var>喝了多少公升？</p>
+					<table style="font-size:15px">
+						<tr>
+							<td><code>A.</code></td>
+							<td><code>\dfrac{<var>(book[1]*data+book[0])*num/ggcd</var>}{<var>book[1]/ggcd</var>}</code> 公升，因為：<br /><br /><code><var>data</var>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}\times <var>num</var>=\dfrac{<var>book[1]*data+book[0]</var>}{<var>book[1]</var>}\times <var>num</var>=\dfrac{<var>(book[1]*data+book[0])*num</var>}{<var>book[1]</var>}<span data-if="ggcd!=1">=\dfrac{<var>(book[1]*data+book[0])*num/ggcd</var>}{<var>book[1]/ggcd</var>}</span></code></td>
+						</tr>
+						<tr>
+							<td><code>B.</code></td>
+							<td><code>\dfrac{<var>(book[1]*data+book[0])</var>}{<var>book[1]</var>}</code> 公升，因為：<br /><br /><code><var>data</var>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}\times<var>num</var>=\dfrac{<var>book[1]*data+book[0]</var>}{<var>book[1]</var>}\times <var>num</var>=\dfrac{<var>(book[1]*data+book[0])*num</var>}{<var>book[1]*num</var>}=\dfrac{<var>(book[1]*data+book[0])</var>}{<var>book[1]</var>}</code></td>
+						</tr>
+						<tr>
+							<td><code>C.</code></td>
+							<td><code><var>mixedFractionFromImproper(book[0]*num+book[1]*data*num,book[1],true,true,false,false)</var></code> 公升，因為：<br /><br /><code><var>data</var>\times<var>num</var>=<var>data*num</var></code> ， <code>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}\times <var>num</var>=<var>mixedFractionFromImproper(book[0]*num,book[1],true,true,false,false)</var></code> ，<br /><br />因此 <code><var>data</var>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}\times<var>num</var>=<var>data*num</var>+<var>mixedFractionFromImproper(book[0]*num,book[1],true,true,false,false)</var>=<var>mixedFractionFromImproper(book[0]*num+book[1]*data*num,book[1],true,true,false,false)</var></code>
+							<div class="graphie" id="similar">
+							</td>
+						</tr>
+					</table>
+					<p>請選擇所有正確的答案：</p>
+					<table  style="font-size:15px">
+						<tr>
+							<td><input type="checkbox" id="pic_1" name="checkbox" /></td>
+							<td style="width:450px"><div onclick="if($('#pic_1').attr('checked')){$('#pic_1').removeAttr('checked')}else{$('#pic_1').attr('checked','checked')}">
+							<code>A</code></div></td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" id="pic_2" name="checkbox" /></td>
+							<td style="width:450px"><div onclick="if($('#pic_2').attr('checked')){$('#pic_2').removeAttr('checked')}else{$('#pic_2').attr('checked','checked')}">
+							<code>B</code></div></td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" id="pic_3" name="checkbox" /></td>
+							<td style="width:450px"><div onclick="if($('#pic_3').attr('checked')){$('#pic_3').removeAttr('checked')}else{$('#pic_3').attr('checked','checked')}">
+							<code>C</code></div></td>
+						</tr>
+					</table>
+				</div>
+				<div class="solution" data-fraction-input="true"  data-type="multiple">
+					<p>選擇所有正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">
+							(function(){
+								var chk_value =[];    
+								$('input[name="checkbox"]:checked').each(function(){    
+									chk_value.push($(this).val());    
+								});
+								return chk_value;
+							})()
+						</div>
+						<div class="validator-function">
+							if(guess.length==0){
+								return "";
+							}
+							if(guess.length!=sum){
+								return false;
+							}
+							var trueAns = 0;
+							for(var i = 0;i&lt;guess.length;i++){
+								if(guess[i]=='true'){
+									trueAns++;
+								}
+							}
+							if(trueAns==sum){
+								return true;
+							}					
+						</div>
+					</div>
+				</div>
+				<div class="hints">
+					<p><var>name</var>一瓶 <code><var>num</var></code> 公升，<var>name1</var>喝了 <code><var>data</var>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 瓶，</p>
+					<p>就是用 <code><var>data</var>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 乘以 <code><var>num</var></code> 。</p>
+					<p>哪個選項是 <code><var>data</var>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 乘以 <code><var>num</var></code> 的值呢？</p>
+					<p><code>A</code> 選項中，先將 <code><var>data</var>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 轉換成假分數形式。</p>
+					<p><code><var>data</var>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 就相當於 <code><span data-if="data&gt;0">\dfrac{<var>book[1]</var>}{<var>book[1]</var>}+</span><span data-if="data&gt;1">\dfrac{<var>book[1]</var>}{<var>book[1]</var>}+</span>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> ，我們可以化簡為：</p>
+					<p><code><span data-if="data&gt;0">\dfrac{<var>book[1]</var>}{<var>book[1]</var>}+</span><span data-if="data&gt;1">\dfrac{<var>book[1]</var>}{<var>book[1]</var>}+</span>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}=\dfrac{<span data-if="data&gt;0"><var>book[1]</var></span><span data-if="data&gt;1">+<var>book[1]</var></span>+<var>book[0]</var>}{<var>book[1]</var>}=\dfrac{<var>book[1]*data+book[0]</var>}{<var>book[1]</var>}</code></p>
+					<p><code>A</code> 選項中，化成假分數是正確的。然後 <code>\dfrac{<var>book[1]*data+book[0]</var>}{<var>book[1]</var>}\times <var>num</var>=\dfrac{<var>book[1]*data+book[0]</var>}{<var>book[1]</var>}+\dfrac{<var>book[1]*data+book[0]</var>}{<var>book[1]</var>}<span data-if="num&gt;2">+\dfrac{<var>book[1]*data+book[0]</var>}{<var>book[1]</var>}</span>=\dfrac{<var>(book[1]*data+book[0])*num</var>}{<var>book[1]</var>}</code> ，這一步也是正確的。<span data-if="ggcd!=1">最後將分數化簡成最簡分數形式，</span>所以 <code>A</code> 選項是正確的。</p>
+					<p><code>B</code> 選項中，將 <code><var>data</var>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 轉換成假分數是正確的，再乘以 <code><var>num</var></code> 時只要分子乘以 <code><var>num</var></code> 就可以了，所以 <code>B</code> 選項是錯誤的。</p>
+					<p><code>C</code> 選項中，我們將帶分數 <code><var>data</var>\dfrac{<var>book[0]</var>}{<var>book[1]</var>}</code> 分成一個整數和一個真分數，再分別乘以 <code><var>num</var></code> ，最後將整數與分數相加的值就是最終的值，答案是正確的，所以 <code>C</code> 選項是正確的。</p>
+					<p>選項 <code class="hint_pink">A</code> 和 <code class="hint_pink">C</code> 是正確的。</p>
+				</div>
+			</div>
+			
+			<div id="case6">
+				<div class="vars">
+					<var id="total">randFromArray([[3,7],[5,6],[5,7],[5,8]])</var>
+					<var id="jeans">randFromArray([[1,2],[3,5],[1,4],[1,3]])</var>
+					<var id="name">randFromArray(["大伯","叔叔","爺爺","外公"])</var>
+					<var id="name1">randFromArray(["香蕉","草莓","芒果","蘋果"])</var>
+					<var id="gac_num">getGCD(total[0]*jeans[0],total[1]*jeans[1])</var>
+				</div>
+				<div class="question">
+					<p><var>name</var>有一塊地，其中 <code>\dfrac{<var>total[0]</var>}{<var>total[1]</var>}</code> 為果園，果園的 <code>\dfrac{<var>jeans[0]</var>}{<var>jeans[1]</var>}</code> 種<var>name1</var>，<var>name1</var>園是這塊地的幾分之幾？</p>
+				</div>
+				<div class="solution" data-fraction-input="true"  data-type="rational">
+					<var>(total[0]*jeans[0])/(total[1]*jeans[1])</var>
+				</div>
+				<div class="hints">
+					<p>果園是這塊地的 <code>\dfrac{<var>total[0]</var>}{<var>total[1]</var>}</code> ，
+					<var>name1</var>園是 <code>\dfrac{<var>total[0]</var>}{<var>total[1]</var>}</code> 的 <code>\dfrac{<var>jeans[0]</var>}{<var>jeans[1]</var>}</code> 。</p>
+					<p>我們可以用 <code>\dfrac{<var>total[0]</var>}{<var>total[1]</var>}</code> 乘以 <code>\dfrac{<var>jeans[0]</var>}{<var>jeans[1]</var>}</code> 來列式。</p>
+					<p><code>\dfrac{<var>total[0]</var>}{<var>total[1]</var>}\times\dfrac{<var>jeans[0]</var>}{<var>jeans[1]</var>}</code></p>
+					<p><code>=\dfrac{<var>total[0]</var>\times<var>jeans[0]</var>}{<var>total[1]</var>\times<var>jeans[1]
+					</var>}</code></p>
+					<p><code>=\dfrac{<var>total[0]*jeans[0]</var>}{<var>total[1]*jeans[1]</var>}</code></p>
+					<span data-if="gac_num!=1"><p><code>=\dfrac{<var>gac_num</var>\times<var>total[0]*jeans[0]/gac_num</var>}{<var>gac_num</var>\times<var>total[1]*jeans[1]/gac_num</var>}=\dfrac{<var>total[0]*jeans[0]/gac_num</var>}{<var>total[1]*jeans[1]/gac_num</var>}</code></p></span>
+					<p><var>name1</var>園是這塊地的 <code class="hint_pink"><span data-if="gac_num==1">\dfrac{<var>total[0]*jeans[0]</var>}{<var>total[1]*jeans[1]</var>}</span><span data-if="gac_num!=1">\dfrac{<var>total[0]*jeans[0]/gac_num</var>}{<var>total[1]*jeans[1]/gac_num</var>}</span></code> 。</p>
+				</div>
+			</div>
+			
+		</div>
+    </div>
+</body>
+</html>
