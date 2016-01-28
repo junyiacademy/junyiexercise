@@ -4,10 +4,19 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>枝葉圖</title>
     <script src="../khan-exercise.js"></script>
+    <script type="text/javascript">
+        function LengthEnsure( array ) {
+            var L = [];
+            for( var index in array ) {
+                L.push( array[ index ].length );
+            }
+            return Math.max.apply(null, L);
+        }
+    </script>
 </head>
 <body>
 <div class="exercise">
-    <div class="vars">
+    <div class="vars" data-ensure="L &lt; 9">
         <var id="STEMS">randRange( 5, 7 )</var>
         <var id="SAMPLES">randRange( 10, 20 )</var>
         <var id="TGT_MEAN">randRange( 20, STEMS * 10 - 20 )</var>
@@ -28,6 +37,7 @@
                 }
             }) ];
         })</var>
+        <var id="L">LengthEnsure( DATA )</var>
         <var id="LOCATION">randFromArray([ "超級市場", "百貨公司", "動物園" ])</var>
         <var id="ITEM">
             {
@@ -106,7 +116,7 @@
                     \space
                     \begin{matrix}
                     <span data-each="STEMS times as STEM" data-unwrap>
-                        <span data-each="DATA[ STEM ] as LEAF" data-unwrap>\color{<var>BLUE</var>}{<var>LEAF</var>}&amp;</span>
+                        <span data-each="DATA[ STEM ] as LEAF" data-unwrap>\color{<var>BLUE</var>}{<var>LEAF</var>}&nbsp;&nbsp;</span>
                         \vphantom{\Large{0}} \\
                     </span>
                     \end{matrix}
@@ -120,7 +130,7 @@
                     \space
                     \begin{matrix}
                     <span data-each="STEMS times as STEM" data-unwrap>
-                        <span data-each="DATA[ STEM ] as LEAF" data-unwrap>\color{<var>GREEN</var>}{<var>STEM</var>}\color{<var>BLUE</var>}{<var>LEAF</var>}&amp;</span>
+                        <span data-each="DATA[ STEM ] as LEAF" data-unwrap>\color{<var>GREEN</var>}{<var>STEM</var>}\color{<var>BLUE</var>}{<var>LEAF</var>}&nbsp;&nbsp;</span>
                         \vphantom{\Large{0}} \\
                     </span>
                     \end{matrix}
