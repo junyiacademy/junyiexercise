@@ -22,7 +22,12 @@
 				<var id="clockRadius">7.7</var>
 				<var id="outerPointRadius">clockRadius * 1.01</var>
                 <var id="N">randRange(2, 34) * 5</var>
-                <var id="R">polar(clockRadius, N)</var>
+                <var id="RN">randRange(1, 2)</var>
+                <var id="R">(function(){
+                    if( RN == 1 ) {
+                        return [ polar( clockRadius, 180 - N ), polar( clockRadius, 180 + N ) ];
+                    } else return [ polar( clockRadius, N ), polar( clockRadius, 360 - N) ];
+                })()</var>
 			</div>
 			
 			<div class="question">
@@ -36,10 +41,15 @@
                         addMouseLayer();
 
                         graph.protractor = new Protractor( [0, 0] );
-                        line([-10, 0], [10, 0]);
                         circle([0, 0], 0.3, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE });
-                        circle([-10, 0], 0.3, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE });
-                        circle([10, 0], 0.3, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE });
+
+                        if( RN == 1 ) {
+                            line([-10, 0], [0, 0]);
+                            circle([-10, 0], 0.3, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE });
+                        } else {
+                            line([10, 0], [0, 0]);
+                            circle([10, 0], 0.3, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE });
+                        }
                         
                         function movePartnerPoint(options) {
                             var x = options.x;
@@ -126,7 +136,9 @@
                         if(abs(guess[0] - 7.7) &lt; 0.0001 &amp;&amp; abs(guess[1] - 0 &lt; 0.0001)){
                             return "";
                         }else{
-                            return abs(guess[0] - R[0]) &lt; 0.0001 &amp;&amp; abs(guess[1] - R[1]) &lt; 0.0001;
+                            var r1 = abs(guess[0] - R[0][0]) &lt; 0.0001 &amp;&amp; abs(guess[1] - R[0][1]) &lt; 0.0001;
+                            var r2 = abs(guess[0] - R[1][0]) &lt; 0.0001 &amp;&amp; abs(guess[1] - R[1][1]) &lt; 0.0001;
+                            return r1 || r2;
                         }
                     </div>
 				</div>
