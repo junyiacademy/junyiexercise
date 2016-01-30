@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html data-require="math word-problems math-format expressions">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>位值3</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+
+        <div class="problems">
+            <div id="caseA1">
+                <div class="vars">
+                    <var id="DIGITS">shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]).slice( 0, 8 )</var>
+                    <var id="NUMBER">digitsToInteger( DIGITS )</var>
+                    <var id="POWER">randRange( 0, 7 )</var>
+                    <var id="DIGIT">DIGITS[POWER]</var>
+
+                    <var id="HINT_IN_NUMBERS">
+                        (function() {
+                            var maxPower = DIGITS.length - 1;
+                            var products = $.map( DIGITS, function( digit, index ){
+                                return  expr([ "*", digit, pow( 10, maxPower+4 - index ) ]) ;
+                            });
+                            return products.join( "+" );
+                        })()
+                    </var>
+
+                    <var id="HINT_IN_WORDS">
+                        (function() {
+                            var maxPower = DIGITS.length - 1;
+                            var words = $.map( DIGITS, function( digit, index ) {
+                                return plural( digit, powerToPlace( maxPower+4 - index ) );
+                            });
+                            return words.join( " + " );
+                        })()
+                    </var>
+
+                    <var id="PLACES">
+                        (function() {
+                            var places = placesLeftOfDecimal.slice( 4, 12 );
+                            return $.map( places, function( place, i ) {
+                                return place + "";
+                            });
+                        })()
+                    </var>
+                    <var id="SOLUTION">PLACES[ DIGITS.length - 1 - POWER ]</var>
+                </div>
+
+				<p class="question">在 <var>NUMBER</var>0000 裡，<var>DIGIT</var> 的位值是什麼？</p>
+                <p class="solution"><var>SOLUTION</var></p>
+                <ul class="choices" data-category="true">
+                    <li data-each="PLACES as place"><var>place</var></li>
+                </ul>
+
+                <div class="hints">
+                    <div>
+                        <p><var>NUMBER</var>0000 可以表達成：</p>
+                        <p>= <var>HINT_IN_NUMBERS</var></p>
+                    </div>
+                    <p><code>= </code> <var>HINT_IN_WORDS</var></p>
+                    <p class="final_hint">因此，<var>DIGIT</var> 是在 <font class="hint_pink"><var>SOLUTION</var></font> 位值。</p>
+                </div>
+            </div>
+
+            <div id="caseA2">
+                <div class="vars">
+                    <var id="DIGITS">shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]).slice( 0, 8 )</var>
+                    <var id="NUMBER">digitsToInteger( DIGITS )</var>
+                    <var id="POWER">randRange( 0, 7 )</var>
+                    <var id="DIGIT">DIGITS[POWER]</var>
+
+                    <var id="HINT_IN_NUMBERS">
+                        (function() {
+                            var maxPower = DIGITS.length - 1;
+                            var products = $.map( DIGITS, function( digit, index ){
+                                return  expr([ "*", digit, pow( 10, maxPower+8 - index ) ]) ;
+                            });
+                            return products.join( "+" );
+                        })()
+                    </var>
+
+                    <var id="HINT_IN_WORDS">
+                        (function() {
+                            var maxPower = DIGITS.length - 1;
+                            var words = $.map( DIGITS, function( digit, index ) {
+                                return plural( digit, powerToPlace( maxPower+8 - index ) );
+                            });
+                            return words.join( " + " );
+                        })()
+                    </var>
+
+                    <var id="PLACES">
+                        (function() {
+                            var places = placesLeftOfDecimal.slice( 8, 16 );
+                            return $.map( places, function( place, i ) {
+                                return place + "";
+                            });
+                        })()
+                    </var>
+                    <var id="SOLUTION">PLACES[ DIGITS.length - 1 - POWER ]</var>
+                </div>
+
+                <p class="question">在 <var>NUMBER</var>00000000 裡，<var>DIGIT</var> 的位值是什麼？</p>
+                <p class="solution"><var>SOLUTION</var></p>
+                <ul class="choices" data-category="true">
+                    <li data-each="PLACES as place"><var>place</var></li>
+                </ul>
+
+                <div class="hints">
+                    <div>
+                        <p><var>NUMBER</var>00000000 可以表達成：</p>
+                        <p>= <var>HINT_IN_NUMBERS</var></p>
+                    </div>
+                    <p><code>= </code> <var>HINT_IN_WORDS</var></p>
+                    <p class="final_hint">因此，<var>DIGIT</var> 是在 <font class="hint_pink"><var>SOLUTION</var></font> 位值。</p>
+                </div>
+            </div>
+
+            <div id="caseB1">
+                <div class="vars" data-ensure="NUMBER > 9999">
+                    <var id="DIGITS">randRange( 0, 9, 12 )</var>
+                    <var id="NUMBER">digitsToInteger( DIGITS )</var>
+                    <var id="ADDENDS">[ ]</var>
+                    <var id="HINT">
+                        (function() {
+                            var maxPower = DIGITS.length - 1;
+                            return $.map(DIGITS, function(digit, index) {
+                                if ( digit === 0 ) {
+                                    return null;
+                                }
+
+                                var addend;
+                                if ( index === DIGITS.length - 1 ) {
+                                    if ( DIGITS[ index - 1] === 0 ) {
+                                        ADDENDS.push( digit );
+                                        return cardinal( digit ) + " 等於 " + digit;
+                                    }
+                                } else if ( index === DIGITS.length - 2 ) {
+                                    addend = digit * 10 + DIGITS[ DIGITS.length - 1 ];
+                                    ADDENDS.push( addend );
+                                    return cardinal( addend ) + " 等於 " + addend;
+                                } else {
+                                    var words = cardinal( digit ) + " " + powerToPlace(maxPower - index);
+                                    var input = [ "*", digit, pow(10, maxPower - index) ];
+                                    var ex = expr( input );
+                                    addend = expr( input, true );
+
+                                    ADDENDS.push( addend );
+                                    return words + " 等於 " + ex + " = " + addend;
+                                }
+                            });
+                        })()
+                    </var>
+                </div>
+
+                <p class="question">如何用數字表達 <var>cardinal( NUMBER )</var> ?</p>
+                <p class="solution" data-forms="integer"><var>NUMBER</var></p>
+                <div class="hints">
+                    <p data-each="HINT as hint"><var>hint</var></p>
+                    <div>
+                        <p>把上面這些加起來:</p>
+                        <p><var>ADDENDS.join( " + " )</var></p>
+                    </div>
+                    <p>= <font class="hint_pink"><var>NUMBER</var></font></p>
+                </div>
+            </div>
+
+            <div id="caseB2">
+                <div class="vars" data-ensure="NUMBER > 99999999">
+                    <var id="DIGITS">randRange( 0, 9, 12 )</var>
+                    <var id="NUMBER">digitsToInteger( DIGITS )</var>
+                    <var id="ADDENDS">[ ]</var>
+                    <var id="HINT">
+                        (function() {
+                            var maxPower = DIGITS.length - 1;
+                            return $.map(DIGITS, function(digit, index) {
+                                if ( digit === 0 ) {
+                                    return null;
+                                }
+
+                                var addend;
+                                if ( index === DIGITS.length - 1 ) {
+                                    if ( DIGITS[ index - 1] === 0 ) {
+                                        ADDENDS.push( digit );
+                                        return cardinal( digit ) + " 等於 " + digit;
+                                    }
+                                } else if ( index === DIGITS.length - 2 ) {
+                                    addend = digit * 10 + DIGITS[ DIGITS.length - 1 ];
+                                    ADDENDS.push( addend );
+                                    return cardinal( addend ) + " 等於 " + addend;
+                                } else {
+                                    var words = cardinal( digit ) + " " + powerToPlace(maxPower - index);
+                                    var input = [ "*", digit, pow(10, maxPower - index) ];
+                                    var ex = expr( input );
+                                    addend = expr( input, true );
+
+                                    ADDENDS.push( addend );
+                                    return words + " 等於 " + ex + " = " + addend;
+                                }
+                            });
+                        })()
+                    </var>
+                </div>
+
+                <p class="question">如何用數字表達 <var>cardinal( NUMBER )</var> ?</p>
+                <p class="solution" data-forms="integer"><var>NUMBER</var></p>
+                <div class="hints">
+                    <p data-each="HINT as hint"><var>hint</var></p>
+                    <div>
+                        <p>把上面這些加起來：</p>
+                        <p><var>ADDENDS.join( " + " )</var></p>
+                    </div>
+                    <p>= <font class="hint_pink"><var>NUMBER</var></font></p>
+                </div>
+            </div>
+
+			<div id="caseC1">
+                <div class="vars">
+                    <var id="DIGITS">shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]).slice( 0, 8 )</var>
+                    <var id="NUMBER">digitsToInteger( DIGITS )</var>
+                    <var id="POWER">randRange( 0, 7 )</var>
+                    <var id="DIGIT">DIGITS[POWER]</var>
+
+                    <var id="HINT_IN_NUMBERS">
+                        (function() {
+                            var maxPower = DIGITS.length - 1;
+                            var products = $.map( DIGITS, function( digit, index ){
+                                return  expr([ "*", digit, pow( 10, maxPower+4 - index ) ]) ;
+                            });
+                            return products.join( "+" );
+                        })()
+                    </var>
+
+                    <var id="HINT_IN_WORDS">
+                        (function() {
+                            var maxPower = DIGITS.length - 1;
+                            var words = $.map( DIGITS, function( digit, index ) {
+                                return plural( digit, powerToPlace( maxPower+4 - index ) );
+                            });
+                            return words.join( " + " );
+                        })()
+                    </var>
+
+                    <var id="PLACES">
+                        (function() {
+                            var places = placesLeftOfDecimal.slice( 4, 12 );
+                            return $.map( places, function( place, i ) {
+                                return place + "";
+                            });
+                        })()
+                    </var>
+                    <var id="SOLUTION">PLACES[ DIGITS.length - 1 - POWER ]</var>
+                </div>
+
+				<p class="question">在 <var>NUMBER</var>0000 裡，這個數的<var>SOLUTION</var>字是多少？</p>
+                <p class="solution" data-forms="integer"><var>DIGIT</var></p>
+                
+                <div class="hints">
+                    <div>
+                        <p><var>NUMBER</var>0000 可以表達成：</p>
+                        <p>= <var>HINT_IN_NUMBERS</var></p>
+                    </div>
+                    <p><code>= </code> <var>HINT_IN_WORDS</var></p>
+                    <p class="final_hint">因此，<var>SOLUTION</var>的數字是<font class="hint_pink"><var>DIGIT</var></font>。</p>
+                </div>
+            </div>
+
+			<div id="caseC2">
+                <div class="vars">
+                    <var id="DIGITS">shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]).slice( 0, 8 )</var>
+                    <var id="NUMBER">digitsToInteger( DIGITS )</var>
+                    <var id="POWER">randRange( 0, 7 )</var>
+                    <var id="DIGIT">DIGITS[POWER]</var>
+
+                    <var id="HINT_IN_NUMBERS">
+                        (function() {
+                            var maxPower = DIGITS.length - 1;
+                            var products = $.map( DIGITS, function( digit, index ){
+                                return  expr([ "*", digit, pow( 10, maxPower+8 - index ) ]) ;
+                            });
+                            return products.join( "+" );
+                        })()
+                    </var>
+
+                    <var id="HINT_IN_WORDS">
+                        (function() {
+                            var maxPower = DIGITS.length - 1;
+                            var words = $.map( DIGITS, function( digit, index ) {
+                                return plural( digit, powerToPlace( maxPower+8 - index ) );
+                            });
+                            return words.join( " + " );
+                        })()
+                    </var>
+
+                    <var id="PLACES">
+                        (function() {
+                            var places = placesLeftOfDecimal.slice( 8, 16 );
+                            return $.map( places, function( place, i ) {
+                                return place + "";
+                            });
+                        })()
+                    </var>
+                    <var id="SOLUTION">PLACES[ DIGITS.length - 1 - POWER ]</var>
+                </div>
+
+				<p class="question">在 <var>NUMBER</var>00000000 裡，這個數的<var>SOLUTION</var>字是多少？</p>
+                <p class="solution" data-forms="integer"><var>DIGIT</var></p>
+                
+                <div class="hints">
+                    <div>
+                        <p><var>NUMBER</var>00000000 可以表達成：</p>
+                        <p>= <var>HINT_IN_NUMBERS</var></p>
+                    </div>
+                    <p><code>= </code> <var>HINT_IN_WORDS</var></p>
+                    <p class="final_hint">因此，<var>SOLUTION</var>的數字是<font class="hint_pink"><var>DIGIT</var></font>。</p>
+                </div>
+            </div>
+			
+			<div id="caseD1">
+                <div class="vars" data-ensure="NUMBER > 9">
+                    <var id="DIGITS">randRange( 0, 9, 12 )</var>
+                    <var id="NUMBER">digitsToInteger( DIGITS )</var>
+                    <var id="ADDENDS">[ ]</var>
+                    <var id="HINT">
+                        (function() {
+                            var maxPower = DIGITS.length - 1;
+                            return $.map(DIGITS, function(digit, index) {
+                                if ( digit === 0 ) {
+                                    return null;
+                                }
+
+                                var addend;
+                                if ( index === DIGITS.length - 1 ) {
+                                    if ( DIGITS[ index - 1] === 0 ) {
+                                        ADDENDS.push( digit );
+                                        return digit + " 等於 " + cardinal( digit );
+                                    }
+                                } else if ( index === DIGITS.length - 2 ) {
+                                    addend = digit * 10 + DIGITS[ DIGITS.length - 1 ];
+                                    ADDENDS.push( addend );
+                                    return addend + " 等於 " + cardinal( addend );
+                                } else {
+                                    var words = cardinal( digit ) + " " + powerToPlace(maxPower - index);
+                                    var input = [ "*", digit, pow(10, maxPower - index) ];
+                                    var ex = expr( input );
+                                    addend = expr( input, true );
+
+                                    ADDENDS.push( addend );
+                                    return ex + " = " + addend + " 等於 " + words;
+                                }
+                            });
+                        })()
+                    </var>
+                </div>
+
+                <p class="question">如何用國字表達 <var>NUMBER</var> ？</p>
+                <div class="solution" data-type="set">
+                    <div class="set-sol"><var>cardinal( NUMBER )</var></div>
+                    <div class="input-format">
+                        <p><span class="entry"></span></p>
+                    </div>
+                    <p class="example">國字，例：一百一十萬</p>
+                </div>
+                <div class="hints">
+                    <p data-each="HINT as hint"><var>hint</var></p>
+                    <p>= <font class="hint_pink"><var>cardinal( NUMBER )</var></font></p>
+                </div>
+            </div>
+			
+			<div id="caseD2">
+                <div class="vars" data-ensure="NUMBER > 99999999">
+                    <var id="DIGITS">randRange( 0, 9, 12 )</var>
+                    <var id="NUMBER">digitsToInteger( DIGITS )</var>
+                    <var id="NUM_TEST">cardinal( 694084109350  )</var>
+                    <var id="ADDENDS">[ ]</var>
+                    <var id="HINT">
+                        (function() {
+                            var maxPower = DIGITS.length - 1;
+                            return $.map(DIGITS, function(digit, index) {
+                                if ( digit === 0 ) {
+                                    return null;
+                                }
+
+                                var addend;
+                                if ( index === DIGITS.length - 1 ) {
+                                    if ( DIGITS[ index - 1] === 0 ) {
+                                        ADDENDS.push( digit );
+                                        return digit + " 等於 " + cardinal( digit );
+                                    }
+                                } else if ( index === DIGITS.length - 2 ) {
+                                    addend = digit * 10 + DIGITS[ DIGITS.length - 1 ];
+                                    ADDENDS.push( addend );
+                                    return addend + " 等於 " + cardinal( addend );
+                                } else {
+                                    var words = cardinal( digit ) + " " + powerToPlace(maxPower - index);
+                                    var input = [ "*", digit, pow(10, maxPower - index) ];
+                                    var ex = expr( input );
+                                    addend = expr( input, true );
+
+                                    ADDENDS.push( addend );
+                                    return ex + " = " + addend + " 等於 " + words;
+                                }
+                            });
+                        })()
+                    </var>
+                </div>
+
+                <p class="question">如何用國字表達 <var>NUMBER</var> ？</p>
+                <div class="solution" data-type="set">
+                    <div class="set-sol"><var>cardinal( NUMBER )</var></div>
+                    <div class="input-format">
+                        <p><span class="entry"></span></p>
+                    </div>
+                    <p class="example">國字，例：一百一十萬</p>
+                </div>
+                <div class="hints">
+                    <p data-each="HINT as hint"><var>hint</var></p>
+                    <p>= <font class="hint_pink"><var>cardinal( NUMBER )</var></font></p>
+                </div>
+            </div> 
+			
+
+        </div>
+    </div>
+</body>
+</html>

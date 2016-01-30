@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-3d math-format interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>立體形體-長方體的體積</title>
+    <script src="../khan-exercise.js"></script>
+    <script type="text/javascript">
+        var makeSquare = function(left, width, bottom, height, color) {
+            KhanUtil.currentGraph.path([
+                    [left, bottom],
+                    [left, bottom + height],
+                    [left + width, bottom + height],
+                    [left + width, bottom],
+                    true
+                ],
+                { stroke: "black", strokeWidth: 1, fill: color }
+            );
+        };
+
+        var normalize = function(vect) {
+            var length = Math.sqrt(vect[0] * vect[0] +
+                                   vect[1] * vect[1] +
+                                   vect[2] * vect[2]);
+            return _.map(vect, function(e) { return e / length; });
+        };
+    </script>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+        <div id="int-box-V">
+            <div class="vars">
+                <var id="LENGTH">randRange(2, 7)</var>
+                <var id="WIDTH">randRange(2, 7)</var>
+                <var id="HEIGHT">randRange(2, 7)</var>
+
+            </div>
+           
+            <p class="question">
+                這個盒子的體積多大？
+            </p>
+			
+			<div class="problem">
+                <div class="graphie">
+                   init({ range: [[-4, LENGTH+WIDTH + 1], [-4, HEIGHT+WIDTH + 1]], scale: 18 });
+
+                   path([ [0, HEIGHT], [LENGTH, HEIGHT], [LENGTH+WIDTH/1.732, HEIGHT+WIDTH/1.732], [WIDTH/1.732, HEIGHT+WIDTH/1.732], true]);
+                    line([0, HEIGHT],[WIDTH/1.732, HEIGHT+WIDTH/1.732], { stroke: "#38C77F" })
+                    
+                    line([0,0],[0, HEIGHT], { stroke: "#0000FF" });
+                    line( [0,0],[LENGTH,0], { stroke: "red" });
+                    line( [0, 0],[WIDTH/1.732,WIDTH/1.732], {strokeDasharray: "-"});
+                    line([LENGTH,0],[LENGTH+WIDTH/1.732,WIDTH/1.732]);
+                   
+                    line( [WIDTH/1.732,WIDTH/1.732],[LENGTH+WIDTH/1.732,WIDTH/1.732], {strokeDasharray: "-"});
+
+                    line( [WIDTH/1.732,WIDTH/1.732],[WIDTH/1.732,WIDTH/1.732+HEIGHT],{strokeDasharray: "-"});
+                    line( [LENGTH+WIDTH/1.732,WIDTH/1.732],[LENGTH+WIDTH/1.732,WIDTH/1.732+HEIGHT]);
+
+                    line( [LENGTH,0],[LENGTH, HEIGHT]);
+
+                    label([LENGTH*0.5,0], "\\color{red}{"+LENGTH+"}" , "below");
+                    label([(WIDTH/1.732)*0.4, HEIGHT+(WIDTH/1.732)*0.5], "\\color{#38C77F}{"+WIDTH+"}" , "left");
+                    label([0,HEIGHT*0.5], "\\color{#0000FF}{"+HEIGHT+"}" , "left");
+
+
+                </div>
+			</div>
+			
+            <div class="solution"  data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>LENGTH * WIDTH * HEIGHT</var></span></p>                
+            </div>
+
+            <div class="hints">
+                <p>盒子的體積是它的
+                    <code>\text{長} \times \text{寬} \times \text{高}</code>
+                    </p>
+                <p>透過這張圖我們可以發現邊長分別是
+                    <code><var>LENGTH</var></code> 、
+                    <code><var>WIDTH</var></code>
+                    跟 <code><var>HEIGHT</var></code> 。</p>
+                <p>為了要知道它的體積，我們直接將它的各邊互乘。
+                    </p>
+                <p>
+                    <code><var>LENGTH</var> \times
+                        <var>WIDTH</var> \times
+                        <var>HEIGHT</var></code>
+                </p>
+                <p>
+                    <code>\qquad= <var>LENGTH * WIDTH * HEIGHT</var></code>
+                </p>
+                <p>所以這個盒子的體積是
+                    <code class="hint_pink"><var>LENGTH * WIDTH * HEIGHT</var></code> 。</p>
+            </div>
+        </div>
+		
+        <div id="int-cube-V">
+            <div class="vars">
+                <var id="LENGTH">randRange(2, 7)</var>
+                <var id="WIDTH">LENGTH</var>
+                <var id="HEIGHT">LENGTH</var>
+                <var id="INDENT_LENGTH">LENGTH*pow(0.9,LENGTH)</var>
+                <var id="S1">INDENT_LENGTH*sqrt(3)/2</var>
+            </div>
+            <p class="question">
+                這個正方體的體積多大？
+            </p>
+            <div class="problem">
+                <div class="graphie" id="cube_case1">   
+                    init({
+                        range: [[-INDENT_LENGTH-3, INDENT_LENGTH+5], [-INDENT_LENGTH-2, INDENT_LENGTH+3]],
+                        scale: 30
+                    });
+                    path([[-INDENT_LENGTH,-INDENT_LENGTH],[-INDENT_LENGTH,INDENT_LENGTH],[INDENT_LENGTH,INDENT_LENGTH],[INDENT_LENGTH,-INDENT_LENGTH],[-INDENT_LENGTH,-INDENT_LENGTH]]);
+                    path([[-INDENT_LENGTH,INDENT_LENGTH],[-INDENT_LENGTH+S1,INDENT_LENGTH+INDENT_LENGTH/2],[INDENT_LENGTH+S1,INDENT_LENGTH+INDENT_LENGTH/2],[INDENT_LENGTH,INDENT_LENGTH],[-INDENT_LENGTH,INDENT_LENGTH]]);
+                    path([[INDENT_LENGTH+S1,INDENT_LENGTH+INDENT_LENGTH/2],[INDENT_LENGTH,INDENT_LENGTH],[INDENT_LENGTH,-INDENT_LENGTH],[INDENT_LENGTH+S1,-INDENT_LENGTH+INDENT_LENGTH/2],[INDENT_LENGTH+S1,INDENT_LENGTH+INDENT_LENGTH/2]]); 
+                    line([-INDENT_LENGTH+S1,INDENT_LENGTH+INDENT_LENGTH/2],[-INDENT_LENGTH+S1,-INDENT_LENGTH+INDENT_LENGTH/2],{strokeDasharray: "-"});
+                    line([-INDENT_LENGTH,-INDENT_LENGTH],[-INDENT_LENGTH+S1,-INDENT_LENGTH+INDENT_LENGTH/2],{strokeDasharray: "-"});
+                    line([INDENT_LENGTH+S1,-INDENT_LENGTH+INDENT_LENGTH/2],[-INDENT_LENGTH+S1,-INDENT_LENGTH+INDENT_LENGTH/2],{strokeDasharray: "-"});
+                    line([-INDENT_LENGTH,-INDENT_LENGTH],[INDENT_LENGTH,-INDENT_LENGTH],{stroke : KhanUtil.RED});
+                    label([0,-INDENT_LENGTH],LENGTH+"\\enspace 公分","below");
+                </div>
+            </div>
+            <div class="solution"  data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>LENGTH * WIDTH * HEIGHT</var></span></p>                
+            </div>
+
+            <div class="hints">
+                <p>一個盒子的體積是
+                    <code>\text{長} \times \text{寬} \times \text{高}</code> 。
+                    </p>
+                <p>因為這是一個正方體，所以每個邊長都一樣長。</p>
+                <p>透過這張圖，我們可以發現邊長是
+                    <code><var>WIDTH</var></code> 。</p>
+                <p>為了要了解它的體積，我們只要將邊長做立方運算就可以了。</p>
+                <p>
+                    <code><var>WIDTH</var>^3 =
+                        <var>WIDTH</var> \times
+                        <var>WIDTH</var> \times
+                        <var>WIDTH</var></code>
+                </p>
+                <p>
+                    <code>\qquad= <var>WIDTH * WIDTH * WIDTH</var></code>
+                </p>
+                <p>所以這個正方體的體積是
+                    <code class="hint_pink"><var>WIDTH * WIDTH * WIDTH</var></code> 。</p>
+            </div>
+        </div>
+
+	</div>
+</div>
+</body>
+</html>

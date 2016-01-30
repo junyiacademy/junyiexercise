@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html data-require="math math-format word-problems stat">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>分數與小數的四則運算</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+</script>
+	</style>
+    <script type="text/javascript">
+	</script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+        <div id="case1">
+			<div class="vars">
+				<var id="J">randRange( 5, 15 )</var>
+				<var id="K">randRange( 15, 20 )</var>
+				<var id="M">randRange( 5, 10 )</var>
+				<var id="N">randRange( 2, 5 )</var>
+				<var id="P">randRange( 5, 15 )</var>
+				<var id="X">(J+P)*M</var>
+				<var id="Y">N*K</var>
+				<var id="X_Y">X-Y</var>
+				<var id="Z">M*K</var>
+			</div>
+		
+			<div class="question">
+					<div class="problem">
+						<p>下面的式子怎麼算比較好？想想看，再算算看。</p>
+						<p><code> \displaystyle \frac{<var>J</var>}{<var>K</var>} - \displaystyle \frac{<var>N</var>}{<var>M</var>} + \displaystyle \frac{<var>P</var>}{<var>K</var>}</code></p>					
+					</div>
+			</div>
+			
+			<div class="solution" data-fraction-input="true" >
+				<span class="sol" data-type="rational"><var>X_Y/Z</var></span>		   
+			</div>
+			
+			<div class="hints">
+				<P>先算同分母的部分</P>
+				<p><code> \enspace \enspace \enspace\displaystyle \frac{<var>J</var>}{<var>K</var>} - \displaystyle \frac{<var>N</var>}{<var>M</var>} + \displaystyle \frac{<var>P</var>}{<var>K</var>}</code></p>
+				<p><code>= \displaystyle \frac{<var>J</var>}{<var>K</var>} + \displaystyle \frac{<var>P</var>}{<var>K</var>} - \displaystyle \frac{<var>N</var>}{<var>M</var>}  </code></p>
+				<p><code>= \displaystyle \frac{<var>J</var> + <var>P</var>}{<var>K</var>} - \displaystyle \frac{<var>N</var>}{<var>M</var>} </code></p>
+				<p>再算異分母的部分</p>
+				<p><code>= \displaystyle \frac{( <var>J</var> + <var>P</var> ) \times <var>M</var> }{<var>K</var>\times <var>M</var>} - \displaystyle \frac{<var>N</var> \times <var>K</var> }{<var>M</var> \times <var>K</var> } </code></p>
+				<p><code>= \displaystyle \frac{<var>J+P</var> \times <var>M</var>  - <var>N</var> \times <var>K</var> }{<var>K</var> \times <var>M</var>} </code></p>
+				<p><code>= \displaystyle \frac{<var>X</var> - <var>Y</var>}{<var>Z</var>}</code></p>
+				<p data-if="getGCD(X_Y,Z)!=1"><code>=\displaystyle \frac{<var>X_Y</var> }{<var>Z</var>}</code></p>
+				<p><code>=<var>decimalFraction(X_Y/Z,true,true,false,false)</var></code></p>
+				
+			</div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars" data-ensure="J > K">
+				<var id="J">(randRange( 1, 999 )/100).toFixed(2)</var>
+				<var id="K">(randRange( 1, 999 )/100).toFixed(2)</var>
+				<var id="M">randRange( 1, 5 )</var>
+				<var id="N">randRange( 5, 9 )</var>
+				<var id="J_sub_K">(J-K).toFixed(2)</var>
+				<var id="mul">(J_sub_K*N).toFixed(2)</var>
+				<var id="sub">(mul-M).toFixed(2)</var>
+			</div>
+		
+			<div class="question">
+					<div class="problem">
+						<p><code><var>J</var> - \displaystyle \frac{<var>M</var>}{<var>N</var>} - <var>K</var></code></p>					
+					</div>
+			</div>
+			
+			 <div class="solution" data-fraction-input="true" >
+				<span class="sol" data-type="rational"><var>sub/N</var></span>		   
+			</div>
+			
+			<div class="hints">
+				<p><code> \enspace \enspace \enspace<var>J</var> - \displaystyle \frac{<var>M</var>}{<var>N</var>} - <var>K</var></code></p>
+				<p><code>= <var>J</var> - <var>K</var> - \displaystyle \frac{<var>M</var>}{<var>N</var>} </code></p>
+				<p><code>= ( <var>J</var> - <var>K</var> ) - \displaystyle \frac{<var>M</var>}{<var>N</var>} </code></p>
+				<p><code>= <var>J_sub_K</var> - \displaystyle \frac{<var>M</var>}{<var>N</var>} </code></p>
+				<P><code>= \displaystyle \frac{<var>J_sub_K</var> \times <var>N</var>}{<var>N</var>}</code><code> - \displaystyle \frac{<var>M</var>}{<var>N</var>}</code></P>
+				<P><code>= \displaystyle \frac{<var>mul</var>}{<var>N</var>}</code><code> - \displaystyle \frac{<var>M</var>}{<var>N</var>}</code></P>
+				<P><code>= \displaystyle \frac{<var>sub</var>}{<var>N</var>}</code></p>
+				<p><code>=<var>decimalFraction(sub/N,true,true,false,false)</var></code></p>
+			</div>
+		</div>	
+		
+		<div id="case3">
+			<div class="vars" data-ensure="J > K">
+				<var id="J">(randRange( 1, 999 )/100).toFixed(2)</var>
+				<var id="K">(randRange( 1, 999 )/100).toFixed(2)</var>
+				<var id="P">randRange( 1, 5 )</var>
+				<var id="M">randRange( 1, 5 )</var>
+				<var id="N">randRange( 6, 12 )</var>
+				<var id="J_SUB_K">(J-K).toFixed(2)</var>
+				<var id="P_mul_N">P*N</var>
+				<var id="add">(J_SUB_K*N+P_mul_N+M).toFixed(2)</var>
+			</div>
+		
+			<div class="question">
+				<div class="problem">
+					<p><code><var>J</var> + ( <var>P</var> \displaystyle \frac{<var>M</var>}{<var>N</var>} - <var>K</var> )</code></p>					
+				</div>
+			</div>
+			
+			<div class="solution" data-fraction-input="true" >
+				<span class="sol" data-type="rational"><var>add/N</var></span>   
+			</div>
+			
+			<div class="hints">
+				<p>我們發現 <code><var>K</code></var> 是小數，可以先算式子中的小數部分，所以要先把括號去掉。</p>
+				<p>當我們要去掉括號時，當括號前面是加號時，去掉括號後，原來括號內的加號或減號不變。</p>
+				<p><code> \enspace \enspace \enspace<var>J</var> + ( <var>P</var> \displaystyle \frac{<var>M</var>}{<var>N</var>} - <var>K</var> )</code></p>
+				<p><code>= <var>J</var> +  <var>P</var> \displaystyle \frac{<var>M</var>}{<var>N</var>} - <var>K</var> </code></p>
+				<p><code>= <var>J</var> - <var>K</var>  + <var>P</var> \displaystyle \frac{<var>M</var>}{<var>N</var>} </code></p>
+				<p><code>=<var>J_SUB_K</var> + <var>P</var> \displaystyle \frac{<var>M</var>}{<var>N</var>}</code></p>
+				<p><code>=\displaystyle \frac{<var>J_SUB_K</var> \times <var>N</var>}{<var>N</var>} + \displaystyle \frac{<var>P</var> \times <var>N</var> + <var>M</var>}{<var>N</var>}</code></p>
+				<p><code>=\displaystyle \frac{<var>J_SUB_K</var> \times <var>N</var> + <var>P</var> \times <var>N</var> + <var>M</var>}{<var>N</var>}</code></p>
+				<p><code>=\displaystyle \frac{<var>add</var>}{<var>N</var>}</code></p>
+				<p><code>=<var>decimalFraction(add/N,true,true,false,false)</var></code></p>
+			</div>
+		</div>	
+		
+		<div id="case4">
+			<div class="vars">				
+				<var id="P">randRange( 1, 5 )</var>
+				<var id="M">randRange( 1, 5 )</var>
+				<var id="N">randRange( 6, 12 )</var>
+				<var id="Q">1</var>			
+				<var id="D">randRange( 1, 5 )</var>
+				<var id="J">(randRange( 1, 30 )/10).toFixed(1)</var>
+				<var id="P_ADD_Q">P+Q</var>
+				<var id="add">P_ADD_Q*N+M+D+J*10*N/10</var>
+			</div>
+			<div class="question">
+				<div class="problem">
+					<p><code><var>P</var> \displaystyle \frac{<var>M</var>}{<var>N</var>} -(<var>J</var>  - <var>Q</var> \displaystyle \frac{<var>D</var>}{<var>N</var>})</code></p>					
+				</div>
+			</div>
+			
+			<div class="solution" data-fraction-input="true" >
+				<span class="sol" data-type="rational"><var>add/N</var></span>   
+			</div>
+			
+			<div class="hints">
+				<p>我們發現式子當中的兩個分數分母都相同，我們可以將括號拆開，先計算分數的部分,</p>
+				<p>拆括號時，當括號前面是減號時，去掉括號後，原來括號內的加號要變成減號，減號要變成加號。</p>
+				<P><code> \enspace \enspace \enspace<var>P</var> \displaystyle \frac{<var>M</var>}{<var>N</var>} -(<var>J</var>  - <var>Q</var> \displaystyle \frac{<var>D</var>}{<var>N</var>})</code></P>
+				<p><code>=<var>P</var> \displaystyle \frac{<var>M</var>}{<var>N</var>} -<var>J</var>  + <var>Q</var> \displaystyle \frac{<var>D</var>}{<var>N</var>}</code></p>
+				<p><code>=<var>P</var> \displaystyle \frac{<var>M</var>}{<var>N</var>} + <var>Q</var> \displaystyle \frac{<var>D</var>}{<var>N</var>} -<var>J</var>  </code></p>
+				<p><code>=(<var>P</var> + <var>Q</var>) \displaystyle \frac{<var>M</var> + <var>D</var>}{<var>N</var>} - <var>J</var>  </code></p>
+				<p><code>=<var>P_ADD_Q</var> \displaystyle \frac{<var>M</var> + <var>D</var>}{<var>N</var>} - \displaystyle \frac{<var>J</var> \times <var>N</var>}{<var>N</var>}</code></p>
+				<p><code>= \displaystyle \frac{<var>P_ADD_Q</var> \times <var>N</var> + <var>M</var> + <var>D</var> - <var>J</var> \times <var>N</var>}{<var>N</var>}</code></p>
+				<p><code>= \displaystyle \frac{<var>add</var>}{<var>N</var>}</code></p>
+				<p><code>=<var>mixedFractionFromImproper(add*10,N*10,true,true,false,false)</var></code></p>
+			</div>
+		</div>
+		
+	</div>
+	</div>
+</body>
+</html>

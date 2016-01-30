@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>認識角</title>
+    <script src="../khan-exercise.js"></script>
+	    <style>
+        .selector {
+            width:0px;
+            height:0px;
+            position:absolute;
+            border:12px solid black;
+            z-index:1;
+            opacity:0;
+            cursor:pointer;
+        }
+        .selected {
+        }
+        .ruler {
+            -ms-transform:rotate(-90deg);
+            -moz-transform:rotate(-90deg);
+            -webkit-transform:rotate(-90deg);
+            opacity:0.5;   
+        }
+    </style>
+	 <script>
+
+        function loadImg(elem, url, count, width, height) {
+
+            var loimg = document.getElementById(elem);
+
+            var inner = "";
+
+            for (var i = 1; i <= count; i++) {
+
+                inner += "<img id=" + "image" + elem + i + " width=" + width + " height=" + height + ">";
+
+            }
+
+            loimg.innerHTML += inner;
+
+            for (var j = 1; j <= count; j++) {
+
+                document.getElementById("image" + elem + j).src = url;
+
+            }
+
+        }
+
+    </script>
+	<script language="javascript">
+		function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+	</script>
+
+	
+</head>
+<body>
+	<div class="exercise">	
+		<div class="problems">
+			<div id="case1">
+				<div class="vars">
+					<var id="test">(function(){Khan.scratchpad.disable();})()</var>
+                    <var id="picture">randRange(1, 4)</var>
+					 <var id="data">
+                        (function(){
+						if(picture == 1)
+                            (loadImg("bg",Khan.urlBase+"images/comparing_angle1.png",+1,"350px","190px"));
+                         
+						if(picture == 2)
+                            (loadImg("bg",Khan.urlBase+"images/comparing_angle2.png",+1,"350px","190px"));
+                          
+						if(picture == 3)
+                            (loadImg("bg",Khan.urlBase+"images/comparing_angle3.png",+1,"350px","190px"));
+                            
+						if(picture == 4)
+                            (loadImg("bg",Khan.urlBase+"images/comparing_angle4.png",+1,"350px","190px"));
+                          
+                        })()
+                    </var>
+                </div>
+                <div class="question">
+                    <p class="question">請用滑鼠點出圖中所有的角。</p>
+					<div id="bg" style="width:350px;height:190px;position:absolute;"></div>
+					<div class="graphie" id="graph">
+                        init({
+                            range:[[0,13],[-5,0]]
+                        });
+                        arcCoords=new Array(new Array(),new Array(),new Array(),new Array());
+                        angles=new Array(new Array(),new Array(),new Array(),new Array());
+                        arcs=new Array(new Array(),new Array(),new Array(),new Array());
+                        arcCoords[0].push([2,-2]);angles[0].push([-90,0]);
+                        arcCoords[0].push([2,-3.86]);angles[0].push([0,90]);
+                        arcCoords[0].push([7.77,-2]);angles[0].push([-180,-90]);
+                        arcCoords[0].push([7.77,-3.86]);angles[0].push([90,180]);
+						
+                        arcCoords[1].push([3,-1.76]);angles[1].push([-60,45]);
+                        arcCoords[1].push([4.1,-0.77]);angles[1].push([-135,-43]);
+                        arcCoords[1].push([4.1,-3.57]);angles[1].push([60,120]);
+                        arcCoords[1].push([5.2,-1.76]);angles[1].push([135,240]);
+						
+                        arcCoords[2].push([4.2,-2.3]);angles[2].push([-90,45]);
+                        arcCoords[2].push([4.2,-3.9]);angles[2].push([0,90]);
+                        arcCoords[2].push([5.7,-0.8]);angles[2].push([-135,-45]);
+                        arcCoords[2].push([7.1,-2.3]);angles[2].push([135,270]);
+                        arcCoords[2].push([7.1,-3.9]);angles[2].push([90,180]);
+						
+                        arcCoords[3].push([3.1,-3.6]);angles[3].push([-4,65]);
+                        arcCoords[3].push([4.2,-1.3]);angles[3].push([-120,-60]);
+                        arcCoords[3].push([5.2,-3.6]);angles[3].push([115,184]);
+                        style({stroke:'black',opacity:0});
+                        for(j=0;j&lt;4;j++)
+                        {
+                            for(i=0;i&lt;arcCoords[j].length;i++)
+                            {
+                                arcs[j].push(arc(arcCoords[j][i],0.3,angles[j][i][0],angles[j][i][1]));
+                            }
+                        }
+                        $(".selector").bind("click",function(){
+                            $(this).toggleClass("selected");
+                            var id=$(this).attr("id");
+                            if($(this).hasClass("selected"))
+                                arcs[parseInt(id.substring(2,3))][parseInt(id.substring(3,4))].attr({opacity:1});
+                            else
+                                arcs[parseInt(id.substring(2,3))][parseInt(id.substring(3,4))].attr({stroke:'black',opacity:0});
+                        });
+					</div>
+					    <div data-if ="picture==1" id="sl00" class="selector" style="left:85px;top:125px;width:30px;height:20px;"></div>
+						<div data-if ="picture==1" id="sl01" class="selector" style="left:85px;top:200px;width:30px;height:30px;"></div>
+						<div data-if ="picture==1" id="sl02" class="selector" style="left:310px;top:125px;width:20px;height:20px;"></div>
+						<div data-if ="picture==1" id="sl03" class="selector" style="left:310px;top:200px;width:20px;height:30px;"></div>
+						
+						<div data-if ="picture==2" id="sl10" class="selector" style="left:122px;top:125px;width:15px;height:20px;"></div>
+						<div data-if ="picture==2" id="sl11" class="selector" style="left:173px;top:90px;width:15px;height:15px;"></div>
+						<div data-if ="picture==2" id="sl12" class="selector" style="left:173px;top:180px;width:15px;height:15px;"></div>
+						<div data-if ="picture==2" id="sl13" class="selector" style="left:205px;top:125px;width:15px;height:20px;"></div> 
+						
+						<div data-if ="picture==3" id="sl20" class="selector" style="left:180px;top:140px;width:20px;height:20px;"></div>
+						<div data-if ="picture==3" id="sl21" class="selector" style="left:180px;top:205px;width:20px;height:20px;"></div>
+						<div data-if ="picture==3" id="sl22" class="selector" style="left:235px;top:84px;width:20px;height:20px;"></div>
+						<div data-if ="picture==3" id="sl23" class="selector" style="left:286px;top:140px;width:20px;height:20px;"></div>
+						<div data-if ="picture==3" id="sl24" class="selector" style="left:286px;top:205px;width:20px;height:20px;"></div>
+						
+						<div data-if ="picture==4" id="sl30" class="selector" style="left:135px;top:190px;width:20px;height:20px;"></div>
+						<div data-if ="picture==4" id="sl31" class="selector" style="left:175px;top:95px;width:20px;height:25px;"></div>
+						<div data-if ="picture==4" id="sl32" class="selector" style="left:213px;top:190px;width:20px;height:20px;"></div>
+				</div>
+				<div class="solution" data-type="multiple">
+                    <div class="sol" data-type="custom">
+                        <div class="guess">1</div>
+                        <div class="validator-function">
+                            var result=true;
+							var empty_check = 0;
+                            $(".selector").each(function()
+							{
+                                if(!$(this).hasClass("selected")){
+                                    result=false;
+									empty_check+=1;
+								}
+                            });
+
+							if(empty_check==$(".selector").length)
+							{
+								return "";
+							}
+                            return result;
+                        </div>
+                    </div>
+                </div>
+				<div class="hints">
+					<p>每個角都是由兩個線段和一個頂點構成的部分。</p>
+                    <div class="graphie" data-update="graph" data-if="picture==1">
+						for(var i=0;i&lt;arcs[0].length;i++)
+						{
+							arcs[0][i].attr({stroke:'red',opacity:1});
+						}                       
+
+                        for(i=0;i&lt;4;i++)
+                        {
+                            $("#sl0"+i).addClass("selected");
+                        }
+                    </div>
+
+                    <div class="graphie" data-update="graph" data-if="picture==2">
+						for(var i=0;i&lt;arcs[1].length;i++)
+						{
+							arcs[1][i].attr({stroke:'red',opacity:1});
+						} 
+
+                        for(i=0;i&lt;4;i++)
+                        {
+                            $("#sl1"+i).addClass("selected");
+                        }
+                    </div>
+
+                    <div class="graphie" data-update="graph" data-if="picture==3">
+						for(var i=0;i&lt;arcs[2].length;i++)
+						{
+							arcs[2][i].attr({stroke:'red',opacity:1});
+						} 
+
+                        for(i=0;i&lt;5;i++)
+                        {
+                            $("#sl2"+i).addClass("selected");
+                        }
+                    </div>
+
+                    <div class="graphie" data-update="graph" data-if="picture==4">
+						for(var i=0;i&lt;arcs[3].length;i++)
+						{
+							arcs[3][i].attr({stroke:'red',opacity:1});
+						} 
+
+                        for(i=0;i&lt;3;i++)
+                        {
+                            $("#sl3"+i).addClass("selected");
+                        }
+                    </div>
+                </div>
+			</div>
+      
+			<div id="case2">
+			    <div class="vars">
+					<var id="num">randRange(1, 2)</var>
+				</div>
+				<div class="question">
+					<div class="problem">
+						<p>請選此圖比較正確的描述：</p>
+						<div data-if="num==1">
+							<p onclick="$('#a_1').prop('checked', 'checked')"><input id="a_1" value="1" type="radio" name="option" />這是角，因為有尖點。</p>
+							<p onclick="$('#a_2').prop('checked', 'checked')"><input id="a_2" value="2" type="radio" name="option" />不是角，因為角的兩邊要是直線段。</p>
+						</div>
+						<div data-if="num==2">
+							<p onclick="$('#a_2').prop('checked', 'checked')"><input id="a_2" value="2" type="radio" name="option" />不是角，因為角的兩邊要是直線段。</p>
+							<p onclick="$('#a_1').prop('checked', 'checked')"><input id="a_1" value="1" type="radio" name="option" />這是角，因為有尖點。</p>
+							
+						</div>
+						<div class="graphie" id="graph">
+							init({
+								range: [[-5, 5], [-3  , 5]]			
+							});
+						
+							arc([-6, 4],6,295,360,{stroke:"black"})
+							arc([6, 4],6,180,245,{stroke:"black"})
+						</div>
+					</div>
+				</div>
+				<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="instruction">
+						請在左側選出正確的答案。
+					</div>
+					<div class="guess">$('input:radio[name="option"]:checked').val()</div>
+					<div class="validator-function">
+						return guess == null ? "" : guess == 2;
+					</div>	
+										
+				</div>
+				</div>	
+				<div class="hints">
+					<div>
+						<p>數學上規定，角的兩邊要是直線段，</p>
+						<p>所以此圖<span class="hint_pink">不是角</span>。</p>
+					</div>
+				</div>
+				
+		    </div>
+			<div id="case3">
+				<div class="vars">
+				<var id="L">randRange(30, 60)</var>
+				<var id="len_1">3*Math.sin(L/180*Math.PI)</var>
+				<var id="high_1">3*Math.cos(L/180*Math.PI)</var>
+				<var id="len_2">6*Math.sin(L/180*Math.PI)</var>
+				<var id="high_2">6*Math.cos(L/180*Math.PI)</var>
+				<var id="num">randRange(1, 2)</var>
+				</div>
+				<div class="question">
+					<p>請選以下兩者比較正確的描述</p>
+					<div data-if="num==1">
+						<p onclick="$('#b_1').prop('checked', 'checked')"><input type="radio" name="option" value="1" id="b_1"/>甲同學：這兩個角一樣，角與其兩邊長度無關。</p>
+						<p onclick="$('#b_2').prop('checked', 'checked')"><input type="radio" name="option" value="2" id="b_2"/>乙同學：這兩個角不一樣，因為兩邊長度不相同。</p>
+					</div>
+					<div data-if="num==2">
+						<p onclick="$('#b_2').prop('checked', 'checked')"><input type="radio" name="option" value="2" id="b_2"/>甲同學：這兩個角不一樣，因為兩邊長度不相同。</p>
+						<p onclick="$('#b_1').prop('checked', 'checked')"><input type="radio" name="option" value="1" id="b_1"/>乙同學：這兩個角一樣，角與其兩邊長度無關。</p>						
+					</div>
+					<div class="graphie" id="graph">
+						init({
+							range: [[-5, 8], [-5, 1]]
+						});
+						line([-4, -4], [-1, -4])
+						line([-4,-4],[len_1-4,high_1-4],{stroke:"black"});
+						arc([-4,-4],1,0,90-L,{stroke:"green"});
+						line([1, -4], [7, -4])
+						line([1,-4],[len_2+1,high_2-4],{stroke:"black"});
+						arc([1,-4],1,0,90-L,{stroke:"green"});
+					</div>
+				</div>
+				<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="instruction">請在左側選出正確的答案。</div>
+					<div class="guess">$('input:radio[name="option"]:checked').val()</div>
+					<div class="validator-function">
+						return guess == null ? "" : guess == 1;
+					</div>
+				</div>	
+				</div>
+				<div class="hints">
+					<p>角與其兩邊長度無關。</p>
+					<div>
+						<p>所以正確的答案為：</p>
+						<p><span class="hint_pink"><var>num==1?"甲":"乙"</var>同學：這兩個角一樣，角與其兩邊長度無關</span>。</p>
+					</div>
+				</div>
+			</div>
+			<div id="case4">
+				<div class="vars">
+					<var id="A">polar(4, 75)</var>
+					<var id="a">[A[0]-2, A[1]-4]</var>
+					<var id="B">polar(4, 105)</var>
+					<var id="b">[B[0]-2, B[1]-4]</var>
+					<var id="C">polar(4, 165)</var>
+					<var id="c">[C[0]+6, C[1]-1]</var>
+					<var id="D">polar(4, 195)</var>
+					<var id="d">[D[0]+6, D[1]-1]</var>
+					<var id="num">randRange(1, 2)</var>
+				</div>
+				<div class="question">
+					<p>請選以下兩者比較正確的描述：</p>
+					<div data-if="num==1">
+						<p onclick="$('#c_1').prop('checked', 'checked')"><input type="radio" name="option" id="c_1" value="1" />甲同學：這兩個角一樣，角的方向不影響角。</p>
+						<p onclick="$('#c_2').prop('checked', 'checked')"><input type="radio" name="option" id="c_2" value="2" />乙同學：這兩個角不一樣，因為其方向不相同。</p>
+					</div>
+					<div data-if="num==2">
+						<p onclick="$('#c_2').prop('checked', 'checked')"><input type="radio" name="option" id="c_2" value="2" />甲同學：這兩個角不一樣，因為其方向不相同。</p>
+						<p onclick="$('#c_1').prop('checked', 'checked')"><input type="radio" name="option" id="c_1" value="1"/>乙同學：這兩個角一樣，角的方向不影響角。</p>
+						
+					</div>
+					<div class="graphie" id="graph">
+						init({
+							range: [[-5, 8], [-5,1]]
+						});
+						line([-2, -4],a,{stroke:"black"});
+						line([-2, -4],b,{stroke:"black"});
+						arc([-2, -4],1,75,105,{stroke:"green"});
+						line([6, -1],c,{stroke:"black"});
+						line([6, -1],d,{stroke:"black"});
+						arc([6, -1],1,165,195,{stroke:"green"});
+					</div>
+				</div>
+				<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="instruction">請在左側選出正確的答案。</div>
+					<div class="guess">$('input:radio[name="option"]:checked').val()</div>
+					<div class="validator-function">
+						return guess == null ? "" : guess == 1;
+					</div>
+										
+				</div>	
+				</div>
+				<div class="hints">
+					<p>角的方向不影響角。</p>
+					<div>
+						<p>所以正確的答案為：</p>
+						<p><span class="hint_pink"><var>num==1?"甲":"乙"</var>同學：這兩個角一樣，角的方向不影響角</span>。</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能用通分做簡單異分母的比較</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area input[type=text] {
+            width: 40px;
+        }
+        .ttable {
+            text-align: left;
+            margin-top: 20px;
+            margin-left: 5px;
+        }
+
+        .ttable tr {
+            height: 23px;
+        }
+
+        .ttable td {
+            padding: 0px 5px;
+            text-align: right;
+        }
+
+        .ttable .labels td {
+            padding-left: 5px;
+            text-align: left;
+            border-bottom: 2px solid black;
+        }
+
+        .ttable .cross-bar td {
+            padding-top: 5px;
+        }
+
+        .ttable .second-col {
+            border-left: 2px solid black;
+        }
+
+        .ttable .third-col {
+            border-left: 2px solid black;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+                <div class="vars" data-ensure="(getGCD(N1, D1) == 1) && (getGCD(N2, D2) == 1)">
+                    <var id="N1">randRange(2, 10)</var>
+                    <var id="D1" data-ensure="D1>N1">randRange(5, 20)</var>
+                    <var id="N2">randRange(2, 10)</var>
+                    <var id="D2" data-ensure="D2>N2">randRange(5, 20)</var>
+                    <var id="LCM">getLCM( D1, D2 )</var>
+                    <var id="COMP_N1">N1 * (LCM / D1)</var>
+                    <var id="COMP_N2">N2 * (LCM / D2)</var>
+                    <var id="SOLUTION">(function() {
+                        if ( COMP_N1 &gt; COMP_N2 ) {
+                            return "&gt;";
+                        } else if ( COMP_N1 &lt; COMP_N2 ) {
+                            return "&lt;";
+                        } else {
+                            return "=";
+                        }
+                        })()</var>
+                </div>
+                <div class="question">
+                    <p>將下列二分數進行通分後，再比較大小</p>
+                    <p>
+                        <code>\dfrac{<var>N1</var>}{<var>D1</var>}</code>
+                        ____ <code>\dfrac{<var>N2</var>}{<var>D2</var>}</code>
+                    </p>
+                </div>
+                <div class="solution"><code><var>SOLUTION</var></code></div>
+                <ul class="choices" data-category="true">
+                    <li><code>&lt;</code></li>
+                    <li><code>=</code></li>
+                    <li><code>&gt;</code></li>
+                </ul>
+                <div class="hints">
+                    <p>我們要先將 <code><var>fraction( N1, D1 )</var> 和 <var>fraction( N2, D2 )</var> 進行通分</code>，</p>
+                    <p>先觀察看看 <code><var>D1</var> 和 <var>D2</var> 的最小公倍數是多少？</code></p>
+                    <p>我們知道 <code><var>D1</var> 和 <var>D2</var> 的最小公倍數是 <var>LCM</var></code></p>
+                    <p><code><var>fraction( N1, D1 )</var> = <var>fraction( COMP_N1, LCM )</var></code></p>
+                    <p><code><var>fraction( N2, D2 )</var> = <var>fraction( COMP_N2, LCM )</var></code></p>
+                    <p>我們知道 <code><var>fraction( COMP_N1, LCM )</var> \color{#F62217}{<var>SOLUTION</var>} <var>fraction( COMP_N2, LCM )</var>， 所以 <var>fraction( N1, D1 )</var> \color{#F62217}{<var>SOLUTION</var>} <var>fraction( N2, D2 )</var></code></p>
+                </div>
+            </div>
+            <div id="case2">
+                <div class="vars" data-ensure="(getGCD(N1, D1) == 1) && (getGCD(N2, D2) == 1)">
+                    <var id="PERSON1">randFromArray(["小文", "小虎", "洋洋", "大明"])</var>
+                    <var id="PERSON2">randFromArray(["丁丁", "小芳", "小松", "大鵬"])</var>
+                    <var id="THING">randFromArray(["起司蛋糕", "藍莓派", "巧克力蛋糕", "提拉米蘇派"])</var>
+                    <var id="N1">randRange(2, 10)</var>
+                    <var id="D1" data-ensure="D1>N1">randRange(5, 20)</var>
+                    <var id="N2">randRange(2, 10)</var>
+                    <var id="D2" data-ensure="D2>N2">randRange(5, 20)</var>
+                    <var id="LCM">getLCM( D1, D2 )</var>
+                    <var id="COMP_N1">N1 * (LCM / D1)</var>
+                    <var id="COMP_N2">N2 * (LCM / D2)</var>
+                    <var id="SOLUTION">(function() {
+                        if ( COMP_N1 &gt; COMP_N2 ) {
+                        return PERSON1;
+                        } else if ( COMP_N1 &lt; COMP_N2 ) {
+                        return PERSON2;
+                        } else {
+                        return "一樣";
+                        }
+                        })()</var>
+                    <var id="COMPARISON">(function() {
+                        if ( COMP_N1 &gt; COMP_N2 ) {
+                        return "&gt;";
+                        } else if ( COMP_N1 &lt; COMP_N2 ) {
+                        return "&lt;";
+                        } else {
+                        return "=";
+                        }
+                        })()</var>
+                </div>
+                <div class="question">
+                    <p><span>一樣大的<var>THING</var>， <var>PERSON1</var>吃了<code><var>fraction(N1, D1)</var></code>個<var>THING</var>，</span></p>
+                    <p><span><var>PERSON2</var>吃了<code><var>fraction(N2, D2)</var></code>個<var>THING</var>，誰吃的<var>THING</var>比較多？</span> </p>
+                </div>
+					<div class="solution"><code><var>SOLUTION</var></code></div>
+					<ul class="choices" data-category="true">
+						<li><code><var>PERSON1</var></code></li>
+						<li><code>一樣</code></li>
+						<li><code><var>PERSON2</var></code></li>
+					</ul>
+                <div class="hints">
+                    <p><code>\normalsize{我們要先將 <var>fraction( N1, D1 )</var> 和 <var>fraction( N2, D2 )</var> 進行通分，}</code></p>
+                    <p><code>\normalsize{先觀察看看 <var>D1</var> 和 <var>D2</var> 的最小公倍數是多少？}</code></p>
+                    <p><code>\normalsize{我們知道 <var>D1</var> 和 <var>D2</var> 的最小公倍數是 <var>LCM</var>}</code></p>
+                    <p><code><var>fraction( N1, D1 )</var> = <var>fraction( COMP_N1, LCM )</var></code></p>
+                    <p><code><var>fraction( N2, D2 )</var> = <var>fraction( COMP_N2, LCM )</var></code></p>
+                    <p><code>\normalsize{我們知道 <var>fraction( COMP_N1, LCM )</var> <var>COMPARISON</var> <var>fraction( COMP_N2, LCM )</var>， 所以 <var>fraction( N1, D1 )</var> <var>COMPARISON</var> <var>fraction( N2, D2 )</var>}</code></p>
+                    <p><code>\normalsize{\color{#F62217}{<var>SOLUTION</var>}吃的比較多}</code></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

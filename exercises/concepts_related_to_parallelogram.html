@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>與平行四邊形相關的概念</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+        #answer_area .entry input[type=text] {
+            width: 50px;
+        }
+        </style>
+	<script type="text/javascript">
+		function chg2(num,quesMin,quesMax){
+		    var ansNums = KhanUtil.randRange(num-quesMax,num-quesMin);
+			var arr = KhanUtil.randRangeUnique(1,num,ansNums);
+			for(var i = 0;i<=ansNums-1;i++){
+				document.getElementById("t_"+arr[i]).style.display="none";
+			}
+			return [num-ansNums,arr];
+		}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+	    <div id="case1">
+            <div class="vars">
+				<var id="test">(function(){Khan.scratchpad.disable();})()</var>
+				<var id="change">chg2(4,3,4)</var>
+            </div>
+			<p class="question">下圖中， <code>\angle{2}+\angle{3}=180^{\circ}</code> ，<code>\overline{AH}\perp N</code> ，說明 <code>\angle{1}</code> 是直角。</p>
+			<div class="problem">
+			    <div class="graphie" id="paralle_1">
+				    init({
+                        range: [ [-1, 12], [-1,4] ],
+                        scale: 40
+                    });
+					line([0,2.5],[5,2.5]);
+					line([0,0],[5,0]);
+					line([0.5,-0.8],[2.2,3.2]);
+					line([4,0],[4,2.5]);
+					line([3.7,0],[3.7,0.3]);
+					line([3.7,0.3],[4,0.3]);
+					label( [1,-0.2],  "\\small{3}", "above right", { color: "black" });
+					label( [2.5,2.5],  "\\small{2}", "below left", { color: "black" });
+					label( [4,2.5],  "\\small{1}", "below left", { color: "black" });
+					label( [4,2.5],  "\\small{A}", "below right", { color: "black" });
+					label( [4,0],  "\\small{H}", "below", { color: "black" });
+					label( [5,0],  "\\small{N}", "right", { color: "black" });
+					label( [5,2.5],  "\\small{M}", "right", { color: "black" });
+					label( [2.5,2.8],  "\\small{L}", "above", { color: "black" });
+				</div>
+				<p>由於<code>\angle{1}+\angle{2}+\angle{3}+\angle{H}=\enspace</code><input type="text" style="width:50px" id="t_1"><code data-if="t_1.style.display=='none'">360</code><code>^{\circ}\enspace\enspace\enspace</code>四邊形內角和為&nbsp;<input type="text" style="width:50px" id="t_2"><code data-if="t_2.style.display=='none'">360</code><code>^{\circ}</code></p>
+				<p>但由題意知 <code>\angle{H}=90^{\circ}</code> ，</p>
+				<p>而且 <code>\angle{2}+\angle{3}=\enspace</code><input type="text" style="width:50px" id="t_3"><code data-if="t_3.style.display=='none'">180</code><code>^{\circ}\enspace\enspace\enspace\enspace</code>同側內角互補</p>
+
+				<p>所以 <code>\angle{1}+180^{\circ}+90^{\circ}=\angle{1}+270^{\circ}=360^{\circ}</code> ，</p>
+				<p>得 <code>\angle{1}=\enspace</code><input type="text" style="width:50px" id="t_4"><code data-if="t_4.style.display=='none'">90</code><code>^{\circ}</code> ，</p>
+				<p>即 <code>\angle{1}</code> 是 <code class="hint_pink">直角</var></code> 。</p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[$("#t_1").val(),$("#t_2").val(),$("#t_3").val(),$("#t_4").val()]</div>
+				    <div class="validator-function">
+						var rightNums = 0;
+						if(document.getElementById("t_1").style.display==""){
+						    (guess[0].replace(/[ ]/g,"")=="360"||guess[0].replace(/[ ]/g,"")==360)?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_2").style.display==""){
+						    (guess[1].replace(/[ ]/g,"")=="360"||guess[1].replace(/[ ]/g,"")==360)?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_3").style.display==""){
+						    (guess[2].replace(/[ ]/g,"")=="180"||guess[2].replace(/[ ]/g,"")==180)?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_4").style.display==""){
+						    (guess[3].replace(/[ ]/g,"")=="90"||guess[3].replace(/[ ]/g,"")==90)?rightNums+=1:rightNums+=0;
+						}
+					    return rightNums==change[0]?true:false;
+                    </div>
+				</div>
+				<p class="example">數字與文字，英文使用大寫</p>
+            </div>
+            <div class="hints">
+			    <p>
+			    	由於 <code>\angle{1}+\angle{2}+\angle{3}+\angle{H} = \color{#FF00AF}{360^{\circ}}</code><br />
+			    	四邊形內角和為 <code class="hint_pink">360^{\circ}</code></p>
+				<p>但由題意知 <code>\angle{H}=90^{\circ}</code></p>
+				<p>而且 <code>\angle{2}+\angle{3} = \color{#FF00AF}{180^{\circ}}</code></p>
+				<p>所以 <code>\angle{1}+180^{\circ}+90^{\circ}=\angle{1}+270^{\circ}=360^{\circ}</code></p>
+				<p>得 <code class="hint_pink">\angle{1}=90^{\circ}</code> ，即 <code>\angle{1}</code> 是 <code class="hint_pink">直角</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case2">
+            <div class="vars">
+			    <var id="J">randRange(55,85)</var>
+				<var id="tanVal">Math.tan(J*Math.PI/180)</var>
+            </div>
+			<p class="question">下圖中， <code>\angle{3}=\angle{4}</code> ，<code>\angle{1}=<var>J</var>^{\circ}</code> ，求 <code>\angle{2}</code> 。</p>
+			<div class="problem">
+			    <div class="graphie" id="paralle_2">
+				    init({
+                        range: [ [-1, 12], [-1,4] ],
+                        scale: 40
+                    });
+					line([0,2.5],[7,2.5]);
+					line([0,0],[7,0]);
+					line([2.2,-0.8],[0.5,3.2]);
+					label( [2,-0.2],  "\\small{3}", "above right", { color: "black" });
+					label( [0.5,2.5],  "\\small{4}", "below", { color: "black" });
+
+					var belowL = 6-3.3/tanVal;
+					var aboveL = 6+0.7/tanVal;
+					line([belowL,-0.8],[aboveL,3.2]);
+					label( [7,0],  "\\small{N}", "right", { color: "black" });
+					label( [7,2.5],  "\\small{M}", "right", { color: "black" });
+					var nl = 2.5/tanVal;
+					label( [6-nl,-0.2],  "\\small{2}", "above left", { color: "black" });
+					label( [5.7,2.5],  "\\small{1}", "below left", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+			    <code>\angle{2}=\enspace</code><span class="sol" data-forms="integer"><var>180-J</var></span><code>^{\circ}</code>
+            </div>
+            <div class="hints">
+			    <p>因為 <code>\angle{3}=\angle{4}</code> ，</p>
+				<p>所以 <code>M//N\enspace\enspace\enspace\enspace\color{BLUE}{平行線判定性質-內錯角相等}</code></p>
+				<p>因此 <code>\angle{1}+\angle{2}=180^{\circ}\enspace\enspace\enspace\enspace\color{BLUE}{同側內角互補}</code></p>
+				<p>但因為 <code>\angle{1}=<var>J</var>^{\circ}</code> ，</p>
+				<p>所以 <code>\angle{2}=180^{\circ}-<var>J</var>^{\circ}=<var>180-J</var>^{\circ}</code></p>
+				<p>因此，本題的答案為 <code class="hint_pink">\angle{2}=<var>180-J</var>^{\circ}</code> 。</p>
+            </div>
+        </div>
+		
+		<div id="case3">
+            <div class="vars">
+				<var id="test">(function(){Khan.scratchpad.disable();})()</var>
+				<var id="change">chg2(7,3,6)</var>
+            </div>
+			<p class="question">說明兩組對邊相等的四邊形一定是平行四邊形。</p>
+			<div class="problem">
+				<p>請在下面的表格中填入正確的答案</p>
+			    <div>
+					<p>如下圖，假設四邊形 <code>ABCD</code> 中 <code>\overline{AB}=\overline{CD}</code> ，<code>\overline{BC}=\overline{AD}</code> ，並做對角線 <code>\overline{AC}</code> 。</p>
+					<div class="graphie" id="paralle_3">
+				    init({
+                        range: [ [-1, 12], [-1,4] ],
+                        scale: 40
+                    });
+					path([[0,0],[4,0],[5,2.5],[1,2.5],[0,0]],{stroke:"black"});
+					line([4,0],[1,2.5]);
+					label( [0,0],  "\\small{B}", "below left", { color: "black" });
+					label( [4,0],  "\\small{C}", "below right", { color: "black" });
+					label( [5,2.5],  "\\small{D}", "above right", { color: "black" });
+					label( [1,2.5],  "\\small{A}", "above left", { color: "black" });
+					
+					label( [2,1.7],  "\\small{1}", "above", { color: "black" });
+					label( [1.5,1.7],  "\\small{3}", "left", { color: "black" });
+					label( [3.8,0.15],  "\\small{4}", "above", { color: "black" });
+					label( [3.5,0.2],  "\\small{2}", "left", { color: "black" });
+					</div>
+				</div>
+				<p>因為 <code>\overline{AB}=\overline{CD}</code> ，<code>\overline{BC}=\overline{AD}</code><code>\enspace\enspace\enspace\enspace\color{#6495ED}{已知}</code></p>
+				<p>又 <code>\overline{AC}=\overline{AC}</code><code>\enspace\enspace\enspace\enspace\color{#6495ED}{共邊}</code></p>
+				<p>所以 <code>\triangle{}</code><input type="text" style="width:50px" id="t_1"><code data-if="t_1.style.display=='none'">ABC</code><code>\enspace\cong\triangle{CDA}\enspace\enspace\enspace\enspace</code><input type="text" style="width:50px" id="t_2"><code data-if="t_2.style.display=='none'" class="hint_blue">SSS</code><code>\color{#6495ED}{全等性質}</code></p>
+				<p>得 <code>\angle{1}=\angle{2}\enspace\enspace\enspace\enspace\color{#6495ED}{對應角相等}</code></p>
+				<p>因此 <span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:50px" id="t_3"><code data-if="t_3.style.display=='none'">AD</code></span><code>//</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:50px" id="t_4"><code data-if="t_4.style.display=='none'">BC</code></span><code>\enspace\enspace\enspace\enspace\color{#6495ED}{內錯角相等之平行線判定性質}</code></p>
+				<p>同理，因為 <code>\angle{3}=\angle{}</code><input type="text" style="width:50px" id="t_5"><code data-if="t_5.style.display=='none'">4</code> ，所以 <span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:50px" id="t_6"><code data-if="t_6.style.display=='none'">AB</code></span><code>//\overline{CD}</code> 。</p>
+				<p>由前兩行的結論知道，<code>ABCD</code> 為 <input type="text" style="width:50px" id="t_7"><code data-if="t_7.style.display=='none'">平行</code><code class="hint_pink">四邊形</code>。</p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value,document.getElementById("t_2").value,document.getElementById("t_3").value,document.getElementById("t_4").value,document.getElementById("t_5").value,document.getElementById("t_6").value,document.getElementById("t_7").value]</div>
+				    <div class="validator-function">
+						var rightNums = 0;
+						if(document.getElementById("t_1").style.display==""){
+						    guess[0].replace(/[ ]/g,"")=="ABC"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_2").style.display==""){
+						    guess[1].replace(/[ ]/g,"")=="SSS"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_3").style.display==""&&document.getElementById("t_4").style.display==""){
+						    (((guess[2].replace(/[ ]/g,"")=="AD"||guess[2].replace(/[ ]/g,"")=="DA")&&(guess[3].replace(/[ ]/g,"")=="BC"||guess[3].replace(/[ ]/g,"")=="CB"))||((guess[2].replace(/[ ]/g,"")=="BC"||guess[2].replace(/[ ]/g,"")=="CB")&&(guess[3].replace(/[ ]/g,"")=="AD"||guess[3].replace(/[ ]/g,"")=="DA")))?rightNums+=2:rightNums+=0;
+						}
+						if(document.getElementById("t_3").style.display==""&&document.getElementById("t_4").style.display!=""){
+						    (guess[2].replace(/[ ]/g,"")=="AD"||guess[2].replace(/[ ]/g,"")=="DA")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_4").style.display==""&&document.getElementById("t_3").style.display!=""){
+						    (guess[3].replace(/[ ]/g,"")=="BC"||guess[3].replace(/[ ]/g,"")=="CB")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_5").style.display==""){
+						    (guess[4].replace(/[ ]/g,"")=="4"||guess[4].replace(/[ ]/g,"")==4||guess[4].replace(/[ ]/g,"")=="ACD"||guess[4].replace(/[ ]/g,"")=="DCA")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_6").style.display==""){
+						    (guess[5].replace(/[ ]/g,"")=="AB"||guess[5].replace(/[ ]/g,"")=="BA")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_7").style.display==""){
+						    guess[6].replace(/[ ]/g,"")=="平行"?rightNums+=1:rightNums+=0;
+						}
+					    return rightNums==change[0]?true:false;
+					</div>
+				</div>
+				<p class="example">數字與文字</p>
+            </div>
+            <div class="hints">
+				<div>
+					<p>如下圖，假設四邊形 <code>ABCD</code> 中 <code>\overline{AB}=\overline{CD}</code> ，<code>\overline{BC}=\overline{AD}</code> ，並做對角線 <code>\overline{AC}</code> 。</p>
+					<div class="graphie" id="paralle_3_1">
+				    init({
+                        range: [ [-1, 12], [-1,4] ],
+                        scale: 40
+                    });
+					path([[0,0],[4,0],[5,2.5],[1,2.5],[0,0]],{stroke:"black"});
+					line([4,0],[1,2.5]);
+					label( [0,0],  "\\small{B}", "below left", { color: "black" });
+					label( [4,0],  "\\small{C}", "below right", { color: "black" });
+					label( [5,2.5],  "\\small{D}", "above right", { color: "black" });
+					label( [1,2.5],  "\\small{A}", "above left", { color: "black" });
+					label( [2,1.7],  "\\small{1}", "above", { color: "black" });
+					label( [1.5,1.7],  "\\small{3}", "left", { color: "black" });
+					label( [3.8,0.15],  "\\small{4}", "above", { color: "black" });
+					label( [3.5,0.2],  "\\small{2}", "left", { color: "black" });
+					</div>
+				</div>
+				<p>因為 <code>\overline{AB}=\overline{CD}</code> ，<code>\overline{BC}=\overline{AD}</code><code>\enspace\enspace\enspace\enspace\color{#6495ED}{已知}</code></p>
+				<p>又 <code>\overline{AC}=\overline{AC}</code><code>\enspace\enspace\enspace\enspace\color{#6495ED}{共邊}</code></p>
+				<p>所以 <code>\triangle{ABC}\cong\triangle{CDA}</code><code>\enspace\enspace\enspace\enspace\color{#6495ED}{SSS全等性質}</code></p>
+				<p>得 <code>\angle{1}=\angle{2}\enspace\enspace\enspace\enspace\color{#6495ED}{對應角相等}</code></p>
+				<p>因此 <code>\overline{AD}//\overline{BC}\enspace\enspace\enspace\enspace\color{#6495ED}{內錯角相等之平行線判定性質}</code></p>
+				<p>同理，因為 <code>\angle{3}=\angle{4}</code> ，所以 <code>\overline{AB}//\overline{CD}</code> 。</p>
+				<p>由前兩行的結論知道，<code>ABCD</code> 為 <code class="hint_pink">平行四邊形</code>。</p>
+            </div>
+        </div>
+		
+		<div id="case4">
+            <div class="vars">
+				<var id="test">(function(){Khan.scratchpad.disable();})()</var>
+				<var id="change">chg2(7,3,6)</var>
+            </div>
+			<p class="question">四邊形 <code>ABCD</code> 中，已知 <code>\overline{AB}//\overline{CD}</code> ，且 <code>\overline{AB}=\overline{CD}</code> ，請說明 <code>\overline{AD}//\overline{BC}</code> 。</p>
+			<div class="problem">
+				<div class="graphie" id="paralle_4_1">
+					init({
+                        range: [ [-1, 12], [-1,4] ],
+                        scale: 40
+                    });
+					path([[0,0],[4,0],[5,2.5],[1,2.5],[0,0]],{stroke:"black"});
+					label( [0,0],  "\\small{B}", "below left", { color: "black" });
+					label( [4,0],  "\\small{C}", "below right", { color: "black" });
+					label( [5,2.5],  "\\small{D}", "above right", { color: "black" });
+					label( [1,2.5],  "\\small{A}", "above left", { color: "black" });
+				</div>
+				<p>請在下面的表格中填入正確的答案</p>
+				<div>
+					<p>如下圖，作對角線 <code>\overline{AC}</code> 。在 <code>\triangle{ABC}</code> 與 <code>\triangle{CDA}</code> 中，</p>
+					<div class="graphie" id="paralle_4_2">
+				    init({
+                        range: [ [-1, 12], [-1,4] ],
+                        scale: 40
+                    });
+					path([[0,0],[4,0],[5,2.5],[1,2.5],[0,0]],{stroke:"black"});
+					line([4,0],[1,2.5]);
+					label( [0,0],  "\\small{B}", "below left", { color: "black" });
+					label( [4,0],  "\\small{C}", "below right", { color: "black" });
+					label( [5,2.5],  "\\small{D}", "above right", { color: "black" });
+					label( [1,2.5],  "\\small{A}", "above left", { color: "black" });
+					label( [2,1.7],  "\\small{4}", "above", { color: "black" });
+					label( [1.5,1.7],  "\\small{1}", "left", { color: "black" });
+					label( [3.8,0.15],  "\\small{3}", "above", { color: "black" });
+					label( [3.5,0.2],  "\\small{2}", "left", { color: "black" });
+					</div>
+				</div>
+				<p>因為 <code>\overline{AB}=\overline{CD}\enspace\enspace\enspace\enspace\color{#6495ED}{已知}</code></p>
+				<p><code>\enspace\enspace\enspace\enspace\angle{1}=\angle{}</code><input type="text" style="width:50px" id="t_1"><code data-if="t_1.style.display=='none'">3</code><code>\enspace\enspace\enspace\enspace</code><input type="text" style="width:50px" id="t_2"><code data-if="t_2.style.display=='none'" class="hint_blue">內錯角</code><code>\color{#6495ED}{相等}</code></p>
+				<p><code>\enspace\enspace\enspace\enspace\overline{AC}=\overline{AC}\enspace\enspace\enspace\enspace\color{#6495ED}{共邊}</code></p>
+				<p>所以 <code>\triangle{}</code><input type="text" style="width:50px" id="t_3"><code data-if="t_3.style.display=='none'">ABC</code><code>\enspace\cong\triangle{CDA}\enspace\enspace\enspace\enspace</code><input type="text" style="width:50px" id="t_4"><code data-if="t_4.style.display=='none'" class="hint_blue">SAS</code><code>\color{#6495ED}{全等性質}</code></p>
+				<p>得 <code>\enspace\enspace\angle{2}=\angle{}</code><input type="text" style="width:50px" id="t_5"><code data-if="t_5.style.display=='none'">4</code></p>
+				<p>因此 <code>\overline{AD}//</code><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:50px" id="t_6"><code data-if="t_6.style.display=='none'">BC</code></span><code>\enspace\enspace\enspace\enspace</code><input type="text" style="width:50px" id="t_7"><code data-if="t_7.style.display=='none'" class="hint_blue">內錯</code><code>\color{#6495ED}{角相等之平行線判定性質}</code></p>
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("t_1").value,document.getElementById("t_2").value,document.getElementById("t_3").value,document.getElementById("t_4").value,document.getElementById("t_5").value,document.getElementById("t_6").value,document.getElementById("t_7").value]</div>
+				    <div class="validator-function">
+						var rightNums = 0;
+						if(document.getElementById("t_1").style.display==""){
+						    (guess[0].replace(/[ ]/g,"")=="3"||guess[0].replace(/[ ]/g,"")==3||guess[0].replace(/[ ]/g,"")=="ACD"||guess[0].replace(/[ ]/g,"")=="DCA")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_2").style.display==""){
+						    guess[1].replace(/[ ]/g,"")=="內錯角"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_3").style.display==""){
+						    guess[2].replace(/[ ]/g,"")=="ABC"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_4").style.display==""){
+						    guess[3].replace(/[ ]/g,"")=="SAS"?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_5").style.display==""){
+						    (guess[4].replace(/[ ]/g,"")=="4"||guess[4].replace(/[ ]/g,"")==4||guess[4].replace(/[ ]/g,"")=="CAD"||guess[4].replace(/[ ]/g,"")=="DAC")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_6").style.display==""){
+						    (guess[5].replace(/[ ]/g,"")=="BC"||guess[5].replace(/[ ]/g,"")=="CB")?rightNums+=1:rightNums+=0;
+						}
+						if(document.getElementById("t_7").style.display==""){
+						    guess[6].replace(/[ ]/g,"")=="內錯"?rightNums+=1:rightNums+=0;
+						}
+					    return rightNums==change[0]?true:false;
+					</div>
+				</div>
+				<p class="example">數字與文字</p>
+            </div>
+            <div class="hints">
+				<div>
+					<p>如下圖，作對角線 <code>\overline{AC}</code> 。在 <code>\triangle{ABC}</code> 與 <code>\triangle{CDA}</code> 中，</p>
+					<div class="graphie" id="paralle_4_3">
+				    init({
+                        range: [ [-1, 12], [-1,4] ],
+                        scale: 40
+                    });
+					path([[0,0],[4,0],[5,2.5],[1,2.5],[0,0]],{stroke:"black"});
+					line([4,0],[1,2.5]);
+					label( [0,0],  "\\small{B}", "below left", { color: "black" });
+					label( [4,0],  "\\small{C}", "below right", { color: "black" });
+					label( [5,2.5],  "\\small{D}", "above right", { color: "black" });
+					label( [1,2.5],  "\\small{A}", "above left", { color: "black" });
+					label( [2,1.7],  "\\small{4}", "above", { color: "black" });
+					label( [1.5,1.7],  "\\small{1}", "left", { color: "black" });
+					label( [3.8,0.15],  "\\small{3}", "above", { color: "black" });
+					label( [3.5,0.2],  "\\small{2}", "left", { color: "black" });
+					</div>
+				</div>
+				<p>因為 <code>\overline{AB}=\overline{CD}\enspace\enspace\enspace\enspace\color{#6495ED}{已知}</code></p>
+				<p><code>\enspace\enspace\enspace\enspace\angle{1}=\angle{3}\enspace\enspace\enspace\enspace\color{#6495ED}{內錯角相等}</code></p>
+				<p><code>\enspace\enspace\enspace\enspace\overline{AC}=\overline{AC}\enspace\enspace\enspace\enspace\color{#6495ED}{共邊}</code></p>
+				<p>所以 <code>\triangle{ABC}\cong\triangle{CDA}\enspace\enspace\enspace\enspace\color{#6495ED}{SAS全等性質}</code></p>
+				<p>得 <code>\enspace\enspace\angle{2}=\angle{4}</code></p>
+				<p>因此 <code class="hint_pink">\overline{AD}//\overline{BC}</code><code>\enspace\enspace\enspace\enspace\color{#6495ED}{內錯角相等之平行線判定性質}</code></p>
+            </div>
+        </div>
+		
+		<div id="case5">
+            <div class="vars">
+				<var id="jk">randFromArray([[10,6,8],[5,3,4],[25,7,24],[15,9,12],[13,5,12],[50,14,48],[30,18,24],[26,10,24]])</var>
+				<var id="J">jk[0]</var>
+				<var id="K">jk[1]</var>
+				<var id="L">jk[2]</var>
+				<var id="r2">K*K+L*L/4</var>
+				<var id="d">splitRadical(r2)</var>
+				<var id="smm">J/8</var>
+				<var id="high">L*K/J</var>
+				<var id="leftlen">K*K/J</var>
+            </div>
+			<p class="question">如下圖，<code>\overline{AC}\perp\overline{CD}</code> ，<code>\overline{AC}\perp\overline{AB}</code> ，<code>\overline{AD}=\overline{BC}=<var>J</var></code> ，<code>\overline{CD}=<var>K</var></code> ，求 <code>\overline{OA}</code> 和 <code>\overline{OB}</code>。</p>
+			<div class="problem">
+				<div class="graphie" id="paralle_5">
+					init({
+                        range: [ [-1, 12], [-1,high/smm+1] ],
+                        scale: 40
+                    });
+					path([[0,0],[J/smm,0],[(J+leftlen)/smm,high/smm],[leftlen/smm,high/smm],[0,0]],{stroke:"black"});
+					label( [leftlen/smm,high/smm],  "\\small{A}", "above left", { color: "black" });
+					label( [0,0],  "\\small{B}", "below left", { color: "black" });
+					label( [J/smm,0],  "\\small{C}", "below right", { color: "black" });
+					label( [(J+leftlen)/smm,high/smm],  "\\small{D}", "above right", { color: "black" });
+					
+					label( [(J+leftlen)/smm/2,high/smm/2],  "\\small{O}", "below", { color: "black" });
+					line([0,0],[(J+leftlen)/smm,high/smm],{stroke:"red"});
+					line([leftlen/smm,high/smm],[J/smm,0],{stroke:"green"});
+					
+					label( [J/smm/2,0],  "\\small{"+J+"}", "below", { color: "black" });
+					label( [(J+leftlen)/smm/2,high/smm],  "\\small{"+J+"}", "above", { color: "black" });
+					label( [J/smm+leftlen/smm/2,high/smm/2],  "\\small{"+K+"}", "right", { color: "black" });
+				</div>
+			</div>
+			<div class="solution" data-type="multiple">
+				 <code>\overline{OA}=\enspace</code><span class="sol" data-forms="integer"><var>L/2</var></span><br />
+				 <code>\overline{OB}=\enspace</code><input type="text" id="intPart" style="width:50px"><span style="font: 150% Arial; padding: 0 0 0 5px;">√</span><span style="border-top: 1px solid #000; padding: 6px 1px 0 3px; margin-left: -1px;"><input type="text" style="width:30px" id="sqrtPart"></span>
+				 <div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("intPart").value,document.getElementById("sqrtPart").value]</div>
+				    <div class="validator-function">
+						var intAns = guess[0].replace(/[ ]/g,"")==""?1:guess[0].replace(/[ ]/g,"");
+						var sqrtAns = guess[1].replace(/[ ]/g,"")==""?1:guess[1].replace(/[ ]/g,"");
+						return intAns*intAns*sqrtAns==r2;
+					</div>
+				</div>
+				<p class="example">整數，例：<code>6</code></p>
+				<p class="example">根式內外的答案若為 <code>1</code> 可不填</p>
+            </div>
+            <div class="hints">
+				<p>由題意知，<code>\triangle{CDA}</code> 是直角三角形，</p>
+				<p>因此 <code>\overline{AC}=\sqrt{\overline{AD}^{2}-\overline{CD}^{2}}=\sqrt{<var>J</var>^{2}-<var>K</var>^{2}}=<var>L</var>\enspace\enspace\enspace\enspace\color{#6495ED}{畢氏定理}</code></p>
+				<p>由於 <code>\overline{AD}=\overline{BC}</code> ，<code>\overline{AC}=\overline{AC}</code></p>
+				<p>所以 <code>\triangle{ABC}\cong\triangle{CDA}\enspace\enspace\enspace\enspace\color{#6495ED}{RHS全等性質}</code></p>
+				<p>得 <code>\enspace\enspace\overline{AB}=\overline{CD}=<var>K</var>\enspace\enspace\enspace\enspace\color{#6495ED}{對應邊相等}</code></p>
+				<p>所以 <code>ABCD</code> 是平行四邊形，<code>\enspace\enspace\enspace\enspace\color{#6495ED}{兩組對邊相等}</code></p>
+				<p>得 <code>\overline{OA}=\overline{AC}\times\dfrac{1}{2}=</code><code class="hint_green">\enspace<var>L/2</var></code><code>\enspace\enspace\enspace\enspace\color{#6495ED}{對角線互相平分}</code></p>
+				<p>由於 <code>\overline{OB}^{2}=\overline{AB}^{2}+\overline{OA}^{2}=<var>K*K</var>+<var>L*L/4</var>=<var>r2</var></code></p>
+				<p data-if="d[0]!=1">得 <code>\overline{OB}=\sqrt{<var>r2</var>}=\sqrt{<var>d[0]</var>^{2}\times<var>d[1]</var>}=</code><code class="hint_green">\enspace<var>formattedSquareRootOf(r2)</var></code> 。</p>
+				<p data-if="d[0]==1">得 <code>\overline{OB}=</code><code class="hint_green">\enspace\sqrt{<var>r2</var>}</code> 。</p>
+				<p>因此，本題的答案為 <code>\overline{OA}=</code><code class="hint_pink">\enspace<var>L/2</var></code> ，<code>\overline{OB}=</code><code class="hint_pink">\enspace<var>formattedSquareRootOf(r2)</var></code> 。</p>
+            </div>
+        </div>
+		
+	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers expressions interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>能做整數四則混合計算(4-n-05)</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+        </style>
+		<script type="text/javascript">
+		 function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+		</script>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+            <div class="vars">
+				<var id="a">randRange(600,1000)</var>
+				<var id="b">randRange(200,400)</var>
+				<var id="c">randRange(100,200)</var>
+				<var id="b_add_c">accAdd(b,c)</var>
+				<var id="sub">Subtr(a,b_add_c)</var>				
+			</div>
+			
+			<div class="problem">
+				<p>哥哥帶了 <code><var>a</var></code> 元去書局，他買了一本 <code><var>b</var></code> 元的字典及 <code><var>c</var></code> 元的鉛筆盒，他身上還有多少元？</p>
+				<p>我們可以將算式紀錄如下，請幫我把空格填入適當的答案。</p>
+				<p><code class="hint_blue"><var>a</var><code>\enspace</code>減掉<code>\enspace</code>[<code>\enspace</code><var>b</var><code>\enspace</code>與<code>\enspace</code><var>c</var><code>\enspace</code>]<code>\enspace</code>的和等於<code>\enspace</code><var>sub</var><code>\enspace</code></code></p>
+				<p>可以記為 <code class="hint_blue"><var>a</var><code>\enspace</code>-(<code>\enspace</code></code><input type="text" id="a_1" style="width:30px"><code>\enspace</code><code class="hint_blue">+</code><code>\enspace</code><input type="text" id="a_2" style="width:30px"><code>\enspace</code><code class="hint_blue">)=<code>\enspace</code><var>sub</var></code></p>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value]</div>
+				    <div class="validator-function">
+						var bol1=false;
+						if((guess[0].replace(/[ ]/g,"")==b&&guess[1].replace(/[ ]/g,"")==c)||(guess[0].replace(/[ ]/g,"")==c&&guess[1].replace(/[ ]/g,"")==b))
+						{
+							bol1=true;
+						}
+						return bol1;
+                    </div>
+				</div>
+				<p class="example">答案填入框中，整數，例如 <code>6</code></p>
+            </div>
+			
+			<div class="hints">
+			<p>[<code>\enspace</code><code><var>b</var></code><code>\enspace</code>與<code>\enspace</code><code><var>c</var></code><code>\enspace</code>的和<code>\enspace</code>]可以用括號記為<code>\enspace</code><code>(</code><code>\enspace</code><code><var>b</var></code><code>\enspace</code><code>+</code><code>\enspace</code><code><var>c</var></code><code>\enspace</code><code>)</code></p>
+			<p><code class="hint_pink"><var>a</var><code>\enspace</code>減掉<code>\enspace</code>[<code>\enspace</code><var>b</var><code>\enspace</code>與<code>\enspace</code><var>c</var><code>\enspace</code>]<code>\enspace</code>的和等於<code>\enspace</code><var>sub</var></code></p>
+			<p>可以記為<code class="hint_pink"><code>\enspace</code><var>a</var><code>\enspace</code>-(<code>\enspace</code><var>b</var><code>\enspace</code>+<code>\enspace</code><var>c</var><code>\enspace</code>)=<code>\enspace</code><var>sub</var></code></p>
+            </div>
+		</div>
+		
+		<div id="case2">
+            <div class="vars">
+				<var id="a">randFromArray([50,60,70,80,90,100])</var>
+				<var id="b">randFromArray([10,15,20,25,30,35])</var>
+				<var id="c">7</var>
+				<var id="a_sub_b">Subtr(a,b)</var>
+				<var id="mul">accMul(a_sub_b,c)</var>				
+			</div>
+			
+			<div class="problem">
+				<p>哥哥每天的零用錢是 <code><var>a</var></code> 元，弟弟每天的零用錢是 <code><var>b</var></code> 元，一星期後兩兄弟的零用錢相差多少元？</p>
+				<p>我們可以將算式紀錄如下，請幫我把空格填入適當的答案。</p>
+				<p>可以先算算哥哥與弟弟 <code>1</code> 天相差多少元，再算一星期的差。</p>
+				<p>[<code>\enspace</code><code><var>a</var></code><code>\enspace</code>與<code>\enspace</code><code><var>b</var></code><code>\enspace</code>的差<code>\enspace</code>]<code>\enspace</code>可以用括號記為<code>\enspace</code>(<code>\enspace</code><code><var>a</var></code><code>\enspace</code><code>-</code><code>\enspace</code><code><var>b</var></code><code>\enspace</code>)</p>
+				<p><code>\enspace</code><code class="hint_blue">[<code>\enspace</code><var>a</var><code>\enspace</code>與<code>\enspace</code><var>b</var><code>\enspace</code>]<code>\enspace</code>的差再乘上<code>\enspace</code><var>c</var><code>\enspace</code>等於<code>\enspace</code><var>mul</var><code>\enspace</code></code></p>
+				<p>可以記為<code>\enspace</code><code class="hint_blue">(<code>\enspace</code></code><input type="text" id="a_1" style="width:30px"><code class="hint_blue"><code>\enspace</code>-<code>\enspace</code></code><input type="text" id="a_2" style="width:30px"><code class="hint_blue"><code>\enspace</code>) &times <code>\enspace</code><var>c</var></code></p>				
+				<p><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code class="hint_blue">=<code>\enspace</code></code><input type="text" id="a_3" style="width:30px"><code class="hint_blue"><code>\enspace</code> &times <code>\enspace</code><var>c</var></code></p>
+				<p><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code class="hint_blue">=<code>\enspace</code><var>mul</var></code></p>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value]</div>
+				    <div class="validator-function">
+						var bol1=false;
+						if(guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==b&&guess[2].replace(/[ ]/g,"")==a_sub_b)
+						{
+							bol1=true;
+						}
+						return bol1
+                    </div>
+				</div>
+				<p class="example">答案填入框中，整數，例如 <code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<p>[<code>\enspace</code><code><var>a</var></code><code>\enspace</code>與<code>\enspace</code><code><var>b</var><code>\enspace</code></code>的差<code>\enspace</code>]可以用括號記為<code>\enspace</code>(<code>\enspace</code><code><var>a</var></code><code>\enspace</code><code>-</code><code>\enspace</code><code><var>b</var></code><code>\enspace</code>)</p>
+				<p><code>\enspace</code><code>\enspace</code><code class="hint_pink">[<code>\enspace</code><var>a</var><code>\enspace</code>與<code>\enspace</code><var>b</var><code>\enspace</code>]<code>\enspace</code>的差再乘上<code>\enspace</code><var>c</var><code>\enspace</code>等於<code>\enspace</code><var>mul</var></code></p>
+				<p>可以記為<code>\enspace</code><code class="hint_pink"><code>\enspace</code>(<code>\enspace</code><var>a</var><code>\enspace</code>-<code>\enspace</code><var>b</var><code>\enspace</code>)<code>\enspace</code> &times <code>\enspace</code><var>c</var></code></p>
+				<p><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code class="hint_pink">=<code>\enspace</code><var>a_sub_b</var><code>\enspace</code> &times <code>\enspace</code><var>c</var></code></p>			
+				<p><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code class="hint_pink">=<code>\enspace</code><var>mul</var><code>\enspace</code></code></p>
+			</div>
+		</div>
+		
+		<div id="case3">
+            <div class="vars">
+				<var id="a">randRange(20,40)</var>
+				<var id="b">randRange(5,10)</var>
+				<var id="c">randRange(40,60)</var>
+				<var id="a_mul_b">accMul(a,b)</var>
+				<var id="sub">Subtr(a_mul_b,c)</var>				
+			</div>
+			
+			<div class="problem">
+				<p><code>1</code> 盒遊戲卡有 <code><var>a</var></code> 張，靜靜買了 <code><var>b</var></code> 盒，送給朋友 <code><var>c</var></code> 張，靜靜還剩下幾張遊戲卡？</p>
+				<p>我們可以將算式紀錄如下，請幫我把空格填入適當的答案。</p>
+				<p style="color:#6495ED"><code>[<var>a</var></code> 乘以 <code><var>b</var></code> 的積 <code>]</code> 減掉 <code><var>c</var></code> 等於 <code><var>sub</var></code></p>
+				<p>可以記為 <input type="text" id="a_1" style="width:30px"><code class="hint_blue">\enspace\times\enspace</code> <input type="text" id="a_2" style="width:30px"> <code class="hint_blue">-\enspace<var>c</var>=<var>sub</code></p>				
+				<p>或是 <code class="hint_blue">\enspace\enspace\enspace(</code> <input type="text" id="a_3" style="width:30px"><code class="hint_blue">\enspace\times</code> <input type="text" id="a_4" style="width:30px"><code class="hint_blue">\enspace)-<var>c</var>=<var>sub</code></p>				
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+				    <div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value]</div>
+				    <div class="validator-function">
+						var bol1=false;
+						if(
+						(guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==b&&guess[2].replace(/[ ]/g,"")==a&&guess[3].replace(/[ ]/g,"")==b)
+						||(guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==b&&guess[2].replace(/[ ]/g,"")==b&&guess[3].replace(/[ ]/g,"")==a)
+						||(guess[0].replace(/[ ]/g,"")==b&&guess[1].replace(/[ ]/g,"")==a&&guess[2].replace(/[ ]/g,"")==a&&guess[3].replace(/[ ]/g,"")==b)
+						||(guess[0].replace(/[ ]/g,"")==b&&guess[1].replace(/[ ]/g,"")==a&&guess[2].replace(/[ ]/g,"")==b&&guess[3].replace(/[ ]/g,"")==a))
+						{
+							bol1=true;
+						}
+						return bol1
+                    </div>
+				</div>
+				<p class="example">答案填入框中，整數，例如 <code>6</code></p>
+            </div>
+			
+			<div class="hints">
+				<p><code>[<var>a</var></code> 乘以 <code><var>b</var></code> 的積 <code>]</code> 可以用括號記為 <code><var>a</var>\times<var>b</var>\enspace</code> 或 <code>(<var>a</var>\times<var>b</var>)</code></p>
+				<p style="color:#6495ED"><code>[<var>a</var></code> 乘以 <code><var>b</var></code> 的積 <code>]</code> 減掉 <code><var>c</var></code> 等於 <code><var>sub</var></code></p>
+				<p>可以記為 <code class="hint_pink"><var>a</var>\times<var>b</var>-<var>c</var>=<var>sub</var></code> 或是 <code class="hint_pink">(<var>a</var>\times<var>b</var>)-<var>c</var>=<var>sub</var></code></p>
+			</div>
+		</div>
+		
+		<div id="case4">
+            <div class="vars" data-ensure="(a%j==0)">
+				<var id="j">randRange(3,5)</var>
+				<var id="a">randRange(100,200)</var>
+				<var id="a_div_j">accDiv(a,j)</var>
+				<var id="sub">Subtr(100,a_div_j)</var>				
+			</div>
+			<div class="question">
+				<div class="problem">
+					<p><code><var>j</var></code> 塊炸雞 <code><var>a</var></code> 元，哥哥買一塊炸雞，付了一張百元鈔票可以找回幾元？</p>
+					<p>一、 先算：一塊炸雞多少元？</p>
+					<p><input type="text" id="a_1" style="width:30px"><code class="hint_blue">\enspace\div\enspace</code><input type="text" id="a_2" style="width:30px"><code class="hint_blue">\enspace=\enspace</code><input type="text" id="a_3" style="width:30px"></p>
+					<p>二、 再算：一張百元鈔票減掉一塊炸雞的金額可以找回幾元？</p>
+					<p><code class="hint_blue">100\enspace-\enspace</code><input type="text" id="a_4" style="width:30px"><code class="hint_blue">\enspace=\enspace</code><input type="text" id="a_5" style="width:30px"></p>
+					<p>三、 用有括號的式子記錄下來：</p>
+					<p><code class="hint_blue">*一張百元鈔票\enspace</code>減掉 <code class="hint_blue">[\enspace<var>a</var>\enspace元平分成\enspace<var>j</var>\enspace塊炸雞的金額\enspace]\enspace</code>就是 <code class="hint_blue">應找回的錢</code> 。</p>
+						<table>             
+							<tr >
+								<td><code>\enspace\enspace</code><input type="text" id="s_1" style="width:30px"><code>\enspace-\enspace</code>(<code>\enspace</code><input type="text" id="s_2" style="width:30px"><code>\enspace\div\enspace</code><input type="text" id="s_3" style="width:30px"><code>\enspace</code>)</td>
+								<td></td>
+								<td><code>\enspace\enspace</code><input type="text" id="s_4" style="width:30px"><code>\enspace-\enspace</code><input type="text" id="s_5" style="width:30px"><code>\enspace\div\enspace</code><input type="text" id="s_6" style="width:30px"></td>						
+							</tr>
+							<tr>
+								<td><code>=\enspace</code><input type="text" id="s_7" style="width:30px"><code>\enspace-\enspace</code><input type="text" id="s_8" style="width:30px"></td>
+								<td><code>\enspace</code>或是<code>\enspace</code></td>
+								<td><code>=\enspace</code><input type="text" id="s_9" style="width:30px"><code>\enspace-\enspace</code><input type="text" id="s_10" style="width:30px"></td>
+							</tr>
+							<tr>
+								<td><code>=\enspace</code><input type="text" id="s_11" style="width:30px"></td>
+								<td></td>
+								<td><code>=\enspace</code><input type="text" id="s_12" style="width:30px"></td>
+							</tr>       
+						</table>
+					<p>我們可以將算式紀錄如上，請幫我把空格填入適當的答案。</p>	
+				</div>
+			</div>
+				
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="guess">[document.getElementById("a_1").value,document.getElementById("a_2").value,document.getElementById("a_3").value,document.getElementById("a_4").value,document.getElementById("a_5").value,document.getElementById("s_1").value,document.getElementById("s_2").value,document.getElementById("s_3").value,document.getElementById("s_4").value,document.getElementById("s_5").value,document.getElementById("s_6").value,document.getElementById("s_7").value,document.getElementById("s_8").value,document.getElementById("s_9").value,document.getElementById("s_10").value,document.getElementById("s_11").value,document.getElementById("s_12").value]</div>
+					<div class="validator-function">
+						var bol1=false;
+						var bol2=false;
+						var bol3=false;
+						var bol4=false;
+						if(guess[0].replace(/[ ]/g,"")==a&&guess[1].replace(/[ ]/g,"")==j&&guess[2].replace(/[ ]/g,"")==a_div_j&&guess[3].replace(/[ ]/g,"")==a_div_j&&guess[4].replace(/[ ]/g,"")==sub)
+						{
+							bol1=true;
+						}
+						if(guess[5].replace(/[ ]/g,"")==100&&guess[6].replace(/[ ]/g,"")==a&&guess[7].replace(/[ ]/g,"")==j&&guess[11].replace(/[ ]/g,"")==100&&guess[12].replace(/[ ]/g,"")==a_div_j&&guess[15].replace(/[ ]/g,"")==sub)
+						{
+							bol2=true;
+						}
+						if(guess[8].replace(/[ ]/g,"")==100&&guess[9].replace(/[ ]/g,"")==a&&guess[10].replace(/[ ]/g,"")==j&&guess[13].replace(/[ ]/g,"")==100&&guess[14].replace(/[ ]/g,"")==a_div_j&&guess[16].replace(/[ ]/g,"")==sub)
+						{
+							bol3=true;
+						}
+						
+						return bol1&&(bol2||bol3);
+					</div>
+				</div>
+				<p class="example">答案填入框中，整數，例如 <code>6</code></p>
+			</div>
+			
+			<div class="hints">
+				<p><code><var>j</var></code> 塊炸雞 <code><var>a</var></code> 元，哥哥買一塊炸雞，付了一張百元鈔票可以找回幾元？</p>
+				<p>一、 先算：一塊炸雞多少元？</p>
+				<p><code class="hint_pink"><var>a</var>\enspace\div\enspace<var>j</var>\enspace=\enspace<var>a_div_j</var></code></p>
+				<p>二、 再算：一張百元鈔票減掉一塊炸雞的金額可以找回幾元？</p>
+				<p><code class="hint_pink">100\enspace-\enspace<var>a_div_j</var>\enspace=\enspace<var>sub</var></code></p>
+				<p>三、 用有括號的式子記錄下來：</p>
+				<p><code class="hint_blue">*一張百元鈔票\enspace減掉\enspace</code><code class="hint_blue">\enspace[\enspace<var>a</var>\enspace元平分成\enspace<var>j</var>\enspace塊炸雞的金額\enspace]\enspace</code>就是 <code class="hint_blue">應找回的錢</code></p>
+				<table>             
+							<tr >
+								<td><code>\enspace\enspace\enspace</code><code class="hint_pink">100-\enspace(\enspace<var>a</var> \div<var>j</var>\enspace)</code></td>
+								<td></td>
+								<td><code>\enspace</code><code>\enspace</code><code>\enspace</code><code>\enspace</code><code class="hint_pink">100-<var>a</var> \div <var>j</var></code></td>						
+							</tr>
+							<tr>
+								<td><code class="hint_pink">=100-<var>a_div_j</var></code></td>
+								<td><code>\enspace</code>或是<code>\enspace</code></td>
+								<td><code>\enspace</code><code class="hint_pink">=100-<var>a_div_j</var></code></td>
+							</tr>
+							<tr>
+								<td><code class="hint_pink">=<var>sub</var></code></td>
+								<td></td>
+								<td><code>\enspace</code><code class="hint_pink">=<var>sub</var></code></td>
+							</tr>       
+						</table>
+			</div>
+			
+		</div>
+		
+		
+		
+		
+	</div>
+	</div>	
+</body>
+</html>

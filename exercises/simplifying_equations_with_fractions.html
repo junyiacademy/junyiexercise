@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html data-require="math math-format expressions graphie interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>分數型算式的化簡</title>
+    <script src="../khan-exercise.js"></script>
+	<script type="text/javascript">
+	    function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
+		function accMul(arg1,arg2){
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+            try{m+=s1.split(".")[1].length}catch(e){}
+            try{m+=s2.split(".")[1].length}catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        }
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2))
+            return (arg1*m+arg2*m)/m
+        }
+        function Subtr(arg1,arg2){
+            var r1,r2,m,n;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0}
+            m=Math.pow(10,Math.max(r1,r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n=(r1>=r2)?r1:r2;
+            return ((arg1*m-arg2*m)/m).toFixed(n);
+        }
+	</script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+            <div class="vars" data-ensure="J!=K && getGCD(J,K)==1 && (K*M-J*P)!=0 && R_before!=1">
+				<var id="J">randRange(2,9)</var>
+				<var id="K">randRange(2,9)</var>
+				<var id="M">randRange(2,9)</var>
+				<var id="N">randRange(2,9)</var>
+				<var id="P">randRange(2,9)</var>
+				<var id="Q">randRange(2,9)</var>
+				<var id="R_before">(K*M-J*P)/(J*K)</var>
+				<var id="R_after">(J*Q-K*N)/(J*K)</var>
+            </div>
+			<p class="question">化簡下列各式</p>
+			<p class="problem"><code>\dfrac{<var>M</var>x-<var>N</var>}{<var>J</var>}-\dfrac{<var>P</var>x-<var>Q</var>}{<var>K</var>}</code></p>
+			<div class="solution"  data-type="multiple">
+				<p><span class="sol" data-type="rational"><var>R_before</var></span><code>\enspace\cdot\enspace x + \enspace</code><span class="sol"><var>R_after</var></span></p>
+				<p class="example">格式例如： <code>-6 x + \dfrac{2}{3}</code></p>	
+			</div>
+
+    <div class="hints">
+	    <p>要化簡 <code>\dfrac{<var>M</var>x-<var>N</var>}{<var>J</var>}-\dfrac{<var>P</var>x-<var>Q</var>}{<var>K</var>}</code> ，我們可以先將 <code><var>J</var></code> 和 <code><var>K</var></code> 通分：</p>
+		<p><code>\dfrac{<var>M</var>x-<var>N</var>}{<var>J</var>}-\dfrac{<var>P</var>x-<var>Q</var>}{<var>K</var>}=\dfrac{<var>K</var>(<var>M</var>x-<var>N</var>)}{<var>J*K</var>}-\dfrac{<var>J</var>(<var>P</var>x-<var>Q</var>)}{<var>J*K</var>}</code></p>
+		<p>分子的部分拆掛號後，同類項要進行合併。</p>
+		<p><code>\dfrac{<var>K</var>(<var>M</var>x-<var>N</var>)}{<var>J*K</var>}-\dfrac{<var>J</var>(<var>P</var>x-<var>Q</var>)}{<var>J*K</var>}</code></p>
+		<p><code>=\dfrac{<var>K*M</var>x-<var>K*N</var>-<var>J*P</var>x+<var>J*Q</var>}{<var>J*K</var>}</code></p>
+		<p><code data-if="abs(K*M-J*P)!=1">=\dfrac{<var>K*M-J*P</var>x+<var>J*Q-K*N</var>}{<var>J*K</var>}</code>
+		   <code data-if="K*M-J*P==1">=\dfrac{x+<var>J*Q-K*N</var>}{<var>J*K</var>}</code>
+		   <code data-if="K*M-J*P==-1">=\dfrac{-x+<var>J*Q-K*N</var>}{<var>J*K</var>}</code>
+		</p>
+		<p><code>=<var>decimalFraction(R_before,true,true,false,false)</var>x+<var>decimalFraction(R_after,true,true,false,false)</var></code></p>
+		<p>所以，本題的答案為 <code class="hint_pink"><var>decimalFraction(R_before,true,true,false,false)</var>x+<var>decimalFraction(R_after,true,true,false,false)</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case2">
+            <div class="vars" data-ensure="R!=K && J!=K && getGCD(J,K)==1 && (K*M-J*P*R)!=0 && R_before!=1">
+				<var id="J">randRange(2,9)</var>
+				<var id="K">randRange(2,9)</var>
+				<var id="M">randRange(2,9)</var>
+				<var id="N">randRange(2,9)</var>
+				<var id="P">randRange(2,9)</var>
+				<var id="Q">randRange(2,9)</var>
+				<var id="R">randRange(2,5)</var>
+				<var id="R_before">(K*M-J*P*R)/(J*K)</var>
+				<var id="R_after">(J*Q*R-K*N)/(J*K)</var>
+            </div>
+			<p class="question">化簡下列各式</p>
+			<p class="problem"><code>\dfrac{<var>M</var>x-<var>N</var>}{<var>J</var>}-\dfrac{<var>R</var>(<var>P</var>x-<var>Q</var>)}{<var>K</var>}</code></p>
+			<div class="solution"   data-type="multiple">
+				<p><span class="sol" data-type="rational"><var>R_before</var></span><code>\enspace\cdot\enspace x + \enspace</code><span class="sol"><var>R_after</var></span></p>
+				<p class="example">格式例如： <code>-6 x + \dfrac{2}{3}</code></p>	
+			</div>
+
+    <div class="hints">
+	    <p>要化簡 <code>\dfrac{<var>M</var>x-<var>N</var>}{<var>J</var>}-\dfrac{<var>R</var>(<var>P</var>x-<var>Q</var>)}{<var>K</var>}</code> ，我們可以先將 <code><var>J</var></code> 和 <code><var>K</var></code> 通分：</p>
+		<p><code>\dfrac{<var>M</var>x-<var>N</var>}{<var>J</var>}-\dfrac{<var>R</var>(<var>P</var>x-<var>Q</var>)}{<var>K</var>}=\dfrac{<var>K</var>(<var>M</var>x-<var>N</var>)}{<var>J*K</var>}-\dfrac{<var>J</var>(<var>P*R</var>x-<var>R*Q</var>)}{<var>J*K</var>}</code></p>
+		<p>分子的部分拆掛號後，同類項要進行合併。</p>
+		<p><code>\dfrac{<var>K</var>(<var>M</var>x-<var>N</var>)}{<var>J*K</var>}-\dfrac{<var>J</var>(<var>P*R</var>x-<var>Q*R</var>)}{<var>J*K</var>}</code></p>
+		<p><code>=\dfrac{<var>K*M</var>x-<var>K*N</var>-<var>J*P*R</var>x+<var>J*Q*R</var>}{<var>J*K</var>}</code></p>
+		<p><code data-if="abs(K*M-J*P*R)!=1">=\dfrac{<var>K*M-J*P*R</var>x+<var>J*Q*R-K*N</var>}{<var>J*K</var>}</code>
+		   <code data-if="K*M-J*P*R==1">=\dfrac{x+<var>J*Q*R-K*N</var>}{<var>J*K</var>}</code>
+		   <code data-if="K*M-J*P*R==-1">=\dfrac{-x+<var>J*Q*R-K*N</var>}{<var>J*K</var>}</code>
+		</p>
+		<p><code>=<var>decimalFraction(R_before,true,true,false,false)</var>x+<var>decimalFraction(R_after,true,true,false,false)</var></code></p>
+		<p>所以，本題的答案為 <code class="hint_pink"><var>decimalFraction(R_before,true,true,false,false)</var>x+<var>decimalFraction(R_after,true,true,false,false)</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case3">
+            <div class="vars" data-ensure="S!=J && R!=K && J!=K && getGCD(J,K)==1 && (K*M*S-J*P*R)!=0 && R_before!=1">
+				<var id="J">randRange(2,9)</var>
+				<var id="K">randRange(2,9)</var>
+				<var id="M">randRange(2,9)</var>
+				<var id="N">randRange(2,9)</var>
+				<var id="P">randRange(2,9)</var>
+				<var id="Q">randRange(2,9)</var>
+				<var id="R">randRange(2,5)</var>
+				<var id="S">randRange(2,5)</var>
+				<var id="R_before">(K*M*S-J*P*R)/(J*K)</var>
+				<var id="R_after">(J*Q*R-K*N*S)/(J*K)</var>
+            </div>
+			<p class="question">化簡下列各式</p>
+			<p class="problem"><code>\dfrac{<var>S</var>(<var>M</var>x-<var>N</var>)}{<var>J</var>}-\dfrac{<var>R</var>(<var>P</var>x-<var>Q</var>)}{<var>K</var>}</code></p>
+			<div class="solution"   data-type="multiple">
+				<p><span class="sol" data-type="rational"><var>R_before</var></span><code>\enspace\cdot\enspace x + \enspace</code><span class="sol"><var>R_after</var></span></p>
+				<p class="example">格式例如： <code>-6 x + \dfrac{2}{3}</code></p>	
+			</div>
+
+    <div class="hints">
+	    <p>要化簡 <code>\dfrac{<var>S</var>(<var>M</var>x-<var>N</var>)}{<var>J</var>}-\dfrac{<var>R</var>(<var>P</var>x-<var>Q</var>)}{<var>K</var>}</code> ，我們可以先將 <code><var>J</var></code> 和 <code><var>K</var></code> 通分：</p>
+		<p><code>\dfrac{<var>S</var>(<var>M</var>x-<var>N</var>)}{<var>J</var>}-\dfrac{<var>R</var>(<var>P</var>x-<var>Q</var>)}{<var>K</var>}=\dfrac{<var>K</var>(<var>M*S</var>x-<var>N*S</var>)}{<var>J*K</var>}-\dfrac{<var>J</var>(<var>P*R</var>x-<var>R*Q</var>)}{<var>J*K</var>}</code></p>
+		<p>分子的部分拆掛號後，同類項要進行合併。</p>
+		<p><code>\dfrac{<var>K</var>(<var>S*M</var>x-<var>S*N</var>)}{<var>J*K</var>}-\dfrac{<var>J</var>(<var>P*R</var>x-<var>Q*R</var>)}{<var>J*K</var>}</code></p>
+		<p><code>=\dfrac{<var>K*M*S</var>x-<var>K*N*S</var>-<var>J*P*R</var>x+<var>J*Q*R</var>}{<var>J*K</var>}</code></p>
+		<p><code data-if="abs(K*M-J*P*R)!=1">=\dfrac{<var>K*M*S-J*P*R</var>x+<var>J*Q*R-K*N*S</var>}{<var>J*K</var>}</code>
+		   <code data-if="K*M*S-J*P*R==1">=\dfrac{x+<var>J*Q*R-K*N*S</var>}{<var>J*K</var>}</code>
+		   <code data-if="K*M*S-J*P*R==-1">=\dfrac{-x+<var>J*Q*R-K*N*S</var>}{<var>J*K</var>}</code>
+		</p>
+		<p><code>=<var>decimalFraction(R_before,true,true,false,false)</var>x+<var>decimalFraction(R_after,true,true,false,false)</var></code></p>
+		<p>所以，本題的答案為 <code class="hint_pink"><var>decimalFraction(R_before,true,true,false,false)</var>x+<var>decimalFraction(R_after,true,true,false,false)</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case4">
+            <div class="vars" data-ensure="S!=J && R!=K && J!=K && getGCD(J,K)==1 && R_before!=1">
+				<var id="J">randRange(2,9)</var>
+				<var id="K">randRange(2,9)</var>
+				<var id="M">randRange(2,9)</var>
+				<var id="N">randRange(2,9)</var>
+				<var id="P">randRange(2,9)</var>
+				<var id="Q">randRange(2,9)</var>
+				<var id="R">randRange(2,5)</var>
+				<var id="S">randRange(2,5)</var>
+				<var id="R_before">(K*M*S+J*P*R)/(J*K)</var>
+				<var id="R_after">(J*Q*R+K*N*S)/(J*K)</var>
+            </div>
+			<p class="question">化簡下列各式</p>
+			<p class="problem"><code>\dfrac{<var>S</var>(<var>M</var>x-<var>N</var>)}{<var>J</var>}+\dfrac{<var>R</var>(<var>P</var>x-<var>Q</var>)}{<var>K</var>}</code></p>
+			<div class="solution"   data-type="multiple">
+				<p><span class="sol" data-type="rational"><var>R_before</var></span><code>\enspace\cdot\enspace x + \enspace</code><span class="sol"><var>-R_after</var></span></p>
+				<p class="example">格式例如： <code>-6 x + \dfrac{2}{3}</code></p>	
+			</div>
+
+    <div class="hints">
+	    <p>要化簡 <code>\dfrac{<var>S</var>(<var>M</var>x-<var>N</var>)}{<var>J</var>}+\dfrac{<var>R</var>(<var>P</var>x-<var>Q</var>)}{<var>K</var>}</code> ，我們可以先將 <code><var>J</var></code> 和 <code><var>K</var></code> 通分：</p>
+		<p><code>\dfrac{<var>S</var>(<var>M</var>x-<var>N</var>)}{<var>J</var>}+\dfrac{<var>R</var>(<var>P</var>x-<var>Q</var>)}{<var>K</var>}=\dfrac{<var>K</var>(<var>M*S</var>x-<var>N*S</var>)}{<var>J*K</var>}+\dfrac{<var>J</var>(<var>P*R</var>x-<var>R*Q</var>)}{<var>J*K</var>}</code></p>
+		<p>分子的部分拆掛號後，同類項要進行合併。</p>
+		<p><code>\dfrac{<var>K</var>(<var>S*M</var>x-<var>S*N</var>)}{<var>J*K</var>}+\dfrac{<var>J</var>(<var>P*R</var>x-<var>Q*R</var>)}{<var>J*K</var>}</code></p>
+		<p><code>=\dfrac{<var>K*M*S</var>x-<var>K*N*S</var>+<var>J*P*R</var>x-<var>J*Q*R</var>}{<var>J*K</var>}</code></p>
+		<p><code>=\dfrac{<var>K*M*S+J*P*R</var>x-<var>J*Q*R+K*N*S</var>}{<var>J*K</var>}</code>
+		</p>
+		<p><code>=<var>decimalFraction(R_before,true,true,false,false)</var>x-<var>decimalFraction(R_after,true,true,false,false)</var></code></p>
+		<p>所以，本題的答案為 <code class="hint_pink"><var>decimalFraction(R_before,true,true,false,false)</var>x-<var>decimalFraction(R_after,true,true,false,false)</var></code> 。</p>
+    </div>
+	</div>
+	
+	<div id="case5">
+            <div class="vars" data-ensure="getGCD(R_low,R_up)==1 && getGCD(S_low,S_up)==1 && R_before!=1">
+				<var id="M">randRange(2,9)</var>
+				<var id="N">randRange(2,9)</var>
+				<var id="P">randRange(2,9)</var>
+				<var id="Q">randRange(2,9)</var>
+				<var id="R_low">randRange(2,5)</var>
+				<var id="S_low">randRange(2,5)</var>
+				<var id="R_up">randRange(1,R_low-1)</var>
+				<var id="S_up">randRange(1,S_low-1)</var>
+				<var id="R_before">accAdd(accDiv(accMul(S_up,M),S_low),accDiv(accMul(R_up,P),R_low))</var>
+				<var id="R_after">S_up*N/S_low+R_up*Q/R_low</var>
+            </div>
+			<p class="question">化簡下列各式</p>
+			<p class="problem"><code>\dfrac{<var>S_up</var>}{<var>S_low</var>} \times (<var>M</var>x-<var>N</var>)+\dfrac{<var>R_up</var>}{<var>R_low</var>} \times (<var>P</var>x-<var>Q</var>)</code></p>
+			<div class="solution"  data-type="multiple">
+				<p><span class="sol" data-type="rational"><var>R_before</var></span><code>\enspace\cdot\enspace x + \enspace</code><span class="sol"><var>-R_after</var></span></p>
+				<p class="example">格式例如： <code>-6 x + \dfrac{2}{3}</code></p>	
+			</div>
+
+    <div class="hints">
+	    <p>要化簡 <code>\dfrac{<var>S_up</var>}{<var>S_low</var>} \times (<var>M</var>x-<var>N</var>)+\dfrac{<var>R_up</var>}{<var>R_low</var>} \times (<var>P</var>x-<var>Q</var>)</code> 可以先拆掛號後，同類項要進行合併。</p>
+		<div>
+		    <p><code>\dfrac{<var>S_up</var>}{<var>S_low</var>} \times (<var>M</var>x-<var>N</var>)+\dfrac{<var>R_up</var>}{<var>R_low</var>} \times (<var>P</var>x-<var>Q</var>)</code></p>
+			<p><code>=<var>fraction(S_up*M,S_low,true,true,false,false)</var>x-<var>fraction(S_up*N,S_low,true,true,false,false)</var>+<var>fraction(R_up*P,R_low,true,true,false,false)</var>x-<var>fraction(R_up*Q,R_low,true,true,false,false)</var></code></p>
+		</div>
+		<p><code>=(<var>decimalFraction(S_up*M/S_low,true,true,false,false)</var>+<var>decimalFraction(R_up*P/R_low,true,true,false,false)</var>)x-(<var>decimalFraction(S_up*N/S_low,true,true,false,false)</var>+<var>decimalFraction(R_up*Q/R_low,true,true,false,false)</var>)</code></p>
+		<p><code>=<var>decimalFraction(S_up*M/S_low+R_up*P/R_low,true,true,false,false)</var>x-<var>decimalFraction(S_up*N/S_low+R_up*Q/R_low,true,true,false,false)</var></code></p>
+		<p>所以，本題的答案為 <code class="hint_pink"><var>decimalFraction(S_up*M/S_low+R_up*P/R_low,true,true,false,false)</var>x-<var>decimalFraction(S_up*N/S_low+R_up*Q/R_low,true,true,false,false)</var></code> 。</p>
+    </div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>

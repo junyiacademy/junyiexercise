@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>認識短除法</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+        </style>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id = "J">randRange(0,2)</var>
+				<var id = "arr">J == 0 ? randFromArray([[30,2,3,5],[42,2,3,7],[50,2,5,5],[66,2,3,11],[70,2,5,7]]) : (J==1 ? randFromArray([[84,2,2,3,7],[24,2,2,2,3],[36,2,2,3,3],[56,2,2,2,7],[60,2,2,3,5],[81,3,3,3,3],[90,2,3,3,5]]) : randFromArray([[48,2,2,2,2,3],[72,2,2,2,3,3]]))</var>
+				<var id = "P"> J == 0 ? randRange(0,1) : (J==1 ? randRange(0,2) : randRange(0,3))</var>
+				<var id = "arr1">J == 0 ? (P == 0 ? [-3.5,1] : [-3,0]) : (J==1 ? (P==0 ? [-3.5,1] : (P==1 ? [-3,0] : [-2.8,-1])) : (P==0 ? [-3.5,1] : (P==1 ? [-3,0] : (P==2 ? [-2.8,-1] :[-2.5,-2]))))</var>			
+				<var id="gcd">getGCD(arr[0],arr[1])</var>
+			</div>
+			<p class="question">樂樂正在練習使用短除法做質因數分解 ，請幫助他完成空格部分。</p>
+			<div class="problem">
+				<div class="graphie" id="gcd">
+					init({
+                        range: [ [-5, 5], [-3.5, 2] ],
+                        scale: 40
+                    });
+					line([-2.5,1.5],[-2.5,0.5]);
+					line([-2.5,0.5],[-0.5,0.5]);
+					
+					label([-1.3,1],arr[0],"center");
+				
+					line([-2.2,-0.5],[-2.2,0.5]);
+					line([-2.2,-0.5],[-0.5,-0.5]);	
+					
+					label([-1.3,0],arr[0]/arr[1],"center");
+					
+					if (J == 1){
+						line([-1.9,-1.5],[-1.9,-0.5]);
+						line([-1.9,-1.5],[-0.5,-1.5]);
+						label([-1.3,-1],arr[0]/arr[1]/arr[2],"center");
+					}
+					if (J == 2){
+						line([-1.9,-1.5],[-1.9,-0.5]);
+						line([-1.9,-1.5],[-0.5,-1.5]);
+						label([-1.3,-1],arr[0]/arr[1]/arr[2],"center");						
+						
+						line([-1.6,-2.5],[-1.6,-1.5]);
+						line([-1.6,-2.5],[-0.5,-2.5]);
+						label([-1.3,-2],arr[0]/arr[1]/arr[2]/arr[3],"center");
+					}
+					
+					label(arr1,"\\fbox{$\\quad$?$\\quad$}","center");
+
+					if (P == 0){
+						if(J == 0){
+							label([-2.5,0],arr[2],"left");
+							label([-1.3,-1],arr[3],"center");
+
+						}
+						else if(J==1){
+							label([-2.5,0],arr[2],"left");
+							label([-2.2,-1],arr[3],"center");							
+							label([-1.3,-2],arr[4],"center");
+						}
+						else{
+							label([-2.5,0],arr[2],"left");
+							label([-2.2,-1],arr[3],"center");
+							label([-1.9,-2],arr[4],"center");
+							label([-1.3,-3],arr[5],"center");
+						}
+					}
+					else if (P == 1){
+						if(J == 0){
+							label([-2.7,1],arr[1],"left");
+							label([-1.3,-1],arr[3],"center");
+						}
+						else if(J==1){
+							label([-2.7,1],arr[1],"left");
+							label([-2.2,-1],arr[3],"center");							
+							label([-1.3,-2],arr[4],"center");
+						}
+						else{
+							label([-2.7,1],arr[1],"left");
+							label([-2.2,-1],arr[3],"center");
+							label([-1.9,-2],arr[4],"center");
+							label([-1.3,-3],arr[5],"center");
+						}
+					}
+					else if (P == 2){
+						if(J == 1){
+							label([-2.7,1],arr[1],"left");
+							label([-2.5,0],arr[2],"center");
+							label([-1.3,-2],arr[4],"center");
+						}
+						else{
+							label([-2.7,1],arr[1],"left");
+							label([-2.5,0],arr[2],"center");
+							label([-1.9,-2],arr[4],"center");
+							label([-1.3,-3],arr[5],"center");
+						}
+					}
+					else if (P == 3){
+						label([-2.7,1],arr[1],"left");
+						label([-2.5,0],arr[2],"center");
+						label([-2.2,-1],arr[3],"center");
+						label([-21.3,-3],arr[5],"center");
+					}
+
+				</div>
+				<p>空格部分答案為 <input type="text" id="a_1" style="width:35px"></p>
+				<p data-if = "J==0 && P==0"> <code><var>arr[0]</var>=</code> <input type="text" id="a_2" style="width:40px"> <code> \times <var>arr[2]</var> \times <var>arr[3]</var></code></p>
+				<p data-if = "J==0 && P==1"> <code><var>arr[0]</var>=</code> <code><var>arr[1]</var> \times </code><input type="text" id="a_2" style="width:40px"> <code> \times <var>arr[3]</var></code></p>
+				<p data-if = "J==1 && P==0"> <code><var>arr[0]</var>=</code> <input type="text" id="a_2" style="width:40px"> <code> \times <var>arr[2]</var> \times <var>arr[3]</var> \times <var>arr[4]</var></code></p>
+				<p data-if = "J==1 && P==1"> <code><var>arr[0]</var>=</code> <code><var>arr[1]</var> \times </code><input type="text" id="a_2" style="width:40px"> <code> \times <var>arr[3]</var> \times <var>arr[4]</var></code></p>
+				<p data-if = "J==1 && P==2"> <code><var>arr[0]</var>=</code> <code><var>arr[1]</var> \times <var>arr[2]</var> \times </code><input type="text" id="a_2" style="width:40px"><code> \times <var>arr[4]</var></code></p>
+				<p data-if = "J==2 && P==0"> <code><var>arr[0]</var>=</code> <input type="text" id="a_2" style="width:40px"> <code> \times <var>arr[2]</var> \times <var>arr[3]</var> \times <var>arr[4]</var> \times <var>arr[5]</var></code></p>
+				<p data-if = "J==2 && P==1"> <code><var>arr[0]</var>=</code> <code><var>arr[1]</var> \times </code><input type="text" id="a_2" style="width:40px"> <code> \times <var>arr[3]</var> \times <var>arr[4]</var> \times <var>arr[5]</var></code></p>
+				<p data-if = "J==2 && P==2"> <code><var>arr[0]</var>=</code> <code><var>arr[1]</var> \times <var>arr[2]</var> \times </code><input type="text" id="a_2" style="width:40px"><code> \times <var>arr[4]</var> \times <var>arr[5]</var></code></p>
+				<p data-if = "J==2 && P==3"> <code><var>arr[0]</var>=</code> <code><var>arr[1]</var> \times <var>arr[2]</var> \times <var>arr[3]</var> \times </code><input type="text" id="a_2" style="width:40px"><code> \times <var>arr[5]</var></code></p>			
+			</div>
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="guess">[$("#a_1").val(),$("#a_2").val()]</div>
+				    <div class="validator-function">
+						var bol_1 = false;					
+
+						if((guess[0].replace(/[ ]/g,"")==arr[1]&&P==0)||(guess[0].replace(/[ ]/g,"")==arr[2]&&P==1)||(guess[0].replace(/[ ]/g,"")==arr[3]&&P==2)||(guess[0].replace(/[ ]/g,"")==arr[4]&&P==3)){
+							bol_1 = true;
+						}
+
+						if(((guess[1].replace(/[ ]/g,"")==arr[1]&&P==0)||(guess[1].replace(/[ ]/g,"")==arr[2]&&P==1)||(guess[1].replace(/[ ]/g,"")==arr[3]&&P==2)||(guess[1].replace(/[ ]/g,"")==arr[4]&&P==3))&&bol_1){
+							return true;
+						}
+
+					</div>
+				</div>
+				<p class="example">填充題（整數）</p>
+			</div>
+			<div class="hints">
+				<p>短除法運算過程中，裡面的數會等於左邊與下方兩數相乘</p>
+				<p data-if = "P==0"> <code><var>arr[0]</var> = \fbox{$\quad$?$\quad$} \times <var>arr[0]/arr[1]</var></code> ，答案為 <code class="hint_pink"><var>arr[1]</var></code> 。</p>
+				<p data-if = "P==1"> <code><var>arr[0]/arr[1]</var> = \fbox{$\quad$?$\quad$} \times <var>arr[0]/arr[1]/arr[2]</var></code> ，答案為 <code class="hint_pink"><var>arr[2]</var></code> 。</p>
+				<p data-if = "P==2"> <code><var>arr[0]/arr[1]/arr[2]</var> = \fbox{$\quad$?$\quad$} \times <var>arr[0]/arr[1]/arr[2]/arr[3]</var></code> ，答案為 <code class="hint_pink"><var>arr[3]</var></code> 。</p>				
+				<p data-if = "P==3"> <code><var>arr[0]/zrr[1]/arr[2]/arr[3]</var> = \fbox{$\quad$?$\quad$} \times <var>arr[0]/arr[1]/arr[2]/arr[3]/arr[4]</var></code> ，答案為 <code class="hint_pink"><var>arr[4]</var></code> 。</p>
+			</div>
+		</div>
+		
+	</div>
+	</div>
+</body>
+</html>

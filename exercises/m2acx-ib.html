@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>有括號的併式(加減乘)</title>
+    <script src="../khan-exercise.js"></script>
+	<script script="text/javascript">
+        if (!Array.prototype.indexOf)
+			{
+			  Array.prototype.indexOf = function(elt /*, from*/)
+			  {
+			    var len = this.length >>> 0;
+			    var from = Number(arguments[1]) || 0;
+			    from = (from < 0)
+			         ? Math.ceil(from)
+			         : Math.floor(from);
+			    if (from < 0)
+			      from += len;
+			    for (; from < len; from++)
+			    {
+			      if (from in this &&
+			          this[from] === elt)
+			        return from;
+			    }
+			    return -1;
+			  };
+			}
+
+		function boxClick( id ){
+			var obj = $( '#' + id );
+			var isChecked = obj.prop( 'checked' );
+			if( isChecked ) {
+				obj.prop( 'checked', false );
+			} else {
+				obj.prop( 'checked', true );
+			}
+		}
+
+		function radioClick( id ) {
+			$( '#' + id ).prop( 'checked', true );
+		}
+	</script>
+
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+	<div id="case1">
+        <div class="vars" data-ensure=" A &gt; C ">
+			<var id="A"> randRange( 9, 15 ) </var>
+			<var id="B"> randRange( 2, 9 ) </var>
+			<var id="C"> randRange( 2, 15 ) </var>
+			<var id="QUES">(function(){
+				var res = [];
+				res.push( "(" + A + "\\times" + B + ")+" + C );
+				res.push( "(" + A + "\\times" + B + ")-" + C );
+				res.push( A + "\\times (" + B + "+" + C + ")" );
+				res.push( A + "\\times (" + B + "-" + C + ")" );
+				return res;
+			})()</var>
+			<var id="Q"> randRangeUnique( 0, 4, 4 ) </var>
+			<var id="_QUES"> [ QUES[ Q[ 0 ] ], QUES[ Q[ 1 ] ], QUES[ Q[ 2 ] ], QUES[ Q[ 3 ] ] ] </var>
+        </div>
+
+		<div class="question">
+		<p>一盒餅乾有 <code><var>A</var></code> 片，小林買了 <code><var>B</var></code> 盒，吃了 <code><var>C</var></code> 片後，還剩下幾片？</p>
+		<p>可以如何列式呢？</p>
+		<p onclick="radioClick( 'option_1' )"><input id="option_1" type="radio" name="count_numbers_1" value="0"/>&nbsp;<code><var>_QUES[ 0 ]</var></code></p>
+        <p onclick="radioClick( 'option_2' )"><input id="option_2" type="radio" name="count_numbers_1" value="1"/>&nbsp;<code><var>_QUES[ 1 ]</var></code></p>
+		<p onclick="radioClick( 'option_3' )"><input id="option_3" type="radio" name="count_numbers_1" value="2"/>&nbsp;<code><var>_QUES[ 2 ]</var></code></p>
+		<p onclick="radioClick( 'option_4' )"><input id="option_4" type="radio" name="count_numbers_1" value="3"/>&nbsp;<code><var>_QUES[ 3 ]</var></code></p>
+		</div>
+		
+		<div class="solution" data-type="multiple">
+		<p>請選擇正確的答案</p>
+		<div class="sol" data-type="custom">
+				<div class="guess">$('input:radio[name="count_numbers_1"]:checked').val()</div>
+	            <div class="validator-function">
+	            	if(guess == null){
+                		return "";
+                	}
+                	return guess ==  Q.indexOf( 1 );
+	            </div>
+            </div>
+		</div>
+
+    	<div class="hints">
+			<p>先算小林買了幾片餅乾，再算還剩下幾片。</p>
+			<p>還剩下 <code class="hint_pink">(<var>A</var> \times <var>B</var>) - <var>C</var></code> 片餅乾。</p>	
+    	</div>
+	</div>
+
+	<div id="case2">
+        <div class="vars" data-ensure=" A &gt; C ">
+			<var id="A"> randRange( 9, 15 ) </var>
+			<var id="B"> randRange( 2, 9 ) </var>
+			<var id="C"> randRange( 2, 15 ) </var>
+			<var id="QUES">(function(){
+				var res = [];
+				res.push( "(" + A + "\\times" + B + ")+" + C );
+				res.push( "(" + A + "\\times" + B + ")-" + C );
+				res.push( A + "\\times (" + B + "+" + C + ")" );
+				res.push( A + "\\times (" + B + "-" + C + ")" );
+				return res;
+			})()</var>
+			<var id="Q"> randRangeUnique( 0, 4, 4 ) </var>
+			<var id="_QUES"> [ QUES[ Q[ 0 ] ], QUES[ Q[ 1 ] ], QUES[ Q[ 2 ] ], QUES[ Q[ 3 ] ] ] </var>
+        </div>
+
+		<div class="question">
+		<p>一箱飲料有 <code><var>A</var></code> 瓶，商店今天賣出 <code><var>B</var></code> 箱又 <code><var>C</var></code> 瓶飲料，今天共賣出幾瓶飲料？</p>
+		<p>可以如何列式呢？</p>
+		<p onclick="radioClick( 'option_1' )"><input id="option_1" type="radio" name="count_numbers_1" value="0"/>&nbsp;<code><var>_QUES[ 0 ]</var></code></p>
+        <p onclick="radioClick( 'option_2' )"><input id="option_2" type="radio" name="count_numbers_1" value="1"/>&nbsp;<code><var>_QUES[ 1 ]</var></code></p>
+		<p onclick="radioClick( 'option_3' )"><input id="option_3" type="radio" name="count_numbers_1" value="2"/>&nbsp;<code><var>_QUES[ 2 ]</var></code></p>
+		<p onclick="radioClick( 'option_4' )"><input id="option_4" type="radio" name="count_numbers_1" value="3"/>&nbsp;<code><var>_QUES[ 3 ]</var></code></p>
+		</div>
+		
+		<div class="solution" data-type="multiple">
+		<p>請選擇正確的答案</p>
+		<div class="sol" data-type="custom">
+				<div class="guess">$('input:radio[name="count_numbers_1"]:checked').val()</div>
+	            <div class="validator-function">
+	            	if(guess == null){
+                		return "";
+                	}
+                	return guess ==  Q.indexOf( 0 );
+	            </div>
+            </div>
+		</div>
+
+    	<div class="hints">
+			<p>先算 <code><var>B</var></code> 箱有幾瓶飲料，再加上 <code><var>C</var></code> 瓶飲料。</p>
+			<p>今天共賣出 <code class="hint_pink">(<var>A</var> \times <var>B</var>) + <var>C</var></code> 瓶飲料。</p>	
+    	</div>
+	</div>
+
+	<div id="case3">
+        <div class="vars">
+			<var id="A"> randRange( 8, 15 ) </var>
+			<var id="B"> randRange( 2, 6 ) </var>
+			<var id="QUES">(function(){
+				var res = [];
+				res.push( 100 + "+(" + A +"\\times" + B + ")" );
+				res.push( 100 + "-(" + A +"\\times" + B + ")" );
+				res.push( "(" + 100 + "+" + A +")\\times" + B );
+				res.push( "(" + 100 + "-" + A +")\\times" + B );
+				return res;
+			})()</var>
+			<var id="Q"> randRangeUnique( 0, 4, 4 ) </var>
+			<var id="_QUES"> [ QUES[ Q[ 0 ] ], QUES[ Q[ 1 ] ], QUES[ Q[ 2 ] ], QUES[ Q[ 3 ] ] ] </var>
+        </div>
+
+		<div class="question">
+		<p>一個橡皮擦 <code><var>A</var></code> 元，哥哥買了 <code><var>B</var></code> 個，付一張 <code>100</code> 元的鈔票，可以找回多少錢？</p>
+		<p>可以如何列式呢？</p>
+		<p onclick="radioClick( 'option_1' )"><input id="option_1" type="radio" name="count_numbers_1" value="0"/>&nbsp;<code><var>_QUES[ 0 ]</var></code></p>
+        <p onclick="radioClick( 'option_2' )"><input id="option_2" type="radio" name="count_numbers_1" value="1"/>&nbsp;<code><var>_QUES[ 1 ]</var></code></p>
+		<p onclick="radioClick( 'option_3' )"><input id="option_3" type="radio" name="count_numbers_1" value="2"/>&nbsp;<code><var>_QUES[ 2 ]</var></code></p>
+		<p onclick="radioClick( 'option_4' )"><input id="option_4" type="radio" name="count_numbers_1" value="3"/>&nbsp;<code><var>_QUES[ 3 ]</var></code></p>
+		</div>
+		
+		<div class="solution" data-type="multiple">
+		<p>請選擇正確的答案</p>
+		<div class="sol" data-type="custom">
+				<div class="guess">$('input:radio[name="count_numbers_1"]:checked').val()</div>
+	            <div class="validator-function">
+	            	if(guess == null){
+                		return "";
+                	}
+                	return guess ==  Q.indexOf( 1 );
+	            </div>
+            </div>
+		</div>
+
+    	<div class="hints">
+			<p>先算哥哥花了多少錢，再算要找多少錢。</p>
+			<p>要找 <code class="hint_pink">100 - (<var>A</var> \times <var>B</var>)</code> 元。</p>	
+    	</div>
+	</div>
+
+	<div id="case4">
+        <div class="vars">
+			<var id="A"> randRange( 8, 15 ) </var>
+			<var id="B"> randRange( 10, 25 ) </var>
+			<var id="C"> randRange( 2, 6 ) </var>
+			<var id="QUES">(function(){
+				var res = [];
+				res.push( A + "+(" + B + "\\times" + C + ")" );
+				res.push( A + "-(" + B + "\\times" + C + ")" );
+				res.push( "(" + A + "+" + B + ")\\times" + C );
+				res.push( "(" + A + "\\times" + B + ")+" + C );
+				return res;
+			})()</var>
+			<var id="Q"> randRangeUnique( 0, 4, 4 ) </var>
+			<var id="_QUES"> [ QUES[ Q[ 0 ] ], QUES[ Q[ 1 ] ], QUES[ Q[ 2 ] ], QUES[ Q[ 3 ] ] ] </var>
+        </div>
+
+		<div class="question">
+		<p>一枝鉛筆 <code><var>A</var></code> 元，一本筆記本 <code><var>B</var></code> 元。佩芬買了一枝鉛筆跟 <code><var>C</var></code> 本筆記本，共要付多少錢？</p>
+		<p>可以如何列式呢？</p>
+		<p onclick="radioClick( 'option_1' )"><input id="option_1" type="radio" name="count_numbers_1" value="0"/>&nbsp;<code><var>_QUES[ 0 ]</var></code></p>
+        <p onclick="radioClick( 'option_2' )"><input id="option_2" type="radio" name="count_numbers_1" value="1"/>&nbsp;<code><var>_QUES[ 1 ]</var></code></p>
+		<p onclick="radioClick( 'option_3' )"><input id="option_3" type="radio" name="count_numbers_1" value="2"/>&nbsp;<code><var>_QUES[ 2 ]</var></code></p>
+		<p onclick="radioClick( 'option_4' )"><input id="option_4" type="radio" name="count_numbers_1" value="3"/>&nbsp;<code><var>_QUES[ 3 ]</var></code></p>
+		</div>
+		
+		<div class="solution" data-type="multiple">
+		<p>請選擇正確的答案</p>
+		<div class="sol" data-type="custom">
+				<div class="guess">$('input:radio[name="count_numbers_1"]:checked').val()</div>
+	            <div class="validator-function">
+	            	if(guess == null){
+                		return "";
+                	}
+                	return guess ==  Q.indexOf( 0 );
+	            </div>
+            </div>
+		</div>
+
+    	<div class="hints">
+			<p>先算 <code><var>C</var></code> 本筆記本多少錢，再算總共要付多少錢。</p>
+			<p>要付 <code class="hint_pink"><var>A</var> + (<var>B</var> \times <var>C</var>)</code> 元。</p>	
+    	</div>
+	</div>
+
+	
+</div>
+</div>
+</body>
+</html>			

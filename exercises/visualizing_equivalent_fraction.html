@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>看圖辨兩個相等的分數</title>
+    <script src="../khan-exercise.js"></script>
+		<style type="text/css">
+		table.nLimit {font-size:15px}
+		table.nLimit td {text-align:center; vertical-align:middle;}
+		
+		.inputbox{
+				width:50px;
+				text-align:center;
+				font-size:10px;
+			}
+
+	</style>
+	<script type="text/javascript">
+	function divi(divisions, colors, y) {
+		var graph = KhanUtil.currentGraph;
+		var set = graph.raphael.set();
+
+		y = y || 0;
+
+		var sum = 0;
+		$.each(divisions, function(i, slice) {
+			sum += slice;
+		});
+
+		var partial = 0;
+		$.each(divisions, function(i, slice) {
+			var x = partial / sum, w = slice / sum;
+			set.push(graph.path([[x, y], [x + w, y], [x + w, y + 1], [x, y + 1]], {
+				stroke: "black",
+				fill: colors[i]
+			}));
+			partial += slice;
+		});
+
+		for (var i = 0; i <= sum; i++) {
+			var x = i / sum;
+			set.push(graph.line([x, y + 0], [x, y + 1], { stroke: "white" }));
+			set.push(graph.line([x-0.1/25, y + 0], [x-0.1/25, y + 1], { stroke: "black" }));
+			set.push(graph.line([x+0.1/25, y + 0], [x+0.1/25, y + 1], { stroke: "black" }));
+		}
+
+		return set;
+	}
+	</script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="problems">
+            <div id="case1">
+				<div class="vars">
+					<var id="type">randRange(1,2)</var>
+					<var id="name">
+						(function(){
+							var num=new Array(2);
+							num[0]=new Array(4);
+							num[1]=new Array(4);
+							num[0]=["A","B","C","D"];
+							num[1]=["小紅","曉明","小黑","小王"];
+							return num;
+						})()
+					</var>
+					<var id="turns">randRangeUnique(1,5,4)</var>
+					<var id="right">
+						(function(){
+							for(var i=0;i&lt4;i++){
+								if(turns[i]==1)
+									return i;
+							}
+						})()</var>
+					<var id="example">randFromArray([4,10,15])</var>
+					<var id="choice">
+						(function(){
+							var num=0;
+							switch(example){
+							case 4:num=randRange(1,3);break;
+							case 10:num=randFromArray([2,4]);break;
+							case 15:num=randFromArray([3,5,6]);break;
+							}
+							return num;
+						})()
+					</var>
+					<var id="choice_1">
+						(function(){
+							var num=new Array();
+							if(example==4){
+								switch(choice){
+								case 1:num=randFromArray([[2,8],[3,12]]);break;
+								case 2:num=randFromArray([[4,8]]);break;
+								case 3:num=randFromArray([[6,8],[9,12]]);break;
+								}
+							}
+							if(example==10){
+								switch(choice){
+								case 2:num=randFromArray([[1,5],[4,20]]);break;
+								case 4:num=randFromArray([[2,5],[8,20]]);break;
+								}
+							}
+							if(example==15){
+								switch(choice){
+								case 3:num=randFromArray([[1,5]]);break;
+								case 5:num=randFromArray([[1,3]]);break;
+								case 6:num=randFromArray([[2,5]]);break;
+								}
+							}
+							return num;
+						})()
+					</var>
+					<var id="choice_2">randFromArray([[3,7],[3,8],[4,9],[4,11]])</var>
+					<var id="choice_3">randFromArray([[7,8],[7,10],[8,10],[8,15]])</var>
+					<var id="choice_4">randFromArray([[5,12],[5,13],[7,15],[6,10]])</var>
+					<var id="choice_turn">
+						(function(){
+							var num=new Array(4);
+							var choice="choice";
+							for(var i=0;i&lt;4;i++){
+								switch(turns[i]){
+									case 1:num[i]=choice_1[0];break;
+									case 2:num[i]=choice_2[0];break;
+									case 3:num[i]=choice_3[0];break;
+									case 4:num[i]=choice_4[0];break;
+								}
+							}
+							return num;
+						})()
+					</var>
+					<var id="sum">
+						(function(){
+							var s = 0;
+							for(var k = 0;k&lt;4;k++){
+								if(turns[k]==1){
+									s+=1;
+									$('#pic_'+(k+1)).val('true');
+								}else{
+									$('#pic_'+(k+1)).val('false');
+								}
+							}
+							return s;
+						})()
+					</var>
+				</div>
+				<div class="question">
+					<p><span data-if="type==1">馬太太有 <code>5</code> 條長度相等的帶子，她將這些帶子剪成長度不相等的小方塊並將特定的小方塊塗上顏色，然而在每一條單一帶子中的小方塊長度是相等的，請問剩下四條中哪一條帶子被標記的小方塊數量與未標記的小方塊數量比例和馬太太一開始做的那一條一樣？</span>
+					<span data-if="type==2">你和你的同學正利用彩帶來佈置班上。你們每個人手中都各自有一條長度完全相等的帶子，可是在你們手中每一條帶子上又被老師畫上了不同數量的小長方形。在你手中的帶子被畫成了 <code><var>example</var></code> 個小長方形，其中有 <code><var>choice</var></code> 個被塗了顏色。請問在下列選項中，你的同學中有哪一個跟你有相同比例被塗上顏色的小長方形？</span>
+					</p>
+					<table  style="font-size:15px" class="nLimit">
+						<tr>
+							<td></td>
+							<td><div class="graphie">
+								init({ range: [ [0, 1], [0, 1] ], scale: [450, 25] });
+								divi([choice,example-choice], ["#6495ED", "white"]);
+							</div></td>
+						</tr>
+						<tr>
+							<td><span data-if="type==1"><code>A</code></span><span data-if="type==2"><var>name[type-1][0]</var></span></td>
+							<td><div class="graphie">
+								init({ range: [ [0, 1], [0, 1] ], scale: [450, 25] });
+								if(turns[0]==1){divi([choice_1[0],choice_1[1]-choice_1[0]], ["#6495ED", "white"]);}
+								if(turns[0]==2){divi([choice_2[0],choice_2[1]-choice_2[0]], ["#6495ED", "white"]);}
+								if(turns[0]==3){divi([choice_3[0],choice_3[1]-choice_3[0]], ["#6495ED", "white"]);}
+								if(turns[0]==4){divi([choice_4[0],choice_4[1]-choice_4[0]], ["#6495ED", "white"]);}
+							</div></td>
+						</tr>
+						<tr>
+							<td><span data-if="type==1"><code>B</code></span><span data-if="type==2"><var>name[type-1][1]</var></span></td>
+							<td><div class="graphie">
+								init({ range: [ [0, 1], [0, 1] ], scale: [450, 25] });
+								if(turns[1]==1){divi([choice_1[0],choice_1[1]-choice_1[0]], ["#6495ED", "white"]);}
+								if(turns[1]==2){divi([choice_2[0],choice_2[1]-choice_2[0]], ["#6495ED", "white"]);}
+								if(turns[1]==3){divi([choice_3[0],choice_3[1]-choice_3[0]], ["#6495ED", "white"]);}
+								if(turns[1]==4){divi([choice_4[0],choice_4[1]-choice_4[0]], ["#6495ED", "white"]);}
+							</div></td>
+						</tr>
+						<tr>
+							<td><span data-if="type==1"><code>C</code></span><span data-if="type==2"><var>name[type-1][2]</var></span></td>
+							<td><div class="graphie">
+								init({ range: [ [0, 1], [0, 1] ], scale: [450, 25] });
+								if(turns[2]==1){divi([choice_1[0],choice_1[1]-choice_1[0]], ["#6495ED", "white"]);}
+								if(turns[2]==2){divi([choice_2[0],choice_2[1]-choice_2[0]], ["#6495ED", "white"]);}
+								if(turns[2]==3){divi([choice_3[0],choice_3[1]-choice_3[0]], ["#6495ED", "white"]);}
+								if(turns[2]==4){divi([choice_4[0],choice_4[1]-choice_4[0]], ["#6495ED", "white"]);}
+							</div></td>
+						</tr>
+						<tr>
+							<td><span data-if="type==1"><code>D</code></span><span data-if="type==2"><var>name[type-1][3]</var></span></td>
+							<td><div class="graphie">
+								init({ range: [ [0, 1], [0, 1] ], scale: [450, 25] });
+								if(turns[3]==1){divi([choice_1[0],choice_1[1]-choice_1[0]], ["#6495ED", "white"]);}
+								if(turns[3]==2){divi([choice_2[0],choice_2[1]-choice_2[0]], ["#6495ED", "white"]);}
+								if(turns[3]==3){divi([choice_3[0],choice_3[1]-choice_3[0]], ["#6495ED", "white"]);}
+								if(turns[3]==4){divi([choice_4[0],choice_4[1]-choice_4[0]], ["#6495ED", "white"]);}
+							</div></td>
+						</tr>
+					</table>
+					<table  style="font-size:15px">
+						<tr>
+							<td><input type="radio" id="pic_1" name="pic" /></td>
+							<td style="width:450px"><div onclick="$('#pic_1').attr('checked','checked')">
+							<span data-if="type==1">彩帶 <code>A</code></span><span data-if="type==2"><var>name[type-1][0]</var></span></div></td>
+						</tr>
+						<tr>
+							<td><input type="radio" id="pic_2" name="pic" /></td>
+							<td style="width:450px"><div onclick="$('#pic_2').attr('checked','checked')">
+							<span data-if="type==1">彩帶 <code>B</code></span><span data-if="type==2"><var>name[type-1][1]</var></span></div></td>
+						</tr>
+						<tr>
+							<td><input type="radio" id="pic_3" name="pic" /></td>
+							<td style="width:450px"><div onclick="$('#pic_3').attr('checked','checked')">
+							<span data-if="type==1">彩帶 <code>C</code></span><span data-if="type==2"><var>name[type-1][2]</var></span></div></td>
+						</tr>
+						<tr>
+							<td><input type="radio" id="pic_4" name="pic" /></td>
+							<td style="width:450px"><div onclick="$('#pic_4').attr('checked','checked')">
+							<span data-if="type==1">彩帶 <code>D</code></span><span data-if="type==2"><var>name[type-1][3]</var></span></div></td>
+						</tr>
+					</table>
+				</div>
+				<div class="solution" data-fraction-input="true"  data-type="multiple">
+					<p>選擇正確的答案</p>
+					<div class="sol" data-type="custom">
+						<div class="guess">
+							(function(){
+								var chk_value =[];    
+								$('input[name="pic"]:checked').each(function(){    
+									chk_value.push($(this).val());    
+								});
+								return chk_value;
+							})()
+						</div>
+						<div class="validator-function">
+							if(guess.length==0){
+								return "";
+							}
+							if(guess.length!=sum){
+								return false;
+							}
+							var trueAns = 0;
+							for(var i = 0;i&lt;guess.length;i++){
+								if(guess[i]=='true'){
+									trueAns++;
+								}
+							}
+							if(trueAns==sum){
+								return true;
+							}					
+						</div>
+					</div>
+				</div>
+				<div class="hints">
+					<p>首先讓我們看一下題目給的這條帶子。請問這條帶子總共被分成了幾份相同的方塊？有多少個被塗上了顏色？</p>
+					<p>因為在這條帶子上總共有 <code><var>example</var></code> 個小的，其中有 <code><var>choice</var></code> 個被塗上了顏色，所以我們可以說 <code><var>example</var></code> 分之 <code><var>choice</var></code> 的小方塊被塗上了顏色。現在請你思考一下在選項中有任何一條有 <code><var>example</var></code> 分之 <code><var>choice</var></code> 的小方塊被塗上顏色嗎？</p>
+					<p>接著讓我們數一下在<span data-if="type==1">每一條帶子中</span><span data-if="type==2">你朋友手中</span>有幾個小方塊。<span data-if="type==1">在彩帶 <code>A</code> 中我們總共找到</span><span data-if="type==2"><var>name[1][0]</var>擁有</span> <code><var>choice_turn[0]</var></code> 個，<span data-if="type==1">彩帶 <code>B</code> 中我們總共找到</span><span data-if="type==2"><var>name[1][1]</var>擁有</span> <code><var>choice_turn[1]</var></code> 個，<span data-if="type==1">彩帶 <code>C</code> 中我們總共找到</span><span data-if="type==2"><var>name[1][2]</var>擁有</span> <code><var>choice_turn[2]</var></code> 個，<span data-if="type==1">彩帶 <code>D</code> 中我們總共找到</span><span data-if="type==2"><var>name[1][3]</var>擁有</span> <code><var>choice_turn[3]</var></code> 個，現在請思考我們可以將其中的任何一條帶子分成相等的 <code><var>example</var></code> 份嗎？</p>
+					<div>
+						<p>
+							<span data-if="choice_1[1]&lt;example">如果我們將<span data-if="type==1">彩帶 <code><var>name[type-1][right]</var></code> </span><span data-if="type==2"><var>name[type-1][right]</var></span>的小方塊再相等的分成 <code><var>example/choice_1[1]</var></code> 份，這樣我們就自己創造出了 <code><var>example</var></code> 份大小長度相等的小方塊嘍；</span>
+							<span data-if="choice_1[1]&gt;example">如果我們將<span data-if="type==1">彩帶 <code><var>name[type-1][right]</var></code> </span><span data-if="type==2"><var>name[type-1][right]</var></span>的小方塊中 <code><var>choice_1[1]/example</var></code> 個小方塊合成一份，這樣我們就自己創造出了 <code><var>example</var></code> 份大小長度相等的小方塊嘍；</span>
+						</p>
+						<div class="graphie">
+						init({ range: [ [0, 1], [0, 1] ], scale: [450, 25] });
+						divi([choice_1[0],choice_1[1]-choice_1[0]], ["#6495ED", "white"]);
+						</div>
+						<p></p>
+						<div class="graphie">
+							init({ range: [ [0, 1], [0, 1] ], scale: [450, 25] });
+							divi([choice,example-choice], ["#6495ED", "white"]);
+						</div>
+						<p>現在我們就可以輕輕鬆鬆地將這兩條帶子和題目給出的帶子做比較。</p>
+					</div>
+					<p>經由以上分析，我們可以得出一個結論，那就是<span data-if="type==1" class="hint_pink">彩帶 <code><var>name[type-1][right]</var></code> </span><span data-if="type==2" class="hint_pink"><var>name[type-1][right]</var></span>有和原始帶子一樣擁有 <code><var>example</var></code> 分之 <code><var>choice</var></code> 的小方塊被塗上顏色。</p>
+				</div>
+			</div>
+			<div id="case2">
+				<div class="vars">
+					<var id="type">randRange(3,5)</var>
+					<var id="num">randRange(1,type-1)</var>
+					<var id="type_1">(randRange(2,4)*type)</var>
+					<var id="num_1">(num*type_1/type)</var>
+				</div>
+				<div class="question">
+					<div class="problem">
+						<p>在一道數學題中，題目給你一條被分成了數個方塊的帶子（圖 <code>A</code> ），其中有 <code><var>num</var></code> 塊被塗上了藍色，而你手中也有一條被分成了數段的帶子（圖 <code>B</code> ），你想要將你手中的這條帶子塗成與題目給你的帶子（圖 <code>A</code> ）一樣。請問你需要將手中帶子裡的幾個小方塊塗上藍色才能達成你的目的？</p>
+						<table  style="font-size:15px" class="nLimit">
+							<tr>
+								<td><code>A</code></td>
+								<td><div class="graphie">
+									init({ range: [ [0, 1], [0, 1] ], scale: [450, 25] });
+									divi([num,type-num], ["#6495ED", "gray"]);
+								</div></td>
+							</tr>
+							<tr>
+								<td><code>B</code></td>
+								<td><div class="graphie">
+									init({ range: [ [0, 1], [0, 1] ], scale: [450, 25] });
+									divi([0,type_1], ["#6495ED", "gray"]);
+								</div></td>
+							</tr>
+						</table>
+						
+					</div></div>
+				<div class="solution" data-fraction-input="true"  data-forms="integer"><var>num_1</var></div>
+				<div class="hints">
+					<p>圖 <code>A</code> 被分成了相等的幾段？</p>
+					<p>圖 <code>A</code> 被分成了 <code><var>type</var></code> 個小方塊， 圖 <code>B</code> 被分成了 <code><var>type_1</var></code> 小方塊。</p>
+					<p>因為 <code><var>type</var> \times <var>type_1/type</var> = <var>type_1</var></code> ，所以圖 <code>B</code> 中的小方塊數量是圖 <code>A</code> 的 <code><var>type_1/type</var></code> 倍。</p>
+					<div><p>圖 <code>A</code> 中有 <code><var>num</var></code> 個小方塊被塗上了藍色，所以圖 <code>B</code> 中就必須有 <code><var>num</var> \times <var>type_1/type</var> = <var>num_1</var></code> 個被塗上藍色的小方塊，</p>
+					<table  style="font-size:15px" class="nLimit">
+						<tr>
+							<td><code>A</code></td>
+							<td><div class="graphie">
+								init({ range: [ [0, 1], [0, 1] ], scale: [450, 25] });
+								divi([num,type-num], ["#6495ED", "gray"]);
+							</div></td>
+						</tr>
+						<tr>
+							<td><code>B</code></td>
+							<td><div class="graphie">
+								init({ range: [ [0, 1], [0, 1] ], scale: [450, 25] });
+								divi([num_1,type_1-num_1], ["#6495ED", "gray"]);
+							</div></td>
+						</tr>
+					</table>
+					<p>這樣我們就可以讓圖 <code>A</code>  <code>=</code> 圖 <code>B</code>  。</p></div>
+					<p>在圖 <code>B</code> 中必須將 <span class="hint_pink"><code><var>num_1</var></code></span> 個小方塊塗上藍色才能讓圖 <code>B</code> 和圖 <code>A</code> 一樣。</p>
+				</div>
+			</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html data-require="math math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>分數的加減</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+<div class="exercise">
+<div class="problems">
+    <div id = "case1">
+        <div class="vars" data-ensure="D1 !== D2">
+            <var id="N1">randRangeNonZero( 2, 9 )</var>
+            <var id="N2">randRangeNonZero( 2, 9 )</var>
+            <var id="D1">randRangeExclude( 2, 9, [N1] )</var>
+            <var id="D2">randRangeExclude( 2, 9, [N2] )</var>
+            <var id="LCM">getLCM( D1, D2 )</var>
+            <var id="D"> D1*D2</var>
+            <var id="F1">LCM / D1</var>
+            <var id="F2">LCM / D2</var>
+        </div>
+    
+        <div class="question">
+            <p><code><var>fraction( N1, D1 )</var> + <var>fraction( N2, D2 )</var> = {?}</code></p>
+        </div>
+        <div class="solution" data-fraction-input="true"  data-type="rational" data-simplify="optional"><var>N1 / D1 + N2 / D2</var></div>
+
+        <div class="hints">
+            <div>
+                <p>首先，我們發現這兩個分數的分母都不一樣，所以我們必須要先把分母變成同樣的分母。最直接的想法就是把分母變成 <code><var>D1</var>\times<var>D2</var>=<var>D1*D2</var></code>。</p>
+                <p data-if="(D1*D2) !== LCM">( 或者我們也可以把分母變成 <code><var>LCM</var></code> 就好，想一想，為什麼？)</p>
+            </div>
+            <div>
+                <p>現在，我們必須讓兩個分數變成同樣的分母 <code><var>D1*D2</var></code>。</p>
+                <p><code>\begin{align*}<var>fraction( N1, D1 )</var>\times <var>fraction( D2, D2 )</var> &= <var>fraction( N1 * D2, D )</var>\\
+                <var>fraction( N2, D2 )</var>\times <var>fraction( D1, D1 )</var> &= <var>fraction( N2 * D1, D )</var>\end{align*}</code></p>
+            </div>
+            <div>
+                <p>所以，問題變成：</p>
+                <p><code><var>fraction( N1 * D2, D )</var> + <var>fraction( N2 * D1, D )</var> = {?}</code></p>
+            </div>
+            <div>
+                <p>現在分母都一樣了！我們可以直接將分子相加。</p>
+                <p><code class="hint_pink">=<var>fraction( D2 * N1 + D1 * N2, D)</var></code></p>
+                <p data-if="getGCD( D2 * N1 + D1 * N2, D ) !== 1">我們也可以用他的等值分數來表示答案，讓分數的數字小一點：</p>
+                <p data-if="getGCD( D2 * N1 + D1 * N2, D ) !== 1"><code>=<var>fractionReduce( F1 * N1 + F2 * N2, LCM )</var></code></p>
+            </div>
+        </div>
+    </div>
+
+    <div id = "case2">
+        <div class="vars" data-ensure="D1 !== D2 && (N1/D1-N2/D2)&gt;0">
+            <var id="N1">randRangeNonZero( 2, 9 )</var>
+            <var id="N2">randRangeNonZero( 2, 9 )</var>
+            <var id="D1">randRangeExclude( 2, 9, [N1] )</var>
+            <var id="D2">randRangeExclude( 2, 9, [N2] )</var>
+            <var id="LCM">getLCM( D1, D2 )</var>
+            <var id="D"> D1*D2</var>
+            <var id="F1">LCM / D1</var>
+            <var id="F2">LCM / D2</var>
+        </div>
+    
+        <div class="question">
+            <p><code><var>fraction( N1, D1 )</var> - <var>fraction( N2, D2 )</var> = {?}</code></p>
+        </div>
+        <div class="solution" data-fraction-input="true"  data-type="rational" data-simplify="optional"><var>N1 / D1 - N2 / D2</var></div>
+
+        <div class="hints">
+            <div>
+                <p>首先，我們發現這兩個分數的分母都不一樣，所以我們必須要先把分母變成同樣的分母。最直接的想法就是把分母變成 <code><var>D1</var>\times<var>D2</var>=<var>D1*D2</var></code>。</p>
+                <p data-if="(D1*D2) !== LCM">( 或者我們也可以把分母變成 <code><var>LCM</var></code> 就好，想一想，為什麼？)</p>
+            </div>
+            <div>
+                <p>現在，我們必須讓兩個分數變成同樣的分母 <code><var>D1*D2</var></code>。</p>
+                <p><code>\begin{align*}<var>fraction( N1, D1 )</var>\times <var>fraction( D2, D2 )</var> &= <var>fraction( N1 * D2, D )</var>\\
+                <var>fraction( N2, D2 )</var>\times <var>fraction( D1, D1 )</var> &= <var>fraction( N2 * D1, D )</var>\end{align*}</code></p>
+            </div>
+            <div>
+                <p>所以，問題變成：</p>
+                <p><code><var>fraction( N1 * D2, D )</var> - <var>fraction( N2 * D1, D )</var> = {?}</code></p>
+            </div>
+            <div>
+                <p>現在分母都一樣了！我們可以直接將分子相減。</p>
+                <p><code class="hint_pink">=<var>fraction( D2 * N1 - D1 * N2, D)</var></code></p>
+                <p data-if="getGCD( D2 * N1 - D1 * N2, D ) !== 1">我們也可以用他的等值分數來表示答案，讓分數的數字小一點：</p>
+                <p data-if="getGCD( D2 * N1 - D1 * N2, D ) !== 1"><code>=<var>fractionReduce( F1 * N1 - F2 * N2, LCM )</var></code></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</body>
+</html>

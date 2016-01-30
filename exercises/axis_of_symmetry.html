@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html data-require="math angles graphie graphie-geometry graphie-helpers">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>對稱軸</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+            <div class="vars">
+                <var id="SYM">randRange( 0, 1 )</var>
+                <var id="SIDES">randRange( 3, 8 )</var>
+                <var id="SIDE">randRange( 0, SIDES - 1 )</var>
+                <var id="ANSWER">SYM ? "是" : "否"</var>
+            </div>
+
+    <div class="problems">
+        <div>
+            <p class="question">藍色的線是圖形的對稱軸嗎?</p>
+            <div class="graphie" id="main">
+                init({
+                     range: [ [ -5, 5 ], [ -5, 5 ] ]
+                });
+                graph.polygon = new RegularPolygon( [ 0, 0 ] , SIDES , 3 );
+
+                if ( SYM ){
+                    graph.split = graph.polygon.drawLineOfSymmetry( SIDE );
+                } else {
+                    graph.split = graph.polygon.drawFakeLineOfSymmetry( SIDE );
+                }
+            </div>
+            <div class="solution"><var>ANSWER</var></div>
+            <ul class="choices" data-category="true">
+                <li>是</li>
+                <li>否</li>
+            </ul>
+            <div class="hints">
+                <p>藍色的線有沒有剛好把圖形分成兩半，而且兩邊看起來像是是彼此的倒影?</p>
+                <div>
+                    <p>橘色的線所描出的圖形為藍色線所分出來的一部分。</p>
+                    <div class="graphie" data-update="main">
+                        graph.half = graph.polygon.splitPath( graph.split ).graphiePath;
+                    </div>
+                </div>
+                <p>如果藍色的線是一面鏡子，從橘色那邊看，橘色線的鏡像會看起來像什麼?</p>
+                <div>
+                    <p>粉紅色的線是橘色線的鏡像。</p>
+                    <div class="graphie" data-update="main">
+                        var temp = [];
+                        var i = 0;
+                        for( i = 0; i != graph.half.length; i++ ){
+                            temp.push( reflectPoint( graph.split.graphiePath, graph.half[ i ] ) );
+                        }
+                        path( temp, { "stroke-width": 5, stroke: KhanUtil.PINK } )
+                    </div>
+                </div>
+                <p data-if="SYM">用藍色的線製做的鏡像剛好會與另一邊重疊，所以藍色的線<span class="hint_pink">是</span>對稱軸</p>
+                <p data-else>藍色的線製做的鏡像沒有與另一邊重疊，所以藍色的線<span class="hint_pink">不是</span>對稱軸</p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

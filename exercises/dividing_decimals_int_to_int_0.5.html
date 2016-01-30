@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html data-require="math graphie graphie-helpers-arithmetic">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>小數的除法0.5(整數除以整數)</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+	<div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="DIVISOR">randRange( 4, 5 )</var>
+				<var id="DIVIDEND">randRange(1,2)*100</var>
+				<var id="QUOTIENT">DIVIDEND/DIVISOR</var>
+				<var id="DIVISOR_DECIMAL">0</var>
+				<var id="MAX_DIVIDEND_DECIMAL">DIVIDEND &lt; 10000 ? 4 : 5</var>
+				<var id="DIVIDEND_DECIMAL">2</var>
+				<var id="QUOTIENT_DECIMAL">DIVIDEND_DECIMAL - DIVISOR_DECIMAL</var>
+				<var id="dividend_int">DIVIDEND*0.01</var>
+				<var id="quotient_int">parseInt(QUOTIENT/10/dividend_int)</var>
+				<var id="last_quotient">10-DIVISOR*quotient_int</var>
+				<var id="GRAPHIE_DIVIDEND">(function() {
+					dividend_temp = DIVIDEND / 10;
+					if ((dividend_temp % DIVISOR) == 0){
+						return DIVIDEND / 10;
+					}
+					else{
+						return DIVIDEND;
+					}
+				})()
+					
+				</var>
+				<var id="GRAPHIE_DIVIDEND_DECIMAL">(function() {
+					dividend_temp = DIVIDEND / 10;
+					if ((dividend_temp % DIVISOR) == 0){
+						return 1;
+					}
+					else{
+						return 2;
+					}
+				})()</var>
+			</div>
+
+			<p class="question"><code><var>dividend_int</var></code> 片披薩平分給 <code><var>DIVISOR</var></code> 個人，每個人分得幾片披薩，用小數怎麼表示？</p>
+			<div class="problems">
+				<div>
+					<div class="solution" data-type="decimal"><var>QUOTIENT  / round( pow( 10, QUOTIENT_DECIMAL ) )</var></div>
+				</div>
+			</div>
+			<div class="hints">
+				<p><code><var>dividend_int</var></code> 片披薩平分給 <code><var>DIVISOR</var></code> 個人，不夠平分；</p>
+				<p><code><var>dividend_int</var></code> 片披薩換成 <code>10</code> 個 <code><var>dividend_int*0.1</var></code> 片披薩，平分給 <code><var>DIVISOR</var></code> 個人，每人分得 <code><var>quotient_int</var></code> 個 <code><var>dividend_int*0.1</var></code> 片披薩<span data-if="last_quotient!=0">，剩下 <code><var>last_quotient</var></code> 個 <code><var>dividend_int*0.1</var></code> 片披薩</span>；</p>
+				<p data-if="last_quotient!=0"><code>2</code> 個 <code>0.1</code> 片披薩換成 <code>20</code> 個 <code>0.01</code> 片披薩，再平分給 <code>4</code> 個人，每人分得 <code>5</code> 個 <code>0.01</code> 片披薩，</p>
+				<p data-if="last_quotient!=0">所以 <code>2</code> 個 <code>0.1</code> 片披薩和 <code>5</code> 個 <code>0.01</code> 片披薩，合起來是 <code>0.25</code> 片披薩。</p>
+				<p data-if="last_quotient==0">所以 <code><var>quotient_int</var></code> 個 <code><var>dividend_int*0.1</var></code> 片披薩合起來是 <code><var>quotient_int*dividend_int*0.1</var></code> 片披薩。</p>
+				<div class="graphie" id="numbers">
+					graph.divider = new Divider( DIVISOR, GRAPHIE_DIVIDEND, DIVISOR_DECIMAL, GRAPHIE_DIVIDEND_DECIMAL );
+					graph.divider.show();
+				</div>
+				<div class="graphie" data-update="numbers">
+					graph.divider.shiftDecimals();
+				</div>
+				<div class="graphie" data-update="numbers" data-each="Array( new Divider( DIVISOR, GRAPHIE_DIVIDEND, DIVISOR_DECIMAL, GRAPHIE_DIVIDEND_DECIMAL ).getNumHints() ) as dummy">
+					graph.divider.showHint();
+				</div>
+				<p>所以，每個人分到 <code class="hint_pink"><var>QUOTIENT  / round( pow( 10, QUOTIENT_DECIMAL ) )</var></code> 片披薩。</p>
+			</div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="init_j,init_k">randFromArray([[1,4],[1,2],[1,5],[2,8],[2,4]])</var>
+				<var id="DIVISOR">init_k</var>
+				<var id="DIVIDEND">init_j*100</var>
+				<var id="QUOTIENT">DIVIDEND/DIVISOR</var>
+				<var id="DIVISOR_DECIMAL">0</var>
+				<var id="MAX_DIVIDEND_DECIMAL">DIVIDEND &lt; 10000 ? 4 : 5</var>
+				<var id="DIVIDEND_DECIMAL">2</var>
+				<var id="QUOTIENT_DECIMAL">DIVIDEND_DECIMAL - DIVISOR_DECIMAL</var>
+				<var id="dividend_int">DIVIDEND*0.01</var>
+				<var id="quotient_int">parseInt(QUOTIENT/10/dividend_int)</var>
+				<var id="last_quotient">10-DIVISOR*quotient_int</var>
+				<var id="GRAPHIE_DIVIDEND">(function() {
+					dividend_temp = DIVIDEND / 10;
+					if ((dividend_temp % DIVISOR) == 0){
+						return DIVIDEND / 10;
+					}
+					else{
+						return DIVIDEND;
+					}
+				})()
+					
+				</var>
+				<var id="GRAPHIE_DIVIDEND_DECIMAL">(function() {
+					dividend_temp = DIVIDEND / 10;
+					if ((dividend_temp % DIVISOR) == 0){
+						return 1;
+					}
+					else{
+						return 2;
+					}
+				})()</var>
+			</div>
+
+			<p class="question"><code><var>dividend_int</var>\div<var>DIVISOR</var>=</code> ？</p>
+			<div class="problems">
+				<div>
+					<div class="solution" data-type="decimal"><var>QUOTIENT  / round( pow( 10, QUOTIENT_DECIMAL ) )</var></div>
+				</div>
+			</div>
+			<div class="hints">
+				<p>我們可以用直式來算算看</p>
+				<div class="graphie" id="numbers">
+					graph.divider = new Divider( DIVISOR, GRAPHIE_DIVIDEND, DIVISOR_DECIMAL, GRAPHIE_DIVIDEND_DECIMAL );
+					graph.divider.show();
+				</div>
+				<div class="graphie" data-update="numbers">
+					graph.divider.shiftDecimals();
+				</div>
+				<div class="graphie" data-update="numbers" data-each="Array( new Divider( DIVISOR, GRAPHIE_DIVIDEND, DIVISOR_DECIMAL, GRAPHIE_DIVIDEND_DECIMAL ).getNumHints() ) as dummy">
+					graph.divider.showHint();
+				</div>
+				<p>所以， <code class="hint_pink"><var>dividend_int</var>\div<var>DIVISOR</var>=<var>QUOTIENT  / round( pow( 10, QUOTIENT_DECIMAL ) )</var></code> 。</p>
+			</div>
+		</div>
+		
+		<div id="case3">
+			<div class="vars">
+				<var id="DIVISOR">5</var>
+				<var id="DIVIDEND">randRange(6,9)*100</var>
+				<var id="QUOTIENT">DIVIDEND/DIVISOR</var>
+				<var id="DIVISOR_DECIMAL">0</var>
+				<var id="MAX_DIVIDEND_DECIMAL">DIVIDEND &lt; 10000 ? 4 : 5</var>
+				<var id="DIVIDEND_DECIMAL">2</var>
+				<var id="QUOTIENT_DECIMAL">DIVIDEND_DECIMAL - DIVISOR_DECIMAL</var>
+				<var id="dividend_int">DIVIDEND*0.01</var>
+				<var id="quotient_int">parseInt(QUOTIENT/10/dividend_int)</var>
+				<var id="last_quotient">10-DIVISOR*quotient_int</var>
+				<var id="R">QUOTIENT  / round( pow( 10, QUOTIENT_DECIMAL ) )</var>
+				<var id="GRAPHIE_DIVIDEND">(function() {
+					dividend_temp = DIVIDEND / 10;
+					if ((dividend_temp % DIVISOR) == 0){
+						return DIVIDEND / 10;
+					}
+					else{
+						return DIVIDEND;
+					}
+				})()
+					
+				</var>
+				<var id="GRAPHIE_DIVIDEND_DECIMAL">(function() {
+					dividend_temp = DIVIDEND / 10;
+					if ((dividend_temp % DIVISOR) == 0){
+						return 1;
+					}
+					else{
+						return 2;
+					}
+				})()</var>
+			</div>
+
+			<p class="question">繩子長 <code><var>dividend_int</var></code> 公尺，平分剪成 <code>5</code> 段，每段繩子長幾公尺？</p>
+			<div class="problems">
+				<div>
+					<div class="solution" data-type="decimal"><var>R</var></div>
+				</div>
+			</div>
+			<div class="hints">
+				<p>要把 <code><var>dividend_int</var></code> 公尺的繩子平分剪成 <code>5</code> 段，我們可以怎麼做呢？</p>
+				<p>我們可以用除法來算算看</p>
+				<p><code><var>dividend_int</var>\div<var>DIVISOR</var>=</code> ？</p>
+				<div class="graphie" id="numbers">
+					graph.divider = new Divider( DIVISOR, GRAPHIE_DIVIDEND, DIVISOR_DECIMAL, GRAPHIE_DIVIDEND_DECIMAL );
+					graph.divider.show();
+				</div>
+				<div class="graphie" data-update="numbers">
+					graph.divider.shiftDecimals();
+				</div>
+				<div class="graphie" data-update="numbers" data-each="Array( new Divider( DIVISOR, GRAPHIE_DIVIDEND, DIVISOR_DECIMAL, GRAPHIE_DIVIDEND_DECIMAL ).getNumHints() ) as dummy">
+					graph.divider.showHint();
+				</div>
+				<p><code><var>dividend_int</var>\div<var>DIVISOR</var>=<var>R</var></code></p>
+				<p>所以我們知道每段繩子長 <code class="hint_pink"><var>R</var></code> 公尺。</p>
+			</div>
+		</div>
+		
+		<div id="case4">
+			<div class="vars">
+				<var id="init_j,init_k">randFromArray([[5,2],[7,2],[10,4],[5,4],[9,4]])</var>
+				<var id="DIVISOR">init_k</var>
+				<var id="DIVIDEND">init_j*100</var>
+				<var id="QUOTIENT">DIVIDEND/DIVISOR</var>
+				<var id="DIVISOR_DECIMAL">0</var>
+				<var id="MAX_DIVIDEND_DECIMAL">DIVIDEND &lt; 10000 ? 4 : 5</var>
+				<var id="DIVIDEND_DECIMAL">2</var>
+				<var id="QUOTIENT_DECIMAL">DIVIDEND_DECIMAL - DIVISOR_DECIMAL</var>
+				<var id="dividend_int">DIVIDEND*0.01</var>
+				<var id="quotient_int">parseInt(QUOTIENT/10/dividend_int)</var>
+				<var id="last_quotient">10-DIVISOR*quotient_int</var>
+				<var id="GRAPHIE_DIVIDEND">(function() {
+					dividend_temp = DIVIDEND / 10;
+					if ((dividend_temp % DIVISOR) == 0){
+						return DIVIDEND / 10;
+					}
+					else{
+						return DIVIDEND;
+					}
+				})()
+					
+				</var>
+				<var id="GRAPHIE_DIVIDEND_DECIMAL">(function() {
+					dividend_temp = DIVIDEND / 10;
+					if ((dividend_temp % DIVISOR) == 0){
+						return 1;
+					}
+					else{
+						return 2;
+					}
+				})()</var>
+			</div>
+
+			<p class="question"><code><var>dividend_int</var>\div<var>DIVISOR</var>=</code> ？</p>
+			<div class="problems">
+				<div>
+					<div class="solution" data-type="decimal"><var>QUOTIENT  / round( pow( 10, QUOTIENT_DECIMAL ) )</var></div>
+				</div>
+			</div>
+			<div class="hints">
+				<p>我們可以用直式來算算看</p>
+				<div class="graphie" id="numbers">
+					graph.divider = new Divider( DIVISOR, GRAPHIE_DIVIDEND, DIVISOR_DECIMAL, GRAPHIE_DIVIDEND_DECIMAL );
+					graph.divider.show();
+				</div>
+				<div class="graphie" data-update="numbers">
+					graph.divider.shiftDecimals();
+				</div>
+				<div class="graphie" data-update="numbers" data-each="Array( new Divider( DIVISOR, GRAPHIE_DIVIDEND, DIVISOR_DECIMAL, GRAPHIE_DIVIDEND_DECIMAL ).getNumHints() ) as dummy">
+					graph.divider.showHint();
+				</div>
+				<p>所以， <code class="hint_pink"><var>dividend_int</var>\div<var>DIVISOR</var>=<var>QUOTIENT  / round( pow( 10, QUOTIENT_DECIMAL ) )</var></code> 。</p>
+			</div>
+		</div>
+    </div>
+	</div>
+</body>
+</html>

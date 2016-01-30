@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>整十倍與整百倍</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+		<div class="problems">
+			<div id="case1">
+				<div class="vars" data-ensure="NUMBER_SEED_INIT % 100 !== 0">
+					<var id="NUMBER_SEED_INIT">randRange(11,999)</var>
+					<var id="NUMBER_SEED">round(NUMBER_SEED_INIT*100)</var>
+					<var id="NUMBER_SEED_LENGTH">NUMBER_SEED_INIT.toString().length</var>
+					<var id="ZEROES">0</var>
+					<var id="E">NUMBER_SEED_LENGTH - 1</var>
+					<var id="DECIMAL">NUMBER_SEED</var>
+				</div>
+				<p class="question">
+					請移動下面數字的小數點，讓下面的數字和上面數字的值相等。
+				</p>
+				<div class="problem">
+					<div class="graphie" id="scinot">
+						init({
+							range: [ [ -5, 12 ], [ -1, 3 ] ],
+							scale: [30, 45]
+						});
+						graph.decimalPlace = E;
+
+						label( [ - 0.5, 2 ], "\\Huge{" + NUMBER_SEED_INIT + "\\times 100}" );
+						graph.digits = [];
+						for ( var i = -5; i &lt; 0; ++i ) {
+							graph.digits.push( label( [ i - 0.5, 0 ], "\\Huge{0}" ) );
+						}
+						$.each( integerToDigits( NUMBER_SEED_INIT ), function() {
+							graph.digits.push( label( [ i - 0.5, 0 ], "\\Huge{" + this + "}" ) );
+							++i;
+						});
+						for ( ; i &lt; 11; ++i ) {
+							graph.digits.push( label( [ i - 0.5, 0 ], "\\Huge{0}" ) );
+						}
+						label( [ -1, 1 ], "\\large{=}" );
+
+						addMouseLayer();
+
+						graph.decimal = addMovablePoint({
+							coord: [ graph.decimalPlace, -0.3 ],
+							snapX: 1,
+							constraints: {
+								constrainY: true
+							},
+							normalStyle: {
+								fill: KhanUtil.BLUE,
+								stroke: KhanUtil.BLUE
+							}
+						});
+
+						var setDecimal = function( place ) {
+							var i;
+							if ( place &lt;= 0 ) {
+								for ( i = -5; i &lt; place-1; ++i ) {
+									graph.digits[i + 5].css('color', 'transparent');
+								}
+								while ( i &lt; NUMBER_SEED_LENGTH ) {
+									graph.digits[ i + 5 ].css('color', '');
+									++i;
+								}
+								while ( i &lt; 11 ) {
+									graph.digits[i + 5].css('color', 'transparent');
+									++i;
+								}
+							} else {
+								for ( i = -5; i &lt; 0; ++i ) {
+									graph.digits[i + 5].css('color', 'transparent');
+								}
+								while ( i &lt; place || i &lt; NUMBER_SEED_LENGTH ) {
+									graph.digits[i + 5].css('color', '');
+									++i;
+								}
+								while ( i &lt; 11 ) {
+									graph.digits[i + 5].css('color', 'transparent');
+									++i;
+								}
+							}
+						};
+
+						setDecimal( E + 1 );
+
+						graph.decimal.onMove = function( x, y ) {
+							if ( x &lt; -3 || x &gt; 6 ) {
+								return false;
+							}
+							setDecimal( x + 1 );
+						};
+					</div>
+				</div>
+
+				<div class="solution" data-type="custom">
+					<div class="instruction">
+						移動下面數字的小數點, 試著將它往左或是往右移動
+					</div>
+					<div class="guess">graph.decimal.coord[0]</div>
+					<div class="validator-function">
+						if ( guess - E === 0 ) {
+							return "";
+						}
+						return guess - E === 2;
+					</div>
+				</div>
+
+				<div class="hints">
+					<p><code><var>NUMBER_SEED_INIT</var> \times <var>100</var></code> 代表小數點要往右移動兩位。</p>
+					<p><code><var>NUMBER_SEED_INIT</var></code> 小數點的位置在 <code><var>NUMBER_SEED_INIT</var></code> 的右下方 <code><var>NUMBER_SEED_INIT</var></code><code class="hint_blue">\Huge{.}</code> 。</p>
+				<div>
+					<p>小數點往右移兩位 <code class="hint_pink"><var>NUMBER_SEED</var></code> 。</p>	
+					<div class="graphie" data-update="scinot">
+								if(NUMBER_SEED_LENGTH==2){ graph.decimal.moveTo(3,-0.3);}
+								if(NUMBER_SEED_LENGTH==3){ graph.decimal.moveTo(4,-0.3);}
+					</div>		
+				</div>
+			</div>
+			</div>			
+			<div id="case2">
+				<div class="vars" data-ensure="NUMBER_SEED_INIT % 100 !== 0">
+					<var id="NUMBER_SEED_INIT">randRange(11,999)</var>
+					<var id="NUMBER_SEED">round(NUMBER_SEED_INIT*10)</var>
+					<var id="NUMBER_SEED_LENGTH">NUMBER_SEED_INIT.toString().length</var>
+					<var id="ZEROES">0</var>
+					<var id="E">NUMBER_SEED_LENGTH - 1</var>
+				</div>
+				<p class="question">
+					請移動下面數字的小數點，讓下面的數字和上面數字的值相等
+				</p>
+				<div class="problem">
+					<div class="graphie" id="scinot">
+						init({
+							range: [ [ -5, 12 ], [ -1, 3 ] ],
+							scale: [30, 45]
+						});
+						graph.decimalPlace = E;
+
+						label( [ - 0.5, 2 ], "\\Huge{" + NUMBER_SEED_INIT + "\\times 10}" );
+						graph.digits = [];
+						for ( var i = -5; i &lt; 0; ++i ) {
+							graph.digits.push( label( [ i - 0.5, 0 ], "\\Huge{0}" ) );
+						}
+						$.each( integerToDigits( NUMBER_SEED_INIT ), function() {
+							graph.digits.push( label( [ i - 0.5, 0 ], "\\Huge{" + this + "}" ) );
+							++i;
+						});
+						for ( ; i &lt; 11; ++i ) {
+							graph.digits.push( label( [ i - 0.5, 0 ], "\\Huge{0}" ) );
+						}
+						label( [ -1, 1 ], "\\large{=}" );
+
+						addMouseLayer();
+
+						graph.decimal = addMovablePoint({
+							coord: [ graph.decimalPlace, -0.3 ],
+							snapX: 1,
+							constraints: {
+								constrainY: true
+							},
+							normalStyle: {
+								fill: KhanUtil.BLUE,
+								stroke: KhanUtil.BLUE
+							}
+						});
+
+						var setDecimal = function( place ) {
+							var i;
+							if ( place &lt;= 0 ) {
+								for ( i = -5; i &lt; place-1; ++i ) {
+									graph.digits[i + 5].css('color', 'transparent');
+								}
+								while ( i &lt; NUMBER_SEED_LENGTH ) {
+									graph.digits[ i + 5 ].css('color', '');
+									++i;
+								}
+								while ( i &lt; 11 ) {
+									graph.digits[i + 5].css('color', 'transparent');
+									++i;
+								}
+							} else {
+								for ( i = -5; i &lt; 0; ++i ) {
+									graph.digits[i + 5].css('color', 'transparent');
+								}
+								while ( i &lt; place || i &lt; NUMBER_SEED_LENGTH ) {
+									graph.digits[i + 5].css('color', '');
+									++i;
+								}
+								while ( i &lt; 11 ) {
+									graph.digits[i + 5].css('color', 'transparent');
+									++i;
+								}
+							}
+						};
+
+						setDecimal( E + 1 );
+
+						graph.decimal.onMove = function( x, y ) {
+							if ( x &lt; -3 || x &gt; 6 ) {
+								return false;
+							}
+							setDecimal( x + 1 );
+						};
+					</div>				
+				</div>
+				<div class="solution" data-type="custom">
+					<div class="instruction">
+						移動下面數字的小數點, 試著將它往左或是往右移動
+					</div>
+					<div class="guess">graph.decimal.coord[0]</div>
+					<div class="validator-function">
+						if ( guess - E === 0 ) {
+							return "";
+						}
+						return guess - E === 1;
+					</div>
+				</div>
+
+				<div class="hints">
+					<p><code><var>NUMBER_SEED_INIT</var> \times </code><code><var>10</var></code> 代表小數點要往右移動一位。</p>
+					<p><code><var>NUMBER_SEED_INIT</var></code> 小數點的位置在 <code><var>NUMBER_SEED_INIT</var></code> 的右下方 <code><var>NUMBER_SEED_INIT</var></code><code class="hint_blue">\Huge{.}</code> 。</p>
+					<div>
+					
+					<div class="graphie" data-update="scinot">
+						if(NUMBER_SEED_LENGTH==2){ graph.decimal.moveTo(2,-0.3);}
+						if(NUMBER_SEED_LENGTH==3){ graph.decimal.moveTo(3,-0.3);}
+					</div>			
+					<p>小數點往右移一位 <code class="hint_pink"><var>NUMBER_SEED</var></code> 。</p>
+					</div>
+				</div>
+			</div>
+			<div id="case3">
+            <div class="vars" data-ensure="Num % 100 !== 0">
+				  <var id="Num">randRange(11, 999)</var>
+				  <var id="H">100</var>
+				  <var id="total">round(Num*H)</var>
+			</div>
+			<div class="question">
+				<div class="problem">
+					<p><code><var>Num</var> \times （\qquad） = <var>total</var></code></p>					
+				</div>
+			</div>				
+			<div class="solution" data-type="multiple">
+				
+                <p><span class="sol" data-forms="integer"><var>H</var></span> </p>
+				<p class="example">整數，例：<code>6</code></p>	
+            </div>
+            <div class="hints">
+
+				<p><code><var>total</var></code> 是 <code><var>Num</var></code> 的 <code><var>H</var></code> 倍。</p>
+                <p>表示 <code><var>Num</var> \times </code> <code class="hint_pink"><var>H</var></code> <code> = <var>total</var></code> 。</p>                  
+			</div>
+		</div>
+			<div id="case4">
+            <div class="vars" data-ensure="Num % 100 !== 0">
+				<var id="Num">randRange(11, 999)</var>
+				  <var id="Ten">10</var>
+				  <var id="total">round(Num*Ten)</var>
+			</div>
+			<div class="question">
+				<div class="problem">
+					<p><code><var>Num</var> \times （\qquad ） = <var>total</var></code></p>				
+				</div>
+			</div>	
+			<div class="solution" data-type="multiple">
+                <p><span class="sol" data-forms="integer"><var>Ten</var></span> </p>
+				<p class="example">整數，例：<code>6</code></p>			
+            </div>
+            <div class="hints">
+				<p><code><var>total</var></code> 是 <code><var>Num</var></code> 的 <code><var>Ten</var></code> 倍。</p>
+                    <p>表示 <code><var>Num</var> \times </code> <code class="hint_pink"><var>Ten</var></code> <code> = </code> <code><var>total</var></code> 。</p>
+			</div>
+
+		</div>
+        </div>
+
+    </div>
+</body>
+</html>
