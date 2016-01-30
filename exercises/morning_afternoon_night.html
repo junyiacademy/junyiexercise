@@ -1,161 +1,0 @@
-<!DOCTYPE html>
-<html data-require="math math-format graphie graphie-helpers jquery.mobile.vmouse interactive expressions">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>認識上午、中午、下午、晚上等時間用語</title>
-    <script src="../khan-exercise.js"></script>
-	<style type="text/css">
-        #answer_area .sol input[type=text] {
-            width: 30px;
-        }
-		.bordered {
-			border: 0px solid black;
-		}
-	</style>
-</head>
-<script type="text/javascript">
-	function isClose(coordA, coordB) {
-        if (Math.abs(coordA[0] - coordB[0]) < 0.3 && Math.abs(coordA[1] - coordB[1]) < 0.3)
-            return true;
-        else
-            return false;
-    }
-</script>
-<body>
-    <div class="exercise">
-    <div class="problems">				<div id="case1">			<div class="vars">				<var id="data">					(function()					{						var name=[["學校升旗是","上午","morning.jpg"],["吃午餐是","中午","have_lunch.jpg"],["到公園玩是","下午","afternoon.jpg"],["寫功課是","晚上","night.jpg"]];						var num=randRange(0,3);						$('#grid11').append("&lt;img height=\'100%\' width=\'100%\' src=\'"+Khan.urlBase+"images/"+name[num][2]+"\'&gt;");						return [name[num][0],name[num][1]];					})()				</var>				<var id="time">data[1]</var>				<var id="my_th">data[0]</var>			</div>			<div class="question">					<p class="problem">						<p>想一想表示的時間，在下面圖片中選擇上午、中午、下午、或晚上。</p>					<table class="bordered">							<tr>															<td class="bordered" width="45%">									<div id="grid11"></div>								</td>															</tr>					</table>				</p>			</div>			<div class="solution" data-type="multiple">				<p><var>data[0]</var><span class="sol" data-type="list" data-choices="['','上午','中午','下午','晚上']"><var>time</var></span></p>				<p class="example">在下拉列表中選擇正確的答案</p>			</div>			<div class="hints">				<p><var>my_th</var><span class="hint_pink"><var>time</var></span>。</p>			</div>		</div>				
-		
-		<div id="case2">
-			<div class="vars">							<var id="turn">randRangeUnique(1,3,2)</var>				
-				<var id="data">
-					(function()
-					{						var shape=[["sleep1.jpg","晚上"],["get_up1.jpg","上午"],["class_1.jpg","中午"],["run_race1.jpg","下午"],["do_homework1.jpg","晚上"],["morning_exercise_1.jpg","上午"]];
-						var kind=new Array(2);							kind=randRangeUnique(0,4,2);						if(kind[0]==0 || kind[0]==1){kind[0]=kind[0]+4*randRange(0,1);}						if(kind[1]==0 || kind[1]==1){kind[1]=kind[1]+4*randRange(0,1);}						$('#grid11').append("&lt;img height=\'100%\' width=\'100%\' src=\'"+Khan.urlBase+"images/"+shape[kind[0]][0]+"\'&gt;");						$('#grid12').append("&lt;img height=\'100%\' width=\'100%\' src=\'"+Khan.urlBase+"images/"+shape[kind[1]][0]+"\'&gt;");
-						
-						return [shape[kind[0]][1],shape[kind[1]][1]];
-					})()
-				</var>				
-				<var id="selection">1</var>				
-			</div>
-			<div class="question">
-				<p>把適當的時間用語，拉線連連看。</p>		
-					 <div style="float:left;width:120px;text-align:center;">
-						<div id="grid11" style="height:80px;border:1px solid black;"></div>
-						<div id="grid12" style="height:80px;border:1px solid black;"></div>
-					 </div>
-					 <div style="position:absolute; width:70px;left:248px;">
-                        <div id="option_1" style="height:30px;border:1px solid black;margin-top:25px;margin-bottom:20px;" align="center"><var>data[turn[0]-1]</var></div>
-                        <div id="option_2" style="height:30px;border:1px solid black;margin-top:50px;margin-bottom:20px;" align="center"><var>data[turn[1]-1]</var></div>
-                    </div>
-					<div class="graphie" id="grid">
-						init({
-                                range:[[0,10],[-5,0]]
-                            });
-                        addMouseLayer();						graph.point_a = addMovableCircle( [ 3.05 ,-1], [ 3.05 ,-1]);						graph.point_b = addMovableCircle([ 3.05, -3.1 ],[ 3.05, -3.1 ]);						graph.point_a.normalStyle.scale = 1;						graph.point_a.highlightStyle.scale = 1.25;						graph.point_b.normalStyle.scale = 1;						graph.point_b.highlightStyle.scale = 1.25;
-                        graph.pointA = addMovablePoint({
-                            coord: [ 3 ,-1 ],
-                            visible:false,
-                            normalStyle: {
-                                stroke: KhanUtil.BLUE,
-                                fill: KhanUtil.BLUE
-                            }
-                        });
-						graph.pointB = addMovablePoint({
-                            coord: [ 3, -3.1 ],
-                            visible:false,
-                            normalStyle: {
-                                stroke: KhanUtil.BLUE,
-                                fill: KhanUtil.BLUE
-                            }
-                        });
-						graph.line1 = addMovableLineSegment({
-                            pointA: graph.pointA,
-                            pointZ: graph.point_a,
-                            fixed: true,
-                            extendLine: false,
-                            normalStyle: {
-                                "stroke": KhanUtil.BLUE,
-                                "stroke-width": 2
-                            }
-                        });
-						graph.line2 = addMovableLineSegment({
-                            pointA: graph.pointB,
-                            pointZ: graph.point_b,
-                            fixed: true,
-                            extendLine: false,
-                            normalStyle: {
-                                "stroke": KhanUtil.BLUE,
-                                "stroke-width": 2
-                            }
-                        });
-						var coords=[[5.3,-1],[5.3,-3.1]];
-						var next_2=new Array(2);
-                        selection=next_2;
-                        graph.isClose=function(coord_1,coord_2){
-                           if((coord_1[0]-coord_2[0])&gt;-0.65 &&(coord_1[0]-coord_2[0])&lt;7 && Math.abs(coord_1[1]-coord_2[1])&lt;0.7)
-                                return true;
-                            else
-                                return false;
-                        }
-						graph.circleA = circle([3,-1],0.3,{stroke: '#999'}); 
-                        graph.circleB = circle([3,-3.1],0.3,{stroke: '#999'});
-                       graph.circleD = circle([5.3,-1],0.3,{stroke: '#999'});
-                        graph.circleF = circle([5.3,-3.1],0.3,{stroke: '#999'});
-						graph.point_a.onMove = function( x, y ) {
-                            for(i=0;i&lt;2;i++){
-                                if(graph.isClose(graph.point_a.coord,coords[i]))
-                                {
-									next_2[0]=document.getElementById("option_"+(i+1)).innerHTML;									
-                                    break;
-                                }
-                                else
-								{
-                                    next_2[0]=-1;
-								}
-                            }
-                            return ( x &lt;7 && x&gt;3 && y);
-							
-                        }
-                        graph.point_b.onMove = function( x, y ) {
-                            for(i=0;i&lt;2;i++){
-                                if(graph.isClose(graph.point_b.coord,coords[i]))
-                                {
-                                    next_2[1]=document.getElementById("option_"+(i+1)).innerHTML;
-                                    break;
-                                }
-                                else
-								{
-                                    next_2[1]=-1;
-								}
-                            }
-                            return ( x &lt;7 && x&gt;3 );
-                        }
-					</div>
-			</div>
-			<div class="solution" data-type="multiple">
-                    <div class="sol" data-type="custom">
-                        <div class="guess">selection</div>
-                        <div class="validator-function">
-						if(guess[0]==data[0] && guess[1]==data[1])
-							return true;
-						else
-							return false; 
-                        </div>
-                    </div>
-				<p>請將圖片中對應的時間用線連起來</p>
-            </div>
-			<div class="hints">
-				<div class="graphie" data-update="grid">
-                        coord=[-1,-3.1];
-                        graph.point_a.moveTo(5.3,coord[turn[0]-1],"graph.line1");
-                </div>
-                <div class="graphie" data-update="grid">
-                        coord=[-1,-3.1];
-                        graph.point_b.moveTo(5.3,coord[turn[1]-1],"graph.line1");
-                </div>
-			</div>
-		</div>
-		<div id="case3">			<div class="vars">							<var id="turn">randRangeUnique(1,3,2)</var>								<var id="data">					(function()					{						var shape=[["sleep1.jpg","晚上"],["get_up1.jpg","上午"],["class_1.jpg","中午"],["run_race1.jpg","下午"],["do_homework1.jpg","晚上"],["morning_exercise_1.jpg","上午"]];												var kind=new Array(2);							kind=randRangeUnique(0,4,2);						if(kind[0]==0 || kind[0]==1){kind[0]=kind[0]+4*randRange(0,1);}						if(kind[1]==0 || kind[1]==1){kind[1]=kind[1]+4*randRange(0,1);}						$('#grid11').append("&lt;img height=\'100%\' width=\'100%\' src=\'"+Khan.urlBase+"images/"+shape[kind[0]][0]+"\'&gt;");						$('#grid12').append("&lt;img height=\'100%\' width=\'100%\' src=\'"+Khan.urlBase+"images/"+shape[kind[1]][0]+"\'&gt;");												return [shape[kind[0]][1],shape[kind[1]][1]];					})()				</var>								<var id="selection">1</var>							</div>			<div class="question">				<p>把適當的時間用語，拉線連連看。</p>							 <div style="float:left;width:120px;text-align:center;">						<div id="grid11" style="height:80px;border:1px solid black;"></div>						<div id="grid12" style="height:80px;border:1px solid black;"></div>					 </div>					 <div style="position:absolute; width:70px;left:248px;">                        <div id="option_1" style="height:30px;border:1px solid black;margin-top:25px;margin-bottom:20px;" align="center"><var>data[turn[0]-1]</var></div>                        <div id="option_2" style="height:30px;border:1px solid black;margin-top:50px;margin-bottom:20px;" align="center"><var>data[turn[1]-1]</var></div>                    </div>					<div class="graphie" id="grid">						init({                                range:[[0,10],[-5,0]]                            });                        addMouseLayer();						graph.point_a = addMovableCircle( [ 3.05 ,-1], [ 3.05 ,-1]);						graph.point_b = addMovableCircle([ 3.05, -3.1 ],[ 3.05, -3.1 ]);						graph.point_a.normalStyle.scale = 1;						graph.point_a.highlightStyle.scale = 1.25;						graph.point_b.normalStyle.scale = 1;						graph.point_b.highlightStyle.scale = 1.25;                        graph.pointA = addMovablePoint({                            coord: [ 3 ,-1 ],                            visible:false,                            normalStyle: {                                stroke: KhanUtil.BLUE,                                fill: KhanUtil.BLUE                            }                        });						graph.pointB = addMovablePoint({                            coord: [ 3, -3.1 ],                            visible:false,                            normalStyle: {                                stroke: KhanUtil.BLUE,                                fill: KhanUtil.BLUE                            }                        });                        						graph.line1 = addMovableLineSegment({                            pointA: graph.pointA,                            pointZ: graph.point_a,                            fixed: true,                            extendLine: false,                            normalStyle: {                                "stroke": KhanUtil.BLUE,                                "stroke-width": 2                            }                        });						graph.line2 = addMovableLineSegment({                            pointA: graph.pointB,                            pointZ: graph.point_b,                            fixed: true,                            extendLine: false,                            normalStyle: {                                "stroke": KhanUtil.BLUE,                                "stroke-width": 2                            }                        });						var coords=[[5.3,-1],[5.3,-3.1]];						var next_2=new Array(2);                        selection=next_2;                        graph.isClose=function(coord_1,coord_2){                             if((coord_1[0]-coord_2[0])&gt;-0.6 &&(coord_1[0]-coord_2[0])&lt;7 && Math.abs(coord_1[1]-coord_2[1])&lt;0.6)									return true;                            else                                return false;                        }						graph.circleA = circle([3,-1],0.3,{stroke: '#999'});                         graph.circleB = circle([3,-3.1],0.3,{stroke: '#999'});                        graph.circleD = circle([5.3,-1],0.3,{stroke: '#999'});                        graph.circleF = circle([5.3,-3.1],0.3,{stroke: '#999'});						graph.point_a.onMove = function( x, y ) {                            for(i=0;i&lt;2;i++){                                if(graph.isClose(graph.point_a.coord,coords[i]))                                {									next_2[0]=document.getElementById("option_"+(i+1)).innerHTML;                                    break;                                }                                else								{                                    next_2[0]=-1;								}                            }                            return ( x &lt;7 && x&gt;3 && y);							                        }                        graph.point_b.onMove = function( x, y ) {                            for(i=0;i&lt;2;i++){                                if(graph.isClose(graph.point_b.coord,coords[i]))                                {                                    next_2[1]=document.getElementById("option_"+(i+1)).innerHTML;                                    break;                                }                                else								{                                    next_2[1]=-1;								}                            }                            return ( x &lt;7 && x&gt;3 );                        }					</div>			</div>			<div class="solution" data-type="multiple">                    <div class="sol" data-type="custom">                        <div class="guess">selection</div>                        <div class="validator-function">						if(guess[0]==data[0] && guess[1]==data[1])							return true;						else							return false;                         </div>                    </div>				<p>請將圖片中對應的時間用線連起來</p>            </div>			<div class="hints">				<div class="graphie" data-update="grid">                        coord=[-1,-3.1];                        graph.point_a.moveTo(5.3,coord[turn[0]-1],"graph.line1");                </div>                <div class="graphie" data-update="grid">                        coord=[-1,-3.1];                        graph.point_b.moveTo(5.3,coord[turn[1]-1],"graph.line1");                </div>			</div>		</div>	</div>
-	</div>
-</body>
-</html>
