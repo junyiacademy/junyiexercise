@@ -50,8 +50,8 @@
                 </div>
                 <p class="problem">請問下面這組聯立方程式共有幾個解？</p>
                 <div class="question">
-                    <p><code>\color{<var>BLUE</var>}{<var>EQUATIONS[0]</var>}</code><br />
-                    <code>\color{<var>GREEN</var>}{<var>EQUATIONS[1]</var>}</code></p>
+                    <p><code>\color{BLUE}{<var>EQUATIONS[0]</var>}</code><br />
+                    <code>\color{GREEN}{<var>EQUATIONS[1]</var>}</code></p>
                 </div>
                 <ul class="choices" data-category="true">
                     <li>一個解</li>
@@ -59,23 +59,110 @@
                     <li>無解</li>
                 </ul>
                 <div class="hints">
-                    <p>將兩個等式都轉換成斜截式：</p>
-                    <div data-unwrap>
-                        <p data-each="COUNT as INDEX"><code>\color{<span data-if="INDEX === 0"><var>BLUE</var></span><span data-else><var>GREEN</var></span>}{<var>EQUATIONS[INDEX]</var>}</code><br />
-                        <span data-if="INDICES[INDEX] === 1"><code>\color{<span data-if="INDEX === 0"><var>BLUE</var></span><span data-else><var>GREEN</var></span>}{y = <var>expr(["+", ["*", AB_VALS[INDEX].a, "x"], AB_VALS[INDEX].b])</var>}</code></span>
-                        <span data-if="INDICES[INDEX] === 2"><code><var>expr(["*", -AB_VALS[INDEX].a, "x"])</var>\color{<var>PINK</var>}{<var>SIGNS_1[INDEX]</var><var>expr(["*", abs( AB_VALS[INDEX].a ), "x"])</var>} + y = <var>AB_VALS[INDEX].b</var>\color{<var>PINK</var>}{<var>SIGNS_1[INDEX]</var><var>expr(["*", abs( AB_VALS[INDEX].a ), "x"])</var>}</code><br />
-                        <code>y = <var>AB_VALS[INDEX].b</var><var>SIGNS_1[INDEX]</var><var>expr(["*", abs( AB_VALS[INDEX].a ), "x"])</var></code><br />
-                        <code>\color{<span data-if="INDEX === 0"><var>BLUE</var></span><span data-else><var>GREEN</var></span>}{y = <var>expr(["+", ["*", AB_VALS[INDEX].a, "x"], AB_VALS[INDEX].b])</var>}</code></span>
-                        <span data-if="INDICES[INDEX] === 3"><code><var>expr(["*", -AB_VALS[INDEX].a * MULT[INDEX], "x"])</var>\color{<var>PINK</var>}{<var>SIGNS_2[INDEX]</var><var>expr(["*", abs( AB_VALS[INDEX].a * MULT[INDEX] ), "x"])</var>} + <var>expr(["*", MULT[INDEX], "y"])</var> = <var>AB_VALS[INDEX].b * MULT[INDEX]</var>\color{<var>PINK</var>}{<var>SIGNS_2[INDEX]</var><var>expr(["*", abs( AB_VALS[INDEX].a * MULT[INDEX] ), "x"])</var>}</code><br />
-                        <code><var>expr(["*", MULT[INDEX], "y"])</var> = <var>AB_VALS[INDEX].b * MULT[INDEX]</var><var>SIGNS_2[INDEX]</var><var>expr(["*", abs( AB_VALS[INDEX].a * MULT[INDEX] ), "x"])</var></code><br />
-                        <code>y = <var>AB_VALS[INDEX].b</var><var>SIGNS_1[INDEX]</var><var>expr(["*", abs( AB_VALS[INDEX].a ), "x"])</var></code><br />
-                        <code>\color{<span data-if="INDEX === 0"><var>BLUE</var></span><span data-else><var>GREEN</var></span>}{y = <var>expr(["+", ["*", AB_VALS[INDEX].a, "x"], AB_VALS[INDEX].b])</var>}</code></span></p>
+                    <p>先找出方程式 <code>\color{blue}{<var>EQUATIONS[0]</var>}</code> 的兩組解：
+                    </p>
+                    <div>
+                        <table style="width:40%">
+                        <tr>
+                            <td style="width:10%;vertical-align: middle;border:#000000 solid 2px;" align="center">
+                                <code>x</code>
+                            </td>
+                            <td style="width:10%;vertical-align: middle;border:#000000 solid 2px;" align="center">
+                                <code>0</code>
+                            </td>
+                            <td style="width:10%;vertical-align: middle;border:#000000 solid 2px;" align="center">
+                                <code>1</code>
+                            </td>
+                        　  </tr>
+                        <tr>
+                        　<td style="width:10%;vertical-align: middle;border:#000000 solid 2px;" align="center">
+                                <code>y</code>
+                            </td>
+                            <td style="width:10%;vertical-align: middle;border:#000000 solid 2px;" align="center">
+                                <code><var>AB_VALS[0].b</var></code>
+                            </td>
+                            <td style="width:10%;vertical-align: middle;border:#000000 solid 2px;" align="center">
+                                <code><var>AB_VALS[0].b+AB_VALS[0].a</var></code>
+                            </td>
+                        　</tr>
+                        </table>
+                    </div>
+                    <div><p>畫出通過 <code> (0,<var>AB_VALS[0].b</var>)、(1,<var>AB_VALS[0].b+AB_VALS[0].a</var>) </code> 的直線 <code>L</code>。</p></div>
+                    <div class="graphie" id="grid2">
+
+                            graphInit({
+                                range: [[-10, 10], [-10, 10]],
+                                scale: [18, 18],
+                                tickStep: 1,
+                                labelStep: 1,
+                                unityLabels: false,
+                                labelFormat: function( s ) { return "\\small{" + s + "}"; },
+                                axisArrows: "<->"
+                            });
+
+                            plot(function( x ) {
+                                return ( AB_VALS[0].a * x + AB_VALS[0].b );
+                            }, [-10, 10], {
+                                stroke: "BLUE"
+                            });                            
+                        </div>
+
+                    <div>
+                        <p>
+                            再找出方程式 <code>\color{green}{<var>EQUATIONS[1]</var>}</code> 的兩組解：
+                        </p>
                     </div>
                     <div>
-                        <p>光是看這兩個等式的斜截式，你發現什麼？</p>
-                        <p><code>\color{<var>BLUE</var>}{y = <var>expr(["+", ["*", AB_VALS[0].a, "x"], AB_VALS[0].b])</var>}</code><br />
-                        <code>\color{<var>GREEN</var>}{y = <var>expr(["+", ["*", AB_VALS[1].a, "x"], AB_VALS[1].b])</var>}</code></p>
+                        <table style="width:40%">
+                        <tr>
+                            <td style="width:10%;vertical-align: middle;border:#000000 solid 2px;" align="center">
+                                <code>x</code>
+                            </td>
+                            <td style="width:10%;vertical-align: middle;border:#000000 solid 2px;" align="center">
+                                <code>0</code>
+                            </td>
+                            <td style="width:10%;vertical-align: middle;border:#000000 solid 2px;" align="center">
+                                <code>1</code>
+                            </td>
+                        　  </tr>
+                        <tr>
+                        　<td style="width:10%;vertical-align: middle;border:#000000 solid 2px;" align="center">
+                                <code>y</code>
+                            </td>
+                            <td style="width:10%;vertical-align: middle;border:#000000 solid 2px;" align="center">
+                                <code><var>AB_VALS[1].b</var></code>
+                            </td>
+                            <td style="width:10%;vertical-align: middle;border:#000000 solid 2px;" align="center">
+                                <code><var>AB_VALS[1].b+AB_VALS[1].a</var></code>
+                            </td>
+                        　</tr>
+                        </table>                        
                     </div>
+                    <div><p>再畫出通過 <code> (0,<var>AB_VALS[1].b</var>)、(1,<var>AB_VALS[1].b+AB_VALS[1].a</var>) </code> 的直線 <code>M</code>。</p></div>
+                    <div class="graphie" id="grid3">
+
+                            graphInit({
+                                range: [[-10, 10], [-10, 10]],
+                                scale: [18, 18],
+                                tickStep: 1,
+                                labelStep: 1,
+                                unityLabels: false,
+                                labelFormat: function( s ) { return "\\small{" + s + "}"; },
+                                axisArrows: "<->"
+                            });
+                            plot(function( x ) {
+                                return ( AB_VALS[0].a * x + AB_VALS[0].b );
+                            }, [-10, 10], {
+                                stroke: "BLUE"
+                            }); 
+                            plot(function( x ) {
+                                return ( AB_VALS[1].a * x + AB_VALS[1].b );
+                            }, [-10, 10], {
+                                stroke: "GREEN"
+                            });                            
+                        </div>
+                    
+                    
                 </div>
             </div>
             <div id="one_solution" data-type="original">
@@ -85,32 +172,9 @@
                 <div class="solution">一個解</div>
                 <div class="hints" data-apply="appendContents">
                     <div>
-                        <p>這兩個方程式的斜率不同。</p>
-                        <div class="graphie" id="grid">
-                            graphInit({
-                                range: [[-10, 10], [-10, 10]],
-                                scale: [18, 18],
-                                tickStep: 1,
-                                labelStep: 1,
-                                unityLabels: false,
-                                labelFormat: function( s ) { return "\\small{" + s + "}"; },
-                                axisArrows: "<->"
-                            });
-
-                            plot(function( x ) {
-                                return ( AB_VALS[0].a * x + AB_VALS[0].b );
-                            }, [-10, 10], {
-                                stroke: "BLUE"
-                            });
-
-                            plot(function( x ) {
-                                return ( AB_VALS[1].a * x + AB_VALS[1].b );
-                            }, [-10, 10], {
-                                stroke: "GREEN"
-                            });
-                        </div>
+                        <p>這兩個方程式的斜率不同。</p>                        
                     </div>
-                    <p>當兩個方程式的斜率不同時，兩條直線會相交一次，形成一個解。</p>
+                    <p>從圖中會發現兩條直線相交一次，形成一個解。</p>
                 </div>
             </div>
             <div id="infinite_solutions" data-type="original">
@@ -120,26 +184,10 @@
                 <div class="solution">無限個解</div>
                 <div class="hints" data-apply="appendContents">
                     <div>
-                        <p>兩個方程式有著相同的斜率與相同的 Y 軸截距；這代表說這兩條直線會完全重疊。</p>
-                        <div class="graphie" id="grid">
-                            graphInit({
-                                range: [[-10, 10], [-10, 10]],
-                                scale: [18, 18],
-                                tickStep: 1,
-                                labelStep: 1,
-                                unityLabels: false,
-                                labelFormat: function( s ) { return "\\small{" + s + "}"; },
-                                axisArrows: "<->"
-                            });
-
-                            plot(function( x ) {
-                                return ( AB_VALS[0].a * x + AB_VALS[0].b );
-                            }, [-10, 10], {
-                                stroke: "BLACK"
-                            });
-                        </div>
+                        <p>兩個方程式通過相同的點；這代表說這兩條直線會完全重疊。</p>
+                        
                     </div>
-                    <p>由於任何一個 <code>\color{<var>BLUE</var>}{<var>EQUATIONS[0]</var>}</code> 的解也是 <code>\color{<var>GREEN</var>}{<var>EQUATIONS[1]</var>}</code> 的解，所以這組聯立方程式有無限個解。</p>
+                    <p>由於任何一個 <code>\color{BLUE}{<var>EQUATIONS[0]</var>}</code> 的解也是 <code>\color{GREEN}{<var>EQUATIONS[1]</var>}</code> 的解，所以這組聯立方程式有無限個解。</p>
                 </div>
             </div>
             <div id="zero_solutions" data-type="original">
@@ -148,32 +196,6 @@
                 </div>
                 <div class="solution">無解</div>
                 <div class="hints" data-apply="appendContents">
-                    <div>
-                        <p>這兩個等式有著相同的斜率但不同的 Y 軸截距。這代表兩條直線是平行的。</p>
-                        <div class="graphie" id="grid">
-                            graphInit({
-                                range: [[-10, 10], [-10, 10]],
-                                scale: [18, 18],
-                                tickStep: 1,
-                                labelStep: 1,
-                                unityLabels: false,
-                                labelFormat: function( s ) { return "\\small{" + s + "}"; },
-                                axisArrows: "<->"
-                            });
-
-                            plot(function( x ) {
-                                return ( AB_VALS[0].a * x + AB_VALS[0].b );
-                            }, [-10, 10], {
-                                stroke: "BLUE"
-                            });
-
-                            plot(function( x ) {
-                                return ( AB_VALS[1].a * x + AB_VALS[1].b );
-                            }, [-10, 10], {
-                                stroke: "GREEN"
-                            });
-                        </div>
-                    </div>
                     <p>平行的直線永遠不會相交，所以這組方程式沒有解。</p>
                 </div>
             </div>
