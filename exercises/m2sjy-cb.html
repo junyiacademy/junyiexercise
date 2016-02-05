@@ -12,6 +12,19 @@
             th = th * Math.PI / 180;
             return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
         }
+
+        function getThetaFromXY(x, y) {
+            var angle = Math.atan(y / x);
+            if (x <= 0 && y > 0) {
+                angle += Math.PI;
+            } else if (x < 0 && y < 0) {
+                angle += Math.PI;
+            } else if (x >= 0 && y < 0) {
+                angle += 2 * Math.PI;
+            }
+            angle = angle * 180 / Math.PI;
+            return angle;
+        }
     </script>
 </head>
 <body>
@@ -41,7 +54,6 @@
                         addMouseLayer();
 
                         graph.protractor = new Protractor( [0, 0] );
-                        circle([0, 0], 0.3, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE });
 
                         if( RN == 1 ) {
                             line([-10, 0], [0, 0]);
@@ -72,6 +84,11 @@
                             return point;
                         }
 
+                        if( RN != 1 ) {
+                        	graph.arc = arc( [ 0, 0 ], 2, 0, 0, { stroke: GREEN } );
+                        } else {
+                        	graph.arc = arc( [ 0, 0 ], 2, 0, 180, { stroke: GREEN } );
+                        }
                         hourPoint = addMovablePoint({
                             coord: polar(clockRadius, hourStartAngle),
                             constraints: {
@@ -82,6 +99,21 @@
                                 }
                             },
                             onMove: function(x, y) {
+                            	var theta = getThetaFromXY(x, y);
+                            	graph.arc.remove();
+                            	if( RN != 1 ) {
+                            		if( theta &gt; 180 ) {
+                            			graph.arc = arc( [ 0, 0 ], 2, theta, 360 );
+                            		} else {
+                            			graph.arc = arc( [ 0, 0 ], 2, 0, theta );
+                            		}
+                            	} else {
+                            		if( theta &lt;= 180 ) {
+                            			graph.arc = arc( [ 0, 0 ], 2, theta, 180 );
+                            		} else {
+                            			graph.arc = arc( [ 0, 0 ], 2, 180, theta );
+                            		}
+                            	}
                                 return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerHourPoint, isOuterPoint: false });
                             },
                             normalStyle: {
@@ -126,6 +158,7 @@
                             }
                         });
 
+                        circle([0, 0], 0.3, { stroke : KhanUtil.BLUE, fill : KhanUtil.BLUE });
                     </div>
 			</div>
             <div class="solution" data-type="multiple">
