@@ -130,6 +130,7 @@ function problemTemplateRendered() {
     // Solution submission
     $("#check-answer-button").click(handleCheckAnswer);
     $("#answerform").submit(handleCheckAnswer);
+    $("#questionform").submit(handleCheckAnswer);
     $("#skip-question-button").click(handleSkippedQuestion);
 
     // Hint button
