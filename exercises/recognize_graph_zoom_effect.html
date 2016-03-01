@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html data-require="math word-problems math graphie interactive ast math-model">
+<html data-require="math word-problems math-format graphie interactive ast math-model">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>能認識平面圖形放大、縮小對長度、角度與面積的影響</title>
@@ -17,7 +17,7 @@
                 <div class="question">
                     <p><var>person(1)</var>將一長<code><var>Length</var></code>公分的線段放大成<code><var>Rate</var></code>倍，這條線段變成多少公分？</p>
                 </div>
-                <div class="solution" data-type="rational">
+                <div class="solution" data-forms="integer">
                     <var>Answer</var>
                 </div>
                 <div class="hints">
@@ -43,7 +43,7 @@
                     </div>
                     <div>
                         <p>
-                            <code><var>Length</var></code>公分的<code><var>Rate</var></code>倍是<font color="RED"><code><var>Answer</var></code></font>公分
+                            <code><var>Length</var></code>公分的<code><var>Rate</var></code>倍是<font class="hint_pink"><code><var>Answer</var></code></font>公分。
                         </p>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                     <var id="scaleWidth">Width*Rate</var>
                 </div>
                 <div class="question">
-                    <p>長方形ㄅ的長為<code><var>Length</var></code>公分、寬為<code><var>Width</var></code>公分，將長方形ㄅ的長寬各別放大成<code><var>Rate</var></code>倍成為長方形ㄆ，長方形ㄆ的長和寬變成多少公分？</p>
+                    <p>長方形ㄅ的長為<code><var>Length</var></code>公分、寬為<code><var>Width</var></code>公分，將長方形ㄅ的長寬分別放大成<code><var>Rate</var></code>倍成為長方形ㄆ，長方形ㄆ的長和寬變成多少公分？</p>
                 </div>
                 <div class="solution" data-type="set">
                     <div class="set-sol" data-type="multiple">
@@ -112,7 +112,7 @@
                     </div>
                     <div>
                          <p>
-                            長方形ㄆ的長為<font color="RED"><code><var>scaleLength</var></code></font>公分、寬為<font color="RED"><code><var>scaleWidth</var></code></font>公分，是長方形ㄅ的<code><var>Rate</var></code>倍圖。
+                            長方形ㄆ的長為<font class="hint_pink"><code><var>scaleLength</var></code></font>公分、寬為<font class="hint_pink"><code><var>scaleWidth</var></code></font>公分，是長方形ㄅ的<code><var>Rate</var></code>倍圖。
                         </p> 
                     </div>
                 </div>
@@ -156,9 +156,9 @@
                     <div class="example">整數，例：<code>6</code></div>
                     <div class="input-format">
                     <div class="entry" data-type="multiple">
-                    <p>ㄆ圖的底長幾公分？<span class="sol"></span>公分</p>
-                    <p>ㄆ圖的高長幾公分？<span class="sol"></span>公分</p>
-                    <p>ㄆ圖的高是ㄅ圖高的幾倍？<span class="sol"></span>倍</p>
+                    <p>ㄆ圖的底長幾公分？<br /><br /><span class="sol"></span>公分</p>
+                    <p>ㄆ圖的高長幾公分？<br /><br /><span class="sol"></span>公分</p>
+                    <p>ㄆ圖的高是ㄅ圖高的幾倍？<br /><br /><span class="sol"></span>倍</p>
                     </div>
                     </div>
                 </div>
@@ -171,17 +171,17 @@
                     </div>
                     <div>
                         <p>
-                            ㄆ圖的底長<font color="RED"><code><var>scaleside</var></code></font>公分
+                            ㄆ圖的底長<font class="hint_pink"><code><var>scaleside</var></code></font>公分
                         </p>
                     </div>
                     <div>
                         <p>
-                            ㄆ圖的高長<font color="RED"><code><var>scaleside</var></code></font>公分
+                            ㄆ圖的高長<font class="hint_pink"><code><var>scaleside</var></code></font>公分
                         </p>
                     </div>
                     <div>
                         <p>
-                            ㄆ圖的高是ㄅ圖高的<code><var>scaleside</var>\div<var>Side</var>=</code><font color="RED"><code><var>Rate</var></code></font>倍
+                            ㄆ圖的高是ㄅ圖高的<code><var>scaleside</var>\div<var>Side</var>=</code><font class="hint_pink"><code><var>Rate</var></code></font>倍
                         </p>
                     </div>
                 </div>
@@ -196,7 +196,7 @@
                     <var id="scaleWidth">12/J</var>
                 </div>
                 <div class="question">
-                    <p>請將此圖縮小成<code>\dfrac{1}{<var>J</var>}</code>倍</p>
+                    <p>請將此圖形的長與寬一同縮小成<code>\dfrac{1}{<var>J</var>}</code>倍</p>
                     <div class="graphie" id = "rectangle">
                         graphInit({
                                 range: [ [-1,25], [-1,13] ],
@@ -298,9 +298,12 @@
                     <div class="guess"> [ graph.pointA.coord, graph.pointB.coord,graph.pointC.coord,graph.pointD.coord ] 
                     </div>
                     <div class="validator-function">
-                        var AB = guess[1][0] - guess[0][0];
-                        var AD = guess[3][1] - guess[0][1];
-                        return(AB == scaleLength && AD == scaleWidth);
+						var AB = Math.abs(guess[1][0] - guess[0][0]);
+                        var AD = Math.abs(guess[3][1] - guess[0][1]);
+						var BC = Math.abs(guess[2][1] - guess[1][1]);
+						var CD = Math.abs(guess[3][0] - guess[2][0]);
+						return(AB == scaleLength &amp;&amp; AD == scaleWidth &amp;&amp; BC == scaleWidth &amp;&amp; CD == scaleLength);
+
                     </div>
                     <div class="show-guess">
                         graph.pointA.setCoord( guess[0] );
@@ -316,11 +319,13 @@
                 <div class="hints">
                     <div class="graphie" data-update="rectangle">
                         init({ range: [[-1, 25], [-1, 13]], scale: 20});
-                        label( [ 0, 0 ], "1", "left" );
+                        label( [ 0, 0 ], "0", "below left" );
                         label( [ 0, Width ], Width, "left" );
                         label( [ 0, scaleWidth ], scaleWidth, "left" );
-                        label( [ Length, 0 ], Length, "left" );
-                        label( [ scaleLength, 0 ], scaleLength, "left" ); 
+						circle([0,scaleWidth],0.1,{fill : "red",stroke : "red"});
+                        label( [ Length, 0 ], Length, "below" );
+                        label( [ scaleLength, 0 ], scaleLength, "below" ); 
+						circle([scaleLength,0],0.1,{fill : "red",stroke : "red"});
                     </div>
                     <div class="graphie" data-update="rectangle">
                         path([[0, 0], [(Length/J), 0], [(Length/J), (Width/J)], [0, (Width/J)], true],{ stroke: RED }); 
@@ -336,7 +341,7 @@
                     <var id="scaleWidth">Width*J</var>
                 </div>
                 <div class="question">
-                    <p>請將此圖放大成<code><var>J</var></code>倍</p>
+                    <p>請將此圖形的長與寬一同放大成<code><var>J</var></code>倍</p>
                     <div class="graphie" id = "rectangle">
                         graphInit({
                                 range: [ [-1,26], [-1,16] ],
@@ -438,9 +443,11 @@
                     <div class="guess"> [ graph.pointA.coord, graph.pointB.coord,graph.pointC.coord,graph.pointD.coord ] 
                     </div>
                     <div class="validator-function">
-                        var AB = guess[1][0] - guess[0][0];
-                        var AD = guess[3][1] - guess[0][1];
-                        return(AB == scaleLength && AD == scaleWidth);
+						var AB = Math.abs(guess[1][0] - guess[0][0]);
+                        var AD = Math.abs(guess[3][1] - guess[0][1]);
+						var BC = Math.abs(guess[2][1] - guess[1][1]);
+						var CD = Math.abs(guess[3][0] - guess[2][0]);
+						return(AB == scaleLength &amp;&amp; AD == scaleWidth &amp;&amp; BC == scaleWidth &amp;&amp; CD == scaleLength);
                     </div>
                     <div class="show-guess">
                         graph.pointA.setCoord( guess[0] );
@@ -456,11 +463,11 @@
                 <div class="hints">
                     <div class="graphie" data-update="rectangle">
                         init({ range: [[-1, 26], [-1, 16]], scale: 20});
-                        label( [ 0, 0 ], "1", "left" );
+						label( [ 0, 0 ], "0", "below left" );
                         label( [ 0, Width ], Width, "left" );
                         label( [ 0, scaleWidth ], scaleWidth, "left" );
-                        label( [ Length, 0 ], Length, "left" );
-                        label( [ scaleLength, 0 ], scaleLength, "right" ); 
+						label( [ Length, 0 ], Length, "below" );
+                        label( [ scaleLength, 0 ], scaleLength, "below" );
                     </div>
                     <div class="graphie" data-update="rectangle">
                         path([[0, 0], [scaleLength, 0], [scaleLength, scaleWidth], [0, scaleWidth], true],{ stroke: RED }); 

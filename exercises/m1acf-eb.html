@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>乘法交換律</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+		.inputText { width:45px;text-align: center;font-size: 1em; }
+    </style>
+	<script language="javascript">
+		function loadimg(center,imgname,xsize,ysize) {
+			var graph = KhanUtil.currentGraph;
+			this.set = graph.raphael.set();
+			this.cx = center[0];
+			this.cy = center[1];
+			var lineColor = "#789";
+			var pro = this;
+			var r = 3.05;
+			var imgPos = graph.scalePoint([this.cx - r, this.cy + r]);
+			this.set.push(graph.mouselayer.image(Khan.urlBase + "images/"+imgname, imgPos[0], imgPos[1], xsize,ysize));
+			return this;
+		}
+    </script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		
+		<div id="case1">
+			<div class="vars">
+				<var id="J, K"> randRangeUnique( 1, 9, 2 ) </var>
+				<var id="_ANS"> J * K </var>
+			</div>
+			
+			<div class="question">
+                <p>算算看，一共有幾顆蘋果？</p>
+                <div class="graphie" id="m2acx-case1">
+                	init( { range : [ [ -3, J * 1.5 ], [ -1, K *1.5 + 3 ] ], scale : 20 } );
+					addMouseLayer();
+                	Khan.scratchpad.enable();
+                	for( var i = 0; i &lt; J; i++ ) {
+                		for( var j = 0; j &lt; K; j++ ) {
+                			new loadimg( [ i * 1.5, j * 1.5 ], "kapples.png", 40, 40 );
+                		}
+                	}
+                </div>
+                <p>● 直的一排有 <code><var>K</var></code> 顆，共有 <code><var>J</var></code> 排，所以有 <code><var>K</var> \times <var>J</var> = <var>_ANS</var></code> 顆蘋果。</p>
+                <P>● 橫的一排有 <input type="text" class="inputText" id="a1" /> 顆，共有 <input type="text" class="inputText" id="a2" /> 排，所以有 <code><var>J</var> \times <var>K</var> = <var>_ANS</var></code> 顆蘋果。</P>
+                <p>● <code><var>K</var> \times <var>J</var></code> 是否等於 <code><var>J</var> \times <var>K</var></code> ？</p>
+                <p onclick="$('#b1').prop('checked', true)"><code>\phantom{● }</code><input type="radio" id="b1" name="radios" value="0" /><code>\quad</code>是</p>
+                <p onclick="$('#b2').prop('checked', true)"><code>\phantom{● }</code><input type="radio" id="b2" name="radios" value="1" /><code>\quad</code>否</p>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="guess">[ $('#a1').val().replace(/[ ]/g,""), $('#a2').val().replace(/[ ]/g,""), $('input:radio[name="radios"]:checked').val() ]</div>
+					<div class="validator-function">
+						if( guess[ 0 ] == "" || guess[ 1 ] == "" ) {
+							return "";
+						} else if( guess[ 2 ] == null ) {
+							return "";
+						} else {
+							return guess[ 0 ] == J &amp;&amp; guess[ 1 ] == K &amp;&amp; guess[ 2 ] == 0;
+						}
+					</div>
+				</div>
+				<p class="example">整數，例：<code>6</code></p>
+				<p class="example">選擇</p>
+			</div>
+
+            <div class="hints">
+				<p>數一數，橫的一排有 <code class="hint_pink"><var>J</var></code> 顆，共有 <code class="hint_pink"><var>K</var></code> 排，所以有 <code><var>J</var> \times <var>K</var> = <var>_ANS</var></code> 顆蘋果。</p>
+				<p>不管怎麼數，蘋果的數量都不會改變，因此 <code class="hint_pink"><var>K</var> \times <var>J</var> = <var>J</var> \times <var>K</var></code>。</p>
+            </div>
+		</div>
+
+		<div id="case2">
+			<div class="vars">
+				<var id="J, K"> randRangeUnique( 1, 9, 2 ) </var>
+				<var id="_ANS"> J * K </var>
+			</div>
+			
+			<div class="question">
+                <p>算算看，一共有幾個杯子？</p>
+                <div class="graphie" id="m2acx-case1">
+                	init( { range : [ [ -3, J * 3 ], [ -1, K * 2 + 3 ] ], scale : 20 } );
+					addMouseLayer();
+                	Khan.scratchpad.enable();
+                	for( var i = 0; i &lt; J; i++ ) {
+                		for( var j = 0; j &lt; K; j++ ) {
+                			new loadimg( [ i * 3, j * 2 ], "cups-m.png", 60, 40 );
+                		}
+                	}
+                </div>
+                <p>● 直的一排有 <code><var>K</var></code> 個，共有 <code><var>J</var></code> 排，所以有 <code><var>K</var> \times <var>J</var> = <var>_ANS</var></code> 個杯子。</p>
+                <P>● 橫的一排有 <input type="text" class="inputText" id="a1" /> 個，共有 <input type="text" class="inputText" id="a2" /> 排，所以有 <code><var>J</var> \times <var>K</var> = <var>_ANS</var></code> 個杯子。</P>
+                <p>● <code><var>K</var> \times <var>J</var></code> 是否等於 <code><var>J</var> \times <var>K</var></code> ？</p>
+                <p onclick="$('#b1').prop('checked', true)"><code>\phantom{● }</code><input type="radio" id="b1" name="radios" value="0" /><code>\quad</code>是</p>
+                <p onclick="$('#b2').prop('checked', true)"><code>\phantom{● }</code><input type="radio" id="b2" name="radios" value="1" /><code>\quad</code>否</p>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<div class="sol" data-type="custom">
+					<div class="guess">[ $('#a1').val().replace(/[ ]/g,""), $('#a2').val().replace(/[ ]/g,""), $('input:radio[name="radios"]:checked').val() ]</div>
+					<div class="validator-function">
+						if( guess[ 0 ] == "" || guess[ 1 ] == "" ) {
+							return "";
+						} else if( guess[ 2 ] == null ) {
+							return "";
+						} else {
+							return guess[ 0 ] == J &amp;&amp; guess[ 1 ] == K &amp;&amp; guess[ 2 ] == 0;
+						}
+					</div>
+				</div>
+				<p class="example">整數，例：<code>6</code></p>
+				<p class="example">選擇</p>
+			</div>
+
+            <div class="hints">
+				<p>數一數，橫的一排有 <code class="hint_pink"><var>J</var></code> 個，共有 <code class="hint_pink"><var>K</var></code> 排，所以有 <code><var>J</var> \times <var>K</var> = <var>_ANS</var></code> 個杯子。</p>
+				<p>不管怎麼數，杯子的數量都不會改變，因此 <code class="hint_pink"><var>K</var> \times <var>J</var> = <var>J</var> \times <var>K</var></code>。</p>
+            </div>
+		</div>
+
+		<div id="case3">
+			<div class="vars">
+				<var id="J, K"> randRangeUnique( 1, 11, 2 ) </var>
+				<var id="_ANS"> J * K </var>
+			</div>
+			
+			<div class="question">
+                <p><code><var>K</var> \times <var>J</var> = <var>_ANS</var></code> ， <code><var>J</var> \times <var>K</var> = \underline{\qquad}</code> 。</p>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>_ANS</var></span>
+			</div>
+
+            <div class="hints">
+            	<div>
+            		<p><code><var>K</var> \times <var>J</var> = <var>_ANS</var></code> 可以看成是：直的一排有 <code><var>K</var></code> 張，共有 <code><var>J</var></code> 排，所以有 <code><var>K</var> \times <var>J</var> = <var>_ANS</var></code> 張卡片。</p>
+            		<p>也可以看成：橫的一排有 <code><var>J</var></code> 張，共有 <code><var>K</var></code> 排，所以有 <code><var>J</var> \times <var>K</var></code> 張卡片。</p>
+            		<div class="graphie" id="m2acx-case1">
+	                	init( { range : [ [ -3.5, J * 2 ], [ -1, K * 3 + 2 ] ], scale : 20 } );
+						addMouseLayer();
+	                	Khan.scratchpad.enable();
+	                	for( var i = 0; i &lt; J; i++ ) {
+	                		for( var j = 0; j &lt; K; j++ ) {
+	                			new loadimg( [ i * 2, j * 3 ], "card-m.png", 35, 48 );
+	                		}
+	                	}
+	                </div>
+            	</div>
+            	<p>不管怎麼數，卡片的數量都不會改變，因此 <code><var>J</var> \times <var>K</var> = <var>K</var> \times <var>J</var> = \color{#FF00AF}{<var>_ANS</var>}</code> 。</p>
+            </div>
+		</div>
+
+	</div>
+	</div>
+</body>
+</html>

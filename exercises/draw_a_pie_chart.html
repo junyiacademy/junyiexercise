@@ -30,7 +30,6 @@
 			}
 			return array;
 		}
-
 	</script>
 </head>
 <body>
@@ -53,6 +52,7 @@
 			<div class="question">
 				<p style="font-weight: bold">將圓周分為 <code>100</code> 等分，每 <code>1</code> 等分表示 <code>1\%</code> ，畫出 </p>
 				<p style="font-weight: bold"><code><var>J</var>\%</code>、<code><var>K</var>\%</code>、<code><var>L</var>\%</code>、<code><var>M</var>\%</code> 。</p>
+                <p style="font-weight: bold">下圖單位：<code>\%</code></p>
 			</div>
 			<div class="problem">
 				<div class="graphie" id="clock">
@@ -100,18 +100,20 @@
                                 }
                             },
                             onMove: function(x, y) {
-								label1.remove(); 
+								label1.remove();
+                                var _radian_1 = cartToPolar([(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2])[ 1 ];
 								label1 = label(
-									[(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									polar(2, _radian_1),
+									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
 									"center", 
 									{ color: "orange" });
 								label4.remove(); 
-								label4 = label(
-									[(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
-									"center", 
-									{ color: "#28AE7B" });
+                                var _radian_2 = cartToPolar([(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2])[ 1 ];
+                                label4 = label(
+                                    polar(2, _radian_2),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
+                                    "center", 
+                                    { color: "#28AE7B" });
                                 return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerMinutePoint, isOuterPoint: false });
                             },
                             normalStyle: {
@@ -134,17 +136,19 @@
                                 }
                             },
                             onMove: function(x, y) {
-								label3.remove(); 
+								label3.remove();
+                                var _radian_3 = cartToPolar([(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
 								label3 = label(
-									[(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									polar( 2, _radian_3 ),
+									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
 									"center", 
 									{ color: "red" });
 									
 								label4.remove(); 
+                                var _radian_4 = cartToPolar([(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2])[ 1 ];
 								label4 = label(
-									[(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									polar( 2, _radian_4 ),
+									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
 									"center", 
 									{ color: "#28AE7B" });
                                 return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerThirdPoint, isOuterPoint: false });
@@ -169,17 +173,19 @@
                                 }
                             },
                             onMove: function(x, y) {
-								label2.remove(); 
+								label2.remove();
+                                var _radian_5 = cartToPolar([(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
 								label2 = label(
-									[(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									polar( 2, _radian_5 ),
+									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
 									"center", 
 									{ color: "#6495ED" });
 									
-								label3.remove(); 
+								label3.remove();
+                                var _radian_6 = cartToPolar([(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
 								label3 = label(
-									[(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									polar( 2, _radian_6 ),
+									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
 									"center", 
 									{ color: "red" });
 									
@@ -271,16 +277,18 @@
                                 }
                             },
                             onMove: function(x, y) {
-								label1.remove(); 
+								label1.remove();
+                                var _radian_7 = cartToPolar([(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2])[ 1 ];
 								label1 = label(
-									[(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									polar( 2, _radian_7 ),
+									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
 									"center", 
 									{ color: "orange" });
-								label2.remove(); 
+								label2.remove();
+                                var _radian_8 = cartToPolar([(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
 								label2 = label(
-									[(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
+									polar( 2, _radian_8 ),
+									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
 									"center", 
 									{ color: "#6495ED" });
                                 return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerHourPoint, isOuterPoint: false });
@@ -371,25 +379,25 @@
 						
 						label1 = label(
 									[(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
-									25+"{\\rm{\\% }}",
+									25,
 									"center", 
 									{ color: "orange" });
 
 						label2 = label(
 									[(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
-									25+"{\\rm{\\% }}",
+									25,
 									"center", 
 									{ color: "#6495ED" });
 									
 						label3 = label(
 									[(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
-									25+"{\\rm{\\% }}",
+									25,
 									"center", 
 									{ color: "red" });
 						
 						label4 = label(
 									[(minutePoint.coord[0]+thirdPoint.coord[0])/2,(minutePoint.coord[1]+thirdPoint.coord[1])/2],
-									25+"{\\rm{\\% }}",
+									25,
 									"center", 
 									{ color: "#28AE7B" });
                     </div>
@@ -570,7 +578,7 @@
 				<tr><td>人數<code>(</code>人<code>)</code></td><td><code><var>Jb</var></code></td><td><code><var>Kb</var></code></td><td><code><var>Lb</var></code></td><td><code><var>Mb</var></code></td><td><code>50</code></td></tr>
 			</table>
 			<div class="problem">
-				<p>根據此表畫出圓形圖。</p>
+				<p>根據此表畫出圓形圖。(下圖單位：<code>\%</code>)</p>
 				<div class="graphie" id="clock">
                         init({ range: [[-4, 4], [-4, 4]], scale: 45 });
 
@@ -578,8 +586,8 @@
                         var outerPointRadius = clockRadius * 1.01;
                         minuteStartAngle = 90;
                         hourStartAngle = 0;
-						thirdStartAngle = 180;
-						lastStartAngle = 270;
+                        thirdStartAngle = 180;
+                        lastStartAngle = 270;
 
                         var percentCircle = addAnalogCircle({ radius: clockRadius, minuteTicks: 100 });
                         percentCircle.draw();
@@ -591,7 +599,7 @@
                             var point = options.point;
                             var outerPoint = options.outerPoint;
                             var isOuterPoint = options.isOuterPoint;
-				
+                
                             var ratio = outerPoint.constraints.fixedDistance.dist / point.constraints.fixedDistance.dist;
                             if (isOuterPoint) {
                                 ratio = 1 / ratio;
@@ -616,18 +624,20 @@
                                 }
                             },
                             onMove: function(x, y) {
-								label1.remove(); 
-								label1 = label(
-									[(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
-									"center", 
-									{ color: "orange" });
-								label4.remove(); 
-								label4 = label(
-									[(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
-									"center", 
-									{ color: "#28AE7B" });
+                                label1.remove();
+                                var _radian_1 = cartToPolar([(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2])[ 1 ];
+                                label1 = label(
+                                    polar(2, _radian_1),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
+                                    "center", 
+                                    { color: "orange" });
+                                label4.remove(); 
+                                var _radian_2 = cartToPolar([(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2])[ 1 ];
+                                label4 = label(
+                                    polar(2, _radian_2),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
+                                    "center", 
+                                    { color: "#28AE7B" });
                                 return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerMinutePoint, isOuterPoint: false });
                             },
                             normalStyle: {
@@ -639,8 +649,8 @@
                                 stroke: ORANGE
                             }
                         });
-						
-						thirdPoint = addMovablePoint({
+                        
+                        thirdPoint = addMovablePoint({
                             coord: polar( clockRadius, thirdStartAngle ),
                             constraints: {
                                 fixedDistance: {
@@ -650,19 +660,21 @@
                                 }
                             },
                             onMove: function(x, y) {
-								label3.remove(); 
-								label3 = label(
-									[(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
-									"center", 
-									{ color: "red" });
-									
-								label4.remove(); 
-								label4 = label(
-									[(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
-									"center", 
-									{ color: "#28AE7B" });
+                                label3.remove();
+                                var _radian_3 = cartToPolar([(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label3 = label(
+                                    polar( 2, _radian_3 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
+                                    "center", 
+                                    { color: "red" });
+                                    
+                                label4.remove(); 
+                                var _radian_4 = cartToPolar([(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2])[ 1 ];
+                                label4 = label(
+                                    polar( 2, _radian_4 ),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
+                                    "center", 
+                                    { color: "#28AE7B" });
                                 return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerThirdPoint, isOuterPoint: false });
                             },
                             normalStyle: {
@@ -674,8 +686,8 @@
                                 stroke: GREEN
                             }
                         });
-						
-						lastPoint = addMovablePoint({
+                        
+                        lastPoint = addMovablePoint({
                             coord: polar( clockRadius, lastStartAngle ),
                             constraints: {
                                 fixedDistance: {
@@ -685,20 +697,22 @@
                                 }
                             },
                             onMove: function(x, y) {
-								label2.remove(); 
-								label2 = label(
-									[(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
-									"center", 
-									{ color: "#6495ED" });
-									
-								label3.remove(); 
-								label3 = label(
-									[(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
-									"center", 
-									{ color: "red" });
-									
+                                label2.remove();
+                                var _radian_5 = cartToPolar([(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label2 = label(
+                                    polar( 2, _radian_5 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
+                                    "center", 
+                                    { color: "#6495ED" });
+                                    
+                                label3.remove();
+                                var _radian_6 = cartToPolar([(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label3 = label(
+                                    polar( 2, _radian_6 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
+                                    "center", 
+                                    { color: "red" });
+                                    
                                 return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerLastPoint, isOuterPoint: false });
                             },
                             normalStyle: {
@@ -732,8 +746,8 @@
                                 stroke: ORANGE
                             }
                         });
-						
-						outerThirdPoint = addMovablePoint({
+                        
+                        outerThirdPoint = addMovablePoint({
                             coord: polar(outerPointRadius, thirdStartAngle),
                             constraints: {
                                 fixedDistance: {
@@ -754,8 +768,8 @@
                                 stroke: GREEN
                             }
                         });
-						
-						outerLastPoint = addMovablePoint({
+                        
+                        outerLastPoint = addMovablePoint({
                             coord: polar(outerPointRadius, lastStartAngle),
                             constraints: {
                                 fixedDistance: {
@@ -787,18 +801,20 @@
                                 }
                             },
                             onMove: function(x, y) {
-								label1.remove(); 
-								label1 = label(
-									[(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
-									"center", 
-									{ color: "orange" });
-								label2.remove(); 
-								label2 = label(
-									[(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
-									Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"{\\rm{\\% }}", 
-									"center", 
-									{ color: "#6495ED" });
+                                label1.remove();
+                                var _radian_7 = cartToPolar([(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2])[ 1 ];
+                                label1 = label(
+                                    polar( 2, _radian_7 ),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
+                                    "center", 
+                                    { color: "orange" });
+                                label2.remove();
+                                var _radian_8 = cartToPolar([(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label2 = label(
+                                    polar( 2, _radian_8 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6), 
+                                    "center", 
+                                    { color: "#6495ED" });
                                 return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerHourPoint, isOuterPoint: false });
                             },
                             normalStyle: {
@@ -842,8 +858,8 @@
                                 "stroke-width": 5
                             }
                         });
-						
-						thirdHand = addMovableLineSegment({
+                        
+                        thirdHand = addMovableLineSegment({
                             pointA: thirdPoint,
                             coordZ: [0, 0],
                             fixed: true,
@@ -852,8 +868,8 @@
                                 "stroke-width": 5
                             }
                         });
-						
-						lastHand = addMovableLineSegment({
+                        
+                        lastHand = addMovableLineSegment({
                             pointA: lastPoint,
                             coordZ: [0, 0],
                             fixed: true,
@@ -884,30 +900,30 @@
                                 "stroke-width": 2
                             }
                         });
-						
-						label1 = label(
-									[(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
-									25+"{\\rm{\\% }}",
-									"center", 
-									{ color: "orange" });
+                        
+                        label1 = label(
+                                    [(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
+                                    25,
+                                    "center", 
+                                    { color: "orange" });
 
-						label2 = label(
-									[(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
-									25+"{\\rm{\\% }}",
-									"center", 
-									{ color: "#6495ED" });
-									
-						label3 = label(
-									[(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
-									25+"{\\rm{\\% }}",
-									"center", 
-									{ color: "red" });
-						
-						label4 = label(
-									[(minutePoint.coord[0]+thirdPoint.coord[0])/2,(minutePoint.coord[1]+thirdPoint.coord[1])/2],
-									25+"{\\rm{\\% }}",
-									"center", 
-									{ color: "#28AE7B" });
+                        label2 = label(
+                                    [(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
+                                    25,
+                                    "center", 
+                                    { color: "#6495ED" });
+                                    
+                        label3 = label(
+                                    [(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
+                                    25,
+                                    "center", 
+                                    { color: "red" });
+                        
+                        label4 = label(
+                                    [(minutePoint.coord[0]+thirdPoint.coord[0])/2,(minutePoint.coord[1]+thirdPoint.coord[1])/2],
+                                    25,
+                                    "center", 
+                                    { color: "#28AE7B" });
                     </div>
 			</div>
             <div class="solution" data-type="multiple">

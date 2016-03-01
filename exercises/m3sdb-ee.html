@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>菱形與箏形的對角線</title>
+    <script src="../khan-exercise.js"></script>
+    <script language="javascript">
+        function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+
+        function randMultiplication( array, multiple ) {
+            for( var i = 0; i < array.length; i++ ){
+                array[ i ] *= multiple;
+            }
+            return array;
+        }
+
+        function getQuadrilateralPaths( lengths ) {
+            var paths = [];
+            for( var i = 0; i < lengths.length; i++ ){
+                paths.push( polar( lengths[ i ], 90 * i ) );
+            }
+            paths.push( paths[ 0 ] );
+            return paths;
+        }
+
+        function lineMidpoint(line) {
+            return [(line[0][0] + line[1][0]) / 2, (line[0][1] + line[1][1]) / 2];
+        }
+    </script>
+</head>
+<body>
+	<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+            <div class="vars">
+                <var id="DIAGONALS_INIT">randMultiplication( randRangeUnique( 3, 8, 3 ), 2 ).sort(function( a, b ){ return b - a; })</var>
+                <var id="IS_KITE">randRangeNonZero( -1, 1 )</var>
+                <var id="IS_SQUARE">randRangeNonZero( -1, 1 )</var>
+                <var id="DIAGONALS">(function(){
+                    if( IS_KITE === 1 ) {
+                        var _direction = [ 0, 2 ].sort(function( a, b ){ return randRangeNonZero( -1, 1 ) });
+                        return [ DIAGONALS_INIT[ 1 ], DIAGONALS_INIT[ _direction[ 0 ] ], DIAGONALS_INIT[ 1 ], DIAGONALS_INIT[ _direction[ 1 ] ] ] ;
+                    } else if( IS_SQUARE === 1 ) {
+                        return [ DIAGONALS_INIT[ 1 ], DIAGONALS_INIT[ 1 ], DIAGONALS_INIT[ 1 ], DIAGONALS_INIT[ 1 ] ] ;
+                    } else {
+                        var _chs = randRangeUnique( 0, 3, 3 );
+                        return [ DIAGONALS_INIT[ _chs[ 0 ] ], DIAGONALS_INIT[ _chs[ 1 ] ], DIAGONALS_INIT[ _chs[ 0 ] ], DIAGONALS_INIT[ _chs[ 1 ] ] ] ;
+                    }
+                })()</var>
+                <var id="_PATHS">getQuadrilateralPaths( DIAGONALS )</var>
+                <var id="COLORS">[ BLUE, ORANGE, GREEN ][ randRange( 0, 2 ) ]</var>
+                <var id="EXIST_LINE">randFromArray( [ 'Vertical', 'Parallel' ] )</var>
+                <var id="EXIST_LINE_LENGTH">EXIST_LINE == 'Vertical' ? roundTo( 0, _PATHS[ 1 ][ 1 ] - _PATHS[ 3 ][ 1 ] ) : roundTo( 0, _PATHS[ 0 ][ 0 ] - _PATHS[ 2 ][ 0 ] )</var>
+                <var id="UN_EXIST_LINE_LENGTH">EXIST_LINE == 'Vertical' ? roundTo( 0, _PATHS[ 0 ][ 0 ] - _PATHS[ 2 ][ 0 ] ) : roundTo( 0, _PATHS[ 1 ][ 1 ] - _PATHS[ 3 ][ 1 ] )</var>
+                <var id="_AREA">EXIST_LINE_LENGTH * UN_EXIST_LINE_LENGTH / 2</var>
+                <var id="SHAPE_STR">IS_KITE === 1 ? '箏形' : '菱形'</var>
+			</div>
+			<div class="question">
+				<p>圖為面積 <code><var>_AREA</var></code> 平方公分的<span><var>SHAPE_STR</var></span>，如果其中一個對角線長 <code><var>EXIST_LINE_LENGTH</var></code> 公分，求另一對角線的長度。</p>
+			</div>
+			<div class="problem">
+				<div class="graphie" id="table-around">
+                    init( { range: [ [ - DIAGONALS[ 0 ] - 1, DIAGONALS[ 0 ] + 1 ], [ - DIAGONALS[ 3 ] - 1, DIAGONALS[ 1 ] + 1 ] ], scale: 18 } );
+                    path( _PATHS, { stroke : COLORS, fill : COLORS, opacity : 0.25 } );
+                    path( _PATHS, { stroke : COLORS } );
+                    if( EXIST_LINE == 'Vertical' ){
+                        line( _PATHS[ 0 ], _PATHS[ 2 ], { stroke : KhanUtil.RED } );
+                        line( _PATHS[ 1 ], _PATHS[ 3 ], { "stroke-dasharray": "-" } );
+                        label( lineMidpoint( [ _PATHS[ 1 ], [ 0, -2 ] ] ) , EXIST_LINE_LENGTH, 'left');
+                        label( lineMidpoint( [ _PATHS[ 0 ], [ -2, 0 ] ] ) , '\\Large{?}', 'above', { color : KhanUtil.RED } );
+                    } else {
+                        line( _PATHS[ 1 ], _PATHS[ 3 ], { stroke : KhanUtil.RED } );
+                        line( _PATHS[ 0 ], _PATHS[ 2 ], { "stroke-dasharray": "-" } );
+                        label( lineMidpoint( [ _PATHS[ 0 ], [ -2, 0 ] ] ) , EXIST_LINE_LENGTH, 'below');
+                        label( lineMidpoint( [ _PATHS[ 1 ], [ 0, -2 ] ] ) , '\\Large{?}', 'left', { color : KhanUtil.RED } );
+                    }
+                 </div>
+			</div>
+            <div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>UN_EXIST_LINE_LENGTH</var></span>公分
+            </div>
+			<div class="hints">
+                    <div>
+                        <p>此為一<var>SHAPE_STR</var>，<var>SHAPE_STR</var>的面積公式為<br/> 對角線<code>A \times</code> 對角線<code>B \div 2</code>，<br/>
+						   面積 <code>\times 2 = </code> 對角線<code>A \times </code> 對角線<code>B</code>，<br/>
+						   面積 <code>\times 2 \div</code> 對角線<code>A = </code>  對角線<code>B</code>，
+						</p>
+                    </div>
+                    <div>        
+                        <p>
+                            <code><var>_AREA</var>\times 2 \div<var>EXIST_LINE_LENGTH</var> = </code>  對角線<code>B =</code>
+							<code><var>_AREA * 2</var>\div<var>EXIST_LINE_LENGTH</var>  = <var>UN_EXIST_LINE_LENGTH</var></code>
+                        </p>   
+                    </div>
+                    <div>
+                        <p>答案為 <code class="hint_pink"><var>UN_EXIST_LINE_LENGTH</var></code> 公分。</p>
+                    </div>
+                </div>
+            </div>
+		</div>
+
+	</div>
+	</div>
+</body>
+</html>

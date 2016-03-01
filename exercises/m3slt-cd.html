@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>簡單複合形體的表面積</title>
+    <script src="../khan-exercise.js"></script>
+
+	
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars" data-ensure="C &gt; A">
+				<var id="A, B"> randFromArray( [ [ 3, 4 ], [ 4, 5 ], [ 6, 3 ], [ 2, 6 ] ] ) </var>
+				<var id="C"> randRange( 5, 10 ) </var>
+				<var id="D"> C * C * 6 </var>
+				<var id="E"> A * B * 4 </var>
+				<var id="ANSWER"> D + E </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求下列圖形的表面積（下圖單位：公分）</p>
+					<div class="graphie" id="pic">
+	                    init({range: [[-9, 9], [-9, 18]], scale: 15});
+						path([[-7,-7],[-7,3],[3,3],[3,-7],[-7,-7]],{fill:"#DAB1D5"});
+						path([[-7,3],[-3,7],[7,7],[3,3],[-7,3]],{fill:"#E2C2DE"});
+						path([[3,3],[7,7],[7,-3],[3,-7],[3,3]],{fill:"#DAB1D5"});
+						path([[-2,5],[-2,11],[2,11],[2,5],[-2,5]],{fill:"#DAB1D5"});
+						path([[-2,11],[0,13],[4,13],[2,11],[-2,11]],{fill:"#E2C2DE"});
+						path([[2,5],[2,11],[4,13],[4,7],[2,5]],{fill:"#DAB1D5"});
+						line([3,-7],[-7,-7],{stroke:KhanUtil.BLUE});
+						label([-2,-8],C,{color:KhanUtil.BLUE});
+						line([7,-3],[3,-7],{stroke:KhanUtil.BLUE});
+						label([5,-6],C,{color:KhanUtil.BLUE});
+						line([7,-3],[7,7],{stroke:KhanUtil.BLUE});
+						label([8,2],C,{color:KhanUtil.BLUE});
+						line([4,13],[4,7],{stroke:KhanUtil.GREEN});
+						label([5,10],B,{color:KhanUtil.GREEN});
+						line([-2,11],[0,13],{stroke:KhanUtil.ORANGE});
+						label([-1,13],A,{color:KhanUtil.ORANGE});
+						line([2,11],[-2,11],{stroke:KhanUtil.RED});
+						label([0,10],A,{color:KhanUtil.RED});
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+            	<span class="sol" data-forms="integer" ><var>ANSWER</var></span>平方公分
+            </div>	
+
+            <div class="hints"> 
+				<p>底下正方體的表面積 <code>(<var>C</var>\times<var>C</var>)\times 6 = <var>D</var></code>。</p>
+				<p>上層長方體的側面積 <code>(<var>A</var>\times<var>B</var>)\times 4 = <var>E</var></code>。</p>
+				<div>
+					<p>因為上層長方體的頂面面積可補足下層長方體被遮住的面積，</p>
+					<p>所以表面積為 <code><var>D</var>+<var>E</var> = \color{#ff00af}{<var>ANSWER</var>}</code> 平方公分。</p>
+				</div>
+			</div>
+		</div>
+
+		<div id="case2">
+			<div class="vars">
+				<var id="RA"> randRange( 4, 8 ) </var>
+				<var id="RB"> randRange( 2, 4 ) </var>
+				<var id="A"> RA * 10 </var>
+				<var id="B"> RB * 10 </var>
+				<var id="C"> 3 * A * A </var>
+				<var id="D"> 3 * A * B + A * B </var>
+				<var id="E"> A * B </var>
+				<var id="ANSWER"> 2 * C + 2 * D + 4 * E </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>均一小學訂製一個頒獎台，如下圖。每一個平台面為寬 <code><var>A</var></code> 公分的正方形，每個台階的高度為 <code><var>B</var></code> 公分，請問頒獎台的表面積是多少？</p>
+					<div class="graphie" id="pic">
+	                    init( { range : [ [ -14, 20 ], [ -7, -5 + 2 * RB + RA + 2 ] ], scale : 15 } );
+						path( [ [ -12, -5 + RB ], [ -12 + RA, -5 + RB + RA ], [ -12 + RA * 2, -5 + RB + RA ], [ -12 + RA, -5 + RB ], [ -12, -5 + RB ] ], { fill : "#BBFFBB" } );
+						path( [ [ -12, -5 ], [ -12, -5 + RB ], [ -12 + RA, -5 + RB ], [ -12 + RA, -5 + 2 * RB ], [ -12 + RA * 2, -5 + 2 * RB ], [ -12 + RA * 2, -5 + RB ], [ -12 + RA * 3, -5 + RB ], [ -12 + RA * 3, -5 ], [ -12, -5 ] ], { fill : "#93FF93" } );
+						path( [ [ -12 + RA, -5 + 2 * RB ], [ -12 + RA * 2, -5 + 2 * RB + RA ], [ -12 + RA * 3, -5 + 2 * RB + RA ], [ -12 + RA * 2, -5 + 2 * RB ] ], { fill : "#BBFFBB" } );
+						path( [ [ -12 + RA * 3, -5 + 2 * RB + RA ], [ -12 + RA * 2, -5 + 2 * RB ], [ -12 + RA * 2, -5 + RB ], [ -12 + RA * 3, -5 + RB + RA ], [ -12 + RA * 3, -5 + 2 * RB + RA ] ], { fill : "#BBFFBB" } );
+						path( [ [ -12 + RA * 2, -5 + RB ], [ -12 + RA * 3, -5 + RB + RA ], [ -12 + RA * 4, -5 + RB + RA ], [ -12 + RA * 3, -5 + RB ], [ -12 + RA * 2, -5 + RB ] ], { fill : "#BBFFBB" } );
+						path( [ [ -12 + RA * 4, -5 + RB + RA ], [ -12 + RA * 3, -5 + RB ], [ -12 + RA * 3, -5 ], [ -12 + RA * 4, -5 + RA ], [ -12 + RA * 4, -5 + RB + RA ] ], { fill : "#BBFFBB" } );
+						line( [ -12, -5 + RB ], [ -12 + RA, -5 + RB ], { stroke : KhanUtil.RED } );
+						label( [ -12 + RA / 2, -4 + RB ], A, { color : KhanUtil.RED } );
+						line( [ -12 + RA * 2, -5 + RB ], [ -12 + RA * 3, -5 + RB ], { stroke : KhanUtil.RED } );
+						label( [ -12 + RA * 5 / 2, -4 + RB ], A, { color : KhanUtil.RED } );
+						line( [ -12 + RA * 3, -5 ], [ -12 + RA * 4, -5 + RA ], { stroke : KhanUtil.GREEN } );
+						label( [ -11 + 7 * RA / 2, -6 + RA / 2 ], A, { color : KhanUtil.GREEN } );
+						label( [ -12 + RA * 2.5, -5 + 2 * RB + RA ], A, "above",  { color : KhanUtil.RED } );
+						line( [ -12 + RA * 2, -5 + 2 * RB + RA ], [ -12 + RA * 3, -5 + 2 * RB + RA ], { stroke : KhanUtil.RED } );
+						line( [ -12 + RA, -5 + RB ], [ -12 + RA * 2, -5 + RB ], { stroke : KhanUtil.RED, "stroke-dasharray" : "-" } );
+						label( [ -12 + RA * 3 / 2, -4 + RB ], 1 );
+						label( [ -12 + RA / 2, -6 + RB ], 2 );
+						label( [ -12 + 5 * RA / 2, -6 + RB ], 3 );
+						line( [ -12 + RA * 3, -5 ], [ -12, -5 ], { stroke : KhanUtil.BLUE } );
+						label( [ -12 + 3 * RA / 2, -6 ], 3 * A, { color : KhanUtil.BLUE } );
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+            	<span class="sol" data-forms="integer" ><var>ANSWER</var></span>平方公分	
+            </div>	
+
+            <div class="hints"> 
+				<div>
+					<p>頒獎台下層的底面積為 <code><var>3*A</var>\times<var>A</var>=<var>C</var></code> 平方公分，從上方觀看三個平台的面積和頒獎台面績相同，共為 <code><var>C</var>\times 2 = <var>2*C</var></code> 平方公分。</p>
+					<p>前面的表面積為 <code><var>3*A</var>\times<var>B</var>+<var>A</var>\times<var>B</var>=<var>D</var></code> 平方公分，前後兩面的表面積為 <code><var>D</var>\times 2 = <var>2*D</var></code> 平方公分。</p>
+					<p>每個台階側面的表面積為 <code><var>A</var>\times<var>B</var>=<var>E</var></code> 平方公分，共有四面，面積共為 <code><var>E</var>\times4=<var>4*E</var></code> 平方公分。</p>
+				</div>
+				<p>頒獎台的表面積為 <code><var>2*C</var>+<var>2*D</var>+<var>4*E</var>=\color{#ff00af}{<var>ANSWER</var>}</code> 平方公分。</p>
+			</div>
+		</div>
+
+		<div id="case3">
+			<div class="vars">
+				<var id="A, B">randFromArray( [ [ 5, 4 ], [ 6, 5 ], [ 7, 5 ], [ 6, 4 ] ] ) </var>
+				<var id="C"> randRange( 1, 3 ) </var>
+				<var id="D"> randRange( 2, 5 ) </var>
+				<var id="E"> C * C + A * B </var>
+				<var id="F"> ( A + B + C ) * 2 * D </var>
+				<var id="ANSWER"> 2 * E + F </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求下列圖形的表面積（下圖單位：公分）</p>
+					<div class="graphie" id="pic">
+	                    init({range: [[-8, 8], [-6, 6]], scale: 30});
+						path([[-6+B,-5],[-6+B,-5+A-C],[-6+B+0.5*D,-5+A-C+0.5*D],[-6+B+0.5*D,-5+0.5*D],[-6+B,-5]],{fill:"#FFE66F"});
+						path([[-6,-5],[-6,-5+A],[-6+B+C,-5+A],[-6+B+C,-5+A-C],[-6+B,-5+A-C],[-6+B,-5],[-6,-5]],{fill:"#FFDC35"});
+						path([[-6,-5+A],[-6+0.7*D,-5+A+0.7*D],[-6+0.7*D+B+C,-5+A+0.7*D],[-6+B+C,-5+A],[-6,-5+A]],{fill:"#FFDC35"});
+						path([[-6+0.7*D+B+C,-5+A+0.7*D],[-6+B+C,-5+A],[-6+B+C,-5+A-C],[-6+0.7*D+B+C,-5+A+0.7*D-C],[-6+0.7*D+B+C,-5+A+0.7*D]],{fill:"#FFE66F"});
+						line([-6,-5],[-6,-5+A],{stroke:KhanUtil.BLUE});
+						label([-6.5,-5+A/2],A,{color:KhanUtil.BLUE});
+						line([-6+B,-5],[-6,-5],{stroke:KhanUtil.GREEN});
+						label([-6+B/2,-5.5],B,{color:KhanUtil.GREEN});
+						line([-6+B,-5+A-C],[-6+B,-5],{stroke:KhanUtil.ORANGE});
+						label([-6.5+B,-5+(A-C)/2],A-C,{color:KhanUtil.ORANGE});
+						line([-6+B,-5+A-C],[-6+B,-5],{stroke:KhanUtil.ORANGE});
+						label([-6.5+B,-5+(A-C)/2],A-C,{color:KhanUtil.ORANGE});
+						line([-6+B+C,-5+A-C],[-6+B,-5+A-C],{stroke:KhanUtil.PURPLE});
+						label([-6+B+C/2,-4.5+(A-C)],C,{color:KhanUtil.PURPLE});
+						line([-6+0.7*D+B+C,-5+A+0.7*D-C],[-6+0.7*D+B+C,-5+A+0.7*D],{stroke:KhanUtil.PURPLE});
+						label([-5.5+0.7*D+B+C,-5+A+0.7*D-C/2],C,{color:KhanUtil.PURPLE});
+						line([-6,-5+A],[-6+0.7*D,-5+A+0.7*D],{stroke:KhanUtil.RED});
+						label([-6.5+0.35*D,-5+A+0.35*D],D,{color:KhanUtil.RED});
+						line([-6+B,-5+A],[-6+B,-5+A-C],{"stroke-dasharray": "-",stroke:KhanUtil.BLUE});
+						line([-6+B,-5+A],[-6+0.7*D+B,-5+A+0.7*D],{"stroke-dasharray": "-",stroke:KhanUtil.BLUE});
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+            	<span class="sol" data-forms="integer" ><var>ANSWER</var></span>平方公分
+            </div>	
+
+            <div class="hints"> 
+				<div>
+					<p>立體圖形前面可分為<br />
+					一個長方形(長 <code><var>A</var></code> 公分，寬 <code><var>B</var></code> 公分)<br />
+					和一個正方形(邊長 <code><var>C</var></code> 公分)</p>
+					<p>因此前面圖形表面積為 <code><var>C</var>\times<var>C</var>+<var>A</var>\times<var>B</var>=<var>E</var></code> 平方公分。前後面積相同，此兩面面積為 <code><var>E</var>\times 2 = <var>2*E</var></code> 平方公分。</p>
+					<div class="graphie">
+						init( { range : [ [ -8, 8 ], [ -6, -5 + A + 1 ] ], scale : 30 } );
+						path([[-6,-5],[-6,-5+A],[-6+B,-5+A],[-6+B,-5],[-6,-5]],{fill:"#D8D8EB",stroke:"#B8B8DC"});
+						path([[-6+B,-5+A],[-6+B+C,-5+A],[-6+B+C,-5+A-C],[-6+B,-5+A-C]],{fill:"#FFE4CA",stroke:"#FFD1A4"})
+					</div>
+				</div>
+				<div>
+					<p>側面面積為前面的周長乘上厚度</p>
+					<p><code>(<var>A</var>+<var>B+C</var>+<var>C</var>+<var>C</var>+<var>A-C</var>+<var>B</var>)\times <var>D</var>=<var>F</var></code> 平方公分。</p>
+				</div>
+				<p>立體形體表面積為 <code><var>2*E</var>+<var>F</var>=\color{#ff00af}{<var>ANSWER</var>}</code> 平方公分。</p>
+			</div>
+		</div>
+
+		<div id="case4">
+			<div class="vars" data-ensure="B!=4">
+				<var id="A"> randRange( 2, 5 ) </var>
+				<var id="B"> randRange( 2, 5 ) </var>
+				<var id="C, D"> randFromArray( [ [ 6, 3 ], [ 5, 2 ], [ 4, 2 ], [ 6, 4 ] ] ) </var>
+				<var id="E"> A * C + 3 * A * D </var>
+				<var id="F"> ( 6 * A + 2 * D + 2 * C ) * B </var>
+				<var id="ANSWER"> 2 * E + F </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求下列圖形的表面積（下圖單位：公分）</p>
+					<div class="graphie" id="pic">
+	                    init({range: [[-8, 16], [-6, 10]], scale: 20});
+						path([[-6,-5+D],[-6+0.7*B,-5+D+0.7*B],[-6+0.7*B+A,-5+D+0.7*B],[-6+A,-5+D]],{fill:"#C2FF68"});
+						path([[-6,-5],[-6,-5+D],[-6+A,-5+D],[-6+A,-5+D+C],[-6+2*A,-5+D+C],[-6+2*A,-5+D],[-6+3*A,-5+D],[-6+3*A,-5],[-6,-5]],{fill:"#D3FF93"});
+						path([[-6+A,-5+D+C],[-6+A+0.7*B,-5+D+C+0.7*B],[-6+2*A+0.7*B,-5+D+C+0.7*B],[-6+2*A,-5+D+C]],{fill:"#C2FF68"});
+						path([[-6+2*A+0.7*B,-5+D+C+0.7*B],[-6+2*A,-5+D+C],[-6+2*A,-5+D],[-6+2*A+0.7*B,-5+D+0.7*B],[-6+2*A+0.7*B,-5+D+C+0.7*B]],{fill:"#C2FF68"});
+						path([[-6+2*A,-5+D],[-6+2*A+0.7*B,-5+D+0.7*B],[-6+3*A+0.7*B,-5+D+0.7*B],[-6+3*A,-5+D]],{fill:"#C2FF68"});
+						path([[-6+3*A,-5+D],[-6+3*A+0.7*B,-5+D+0.7*B],[-6+3*A+0.7*B,-5+0.7*B],[-6+3*A,-5]],{fill:"#C2FF68"});
+						line([-6+3*A,-5],[-6,-5],{stroke:KhanUtil.BLUE});
+						label([-6+3*A/2,-5.5],3*A,{color:KhanUtil.BLUE});
+						line([-6,-5+D],[-6+A,-5+D],{stroke:KhanUtil.GREEN});
+						label([-6+A/2,-5.5+D],A,{color:KhanUtil.GREEN});
+						line([-6+A,-5+D+C],[-6+2*A,-5+D+C],{stroke:KhanUtil.GREEN});
+						label([-6+3*A/2,-5.5+D+C],A,{color:KhanUtil.GREEN});
+						line([-6+2*A,-5+D],[-6+3*A,-5+D],{stroke:KhanUtil.GREEN});
+						label([-6+5*A/2,-5.5+D],A,{color:KhanUtil.GREEN});
+						line([-6+2*A+0.7*B,-5+D+0.7*B],[-6+2*A+0.7*B,-5+D+C+0.7*B],{stroke:KhanUtil.ORANGE});
+						label([-6+2*A+0.7*B+0.5,-5+D+0.7*B+C/2],C,{color:KhanUtil.ORANGE});
+						line([-6+3*A+0.7*B,-5+D+0.7*B],[-6+3*A+0.7*B,-5+0.7*B],{stroke:KhanUtil.PURPLE});
+						label([-6+3*A+0.7*B+0.5,-5+D/2+0.7*B],D,{color:KhanUtil.PURPLE})
+						line([-6+3*A+0.7*B,-5+0.7*B],[-6+3*A,-5],{stroke:KhanUtil.RED});
+						label([-5.5+3*A+0.35*B,-5.5+0.35*B],B,{color:KhanUtil.RED});
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+            	<span class="sol" data-forms="integer" ><var>ANSWER</var></span>平方公分
+            </div>	
+
+            <div class="hints"> 
+			<div>
+				<p>先觀察立體圖形的前面，可分為兩個長方形</p>
+				<p>上方的長方形(長 <code><var>C</var></code> 公分，寬 <code><var>A</var></code> 公分)，<br />下方的長方形(長 <code><var>3*A</var></code> 公分，寬 <code><var>D</var></code> 公分)</p>
+				<p>因此前方複合圖形的表面積為 <code><var>A</var>\times<var>C</var>+<var>3*A</var>\times<var>D</var>=<var>E</var></code> 平方公分。</p>
+				<p>前後共有兩個相等面積 <code><var>E</var>\times 2=<var>2*E</var></code> 平方公分。</p>
+				<div class="graphie" id="pic-2">
+                    init( { range : [ [ -8, 16 ], [ -6, -5 + D + C + 1 ] ], scale : 20 } );
+					path( [ [ -6, -5 ], [ -6, -5 + D ], [ -6 + 3 * A, -5 + D ], [ -6 + 3 * A, -5 ], [ -6, -5 ] ], { fill : "#FFE4CA", stroke : "#FFD1A4" } );
+					path( [ [ -6 + A, -5 + D ], [ -6 + A, -5 + D + C ], [ -6 + 2 * A, -5 + D + C ], [ -6 + 2 * A, -5 + D ] ], { fill : "#D8D8EB", stroke : "#B8B8DC" } );
+				</div>
+			</div>
+			<div>
+				<p>側面面積為前面的周長乘上厚度</p>
+				<p><code>(<var>D</var>+<var>A</var>+<var>C</var>+<var>A</var>+<var>C</var>+<var>A</var>+<var>D</var>+<var>3*A</var>)\times<var>B</var>=<var>F</var></code> 平方公分。</p>
+			</div>
+			<p>立體形體表面積為 <code><var>2*E</var>+<var>F</var>=\color{#ff00af}{<var>ANSWER</var>}</code> 平方公分。</p>
+			</div>
+		</div>
+
+		
+	</div>
+	</div>
+</body>
+</html>

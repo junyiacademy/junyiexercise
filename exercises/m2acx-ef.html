@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>間隔問題</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+			table.nLimit td { width:60px;}
+        </style>
+	<script language="javascript">
+		function loadimg(center,imgname,xsize,ysize) {
+			var graph = KhanUtil.currentGraph;
+			this.set = graph.raphael.set();
+			this.cx = center[0];
+			this.cy = center[1];
+			var lineColor = "#789";
+			var pro = this;
+			var r = 3.05;
+			var imgPos = graph.scalePoint([this.cx - r, this.cy + r]);
+			this.set.push(graph.mouselayer.image(Khan.urlBase + "images/"+imgname, imgPos[0], imgPos[1], xsize,ysize));
+			return this;
+		}
+    </script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		
+		<div id="case1">
+			<div class="vars">
+				<var id="J, K"> randFromArray( [ [ 20, 5 ], [ 18, 2 ], [ 24, 6 ], [ 21, 3 ], [ 16, 4 ], [ 25, 5 ], [ 28, 7 ], [ 32, 8 ], [ 27, 9 ], [ 24, 3 ], [ 20, 4 ] ] ) </var>
+				<var id="L"> roundTo( 0, J / K ) </var>
+				<var id="A"> L + 1 </var>
+			</div>
+			
+			<div class="question">
+                <p>里長在一條長 <code><var>J</var></code> 公尺的分隔島上，每隔 <code><var>K</var></code> 公尺種一棵樹，頭尾兩端都有種樹，共要種幾棵樹？</p>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>A</var></span>棵
+			</div>
+
+            <div class="hints">
+				<div>
+					<p>總共有 <code><var>J</var> \div <var>K</var> = <var>L</var></code> 個間隔。</p>
+					<div class="graphie" id="m2acx-case1">
+                    	init( { range : [ [ -1, 11 ], [ -2, 5 ] ], scale : 40 } );
+                    	style( { stroke : RED } );
+                    	line( [ 0, 0 ], [ 10, 0 ] );
+                    	for( var i = 1; i &lt; L; i++ ) {
+                    		line( [ i * ( 10 / L ), 0 ], [ i * ( 10 / L ), 0.5 ] );
+                    	}
+                    	line( [ 0, 0.75 ], [ 0, -1.25 ] );
+                    	line( [ 10, 0.75 ], [ 10, -1.25 ] );
+                    	line( [ 0, -0.75 ], [ 4, -0.75 ], { "stroke-dasharray": "-" } );
+                    	line( [ 6, -0.75 ], [ 10, -0.75 ], { "stroke-dasharray": "-" } );
+                    	label( [ 5, -0.75 ], J + "公尺", { color : BLUE } );
+                    	label( [ 5 / L, 0 ], K + "公尺", "above", { color : BLUE } );
+
+						addMouseLayer();
+                    	Khan.scratchpad.enable();
+                    	graph.IMG1 = new loadimg( [ 2, 1.25 ], "tree-m.png", 80, 150 );
+                    	graph.IMG2 = new loadimg( [ 12, 1.25 ], "tree-m.png", 80, 150 );
+	                </div> 
+				</div>
+				<p>因為頭尾兩端都有種樹，所以需要 <code><var>L</var> + 1 = \color{#FF00AF}{<var>A</var>}</code> 棵樹。</p>
+            </div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="J, K"> randFromArray( [ [ 18, 2 ], [ 14, 2 ], [ 18, 3 ], [ 16, 4 ], [ 20, 5 ], [ 24, 6 ], [ 21, 7 ], [ 30, 6 ], [ 15, 5 ], [ 12, 4 ], [ 15, 3 ] ] ) </var>
+				<var id="L"> roundTo( 0, J / K ) </var>
+				<var id="A"> L + 1 </var>
+			</div>
+			
+			<div class="question">
+                <p>學校要在一條長 <code><var>J</var></code> 公尺的走廊上，每隔 <code><var>K</var></code> 公尺放一個盆栽，頭尾都要放，請問一共要幾個盆栽？</p>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>A</var></span>個
+			</div>
+
+            <div class="hints">
+				<div>
+					<p>總共有 <code><var>J</var> \div <var>K</var> = <var>L</var></code> 個間隔。</p>
+					<div class="graphie" id="m2acx-case1">
+                    	init( { range : [ [ -1, 11 ], [ -2, 5 ] ], scale : 40 } );
+                    	style( { stroke : RED } );
+                    	line( [ 0, 0 ], [ 10, 0 ] );
+                    	for( var i = 1; i &lt; L; i++ ) {
+                    		line( [ i * ( 10 / L ), 0 ], [ i * ( 10 / L ), 0.5 ] );
+                    	}
+                    	line( [ 0, 0.75 ], [ 0, -1.25 ] );
+                    	line( [ 10, 0.75 ], [ 10, -1.25 ] );
+                    	line( [ 0, -0.75 ], [ 4, -0.75 ], { "stroke-dasharray": "-" } );
+                    	line( [ 6, -0.75 ], [ 10, -0.75 ], { "stroke-dasharray": "-" } );
+                    	label( [ 5, -0.75 ], J + "公尺", { color : BLUE } );
+                    	label( [ 5 / L, 0 ], K + "公尺", "above", { color : BLUE } );
+
+						addMouseLayer();
+                    	Khan.scratchpad.enable();
+                    	graph.IMG1 = new loadimg( [ 2, 1.5 ], "floower-m.png", 80, 150 );
+                    	graph.IMG2 = new loadimg( [ 12, 1.5 ], "floower-m.png", 80, 150 );
+	                </div> 
+				</div>
+				<p>因為頭尾兩端都要放盆栽，所以需要 <code><var>L</var> + 1 = \color{#FF00AF}{<var>A</var>}</code> 個盆栽。</p>
+            </div>
+		</div>
+
+		<div id="case3">
+			<div class="vars" data-ensure=" isInt( A ) ">
+				<var id="J, K"> randFromArray( [ [ 32, 9 ], [ 40, 9 ], [ 28, 8 ], [ 21, 8 ], [ 18, 7 ], [ 36, 7 ], [ 25, 6 ], [ 30, 6 ], [ 20, 5 ], [ 32, 5 ], [ 12, 4 ], [ 24, 4 ], [ 16, 3 ], [ 24, 3 ] ] ) </var>
+				<var id="L"> K - 1 </var>
+				<var id="A"> J / L </var>
+			</div>
+			
+			<div class="question">
+                <p>圍牆長 <code><var>J</var></code> 公尺，楊伯伯有 <code><var>K</var></code> 盆杜鵑花，每隔一段相同距離都要放，頭尾都要放，相鄰兩盆花之間的距離是幾公尺？</p>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>A</var></span>公尺
+			</div>
+
+            <div class="hints">
+				<div>
+					<p>因為頭尾兩端都要放杜鵑花，所以總共有 <code><var>K</var> - 1 = <var>L</var></code> 個間隔。</p>
+					<div class="graphie" id="m2acx-case1">
+                    	init( { range : [ [ -1, 11 ], [ -2, 3 ] ], scale : 40 } );
+                    	style( { stroke : RED } );
+                    	line( [ 0, 0 ], [ 10, 0 ] );
+                    	for( var i = 1; i &lt; L; i++ ) {
+                    		line( [ i * ( 10 / L ), 0 ], [ i * ( 10 / L ), 0.5 ] );
+                    	}
+                    	line( [ 0, 0.75 ], [ 0, -1.25 ] );
+                    	line( [ 10, 0.75 ], [ 10, -1.25 ] );
+                    	line( [ 0, -0.75 ], [ 4, -0.75 ], { "stroke-dasharray": "-" } );
+                    	line( [ 6, -0.75 ], [ 10, -0.75 ], { "stroke-dasharray": "-" } );
+                    	label( [ 5, -0.75 ], J + "公尺", { color : BLUE } );
+                    	label( [ 5 / L, 0 ], "？公尺", "above", { color : BLUE } );
+
+						addMouseLayer();
+                    	Khan.scratchpad.enable();
+                    	for( var i = 0; i &lt; K; i++ ) {
+                    		new loadimg( [ 2.5 + i / ( K - 1 ) * 10, -1.5 ], "flower-m2.png", 40, 40 );
+                    	}
+	                </div> 
+				</div>
+				<p>相鄰兩盆花之間的距離是 <code><var>J</var> \div <var>L</var> = \color{#FF00AF}{<var>A</var>}</code> 公尺。</p>
+            </div>
+		</div>
+
+		<div id="case4">
+			<div class="vars" data-ensure=" isInt( A ) ">
+				<var id="J, K"> randFromArray( [ [ 42, 8 ], [ 35, 8 ], [ 42, 7 ], [ 36, 7 ], [ 35, 6 ], [ 40, 6 ], [ 44, 5 ], [ 40, 5 ], [ 36, 4 ], [ 39, 4 ], [ 38, 3 ] ] ) </var>
+				<var id="L"> K - 1 </var>
+				<var id="A"> J / L </var>
+			</div>
+			
+			<div class="question">
+                <p>馬拉松全長 <code><var>J</var></code> 公里，每隔一段相同的距離要設置一個飲水區，起點跟終點也有設置，主辦單位預計設置 <code><var>K</var></code> 個飲水區，相鄰兩個飲水區之間的距離是幾公里？</p>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>A</var></span>公里
+			</div>
+
+            <div class="hints">
+				<div>
+					<p>因為頭尾兩端都要設置飲水區，所以總共有 <code><var>K</var> - 1 = <var>L</var></code> 個間隔。</p>
+					<div class="graphie" id="m2acx-case1">
+                    	init( { range : [ [ -1, 11 ], [ -2, 3 ] ], scale : 40 } );
+                    	style( { stroke : RED } );
+                    	line( [ 0, 0 ], [ 10, 0 ] );
+                    	for( var i = 1; i &lt; L; i++ ) {
+                    		line( [ i * ( 10 / L ), 0 ], [ i * ( 10 / L ), 0.5 ] );
+                    	}
+                    	line( [ 0, 0.75 ], [ 0, -1.25 ] );
+                    	line( [ 10, 0.75 ], [ 10, -1.25 ] );
+                    	line( [ 0, -0.75 ], [ 4, -0.75 ], { "stroke-dasharray": "-" } );
+                    	line( [ 6, -0.75 ], [ 10, -0.75 ], { "stroke-dasharray": "-" } );
+                    	label( [ 5, -0.75 ], J + "公里", { color : BLUE } );
+                    	label( [ 5 / L, 0 ], "？公里", "above", { color : BLUE } );
+
+						addMouseLayer();
+                    	Khan.scratchpad.enable();
+                    	for( var i = 0; i &lt; K; i++ ) {
+                    		new loadimg( [ 2.5 + i / ( K - 1 ) * 10, -1.5 ], "malas-m.png", 40, 40 );
+                    	}
+	                </div> 
+				</div>
+				<p>相鄰兩個飲水區之間的距離是 <code><var>J</var> \div <var>L</var> = \color{#FF00AF}{<var>A</var>}</code> 公里。</p>
+            </div>
+		</div>
+
+	</div>
+	</div>
+</body>
+</html>
