@@ -579,13 +579,35 @@
             
         </div>
         </div>
-        <!-- need to figure out how to validate the fraction input -->
+        <!-- need to figure out how to validate the fraction input 
+             We constraint the answer type to decimal now -->
         <div id="case3-data-to-ratio" data-weight=1>
+            <!-- for decimal -->
+            <div class="vars">
+                <var id="test">(function(){Khan.scratchpad.disable();})()</var>
+                <var id="GCD">randRange(2,7)</var>
+                <var id="total">randFromArray([10,20,40])*GCD</var>
+                <var id="numsArray">
+                (function(){
+                    var arr = sortNumbers(randRangeUnique(1,total/GCD,3));
+                    var retArr = [arr[0],arr[1]-arr[0],arr[2]-arr[1],total/GCD-arr[2]];
+                    return retArr;
+                })()</var>
+                <var id="J">numsArray[0]*GCD</var>
+                <var id="K">numsArray[1]*GCD</var>
+                <var id="L">numsArray[2]*GCD</var>
+                <var id="M">numsArray[3]*GCD</var>
+                <var id="J_percent">J/total</var>
+                <var id="K_percent">K/total</var>
+                <var id="L_percent">L/total</var>
+                <var id="M_percent">M/total</var>                
+            </div>
+<!--        for fraction                
             <div class="vars">
                 <var id="test">(function(){Khan.scratchpad.disable();})()</var>
                 <var id="GCD">randRange(2,7)</var>
                 <var id="ratio">randFromArray([3,5,6,10,12,15,18,20])</var>
-                <var id="total">360/ratio</var> <!--ratio*GCD-->
+                <var id="total">360/ratio</var> 
                 <var id="numsArray">
                 (function(){
                     var arr = sortNumbers(randRangeUnique(1,360/ratio,3));
@@ -602,6 +624,7 @@
                 <var id="M_percent">roundTo(2,M/total)</var>
 
             </div>
+-->            
         <div class="question">
             <p style="font-weight:bold">下表是<var>table_name</var>，表中的數字表示每一種<var>item_name</var>的<var>item_unit</var>。</p>
             <table class="nLimit"  style="background-color:#F8F8F8">
@@ -610,11 +633,14 @@
             </table>
         </div>
         <div class="problem">
-            <p>請算出每種<var>item_name</var>的<var>item_unit</var>所占的比率，並將比率用小數表示，填入下表。
-        </p></div>
+            <p>請算出每種<var>item_name</var>的<var>item_unit</var>所占的比率，並將比率用小數表示，填入下表。</p>
+            <!-- for fraction
+            <p>請算出每種<var>item_name</var>的<var>item_unit</var>所占的比率，並將比率用最簡分數表示，填入下表。</p>
+            -->
+        </div>
         <table class="nLimit"  style="background-color:#F8F8F8">
                 <tr><td><var>item_name</var></td><td><var>item_1</var></td><td><var>item_2</var></td><td><var>item_3</var></td><td><var>item_4</var></td></tr>
-                <tr><td>比率</td><td><input type="rational" id="a_1" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"></td><td><input type="text" id="a_2" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"></td><td><input type="text" id="a_3" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"></td><td><input type="text" id="a_4" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"></td></tr>
+                <tr><td>比率</td><td><input type="text" id="a_1" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"></td><td><input type="text" id="a_2" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"></td><td><input type="text" id="a_3" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"></td><td><input type="text" id="a_4" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"></td></tr>
         </table>
         <div class="solution" data-type="multiple">
             <div class="sol" data-type="custom">
@@ -629,10 +655,20 @@
                         return false;
                     </div>
                 </div>
-                <p class="example">在表中填入分數，例如 <code>1/6</code></p>
+                <p class="example">在表中填入小數，例如 <code>0.6</code></p>
+                <!--<p class="example">在表中填入分數，例如 <code>1/6</code></p>-->
         </div>
         <div class="hints">
             <p>我們要先計算出全部有多少：<code><var>J</var>+<var>K</var>+<var>L</var>+<var>M</var>=<var>total</var></code>。</p>
+            <p><var>item_1</var>占全部的比率是：</br>
+                <code>\quad<var>J</var>\div <var>total</var>=\dfrac{<var>J</var>}{<var>total</var>}=</code><code class="hint_pink">\color{fuchsia}{<var>J_percent</var>}</code></p>
+            <p><var>item_2</var>占全部的比率是：</br>
+                <code>\quad<var>K</var>\div <var>total</var>=\dfrac{<var>K</var>}{<var>total</var>}=</code><code class="hint_pink">\color{fuchsia}{<var>K_percent</var>}</code></p>
+            <p><var>item_3</var>占全部的比率是：</br>
+                <code>\quad<var>L</var>\div <var>total</var>=\dfrac{<var>L</var>}{<var>total</var>}=</code><code class="hint_pink">\color{fuchsia}{<var>L_percent</var>}</code></p>
+            <p><var>item_4</var>占全部的比率是：</br>
+                <code>\quad<var>M</var>\div <var>total</var>=\dfrac{<var>M</var>}{<var>total</var>}=</code><code class="hint_pink">\color{fuchsia}{<var>M_percent</var>}</code></p>
+<!--        for fration            
             <p><var>item_1</var>占全部的比率是：</br>
                 <code>\quad<var>J</var>\div <var>total</var>=\dfrac{<var>J</var>}{<var>total</var>}=</code><code class="hint_pink">\color{fuchsia}{<var>fraction(J,total,true,true,false,false)</var>}</code></p>
             <p><var>item_2</var>占全部的比率是：</br>
@@ -641,6 +677,7 @@
                 <code>\quad<var>L</var>\div <var>total</var>=\dfrac{<var>L</var>}{<var>total</var>}=</code><code class="hint_pink">\color{fuchsia}{<var>fraction(L,total,true,true,false,false)</var>}</code></p>
             <p><var>item_4</var>占全部的比率是：</br>
                 <code>\quad<var>M</var>\div <var>total</var>=\dfrac{<var>M</var>}{<var>total</var>}=</code><code class="hint_pink">\color{fuchsia}{<var>fraction(M,total,true,true,false,false)</var>}</code></p>
+-->
         </div>
         </div>        
 	</div>
