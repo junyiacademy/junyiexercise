@@ -55,10 +55,10 @@
     </div>
     <div class="problems">
 	    <div id="case1-classify-two-chart"  data-weight=1>
-            <div class="vars">
+            <div class="vars" data-ensure="abs(J-K)&gt;10 && abs(K-L)&gt;10 && abs(L-M)&gt;10 && abs(M-J)&gt;10">
                 <var id="test">(function(){Khan.scratchpad.disable();})()</var>
                 <var id="GCD">randRange(2,7)</var>
-                <var id="total">randFromArray([10,20,25])*GCD</var>
+                <var id="total">randFromArray([20,25,50])*GCD</var>
                 <var id="num_item">randRange(4,5)</var>
                 <var id="numsArray">
                 (function(){
@@ -71,38 +71,129 @@
                     }
                     return retArr;
                 })()</var>
-                <var id="J">numsArray[0]*GCD</var>
-                <var id="K">numsArray[1]*GCD</var>
-                <var id="L">numsArray[2]*GCD</var>
-                <var id="M">numsArray[3]*GCD</var>
-                <var data-if="num_item===5" id="N">numsArray[4]*GCD</var>
+                <var id="J_data">numsArray[0]*GCD</var>
+                <var id="K_data">numsArray[1]*GCD</var>
+                <var id="L_data">numsArray[2]*GCD</var>
+                <var id="M_data">numsArray[3]*GCD</var>
+                <var id="J">J_data*100/total</var>
+                <var id="K">K_data*100/total</var>
+                <var id="L">L_data*100/total</var>
+                <var id="M">M_data*100/total</var>
+                <var data-if="num_item==5" id="N_data">numsArray[4]*GCD</var>
+                <var data-if="num_item==5" id="N">N_data*100/total</var>
                 <var id="question-type">randRange(0,2)</var>
             </div>
 			
 			<div class="question">
+                <p>下圖是<var>table_name</var>的圓形圖。</p>
                 <div class="graphie" id="circle" style="float:left">
-                    init({ range: [[-4, 4], [-4, 4]], scale: 45 });
+                    init({ range: [[-4, 6.5], [-3, 3]], scale: 45 });
                     leftCenter = [-2,0];
                     rightCenter = [2,0];
-                    radius = 1.5;
-                    circle(leftCenter,1.5);
-                    circle(rightCenter,1.5);
-                    line(leftCenter,[leftCenter[0]+radius,0]);
-                    line(leftCenter,polar(2,J*3.6));
-                    line(leftCenter,polar(2,J*3.6+K*3.6));
-                    line(leftCenter,polar(2,J*3.6+K*3.6+L*3.6));
-                    if(num_item==5){
-                        line(leftCenter,polar(2,J*3.6+K*3.6+L*3.6+M*3.6));
+                    radius = 1.8;
+
+                    color_list = ["#9FE0F6","#FFA500","#EEFFA5","#DE9DD6","#97EC71"];
+
+                    cart_item1 = [radius,0];
+                    cart_item2 = polar(radius,J*3.6);
+                    cart_item3 = polar(radius,J*3.6+K*3.6);
+                    cart_item4 = polar(radius,J*3.6+K*3.6+L*3.6);
+                    left_item1 = [cart_item1[0]+leftCenter[0],cart_item1[1]];
+                    left_item2 = [cart_item2[0]+leftCenter[0],cart_item2[1]];
+                    left_item3 = [cart_item3[0]+leftCenter[0],cart_item3[1]];
+                    left_item4 = [cart_item4[0]+leftCenter[0],cart_item4[1]];
+                    right_item1 = [cart_item1[0]+rightCenter[0],cart_item1[1]];
+                    right_item2 = [cart_item2[0]+rightCenter[0],cart_item2[1]];
+                    right_item3 = [cart_item3[0]+rightCenter[0],cart_item3[1]];
+                    right_item4 = [cart_item4[0]+rightCenter[0],cart_item4[1]];
+                    if(num_item == 5){
+                        cart_item5 = polar(radius,J*3.6+K*3.6+L*3.6+M*3.6);
+                        left_item5 = [cart_item5[0]+leftCenter[0],cart_item5[1]];
+                        right_item5 = [cart_item5[0]+rightCenter[0],cart_item5[1]];
                     }
-                
-                    label( polar(2,J*1.8),  "\\large{"+item_5+"}", "center", { color: "#6495ED" });
-                    label( polar(2,J*3.6+K*1.8),  "\\large{"+item_1+"}", "center", { color: "#FFA500" });
-                    label( polar(2,J*3.6+K*3.6+L*1.8),  "\\large{"+item_2+"}", "center", { color: "red" });
-                    label( polar(2,J*3.6+K*3.6+L*3.6+M*1.8),  "\\large{"+item_3+"}", "center", { color: "#28AE7B" });
-                    label( polar(2,J*1.8+K*1.8+L*1.8+M*1.8+180),  "\\large{"+item_4+"}", "center", { color: "purple" });
+
+                    //Circle 1
+
+                    arc(leftCenter,radius,0,J*3.6,{fill:color_list[0]});
+                    path([leftCenter,[cart_item1[0]+leftCenter[0],cart_item1[1]],[cart_item2[0]+leftCenter[0],cart_item2[1]],leftCenter], {stroke: color_list[0] , fill: color_list[0] });
+                    arc(leftCenter,radius,J*3.6,J*3.6+K*3.6,{fill:color_list[1]});
+                    path([leftCenter,[cart_item2[0]+leftCenter[0],cart_item2[1]],[cart_item3[0]+leftCenter[0],cart_item3[1]],leftCenter], {stroke: color_list[1],fill: color_list[1]});
+                    arc(leftCenter,radius,J*3.6+K*3.6,J*3.6+K*3.6+L*3.6,{fill:color_list[2]});
+                    path([leftCenter,[cart_item3[0]+leftCenter[0],cart_item3[1]],[cart_item4[0]+leftCenter[0],cart_item4[1]],leftCenter], {stroke: color_list[2],fill: color_list[2]});
+                    
+                    if(num_item == 4){
+                        arc(leftCenter,radius,J*3.6+K*3.6+L*3.6,360,{fill:color_list[3]});
+                        path([leftCenter,[cart_item4[0]+leftCenter[0],cart_item4[1]],[cart_item1[0]+leftCenter[0],cart_item1[1]],leftCenter], {stroke: color_list[3],fill: color_list[3]});
+                    }
+                    else{
+                        arc(leftCenter,radius,J*3.6+K*3.6+L*3.6,J*3.6+K*3.6+L*3.6+M*3.6,{fill:color_list[3]});
+                        path([leftCenter,[cart_item4[0]+leftCenter[0],cart_item4[1]],[cart_item5[0]+leftCenter[0],cart_item5[1]],leftCenter], {stroke: color_list[3],fill: color_list[3]});
+                    }
+
+                    circle(leftCenter,radius);
+                    line(leftCenter,left_item1);
+                    line(leftCenter,left_item2);
+                    line(leftCenter,left_item3);
+                    line(leftCenter,left_item4);
+
+                    //Circle 2
+                    circle(rightCenter,radius);
+                    line(rightCenter,right_item1);
+                    line(rightCenter,right_item2);
+                    line(rightCenter,right_item3);
+                    line(rightCenter,right_item4);                    
+
+                    if(num_item==5){
+                        line(leftCenter,left_item5);
+                        line(rightCenter,right_item5);
+                    }
+                    label_ratio = 2;
+
+                    cart_label1 = polar(radius/2,J*1.8);
+                    cart_label2 = polar(radius/2,J*3.6+K*1.8);
+                    cart_label3 = polar(radius/2,J*3.6+K*3.6+L*1.8);
+                    cart_label4 = polar(radius/2,J*3.6+K*3.6+L*3.6+M*1.8);
+                    if(num_item==5){
+                        cart_label5 = polar(radius/2,J*1.8+K*1.8+L*1.8+M*1.8+180);
+                    }
+                    
+                    // item percent
+                    label( [cart_label1[0]+rightCenter[0],cart_label1[1]],  "\\small{"+J+"\\%}", "center", { color: "#000000" });
+                    label( [cart_label2[0]+rightCenter[0],cart_label2[1]],  "\\small{"+K+"\\%}", "center", { color: "#000000" });
+                    label( [cart_label3[0]+rightCenter[0],cart_label3[1]],  "\\small{"+L+"\\%}", "center", { color: "#000000" });
+                    label( [cart_label4[0]+rightCenter[0],cart_label4[1]],  "\\small{"+M+"\\%}", "center", { color: "#000000" });
+                    if(num_item==5){
+                        label( [cart_label5[0]+rightCenter[0],cart_label5[1]],  "\\small{"+N+"\\%}", "center", { color: "#000000" });
+                    }
+                    
+                    // amount
+                    label( [cart_label1[0]+leftCenter[0],cart_label1[1]],  "\\small{"+J_data+unit+"}", "center", { color: "#000000" });
+                    label( [cart_label2[0]+leftCenter[0],cart_label2[1]],  "\\small{"+K_data+unit+"}", "center", { color: "#000000" });
+                    label( [cart_label3[0]+leftCenter[0],cart_label3[1]],  "\\small{"+L_data+unit+"}", "center", { color: "#000000" });
+                    label( [cart_label4[0]+leftCenter[0],cart_label4[1]],  "\\small{"+M_data+unit+"}", "center", { color: "#000000" });
+                    if(num_item==5){
+                        label( [cart_label5[0]+leftCenter[0],cart_label5[1]],  "\\small{"+N_data+unit+"}", "center", { color: "#000000" });
+                    }
+                    
+                    // item square
+                    
+                    square_size = 0.5;
+                    for( var i=0 ; i &lt; num_item ; i++){
+                        path([[4.3,num_item-i-2.5+square_size/2],[4.3,num_item-i-2.5-square_size/2],[4.3+square_size,num_item-i-2.5-square_size/2],[4.3+square_size,num_item-i-2.5+square_size/2],[4.3,num_item-i-2.5+square_size/2]], {stroke: "#000000",fill: color_list[i]});
+                    }
+
+                    // item name
+                    label( [5,num_item-2.5],  "\\large{"+item_1+"}", "right", { color: "#000000" });
+                    label( [5,num_item-3.5],  "\\large{"+item_2+"}", "right", { color: "#000000" });
+                    label( [5,num_item-4.5],  "\\large{"+item_3+"}", "right", { color: "#000000" });
+                    label( [5,num_item-5.5],  "\\large{"+item_4+"}", "right", { color: "#000000" });
+                    if(num_item==5){
+                        label( [5,num_item-6.5],  "\\large{"+item_5+"}", "right", { color: "#000000" });
+                    }
+                                                            
                 </div>
  
-                <p>下表是<var>table_name</var>。</p>
+                
                 <table class="nLimit" style="background-color:#F8F8F8">
                     <tr><td><var>item_name</var></td><td><var>item_1</var></td><td><var>item_2</var></td><td><var>item_3</var></td><td><var>item_4</var></td></tr>
                     <tr><td> 圓心角(度) </td><td><code><var>J</var>^\circ</code></td><td><code><var>K</var>^\circ</code></td><td><code><var>L</var>^\circ</code></td><td><code><var>M</var>^\circ</code></td></tr>
