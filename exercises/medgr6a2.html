@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie time interactive angles">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>圓形圖：綜合</title>
+    <script src="../khan-exercise.js"></script>
+	<style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 35px;
+        }
+		#answer_area .entry input[type=text] {
+            width: 35px;
+        }
+		table.nLimit{margin:5px ;border:1px }
+		table.nLimit td { text-align:center;min-width:60px;max-width:100px;border: 1px solid #AAA; padding: 5px;}
+        </style>
+		<script type="text/javascript">
+		function bubbleSort(array) {
+			var i = 0,
+			len = array.length,
+			j, d;
+			for (; i < len; i++) {
+				for (j = 0; j < len; j++) {
+					if (array[i][1] < array[j][1]) {
+						d = array[j];
+						array[j] = array[i];
+						array[i] = d;
+					}
+				}
+			}
+			return array;
+		}
+	</script>
+</head>
+<body>
+	<div class="exercise">
+    <div class="vars">
+        <var id="names">randFromArray(["小玉","珍珍","小紅","娟娟","冠宏","小惠","阿光","宜生"])</var>
+        <var id="table_name,item_name,item_1,item_2,item_3,item_4,item_unit,unit">
+            randFromArray([[names+"家今年一月份的支出統計表","支出項目","房租","伙食","交通","雜支","支出","千元"],
+                           ["超市去年營業額統計表","項目","家電","蔬果","食品飲料","生活用品","營業額","千元"],
+                           ["宜生國小六年級學生血型統計表","血型","A型","B型","AB型","O型","人數","人"],
+                           ["健康國小六年級學生喜好休閒活動統計表","休閒活動","打籃球","打棒球","閱讀","畫畫","人數","人"],
+                           ["學生心中最喜歡寵物的統計表","寵物","狗","貓","兔子","天竺鼠","人數","人"],
+                           ["民眾如何安排假期活動的統計表","假期活動","拜訪親友","待在家裡","觀光旅遊","沒有休假","人數","人"],
+                           ["湖中國小六年級學生最喜歡的球類運動統計表","球類運動","足球","躲避球","籃球","排球","人數","人"],
+                           ["樂樂雜貨店不同品牌飲料賣出的數量統計表","飲料種類","果汁","茶","運動飲料","水","數量","瓶"],
+                           ["流星國小的學生最喜歡的亞洲國家統計表","國家","日本","韓國","新加坡","香港","人數","人"],
+                           ["花兒國小六年級購買零食考慮因素統計表","考慮因素","熱量","味道","價格","份量","得票數","票"],
+                           ["均一餐廳午餐銷售情形統計表","品名","水餃","麵類","飯類","甜點飲料","數量","份"],
+                           ["冠宏一家人到宜蘭自助旅行的花費統計表","項目","餐飲","住宿","門票","交通","花費","千元"],
+                           ["太陽國小六年級票選運動會代表吉祥物的得票數統計表","吉祥物","浣熊","熊貓","綿羊","大象","得票數","票"]]) 
+        </var>
+    </div>
+    <div class="problems">
+	    <div id="case1-divisible-percent-pie-chart">
+            <div class="vars" data-ensure="(numsArray[0]-numsArray[1])!==0 && (numsArray[0]-numsArray[2])!==0 && (numsArray[0]-numsArray[3])!==0 && (numsArray[1]-numsArray[2])!==0 && (numsArray[1]-numsArray[3])!==0 && (numsArray[2]-numsArray[3])!==0 && M_percent &lt;=45 && K_percent&lt;=45 && L_percent&lt;=45 && J_percent&lt;=45 && J_percent !== 25">
+                <var id="test">(function(){Khan.scratchpad.disable();})()</var>
+                <var id="GCD">randRange(2,7)</var>
+                <var id="total">randFromArray([10,20,25])*GCD</var>
+                <var id="numsArray">
+                (function(){
+                    var arr = sortNumbers(randRangeUnique(1,total/GCD,3));
+                    var retArr = [arr[0],arr[1]-arr[0],arr[2]-arr[1],total/GCD-arr[2]];
+                    return retArr;
+                })()</var>
+                <var id="J">numsArray[0]*GCD</var>
+                <var id="K">numsArray[1]*GCD</var>
+                <var id="L">numsArray[2]*GCD</var>
+                <var id="M">numsArray[3]*GCD</var>
+                <var id="J_percent">J*100/total</var>
+                <var id="K_percent">K*100/total</var>
+                <var id="L_percent">L*100/total</var>
+                <var id="M_percent">M*100/total</var>
+            </div>
+            
+            <div class="question">
+ 
+                <p>下表是<var>table_name</var>。請根據下表的資料，先算出每個<var>item_name</var>所占的百分率。</p>
+                <table class="nLimit" style="background-color:#F8F8F8">
+                    <tr><td><var>item_name</var></td><td><var>item_1</var></td><td><var>item_2</var></td><td><var>item_3</var></td><td><var>item_4</var></td></tr>
+                    <tr><td><var>item_unit</var>(<var>unit</var>)</td><td><code><var>J</var></code></td><td><code><var>K</var></code></td><td><code><var>L</var></code></td><td><code><var>M</var></code></td></tr>
+                    <tr><td> 百分率 </td><td><input type="text" id="a_1" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>\ \%</code></td><td><input type="text" id="a_2" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>\ \%</code></td><td><input type="text" id="a_3" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>\ \%</code></td><td><input type="text" id="a_4" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>\ \%</code></td></tr>
+                </table>
+            </div>
+
+            <div class="problem">
+                
+                <p>
+                    我們將圓周分為 <code>100</code> 等分，每 <code>1</code> 等分表示 <code>1\%</code>。</br>
+                    請你移動圓內的線段，畫出百分圓形圖。
+                </p>
+                <!--
+                <p style="font-weight: bold">下圖單位：<code>\%</code></p>-->
+            
+                <div class="graphie" id="clock">
+                        init({ range: [[-4, 4], [-4, 4]], scale: 45 });
+
+                        var clockRadius = 3.75;
+                        var outerPointRadius = clockRadius * 1.01;
+                        minuteStartAngle = 90;
+                        hourStartAngle = 0;
+                        thirdStartAngle = 180;
+                        lastStartAngle = 270;
+
+                        var percentCircle = addAnalogCircle({ radius: clockRadius, minuteTicks: 100 });
+                        percentCircle.draw();
+                        addMouseLayer();
+
+                        function movePartnerPoint(options) {
+                            var x = options.x;
+                            var y = options.y;
+                            var point = options.point;
+                            var outerPoint = options.outerPoint;
+                            var isOuterPoint = options.isOuterPoint;
+                
+                            var ratio = outerPoint.constraints.fixedDistance.dist / point.constraints.fixedDistance.dist;
+                            if (isOuterPoint) {
+                                ratio = 1 / ratio;
+                                point.setCoord([x * ratio , y * ratio]);
+                                outerPoint.setCoord([x, y]);
+                            } else {
+                                point.setCoord([x, y]);
+                                outerPoint.setCoord([x * ratio, y * ratio]);
+                            }
+
+                            point.updateLineEnds();
+                            return point;
+                        }
+
+                        minutePoint = addMovablePoint({
+                            coord: polar( clockRadius, minuteStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                label1.remove();
+                                var _radian_1 = cartToPolar([(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2])[ 1 ];
+                                label1 = label(
+                                    polar(2, _radian_1),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "orange" });
+                                label4.remove(); 
+                                var _radian_2 = cartToPolar([(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2])[ 1 ];
+                                label4 = label(
+                                    polar(2, _radian_2),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "#28AE7B" });
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerMinutePoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+                        
+                        thirdPoint = addMovablePoint({
+                            coord: polar( clockRadius, thirdStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                label3.remove();
+                                var _radian_3 = cartToPolar([(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label3 = label(
+                                    polar( 2, _radian_3 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "red" });
+                                    
+                                label4.remove(); 
+                                var _radian_4 = cartToPolar([(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2])[ 1 ];
+                                label4 = label(
+                                    polar( 2, _radian_4 ),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "#28AE7B" });
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerThirdPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+                        
+                        lastPoint = addMovablePoint({
+                            coord: polar( clockRadius, lastStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                label2.remove();
+                                var _radian_5 = cartToPolar([(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label2 = label(
+                                    polar( 2, _radian_5 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "#6495ED" });
+                                    
+                                label3.remove();
+                                var _radian_6 = cartToPolar([(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label3 = label(
+                                    polar( 2, _radian_6 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "red" });
+                                    
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerLastPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        outerMinutePoint = addMovablePoint({
+                            coord: polar(outerPointRadius, minuteStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: minutePoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+                        
+                        outerThirdPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, thirdStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: thirdPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+                        
+                        outerLastPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, lastStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: lastPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        hourPoint = addMovablePoint({
+                            coord: polar(clockRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                label1.remove();
+                                var _radian_7 = cartToPolar([(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2])[ 1 ];
+                                label1 = label(
+                                    polar( 2, _radian_7 ),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "orange" });
+                                label2.remove();
+                                var _radian_8 = cartToPolar([(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label2 = label(
+                                    polar( 2, _radian_8 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "#6495ED" });
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerHourPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        outerHourPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: hourPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        minuteHand = addMovableLineSegment({
+                            pointA: minutePoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: ORANGE,
+                                "stroke-width": 5
+                            }
+                        });
+                        
+                        thirdHand = addMovableLineSegment({
+                            pointA: thirdPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: GREEN,
+                                "stroke-width": 5
+                            }
+                        });
+                        
+                        lastHand = addMovableLineSegment({
+                            pointA: lastPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: RED,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        hourHand = addMovableLineSegment({
+                            pointA: hourPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: BLUE,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        centerPoint = addMovablePoint({
+                            coord: [0, 0],
+                            constraints: {
+                                fixed: true
+                            },
+                            normalStyle: {
+                                fill: "#fff",
+                                stroke: "#000",
+                                "stroke-width": 2
+                            }
+                        });
+                        
+                        label1 = label(
+                                    [(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
+                                    25+"\\%",
+                                    "center", 
+                                    { color: "orange" });
+
+                        label2 = label(
+                                    [(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
+                                    25+"\\%",
+                                    "center", 
+                                    { color: "#6495ED" });
+                                    
+                        label3 = label(
+                                    [(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
+                                    25+"\\%",
+                                    "center", 
+                                    { color: "red" });
+                        
+                        label4 = label(
+                                    [(minutePoint.coord[0]+thirdPoint.coord[0])/2,(minutePoint.coord[1]+thirdPoint.coord[1])/2],
+                                    25+"\\%",
+                                    "center", 
+                                    { color: "#28AE7B" });
+                    </div>
+            </div>
+            <div class="solution" data-type="multiple">
+                移動圓內直線，畫出圓形圖。
+                <div class="sol" data-type="custom">
+                    <div class="guess">[minutePoint.coord,hourPoint.coord,thirdPoint.coord,lastPoint.coord,$('#a_1').val().replace(/[ ]/g,""),$('#a_2').val().replace(/[ ]/g,""),$('#a_3').val().replace(/[ ]/g,""),$('#a_4').val().replace(/[ ]/g,"")]</div>
+                    <div class="validator-function">
+                        if(KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270  && (guess[4]=='' || guess[5]=='' || guess[6]=='' || guess[7]=='')){
+                            return "";
+                        }
+                        var greenAns = KhanUtil.findAngle(guess[2],[0,0])-KhanUtil.findAngle(guess[0],[0,0]);
+                        greenAns&gt;360?greenAns-=360:(greenAns&lt;0?greenAns+=360:greenAns=greenAns);
+                        var orangeAns = KhanUtil.findAngle(guess[0],[0,0])-KhanUtil.findAngle(guess[1],[0,0]);
+                        orangeAns&gt;360?orangeAns-=360:(orangeAns&lt;0?orangeAns+=360:orangeAns=orangeAns);
+                        var redAns = KhanUtil.findAngle(guess[3],[0,0])-KhanUtil.findAngle(guess[2],[0,0]);
+                        redAns&gt;360?redAns-=360:(redAns&lt;0?redAns+=360:redAns=redAns);
+                        var blueAns = 360-KhanUtil.findAngle(guess[3],[0,0])+KhanUtil.findAngle(guess[1],[0,0]);
+                        blueAns&gt;360?blueAns-=360:(blueAns&lt;0?blueAns+=360:blueAns=blueAns);
+                        var arr = KhanUtil.sortNumbers([Math.round(greenAns/3.6),Math.round(orangeAns/3.6),Math.round(redAns/3.6),Math.round(blueAns/3.6)]);
+                        var ansArr = KhanUtil.sortNumbers([J_percent,K_percent,L_percent,M_percent]);
+                        if(arr[0]==ansArr[0] && arr[1]==ansArr[1] && arr[2]==ansArr[2] && arr[3]==ansArr[3] && guess[4]==J_percent && guess[5]==K_percent && guess[6]==L_percent && guess[7]==M_percent){
+                            return true;
+                        }
+                        return false;
+                    </div>
+                </div>
+                <p class="example">在表中填入整數，例如 <code>6</code></p>
+            </div>
+            
+            <div class="hints">
+                <p>我們要先計算出全部有多少：<code><var>J</var>+<var>K</var>+<var>L</var>+<var>M</var>=<var>total</var></code>。</p>
+                <p><var>item_1</var>占全部的百分率是 <code><var>J</var>\div <var>total</var>=\color{fuchsia}{<var>J_percent</var>}\ \%</code></p>
+                <p><var>item_2</var>占全部的百分率是 <code><var>K</var>\div <var>total</var>=\color{fuchsia}{<var>K_percent</var>}\ \%</code></p>
+                <p><var>item_3</var>占全部的百分率是 <code><var>L</var>\div <var>total</var>=\color{fuchsia}{<var>L_percent</var>}\ \%</code></p>
+                <p><var>item_4</var>占全部的百分率是 <code><var>M</var>\div <var>total</var>=\color{fuchsia}{<var>M_percent</var>}\ \%</code></p>
+                <div>
+                    <p>接著按照百分率畫出圓形圖。</p>
+                    <div class="graphie" data-update="clock">
+                        init({ range: [[-4, 4], [-4, 4]], scale: 45 });
+
+                        var clockRadius = 3.75;
+                        var outerPointRadius = clockRadius * 1.01;
+                        minuteStartAngle = 90;
+                        hourStartAngle = 90-J_percent*3.6;
+                        thirdStartAngle = 90+K_percent*3.6;
+                        lastStartAngle = 90-J_percent*3.6-L_percent*3.6;
+                        minutePoint1 = circle( polar( clockRadius, minuteStartAngle ), 0.05,{stroke: "#FFF0AC",fill:"#FFF0AC"});
+                        thirdPoint1 = circle(polar( clockRadius, thirdStartAngle ),0.05,{stroke: "#C2FF68",fill:"#C2FF68"});
+                        lastPoint1 = circle(polar( clockRadius, lastStartAngle ),0.05,{stroke: "#FF9797",fill:"#FF9797"});
+                        hourPoint1 = circle(polar(clockRadius, hourStartAngle),0.05,{stroke: "#D2E9FF",fill:"#D2E9FF"});
+                        minuteHand1 = line(polar( clockRadius, minuteStartAngle ),[0,0],{stroke: "#FFF0AC","stroke-width": 2});
+                        thirdHand1 = line(polar( clockRadius, thirdStartAngle ),[0,0],{stroke: "#C2FF68","stroke-width": 2});
+                        lastHand1 = line(polar( clockRadius, lastStartAngle ),[0,0],{stroke: "#FF9797","stroke-width": 2});
+                        hourHand1 = line(polar(clockRadius, hourStartAngle),[0,0],{stroke: "#D2E9FF","stroke-width": 2});
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="case2-need-to-round-percent-pie-chart">
+            <div class="vars" data-ensure=" M_percent &lt;=45 && K_percent&lt;=45 && L_percent&lt;=45 && J_percent&lt;=45 && J_percent !== 25 && (J_percent+K_percent+L_percent+M_percent===100)">
+                <var id="test">(function(){Khan.scratchpad.disable();})()</var>
+                <var id="GCD">randRange(2,7)</var>
+                <var id="total">randFromArray([11,13,15,17,19])*GCD</var>
+                <var id="numsArray" data-ensure="(numsArray[0]-numsArray[1])!==0 && (numsArray[0]-numsArray[2])!==0 && (numsArray[0]-numsArray[3])!==0 && (numsArray[1]-numsArray[2])!==0 && (numsArray[1]-numsArray[3])!==0 && (numsArray[2]-numsArray[3])!==0">
+                (function(){
+                    var arr = sortNumbers(randRangeUnique(1,total/GCD,3));
+                    var retArr = [arr[0],arr[1]-arr[0],arr[2]-arr[1],(total/GCD)-arr[2]];
+                    return retArr;
+                })()</var>
+                <var id="J">numsArray[0]*GCD</var>
+                <var id="K">numsArray[1]*GCD</var>
+                <var id="L">numsArray[2]*GCD</var>
+                <var id="M">numsArray[3]*GCD</var>
+                <var id="J_percent">roundTo(0,J*100/total)</var>
+                <var id="K_percent">roundTo(0,K*100/total)</var>
+                <var id="L_percent">roundTo(0,L*100/total)</var>
+                <var id="M_percent">roundTo(0,M*100/total)</var>
+            </div>
+            
+            <div class="question">
+ 
+                <p>下表是<var>table_name</var>。請先根據下表的資料，算出每種<var>item_name</var>的<var>item_unit</var>所占的百分率。</br>
+                (用四捨五入法將商取概數到小數點後第二位，再化成百分率)</p>
+                <table class="nLimit" style="background-color:#F8F8F8">
+                    <tr><td><var>item_name</var></td><td><var>item_1</var></td><td><var>item_2</var></td><td><var>item_3</var></td><td><var>item_4</var></td></tr>
+                    <tr><td><var>item_unit</var>(<var>unit</var>)</td><td><code><var>J</var></code></td><td><code><var>K</var></code></td><td><code><var>L</var></code></td><td><code><var>M</var></code></td></tr>
+                    <tr><td> 百分率 </td><td><input type="text" id="a_1" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>\ \%</code></td><td><input type="text" id="a_2" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>\ \%</code></td><td><input type="text" id="a_3" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>\ \%</code></td><td><input type="text" id="a_4" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>\ \%</code></td></tr>                    
+                </table>
+ 
+                <p>
+                    下圖將圓周分為 <code>100</code> 等分，每 <code>1</code> 等分表示 <code>1\%</code>。</br>
+                    請你移動圓內的線段，畫出百分圓形圖。</br>
+                    
+                </p>
+                <!--
+                <p style="font-weight: bold">下圖單位：<code>\%</code></p> -->
+            </div>
+            <div class="problem">
+                <div class="graphie" id="clock">
+                        init({ range: [[-4, 4], [-4, 4]], scale: 45 });
+
+                        var clockRadius = 3.75;
+                        var outerPointRadius = clockRadius * 1.01;
+                        minuteStartAngle = 90;
+                        hourStartAngle = 0;
+                        thirdStartAngle = 180;
+                        lastStartAngle = 270;
+
+                        var percentCircle = addAnalogCircle({ radius: clockRadius, minuteTicks: 100 });
+                        percentCircle.draw();
+                        addMouseLayer();
+
+                        function movePartnerPoint(options) {
+                            var x = options.x;
+                            var y = options.y;
+                            var point = options.point;
+                            var outerPoint = options.outerPoint;
+                            var isOuterPoint = options.isOuterPoint;
+                
+                            var ratio = outerPoint.constraints.fixedDistance.dist / point.constraints.fixedDistance.dist;
+                            if (isOuterPoint) {
+                                ratio = 1 / ratio;
+                                point.setCoord([x * ratio , y * ratio]);
+                                outerPoint.setCoord([x, y]);
+                            } else {
+                                point.setCoord([x, y]);
+                                outerPoint.setCoord([x * ratio, y * ratio]);
+                            }
+
+                            point.updateLineEnds();
+                            return point;
+                        }
+
+                        minutePoint = addMovablePoint({
+                            coord: polar( clockRadius, minuteStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                label1.remove();
+                                var _radian_1 = cartToPolar([(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2])[ 1 ];
+                                label1 = label(
+                                    polar(2, _radian_1),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "orange" });
+                                label4.remove(); 
+                                var _radian_2 = cartToPolar([(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2])[ 1 ];
+                                label4 = label(
+                                    polar(2, _radian_2),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "#28AE7B" });
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerMinutePoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+                        
+                        thirdPoint = addMovablePoint({
+                            coord: polar( clockRadius, thirdStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                label3.remove();
+                                var _radian_3 = cartToPolar([(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label3 = label(
+                                    polar( 2, _radian_3 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "red" });
+                                    
+                                label4.remove(); 
+                                var _radian_4 = cartToPolar([(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2])[ 1 ];
+                                label4 = label(
+                                    polar( 2, _radian_4 ),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "#28AE7B" });
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerThirdPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+                        
+                        lastPoint = addMovablePoint({
+                            coord: polar( clockRadius, lastStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                label2.remove();
+                                var _radian_5 = cartToPolar([(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label2 = label(
+                                    polar( 2, _radian_5 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "#6495ED" });
+                                    
+                                label3.remove();
+                                var _radian_6 = cartToPolar([(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label3 = label(
+                                    polar( 2, _radian_6 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "red" });
+                                    
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerLastPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        outerMinutePoint = addMovablePoint({
+                            coord: polar(outerPointRadius, minuteStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: minutePoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+                        
+                        outerThirdPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, thirdStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: thirdPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+                        
+                        outerLastPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, lastStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: lastPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        hourPoint = addMovablePoint({
+                            coord: polar(clockRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                label1.remove();
+                                var _radian_7 = cartToPolar([(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2])[ 1 ];
+                                label1 = label(
+                                    polar( 2, _radian_7 ),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "orange" });
+                                label2.remove();
+                                var _radian_8 = cartToPolar([(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label2 = label(
+                                    polar( 2, _radian_8 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI/3.6)+"\\%", 
+                                    "center", 
+                                    { color: "#6495ED" });
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerHourPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        outerHourPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 100
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: hourPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        minuteHand = addMovableLineSegment({
+                            pointA: minutePoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: ORANGE,
+                                "stroke-width": 5
+                            }
+                        });
+                        
+                        thirdHand = addMovableLineSegment({
+                            pointA: thirdPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: GREEN,
+                                "stroke-width": 5
+                            }
+                        });
+                        
+                        lastHand = addMovableLineSegment({
+                            pointA: lastPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: RED,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        hourHand = addMovableLineSegment({
+                            pointA: hourPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: BLUE,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        centerPoint = addMovablePoint({
+                            coord: [0, 0],
+                            constraints: {
+                                fixed: true
+                            },
+                            normalStyle: {
+                                fill: "#fff",
+                                stroke: "#000",
+                                "stroke-width": 2
+                            }
+                        });
+                        
+                        label1 = label(
+                                    [(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
+                                    25+"\\%",
+                                    "center", 
+                                    { color: "orange" });
+
+                        label2 = label(
+                                    [(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
+                                    25+"\\%",
+                                    "center", 
+                                    { color: "#6495ED" });
+                                    
+                        label3 = label(
+                                    [(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
+                                    25+"\\%",
+                                    "center", 
+                                    { color: "red" });
+                        
+                        label4 = label(
+                                    [(minutePoint.coord[0]+thirdPoint.coord[0])/2,(minutePoint.coord[1]+thirdPoint.coord[1])/2],
+                                    25+"\\%",
+                                    "center", 
+                                    { color: "#28AE7B" });
+                    </div>
+            </div>
+            <div class="solution" data-type="multiple">
+                移動圓內直線，畫出圓形圖。
+                <div class="sol" data-type="custom">
+                    <div class="guess">[minutePoint.coord,hourPoint.coord,thirdPoint.coord,lastPoint.coord,$('#a_1').val().replace(/[ ]/g,""),$('#a_2').val().replace(/[ ]/g,""),$('#a_3').val().replace(/[ ]/g,""),$('#a_4').val().replace(/[ ]/g,"")]</div>
+                    <div class="validator-function">
+                        if(KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270 && (guess[4]=='' || guess[5]=='' || guess[6]=='' || guess[7]=='')){
+                            return "";
+                        }
+                        var greenAns = KhanUtil.findAngle(guess[2],[0,0])-KhanUtil.findAngle(guess[0],[0,0]);
+                        greenAns&gt;360?greenAns-=360:(greenAns&lt;0?greenAns+=360:greenAns=greenAns);
+                        var orangeAns = KhanUtil.findAngle(guess[0],[0,0])-KhanUtil.findAngle(guess[1],[0,0]);
+                        orangeAns&gt;360?orangeAns-=360:(orangeAns&lt;0?orangeAns+=360:orangeAns=orangeAns);
+                        var redAns = KhanUtil.findAngle(guess[3],[0,0])-KhanUtil.findAngle(guess[2],[0,0]);
+                        redAns&gt;360?redAns-=360:(redAns&lt;0?redAns+=360:redAns=redAns);
+                        var blueAns = 360-KhanUtil.findAngle(guess[3],[0,0])+KhanUtil.findAngle(guess[1],[0,0]);
+                        blueAns&gt;360?blueAns-=360:(blueAns&lt;0?blueAns+=360:blueAns=blueAns);
+                        var arr = KhanUtil.sortNumbers([Math.round(greenAns/3.6),Math.round(orangeAns/3.6),Math.round(redAns/3.6),Math.round(blueAns/3.6)]);
+                        var ansArr = KhanUtil.sortNumbers([J_percent,K_percent,L_percent,M_percent]);
+                        if(arr[0]==ansArr[0] && arr[1]==ansArr[1] && arr[2]==ansArr[2] && arr[3]==ansArr[3] && guess[4]==J_percent && guess[5]==K_percent && guess[6]==L_percent && guess[7]==M_percent){
+                            return true;
+                        }
+                        return false;
+                    </div>
+                </div>
+                <p class="example">在表中填入整數，例如 <code>6</code></p>
+            </div>
+            
+            <div class="hints">
+                <p>我們要先計算出全部有多少：<code><var>J</var>+<var>K</var>+<var>L</var>+<var>M</var>=<var>total</var></code>。</p>
+                <p><var>item_1</var>占全部的百分率是：</br>
+                <code>\quad<var>J</var>\div <var>total</var>\fallingdotseq<var>J_percent/100</var>=\color{fuchsia}{<var>J_percent</var>}\ \%</code></p>
+                <p><var>item_2</var>占全部的百分率是：</br>
+                <code>\quad<var>K</var>\div <var>total</var>\fallingdotseq<var>K_percent/100</var>=\color{fuchsia}{<var>K_percent</var>}\ \%</code></p>
+                <p><var>item_3</var>占全部的百分率是：</br>
+                <code>\quad<var>L</var>\div <var>total</var>\fallingdotseq<var>L_percent/100</var>=\color{fuchsia}{<var>L_percent</var>}\ \%</code></p>
+                <p><var>item_4</var>占全部的百分率是：</br>
+                <code>\quad<var>M</var>\div <var>total</var>\fallingdotseq<var>M_percent/100</var>=\color{fuchsia}{<var>M_percent</var>}\ \%</code></p>
+                <div>
+                    <p>接著按照百分率畫出圓形圖。</p>
+                    <div class="graphie" data-update="clock">
+                        init({ range: [[-4, 4], [-4, 4]], scale: 45 });
+
+                        var clockRadius = 3.75;
+                        var outerPointRadius = clockRadius * 1.01;
+                        minuteStartAngle = 90;
+                        hourStartAngle = 90-J_percent*3.6;
+                        thirdStartAngle = 90+K_percent*3.6;
+                        lastStartAngle = 90-J_percent*3.6-L_percent*3.6;
+                        minutePoint1 = circle( polar( clockRadius, minuteStartAngle ), 0.05,{stroke: "#FFF0AC",fill:"#FFF0AC"});
+                        thirdPoint1 = circle(polar( clockRadius, thirdStartAngle ),0.05,{stroke: "#C2FF68",fill:"#C2FF68"});
+                        lastPoint1 = circle(polar( clockRadius, lastStartAngle ),0.05,{stroke: "#FF9797",fill:"#FF9797"});
+                        hourPoint1 = circle(polar(clockRadius, hourStartAngle),0.05,{stroke: "#D2E9FF",fill:"#D2E9FF"});
+                        minuteHand1 = line(polar( clockRadius, minuteStartAngle ),[0,0],{stroke: "#FFF0AC","stroke-width": 2});
+                        thirdHand1 = line(polar( clockRadius, thirdStartAngle ),[0,0],{stroke: "#C2FF68","stroke-width": 2});
+                        lastHand1 = line(polar( clockRadius, lastStartAngle ),[0,0],{stroke: "#FF9797","stroke-width": 2});
+                        hourHand1 = line(polar(clockRadius, hourStartAngle),[0,0],{stroke: "#D2E9FF","stroke-width": 2});
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="case3-data-angle-pie-chart"  data-weight=2>
+            <div class="vars" data-ensure="M_angle&lt;=162 && K_angle&lt;=162 && L_angle&lt;=162 && J_angle&lt;=162 && J_angle !== 90">
+                <var id="test">(function(){Khan.scratchpad.disable();})()</var>
+                <var id="GCD">randRange(2,7)</var>
+                <var id="ratio">randFromArray([5,10,15,20])</var>
+                <var id="total">360/ratio</var>
+                <var id="numsArray" data-ensure="(numsArray[0]-numsArray[1])!==0 && (numsArray[0]-numsArray[2])!==0 && (numsArray[0]-numsArray[3])!==0 && (numsArray[1]-numsArray[2])!==0 && (numsArray[1]-numsArray[3])!==0 && (numsArray[2]-numsArray[3])!==0">
+                (function(){
+                    var arr = sortNumbers(randRangeUnique(1,360/ratio,3));
+                    var retArr = [arr[0],arr[1]-arr[0],arr[2]-arr[1],(360/ratio)-arr[2]];
+                    return retArr;
+                })()</var>
+                <var id="J">numsArray[0]</var>
+                <var id="K">numsArray[1]</var>
+                <var id="L">numsArray[2]</var>
+                <var id="M">numsArray[3]</var>
+                <var id="J_angle">J*ratio</var>
+                <var id="K_angle">K*ratio</var>
+                <var id="L_angle">L*ratio</var>
+                <var id="M_angle">M*ratio</var>
+
+            </div>
+            
+            <div class="question">
+ 
+                <p>下表是<var>table_name</var>。請根據下表的資料，算出每種<var>item_name</var>所占的比率，再根據比率算出圓心角的角度。</p>
+                <table class="nLimit" style="background-color:#F8F8F8">
+                    <tr><td><var>item_name</var></td><td><var>item_1</var></td><td><var>item_2</var></td><td><var>item_3</var></td><td><var>item_4</var></td></tr>
+                    <tr><td><var>item_unit</var>(<var>unit</var>)</td><td><code><var>J</var></code></td><td><code><var>K</var></code></td><td><code><var>L</var></code></td><td><code><var>M</var></code></td></tr>
+                    <tr><td>圓心角(度)</td><td><input type="text" id="a_1" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>^\circ</code></td><td><input type="text" id="a_2" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>^\circ</code></td><td><input type="text" id="a_3" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>^\circ</code></td><td><input type="text" id="a_4" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>^\circ</code></td></tr>                     
+                </table>
+ 
+                <p>我們將圓周分為 <code>360</code> 小格，每一小格是 <code>1</code> 度，每一大格是 <code>5</code> 度。</br>
+                    請你移動圓內的線段，根據圓心角的角度畫出圓形圖。</p>
+
+            </div>
+            <div class="problem">
+                <div class="graphie" id="clock">
+                        init({ range: [[-4, 4], [-4, 4]], scale: 45 });
+
+                        var clockRadius = 3.75;
+                        var outerPointRadius = clockRadius * 1.01;
+                        minuteStartAngle = 90;
+                        hourStartAngle = 0;
+                        thirdStartAngle = 180;
+                        lastStartAngle = 270;
+
+                        var percentCircle = addAnalogCircle({ radius: clockRadius, minuteTicks: 360 ,hourTicks: 1,middleTicks: 72});
+                        percentCircle.draw();
+                        addMouseLayer();
+
+                        function movePartnerPoint(options) {
+                            var x = options.x;
+                            var y = options.y;
+                            var point = options.point;
+                            var outerPoint = options.outerPoint;
+                            var isOuterPoint = options.isOuterPoint;
+                
+                            var ratio = outerPoint.constraints.fixedDistance.dist / point.constraints.fixedDistance.dist;
+                            if (isOuterPoint) {
+                                ratio = 1 / ratio;
+                                point.setCoord([x * ratio , y * ratio]);
+                                outerPoint.setCoord([x, y]);
+                            } else {
+                                point.setCoord([x, y]);
+                                outerPoint.setCoord([x * ratio, y * ratio]);
+                            }
+
+                            point.updateLineEnds();
+                            return point;
+                        }
+
+                        minutePoint = addMovablePoint({
+                            coord: polar( clockRadius, minuteStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 72
+                                }
+                            },
+                            onMove: function(x, y) {
+                                label1.remove();
+                                var _radian_1 = cartToPolar([(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2])[ 1 ];
+                                label1 = label(
+                                    polar(2, _radian_1),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI)+"^{\\circ}", 
+                                    "center", 
+                                    { color: "orange" });
+                                label4.remove(); 
+                                var _radian_2 = cartToPolar([(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2])[ 1 ];
+                                label4 = label(
+                                    polar(2, _radian_2),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI)+"^{\\circ}", 
+                                    "center", 
+                                    { color: "#28AE7B" });
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerMinutePoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+                        
+                        thirdPoint = addMovablePoint({
+                            coord: polar( clockRadius, thirdStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 72
+                                }
+                            },
+                            onMove: function(x, y) {
+                                label3.remove();
+                                var _radian_3 = cartToPolar([(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label3 = label(
+                                    polar( 2, _radian_3 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI)+"^{\\circ}", 
+                                    "center", 
+                                    { color: "red" });
+                                    
+                                label4.remove(); 
+                                var _radian_4 = cartToPolar([(thirdPoint.coord[0]+minutePoint.coord[0])/2,(thirdPoint.coord[1]+minutePoint.coord[1])/2])[ 1 ];
+                                label4 = label(
+                                    polar( 2, _radian_4 ),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-thirdPoint.coord[0])*(minutePoint.coord[0]-thirdPoint.coord[0])+(minutePoint.coord[1]-thirdPoint.coord[1])*(minutePoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI)+"^{\\circ}", 
+                                    "center", 
+                                    { color: "#28AE7B" });
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerThirdPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+                        
+                        lastPoint = addMovablePoint({
+                            coord: polar( clockRadius, lastStartAngle ),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 72
+                                }
+                            },
+                            onMove: function(x, y) {
+                                label2.remove();
+                                var _radian_5 = cartToPolar([(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label2 = label(
+                                    polar( 2, _radian_5 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI)+"^{\\circ}", 
+                                    "center", 
+                                    { color: "#6495ED" });
+                                    
+                                label3.remove();
+                                var _radian_6 = cartToPolar([(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label3 = label(
+                                    polar( 2, _radian_6 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-thirdPoint.coord[0])*(lastPoint.coord[0]-thirdPoint.coord[0])+(lastPoint.coord[1]-thirdPoint.coord[1])*(lastPoint.coord[1]-thirdPoint.coord[1]))/2/3.75)*180/Math.PI)+"^{\\circ}", 
+                                    "center", 
+                                    { color: "red" });
+                                    
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerLastPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        outerMinutePoint = addMovablePoint({
+                            coord: polar(outerPointRadius, minuteStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 72
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: minutePoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            },
+                            highlightStyle: {
+                                fill: ORANGE,
+                                stroke: ORANGE
+                            }
+                        });
+                        
+                        outerThirdPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, thirdStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 72
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: thirdPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            },
+                            highlightStyle: {
+                                fill: GREEN,
+                                stroke: GREEN
+                            }
+                        });
+                        
+                        outerLastPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, lastStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 72
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: lastPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: RED,
+                                stroke: RED
+                            },
+                            highlightStyle: {
+                                fill: RED,
+                                stroke: RED
+                            }
+                        });
+
+                        hourPoint = addMovablePoint({
+                            coord: polar(clockRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: clockRadius,
+                                    point: [0, 0],
+                                    snapPoints: 72
+                                }
+                            },
+                            onMove: function(x, y) {
+                                label1.remove();
+                                var _radian_7 = cartToPolar([(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2])[ 1 ];
+                                label1 = label(
+                                    polar( 2, _radian_7 ),
+                                    Math.round(2*Math.asin(sqrt((minutePoint.coord[0]-hourPoint.coord[0])*(minutePoint.coord[0]-hourPoint.coord[0])+(minutePoint.coord[1]-hourPoint.coord[1])*(minutePoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI)+"^{\\circ}", 
+                                    "center", 
+                                    { color: "orange" });
+                                label2.remove();
+                                var _radian_8 = cartToPolar([(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2])[ 1 ];
+                                label2 = label(
+                                    polar( 2, _radian_8 ),
+                                    Math.round(2*Math.asin(sqrt((lastPoint.coord[0]-hourPoint.coord[0])*(lastPoint.coord[0]-hourPoint.coord[0])+(lastPoint.coord[1]-hourPoint.coord[1])*(lastPoint.coord[1]-hourPoint.coord[1]))/2/3.75)*180/Math.PI)+"^{\\circ}", 
+                                    "center", 
+                                    { color: "#6495ED" });
+                                return movePartnerPoint({ x: x, y: y, point: this, outerPoint: outerHourPoint, isOuterPoint: false });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        outerHourPoint = addMovablePoint({
+                            coord: polar(outerPointRadius, hourStartAngle),
+                            constraints: {
+                                fixedDistance: {
+                                    dist: outerPointRadius,
+                                    point: [0, 0],
+                                    snapPoints: 72
+                                }
+                            },
+                            onMove: function(x, y) {
+                                return movePartnerPoint({ x: x, y: y, point: hourPoint, outerPoint: this, isOuterPoint: true });
+                            },
+                            normalStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            },
+                            highlightStyle: {
+                                fill: BLUE,
+                                stroke: BLUE
+                            }
+                        });
+
+                        minuteHand = addMovableLineSegment({
+                            pointA: minutePoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: ORANGE,
+                                "stroke-width": 5
+                            }
+                        });
+                        
+                        thirdHand = addMovableLineSegment({
+                            pointA: thirdPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: GREEN,
+                                "stroke-width": 5
+                            }
+                        });
+                        
+                        lastHand = addMovableLineSegment({
+                            pointA: lastPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: RED,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        hourHand = addMovableLineSegment({
+                            pointA: hourPoint,
+                            coordZ: [0, 0],
+                            fixed: true,
+                            normalStyle: {
+                                stroke: BLUE,
+                                "stroke-width": 5
+                            }
+                        });
+
+                        centerPoint = addMovablePoint({
+                            coord: [0, 0],
+                            constraints: {
+                                fixed: true
+                            },
+                            normalStyle: {
+                                fill: "#fff",
+                                stroke: "#000",
+                                "stroke-width": 2
+                            }
+                        });
+                        
+                        label1 = label(
+                                    [(minutePoint.coord[0]+hourPoint.coord[0])/2,(minutePoint.coord[1]+hourPoint.coord[1])/2],
+                                    90+"^{\\circ}",
+                                    "center", 
+                                    { color: "orange" });
+
+                        label2 = label(
+                                    [(hourPoint.coord[0]+lastPoint.coord[0])/2,(hourPoint.coord[1]+lastPoint.coord[1])/2],
+                                    90+"^{\\circ}",
+                                    "center", 
+                                    { color: "#6495ED" });
+                                    
+                        label3 = label(
+                                    [(thirdPoint.coord[0]+lastPoint.coord[0])/2,(thirdPoint.coord[1]+lastPoint.coord[1])/2],
+                                    90+"^{\\circ}",
+                                    "center", 
+                                    { color: "red" });
+                        
+                        label4 = label(
+                                    [(minutePoint.coord[0]+thirdPoint.coord[0])/2,(minutePoint.coord[1]+thirdPoint.coord[1])/2],
+                                    90+"^{\\circ}",
+                                    "center", 
+                                    { color: "#28AE7B" });
+                    </div>
+            </div>
+            <div class="solution" data-type="multiple">
+                移動圓內直線，畫出圓形圖。
+                <div class="sol" data-type="custom">
+                    <div class="guess">[minutePoint.coord,hourPoint.coord,thirdPoint.coord,lastPoint.coord,$('#a_1').val().replace(/[ ]/g,""),$('#a_2').val().replace(/[ ]/g,""),$('#a_3').val().replace(/[ ]/g,""),$('#a_4').val().replace(/[ ]/g,"")]</div>
+                    <div class="validator-function">
+                        if(KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270 && (guess[4]=='' || guess[5]=='' || guess[6]=='' || guess[7]=='')){
+                            return "";
+                        }
+                        var greenAns = KhanUtil.findAngle(guess[2],[0,0])-KhanUtil.findAngle(guess[0],[0,0]);
+                        greenAns&gt;360?greenAns-=360:(greenAns&lt;0?greenAns+=360:greenAns=greenAns);
+                        var orangeAns = KhanUtil.findAngle(guess[0],[0,0])-KhanUtil.findAngle(guess[1],[0,0]);
+                        orangeAns&gt;360?orangeAns-=360:(orangeAns&lt;0?orangeAns+=360:orangeAns=orangeAns);
+                        var redAns = KhanUtil.findAngle(guess[3],[0,0])-KhanUtil.findAngle(guess[2],[0,0]);
+                        redAns&gt;360?redAns-=360:(redAns&lt;0?redAns+=360:redAns=redAns);
+                        var blueAns = 360-KhanUtil.findAngle(guess[3],[0,0])+KhanUtil.findAngle(guess[1],[0,0]);
+                        blueAns&gt;360?blueAns-=360:(blueAns&lt;0?blueAns+=360:blueAns=blueAns);
+                        var arr = KhanUtil.sortNumbers([Math.round(greenAns),Math.round(orangeAns),Math.round(redAns),Math.round(blueAns)]);
+                        var ansArr = KhanUtil.sortNumbers([J_angle,K_angle,L_angle,M_angle]);
+                        if(arr[0]==ansArr[0] && arr[1]==ansArr[1] && arr[2]==ansArr[2] && arr[3]==ansArr[3] && guess[4]==J_angle && guess[5]==K_angle && guess[6]==L_angle && guess[7]==M_angle){
+                            return true;
+                        }
+                        return false;
+                    </div>
+                </div>
+                <p class="example">在表中填入整數，例如 <code>6</code>。</p>
+            </div>
+            
+            <div class="hints">
+                <p>
+                    我們要先計算出全部有多少：<code><var>J</var>+<var>K</var>+<var>L</var>+<var>M</var>=<var>total</var></code>。</br>
+                    一個圓有 <code>360^\circ</code>。我們可以先算出每個項目的比率，再計算圓心角。
+                </p>
+                <div>
+                    <p>
+                        <var>item_1</var>佔全部的比率是：</br>
+                        <code>\quad<var>J</var>\div <var>total</var>=\dfrac{<var>J</var>}{<var>total</var>}</code><code data-if="getGCD(J,total)!==1">=<var>fraction(J,total,true,true,false,false)</var></code>
+                    </p>
+                    <p>所以圓形圖中，<var>item_1</var>的扇形圓心角度數是 <code>360^\circ\times<var>fraction(J,total,true,true,false,false)</var>=\color{fuchsia}{<var>J_angle</var>}^\circ</code></p>
+                    
+                    <div class="graphie" id="item1">
+                        init({ range: [[-1.5, 2.5], [-1.5, 1.5]], scale: 45 });
+                        circle([0,0],1);
+                        arc([0,0],1,0,J*ratio,{stroke:"orange"});
+                        line([0,0],polar(1,J_angle),{stroke:"orange"});
+                        line([0,0],polar(1,0),{stroke:"orange"});
+                        arc([0,0],0.1,0,J_angle,{stroke:"orange"});
+                        label( [1.5,0.5],  "\\small{"+J_angle+"}^{\\circ}", "center", { color: "orange" });
+                    </div>
+                </div>
+                <div>
+                    <p>
+                        <var>item_2</var>佔全部的比率是：</br>
+                        <code>\quad<var>K</var>\div <var>total</var>=\dfrac{<var>K</var>}{<var>total</var>}</code><code data-if="getGCD(K,total)!==1">=<var>fraction(K,total,true,true,false,false)</var></code>
+                    </p>
+                    <p>所以圓形圖中，<var>item_2</var>的扇形圓心角度數是 <code>360^\circ\times<var>fraction(K,total,true,true,false,false)</var>=\color{fuchsia}{<var>K_angle</var>}^\circ</code></p>
+
+                    <div class="graphie" id="item2">
+                        init({ range: [[-1.5, 2.5], [-1.5, 1.5]], scale: 45 });
+                        circle([0,0],1);
+                        arc([0,0],1,0,K_angle,{stroke:"#28AE7B"});
+                        line([0,0],polar(1,K_angle),{stroke:"#28AE7B"});
+                        line([0,0],polar(1,0),{stroke:"#28AE7B"});
+                        arc([0,0],0.1,0,K_angle,{stroke:"#28AE7B"});
+                        label( [1.5,0.5],  "\\small{"+K_angle+"}^{\\circ}", "center", { color: "#28AE7B" });
+                    </div>
+                </div> 
+                <div>
+                    <p>
+                        <var>item_3</var>佔全部的比率是：</br>
+                        <code>\quad<var>L</var>\div <var>total</var>=\dfrac{<var>L</var>}{<var>total</var>}</code><code data-if="getGCD(L,total)!==1">=<var>fraction(L,total,true,true,false,false)</var></code>
+                    </p>
+                    <p>所以圓形圖中，<var>item_3</var>的扇形圓心角度數是 <code>360^\circ\times<var>fraction(L,total,true,true,false,false)</var>=\color{fuchsia}{<var>L_angle</var>}^\circ</code></p>
+
+                    <div class="graphie" id="item3">
+                        init({ range: [[-1.5, 2.5], [-1.5, 1.5]], scale: 45 });
+                        circle([0,0],1);
+                        arc([0,0],1,0,L_angle,{stroke:"#6495ED"});
+                        line([0,0],polar(1,L_angle),{stroke:"#6495ED"});
+                        line([0,0],polar(1,0),{stroke:"#6495ED"});
+                        arc([0,0],0.1,0,L_angle,{stroke:"#6495ED"});
+                        label( [1.5,0.5],  "\\small{"+L_angle+"}^{\\circ}", "center", { color: "#6495ED" });
+                    </div>
+                </div> 
+                <div>
+                    <p>
+                        <var>item_4</var>佔全部的比率是：</br>
+                        <code>\quad<var>M</var>\div <var>total</var>=\dfrac{<var>M</var>}{<var>total</var>}</code><code data-if="getGCD(M,total)!==1">=<var>fraction(M,total,true,true,false,false)</var></code>
+                    </p>
+                    <p>所以圓形圖中，<var>item_4</var>的扇形圓心角度數是 <code>360^\circ\times<var>fraction(M,total,true,true,false,false)</var>=\color{fuchsia}{<var>M_angle</var>}^\circ</code></p>
+
+                    <div class="graphie" id="item4">
+                        init({ range: [[-1.5, 2.5], [-1.5, 1.5]], scale: 45 });
+                        circle([0,0],1);
+                        arc([0,0],1,0,M_angle,{stroke:"red"});
+                        line([0,0],polar(1,M_angle),{stroke:"red"});
+                        line([0,0],polar(1,0),{stroke:"red"});
+                        arc([0,0],0.1,0,M_angle,{stroke:"red"});
+                        label( [1.5,0.5],  "\\small{"+M_angle+"}^{\\circ}", "center", { color: "red" });
+                    </div>
+                </div>
+                <div>
+                    <p>接著按照百分率畫出圓形圖。</p>
+                    <div class="graphie" data-update="clock">
+                        init({ range: [[-4, 4], [-4, 4]], scale: 45 });
+
+                        var clockRadius = 3.75;
+                        var outerPointRadius = clockRadius * 1.01;
+                        minuteStartAngle = 90;
+                        hourStartAngle = 90-J_angle;
+                        thirdStartAngle = 90+K_angle;
+                        lastStartAngle = 90-J_angle-L_angle;
+                        minutePoint1 = circle( polar( clockRadius, minuteStartAngle ), 0.05,{stroke: "#FFF0AC",fill:"#FFF0AC"});
+                        thirdPoint1 = circle(polar( clockRadius, thirdStartAngle ),0.05,{stroke: "#C2FF68",fill:"#C2FF68"});
+                        lastPoint1 = circle(polar( clockRadius, lastStartAngle ),0.05,{stroke: "#FF9797",fill:"#FF9797"});
+                        hourPoint1 = circle(polar(clockRadius, hourStartAngle),0.05,{stroke: "#D2E9FF",fill:"#D2E9FF"});
+                        minuteHand1 = line(polar( clockRadius, minuteStartAngle ),[0,0],{stroke: "#FFF0AC","stroke-width": 2});
+                        thirdHand1 = line(polar( clockRadius, thirdStartAngle ),[0,0],{stroke: "#C2FF68","stroke-width": 2});
+                        lastHand1 = line(polar( clockRadius, lastStartAngle ),[0,0],{stroke: "#FF9797","stroke-width": 2});
+                        hourHand1 = line(polar(clockRadius, hourStartAngle),[0,0],{stroke: "#D2E9FF","stroke-width": 2});
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>        
+	</div>
+	</div>
+</body>
+</html>

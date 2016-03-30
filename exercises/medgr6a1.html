@@ -2,7 +2,7 @@
 <html data-require="math math-format graphie time interactive angles">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>繪製圓形圖-2</title>
+    <title>圓形圖：基礎</title>
     <script src="../khan-exercise.js"></script>
 	<style type="text/css">
         #answer_area .sol input[type=text] {
@@ -37,55 +37,62 @@
     <div class="vars">
         <var id="names">randFromArray(["小玉","珍珍","小紅","娟娟","冠宏","小惠","阿光","宜生"])</var>
         <var id="table_name,item_name,item_1,item_2,item_3,item_4,item_5,item_unit,unit">
-            randFromArray([[names+"家今年一月份的支出","支出項目","房租","伙食","交通","雜支","休閒","支出","元"],
-                           ["超市去年營業額","項目","家電","蔬果","食品","生活用品","飲料","營業額","千元"],
+            randFromArray([[names+"家今年的支出","支出項目","房租","伙食","交通","雜支","休閒","支出","萬元"],
+                           ["超市去年營業額","項目","家電","蔬果","食品","生活用品","飲料","營業額","萬元"],
                            ["健康國小六年級學生喜好休閒活動","休閒活動","打籃球","打棒球","閱讀","畫畫","聽音樂","人數","人"],
-                           ["調查學生心中首選寵物","寵物","狗","貓","兔子","天竺鼠","鳥","人數","人"],
+                           ["學生最喜愛寵物","寵物","狗","貓","兔子","天竺鼠","鳥","人數","人"],
                            ["民眾如何安排假期活動","假期活動","拜訪親友","待在家裡","觀光旅遊","沒有休假","運動休閒","人數","人"],
                            ["湖中國小六年級學生最喜歡的球類運動","球類運動","足球","躲避球","籃球","排球","羽球","人數","人"],
-                           ["樂樂國小合作社不同品牌飲料賣出的數量","飲料種類","果汁","茶","運動飲料","水","可可","數量","瓶"],
-                           ["流星國小最喜歡的亞洲國家","國家名稱","日本","韓國","新加坡","香港","澳門","人數","人"],
-                           ["花兒國小六年級購買零食考慮因素","考慮因素","熱量","味道","價格","份量","品牌","得票數","票"],
-                           ["均一餐廳午餐銷售情形","種類","水餃","麵類","飯類","飲料","甜點","數量","份"],
-                           [names+"一家人到宜蘭自助旅行的花費","項目","餐飲","住宿","門票","交通","雜支","花費","千元"],
-                           ["太陽國小六年級票選運動會代表吉祥物的得票數","吉祥物","浣熊","熊貓","綿羊","大象","貓頭鷹","得票數","票"],
+                           ["樂樂雜貨店一天內不同品牌飲料銷售","飲料種類","果汁","茶","運動飲料","水","可可","數量","瓶"],
+                           ["流星國小的學生最喜歡的亞洲國家","國家名稱","日本","韓國","新加坡","香港","澳門","人數","人"],
+                           ["花兒國小六年級購買零食","考慮因素","熱量","味道","價格","份量","品牌","得票數","票"],
+                           ["均一餐廳午餐銷售","種類","水餃","麵類","飯類","飲料","甜點","數量","份"],
+                           [names+"一家人到歐洲自助旅行花費","項目","餐飲","住宿","門票","交通","雜支","花費","萬元"],
+                           ["太陽國小六年級票選運動會代表吉祥物得票數","吉祥物","浣熊","熊貓","綿羊","大象","貓頭鷹","得票數","票"],
                            [names+"到水上樂園遊玩一日花費","項目","午餐","飲料","車資","門票","零食","花費","元"]])
 <!--                           ["宜生國小六年級學生血型統計表","血型","A型","B型","AB型","O型","人數","人"],-->
         </var>
     </div>
     <div class="problems">
-	    <div id="case1-classify-two-chart"  data-weight=1>
-            <div class="vars" data-ensure="abs(J-K)&gt;10 && abs(K-L)&gt;10 && abs(L-M)&gt;10 && abs(M-J)&gt;10">
+	    <div id="case1-classify-two-chart">
+            <div class="vars" data-ensure="J&lt;50 && K&lt;50 && L&lt;50 && M&lt;50 && N&lt;50 && a5!==0">
                 <var id="test">(function(){Khan.scratchpad.disable();})()</var>
                 <var id="GCD">randRange(2,7)</var>
                 <var id="total">randFromArray([20,25,50])*GCD</var>
                 <var id="num_item">randRange(4,5)</var>
+                <var id="a1">randRange(2,roundTo(0,total/(10*GCD)))</var>
+                <var id="a2">randRange(roundTo(0,total/(10*GCD)),roundTo(0,total/(5*GCD)))</var>
+                <var id="a3">randRange(roundTo(0,total/(5*GCD)),roundTo(0,(total*3)/(10*GCD)))</var>
+                <var id="a4">num_item == 4 ? (total/GCD-a1-a2-a3) : (randRange(roundTo(0,(total*3)/(10*GCD)),roundTo(0,(total*4)/(10*GCD))))</var>
+                <var id="a5">num_item == 4 ? -1 : total/GCD-a1-a2-a3-a4</var>
+                <var id="random_index">num_item == 4 ? shuffle([0,1,2,3]) : shuffle([0,1,2,3,4])</var>
                 <var id="numsArray">
                 (function(){
-                    var arr = sortNumbers(randRangeUnique(1,total/GCD,num_item-1));
-                    if(num_item == 5) {
-                        var retArr = [arr[0],arr[1]-arr[0],arr[2]-arr[1],arr[3]-arr[2],total/GCD-arr[3]];
+                    if(num_item === 5) {
+                        var retArr = [a1,a2,a3,a4,a5];
                     }  
                     else {
-                        var retArr = [arr[0],arr[1]-arr[0],arr[2]-arr[1],total/GCD-arr[2]];
+                        var retArr = [a1,a2,a3,a4];
                     }
                     return retArr;
                 })()</var>
-                <var id="J_data">numsArray[0]*GCD</var>
-                <var id="K_data">numsArray[1]*GCD</var>
-                <var id="L_data">numsArray[2]*GCD</var>
-                <var id="M_data">numsArray[3]*GCD</var>
+                <var id="J_data">numsArray[random_index[0]]*GCD</var>
+                <var id="K_data">numsArray[random_index[1]]*GCD</var>
+                <var id="L_data">numsArray[random_index[2]]*GCD</var>
+                <var id="M_data">numsArray[random_index[3]]*GCD</var>
                 <var id="J">J_data*100/total</var>
                 <var id="K">K_data*100/total</var>
                 <var id="L">L_data*100/total</var>
                 <var id="M">M_data*100/total</var>
-                <var data-if="num_item==5" id="N_data">numsArray[4]*GCD</var>
-                <var data-if="num_item==5" id="N">N_data*100/total</var>
-                <var id="question-type">randRange(0,2)</var>
+                <var id="N_data">num_item == 4 ? -1 : numsArray[random_index[4]]*GCD</var>
+                <var id="N">num_item == 4 ? -1 : N_data*100/total</var>
+                <var id="question_type">randRange(0,3)</var>
+                <var id="ans_choice">["圖一","圖二"]</var>
+                <var id="ans">ans_choice[question_type % 2 ]</var>
             </div>
 			
 			<div class="question">
-                <p>下圖是<var>table_name</var>的圓形圖。</p>
+                <p>下面兩個圓形圖都是用來表示<var>table_name</var>的情形。</p>
                 <div class="graphie" id="circle" style="float:left">
                     init({ range: [[-4, 6.5], [-3, 3]], scale: 45 });
                     leftCenter = [-2,0];
@@ -128,6 +135,8 @@
                     else{
                         arc(leftCenter,radius,J*3.6+K*3.6+L*3.6,J*3.6+K*3.6+L*3.6+M*3.6,{fill:color_list[3]});
                         path([leftCenter,[cart_item4[0]+leftCenter[0],cart_item4[1]],[cart_item5[0]+leftCenter[0],cart_item5[1]],leftCenter], {stroke: color_list[3],fill: color_list[3]});
+                        arc(leftCenter,radius,J*3.6+K*3.6+L*3.6+M*3.6,360,{fill:color_list[4]});
+                        path([leftCenter,[cart_item5[0]+leftCenter[0],cart_item5[1]],[cart_item1[0]+leftCenter[0],cart_item1[1]],leftCenter], {stroke: color_list[4],fill: color_list[4]});
                     }
 
                     circle(leftCenter,radius);
@@ -137,6 +146,25 @@
                     line(leftCenter,left_item4);
 
                     //Circle 2
+
+                    arc(rightCenter,radius,0,J*3.6,{fill:color_list[0]});
+                    path([rightCenter,right_item1,right_item2,rightCenter], {stroke: color_list[0],fill: color_list[0] });
+                    arc(rightCenter,radius,J*3.6,J*3.6+K*3.6,{fill:color_list[1]});
+                    path([rightCenter,right_item2,right_item3,rightCenter], {stroke: color_list[1],fill: color_list[1]});
+                    arc(rightCenter,radius,J*3.6+K*3.6,J*3.6+K*3.6+L*3.6,{fill:color_list[2]});
+                    path([rightCenter,right_item3,right_item4,rightCenter], {stroke: color_list[2],fill: color_list[2]});
+                    
+                    if(num_item == 4){
+                        arc(rightCenter,radius,J*3.6+K*3.6+L*3.6,360,{fill:color_list[3]});
+                        path([rightCenter,right_item4,right_item1,rightCenter], {stroke: color_list[3],fill: color_list[3]});
+                    }
+                    else{
+                        arc(rightCenter,radius,J*3.6+K*3.6+L*3.6,J*3.6+K*3.6+L*3.6+M*3.6,{fill:color_list[3]});
+                        path([rightCenter,right_item4,right_item5,rightCenter], {stroke: color_list[3],fill: color_list[3]});
+                        arc(rightCenter,radius,J*3.6+K*3.6+L*3.6+M*3.6,360,{fill:color_list[4]});
+                        path([rightCenter,right_item5,right_item1,rightCenter], {stroke: color_list[4],fill: color_list[4]});
+                    }
+
                     circle(rightCenter,radius);
                     line(rightCenter,right_item1);
                     line(rightCenter,right_item2);
@@ -147,14 +175,14 @@
                         line(leftCenter,left_item5);
                         line(rightCenter,right_item5);
                     }
-                    label_ratio = 2;
+                    label_ratio = 1.7;
 
-                    cart_label1 = polar(radius/2,J*1.8);
-                    cart_label2 = polar(radius/2,J*3.6+K*1.8);
-                    cart_label3 = polar(radius/2,J*3.6+K*3.6+L*1.8);
-                    cart_label4 = polar(radius/2,J*3.6+K*3.6+L*3.6+M*1.8);
+                    cart_label1 = polar(radius/label_ratio,J*1.8);
+                    cart_label2 = polar(radius/label_ratio,J*3.6+K*1.8);
+                    cart_label3 = polar(radius/label_ratio,J*3.6+K*3.6+L*1.8);
+                    cart_label4 = polar(radius/label_ratio,J*3.6+K*3.6+L*3.6+M*1.8);
                     if(num_item==5){
-                        cart_label5 = polar(radius/2,J*1.8+K*1.8+L*1.8+M*1.8+180);
+                        cart_label5 = polar(radius/label_ratio,J*3.6+K*3.6+L*3.6+M*3.6+N*1.8);
                     }
                     
                     // item percent
@@ -177,52 +205,50 @@
                     
                     // item square
                     
-                    square_size = 0.5;
+                    square_size = 0.4;
                     for( var i=0 ; i &lt; num_item ; i++){
-                        path([[4.3,num_item-i-2.5+square_size/2],[4.3,num_item-i-2.5-square_size/2],[4.3+square_size,num_item-i-2.5-square_size/2],[4.3+square_size,num_item-i-2.5+square_size/2],[4.3,num_item-i-2.5+square_size/2]], {stroke: "#000000",fill: color_list[i]});
+                        path([[4.2,num_item-i-2.5+square_size/2],[4.2,num_item-i-2.5-square_size/2],[4.2+square_size,num_item-i-2.5-square_size/2],[4.2+square_size,num_item-i-2.5+square_size/2],[4.2,num_item-i-2.5+square_size/2]], {stroke: "#000000",fill: color_list[i]});
                     }
 
                     // item name
-                    label( [5,num_item-2.5],  "\\large{"+item_1+"}", "right", { color: "#000000" });
-                    label( [5,num_item-3.5],  "\\large{"+item_2+"}", "right", { color: "#000000" });
-                    label( [5,num_item-4.5],  "\\large{"+item_3+"}", "right", { color: "#000000" });
-                    label( [5,num_item-5.5],  "\\large{"+item_4+"}", "right", { color: "#000000" });
+                    label( [4.6,num_item-2.5],  "\\large{"+item_1+"}", "right", { color: "#000000" });
+                    label( [4.6,num_item-3.5],  "\\large{"+item_2+"}", "right", { color: "#000000" });
+                    label( [4.6,num_item-4.5],  "\\large{"+item_3+"}", "right", { color: "#000000" });
+                    label( [4.6,num_item-5.5],  "\\large{"+item_4+"}", "right", { color: "#000000" });
                     if(num_item==5){
-                        label( [5,num_item-6.5],  "\\large{"+item_5+"}", "right", { color: "#000000" });
+                        label( [4.6,num_item-6.5],  "\\large{"+item_5+"}", "right", { color: "#000000" });
                     }
+
+                    //graph name
+                    label( [leftCenter[0],leftCenter[1]-2.3],  "\\large{"+"圖一}", "center", { color: "#000000" });
+                    label( [rightCenter[0],rightCenter[1]-2.3],  "\\large{"+"圖二}", "center", { color: "#000000" });                    
                                                             
                 </div>
  
-                
-                <table class="nLimit" style="background-color:#F8F8F8">
-                    <tr><td><var>item_name</var></td><td><var>item_1</var></td><td><var>item_2</var></td><td><var>item_3</var></td><td><var>item_4</var></td></tr>
-                    <tr><td> 圓心角(度) </td><td><code><var>J</var>^\circ</code></td><td><code><var>K</var>^\circ</code></td><td><code><var>L</var>^\circ</code></td><td><code><var>M</var>^\circ</code></td></tr>
-                </table>
- 
-				<p style="font-weight: bold">我們將圓周分為 <code>360</code> 小格，每一小格是 <code>1</code> 度，每一大格是 <code>5</code> 度，請根據上表的圓心角，畫出圓形圖。</p>
-				<!--
-                <p style="font-weight: bold"><code><var>J</var>\%</code>、<code><var>K</var>\%</code>、<code><var>L</var>\%</code>、<code><var>M</var>\%</code> 。</p>
-                -->
-                <p style="font-weight: bold">下圖單位：度</p>
+                <p data-if="question_type===0">請選出哪一張圖是<var>table_name</var>的數量圓形圖？</p>
+                <p data-if="question_type===1">請選出哪一張圖是<var>table_name</var>百分率圓形圖？</p>
+                <p data-if="question_type===2">想知道每一個<var>item_name</var>的<var>item_unit</var>有幾<var>unit</var>，要看哪一張圖？</p>
+                <p data-if="question_type===3">想知道每一個<var>item_name</var>的百分率是多少，要看哪一張圖？</p>
 			</div>
-			<div class="problem">
-				<div class="graphie" id="clock">
-                        
-                </div>
-			</div>
-            <div class="solution" data-type="multiple">
-				<div class="sol" data-type="custom">
-				    <div class="guess"></div>
-				    <div class="validator-function">
-                    </div>
-				</div>
-				<p class="example">移動圓內直線，使其滿足題目中給出的條件</p>
-            </div>
+			<!--<div class="problem">
+				
+			</div>-->
+            <p class="solution"><var>ans</var></p>
+            <ul class="choices" data-category="true">
+                <li data-each="ans_choice as choice"><var>choice</var></li> 
+            </ul>
+            
 			
 			<div class="hints">
-				<div>
-
-				</div>
+				<p>
+                    我們可以觀察一下兩張圖。例如，我們可以從圖一知道<var>item_1</var>有 <code><var>J_data</var></code> <var>unit</var>，可以從圖二知道<var>item_1</var>有 <code><var>J</var>\ \%</code>。
+                </p>
+                <p>
+                    所以我們知道圖一是數量圓形圖，圖二是百分率圓形圖。
+				</p>
+                <p data-if="question_type &lt; 2">因此答案是<code>\color{fuchsia}{\mbox{<var class="hint_pink">ans</var>}}</code>。</p>
+                <p data-if="question_type === 2">因此想知道每一個<var>item_name</var>的<var>item_unit</var>有幾<var>unit</var>，要看<code>\color{fuchsia}{\mbox{<var class="hint_pink">ans</var>}}</code>。</p>
+                <p data-if="question_type === 3">因此想知道每一個<var>item_name</var>的百分率是多少，要看<code>\color{fuchsia}{\mbox{<var class="hint_pink">ans</var>}}</code>。</p>
             </div>
 		</div>
         <div id="case2-classify-the-items-from-chart">
@@ -251,17 +277,17 @@
                 
         </div>
         <div class="question">
-            <p>下面是<var>table_name</var>的圓形圖。如果圖中五項花費所占的百分率分別為 <code><var>J</var>\%</code> 、<code><var>K</var>\%</code> 、<code><var>L</var>\%</code> 、<code><var>M</var>\%</code> 、<code><var>N</var>\%</code> ，請將百分率填入下面的括號中。</p>
+            <p>下面是<var>table_name</var>的圓形圖。如果圖中五個項目的百分率分別為 <code><var>J</var>\%</code> 、<code><var>K</var>\%</code> 、<code><var>L</var>\%</code> 、<code><var>M</var>\%</code> 、<code><var>N</var>\%</code> ，請將百分率填入下面的括號中。</p>
         </div>
         <div class="problem">
             <div class="graphie" id="circle" style="float:left">
-                init({ range: [[-4, 4], [-4, 4]], scale: 45 });
-                circle([0,0],4);
-                line([0,0],[4,0]);
-                line([0,0],polar(4,J*3.6));
-                line([0,0],polar(4,J*3.6+K*3.6));
-                line([0,0],polar(4,J*3.6+K*3.6+L*3.6));
-                line([0,0],polar(4,J*3.6+K*3.6+L*3.6+M*3.6));
+                init({ range: [[-3.3, 3.3], [-3.3, 3.3]], scale: 45 });
+                circle([0,0],3.2);
+                line([0,0],[3.2,0]);
+                line([0,0],polar(3.2,J*3.6));
+                line([0,0],polar(3.2,J*3.6+K*3.6));
+                line([0,0],polar(3.2,J*3.6+K*3.6+L*3.6));
+                line([0,0],polar(3.2,J*3.6+K*3.6+L*3.6+M*3.6));
                 
                 label( polar(2,J*1.8),  "\\large{"+item_5+"}", "center", { color: "#6495ED" });
                 label( polar(2,J*3.6+K*1.8),  "\\large{"+item_1+"}", "center", { color: "#FFA500" });
@@ -296,11 +322,11 @@
         </div>
         <div class="hints">
             <div style="clear:both">
-                <p><br/>我們先依這五項花費的大小順序排列 <code>:</code><br /><code><var>sortArray[4]</var>\%><var>sortArray[3]</var>\%><var>sortArray[2]</var>\%><var>sortArray[1]</var>\%><var>sortArray[0]</var>\%</code></p>
+                <p><br/>我們先依這五個項目的大小順序排列 <code>:</code><br /><code><var>sortArray[4]</var>\%><var>sortArray[3]</var>\%><var>sortArray[2]</var>\%><var>sortArray[1]</var>\%><var>sortArray[0]</var>\%</code></p>
             </div>
             <div>
                 <p>
-                    從圓形圖中，我們可以將<var>item_name</var>從大到小排列：<br />
+                    從圓形圖中，我們將<var>item_name</var>所占的面積從大到小排列：<br />
                     <var>SORT_ALL[4][0]</var>、<var>SORT_ALL[3][0]</var>、<var>SORT_ALL[2][0]</var>、<var>SORT_ALL[1][0]</var>、<var>SORT_ALL[0][0]</var>。
                 </p>
             </div>
@@ -316,67 +342,191 @@
             
         </div>
         <!-- need to figure out how to validate the fraction input -->
-        <div id="case3-data-to-ratio" data-weight=1>
-            <div class="vars">
+        <div id="case3-read-the-pi-chart">
+            <div class="vars" data-ensure="J&lt;50 && K&lt;50 && L&lt;50 && M&lt;50 && N&lt;50 && a5&gt;0">
                 <var id="test">(function(){Khan.scratchpad.disable();})()</var>
                 <var id="GCD">randRange(2,7)</var>
-                <var id="ratio">randFromArray([3,5,6,10,12,15,18,20])</var>
-                <var id="total">360/ratio</var> <!--ratio*GCD-->
+                <var id="total">randFromArray([20,25,50])*GCD</var>
+                <var id="num_item">randRange(4,5)</var>
+                <var id="a1">randRange(2,roundTo(0,total/(10*GCD)))</var>
+                <var id="a2">randRange(roundTo(0,total/(10*GCD)),roundTo(0,total/(5*GCD)))</var>
+                <var id="a3">randRange(roundTo(0,total/(5*GCD)),roundTo(0,(total*3)/(10*GCD)))</var>
+                <var id="a4">num_item == 4 ? (total/GCD-a1-a2-a3) : (randRange(roundTo(0,(total*3)/(10*GCD)),roundTo(0,(total*4)/(10*GCD))))</var>
+                <var id="a5">num_item == 4 ? 25 : total/GCD-a1-a2-a3-a4</var>
+                <var id="random_index">num_item == 4 ? shuffle([0,1,2,3]) : shuffle([0,1,2,3,4])</var>
                 <var id="numsArray">
                 (function(){
-                    var arr = sortNumbers(randRangeUnique(1,360/ratio,3));
-                    var retArr = [arr[0],arr[1]-arr[0],arr[2]-arr[1],(360/ratio)-arr[2]];
+                    if(num_item === 5) {
+                        var retArr = [a1,a2,a3,a4,a5];
+                    }  
+                    else {
+                        var retArr = [a1,a2,a3,a4];
+                    }
                     return retArr;
                 })()</var>
-                <var id="J">numsArray[0]</var>
-                <var id="K">numsArray[1]</var>
-                <var id="L">numsArray[2]</var>
-                <var id="M">numsArray[3]</var>
-                <var id="J_percent">roundTo(2,J/total)</var>
-                <var id="K_percent">roundTo(2,K/total)</var>
-                <var id="L_percent">roundTo(2,L/total)</var>
-                <var id="M_percent">roundTo(2,M/total)</var>
+                <var id="J_data">numsArray[random_index[0]]*GCD</var>
+                <var id="K_data">numsArray[random_index[1]]*GCD</var>
+                <var id="L_data">numsArray[random_index[2]]*GCD</var>
+                <var id="M_data">numsArray[random_index[3]]*GCD</var>
+                <var id="J">J_data*100/total</var>
+                <var id="K">K_data*100/total</var>
+                <var id="L">L_data*100/total</var>
+                <var id="M">M_data*100/total</var>
+                <var id="N_data">num_item == 4 ? -1 : numsArray[random_index[4]]*GCD</var>
+                <var id="N">num_item == 4 ? -1 : N_data*100/total</var>
+                <var id="graph_type">randRange(0,1)</var>
+                <var id="ask_item">randRange(0,num_item-1)</var>
+                <var id="ans_data">numsArray[random_index[ask_item]]*GCD</var>
+                <var id="ans_percent">numsArray[random_index[ask_item]]*GCD*100/total</var>
+                <var id="item_set">[item_1,item_2,item_3,item_4,item_5]</var>
+                <var id="ask_item_name">item_set[ask_item]</var>
+            </div>
+            
+            <div class="question">
+                <p>下圖是<var>table_name</var>的圓形圖。</p>
+                <div class="graphie" id="circle" style="float:left">
+                    init({ range: [[-4, 6.5], [-4, 4]], scale: 45 });
+                    rightCenter = [0,0];
+                    radius = 3.7;
+
+                    color_list = ["#9FE0F6","#FFA500","#EEFFA5","#DE9DD6","#97EC71"];
+
+                    cart_item1 = [radius,0];
+                    cart_item2 = polar(radius,J*3.6);
+                    cart_item3 = polar(radius,J*3.6+K*3.6);
+                    cart_item4 = polar(radius,J*3.6+K*3.6+L*3.6);
+                    right_item1 = [cart_item1[0]+rightCenter[0],cart_item1[1]];
+                    right_item2 = [cart_item2[0]+rightCenter[0],cart_item2[1]];
+                    right_item3 = [cart_item3[0]+rightCenter[0],cart_item3[1]];
+                    right_item4 = [cart_item4[0]+rightCenter[0],cart_item4[1]];
+                    if(num_item == 5){
+                        cart_item5 = polar(radius,J*3.6+K*3.6+L*3.6+M*3.6);
+                        right_item5 = [cart_item5[0]+rightCenter[0],cart_item5[1]];
+                    }
+
+                    //Circle
+
+                    arc(rightCenter,radius,0,J*3.6,{fill:color_list[0]});
+                    path([rightCenter,right_item1,right_item2,rightCenter], {stroke: color_list[0],fill: color_list[0] });
+                    arc(rightCenter,radius,J*3.6,J*3.6+K*3.6,{fill:color_list[1]});
+                    path([rightCenter,right_item2,right_item3,rightCenter], {stroke: color_list[1],fill: color_list[1]});
+                    arc(rightCenter,radius,J*3.6+K*3.6,J*3.6+K*3.6+L*3.6,{fill:color_list[2]});
+                    path([rightCenter,right_item3,right_item4,rightCenter], {stroke: color_list[2],fill: color_list[2]});
+                    
+                    if(num_item == 4){
+                        arc(rightCenter,radius,J*3.6+K*3.6+L*3.6,360,{fill:color_list[3]});
+                        path([rightCenter,right_item4,right_item1,rightCenter], {stroke: color_list[3],fill: color_list[3]});
+                    }
+                    else{
+                        arc(rightCenter,radius,J*3.6+K*3.6+L*3.6,J*3.6+K*3.6+L*3.6+M*3.6,{fill:color_list[3]});
+                        path([rightCenter,right_item4,right_item5,rightCenter], {stroke: color_list[3],fill: color_list[3]});
+                        arc(rightCenter,radius,J*3.6+K*3.6+L*3.6+M*3.6,360,{fill:color_list[4]});
+                        path([rightCenter,right_item5,right_item1,rightCenter], {stroke: color_list[4],fill: color_list[4]});
+                    }
+
+                    circle(rightCenter,radius);
+                    line(rightCenter,right_item1);
+                    line(rightCenter,right_item2);
+                    line(rightCenter,right_item3);
+                    line(rightCenter,right_item4);                    
+
+                    if(num_item==5){
+                        line(rightCenter,right_item5);
+                    }
+                    
+                    label_ratio = 1.7;
+
+                    cart_label1 = polar(radius/label_ratio,J*1.8);
+                    cart_label2 = polar(radius/label_ratio,J*3.6+K*1.8);
+                    cart_label3 = polar(radius/label_ratio,J*3.6+K*3.6+L*1.8);
+                    cart_label4 = polar(radius/label_ratio,J*3.6+K*3.6+L*3.6+M*1.8);
+                    if(num_item==5){
+                        cart_label5 = polar(radius/label_ratio,J*3.6+K*3.6+L*3.6+M*3.6+N*1.8);
+                    }
+                    
+                    // item percent
+                    if(graph_type==1){
+                        label( [cart_label1[0]+rightCenter[0],cart_label1[1]],  "\\large{"+J+"\\%}", "center", { color: "#000000" });
+                        label( [cart_label2[0]+rightCenter[0],cart_label2[1]],  "\\large{"+K+"\\%}", "center", { color: "#000000" });
+                        label( [cart_label3[0]+rightCenter[0],cart_label3[1]],  "\\large{"+L+"\\%}", "center", { color: "#000000" });
+                        label( [cart_label4[0]+rightCenter[0],cart_label4[1]],  "\\large{"+M+"\\%}", "center", { color: "#000000" });
+                        if(num_item==5){
+                            label( [cart_label5[0]+rightCenter[0],cart_label5[1]],  "\\large{"+N+"\\%}", "center", { color: "#000000" });
+                        }
+                    }
+                    
+                    // amount
+                    else{
+                        label( [cart_label1[0]+rightCenter[0],cart_label1[1]],  "\\large{"+J_data+unit+"}", "center", { color: "#000000" });
+                        label( [cart_label2[0]+rightCenter[0],cart_label2[1]],  "\\large{"+K_data+unit+"}", "center", { color: "#000000" });
+                        label( [cart_label3[0]+rightCenter[0],cart_label3[1]],  "\\large{"+L_data+unit+"}", "center", { color: "#000000" });
+                        label( [cart_label4[0]+rightCenter[0],cart_label4[1]],  "\\large{"+M_data+unit+"}", "center", { color: "#000000" });
+                        if(num_item==5){
+                            label( [cart_label5[0]+rightCenter[0],cart_label5[1]],  "\\large{"+N_data+unit+"}", "center", { color: "#000000" });
+                        }
+                    }
+                    
+                    // item square
+                    
+                    square_size = 0.4;
+                    for( var i=0 ; i &lt; num_item ; i++){
+                        path([[4.2,num_item-i-2.5+square_size/2],[4.2,num_item-i-2.5-square_size/2],[4.2+square_size,num_item-i-2.5-square_size/2],[4.2+square_size,num_item-i-2.5+square_size/2],[4.2,num_item-i-2.5+square_size/2]], {stroke: "#000000",fill: color_list[i]});
+                    }
+
+                    // item name
+                    label( [4.6,num_item-2.5],  "\\large{"+item_1+"}", "right", { color: "#000000" });
+                    label( [4.6,num_item-3.5],  "\\large{"+item_2+"}", "right", { color: "#000000" });
+                    label( [4.6,num_item-4.5],  "\\large{"+item_3+"}", "right", { color: "#000000" });
+                    label( [4.6,num_item-5.5],  "\\large{"+item_4+"}", "right", { color: "#000000" });
+                    if(num_item==5){
+                        label( [4.6,num_item-6.5],  "\\large{"+item_5+"}", "right", { color: "#000000" });
+                    }
+
+                    //graph name
+                    //label( [rightCenter[0],rightCenter[1]-4],  "\\large{"+"圖二}", "center", { color: "#000000" });                    
+                                                            
+                </div>
+                <div data-if="graph_type===0">
+                    <p>總共有 <input type="text" id="a_1" style="height:20px;width:50px;background:#FFFFFF;border:1px solid gray;text-align:center"> <var>unit</var>。</p>
+                    <p><var>ask_item_name</var>的部分有 <input type="text" id="a_2" style="height:20px;width:50px;background:#FFFFFF;border:1px solid gray;text-align:center"> <var>unit</var>，占 <input type="text" id="a_3" style="height:20px;width:50px;background:#FFFFFF;border:1px solid gray;text-align:center"> <code>\%</code>。</p>
+                </div>
+                <div data-if="graph_type===1">
+                    <p>全部加起來 <input type="text" id="a_1" style="height:20px;width:50px;background:#FFFFFF;border:1px solid gray;text-align:center"> <code>\%</code>。</p>
+                    <p><var>ask_item_name</var>占 <input type="text" id="a_2" style="height:20px;width:50px;background:#FFFFFF;border:1px solid gray;text-align:center"> <code>\%</code></p>
+                    <p>如果全部有 <code><var>total</var></code> <var>unit</var>，<var>ask_item_name</var>的部分有 <input type="text" id="a_3" style="height:20px;width:50px;background:#FFFFFF;border:1px solid gray;text-align:center"> <var>unit</var>。</p>
+                </div>
 
             </div>
-        <div class="question">
-            <p style="font-weight:bold">下表是<var>table_name</var>，表中的數字表示每一種<var>item_name</var>的<var>item_unit</var>。</p>
-            <table class="nLimit"  style="background-color:#F8F8F8">
-                <tr><td><var>item_name</var></td><td><var>item_1</var></td><td><var>item_2</var></td><td><var>item_3</var></td><td><var>item_4</var></td></tr>
-                <tr><td><var>item_unit</var>(<var>unit</var>)</td><td><code><var>J</var></code></td><td><code><var>K</var></code></td><td><code><var>L</var></code></td><td><code><var>M</var></code></td></tr>
-            </table>
-        </div>
-        <div class="problem">
-            <p>請算出每種<var>item_name</var>的<var>item_unit</var>所占的比率，並將比率用小數表示，填入下表。
-        </p></div>
-        <table class="nLimit"  style="background-color:#F8F8F8">
-                <tr><td><var>item_name</var></td><td><var>item_1</var></td><td><var>item_2</var></td><td><var>item_3</var></td><td><var>item_4</var></td></tr>
-                <tr><td>比率</td><td><input type="rational" id="a_1" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"></td><td><input type="text" id="a_2" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"></td><td><input type="text" id="a_3" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"></td><td><input type="text" id="a_4" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"></td></tr>
-        </table>
+        
         <div class="solution" data-type="multiple">
             <div class="sol" data-type="custom">
-                    <div class="guess">[$('#a_1').val().replace(/[ ]/g,""),$('#a_2').val().replace(/[ ]/g,""),$('#a_3').val().replace(/[ ]/g,""),$('#a_4').val().replace(/[ ]/g,"")]</div>
+                    <div class="guess">[$('#a_1').val().replace(/[ ]/g,""),$('#a_2').val().replace(/[ ]/g,""),$('#a_3').val().replace(/[ ]/g,"")]</div>
                     <div class="validator-function">
-                        if(guess[0]=='' || guess[1]=='' || guess[2]=='' || guess[3]==''){
+                        if(guess[0]=='' || guess[1]=='' || guess[2]==''){
                             return '';
                         }
-                        if(roundTo(2,guess[0])==J_percent && roundTo(2,guess[1])==K_percent && roundTo(2,guess[2])==L_percent && roundTo(2,guess[3])==M_percent){
+                        if( graph_type==0 && guess[0]==total && guess[1]==ans_data && guess[2]==ans_percent ){
+                            return true;
+                        }
+                        if( graph_type==1 && guess[0]==100 && guess[1]==ans_percent && guess[2]==ans_data ){
                             return true;
                         }
                         return false;
                     </div>
                 </div>
-                <p class="example">在表中填入分數，例如 <code>1/6</code></p>
+                <p class="example">在表中填入整數，例如 <code>6</code></p>
         </div>
         <div class="hints">
-            <p>我們要先計算出全部有多少：<code><var>J</var>+<var>K</var>+<var>L</var>+<var>M</var>=<var>total</var></code>。</p>
-            <p><var>item_1</var>占全部的比率是：</br>
-                <code>\quad<var>J</var>\div <var>total</var>=\dfrac{<var>J</var>}{<var>total</var>}=</code><code class="hint_pink">\color{fuchsia}{<var>fraction(J,total,true,true,false,false)</var>}</code></p>
-            <p><var>item_2</var>占全部的比率是：</br>
-                <code>\quad<var>K</var>\div <var>total</var>=\dfrac{<var>K</var>}{<var>total</var>}=</code><code class="hint_pink">\color{fuchsia}{<var>fraction(K,total,true,true,false,false)</var>}</code></p>
-            <p><var>item_3</var>占全部的比率是：</br>
-                <code>\quad<var>L</var>\div <var>total</var>=\dfrac{<var>L</var>}{<var>total</var>}=</code><code class="hint_pink">\color{fuchsia}{<var>fraction(L,total,true,true,false,false)</var>}</code></p>
-            <p><var>item_4</var>占全部的比率是：</br>
-                <code>\quad<var>M</var>\div <var>total</var>=\dfrac{<var>M</var>}{<var>total</var>}=</code><code class="hint_pink">\color{fuchsia}{<var>fraction(M,total,true,true,false,false)</var>}</code></p>
+            <p data-if="graph_type===1">全部項目的總和應該是 <code>1</code> 也就是等於<code>\color{fuchsia}{100}\%</code>。</p>
+            <p data-if="graph_type===1">從圖中我們可以看出<var>ask_item_name</var>占 <code>\color{fuchsia}{<var>ans_percent</var>} \%</code>。</p>
+            <p data-if="graph_type===1">全部有 <code><var>total</var></code> <var>unit</var>，<var>ask_item_name</var>的部分是：<code><var>total</var>\times<var>ans_percent</var> \%=\color{fuchsia}{<var>ans_data</var>} <var>unit</var></code>。</p>
+            <p data-if="graph_type===0 && num_item===4">我們要先計算出全部有多少：<code><var>J_data</var>+<var>K_data</var>+<var>L_data</var>+<var>M_data</var>=\color{fuchsia}{<var>total</var>}</code>。</p>
+            <p data-if="graph_type===0 && num_item===5">我們要先計算出全部有多少：<code><var>J_data</var>+<var>K_data</var>+<var>L_data</var>+<var>M_data</var>+<var>N_data</var>=\color{fuchsia}{<var>total</var>}</code>。</p>
+            <p data-if="graph_type===0">從圖中我們可以看出<var>ask_item_name</var>的部分有 <code>\color{fuchsia}{<var>ans_data</var>}</code> <var>unit</var>。</p>
+            <p data-if="graph_type===0">我們可以利用除法來計算占多少比率。</br>
+                <code><var>ans_data</var>\div<var>total</var>=\color{fuchsia}{<var>ans_percent</var>} \%</code>。
+            </p>
+            
         </div>
         </div>        
 	</div>
