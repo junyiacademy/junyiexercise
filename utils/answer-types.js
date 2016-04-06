@@ -772,11 +772,14 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                         } else if (piApprox &&
                                    predicate(val, Math.abs(val * 0.001))) {
                             score.empty = true;
-                            score.message = $._("Your answer is close, but you may " +
+                            score.message = $._("你的答案其實很接近了！但是你計算時可能是用 π 的近似值，你可以用 π 的倍數來回答，例如：12 pi 或 2/3 pi。");
+									  /*
+									  "Your answer is close, but you may " +
                                       "have approximated pi. Enter your " +
                                       "answer as a multiple of pi, like " +
                                       "<code>12\\ \\text{pi}</code> or " +
                                       "<code>2/3\\ \\text{pi}</code>");
+									  */
                         }
                     }
                 });
