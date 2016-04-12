@@ -47,8 +47,7 @@ var PerseusBridge = Exercises.PerseusBridge,
     numHints,
     hintsUsed,
     lastAttemptOrHint,
-    firstProblem = true,
-    handlingAttempt = false;
+    firstProblem = true;
 
 $(Exercises)
     .bind("problemTemplateRendered", problemTemplateRendered)
@@ -60,22 +59,6 @@ $(Exercises)
     .bind("gotoNextProblem", gotoNextProblem)
     .bind("updateUserExercise", updateUserExercise)
     .bind("clearExistingProblem", clearExistingProblem);
-
-function SafeFunctionCalling(callback) {
-    // Set the semaphore for the callback.
-    if (handlingAttempt) {
-        return false;
-    }
-    handlingAttempt = true;
-
-    // Get arguments and call the function.
-    var callback_args = Array.prototype.slice.call(arguments, 1);
-    var result = callback.apply(this, callback_args);
-
-    // Reset the semaphore for the callback.
-    handlingAttempt = false;
-    return result;
-}
 
 function exercisePointCalculator(){
     // Warning!!!!!!!!!!!
@@ -230,11 +213,11 @@ function handleCheckAnswer() {
     if (!localMode){
         Analytics.send_ga_event('exercise', 'submit', 'Exercise-Answer-Submit');
     }
-    return SafeFunctionCalling(handleAttempt, {skipped: false});
+    return handleAttempt({skipped: false});
 }
 
 function handleSkippedQuestion() {
-    return SafeFunctionCalling(handleAttempt, {skipped: true});
+    return handleAttempt({skipped: true});
 }
 
 function handleAttempt(data) {
@@ -708,6 +691,8 @@ function enableCheckAnswer() {
         .prop("disabled", false)
         .removeClass("buttonDisabled");}
         , 2000);
+    $('#answerform input[type=submit]').prop('disabled', false);
+    $('#questionform input[type=submit]').prop('disabled', false);
 }
 
 function disableCheckAnswer() {
@@ -719,6 +704,9 @@ function disableCheckAnswer() {
     $("#skip-question-button")
         .prop("disabled", true)
         .addClass("buttonDisabled");
+
+    $('#answerform input[type=submit]').prop('disabled', true);
+    $('#questionform input[type=submit]').prop('disabled', true);
 }
 
 function clearExistingProblem() {
