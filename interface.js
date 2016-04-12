@@ -47,7 +47,8 @@ var PerseusBridge = Exercises.PerseusBridge,
     numHints,
     hintsUsed,
     lastAttemptOrHint,
-    firstProblem = true;
+    firstProblem = true,
+    handlingAttempt = false;
 
 $(Exercises)
     .bind("problemTemplateRendered", problemTemplateRendered)
@@ -59,6 +60,22 @@ $(Exercises)
     .bind("gotoNextProblem", gotoNextProblem)
     .bind("updateUserExercise", updateUserExercise)
     .bind("clearExistingProblem", clearExistingProblem);
+
+function SafeFunctionCalling(callback) {
+    // Set the semaphore for the callback.
+    if (handlingAttempt) {
+        return false;
+    }
+    handlingAttempt = true;
+
+    // Get arguments and call the function.
+    var callback_args = Array.prototype.slice.call(arguments, 1);
+    var result = callback.apply(this, callback_args);
+
+    // Reset the semaphore for the callback.
+    handlingAttempt = false;
+    return result;
+}
 
 function exercisePointCalculator(){
     // Warning!!!!!!!!!!!
@@ -213,11 +230,11 @@ function handleCheckAnswer() {
     if (!localMode){
         Analytics.send_ga_event('exercise', 'submit', 'Exercise-Answer-Submit');
     }
-    return handleAttempt({skipped: false});
+    return SafeFunctionCalling(handleAttempt, {skipped: false});
 }
 
 function handleSkippedQuestion() {
-    return handleAttempt({skipped: true});
+    return SafeFunctionCalling(handleAttempt, {skipped: true});
 }
 
 function handleAttempt(data) {
