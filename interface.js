@@ -125,7 +125,13 @@ function problemTemplateRendered() {
     }
 
     // 'Check Answer' or 'Submit Answer'
-    originalCheckAnswerText = $("#check-answer-button").val();
+    if (Exercises.examMode) {
+        originalCheckAnswerText = "下一題";
+        $("#check-answer-button").val(originalCheckAnswerText);
+    }
+    else {
+        originalCheckAnswerText = $("#check-answer-button").val();
+    }
 
     // Solution submission
     $("#check-answer-button").click(handleCheckAnswer);
