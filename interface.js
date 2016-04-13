@@ -277,6 +277,7 @@ function handleAttempt(data) {
     // in examMode, we don't give feedback if it is correct or wrong
     if (skipped || Exercises.assessmentMode || Exercises.examMode) {
         disableCheckAnswer();
+        $("#check-answer-results > p").hide();
     } else if (score.correct) {
         // Correct answer, so show the next question button.
         $("#check-answer-button").hide();
@@ -690,6 +691,8 @@ function enableCheckAnswer() {
         .prop("disabled", false)
         .removeClass("buttonDisabled");}
         , 2000);
+    $('#answerform input[type=submit]').prop('disabled', false);
+    $('#questionform input[type=submit]').prop('disabled', false);
 }
 
 function disableCheckAnswer() {
@@ -701,6 +704,9 @@ function disableCheckAnswer() {
     $("#skip-question-button")
         .prop("disabled", true)
         .addClass("buttonDisabled");
+
+    $('#answerform input[type=submit]').prop('disabled', true);
+    $('#questionform input[type=submit]').prop('disabled', true);
 }
 
 function clearExistingProblem() {
