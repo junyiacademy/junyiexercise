@@ -664,7 +664,14 @@ var Khan = (function() {
             if (asc_transform_list.indexOf(Khan.answerType) >= 0) {
                     if (Array.isArray(guess)) {
                         for (index = 0; index < guess.length; ++index) {
-                            guess[index] = Khan.asc(guess[index]);
+							if (Array.isArray(guess[index])) {
+								for (sub_index = 0; sub_index < guess[index].length;++sub_index) {
+									guess[index][sub_index] = Khan.asc(guess[index][sub_index]);
+								}
+							}
+							else{
+								guess[index] = Khan.asc(guess[index]);
+							}
                         }
                     }
                     else {
