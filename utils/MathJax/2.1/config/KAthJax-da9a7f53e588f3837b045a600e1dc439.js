@@ -4,7 +4,7 @@ skipStartupTypeset: !0,
 jax: [ "input/TeX", "output/HTML-CSS" ],
 extensions: [ "tex2jax.js", "MathZoom.js" ],
 TeX: {
-extensions: [ "AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js", "newcommand.js", "boldsymbol.js" ],
+extensions: [ "AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js", "newcommand.js", "boldsymbol.js", "mhchem.js" ],
 Macros: {
 RR: "\\mathbb{R}",
 blue: "\\color{#6495ED}",
