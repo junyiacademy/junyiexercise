@@ -576,7 +576,7 @@ function outputFillBlanksProof() {
                 else {
                     proofText += "<div class=\"" + divName(finishedKeys[i]) + "\">";
                     proofText += prettifyEquality(finishedKeys[i]);
-                    proofText += "&nbsp;(因為" + finishedEqualities[finishedKeys[i]] + ")</div>" + "<br>";
+                    proofText += "&nbsp;&nbsp;(因為" + finishedEqualities[finishedKeys[i]] + ")</div>" + "<br>";
                     newEqualities[finishedKeys[i]] = finishedEqualities[finishedKeys[i]];
                     // knownEqualities[finishedKeys[i].reverse()] = finishedEqualities[finishedKeys[i]];
                 }
