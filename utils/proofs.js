@@ -429,7 +429,7 @@ function outputFinishedProof() {
                     proofText += "<code>, \\  </code> 而且 <code>\\  </code></div>";
                 }
                 else {
-                    proofText += "</div><br><br><h3 style=\"clear:both\">Proof</h3>";
+                    proofText += "</div><br><br><h3 style=\"clear:both\">證明</h3>";
                 }
 
                 possibleValids.push(prettifyEquality(finishedKeys[i]));
@@ -437,7 +437,7 @@ function outputFinishedProof() {
             else {
                 proofText += "<div class=\"" + divName(finishedKeys[i]) + "\">";
                 proofText += prettifyEquality(finishedKeys[i]);
-                proofText += " 因為" + finishedEqualities[finishedKeys[i]] + "</div><br>";
+                proofText += "&nbsp;&nbsp;(因為" + finishedEqualities[finishedKeys[i]] + ")</div><br>";
 
                 possibleValids.push(prettifyEquality(finishedKeys[i]));
             }
@@ -483,7 +483,7 @@ function outputKnownProof() {
             else {
                 proofText += "<div class=\"" + divName(knownKeys[i]) + "\">";
                 proofText += prettifyEquality(knownKeys[i]);
-                proofText += " 因為" + knownEqualities[knownKeys[i]] + "</div>" + "<br>";
+                proofText += "&nbsp;&nbsp;(因為" + knownEqualities[knownKeys[i]] + ")</div>" + "<br>";
             }
 
         }
@@ -541,7 +541,7 @@ function outputFillBlanksProof() {
                 if (KhanUtil.random() < 0.2) {
                     proofText += "<div class=\"" + divName(finishedKeys[i]) + "\">";
                     proofText += prettifyEquality(finishedKeys[i]);
-                    proofText += "因為<select class=\"missing missingReason\" id=\"" + finishedKeys[i] + "\">"
+                    proofText += "&nbsp;&nbsp;(因為<select class=\"missing missingReason\" id=\"" + finishedKeys[i] + "\">"
                     + "<option></option>"
                     + "<option value=\"SSS\">SSS 全等</option>"
                     + "<option value=\"ASA\">AAA 全等</option>"
@@ -550,7 +550,7 @@ function outputFillBlanksProof() {
                     + "<option>全等三角形的對應角和對應邊是相等的</option>"
                     + "<option>對頂角相等</option>"
                     + "<option>內錯角相等</option>"
-                    + "</select> </div>" + "<br>";
+                    + "</select> )</div>" + "<br>";
                     blanks++;
                 }
                 else if (KhanUtil.random() < 0.2) {
@@ -576,7 +576,7 @@ function outputFillBlanksProof() {
                 else {
                     proofText += "<div class=\"" + divName(finishedKeys[i]) + "\">";
                     proofText += prettifyEquality(finishedKeys[i]);
-                    proofText += "因為" + finishedEqualities[finishedKeys[i]] + "</div>" + "<br>";
+                    proofText += "&nbsp;(因為" + finishedEqualities[finishedKeys[i]] + ")</div>" + "<br>";
                     newEqualities[finishedKeys[i]] = finishedEqualities[finishedKeys[i]];
                     // knownEqualities[finishedKeys[i].reverse()] = finishedEqualities[finishedKeys[i]];
                 }
@@ -958,22 +958,22 @@ function outputBadProof() {
         if (knownEqualities[knownKeys[i]].substring(0, 4) != "Same") {
             if (knownEqualities[knownKeys[i]] === "given") {
                 numberGivens--;
-                proofText += "<div style=\"float:left\" class=\"" + divName(knownKeys[i]) + "\">";
+                proofText += "<div  class=\"" + divName(knownKeys[i]) + "\">";
                 proofText += prettifyEquality(knownKeys[i]);
                 if (numberGivens > 1) {
                     proofText += "<code>, \\ </code> </div>";
                 }
                 else if (numberGivens > 0) {
-                    proofText += "<code>, \\  </code>and<code>\\  </code></div>";
+                    proofText += "<code>, \\  </code>和<code>\\  </code></div>";
                 }
                 else {
-                    proofText += "</div><br><br><h3 style=\"clear:both\">Proof</h3>";
+                    proofText += "</div><br><br><h3 style=\"clear:both\">證明</h3>";
                 }
             }
             else {
                 proofText += "<div class=\"" + divName(knownKeys[i]) + "\">";
                 proofText += prettifyEquality(knownKeys[i]);
-                proofText += "因為" + knownEqualities[knownKeys[i]] + "</div><br>";
+                proofText += "&nbsp;&nbsp;(因為" + knownEqualities[knownKeys[i]] + ")</div><br>";
             }
         }
 
@@ -983,21 +983,21 @@ function outputBadProof() {
         if (eqIn(finalRelation, finishedEqualities)) {
             proofText += "<div class=\"" + divName(finalRelation.toString()) + "\">";
             proofText += prettifyEquality(finalRelation);
-            proofText += "因為" + finishedEqualities[finalRelation] + "</div>" + "<br>";
+            proofText += "&nbsp;&nbsp;(因為" + finishedEqualities[finalRelation] + ")</div>" + "<br>";
         }
         else {
             proofText += "<div class=\"" + divName(finalRelation.toString()) + "\">";
             proofText += prettifyEquality(finalRelation);
             if (finalRelation[0] instanceof Triang) {
-                proofText += "因為" + KhanUtil.randFromArray(["SSS", "ASA", "SAS", "AAS"]) + "</div>" + "<br>";
+                proofText += "&nbsp;&nbsp;(因為" + KhanUtil.randFromArray(["SSS", "ASA", "SAS", "AAS"]) + ")</div>" + "<br>";
             }
             else if (finalRelation[0] instanceof Ang) {
-                proofText += "因為"
+                proofText += "&nbsp;&nbsp;(因為"
                 + KhanUtil.randFromArray(["對頂角相等", "alternate angles are equal", "全等三角形的對應角和對應邊是相等的"])
-                + "</div>" + "<br>";
+                + ")</div>" + "<br>";
             }
             else {
-                proofText += "因為" + "全等三角形的對應角和對應邊是相等的" + "</div>" + "<br>";
+                proofText += "&nbsp;&nbsp;(因為" + "全等三角形的對應角和對應邊是相等的" + ")</div>" + "<br>";
             }
         }
     }
@@ -2144,10 +2144,10 @@ function eqIn(item, object) {
 function prettifyEquality(equality) {
     var eq = equality.toString();
     if (eq[0] === "s") {
-        return "<code> \\overline{" + eq.substring(3, 5) + "} \\cong \\overline{" + eq.substring(9, 11) + "}</code>";
+        return "<code> \\overline{" + eq.substring(3, 5) + "} = \\overline{" + eq.substring(9, 11) + "}</code>";
     }
     else if (eq[0] === "a") {
-        return "<code> \\angle " + eq.substring(3, 6) + " \\cong \\angle " + eq.substring(10, 13) + "</code>";
+        return "<code> \\angle " + eq.substring(3, 6) + " = \\angle " + eq.substring(10, 13) + "</code>";
     }
     else {
         return "<code> \\triangle " + eq.substring(8, 11) + " \\cong \\triangle " + eq.substring(20, 23) + "</code>";
