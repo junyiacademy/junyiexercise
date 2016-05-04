@@ -420,13 +420,13 @@ function outputFinishedProof() {
         if (finishedEqualities[finishedKeys[i]].substring(0, 4) != "Same") {
             if (finishedEqualities[finishedKeys[i]] === "given") {
                 numberGivens--;
-                proofText += "<div style=\"float:left\" class=\"" + divName(finishedKeys[i]) + "\">";
+                proofText += "<div  class=\"" + divName(finishedKeys[i]) + "\">";
                 proofText += prettifyEquality(finishedKeys[i]);
                 if (numberGivens > 1) {
                     proofText += "<code>, \\ </code> </div>";
                 }
                 else if (numberGivens > 0) {
-                    proofText += "<code>, \\  </code> 而且 <code>\\  </code></div>";
+                    proofText += "<code> \\  </code> 而且 <code>\\  </code></div>";
                 }
                 else {
                     proofText += "</div><br><br><h3 style=\"clear:both\">證明</h3>";
@@ -964,7 +964,7 @@ function outputBadProof() {
                     proofText += "<code>, \\ </code> </div>";
                 }
                 else if (numberGivens > 0) {
-                    proofText += "<code>, \\  </code>和<code>\\  </code></div>";
+                    proofText += "<code> \\  </code> 和 <code>\\  </code></div>";
                 }
                 else {
                     proofText += "</div><br><br><h3 style=\"clear:both\">證明</h3>";
