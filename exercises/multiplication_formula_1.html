@@ -97,12 +97,13 @@
 			<div class="problem"><p><code>(<var>J</var>a + <var>K</var>b)(<var>M</var>c + <var>N</var>d )</code></p></div>
 			<div class="solution" data-type="multiple">				
 				<span class="sol" data-forms="integer"><var>J*M</var></span>
-				<code>ac+</code>
-				<span class="sol" data-forms="integer"><var>J*N</var></span>
-				<code>ad+</code>
-				<span class="sol" data-forms="integer"><var>K*M</var></span>
-				<code>bc+</code>
-				<span class="sol" data-forms="integer"><var>K*N</var></span>
+				<code data-if ="J*N &lt; 0">ac-</code>
+				<code data-if ="J*N &gt; 0">ac+</code>
+				<span class="sol" data-forms="integer"><var>abs(J*N)</var></span>
+				<code>ad-</code>
+				<span class="sol" data-forms="integer"><var>abs(K*M)</var></span>
+				<code>bc-</code>
+				<span class="sol" data-forms="integer"><var>abs(K*N)</var></span>
 				<code>bd</code>
 				<p class="example">整數，例 <code>6</code></p>
             </div>
@@ -139,14 +140,18 @@
 			<div class="problem">
 			    <p><code>( <var>decimalFraction(J,true,true,false,false)</var>a + <var>K_S</var>b)(<var>M_S</var>c +<var>decimalFraction(N,true,true,false,false)</var>d )</code></p>
 			</div>
-			<div class="solution" data-type="multiple">				
-				<span class="sol" data-type="rational"><var>J*M</var></span>
-				<code>ac+</code>
-				<span class="sol" data-type="rational"><var>J*N</var></span>
-				<code>ad+</code>
-				<span class="sol" data-forms="integer"><var>K*M</var></span>
-				<code>bc+</code>
-				<span class="sol" data-type="rational"><var>K*N</var></span>
+			<div class="solution" data-type="multiple">
+				<code data-if ="J*M &lt; 0">-</code>		
+				<span class="sol" data-type="rational"><var>abs(J*M)</var></span>
+				<code data-if ="J*N &lt; 0">ac-</code>
+				<code data-if ="J*N &gt; 0">ac+</code>
+				<span class="sol" data-type="rational"><var>abs(J*N)</var></span>
+				<code data-if ="K*M &lt; 0">ad-</code>
+				<code data-if ="K*M &gt; 0">ad+</code>
+				<span class="sol" data-forms="integer"><var>abs(K*M)</var></span>
+				<code data-if ="K*N &lt; 0">bc-</code>
+				<code data-if ="K*N &gt; 0">bc+</code>
+				<span class="sol" data-type="rational"><var>abs(K*N)</var></span>
 				<code>bd</code>
 				<p class="example">整數，例 <code>6</code></p> 
 				<p class="example">分數，例 <code><var>decimalFraction(0.5,true,true,false,false)</var></code></p>
@@ -179,11 +184,13 @@
 				<p><code>(a + <var>J</var>)(a + <var>K</var> )</code></p>
 			</div>
 			<div class="solution" data-type="multiple">	
-				<code>a^2+</code>			
-				<span class="sol" data-forms="integer"><var>J+K</var></span>
-				<code>a+</code>
-				<span class="sol" data-forms="integer"><var>J*K</var></span>
-				<p class="example">整數，例 <code>6</code></p> 
+				<code data-if ="J+K &lt; 0">a^2-</code>
+				<code data-if ="J+K &gt; 0">a^2+</code>		
+				<span class="sol" data-forms="integer"><var>abs(J+K)</var></span>
+				<code data-if ="J*K &lt; 0">a-</code>
+				<code data-if ="J*K &gt; 0">a+</code>
+				<span class="sol" data-forms="integer"><var>abs(J*K)</var></span>
+				<p class="example">整數，例 <code>6</code>。若答案算出為0或1，也必須填上。</p> 
             </div>
 
             <div class="hints">
@@ -211,10 +218,26 @@
             </div>
             <p class="question">利用乘法公式，計算下列各式：</p>
 			<p><code>(<var>J_S</var>b <var>M</var>)(<var>K_S</var>b <var>N</var>)</code></p>
-			<div class="solution" data-type="multiple">	
-				<span class="sol" data-forms="integer"><var>J*K</var></span><code>b^2+</code>
-				<span class="sol" data-forms="integer"><var>J*N+M*K</var></span><code>b+</code>
-				<span class="sol" data-forms="integer"><var>M*N</var></span>
+			<div class="solution" data-type="multiple">
+				<!--
+				<code data-if ="J*K &lt; 0">-</code>		
+				<span class="sol" data-type="integer"><var>abs(J*K)</var></span>
+				<code data-if ="J*N+M*K &lt; 0">b^2-</code>
+				<code data-if ="J*N+M*K &gt; 0">b^2+</code>
+				<span class="sol" data-type="integer"><var>abs(J*N+M*K)</var></span>
+				<code data-if ="M*N &lt; 0">b-</code>
+				<code data-if ="M*N &gt; 0">b+</code>
+				<span class="sol" data-forms="integer"><var>abs(M*N)</var></span>
+				-->
+				<code data-if ="J*K &lt; 0">-</code>
+				<span class="sol" data-forms="integer"><var>abs(J*K)</var></span>
+				<code data-if ="J*N+M*K &lt; 0">b^2-</code>
+				<code data-if ="J*N+M*K &gt; 0">b^2+</code>
+				<span class="sol" data-forms="integer"><var>abs(J*N+M*K)</var></span>
+				<code data-if ="M*N &lt; 0">b-</code>
+				<code data-if ="M*N &gt; 0">b+</code>
+				<span class="sol" data-forms="integer"><var>abs(M*N)</var></span>
+				
 				<p class="example">整數，例 <code>6</code></p> 
             </div>
 

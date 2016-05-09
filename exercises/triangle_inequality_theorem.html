@@ -24,7 +24,12 @@
     <div class="exercise">
         <div class="vars">
             <var id="MAIN">randomTriangleWithSides()</var>
-            <var id="HIDDEN">rand( 3 )</var>
+            <var id="HIDDEN">
+                (function(){
+                    var arr = [round(MAIN[1][0],2),round(MAIN[1][1],2),round(MAIN[1][2],2)];
+                    var max_index = arr.indexOf(Math.max.apply(Math, arr));
+                    return max_index;
+                })()</var> <!--rand( 3 )</var>-->
             <var id="ANSWER">MAIN[ 1 ][ HIDDEN ]</var>
             <var id="KNOWN">MAIN[ 1 ].slice( 0, HIDDEN ).concat( MAIN[ 1 ].slice( HIDDEN + 1 ) )</var>
             <var id="MAX">roundTo( 1, parseFloat( KNOWN[ 0 ]  ) + parseFloat( KNOWN[ 1 ] ) )</var>
@@ -34,7 +39,7 @@
         <div class="problems">
             <div id="range">
                 <div class="problem">
-                    邊x的長度會在哪個範圍內呢?
+                    請利用<code>\color{red}{三角不等式}</code>，判斷邊 <code>x</code> 的長度會在哪個範圍內呢？
                 </div>
                 <div class="question">
                     <div class="graphie">
@@ -53,9 +58,9 @@
                     <span class="example">二位小數，例： <code>0.75</code></span>
                 </div>
                 <div class="hints">
-                    <p>三角不等式定理描述三角形的任意兩邊長度的總和大於第三條邊</p>
+                    <p>三角不等式描述三角形的任意兩邊長度的總和大於第三條邊</p>
                     <p>所以第三條邊必須小於<code><var>KNOWN[ 0 ]</var> + <var>KNOWN[ 1 ]</var> = <var>MAX</var></code></p>
-                    <p>相同理論下, 第三條邊總是大於另外兩邊長的差</p>
+                    <p>同時, 第三條邊總是大於另外兩邊長的差</p>
                     <p>所以第三條邊必須大於<code><var>KNOWN[0] &lt; KNOWN[1] ? KNOWN[1] : KNOWN[0]</var> - <var>KNOWN[0] &lt; KNOWN[1] ? KNOWN[0] : KNOWN[1]</var> = <var>MIN</var></code></p>
                     <p>所以 <code><var>MIN</var> &lt; x &lt; <var>MAX</var></code></p>
                 </div>

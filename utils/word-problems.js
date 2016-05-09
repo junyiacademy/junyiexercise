@@ -364,7 +364,6 @@ $.fn["word-problemsLoad"] = function() {
         new Noun("蘋果", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
         new Noun("梨子", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
         new Noun("椰子", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
-        new Noun("茄子", {measureWord: new IncrementalShuffler(["個", "條"])}),
         new Noun("奇異果", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
         new Noun("檸檬", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),
         new Noun("芒果", {measureWord: new IncrementalShuffler(["個", "粒", "顆"])}),

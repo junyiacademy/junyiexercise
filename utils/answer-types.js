@@ -83,8 +83,8 @@ function checkIfAnswerEmpty(guess) {
 var MAXERROR_EPSILON = Math.pow(2, -42);
 
 var inexactMessages = {
-    unsimplified: "你的答案其實很接近了！要記得簡化或約分唷！",
-    missingPercentSign: "你的答案其實很接近了，但缺一個<code>\\%</code> 的符號唷。"
+    unsimplified: "你的答案需要化簡或約分唷！",
+    missingPercentSign: "你的答案其實很接近了，但缺一個<code>\\%</code> 的符號唷！"
 };
 
 // Remove cleanupMath and texCleanup when tex.js is moved in from KA.
@@ -772,11 +772,14 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                         } else if (piApprox &&
                                    predicate(val, Math.abs(val * 0.001))) {
                             score.empty = true;
-                            score.message = $._("Your answer is close, but you may " +
+                            score.message = $._("和正確答案很接近了！請再計算一遍。如果計算有用到圓周率，你可以用 pi 表示圓周率，例如：12 pi 或 2/3 pi。");
+									  /*
+									  "Your answer is close, but you may " +
                                       "have approximated pi. Enter your " +
                                       "answer as a multiple of pi, like " +
                                       "<code>12\\ \\text{pi}</code> or " +
                                       "<code>2/3\\ \\text{pi}</code>");
+									  */
                         }
                     }
                 });
@@ -791,7 +794,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     });
                     if (!interpretedGuess) {
                         score.empty = true;
-                        score.message = $._("無法識別你的答案哦！請重新輸入。");
+                        score.message = $._("無法識別你的答案唷！請重新輸入。");
                         return score;
                     }
                 }
