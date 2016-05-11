@@ -36,6 +36,7 @@
 </head>
 <div class="exercise">
 <div class="problems">
+	<!--
 	<div id="case1">
         <div class="vars" >
 			<var id="J">randRange(1,4)</var>
@@ -179,6 +180,7 @@
 					<p class="hint_pink" data-if="J==4">所以，藍邊相互平行，紅邊不平行。</p>
 			</div>
 	</div>
+	-->
 	<div id="case2">
         <div class="vars" >
 			<var id="J">randRange(1,10)</var>
@@ -216,11 +218,14 @@
 		<div class="problem">
 			<p>下面三角形中，哪些三角形有直角？</p>
 			<div class="graphie" id="angle" >
-				init({ range: [ [-1, 25], [-0.5, 8] ], scale: 20 });
+				init({ range: [ [-1, 25], [-12, 8] ], scale: 20 });
 				for( var i=0;i&lt;5;i++){
 					label( [5*i+1.5,7] , "("+(i+1)+")" , "center" , { color : COLORS[i]});
 					path( moveCoord(get_path[i],5*i) , { stroke : COLORS[i]});
 				}
+
+				addMouseLayer();
+				graph.protractor = new Protractor( [12, -10] );
 			</div>
 		</div>
 		<div class="solution" data-type="multiple">
@@ -261,11 +266,13 @@
 			<p class="example">複選</p>
 		</div>
 		<div class="hints">
+			<!--
 			<div class="graphie" data-update="angle">
 				init({ range: [ [-1, 25], [-12, 8] ], scale: 20 });
 				addMouseLayer();
 				graph.protractor = new Protractor( [12, -10] );
 			</div>
+			-->
 			<p>量一量，通過量角器可以得出第<code class="hint_pink">\enspace<var>index[5]</var>\enspace</code>個和第<code class="hint_pink">\enspace<var>index[6]</var>\enspace</code>個是直角三角形。</p>
 		</div>
 	</div>
@@ -305,7 +312,9 @@
 					pointA: pointa,
 					pointZ: point_a,  
 					constraints: { fixed:true} ,
-							
+					normalStyle:{
+						stroke:"blue"
+					}		
 				});
 				pointb=addMovablePoint({ coord: [bx, by ], visible: false});
 				graph.line2 = addMovableLineSegment({
@@ -322,6 +331,9 @@
 					pointA: pointb, 
 					pointZ: point_b,  
 					constraints: { fixed:true} ,
+					normalStyle:{
+						stroke:"purple"
+					}
 						
 				});
 				pointc=addMovablePoint({ coord: [   b+0.1, 1 ], visible: true,snapX:1,snapY:1});
@@ -332,7 +344,7 @@
 						fixed:true
 					} ,
 					normalStyle:{
-							stroke:"red"
+							stroke:"green"
 					}
 				});	
 				</div>
@@ -374,6 +386,9 @@
 								pointZ: pointb,  
 								
 								constraints: { fixed:true} ,
+								normalStyle:{
+									stroke:"blue"
+								}
 								
 					});
 					point_b=addMovablePoint({ coord: [ bx+0.1, by ], visible: true, snapX: 1 ,snapY:1});
@@ -382,7 +397,7 @@
 							pointZ: point_b,  
 							constraints: { fixed:true} ,
 							normalStyle:{
-									stroke:"RED"
+									stroke:"purple"
 								},
 							
 					});
@@ -393,6 +408,9 @@
 							constraints: { 
 								fixed:true
 							} ,	
+							normalStyle:{
+								stroke:"green"
+							}
 					});
 				
 				</div>
