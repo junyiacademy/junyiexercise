@@ -12,7 +12,7 @@
         <var id="UPPER_BOUND">3</var>
 
         <var id="DENOMINATOR" data-ensure="abs(DENOMINATOR) > 1">randRange(1, 6)</var>
-        <var id="NUMERATOR" data-ensure="abs(NUMERATOR / DENOMINATOR) <= 3 && !reduces(NUMERATOR, DENOMINATOR)">randRange(2, 18)</var>
+        <var id="NUMERATOR" data-ensure="abs(NUMERATOR / DENOMINATOR) <= 3 && !reduces(NUMERATOR, DENOMINATOR)">randRange(DENOMINATOR+1, 18)</var>
 
         <var id="SOLUTION">NUMERATOR / DENOMINATOR</var>
 
@@ -29,7 +29,7 @@
             <div class="question">
                 <p><ass="question">
                 <p>請移動<strong><code>\color{orange}{\text{橘點}}</code></strong>至
-                <strong><code>\color{orange}{<var>fraction(NUMERATOR, DENOMINATOR)</var>}</code></strong>之處。</p>
+                <strong><code>\color{orange}{<var>M_NUMBER</var>}</code></strong>之處。</p>
 
                 <div class="graphie" id="number-line">
                     init({
@@ -40,7 +40,7 @@
                     style({arrows: "&gt;"});
                     line( [ 0, 0 ], [ UPPER_BOUND + 0.25/SCALE, 0 ] );
 
-                    style({arrows: "-&gt;"});
+                    style({arrows: ""});
                     line( [ 0, 0 ], [ LOWER_BOUND - 0.25/SCALE, 0 ] );
 
                     style({arrows: ""});
@@ -80,6 +80,7 @@
             </div>
 
             <div class="hints">
+                <!--
                 <p>因為<code>\color{orange}{<var>NUMBER</var>}</code>是<span data-if="SOLUTION > 0">正數</span>
                 <span data-else>負數</span>，所以需從原點向<span data-if="SOLUTION > 0">右移動</span>
                 <span data-else>左移動</span>。</p>
@@ -88,9 +89,10 @@
                     <p>我們先將這個假分數<code>\color{orange}{<var>NUMBER</var>}</code>轉換成代分數：</p>
                     <p><code>\color{orange}{<var>NUMBER</var>}</code> = <code>\color{blue}{<var>M_NUMBER</var>}</code></p>
                 </div>
+                -->
 
                 <div>
-                    <p>因此，我們可以知道<code>\color{blue}{<var>M_NUMBER</var>}</code>在數線上位於<code>\color{green}{<var>M_WHOLE</var>}</code>
+                    <p>我們可以知道<code>\color{orange}{<var>M_NUMBER</var>}</code>在數線上位於<code>\color{green}{<var>M_WHOLE</var>}</code>
                     到<code>\color{green}{<var>M_WHOLE + (SOLUTION > 1 ? 1 : -1)</var>}</code>中間。</p>
                     <div class="graphie" data-update="number-line">
                         style({ stroke: "#FFA500", strokeWidth: 3.5 });
@@ -100,7 +102,7 @@
                 </div>
 
                 <div>
-                    <p><code>\color{blue}{<var>M_NUMBER</var>}</code>在數線上是從<code>\color{green}{<var>M_WHOLE</var>}</code>再往<span data-if="SOLUTION > 0">右邊</span><span data-else>左邊</span>移動<code>\color{green}{<var>fraction(M_NUMERATOR, DENOMINATOR)</var>}</code>。</p>
+                    <p><code>\color{orange}{<var>M_NUMBER</var>}</code>在數線上是從<code>\color{green}{<var>M_WHOLE</var>}</code>再往<span data-if="SOLUTION > 0">右邊</span><span data-else>左邊</span>移動<code>\color{green}{<var>fraction(M_NUMERATOR, DENOMINATOR)</var>}</code>。</p>
                     <div class="graphie" data-update="number-line">
                         style({ stroke: GREEN, fill: "#6495ED", strokeWidth: 3.5, arrows: "-&gt;" });
                         line( [ M_WHOLE, 0 ], [ SOLUTION, 0 ] );
@@ -113,10 +115,10 @@
 
                 <div>
                     <div class="graphie" data-update="number-line">
-                        label( [ SOLUTION, -0.83 ],  NUMBER, "center", { color: "#FFA500" });
+                        label( [ SOLUTION, -0.83 ],  M_NUMBER, "center", { color: "#FFA500" });
                         graph.movablePoint.moveTo( SOLUTION, 0 );
                     </div>
-                    <p>橘點的位置表示的就是<code>\color{orange}{<var>NUMBER</var>}</code>在數線上的位置。</p>
+                    <p>橘點的位置表示的就是<code>\color{orange}{<var>M_NUMBER</var>}</code>在數線上的位置。</p>
                 </div>
             </div>
         </div>
