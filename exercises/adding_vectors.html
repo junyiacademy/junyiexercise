@@ -8,11 +8,11 @@
 <body>
     <div class="exercise">
     <div class="vars" data-ensure="0 < abs( AX + BX ) && abs( AX + BX ) < 10 && 0 < abs( AY + BY ) && abs( AY + BY ) < 10 && (AX * AY) * (BX * BY) < 0">
-        <var id="AX">randRangeNonZero( -9, 9 )</var>
-        <var id="AY">randRangeNonZero( -9, 9 )</var>
+        <var id="AX">randRangeNonZero( -8, 8 )</var>
+        <var id="AY">randRangeNonZero( -8, 8 )</var>
 
-        <var id="BX">randRangeNonZero( -9, 9 )</var>
-        <var id="BY">randRangeNonZero( -9, 9 )</var>
+        <var id="BX">randRangeNonZero( -8, 8 )</var>
+        <var id="BY">randRangeNonZero( -8, 8 )</var>
     </div>
 
     <div class="problems">
@@ -26,7 +26,7 @@
                         labelStep: 1,
                         unityLabels: false,
                         labelFormat: function( s ) { return "\\small{" + s + "}"; },
-                        axisArrows: "<->"
+                        axisArrows: "-&gt;"
                     });
 
                     line( [0, 0], [AX, AY], { stroke: "#6495ed", arrows: "->" } );
@@ -41,28 +41,29 @@
 
                 <p>請問 <code>\vec a + \vec b</code> 是多少？</p>
 
-                <p><code>\begin{align*}
-                    \vec a &= <var>AX</var> \hat\imath + <var>AY</var> \hat\jmath \\
-                    \vec b &= <var>BX</var> \hat\imath + <var>BY</var> \hat\jmath
-                \end{align*}</code></p>
+                <p><code>
+                    \vec a = ( <var>AX</var>  ,  <var>AY</var> )  \\
+                    \vec b = ( <var>BX</var>  ,  <var>BY</var> )
+                </code></p>
             </div>
 
             <div class="solution" data-type="multiple">
-                <p><span class="sol" data-fallback="1"><var>AX + BX</var></span> <code>\hat\imath + {}</code><span class="sol" data-fallback="1"><var>AY + BY</var></span> <code>\hat\jmath</code></p>
+                <p> ( <span class="sol" data-fallback="1"> <var>AX + BX</var></span> <code> , </code><span class="sol" data-fallback="1"><var>AY + BY</var></span> ) </p>
             </div>
         </div>
     </div>
 
     <div class="hints">
-        <p>將 <code>\hat\imath</code> 和 <code>\hat\jmath</code> 的部份分開相加。</p>
+        <p>將 <code>x</code> 和 <code>y</code> 分開相加。</p>
         <div>
-            <p><code>\hat a + \hat b = (<var>AX</var> + <var>BX</var>) \hat\imath + (<var>AY</var> + <var>BY</var>) \hat\jmath</code></p>
+            <p><code>x</code> 部分 <code> = </code> <span data-if="AX&lt;0">(</span><var>AX</var><span data-if="AX&lt;0">)</span> + <span data-if="BX&lt;0">(</span><var>BX</var><span data-if="BX&lt;0">)</span> <code> = </code> <var>AX + BX</var><br>
+               <code>y</code> 部分 <code> = </code> <span data-if="AY&lt;0">(</span><var>AY</var><span data-if="AY&lt;0">)</span> + <span data-if="BY&lt;0">(</span><var>BY</var><span data-if="BY&lt;0">)</span> <code> = </code> <var>AY + BY</var></p>
+        </div>
+        <div>
+            <p><code>\vec a + \vec b = ( <var>AX + BX</var> , <var>AY + BY</var> )</code></p>
             <div class="graphie" data-update="graph">
                 line( [BX, BY], [BX + AX, BY + AY], { stroke: "#6495ed", arrows: "->" } );
             </div>
-        </div>
-        <div>
-            <p><code>\hphantom{\hat a + \hat b} = <var>AX + BX</var>\hat\imath + <var>AY + BY</var>\hat\jmath</code></p>
             <div class="graphie" data-update="graph">
                 line( [0, 0], [BX + AX, BY + AY], { stroke: "#ffa500", arrows: "->" } );
             </div>
