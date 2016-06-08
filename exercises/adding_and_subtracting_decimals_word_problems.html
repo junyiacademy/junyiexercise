@@ -8,6 +8,7 @@
 <body>
     <div class="exercise">
     <div class="problems">
+<!--
         <div id="produceCost">
 
             <div class="vars">
@@ -92,22 +93,22 @@
                 <p class="final_answer"><var>person(2)</var>比<var>person(1)</var>快上 <span class="hint_pink"><var>solution</var></span> 秒。</p>
             </div>
         </div>
-
+-->
         <div id="twinWeight">
 
             <div class="vars">
-                <var id="G">randRange(2,6)*100</var>
-                <var id="H">randRange(1,9)*10</var>
+                <var id="G">randRange(2,3)*100</var>
+                <var id="H">randRange(5,9)*10</var>
                 <var id="I">randRange(1,9)*1</var>
                 <var id="weight_1_integer">G+H+I</var>
                 <var id="weight_1_decimal">(2)</var>
-                <var id="weight_1">roundTo(4,truncate_to_max(0.4536*weight_1_integer*pow(10,-weight_1_decimal), 2))</var>
-                <var id="J">randRange(3,5)*100</var>
-                <var id="K">randRange(1,9)*10</var>
+                <var id="weight_1">roundTo(4,truncate_to_max(weight_1_integer*pow(10,-weight_1_decimal), 2))</var>
+                <var id="J">randRange(2,3)*100</var>
+                <var id="K">randRange(5,9)*10</var>
                 <var id="L">randRange(1,9)*1</var>
                 <var id="weight_2_integer">J+K+L</var>
                 <var id="weight_2_decimal">(2)</var>
-                <var id="weight_2">roundTo(4,truncate_to_max(0.4536*weight_2_integer*pow(10,-weight_2_decimal), 2))</var>
+                <var id="weight_2">roundTo(4,truncate_to_max(weight_2_integer*pow(10,-weight_2_decimal), 2))</var>
                 <var id="height_1">roundTo(4,randRange(16.5,22.5)*2.54)</var>
                 <var id="height_2">roundTo(4,randRange(16.5,22.5)*2.54)</var>
                 <var id="solution">roundTo(4,truncate_to_max((weight_1+weight_2),2))</var>
@@ -116,8 +117,8 @@
             </div>
 
             <div class="question spin">
-                <p><var>plem</var>，<var>person(1)</var>的雙親生下雙胞胎，並取名<var>person(2)</var>和<var>person(3)</var>。當他們剛出生時，<var>person(2)</var>重 <var>weight_1</var> 公斤{ 且高 <var>height_1</var> 公分|}，<var>person(3)</var>重 <var>weight_2</var>公斤{且高 <var>height_2</var> 公分|}。</p>
-                <p class="question">寶寶們總共多重？</p>
+                <p><var>plem</var>，<var>person(1)</var>的雙親生下雙胞胎，並取名<var>person(2)</var>和<var>person(3)</var>。剛出生時，<var>person(2)</var>重 <var>weight_1</var> 公斤，<var>person(3)</var>重 <var>weight_2</var> 公斤。</p>
+                <p class="question">請問這對雙胞胎寶寶，體重總共多重？</p>
 
             </div>
 
@@ -165,14 +166,15 @@
             </div>
 
             <div class="question spin">
-                <p>{週二{<var>timeofday(1)</var>|}，|上週四，|}<var>person(1)</var>走到<var>(store(1))</var>店並且{，在看了 <var>time_1</var> 分鐘後，|}決定要買一個價值 <var>price_1</var> 元的<var>storeItem(1,1)</var>。<var>person(1)</var>給店家 <var>amount_paid</var> 元。</p>
-                <p class="question"> <var>person(1)</var>應收到多少店家找給他的零錢？</p>
+                <p>一桶牛奶最多可裝 <var>amount_paid</var> 公升，<var>person(1)</var>已經裝了 <var>price_1</var> 公升。</p>
+                <p class="question"> 請問<var>person(1)</var>還要再裝幾公升才能把這桶牛奶裝滿？</p>
             </div>
-            <div class="solution" data-forms="dollar"><var>amount_paid-price_1</var></div>
-
+            <div class="solution" data-type="multiple">
+                <p> <span class="sol"><var>amount_paid-price_1 </var></span> 公升</p>
+            </div>
             <div class="hints">
-                <p>要得知<var>person(1)</var>會收到多少零錢，我們可以將<var>he(1)</var>付出的費用減掉<var>storeItem(1,1)</var>的值格。</p>
-                <p><var>person(1)</var>付的錢 <code>-</code> <var>storeItem(1,1)</var>的價格 <code>=</code> <var>person(1)</var>應得到的零錢。</p>
+                <p>要知道<var>person(1)</var>還要再裝幾公升才能把這桶牛奶裝滿，我們可以將一桶牛奶最多可裝的公升數，減掉<var>he(1)</var>已經裝的公升數。</p>
+                <p>一桶牛奶最多可裝的公升數 <code>-</code> <var>person(1)</var>已經裝了的公升數 <code>=</code> <var>person(1)</var>還要再裝幾公升才能把這桶牛奶裝滿。</p>
                 <div class="graphie" id="numbers">
                     graph.subtractor = new DecimalSubtractor( amount_paid_integer, amount_paid_decimal, price_1_integer, price_1_decimal );
                     graph.subtractor.show();
@@ -181,7 +183,7 @@
                 <div class="graphie" data-update="numbers" data-each="DecimalAdder.numHintsFor( amount_paid_integer, amount_paid_decimal, price_1_integer, price_1_decimal ) times">
                     graph.subtractor.showHint();
                 </div>
-                <p class="final_answer"><var>person(1)</var>收到 <span class="hint_pink"><var>solution</var></span> 元的零錢。</p>
+                <p class="final_answer"><var>person(1)</var>還要再裝 <span class="hint_pink"><var>solution</var></span> 公升才能把這桶牛奶裝滿。</p>
             </div>
         </div>
 
@@ -200,16 +202,16 @@
             </div>
 
             <div class="question spin">
-                <p>在最近的暴風雨，高 <var>rain_1</var> 公分的雨下在<var>person(1)</var>的家鄉，且 <var>rain_2</var> 公分的雨下在<var>person(2)</var>的家鄉 {另外，高 <var>snow_1</var> 公分的雨下在<var>person(3)</var>的家鄉。|}</p>
-                <p class="question"><var>person(2)</var>的家鄉比<var>person(1)</var>的家鄉多下多少雨？</p>
+                <p><var>person(1)</var>和<var>person(2)</var>在週末相約一起到郊外騎腳踏車，<var>person(1)</var>騎了 <var>rain_1</var> 公里，<var>person(2)</var>騎了 <var>rain_2</var> 公里。</p>
+                <p class="question">請問<var>person(2)</var>比<var>person(1)</var>多騎了多少公里？</p>
             </div>
 
             <div class="solution" data-type="multiple">
-                <p> <span class="sol"><var>rain_2-rain_1 </var></span> 公分</p>
+                <p> <span class="sol"><var>rain_2-rain_1 </var></span> 公里</p>
             </div>
             <div class="hints">
-                <p>要知道降雨量的差別，我們可以把<var>person(1)</var>家鄉的降雨量減掉<var>person(2)</var>家鄉的降雨量。</p>
-                <p><var>person(2)</var>家鄉的降雨量 <code>-</code> <var>person(1)</var>家鄉的降雨量 <code>=</code> 降雨量的差別。</p>
+                <p>要知道<var>person(2)</var>比<var>person(1)</var>多騎了多少公里，我們可以把<var>person(2)</var>騎的公里數減掉<var>person(1)</var>騎的公里數。</p>
+                <p><var>person(2)</var>騎的公里數 <code>-</code> <var>person(1)</var>騎的公里數 <code>=</code> <var>person(2)</var>比<var>person(1)</var>多騎了多少公里。</p>
                 <div class="graphie" id="numbers">
                     graph.subtractor = new DecimalSubtractor( roundTo(4,rain_2*100), rain_2_decimal, roundTo(4,rain_1*100), rain_1_decimal );
                     graph.subtractor.show();
@@ -218,7 +220,7 @@
                 <div class="graphie" data-update="numbers" data-each="DecimalAdder.numHintsFor( rain_2_integer, rain_2_decimal, rain_1_integer, rain_1_decimal ) times">
                     graph.subtractor.showHint();
                 </div>
-                <p class="final_answer"><var>person(2)</var>的家鄉比<var>person(1)</var>的家鄉多 <span class="hint_pink"><var>solution</var></span> 公分的降雨量。</p>
+                <p class="final_answer"><var>person(2)</var>比<var>person(1)</var>多騎了 <span class="hint_pink"><var>solution</var></span> 公里。</p>
             </div>
         </div>
 
@@ -237,16 +239,16 @@
             </div>
 
             <div class="question spin">
-                <p>{每早上學|每早上班|為了見<var>his(1)</var>奶奶}，<var>person(1)</var>坐<var>(vehicle(1))</var> <var>distance_1</var> <var>plural(distance(1))</var>和<var>(vehicle(2))</var> <var>distance_2</var> <var>plural(distance(1))</var>. {總結來說，總共花了 <var>time_1</var> 分鐘。|}</p>
-                <p class="question"><var>person(1)</var>總共移動多少<var>plural(distance(1))</var>？</p>
+                <p>有一隻小青蛙，牠在數線上從 <var>distance_1</var> 向右跳了 <var>distance_2</var> 。</p>
+                <p class="question">請問牠會停在哪個數字上？</p>
             </div>
 
             <div class="solution" data-type="multiple">
-                <p> <span class="sol"><var>distance_1+distance_2</var></span> <var>plural(distance(1))</var></p>
+                <p>停在 <span class="sol"><var>distance_1+distance_2</var></span> 上</p>
             </div>
             <div class="hints">
-                <p>要知道<var>person(1)</var>的移動總距離，我們需要把兩段距離加起來。</p>
-                <p><var>vehicle(1)</var>的移動距離 <code>+</code> <var>vehicle(2)</var>的移動距離 <code>=</code> 總移動距離。</p>
+                <p>要知道小青蛙最後停在哪個數字上，我們可以用加法。</p>
+                <p>小青蛙原本的位置 <code>+</code> 牠向右跳了多少 <code>=</code> 牠最後停在哪個數字上。</p>
                 <div class="graphie" id="numbers">
                     graph.adder = new DecimalAdder( distance_1_integer, distance_1_decimal, distance_2_integer, distance_2_decimal );
                     graph.adder.show();
@@ -259,7 +261,7 @@
                 <div class="graphie" data-update="numbers" data-each="DUMMY as dummy">
                     graph.adder.showHint();
                 </div>
-                <p class="final_answer"><var>person(1)</var>總共移動 <span class="hint_pink"><var>solution</var></span> <var>plural(distance(1))</var>。</p>
+                <p class="final_answer">所以小青蛙最後會停留在 <span class="hint_pink"><var>solution</var></span> 上。</p>
             </div>
         </div>
     </div>
