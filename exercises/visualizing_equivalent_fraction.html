@@ -22,14 +22,14 @@
 
 		y = y || 0;
 
-		var sum = 0;
+		var slice_sum = 0;
 		$.each(divisions, function(i, slice) {
-			sum += slice;
+			slice_sum += slice;
 		});
 
 		var partial = 0;
 		$.each(divisions, function(i, slice) {
-			var x = partial / sum, w = slice / sum;
+			var x = partial / slice_sum, w = slice / slice_sum;
 			set.push(graph.path([[x, y], [x + w, y], [x + w, y + 1], [x, y + 1]], {
 				stroke: "black",
 				fill: colors[i]
@@ -37,8 +37,8 @@
 			partial += slice;
 		});
 
-		for (var i = 0; i <= sum; i++) {
-			var x = i / sum;
+		for (var i = 0; i <= slice_sum; i++) {
+			var x = i / slice_sum;
 			set.push(graph.line([x, y + 0], [x, y + 1], { stroke: "white" }));
 			set.push(graph.line([x-0.1/25, y + 0], [x-0.1/25, y + 1], { stroke: "black" }));
 			set.push(graph.line([x+0.1/25, y + 0], [x+0.1/25, y + 1], { stroke: "black" }));
@@ -128,7 +128,7 @@
 							return num;
 						})()
 					</var>
-					<var id="sum">
+					<var id="s_sum">
 						(function(){
 							var s = 0;
 							for(var k = 0;k&lt;4;k++){
@@ -235,7 +235,7 @@
 							if(guess.length==0){
 								return "";
 							}
-							if(guess.length!=sum){
+							if(guess.length!=s_sum){
 								return false;
 							}
 							var trueAns = 0;
@@ -244,7 +244,7 @@
 									trueAns++;
 								}
 							}
-							if(trueAns==sum){
+							if(trueAns==s_sum){
 								return true;
 							}					
 						</div>
