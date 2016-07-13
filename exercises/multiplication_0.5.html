@@ -1,63 +1,175 @@
 <!DOCTYPE html>
-<html data-require="math graphie graphie-helpers-arithmetic word-problems">
+<html data-require="">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>乘法 0.5</title>
     <script src="../khan-exercise.js"></script>
 </head>
+
 <body>
     <div class="exercise">
         <div class="vars">
-            <var id="A">randRange( 1, 10 )</var>
-            <var id="B">randFromArray( [ 0, 1, 2, 3, 5, 10 ] )</var>
+            <var id="A">randFromArray( [ "apple", "banana", "car" ] )</var>
         </div>
 
         <div class="problems">
             <div>
-                <div class="graphie" id="numbers">
-                    init({
-                        range: [ [ -1, 12 ], [ -3, B + 1 ] ],
-                        scale: [ 50, 50 ]
-                    });
-                    KhanUtil.currentGraph.labelHolder = label( [ 0, B ],
-                        "\\Huge{\\color{#6495ED}{" + A + "} \\times \\color{#28AE7B}{" + B + "} = {?}}", "right" );
+                <div class="row">
+                    <p> 請唸唸看 <var>A</var> !</p>
+                    <div id="input_ans" style="display:none;"><var>A</var></div>
                 </div>
-                <div class="solution" data-forms="integer"><var>A * B</var></div>
+                <div class="row">
+                    <form>
+                        <button type="button" class="btn btn-primary" id="start">開始辨識</button>
+                        <button type="button" class="btn btn-danger" id="restart">重新開始</button>
+                        <span class="label label-success" id="status"></span>
+                        <span class="label label-info" id="os"></span>
+                    </form>
+                </div>
+                <div class="solution" data-type="text"><var>A</var></div>
             </div>
         </div>
         <div class="hints">
-            <div data-if="B > 0" data-unwrap>
-                <div>
-                    <div class="graphie" data-update="numbers">
-                        label( [ 0, B - 1 ], "\\text{先畫 " + A +  "個圓圈" + "。}", "right" );
-                        drawRow( A, B - 3, "#6495ED", 1 );
-                    </div>
-                </div>
-                <div>
-                    <div class="graphie" data-update="numbers">
-                        label( [ 0, B - 2 ], "\\text{"
-                            + "假如共有"  +  B
-                            + " 列, 而每列都有 " +  A 
-                            + " 個圓圈, 則總共會有幾個圓圈?"
-                            + "}",
-                            "right" );
-                        for ( var i = 1; i &lt; B; i++ ) {
-                            drawRow( A, B - 3 - i, "#28AE7B", A * i + 1 );
-                        }
-                    </div>
-                </div>
-            </div>
-            <div data-else>
-                <div class="graphie" data-update="numbers">
-                    label( [ 0, B - 1 ], "\\large{\\text{任何數字乘上0都會變成0。}}", "right" );
-                </div>
-            </div>
-            <div class="graphie" data-update="numbers">
-                KhanUtil.currentGraph.labelHolder.remove();
-                label( [ 0, B ],
-                    "\\Huge{\\color{#6495ED}{" + A + "} \\times \\color{#28AE7B}{" + B + "} = " + ( A  * B ) + "}", "right" );
-            </div>
+
         </div>
     </div>
+    <script>
+        var os = getMobileOperatingSystem();
+        if (!('webkitSpeechRecognition' in window)) {
+            if (os == 'iOS') {
+                $('#os').text(os);
+                $('#status').text('請使用 Siri 語音輸入法');
+                $('#start').hide();
+            } else if (os == 'Android') {
+                $('#os').text(os);
+                $('#status').text('請使用 Chrome 語音輸入法');
+                $('#start').hide();
+            } else {
+                $('#os').text(os);
+                $('#status').text('請使用 Chrome');
+                $('#start').hide();
+            }
+        } else {
+            $('#os').text(os);
+            var recognition = new webkitSpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.continuous = false;
+            recognition.interimResults = true;
+
+            recognizing = false;
+
+            var final_rst = [];
+            var inter_rst = [];
+
+            recognition.onstart = function() {
+                recognizing = true;
+                update_start_btn();
+                console.log('recognition start');
+                $('#status').text('正在辨識');
+            };
+
+            recognition.onend = function() {
+                recognizing = false;
+                update_start_btn();
+                console.log('recognition end');
+            };
+
+            recognition.onresult = function(event) {
+                console.log('recognition result');
+                update_start_btn();
+                $('#status').text('辨識完成');
+                console.log(event);
+                for (var i = event.resultIndex; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) {
+                        final_rst.push(event.results[i][0].transcript);
+                        $("#check-answer-button").removeAttr("disabled")
+                        $('#solutionarea').find('input').val(event.results[i][0].transcript);
+                        $('#final_rst_panel').text(event.results[i][0].transcript);
+                    } else {
+                        inter_rst.push(event.results[i][0].transcript);
+                        $('#inter_rst_panel').text($('#inter_rst_panel').text() + ', ' + event.results[i][0].transcript);
+                    }
+                }
+
+            };
+
+            function reset_recognition() {
+                final_rst = [];
+                inter_rst = [];
+                $('#inter_rst_panel').text('');
+                $('#final_rst_panel').text('');
+                update_start_btn();
+            }
+
+
+            function update_start_btn() {
+                if (recognizing == true) {
+                    $('#start').removeClass('btn-primary').addClass('btn-danger');
+                    $('#start').text('停止辨識');
+                } else {
+                    $('#start').removeClass('btn-danger').addClass('btn-primary');
+                    $('#start').text('開始辨識');
+                }
+            }
+        }
+
+        function voice_only_input(obj) {
+            console.log("voice only init");
+            obj.on('keypress', function(event) {
+                console.log('keypress');
+                event.preventDefault();
+                return false;
+            });
+            obj.on('paste', function(event) {
+                console.log('paste');
+                event.preventDefault();
+                return false;
+            });
+        }
+
+        function getMobileOperatingSystem() {
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            if (userAgent.match(/iPad/i) ||
+                userAgent.match(/iPhone/i) ||
+                userAgent.match(/iPod/i)) {
+                return 'iOS';
+            } else if (userAgent.match(/Android/i)) {
+                return 'Android';
+            } else {
+                return userAgent;
+            }
+        }
+
+        $(document).ready(function() {
+            $('#start').click(function() {
+                console.log('click');
+                if (recognizing == false) {
+                    reset_recognition();
+                    recognition.start();
+                } else {
+                    recognition.stop();
+                }
+            });
+            $('#restart').click(function() {
+                $('#solutionarea').children("input").val('');
+            });
+        });
+        var checkVoiceOnlyInput = setInterval(function() {
+            if ($('#solutionarea').children("input").length) {
+                voice_only_input($('#solutionarea').children("input"));
+                $('#solutionarea').children("input").focus();
+                console.log("voice only input ok");
+                clearInterval(checkVoiceOnlyInput);
+                $('#solutionarea').children("input").change(function() {
+                    var parsedInput = $.trim($('#solutionarea').children("input").val().toLowerCase());
+                    $('#solutionarea').children("input").val(parsedInput);
+                    $("#check-answer-button").removeAttr("disabled")
+                });
+            }
+        }, 100);
+        console.log('speaking js init');
+    </script>
 </body>
+
 </html>
