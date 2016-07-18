@@ -10,7 +10,7 @@
 <body>
     <div class="exercise">
         <div class="vars">
-            <var id="A">randFromArray( [ "apple", "banana", "car" ] )</var>
+            <var id="A">randFromArray( [ "apple", "book", "cat", "dog", "egg", "fish", "girl", "hat", "ink", "kite" ] )</var>
         </div>
 
         <div class="problems">
@@ -28,7 +28,10 @@
                         <!-- <span class="label label-info" id="os"></span> -->
                     </form>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top:20px">
+                    <img src="" class="img-responsive" id='eng_img' alt="image">
+                </div>
+                <div class="row" style="margin-top:50px">
                     <form>
                         <div class="form-group">
                             <label for="language">語言</label>
@@ -38,7 +41,7 @@
                                 <option value="US English Female" selected>US English Female</option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="pitch">音調</label>
                             <select id="pitch" name="pitch" class="form-control">
                                 <option value="0">0</option>
@@ -59,7 +62,7 @@
                                 <option value="1.3">1.3</option>
                                 <option value="1.5">1.5</option>
                             </select>
-                        </div>
+                        </div> -->
                     </form>
                 </div>
                 <div class="solution" data-type="text"><var>A</var></div>
@@ -177,6 +180,19 @@
             }
         }
 
+        var img = {
+            'apple': 'http://i.imgur.com/EmLihP3.png',
+            'book': 'http://i.imgur.com/EkHzAbX.png',
+            'cat': 'http://i.imgur.com/4kMtiaX.png',
+            'dog': 'http://i.imgur.com/sjgvhX6.png',
+            'egg': 'http://i.imgur.com/tjZQtwM.png',
+            'fish': 'http://i.imgur.com/BBJo7yX.png',
+            'girl': 'http://i.imgur.com/PuZNao8.png',
+            'hat': 'http://i.imgur.com/rfSdCse.png',
+            'ink': 'http://i.imgur.com/DQ2y5oD.png',
+            'kite': 'http://i.imgur.com/Fp1hvEy.png'
+        };
+
         $(document).ready(function() {
             $('#start').click(function() {
                 console.log('click');
@@ -198,6 +214,8 @@
             if ($('#solutionarea').children("input").length) {
                 voice_only_input($('#solutionarea').children("input"));
                 $('#solutionarea').children("input").focus();
+                $("#eng_img").attr('src', img[$("#input_ans").text()]);
+
                 console.log("voice only input ok");
                 clearInterval(checkVoiceOnlyInput);
                 $('#solutionarea').children("input").change(function() {
@@ -210,8 +228,10 @@
 
         function playText() {
             responsiveVoice.speak($("#input_ans").text(), $("#language").val(), {
-                pitch: parseFloat($("#pitch").val()),
-                rate: parseFloat($("#rate").val()),
+                // pitch: parseFloat($("#pitch").val()),
+                // rate: parseFloat($("#rate").val()),
+                pitch: 1.0,
+                rate: 1.0,
                 onstart: function() {
                     console.log("read start");
                 },
