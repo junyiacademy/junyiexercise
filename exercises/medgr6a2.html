@@ -447,9 +447,8 @@
                 <div class="sol" data-type="custom">
                     <div class="guess">[minutePoint.coord,hourPoint.coord,thirdPoint.coord,lastPoint.coord,$('#a_1').val().replace(/[ ]/g,""),$('#a_2').val().replace(/[ ]/g,""),$('#a_3').val().replace(/[ ]/g,""),$('#a_4').val().replace(/[ ]/g,"")]</div>
                     <div class="validator-function">
-                        if(KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270  && (guess[4]=='' || guess[5]=='' || guess[6]=='' || guess[7]=='')){
-                            return "";
-                        }
+                        
+                        
                         var greenAns = KhanUtil.findAngle(guess[2],[0,0])-KhanUtil.findAngle(guess[0],[0,0]);
                         greenAns&gt;360?greenAns-=360:(greenAns&lt;0?greenAns+=360:greenAns=greenAns);
                         var orangeAns = KhanUtil.findAngle(guess[0],[0,0])-KhanUtil.findAngle(guess[1],[0,0]);
@@ -460,6 +459,15 @@
                         blueAns&gt;360?blueAns-=360:(blueAns&lt;0?blueAns+=360:blueAns=blueAns);
                         var arr = KhanUtil.sortNumbers([Math.round(greenAns/3.6),Math.round(orangeAns/3.6),Math.round(redAns/3.6),Math.round(blueAns/3.6)]);
                         var ansArr = KhanUtil.sortNumbers([J_percent,K_percent,L_percent,M_percent]);
+
+                        if( KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270){
+                            return "請移動圓內的線段，畫出百分圓形圖，否則不算完整作答唷！";
+                        }
+
+                        if(KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270  && (guess[4]=='' || guess[5]=='' || guess[6]=='' || guess[7]=='')){
+                            return "";
+                        }
+
                         if(arr[0]==ansArr[0] && arr[1]==ansArr[1] && arr[2]==ansArr[2] && arr[3]==ansArr[3] && guess[4]==J_percent && guess[5]==K_percent && guess[6]==L_percent && guess[7]==M_percent){
                             return true;
                         }
