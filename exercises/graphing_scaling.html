@@ -11,12 +11,21 @@
             <div id="triangle">
                 <div class="vars">
                     <var id="J">randRange(3,5)</var>
-                    <var id="X">randRange(1,2)</var>
-                    <var id="Y">randRange(1,2)</var>
+                    <var id="S_X">randRange(1,3)</var>
+                    <var id="S_Y">randRange(1,3)</var>
+                    <var id="L_X">S_X*J</var>
+                    <var id="L_Y">S_Y*J</var>
+                    <!-- 1 for small 2 for alrge -->
+                    <var id="type">1</var> 
+                    <var id="X">type==1?S_X:L_X</var>
+                    <var id="Y">type==1?S_Y:L_Y</var>
+                    <var id="ansX">type==1?L_X:S_X</var>
+                    <var id="ansY">type==1?L_Y:S_Y</var>
                     <var id="AREA">(X*Y)/2</var>
                 </div>
                 <div class="question">
-                    <p>圖<code>1</code>是一個直角三角形，將圖<code>1</code>以<code><var>J</var></code>倍放大</p>
+                    <p data-if="type===1"><code>\triangle ABC</code>是一個直角三角形，請在下面的方格中，拖拉藍點，來讓藍色三角形是三角形 <code>ABC</code>的 <code><var>J</var></code>倍放大圖。</p>
+                    <p data-if="type===2">圖<code>1</code>是一個直角三角形，將圖<code>1</code>以<code><var>J</var></code>倍縮小</p>
                     <div class="graphie" id="area">
                         graphInit({
                                 range: [ [-1,20], [-1,15] ],
@@ -36,8 +45,8 @@
 
                         addMouseLayer();
 
-                        label( [ 1, 0 ], "圖1", "below" );
-                        label( [ 0, 0 ], "A", "left" );
+                        //label( [ 1, 0 ], "圖1", "below" );
+                        labelA = label( [ 0, 0 ], "A", "left" );
                         graph.pointA = addMovablePoint({
                             coord: [ 0, 0 ],
                             snapX: 0.5,
@@ -110,7 +119,7 @@
                 </div>
                  <div class="solution" data-type="custom">
                     <div class="instruction">
-                        直接在題目區用拉的呈現
+                        拖拉圖中的藍點，畫出放大圖。
                     </div>
                     <div class="guess"> [ graph.pointA.coord, graph.pointB.coord,graph.pointC.coord ] 
                     </div>
@@ -129,27 +138,60 @@
                     </div>
                 </div>
                 <div class="hints">
-                    <p>放大後的邊長<code>=</code>原邊長<code>\times</code>放大倍數<br/>對應角相等。
-                    </p>
-                    <div class="graphie" data-update="area">  
-                        init({ range: [[-1, 20], [-1, 15]], scale: 25});
-                        path([[9, 0], [9, J*Y], [9+(J*X), 0], true],
-                        { stroke: BLUE });
-
-                        label( [ 13, 0 ], "圖2", "below" );
-                        label( [ 9, 0 ], "D", "left" );
-                        label( [ 9+(J*X), 0], "E", "right" );
-                        label( [ 9, J*Y ], "F", "above" );
+                    <div>
+                        <p>放大後的邊長 <code>=</code> 原邊長 <code>\times</code> 放大倍數。</p>
+                        <p>我們先點出 <code>D</code> 點。</p>
+                        <div class="graphie" data-update="area">  
+                        
+                            //label( [ 13, 0 ], "圖2", "below" );
+                            
+                            label( [ X+1, 0 ], "D", "below" );
+                            
+                        </div> 
                     </div>
+
+                    <div>
+                        <p>原圖的 <code>B</code> 點在 <code>A</code> 右方的 <code><var>X</var></code> 格，所以第二點 <code>E</code> 要在 <code>D</code> 點右方 <code><var>X</var>\times<var>J</var>=<var>X*J</var></code> 格。</p>
+                        <div class="graphie" data-update="area">  
+                        
+                            path([[X+1, 0], [X+1+(J*X), 0]],{ stroke: PINK });
+
+                            //label( [ 0, 0 ], "D", "below" );
+                            label( [ X+1+(J*X), 0], "E", "below" );
+                        </div>    
+                    </div>
+                    
+                    <div>
+                        <p>原圖的 <code>C</code> 點在 <code>A</code> 上方的 <code><var>Y</var></code> 格，所以第三點 <code>F</code> 要在 <code>D</code> 點上方 <code><var>Y</var>\times<var>J</var>=<var>Y*J</var></code> 格。</p>
+                        <div class="graphie" data-update="area">  
+                        
+                            path([[X+1, 0], [X+1, J*Y]],{ stroke: PINK });
+                            
+                            label( [ X+1, J*Y ], "F", "above" );
+                        </div>    
+                    </div>
+                    
+                    <div>
+                        <p>最後再連接 <code>EF</code> 線段，三角形 <code>DEF</code> 就會是三角形 <code>ABC</code> 的 <code><var>J</var></code> 倍放大圖。</p>
+                        <div class="graphie" data-update="area">  
+                            //init({ range: [[-1, 20], [-1, 15]], scale: 25});
+                            path([[X+1, J*Y], [X+1+(J*X), 0]],{ stroke: PINK });
+
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
             <div id="square">
                 <div class="vars">
-                    <var id="J">randFromArray([8,10,12,16,20])</var>
-                    <var id="K">J/2</var>
+                    <var id="K">randRange(2,4)</var>
+                    <!--<var id="J">randFromArray([8,10,12,16,20])</var>-->
+                    <var id="ratio">randRange(2,6)</var>
+                    <var id="J">K*ratio</var>
+                    <!--<var id="K">J/2</var>-->
                 </div>
                 <div class="question">
-                    <p>甲圖是邊長為<code><var>J</var></code>公分的正方形，將甲圖以<code>\dfrac{1}{2}</code>倍縮小</p>
+                    <p>甲圖是邊長為<code><var>J</var></code>公分的正方形，請在下面的方格中，拖拉藍點，來畫出甲圖的 <code>\dfrac{1}{<var>ratio</var>}</code>倍縮小圖。</p>
                     <div class="graphie" id="area">
                         graphInit({
                                 range: [ [-1,35], [-1,25] ],
@@ -251,7 +293,7 @@
                 </div>
                 <div class="solution" data-type="custom">
                     <div class="instruction">
-                        直接在題目區用拉的呈現
+                        拖拉圖中的藍點，畫出縮小圖。
                     </div>
                     <div class="guess"> [ graph.pointA.coord, graph.pointB.coord,graph.pointD.coord,graph.pointC.coord ] 
                     </div>
@@ -275,32 +317,55 @@
                     </div>
                 </div>
                 <div class="hints">
-                    <p>縮小後的邊長<code>=</code>原邊長<code>\times</code>縮小的倍數<br/>縮小後的角度<code>=</code>原來圖形的角度
+                    <p>縮小後的邊長 <code>=</code> 原邊長 <code>\times</code> 縮小的倍數<br/>
+                       縮小後的角度 <code>=</code> 原來圖形的角度。
                     </p>
-                    <div class="graphie" data-update="area">
-                        init({ range: [[-1, 35], [-1, 25]], scale: 15});
-                        path([[J+3, 0], [J+3, K], [J+3+K, K], [J+3+K, 0], true],
-                        { stroke: BLUE });
+                    <p>甲圖是邊長為 <code><var>J</var></code> 公分的正方形，所以甲圖的 <code>\dfrac{1}{<var>ratio</var>}</code> 倍縮小圖是邊長為 <code><var>K</var></code> 公分的正方形。</p>
 
-                        label( [ ((J+3+K+J+3)/2), 0 ], "乙圖", "below" );
-                        label( [ J+3, 0 ], "D", "left" );
-                        label( [ J+3+K, 0 ], "E", "right" );
-                        label( [ J+3, K ], "G", "above" );
-                        label( [ J+3+K, K ], "F", "above" );
+                    <div>
+                        <p>我們先點出 <code>E</code> 點。</p>
+                        <div class="graphie" data-update="area">
+                            
+                            label( [ J+3, 0 ], "E", "left" );
+                            
+                            
+                        </div>
+                    </div>
+
+                    <div>
+                        <p>接著畫出邊長為 <code><var>K</var></code> 公分的正方形。圖中的乙圖就是甲圖的 <code>\dfrac{1}{<var>ratio</var>}</code> 倍縮小圖。
+                        <div class="graphie" data-update="area">
+                            
+                            path([[J+3, 0], [J+3, K], [J+3+K, K], [J+3+K, 0], true],
+                            { stroke: PINK });
+
+                            label( [ ((J+3+K+J+3)/2), 0 ], "乙圖", "below" );
+                            //label( [ J+3, 0 ], "E", "left" );
+                            label( [ J+3+K, 0 ], "F", "right" );
+                            label( [ J+3, K ], "H", "above" );
+                            label( [ J+3+K, K ], "G", "above" );
+                        </div>
                     </div>
                 </div>
             </div>
-            <div id="Trapezoid">
-                <div class="vars">
-                    <var id="J">2</var>
-                    <var id="K">J/2</var>
+            <div id="rectangle">
+                <div class="vars" data-ensure="X!==Y">
+                    
+                    <var id="X">randRange(2,4)</var>
+                    <var id="Y">randRange(2,4)</var>
+                    
+                    <!--<var id="J">randFromArray([8,10,12,16,20])</var>-->
+                    <var id="ratio">randRange(2,6)</var>
+                    <var id="J">X*ratio</var>
+                    <var id="K">Y*ratio</var>
+                    <!--<var id="K">J/2</var>-->
                 </div>
                 <div class="question">
-                    <p>畫出甲圖的<code>\dfrac{1}{<var>J</var>}</code>縮小圖</p>
+                    <p>如圖，甲圖是長寬分別為 <span data-if="X>Y"><code><var>X</var>,<var>Y</var></code></span><span data-if="Y>X"><code><var>Y</var>,<var>X</var></code></span> 的長方形，請在下面的方格中，拖拉藍點，來畫出甲圖的 <code><var>ratio</var></code>倍放大圖。</p>
                     <div class="graphie" id="area">
                         graphInit({
-                                range: [ [-1,25], [-1,11] ],
-                                scale: 20,
+                                range: [ [-1,35], [-1,25] ],
+                                scale: 15,
                                 axisArrows:0,
                                 tickStep: 1,
                                 labelStep: 1,
@@ -309,15 +374,14 @@
                                 tickOpacity: 0.4,
                                 labelOpacity: 0.01,
                             });
-
-                        init({ range: [[-1, 25], [-1, 11]], scale: 20});
-                        path([[0, 0], [12, 0], [6, 6], [0, 6], true],
-                        {  stroke: GRAY  });
+                        init({ range: [[-1, 35], [-1, 25]], scale: 15});
+                        path([[0, 0], [X, 0], [X, Y], [0, Y], true],
+                        { stroke: GRAY });
 
                         addMouseLayer();
 
-                        label( [ 6, 0 ], "甲圖", "below" );
-                        
+                        label( [ X/2, 0 ], "甲圖", "below" );
+                        label( [ 0, 0 ], "A", "left" );
                         graph.pointA = addMovablePoint({
                             coord: [ 0, 0 ],
                             snapX: 0.5,
@@ -328,8 +392,9 @@
                             }
                         });
 
+                        label( [ X, 0 ], "B", "right" );
                         graph.pointB = addMovablePoint({
-                            coord: [ 12, 0 ],
+                            coord: [ X, 0 ],
                             snapX: 0.5,
                             snapY: 0.5,
                             normalStyle: {
@@ -338,18 +403,20 @@
                             }
                         });
 
-                        graph.pointC = addMovablePoint({
-                            coord: [ 6, 6 ],
-                            snapX: 0.5,
-                            snapY: 0.5,
-                            normalStyle: {
-                                stroke: KhanUtil.BLUE,
-                                fill: KhanUtil.BLUE
-                            }
-                        });
-
+                        label( [ 0, Y ], "D", "above" );
                         graph.pointD = addMovablePoint({
-                            coord: [ 0, 6 ],
+                            coord: [ 0, Y ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        label( [ X, Y ], "C", "above" );
+                        graph.pointC = addMovablePoint({
+                            coord: [ X, Y ],
                             snapX: 0.5,
                             snapY: 0.5,
                             normalStyle: {
@@ -396,7 +463,195 @@
                 </div>
                 <div class="solution" data-type="custom">
                     <div class="instruction">
-                        直接在題目區用拉的呈現
+                        拖拉圖中的藍點，畫出放大圖。
+                    </div>
+                    <div class="guess"> [ graph.pointA.coord, graph.pointB.coord,graph.pointD.coord,graph.pointC.coord ] 
+                    </div>
+                    <div class="validator-function">
+                        var AB = guess[1][0] - guess[0][0];
+                        var AD = guess[2][1] - guess[0][1];
+                        var CD = guess[3][0] - guess[2][0];
+                        var CB = guess[3][1] - guess[1][1];
+                        var area = (AB/2)*(AD/2);
+                        return (AB == CD && AD == CB && area == (J*K/4));
+                    </div>
+                    <div class="show-guess">
+                        graph.pointA.setCoord( guess[0] );
+                        graph.pointB.setCoord( guess[1] );
+                        graph.pointD.setCoord( guess[2] );
+                        graph.pointC.setCoord( guess[3] );
+                        graph.line1.transform( true );
+                        graph.line2.transform( true );
+                        graph.line3.transform( true );
+                        graph.line4.transform( true );
+                    </div>
+                </div>
+                <div class="hints">
+                    <p>放大後的邊長 <code>=</code> 原邊長 <code>\times</code> 放大的倍數<br/>
+                       放大後的角度 <code>=</code> 原來圖形的角度。
+                    </p>
+                    <p>甲圖是長寬分別為 <span data-if="X>Y"><code><var>X</var>,<var>Y</var></code></span><span data-if="Y>X"><code><var>Y</var>,<var>X</var></code></span> 公分的長方形，所以甲圖的 <code><var>ratio</var></code> 倍放大圖是<span data-if="X>Y"><code><var>J</var>,<var>K</var></code></span><span data-if="Y>X"><code><var>K</var>,<var>J</var></code></span> 公分的長方形。</p>
+
+                    <div>
+                        <p>我們先點出 <code>E</code> 點。</p>
+                        <div class="graphie" data-update="area">
+                            
+                            label( [ X+3, 0 ], "E", "left" );
+                            
+                        </div>
+                    </div>
+
+                    <div>
+                        <p>原圖的 <code>B</code> 點在 <code>A</code> 點右方 <code><var>X</var></code> 格，所以第二點 <code>F</code> 要在 <code>E</code> 點右方 <code><var>X</var>\times<var>ratio</var>=<var>J</var></code> 格。</p>
+                        <div class="graphie" data-update="area">  
+                        
+                            path([[X+3, 0], [X+3+J, 0]],{ stroke: PINK });
+
+                            //label( [ 0, 0 ], "D", "below" );
+                            label( [ X+3+J, 0], "F", "right" );
+                        </div>    
+                    </div>
+                    
+                    <div>
+                        <p>原圖的 <code>D</code> 點在 <code>A</code> 點上方 <code><var>Y</var></code> 格，所以第三點 <code>H</code> 要在 <code>E</code> 點上方 <code><var>Y</var>\times<var>ratio</var>=<var>K</var></code> 格。</p>
+                        <div class="graphie" data-update="area">  
+                        
+                            path([[X+3, 0], [X+3, K]],{ stroke: PINK });
+                            
+                            label( [ X+3, K ], "H", "above" );
+                        </div>    
+                    </div>
+
+                    <div>
+                        <p>按照同樣的方法畫出 <code>G</code> 點，就完成一個長寬分別是 <span data-if="X>Y"><code><var>J</var>,<var>K</var></code></span><span data-if="Y>X"><code><var>K</var>,<var>J</var></code></span> 公分的長方形。圖中的乙圖就是甲圖的 <code><var>ratio</var></code> 倍放大圖。
+                        <div class="graphie" data-update="area">
+                            
+                            path([[X+3, 0], [X+3, K], [X+3+J, K], [X+3+J, 0], true],
+                            { stroke: PINK });
+
+                            label( [ ((X+3+X+J+3)/2), 0 ], "乙圖", "below" );
+                            //label( [ X+3, 0 ], "E", "left" );
+                            label( [ X+3+J, 0 ], "F", "right" );
+                            label( [ X+3, K ], "H", "above" );
+                            label( [ X+3+J, K ], "G", "above" );
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="Trapezoid">
+                <div class="vars">
+                    <var id="K">randRange(2,3)</var>
+                    <var id="J">randRange(2,3)</var>
+                    <var id="ans">K*J</var>
+                    <!--<var id="J">2</var>
+                    <var id="K">J/2</var>-->
+                </div>
+                <div class="question">
+                    <p>在下面的方格中，拖拉藍色的點，畫出甲圖的 <code>\dfrac{1}{<var>J</var>}</code> 倍縮小圖</p>
+                    <div class="graphie" id="area">
+                        graphInit({
+                                range: [ [-1,25], [-1,11] ],
+                                scale: 20,
+                                axisArrows:0,
+                                tickStep: 1,
+                                labelStep: 1,
+                                gridOpacity: 0.2,
+                                axisOpacity: 0.05,
+                                tickOpacity: 0.4,
+                                labelOpacity: 0.01,
+                            });
+
+                        init({ range: [[-1, 26], [-1, 11]], scale: 20});
+                        path([[0, 0], [2*ans, 0], [ans, ans], [0, ans], true],
+                        {  stroke: GRAY  });
+
+                        addMouseLayer();
+
+                        label( [ ans, 0 ], "甲圖", "below" );
+                        
+                        label( [ 0, 0 ], "A", "below" );
+                        graph.pointA = addMovablePoint({
+                            coord: [ 0, 0 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        label( [ 2*ans, 0 ], "B", "below" );
+                        graph.pointB = addMovablePoint({
+                            coord: [ 2*ans, 0 ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        label( [ ans, ans ], "C", "above" );
+                        graph.pointC = addMovablePoint({
+                            coord: [ ans, ans ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        label( [ 0, ans ], "D", "above" );
+                        graph.pointD = addMovablePoint({
+                            coord: [ 0, ans ],
+                            snapX: 0.5,
+                            snapY: 0.5,
+                            normalStyle: {
+                                stroke: KhanUtil.BLUE,
+                                fill: KhanUtil.BLUE
+                            }
+                        });
+
+                        graph.line1 = addMovableLineSegment({
+                            pointA: graph.pointA,
+                            pointZ: graph.pointB,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        graph.line2 = addMovableLineSegment({
+                            pointA: graph.pointB,
+                            pointZ: graph.pointC,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+
+                        graph.line3 = addMovableLineSegment({
+                            pointA: graph.pointC,
+                            pointZ: graph.pointD,
+                            fixed: true,
+                            //extendLine: true
+                        });
+
+                        graph.line4 = addMovableLineSegment({
+                            pointA: graph.pointD,
+                            pointZ: graph.pointA,
+                            fixed: true,
+                            //extendLine: true
+                        });
+                        
+                        graph.pointA.toFront();
+                        graph.pointB.toFront();
+                        graph.pointC.toFront();
+                        graph.pointD.toFront();
+
+                    </div>
+                </div>
+                <div class="solution" data-type="custom">
+                    <div class="instruction">
+                        拖拉圖中的藍點，畫出縮小圖。
                     </div>
                     <div class="guess"> [ graph.pointA.coord, graph.pointB.coord,graph.pointC.coord,graph.pointD.coord ] 
                     </div>
@@ -406,7 +661,7 @@
                         var CD = guess[2][0] - guess[3][0];
                         var CB = guess[2][1] - guess[1][1];
                         var area = ((BA+CD)*DA)/2;
-                        return (area == (54/(J*J)));
+                        return (area == (K+2*K)*K/2);
                     </div>
                     <div class="show-guess">
                         graph.pointA.setCoord( guess[0] );
@@ -420,15 +675,51 @@
                     </div>
                 </div>
                 <div class="hints">
-                    <p>縮小後的邊長<code>=</code>原邊長<code>\times</code>縮小的倍數<br>縮小後的角度<code>=</code>原來圖形的角度
+                    <p>縮小後的邊長 <code>=</code> 原邊長 <code>\times</code> 縮小的倍數<br>
+                       縮小後的角度 <code>=</code> 原來圖形的角度
                     </p>
-                    <div class="graphie" data-update="area">
-                        init({ range: [[-1, 25], [-1, 11]], scale: 20});
-                        path([[12+3, 0], [12+3, 6/J], [12+3+(6/J), 6/J], [12+3+(12/J), 0], true],
-                        { stroke: BLUE });
 
-                        label( [ ((12+3+(12/J)+12+3)/2), 0 ], "乙圖", "below" );
+                    <div>
+                        <p>我們先點出 <code>E</code> 點。</p>
+                        <div class="graphie" data-update="area">
+                            
+                            label( [ 2*ans+2, 0 ], "E", "left" );
+                            
+                        </div>
                     </div>
+
+                    <div>
+                        <p>原圖的 <code>B</code> 點在 <code>A</code> 點右方 <code><var>2*ans</var></code> 格，所以第二點 <code>F</code> 要在 <code>E</code> 點右方 <code><var>2*ans</var>\times\dfrac{1}{<var>J</var>}=<var>2*K</var></code> 格。</p>
+                        <div class="graphie" data-update="area">  
+                        
+                            path([[2*ans+2, 0], [2*ans+2+2*K, 0]],{ stroke: PINK });
+
+                            label( [2*ans+2+2*K, 0], "F", "right" );
+                        </div>    
+                    </div>
+                    
+                    <div>
+                        <p>原圖的 <code>D</code> 點在 <code>A</code> 點上方 <code><var>ans</var></code> 格，所以第三點 <code>H</code> 要在 <code>E</code> 點上方 <code><var>ans</var>\times\dfrac{1}{<var>J</var>}=<var>K</var></code> 格。</p>
+                        <div class="graphie" data-update="area">  
+                        
+                            path([[2*ans+2, 0], [2*ans+2, K]],{ stroke: PINK });
+                            
+                            label( [ 2*ans+2, K ], "H", "above" );
+                        </div>    
+                    </div>
+
+                    <div>
+                        <p>按照同樣的方法畫出 <code>G</code> 點，就完成乙圖。圖中的乙圖就是甲圖的 <code>\dfrac{1}{<var>J</var>}</code> 倍縮小圖。
+                        <div class="graphie" data-update="area">
+                            
+                            path([[2*ans+2, 0], [2*ans+2, K], [2*ans+2+K, K], [2*ans+2+2*K, 0], true],{ stroke: PINK });
+
+                            label( [ (2*ans+2+K), 0 ], "乙圖", "below" );
+
+                            label( [ 2*ans+2+K, K ], "G", "above" );
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div id="kiteshape">
@@ -438,7 +729,7 @@
                     <var id="L">2*J</var>
                 </div>
                 <div class="question">
-                    <p>在下面方格中，畫出乙圖的<code><var>J</var></code>倍放大圖</p>
+                    <p>在下面方格中，拖拉藍色的點，畫出乙圖的 <code><var>J</var></code> 倍放大圖。</p>
                     <div class="graphie" id="area">
                         graphInit({
                                 range: [ [-1,20], [-1,20] ],
@@ -459,6 +750,7 @@
 
                         label( [ 2, 11 ], "乙圖", "below" );
                         
+                        label( [ 0, 13 ], "A", "left" );
                         graph.pointA = addMovablePoint({
                             coord: [ 0, 13 ],
                             snapX: 0.5,
@@ -469,6 +761,7 @@
                             }
                         });
 
+                        label( [ 2, 15 ], "B", "above" );
                         graph.pointB = addMovablePoint({
                             coord: [ 2, 15 ],
                             snapX: 0.5,
@@ -479,6 +772,7 @@
                             }
                         });
 
+                        label( [ 6, 13 ], "C", "right" );
                         graph.pointC = addMovablePoint({
                             coord: [ 6, 13 ],
                             snapX: 0.5,
@@ -489,6 +783,7 @@
                             }
                         });
 
+                        label( [ 2, 11 ], "D", "left" );
                         graph.pointD = addMovablePoint({
                             coord: [ 2, 11 ],
                             snapX: 0.5,
@@ -537,7 +832,7 @@
                 </div>
                 <div class="solution" data-type="custom">
                     <div class="instruction">
-                        直接在題目區用拉的呈現
+                        拖拉圖中的藍點，畫出放大圖。
                     </div>
                     <div class="guess"> [ graph.pointA.coord, graph.pointB.coord,graph.pointC.coord,graph.pointD.coord ] 
                     </div>
@@ -559,19 +854,58 @@
                     </div>
                 </div>
                 <div class="hints">
-                    <p>放大後的邊長<code>=</code>原邊長<code>\times</code>放大的倍數<br/>放大後的角度<code>=</code>原來圖形的角度
-                    <br/>
-                        要繪製出乙圖的<font color = "RED"><code><var>J</var></code></font>倍放大圖可以找到乙圖對角線的中心點後，將乙圖的對角線放大成原長的<font color = "RED"><code><var>J</var></code></font>倍
+                    <p>放大後的邊長 <code>=</code> 原邊長 <code>\times</code> 放大的倍數<br/>
+                       放大後的角度 <code>=</code> 原來圖形的角度
                     </p>
-                    <div class="graphie" data-update="area">
-                        init({ range: [[-1, 20], [-1, 20]], scale: 20});
-                        path([[0,13], [6*J,13], true], { stroke: RED });
-                        path([[(2*J), (13+L)], [(2*J), (13-L)], true], { stroke: RED });
+                    <div>
+                        <p>要繪製出乙圖的<font color = "RED"><code><var>J</var></code></font>倍放大圖，可以先利用乙圖的 <code>A</code> 點當作放大圖的 <code>E</code> 點。</p>
+                        <div class="graphie" data-update="area">  
+                        
+                            label( [ 0, 13 ], "E", "right" );
+                            
+                        </div>  
                     </div>
-                    <div class="graphie" data-update="area">
-                        init({ range: [[-1, 30], [-1, 20]], scale: 20});
-                        path([[0,13], [(2*J), (13+L)], [6*J,13], [(2*J), (13-L)], true], { stroke: RED });
+
+                    <div>
+                        <p>乙圖的 <code>B</code> 點在 <code>A</code> 點右方 <code>2</code> 格上方 <code>2</code> 格，所以第二點 <code>F</code> 要在 <code>E</code> 點右方 <code><var>2*J</var></code> 格上方 <code><var>2*J</var></code>。</p>
+                        <div class="graphie" data-update="area">  
+                        
+                            path([[0, 13], [0+2*J, 13+2*J]],{ stroke: PINK });
+
+                            //label( [ 0, 0 ], "D", "below" );
+                            label( [0+2*J, 13+2*J], "F", "right" );
+                        </div>    
                     </div>
+                    
+                    <div>
+                        <p>乙圖的 <code>D</code> 點在 <code>A</code> 點右方 <code>2</code> 格下方 <code>2</code> 格，所以第三點 <code>H</code> 要在 <code>E</code> 點右方 <code><var>2*J</var></code> 格下方 <code><var>2*J</var></code>。</p>
+                        <div class="graphie" data-update="area">  
+                        
+                            path([[0, 13], [0+2*J, 13-2*J]],{ stroke: PINK });
+
+                            label( [0+2*J, 13-2*J], "H", "right" );
+                        </div>    
+                    </div>
+
+                    <div>
+                        <p>乙圖的 <code>C</code> 點在 <code>A</code> 點右方 <code>6</code> 格，所以第四點 <code>G</code> 要在 <code>E</code> 點右方 <code><var>6*J</var></code> 格。</p>
+                        <div class="graphie" data-update="area">  
+                        
+                            path([[0+6*J, 13], [0+2*J, 13-2*J]],{ stroke: PINK });
+                            path([[0+6*J, 13], [0+2*J, 13+2*J]],{ stroke: PINK });
+
+                            label( [0+6*J, 13], "G", "right" );
+                        </div>    
+                    </div>
+
+                    <div>
+                        <p>甲圖就是乙圖的 <code><var>J</var></code> 倍放大圖</p>
+                        <div class="graphie" data-update="area">  
+                            label( [0+2*J, 13-2*J], "甲圖", "below" );
+                        </div> 
+                    </div>
+
+                
                 </div>
             </div>
             <div id="parallelogram">
@@ -581,7 +915,7 @@
                     <var id="L">2*J</var>
                 </div>
                 <div class="question">
-                    <p>在下面方格中，畫出甲圖的<code>\dfrac{1}{<var>J</var>}</code>縮小圖</p>
+                    <p>在下面方格中，拖拉藍色點，畫出甲圖的 <code>\dfrac{1}{<var>J</var>}</code> 倍縮小圖</p>
                     <div class="graphie" id="area">
                         graphInit({
                                 range: [ [-1,25], [-1,20] ],
@@ -602,6 +936,7 @@
 
                         label( [ 9, 9 ], "甲圖", "below" );
                         
+                        label( [0, 15], "A", "left" );
                         graph.pointA = addMovablePoint({
                             coord: [ 0, 15 ],
                             snapX: 0.5,
@@ -612,6 +947,7 @@
                             }
                         });
 
+                        label( [12, 15], "B", "right" );
                         graph.pointB = addMovablePoint({
                             coord: [ 12, 15 ],
                             snapX: 0.5,
@@ -622,6 +958,7 @@
                             }
                         });
 
+                        label( [15, 9], "C", "right" );
                         graph.pointC = addMovablePoint({
                             coord: [ 15, 9 ],
                             snapX: 0.5,
@@ -632,6 +969,7 @@
                             }
                         });
 
+                        label( [3, 9], "D", "left" );
                         graph.pointD = addMovablePoint({
                             coord: [ 3, 9 ],
                             snapX: 0.5,
@@ -679,7 +1017,7 @@
                 </div>
                 <div class="solution" data-type="custom">
                     <div class="instruction">
-                        直接在題目區用拉的呈現
+                        拖拉圖中的藍點，畫出縮小圖。
                     </div>
                     <div class="guess"> [ graph.pointA.coord, graph.pointB.coord,graph.pointC.coord,graph.pointD.coord ] 
                     </div>
@@ -704,21 +1042,49 @@
                     </div>
                 </div>
                 <div class="hints">
-                    <p>
-                        縮小後的邊長<code>=</code>原邊長<code>\times</code>縮小的倍數<br/>
-                        縮小後的角度<code>=</code>原來圖形的角度<br/>
-                        要繪製出甲圖的<font color="RED"><code>\dfrac{1}{<var>J</var>}</code></font>倍縮小圖可以將甲圖的上下兩邊先縮小成原先的<font color="RED"><code>\dfrac{1}{<var>J</var>}</code></font>後，逐一點出相對應的頂點，再將其頂點連線。<br/>
-                    </p>
-                    <div class="graphie" data-update="area">
-                        init({ range: [[-1, 25], [-1, 20]], scale: 20});
-                        path([[0, 15], [12/J, 15], true], { stroke: RED });
-                        path([[0+(3/J), 15-(6/J)], [0+(12/J)+(3/J), 15-(6/J)], true], { stroke: RED });
+                    <div>
+                        <p>
+                        縮小後的邊長 <code>=</code> 原邊長 <code>\times</code> 縮小的倍數<br/>
+                        縮小後的角度 <code>=</code> 原來圖形的角度<br/>
+                        要繪製出甲圖的<font color="RED"><code>\dfrac{1}{<var>J</var>}</code></font>倍縮小圖，我們可以先將左上角的 <code>A</code> 點當作 <code>E</code> 點。
+                        </p>
+                        <div class="graphie" data-update="area">
+                            label( [0, 15], "E", "above" );
+                        </div>
                     </div>
-                    <div class="graphie" data-update="area">
-                        init({ range: [[-1, 30], [-1, 20]], scale: 20});
-                        path([[0, 15], [0+(3/J), 15-(6/J)], true], { stroke: RED });
-                        path([[12/J, 15], [0+(12/J)+(3/J), 15-(6/J)], true], { stroke: RED });
+                    <div>
+                        <p>原圖的 <code>B</code> 點在 <code>A</code> 右 <code>12</code> 格的地方 ，所以第二點 <code>F</code> 要在 <code>E</code> 點右 <code>12\times\dfrac{1}{<var>J</var>}=<var>12/J</var></code> 格的地方。</p>
+                        <div class="graphie" data-update="area">
+                            path([[0, 15], [12/J, 15]], { stroke: RED });
+                            label( [12/J,15] , "F" , "above");
+                        </div>
                     </div>
+
+                    <div>
+                        <p>原圖的 <code>D</code> 點在 <code>A</code> 右方 <code>3</code> 格下方 <code>6</code> 格的地方 ，所以第三點 <code>H</code> 要在 <code>E</code> 點右方 <code><var>3/J</var></code> 格下方 <code><var>6/J</var></code>的地方。</p>
+                        <div class="graphie" data-update="area">
+                            path([[0, 15], [3/J, 15-6/J]], { stroke: RED });
+                            label( [3/J, 15-6/J] , "H" , "left");
+                        </div>
+                    </div>
+
+                    <div>
+                        <p>原圖的 <code>C</code> 點在 <code>D</code> 右 <code>12</code> 格的地方 ，所以第四點 <code>G</code> 要在 <code>H</code> 點右 <code>12\times\dfrac{1}{<var>J</var>}=<var>12/J</var></code> 格的地方。</p>
+                        <div class="graphie" data-update="area">
+                            path([[3/J, 15-6/J], [3/J+12/J, 15-6/J]], { stroke: RED });
+                            path([[12/J, 15], [3/J+12/J, 15-6/J]], { stroke: RED });
+                            label( [3/J+12/J, 15-6/J] , "G" , "right");
+                        </div>
+                    </div>
+
+                    <div>
+                        <p>乙圖就是甲圖的 <code>\dfrac{1}{<var>J</var>}</code> 倍縮小圖</p>
+                        <div class="graphie" data-update="area">  
+                            label( [1.5/J+6/J, 15-6/J], "乙圖", "below" );
+                        </div> 
+                    </div>
+
+                    
                 </div>
             </div>
         </div>
