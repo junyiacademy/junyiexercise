@@ -294,6 +294,7 @@ function handleAttempt(data) {
             }); 
         }
         
+        $("#raise-hand-button").css("background","white");
         
 
         if(!/iphone|ipod|ipad/i.test(navigator.userAgent)) // check if is ipad device
@@ -580,6 +581,11 @@ function request(method, data) {
 
     attemptHintQueue.queue(function(next) {
         $.ajax(params).then(function(data, textStatus, jqXHR) {
+
+            if (data.exerciseStates.struggling && !data.actionResults.attemptCorrect){
+                $("#raise-hand-button").css("background","red");
+            }
+
             deferred.resolve(data, textStatus, jqXHR);
 
             // Tell any listeners that we now have new userExercise data
@@ -611,6 +617,8 @@ function request(method, data) {
 }
 
 function readyForNextProblem(e, data) {
+    $("#raise-hand-button").css("background","white");
+
     if (!firstProblem) {
         // As both of the following variables are only used to make sure the
         // client matches the server on pageLoad, we will set them back to 0
