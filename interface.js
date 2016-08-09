@@ -294,9 +294,6 @@ function handleAttempt(data) {
             }); 
         }
         
-        $("#raise-hand-button").css("background","white");
-        
-
         if(!/iphone|ipod|ipad/i.test(navigator.userAgent)) // check if is ipad device
         {
             $("#next-question-button").focus();
@@ -583,7 +580,7 @@ function request(method, data) {
         $.ajax(params).then(function(data, textStatus, jqXHR) {
 
             if (data.exerciseStates.struggling && !data.actionResults.attemptCorrect){
-                $("#raise-hand-button").css("background","red");
+                $("#raise-hand-button").effect('shake', { times:3 }, 800); 
             }
 
             deferred.resolve(data, textStatus, jqXHR);
@@ -617,7 +614,6 @@ function request(method, data) {
 }
 
 function readyForNextProblem(e, data) {
-    $("#raise-hand-button").css("background","white");
 
     if (!firstProblem) {
         // As both of the following variables are only used to make sure the
