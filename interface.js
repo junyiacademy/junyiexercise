@@ -139,6 +139,7 @@ function problemTemplateRendered() {
     // Next question button
     $("#next-question-button").click(function() {
         $(Exercises).trigger("gotoNextProblem");
+        $("#raise-hand-button").prop('disabled', false);
 
         // Disable next question button until next time
         // TODO(alpert): Why? Is blurring not enough?
@@ -464,11 +465,11 @@ function updateHintButtonText() {
 
     if (hintsAreFree) {
         $hintButton.val(hintsUsed ?
-                "下一個步驟 (還有 " + hintsLeft + " 個步驟" :
+                "下一個步驟 ( 還有 " + hintsLeft + " 個步驟 ）" :
                 "解題說明");
     } else {
         $hintButton.val(hintsUsed ?
-                "下一個提示 (還有 " + hintsLeft + " 個提示)" :
+                "下一個提示 ( 還有 " + hintsLeft + " 個提示 )" :
                 "我需要提示");
     }
 }
