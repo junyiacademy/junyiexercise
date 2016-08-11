@@ -67,25 +67,47 @@
 			<var id="K">randRange(0,5)</var>
 			<var id="L">J-K</var>
 			<var id="T">randRange(1,2)</var>
+			<var id="ans">T===1?L:K</var>
+			<var id="set">
+			(function(){
+				if (T == 1){
+					$('#grid31').val(K);
+					$('#grid32').val("?");
+					$('#grid41').val(J);
+				} else {
+					$('#grid31').val("?");
+					$('#grid32').val(L);
+					$('#grid41').val(J);
+				}
+			})()</var>
 		</div>
 		<div class="question">
-			<p>做做看， <code class="hint_green"><var>J</var></code> 這個數可以分成哪兩個數？</p>
-			<p><input type="text" class="input_text" data-if="T==1" id="ans1"> <code class="hint_blue">\qquad<var>K</var>\qquad</code> <input type="text" class="input_text" data-if="T==2" id="ans2"></p>
+			<p>做做看， <code class="hint_green"><var>J</var></code> 這個數可以分成 <span data-if="T===1"><code><var>K</var></code> 和</span><span data-if="T===2"><code><var>L</var></code> 和</span>哪一個數？</p>
+			
+			<table class="nLimit">
+				<tr>
+					<td><input type="text"  id="grid31" class="box" readonly="readonly" style="color:#6495ED"/></td><td></td>
+					<td><input type="text"  id="grid32" class="box" readonly="readonly" style="color:red"/></td><td></td>
+				</tr>
+				<tr><td colspan="3">╲╱</td>
+				</tr>
+				<tr><td></td>
+					<td><input type="text"  id="grid41" class="box" readonly="readonly"/></td>
+				</tr>
+			</table>
+
 		</div>
 		<div class="solution" data-type="multiple">
-			<div class="sol" data-type="custom">
-				<div class="guess">$('#ans'+T).val()</div>
-				<div class="validator-function">
-					if(guess==""){return "";}
-					return guess==L;
-				</div>
-			</div>
-			<p class="example">整數，例：<code>6</code></p>
+			<p><code>?\ =\ </code><span class="sol" data-forms="integer"><var>ans</var></span></p>
 		</div>
+		
 		<div class="hints">
+			<div>用 <code><var>J</var></code> 個圈圈表示 <code><var>J</var></code>。</div>
 			<div class="graphie" id="circle_1">
-				init({range:[[0,11],[-0.5,0.5]],scale:40});
+				init({range:[[0,11],[-1,0.5]],scale:40});
 				label( [0, 0], "\\color{#28AE7B}{"+J+"}=", "right" );
+				for(var i = 0; i &lt; J; i++){circle( [0.5*i+1.5, 0], 3 / 20, { fill: "#28AE7B", stroke: "none" });}
+				/*
 				if(T==1){
 					for(var i = 0; i &lt; L; i++){circle( [0.5*i+1.5, 0], 3 / 20, { fill: KhanUtil.RED, stroke: "none" });}
 					for(var j = 0; j &lt; K; j++){circle( [0.5*(j+L)+1.5, 0], 3 / 20, { fill: KhanUtil.BLUE, stroke: "none" });}
@@ -93,28 +115,46 @@
 					for(var i = 0; i &lt; L; i++){circle( [0.5*(i+K)+1.5, 0], 3 / 20, { fill: KhanUtil.RED, stroke: "none" });}
 					for(var j = 0; j &lt; K; j++){circle( [0.5*j+1.5, 0], 3 / 20, { fill: KhanUtil.BLUE, stroke: "none" });}
 				}
+				*/
 			</div>
-			<div class="graphie" id="circle_2">
-				init({range:[[0,11],[-0.5,0.5]],scale:40});
-				label( [0, 0], "\\color{#6495ED}{"+K+"}=", "right" );
+			<div class="graphie" data-update="circle_1">
 				if(T==1){
-					for(var j = 0; j &lt; K; j++){circle( [0.5*(j+L)+1.5, 0], 3 / 20, { fill: KhanUtil.BLUE, stroke: "none" });}
+					for(var i = 0; i &lt; K; i++){circle( [0.5*i+1.5, 0], 3 / 20, { fill: KhanUtil.BLUE, stroke: "none" });}
+					path([[1.25, -0.25],[1.25, 0.25],[0.5*(K+1)+0.75, 0.25],[0.5*(K+1)+0.75, -0.25],true],{fill: "none",stroke: "blue"});
+					label( [(K+0)/2 *0.5+1.25,-0.1], "\\color{blue}{"+ K +"}", "below" );
+					//
 				}else{
-					for(var j = 0; j &lt; K; j++){circle( [0.5*j+1.5, 0], 3 / 20, { fill: KhanUtil.BLUE, stroke: "none" });}
+					//
+					path([[1.25, -0.25],[1.25, 0.25],[0.5*(L+1)+0.75, 0.25],[0.5*(L+1)+0.75, -0.25],true],{fill: "none",stroke: "red"});
+					for(var j = 0; j &lt; L; j++){circle( [0.5*j+1.5, 0], 3 / 20, { fill: KhanUtil.RED, stroke: "none" });}
+					label( [(L+0)/2 *0.5+1.25,-0.1], "\\color{red}{"+ L +"}", "below" );
 				}
+
+				
 			</div>
 			<div>
-				<div class="graphie" id="circle_3">
-					init({range:[[0,11],[-0.5,0.5]],scale:40});
-					label( [0, 0], "\\color{red}{"+L+"}=", "right" );
+				<div class="graphie" data-update="circle_1">
+					
 					if(T==1){
-						for(var i = 0; i &lt; L; i++){circle( [0.5*i+1.5, 0], 3 / 20, { fill: KhanUtil.RED, stroke: "none" });}
-					}else{
+						label( [(K+J)/2 *0.5+1.25,0], "\\color{red}{"+"↓"+"}", "below" );
+						label( [(K+J)/2 *0.5+1.25,-0.5], "\\color{red}{"+ L +"}", "below" );
+						
 						for(var i = 0; i &lt; L; i++){circle( [0.5*(i+K)+1.5, 0], 3 / 20, { fill: KhanUtil.RED, stroke: "none" });}
+
+					}else{
+						label( [(L+J)/2 * 0.5+1.25, 0], "\\color{blue}{"+"↓"+"}", "below" );
+						label( [(L+J)/2 * 0.5+1.25, -0.5], "\\color{blue}{"+K+"}", "below" );
+						
+						for(var j = 0; j &lt; K; j++){circle( [0.5*(j+L)+1.5, 0], 3 / 20, { fill: KhanUtil.BLUE, stroke: "none" });}
+
 					}
+					
 				</div>
 			</div>
-			<p><code class="hint_green"><var>J</var></code> 可以分成 <code class="hint_red" data-if="T==1"><var>L</var></code> <span data-if="T==1">和</span> <code class="hint_blue"><var>K</var></code> <span data-if="T==2">和</span> <code class="hint_red" data-if="T==2"><var>L</var></code> 。</p>
+			<p>
+				<code class="hint_green"><var>J</var></code> 可以分成 <code class="hint_red" data-if="T==1"><var>L</var></code> <span data-if="T==1">和</span> <code class="hint_blue"><var>K</var></code> <span data-if="T==2">和</span> <code class="hint_red" data-if="T==2"><var>L</var></code>。<br>
+				所以 <code>?=<var>ans</var></code>
+			</p>
 		</div>
 	</div>
 	
@@ -132,8 +172,8 @@
 		<div class="problem">
 			<table class="nLimit">
 				<tr>
-					<td><input type="text"  id="grid31" class="box" style="color:#6495ED"/></td><td></td>
-					<td><input type="text"  id="grid32" class="box" style="color:red"/></td><td></td>
+					<td><input type="text"  id="grid31" class="box" readonly="readonly" style="color:#6495ED"/></td><td></td>
+					<td><input type="text"  id="grid32" class="box" readonly="readonly" style="color:red"/></td><td></td>
 				</tr>
 				<tr><td colspan="3">╲╱</td>
 				</tr>
@@ -143,7 +183,9 @@
 			</table>
 			<p><code class="hint_blue"><var>K</var></code> 和 <code class="hint_red"><var>L</var></code> 合起來是多少？</p>
 		</div>
-		<div class="solution" data-forms="integer"><var>J</var></div>
+		<div class="solution" data-forms="multiple">
+			<p><code>?\ =\ </code><span class="sol" data-forms="integer"><var>J</var></span></p>
+		</div>
 		<div class="hints">
 			<div class="graphie" id="circle_2">
 				init({range:[[0,11],[-0.5,0.5]],scale:40});
