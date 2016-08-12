@@ -443,6 +443,12 @@ function onHintShown(e, data) {
     if (hintsUsed === numHints) {
         $("#hint").attr("disabled", true);
         $(Exercises).trigger("allHintsUsed");
+        
+        if (userExercise.exerciseStates.struggling) {
+            setTimeout(function(){
+                $("#raise-hand-button-container").effect("shake", {times: 3, distance: 5}, 480);
+            },3000);
+        }
     }
 
     var curTime = new Date().getTime();
@@ -583,8 +589,11 @@ function request(method, data) {
     attemptHintQueue.queue(function(next) {
         $.ajax(params).then(function(data, textStatus, jqXHR) {
 
-            if (data.exerciseStates.struggling && !data.actionResults.attemptCorrect){
-                $("#raise-hand-button").effect('shake', { times:3 }, 800); 
+            // stuggling & attempt answer
+            if (data.exerciseStates.struggling && "attemptCorrect" in data.actionResults){
+                if (!data.actionResults.attemptCorrect) {
+                    $("#get-hint-button-container").effect("shake", {times: 3, distance: 5}, 480);
+                }  
             }
 
             deferred.resolve(data, textStatus, jqXHR);
