@@ -208,7 +208,6 @@ function newProblem(e, data) {
     if (numHints === 0) {
         $("#get-hint-button-container").css("display","none");
     }
-    $(".hint-box").show();
     updateHintButtonText();
     $("#hint").attr("disabled", hintsUsed >= numHints);
 }
@@ -592,7 +591,14 @@ function request(method, data) {
             // stuggling & attempt answer
             if (data.exerciseStates.struggling && "attemptCorrect" in data.actionResults){
                 if (!data.actionResults.attemptCorrect) {
-                    $("#get-hint-button-container").effect("shake", {times: 3, distance: 5}, 480);
+                    var hint_disabled = $("#hint").attr("disabled");
+                    
+                    if (hint_disabled === "disabled") {
+                        $("#raise-hand-button").effect("shake", {times: 3, distance: 5}, 480);
+                    }
+                    else {
+                        $("#get-hint-button-container").effect("shake", {times: 3, distance: 5}, 480);
+                    }
                 }  
             }
 
