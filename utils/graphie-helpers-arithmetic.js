@@ -460,7 +460,7 @@ function Multiplier(a, b, digitsA, digitsB, deciA, deciB) {
         highlights = highlights.concat(drawDigits([bigDigit], -indexA, 2, KhanUtil.BLUE));
         highlights = highlights.concat(drawDigits([smallDigit], -indexB, 1, KhanUtil.PINK));
         if (carry) {
-            highlights = highlights.concat(graph.label([-indexA, 3], "\\color{#FFA500}{" + carry + "}", "below"));
+            highlights = highlights.concat(graph.label([-indexA-indexB, 3], "\\color{#FFA500}{" + carry + "}", "below"));
         }
         graph.label([2, -indexB * digitsA.length - indexA + 2],
             "\\color{#6495ED}{" + bigDigit + "}"
@@ -474,7 +474,7 @@ function Multiplier(a, b, digitsA, digitsB, deciA, deciB) {
         highlights = highlights.concat(drawDigits([ones], -indexB - indexA, -indexB, KhanUtil.GREEN));
 
         if (currCarry) {
-            highlights = highlights.concat(graph.label([-1 - indexA, 3], "\\color{#28AE7B}{" + currCarry + "}", "below"));
+            highlights = highlights.concat(graph.label([-1 - indexA-indexB, 3], "\\color{#28AE7B}{" + currCarry + "}", "below"));
             if (indexA === digitsA.length - 1) {
                 drawDigits([currCarry], -indexB - indexA - 1, -indexB);
                 highlights = highlights.concat(drawDigits([currCarry], -indexB - indexA - 1, -indexB, KhanUtil.GREEN));
@@ -497,7 +497,7 @@ function Multiplier(a, b, digitsA, digitsB, deciA, deciB) {
                 digitsProduct.unshift(0);
             }
             graph.path([[-1 - digitsProduct.length, 0.5 - digitsB.length], [1, 0.5 - digitsB.length]]);
-            graph.label([-1 - digitsProduct.length, 1 - digitsB.length] , "\\LARGE{+\\vphantom{0}}");
+            //graph.label([-1 - digitsProduct.length, 1 - digitsB.length] , "\\LARGE{+\\vphantom{0}}");
             drawDigits(digitsProduct, 1 - digitsProduct.length, -digitsB.length);
         }
     }
