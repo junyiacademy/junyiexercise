@@ -207,6 +207,13 @@ function newProblem(e, data) {
     $(".hint-box").toggle(numHints !== 0);
     updateHintButtonText();
     $("#hint").attr("disabled", hintsUsed >= numHints);
+
+    // add GA_code to scratchpad svg when newproblem render
+    $("#scratchpad svg").attr("onclick","Analytics.send_ga_event('exercise', 'click', 'scratchpad_used');");
+    $("#scratchpad").on('click', 'svg', function(e) {
+        e.preventDefault();
+        $("#scratchpad svg").attr("onclick","");
+    });
 }
 
 function handleCheckAnswer() {

@@ -455,6 +455,9 @@ var Khan = (function() {
                         if (!pad || !$("#scratchpad div").children().length) {
                             pad = new DrawingScratchpad(
                                 $("#scratchpad div")[0]);
+
+                            // add GA_code to scratchpad svg after drawing #scratchpad svg 
+                            $("#scratchpad svg").attr("onclick","Analytics.send_ga_event('exercise', 'click', 'scratchpad_used');");
                         }
                     };
 
