@@ -139,6 +139,7 @@ function problemTemplateRendered() {
     // Next question button
     $("#next-question-button").click(function() {
         $(Exercises).trigger("gotoNextProblem");
+        $("#raise-hand-button").prop('disabled', false);
 
         // Disable next question button until next time
         // TODO(alpert): Why? Is blurring not enough?
@@ -204,7 +205,9 @@ function newProblem(e, data) {
             .addClass("framework-" + framework);
 
     // Enable/disable the get hint button
-    $(".hint-box").toggle(numHints !== 0);
+    if (numHints === 0) {
+        $("#get-hint-button-container").css("display","none");
+    }
     updateHintButtonText();
     $("#hint").attr("disabled", hintsUsed >= numHints);
 }
@@ -294,8 +297,6 @@ function handleAttempt(data) {
             }); 
         }
         
-        
-
         if(!/iphone|ipod|ipad/i.test(navigator.userAgent)) // check if is ipad device
         {
             $("#next-question-button").focus();
@@ -441,6 +442,12 @@ function onHintShown(e, data) {
     if (hintsUsed === numHints) {
         $("#hint").attr("disabled", true);
         $(Exercises).trigger("allHintsUsed");
+        
+        if (userExercise.exerciseStates.struggling) {
+            setTimeout(function(){
+                $("#raise-hand-button-container").effect("shake", {times: 3, distance: 5}, 480);
+            },3000);
+        }
     }
 
     var curTime = new Date().getTime();
@@ -463,11 +470,11 @@ function updateHintButtonText() {
 
     if (hintsAreFree) {
         $hintButton.val(hintsUsed ?
-                "下一個步驟 (還有 " + hintsLeft + " 個步驟" :
+                "下一個步驟 ( 還有 " + hintsLeft + " 個步驟 ）" :
                 "解題說明");
     } else {
         $hintButton.val(hintsUsed ?
-                "下一個提示 (還有 " + hintsLeft + " 個提示)" :
+                "下一個提示 ( 還有 " + hintsLeft + " 個提示 )" :
                 "我需要提示");
     }
 }
@@ -580,6 +587,21 @@ function request(method, data) {
 
     attemptHintQueue.queue(function(next) {
         $.ajax(params).then(function(data, textStatus, jqXHR) {
+
+            // stuggling & attempt answer
+            if (data.exerciseStates.struggling && "attemptCorrect" in data.actionResults){
+                if (!data.actionResults.attemptCorrect) {
+                    var hint_disabled = $("#hint").attr("disabled");
+                    
+                    if (hint_disabled === "disabled") {
+                        $("#raise-hand-button").effect("shake", {times: 3, distance: 5}, 480);
+                    }
+                    else {
+                        $("#get-hint-button-container").effect("shake", {times: 3, distance: 5}, 480);
+                    }
+                }  
+            }
+
             deferred.resolve(data, textStatus, jqXHR);
 
             // Tell any listeners that we now have new userExercise data
@@ -611,6 +633,7 @@ function request(method, data) {
 }
 
 function readyForNextProblem(e, data) {
+
     if (!firstProblem) {
         // As both of the following variables are only used to make sure the
         // client matches the server on pageLoad, we will set them back to 0
