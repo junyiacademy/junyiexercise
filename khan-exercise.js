@@ -504,7 +504,7 @@ var Khan = (function() {
             },
 
             setVideos: function(exercise) {
-
+                this.resetRelatedVideoBox();
                 if (exercise.relatedVideos) {
                     this.cache[exercise.name] = exercise.relatedVideos;
                 }
@@ -551,7 +551,6 @@ var Khan = (function() {
 
                 var container = $(".related-video-box");
                 var jel = container.find(".related-video-list");
-                jel.empty();
 
                 var self = this;
                 var template = Templates.get("video.thumbnail");
@@ -612,6 +611,11 @@ var Khan = (function() {
 
                 ModalVideo.hookup();
                 this._eventsBound = true;
+            },
+            resetRelatedVideoBox: function(){
+                var container = $(".related-video-box");
+                container.hide();
+                container.find(".related-video-list").empty();
             }
         },
 
