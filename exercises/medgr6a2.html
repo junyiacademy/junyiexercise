@@ -57,7 +57,7 @@
             <div class="vars" data-ensure="(numsArray[0]-numsArray[1])!==0 && (numsArray[0]-numsArray[2])!==0 && (numsArray[0]-numsArray[3])!==0 && (numsArray[1]-numsArray[2])!==0 && (numsArray[1]-numsArray[3])!==0 && (numsArray[2]-numsArray[3])!==0 && M_percent &lt;=45 && K_percent&lt;=45 && L_percent&lt;=45 && J_percent&lt;=45 && J_percent !== 25">
                 <var id="test">(function(){Khan.scratchpad.disable();})()</var>
                 <var id="GCD">randRange(2,7)</var>
-                <var id="total">randFromArray([10,20,25])*GCD</var>
+                <var id="total">20*GCD</var>
                 <var id="numsArray">
                 (function(){
                     var arr = sortNumbers(randRangeUnique(1,total/GCD,3));
@@ -76,7 +76,11 @@
             
             <div class="question">
  
-                <p>下表是<var>table_name</var>。請根據下表的資料，先算出每個<var>item_name</var>所占的百分率。</p>
+                <p>下表是<var>table_name</var>。請根據下表的資料，回答下列問題。</p>
+                    <p>(1) 算出每個<var>item_name</var>所占的百分率。</p>
+                    <p>(2) 根據第 (1) 小題計算出的百分率，畫出百分圓形圖。</p>
+                    <hr>
+                <p>(1) 下面有四個空格，每一格都需作答。</p>
                 <table class="nLimit" style="background-color:#F8F8F8">
                     <tr><td><var>item_name</var></td><td><var>item_1</var></td><td><var>item_2</var></td><td><var>item_3</var></td><td><var>item_4</var></td></tr>
                     <tr><td><var>item_unit</var>(<var>unit</var>)</td><td><code><var>J</var></code></td><td><code><var>K</var></code></td><td><code><var>L</var></code></td><td><code><var>M</var></code></td></tr>
@@ -85,10 +89,9 @@
             </div>
 
             <div class="problem">
-                
                 <p>
-                    我們將圓周分為 <code>100</code> 等分，每 <code>1</code> 等分表示 <code>1\%</code>。</br>
-                    請你移動圓內的線段，畫出百分圓形圖。
+                    (2) 我們將圓周分為 <code>100</code> 等分，每 <code>1</code> 等分表示 <code>1\%</code>。</br>
+                    請你移動圓內的線段，畫出<var>item_1</var>、<var>item_2</var>、<var>item_3</var>和<var>item_4</var>的百分圓形圖。
                 </p>
                 <!--
                 <p style="font-weight: bold">下圖單位：<code>\%</code></p>-->
@@ -134,7 +137,7 @@
                                 fixedDistance: {
                                     dist: clockRadius,
                                     point: [0, 0],
-                                    snapPoints: 100
+                                    snapPoints: 20
                                 }
                             },
                             onMove: function(x, y) {
@@ -170,7 +173,7 @@
                                 fixedDistance: {
                                     dist: clockRadius,
                                     point: [0, 0],
-                                    snapPoints: 100
+                                    snapPoints: 20
                                 }
                             },
                             onMove: function(x, y) {
@@ -207,7 +210,7 @@
                                 fixedDistance: {
                                     dist: clockRadius,
                                     point: [0, 0],
-                                    snapPoints: 100
+                                    snapPoints: 20
                                 }
                             },
                             onMove: function(x, y) {
@@ -245,7 +248,7 @@
                                 fixedDistance: {
                                     dist: outerPointRadius,
                                     point: [0, 0],
-                                    snapPoints: 100
+                                    snapPoints: 20
                                 }
                             },
                             onMove: function(x, y) {
@@ -267,7 +270,7 @@
                                 fixedDistance: {
                                     dist: outerPointRadius,
                                     point: [0, 0],
-                                    snapPoints: 100
+                                    snapPoints: 20
                                 }
                             },
                             onMove: function(x, y) {
@@ -289,7 +292,7 @@
                                 fixedDistance: {
                                     dist: outerPointRadius,
                                     point: [0, 0],
-                                    snapPoints: 100
+                                    snapPoints: 20
                                 }
                             },
                             onMove: function(x, y) {
@@ -311,7 +314,7 @@
                                 fixedDistance: {
                                     dist: clockRadius,
                                     point: [0, 0],
-                                    snapPoints: 100
+                                    snapPoints: 20
                                 }
                             },
                             onMove: function(x, y) {
@@ -347,7 +350,7 @@
                                 fixedDistance: {
                                     dist: outerPointRadius,
                                     point: [0, 0],
-                                    snapPoints: 100
+                                    snapPoints: 20
                                 }
                             },
                             onMove: function(x, y) {
@@ -441,13 +444,14 @@
                     </div>
             </div>
             <div class="solution" data-type="multiple">
-                移動圓內直線，畫出圓形圖。
+                <font color="FF0000"><b>
+                驗證答案前，請一定要檢查是不是已經在左方圓形圖中「移動圓內的線段，畫出百分圓形圖」，否則不算完整作答唷！
+                </b></font>
                 <div class="sol" data-type="custom">
                     <div class="guess">[minutePoint.coord,hourPoint.coord,thirdPoint.coord,lastPoint.coord,$('#a_1').val().replace(/[ ]/g,""),$('#a_2').val().replace(/[ ]/g,""),$('#a_3').val().replace(/[ ]/g,""),$('#a_4').val().replace(/[ ]/g,"")]</div>
                     <div class="validator-function">
-                        if(KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270  && (guess[4]=='' || guess[5]=='' || guess[6]=='' || guess[7]=='')){
-                            return "";
-                        }
+                        
+                        
                         var greenAns = KhanUtil.findAngle(guess[2],[0,0])-KhanUtil.findAngle(guess[0],[0,0]);
                         greenAns&gt;360?greenAns-=360:(greenAns&lt;0?greenAns+=360:greenAns=greenAns);
                         var orangeAns = KhanUtil.findAngle(guess[0],[0,0])-KhanUtil.findAngle(guess[1],[0,0]);
@@ -458,6 +462,15 @@
                         blueAns&gt;360?blueAns-=360:(blueAns&lt;0?blueAns+=360:blueAns=blueAns);
                         var arr = KhanUtil.sortNumbers([Math.round(greenAns/3.6),Math.round(orangeAns/3.6),Math.round(redAns/3.6),Math.round(blueAns/3.6)]);
                         var ansArr = KhanUtil.sortNumbers([J_percent,K_percent,L_percent,M_percent]);
+
+                        if( KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270){
+                            return "請移動圓內的線段，畫出百分圓形圖，否則不算完整作答唷！";
+                        }
+
+                        if(KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270  && (guess[4]=='' || guess[5]=='' || guess[6]=='' || guess[7]=='')){
+                            return "";
+                        }
+
                         if(arr[0]==ansArr[0] && arr[1]==ansArr[1] && arr[2]==ansArr[2] && arr[3]==ansArr[3] && guess[4]==J_percent && guess[5]==K_percent && guess[6]==L_percent && guess[7]==M_percent){
                             return true;
                         }
@@ -496,7 +509,7 @@
                 </div>
             </div>
         </div>
-        
+        <!--
         <div id="case2-need-to-round-percent-pie-chart">
             <div class="vars" data-ensure=" M_percent &lt;=45 && K_percent&lt;=45 && L_percent&lt;=45 && J_percent&lt;=45 && J_percent !== 25 && (J_percent+K_percent+L_percent+M_percent===100)">
                 <var id="test">(function(){Khan.scratchpad.disable();})()</var>
@@ -520,8 +533,13 @@
             
             <div class="question">
  
-                <p>下表是<var>table_name</var>。請先根據下表的資料，算出每種<var>item_name</var>的<var>item_unit</var>所占的百分率。</br>
+                <p>下表是<var>table_name</var>。請先根據下表的資料，回答下列問題。
+                    <p>(1) 算出每種<var>item_name</var>的<var>item_unit</var>所占的百分率。</br>
                 (用四捨五入法將商取概數到小數點後第二位，再化成百分率)</p>
+                    <p>(2) 根據第 (1) 小題計算出的百分率，畫出百分圓形圖。</p>
+                    <hr>
+                <p>(1) 下面有四個空格，每一格都需作答。</p>
+                    
                 <table class="nLimit" style="background-color:#F8F8F8">
                     <tr><td><var>item_name</var></td><td><var>item_1</var></td><td><var>item_2</var></td><td><var>item_3</var></td><td><var>item_4</var></td></tr>
                     <tr><td><var>item_unit</var>(<var>unit</var>)</td><td><code><var>J</var></code></td><td><code><var>K</var></code></td><td><code><var>L</var></code></td><td><code><var>M</var></code></td></tr>
@@ -529,12 +547,11 @@
                 </table>
  
                 <p>
-                    下圖將圓周分為 <code>100</code> 等分，每 <code>1</code> 等分表示 <code>1\%</code>。</br>
-                    請你移動圓內的線段，畫出百分圓形圖。</br>
+                    (2) 下圖將圓周分為 <code>100</code> 等分，每 <code>1</code> 等分表示 <code>1\%</code>。</br>
+                    請你移動圓內的線段，畫出<var>item_1</var>、<var>item_2</var>、<var>item_3</var>和<var>item_4</var>的百分圓形圖。
                     
                 </p>
-                <!--
-                <p style="font-weight: bold">下圖單位：<code>\%</code></p> -->
+                
             </div>
             <div class="problem">
                 <div class="graphie" id="clock">
@@ -885,13 +902,13 @@
                     </div>
             </div>
             <div class="solution" data-type="multiple">
-                移動圓內直線，畫出圓形圖。
+                <font color="FF0000"><b>
+                驗證答案前，請一定要檢查是不是已經在左方圓形圖中「移動圓內的線段，畫出百分圓形圖」，否則不算完整作答唷！
+                </b></font>
                 <div class="sol" data-type="custom">
                     <div class="guess">[minutePoint.coord,hourPoint.coord,thirdPoint.coord,lastPoint.coord,$('#a_1').val().replace(/[ ]/g,""),$('#a_2').val().replace(/[ ]/g,""),$('#a_3').val().replace(/[ ]/g,""),$('#a_4').val().replace(/[ ]/g,"")]</div>
                     <div class="validator-function">
-                        if(KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270 && (guess[4]=='' || guess[5]=='' || guess[6]=='' || guess[7]=='')){
-                            return "";
-                        }
+                        
                         var greenAns = KhanUtil.findAngle(guess[2],[0,0])-KhanUtil.findAngle(guess[0],[0,0]);
                         greenAns&gt;360?greenAns-=360:(greenAns&lt;0?greenAns+=360:greenAns=greenAns);
                         var orangeAns = KhanUtil.findAngle(guess[0],[0,0])-KhanUtil.findAngle(guess[1],[0,0]);
@@ -902,6 +919,15 @@
                         blueAns&gt;360?blueAns-=360:(blueAns&lt;0?blueAns+=360:blueAns=blueAns);
                         var arr = KhanUtil.sortNumbers([Math.round(greenAns/3.6),Math.round(orangeAns/3.6),Math.round(redAns/3.6),Math.round(blueAns/3.6)]);
                         var ansArr = KhanUtil.sortNumbers([J_percent,K_percent,L_percent,M_percent]);
+
+                        if( KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270){
+                            return "請移動圓內的線段，畫出百分圓形圖，否則不算完整作答唷！";
+                        }
+
+                        if(KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270 && (guess[4]=='' || guess[5]=='' || guess[6]=='' || guess[7]=='')){
+                            return "";
+                        }                        
+
                         if(arr[0]==ansArr[0] && arr[1]==ansArr[1] && arr[2]==ansArr[2] && arr[3]==ansArr[3] && guess[4]==J_percent && guess[5]==K_percent && guess[6]==L_percent && guess[7]==M_percent){
                             return true;
                         }
@@ -944,7 +970,7 @@
                 </div>
             </div>
         </div>
-
+        -->
         <div id="case3-data-angle-pie-chart"  data-weight=2>
             <div class="vars" data-ensure="M_angle&lt;=162 && K_angle&lt;=162 && L_angle&lt;=162 && J_angle&lt;=162 && J_angle !== 90">
                 <var id="test">(function(){Khan.scratchpad.disable();})()</var>
@@ -970,15 +996,20 @@
             
             <div class="question">
  
-                <p>下表是<var>table_name</var>。請根據下表的資料，算出每種<var>item_name</var>所占的比率，再根據比率算出圓心角的角度。</p>
+                <p>下表是<var>table_name</var>。請根據下表的資料，回答下列問題。
+                    <p>(1) 算出每種<var>item_name</var>所占的比率，再根據比率算出圓心角的角度。</p>
+                    <p>(2) 根據第 (1) 小題計算出的角度，畫出圓形圖。</p>
+                <hr>
+                <p>(1) 下面有四個空格，每一格都需作答。</p>
+                    
                 <table class="nLimit" style="background-color:#F8F8F8">
                     <tr><td><var>item_name</var></td><td><var>item_1</var></td><td><var>item_2</var></td><td><var>item_3</var></td><td><var>item_4</var></td></tr>
                     <tr><td><var>item_unit</var>(<var>unit</var>)</td><td><code><var>J</var></code></td><td><code><var>K</var></code></td><td><code><var>L</var></code></td><td><code><var>M</var></code></td></tr>
                     <tr><td>圓心角(度)</td><td><input type="text" id="a_1" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>^\circ</code></td><td><input type="text" id="a_2" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>^\circ</code></td><td><input type="text" id="a_3" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>^\circ</code></td><td><input type="text" id="a_4" style="height:60px;width:50px;background:#FFFFFF;border:0px;text-align:center"><code>^\circ</code></td></tr>                     
                 </table>
  
-                <p>我們將圓周分為 <code>360</code> 小格，每一小格是 <code>1</code> 度，每一大格是 <code>5</code> 度。</br>
-                    請你移動圓內的線段，根據圓心角的角度畫出圓形圖。</p>
+                <p>(2) 我們將圓周分為 <code>360</code> 小格，每一小格是 <code>1</code> 度，每一大格是 <code>5</code> 度。</br>
+                    請你移動圓內的線段，根據圓心角的角度畫出<var>item_1</var>、<var>item_2</var>、<var>item_3</var>和<var>item_4</var>的圓形圖。</p>
 
             </div>
             <div class="problem">
@@ -1330,13 +1361,13 @@
                     </div>
             </div>
             <div class="solution" data-type="multiple">
-                移動圓內直線，畫出圓形圖。
+                <font color="FF0000"><b>
+                驗證答案前，請一定要檢查是不是已經在左方圓形圖中「移動圓內的線段，畫出百分圓形圖」，否則不算完整作答唷！
+                </b></font>
                 <div class="sol" data-type="custom">
                     <div class="guess">[minutePoint.coord,hourPoint.coord,thirdPoint.coord,lastPoint.coord,$('#a_1').val().replace(/[ ]/g,""),$('#a_2').val().replace(/[ ]/g,""),$('#a_3').val().replace(/[ ]/g,""),$('#a_4').val().replace(/[ ]/g,"")]</div>
                     <div class="validator-function">
-                        if(KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270 && (guess[4]=='' || guess[5]=='' || guess[6]=='' || guess[7]=='')){
-                            return "";
-                        }
+                        
                         var greenAns = KhanUtil.findAngle(guess[2],[0,0])-KhanUtil.findAngle(guess[0],[0,0]);
                         greenAns&gt;360?greenAns-=360:(greenAns&lt;0?greenAns+=360:greenAns=greenAns);
                         var orangeAns = KhanUtil.findAngle(guess[0],[0,0])-KhanUtil.findAngle(guess[1],[0,0]);
@@ -1347,6 +1378,15 @@
                         blueAns&gt;360?blueAns-=360:(blueAns&lt;0?blueAns+=360:blueAns=blueAns);
                         var arr = KhanUtil.sortNumbers([Math.round(greenAns),Math.round(orangeAns),Math.round(redAns),Math.round(blueAns)]);
                         var ansArr = KhanUtil.sortNumbers([J_angle,K_angle,L_angle,M_angle]);
+                        
+                        if( KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270){
+                            return "請移動圓內的線段，畫出百分圓形圖，否則不算完整作答唷！";
+                        }
+
+                        if(KhanUtil.findAngle(guess[0],[0,0]) === 90 && KhanUtil.findAngle(guess[1],[0,0]) === 0 && KhanUtil.findAngle(guess[2],[0,0]) === 180 && KhanUtil.findAngle(guess[3],[0,0]) === 270 && (guess[4]=='' || guess[5]=='' || guess[6]=='' || guess[7]=='')){
+                            return "";
+                        }
+
                         if(arr[0]==ansArr[0] && arr[1]==ansArr[1] && arr[2]==ansArr[2] && arr[3]==ansArr[3] && guess[4]==J_angle && guess[5]==K_angle && guess[6]==L_angle && guess[7]==M_angle){
                             return true;
                         }

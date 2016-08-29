@@ -455,6 +455,9 @@ var Khan = (function() {
                         if (!pad || !$("#scratchpad div").children().length) {
                             pad = new DrawingScratchpad(
                                 $("#scratchpad div")[0]);
+
+                            // add GA_code to scratchpad svg after drawing #scratchpad svg 
+                            $("#scratchpad svg").attr("onclick","Analytics.send_ga_event('exercise', 'click', 'scratchpad_used');");
                         }
                     };
 
@@ -504,7 +507,7 @@ var Khan = (function() {
             },
 
             setVideos: function(exercise) {
-
+                this.resetRelatedVideoBox();
                 if (exercise.relatedVideos) {
                     this.cache[exercise.name] = exercise.relatedVideos;
                 }
@@ -551,7 +554,6 @@ var Khan = (function() {
 
                 var container = $(".related-video-box");
                 var jel = container.find(".related-video-list");
-                jel.empty();
 
                 var self = this;
                 var template = Templates.get("video.thumbnail");
@@ -612,6 +614,11 @@ var Khan = (function() {
 
                 ModalVideo.hookup();
                 this._eventsBound = true;
+            },
+            resetRelatedVideoBox: function(){
+                var container = $(".related-video-box");
+                container.hide();
+                container.find(".related-video-list").empty();
             }
         },
 
