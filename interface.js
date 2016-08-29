@@ -78,7 +78,7 @@ function exercisePointCalculator(){
     var offset = 0;
     var required_streak = min_streak_till_proficiency;
     //degrade_threshold = (required_streak + consts.DEGRADING_EXERCISES_AFTER_PROFICIENCY)
-    
+
     var proficient = userExercise.exerciseStates['proficient'];
     var suggested = userExercise.exerciseStates['suggested'];
     if (userExercise.longestStreak + offset <= required_streak) {
@@ -274,7 +274,7 @@ function handleAttempt(data) {
         });
     }
 
-    // Update interface corresponding to correctness, 
+    // Update interface corresponding to correctness,
     // in examMode, we don't give feedback if it is correct or wrong
     if (skipped || Exercises.assessmentMode || Exercises.examMode) {
         disableCheckAnswer();
@@ -292,11 +292,12 @@ function handleAttempt(data) {
             $('#answercontent .energy-points-badge')
             .html('+' +points.toString())
             .attr('class', 'positive-trigger energy-points-badge')
+            .attr('style', 'color:white;background-color:#005987;border-radius:3px;padding:2px;')
             .effect('bounce', {}, 1000, function(){
                 $(this).hide();
-            }); 
+            });
         }
-        
+
         if(!/iphone|ipod|ipad/i.test(navigator.userAgent)) // check if is ipad device
         {
             $("#next-question-button").focus();
@@ -442,7 +443,7 @@ function onHintShown(e, data) {
     if (hintsUsed === numHints) {
         $("#hint").attr("disabled", true);
         $(Exercises).trigger("allHintsUsed");
-        
+
         if (userExercise.exerciseStates.struggling) {
             setTimeout(function(){
                 $("#raise-hand-button-container").effect("shake", {times: 3, distance: 5}, 480);
@@ -592,14 +593,14 @@ function request(method, data) {
             if (data.exerciseStates.struggling && "attemptCorrect" in data.actionResults){
                 if (!data.actionResults.attemptCorrect) {
                     var hint_disabled = $("#hint").attr("disabled");
-                    
+
                     if (hint_disabled === "disabled") {
                         $("#raise-hand-button").effect("shake", {times: 3, distance: 5}, 480);
                     }
                     else {
                         $("#get-hint-button-container").effect("shake", {times: 3, distance: 5}, 480);
                     }
-                }  
+                }
             }
 
             deferred.resolve(data, textStatus, jqXHR);
@@ -747,7 +748,7 @@ function clearExistingProblem() {
 
     // Wipe out any previous problem
     if (framework === "perseus") {
-        if(PerseusBridge && PerseusBridge.cleanupProblem) PerseusBridge.cleanupProblem();   
+        if(PerseusBridge && PerseusBridge.cleanupProblem) PerseusBridge.cleanupProblem();
     } else if (framework === "khan-exercises") {
         if(Khan && Khan.cleanupProblem) Khan.cleanupProblem();
     }
