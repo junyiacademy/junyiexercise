@@ -292,7 +292,7 @@ function handleAttempt(data) {
             $('#answercontent .energy-points-badge')
             .html('+' +points.toString())
             .attr('class', 'positive-trigger energy-points-badge')
-            .attr('style', 'color:white;background-color:#005987;border-radius:3px;padding:2px;')
+            .attr('style', 'color:white;background-color:#005987;border-radius:3px;padding:3px;')
             .effect('bounce', {}, 1000, function(){
                 $(this).hide();
             });
