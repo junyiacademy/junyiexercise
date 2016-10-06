@@ -189,6 +189,7 @@ function Subtractor(a, b, digitsA, digitsB, decimalPlaces) {
         this.removeHighlights(index);
 
         if (index !== 0) {
+            
             this.removeHighlights(index - 1);
         }
         if (index === numHints - 1) {
@@ -223,6 +224,8 @@ function Subtractor(a, b, digitsA, digitsB, decimalPlaces) {
         var diff = workingDigitsA[index] - subtrahend;
         if (((a - b) / Math.pow(10, index)) > 1 || index < decimalPlaces) {
             graph.label([pos.max - index, pos.diff], "\\LARGE{" + diff + "}");
+        } else{
+            highlights[index].push(graph.label([pos.sideX, pos.sideY + 0.5], "\\color{#000000}{我們可以將最左邊的零省略！}", "above right"));
         }
 
         highlights[index].push(graph.label([pos.max - index, pos.diff], "\\LARGE{\\color{#28AE7B}{" + diff + "}}"));
