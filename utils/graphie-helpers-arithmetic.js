@@ -554,6 +554,8 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
     var value = 0;
     var decimals = [];
     var level = 0;
+    var prevlabel = 0;
+    var prevasklabel = 0;
 
 
     this.show = function() {
@@ -581,8 +583,10 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
         drawDigits(digitsDividend, 0, 0);
         graph.path([[-0.95, 0.5],  [digitsDividend.length + (deciDiff > 0 ? deciDiff : 0), 0.5]]);
         graph.arc([-1.05,0.1],0.4,280,80,false);
+
         prevlabel = graph.label([0,0],"");
         prevasklabel = graph.label([0,0],"");
+        
     };
 
     this.showHint = function() {
@@ -602,7 +606,7 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
             var total = value + remainder;
             var quotient = Math.floor(total / divisor);
             highlights = highlights.concat(drawDigits([value], index, -2*level, KhanUtil.BLUE));
-            if ((index !== 0)&&(((quotient !== 0)&&(level !== 0))||((quotient === 0)&&(level > 0)))) {
+            if ((index !== 0)&&(level !== 0)) {
                 graph.style({
                     stroke: KhanUtil.BLUE,
                     arrows: "->"
@@ -615,25 +619,13 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
             var totalDigits = KhanUtil.integerToDigits(total);
             highlights = highlights.concat(drawDigits(totalDigits, index - totalDigits.length + 1, -2 * level, KhanUtil.BLUE));
 
-            if (quotient === 0){
-                prevlabel.remove();
-                prevasklabel.remove();
-                prevasklabel = graph.label([digitsDividend.length + 0.5, -2 * level],
-                 "\\color{#6495ED}{" + total + "}"
-                + "\\text{是}"
-                + divisor
-                + "\\text{的幾倍?}", "right");
-                
-            } else{
-                prevlabel.remove();
-                prevasklabel.remove();
-                prevasklabel = graph.label([digitsDividend.length + 0.5, -2 * level],
-                 "\\color{#6495ED}{" + total + "}"
-                + "\\text{是}"
-                + divisor
-                + "\\text{的幾倍?}", "right");
-
-            }
+            prevlabel.remove();
+            prevasklabel.remove();
+            prevasklabel = graph.label([digitsDividend.length + 0.5, -2 * level],
+              "\\color{#6495ED}{" + total + "}"
+              + "\\text{是}"
+              + divisor
+              + "\\text{的幾倍?}", "right");
 
             fShowFirstHalf = false;
         } else {
@@ -659,7 +651,7 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
                 
                 graph.path([[index - product.length - 0.25, -2 * level - 1.5], [index + 1.5, -2 * level - 1.5]]);
                 
-            } else { }
+            }
 
             if (quotient === 0) {
                 
