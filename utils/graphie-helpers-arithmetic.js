@@ -554,8 +554,8 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
     var value = 0;
     var decimals = [];
     var level = 0;
-    var prevlabel = 0;
-    var prevasklabel = 0;
+    var prevlabel = null;
+    var prevasklabel = null;
 
 
     this.show = function() {
@@ -601,11 +601,16 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
         }
 
         if (fShowFirstHalf) {
+
+            prevlabel.remove();
+            prevasklabel.remove();
+
             value = digitsDividend[index];
-            
+            highlights = highlights.concat(drawDigits([value], index, -2*level, KhanUtil.BLUE));
+
             var total = value + remainder;
             var quotient = Math.floor(total / divisor);
-            highlights = highlights.concat(drawDigits([value], index, -2*level, KhanUtil.BLUE));
+            
             if ((index !== 0)&&(level !== 0)) {
                 graph.style({
                     stroke: KhanUtil.BLUE,
@@ -619,8 +624,6 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
             var totalDigits = KhanUtil.integerToDigits(total);
             highlights = highlights.concat(drawDigits(totalDigits, index - totalDigits.length + 1, -2 * level, KhanUtil.BLUE));
 
-            prevlabel.remove();
-            prevasklabel.remove();
             prevasklabel = graph.label([digitsDividend.length + 0.5, -2 * level],
               "\\color{#6495ED}{" + total + "}"
               + "\\text{是}"
@@ -637,8 +640,8 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
             if (quotient === 0 && fOnlyZeros && digitsDividend.length - deciDividend + deciDivisor > index + 1) {
                 
             } else {
-                var quotientLabel = drawDigits([quotient], index, 1);
                 fOnlyZeros = false;
+                var quotientLabel = drawDigits([quotient], index, 1);
                 highlights = highlights.concat(drawDigits([quotient], index, 1, KhanUtil.GREEN));
             }
 
