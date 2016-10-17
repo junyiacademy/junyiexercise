@@ -189,6 +189,7 @@ function Subtractor(a, b, digitsA, digitsB, decimalPlaces) {
         this.removeHighlights(index);
 
         if (index !== 0) {
+            
             this.removeHighlights(index - 1);
         }
         if (index === numHints - 1) {
@@ -217,12 +218,14 @@ function Subtractor(a, b, digitsA, digitsB, decimalPlaces) {
         }
 
         if(workingDigitsA[index] > 9) {
-            highlights[index].push(graph.label([pos.sideX, pos.sideY + 0.5], "相減不夠減，因此我們需要跟左邊的位值借位！", "above right"));
+            highlights[index].push(graph.label([pos.sideX, pos.sideY + 0.5], "相減不夠減，因此我們需要跟左邊的位值退位！", "above right"));
         }
 
         var diff = workingDigitsA[index] - subtrahend;
         if (((a - b) / Math.pow(10, index)) > 1 || index < decimalPlaces) {
             graph.label([pos.max - index, pos.diff], "\\LARGE{" + diff + "}");
+        } else{
+            highlights[index].push(graph.label([pos.sideX, pos.sideY + 0.5], "\\color{#000000}{我們可以將最左邊的零省略！}", "above right"));
         }
 
         highlights[index].push(graph.label([pos.max - index, pos.diff], "\\LARGE{\\color{#28AE7B}{" + diff + "}}"));
@@ -497,7 +500,7 @@ function Multiplier(a, b, digitsA, digitsB, deciA, deciB) {
                 digitsProduct.unshift(0);
             }
             graph.path([[-1 - digitsProduct.length, 0.5 - digitsB.length], [1, 0.5 - digitsB.length]]);
-            //graph.label([-1 - digitsProduct.length, 1 - digitsB.length] , "\\LARGE{+\\vphantom{0}}");
+            
             drawDigits(digitsProduct, 1 - digitsProduct.length, -digitsB.length);
         }
     }
@@ -550,6 +553,10 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
     var leadingZeros = [];
     var value = 0;
     var decimals = [];
+    var level = 0;
+    var prevlabel = null;
+    var prevasklabel = null;
+
 
     this.show = function() {
         var paddedDivisor = digitsDivisor;
@@ -574,7 +581,12 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
 
         drawDigits(paddedDivisor, -0.5 - paddedDivisor.length, 0);
         drawDigits(digitsDividend, 0, 0);
-        graph.path([[-0.75, -0.5], [-0.75, 0.5], [digitsDividend.length + (deciDiff > 0 ? deciDiff : 0), 0.5]]);
+        graph.path([[-0.95, 0.5],  [digitsDividend.length + (deciDiff > 0 ? deciDiff : 0), 0.5]]);
+        graph.arc([-1.05,0.1],0.4,280,80,false);
+
+        prevlabel = graph.label([0,0],"");
+        prevasklabel = graph.label([0,0],"");
+        
     };
 
     this.showHint = function() {
@@ -583,31 +595,40 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
             while (leadingZeros.length) {
                 leadingZeros.pop().remove();
             }
+            prevlabel.remove();
+            prevasklabel.remove();
             return;
         }
 
         if (fShowFirstHalf) {
+
+            prevlabel.remove();
+            prevasklabel.remove();
+
             value = digitsDividend[index];
-            var quotient = value / divisor;
+            highlights = highlights.concat(drawDigits([value], index, -2*level, KhanUtil.BLUE));
+
             var total = value + remainder;
-            highlights = highlights.concat(drawDigits([value], index, 0, KhanUtil.BLUE));
-            if (index !== 0) {
+            var quotient = Math.floor(total / divisor);
+            
+            if ((index !== 0)&&(level !== 0)) {
                 graph.style({
+                    stroke: KhanUtil.BLUE,
                     arrows: "->"
                 }, function() {
-                    highlights.push(graph.path([[index, 0 - 0.5], [index, -2 * index + 0.5]]));
+                    highlights.push(graph.path([[index, 0 - 0.5], [index, -2 * level + 0.8]]));
                 });
             }
 
-            drawDigits([value], index, -2 * index);
+            drawDigits([value], index, -2 * level);
             var totalDigits = KhanUtil.integerToDigits(total);
-            highlights = highlights.concat(drawDigits(totalDigits, index - totalDigits.length + 1, -2 * index, KhanUtil.BLUE));
+            highlights = highlights.concat(drawDigits(totalDigits, index - totalDigits.length + 1, -2 * level, KhanUtil.BLUE));
 
-            graph.label([digitsDividend.length + 0.5, -2 * index],
-                 "\\color{#6495ED}{" + total + "}"
-                + "\\text{是}"
-                + divisor
-               + "\\text{的幾倍?}", "right");
+            prevasklabel = graph.label([digitsDividend.length + 0.5, -2 * level],
+              "\\color{#6495ED}{" + total + "}"
+              + "\\text{是}"
+              + divisor
+              + "\\text{的幾倍?}", "right");
 
             fShowFirstHalf = false;
         } else {
@@ -615,30 +636,44 @@ function Divider(divisor, dividend, deciDivisor, deciDividend) {
             var quotient = Math.floor(value / divisor);
             var diff = value - (quotient * divisor);
             remainder = diff * 10;
-            var quotientLabel = drawDigits([quotient], index, 1);
+            
             if (quotient === 0 && fOnlyZeros && digitsDividend.length - deciDividend + deciDivisor > index + 1) {
-                leadingZeros = leadingZeros.concat(quotientLabel);
+                
             } else {
                 fOnlyZeros = false;
+                var quotientLabel = drawDigits([quotient], index, 1);
+                highlights = highlights.concat(drawDigits([quotient], index, 1, KhanUtil.GREEN));
             }
-            highlights = highlights.concat(drawDigits([quotient], index, 1, KhanUtil.GREEN));
 
             var product = KhanUtil.integerToDigits(divisor * quotient);
-            drawDigits(product, index - product.length + 1, -2 * index - 1);
-            highlights = highlights.concat(drawDigits(product, index - product.length + 1, -2 * index - 1, KhanUtil.ORANGE));
+            if ( (divisor * quotient) !== 0){
+                drawDigits(product, index - product.length + 1, -2 * level - 1);
+                highlights = highlights.concat(drawDigits(product, index - product.length + 1, -2 * level - 1, KhanUtil.ORANGE));
+                var diffDigits = KhanUtil.integerToDigits(diff);
+                drawDigits(diffDigits, index - diffDigits.length + 1, -2 * level - 2);
+                
+                graph.path([[index - product.length - 0.25, -2 * level - 1.5], [index + 1.5, -2 * level - 1.5]]);
+                
+            }
 
-            var diffDigits = KhanUtil.integerToDigits(diff);
-            drawDigits(diffDigits, index - diffDigits.length + 1, -2 * index - 2);
-            graph.label([index - product.length, -2 * index - 1] , "-\\vphantom{0}");
-            graph.path([[index - product.length - 0.25, -2 * index - 1.5], [index + 0.5, -2 * index - 1.5]]);
-
-            graph.label([digitsDividend.length + 0.5, -2 * index - 1],
-                "\\color{#6495ED}{" + value + "}"
-                + "\\div"
-                + divisor + " 的商是 "
-                + "\\color{#28AE7B}{" + quotient + "}", "right");
+            if (quotient === 0) {
+                
+                prevlabel = graph.label([digitsDividend.length + 0.5, -2 * level - 1],
+                    "\\color{#6495ED}{" + value + "}" + "\\div" + divisor + "不夠除", "right");
+                
+            } else {
+                
+                prevlabel = graph.label([digitsDividend.length + 0.5, -2 * level - 1],
+                    "\\color{#6495ED}{" + value + "}"
+                    + "\\div"
+                    + divisor + " 的商是 "
+                    + "\\color{#28AE7B}{" + quotient + "}", "right");
+                level++;
+                
+            }
             index++;
             fShowFirstHalf = true;
+
         }
     }
 
