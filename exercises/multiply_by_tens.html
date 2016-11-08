@@ -8,19 +8,19 @@
 <body>
     <div class="exercise">
         <div class="vars">
-            <var id="A">randRange( 1, 9 )</var>
+            <var id="A">10</var>
             <var id="B">randRange( 2, 9 )</var>
 			<var id="AB">A*B</var>
-			<var id="C">B*10</var>
+			<var id="C">randRange( 1, 9 )</var>
 			<var id="AC">A*C</var>
-			<var id="d">randRange( 1, 2 )</var>
+			<var id="d">1</var>
         </div>
 
         <div class="problems">
             <div>
                 <div class="graphie" id="numbers">
                     init({
-                        range: [ [ -1, 9], [ -1, 1 ] ],
+                        range: [ [ -1, 10], [ -3-C, 1 ] ],
                         scale: [ 50, 50 ]
                     });
 					if(d==1)
@@ -40,47 +40,30 @@
             </div>
         </div>
         <div class="hints">
-             <div class="graphie" id="numbers1">
-                    init({
-                        range: [ [ -1, 8], [ -1, 1 ] ],
-                        scale: [ 50, 50 ]
-                    });
-					if(d==1)
-					{
-						KhanUtil.currentGraph.labelHolder = label( [ 0, 0 ],
-                        "\\Huge{\\color{#6495ED}{" + A + "} \\times \\color{#28AE7B}{" + B + "} \\times \\color{#28AE7B}{" + 10 + "} = {?}}", "right" );
-					}
-					if(d==2)
-					{
-						KhanUtil.currentGraph.labelHolder = label( [ 0, 0 ],
-                        "\\Huge{{?} = \\color{#6495ED}{" + A + "} \\times \\color{#28AE7B}{" + B + "} \\times \\color{#28AE7B}{" + 10 + "}}", "right" );
-					}
+            <div>
+                <div class="graphie" data-update="numbers">
+                    label( [ 0,  - 1 ], "\\text{先畫 " + A +  " 個圓圈" + "。}", "right" );
+                    drawRow( A,  - 3, "#6495ED", 1 );
                 </div>
-				
-				<div class="graphie" id="numbers2">
-                    init({
-                        range: [ [ -1, 8], [ -1, 1 ] ],
-                        scale: [ 50, 50 ]
-                    });
-					if(d==1)
-					{
-						KhanUtil.currentGraph.labelHolder = label( [ 0, 0 ],
-                        "\\Huge{\\color{#6495ED}{" + AB + "} \\times \\color{#28AE7B}{" + 10 + "} = {?}}", "right" );
-					}
-					if(d==2)
-					{
-						KhanUtil.currentGraph.labelHolder = label( [ 0, 0 ],
-                        "\\Huge{{?} = \\color{#6495ED}{" + AB + "}  \\times \\color{#28AE7B}{" + 10 + "}}", "right" );
-					}
+            </div>
+                <div>
+                    <div class="graphie" data-update="numbers">
+                        label( [ 0,  - 2 ], "\\text{"
+                            + "假如共有"  +  C
+                            + " 列, 而每列都有 " +  A 
+                            + " 個圓圈, 則總共會有幾個圓圈?"
+                            + "}",
+                            "right" );
+                        for ( var i = 1; i &lt; C; i++ ) {
+                            drawRow( A,  - 3 - i, "#28AE7B", A * i + 1 );
+                        }
+                    </div>
                 </div>
-				<div class="graphie" id="numbers3">
-                    init({
-                        range: [ [ -1, 8], [ -1, 1 ] ],
-                        scale: [ 50, 50 ]
-                    });
-						KhanUtil.currentGraph.labelHolder = label( [ 0, 0 ],
-                        "\\Huge{{?} = \\color{#FF00AF}{" + AC + "} }", "right" );
-                </div>
+            <div class="graphie" data-update="numbers">
+                KhanUtil.currentGraph.labelHolder.remove();
+                label( [ 0, 0 ],
+                    "\\Huge{\\color{#6495ED}{" + A + "} \\times \\color{#28AE7B}{" + C + "} = " + "\\color{#FF00AF}{" + ( A  * C ) + "}}", "right" );
+            </div>
         </div>
     </div>
 </body>
