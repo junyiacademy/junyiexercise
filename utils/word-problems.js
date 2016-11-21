@@ -353,11 +353,7 @@ $.fn["word-problemsLoad"] = function() {
         new Noun("仰臥起坐", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
         new Noun("開合跳", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
         new Noun("原地彈跳", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
-        new Noun("交互蹲跳", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
-        new Noun("跳跳繩", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
-        new Noun("呼拉圈轉", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
-        new Noun("踢毽子", {measureWord: new IncrementalShuffler(["個", "次", "下"])}),
-        new Noun("投籃", {measureWord: new IncrementalShuffler(["個", "次", "下"])})
+        new Noun("交互蹲跳", {measureWord: new IncrementalShuffler(["個", "次", "下"])})
     ]);
 
     var fruits = new IncrementalShuffler([

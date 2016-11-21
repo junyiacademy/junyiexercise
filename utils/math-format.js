@@ -248,7 +248,7 @@ $.extend(KhanUtil, {
 				case 8: re = cardinalUnits[5] + re; break;
 				case 12: re = cardinalUnits[6] + re; k = 0; break;
 			} 
-			if ( (k % 4 == 3 || k % 4 == 2) && a[0].charAt(i + 2) != 0 && a[0].charAt(i + 1) == 0) {
+			if ( (k % 4 == 1 || k % 4 == 2 || k % 4 == 3) && a[0].charAt(i + 1) != 0 && a[0].charAt(i + 0) == 0) {
 				re = cardinalNums[0] + re;
 			}
 			if (a[0].charAt(i) != 0) re = cardinalNums[a[0].charAt(i)] + cardinalUnits[k % 4] + re; k++;
