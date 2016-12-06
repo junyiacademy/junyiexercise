@@ -107,7 +107,7 @@ Dir["exercises/**/*.html"].each do |filename|
       exit 1
     end
 
-    next if var.content !=~ /\S/
+    next if var.content !~ /\S/
       jshint("return (#{var.content});")
       exp = "(#{var.content})"
       puts exp
