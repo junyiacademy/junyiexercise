@@ -108,10 +108,9 @@ Dir["exercises/**/*.html"].each do |filename|
     end
 
     next if var.content !~ /\S/
-      jshint("return (#{var.content});")
-      exp = "(#{var.content})"
-      puts exp
-      var.content = @uglifier.compile(exp).gsub(/;$/, "")
+    jshint("return (#{var.content});")
+    exp = "(#{var.content})"
+    var.content = @uglifier.compile(exp).gsub(/;$/, "")
   end
 
   doc.css(".graphie", "div.guess", "div.show-guess", "div.show-guess-solutionarea").each do |graphie|
