@@ -107,7 +107,7 @@ Dir["exercises/**/*.html"].each do |filename|
       exit 1
     end
 
-    next if var.content !~ /\S/
+    next if var.content !~ /\S/ # only whitespace
     jshint("return (#{var.content});")
     exp = "(#{var.content})"
     var.content = @uglifier.compile(exp).gsub(/;$/, "")
