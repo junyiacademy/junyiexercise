@@ -1,157 +1,157 @@
 ﻿<!DOCTYPE html>
 <html data-require="math math-format graphie graphie-helpers word-problems">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>分數代表的數量</title>
-    <script src="../khan-exercise.js"></script>
-	<script type="text/javascript">
-		function polar(r, th) {
-            if (typeof r === "number") {
-                r = [r, r];
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>分數代表的數量</title>
+        <script src="../khan-exercise.js"></script>
+        <script type="text/javascript">
+            function polar(r, th) {
+                if (typeof r === "number") {
+                    r = [r, r];
+                }
+                th = th * Math.PI / 180;
+                return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
             }
-            th = th * Math.PI / 180;
-            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
-        }
-	</script>
-</head>
-<body>
-	<div class="exercise">
-		<div class="problems">
-			<div id="case1">
-				<div class="vars">
-					<var id="UNIT_ALL, UNIT_SIGNAL, FOODS">randFromArray([['盒', '顆', '巧克力'], ['包', '片', '餅乾'], ['包', '顆', '糖果'], ['袋', '顆', '蘋果'], ['包', '片', '吐司麵包'], ['盒', '顆', '水餃']])</var>
-					<var id="COLORS1,COLORS2">[KhanUtil.BLUE, KhanUtil.RED]</var>
-					<var id="SUMS">randRange(5, 20)</var>
-					<var id="DISAPPEARED">randRange(1, SUMS - 1)</var>
-				</div>
-				<div class="question">
-					<p>一<var>UNIT_ALL+FOODS</var>有 <code><var>SUMS</var></code> <var>UNIT_SIGNAL+FOODS</var>，<var>person(1)</var>吃了 <code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> <var>UNIT_ALL+FOODS</var>，請問<var>person(1)</var>吃了幾<var>UNIT_SIGNAL+FOODS</var>？</p>
-				</div>
+        </script>
+    </head>
+    <body>
+        <div class="exercise">
+            <div class="problems">
+                <div id="case1">
+                    <div class="vars">
+                        <var id="UNIT_ALL, UNIT_SIGNAL, FOODS">randFromArray([['盒', '顆', '巧克力'], ['包', '片', '餅乾'], ['包', '顆', '糖果'], ['袋', '顆', '蘋果'], ['包', '片', '吐司麵包'], ['盒', '顆', '水餃']])</var>
+                        <var id="COLORS1,COLORS2">[KhanUtil.BLUE, KhanUtil.RED]</var>
+                        <var id="SUMS">randRange(5, 20)</var>
+                        <var id="DISAPPEARED">randRange(1, SUMS - 1)</var>
+                    </div>
+                    <div class="question">
+                        <p>一<var>UNIT_ALL+FOODS</var>有 <code><var>SUMS</var></code> <var>UNIT_SIGNAL+FOODS</var>，<var>person(1)</var>吃了 <code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> <var>UNIT_ALL+FOODS</var>，請問<var>person(1)</var>吃了幾<var>UNIT_SIGNAL+FOODS</var>？</p>
+                    </div>
 
-				<div class="solution" data-fraction-input="true" data-type="multiple">
-					<p><span class="sol" data-forms="integer"><var>DISAPPEARED</var></span><var>UNIT_SIGNAL</var></p>
-				</div>
-				<div class="hints">
-					<div>
-						<p><code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> ，代表這<var>UNIT_ALL+FOODS</var>分成 <code><var>SUMS</var></code> 份，我們拿了其中的<code><var>DISAPPEARED</var></code> 份。</p>
-						<div class="graphie" id="fraction-case-1">
-							init({range:[[-1, 21], [-2, 2]], scale : 20 });
-							path([[0, -0.5], [SUMS - DISAPPEARED, -0.5], [SUMS - DISAPPEARED, 0.5], [0, 0.5], [0, -0.5]], { stroke : COLORS1, fill : COLORS1, opacity : 0.5});
-							path([[SUMS - DISAPPEARED, -0.5], [SUMS, -0.5], [SUMS, 0.5], [SUMS - DISAPPEARED, 0.5], [SUMS - DISAPPEARED, -0.5]], { stroke : COLORS2, fill : COLORS2, opacity : 0.5});
-							path([[0, -0.5], [SUMS, -0.5], [SUMS, 0.5], [0, 0.5], [0, -0.5]]);
-							for(var i = 1; i&lt; SUMS; i++){
-								line([i, -0.5], [i, 0.5]);
-							}
-						</div>
-					</div>
-					<p>這<var>UNIT_ALL+FOODS</var>有 <code><var>SUMS</var></code> <var>UNIT_SIGNAL</var>，所以分成 <code><var>SUMS</var></code> 份後，一份就是 <code>1</code> <var>UNIT_SIGNAL</var>。</p>
-					<div>
-						<p>所以 <code><var>DISAPPEARED</var></code> 份就是 <code><var>DISAPPEARED</var></code> <var>UNIT_SIGNAL</var>。</p>
-						<p>也就是說 <code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> <var>UNIT_ALL+FOODS</var>就是 <code class="hint_pink"><var>DISAPPEARED</var></code>  <var>UNIT_SIGNAL+FOODS</var>。</p>
-					</div>
-				</div>
-			</div>
+                    <div class="solution" data-fraction-input="true" data-type="multiple">
+                        <p><span class="sol" data-forms="integer"><var>DISAPPEARED</var></span><var>UNIT_SIGNAL</var></p>
+                    </div>
+                    <div class="hints">
+                        <div>
+                            <p><code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> ，代表這<var>UNIT_ALL+FOODS</var>分成 <code><var>SUMS</var></code> 份，我們拿了其中的<code><var>DISAPPEARED</var></code> 份。</p>
+                            <div class="graphie" id="fraction-case-1">
+                                init({range:[[-1, 21], [-2, 2]], scale : 20 });
+                                path([[0, -0.5], [SUMS - DISAPPEARED, -0.5], [SUMS - DISAPPEARED, 0.5], [0, 0.5], [0, -0.5]], { stroke : COLORS1, fill : COLORS1, opacity : 0.5});
+                                path([[SUMS - DISAPPEARED, -0.5], [SUMS, -0.5], [SUMS, 0.5], [SUMS - DISAPPEARED, 0.5], [SUMS - DISAPPEARED, -0.5]], { stroke : COLORS2, fill : COLORS2, opacity : 0.5});
+                                path([[0, -0.5], [SUMS, -0.5], [SUMS, 0.5], [0, 0.5], [0, -0.5]]);
+                                for(var i = 1; i&lt; SUMS; i++){
+                                line([i, -0.5], [i, 0.5]);
+                                }
+                            </div>
+                        </div>
+                        <p>這<var>UNIT_ALL+FOODS</var>有 <code><var>SUMS</var></code> <var>UNIT_SIGNAL</var>，所以分成 <code><var>SUMS</var></code> 份後，一份就是 <code>1</code> <var>UNIT_SIGNAL</var>。</p>
+                        <div>
+                            <p>所以 <code><var>DISAPPEARED</var></code> 份就是 <code><var>DISAPPEARED</var></code> <var>UNIT_SIGNAL</var>。</p>
+                            <p>也就是說 <code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> <var>UNIT_ALL+FOODS</var>就是 <code class="hint_pink"><var>DISAPPEARED</var></code>  <var>UNIT_SIGNAL+FOODS</var>。</p>
+                        </div>
+                    </div>
+                </div>
 
-			<div id="case2">
-				<div class="vars">
-					<var id="UNIT_ALL, UNIT_SIGNAL, FOODS">randFromArray([['盒', '顆', '巧克力'], ['包', '片', '餅乾'], ['包', '顆', '糖果'], ['袋', '顆', '蘋果'], ['包', '片', '吐司麵包'], ['盒', '顆', '水餃']])</var>
-					<var id="COLORS1,COLORS2">[KhanUtil.BLUE, KhanUtil.RED]</var>
-					<var id="SUMS">randRange(5, 20)</var>
-					<var id="DISAPPEARED">randRange(1, SUMS - 1)</var>
-				</div>
-				<div class="question">
-					<p>一<var>UNIT_ALL+FOODS</var>的 <code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> 有 <code><var>DISAPPEARED</var></code> <var>UNIT_SIGNAL</var>，請問一<var>UNIT_ALL+FOODS</var>有幾<var>UNIT_SIGNAL+FOODS</var>？</p>
-				</div>
+                <div id="case2">
+                    <div class="vars">
+                        <var id="UNIT_ALL, UNIT_SIGNAL, FOODS">randFromArray([['盒', '顆', '巧克力'], ['包', '片', '餅乾'], ['包', '顆', '糖果'], ['袋', '顆', '蘋果'], ['包', '片', '吐司麵包'], ['盒', '顆', '水餃']])</var>
+                        <var id="COLORS1,COLORS2">[KhanUtil.BLUE, KhanUtil.RED]</var>
+                        <var id="SUMS">randRange(5, 20)</var>
+                        <var id="DISAPPEARED">randRange(1, SUMS - 1)</var>
+                    </div>
+                    <div class="question">
+                        <p>一<var>UNIT_ALL+FOODS</var>的 <code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> 有 <code><var>DISAPPEARED</var></code> <var>UNIT_SIGNAL</var>，請問一<var>UNIT_ALL+FOODS</var>有幾<var>UNIT_SIGNAL+FOODS</var>？</p>
+                    </div>
 
-				<div class="solution" data-fraction-input="true" data-type="multiple">
-					<p><span class="sol" data-forms="integer"><var>SUMS</var></span><var>UNIT_SIGNAL</var></p>
-				</div>
-				<div class="hints">
-					<div>
-						<p><code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> ，代表這<var>UNIT_ALL+FOODS</var>分成 <code><var>SUMS</var></code> 份，我們拿了其中的<code><var>DISAPPEARED</var></code> 份。</p>
-						<div class="graphie" id="fraction-case-2">
-							init({range:[[-1, 21], [-2, 2]], scale : 20 });
-							path([[0, -0.5], [SUMS - DISAPPEARED, -0.5], [SUMS - DISAPPEARED, 0.5], [0, 0.5], [0, -0.5]], { stroke : COLORS1, fill : COLORS1, opacity : 0.5});
-							path([[SUMS - DISAPPEARED, -0.5], [SUMS, -0.5], [SUMS, 0.5], [SUMS - DISAPPEARED, 0.5], [SUMS - DISAPPEARED, -0.5]], { stroke : COLORS2, fill : COLORS2, opacity : 0.5});
-							path([[0, -0.5], [SUMS, -0.5], [SUMS, 0.5], [0, 0.5], [0, -0.5]]);
-							for(var i = 1; i&lt; SUMS; i++){
-								line([i, -0.5], [i, 0.5]);
-							}
-						</div>
-					</div>
-					<p>其中的 <code><var>DISAPPEARED</var></code> 份是 <code><var>DISAPPEARED</var></code> <var>UNIT_SIGNAL</var>，那全部有幾份呢？</p>
-					<p>全部有 <code><var>SUMS</var></code> 份，所以有 <code class="hint_pink"><var>SUMS</var></code> <var>UNIT_SIGNAL</var>。</p>
-				</div>
-			</div>
+                    <div class="solution" data-fraction-input="true" data-type="multiple">
+                        <p><span class="sol" data-forms="integer"><var>SUMS</var></span><var>UNIT_SIGNAL</var></p>
+                    </div>
+                    <div class="hints">
+                        <div>
+                            <p><code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> ，代表這<var>UNIT_ALL+FOODS</var>分成 <code><var>SUMS</var></code> 份，我們拿了其中的<code><var>DISAPPEARED</var></code> 份。</p>
+                            <div class="graphie" id="fraction-case-2">
+                                init({range:[[-1, 21], [-2, 2]], scale : 20 });
+                                path([[0, -0.5], [SUMS - DISAPPEARED, -0.5], [SUMS - DISAPPEARED, 0.5], [0, 0.5], [0, -0.5]], { stroke : COLORS1, fill : COLORS1, opacity : 0.5});
+                                path([[SUMS - DISAPPEARED, -0.5], [SUMS, -0.5], [SUMS, 0.5], [SUMS - DISAPPEARED, 0.5], [SUMS - DISAPPEARED, -0.5]], { stroke : COLORS2, fill : COLORS2, opacity : 0.5});
+                                path([[0, -0.5], [SUMS, -0.5], [SUMS, 0.5], [0, 0.5], [0, -0.5]]);
+                                for(var i = 1; i&lt; SUMS; i++){
+                                line([i, -0.5], [i, 0.5]);
+                                }
+                            </div>
+                        </div>
+                        <p>其中的 <code><var>DISAPPEARED</var></code> 份是 <code><var>DISAPPEARED</var></code> <var>UNIT_SIGNAL</var>，那全部有幾份呢？</p>
+                        <p>全部有 <code><var>SUMS</var></code> 份，所以有 <code class="hint_pink"><var>SUMS</var></code> <var>UNIT_SIGNAL</var>。</p>
+                    </div>
+                </div>
 
-			<div id="case3">
-				<div class="vars">
-					<var id="UNIT_ALL, UNIT_SIGNAL, FOODS">randFromArray([['捆', '條', '緞帶'], ['包', '張', '色紙'], ['包', '張', '貼紙']])</var>
-					<var id="COLORS1,COLORS2">[KhanUtil.BLUE, KhanUtil.RED]</var>
-					<var id="SUMS">randRange(5, 20)</var>
-					<var id="DISAPPEARED">randRange(1, SUMS - 1)</var>
-				</div>
-				<div class="question">
-					<p>一<var>UNIT_ALL+FOODS</var>有 <code><var>SUMS</var></code> <var>UNIT_SIGNAL+FOODS</var>，<var>person(1)</var>用了 <code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> <var>UNIT_ALL+FOODS</var>，請問<var>person(1)</var>用了幾<var>UNIT_SIGNAL+FOODS</var>？</p>
-				</div>
+                <div id="case3">
+                    <div class="vars">
+                        <var id="UNIT_ALL, UNIT_SIGNAL, FOODS">randFromArray([['捆', '條', '緞帶'], ['包', '張', '色紙'], ['包', '張', '貼紙']])</var>
+                        <var id="COLORS1,COLORS2">[KhanUtil.BLUE, KhanUtil.RED]</var>
+                        <var id="SUMS">randRange(5, 20)</var>
+                        <var id="DISAPPEARED">randRange(1, SUMS - 1)</var>
+                    </div>
+                    <div class="question">
+                        <p>一<var>UNIT_ALL+FOODS</var>有 <code><var>SUMS</var></code> <var>UNIT_SIGNAL+FOODS</var>，<var>person(1)</var>用了 <code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> <var>UNIT_ALL+FOODS</var>，請問<var>person(1)</var>用了幾<var>UNIT_SIGNAL+FOODS</var>？</p>
+                    </div>
 
-				<div class="solution" data-fraction-input="true" data-type="multiple">
-					<p><span class="sol" data-forms="integer"><var>DISAPPEARED</var></span><var>UNIT_SIGNAL</var></p>
-				</div>
-				<div class="hints">
-					<div>
-						<p><code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> ，代表這<var>UNIT_ALL+FOODS</var>分成 <code><var>SUMS</var></code> 份，我們拿了其中的<code><var>DISAPPEARED</var></code> 份。</p>
-						<div class="graphie" id="fraction-case-3">
-							init({range:[[-1, 21], [-2, 2]], scale : 20 });
-							path([[0, -0.5], [SUMS - DISAPPEARED, -0.5], [SUMS - DISAPPEARED, 0.5], [0, 0.5], [0, -0.5]], { stroke : COLORS1, fill : COLORS1, opacity : 0.5});
-							path([[SUMS - DISAPPEARED, -0.5], [SUMS, -0.5], [SUMS, 0.5], [SUMS - DISAPPEARED, 0.5], [SUMS - DISAPPEARED, -0.5]], { stroke : COLORS2, fill : COLORS2, opacity : 0.5});
-							path([[0, -0.5], [SUMS, -0.5], [SUMS, 0.5], [0, 0.5], [0, -0.5]]);
-							for(var i = 1; i&lt; SUMS; i++){
-								line([i, -0.5], [i, 0.5]);
-							}
-						</div>
-					</div>
-					<p>這<var>UNIT_ALL+FOODS</var>有 <code><var>SUMS</var></code> <var>UNIT_SIGNAL</var>，所以分成 <code><var>SUMS</var></code> 份後，一份就是 <code>1</code> <var>UNIT_SIGNAL</var>。</p>
-					<div>
-						<p>所以 <code><var>DISAPPEARED</var></code> 份就是 <code><var>DISAPPEARED</var></code> <var>UNIT_SIGNAL</var>。</p>
-						<p>也就是說 <code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> <var>UNIT_ALL+FOODS</var>就是 <code class="hint_pink"><var>DISAPPEARED</var></code>  <var>UNIT_SIGNAL+FOODS</var>。</p>
-					</div>
-				</div>
-			</div>
+                    <div class="solution" data-fraction-input="true" data-type="multiple">
+                        <p><span class="sol" data-forms="integer"><var>DISAPPEARED</var></span><var>UNIT_SIGNAL</var></p>
+                    </div>
+                    <div class="hints">
+                        <div>
+                            <p><code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> ，代表這<var>UNIT_ALL+FOODS</var>分成 <code><var>SUMS</var></code> 份，我們拿了其中的<code><var>DISAPPEARED</var></code> 份。</p>
+                            <div class="graphie" id="fraction-case-3">
+                                init({range:[[-1, 21], [-2, 2]], scale : 20 });
+                                path([[0, -0.5], [SUMS - DISAPPEARED, -0.5], [SUMS - DISAPPEARED, 0.5], [0, 0.5], [0, -0.5]], { stroke : COLORS1, fill : COLORS1, opacity : 0.5});
+                                path([[SUMS - DISAPPEARED, -0.5], [SUMS, -0.5], [SUMS, 0.5], [SUMS - DISAPPEARED, 0.5], [SUMS - DISAPPEARED, -0.5]], { stroke : COLORS2, fill : COLORS2, opacity : 0.5});
+                                path([[0, -0.5], [SUMS, -0.5], [SUMS, 0.5], [0, 0.5], [0, -0.5]]);
+                                for(var i = 1; i&lt; SUMS; i++){
+                                line([i, -0.5], [i, 0.5]);
+                                }
+                            </div>
+                        </div>
+                        <p>這<var>UNIT_ALL+FOODS</var>有 <code><var>SUMS</var></code> <var>UNIT_SIGNAL</var>，所以分成 <code><var>SUMS</var></code> 份後，一份就是 <code>1</code> <var>UNIT_SIGNAL</var>。</p>
+                        <div>
+                            <p>所以 <code><var>DISAPPEARED</var></code> 份就是 <code><var>DISAPPEARED</var></code> <var>UNIT_SIGNAL</var>。</p>
+                            <p>也就是說 <code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> <var>UNIT_ALL+FOODS</var>就是 <code class="hint_pink"><var>DISAPPEARED</var></code>  <var>UNIT_SIGNAL+FOODS</var>。</p>
+                        </div>
+                    </div>
+                </div>
 
-			<div id="case4">
-				<div class="vars">
-					<var id="UNIT_ALL, UNIT_SIGNAL, FOODS">randFromArray([['捆', '條', '緞帶'], ['包', '張', '色紙'], ['包', '張', '貼紙']])</var>
-					<var id="COLORS1,COLORS2">[KhanUtil.BLUE, KhanUtil.RED]</var>
-					<var id="SUMS">randRange(5, 20)</var>
-					<var id="DISAPPEARED">randRange(1, SUMS - 1)</var>
-				</div>
-				<div class="question">
-					<p>一<var>UNIT_ALL+FOODS</var>的 <code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> 有 <code><var>DISAPPEARED</var></code> <var>UNIT_SIGNAL</var>，請問一<var>UNIT_ALL+FOODS</var>有幾<var>UNIT_SIGNAL+FOODS</var>？</p>
-				</div>
+                <div id="case4">
+                    <div class="vars">
+                        <var id="UNIT_ALL, UNIT_SIGNAL, FOODS">randFromArray([['捆', '條', '緞帶'], ['包', '張', '色紙'], ['包', '張', '貼紙']])</var>
+                        <var id="COLORS1,COLORS2">[KhanUtil.BLUE, KhanUtil.RED]</var>
+                        <var id="SUMS">randRange(5, 20)</var>
+                        <var id="DISAPPEARED">randRange(1, SUMS - 1)</var>
+                    </div>
+                    <div class="question">
+                        <p>一<var>UNIT_ALL+FOODS</var>的 <code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> 有 <code><var>DISAPPEARED</var></code> <var>UNIT_SIGNAL</var>，請問一<var>UNIT_ALL+FOODS</var>有幾<var>UNIT_SIGNAL+FOODS</var>？</p>
+                    </div>
 
-				<div class="solution" data-fraction-input="true" data-type="multiple">
-					<p><span class="sol" data-forms="integer"><var>SUMS</var></span><var>UNIT_SIGNAL</var></p>
-				</div>
-				<div class="hints">
-					<div>
-						<p><code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> ，代表這<var>UNIT_ALL+FOODS</var>分成 <code><var>SUMS</var></code> 份，我們拿了其中的<code><var>DISAPPEARED</var></code> 份。</p>
-						<div class="graphie" id="fraction-case-2">
-							init({range:[[-1, 21], [-2, 2]], scale : 20 });
-							path([[0, -0.5], [SUMS - DISAPPEARED, -0.5], [SUMS - DISAPPEARED, 0.5], [0, 0.5], [0, -0.5]], { stroke : COLORS1, fill : COLORS1, opacity : 0.5});
-							path([[SUMS - DISAPPEARED, -0.5], [SUMS, -0.5], [SUMS, 0.5], [SUMS - DISAPPEARED, 0.5], [SUMS - DISAPPEARED, -0.5]], { stroke : COLORS2, fill : COLORS2, opacity : 0.5});
-							path([[0, -0.5], [SUMS, -0.5], [SUMS, 0.5], [0, 0.5], [0, -0.5]]);
-							for(var i = 1; i&lt; SUMS; i++){
-								line([i, -0.5], [i, 0.5]);
-							}
-						</div>
-					</div>
-					<p>其中的 <code><var>DISAPPEARED</var></code> 份是 <code><var>DISAPPEARED</var></code> <var>UNIT_SIGNAL</var>，那全部有幾份呢？</p>
-					<p>全部有 <code><var>SUMS</var></code> 份，所以有 <code class="hint_pink"><var>SUMS</var></code> <var>UNIT_SIGNAL</var>。</p>
-				</div>
-			</div>
+                    <div class="solution" data-fraction-input="true" data-type="multiple">
+                        <p><span class="sol" data-forms="integer"><var>SUMS</var></span><var>UNIT_SIGNAL</var></p>
+                    </div>
+                    <div class="hints">
+                        <div>
+                            <p><code>\dfrac{<var>DISAPPEARED</var>}{<var>SUMS</var>}</code> ，代表這<var>UNIT_ALL+FOODS</var>分成 <code><var>SUMS</var></code> 份，我們拿了其中的<code><var>DISAPPEARED</var></code> 份。</p>
+                            <div class="graphie" id="fraction-case-2">
+                                init({range:[[-1, 21], [-2, 2]], scale : 20 });
+                                path([[0, -0.5], [SUMS - DISAPPEARED, -0.5], [SUMS - DISAPPEARED, 0.5], [0, 0.5], [0, -0.5]], { stroke : COLORS1, fill : COLORS1, opacity : 0.5});
+                                path([[SUMS - DISAPPEARED, -0.5], [SUMS, -0.5], [SUMS, 0.5], [SUMS - DISAPPEARED, 0.5], [SUMS - DISAPPEARED, -0.5]], { stroke : COLORS2, fill : COLORS2, opacity : 0.5});
+                                path([[0, -0.5], [SUMS, -0.5], [SUMS, 0.5], [0, 0.5], [0, -0.5]]);
+                                for(var i = 1; i&lt; SUMS; i++){
+                                line([i, -0.5], [i, 0.5]);
+                                }
+                            </div>
+                        </div>
+                        <p>其中的 <code><var>DISAPPEARED</var></code> 份是 <code><var>DISAPPEARED</var></code> <var>UNIT_SIGNAL</var>，那全部有幾份呢？</p>
+                        <p>全部有 <code><var>SUMS</var></code> 份，所以有 <code class="hint_pink"><var>SUMS</var></code> <var>UNIT_SIGNAL</var>。</p>
+                    </div>
+                </div>
 
-		</div>
-	</div>
-</body>
+            </div>
+        </div>
+    </body>
 </html>
