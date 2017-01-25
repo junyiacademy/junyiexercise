@@ -9,14 +9,13 @@ $(Exercises)
 
 function renderReadOnlyProblem(event, args) {
     var framework = Exercises.getCurrentFramework();
-
     var userExercise = args.userExercise;
     var answerData = args.answerData;
     var answerType = args.answerType;
     var solution = args.solution;
     var hints = args.hints;
+    console.log("hints:",hints);
     var problem = args.problem;
-
     var solutionarea = $("#solutionarea");
 
     if (typeof userExercise !== "undefined" && userExercise.readOnly) {
@@ -90,30 +89,42 @@ function renderReadOnlyProblem(event, args) {
         }
 
         var appendGuessForCustom = function(thissolutionarea, validator, guess) {
-            if (validator(guess)) {
-                thissolutionarea
-                    .removeClass("incorrect-activity")
-                    .addClass("correct-activity");
-                thissolutionarea.attr("title", $._("正確答案"));
-                thissolutionarea.append(
-                    $("<p class='solution'>" + $._("答案正確") + "</p>")
-                );
-            } else {
+            var hasAnyoneUndoneHistoryWidgets = Exercises.PerseusBridge.undoneHistoryWidgets();
+            if( hasAnyoneUndoneHistoryWidgets ) {
+                console.log("undoneHistoryWidgets true!");
                 thissolutionarea
                     .removeClass("correct-activity")
                     .addClass("incorrect-activity");
-                thissolutionarea.attr("title", $._("錯誤答案"));
+                thissolutionarea.attr("title", $._("部份功能錯誤"));
                 thissolutionarea.append(
-                    $("<p class='solution'>" + $._("答案錯誤") + "</p>")
+                    $("<p class='solution'>" + $._("部份功能錯誤") + "</p>")
                 );
             }
+            else {
+                if (validator(guess)) {
+                    thissolutionarea
+                        .removeClass("incorrect-activity")
+                        .addClass("correct-activity");
+                    thissolutionarea.attr("title", $._("正確答案"));
+                    thissolutionarea.append(
+                        $("<p class='solution'>" + $._("答案正確") + "</p>")
+                    );
+                } else {
+                    thissolutionarea
+                        .removeClass("correct-activity")
+                        .addClass("incorrect-activity");
+                    thissolutionarea.attr("title", $._("錯誤答案"));
+                    thissolutionarea.append(
+                        $("<p class='solution'>" + $._("答案錯誤") + "</p>")
+                    );
+                }
+            }
+
         }
 
         var appendGuess = function(thissolutionarea, validator, guess) {
             var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
-
             thisAnswerData.showGuess(guess);
-
             if (thisAnswerData.validator(guess) === true) {
                 // If the user didn't get the problem right on the first try, all
                 // answers are labelled incorrect by default
@@ -148,7 +159,6 @@ function renderReadOnlyProblem(event, args) {
                 thissolutionarea = $("<div>")
                     .addClass("user-activity " + value[0])
                     .appendTo(timelineEvents);
-
                 if (value[0] === "hint-activity") {
                     prependHintActivity(thissolutionarea);
                 } else if (value[0] == 'skipped-activity'){
@@ -162,7 +172,6 @@ function renderReadOnlyProblem(event, args) {
                         // radio and custom are the only answer types that
                         // can't display its own guesses in the activity bar
                         var validator = Khan.answerTypes[answerType].setup(null, solution).validator;
-
                         if (answerType === "radio") {
                             appendGuessForRadio(thissolutionarea, validator, guess);
                         } else if (answerType === "custom") {
@@ -313,22 +322,28 @@ function renderReadOnlyProblem(event, args) {
                 timelineMax = states.eq(-1).position().left + states.eq(-1).width() + 5,
                 scroll = Math.min(currentScroll - offset, currentScroll + timelineMax - timeline.width() + 25);
 
-            if (hintNum >= 0) {
-                $(hints[hintNum]).appendTo(realHintsArea).runModules(problem);
-            }
+                var hintDOMs = realHintsArea.context.getElementsByClassName("hint");
+                console.log("hintDOMs before:",hintDOMs);
+                while( hintDOMs.length )
+                    hintDOMs[ 0 ].remove();
+                if ( hints ) {
+                for(var idx = 0; idx <= hintNum; ++idx) {
+                    $(hints[idx]).appendTo(realHintsArea).runModules(problem);
+                }
 
+            }
+            console.log("hintDOMs after:",hintDOMs);
             MathJax.Hub.Queue(function() {
                 var recordState = function() {
                     $("#problemarea input").attr({disabled: "disabled"});
                     thisHintArea = realHintsArea.clone();
                     thisProblem = realWorkArea.clone();
-
                     var thisState = {
                         slide: thisSlide,
                         hintNum: hintNum,
                         hintArea: thisHintArea,
                         problem: thisProblem,
-                        scroll: scroll
+                        scroll: scroll,
                     };
 
                     statelist[i] = thisState;
@@ -367,16 +382,25 @@ function renderReadOnlyProblem(event, args) {
             if (statelist[slideNum]) {
                 thisState = statelist[slideNum];
 
+
                 scrub(thisState, fadeTime);
                 if (framework === "khan-exercises") {
                     $("#workarea").remove();
                     $("#hintsarea").remove();
                     $("#problemarea").append(thisState.problem).append(thisState.hintArea);
+                } else if( 0 ) {
+                    var hintsareaDOM = document.getElementById("hintsarea");
+                    if(hintsareaDOM) {
+                        hintsareaDOM.remove();
+                    }
+                    $("#problemarea").append(thisState.hintArea);
                 }
+                    // $("#problemarea").append(thisState.problem).append(thisState.hintArea);
                 if (thisSlide.data("guess") !== undefined) {
                     solutionarea.effect("highlight", {}, fadeTime);
 
                     // If there is a guess we show it as if it was filled in by the user
+                    console.log("If there is a guess we show it as if it was filled in by the user");
                     if (framework === "khan-exercises") {
                         answerData.showGuess(thisSlide.data("guess"));
                     } else {
@@ -391,7 +415,6 @@ function renderReadOnlyProblem(event, args) {
                 }
                 // fire the "show guess" event
                 $(Khan).trigger("showGuess");
-
                 // TODO: still highlight even if hint modifies problem (and highlight following hints)
                 if (slideNum > 0 && (thisState.hintNum > statelist[slideNum - 1].hintNum)) {
                     $("#hintsarea").children().each(function(index, elem) {
@@ -399,7 +422,7 @@ function renderReadOnlyProblem(event, args) {
                             $(elem).effect("highlight", {}, fadeTime);
                         }
                     });
-
+                    console.log("previousHintNum:",previousHintNum);
                     previousHintNum = thisState.hintNum;
                 }
 
