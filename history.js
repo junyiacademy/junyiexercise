@@ -180,7 +180,18 @@ function renderReadOnlyProblem(event, args) {
                                 .attr("disabled", true);
                     } else {
                         // should be perseus question.
-                        PersersBridge.applyAnswers(guess);
+                        Exercises.PerseusBridge.showGuess(guess);
+                        var validator = function(guess) {
+                            return Exercises.PerseusBridge.scoreInput().correct;
+                        }
+                        appendGuessForCustom(thissolutionarea, validator, guess);
+                        thissolutionarea
+                            .data("guess", guess)
+                                .find("input")
+                                .attr("disabled", true)
+                            .end()
+                                .find("select")
+                                .attr("disabled", true);
                     }
                 }
             });
@@ -341,8 +352,9 @@ function renderReadOnlyProblem(event, args) {
                     } else {
                         recordState();
                     }
+                } else {
+                    recordState();
                 }
-
             });
         };
 
@@ -356,18 +368,26 @@ function renderReadOnlyProblem(event, args) {
                 thisState = statelist[slideNum];
 
                 scrub(thisState, fadeTime);
-
-                $("#workarea").remove();
-                $("#hintsarea").remove();
-                $("#problemarea").append(thisState.problem).append(thisState.hintArea);
-
+                if (framework === "khan-exercises") {
+                    $("#workarea").remove();
+                    $("#hintsarea").remove();
+                    $("#problemarea").append(thisState.problem).append(thisState.hintArea);
+                }
                 if (thisSlide.data("guess") !== undefined) {
                     solutionarea.effect("highlight", {}, fadeTime);
 
                     // If there is a guess we show it as if it was filled in by the user
-                    answerData.showGuess(thisSlide.data("guess"));
+                    if (framework === "khan-exercises") {
+                        answerData.showGuess(thisSlide.data("guess"));
+                    } else {
+                        Exercises.PerseusBridge.showGuess(thisSlide.data("guess"));
+                    }
                 } else {
-                    answerData.showGuess();
+                    if (framework === "khan-exercises") {
+                        answerData.showGuess();
+                    } else {
+                        Exercises.PerseusBridge.showGuess();
+                    }
                 }
                 // fire the "show guess" event
                 $(Khan).trigger("showGuess");
