@@ -290,14 +290,10 @@ function handleAttempt(data) {
         $("#check-answer-results > p").hide();
     } else if (score.correct) {
         // Correct answer, so show the next question button.
-<<<<<<< HEAD
+        firstTimeWrong = true;
         if (document.getElementById("au-correct-answer") !== null) {
             document.getElementById("au-correct-answer").play();
         }
-=======
-        firstTimeWrong = true;
-        document.getElementById("au-correct-answer").play();
->>>>>>> 6a104df... Change the answer button to vibrate only once whatever users have clicked in 1.5sec
         $("#check-answer-button").hide();
         $("#check-answer-results > p").hide();
         $("#next-question-button")
@@ -323,19 +319,13 @@ function handleAttempt(data) {
         $("#skip-question-button").prop("disabled", true);
     } else {
         // Wrong answer. Enable all the input elements
-<<<<<<< HEAD
-        if (document.getElementById("au-wrong-answer") !== null) {    
-            document.getElementById("au-wrong-answer").play();
-        }
-        $("#check-answer-button")
-            .val($._("答錯了，再試試看喔！"))
-            .parent()  // .check-answer-wrapper makes shake behave
-            .effect("shake", {times: 3, distance: 5}, 480);
-=======
+
         if (waitForVibration == false || firstTimeWrong == true) {
             firstTimeWrong = false;
             waitForVibration = true;
+            if (document.getElementById("au-wrong-answer") !== null) {    
             document.getElementById("au-wrong-answer").play();
+            }
             $("#check-answer-button")
                 .val($._("答錯了，再試試看喔！"))
                 .parent()  // .check-answer-wrapper makes shake behave
@@ -345,7 +335,6 @@ function handleAttempt(data) {
                     hintCanVibration = true;
                 },1500);               
         } 
->>>>>>> 6a104df... Change the answer button to vibrate only once whatever users have clicked in 1.5sec
 
         // Is this a message to be shown?
         if (score.message != null) {
@@ -635,13 +624,13 @@ function request(method, data) {
                     var hint_disabled = $("#hint").attr("disabled");
 
                     if (hint_disabled === "disabled") {
-                        if (hintCanVibration == true) {
+                        if (hintCanVibration === true) {
                             hintCanVibration = false;
                             $("#raise-hand-button").effect("shake", {times: 3, distance: 5}, 480);
                         }
                     }
                     else {
-                        if (hintCanVibration == true) {
+                        if (hintCanVibration === true) {
                              hintCanVibration = false;
                             $("#get-hint-button-container").effect("shake", {times: 3, distance: 5}, 480);
                         }
