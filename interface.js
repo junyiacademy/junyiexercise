@@ -290,14 +290,11 @@ function handleAttempt(data) {
         $("#check-answer-results > p").hide();
     } else if (score.correct) {
         // Correct answer, so show the next question button.
-<<<<<<< HEAD
+
         firstTimeWrong = true;
-        document.getElementById("au-correct-answer").play();
-=======
         if (document.getElementById("au-correct-answer") !== null) {
             document.getElementById("au-correct-answer").play();
         }
->>>>>>> 5b8814a80fb2eea2dd85cb9fdad6ae3e02adc2c9
         $("#check-answer-button").hide();
         $("#check-answer-results > p").hide();
         $("#next-question-button")
@@ -323,11 +320,12 @@ function handleAttempt(data) {
         $("#skip-question-button").prop("disabled", true);
     } else {
         // Wrong answer. Enable all the input elements
-<<<<<<< HEAD
         if (waitForVibration == false || firstTimeWrong == true) {
             firstTimeWrong = false;
             waitForVibration = true;
+        if (document.getElementById("au-wrong-answer") !== null) {    
             document.getElementById("au-wrong-answer").play();
+        }
             $("#check-answer-button")
                 .val($._("答錯了，再試試看喔！"))
                 .parent()  // .check-answer-wrapper makes shake behave
@@ -335,17 +333,7 @@ function handleAttempt(data) {
                 setTimeout(function() {
                     waitForVibration = false;
                     hintCanVibration = true;
-                },1500);               
-        } 
-=======
-        if (document.getElementById("au-wrong-answer") !== null) {    
-            document.getElementById("au-wrong-answer").play();
-        }
-        $("#check-answer-button")
-            .val($._("答錯了，再試試看喔！"))
-            .parent()  // .check-answer-wrapper makes shake behave
-            .effect("shake", {times: 3, distance: 5}, 480);
->>>>>>> 5b8814a80fb2eea2dd85cb9fdad6ae3e02adc2c9
+                },1500);                       } 
 
         // Is this a message to be shown?
         if (score.message != null) {
