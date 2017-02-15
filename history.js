@@ -14,7 +14,6 @@ function renderReadOnlyProblem(event, args) {
     var answerType = args.answerType;
     var solution = args.solution;
     var hints = args.hints;
-    console.log("hints:",hints);
     var problem = args.problem;
     var solutionarea = $("#solutionarea");
 
@@ -91,13 +90,12 @@ function renderReadOnlyProblem(event, args) {
         var appendGuessForCustom = function(thissolutionarea, validator, guess) {
             var hasAnyoneUndoneHistoryWidgets = Exercises.PerseusBridge.undoneHistoryWidgets();
             if( hasAnyoneUndoneHistoryWidgets ) {
-                console.log("undoneHistoryWidgets true!");
                 thissolutionarea
                     .removeClass("correct-activity")
                     .addClass("incorrect-activity");
-                thissolutionarea.attr("title", $._("部份功能錯誤"));
+                thissolutionarea.attr("title", $._("無法完整顯示"));
                 thissolutionarea.append(
-                    $("<p class='solution'>" + $._("部份功能錯誤") + "</p>")
+                    $("<p class='solution'>" + $._("無法完整顯示") + "</p>")
                 );
             }
             else {
@@ -323,7 +321,6 @@ function renderReadOnlyProblem(event, args) {
                 scroll = Math.min(currentScroll - offset, currentScroll + timelineMax - timeline.width() + 25);
 
                 var hintDOMs = realHintsArea.context.getElementsByClassName("hint");
-                console.log("hintDOMs before:",hintDOMs);
                 while( hintDOMs.length )
                     hintDOMs[ 0 ].remove();
                 if ( hints ) {
@@ -332,7 +329,6 @@ function renderReadOnlyProblem(event, args) {
                 }
 
             }
-            console.log("hintDOMs after:",hintDOMs);
             MathJax.Hub.Queue(function() {
                 var recordState = function() {
                     $("#problemarea input").attr({disabled: "disabled"});
@@ -400,7 +396,6 @@ function renderReadOnlyProblem(event, args) {
                     solutionarea.effect("highlight", {}, fadeTime);
 
                     // If there is a guess we show it as if it was filled in by the user
-                    console.log("If there is a guess we show it as if it was filled in by the user");
                     if (framework === "khan-exercises") {
                         answerData.showGuess(thisSlide.data("guess"));
                     } else {
@@ -410,7 +405,7 @@ function renderReadOnlyProblem(event, args) {
                     if (framework === "khan-exercises") {
                         answerData.showGuess();
                     } else {
-                        Exercises.PerseusBridge.showGuess();
+                        Exercises.PerseusBridge.showGuess(thisSlide.data("guess"));
                     }
                 }
                 // fire the "show guess" event
@@ -422,7 +417,6 @@ function renderReadOnlyProblem(event, args) {
                             $(elem).effect("highlight", {}, fadeTime);
                         }
                     });
-                    console.log("previousHintNum:",previousHintNum);
                     previousHintNum = thisState.hintNum;
                 }
 
