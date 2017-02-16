@@ -319,16 +319,9 @@ function renderReadOnlyProblem(event, args) {
                 currentScroll = timeline.scrollLeft(),
                 timelineMax = states.eq(-1).position().left + states.eq(-1).width() + 5,
                 scroll = Math.min(currentScroll - offset, currentScroll + timelineMax - timeline.width() + 25);
-
-                var hintDOMs = realHintsArea.context.getElementsByClassName("hint");
-                while( hintDOMs.length )
-                    hintDOMs[ 0 ].remove();
-                if ( hints ) {
-                for(var idx = 0; idx <= hintNum; ++idx) {
-                    $(hints[idx]).appendTo(realHintsArea).runModules(problem);
+                if ( hintNum >= 0 && hints) {
+                    $(hints[hintNum]).appendTo(realHintsArea).runModules(problem);
                 }
-
-            }
             MathJax.Hub.Queue(function() {
                 var recordState = function() {
                     $("#problemarea input").attr({disabled: "disabled"});
@@ -384,12 +377,9 @@ function renderReadOnlyProblem(event, args) {
                     $("#workarea").remove();
                     $("#hintsarea").remove();
                     $("#problemarea").append(thisState.problem).append(thisState.hintArea);
-                } else if( 0 ) {
-                    var hintsareaDOM = document.getElementById("hintsarea");
-                    if(hintsareaDOM) {
-                        hintsareaDOM.remove();
-                    }
-                    $("#problemarea").append(thisState.hintArea);
+                } else {
+                    console.log("thisState.hintNum:",thisState.hintNum);
+                    Exercises.PerseusBridge.showHint(thisState.hintNum);
                 }
                     // $("#problemarea").append(thisState.problem).append(thisState.hintArea);
                 if (thisSlide.data("guess") !== undefined) {
