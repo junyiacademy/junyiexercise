@@ -378,7 +378,6 @@ function renderReadOnlyProblem(event, args) {
                     $("#hintsarea").remove();
                     $("#problemarea").append(thisState.problem).append(thisState.hintArea);
                 } else {
-                    console.log("thisState.hintNum:",thisState.hintNum);
                     Exercises.PerseusBridge.showHint(thisState.hintNum);
                 }
                     // $("#problemarea").append(thisState.problem).append(thisState.hintArea);
