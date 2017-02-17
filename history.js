@@ -88,8 +88,8 @@ function renderReadOnlyProblem(event, args) {
         }
 
         var appendGuessForCustom = function(thissolutionarea, validator, guess) {
-            var hasAnyoneUndoneHistoryWidgets = Exercises.PerseusBridge.undoneHistoryWidgets();
-            if( hasAnyoneUndoneHistoryWidgets ) {
+            var canShowAllHistoryWidgets = Exercises.PerseusBridge.canShowAllHistoryWidgets();
+            if( !canShowAllHistoryWidgets ) {
                 thissolutionarea
                     .removeClass("correct-activity")
                     .addClass("incorrect-activity");
