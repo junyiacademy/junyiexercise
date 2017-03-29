@@ -378,7 +378,7 @@ function renderReadOnlyProblem(event, args) {
                     $("#hintsarea").remove();
                     $("#problemarea").append(thisState.problem).append(thisState.hintArea);
                 } else {
-                    Exercises.PerseusBridge.showHint(thisState.hintNum);
+                    Exercises.PerseusBridge.showHistoryHint(thisState.hintNum);
                 }
                     // $("#problemarea").append(thisState.problem).append(thisState.hintArea);
                 if (thisSlide.data("guess") !== undefined) {
