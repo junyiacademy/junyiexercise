@@ -421,7 +421,7 @@ function handleAttempt(data) {
         $("#problem-and-answer").css("visibility", "hidden");
         $(Exercises).trigger("warning",
                 $._("這一個畫面過期了。請<a href='" + window.location.href +
-                    "'>重新整理</a>網頁。不用擔心，沒有損失進度。"
+                    "'>重新整理</a>網頁。"
                     )
         );
     });
