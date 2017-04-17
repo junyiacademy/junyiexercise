@@ -291,7 +291,8 @@ function handleAttempt(data) {
     } else if (score.correct) {
         // Correct answer, so show the next question button.
         firstTimeWrong = true;
-        if (document.getElementById("au-correct-answer") !== null) {
+        // for ab test
+        if ((document.getElementById("au-correct-answer") !== null)&&(Exercises.abTestGroup !== 'navSideBar_10')&&(Exercises.abTestGroup !== 'wo_all_10')) {
             document.getElementById("au-correct-answer").play();
         }
         $("#check-answer-button").hide();
@@ -323,8 +324,9 @@ function handleAttempt(data) {
         if (waitForVibration == false || firstTimeWrong == true) {
             firstTimeWrong = false;
             waitForVibration = true;
-            if (document.getElementById("au-wrong-answer") !== null) {    
-            document.getElementById("au-wrong-answer").play();
+            // for ab test
+            if ((document.getElementById("au-wrong-answer") !== null)&&(Exercises.abTestGroup !== 'navSideBar_10')&&(Exercises.abTestGroup !== 'wo_all_10')) {
+                document.getElementById("au-wrong-answer").play();
             }
             $("#check-answer-button")
                 .val($._("答錯了，再試試看喔！"))
