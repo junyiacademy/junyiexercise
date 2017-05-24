@@ -323,9 +323,6 @@ function handleAttempt(data) {
         if (waitForVibration == false || firstTimeWrong == true) {
             firstTimeWrong = false;
             waitForVibration = true;
-            if ((document.getElementById("au-wrong-answer") !== null)) {
-                document.getElementById("au-wrong-answer").play();
-            }
             $("#check-answer-button")
                 .val($._("答錯了，再試試看喔！"))
                 .parent()  // .check-answer-wrapper makes shake behave
