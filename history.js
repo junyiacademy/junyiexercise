@@ -17,6 +17,7 @@ function renderReadOnlyProblem(event, args) {
     var problem = args.problem;
     var solutionarea = $("#solutionarea");
 
+    alert("answerType "+answerType);
     if (typeof userExercise !== "undefined" && userExercise.readOnly) {
         var timelineEvents, timeline;
         var timelinecontainer = $("<div id='timelinecontainer'>")
@@ -123,7 +124,7 @@ function renderReadOnlyProblem(event, args) {
         var appendGuess = function(thissolutionarea, validator, guess) {
             var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
             thisAnswerData.showGuess(guess);
-            if (thisAnswerData.validator(guess) === true) {
+            if (thisAnswerData.validator(guess).correct === true) {
                 // If the user didn't get the problem right on the first try, all
                 // answers are labelled incorrect by default
                 thissolutionarea
@@ -157,6 +158,7 @@ function renderReadOnlyProblem(event, args) {
                 thissolutionarea = $("<div>")
                     .addClass("user-activity " + value[0])
                     .appendTo(timelineEvents);
+                alert("value[0] "+value[0]);
                 if (value[0] === "hint-activity") {
                     prependHintActivity(thissolutionarea);
                 } else if (value[0] == 'skipped-activity'){
@@ -164,6 +166,8 @@ function renderReadOnlyProblem(event, args) {
                 } else { // This panel is a solution (or the first panel)
                     thissolutionarea.data("hint", false);
                     // See above, this shouldn't be i18n-ized
+                    alert("guess "+guess);
+                    alert("framework "+framework);
                     if (guess === "Activity Unavailable") {
                         thissolutionarea.text(guess);
                     } else if (framework === "khan-exercises") {
