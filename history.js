@@ -78,7 +78,7 @@ function renderReadOnlyProblem(event, args) {
                   (guess.value != null ? guess.value : guess) +
                   "</p>").tmpl()
             );
-            if (validator(guess)) {
+            if (validator(guess).correct) {
                 thissolutionarea
                     .removeClass("incorrect-activity")
                     .addClass("correct-activity");
@@ -90,41 +90,60 @@ function renderReadOnlyProblem(event, args) {
 
         var appendGuessForCustom = function(thissolutionarea, validator, guess) {
             var canShowAllHistoryWidgets = Exercises.PerseusBridge.canShowAllHistoryWidgets();
-            if( !canShowAllHistoryWidgets ) {
+
+            if (validator(guess).correct) {
+                thissolutionarea
+                    .removeClass("incorrect-activity")
+                    .addClass("correct-activity");
+                thissolutionarea.attr("title", $._("正確答案"));
+                thissolutionarea.append(
+                    $("<p class='solution'>" + $._("答案正確") + "</p>")
+                );
+            } else {
                 thissolutionarea
                     .removeClass("correct-activity")
                     .addClass("incorrect-activity");
-                thissolutionarea.attr("title", $._("無法完整顯示"));
+                thissolutionarea.attr("title", $._("錯誤答案"));
                 thissolutionarea.append(
-                    $("<p class='solution'>" + $._("無法完整顯示") + "</p>")
+                    $("<p class='solution'>" + $._("答案錯誤") + "</p>")
                 );
             }
-            else {
-                if (validator(guess)) {
-                    thissolutionarea
-                        .removeClass("incorrect-activity")
-                        .addClass("correct-activity");
-                    thissolutionarea.attr("title", $._("正確答案"));
-                    thissolutionarea.append(
-                        $("<p class='solution'>" + $._("答案正確") + "</p>")
-                    );
-                } else {
-                    thissolutionarea
-                        .removeClass("correct-activity")
-                        .addClass("incorrect-activity");
-                    thissolutionarea.attr("title", $._("錯誤答案"));
-                    thissolutionarea.append(
-                        $("<p class='solution'>" + $._("答案錯誤") + "</p>")
-                    );
-                }
-            }
-
         }
+        var hasCustomType = function() {
+            var solAreaHasCustomType = false;
+            $(solution).find(".sol").each(function(idx) {
+                var type = $(this).data("type");
+                alert('in '+type);
+                if (type === "custom") {
+                    solAreaHasCustomType = true;
+                }
+            });
 
+            alert("solAreaHasCustomType " + solAreaHasCustomType);
+            return solAreaHasCustomType;
+        }
         var appendGuess = function(thissolutionarea, validator, guess) {
             var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
             thisAnswerData.showGuess(guess);
-            if (thisAnswerData.validator(guess).correct === true) {
+            if (thisAnswerData.validator(guess).correct) {
+                // If the user didn't get the problem right on the first try, all
+                // answers are labelled incorrect by default
+                thissolutionarea
+                    .removeClass("incorrect-activity")
+                    .addClass("correct-activity");
+
+                thissolutionarea.attr("title", $._("正確答案"));
+            } else {
+                thissolutionarea
+                    .removeClass("correct-activity")
+                    .addClass("incorrect-activity");
+                thissolutionarea.attr("title", $._("錯誤答案"));
+            }
+        }
+        var appendGuess = function(thissolutionarea, validator, guess) {
+            var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
+            thisAnswerData.showGuess(guess);
+            if (thisAnswerData.validator(guess).correct) {
                 // If the user didn't get the problem right on the first try, all
                 // answers are labelled incorrect by default
                 thissolutionarea
@@ -150,7 +169,11 @@ function renderReadOnlyProblem(event, args) {
                 // can remove it. It shouldn't be i18n-ized though
                 var guess = value[1] === "Activity Unavailable" ? value[1] : JSON.parse(value[1]),
                     thissolutionarea;
-
+                alert('value ' + value);
+                alert("value[0] "+value[0]);
+                alert("value[1] "+value[1]);
+                alert("guess "+guess);
+                alert(JSON.parse(value[1]));
                 timelineEvents
                     // I18N: This is a number of seconds, like '3s'
                     .append("<div class='timeline-time'>" + $._("%(time)s秒", {time: value[2]}) + "</div>");
@@ -158,7 +181,7 @@ function renderReadOnlyProblem(event, args) {
                 thissolutionarea = $("<div>")
                     .addClass("user-activity " + value[0])
                     .appendTo(timelineEvents);
-                alert("value[0] "+value[0]);
+                
                 if (value[0] === "hint-activity") {
                     prependHintActivity(thissolutionarea);
                 } else if (value[0] == 'skipped-activity'){
@@ -166,7 +189,7 @@ function renderReadOnlyProblem(event, args) {
                 } else { // This panel is a solution (or the first panel)
                     thissolutionarea.data("hint", false);
                     // See above, this shouldn't be i18n-ized
-                    alert("guess "+guess);
+                    
                     alert("framework "+framework);
                     if (guess === "Activity Unavailable") {
                         thissolutionarea.text(guess);
@@ -177,6 +200,9 @@ function renderReadOnlyProblem(event, args) {
                         if (answerType === "radio") {
                             appendGuessForRadio(thissolutionarea, validator, guess);
                         } else if (answerType === "custom") {
+                            appendGuessForCustom(thissolutionarea, validator, guess);
+                        } else if (answerType === "multiple" && hasCustomType(thissolutionarea)) {
+                            alert('in multiple and custom');
                             appendGuessForCustom(thissolutionarea, validator, guess);
                         } else {
                             appendGuess(thissolutionarea, validator, guess);
@@ -193,7 +219,7 @@ function renderReadOnlyProblem(event, args) {
                         // should be perseus question.
                         Exercises.PerseusBridge.showGuess(guess);
                         var validator = function(guess) {
-                            return Exercises.PerseusBridge.scoreInput().correct;
+                            return Exercises.PerseusBridge.scoreInput();
                         }
                         appendGuessForCustom(thissolutionarea, validator, guess);
                         thissolutionarea
