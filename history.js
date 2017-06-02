@@ -90,6 +90,7 @@ function renderReadOnlyProblem(event, args) {
             }
         }
 
+        // Khan's custom answer type and perseus question use
         var appendGuessForCustom = function(thissolutionarea, validator, guess) {
             if (validator(guess).correct) {
                 thissolutionarea
