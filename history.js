@@ -71,7 +71,7 @@ function renderReadOnlyProblem(event, args) {
         var appendGuessForRadio = function(thissolutionarea, useractivity, guess) {
             thissolutionarea.append(
                 $("<p class='solution'>" +
-                  $._("選擇選項: " + guess.index) +
+                  $._("選擇選項: " + (guess.index+1)) +
                   "</p>")
             );
             if (useractivity === "correct-activity") {
