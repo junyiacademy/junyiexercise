@@ -68,16 +68,13 @@ function renderReadOnlyProblem(event, args) {
             );
         }
 
-        var appendGuessForRadio = function(thissolutionarea, validator, guess) {
+        var appendGuessForRadio = function(thissolutionarea, useractivity, guess) {
             thissolutionarea.append(
-                // Add the guess to the activity bar
-                // TODO(emily): remove this
-                // backwards-compatible code in 7/13
                 $("<p class='solution'>" +
-                  (guess.value != null ? guess.value : guess) +
-                  "</p>").tmpl()
+                  $._("選擇選項: " + guess.index) +
+                  "</p>")
             );
-            if (validator(guess).correct) {
+            if (useractivity === "correct-activity") {
                 thissolutionarea
                     .removeClass("incorrect-activity")
                     .addClass("correct-activity");
@@ -194,7 +191,7 @@ function renderReadOnlyProblem(event, args) {
                         // can't display its own guesses in the activity bar
                         var validator = Khan.answerTypes[answerType].setup(null, solution).validator;
                         if (answerType === "radio") {
-                            appendGuessForRadio(thissolutionarea, validator, guess);
+                            appendGuessForRadio(thissolutionarea, now_activity, guess);
                         } else if (answerType === "custom") {
                             appendGuessForCustom(thissolutionarea, validator, guess);
                         } else if (answerType === "multiple" && hasCustomType(thissolutionarea)) {
