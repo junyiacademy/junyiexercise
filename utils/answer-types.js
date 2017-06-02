@@ -1020,7 +1020,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             $(solutionarea).append($(solution).clone().contents().tmpl());
             
             var answerDataArray = [];
-            alert('in setup');
+
             // Iterate over each of the .sol elements
             $(solutionarea).find(".sol").each(function(idx) {
                 var type = $(this).data("type");
@@ -1751,7 +1751,6 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                             "var guess = " + JSON.stringify(guess) + ";" +
                             showCustomGuessCode +
                         "})()";
-                        alert(code);
                     KhanUtil.tmpl.getVAR(code, KhanUtil.currentGraph);
                 },
                 showGuess: function(guess) {

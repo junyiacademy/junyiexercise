@@ -119,25 +119,30 @@ function renderReadOnlyProblem(event, args) {
                 }
             });
 
-            alert("solAreaHasCustomType " + solAreaHasCustomType);
+            //alert("solAreaHasCustomType " + solAreaHasCustomType);
             return solAreaHasCustomType;
         }
-        var appendGuess = function(thissolutionarea, validator, guess) {
-            var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
+        var appendGuessHasCustomType = function(thissolutionarea, useractivity, guess) {
+            var thisAnswerData = Khan.answerTypes[answerType].setup(null, solution);
             thisAnswerData.showGuess(guess);
-            if (thisAnswerData.validator(guess).correct) {
+            if (useractivity === "correct-activity") {
                 // If the user didn't get the problem right on the first try, all
                 // answers are labelled incorrect by default
                 thissolutionarea
                     .removeClass("incorrect-activity")
                     .addClass("correct-activity");
-
                 thissolutionarea.attr("title", $._("正確答案"));
+                thissolutionarea.append(
+                    $("<p class='solution'>" + $._("答案正確") + "</p>")
+                );
             } else {
                 thissolutionarea
                     .removeClass("correct-activity")
                     .addClass("incorrect-activity");
                 thissolutionarea.attr("title", $._("錯誤答案"));
+                thissolutionarea.append(
+                    $("<p class='solution'>" + $._("答案錯誤") + "</p>")
+                );
             }
         }
         var appendGuess = function(thissolutionarea, validator, guess) {
@@ -149,7 +154,6 @@ function renderReadOnlyProblem(event, args) {
                 thissolutionarea
                     .removeClass("incorrect-activity")
                     .addClass("correct-activity");
-
                 thissolutionarea.attr("title", $._("正確答案"));
             } else {
                 thissolutionarea
@@ -169,11 +173,7 @@ function renderReadOnlyProblem(event, args) {
                 // can remove it. It shouldn't be i18n-ized though
                 var guess = value[1] === "Activity Unavailable" ? value[1] : JSON.parse(value[1]),
                     thissolutionarea;
-                alert('value ' + value);
-                alert("value[0] "+value[0]);
-                alert("value[1] "+value[1]);
-                alert("guess "+guess);
-                alert(JSON.parse(value[1]));
+
                 timelineEvents
                     // I18N: This is a number of seconds, like '3s'
                     .append("<div class='timeline-time'>" + $._("%(time)s秒", {time: value[2]}) + "</div>");
@@ -182,9 +182,10 @@ function renderReadOnlyProblem(event, args) {
                     .addClass("user-activity " + value[0])
                     .appendTo(timelineEvents);
                 
-                if (value[0] === "hint-activity") {
+                var now_activity = value[0];
+                if (now_activity === "hint-activity") {
                     prependHintActivity(thissolutionarea);
-                } else if (value[0] == 'skipped-activity'){
+                } else if (now_activity == 'skipped-activity'){
                     appendSkippedActivity(thissolutionarea);
                 } else { // This panel is a solution (or the first panel)
                     thissolutionarea.data("hint", false);
@@ -203,7 +204,7 @@ function renderReadOnlyProblem(event, args) {
                             appendGuessForCustom(thissolutionarea, validator, guess);
                         } else if (answerType === "multiple" && hasCustomType(thissolutionarea)) {
                             alert('in multiple and custom');
-                            appendGuessForCustom(thissolutionarea, validator, guess);
+                            appendGuessHasCustomType(thissolutionarea, now_activity, guess);
                         } else {
                             appendGuess(thissolutionarea, validator, guess);
                         }
