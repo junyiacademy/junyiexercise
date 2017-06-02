@@ -1018,14 +1018,14 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             // Very quickly place all of the elements in the solution area
             // Clone it, because we don't want to modify or move it
             $(solutionarea).append($(solution).clone().contents().tmpl());
-            
+
             var answerDataArray = [];
 
             // Iterate over each of the .sol elements
             $(solutionarea).find(".sol").each(function(idx) {
                 var type = $(this).data("type");
                 type = type != null ? type : "number";
-                
+
                 // find the corresponding answer
                 var sol = $(solution).find(".sol").eq(idx);
 
@@ -1036,7 +1036,6 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 // perform setup on each of the areas
                 var answerData = Khan.answerTypes[type].setup(solarea, sol);
                 // Store the returned data, for use later
-                alert(type);
                 answerDataArray.push(answerData);
             });
 
@@ -1077,10 +1076,8 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 showGuess: function(guess) {
                     // Iterate through each of the answerDatas, and show the
                     // cooresponding guess for each
-                    //alert('ll '+answerDataArray.length);
                     $.each(answerDataArray, function(i, answerData) {
                         if (guess !== undefined) {
-                            //alert('gu '+i+' '+guess[i]);
                             answerData.showGuess(guess[i]);
                         } else {
                             answerData.showGuess();
