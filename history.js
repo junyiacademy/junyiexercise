@@ -83,13 +83,14 @@ function renderReadOnlyProblem(event, args) {
                     .addClass("correct-activity");
                 thissolutionarea.attr("title", $._("正確答案"));
             } else {
+                thissolutionarea
+                    .removeClass("correct-activity")
+                    .addClass("incorrect-activity");
                 thissolutionarea.attr("title", $._("錯誤答案"));
             }
         }
 
         var appendGuessForCustom = function(thissolutionarea, validator, guess) {
-            var canShowAllHistoryWidgets = Exercises.PerseusBridge.canShowAllHistoryWidgets();
-
             if (validator(guess).correct) {
                 thissolutionarea
                     .removeClass("incorrect-activity")
