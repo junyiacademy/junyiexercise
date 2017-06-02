@@ -17,7 +17,6 @@ function renderReadOnlyProblem(event, args) {
     var problem = args.problem;
     var solutionarea = $("#solutionarea");
 
-    alert("answerType "+answerType);
     if (typeof userExercise !== "undefined" && userExercise.readOnly) {
         var timelineEvents, timeline;
         var timelinecontainer = $("<div id='timelinecontainer'>")
@@ -109,25 +108,21 @@ function renderReadOnlyProblem(event, args) {
                 );
             }
         }
+        // check mutiple answer type contain custom answer type or not
         var hasCustomType = function() {
             var solAreaHasCustomType = false;
             $(solution).find(".sol").each(function(idx) {
                 var type = $(this).data("type");
-                alert('in '+type);
                 if (type === "custom") {
                     solAreaHasCustomType = true;
                 }
             });
-
-            //alert("solAreaHasCustomType " + solAreaHasCustomType);
             return solAreaHasCustomType;
         }
         var appendGuessHasCustomType = function(thissolutionarea, useractivity, guess) {
             var thisAnswerData = Khan.answerTypes[answerType].setup(null, solution);
             thisAnswerData.showGuess(guess);
             if (useractivity === "correct-activity") {
-                // If the user didn't get the problem right on the first try, all
-                // answers are labelled incorrect by default
                 thissolutionarea
                     .removeClass("incorrect-activity")
                     .addClass("correct-activity");
@@ -181,7 +176,7 @@ function renderReadOnlyProblem(event, args) {
                 thissolutionarea = $("<div>")
                     .addClass("user-activity " + value[0])
                     .appendTo(timelineEvents);
-                
+
                 var now_activity = value[0];
                 if (now_activity === "hint-activity") {
                     prependHintActivity(thissolutionarea);
@@ -190,8 +185,6 @@ function renderReadOnlyProblem(event, args) {
                 } else { // This panel is a solution (or the first panel)
                     thissolutionarea.data("hint", false);
                     // See above, this shouldn't be i18n-ized
-                    
-                    alert("framework "+framework);
                     if (guess === "Activity Unavailable") {
                         thissolutionarea.text(guess);
                     } else if (framework === "khan-exercises") {
@@ -203,7 +196,8 @@ function renderReadOnlyProblem(event, args) {
                         } else if (answerType === "custom") {
                             appendGuessForCustom(thissolutionarea, validator, guess);
                         } else if (answerType === "multiple" && hasCustomType(thissolutionarea)) {
-                            alert('in multiple and custom');
+                            // this multiple answer type contain custom answer type
+                            // so use now_activity to know that user's answer correct or not
                             appendGuessHasCustomType(thissolutionarea, now_activity, guess);
                         } else {
                             appendGuess(thissolutionarea, validator, guess);
