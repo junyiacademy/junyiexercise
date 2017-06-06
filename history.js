@@ -88,8 +88,8 @@ function renderReadOnlyProblem(event, args) {
         }
 
         // Khan's custom answer type and perseus question use
-        var appendGuessForCustom = function(thissolutionarea, validator, guess) {
-            if (validator(guess).correct) {
+        var appendGuessForCustom = function(thissolutionarea, useractivity, guess) {
+            if (useractivity === "correct-activity") {
                 thissolutionarea
                     .removeClass("incorrect-activity")
                     .addClass("correct-activity");
@@ -139,12 +139,10 @@ function renderReadOnlyProblem(event, args) {
                 );
             }
         }
-        var appendGuess = function(thissolutionarea, validator, guess) {
+        var appendGuess = function(thissolutionarea, useractivity, guess) {
             var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
             thisAnswerData.showGuess(guess);
-            if (thisAnswerData.validator(guess).correct) {
-                // If the user didn't get the problem right on the first try, all
-                // answers are labelled incorrect by default
+            if (useractivity === "correct-activity") {
                 thissolutionarea
                     .removeClass("incorrect-activity")
                     .addClass("correct-activity");
@@ -189,17 +187,16 @@ function renderReadOnlyProblem(event, args) {
                     } else if (framework === "khan-exercises") {
                         // radio and custom are the only answer types that
                         // can't display its own guesses in the activity bar
-                        var validator = Khan.answerTypes[answerType].setup(null, solution).validator;
                         if (answerType === "radio") {
                             appendGuessForRadio(thissolutionarea, now_activity, guess);
                         } else if (answerType === "custom") {
-                            appendGuessForCustom(thissolutionarea, validator, guess);
+                            appendGuessForCustom(thissolutionarea, now_activity, guess);
                         } else if (answerType === "multiple" && hasCustomType(thissolutionarea)) {
                             // this multiple answer type contain custom answer type
                             // so use now_activity to know that user's answer correct or not
                             appendGuessHasCustomType(thissolutionarea, now_activity, guess);
                         } else {
-                            appendGuess(thissolutionarea, validator, guess);
+                            appendGuess(thissolutionarea, now_activity, guess);
                         }
 
                         thissolutionarea
@@ -215,7 +212,7 @@ function renderReadOnlyProblem(event, args) {
                         var validator = function(guess) {
                             return Exercises.PerseusBridge.scoreInput();
                         }
-                        appendGuessForCustom(thissolutionarea, validator, guess);
+                        appendGuessForCustom(thissolutionarea, now_activity, guess);
                         thissolutionarea
                             .data("guess", guess)
                                 .find("input")
