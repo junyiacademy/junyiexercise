@@ -16,7 +16,7 @@ function renderReadOnlyProblem(event, args) {
     var hints = args.hints;
     var problem = args.problem;
     var solutionarea = $("#solutionarea");
-
+    alert(answerType);
     if (typeof userExercise !== "undefined" && userExercise.readOnly) {
         var timelineEvents, timeline;
         var timelinecontainer = $("<div id='timelinecontainer'>")
@@ -112,6 +112,7 @@ function renderReadOnlyProblem(event, args) {
             var solAreaHasCustomType = false;
             $(solution).find(".sol").each(function(idx) {
                 var type = $(this).data("type");
+                alert(type);
                 if (type === "custom") {
                     solAreaHasCustomType = true;
                 }
@@ -165,7 +166,7 @@ function renderReadOnlyProblem(event, args) {
                 // can remove it. It shouldn't be i18n-ized though
                 var guess = value[1] === "Activity Unavailable" ? value[1] : JSON.parse(value[1]),
                     thissolutionarea;
-
+                alert(value);
                 timelineEvents
                     // I18N: This is a number of seconds, like '3s'
                     .append("<div class='timeline-time'>" + $._("%(time)s秒", {time: value[2]}) + "</div>");
