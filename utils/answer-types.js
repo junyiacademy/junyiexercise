@@ -1025,7 +1025,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             $(solutionarea).find(".sol").each(function(idx) {
                 var type = $(this).data("type");
                 type = type != null ? type : "number";
-                alert('subtype' + type);
+
                 // find the corresponding answer
                 var sol = $(solution).find(".sol").eq(idx);
 

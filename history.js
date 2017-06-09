@@ -16,7 +16,6 @@ function renderReadOnlyProblem(event, args) {
     var hints = args.hints;
     var problem = args.problem;
     var solutionarea = $("#solutionarea");
-    alert('answerType' + answerType);
     if (typeof userExercise !== "undefined" && userExercise.readOnly) {
         var timelineEvents, timeline;
         var timelinecontainer = $("<div id='timelinecontainer'>")
@@ -73,8 +72,11 @@ function renderReadOnlyProblem(event, args) {
                 .removeClass("incorrect-activity")
                 .addClass("correct-activity");
             thissolutionarea.attr("title", $._("正確答案"));
-            if (canAnswerShowOnTimeLine()){
+            // some HTML type problem can show answer on answer area
+            if (canAnswerShowOnTimeLine()) {
+                // put the answer area on the time line
                 var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
+                // show the answer on time line
                 thisAnswerData.showGuess(guess);
             } else {
                 thissolutionarea.append(
@@ -88,8 +90,11 @@ function renderReadOnlyProblem(event, args) {
                 .removeClass("correct-activity")
                 .addClass("incorrect-activity");
             thissolutionarea.attr("title", $._("錯誤答案"));
+            // some HTML type problem can show answer on answer area
             if (canAnswerShowOnTimeLine()) {
+                // put the answer area on the time line
                 var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
+                // show the answer on time line
                 thisAnswerData.showGuess(guess);
             } else {
                 thissolutionarea.append(
@@ -102,16 +107,20 @@ function renderReadOnlyProblem(event, args) {
             thissolutionarea
                 .removeClass("correct-activity")
                 .addClass("incorrect-activity");
-            thissolutionarea.attr("title", $._("無法判斷"));
+            thissolutionarea.attr("title", $._("無法判斷結果"));
             thissolutionarea.append(
-                $("<p class='solution'>" + $._("無法判斷") + "</p>")
+                $("<p class='solution'>" + $._("無法判斷結果") + "</p>")
             );
         }
         // check the answer can show on time line or not
+        // now 'number' type and 'multiple' & 'set' contain only 'number' type can show on time line
         var canAnswerShowOnTimeLine = function() {
             switch(answerType) {
                 case 'number':
                     return true;
+                case 'multiple':
+                case 'set':
+                    return !hasCustomType() && countAnswerTypeAmount() <= 2;
                 default:
                     return false;
             }
@@ -119,7 +128,9 @@ function renderReadOnlyProblem(event, args) {
         // check this can be validate or not
         var canValidate = function () {
             if (hasCustomType() || answerType === 'custom') {
-                return $.isFunction(answerData.showCustomGuess);
+                // if this problem not have show-guess-solutionarea
+                // some of then can't be validate, so it must have this area
+                return solution.find(".show-guess-solutionarea").text() !== "";
 
             } else {
                 return true;
@@ -131,7 +142,6 @@ function renderReadOnlyProblem(event, args) {
             var solAreaHasCustomType = false;
             $(solution).find(".sol").each(function(idx) {
                 var type = $(this).data("type");
-                //alert(type);
                 if (type === "custom") {
                     solAreaHasCustomType = true;
                 }
@@ -139,18 +149,21 @@ function renderReadOnlyProblem(event, args) {
             return solAreaHasCustomType;
         }
 
+        var countAnswerTypeAmount = function() {
+            return $(solution).find(".sol").length;
+        }
+
+
         var appendTimelineEvents = function() {
             /* value[0]: css class
              * value[1]: guess
              * value[2]: time taken since last guess
              */
-             alert(answerType);
             $.each(userExercise.userActivity, function(index, value) {
                 // TODO(emily): figure out where this is coming from, and if we
                 // can remove it. It shouldn't be i18n-ized though
                 var guess = value[1] === "Activity Unavailable" ? value[1] : JSON.parse(value[1]),
                     thissolutionarea;
-                //alert(value);
                 timelineEvents
                     // I18N: This is a number of seconds, like '3s'
                     .append("<div class='timeline-time'>" + $._("%(time)s秒", {time: value[2]}) + "</div>");
@@ -175,19 +188,18 @@ function renderReadOnlyProblem(event, args) {
                             appendCorrect(thissolutionarea, guess);
 
                         } else {  // incorrect-activity, last one activity(correct, incorrect, unknow)
-                            alert('canValidate' + canValidate());
                             var length_of_user_activity = userExercise.userActivity.length;
-                            // not the last element
+                            // not the last element, it must be incorrect
                             if (index != (length_of_user_activity-1)) { 
                                 appendIncorrect(thissolutionarea, guess);
-
-                            } else if(canValidate()) {
+                            // it is the last one, check it can be validate or not
+                            } else if (canValidate()) {
                                 var answer_correct = false;
-
+                                // when it is HTML problem
                                 if (framework === "khan-exercises") {
                                     answerData.showGuess(guess);
                                     answer_correct = answerData.validator(guess).correct;
-
+                                // when it is Perseus
                                 } else {
                                     Exercises.PerseusBridge.showGuess(guess);
                                     var validator = function(guess) {
@@ -196,15 +208,15 @@ function renderReadOnlyProblem(event, args) {
                                     answer_correct = validator(guess).correct;
 
                                 }
-
-                                if(answer_correct) {
+                                // append the result on time line
+                                if (answer_correct) {
                                     appendCorrect(thissolutionarea, guess);
 
                                 } else {
                                     appendIncorrect(thissolutionarea, guess);
 
                                 }
-
+                            // this kind problem we can't validate it answer correct or not
                             } else {
                                 appendCannotValidate(thissolutionarea);
 
