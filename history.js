@@ -16,7 +16,7 @@ function renderReadOnlyProblem(event, args) {
     var hints = args.hints;
     var problem = args.problem;
     var solutionarea = $("#solutionarea");
-    alert(answerType);
+    alert('answerType' + answerType);
     if (typeof userExercise !== "undefined" && userExercise.readOnly) {
         var timelineEvents, timeline;
         var timelinecontainer = $("<div id='timelinecontainer'>")
@@ -67,44 +67,63 @@ function renderReadOnlyProblem(event, args) {
                 $("<p class='solution'>" + $._("跳過這題") + "</p>")
             );
         }
-
-        var appendGuessForRadio = function(thissolutionarea, useractivity, guess) {
-            thissolutionarea.append(
-                $("<p class='solution'>" +
-                  $._("選擇選項: " + (guess.index+1)) +
-                  "</p>")
-            );
-            if (useractivity === "correct-activity") {
-                thissolutionarea
-                    .removeClass("incorrect-activity")
-                    .addClass("correct-activity");
-                thissolutionarea.attr("title", $._("正確答案"));
+        // append correct state on time line
+        var appendCorrect = function(thissolutionarea, guess) {
+            thissolutionarea
+                .removeClass("incorrect-activity")
+                .addClass("correct-activity");
+            thissolutionarea.attr("title", $._("正確答案"));
+            if (canAnswerShowOnTimeLine()){
+                var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
+                thisAnswerData.showGuess(guess);
             } else {
-                thissolutionarea
-                    .removeClass("correct-activity")
-                    .addClass("incorrect-activity");
-                thissolutionarea.attr("title", $._("錯誤答案"));
-            }
-        }
-
-        // Khan's custom answer type and perseus question use
-        var appendGuessForCustom = function(thissolutionarea, useractivity, guess) {
-            if (useractivity === "correct-activity") {
-                thissolutionarea
-                    .removeClass("incorrect-activity")
-                    .addClass("correct-activity");
-                thissolutionarea.attr("title", $._("正確答案"));
                 thissolutionarea.append(
                     $("<p class='solution'>" + $._("答案正確") + "</p>")
                 );
+            }
+        }
+        // append incorrect state on time line
+        var appendIncorrect = function(thissolutionarea, guess) {
+            thissolutionarea
+                .removeClass("correct-activity")
+                .addClass("incorrect-activity");
+            thissolutionarea.attr("title", $._("錯誤答案"));
+            if (canAnswerShowOnTimeLine()) {
+                var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
+                thisAnswerData.showGuess(guess);
             } else {
-                thissolutionarea
-                    .removeClass("correct-activity")
-                    .addClass("incorrect-activity");
-                thissolutionarea.attr("title", $._("錯誤答案"));
                 thissolutionarea.append(
                     $("<p class='solution'>" + $._("答案錯誤") + "</p>")
                 );
+            }
+        }
+        // append cannot validate state on time line
+        var appendCannotValidate = function(thissolutionarea) {
+            thissolutionarea
+                .removeClass("correct-activity")
+                .addClass("incorrect-activity");
+            thissolutionarea.attr("title", $._("無法判斷"));
+            thissolutionarea.append(
+                $("<p class='solution'>" + $._("無法判斷") + "</p>")
+            );
+        }
+        // check the answer can show on time line or not
+        var canAnswerShowOnTimeLine = function() {
+            switch(answerType) {
+                case 'number':
+                    return true;
+                default:
+                    return false;
+            }
+        }
+        // check this can be validate or not
+        var canValidate = function () {
+            if (hasCustomType() || answerType === 'custom') {
+                return $.isFunction(answerData.showCustomGuess);
+
+            } else {
+                return true;
+
             }
         }
         // check mutiple answer type contain custom answer type or not
@@ -112,48 +131,12 @@ function renderReadOnlyProblem(event, args) {
             var solAreaHasCustomType = false;
             $(solution).find(".sol").each(function(idx) {
                 var type = $(this).data("type");
-                alert(type);
+                //alert(type);
                 if (type === "custom") {
                     solAreaHasCustomType = true;
                 }
             });
             return solAreaHasCustomType;
-        }
-        var appendGuessHasCustomType = function(thissolutionarea, useractivity, guess) {
-            var thisAnswerData = Khan.answerTypes[answerType].setup(null, solution);
-            thisAnswerData.showGuess(guess);
-            if (useractivity === "correct-activity") {
-                thissolutionarea
-                    .removeClass("incorrect-activity")
-                    .addClass("correct-activity");
-                thissolutionarea.attr("title", $._("正確答案"));
-                thissolutionarea.append(
-                    $("<p class='solution'>" + $._("答案正確") + "</p>")
-                );
-            } else {
-                thissolutionarea
-                    .removeClass("correct-activity")
-                    .addClass("incorrect-activity");
-                thissolutionarea.attr("title", $._("錯誤答案"));
-                thissolutionarea.append(
-                    $("<p class='solution'>" + $._("答案錯誤") + "</p>")
-                );
-            }
-        }
-        var appendGuess = function(thissolutionarea, useractivity, guess) {
-            var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
-            thisAnswerData.showGuess(guess);
-            if (useractivity === "correct-activity") {
-                thissolutionarea
-                    .removeClass("incorrect-activity")
-                    .addClass("correct-activity");
-                thissolutionarea.attr("title", $._("正確答案"));
-            } else {
-                thissolutionarea
-                    .removeClass("correct-activity")
-                    .addClass("incorrect-activity");
-                thissolutionarea.attr("title", $._("錯誤答案"));
-            }
         }
 
         var appendTimelineEvents = function() {
@@ -161,12 +144,13 @@ function renderReadOnlyProblem(event, args) {
              * value[1]: guess
              * value[2]: time taken since last guess
              */
+             alert(answerType);
             $.each(userExercise.userActivity, function(index, value) {
                 // TODO(emily): figure out where this is coming from, and if we
                 // can remove it. It shouldn't be i18n-ized though
                 var guess = value[1] === "Activity Unavailable" ? value[1] : JSON.parse(value[1]),
                     thissolutionarea;
-                alert(value);
+                //alert(value);
                 timelineEvents
                     // I18N: This is a number of seconds, like '3s'
                     .append("<div class='timeline-time'>" + $._("%(time)s秒", {time: value[2]}) + "</div>");
@@ -178,42 +162,54 @@ function renderReadOnlyProblem(event, args) {
                 var now_activity = value[0];
                 if (now_activity === "hint-activity") {
                     prependHintActivity(thissolutionarea);
-                } else if (now_activity == 'skipped-activity'){
+                } else if (now_activity == 'skipped-activity') {
                     appendSkippedActivity(thissolutionarea);
-                } else { // This panel is a solution (or the first panel)
+                } else {
                     thissolutionarea.data("hint", false);
                     // See above, this shouldn't be i18n-ized
                     if (guess === "Activity Unavailable") {
                         thissolutionarea.text(guess);
-                    } else if (framework === "khan-exercises") {
-                        // radio and custom are the only answer types that
-                        // can't display its own guesses in the activity bar
-                        if (answerType === "radio") {
-                            appendGuessForRadio(thissolutionarea, now_activity, guess);
-                        } else if (answerType === "custom") {
-                            appendGuessForCustom(thissolutionarea, now_activity, guess);
-                        } else if (answerType === "multiple" && hasCustomType(thissolutionarea)) {
-                            // this multiple answer type contain custom answer type
-                            // so use now_activity to know that user's answer correct or not
-                            appendGuessHasCustomType(thissolutionarea, now_activity, guess);
-                        } else {
-                            appendGuess(thissolutionarea, now_activity, guess);
-                        }
 
-                        thissolutionarea
-                            .data("guess", guess)
-                                .find("input")
-                                .attr("disabled", true)
-                            .end()
-                                .find("select")
-                                .attr("disabled", true);
                     } else {
-                        // should be perseus question.
-                        Exercises.PerseusBridge.showGuess(guess);
-                        var validator = function(guess) {
-                            return Exercises.PerseusBridge.scoreInput();
+                        if (now_activity == 'correct-activity') {
+                            appendCorrect(thissolutionarea, guess);
+
+                        } else {  // incorrect-activity, last one activity(correct, incorrect, unknow)
+                            alert('canValidate' + canValidate());
+                            var length_of_user_activity = userExercise.userActivity.length;
+                            // not the last element
+                            if (index != (length_of_user_activity-1)) { 
+                                appendIncorrect(thissolutionarea, guess);
+
+                            } else if(canValidate()) {
+                                var answer_correct = false;
+
+                                if (framework === "khan-exercises") {
+                                    answerData.showGuess(guess);
+                                    answer_correct = answerData.validator(guess).correct;
+
+                                } else {
+                                    Exercises.PerseusBridge.showGuess(guess);
+                                    var validator = function(guess) {
+                                        return Exercises.PerseusBridge.scoreInput();
+                                    }
+                                    answer_correct = validator(guess).correct;
+
+                                }
+
+                                if(answer_correct) {
+                                    appendCorrect(thissolutionarea, guess);
+
+                                } else {
+                                    appendIncorrect(thissolutionarea, guess);
+
+                                }
+
+                            } else {
+                                appendCannotValidate(thissolutionarea);
+
+                            }
                         }
-                        appendGuessForCustom(thissolutionarea, now_activity, guess);
                         thissolutionarea
                             .data("guess", guess)
                                 .find("input")
