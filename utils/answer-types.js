@@ -1203,6 +1203,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             $(solutionarea).find(".entry").each(function() {
                 var input = $(this), type = $(this).data("type");
                 type = type != null ? type : "number";
+
                 var sol = input.clone(),
                     solarea = input.empty();
 
