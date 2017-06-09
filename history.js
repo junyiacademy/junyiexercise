@@ -121,7 +121,9 @@ function renderReadOnlyProblem(event, args) {
                     return true;
                 case 'multiple':
                 case 'set':
-                    return !hasCustomType() && countAnswerTypeAmount() <= 2;
+                    return !hasCustomType() &&
+                            // when answer area too long, we have not enouge area to show it
+                            ($(solution).find(".entry").length + $(solution).find(".sol").length) <= 2;
                 default:
                     return false;
             }
@@ -141,7 +143,15 @@ function renderReadOnlyProblem(event, args) {
         // check mutiple answer type contain custom answer type or not
         var hasCustomType = function() {
             var solAreaHasCustomType = false;
-            $(solution).find(".sol").each(function(idx) {
+
+            $(solution).find(".sol").each(function() {
+                var type = $(this).data("type");
+                if (type === "custom") {
+                    solAreaHasCustomType = true;
+                }
+            });
+
+            $(solution).find(".entry").each(function() {
                 var type = $(this).data("type");
                 if (type === "custom") {
                     solAreaHasCustomType = true;
@@ -149,11 +159,6 @@ function renderReadOnlyProblem(event, args) {
             });
             return solAreaHasCustomType;
         }
-
-        var countAnswerTypeAmount = function() {
-            return $(solution).find(".sol").length;
-        }
-
 
         var appendTimelineEvents = function() {
             /* value[0]: css class
