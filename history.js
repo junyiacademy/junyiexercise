@@ -132,10 +132,11 @@ function renderReadOnlyProblem(event, args) {
         var canValidate = function () {
             if (hasCustomType() || answerType === 'custom') {
                 // if this problem not have show-guess-solutionarea
-                // some of then can't be validate, so it must have this area
+                // some of HTMLs can't be validated without show-guess-solutionarea, so it must have this area
                 return solution.find(".show-guess-solutionarea").text() !== "";
 
             } else {
+                // it can use it default validater
                 return true;
 
             }
