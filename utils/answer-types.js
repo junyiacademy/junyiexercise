@@ -1594,7 +1594,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                         // Select the correct radio button
                         $list.children().filter(function() {
                             // Filter using the index to choose the radio
-                            return guess.index ===
+                            return String(guess.index) ===
                                 $(this).find("input").val();
                         }).find("input").attr("checked", true);
                     }

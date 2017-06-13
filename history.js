@@ -67,76 +67,97 @@ function renderReadOnlyProblem(event, args) {
                 $("<p class='solution'>" + $._("跳過這題") + "</p>")
             );
         }
-
-        var appendGuessForRadio = function(thissolutionarea, validator, guess) {
-            thissolutionarea.append(
-                // Add the guess to the activity bar
-                // TODO(emily): remove this
-                // backwards-compatible code in 7/13
-                $("<p class='solution'>" +
-                  (guess.value != null ? guess.value : guess) +
-                  "</p>").tmpl()
-            );
-            if (validator(guess)) {
-                thissolutionarea
-                    .removeClass("incorrect-activity")
-                    .addClass("correct-activity");
-                thissolutionarea.attr("title", $._("正確答案"));
+        // append correct state on time line
+        var appendCorrect = function(thissolutionarea, guess) {
+            thissolutionarea
+                .removeClass("incorrect-activity")
+                .addClass("correct-activity");
+            thissolutionarea.attr("title", $._("正確答案"));
+            // some HTML type problem can show answer on answer area
+            if (canAnswerShowOnTimeLine()) {
+                // put the answer area on the time line
+                var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
+                // show the answer on time line
+                thisAnswerData.showGuess(guess);
             } else {
-                thissolutionarea.attr("title", $._("錯誤答案"));
-            }
-        }
-
-        var appendGuessForCustom = function(thissolutionarea, validator, guess) {
-            var canShowAllHistoryWidgets = Exercises.PerseusBridge.canShowAllHistoryWidgets();
-            if( !canShowAllHistoryWidgets ) {
-                thissolutionarea
-                    .removeClass("correct-activity")
-                    .addClass("incorrect-activity");
-                thissolutionarea.attr("title", $._("無法完整顯示"));
                 thissolutionarea.append(
-                    $("<p class='solution'>" + $._("無法完整顯示") + "</p>")
+                    $("<p class='solution'>" + $._("答案正確") + "</p>")
                 );
             }
-            else {
-                if (validator(guess)) {
-                    thissolutionarea
-                        .removeClass("incorrect-activity")
-                        .addClass("correct-activity");
-                    thissolutionarea.attr("title", $._("正確答案"));
-                    thissolutionarea.append(
-                        $("<p class='solution'>" + $._("答案正確") + "</p>")
-                    );
-                } else {
-                    thissolutionarea
-                        .removeClass("correct-activity")
-                        .addClass("incorrect-activity");
-                    thissolutionarea.attr("title", $._("錯誤答案"));
-                    thissolutionarea.append(
-                        $("<p class='solution'>" + $._("答案錯誤") + "</p>")
-                    );
-                }
-            }
-
         }
-
-        var appendGuess = function(thissolutionarea, validator, guess) {
-            var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
-            thisAnswerData.showGuess(guess);
-            if (thisAnswerData.validator(guess) === true) {
-                // If the user didn't get the problem right on the first try, all
-                // answers are labelled incorrect by default
-                thissolutionarea
-                    .removeClass("incorrect-activity")
-                    .addClass("correct-activity");
-
-                thissolutionarea.attr("title", $._("正確答案"));
+        // append incorrect state on time line
+        var appendIncorrect = function(thissolutionarea, guess) {
+            thissolutionarea
+                .removeClass("correct-activity")
+                .addClass("incorrect-activity");
+            thissolutionarea.attr("title", $._("錯誤答案"));
+            // some HTML type problem can show answer on answer area
+            if (canAnswerShowOnTimeLine()) {
+                // put the answer area on the time line
+                var thisAnswerData = Khan.answerTypes[answerType].setup(thissolutionarea, solution);
+                // show the answer on time line
+                thisAnswerData.showGuess(guess);
             } else {
-                thissolutionarea
-                    .removeClass("correct-activity")
-                    .addClass("incorrect-activity");
-                thissolutionarea.attr("title", $._("錯誤答案"));
+                thissolutionarea.append(
+                    $("<p class='solution'>" + $._("答案錯誤") + "</p>")
+                );
             }
+        }
+        // append cannot validate state on time line
+        var appendCannotValidate = function(thissolutionarea) {
+            thissolutionarea
+                .removeClass("incorrect-activity")
+                .addClass("correct-activity");
+            thissolutionarea.attr("title", $._("無法判斷結果"));
+            thissolutionarea.append(
+                $("<p class='solution'>" + $._("無法判斷結果") + "</p>")
+            );
+        }
+        // check the answer can show on time line or not
+        // now 'number' type and 'multiple' contain only 'number' type can show on time line
+        var canAnswerShowOnTimeLine = function() {
+            switch(answerType) {
+                case 'number':
+                    return true;
+                case 'multiple':
+                    return !hasCustomType() &&
+                            // when answer area too long, we have not enouge area to show it
+                            ($(solution).find(".sol").length <= 2);
+                default:
+                    return false;
+            }
+        }
+        // check this can be validate or not
+        var canValidate = function () {
+            if (hasCustomType() || answerType === 'custom') {
+                // if this problem not have show-guess-solutionarea
+                // some of HTMLs can't be validated without show-guess-solutionarea, so it must have this area
+                return solution.find(".show-guess-solutionarea").text() !== "";
+
+            } else {
+                // it can use it default validater
+                return true;
+
+            }
+        }
+        // check mutiple answer type contain custom answer type or not
+        var hasCustomType = function() {
+            var solAreaHasCustomType = false;
+
+            $(solution).find(".sol").each(function() {
+                var type = $(this).data("type");
+                if (type === "custom") {
+                    solAreaHasCustomType = true;
+                }
+            });
+
+            $(solution).find(".entry").each(function() {
+                var type = $(this).data("type");
+                if (type === "custom") {
+                    solAreaHasCustomType = true;
+                }
+            });
+            return solAreaHasCustomType;
         }
 
         var appendTimelineEvents = function() {
@@ -157,41 +178,57 @@ function renderReadOnlyProblem(event, args) {
                 thissolutionarea = $("<div>")
                     .addClass("user-activity " + value[0])
                     .appendTo(timelineEvents);
-                if (value[0] === "hint-activity") {
+
+                var now_activity = value[0];
+                if (now_activity === "hint-activity") {
                     prependHintActivity(thissolutionarea);
-                } else if (value[0] == 'skipped-activity'){
+                } else if (now_activity == 'skipped-activity') {
                     appendSkippedActivity(thissolutionarea);
-                } else { // This panel is a solution (or the first panel)
+                } else {
                     thissolutionarea.data("hint", false);
                     // See above, this shouldn't be i18n-ized
                     if (guess === "Activity Unavailable") {
                         thissolutionarea.text(guess);
-                    } else if (framework === "khan-exercises") {
-                        // radio and custom are the only answer types that
-                        // can't display its own guesses in the activity bar
-                        var validator = Khan.answerTypes[answerType].setup(null, solution).validator;
-                        if (answerType === "radio") {
-                            appendGuessForRadio(thissolutionarea, validator, guess);
-                        } else if (answerType === "custom") {
-                            appendGuessForCustom(thissolutionarea, validator, guess);
-                        } else {
-                            appendGuess(thissolutionarea, validator, guess);
-                        }
 
-                        thissolutionarea
-                            .data("guess", guess)
-                                .find("input")
-                                .attr("disabled", true)
-                            .end()
-                                .find("select")
-                                .attr("disabled", true);
                     } else {
-                        // should be perseus question.
-                        Exercises.PerseusBridge.showGuess(guess);
-                        var validator = function(guess) {
-                            return Exercises.PerseusBridge.scoreInput().correct;
+                        if (now_activity == 'correct-activity') {
+                            appendCorrect(thissolutionarea, guess);
+
+                        } else {  // incorrect-activity, last one activity(correct, incorrect, unknow)
+                            var length_of_user_activity = userExercise.userActivity.length;
+                            // not the last element, it must be incorrect
+                            if (index != (length_of_user_activity-1)) { 
+                                appendIncorrect(thissolutionarea, guess);
+                            // it is the last one, check it can be validate or not
+                            } else if (canValidate()) {
+                                var answer_correct = false;
+                                // when it is HTML problem
+                                if (framework === "khan-exercises") {
+                                    answerData.showGuess(guess);
+                                    answer_correct = answerData.validator(guess).correct;
+                                // when it is Perseus
+                                } else {
+                                    Exercises.PerseusBridge.showGuess(guess);
+                                    var validator = function(guess) {
+                                        return Exercises.PerseusBridge.scoreInput();
+                                    }
+                                    answer_correct = validator(guess).correct;
+
+                                }
+                                // append the result on time line
+                                if (answer_correct) {
+                                    appendCorrect(thissolutionarea, guess);
+
+                                } else {
+                                    appendIncorrect(thissolutionarea, guess);
+
+                                }
+                            // this kind problem we can't validate it answer correct or not
+                            } else {
+                                appendCannotValidate(thissolutionarea);
+
+                            }
                         }
-                        appendGuessForCustom(thissolutionarea, validator, guess);
                         thissolutionarea
                             .data("guess", guess)
                                 .find("input")
