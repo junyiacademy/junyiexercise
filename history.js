@@ -106,8 +106,8 @@ function renderReadOnlyProblem(event, args) {
         // append cannot validate state on time line
         var appendCannotValidate = function(thissolutionarea) {
             thissolutionarea
-                .removeClass("correct-activity")
-                .addClass("incorrect-activity");
+                .removeClass("incorrect-activity")
+                .addClass("correct-activity");
             thissolutionarea.attr("title", $._("無法判斷結果"));
             thissolutionarea.append(
                 $("<p class='solution'>" + $._("無法判斷結果") + "</p>")
