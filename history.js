@@ -114,16 +114,15 @@ function renderReadOnlyProblem(event, args) {
             );
         }
         // check the answer can show on time line or not
-        // now 'number' type and 'multiple' & 'set' contain only 'number' type can show on time line
+        // now 'number' type and 'multiple' contain only 'number' type can show on time line
         var canAnswerShowOnTimeLine = function() {
             switch(answerType) {
                 case 'number':
                     return true;
                 case 'multiple':
-                case 'set':
                     return !hasCustomType() &&
                             // when answer area too long, we have not enouge area to show it
-                            ($(solution).find(".entry").length + $(solution).find(".sol").length) <= 2;
+                            $(solution).find(".sol").length) <= 2;
                 default:
                     return false;
             }
