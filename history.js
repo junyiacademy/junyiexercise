@@ -122,7 +122,7 @@ function renderReadOnlyProblem(event, args) {
                 case 'multiple':
                     return !hasCustomType() &&
                             // when answer area too long, we have not enouge area to show it
-                            $(solution).find(".sol").length) <= 2;
+                            ($(solution).find(".sol").length <= 2);
                 default:
                     return false;
             }
