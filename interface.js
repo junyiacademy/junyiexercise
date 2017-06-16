@@ -28,7 +28,9 @@ _.extend(Exercises, {
     guessLog: undefined,
     userActivityLog: undefined
 });
-
+var hintCanVibration = true; 
+var waitForVibration = false;
+var firstTimeWrong = true;
 var PerseusBridge = Exercises.PerseusBridge,
 
     // Store these here so that they're hard to change after the fact via
@@ -288,7 +290,10 @@ function handleAttempt(data) {
         $("#check-answer-results > p").hide();
     } else if (score.correct) {
         // Correct answer, so show the next question button.
-        document.getElementById("au-correct-answer").play();
+        firstTimeWrong = true;
+        if ((document.getElementById("au-correct-answer") !== null)) {
+            document.getElementById("au-correct-answer").play();
+        }
         $("#check-answer-button").hide();
         $("#check-answer-results > p").hide();
         $("#next-question-button")
@@ -314,11 +319,19 @@ function handleAttempt(data) {
         $("#skip-question-button").prop("disabled", true);
     } else {
         // Wrong answer. Enable all the input elements
-        document.getElementById("au-wrong-answer").play();
-        $("#check-answer-button")
-            .val($._("答錯了，再試試看喔！"))
-            .parent()  // .check-answer-wrapper makes shake behave
-            .effect("shake", {times: 3, distance: 5}, 480);
+
+        if (waitForVibration == false || firstTimeWrong == true) {
+            firstTimeWrong = false;
+            waitForVibration = true;
+            $("#check-answer-button")
+                .val($._("答錯了，再試試看喔！"))
+                .parent()  // .check-answer-wrapper makes shake behave
+                .effect("shake", {times: 3, distance: 5}, 480);
+                setTimeout(function() {
+                    waitForVibration = false;
+                    hintCanVibration = true;
+                },1500);               
+        } 
 
         // Is this a message to be shown?
         if (score.message != null) {
@@ -405,7 +418,7 @@ function handleAttempt(data) {
         $("#problem-and-answer").css("visibility", "hidden");
         $(Exercises).trigger("warning",
                 $._("這一個畫面過期了。請<a href='" + window.location.href +
-                    "'>重新整理</a>網頁。不用擔心，沒有損失進度。"
+                    "'>重新整理</a>網頁。"
                     )
         );
     });
@@ -451,13 +464,18 @@ function onHintShown(e, data) {
     if (hintsUsed === numHints) {
         $("#hint").attr("disabled", true);
         $(Exercises).trigger("allHintsUsed");
-
+       
         if (userExercise.exerciseStates.struggling) {
-            setTimeout(function(){
-                $("#raise-hand-button-container").effect("shake", {times: 3, distance: 5}, 480);
-            },3000);
+            if (hintCanVibration === true) {
+                hintCanVibration = false;
+                setTimeout(function() {
+                    $("#raise-hand-button-container").effect("shake", {times: 3, distance: 5}, 480);
+                },0);
+            }
         }
+
     }
+
 
     var curTime = new Date().getTime();
     var timeTaken = Math.round((curTime - lastAttemptOrHint) / 1000);
@@ -603,10 +621,16 @@ function request(method, data) {
                     var hint_disabled = $("#hint").attr("disabled");
 
                     if (hint_disabled === "disabled") {
-                        $("#raise-hand-button").effect("shake", {times: 3, distance: 5}, 480);
+                        if (hintCanVibration === true) {
+                            hintCanVibration = false;
+                            $("#raise-hand-button").effect("shake", {times: 3, distance: 5}, 480);
+                        }
                     }
                     else {
-                        $("#get-hint-button-container").effect("shake", {times: 3, distance: 5}, 480);
+                        if (hintCanVibration === true) {
+                             hintCanVibration = false;
+                            $("#get-hint-button-container").effect("shake", {times: 3, distance: 5}, 480);
+                        }
                     }
                 }
             }
