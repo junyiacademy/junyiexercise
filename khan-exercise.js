@@ -445,7 +445,6 @@ var Khan = (function() {
                     }
 
                     var makeVisible = function() {
-                        $("#workarea, #hintsarea").css("padding-top", 50);
                         $("#scratchpad").show();
                         $("#scratchpad-show").text("隱藏計算紙");
 
