@@ -184,7 +184,7 @@ var Khan = (function() {
 
             link = document.createElement("link");
             link.rel = "stylesheet";
-            link.href = urlBase + "local-only/katex/katex.less.css";
+            link.href = urlBase + "local-only/katex/katex.css";
             document.getElementsByTagName("head")[0].appendChild(link);
         })();
     }
