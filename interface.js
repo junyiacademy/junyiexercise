@@ -210,6 +210,9 @@ function newProblem(e, data) {
     if (numHints === 0) {
         $("#get-hint-button-container").css("display","none");
     }
+    else {
+        $("#get-hint-button-container").css("display","unset");
+    }
     updateHintButtonText();
     $("#hint").attr("disabled", hintsUsed >= numHints);
 
