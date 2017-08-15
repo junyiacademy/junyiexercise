@@ -134,7 +134,11 @@ function problemTemplateRendered() {
     $("#answerform").submit(handleCheckAnswer);
     $("#questionform").submit(handleCheckAnswer);
     $("#skip-question-button").click(handleSkippedQuestion);
-
+    $("#jump-out").click(handleSkippedQuestion);
+    $("#watch-report-directly").click(handlegotoReport);
+    function handlegotoReport(){
+        location.href = location.href + '?exam_list_report=1';
+    }    
     // Hint button
     $("#hint").click(onHintButtonClicked);
 
@@ -363,14 +367,25 @@ function handleAttempt(data) {
                 .addClass("green");
         updateHintButtonText();
     }
-
-    $(Exercises).trigger("checkAnswer", {
+    if(skipped){
+         $(Exercises).trigger("skipAnswer", {
         correct: score.correct,
         card: Exercises.currentCard,
 
         // Determine if this attempt qualifies as fast completion
         fast: !localMode && userExercise.secondsPerFastProblem >= timeTaken
     });
+        
+    }
+    else{
+        $(Exercises).trigger("checkAnswer", {
+            correct: score.correct,
+            card: Exercises.currentCard,
+
+            // Determine if this attempt qualifies as fast completion
+            fast: !localMode && userExercise.secondsPerFastProblem >= timeTaken
+        });
+    }
 
     var curTime = new Date().getTime();
     var timeTaken = Math.round((curTime - lastAttemptOrHint) / 1000);
