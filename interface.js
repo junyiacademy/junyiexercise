@@ -137,7 +137,7 @@ function problemTemplateRendered() {
     $("#jump-out").click(handleSkippedQuestion);
     $("#watch-report-directly").click(handlegotoReport);
     function handlegotoReport(){
-        location.href = location.href + '?exam_list_report=1';
+        location.href = location.href.split('?')[0] + '?exam_list_report=1';
     }    
     // Hint button
     $("#hint").click(onHintButtonClicked);
@@ -369,13 +369,12 @@ function handleAttempt(data) {
     }
     if(skipped){
          $(Exercises).trigger("skipAnswer", {
-        correct: score.correct,
+        correct: null,
         card: Exercises.currentCard,
 
         // Determine if this attempt qualifies as fast completion
         fast: !localMode && userExercise.secondsPerFastProblem >= timeTaken
-    });
-        
+    });      
     }
     else{
         $(Exercises).trigger("checkAnswer", {
@@ -392,8 +391,14 @@ function handleAttempt(data) {
     var stringifiedGuess = JSON.stringify(score.guess);
     var attemptData = null;
     if (!localMode) {
-        attemptData = buildAttemptData(
-            score.correct, ++attempts, stringifiedGuess, timeTaken, skipped);
+        if(skipped){
+            attemptData = buildAttemptData(
+                null, ++attempts, stringifiedGuess, timeTaken, skipped);
+        }else
+        {
+            attemptData = buildAttemptData(
+                score.correct, ++attempts, stringifiedGuess, timeTaken, skipped);
+        }
     }
     lastAttemptOrHint = curTime;
 
@@ -487,11 +492,10 @@ function onHintShown(e, data) {
             if (hintCanVibration === true) {
                 hintCanVibration = false;
                 setTimeout(function() {
-                    $("#raise-hand-button-container").effect("shake", {times: 3, distance: 5}, 480);
+                    $("#raise-handhint-button-container").effect("shake", {times: 3, distance: 5}, 480);
                 },0);
             }
         }
-
     }
 
 
