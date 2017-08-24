@@ -414,6 +414,7 @@ function handleAttempt(data) {
         // Skip the server; just pretend we have success
         return false;
     }
+    var requestUrl = "problems/" + problemNum + "/attempt";
 
     if ((skipped || Exercises.examMode) && !Exercises.assessmentMode ) {
         // Skipping or examMode should pull up the next card immediately - but, if we're in
@@ -422,7 +423,7 @@ function handleAttempt(data) {
         $(Exercises).trigger("gotoNextProblem");
     }
     // Save the problem results to the server
-    var requestUrl = "problems/" + problemNum + "/attempt";
+    console.log(problemNum);
     request(requestUrl, attemptData).fail(function(xhr) {
         // Alert any listeners of the error before reload
         $(Exercises).trigger("attemptError", {userExercise: userExercise});
@@ -624,14 +625,13 @@ function handleJumpToHeaven(data) {
 
     return false;
 }
-function handleStopExam() {
-    console.log(Exercises.currentCard);
 
-    handleAttempt({skipped: true});
-    setTimeout(function(){
-    handleAttempt({skipped: true});
-    //do what you need here
-    }, 400);
+function handleStopExam() {
+    console.log(Exercises.incompleteStack.length);
+    cards_to_be_skipped = Exercises.incompleteStack.length;
+    for (i = 0; i < cards_to_be_skipped; i++){
+        handleAttempt({skipped: true});
+    }
 
    
     // setTimeout(function(){
