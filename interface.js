@@ -135,7 +135,7 @@ function problemTemplateRendered() {
     $("#questionform").submit(handleCheckAnswer);
     $("#skip-question-button").click(handleSkippedQuestion);
     $("#jump-out").click(handleSkippedQuestion);
-    $("#watch-report-directly").click(handleStopExam);
+    $("#watch-report-directly").click(handleJumpToEnd);
     function handlegotoReport(){
         location.href = location.href.split('?')[0] + '?exam_list_report=1';
     }    
@@ -230,12 +230,12 @@ function newProblem(e, data) {
 }
 
 function handleCheckAnswer() {
-
     return handleAttempt({skipped: false});
 }
 
 function handleSkippedQuestion() {
-    return handleAttempt({skipped: true});
+    handleStopExam(1);
+    //return handleAttempt({skipped: true});
 }
 
 function handleAttempt(data) {
@@ -420,11 +420,69 @@ function handleAttempt(data) {
         // Skipping or examMode should pull up the next card immediately - but, if we're in
         // assessment mode, we don't know what the next card will be yet, so
         // wait for the special assessment mode triggers to fire instead.
-        $(Exercises).trigger("gotoNextProblem");
+        if(skipped){
+            $(Exercises).trigger("jumptoNextProblem");
+        }else{
+            $(Exercises).trigger("gotoNextProblem");
+        }
     }
     // Save the problem results to the server
-    console.log(problemNum);
-    request(requestUrl, attemptData).fail(function(xhr) {
+    if(!skipped){
+        request(requestUrl, attemptData).fail(function(xhr) {
+            // Alert any listeners of the error before reload
+            $(Exercises).trigger("attemptError", {userExercise: userExercise});
+
+            if (xhr && xhr.readyState === 0) {
+                // This path gets called when there is a broken pipe during
+                // page unload- browser navigating away during ajax request
+                // See http://stackoverflow.com/a/1370383.
+                return;
+            }
+
+            // Error during submit. Disable the page and ask users to
+            // reload in an attempt to get updated data.
+
+            // Hide the page so users don't continue, then warn the user about the
+            // problem and encourage reloading the page
+            $("#problem-and-answer").css("visibility", "hidden");
+            $(Exercises).trigger("warning",
+                    $._("這一個畫面過期了。請<a href='" + window.location.href +
+                        "'>重新整理</a>網頁。"
+                        )
+            );
+        });
+    }
+    return [problemNum,attemptData];
+}
+
+function onHintButtonClicked() {
+    var framework = Exercises.getCurrentFramework();
+
+    if (framework === "perseus") {
+        $(PerseusBridge).trigger("showHint");
+    } else if (framework === "khan-exercises") {
+        $(Khan).trigger("showHint");
+    }
+}
+
+function handleJumpToEnd(data){
+    handleStopExam(Exercises.incompleteStack.length);
+}
+
+function handleStopExam(cards_to_be_skipped) {
+    var attemptDataList = [];
+    problem_number = 0;
+    for (var i = 0; i < cards_to_be_skipped ; i++){
+        attemptData = handleAttempt({skipped: true});
+        attemptDataList.push(attemptData[1]);
+        problem_number = attemptData[0];
+    }
+    console.log(attemptDataList);
+    if (Exercises.incompleteStack.length === 0){
+        problem_number = problem_number + 1;
+    }
+    var requestUrl = "skip_problems/" + (problem_number-cards_to_be_skipped) + "/attempt";
+    request(requestUrl, {"list": JSON.stringify(attemptDataList), casing : "camel"}).fail(function(xhr) {
         // Alert any listeners of the error before reload
         $(Exercises).trigger("attemptError", {userExercise: userExercise});
 
@@ -447,198 +505,6 @@ function handleAttempt(data) {
                     )
         );
     });
-
-    return false;
-}
-
-function onHintButtonClicked() {
-    var framework = Exercises.getCurrentFramework();
-
-    if (framework === "perseus") {
-        $(PerseusBridge).trigger("showHint");
-    } else if (framework === "khan-exercises") {
-        $(Khan).trigger("showHint");
-    }
-}
-
-function handleJumpToEnd(data){
-
-}
-function handleJumpToHeaven(data) {
-    attempTDataList = [];
-
-    var framework = Exercises.getCurrentFramework();
-    var skipped = data.skipped;
-    var score;
-
-    if (framework === "perseus") {
-        score = PerseusBridge.scoreInput();
-    } else if (framework === "khan-exercises") {
-        score = Khan.scoreInput();
-    }
-
-    if (!canAttempt) {
-        // Just don't allow further submissions once a correct answer or skip
-        // has been called or sometimes the server gets confused.
-        return false;
-    }
-
-    if (score.correct || skipped) {
-        // Once we receive a correct answer or a skip, that's it; further
-        // attempts are disallowed.
-        canAttempt = false;
-    }
-
-    Exercises.guessLog.push(score.guess);
-    Exercises.userActivityLog.push([
-            score.correct ? "correct-activity" : "incorrect-activity",
-            stringifiedGuess, timeTaken]);
-
-    if (score.correct || skipped || Exercises.examMode) {
-        $(Exercises).trigger("problemDone", {
-            card: Exercises.currentCard,
-            attempts: attempts
-        });
-    }
-
-    // Update interface corresponding to correctness,
-    // in examMode, we don't give feedback if it is correct or wrong
-    if (skipped || Exercises.assessmentMode || Exercises.examMode) {
-        disableCheckAnswer();
-        $("#check-answer-results > p").hide();
-    }
-
-    if (!hintsAreFree) {
-        hintsAreFree = true;
-        $(".hint-box")
-            .css("position", "relative")
-            .animate({top: -10}, 250)
-            .find(".info-box-header")
-                .slideUp(250)
-                .end()
-            .find("#hint")
-                .removeClass("orange")
-                .addClass("green");
-        updateHintButtonText();
-    }
-    if(skipped){
-         $(Exercises).trigger("skipAnswer", {
-        correct: null,
-        card: Exercises.currentCard,
-
-        // Determine if this attempt qualifies as fast completion
-        fast: !localMode && userExercise.secondsPerFastProblem >= timeTaken
-    });      
-    }
-    
-    var curTime = new Date().getTime();
-    var timeTaken = Math.round((curTime - lastAttemptOrHint) / 1000);
-    var stringifiedGuess = JSON.stringify(score.guess);
-    var attemptData = null;
-    if (!localMode) {
-        if(skipped){
-            attemptData = buildAttemptData(
-                null, ++attempts, stringifiedGuess, timeTaken, skipped);
-        }else
-        {
-            attemptData = buildAttemptData(
-                score.correct, ++attempts, stringifiedGuess, timeTaken, skipped);
-        }
-    }
-    lastAttemptOrHint = curTime;
-
-    if (localMode || Exercises.currentCard.get("preview")) {
-        // Skip the server; just pretend we have success
-        return false;
-    }
-
-    if ((skipped || Exercises.examMode) && !Exercises.assessmentMode ) {
-        // Skipping or examMode should pull up the next card immediately - but, if we're in
-        // assessment mode, we don't know what the next card will be yet, so
-        // wait for the special assessment mode triggers to fire instead.
-        $(Exercises).trigger("gotoNextProblem");
-    }
-
-    // Save the problem results to the server
-    
-    data = attemptData
-    var requestUrl = "problems/" + problemNum + "/attempt";
-    var apiBaseUrl = (Exercises.assessmentMode ?
-            "/api/v1/user/assessment/exercises" : "/api/v1/user/exercises");
-
-    var params = {
-        // Do a request to the server API
-        url: apiBaseUrl + "/" + userExercise.exerciseModel.name + "/" + requestUrl,
-        type: "POST",
-        data: data,
-        dataType: "json"
-    };
-
-    var deferred = $.Deferred();
-
-    attemptHintQueue.queue(function(next) {
-        $.ajax(params).then(function(data, textStatus, jqXHR) {
-            // Tell any listeners that we now have new userExercise data
-            $(Exercises).trigger("updateUserExercise", {
-                userExercise: data,
-                source: "serverResponse"
-            });
-        }, function(jqXHR, textStatus, errorThrown) {
-            // Execute passed error function first in case it wants different
-            // behavior depending upon the length of the request queue
-            // TODO(alpert): Huh? Don't think this matters.
-            deferred.reject(jqXHR, textStatus, errorThrown);
-
-            // Clear the queue so we don't spit out a bunch of queued up
-            // requests after the error
-            attemptHintQueue.clearQueue();
-        }).always(function() {
-            $(Exercises).trigger("apiRequestEnded");
-            next();
-        });
-    });
-    $(Exercises).trigger("apiRequestStarted");
-
-    // request(requestUrl, attemptData).fail(function(xhr) {
-    //     // Alert any listeners of the error before reload
-    //     $(Exercises).trigger("attemptError", {userExercise: userExercise});
-
-    //     if (xhr && xhr.readyState === 0) {
-    //         // This path gets called when there is a broken pipe during
-    //         // page unload- browser navigating away during ajax request
-    //         // See http://stackoverflow.com/a/1370383.
-    //         return;
-    //     }
-
-    //     // Error during submit. Disable the page and ask users to
-    //     // reload in an attempt to get updated data.
-
-    //     // Hide the page so users don't continue, then warn the user about the
-    //     // problem and encourage reloading the page
-    //     $("#problem-and-answer").css("visibility", "hidden");
-    //     $(Exercises).trigger("warning",
-    //             $._("這一個畫面過期了。請<a href='" + window.location.href +
-    //                 "'>重新整理</a>網頁。"
-    //                 )
-    //     );
-    // });
-
-    return false;
-}
-
-function handleStopExam() {
-    console.log(Exercises.incompleteStack.length);
-    cards_to_be_skipped = Exercises.incompleteStack.length;
-    for (i = 0; i < cards_to_be_skipped; i++){
-        handleAttempt({skipped: true});
-    }
-
-   
-    // setTimeout(function(){
-    //     handleSkippedQuestion();
-    // //do what you need here
-    // }, 4000);
-
 }
 
 /**
@@ -819,7 +685,7 @@ function request(method, data) {
     attemptHintQueue.queue(function(next) {
         $.ajax(params).then(function(data, textStatus, jqXHR) {
 
-            // stuggling & attempt answer
+            //stuggling & attempt answer
             if (data.exerciseStates.struggling && "attemptCorrect" in data.actionResults){
                 if (!data.actionResults.attemptCorrect) {
                     var hint_disabled = $("#hint").attr("disabled");
