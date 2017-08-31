@@ -135,10 +135,24 @@ function problemTemplateRendered() {
     $("#questionform").submit(handleCheckAnswer);
     $("#skip-question-button").click(handleSkippedQuestion);
     $("#jump-out").click(handleSkippedQuestion);
-    $("#watch-report-directly").click(handleJumpToEnd);
+    //$("#watch-report-directly").click(handleJumpToEnd);
     function handlegotoReport(){
         location.href = location.href.split('?')[0] + '?exam_list_report=1';
-    }    
+    }
+    $("#watch-report-directly").click(function(e) {
+        swal({
+            title:'<span style="font-size:16px;">小提醒：按下之後將中止這份評量，如評量為老師指派的任務，將顯示您未完成任務。\n您確定要中止嗎？</span>',
+            imageUrl: '/images/warn.svg',
+            imageWidth: 80,
+            width: 420,
+            showCancelButton: true,
+            confirmButtonText: '是',
+            confirmButtonColor: '#ff6756',
+            cancelButtonText: '否',
+        }).then(function () {
+            handleJumpToEnd();
+        })
+    });    
     // Hint button
     $("#hint").click(onHintButtonClicked);
 
