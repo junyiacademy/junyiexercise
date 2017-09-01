@@ -429,7 +429,7 @@ function handleAttempt(data) {
         return false;
     }
     var requestUrl = "problems/" + problemNum + "/attempt";
-
+    return_problemNum = problemNum;
     if ((skipped || Exercises.examMode) && !Exercises.assessmentMode ) {
         // Skipping or examMode should pull up the next card immediately - but, if we're in
         // assessment mode, we don't know what the next card will be yet, so
@@ -466,7 +466,7 @@ function handleAttempt(data) {
             );
         });
     }
-    return [problemNum,attemptData];
+    return [return_problemNum,attemptData];
 }
 
 function onHintButtonClicked() {
@@ -485,18 +485,18 @@ function handleJumpToEnd(data){
 
 function handleStopExam(cards_to_be_skipped) {
     var attemptDataList = [];
-    problem_number = 0;
+    var problemNumList = [];
     for (var i = 0; i < cards_to_be_skipped ; i++){
         attemptData = handleAttempt({skipped: true});
         attemptDataList.push(attemptData[1]);
-        problem_number = attemptData[0];
+        problemNumList.push(attemptData[0]);
     }
-    console.log(attemptDataList);
-    if (Exercises.incompleteStack.length === 0){
-        problem_number = problem_number + 1;
-    }
-    var requestUrl = "skip_problems/" + (problem_number-cards_to_be_skipped) + "/attempt";
-    request(requestUrl, {"list": JSON.stringify(attemptDataList), casing : "camel"}).fail(function(xhr) {
+    // console.log(attemptDataList);
+    // if (Exercises.incompleteStack.length === 0){
+    //     problem_number = problem_number + 1;
+    // }
+    var requestUrl = "skip_problems/" + "0" + "/attempt";
+    request(requestUrl, {"list": JSON.stringify(attemptDataList), casing : "camel", "problem_list": JSON.stringify(problemNumList)}).fail(function(xhr) {
         // Alert any listeners of the error before reload
         $(Exercises).trigger("attemptError", {userExercise: userExercise});
 
