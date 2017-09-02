@@ -670,15 +670,6 @@ function request(method, data) {
 
 function readyForNextProblem(e, data) {
 
-    var isPracticeMode = Exercises.practiceMode;
-    var totalDone = data.userExercise.totalDone;
-    var currentLevel = data.userExercise.currentLevel;
-    var promoCnt = 3;
-
-    if (!Exercises.isMission && isPracticeMode && totalDone == promoCnt) {
-        RecommendAction.checkShowRecommendActionModal();
-    }
-
     if (!firstProblem) {
         // As both of the following variables are only used to make sure the
         // client matches the server on pageLoad, we will set them back to 0
