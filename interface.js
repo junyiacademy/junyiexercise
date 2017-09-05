@@ -75,7 +75,7 @@ function exercisePointCalculator(){
     var suggested_exercise_multiplier = 3;
     var incomplete_exercise_multiplier = 5;
     var limit_exercises = 150;
-
+    
     var points = 0;
     var offset = 0;
     var required_streak = min_streak_till_proficiency;
@@ -114,6 +114,7 @@ function exercisePointCalculator(){
 
 function problemTemplateRendered() {
     previewingItem = Exercises.previewingItem;
+    var first_time_skip = true;
     // Setup appropriate img URLs
     $("#issue-throbber").attr("src",
             Exercises.khanExercisesUrlBase + "css/images/throbber.gif");
@@ -133,15 +134,30 @@ function problemTemplateRendered() {
     $("#check-answer-button").click(handleCheckAnswer);
     $("#answerform").submit(handleCheckAnswer);
     $("#questionform").submit(handleCheckAnswer);
-    $("#skip-question-button").click(handleSkippedQuestion);
-    $("#jump-out").click(handleSkippedQuestion);
-    //$("#watch-report-directly").click(handleJumpToEnd);
-    function handlegotoReport(){
-        location.href = location.href.split('?')[0] + '?exam_list_report=1';
-    }
+    $("#skip-question-button").click(function(e) {
+        if(first_time_skip){
+        swal({
+            title:'<span style="font-size:20px;">小提醒：按下之後將無法再做答這題\n您確定要跳過嗎？</span>',
+            imageUrl: '/images/warn.svg',
+            imageWidth: 80,
+            width: 420,
+            showCancelButton: true,
+            confirmButtonText: '是',
+            confirmButtonColor: '#ff6756',
+            cancelButtonText: '否',
+        }).then(function () {
+            first_time_skip = false;
+            handleSkippedQuestion();
+        })
+        }else{
+            handleSkippedQuestion();
+        }
+        return false;
+    });
+
     $("#watch-report-directly").click(function(e) {
         swal({
-            title:'<span style="font-size:16px;">小提醒：按下之後將中止這份評量，如評量為老師指派的任務，將顯示您未完成任務。\n您確定要中止嗎？</span>',
+            title:'<span style="font-size:16px;">小提醒：按下之後將中止這份評量，如評量為老師指派的任務，將無法重新進行。\n您確定要中止嗎？</span>',
             imageUrl: '/images/warn.svg',
             imageWidth: 80,
             width: 420,
@@ -152,6 +168,7 @@ function problemTemplateRendered() {
         }).then(function () {
             handleJumpToEnd();
         })
+        return false;
     });    
     // Hint button
     $("#hint").click(onHintButtonClicked);
@@ -465,6 +482,7 @@ function handleAttempt(data) {
                         )
             );
         });
+        return false;
     }
     return [return_problemNum,attemptData];
 }
@@ -491,12 +509,13 @@ function handleStopExam(cards_to_be_skipped) {
         attemptDataList.push(attemptData[1]);
         problemNumList.push(attemptData[0]);
     }
-    // console.log(attemptDataList);
-    // if (Exercises.incompleteStack.length === 0){
-    //     problem_number = problem_number + 1;
-    // }
-    var requestUrl = "skip_problems/" + "0" + "/attempt";
-    request(requestUrl, {"list": JSON.stringify(attemptDataList), casing : "camel", "problem_list": JSON.stringify(problemNumList)}).fail(function(xhr) {
+
+    var requestUrl = "skip_problems/attempt";
+    request(requestUrl, {
+        "list": JSON.stringify(attemptDataList), 
+        casing : "camel", 
+        "problem_list": JSON.stringify(problemNumList)
+    }).fail(function(xhr) {
         // Alert any listeners of the error before reload
         $(Exercises).trigger("attemptError", {userExercise: userExercise});
 
@@ -554,7 +573,7 @@ function onHintShown(e, data) {
             if (hintCanVibration === true) {
                 hintCanVibration = false;
                 setTimeout(function() {
-                    $("#raise-handhint-button-container").effect("shake", {times: 3, distance: 5}, 480);
+                    $("#raise-hand-button-container").effect("shake", {times: 3, distance: 5}, 480);
                 },0);
             }
         }
