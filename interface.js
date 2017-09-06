@@ -451,11 +451,7 @@ function handleAttempt(data) {
         // Skipping or examMode should pull up the next card immediately - but, if we're in
         // assessment mode, we don't know what the next card will be yet, so
         // wait for the special assessment mode triggers to fire instead.
-        if(skipped){
-            $(Exercises).trigger("jumptoNextProblem");
-        }else{
-            $(Exercises).trigger("gotoNextProblem");
-        }
+        $(Exercises).trigger("gotoNextProblem",[skipped]);
     }
     // Save the problem results to the server
     if(!skipped){
