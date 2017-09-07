@@ -157,7 +157,7 @@ function problemTemplateRendered() {
 
     $("#watch-report-directly").click(function(e) {
         swal({
-            title:'<span style="font-size:16px;">小提醒：按下之後將中止這份評量，如評量為老師指派的任務，將無法重新進行。\n您確定要中止嗎？</span>',
+            title:'<span style="font-size:18px;">小提醒：按下之後將中止這份評量，如評量為老師指派的任務，將無法重新進行。\n您確定要中止嗎？</span>',
             imageUrl: '/images/warn.svg',
             imageWidth: 80,
             width: 420,
@@ -473,8 +473,9 @@ function handleAttempt(data) {
             );
         });
         return false;
+    }else{
+        return [return_problemNum,attemptData];
     }
-    return [return_problemNum,attemptData];
 }
 
 function onHintButtonClicked() {
@@ -708,7 +709,7 @@ function request(method, data) {
     attemptHintQueue.queue(function(next) {
         $.ajax(params).then(function(data, textStatus, jqXHR) {
 
-            //stuggling & attempt answer
+            // stuggling & attempt answer
             if (data.exerciseStates.struggling && "attemptCorrect" in data.actionResults){
                 if (!data.actionResults.attemptCorrect) {
                     var hint_disabled = $("#hint").attr("disabled");
