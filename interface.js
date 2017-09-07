@@ -400,13 +400,7 @@ function handleAttempt(data) {
         updateHintButtonText();
     }
     if(skipped){
-         $(Exercises).trigger("skipAnswer", {
-        correct: null,
-        card: Exercises.currentCard,
-
-        // Determine if this attempt qualifies as fast completion
-        fast: !localMode && userExercise.secondsPerFastProblem >= timeTaken
-    });      
+        Exercises.renderProblemHistory();     
     }
     else{
         $(Exercises).trigger("checkAnswer", {
