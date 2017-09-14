@@ -166,7 +166,7 @@ function problemTemplateRendered() {
             confirmButtonColor: '#ff6756',
             cancelButtonText: '否',
         }).then(function () {
-            handleJumpToEnd();
+            handleExamSkipToEnd(Exercises.incompleteStack.length);
         })
         return false;
     });    
@@ -265,8 +265,8 @@ function handleCheckAnswer() {
 }
 
 function handleSkippedQuestion() {
-    handleStopExam(1);
-    //return handleAttempt({skipped: true});
+    // handleStopExam(1);
+    handleAttempt({skipped: true});
 }
 
 function handleAttempt(data) {
@@ -318,7 +318,8 @@ function handleAttempt(data) {
     if (score.correct || skipped || Exercises.examMode) {
         $(Exercises).trigger("problemDone", {
             card: Exercises.currentCard,
-            attempts: attempts
+            attempts: attempts,
+            skip: skipped
         });
     }
 
@@ -399,33 +400,35 @@ function handleAttempt(data) {
                 .addClass("green");
         updateHintButtonText();
     }
-    if(skipped){
-        Exercises.renderProblemHistory();     
-    }
-    else{
-        $(Exercises).trigger("checkAnswer", {
-            correct: score.correct,
-            card: Exercises.currentCard,
 
-            // Determine if this attempt qualifies as fast completion
-            fast: !localMode && userExercise.secondsPerFastProblem >= timeTaken
-        });
-    }
+    // if(skipped && Exercises.examMode){
+    //     Exercises.renderProblemHistory();
+    // }
+    // else{
+    $(Exercises).trigger("checkAnswer", {
+        correct: score.correct,
+        card: Exercises.currentCard,
+
+        // Determine if this attempt qualifies as fast completion
+        fast: !localMode && userExercise.secondsPerFastProblem >= timeTaken
+    });
+    // }
 
     var curTime = new Date().getTime();
     var timeTaken = Math.round((curTime - lastAttemptOrHint) / 1000);
     var stringifiedGuess = JSON.stringify(score.guess);
     var attemptData = null;
-    if (!localMode) {
-        if(skipped){
-            attemptData = buildAttemptData(
-                null, ++attempts, stringifiedGuess, timeTaken, skipped);
-        }else
-        {
-            attemptData = buildAttemptData(
-                score.correct, ++attempts, stringifiedGuess, timeTaken, skipped);
-        }
+    // if (!localMode) {
+    if(skipped){
+        attemptData = buildAttemptData(
+            score.correct, ++attempts, stringifiedGuess, timeTaken, skipped);
+    }else
+    {
+        attemptData = buildAttemptData(
+            score.correct, ++attempts, stringifiedGuess, timeTaken, skipped);
     }
+    // }
+
     lastAttemptOrHint = curTime;
 
     if (localMode || Exercises.currentCard.get("preview")) {
@@ -445,68 +448,15 @@ function handleAttempt(data) {
         // Skipping or examMode should pull up the next card immediately - but, if we're in
         // assessment mode, we don't know what the next card will be yet, so
         // wait for the special assessment mode triggers to fire instead.
-        $(Exercises).trigger("gotoNextProblem",[skipped]);
+        var isRenderAnimation = true;
+        if (Exercises.examMode) {
+            isRenderAnimation = false;
+        }
+        $(Exercises).trigger("gotoNextProblem",[isRenderAnimation]);
     }
     // Save the problem results to the server
-    if(!skipped){
-        request(requestUrl, attemptData).fail(function(xhr) {
-            // Alert any listeners of the error before reload
-            $(Exercises).trigger("attemptError", {userExercise: userExercise});
-
-            if (xhr && xhr.readyState === 0) {
-                // This path gets called when there is a broken pipe during
-                // page unload- browser navigating away during ajax request
-                // See http://stackoverflow.com/a/1370383.
-                return;
-            }
-
-            // Error during submit. Disable the page and ask users to
-            // reload in an attempt to get updated data.
-
-            // Hide the page so users don't continue, then warn the user about the
-            // problem and encourage reloading the page
-            $("#problem-and-answer").css("visibility", "hidden");
-            $(Exercises).trigger("warning",
-                    $._("這一個畫面過期了。請<a href='" + window.location.href +
-                        "'>重新整理</a>網頁。"
-                        )
-            );
-        });
-        return false;
-    }else{
-        return [return_problemNum,attemptData];
-    }
-}
-
-function onHintButtonClicked() {
-    var framework = Exercises.getCurrentFramework();
-
-    if (framework === "perseus") {
-        $(PerseusBridge).trigger("showHint");
-    } else if (framework === "khan-exercises") {
-        $(Khan).trigger("showHint");
-    }
-}
-
-function handleJumpToEnd(data){
-    handleStopExam(Exercises.incompleteStack.length);
-}
-
-function handleStopExam(cards_to_be_skipped) {
-    var attemptDataList = [];
-    var problemNumList = [];
-    for (var i = 0; i < cards_to_be_skipped ; i++){
-        attemptData = handleAttempt({skipped: true});
-        attemptDataList.push(attemptData[1]);
-        problemNumList.push(attemptData[0]);
-    }
-
-    var requestUrl = "skip_problems/attempt";
-    request(requestUrl, {
-        "list": JSON.stringify(attemptDataList), 
-        casing : "camel", 
-        "problem_list": JSON.stringify(problemNumList)
-    }).fail(function(xhr) {
+    // if(!skipped){
+    request(requestUrl, attemptData).fail(function(xhr) {
         // Alert any listeners of the error before reload
         $(Exercises).trigger("attemptError", {userExercise: userExercise});
 
@@ -529,6 +479,28 @@ function handleStopExam(cards_to_be_skipped) {
                     )
         );
     });
+    return false;
+    // }else{
+    //     return [return_problemNum,attemptData];
+    // }
+}
+
+function onHintButtonClicked() {
+    var framework = Exercises.getCurrentFramework();
+
+    if (framework === "perseus") {
+        $(PerseusBridge).trigger("showHint");
+    } else if (framework === "khan-exercises") {
+        $(Khan).trigger("showHint");
+    }
+}
+
+function handleExamSkipToEnd(skipped_cards_num) {
+    var attemptDataList = [];
+    var problemNumList = [];
+    for (var i = 0; i < skipped_cards_num ; i++){
+        attemptData = handleAttempt({skipped: true});
+    }
 }
 
 /**
@@ -600,8 +572,7 @@ function updateHintButtonText() {
 }
 
 // Build the data to pass to the server
-function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
-                          skipped) {
+function buildAttemptData(correct, attemptNum, attemptContent, timeTaken, skipped) {
     var framework = Exercises.getCurrentFramework();
     var data;
 
