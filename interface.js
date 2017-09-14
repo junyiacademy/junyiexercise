@@ -265,7 +265,6 @@ function handleCheckAnswer() {
 }
 
 function handleSkippedQuestion() {
-    // handleStopExam(1);
     handleAttempt({skipped: true});
 }
 
@@ -370,8 +369,8 @@ function handleAttempt(data) {
                 setTimeout(function() {
                     waitForVibration = false;
                     hintCanVibration = true;
-                },1500);               
-        } 
+                },1500);
+        }
 
         // Is this a message to be shown?
         if (score.message != null) {
@@ -401,10 +400,6 @@ function handleAttempt(data) {
         updateHintButtonText();
     }
 
-    // if(skipped && Exercises.examMode){
-    //     Exercises.renderProblemHistory();
-    // }
-    // else{
     $(Exercises).trigger("checkAnswer", {
         correct: score.correct,
         card: Exercises.currentCard,
@@ -412,23 +407,15 @@ function handleAttempt(data) {
         // Determine if this attempt qualifies as fast completion
         fast: !localMode && userExercise.secondsPerFastProblem >= timeTaken
     });
-    // }
 
     var curTime = new Date().getTime();
     var timeTaken = Math.round((curTime - lastAttemptOrHint) / 1000);
     var stringifiedGuess = JSON.stringify(score.guess);
     var attemptData = null;
-    // if (!localMode) {
-    if(skipped){
-        attemptData = buildAttemptData(
-            score.correct, ++attempts, stringifiedGuess, timeTaken, skipped);
-    }else
-    {
+    if (!localMode) {
         attemptData = buildAttemptData(
             score.correct, ++attempts, stringifiedGuess, timeTaken, skipped);
     }
-    // }
-
     lastAttemptOrHint = curTime;
 
     if (localMode || Exercises.currentCard.get("preview")) {
@@ -455,7 +442,6 @@ function handleAttempt(data) {
         $(Exercises).trigger("gotoNextProblem",[isRenderAnimation]);
     }
     // Save the problem results to the server
-    // if(!skipped){
     request(requestUrl, attemptData).fail(function(xhr) {
         // Alert any listeners of the error before reload
         $(Exercises).trigger("attemptError", {userExercise: userExercise});
@@ -480,9 +466,6 @@ function handleAttempt(data) {
         );
     });
     return false;
-    // }else{
-    //     return [return_problemNum,attemptData];
-    // }
 }
 
 function onHintButtonClicked() {
