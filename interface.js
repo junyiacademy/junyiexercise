@@ -265,7 +265,7 @@ function handleCheckAnswer() {
 }
 
 function handleSkippedQuestion() {
-    handleAttempt({skipped: true});
+    return handleAttempt({skipped: true});
 }
 
 function handleAttempt(data) {
@@ -317,8 +317,7 @@ function handleAttempt(data) {
     if (score.correct || skipped || Exercises.examMode) {
         $(Exercises).trigger("problemDone", {
             card: Exercises.currentCard,
-            attempts: attempts,
-            skip: skipped
+            attempts: attempts
         });
     }
 
@@ -430,7 +429,6 @@ function handleAttempt(data) {
         return false;
     }
     var requestUrl = "problems/" + problemNum + "/attempt";
-    return_problemNum = problemNum;
     if ((skipped || Exercises.examMode) && !Exercises.assessmentMode ) {
         // Skipping or examMode should pull up the next card immediately - but, if we're in
         // assessment mode, we don't know what the next card will be yet, so
@@ -479,10 +477,8 @@ function onHintButtonClicked() {
 }
 
 function handleExamSkipToEnd(skipped_cards_num) {
-    var attemptDataList = [];
-    var problemNumList = [];
     for (var i = 0; i < skipped_cards_num ; i++){
-        attemptData = handleAttempt({skipped: true});
+        handleAttempt({skipped: true});
     }
 }
 
