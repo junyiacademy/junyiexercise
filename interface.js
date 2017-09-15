@@ -270,7 +270,7 @@ function handleSkippedQuestion() {
 
 function handleAttempt(data) {
     var framework = Exercises.getCurrentFramework();
-    var skipped = data.skipped;
+    var skipped = false || data.skipped;
     var score;
 
     if (framework === "perseus") {
