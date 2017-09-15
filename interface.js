@@ -317,7 +317,8 @@ function handleAttempt(data) {
     if (score.correct || skipped || Exercises.examMode) {
         $(Exercises).trigger("problemDone", {
             card: Exercises.currentCard,
-            attempts: attempts
+            attempts: attempts,
+            skip: skipped,
         });
     }
 
