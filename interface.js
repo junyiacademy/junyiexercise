@@ -136,19 +136,19 @@ function problemTemplateRendered() {
     $("#questionform").submit(handleCheckAnswer);
     $("#skip-question-button").click(function(e) {
         if(first_time_skip){
-        swal({
-            title:'<span style="font-size:20px;">小提醒：按下之後將無法再做答這題\n您確定要跳過嗎？</span>',
-            imageUrl: '/images/warn.svg',
-            imageWidth: 80,
-            width: 420,
-            showCancelButton: true,
-            confirmButtonText: '是',
-            confirmButtonColor: '#ff6756',
-            cancelButtonText: '否',
-        }).then(function () {
-            first_time_skip = false;
-            handleSkippedQuestion();
-        })
+            swal({
+                title:'<span style="font-size:20px;">小提醒：按下之後將無法再做答這題\n您確定要跳過嗎？</span>',
+                imageUrl: '/images/warn.svg',
+                imageWidth: 80,
+                width: 420,
+                showCancelButton: true,
+                confirmButtonText: '是',
+                confirmButtonColor: '#ff6756',
+                cancelButtonText: '否',
+            }).then(function () {
+                first_time_skip = false;
+                handleSkippedQuestion();
+            });
         }else{
             handleSkippedQuestion();
         }
