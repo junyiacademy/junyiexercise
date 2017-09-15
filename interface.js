@@ -75,7 +75,7 @@ function exercisePointCalculator(){
     var suggested_exercise_multiplier = 3;
     var incomplete_exercise_multiplier = 5;
     var limit_exercises = 150;
-
+    
     var points = 0;
     var offset = 0;
     var required_streak = min_streak_till_proficiency;
@@ -114,6 +114,7 @@ function exercisePointCalculator(){
 
 function problemTemplateRendered() {
     previewingItem = Exercises.previewingItem;
+    var first_time_skip = true;
     // Setup appropriate img URLs
     $("#issue-throbber").attr("src",
             Exercises.khanExercisesUrlBase + "css/images/throbber.gif");
@@ -133,14 +134,49 @@ function problemTemplateRendered() {
     $("#check-answer-button").click(handleCheckAnswer);
     $("#answerform").submit(handleCheckAnswer);
     $("#questionform").submit(handleCheckAnswer);
-    $("#skip-question-button").click(handleSkippedQuestion);
+    $("#skip-question-button").click(function(e) {
+        if(first_time_skip){
+            swal({
+                title:'<span style="font-size:20px;">小提醒：按下之後將無法再做答這題\n您確定要跳過嗎？</span>',
+                imageUrl: '/images/warn.svg',
+                imageWidth: 80,
+                width: 420,
+                showCancelButton: true,
+                confirmButtonText: '是',
+                confirmButtonColor: '#ff6756',
+                cancelButtonText: '否',
+            }).then(function () {
+                first_time_skip = false;
+                handleSkippedQuestion();
+            });
+        }else{
+            handleSkippedQuestion();
+        }
+        return false;
+    });
 
+    $("#watch-report-directly").click(function(e) {
+        swal({
+            title:'<span style="font-size:18px;">小提醒：按下之後將中止這份評量，如評量為老師指派的任務，將無法重新進行。\n您確定要中止嗎？</span>',
+            imageUrl: '/images/warn.svg',
+            imageWidth: 80,
+            width: 420,
+            showCancelButton: true,
+            confirmButtonText: '是',
+            confirmButtonColor: '#ff6756',
+            cancelButtonText: '否',
+        }).then(function () {
+            handleExamSkipToEnd(Exercises.incompleteStack.length);
+        })
+        return false;
+    });    
     // Hint button
     $("#hint").click(onHintButtonClicked);
 
     // Next question button
     $("#next-question-button").click(function() {
-        $(Exercises).trigger("gotoNextProblem");
+        $(Exercises).trigger("gotoNextProblem");        
+
         $("#raise-hand-button").prop('disabled', false);
 
         // Disable next question button until next time
@@ -225,7 +261,6 @@ function newProblem(e, data) {
 }
 
 function handleCheckAnswer() {
-
     return handleAttempt({skipped: false});
 }
 
@@ -235,7 +270,7 @@ function handleSkippedQuestion() {
 
 function handleAttempt(data) {
     var framework = Exercises.getCurrentFramework();
-    var skipped = data.skipped;
+    var skipped = false || data.skipped;
     var score;
 
     if (framework === "perseus") {
@@ -282,7 +317,8 @@ function handleAttempt(data) {
     if (score.correct || skipped || Exercises.examMode) {
         $(Exercises).trigger("problemDone", {
             card: Exercises.currentCard,
-            attempts: attempts
+            attempts: attempts,
+            skip: skipped,
         });
     }
 
@@ -333,8 +369,8 @@ function handleAttempt(data) {
                 setTimeout(function() {
                     waitForVibration = false;
                     hintCanVibration = true;
-                },1500);               
-        } 
+                },1500);
+        }
 
         // Is this a message to be shown?
         if (score.message != null) {
@@ -394,6 +430,10 @@ function handleAttempt(data) {
         return false;
     }
 
+    // gotoNextProblem will ++problemNum
+    // save problemNum in requestUrl before "gotoNextProblem".
+    var requestUrl = "problems/" + problemNum + "/attempt";
+
     if ((skipped || Exercises.examMode) && !Exercises.assessmentMode ) {
         // Skipping or examMode should pull up the next card immediately - but, if we're in
         // assessment mode, we don't know what the next card will be yet, so
@@ -401,7 +441,6 @@ function handleAttempt(data) {
         $(Exercises).trigger("gotoNextProblem");
     }
     // Save the problem results to the server
-    var requestUrl = "problems/" + problemNum + "/attempt";
     request(requestUrl, attemptData).fail(function(xhr) {
         // Alert any listeners of the error before reload
         $(Exercises).trigger("attemptError", {userExercise: userExercise});
@@ -425,7 +464,6 @@ function handleAttempt(data) {
                     )
         );
     });
-
     return false;
 }
 
@@ -436,6 +474,12 @@ function onHintButtonClicked() {
         $(PerseusBridge).trigger("showHint");
     } else if (framework === "khan-exercises") {
         $(Khan).trigger("showHint");
+    }
+}
+
+function handleExamSkipToEnd(skipped_cards_num) {
+    for (var i = 0; i < skipped_cards_num ; i++){
+        handleAttempt({skipped: true});
     }
 }
 
@@ -476,7 +520,6 @@ function onHintShown(e, data) {
                 },0);
             }
         }
-
     }
 
 
@@ -485,7 +528,6 @@ function onHintShown(e, data) {
     lastAttemptOrHint = curTime;
 
     Exercises.userActivityLog.push(["hint-activity", "0", timeTaken]);
-
     if (!previewingItem && !localMode && !userExercise.readOnly &&
             !Exercises.currentCard.get("preview") && canAttempt) {
         // Don't do anything on success or failure; silently failing is ok here
@@ -510,8 +552,7 @@ function updateHintButtonText() {
 }
 
 // Build the data to pass to the server
-function buildAttemptData(correct, attemptNum, attemptContent, timeTaken,
-                          skipped) {
+function buildAttemptData(correct, attemptNum, attemptContent, timeTaken, skipped) {
     var framework = Exercises.getCurrentFramework();
     var data;
 
