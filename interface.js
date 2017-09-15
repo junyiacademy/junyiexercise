@@ -429,18 +429,15 @@ function handleAttempt(data) {
         // Skip the server; just pretend we have success
         return false;
     }
-    var requestUrl = "problems/" + problemNum + "/attempt";
+
     if ((skipped || Exercises.examMode) && !Exercises.assessmentMode ) {
         // Skipping or examMode should pull up the next card immediately - but, if we're in
         // assessment mode, we don't know what the next card will be yet, so
         // wait for the special assessment mode triggers to fire instead.
-        var isRenderAnimation = true;
-        if (Exercises.examMode) {
-            isRenderAnimation = false;
-        }
-        $(Exercises).trigger("gotoNextProblem",[isRenderAnimation]);
+        $(Exercises).trigger("gotoNextProblem");
     }
     // Save the problem results to the server
+    var requestUrl = "problems/" + problemNum + "/attempt";
     request(requestUrl, attemptData).fail(function(xhr) {
         // Alert any listeners of the error before reload
         $(Exercises).trigger("attemptError", {userExercise: userExercise});
