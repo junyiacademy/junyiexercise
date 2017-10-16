@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>在數線上2個一數 </title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="LOWER_BOUND"> 0 </var>
+				<var id="UPPER_BOUND"> 0.8 </var>
+				<var id="START_NUMBER"> randRange( 0, 12 ) </var>
+				<var id="CHOOSE_INDEX"> randRange( 1, 4 ) </var>
+				<var id="MARK_INCREMENT"> 0.1 </var>
+				<var id="DOUBLE_MARK_INCREMENT"> 0.2 </var>
+				<var id="TENTHS"> randRange( 1, 9 ) </var>
+				<var id="SOLUTION"> TENTHS * MARK_INCREMENT </var>
+				<var id="SOLN_TXT"> SOLUTION.toFixed(1) </var>
+				<var id="S"> START_NUMBER + CHOOSE_INDEX * 2 </var>		
+			</div>
+			
+			<div class="question">
+                <p><code>2</code> 個一數，在 <code>\square</code> 中填入代表點的數字。</p>
+			</div>
+			
+			<div class="problem">
+                <div class="graphie" id="number-line">
+					init({
+                        range: [ [LOWER_BOUND - 0.1, UPPER_BOUND +0.3], [-0.5, 0.5] ],
+                        scale: [400,200]
+                    });
+					 line( [ 0, 0 ], [ LOWER_BOUND - 0.06, 0 ] );
+					 
+                    style({arrows: "&gt;"});
+                    line( [ 0, 0 ], [ UPPER_BOUND + 0.06, 0 ] );
+
+                    style({arrows: ""});
+                    for ( var x = LOWER_BOUND; x &lt;= UPPER_BOUND; x += MARK_INCREMENT ) {
+                        ellipse( [ x, 0 ], [0.01, 0.02 ],{fill:"black"} );
+                    }
+					
+					for ( var x = LOWER_BOUND,i=0; x &lt;= UPPER_BOUND; x +=DOUBLE_MARK_INCREMENT,i+=1 ) {
+						if (i==CHOOSE_INDEX) {
+							label( [ LOWER_BOUND+x, -0.2 ],  "\\square", "center", { color: BLUE });
+						} else {
+							label( [ LOWER_BOUND+x, -0.2 ],  roundTo(0,START_NUMBER+x*10), "center", { color: BLUE });
+						}
+                    }  
+				</div>
+            </div>
+			
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>S</var></span>
+            </div>
+
+
+            <div class="hints">
+                <div class="graphie" data-update="number-line">
+					var count_point = 0;
+					setTimeout(function() {
+						p = setInterval(function() {
+							arc( [0.1 + LOWER_BOUND + DOUBLE_MARK_INCREMENT * count_point, -0.1], 0.1414, 45, 135, { stroke: "blue" } );
+							label( [ LOWER_BOUND+LOWER_BOUND+DOUBLE_MARK_INCREMENT * count_point+0.1, 0.2 ],  2, "center", { color: BLUE });
+							count_point++;
+							if(count_point == CHOOSE_INDEX ){clearInterval(p);}
+						}, 750);
+					}, 0);							
+                </div>
+				<p><code> <var> S-2</var> + 2 = <var> S</var></code>，因此空格中應填入 <code class="hint_pink"><var>S</var></code>。</p>           
+            </div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars" data-ensure=" isInt( S / 2 ) ">
+				<var id="LOWER_BOUND"> 0 </var>
+				<var id="UPPER_BOUND"> 0.8 </var>
+				<var id="START_NUMBER"> randRange( 0, 12 ) </var>
+				<var id="START_INDEX"> randRange( 0, 7 ) </var>
+				<var id="CHOOSE_INDEX"> randRange( 1, 8 - START_INDEX ) </var>
+				<var id="END_INDEX"> START_INDEX + CHOOSE_INDEX </var>
+				<var id="MARK_INCREMENT"> 0.1 </var>
+				<var id="DOUBLE_MARK_INCREMENT"> 0.2 </var>
+				<var id="TENTHS"> randRange( 1, 9 ) </var>
+				<var id="SOLUTION"> TENTHS * MARK_INCREMENT </var>
+				<var id="SOLN_TXT"> SOLUTION.toFixed(1) </var>
+				<var id="START_POINT"> LOWER_BOUND + START_INDEX * MARK_INCREMENT</var>
+				<var id="END_POINT"> LOWER_BOUND + END_INDEX * MARK_INCREMENT </var>
+				<var id="S"> START_NUMBER + END_INDEX</var>		
+			</div>
+			
+			 <div class="question">
+                <p>小青蛙從 <code><var>START_NUMBER+START_INDEX</var></code> 開始，向右跳 <code><var>CHOOSE_INDEX</var></code> 格，會停在哪一個數字上？</p>
+			</div>
+			
+			<div class="problem">
+                <div class="graphie" id="number-line">
+					init({
+                        range: [ [LOWER_BOUND - 0.1, UPPER_BOUND +0.3], [-0.5, 0.5] ],
+                        scale: [400,200]
+                    });
+					 line( [ 0, 0 ], [ LOWER_BOUND - 0.06, 0 ] );
+					 
+                    style({arrows: "&gt;"});
+                    line( [ 0, 0 ], [ UPPER_BOUND + 0.06, 0 ] );
+
+                    style({arrows: ""});
+                    for ( var x = LOWER_BOUND; x &lt;= UPPER_BOUND; x += MARK_INCREMENT ) {
+                        ellipse( [ x, 0 ], [0.01,0.02],{fill:"black"} );
+						label( [ LOWER_BOUND+x, -0.1 ],  roundTo(0,START_NUMBER+x*10), "center", { color: BLUE });
+                    } 
+				</div>
+            </div>
+			
+			<div class="solution" data-type="multiple">
+			    <span class="sol" data-forms="integer"><var>S</var></span>
+            </div>
+            <div class="hints">
+                <div>
+                    <div class="graphie" data-update="number-line">
+						var xx = START_POINT - MARK_INCREMENT;
+						setTimeout(function() {
+							p = setInterval(function() {
+								arc( [ 0.05 + xx + MARK_INCREMENT, -0.05 ], 0.07, 45, 135, { stroke: "blue" } );
+								label( [ xx + MARK_INCREMENT + 0.05, 0.1 ],  1, "center", { color: BLUE } );
+								xx+=MARK_INCREMENT;
+								if( xx &gt; END_POINT - MARK_INCREMENT - 0.09 ) { clearInterval(p); }
+							}, 750);
+						}, 0);						
+                    </div>
+                </div>
+				<p><code> <var> S-CHOOSE_INDEX</var> + <var> CHOOSE_INDEX</var> = <var> S</var></code>，因此青蛙會停在 <code class="hint_pink"><var>S</var></code> 上面。</p>           
+            </div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>
