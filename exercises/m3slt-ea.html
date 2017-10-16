@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<html data-require="math graphie math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>柱體的體積</title>
+    <script src="../khan-exercise.js"></script>
+    <script type="text/javascript">
+    	function getCoordFromEllipse( radians, longAxis, shortAxis ){
+    		var x = longAxis * Math.cos( radians / 180 * Math.PI );
+    		var y = shortAxis * Math.sin( radians / 180 * Math.PI );
+    		return [ x, y ];
+    	}
+
+    	function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+    </script>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+            <div class="vars">
+				<var id="J, K, L, M, N, O, P"> randFromArray( [ [ 5, 12, 13, 15, 144 / 13, 60 / 13, 25 / 13 ], [ 6, 8, 10, 15, 32 / 5, 24 / 5, 18 / 5 ], [ 5, 12, 13, 10, 144 / 13, 60 / 13, 25 / 13 ], [ 3, 4, 5, 10, 16 / 5, 12 / 5, 9 / 5 ], [ 4, 3, 5, 15, 9 / 5, 12 / 5, 16 / 5 ] ] ) </var>
+				<var id="T"> J * K * M / 2</var>
+			</div>
+
+            <div class="question">
+                <p>求下列角柱的體積。</p>
+                <div class="graphie" id="graph1">
+                    init( { range : [ [ -2, 14 ], [ -2, O + M + 2 ] ], scale : 15 } );
+					path( [ [ 0, M ], [ 0, 0 ], [ 0 + L, 0 ], [ L, M ], [ 0, M ] ], { fill : "#FFDAC8" } );
+					path( [ [ N, O + M ], [ 0, M ], [ L, M ], [ N, O + M ] ], { fill : "#FFDAC8" } );
+					line( [ N, O + M ], [ L, M ], { stroke : "red" } );
+					label( [ L - P / 2, M + O / 2 ], J, "above right", { color : "red" } );
+					line( [ N, O + M ], [ 0, M ], { stroke : GREEN } );
+					label( [ N / 2, M + O / 2 ], K, "above left", { color : GREEN } );
+					line( [ L, M ], [ 0, M ], { stroke : PURPLE } );
+					label( [ L / 2, M ], L, "below", { color : PURPLE } );
+					line( [ 0, M ], [ 0, 0 ], { stroke : ORANGE } );
+					label( [ 0, M / 2 ], M, "left", { color : ORANGE } );
+					label( [ L / 2, 0 ], "（單位：公尺）", "below" );
+					line( [ N, M + O ], [ N, O ], { strokeDasharray : "-" } );
+					line( [ 0, 0 ], [ N, O ], { strokeDasharray : "-" } );
+					line( [ L, 0 ], [ N, O ], { strokeDasharray : "-" } );
+                </div>
+			</div>	
+
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>T</var></span>立方公尺
+			</div>
+
+			<div class="hints">
+				<p>三角柱的體積為底面積<code> \times </code>柱高</p>
+				<p>柱體體積為<code><var>J</var> \times <var>K</var> \div 2 \times <var>M</var>=\color{#FF00AF}{<var>T</var>}</code> 立方公尺。</p>
+			</div>
+        </div>
+
+		<div id="case2">
+            <div class="vars" data-ensure=" isInt( O ) ">
+				<var id="J, K, L, M, N"> randFromArray( [ [ 10, 4.8, 6, 20, 8 ], [ 8.5, 4.2, 6, 20, 6 ], [ 20, 19.2, 24, 40, 32 ], [ 15, 7.2, 9, 30, 24 ] ] ) </var>
+				<var id="P"> sqrt( pow( L, 2 ) - pow( K, 2 ) ) </var>
+				<var id="Q"> J - sqrt( pow( L, 2 ) - pow( K, 2 ) ) </var>
+				<var id="R"> M * Math.cos( 30 / 180 * Math.PI ) </var>
+				<var id="T"> M * Math.sin( 30 / 180 * Math.PI ) </var>
+				<var id="O"> J * K / 2 * M </var>
+				<var id="S"> J == 20 ? 8 : ( J == 15 ? 10 : 15 ) </var>
+			</div>
+
+            <div class="question">
+                <p>求下列角柱的體積。</p>
+                <div class="graphie" id="graph1">
+                    init( { range : [ [ -P - 1, Q + R + 1 ], [ -5, T + K + 1 ] ], scale : S } );
+					path( [ [ 0, K ], [ -P, 0 ], [ Q, 0 ], [ 0, K ] ], { fill : "#BBFFFF" } );
+					path( [ [ 0, K ], [ Q, 0 ], [ Q + R, T ], [ R, T + K ], [ 0, K ] ], { fill : "#BBFFFF" } );
+					line( [ R, T + K ], [ Q + R - J, T ], { strokeDasharray : "-" } );
+					line( [ Q + R, T ], [ Q + R - J, T ], { strokeDasharray : "-" } );
+					line( [ -P, 0 ], [ Q + R - J, T ], { strokeDasharray : "-" } );
+					line( [ 0, K ], [ 0, 0 ], { stroke : "#871F78", strokeDasharray : "-" } );
+					 
+					line( [ -P, 0 ], [ Q, 0 ], { stroke : "red" } );
+					label( [ 0, 0 ], J, "below", { color : "red" } );
+
+					label( [ 0, K / 2 ], K, "right", { color : "#871F78" } );
+					line( [ 0, K ], [ -P, 0 ], { stroke : GREEN } );
+					label( [ -P / 2, K / 2 ], L, "left", { color : GREEN } );
+					line( [ Q, 0 ], [ Q + R, T ], { stroke : ORANGE } );
+					label( [ Q + R / 2, T / 2 ], M, "below", { color : ORANGE } );
+					line( [ Q + R, T ], [ R, T + K ], { stroke : "#97694F" } );
+					label( [ R + Q - Q / 2, T + K / 2 ], N, "above", { color : "#97694F" } );
+					label( [ 0, -1.5 ], "（單位：公尺）", "below" );
+                </div>
+			</div>
+
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>O</var></span>立方公尺
+			</div>
+
+			<div class="hints">
+				<p>三角柱的體積為底面積<code> \times </code>柱高</p>
+				<P>柱體體積為 <code><var>J</var> \times <var>K</var> \div 2 \times <var>M</var>=\color{#FF00AF}{<var>O</var>}</code> 立方公尺。</P>
+			</div>
+        </div>
+
+		<div id="case3">
+            <div class="vars">
+				<var id="J, K, L, M, N"> randFromArray( [ [ 10, 6, 10, 6, 5 ], [ 5, 4, 10, 8, 5 ], [ 3, 5, 6, 10, 3 ], [ 4, 10, 6, 10, 2 ], [ 20, 5, 14, 6, 7 ], [ 30, 5, 16, 7, 8 ] ] ) </var>
+				<var id="T"> roundTo( 5, 3.14 * pow( J / 2 , 2 ) * K ) </var>
+			</div>
+
+            <div class="question">
+                <p>求下列圓柱體的體積(圓周率用3.14計算)</p>
+                <div class="graphie" id="graph1">
+                    init( { range : [ [ -10, 10 ], [ -6, 15 ] ], scale : 15 } );
+					ellipse( [ 0, 0 ], [ L / 2, N / 2 ], { fill : "yellow" } );
+					path( [ [ - L / 2, M ], [ - L / 2, 0 ], [ L / 2, 0 ], [ L / 2, M ], [ - L / 2, M ] ], { stroke : "yellow", fill : "yellow" } );
+					ellipse( [ 0, M ], [ L / 2, N / 2 ], { fill : "yellow" } );
+					line( [ - L / 2, 0 ], [ - L / 2, M ] );
+					line( [ - L / 2, M ], [ L / 2, M ], { stroke : "red" } );
+					line( [ L / 2, M ], [ L / 2, 0 ], { stroke : "#871F78" } );
+					circle( [ 0, M ], 0.1 );
+					label( [ L / 2, M / 2 ], K, "right", { color : "#871F78" } );
+					label( [ 0, M ], J, "above", { color : "red" } );
+					label( [ 0, - N / 2 ], "（單位：公分）", "below" );
+                </div>
+			</div>
+
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer, decimal"><var>T</var></span>立方公分
+			</div>
+
+			<div class="hints">
+				<p>圓柱的體積為底面積<code> \times </code>柱高</p>
+				<p>圓柱的半徑為 <code><var>J</var> \div 2=<var>J/2</var></code></p>
+				<P>柱體的體積為 <code><var>J/2</var> \times <var>J/2</var> \times 3.14 \times <var>K</var>=\color{#FF00AF}{<var>T</var>}</code> 立方公分。</P>
+			</div>
+        </div>
+
+		<div id="case4">
+            <div class="vars">
+				<var id="J, K"> randFromArray( [ [ 20, 40 ], [ 10, 20 ], [ 10, 30 ], [ 20, 10 ], [ 30, 10 ], [ 20, 15 ] ] ) </var>
+				<var id="Q"> J &gt; K ? 1.5 : 1 </var>
+				<var id="A, B"> [ polar( J / 2, -10 ), polar( J / 2, 170 ) ] </var>
+				<var id="D"> [ Q * K * Math.cos( 10 / 180 * Math.PI ) + A[ 0 ], Q * K * Math.sin( 10 / 180 * Math.PI ) + A[ 1 ] ]</var>
+				<var id="C"> [ Q * K * Math.cos( 10 / 180 * Math.PI ) + B[ 0 ], Q * K * Math.sin( 10 / 180 * Math.PI ) + B[ 1 ] ]</var>
+				<var id="M"> [ ( C[ 0 ] + D[ 0 ] ) / 2, ( C[ 1 ] + D[ 1 ] ) / 2 ] </var>
+				<var id="_AROUND"> polar( J / 2, 100 ) </var>
+				<var id="_AROUND_2"> [ Q * K * Math.cos( 10 / 180 * Math.PI ) + _AROUND[ 0 ], Q * K * Math.sin( 10 / 180 * Math.PI ) + _AROUND[ 1 ] ] </var>
+				<var id="T"> roundTo( 1, pow( J / 2, 2 ) * 3.14 * K / 2 ) </var>
+			</div>
+
+            <div class="question">
+                <p>求下列圓柱的體積(圓周率用3.14計算)。</p>
+                <div class="graphie" id="graph1">
+                    init( { range : [ [ B[ 0 ] - 5, D[0] + 15 ], [ A[ 1 ] - 6 - 10, _AROUND_2[ 1 ] + 10 ] ], scale : 5 } );
+
+                    arc( M, J / 2, -10, 170, { fill : ORANGE, strokeWidth : 1.5 } );
+                    path( [ A, D, _AROUND_2, _AROUND, A ], { stroke : ORANGE, fill : ORANGE, strokeWidth : 1.5 } );
+                    arc( [ 0, 0 ], J / 2, -10, 170, { fill : ORANGE, strokeWidth : 1.5 } );
+                    line( _AROUND, _AROUND_2, { strokeWidth : 2, stroke : BLUE } );
+                    line( A, D, { strokeWidth : 1.5 } );
+                    line( A, B, { strokeWidth : 2, stroke : GREEN } );
+                    circle( [ 0, 0 ], 0.2, { stroke : RED, fill : RED } );
+                    label( [ ( _AROUND[ 0 ] + _AROUND_2[ 0 ] ) / 2, ( _AROUND[ 1 ] + _AROUND_2[ 1 ] ) / 2 ], K, "above left", { color : BLUE } );
+                    label( [ 0, 0 ], J, "below left", { color : GREEN } );
+                    line( [ A[ 0 ], A[ 1 ] - 6 ], [ 0, -1 ], { arrows : "&gt;" } );
+                    label( [ A[ 0 ], A[ 1 ] - 6 ], "圓心", "below" );
+                    label( [ (A[0] + D[0])/2, (A[1] + D[1])/2 ], "（單位：公尺）", "below right" );
+                </div>
+			</div>
+
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer, decimal"><var>T</var></span>立方公分
+			</div>
+
+			<div class="hints">
+				<p>圓柱的體積為底面積<code> \times </code>柱高</p>
+				<p>圓柱的半徑為 <code><var>J</var> \div 2 = <var>J/2</var></code></p>
+				<P>圓柱的體積為 <code><var>J/2</var> \times <var>J/2</var> \times 3.14 \div 2 \times <var>K</var>=\color{#FF00AF}{<var>T</var>}</code> 立方公尺。</P>
+			</div>
+        </div>
+
+		<div id="case5">
+            <div class="vars">
+				<var id="J, K, L, M"> randFromArray( [ [ 10, 20, 12, 10 ], [ 15, 30, 10, 5 ], [ 6, 12, 8, 3 ], [ 4, 8, 2, 15 ], [ 7, 14, 4, 6 ], [ 8, 16, 5, 9 ] ] ) </var>
+				<var id="T"> ( J + K ) * L / 2 * M </var>
+            </div>
+
+            <div class="question">
+                <p>求下列柱體的體積。</p>
+                <div class="graphie" id="graph1">
+                    init( { range : [ [ - K / 2 - 2, K / 2 + 2 ], [ -M - 2, L + 2 ] ], scale : 15 } );
+					path( [ [ - K / 2, L ], [ -J / 2, 0 ], [ J / 2, 0 ], [ K / 2, L ], [ - K / 2, L ] ], { fill : "#FFDAC8" } );
+					path( [ [ - J / 2, 0 ], [ - J / 2, - M ], [ J / 2, - M ], [ J / 2, 0 ], [ - J / 2, 0 ] ], { fill : "#FFDAC8" } );
+					path( [ [ - K / 2, L ], [ - K / 2, L - M ], [ - J / 2, - M ], [ - J / 2, 0 ], [ - K / 2, L ] ], { fill : "#FFDAC8" } );
+					path( [ [ K / 2, L ], [ J / 2, 0 ], [ J / 2, - M ], [ K / 2, L - M ], [ K / 2, L ] ], { fill : "#FFDAC8" } );
+					line( [ - J / 2, 0 ], [ J / 2, 0 ], { stroke : GREEN } );
+					label( [ 0, 0 ], J, "below", { color : GREEN } );
+					line( [ K / 2, L ], [ - K / 2, L ], { stroke : "red" } );
+					label( [ 0, L ], K, "above", { color : "red" } );
+					label( [ 0, L / 2 ], L, "left", { color : "#871F78" } );
+					line( [ - K / 2, L ], [ - K / 2, L - M ], { stroke : ORANGE } );
+					label( [ - K / 2, ( L -  M ) + M / 2 ], M, "left", { color : ORANGE } );
+					line( [ 0, 0 ], [ 0, L ], { stroke : "#871F78", strokeDasharray : "-" } );
+					label( [ 0, -M ], "（單位：公尺）", "below" );
+                </div>
+			</div>
+
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>T</var></span>立方公尺
+			</div>
+
+			<div class="hints">
+				<p>柱體的體積為底面積<code> \times </code>柱高。</p>
+				<p>柱體的底面積為 <code>(<var>J</var>+<var>K</var>) \times <var>L</var> \div 2=<var>(J+K)*L/2</var></code></p>
+				<P>柱體的體積為 <code><var>(J+K)*L/2</var> \times <var>M</var>=\color{#FF00AF}{<var>T</var>}</code> 立方公尺。</P>
+			</div>
+        </div>
+	</div>
+</div>	
+</body>
+</html>
+
