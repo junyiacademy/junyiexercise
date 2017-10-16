@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>複合圖形的面積計算</title>
+    <script src="../khan-exercise.js"></script>
+
+	
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="A, B"> randFromArray( [ [ 7, 10 ], [ 8, 11 ], [ 6, 9 ], [ 8, 13 ], [ 9, 16 ], [ 5, 8 ], [ 5, 12 ] ] ) </var>
+				<var id="C"> B - A </var>
+				<var id="ANSWER"> roundTo( 1, C * B / 2 ) </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求著色部分面積(單位：公分)。</p>
+					<div class="graphie" id="pic">
+	                    init( { range : [ [ -5, 5 ], [ -5, 5 ] ], scale : 20 } );
+						path( [ [ -4, -4 ], [ -4, 4 ], [ 4, 4 ], [ 4, -4 ], [ -4, -4 ] ] );
+						path( [ [ -4, -4 ], [ -4 + 8 / B * A, 4 ], [ 4, 4 ], [ -4, -4 ] ], { fill : "pink" } );
+						path( [ [ -4, 3.6 ], [ -3.6, 3.6 ], [ -3.6, 4 ] ] );
+						line( [ -4, -4 ], [ -4, 4 ], { stroke : "blue" } );
+						label( [ -4.5, 0 ], B, { color : "blue" } );
+						line( [ -4, -4 ], [ 4, -4 ], { stroke : "blue" } );
+						label( [ 0, -4.5 ], B, { color : "blue" } );
+						line( [ -4, 4 ], [ -4 + 8 / B * A, 4 ], { stroke : "orange" } );
+						label( [ -4 + 4 / B * A, 4.5 ], A, { color : "orange" } );
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+                <span class="sol" data-forms="integer, decimal"><var>ANSWER</var></span>平方公分
+            </div>	
+
+            <div class="hints"> 
+				<p>仔細看，紅色面積是一個三角形，欲求三角形的面積，要先找到「底」與「高」。</p>
+				<p>三角形的底是<code><var>B</var>-<var>A</var>=<var>C</var></code>(公分)，高是<code><var>B</var></code>(公分)，三角形的面積為<code>「底」\times「高」\div2 =<var>C</var>\times<var>B</var>\div 2= <var>ANSWER</var></code>。</p>
+				<p>答案為「<code class="hint_pink"><var>ANSWER</var></code>」平方公分。</p>
+			</div>
+		</div>
+
+		<div id="case2">
+			<div class="vars">
+				<var id="A, B, C"> randFromArray( [ [ 8, 20, 16 ], [ 6, 18, 12 ], [ 7, 15, 14 ], [ 7, 18, 14 ], [ 8, 18, 16 ], [ 8, 22, 16 ], [ 9, 30, 18 ], [ 10, 25, 20 ] ] ) </var>
+				<var id="D"> B * C </var>
+				<var id="E"> B * A </var>
+				<var id="ANSWER"> D - E </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求著色部分面積(單位：公分)。</p>
+					<div class="graphie" id="pic">
+	                    init( { range : [ [ -16, 8 ], [ -9, -7 + B +2 ] ], scale : 10 } );
+						path( [ [ -14, -7 ], [ -14, -7 + B ], [ -14 + C, -7 + B ], [ -14 + C, -7 ], [ -14, -7 ] ], { fill : "#DCB5FF" } );
+						path( [ [ -12, -7 ], [ -12 + A, -7 ], [ -14 + C, -7 + B ], [ -14 + C - A, -7 + B ], [ -12, -7 ] ], { fill : "#FFFFFF" } );
+						line( [ -14, -7 ], [ -14, -7 + B ], { stroke : "blue" } );
+						label( [ -15, -7 + B / 2 ], B, { color : "blue" } );
+						line( [ -14, -7 + B ], [ -14 + C, -7 + B ], { stroke : "green" } );
+						label( [ -14 + C / 2, -6 + B ], C, { color : "green" } );
+						line( [ -12, -7 ], [ -12 + A, -7 ], { stroke : "orange" } );
+						label( [ -12 + A / 2, -8 ], A, { color : "orange" } );
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>ANSWER</var></span>平方公分
+			</div>	
+
+            <div class="hints"> 
+				<p>仔細看，紫色面積是由長方形減掉平行四邊形的面積。</p>
+				<p>長方形的面積為 <code><var>B</var>\times<var>C</var>=<var>D</var></code>。平行四邊形的面積公式為<code>「底」\times「垂直的高」= <var>A</var> \times <var>B</var>=<var>E</var></code>。</p>
+				<p>紫色面積為<code><var>D</var>-<var>E</var> =<var>ANSWER</var></code>，答案為「<code class="hint_pink"><var>ANSWER</var></code>」平方公分。</p>
+			</div>
+		</div>
+
+		<div id="case3">
+			<div class="vars">
+				<var id="A, B, C"> randFromArray( [ [ 12, 5, 7 ], [ 10, 7, 9 ], [ 11, 6, 8 ], [ 11, 7, 9 ], [ 11, 5, 8 ], [ 12, 6, 8 ], [ 12, 7, 9 ], [ 13, 6, 7 ], [ 13, 7, 8 ], [ 13, 7, 9 ] ] ) </var>
+				<var id="D"> B * A </var>
+				<var id="E"> C * A </var>
+				<var id="ANSWER"> D + E </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求著色部分面積(單位：公分)。</p>
+					<div class="graphie" id="pic">
+	                    init( { range : [ [ -16, 16 ], [ -9, 9 ] ], scale : 10 } );
+						path( [ [ -14, -7 ], [ -14, -7 + A ], [ 14, -7 + A ], [ 14, -7 ], [ -14, -7 ] ] );
+						path( [ [ -12, -7 ], [ -12 + B, -7 ], [ -8 + B, -7 + A ], [ -8, -7 + A ], [ -12, -7 ] ], { fill : "#DCB5FF" } );
+						path( [ [ 13, -7 ], [ 13 - C, -7 ], [ 11 - C, -7 + A ], [ 11, -7 + A ], [ 13, -7 ] ], { fill : "#DCB5FF" } );
+						line( [ -14, -7 ], [ -14, -7 + A ], { stroke : "blue" } );
+						label( [ -15, -7 + A / 2 ], A, { color : "blue" } );
+						line( [ -8 + B, -7 + A ], [ -8, -7 + A ], { stroke : "green" } );
+						label( [ -8 + B /2, -6 + A ], B, { color : "green" } );
+						line( [ 11 - C, -7 + A ], [ 11, -7 + A ], { stroke : "orange" } );
+						label( [ 11 - C / 2, -6 + A ], C, { color : "orange" } );
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>ANSWER</var></span>平方公分
+			</div>
+
+            <div class="hints"> 
+				<p>仔細看，紫色區域的面積是由兩個平行四邊形組成。</p>
+				<p>平行四邊形的面積公式為<code>「底」\times「垂直的高」。<br />
+				</code>左邊的面積為<code><var>B</var>\times<var>A</var> =<var>D</var></code><br />
+				右邊的面積為<code><var>C</var>\times<var>A</var> =<var>E</var></code></p>
+				<p>紫色面積為<code><var>D</var>+<var>E</var> =<var>ANSWER</var></code>，答案為「<code class="hint_pink"><var>ANSWER</var></code>」平方公分。</p>
+			</div>
+		</div>
+
+		<div id="case4">
+			<div class="vars">
+				<var id="A, B, C, D"> randFromArray( [ [ 24, 16, 30, 8 ], [ 21, 15, 25, 5 ], [ 21, 10, 22, 5 ], [ 14, 10, 16, 4 ], [ 16, 11, 20, 3 ], [ 16, 12, 22, 3 ], [ 12, 7, 15, 4 ] ] ) </var>
+				<var id="E"> roundTo( 1, ( B + C ) * A / 2 ) </var>
+				<var id="F"> roundTo( 1, C * D / 2 ) </var>
+				<var id="ANSWER"> E - F </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求著色部分面積(單位：公分)。</p>
+					<div class="graphie" id="pic">
+	                    init( { range : [ [ -18, 16 ], [ -15, -12 + A + 2 ] ], scale : 10 } );
+						path( [ [ -15, -12 ], [ -15, -12 + A ], [ -15 + B, -12 + A ], [ -15 + C, -12 ], [ -15, -12 ] ], { fill : "#CECEFF", stroke : "#B9B9FF" } );
+						path( [ [ -15, -12 ], [ -15 + C / 2, -12 + D ], [ -15 + C, -12 ], [ -15, -12 ] ], { fill : "#FBFBFF", stroke : "#84C1FF" } );
+						line( [ -15 + C / 2, -12 ], [ -15 + C / 2, -12 + D ], { "stroke-dasharray" : "-",stroke : "grey" } );
+						label( [ -14 + C/ 2, -12 + D / 2 ], D, { color : "grey" } );
+						path( [ [ -15 + C / 2, -12 + 0.4 ], [ -15 + C / 2 + 0.4, -12 + 0.4 ], [ -15 + C / 2 + 0.4, -12 ] ] );
+						line( [ -15, -12 + A ], [ -15 + B, -12 + A ], { stroke : "green" } );
+						label( [ -15 + B / 2, -11 + A ], B, { color : "green" } );
+						line( [ -15, -12 ], [ -15, -12 + A ], { stroke : "blue" } );
+						label( [ -16, -12 + A / 2 ], A, { color : "blue" } );
+						line( [ -15 + C, -12 ], [ -15, -12 ], { stroke : "orange" } );
+						label( [ -15 + C / 2, -13 ], C, { color : "orange" } );
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer, decimal"><var>ANSWER</var></span>平方公分
+			</div>	
+
+            <div class="hints"> 
+				<p>仔細看，藍色區域的面積是由梯形面積減掉三角形面積組成。</p>
+				<div>
+				<p>梯形的面積為<code>(上底+下底)\times高 \div 2</code>
+				<code>=(<var>B</var> + <var>C</var>) \times <var>A</var>  \div 2 = <var>B+C</var> \times <var>A</var> \div  2=<var>E</var> 。</code></p>
+				<p>三角形的面積為<code> 底邊長 \times 高度 \div 2</code><code> =<var>C</var> \times <var>D</var> \div 2 =  <var>F</var>。</code></p>
+				</div>
+				<p>藍色面積為梯形<code>-</code>三角形 <code>= <var>E</var> -<var>F</var>=<var>ANSWER</var></code>。答案為「<code class="hint_pink"><var>ANSWER</var></code>」平方公分。</p>
+			</div>
+		</div>
+	
+		<div id="case5">
+			<div class="vars">
+				<var id="A, B, C, D"> randFromArray( [ [ 6, 6, 9, 18 ], [ 5, 5, 8, 16 ], [ 6, 6, 8, 16 ], [ 7, 7, 6, 12 ], [ 7, 7, 10, 20 ], [ 8, 8, 9, 18 ], [ 8, 8, 11, 22 ] ] ) </var>
+				<var id="E"> roundTo( 1, ( D + C ) * A / 2 ) </var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求著色部分面積(單位：公分)。</p>
+					<div class="graphie" id="pic">
+	                    init( { range : [ [ -13, 13 ], [ -10, -8 + A + B + 2 ] ], scale : 15 } );
+						path( [ [ -11, -8 ], [ -11 + D, -8 ], [ -11 + D / 2, -8 + A + B ], [ -11, -8 ] ] );
+						line( [ -11 + D / 2, -8 + A + B ], [ -11 + D / 2, -8 + A ], { "stroke-dasharray" : "-", stroke : "blue" } );
+						label( [ -10 + D / 2, -8 + A + B / 2 ], B, { color : "blue" } );
+						path( [ [ -11, -8 ], [ -11 + D / 2 - C / 2, -8 + A ], [ -11 + D / 2 + C / 2, -8 + A ], [ -11 + D, -8 ] ], { fill : "#CECEFF" } );
+						line( [ -11 + D / 2, -8 ], [ -11 + D / 2, -8 + A ], { "stroke-dasharray" : "-", stroke : "green" } );
+						label( [ -10 + D / 2, -8 + A / 2 ], A, { color : "green" } );
+						line( [ -11 + D / 2 - C / 2, -8 + A ], [ -11 + D / 2 + C / 2, -8 + A ], { stroke : "orange" } );
+						label( [ -10 + D / 2 - 2, -7 + A ], C, { color : "orange" } );
+						line( [ -11, -8 ], [ -11 + D, -8 ], { stroke : "red" } );
+						label( [ -11 + D / 2, -9 ], D, { color : "red" } );
+					</div>	
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer, decimal"><var>E</var></span>平方公分
+			</div>	
+
+            <div class="hints"> 
+				<p>我們可以發現，藍色面積是由一個大三角形從中間切半後形成的梯形。</p>
+				<div>
+				<p>梯形的面積為<code>(</code>上底<code>+</code>下底 <code>)</code><code>\times</code>高 <code>\div 2</code> <code>=(<var>C</var> +<var>D</var>) \times <var>A</var> \div 2= <var>C+D</var> \times <var>A</var> \div 2= <var>E</var></code>。</p>
+				</div>
+				<p>答案為「<code class="hint_pink"><var>E</var></code>」平方公分。</p>
+			</div>
+		</div>
+
+		<div id="case6">
+			<div class="vars">
+				<var id="A,B,C">randFromArray([[8,20,30],[5,10,15],[6,12,18],[6,10,15],[7,14,28],[7,12,18],[8,16,24]])</var>
+				<var id="D">roundTo(1,(A+C)*B/2)</var>
+				<var id="E">A*B</var>
+				<var id="ANSWER">roundTo(1,D-E)</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求著色部分面積(單位：公分)。</p>
+					<div class="graphie" id="pic">
+	                    init({range: [[-16, 16], [-12, 12]], scale:15});
+						path([[-C/2,-B/2],[-A/2,B/2],[A/2,B/2],[C/2,-B/2],[-C/2,-B/2]],{fill:"#CECEFF",stroke:"#ACD6FF"});
+						path([[A/2,B/2],[-A/2,B/2],[-C/2+3,-B/2],[-C/2+3+A,-B/2],[A/2,B/2]],{fill:"#FBFBFF",stroke:"#ACD6FF"});
+						line([-A/2,B/2],[-A/2,-B/2],{"stroke-dasharray": "-",stroke:"blue"});
+						label([-A/2+1,0],B,{color:"blue"});
+						line([C/2,-B/2],[-C/2,-B/2],{stroke:"green"});
+						label([0,-B/2-1],C,{color:"green"});
+						line([A/2,B/2],[-A/2,B/2],{stroke:"orange"});
+						label([0,B/2+1],A,{color:"orange"});
+					</div>	
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer, decimal"><var>ANSWER</var></span>平方公分
+			</div>	
+
+            <div class="hints"> 
+				<p>仔細看，可以發現，藍色面積是由一個梯形減掉平行四邊形的面積。</p>
+				<div>
+				<p>梯形的面積為<code>(</code>上底<code>+</code>下底 <code>)\times 高 \div 2</code></p>
+				<p><code> = ( <var>A</var> +<var>C</var>) \times <var>B</var> \div 2  = <var>A+C</var> \times <var>B</var>  \div 2= <var>D</var></code>。 </p>
+				<p>平行四邊形的面積為底邊長<code>\times</code>高度<code>= <var>A</var>\times <var>B</var> =<var>E</var></code>。</p>
+				</div>
+				<p>梯形面積<code>-</code>平行四邊形<code>=<var>D</var>-<var>E</var> =<var>ANSWER</var></code>。答案為「<code class="hint_pink"><var>ANSWER</var></code>」平方公分。</p>
+			</div>
+		</div>
+
+		<div id="case7">
+			<div class="vars">
+				<var id="A,B,C,D,">randFromArray([[8,24,10,20],[5,15,8,12],[5,16,8,14],[6,17,10,14],[7,21,12,12],[7,22,12,14]])</var>
+				<var id="E">roundTo(1,(A+B)*D/2)</var>
+				<var id="F">roundTo(1,C*B/2)</var>
+				<var id="ANSWER">roundTo(1,E-F)</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求著色部分面積(單位：公分)。</p>
+					<div class="graphie" id="pic">
+	                    init({range: [[-6, 6], [-4, 4]], scale:40});
+						path([[-5,-3],[-2,3],[3,3],[4,-3],[-5,-3]],{fill:"#FFD1A4",stroke:"#FFAD86"});
+						path([[-5,-3],[-2,3],[21/6,0],[-5,-3]],{fill:"#FFFFFF",stroke:"#FFAD86"});
+						path([[-2.1,2.8],[-1.9,2.7],[-1.8,2.9]]);
+						line([-5,-3],[-2,3],{stroke:"blue"});
+						label([-4,1],B,{color:"blue"});
+						line([-2,3],[3,3],{stroke:"green"});
+						label([0.5,3.5],A,{color:"green"});
+						line([4,-3],[-5,-3],{stroke:"orange"});
+						label([-0.5,-3.5],B,{color:"orange"});
+						line([5,-3],[5,3],{stroke:"grey","stroke-dasharray": "-"});
+						label([5.5,0],D,{color:"grey"});
+						line([4.8,-3],[5.2,-3],{stroke:"grey"});
+						line([4.8,3],[5.2,3],{stroke:"grey"});
+						line([-2,3],[21/6,0],{stroke:"purple"});
+						label([0.25,1.3],C,{color:"purple"});
+					</div>
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer, decimal"><var>ANSWER</var></span>平方公分
+			</div>	
+
+            <div class="hints"> 
+				<p>我們可以發現，橘色面積是由梯形減掉直角三角形的部分。</p>
+				<div>
+					<p>梯形的面積為<code>(</code>上底<code>+</code>下底 <code>)\times 高 \div 2</code></p>
+					<p><code> = ( <var>A</var> +<var>B</var>) \times <var>D</var> \div 2  = <var>A+B</var> \times <var>D</var>  \div 2= <var>E</var></code>。 </p>
+					<p>三角形的面積為底邊長<code>\times </code>高度<code>\div 2</code></p>
+					<p><code>= <var>C</var>\times <var>B</var>\div 2 =<var>F</var></code>。</p>
+				</div>
+				<div>
+					<p>梯形面積<code>-</code>三角形<code>=<var>E</var>-<var>F</var> =<var>ANSWER</var></code>。</p>
+					<p>答案為「<code class="hint_pink"><var>ANSWER</var></code>」平方公分。</p>
+				</div>
+			</div>
+		</div>
+
+		<div id="case8">
+			<div class="vars">
+				<var id="A,B,C,D,E,F">randFromArray([[12,6,20,12,30,40],[11,8,9,11,20,30],[10,9,11,9,20,30],[7,6,9,7,16,24],[9,6,7,9,16,24],[5,4,7,5,12,18],[7,4,5,7,12,18]])</var>
+				<var id="G">roundTo(1,E*(A+C)/2)</var>
+				<var id="I">A*B</var>
+				<var id="ANSWER">roundTo(1,G+I)</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求著色部分面積(單位：公分)。</p>
+					<div class="graphie" id="pic">
+	                    init({range: [[-21, 21], [-18, -16+C+D+3]], scale:10});
+						path([[-18,-16],[-18,-16+A],[-18+B,-16+A],[-18+B,-16],[-18,-16]],{fill:"#FFD9EC",stroke:"#FFB5B5"});
+						path([[-18+B,-16],[-18+B,-16+C+D],[-18+B+E,-16],[-18+B,-16]],{fill:"#FFD9EC",stroke:"#FFB5B5"});
+						path([[-18,-15.4],[-17.4,-15.4],[-17.4,-16]]);
+						line([-18,-16],[-18,-16+A],{stroke:"blue"});
+						label([-19,-16+A/2],A,{color:"blue"});
+						line([-18,-16+A],[-18+B,-16+A],{stroke:"green"});
+						label([-18+B/2,-15+A],B,{color:"green"});
+						line([-18+B,-16+A],[-18+B,-16],{stroke:"blue"});
+						label([-17+B,-16+A/2],A,{color:"blue"});
+						line([-18+B,-16+A],[-18+B,-16+C+D],{stroke:"orange"});
+						label([-17+B,-16+A/2+C/2+D/2],C,{color:"orange"});
+						line([-18+B+E,-16],[-18+B,-16],{stroke:"purple"});
+						label([-18+B+E/2,-17],E,{color:"purple"});
+						line([-18+B,-16+C+D],[-18+B+E,-16],{stroke:"red"});
+						label([-16+B+E/2,-16+C/2+D/2],F,{color:"red"});
+					</div>	
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer, decimal"><var>ANSWER</var></span>平方公分
+			</div>	
+
+            <div class="hints"> 
+				<p>仔細看，著色面積是一個長方形<code>+</code>一個三角形組合而成的複合圖形。</p>
+				<p>
+					三角形的面積為<code>底 \times 高\div 2 = <var>E</var>\times<var>A+C</var>\div  2 = <var>G</var>。</code>
+					<br />長方形的面積為<code>長 \times 寬</code><code>= <var>A</var>\times <var>B</var> =<var>I</var></code>。</p>
+				<p>
+					三角形面積<code>+</code>長方形面積<code>= <var>G</var>+<var>I</var> = <var>ANSWER</var></code>。
+					<br />答案為「<code class="hint_pink"><var>ANSWER</var></code>」平方公分。</p>
+			</div>
+		</div>
+
+		<div id="case9">
+			<div class="vars">
+				<var id="A,B,C,D,E">randFromArray([[20,30,24,7,6],[10,15,12,5,6],[10,15,14,4,3],[12,18,14,3,2],[12,18,16,4,3],[14,21,16,6,5],[14,21,18,7,5]])</var>
+				<var id="F">roundTo(1,C*(A+B)/2)</var>
+				<var id="G">D*E</var>
+				<var id="ANSWER">roundTo(1,F-G)</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求著色部分面積(單位：公分)。</p>
+					<div class="graphie" id="pic">
+	                    init({range: [[-17, 17], [-14, C/2+3]], scale:10});
+						path([[-B/2,-C/2],[-A/2,C/2],[A/2,C/2],[B/2,-C/2],[-B/2,-C/2]],{fill:"#BBFFBB",stroke:"#A6FFA6"});
+						path([[A/2-3,C/2],[A/2-3-E,C/2],[A/2-3-E,C/2-D],[A/2-3,C/2-D],[A/2-3,C/2]],{fill:"#F0FFF0"});
+						line([B/2,-C/2],[-B/2,-C/2],{stroke:"blue"});
+						label([0,-C/2-1],B,{color:"blue"});
+						line([-A/2,C/2],[A/2,C/2],{stroke:"orange"});
+						label([0,C/2+1],A,{color:"orange"});
+						line([-A/2,C/2],[-A/2,-C/2],{stroke:"green"});
+						label([-A/2+1,0],C,{color:"green"});
+						line([A/2-3-E,C/2],[A/2-3-E,C/2-D],{stroke:"red"});
+						label([A/2-2-E,C/2-D/2],D,{color:"red"});
+						line([A/2-3-E,C/2-D],[A/2-3,C/2-D],{stroke:"purple"});
+						label([A/2-3-E/2,C/2-D-1],E,{color:"purple"});
+					</div>	
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer, forms"><var>ANSWER</var></span>平方公分
+			</div>	
+
+            <div class="hints"> 
+				<p>我們可以發現，著色面積是由一個梯形<code>-</code>一個長方形組合而成的複合圖形。</p>
+				<div>
+				<p>梯形的面積為<code>(上底+下底)\times 高 \div 2 </code> <code>= (<var>A</var>+<var>B</var>) \times <var>C</var> \div 2 </code><code>=<var>A+B</var>\times<var>C</var>\div 2= <var>F</var>。</code></p>
+				<p><code>長方形的面積為 長\times寬</code><code>=<var>D</var> \times<var>E</var> =<var>G</var></code>。</p>
+				</div>
+				<p>
+					梯形面積<code>-</code>長方形面積<code>=<var>F</var>-<var>G</var>=<var>ANSWER</var></code>。
+					<br />答案為「<code class="hint_pink"><var>ANSWER</var></code>」平方公分。</p>
+			</div>
+		</div>
+
+		<div id="case10">
+			<div class="vars">
+				<var id="A,B,C,D,E">randFromArray([[20,30,24,6,6],[10,24,12,5,5],[10,20,12,5,5],[12,18,14,4,4],[12,20,14,4,4],[14,18,16,3,3],[14,20,16,3,3]])</var>
+				<var id="F">roundTo(1,C*(A+B)/2)</var>
+				<var id="G">D*E</var>
+				<var id="ANSWER">roundTo(1,F-G)</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求著色部分面積(單位：公分)。</p>
+					<div class="graphie" id="pic">
+	                    init({range: [[-17, 17], [-14, 14]], scale:10});
+						path([[-B/2,-C/2],[-A/2,C/2],[A/2,C/2],[B/2,-C/2],[-B/2,-C/2]],{fill:"#FFC1E0",stroke:"#ffaad5"});
+						path([[A/2-3,C/2],[A/2-3-E,C/2],[A/2-3-E,C/2-D],[A/2-3,C/2-D],[A/2-3,C/2]],{fill:"#FFF7FB"});
+						line([B/2,-C/2],[-B/2,-C/2],{stroke:"blue"});
+						label([0,-C/2-1],B,{color:"blue"});
+						line([-A/2,C/2],[A/2,C/2],{stroke:"orange"});
+						label([0,C/2+1],A,{color:"orange"});
+						line([-A/2,C/2],[-A/2,-C/2],{stroke:"green"});
+						label([-A/2+1,0],C,{color:"green"});
+						line([A/2-3-E,C/2],[A/2-3-E,C/2-D],{stroke:"red"});
+						label([A/2-2-E,C/2-D/2],D,{color:"red"});
+						line([A/2-3-E,C/2-D],[A/2-3,C/2-D],{stroke:"purple"});
+						label([A/2-3-E/2,C/2-D-1],E,{color:"purple"});
+					</div>	
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer, decimal"><var>ANSWER</var></span>平方公分
+			</div>	
+
+            <div class="hints"> 
+			<p>我們可以發現，著色面積是由一個梯形<code>-</code>一個正方形組合而成的複合圖形。</p>
+			<div>
+			<p>梯形的面積為<code>(上底+下底)\times 高 \div 2 </code> <code>= (<var>A</var>+<var>B</var>) \times <var>C</var> \div 2 </code><code>=<var>A+B</var>\times<var>C</var>\div 2= <var>F</var>。</code></p>
+			<p><code>正方形的面積為邊長相乘</code><code>=<var>D</var> \times<var>E</var> =<var>G</var></code>。</p>
+			</div>
+			<p>
+				梯形面積<code>-</code>正方形面積<code>=<var>F</var>-<var>G</var>=<var>ANSWER</var>。</code>
+				<br />答案為「<code class="hint_pink"><var>ANSWER</var></code>」平方公分。</p>
+			</div>
+		</div>
+
+		<div id="case11">
+			<div class="vars">
+				<var id="A,B,C,D">randFromArray([[10,20,12,30],[5,10,6,15],[6,12,7,18],[7,14,8,21],[8,16,8,24],[9,18,10,27],[11,22,10,33]])</var>
+				<var id="E">B*D</var>
+				<var id="F">roundTo(1,C*(A+B)/2)</var>
+				<var id="ANSWER">roundTo(1,E-F)</var>
+			</div>
+			
+			<div class="question">
+				<div class="problem">
+	                <p>求著色部分面積(單位：公分)。</p>
+					<div class="graphie" id="pic">
+	                    init({range: [[-13, 13], [-18, 18]], scale:10});
+						path([[-B/2,-D/2],[-B/2,D/2],[B/2,D/2],[B/2,-D/2],[-B/2,-D/2]],{fill:"#E6CAFF",stroke:"#DCB5FF"});
+						path([[-B/2+0.6,D/2],[-B/2+0.6,D/2-0.6],[-B/2,D/2-0.6]]);
+						path([[B/2,-D/2],[-B/2,-D/2],[-A/2,-(D/2-C)],[A/2,-(D/2-C)],[B/2,-D/2]],{fill:"#FFFFFF"});
+						line([B/2,-D/2],[-B/2,-D/2],{stroke:"blue"});
+						label([0,-D/2-1],B,{color:"blue"});
+						line([-B/2,-D/2],[-B/2,D/2],{stroke:"orange"});
+						label([-B/2-1,0],D,{color:"orange"});
+						line([-A/2,-(D/2-C)],[-A/2,-D/2],{stroke:"green","stroke-dasharray": "-"});
+						label([-A/2+1,-D/2+C/2],C,{color:"green"});
+						line([-A/2,-(D/2-C)],[A/2,-(D/2-C)],{stroke:"purple"});
+						label([0,-(D/2-C)+1],A,{color:"purple"});
+					</div>	
+				</div>
+			</div>
+			
+			<div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer, decimal"><var>ANSWER</var></span>平方公分
+			</div>	
+
+            <div class="hints"> 
+				<p>我們可以發現，紫色面積是由長方形面積<code>-</code>梯形面積的部分。</p>
+				<div>
+					<p><code>長方形的面積為長\times寬</code><code>=<var>B</var> \times<var>D</var> =<var>E</var></code>。</p>
+					<p>梯形的面積為<code>(上底+下底)\times 高 \div 2 </code> <code>= (<var>A</var>+<var>B</var>) \times <var>C</var> \div 2 </code><code>=<var>A+B</var>\times<var>C</var>\div 2= <var>F</var>。</code></p>
+				</div>
+				<p>
+					長方形面積<code>-</code>梯形面積<code>=<var>E</var>-<var>F</var>=<var>ANSWER</var>。</code>
+					<br />答案為「<code class="hint_pink"><var>ANSWER</var></code>」平方公分。</p>
+			</div>
+		</div>
+
+		
+	</div>
+	</div>
+</body>
+</html>
