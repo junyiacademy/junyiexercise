@@ -90,18 +90,20 @@ end
 
 FileUtils.mkdir_p("exercises-packed")
 
-Dir["exercises/**/*.html"].each do |filename|
+exercises = Dir["exercises/**/*.html"]
+exercises.each.with_index do |filename, i|
+  print "\r(#{i+1}/#{exercises.length}) #{filename}\x1b[K"
   packed_filename = filename.gsub(/^exercises\//, "exercises-packed/")
   next if File.exist?(packed_filename) && File.mtime(packed_filename) > File.mtime(filename)
 
   FileUtils.mkdir_p(File.dirname(packed_filename))
 
-  puts filename
   cant = 0
   doc = Nokogiri::HTML::Document.parse(File.read(filename))
 
   doc.css("var").each do |var|
     if var.elements.any?
+      puts ""
       puts "-- error: JS element has children"
       puts var.inner_html
       exit 1
@@ -116,6 +118,7 @@ Dir["exercises/**/*.html"].each do |filename|
 
   doc.css(".graphie", "div.guess", "div.show-guess", "div.show-guess-solutionarea").each do |graphie|
     if graphie.elements.any?
+      puts ""
       puts "-- error: JS element has children"
       exit 1
     end
@@ -126,6 +129,7 @@ Dir["exercises/**/*.html"].each do |filename|
 
   doc.css("div.validator-function").each do |validator|
     if validator.elements.any?
+      puts ""
       puts "-- error: JS element has children"
       exit 1
     end
@@ -157,3 +161,5 @@ Dir["exercises/**/*.html"].each do |filename|
     f.write doc.to_html
   end
 end
+
+puts ""
