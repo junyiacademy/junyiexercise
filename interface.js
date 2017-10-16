@@ -28,7 +28,7 @@ _.extend(Exercises, {
     guessLog: undefined,
     userActivityLog: undefined
 });
-var hintCanVibration = true; 
+var hintCanVibration = true;
 var waitForVibration = false;
 var firstTimeWrong = true;
 var PerseusBridge = Exercises.PerseusBridge,
@@ -511,7 +511,7 @@ function onHintShown(e, data) {
     if (hintsUsed === numHints) {
         $("#hint").attr("disabled", true);
         $(Exercises).trigger("allHintsUsed");
-       
+
         if (userExercise.exerciseStates.struggling) {
             if (hintCanVibration === true) {
                 hintCanVibration = false;
@@ -667,7 +667,7 @@ function request(method, data) {
                     if (hint_disabled === "disabled") {
                         if (hintCanVibration === true) {
                             hintCanVibration = false;
-                            $("#raise-hand-button").effect("shake", {times: 3, distance: 5}, 480);
+                            $("#raise-hand-button-container").effect("shake", {times: 3, distance: 5}, 480);
                         }
                     }
                     else {
