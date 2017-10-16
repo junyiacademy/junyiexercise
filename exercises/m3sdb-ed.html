@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie graphie-geometry angles">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>菱形的面積</title>
+    <script src="../khan-exercise.js"></script>
+    <script language="javascript">
+        function polar(r, th) {
+            if (typeof r === "number") {
+                r = [r, r];
+            }
+            th = th * Math.PI / 180;
+            return [r[0] * Math.cos(th), r[1] * Math.sin(th)];
+        }
+
+        function getPedal( p, a, b ) {
+            if( a[ 0 ] == b[ 0 ] ) {
+                return [ b[ 0 ], a[ 1 ] ];
+            } else {
+                var k1 = ( b[ 1 ] - a[ 1 ] ) / ( b[ 0 ] - a[ 0 ] );
+                var k2 = -1 / k1;
+                var x = ( a[ 1 ] - p[ 1 ] - ( k1 * a[ 0 ] - k2 * p[ 0 ] ) ) / ( k2 - k1 );
+                var y = k1 * ( x - a[ 0 ] ) + a[ 1 ];
+                return [ x, y ];
+            }
+        }
+
+        function radioClick( id ) {
+            $( '#' + id ).prop( 'checked', true );
+        }
+
+    </script>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+		<div id="case1">
+            <div class="vars" data-ensure=" isInt( _ANS ) ">
+                <var id="IS_SQUARE">randRangeNonZero( -1, 1 )</var>
+				<var id="A, B"> randRangeUnique( 5, 11, 2 ) </var>
+                <var id="_DIAS1, _DIAS2"> IS_SQUARE == 1 ? [ A, A ] : [ A, B ] </var>
+                <var id="S"> randRange( 0, 359 ) </var>
+                <var id="_PATHS">(function(){
+                    var els = [];
+                    els.push( polar( _DIAS1, S ), polar( _DIAS2, S + 90 ), polar( _DIAS1, S + 180 ), polar( _DIAS2, S + 270 ), polar( _DIAS1, S ) );
+                    return els;
+                })()</var>
+                <var id="_ARROUND_PATHS">(function(){
+                    var eli = [];
+                    for( var i = 0; i &lt; 4; i++ ) {
+                        eli.push( reflectPoint( [ _PATHS[ i ], _PATHS[ i + 1 ] ], [ 0, 0 ] ) );
+                    }
+                    eli.push( eli[ 0 ] );
+                    return eli;
+                })()</var>
+                <var id="COLORS"> [ BLUE, ORANGE, GREEN ][ randRange( 0, 2 ) ] </var>
+                <var id="R"> max( _DIAS1, _DIAS2 ) </var>
+                <var id="_ANS"> 0, _DIAS1 * 2 * _DIAS2 * 2 / 2 </var>
+			</div>
+
+			<div class="question">
+				<p>請計算以下菱形的面積(單位：公分)。</p>
+			</div>
+
+			<div class="problem">
+				<div class="graphie" id="area-case1">
+                    init( { range: [ [ -R * 2, R * 2 ], [ -R * 2, R * 2 ] ], scale : 10 } );
+                    path( _PATHS, { fill : COLORS, stroke : COLORS, opacity : 0.25 } );
+                    path( _PATHS, { stroke : COLORS } );
+
+                    if( IS_SQUARE == 1 ) {
+                        var ty = randRange( 1, 3 );
+                        if( ty == 1 ) {
+                            path( _ARROUND_PATHS, { strokeWidth : 1 } );
+                            label( polar( _DIAS1 + 4, S ),  "\\Large{" + _DIAS1 * 2 + "}" );
+                            label( polar( _DIAS1 + 4, S + 90 ),  "\\Large{" + _DIAS1 * 2 + "}" );
+                        } else if( ty == 2 ) {
+                            line( _PATHS[ 0 ], _PATHS[ 2 ] );
+                            label( polar( 2, S + 90 ),  _DIAS1 * 2 );
+                        } else {
+                            var p1 = polar( _DIAS1 + 2.5, S + 90 );
+                            var re1 = reflectPoint( [ _ARROUND_PATHS[ 0 ], _ARROUND_PATHS[ 1 ] ], _PATHS[ 0 ] );
+                            var re2 = reflectPoint( [ _ARROUND_PATHS[ 0 ], _ARROUND_PATHS[ 1 ] ], _PATHS[ 2 ] );
+                            var mid = lineMidpoint( [ re1, re2 ] ); 
+                            line( _PATHS[ 0 ], re1, { strokeWidth : 1 } );
+                            line( _PATHS[ 2 ], re2, { strokeWidth : 1 } );
+                            path( parallelLine( [ [ 0, 0 ], _PATHS[ 2 ] ], p1 ), { strokeWidth : 1 } );
+                            path( parallelLine( [ [ 0, 0 ], _PATHS[ 0 ] ], p1 ), { strokeWidth : 1 } );
+                            label( polar( _DIAS1 + 5, S + 90 ),  _DIAS1 * 2 );
+
+                            var intersec = findIntersection( [ _PATHS[ 0 ], re1 ], parallelLine( [ [ 0, 0 ], _PATHS[ 2 ] ], p1 ) );
+                            var inang = cartToPolar( intersec );
+                            var inangOver = polar( inang[0] - 3, inang[1] );
+                            line( inangOver, getPedal( inangOver, _PATHS[ 0 ], [ intersec[0], intersec[1] ] ), { strokeWidth : 1, stroke : KhanUtil.RED } );
+
+                            var intersec2 = findIntersection( [ _PATHS[ 2 ], re2 ], parallelLine( [ [ 0, 0 ], _PATHS[ 0 ] ], p1 ) );
+                            line( inangOver, getPedal( inangOver, [ intersec2[0], intersec2[1] ], [ intersec[0], intersec[1] ] ), { strokeWidth : 1, stroke : KhanUtil.RED } );
+                        }
+                    } else {
+                        line( _PATHS[ 0 ], [ 0, 0 ], { stroke : RED } );
+                        line( _PATHS[ 1 ], [ 0, 0 ], { stroke : PURPLE } );
+                        line( _PATHS[ 2 ], [ 0, 0 ], { stroke : COLORS } );
+                        line( _PATHS[ 3 ], [ 0, 0 ], { stroke : COLORS } );
+
+                        var m1 = lineMidpoint( [ _PATHS[ 0 ], [ 0, 0 ] ] );
+                        var m1_polar = cartToPolar( m1 );
+                        label( polar( m1_polar[ 0 ], m1_polar[ 1 ] - 20 ), A, { color : RED } );
+
+                        var m2 = lineMidpoint( [ _PATHS[ 1 ], [ 0, 0 ] ] );
+                        var m2_polar = cartToPolar( m2 );
+                        label( polar( m2_polar[ 0 ], m2_polar[ 1 ] + 20 ), B, { color : PURPLE } );
+                    }
+                </div>
+			</div>
+
+            <div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>_ANS</var></span>平方公分
+            </div>
+
+			<div class="hints">
+                <div>
+                    <p>菱形的面積由長方形變化而來，</p>
+                    <p>菱形面積 <code>=</code> 兩對角線相乘 <code> \times \dfrac{1}{2}</code></p>
+                </div>
+                <div>
+                    <p data-if=" IS_SQUARE == -1 ">根據題目的條件，對角線分別為 <br />
+                    <code><var>_DIAS1</var> \times 2 = <var>_DIAS1 * 2</var></code> <br /> 
+                    <code><var>_DIAS2</var> \times 2 = <var>_DIAS2 * 2</var></code> </p>
+                    <p data-if=" IS_SQUARE == 1 ">因為此圖形為正方形，兩對角線相同。</p>
+                    <p>菱形面積 <code> = <var>_DIAS1 * 2</var> \times <var>_DIAS2 * 2</var> \times \dfrac{1}{2}</code></p>
+                    <p><code>\phantom{菱形面積}</code> <code> = <var>_DIAS1 * 2 * _DIAS2 * 2</var> \times \dfrac{1}{2}</code></p>
+                    <p><code>\phantom{菱形面積}</code> <code> = <var>_ANS</var></code></p>
+                    <p>答案為 <code class="hint_pink"><var>_ANS</var></code> 平方公分。</p>
+                </div>                 
+            </div>
+            
+		</div>
+
+		<div id="case2">
+            <div class="vars">
+                <var id="J"> randRange( 0, 3 ) </var>
+                <var id="_STR"> [ '甲', '丙', '丁', '乙' ][ J ] </var>
+                <var id="_SIDES"> randFromArray( [ [ 4, 4, 4, 4 ], [ 4, 6, 4, 6 ] ] ) </var>
+                <var id="_PATHS">(function(){
+                    var s = [];
+                    $.each( _SIDES, function( i, elem ) {
+                        s.push( polar( elem, i * 90 ) );
+                    });
+                    s.push( s[ 0 ] );
+                    return s;
+                })()</var>
+                <var id="COLORS"> [ BLUE, ORANGE, GREEN ][ randRange( 0, 2 ) ] </var>
+                <var id="L1">lineMidpoint( [ [ 0, 0 ], _PATHS[ 0 ] ] )</var>
+                <var id="L2">lineMidpoint( [ [ 0, 0 ], _PATHS[ 1 ] ] )</var>
+			</div>
+
+			<div class="question">
+				<p>菱形的面積是<var>_STR</var>的______倍。</p>
+			</div>
+
+			<div class="problem">
+				<div class="graphie" id="times-case2">
+                    init( { range: [ [ - 7, 7 ], [ - 6, 6 ] ], scale: 30 } );
+
+                    graph.pathFill = path( _PATHS, { stroke : COLORS, fill : COLORS, opacity : 0.5 } );
+                    graph.pathUnFill = path( _PATHS, { stroke : COLORS } );
+                    graph.line1 = line( _PATHS[ 0 ], _PATHS[ 2 ], { stroke : COLORS } );
+                    graph.line2 = line( _PATHS[ 1 ], _PATHS[ 3 ], { stroke : COLORS } );
+
+                    graph.lab1 = label( polar( 2, 135 ), "\\Large{" + '甲' + "}" );
+                    graph.lab2 = label( polar( 2, 135 + 90 ), "\\Large{" + '丙' + "}" );
+                    graph.lab3 = label( polar( 2, 135 + 180 ), "\\Large{" + '丁' + "}" );
+                    graph.lab4 = label( polar( 2, 135 + 270 ), "\\Large{" + '乙' + "}" );
+
+                </div>
+			</div>
+
+            <div class="solution" data-type="multiple">
+				<span class="sol" data-forms="integer"><var>4</var></span>
+            </div>
+
+			<div class="hints">
+                <div>
+                    <p>菱形面積 <code>=</code> 兩對角線相乘 <code> \times \dfrac{1}{2}</code></p>
+                    <p>假設兩條對角線各為 <code><var>_SIDES[ 0 ] * 2</var></code> 公分、 <code><var>_SIDES[ 1 ] * 2</var></code> 公分</p>
+                    <p>則菱形面積 <code> = <var>_SIDES[ 0 ] * 2</var> \times <var>_SIDES[ 1 ] * 2</var> \times \dfrac{1}{2} = <var>_SIDES[ 0 ] * 2 * _SIDES[ 1 ]</var></code> </p>
+                    <div class="graphie" data-update="times-case2">
+                        graph.lab1.hide();
+                        graph.lab2.hide();
+                        graph.lab3.hide();
+                        graph.lab4.hide();
+                        graph.line1.hide();
+                        graph.line2.hide();
+
+                        graph.line3 = line( _PATHS[ 2 ], _PATHS[ 0 ], { stroke : RED } );
+                        graph.line4 = line( _PATHS[ 1 ], _PATHS[ 3 ], { stroke : PURPLE } );
+                        graph.lab5 = label( [ L1[ 0 ], L1[1] + 1 ], _SIDES[ 0 ] * 2, { color : RED } );
+                        graph.lab6 = label( [ L2[ 0 ] - 1, L2[1] ], _SIDES[ 1 ] * 2, { color : PURPLE } );
+                    </div>
+                </div>
+                <div>
+                    <p>因<var>_STR</var>為一個三角形，<br />底邊和高是我們假設對角線的 <code>\dfrac{1}{2}</code>，</p>
+                    <p>因此<var>_STR</var>的底邊是 <code><var>_SIDES[ 0 ]</var></code> 公分，高是 <code><var>_SIDES[ 1 ]</var></code> 公分</p>
+                    <p>則<var>_STR</var>的面積 <code> = <var>_SIDES[ 0 ]</var> \times <var>_SIDES[ 1 ]</var> \times \dfrac{1}{2} = <var>roundTo( 0, _SIDES[ 1 ] * _SIDES[ 0 ] / 2 ) </var> </code></p>
+                    <div class="graphie" data-update="times-case2">
+                        graph.lab1.show();
+                        graph.lab2.show();
+                        graph.lab3.show();
+                        graph.lab4.show();
+                        graph.pathFill.hide();
+                        graph.lab5.hide();
+                        graph.lab6.hide();
+                        graph.line3.hide();
+                        graph.line4.hide();
+                        line( [ 0, 0 ], _PATHS[ 0 ], {  } );
+                        line( [ 0, 0 ], _PATHS[ 1 ], {  } );
+                        line( [ 0, 0 ], _PATHS[ 2 ], {  } );
+                        line( [ 0, 0 ], _PATHS[ 3 ], {  } );
+
+                        if( J == 0 ) {
+                            path( [ _PATHS[ 2 ], [ 0, 0 ], _PATHS[ 1 ] ], { fill : COLORS, opacity : 0.5 } );
+                            line( [ 0, 0 ], _PATHS[ 1 ], { stroke : RED } );
+                            line( [ 0, 0 ], _PATHS[ 2 ], { stroke : PURPLE } );
+                            var L3 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 1 ] ] );
+                            var L4 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 2 ] ] );
+                            label( [ L3[ 0 ] + 0.5, L3[ 1 ] ], _SIDES[ 1 ], { color : RED } );
+                            label( [ L4[ 0 ], L4[ 1 ] - 0.5 ], _SIDES[ 0 ], { color : PURPLE } );
+                        } else if( J == 1 ) {
+                            path( [ _PATHS[ 2 ], [ 0, 0 ], _PATHS[ 3 ] ], { fill : COLORS, opacity : 0.5 } );
+                            line( [ 0, 0 ], _PATHS[ 2 ], { stroke : RED } );
+                            line( [ 0, 0 ], _PATHS[ 3 ], { stroke : PURPLE } );
+                            var L3 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 2 ] ] );
+                            var L4 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 3 ] ] );
+                            label( [ L3[ 0 ], L3[ 1 ] + 0.5 ], _SIDES[ 0 ], { color : RED } );
+                            label( [ L4[ 0 ] + 0.5, L4[ 1 ] ], _SIDES[ 1 ], { color : PURPLE } );
+                        } else if( J == 2 ) {
+                            path( [ _PATHS[ 4 ], [ 0, 0 ], _PATHS[ 3 ] ], { fill : COLORS, opacity : 0.5 } );
+                            line( [ 0, 0 ], _PATHS[ 3 ], { stroke : RED } );
+                            line( [ 0, 0 ], _PATHS[ 4 ], { stroke : PURPLE } );
+                            var L3 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 3 ] ] );
+                            var L4 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 4 ] ] );
+                            label( [ L3[ 0 ] - 0.5, L3[ 1 ] ], _SIDES[ 1 ], { color : RED } );
+                            label( [ L4[ 0 ], L4[ 1 ] + 0.5 ], _SIDES[ 0 ], { color : PURPLE } );
+                        } else {
+                            path( [ _PATHS[ 4 ], [ 0, 0 ], _PATHS[ 1 ] ], { fill : COLORS, opacity : 0.5 } );
+                            line( [ 0, 0 ], _PATHS[ 4 ], { stroke : RED } );
+                            line( [ 0, 0 ], _PATHS[ 1 ], { stroke : PURPLE } );
+                            var L3 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 4 ] ] );
+                            var L4 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 1 ] ] );
+                            label( [ L3[ 0 ], L3[ 1 ] - 0.5 ], _SIDES[ 0 ], { color : RED } );
+                            label( [ L4[ 0 ] - 0.5, L4[ 1 ] ], _SIDES[ 1 ], { color : PURPLE } );
+                        }
+                    </div>
+                </div>
+                <div>
+                    <p>菱形的面積 <code>\div</code> <var>_STR</var> <code>= <var>roundTo( 0, _SIDES[ 1 ] * _SIDES[ 0 ] * 2 ) </var> \div <var>roundTo( 0, _SIDES[ 1 ] * _SIDES[ 0 ] / 2 ) </var> = 4</code></p>
+                    <p>所以菱形的面積是<var>_STR</var>的 <code class="hint_pink">4</code> 倍。</p>
+                </div>             
+            </div>
+            
+		</div>
+		
+        <div id="case3">
+            <div class="vars">
+                <var id="_FOURTH"> randRange( 1, 10 ) </var>
+                <var id="J, K"> randRangeUnique( 0, 4, 2 ) </var>
+                <var id="_STR"> [ '甲', '丙', '丁', '乙' ][ J ] </var>
+                <var id="_STR2"> [ '甲', '丙', '丁', '乙' ][ K ] </var>
+                <var id="_SIDES"> randFromArray( [ [ 4, 4, 4, 4 ], [ 4, 6, 4, 6 ] ] ) </var>
+                <var id="_PATHS">(function(){
+                    var s = [];
+                    $.each( _SIDES, function( i, elem ) {
+                        s.push( polar( elem, i * 90 ) );
+                    });
+                    s.push( s[ 0 ] );
+                    return s;
+                })()</var>
+                <var id="C1, C2"> randRangeUnique( 0, 3, 2 ) </var>
+                <var id="COLORS"> [ BLUE, ORANGE, GREEN ][ C1 ] </var>
+                <var id="COLORS2"> [ BLUE, ORANGE, GREEN ][ C2 ] </var>
+                <var id="L1">lineMidpoint( [ [ 0, 0 ], _PATHS[ 0 ] ] )</var>
+                <var id="L2">lineMidpoint( [ [ 0, 0 ], _PATHS[ 1 ] ] )</var>
+            </div>
+
+            <div class="question">
+                <p data-if=" _FOURTH &lt; 6 ">菱形中，<var>_STR</var>和<var>_STR2</var>的面積相同嗎？</p>
+                <p data-if=" _FOURTH &gt; 5 ">菱形中，甲、乙、丙、丁的面積相同嗎？</p>
+            </div>
+
+            <div class="problem">
+                <div class="graphie" id="times-case3">
+                    init( { range: [ [ - 7, 7 ], [ - 6, 6 ] ], scale: 30 } );
+
+                    graph.pathFill = path( _PATHS, { stroke : COLORS, fill : COLORS, opacity : 0.5 } );
+                    graph.pathUnFill = path( _PATHS, { stroke : COLORS } );
+                    graph.line1 = line( _PATHS[ 0 ], _PATHS[ 2 ], { stroke : COLORS } );
+                    graph.line2 = line( _PATHS[ 1 ], _PATHS[ 3 ], { stroke : COLORS } );
+
+                    graph.lab1 = label( polar( 2, 135 ), "\\Large{" + '甲' + "}" );
+                    graph.lab2 = label( polar( 2, 135 + 90 ), "\\Large{" + '丙' + "}" );
+                    graph.lab3 = label( polar( 2, 135 + 180 ), "\\Large{" + '丁' + "}" );
+                    graph.lab4 = label( polar( 2, 135 + 270 ), "\\Large{" + '乙' + "}" );
+
+                </div>
+                <p onclick="radioClick('option_1')"><input type="radio" name="radios" id="option_1" value="0" /><code>\quad</code>相同</p>
+                <p onclick="radioClick('option_2')"><input type="radio" name="radios" id="option_2" value="1" /><code>\quad</code>不相同</p>
+            </div>
+
+            <div class="solution" data-type="multiple">
+                    <div class="sol" data-type="custom">
+                        <div class="guess">$('input:radio[name="radios"]:checked').val()</div>
+                        <div class="validator-function">
+                            if(guess == null){
+                                return "";
+                            }
+                            return guess == 0;
+                        </div>
+                    </div>
+                </div>
+
+            <div class="hints">
+                <div>
+                    <p>菱形面積 <code>=</code> 兩對角線相乘 <code> \times \dfrac{1}{2}</code></p>
+                    <p>假設兩條對角線各為 <code><var>_SIDES[ 0 ] * 2</var></code> 公分、 <code><var>_SIDES[ 1 ] * 2</var></code> 公分</p>
+                    <p>則菱形面積 <code> = <var>_SIDES[ 0 ] * 2</var> \times <var>_SIDES[ 1 ] * 2</var> \times \dfrac{1}{2} = <var>_SIDES[ 0 ] * 2 * _SIDES[ 1 ]</var></code> </p>
+                    <div class="graphie" data-update="times-case3">
+                        graph.lab1.hide();
+                        graph.lab2.hide();
+                        graph.lab3.hide();
+                        graph.lab4.hide();
+                        graph.line1.hide();
+                        graph.line2.hide();
+
+                        graph.line3 = line( _PATHS[ 2 ], _PATHS[ 0 ], { stroke : RED } );
+                        graph.line4 = line( _PATHS[ 1 ], _PATHS[ 3 ], { stroke : PURPLE } );
+                        graph.lab5 = label( [ L1[ 0 ], L1[1] + 1 ], _SIDES[ 0 ] * 2, { color : RED } );
+                        graph.lab6 = label( [ L2[ 0 ] - 1, L2[1] ], _SIDES[ 1 ] * 2, { color : PURPLE } );
+                    </div>
+                </div>
+                <div>
+                    <p>因<var>_STR</var>為一個三角形，<br />底邊和高是大菱形對角線的 <code>\dfrac{1}{2}</code>，</p>
+                    <p>因此<var>_STR</var>的底邊是 <code><var>_SIDES[ 0 ]</var></code> 公分，高是 <code><var>_SIDES[ 1 ]</var></code> 公分</p>
+                    <p>則<var>_STR</var>的面積 <code> = <var>_SIDES[ 0 ]</var> \times <var>_SIDES[ 1 ]</var> \times \dfrac{1}{2} = <var>roundTo( 0, _SIDES[ 1 ] * _SIDES[ 0 ] / 2 ) </var> </code></p>
+                    <div class="graphie" data-update="times-case3">
+                        graph.lab1.show();
+                        graph.lab2.show();
+                        graph.lab3.show();
+                        graph.lab4.show();
+                        graph.pathFill.hide();
+                        graph.lab5.hide();
+                        graph.lab6.hide();
+                        graph.line3.hide();
+                        graph.line4.hide();
+                        line( [ 0, 0 ], _PATHS[ 0 ], {  } );
+                        line( [ 0, 0 ], _PATHS[ 1 ], {  } );
+                        line( [ 0, 0 ], _PATHS[ 2 ], {  } );
+                        line( [ 0, 0 ], _PATHS[ 3 ], {  } );
+
+                        if( J == 0 ) {
+                            path( [ _PATHS[ 2 ], [ 0, 0 ], _PATHS[ 1 ] ], { fill : COLORS, opacity : 0.5 } );
+                            line( [ 0, 0 ], _PATHS[ 1 ], { stroke : RED } );
+                            line( [ 0, 0 ], _PATHS[ 2 ], { stroke : PURPLE } );
+                            var L3 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 1 ] ] );
+                            var L4 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 2 ] ] );
+                            label( [ L3[ 0 ] + 0.5, L3[ 1 ] ], _SIDES[ 1 ], { color : RED } );
+                            label( [ L4[ 0 ], L4[ 1 ] - 0.5 ], _SIDES[ 0 ], { color : PURPLE } );
+                        } else if( J == 1 ) {
+                            path( [ _PATHS[ 2 ], [ 0, 0 ], _PATHS[ 3 ] ], { fill : COLORS, opacity : 0.5 } );
+                            line( [ 0, 0 ], _PATHS[ 2 ], { stroke : RED } );
+                            line( [ 0, 0 ], _PATHS[ 3 ], { stroke : PURPLE } );
+                            var L3 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 2 ] ] );
+                            var L4 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 3 ] ] );
+                            label( [ L3[ 0 ], L3[ 1 ] + 0.5 ], _SIDES[ 0 ], { color : RED } );
+                            label( [ L4[ 0 ] + 0.5, L4[ 1 ] ], _SIDES[ 1 ], { color : PURPLE } );
+                        } else if( J == 2 ) {
+                            path( [ _PATHS[ 4 ], [ 0, 0 ], _PATHS[ 3 ] ], { fill : COLORS, opacity : 0.5 } );
+                            line( [ 0, 0 ], _PATHS[ 3 ], { stroke : RED } );
+                            line( [ 0, 0 ], _PATHS[ 4 ], { stroke : PURPLE } );
+                            var L3 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 3 ] ] );
+                            var L4 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 4 ] ] );
+                            label( [ L3[ 0 ] - 0.5, L3[ 1 ] ], _SIDES[ 1 ], { color : RED } );
+                            label( [ L4[ 0 ], L4[ 1 ] + 0.5 ], _SIDES[ 0 ], { color : PURPLE } );
+                        } else {
+                            path( [ _PATHS[ 4 ], [ 0, 0 ], _PATHS[ 1 ] ], { fill : COLORS, opacity : 0.5 } );
+                            line( [ 0, 0 ], _PATHS[ 4 ], { stroke : RED } );
+                            line( [ 0, 0 ], _PATHS[ 1 ], { stroke : PURPLE } );
+                            var L3 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 4 ] ] );
+                            var L4 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 1 ] ] );
+                            label( [ L3[ 0 ], L3[ 1 ] - 0.5 ], _SIDES[ 0 ], { color : RED } );
+                            label( [ L4[ 0 ] - 0.5, L4[ 1 ] ], _SIDES[ 1 ], { color : PURPLE } );
+                        }
+                    </div>
+                </div>
+                <div>
+                    <p><var>_STR2</var>也是一個三角形，<br />底邊和高是大菱形對角線的 <code>\dfrac{1}{2}</code>，</p>
+                    <p>因此<var>_STR2</var>的底邊是 <code><var>_SIDES[ 0 ]</var></code> 公分，高是 <code><var>_SIDES[ 1 ]</var></code> 公分</p>
+                    <p>則<var>_STR2</var>的面積 <code> = <var>_SIDES[ 0 ]</var> \times <var>_SIDES[ 1 ]</var> \times \dfrac{1}{2} = <var>roundTo( 0, _SIDES[ 1 ] * _SIDES[ 0 ] / 2 ) </var> </code></p>
+                    <div class="graphie" data-update="times-case3">
+
+                        if( K == 0 ) {
+                            path( [ _PATHS[ 2 ], [ 0, 0 ], _PATHS[ 1 ] ], { fill : COLORS2, opacity : 0.5 } );
+                            line( [ 0, 0 ], _PATHS[ 1 ], { stroke : RED } );
+                            line( [ 0, 0 ], _PATHS[ 2 ], { stroke : PURPLE } );
+                            var L3 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 1 ] ] );
+                            var L4 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 2 ] ] );
+                            label( [ L3[ 0 ] + 0.5, L3[ 1 ] ], _SIDES[ 1 ], { color : RED } );
+                            label( [ L4[ 0 ], L4[ 1 ] - 0.5 ], _SIDES[ 0 ], { color : PURPLE } );
+                        } else if( K == 1 ) {
+                            path( [ _PATHS[ 2 ], [ 0, 0 ], _PATHS[ 3 ] ], { fill : COLORS2, opacity : 0.5 } );
+                            line( [ 0, 0 ], _PATHS[ 2 ], { stroke : RED } );
+                            line( [ 0, 0 ], _PATHS[ 3 ], { stroke : PURPLE } );
+                            var L3 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 2 ] ] );
+                            var L4 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 3 ] ] );
+                            label( [ L3[ 0 ], L3[ 1 ] + 0.5 ], _SIDES[ 0 ], { color : RED } );
+                            label( [ L4[ 0 ] + 0.5, L4[ 1 ] ], _SIDES[ 1 ], { color : PURPLE } );
+                        } else if( K == 2 ) {
+                            path( [ _PATHS[ 4 ], [ 0, 0 ], _PATHS[ 3 ] ], { fill : COLORS2, opacity : 0.5 } );
+                            line( [ 0, 0 ], _PATHS[ 3 ], { stroke : RED } );
+                            line( [ 0, 0 ], _PATHS[ 4 ], { stroke : PURPLE } );
+                            var L3 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 3 ] ] );
+                            var L4 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 4 ] ] );
+                            label( [ L3[ 0 ] - 0.5, L3[ 1 ] ], _SIDES[ 1 ], { color : RED } );
+                            label( [ L4[ 0 ], L4[ 1 ] + 0.5 ], _SIDES[ 0 ], { color : PURPLE } );
+                        } else {
+                            path( [ _PATHS[ 4 ], [ 0, 0 ], _PATHS[ 1 ] ], { fill : COLORS2, opacity : 0.5 } );
+                            line( [ 0, 0 ], _PATHS[ 4 ], { stroke : RED } );
+                            line( [ 0, 0 ], _PATHS[ 1 ], { stroke : PURPLE } );
+                            var L3 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 4 ] ] );
+                            var L4 = lineMidpoint( [ [ 0, 0 ], _PATHS[ 1 ] ] );
+                            label( [ L3[ 0 ], L3[ 1 ] - 0.5 ], _SIDES[ 0 ], { color : RED } );
+                            label( [ L4[ 0 ] - 0.5, L4[ 1 ] ], _SIDES[ 1 ], { color : PURPLE } );
+                        }
+                    </div>
+                </div>
+                <div>
+                    <p data-if=" _FOURTH &lt; 6 ">可推證:甲、乙的面積皆<span class="hint_pink">相同</span>。</p>
+                    <p data-if=" _FOURTH &gt; 5 ">可推證:甲、乙、丙、丁的面積皆<span class="hint_pink">相同</span>。</p>
+                </div>          
+            </div>
+            
+        </div>
+
+	</div>
+	</div>
+</body>
+</html>
