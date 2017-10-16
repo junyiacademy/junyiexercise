@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html data-require="math math-format graphie word-problems interactive">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>讀出數線上的分數</title>
+    <script src="../khan-exercise.js"></script>
+</head>
+<body>
+    <div class="exercise">
+    <div class="problems">
+		<div id="case1">
+			<div class="vars">
+				<var id="A"> randRange( 4, 10 ) </var>
+				<var id="B"> randRange( 1, A - 1 ) </var>				
+			</div>
+			
+			 <div class="question">
+                <p>如圖，我們將 <code>0 \sim  1</code> 等份，每一個線段一樣長，請用分數表示橘色點位置。</p>
+			</div>
+			
+			<div class="problem">
+                <div class="graphie" id="number-line">
+                    init( { range: [ [ -6, 6 ], [ -1, 1 ] ], scale : 42 } ); 
+                    style( { arrows : "&gt;" } );
+					line( [ -5.2, 0 ], [ 5.2, 0 ] );
+					style( { arrows: "" } );
+					line( [ -5, 0.1 ], [ -5, -0.1 ], { stroke : "blue" } );
+					line( [ 5, 0.1 ], [ 5, -0.1 ], { stroke : "blue" } );
+					for( var i = 1; i &lt; A; i++ ) {
+						line( [ ( 10 / A ) * i - 5, 0.1 ], [ ( 10 / A ) * i - 5, -0.1 ] );
+					}
+					circle( [ ( 10 / A ) * B - 5, 0 ], 0.1, { fill : "orange", stroke : "orange" } );
+				</div>
+            </div>
+			
+			<div class="solution" data-forms="proper" data-simplify="optional"><var>B / A</var></div>
+
+            <div class="hints">
+                <p>首先我們先看一下這個數線一個單位被分成幾等份。</p>
+				<p>我們發現 <code>0 \sim 1</code> 之間分成 <code><var>A</var></code> 等份，因此<span class="hint_orange">橘色</span>點代表的分數分母應該是 <code class="hint_orange"><var>A</var></code> ，那分子要怎麼看呢？</p>
+				<div>
+					<p>分子就是他從 <code>0</code> 開始移動了幾等份，我們可以發現總共移動了 <code class="hint_green"><var>B</var></code> 等份，因此分子應該是 <code class="hint_green"><var>B</var></code> 。</p>
+					<div class="graphie" data-update="number-line">
+						for(var i=1;i&lt;B+1;i++) {
+							label( [ ( 10 / A ) * i - 5, 0 ], i, "above", { color : GREEN } );
+						}
+					</div>
+				<p>因此橘色點代表的分數為 <code class="hint_pink"> \dfrac{<var>B</var>}{<var>A</var>}</code>。</p>
+				</div>
+            </div>
+		</div>
+		
+		<div id="case2">
+			<div class="vars">
+				<var id="A"> randRange( 2, 5 ) </var>
+				<var id="B"> randRange( A + 1, 3 * A ) </var>				
+			</div>
+			
+			 <div class="question">
+                <p>如圖，我們將每個單位長等份，每一個線段一樣長，請用假分數表示橘色點位置。</p>
+			</div>
+			
+			<div class="problem">
+                <div class="graphie" id="number-line">
+                    init( { range : [ [ -6, 6 ], [ -1, 1 ] ], scale : 42 } ); 
+                    style( { arrows : "&gt;" } );
+					line( [ -5.2, 0 ], [ 5.5, 0 ] );
+					style( { arrows : "" } );
+					line( [ -5, 0.1 ], [ -5, -0.1 ], { stroke : BLUE } );
+					line( [ 5, 0.1 ], [ 5, -0.1 ], { stroke : BLUE } );
+					label( [ 5, -0.3 ], 3, { color : BLUE } );
+					for( var i = 1; i &lt; 3 * A; i++ ) {
+						line( [ ( 10 / ( 3 * A ) ) * i - 5, 0.1 ], [ ( 10 / ( 3 * A ) ) * i - 5, -0.1 ] );
+						if( i % A == 0 ) {
+							label( [ ( 10 / ( 3 * A ) ) * i - 5, -0.3 ], i / A, { color : BLUE } );
+						}
+					}
+					circle( [ ( 10 / ( 3 * A ) ) * B - 5, 0 ], 0.1, { fill : "orange", stroke : "orange" } );
+				</div>
+            </div>
+			
+			<p class="solution" data-type="number" data-forms="improper" data-simplify="optional"><var>B/A</var></p>
+
+            <div class="hints">
+                <p>首先我們先看一下這個數線一個單位被分成幾等份。</p>
+				<p>我們發現每個單位之間分成 <code><var>A</var></code> 等份，因此<span class="hint_orange">橘色</span>點代表的分數分母應該是 <code class="hint_orange"><var>A</var></code> ，那分子要怎麼看呢？</p>
+				<div>
+					<p>分子就是他從 <code>0</code> 開始移動了幾等份，我們可以發現總共移動了 <code class="hint_green"><var>B</var></code> 等份，因此分子應該是 <code class="hint_green"><var>B</var></code> 。</p>
+					<div class="graphie" data-update="number-line">
+						for( var i = 1; i &lt; B + 1; i++ ) {
+							label( [ ( 10 / ( 3 * A ) ) * i - 5, 0.3 ], i, { color : GREEN } );
+						}
+						style( { arrows : "&gt;" } );
+						line( [ -5, 0 ], [ ( 10 / ( 3 * A ) ) * B - 5, 0 ], { stroke : "blue" } );					
+					</div>
+				<p>因此橘色點代表的分數為 <code class="hint_pink"> \dfrac{<var>B</var>}{<var>A</var>}</code> 。</p>
+				</div>
+            </div>
+		</div>
+		
+		<div id="case3">
+			<div class="vars">
+				<var id="A"> randRange( 2, 5 ) </var>
+				<var id="B" data-ensure=" B != 2 * A "> randRange( A + 1, 3 * A - 1 ) </var>	
+				<var id="C"> floorTo( 0, B / A ) </var>				
+			</div>
+			
+			 <div class="question">
+                <p>如圖，我們將每個單位長等份，每一個線段一樣長，請用帶分數表示橘色點位置。</p>
+			</div>
+			
+			<div class="problem">
+                <div class="graphie" id="number-line">
+                    init( { range : [ [ -6, 6 ], [ -1, 1 ] ], scale : 42 } ); 
+                    style( { arrows : "&gt;" } );
+					line( [ -5.2, 0 ], [ 5.5, 0 ] );
+					style( { arrows : "" } );
+					line( [ -5, 0.1 ], [ -5, -0.1 ], { stroke : BLUE } );
+					line( [ 5, 0.1 ], [ 5, -0.1 ], { stroke : BLUE } );
+					label( [ 5, -0.3 ], 3, { color : BLUE } );
+					for( var i = 1; i &lt; 3 * A; i++ ) {
+						line( [ ( 10 / ( 3 * A ) ) * i - 5, 0.1 ], [ ( 10 / ( 3 * A ) ) * i - 5, -0.1 ] );
+						if( i % A == 0 ) {
+							label( [ ( 10 / ( 3 * A ) ) * i - 5, -0.3 ], i / A, { color : BLUE } );
+						}
+					}
+					circle( [ ( 10 / ( 3 * A ) ) * B - 5, 0 ], 0.1, { fill : "orange", stroke : "orange" } );
+				</div>
+            </div>
+			
+			<p class="solution" data-type="number" data-forms="mixed" data-simplify="optional"><var>B/A</var></p>
+
+            <div class="hints">
+                <p>首先我們觀察一下橘色點，可以知道橘色點在 <code><var>C</var>\sim<var>ceilTo(0,B/A)</var></code> 之間，因此這個帶分數的整數部分就是 <code><var>C</var></code> 。我們再來看一下這個數線一個單位被分成幾等份。</p>
+				<p>我們發現每個單位之間分成 <code><var>A</var></code> 等份，因此<span class="hint_orange">橘色</span>點代表的帶分數分母應該是 <code class="hint_orange"><var>A</var></code> ，那分子要怎麼看呢？</p>
+				<div>
+					<p>分子就是他從整數部分 <code><var>C</var></code> 開始移動了幾等份，我們可以發現總共移動了 <code class="hint_green"><var>B-C*A</var></code> 等份，因此分子應該是 <code class="hint_green"><var>B-C*A</var></code> 。</p>
+					<div class="graphie" data-update="number-line">
+						for( var i = C * A + 1; i &lt; B + 1; i++ ) {
+							label( [ ( 10 / ( 3 * A ) ) * i - 5, 0 ], i - C * A, "above", { color : GREEN } );
+						}
+						style( { arrows : "&gt;" } );
+						line( [ ( 10 / ( 3 * A ) ) * C * A - 5, 0 ], [ ( 10 / ( 3 * A ) ) * B - 5, 0 ], { stroke : BLUE } );	
+					</div>
+				<p>因此橘色點代表的分數為 <code class="hint_pink"><var>C</var> \dfrac{<var> B - A * C </var>}{<var>A</var>}</code> 。</p>
+				</div>
+            </div>
+		</div>
+		
+	</div>
+	</div>
+</body>
+</html>
