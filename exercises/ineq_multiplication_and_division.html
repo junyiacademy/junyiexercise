@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html data-require="math graphie math-format">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>不等式乘除計算</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+    </style>
+    <script language="javascript">
+		function randArrSort(g, s) {
+            //g = [a,b,c]; s = [3,2,1]; return [c,b,a]
+            var res = [];
+            for( var i = 0, l = s.length; i < l; i++){
+                res.push(g[s[i] - 1]);
+            }
+            return res;
+        }
+        if(!Array.indexOf)
+            {
+                Array.prototype.indexOf = function(obj)
+                {             
+                    for(var i=0; i<this.length; i++)
+                    {
+                        if(this[i]==obj)
+                        {
+                            return i;
+                        }
+                    }
+                    return -1;
+                }
+            }
+	</script>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars" data-ensure="abs(AJ*J) !== 1 ">
+                <var id="J">randRangeExclude(-9, 9, [0,1,-1,-2,2])</var>
+                <var id="K">randRangeExclude(-15, 15, [0,1,-1])</var>
+                <var id="L">randRangeExclude(-30, 30, [0,1,-1])</var>
+                <var id="ABSJ">abs(J)</var>
+                <var id="ABSJN">abs(2/J)</var>
+                <var id="AJ">-3/abs(J)</var>
+                <var id="SYMBOLS">randRange(1,4)</var>
+                <var id="S">['&gt;','&ge;','&lt;','&le;'][SYMBOLS-1]</var>
+                <var id="AS">['&gt;','&ge;','&lt;','&le;'][(SYMBOLS+1)%4]</var>
+                <var id="Q">(function(){
+                    var ques = J+'x'+(K &lt; 0 ? '' : '+')+K;
+                    var q1 = [(J &lt; 0 ? '-' : '')+'x'+(K/ABSJ &lt; 0 ? '' : '+')+decimalFraction(K/ABSJ,true,true,false,false)+S+decimalFraction(L/ABSJ,true,true,false,false),(J &lt; 0 ? '-' : '')+'x'+(K/ABSJ &lt; 0 ? '' : '+')+decimalFraction(K/ABSJ,true,true,false,false)+'=('+ques+')\\div'+ABSJ+S+'('+L+')\\div'+ABSJ+'='+decimalFraction(L/ABSJ,true,true,false,false)+'\\Rightarrow 相同！'];
+                    var q2 = [round(J*ABSJN)+'x'+(K*ABSJN &lt; 0 ? '' : '+')+decimalFraction(K*ABSJN,true,true,false,false)+S+decimalFraction(L*ABSJN,true,true,false,false),round(J*ABSJN)+'x'+(K*ABSJN &lt; 0 ? '' : '+')+decimalFraction(K*ABSJN,true,true,false,false)+'=('+ques+')\\times'+decimalFraction(ABSJN,true,true,false,false)+S+'('+L+')\\times'+decimalFraction(ABSJN,true,true,false,false)+'='+decimalFraction(L*ABSJN,true,true,false,false)+'\\Rightarrow 相同！'];
+                    var q3 = [round(J*3)+'x'+(K*3 &lt; 0 ? '' : '+')+decimalFraction(K*3,true,true,false,false)+S+decimalFraction(L*3,true,true,false,false),round(J*3)+'x'+(K*3 &lt; 0 ? '' : '+')+decimalFraction(K*3,true,true,false,false)+'=('+ques+')\\times'+3+S+'('+L+')\\times'+3+'='+decimalFraction(L*3,true,true,false,false)+'\\Rightarrow 相同！'];
+
+                    var w1 = [(J/(-ABSJ) &lt; 0 ? '-' : '')+'x'+(K/(-ABSJ) &lt; 0 ? '' : '+')+decimalFraction(K/(-ABSJ),true,true,false,false)+S+decimalFraction(L/(-ABSJ),true,true,false,false),(J/ABSJ &lt; 0 ? '-' : '')+'x'+(K/ABSJ &lt; 0 ? '' : '+')+decimalFraction(K/ABSJ,true,true,false,false)+'=('+ques+')\\div'+decimalFraction(ABSJ,true,true,false,false)+S+'('+L+')\\div'+ABSJ+'='+decimalFraction(L/ABSJ,true,true,false,false)+'\\Rightarrow 相同！',(J/ABSJ &lt; 0 ? '-' : '')+'x'+(K/ABSJ &lt; 0 ? '' : '+')+decimalFraction(K/ABSJ,true,true,false,false)+S+decimalFraction(L/ABSJ,true,true,false,false),decimalFraction(-L/ABSJ,true,true,false,false)+S+(-J/ABSJ &lt; 0 ? '-' : '')+'x'+(-K/ABSJ &lt; 0 ? '' : '+')+decimalFraction(-K/ABSJ,true,true,false,false)];
+                    var w2 = [(J*AJ)+'x'+(K*AJ &lt; 0 ? '' : '+')+decimalFraction(K*AJ,true,true,false,false)+S+decimalFraction(L*AJ,true,true,false,false),round(J*(-AJ))+'x'+(K*(-AJ) &lt; 0 ? '' : '+')+decimalFraction(K*(-AJ),true,true,false,false)+'=('+ques+')\\times'+decimalFraction((-AJ),true,true,false,false)+S+'('+L+')\\times'+decimalFraction((-AJ),true,true,false,false)+'='+decimalFraction(L*(-AJ),true,true,false,false)+'\\Rightarrow 相同！',round(J*(-AJ))+'x'+(K*(-AJ) &lt; 0 ? '' : '+')+decimalFraction(K*(-AJ),true,true,false,false)+S+decimalFraction(L*(-AJ),true,true,false,false),decimalFraction(L*(AJ),true,true,false,false)+S+round(J*(AJ))+'x'+(K*(AJ) &lt; 0 ? '' : '+')+decimalFraction(K*(AJ),true,true,false,false)];
+                    var w3 = [(J*(-2))+'x'+(K*(-2) &lt; 0 ? '' : '+')+decimalFraction(K*(-2),true,true,false,false)+S+decimalFraction(L*(-2),true,true,false,false),round(J*(2))+'x'+(K*(2) &lt; 0 ? '' : '+')+decimalFraction(K*(2),true,true,false,false)+'=('+ques+')\\times'+decimalFraction((2),true,true,false,false)+S+'('+L+')\\times'+decimalFraction((2),true,true,false,false)+'='+decimalFraction(L*(2),true,true,false,false)+'\\Rightarrow 相同！',round(J*(2))+'x'+(K*(2) &lt; 0 ? '' : '+')+decimalFraction(K*(2),true,true,false,false)+S+decimalFraction(L*(2),true,true,false,false),decimalFraction(-L*(2),true,true,false,false)+S+round(-J*(2))+'x'+(-K*(2) &lt; 0 ? '' : '+')+decimalFraction(-K*(2),true,true,false,false)];
+                    return [q1,q2,q3,[w1,w2,w3][randRange(0,2)]];
+                })()</var>
+                <var id="ANS_ARR">randRangeUnique(1,5,4)</var>
+                <var id="ANS">randArrSort(Q,ANS_ARR)</var>
+                <var id="R">ANS_ARR.indexOf(4)</var>
+                <var id="R_C">(function(){
+                    var split_a = Q[3][3].split(S);
+                    return split_a[1]+AS+split_a[0];
+                })()</var>
+            </div>
+
+            <p class="question">下列哪一個不等式和 <code><var>J</var>x+<var>K</var><var>S</var><var>L</var></code> 的解不同？</p>
+
+            <div class="problem">
+                <p><code>A.\quad <var>ANS[0][0]</var></code></p>
+                <p><code>B.\quad <var>ANS[1][0]</var></code></p>
+                <p><code>C.\quad <var>ANS[2][0]</var></code></p>
+                <p><code>D.\quad <var>ANS[3][0]</var></code></p>
+            </div>
+
+            <p class="solution"><var>['A','B','C','D'][R]</var></p>
+                <ul class="choices" data-category="true">                   
+                    <li>A</li>
+                    <li>B</li>
+                    <li>C</li>
+                    <li>D</li>
+                </ul>
+                
+            <div class="hints">
+                <div>
+                    <p>不等式兩邊同加或同減一數時，大小關係不變。</p>
+                    <p>不等式兩邊同乘以或同除以一正數，就好像放大和縮小，所以大小關係不變。</p>
+                    <p>因此我們可以把題目作正數的乘除，再和選項比對。</p>
+                </div>
+                <p><code>A.\quad <var>ANS[0][1]</var></code></p>
+                <p><code>B.\quad <var>ANS[1][1]</var></code></p>
+                <p><code>C.\quad <var>ANS[2][1]</var></code></p>
+                <p><code>D.\quad <var>ANS[3][1]</var></code></p>
+                <div>
+                    <p>但是選項問的是 <code><var>Q[3][0]</var></code>，所以把 <code><var>Q[3][2]</var></code> 左右移項，</p>
+                    <p>得到 <code><var>Q[3][3]</var></code>，也就是 <code><var>R_C</var></code>，</p>
+                    <p>所以題目和 <code class="hint_pink"><var>['A','B','C','D'][R]</var> : <var>Q[3][0]</var></code> 不同。</p>
+                </div>
+            </div> 
+
+        </div>
+
+        <div id="case2">
+            <div class="vars" data-ensure="!isInt(L/J)">
+                <var id="J">randRange(2, 9)</var>
+                <var id="L">randRangeExclude(-30, 30, [0,1,-1])</var>
+                <var id="SYMBOLS">randRange(1,4)</var>
+                <var id="S">['&gt;','&ge;','&lt;','&le;'][SYMBOLS-1]</var>
+                <var id="AS">['&gt;','&ge;','&lt;','&le;'][(SYMBOLS+1)%4]</var>
+            </div>
+
+            <p class="question">若不等式 <code><var>-J</var>x<var>S</var><var>L</var></code>，則 <code>x</code> 的不等式關係為何？</p>
+
+            <div class="solution" data-type="multiple">
+                <code>x</code>
+                <span class="sol" data-type="list" data-choices="['', '&gt;', '&ge;','&lt;','&le;']">
+                    <var>AS</var>
+                </span>
+                <span class="sol" data-type="rational"><var>-L/J</var></span>
+                <p class="example">選擇並填充</p>
+                <p class="example">小數，例：<code>0.75</code></p>
+                <p class="example">帶分數，例：<code>1\quad 3/4</code></p>
+                <p class="example"><em>假</em>分數，例：<code>10/7</code> 或 <code>14/8</code></p>
+                <p class="example"><em>真</em>分數，例：<code>1/2</code> 或 <code>6/10</code></p>
+            </div>
+                
+            <div class="hints">
+                <div>
+                	<p>不等式兩邊同乘以或同除以一正數，就好像放大和縮小，所以大小關係不變。因此我們可以把不等式作正數的乘除，再和題目的要求作比對。</p>
+                	<p><code><var>-J</var>x \div <var>J</var> <var>S</var><var>L</var> \div <var>J</var>\Rightarrow -x<var>S</var><var>fraction(L,J,true,true,false,false)</var></code></p>
+                </div>
+                <div>
+                	<p>因為題目的 <code>x</code> 係數是正的，所以把 <code>-x</code> 和常數利用加減移項，<code>x</code> 的係數就變號了。</p>
+                	<p><code>(-x)+x-<var>fraction(L,J,true,true,false,false)</var><var>S</var>(<var>fraction(L,J,true,true,false,false)</var>)+x-<var>fraction(L,J,true,true,false,false)</var>\Rightarrow <var>fraction(-L,J,true,true,false,false)</var><var>S</var>x</code></p>
+                </div>
+                <div>
+                	<p><code><var>fraction(-L,J,true,true,false,false)</var><var>S</var>x</code> 也就是 <code>x<var>AS</var><var>fraction(-L,J,true,true,false,false)</var></code>，所以答案是 <code class="hint_pink">x<var>AS</var><var>fraction(-L,J,true,true,false,false)</var></code> 。</p>
+                	<p>你可以發現，<span class="hint_red">不等式兩邊同乘以或同除以一負數，不等號會換方向</span>。</p>
+                </div>
+            </div> 
+
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
