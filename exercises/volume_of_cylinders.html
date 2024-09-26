@@ -23,6 +23,16 @@
                                    vect[2] * vect[2]);
             return _.map(vect, function(e) { return e / length; });
         };
+		 function accDiv(arg1,arg2){
+            var t1=0,t2=0,r1,r2;
+            try{t1=arg1.toString().split(".")[1].length}catch(e){}
+            try{t2=arg2.toString().split(".")[1].length}catch(e){}
+            with(Math){
+                r1=Number(arg1.toString().replace(".",""))
+                r2=Number(arg2.toString().replace(".",""))
+                return (r1/r2)*pow(10,t2-t1);
+            }
+        }
     </script>
 </head>
 <body>
@@ -32,10 +42,11 @@
             <div class="vars">
                 <var id="r">randRange(2, 4)</var>
                 <var id="h">randRange(5, 9)</var>
+				<var id="ans">accDiv(314 * r * r * h,100)</var>
             </div>
 
             <div class="question">
-                <p>底面半徑為
+                <p>底面半徑為	
                     <code><var>r</var></code> 、高為
                     <code><var>h</var></code> 的圓柱體，它的體積是多少？</p>
 
@@ -58,15 +69,25 @@
                     label([3, 1], h, "right");
                 </div>
             </div>
-
-            <div class="solution" data-type="multiple">
-                <p>
-                    <span class="sol" data-forms="pi">
-                        <var>Math.PI * r * r * h</var>
-                    </span>
-                    立方單位
-                </p>
+			<div class="solution" data-type="multiple">
+				<p><input type="text" id="t_1" style="width:50px"></p>
+			    <div class="sol" data-type="custom">
+				    <div class="guess">document.getElementById("t_1").value</div>
+				    <div class="validator-function">
+					if(guess==""){
+						    return "";
+						}
+					var ans1= r * r * h;
+					ans1=ans1+"PI";
+						if(guess==ans||guess.toUpperCase().replace(/[ ]/g,"")==ans1){
+						    return true;
+						}
+					</div>
+				</div>
+				<p class="example"><code>pi</code> 的倍數，例如 <code>12\enspace pi</code> 或 <code>12\enspace  PI</code></p>
+				<p class="example">小數，例：<code>0.75</code></p>
             </div>
+
 
             <div class="hints">
                 <p>
@@ -77,7 +98,7 @@
                 <p>
                     圓柱體的體積是底面面積乘以高：
                     <code>B \cdot h = <var>r * r</var>\pi \cdot <var>h</var>
-                        = <var>r * r * h</var>\pi</code> 。
+                        = </code> <code class="hint_pink"><var>r * r * h</var>\pi</code> 。
                 </p>
             </div>
         </div>
