@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html data-require="math graphie">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>不等式移項計算</title>
+    <script src="../khan-exercise.js"></script>
+    <style type="text/css">
+        #answer_area .sol input[type=text] {
+            width: 50px;
+        }
+    </style>
+    <script language="javascript">
+		function randArrSort(g, s) {
+            //g = [a,b,c]; s = [3,2,1]; return [c,b,a]
+            var res = [];
+            for( var i = 0, l = s.length; i < l; i++){
+                res.push(g[s[i] - 1]);
+            }
+            return res;
+        }
+        if(!Array.indexOf)
+            {
+                Array.prototype.indexOf = function(obj)
+                {             
+                    for(var i=0; i<this.length; i++)
+                    {
+                        if(this[i]==obj)
+                        {
+                            return i;
+                        }
+                    }
+                    return -1;
+                }
+            }
+	</script>
+</head>
+<body>
+<div class="exercise">
+    <div class="problems">
+        <div id="case1">
+            <div class="vars" data-ensure="abs(L)-abs(K) !== 0">
+                <var id="J">randRangeExclude(-9, 9, [0,1,-1])</var>
+                <var id="K">randRangeExclude(-15, 15, [0,1,-1])</var>
+                <var id="L">randRangeExclude(-30, 30, [0,1,-1])</var>
+                <var id="SYMBOLS">randRange(1,4)</var>
+                <var id="S">['&gt;','&ge;','&lt;','&le;'][SYMBOLS-1]</var>
+                <var id="Q">(function(){
+                    var q1 = [J+'x'+(K+L&lt;0?'':'+')+(K+L)+S+(L+L),J+'x'+(K+L&lt;0?'':'+')+(K+L)+'=\\color{#28AE7B}{('+J+'x'+(K&lt;0?'':'+')+K+')}'+(L&lt;0?'':'+')+L+S+'\\color{#28AE7B}{('+L+')}'+(L&lt;0?'':'+')+L+'='+(L+L)+'\\Rightarrow 相同'];
+                    var q2 = [J+'x'+(K+K&lt;0?'':'+')+(K+K)+S+(L+K),J+'x'+(K+K&lt;0?'':'+')+(K+K)+'=\\color{#28AE7B}{('+J+'x'+(K&lt;0?'':'+')+K+')}'+(K&lt;0?'':'+')+K+S+'\\color{#28AE7B}{('+L+')}'+(K&lt;0?'':'+')+K+'='+(L+K)+'\\Rightarrow 相同'];
+                    var q3 = [J+'x'+(K-L&lt;0?'':'+')+(K-L)+S+(L-L),J+'x'+(K-L&lt;0?'':'+')+(K-L)+'=\\color{#28AE7B}{('+J+'x'+(K&lt;0?'':'+')+K+')}'+'-'+(L&lt;0?'(':'')+L+(L&lt;0?')':'')+S+'\\color{#28AE7B}{('+L+')}'+'-'+(L&lt;0?'(':'')+L+(L&lt;0?')':'')+'=0'+'\\Rightarrow 相同'];
+                    var q4 = [K+S+L+(-J&lt;0?'':'+')+(-J+'x'),K+'=\\color{#28AE7B}{('+J+'x'+(K&lt;0?'':'+')+K+')}-'+(J&lt;0?'(':'')+J+'x'+(J&lt;0?')':'')+S+'\\color{#28AE7B}{('+L+')}'+'-'+(J&lt;0?'(':'')+J+'x'+(J&lt;0?')':'')+'='+L+(-J&lt;0?'':'+')+(-J+'x')+'\\Rightarrow 相同'];
+                    var q5 = [K+S+L+(-J&gt;0?'':'+')+(J+'x'),K+'=\\color{#28AE7B}{('+J+'x'+(K&lt;0?'':'+')+K+')}-'+(J&lt;0?'(':'')+J+'x'+(J&lt;0?')':'')+S+'\\color{#28AE7B}{('+L+')}'+'-'+(J&lt;0?'(':'')+J+'x'+(J&lt;0?')':'')+'\\color{red}{\\ne}'+L+(-J&gt;0?'':'+')+(J+'x')+'\\Rightarrow \\color{red}{不同}'];
+                    return [q1,q2,q3,q4,q5];
+                })()</var>
+                <var id="ANS_ARR">randRangeUnique(1,6,5)</var>
+                <var id="ANS">randArrSort(Q,ANS_ARR)</var>
+                <var id="R">ANS_ARR.indexOf(5)</var>
+            </div>
+
+            <p class="question">下列哪一個不等式和 <code class="hint_green"><var>J</var>x+<var>K</var><var>S</var><var>L</var></code> 的解不同？</p>
+
+            <div class="problem">
+                <p><code>A.\quad <var>ANS[0][0]</var></code></p>
+                <p><code>B.\quad <var>ANS[1][0]</var></code></p>
+                <p><code>C.\quad <var>ANS[2][0]</var></code></p>
+                <p><code>D.\quad <var>ANS[3][0]</var></code></p>
+                <p><code>E.\quad <var>ANS[4][0]</var></code></p>
+            </div>
+
+            <p class="solution"><var>['A','B','C','D','E'][R]</var></p>
+                <ul class="choices" data-category="true">                   
+                    <li>A</li>
+                    <li>B</li>
+                    <li>C</li>
+                    <li>D</li>
+                    <li>E</li>
+                </ul>
+                
+            <div class="hints">
+                <p>不等式兩邊同加或同減一數時，大小關係不變。所以我們可以把不等號的左邊利用加減方式調整到相同，再看不等號的右邊是否相同。</p>
+                <p><code>A.\quad <var>ANS[0][1]</var></code></p>
+                <p><code>B.\quad <var>ANS[1][1]</var></code></p>
+                <p><code>C.\quad <var>ANS[2][1]</var></code></p>
+                <p><code>D.\quad <var>ANS[3][1]</var></code></p>
+                <p><code>E.\quad <var>ANS[4][1]</var></code></p>
+                <p>所以答案是選 <code class="hint_pink"><var>['A','B','C','D','E'][R]</var> : <var>ANS[R][0]</var></code> 和題目不同。</p>
+            </div> 
+
+        </div>
+
+        <div id="case2">
+            <div class="vars" data-ensure="abs(L)-abs(K) !== 0">
+                <var id="J">randRangeExclude(-9, 9, [0,1,-1])</var>
+                <var id="K">randRangeExclude(-15, 15, [0,1,-1])</var>
+                <var id="L">randRangeExclude(-30, 30, [0,1,-1])</var>
+                <var id="SYMBOLS">randRange(1,4)</var>
+                <var id="S">['&gt;','&ge;','&lt;','&le;'][SYMBOLS-1]</var>
+                <var id="R">round(L-K)</var>
+            </div>
+
+            <p class="question">已知不等式 <code><var>J</var>x+<var>K</var><var>S</var><var>L</var></code>，則 <code><var>J</var>x<var>S</var>\color{red}{\underline{\qquad\qquad}}</code>。</p>
+
+            <p class="solution" data-forms="integer"><var>R</var></p>
+                
+            <div class="hints">
+                <p>不等式兩邊同加或同減一數時，大小關係不變。所以我們可以把不等號的左邊利用加減方式調整到相同，再看不等號的右邊是多少。</p>
+                <div>
+                    <p><code><var>J</var>x=(<var>J</var>x+<var>K</var>)-<var>K</var><var>S</var>(<var>L</var>)-<var>K</var>=<var>R</var></code>，</p>
+                </div>
+                <p>所以答案是 <code class="hint_pink"><var>J</var>x<var>S</var><var>R</var></code> 。</p>
+            </div> 
+
+        </div>
+
+        <div id="case3">
+            <div class="vars" data-ensure="abs(L)-abs(K) !== 0">
+                <var id="J">randRange(-9, -2)</var>
+                <var id="K">randRangeExclude(-15, 15, [0,1,-1])</var>
+                <var id="L">randRangeExclude(-30, 30, [0,1,-1])</var>
+                <var id="SYMBOLS">randRange(1,4)</var>
+                <var id="S">['&gt;','&ge;','&lt;','&le;'][SYMBOLS-1]</var>
+                <var id="AS">['&gt;','&ge;','&lt;','&le;'][(SYMBOLS+1)%4]</var>
+                <var id="R">round(K-L)</var>
+            </div>
+
+            <p class="question">若不等式 <code><var>J</var>x+<var>K</var><var>S</var><var>L</var></code>，則 <code><var>-J</var>x</code> 的不等式關係為何</code>？</p>
+
+            <div class="solution" data-type="multiple">
+                <code><var>-J</var>x</code>
+                <span class="sol" data-type="list" data-choices="['', '&gt;', '&ge;','&lt;','&le;']">
+                    <var>AS</var>
+                </span>
+                <span class="sol" data-forms="integer"><var>R</var></span>
+                <p class="example">選擇並填充</p>
+                <p class="example">整數，例：<code>6</code></p>
+            </div>
+                
+            <div class="hints">
+                <p>不等式兩邊同加或同減一數時，大小關係不變。</p>
+                <div>
+                    <p>因為題目由 <code><var>J</var>x</code> 變成 <code><var>-J</var>x</code>，所以不等號兩邊同加 <code><var>-J</var>x</code>，讓 <code><var>-J</var>x</code> 變到不等號右邊，係數就變號了。</p>
+                    <p><code>(<var>J</var>x+<var>K</var>)+<var>-J</var>x<var>S</var>(<var>L</var>)+<var>-J</var>x\Rightarrow <var>K</var><var>S</var><var>-J</var>x+<var>L</var></code></p>
+                </div>
+                <div>
+                    <p>再把其他常數利用加減移到另一邊：</p>
+                    <p><code>(<var>K</var>)-<var>L</var><var>S</var>(<var>-J</var>x+<var>L</var>)-<var>L</var>\Rightarrow <var>R</var><var>S</var><var>-J</var>x</code></p>
+                </div>
+                <div>
+                    <p>最後，<code>\lceil <var>R</var><var>S</var><var>-J</var>x \rfloor</code> 相當於 <code>\lceil <var>-J</var>x<var>AS</var><var>R</var> \rfloor</code>，</p>
+                    <p>所以答案是 <code class="hint_pink"><var>-J</var>x<var>AS</var><var>R</var></code> 。</p>
+                </div>
+            </div> 
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
