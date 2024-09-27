@@ -560,6 +560,21 @@ $.fn["word-problemsLoad"] = function() {
         }
         return "A " + word;
     };
+	
+	var juices = new IncrementalShuffler([
+        "蘋果汁",
+        "柳橙汁",
+		"芹菜汁",
+		"芭樂汁",
+		"西瓜汁",
+		"鳳梨汁",
+		"酪梨汁",
+		"百香果汁",
+		"葡萄汁",
+		"葡萄柚汁",
+		"番茄汁",
+		"菠菜汁"
+    ]);
 
     $.extend(KhanUtil, {
         person: function(i) {
@@ -749,7 +764,9 @@ $.fn["word-problemsLoad"] = function() {
         animalStddevLifespan: function(i) {
             return animals.get(i - 1)[2];
         },
-        
+        juice: function(i) {
+			return juices.get(i - 1);
+		},
         // measure word helper.(for Chinese)  There are two signatures
         // - measureWord(NOUN): return measure word of NOUN if available
         // - measureWord(NUMBER, NOUN): return "NUMBER measureWord NOUN", use default measure word if not available
